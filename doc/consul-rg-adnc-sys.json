@@ -1,0 +1,14 @@
+{
+    "service":
+    {
+        "name": "adnc-api-sys-1",
+        "tags": ["adnc-sys"],
+        "address": "http://172.16.0.4",
+        "port": 8001,
+        "checks": [
+        {
+            "http": "http://172.16.0.4:8001/health-24b01005-a76a-4b3b-8fb1-5e0f2e9564fb",
+            "interval": "10s"
+        }]
+    }
+}

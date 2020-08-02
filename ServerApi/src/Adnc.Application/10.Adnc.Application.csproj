@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.1</TargetFramework>
+		<AssemblyName>Adnc.Application</AssemblyName>
+		<RootNamespace>Adnc.Application</RootNamespace>
+		<Version>0.5.0</Version>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<DocumentationFile>F:\AspNetCore.Management\ServerApi\src\Adnc.Application\Adnc.Application.xml</DocumentationFile>
+		<NoWarn>$(NoWarn);1591</NoWarn>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Autofac" Version="5.1.2" />
+		<PackageReference Include="Castle.Core" Version="4.4.0" />
+		<PackageReference Include="Autofac.Extras.DynamicProxy" Version="5.0.0" />
+		<PackageReference Include="Autofac.Extensions.DependencyInjection" Version="6.0.0" />
+		<PackageReference Include="AutoMapper" Version="9.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Adnc.Core\11.Adnc.Core.csproj" />
+		<ProjectReference Include="..\Adnc.Infr.EasyCaching\21.Adnc.Infr.EasyCaching.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="Adnc.Application.xml">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+
+</Project>

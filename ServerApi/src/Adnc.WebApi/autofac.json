@@ -1,0 +1,16 @@
+﻿{
+  "modules": [
+    {
+      "type": "Adnc.Core.RegisterModule, Adnc.Core"
+    },
+    {
+      "type": "Adnc.Application.RegisterModule, Adnc.Application"
+    },
+    {
+      "type": " Adnc.Infr.EfCore.RegisterModule,  Adnc.Infr.EfCore"
+    },
+    {
+      "type": "Adnc.Infr.Mongo.RegisterModule, Adnc.Infr.Mongo"
+    }
+  ]
+}

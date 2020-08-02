@@ -1,0 +1,25 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Text;
+
+namespace Adnc.Application.Dtos
+{
+    /// <summary>
+    /// 登录信息
+    /// </summary>
+    public class UserValidateInputDto
+    {
+        /// <summary>
+        /// 账户
+        /// </summary>
+        [Required]
+        public string Account { get; set; }
+
+        /// <summary>
+        /// 密码
+        /// </summary>
+        [Required]
+        public string Password { get; set; }
+    }
+}

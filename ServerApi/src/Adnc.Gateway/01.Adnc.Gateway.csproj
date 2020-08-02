@@ -1,0 +1,47 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RootNamespace>Adnc.Gateway</RootNamespace>
+    <AssemblyName>Adnc.Gateway</AssemblyName>
+	  <SatelliteResourceLanguages>zh-Hans</SatelliteResourceLanguages>
+	  <SatelliteResourceLanguages>zh-Hant</SatelliteResourceLanguages>
+	  <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Controllers\AuthController.cs" />
+    <Compile Remove="WebUtiliy\JwtTokenUtil.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Ocelot" Version="16.0.1" />
+    <PackageReference Include="Ocelot.Provider.Consul" Version="16.0.1" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.7.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Config\ocelot.production.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Config\ocelot.test.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Config\ocelot.development.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+    <Folder Include="WebUtiliy\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Adnc.Common\19.Adnc.Common.csproj" />
+    <ProjectReference Include="..\Adnc.Infr.Consul\20.Adnc.Infr.Consul.csproj" />
+  </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>
+
+</Project>
