@@ -10,7 +10,7 @@ Adnc 是一个基于asp.netcore前后端分离的基础开发框架(支持微服
 
   - ClientApp 前端项目
   - ServerApi 后端项目
-  - doc 项目相关文档
+  - doc 项目相关文档(数据库脚本/docker-compose.yaml文件)
 
 ## ClientApp
   - ClientApp基于Vue-element-adminy以及web-flash(https://github.com/PanJiaChen/vue-element-admin) 搭建，感谢两位作者。
