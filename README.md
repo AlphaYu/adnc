@@ -1,8 +1,10 @@
 # Adnc
 
-[![N|Solid](https://cldup.com/dTxpPi9lDf.thumb.png)](https://nodesource.com/products/nsolid)
+[系统地址](http://193.112.75.77) 用户名/密码(alpha2008/alpha2008)
 
-[![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://travis-ci.org/joemccann/dillinger)
+[接口地址](http://193.112.75.77:8888/sys/index.html)
+
+[![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://github.com/AlphaYu/Adnc)
 
 Adnc 是一个基于asp.netcore前后端分离的基础开发框架(支持微服务)。
 
