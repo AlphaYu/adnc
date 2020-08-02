@@ -13,7 +13,7 @@ Adnc 是一个基于asp.netcore前后端分离的基础开发框架(支持微服
 ## ClientApp
   - ClientApp基于Vue-element-adminy以及web-flash(https://github.com/PanJiaChen/vue-element-admin) 搭建，感谢两位作者。
   - 技术栈 Vue + Vue-Router + Vuex + Axios
-  - 构建步骤
+  - 构建步骤jieyu
     ```bash 
     # Install dependencies 
     npm install --registry=https://registry.npm.taobao.org
@@ -26,8 +26,27 @@ Adnc 是一个基于asp.netcore前后端分离的基础开发框架(支持微服
 
 ## ServerApi
   - ServerApi基于.netcore3.1搭建。
+  - 主要技术栈
+ 
+| 名称 | 描述 |
+| ------ | ------ |
+| Ocelot | 基于 .net core 编写的开源Api网关  |
+| Consul | 配置中心、服务发现/注册|
+| SkyAPM.Agent.AspNetCore | skywalking .net core 探针，性能检测 |
+| AspNetCore.HealthChecks | 健康检测插件 |
+| Autofac | IOC容器 |
+| Autofac.Extras.DynamicProxy | AOP |
+| Efcore | Orm框架 |
+| Z.EntityFramework.Plus.EFCore | 高新能的批量更新Ef插件 |
+| NLog | 日志记录插件 |
+| AutoMapper | 模型映射 |
+| Swashbuckle.AspNetCore | REST APIs文档生成工具（swagger） |
+| EasyCaching | 实现一、二级缓存管理的一个开源的 C# 库 |
+| CAP  | 实现事件总线及最终一致性（分布式事务）的一个开源的 C# 库 |
+| xUnit | 单元测试模板 |
+
   - 项目结构
-00-09 输出类项目(webapi,mvc,gRpc,console)、10-19业务类项目、:20-29基础服务、30-xx 测试项目.
+00-09 输出类项目(webapi,mvc,gRpc,console)、10-19业务类项目、:20-29基础设施层、30-xx 测试项目.
 
 | 项目名称 | 描述 |
 | ------ | ------ |
@@ -37,8 +56,16 @@ Adnc 是一个基于asp.netcore前后端分离的基础开发框架(支持微服
 | 10.Adnc.Application | 应用层，协调webapi层与core层，负责dot<=>entity转换、cache管理(一、二级缓存)、记录日志、消息发送等 |
 | 11.Adnc.Core | 核心业务层或者领域层，包含实体、仓储(接口)、单库事务/分布式事务、EventBus。 |
 | 19.Adnc.Common | 公共层，提供帮助类和扩展方法以及一些公用模型 |
-| 20.Adnc.Infr.Consul | 基础服务层，集成了Consul。负责服务的注册、发现以及系统配置读取 |
-| 21.Adnc.Infr.EasyCaching | 基础服务层，集成了EasyCaching。重写了EasyCaching拦截器部分代码，负责一、二级缓存的管理 |
-| 22.Adnc.Infr.EfCore| 基础服务层，Adnc.Core仓储接口的Ef实现，负责mysql数据库的CRUD操作 |
-| 23.Adnc.Infr.Mongo| 基础服务层，Adnc.Core仓储接口的MongoDb实现,负责MongoDb数据库的CRUD操作 |
+| 20.Adnc.Infr.Consul | 基础设施层，集成了Consul。负责服务的注册、发现以及系统配置读取 |
+| 21.Adnc.Infr.EasyCaching | 基础设施层，集成了EasyCaching。重写了EasyCaching拦截器部分代码，负责一、二级缓存的管理 |
+| 22.Adnc.Infr.EfCore| 基础设施层，Adnc.Core仓储接口的Ef实现，负责mysql数据库的CRUD操作 |
+| 23.Adnc.Infr.Mongo| 基础设施层，Adnc.Core仓储接口的MongoDb实现,负责MongoDb数据库的CRUD操作 |
 | 30.Adnc.UnitTest| 单元测试，集成了xunit测试模板 |
+
+License
+----
+
+MIT
+
+
+**Free Software, Hell Yeah!**
