@@ -17,11 +17,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="logs\skyapm-20200728.log" />
-    <None Remove="logs\skyapm-20200729.log" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="AspNetCore.HealthChecks.MongoDb" Version="3.1.2" />
     <PackageReference Include="AspNetCore.HealthChecks.MySql" Version="3.1.1" />
     <PackageReference Include="AspNetCore.HealthChecks.Redis" Version="3.1.1" />
@@ -64,10 +59,6 @@
     <Content Update="nlog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="logs\" />
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties properties_4launchsettings_1json__JsonSchema="http://json.schemastore.org/launchsettings.json" /></VisualStudio></ProjectExtensions>

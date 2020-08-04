@@ -43,6 +43,7 @@ namespace Adnc.WebApi
                     if (env.IsProduction() || env.IsStaging())
                     {
                         var configuration = cb.Build();
+                        //从consul配置中心读取配置
                         cb.AddConsul(new[] { configuration.GetValue<Uri>("ConsulUrl") }, configuration.GetValue<string>("ConsulKeyPath"));
                     }
                     cb.AddJsonFile("autofac.json", optional: true);

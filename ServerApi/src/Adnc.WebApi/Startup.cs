@@ -98,7 +98,7 @@ namespace Adnc.WebApi
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-            app.UseCustomAuthentication();
+            //app.UseCustomAuthentication();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers().RequireAuthorization();
