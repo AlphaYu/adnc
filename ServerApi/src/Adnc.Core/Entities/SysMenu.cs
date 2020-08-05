@@ -11,7 +11,7 @@ namespace Adnc.Core.Entities
 	/// </summary>
 	[Table("SysMenu")]
 	[Description("菜单")]
-	public class SysMenu : EfEntity<long>
+	public class SysMenu : EfAuditEntity
 	{
 		/// <summary>
 		/// 编号

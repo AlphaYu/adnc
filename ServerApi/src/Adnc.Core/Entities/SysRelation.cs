@@ -10,13 +10,9 @@ namespace Adnc.Core.Entities
 	/// </summary>
 	[Table("SysRelation")]
 	[Description("菜单角色关系")]
-	public class SysRelation
-	{
-		[Key]
-		[Column("ID")]
-		public long ID { get; set; }
-
-		[Column("MenuId")]
+    public class SysRelation : EfEntity
+    {
+        [Column("MenuId")]
 		public long MenuId { get; set; }
 
 		[Column("RoleId")]

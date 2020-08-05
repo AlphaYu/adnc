@@ -11,7 +11,7 @@ namespace Adnc.Core.Entities
 	/// </summary>
 	[Table("SysRole")]
 	[Description("角色")]
-	public class SysRole : EfEntity<long>
+	public class SysRole : EfAuditEntity
 	{
 		[Column("DeptId")]
 		public long? DeptId { get; set; }

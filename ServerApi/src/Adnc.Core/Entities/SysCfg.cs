@@ -10,7 +10,7 @@ namespace Adnc.Core.Entities
 	/// </summary>
 	[Table("SysCfg")]
 	[Description("系统参数")]
-	public class SysCfg : EfEntity<long>
+	public class SysCfg : EfAuditEntity
 	{
 		/// <summary>
 		/// 备注

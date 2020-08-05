@@ -11,12 +11,13 @@ using Adnc.Core.IRepositories;
 using Adnc.Common.Models;
 using Z.EntityFramework.Plus;
 using Newtonsoft.Json;
+using Adnc.Core.Entities;
 
 namespace  Adnc.Infr.EfCore.Repositories
 {
     public class BaseRepository<TDbContext, TEntity> : IEfRepository<TEntity>
        where TDbContext : DbContext
-       where TEntity : class
+       where TEntity : EfEntity
     {
         protected TDbContext DbContext { get; }
 

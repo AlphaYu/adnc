@@ -10,7 +10,7 @@ namespace Adnc.Core.Entities
 	/// </summary>
 	[Table("SysUser")]
 	[Description("账号")]
-	public class SysUser : EfEntity<long>
+	public class SysUser : EfAuditEntity
 	{
 
 		//private SysDept _dept;

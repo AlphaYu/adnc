@@ -23,7 +23,7 @@ namespace Adnc.Application
             CreateMap<DictSaveInputDto, SysDict>();
             CreateMap<SysDict, DictDto>();
 
-            CreateMap<SysFileInfo, FileInfoDto>();
+            //CreateMap<SysFileInfo, FileInfoDto>();
 
             CreateMap<MenuSaveInputDto, SysMenu>();
             CreateMap<SysMenu, MenuDto>().ReverseMap();

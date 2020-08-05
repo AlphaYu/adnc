@@ -30,21 +30,5 @@ namespace  Adnc.Infr.EfCore.Repositories
 
             return relations.Select(d => d.Menu).ToList();
         }
-
-        public List<SysMenu> GetMenusByRoleIds(long[] roleIds, bool enabledOnly)
-        {
-            var query = DbContext.Set<SysRelation>()
-                            .Where(r => roleIds.Contains(r.RoleId))
-                            .Select(u => new { u.Menu })
-                            .Distinct();
-
-            if (enabledOnly)
-                query = query.Where(r => r.Menu.Status == true);
-
-
-            var relations = query.ToList();
-
-            return relations.Select(d => d.Menu).ToList();
-        }
     }
 }

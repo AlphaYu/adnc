@@ -10,12 +10,12 @@ namespace Adnc.Core.Entities
 	/// </summary>
 	[Table("SysTaskLog")]
 	[Description("定时任务日志")]
-	public class SysTaskLog
-	{
-		/// <summary>
-		/// 执行时间
-		/// </summary>
-		[Description("执行时间")]
+    public class SysTaskLog : EfEntity
+    {
+        /// <summary>
+        /// 执行时间
+        /// </summary>
+        [Description("执行时间")]
 		[Column("ExecAt")]
 		public DateTime? ExecAt { get; set; }
 
@@ -25,10 +25,6 @@ namespace Adnc.Core.Entities
 		[Description("执行结果（成功:1、失败:0)")]
 		[Column("ExecSuccess")]
 		public bool? ExecSuccess { get; set; }
-
-		[Key]
-		[Column("ID")]
-		public long ID { get; set; }
 
 		[Column("IdTask")]
 		public long? IdTask { get; set; }

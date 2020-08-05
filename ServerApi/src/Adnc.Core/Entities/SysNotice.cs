@@ -10,7 +10,7 @@ namespace Adnc.Core.Entities
 	/// </summary>
 	[Table("SysNotice")]
 	[Description("通知")]
-	public class SysNotice : EfEntity<long>
+	public class SysNotice : EfAuditEntity
 	{
 		[StringLength(255)]
 		[Column("Content")]

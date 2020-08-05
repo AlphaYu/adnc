@@ -68,7 +68,7 @@ namespace Adnc.Infr.EfCore
             var auditEntities = ChangeTracker.Entries<IAudit>().Where(x => x.State == EntityState.Added || x.State == EntityState.Modified);
             foreach (var entry in auditEntities)
             {
-                var entity = entry.Entity as IAudit;
+                var entity = entry.Entity;
                 if (entry.State == EntityState.Added)
                 {
                     entity.CreateBy = _userContext.ID;
@@ -87,7 +87,7 @@ namespace Adnc.Infr.EfCore
             modelBuilder.Entity<SysCfg>();
             modelBuilder.Entity<SysDept>();
             modelBuilder.Entity<SysDict>();
-            modelBuilder.Entity<SysFileInfo>();
+            //modelBuilder.Entity<SysFileInfo>();
             modelBuilder.Entity<SysLoginLog>();
             modelBuilder.Entity<SysMenu>();
             modelBuilder.Entity<SysNotice>();

@@ -10,13 +10,10 @@ namespace Adnc.Core.Entities
 	/// </summary>
 	[Table("SysLoginLog")]
 	[Description("登录日志")]
-	public class SysLoginLog
-	{
-		[Key]
-		[Column("ID")]
-		public long ID { get; set; }
+    public class SysLoginLog : EfEntity
+    {
 
-		[StringLength(20)]
+        [StringLength(20)]
 		[Column("Device")]
 		public string Device { get; set; }
 

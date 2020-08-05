@@ -10,7 +10,7 @@ namespace Adnc.Core.Entities
 	/// </summary>
 	[Table("SysDict")]
 	[Description("字典")]
-	public class SysDict : EfEntity<long>
+	public class SysDict : EfAuditEntity
 	{
 		public override long ID { get; set; }
 

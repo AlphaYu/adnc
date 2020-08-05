@@ -10,7 +10,7 @@ namespace Adnc.Core.Entities
 	/// </summary>
 	[Table("SysTask")]
 	[Description("定时任务")]
-	public class SysTask : EfEntity<long>
+	public class SysTask : EfAuditEntity
 	{
 		/// <summary>
 		/// 是否允许并发

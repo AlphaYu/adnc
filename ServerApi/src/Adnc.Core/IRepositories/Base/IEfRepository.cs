@@ -9,11 +9,12 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Adnc.Common.Models;
+using Adnc.Core.Entities;
 
 namespace Adnc.Core.IRepositories
 {
     public interface IEfRepository<TEntity> : IRepository<TEntity>
-       where TEntity : class
+       where TEntity : EfEntity
     {
         DbSet<TEntity> GetAll();
 
