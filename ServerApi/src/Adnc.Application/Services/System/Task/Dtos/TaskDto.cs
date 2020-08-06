@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Adnc.Application.Dtos
 {
-	public class TaskDto : BaseDto<long>
+	public class TaskDto : BaseOutputDto
 	{
 		/// <summary>
 		/// 是否允许并发

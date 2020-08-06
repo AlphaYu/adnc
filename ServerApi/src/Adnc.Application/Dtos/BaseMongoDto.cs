@@ -4,7 +4,8 @@ using System.Text;
 
 namespace Adnc.Application.Dtos
 {
-    public class BaseMongoDto
+    [Serializable]
+    public abstract class BaseMongoDto : BaseDto
     {
         public string Id { get; set; }
     }

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Adnc.Application.Dtos
 {
-	public class TaskLogDto
+	public class TaskLogDto:BaseOutputDto
 	{
 		/// <summary>
 		/// 执行时间
@@ -16,7 +16,6 @@ namespace Adnc.Application.Dtos
 		/// </summary>
 		public bool? ExecSuccess { get; set; }
 
-		public long ID { get; set; }
 
 		public long? IdTask { get; set; }
 

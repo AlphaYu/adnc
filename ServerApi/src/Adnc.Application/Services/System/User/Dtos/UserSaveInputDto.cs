@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Adnc.Application.Dtos
 {
-    public class UserSaveInputDto : BaseInputDto<long>
+    public class UserSaveInputDto : BaseInputDto
     {
         /// <summary>
         /// 账户

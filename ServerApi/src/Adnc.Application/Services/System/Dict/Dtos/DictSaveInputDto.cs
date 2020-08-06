@@ -5,7 +5,7 @@ using Adnc.Application.Dtos;
 
 namespace Adnc.Application.Dtos
 {
-    public class DictSaveInputDto : BaseDto<long>
+    public class DictSaveInputDto : BaseInputDto
     {
         public string DictName { get; set; }
 

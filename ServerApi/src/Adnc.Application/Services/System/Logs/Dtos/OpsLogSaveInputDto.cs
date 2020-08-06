@@ -4,15 +4,15 @@ using System.Text;
 
 namespace Adnc.Application.Dtos
 {
-	/// <summary>
-	/// 操作日志
-	/// </summary>
-	public class OpsLogSaveInputDto
-	{
-		/// <summary>
-		/// 控制器类名
-		/// </summary>
-		public string ClassName { get; set; }
+    /// <summary>
+    /// 操作日志
+    /// </summary>
+    public class OpsLogSaveInputDto : BaseInputDto
+    {
+        /// <summary>
+        /// 控制器类名
+        /// </summary>
+        public string ClassName { get; set; }
 
 		/// <summary>
 		/// 创建时间

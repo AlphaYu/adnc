@@ -8,7 +8,7 @@ namespace Adnc.Application.Dtos
     /// 菜单元数据
     /// </summary>
     [Serializable]
-    public class MenuMetaDto
+    public class MenuMetaDto:BaseDto
     {
         /// <summary>
         /// 菜单标题

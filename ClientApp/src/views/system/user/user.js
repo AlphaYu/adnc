@@ -58,6 +58,12 @@ export default {
         ],
         email: [
           { required: true, message: '请输入email', trigger: 'blur' }
+        ],      
+        phone: [
+          { required: true, message: '请输入电话', trigger: 'blur' }
+        ],
+        birthday: [
+          { required: true, message: '请输入出生日期', trigger: 'blur' }
         ]
       },
       listQuery: {

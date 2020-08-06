@@ -8,7 +8,7 @@ namespace Adnc.Application.Dtos
 	/// 用户
 	/// </summary>
     [Serializable]
-	public class UserDto : BaseDto<long>
+	public class UserDto : BaseOutputDto
 	{
         /// <summary>
         /// 账户

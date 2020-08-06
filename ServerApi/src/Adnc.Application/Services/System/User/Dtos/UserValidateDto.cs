@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Adnc.Application.Dtos
 {
-    public class UserValidateDto
+    public class UserValidateDto : BaseDto
     {
         public long ID { get; set; }
 

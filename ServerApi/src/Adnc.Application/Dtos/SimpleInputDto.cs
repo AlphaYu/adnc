@@ -8,7 +8,8 @@ namespace Adnc.Application.Dtos
     /// 用于解决API frompost 方式接收 string,int,long等基础类型的问题。
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class SimpleInputDto<T>
+    [Serializable]
+    public class SimpleInputDto<T> : BaseDto
     {
         /// <summary>
         /// 需要传递的值

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Adnc.Application.Dtos
 {
-    public class UserChangeStatusInputDto
+    public class UserChangeStatusInputDto : BaseDto
     {
         public long[] UserIds { get; set; }
 

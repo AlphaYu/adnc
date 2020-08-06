@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Adnc.Application.Dtos
 {
-    public class RoleSaveInputDto : BaseInputDto<long>
+    public class RoleSaveInputDto : BaseInputDto
     {
 		/// <summary>
 		/// 部门ID

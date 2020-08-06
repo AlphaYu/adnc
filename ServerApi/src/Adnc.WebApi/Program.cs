@@ -15,6 +15,7 @@ using NLog.Fluent;
 using NLog.Web;
 using Adnc.Common;
 using Adnc.Infr.Consul.Configuration;
+using Adnc.Infr.Consul;
 
 namespace Adnc.WebApi
 {
@@ -44,7 +45,8 @@ namespace Adnc.WebApi
                     {
                         var configuration = cb.Build();
                         //从consul配置中心读取配置
-                        cb.AddConsul(new[] { configuration.GetValue<Uri>("ConsulUrl") }, configuration.GetValue<string>("ConsulKeyPath"));
+                        var consulOption = configuration.GetSection("Consul").Get<ConsulOption>();
+                        cb.AddConsul(new[] { consulOption.ConsulUrl }, consulOption.ConsulKeyPath);
                     }
                     cb.AddJsonFile("autofac.json", optional: true);
                 })

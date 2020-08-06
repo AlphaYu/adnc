@@ -60,7 +60,7 @@ namespace Adnc.Application.Services
                 throw new BusinessException(new ErrorModel(ErrorCode.BadRequest,"请输入任务名称"));
             }
             //add
-            if (saveDto.Id == 0)
+            if (saveDto.ID == 0)
             {
                 var exist = await _taskRepository.ExistAsync(c => c.Name == saveDto.Name);
                 if (exist)
@@ -75,7 +75,7 @@ namespace Adnc.Application.Services
             //update
             else
             {
-                var exist = await _taskRepository.ExistAsync(c => c.Name == saveDto.Name && c.ID != saveDto.Id);
+                var exist = await _taskRepository.ExistAsync(c => c.Name == saveDto.Name && c.ID != saveDto.ID);
                 if (exist)
                     throw new BusinessException(new ErrorModel(ErrorCode.BadRequest,"任务名称已经存在"));
 

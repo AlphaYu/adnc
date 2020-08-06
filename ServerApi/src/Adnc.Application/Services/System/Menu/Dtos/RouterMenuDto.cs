@@ -8,7 +8,7 @@ namespace Adnc.Application.Dtos
     /// 路由菜单
     /// </summary>
     [Serializable]
-    public class RouterMenuDto
+    public class RouterMenuDto : BaseDto
     {
         /// <summary>
         /// 菜单ID

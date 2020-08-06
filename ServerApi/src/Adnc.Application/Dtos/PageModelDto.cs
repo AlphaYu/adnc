@@ -6,7 +6,7 @@ using Adnc.Common.Helper;
 namespace Adnc.Application.Dtos
 {
     [Serializable]
-    public class PageModelDto<T>
+    public class PageModelDto<T> : BaseDto
     {
         public IReadOnlyList<T> Data { get; set; }
 

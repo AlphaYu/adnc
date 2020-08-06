@@ -7,7 +7,7 @@ namespace Adnc.Application.Dtos
     /// <summary>
     /// 用户个人信息
     /// </summary>
-    public class UserProfileDto
+    public class UserProfileDto : BaseDto
     {
         /// <summary>
         /// 账户

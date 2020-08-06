@@ -7,7 +7,7 @@ namespace Adnc.Application.Dtos
 	/// <summary>
 	/// 菜单
 	/// </summary>
-	public class MenuSaveInputDto : BaseInputDto<long>
+	public class MenuSaveInputDto : BaseInputDto
 	{
 		/// <summary>
 		/// 编号

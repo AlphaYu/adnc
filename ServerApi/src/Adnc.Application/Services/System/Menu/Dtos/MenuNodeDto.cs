@@ -8,13 +8,8 @@ namespace Adnc.Application.Dtos
     /// 菜单节点
     /// </summary>
     [Serializable]
-    public class MenuNodeDto
+    public class MenuNodeDto : BaseOutputDto
     {
-        /// <summary>
-        /// 菜单ID
-        /// </summary>
-        public long ID { get; set; }
-
         /// <summary>
         /// 父菜单ID
         /// </summary>

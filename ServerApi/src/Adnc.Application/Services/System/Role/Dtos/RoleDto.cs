@@ -7,7 +7,7 @@ namespace Adnc.Application.Dtos
 	/// <summary>
 	/// 角色
 	/// </summary>
-	public class RoleDto : BaseDto<long>
+	public class RoleDto :BaseOutputDto
 	{
 		/// <summary>
 		/// 部门ID

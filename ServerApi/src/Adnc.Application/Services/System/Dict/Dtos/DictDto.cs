@@ -5,7 +5,7 @@ using System.Text;
 namespace Adnc.Application.Dtos
 {
 	[Serializable]
-	public class DictDto : BaseDto<long>
+	public class DictDto : BaseOutputDto
 	{
 		public string Name { get; set; }
 

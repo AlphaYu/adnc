@@ -7,7 +7,7 @@ namespace Adnc.Application.Dtos
 	/// <summary>
 	/// 菜单
 	/// </summary>
-	public class MenuDto : BaseDto<long>
+	public class MenuDto : BaseInputDto
 	{
 		/// <summary>
 		/// 编号

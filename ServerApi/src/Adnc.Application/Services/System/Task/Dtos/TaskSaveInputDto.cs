@@ -4,14 +4,12 @@ using System.Text;
 
 namespace Adnc.Application.Dtos
 {
-	public class TaskSaveInputDto
-	{
-		public long Id { get; set; }
-		
-		/// <summary>
-		/// 是否允许并发
-		/// </summary>
-		public bool Concurrent { get; set; }
+    public class TaskSaveInputDto : BaseInputDto
+    {
+        /// <summary>
+        /// 是否允许并发
+        /// </summary>
+        public bool Concurrent { get; set; }
 
 		/// <summary>
 		/// 定时规则

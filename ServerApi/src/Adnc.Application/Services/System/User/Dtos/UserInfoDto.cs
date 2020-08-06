@@ -7,7 +7,7 @@ namespace Adnc.Application.Dtos
     /// <summary>
     /// 用户信息
     /// </summary>
-    public class UserInfoDto
+    public class UserInfoDto : BaseDto
     {
         /// <summary>
         /// 姓名

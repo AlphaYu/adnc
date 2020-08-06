@@ -8,12 +8,12 @@ namespace Adnc.Application.Dtos
 	/// 角色，权限
 	/// </summary>
 	[Serializable]
-	public class RoleMenuCodesDto
-	{
-		/// <summary>
-		/// 菜单Code
-		/// </summary>
-		public string Code { get; set; }
+    public class RoleMenuCodesDto : BaseDto
+    {
+        /// <summary>
+        /// 菜单Code
+        /// </summary>
+        public string Code { get; set; }
 
 		/// <summary>
 		/// 角色ID

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Adnc.Application.Dtos
 {
-    public class RolePermissionsCheckInputDto
+    public class RolePermissionsCheckInputDto : BaseDto
     {
         [Required]
         public long[] RoleIds { get; set; }

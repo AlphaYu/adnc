@@ -8,7 +8,7 @@ namespace Adnc.Application.Dtos
     /// <summary>
     /// 登录信息
     /// </summary>
-    public class UserValidateInputDto
+    public class UserValidateInputDto : BaseDto
     {
         /// <summary>
         /// 账户

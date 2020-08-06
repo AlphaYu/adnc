@@ -31,6 +31,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.OpenApi.Models;
 using System.IO;
 using System.Reflection;
+using Adnc.Infr.Consul;
 
 namespace Adnc.WebApi.Helper
 {
@@ -41,6 +42,7 @@ namespace Adnc.WebApi.Helper
         private readonly JWTConfig _jwtConfig;
         private readonly MongoConfig _mongoConfig;
         private readonly MysqlConfig _mysqlConfig;
+        private readonly ConsulOption _consulOption;
 
         private static volatile ServiceRegistrationHelper _uniqueInstance;
         private static readonly object _lockObject = new object();

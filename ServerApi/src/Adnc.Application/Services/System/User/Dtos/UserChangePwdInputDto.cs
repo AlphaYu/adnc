@@ -8,7 +8,7 @@ namespace Adnc.Application.Dtos
     /// <summary>
     /// 修改密码Model
     /// </summary>
-    public class UserChangePwdInputDto
+    public class UserChangePwdInputDto : BaseDto
     {
         /// <summary>
         /// 旧密码

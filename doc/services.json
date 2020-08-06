@@ -1,0 +1,34 @@
+{
+    "services":[
+        {
+            "id":"adnc-api-sys-9010",
+            "name":"adnc-api-sys",
+            "tags":[
+                "urlprefix-/sys"
+            ],
+            "address":"172.16.0.4",
+            "port":9010,
+            "checks":[
+                {
+                    "http":"http://172.16.0.4:9010/sys/health-24b01005-a76a-4b3b-8fb1-5e0f2e9564fb",
+                    "interval":"10s"
+                }
+            ]
+        },
+        {
+            "id":"adnc-api-sys-9020",
+            "name":"adnc-api-sys",
+            "tags":[
+                "urlprefix-/sys"
+            ],
+            "address":"172.16.0.4",
+            "port":9020,
+            "checks":[
+                {
+                    "http":"http://172.16.0.4:9020/sys/health-24b01005-a76a-4b3b-8fb1-5e0f2e9564fb",
+                    "interval":"10s"
+                }
+            ]
+        }
+    ]
+}

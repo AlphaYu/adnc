@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Adnc.Application.Dtos
 {
-    public class RoleSetInputDto : BaseInputDto<long>
+    public class RoleSetInputDto : BaseInputDto
     {
         public string RoleIds { get; set; }
     }

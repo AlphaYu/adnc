@@ -8,7 +8,7 @@ namespace Adnc.Application.Dtos
     /// <summary>
     /// 刷新Token实体
     /// </summary>
-    public class RefreshTokenInputDto
+    public class RefreshTokenInputDto:BaseDto
     {
         /// <summary>
         /// 账号

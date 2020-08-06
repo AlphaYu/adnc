@@ -9,7 +9,7 @@ namespace Adnc.Application.Dtos
     /// </summary>
     /// <typeparam name="TKey"></typeparam>
     /// <typeparam name="TData"></typeparam>
-    public class ZTreeNodeDto<TKey, TData>
+    public class ZTreeNodeDto<TKey, TData> : BaseDto
     {
         /// <summary>
         /// 节点ID

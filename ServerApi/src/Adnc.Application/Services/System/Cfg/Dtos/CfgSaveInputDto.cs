@@ -7,7 +7,7 @@ namespace Adnc.Application.Dtos
 	/// <summary>
 	/// 系统配置
 	/// </summary>
-	public class CfgSaveInputDto:BaseInputDto<long>
+	public class CfgSaveInputDto:BaseInputDto
     {
         /// <summary>
         /// 备注

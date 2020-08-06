@@ -8,7 +8,7 @@ namespace Adnc.Application.Dtos
 	/// 部门
 	/// </summary>
 	[Serializable]
-	public class DeptSaveInputDto : BaseInputDto<long>
+	public class DeptSaveInputDto : BaseInputDto
 	{
 		/// <summary>
 		/// 部门全称

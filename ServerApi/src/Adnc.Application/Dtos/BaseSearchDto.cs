@@ -7,7 +7,8 @@ namespace Adnc.Application.Dtos
     /// <summary>
     /// 查询条件基类
     /// </summary>
-    public class BaseSearchDto
+    [Serializable]
+    public abstract class BaseSearchDto : BaseDto
     {
 
         private int _pageIndex;
