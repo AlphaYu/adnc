@@ -36,7 +36,7 @@ namespace Adnc.UnitTest
             //builder.RegisterAssemblyTypes(assemblysServices).AsImplementedInterfaces();
             //builder.RegisterAssemblyTypes(typeof(DbFixture).GetTypeInfo().Assembly);
 
-            string dbstring = "Server=localhost;database=AlphaNetCore;uid=root;pwd=alpha1;";
+            string dbstring = "Server=193.112.75.77;database=AlphaNetCore;uid=root;pwd=alpha.netcore;";
             var option = new DbContextOptionsBuilder<AdncDbContext>()
                 .UseLoggerFactory(LoggerFactory.Create(builder => builder.AddDebug()))
                 .UseMySql(dbstring, mySqlOptions => mySqlOptions.ServerVersion(new ServerVersion(new Version(8, 0, 18), ServerType.MySql)))

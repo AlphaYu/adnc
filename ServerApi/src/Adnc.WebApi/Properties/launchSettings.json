@@ -3,7 +3,7 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://192.168.32.106:5000",
+      "applicationUrl": "http://localhost:5000",
       "sslPort": 0
     }
   },
@@ -24,7 +24,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development",
         "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "SkyAPM.Agent.AspNetCore"
       },
-      "applicationUrl": "http://192.168.32.106:5000"
+      "applicationUrl": "http://localhost:5000"
     }
   }
 }

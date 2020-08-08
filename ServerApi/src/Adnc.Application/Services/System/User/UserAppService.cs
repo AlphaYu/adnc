@@ -36,30 +36,30 @@ namespace Adnc.Application.Services
             _systemManagerService = systemManagerService;
         }
 
-        public async Task<int> ChangeStatus(long Id)
+        public async Task ChangeStatus(long Id)
         {
             var user = await _userRepository.FetchAsync(u => new { u.ID, u.Status }, x => x.ID == Id);
             user.Status = (int)(user.Status == (int)ManageStatus.Enabled ? ManageStatus.Disabled : ManageStatus.Enabled);
 
-            return await _userRepository.UpdateAsync(user, x => x.Status);
+            await _userRepository.UpdateAsync(user, x => x.Status);
         }
 
-        public async Task<int> ChangeStatus(UserChangeStatusInputDto changeDto)
+        public async Task ChangeStatus(UserChangeStatusInputDto changeDto)
         {
             string userids = string.Join<long>(",", changeDto.UserIds);
-            return await _userRepository.UpdateRangeAsync(u => userids.Contains(u.ID.ToString()), u => new SysUser { Status = changeDto.Status });
+            await _userRepository.UpdateRangeAsync(u => userids.Contains(u.ID.ToString()), u => new SysUser { Status = changeDto.Status });
         }
 
-        public async Task<int> Delete(long Id)
+        public async Task Delete(long Id)
         {
             if (Id <= 2)
             {
                 throw new BusinessException(new ErrorModel(ErrorCode.Forbidden,"不能删除初始用户"));
             }
-            return await _userRepository.UpdateAsync(new SysUser() { ID = Id, Status = (int)ManageStatus.Deleted }, x => x.Status);
+            await _userRepository.UpdateAsync(new SysUser() { ID = Id, Status = (int)ManageStatus.Deleted }, x => x.Status);
         }
 
-        public async Task<int> Save(UserSaveInputDto saveDto)
+        public async Task Save(UserSaveInputDto saveDto)
         {
             var user = _mapper.Map<SysUser>(saveDto);
             if (user.ID < 1)
@@ -72,11 +72,12 @@ namespace Adnc.Application.Services
                 user.Salt = SecurityHelper.GenerateRandomCode(5);
                 user.Password = HashHelper.GetHashedString(HashType.MD5, user.Password, user.Salt);
                 user.ID = IdGeneraterHelper.GetNextId(IdGeneraterKey.USER);
-                return await _systemManagerService.AddUser(user);
+                user.UserFinance = new SysUserFinance { ID = user.ID, Amount = 0.00M };
+                await _systemManagerService.AddUser(user);
             }
             else
             {
-                return await _userRepository.UpdateAsync(user,
+                await _userRepository.UpdateAsync(user,
                      x => x.Name,
                      x => x.DeptId,
                      x => x.Sex,
@@ -123,13 +124,13 @@ namespace Adnc.Application.Services
             return result;
         }
 
-        public async Task<int> SetRole(RoleSetInputDto setDto)
+        public async Task SetRole(RoleSetInputDto setDto)
         {
             if (setDto.ID < 1)
             {
                 throw new BusinessException(new ErrorModel(ErrorCode.Forbidden, "禁止修改管理员角色"));
             }
-            return await _userRepository.UpdateAsync(new SysUser() { ID = setDto.ID, RoleId = setDto.RoleIds }, x => x.RoleId);
+            await _userRepository.UpdateAsync(new SysUser() { ID = setDto.ID, RoleId = setDto.RoleIds }, x => x.RoleId);
         }
     }
 }

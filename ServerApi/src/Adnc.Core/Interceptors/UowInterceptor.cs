@@ -1,12 +1,8 @@
-﻿using Castle.DynamicProxy;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Adnc.Common.Extensions;
-using Adnc.Common.Models;
-using Adnc.Core.Entities;
-using Adnc.Core.IRepositories;
+﻿using System;
+using System.Reflection;
+using System.Security.Cryptography.X509Certificates;
+using System.Threading.Tasks;
+using Castle.DynamicProxy;
 
 namespace Adnc.Core.Interceptors
 {
@@ -21,18 +17,57 @@ namespace Adnc.Core.Interceptors
 
         public void Intercept(IInvocation invocation)
         {
-            var tran = _unitOfWork.BeginTransaction();
+            var methodInfo = invocation.MethodInvocationTarget ?? invocation.Method;
 
+            //Sync
+            if (!IsAsyncMethod(methodInfo))
+            {
+                using var trans = _unitOfWork.BeginTransaction();
+                try
+                {
+                    invocation.Proceed();
+                    trans.Commit();
+                }
+                catch(Exception ex)
+                {
+                    trans.Rollback();
+                    throw ex;
+                }
+                return;
+            }
+
+            //Async
+            InterceptAsync(invocation).Wait();
+        }
+
+        private async Task InterceptAsync(IInvocation invocation)
+        {
+            using var transAsync = await _unitOfWork.BeginTransactionAsync();
             try
             {
                 invocation.Proceed();
-                tran.Commit();
+                var result = invocation.ReturnValue as Task;
+                await result.ContinueWith(async x =>
+                {
+                    if (x.Status == TaskStatus.RanToCompletion)
+                        await transAsync.CommitAsync();
+                    else
+                        await transAsync.RollbackAsync();
+                });
             }
             catch (Exception ex)
             {
-                tran.Rollback();
+                await transAsync.RollbackAsync();
                 throw ex;
-            }           
+            }
+        }
+
+        private bool IsAsyncMethod(MethodInfo method)
+        {
+            return (
+            method.ReturnType == typeof(Task)
+            || (method.ReturnType.IsGenericType && method.ReturnType.GetGenericTypeDefinition() == typeof(Task<>))
+            );
         }
     }
 }

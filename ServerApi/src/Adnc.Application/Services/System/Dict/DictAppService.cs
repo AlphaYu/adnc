@@ -31,9 +31,9 @@ namespace Adnc.Application.Services
             _systemManagerService = systemManagerService;
         }
 
-        public async Task<int> Delete(long Id)
+        public async Task Delete(long Id)
         {
-            return await _dictRepository.UpdateRangeAsync(d => (d.ID == Id) || (d.Pid == Id), d => new SysDict { IsDeleted = true });
+            await _dictRepository.UpdateRangeAsync(d => (d.ID == Id) || (d.Pid == Id), d => new SysDict { IsDeleted = true });
         }
 
         public async Task<List<DictDto>> GetList(DictSearchDto searchDto)
@@ -60,7 +60,7 @@ namespace Adnc.Application.Services
             return result;
         }
 
-        public async Task<int> Save(DictSaveInputDto saveDto)
+        public async Task Save(DictSaveInputDto saveDto)
         {
             if (string.IsNullOrWhiteSpace(saveDto.DictName))
             {
@@ -73,20 +73,20 @@ namespace Adnc.Application.Services
                 //long Id = new Snowflake(1, 1).NextId();
                 long Id = IdGeneraterHelper.GetNextId(IdGeneraterKey.DICT);
                 var subDicts = GetSubDicts(Id, saveDto.DictValues);
-                return await _dictRepository.InsertAsync(subDicts.Append(new SysDict { ID = Id, Pid = 0, Name = saveDto.DictName, Tips = saveDto.Tips,Num="0" }));
+                await _dictRepository.InsertRangeAsync(subDicts.Append(new SysDict { ID = Id, Pid = 0, Name = saveDto.DictName, Tips = saveDto.Tips,Num="0" }));
             }
             //update
             else
             {
                 var dict = new SysDict { Name = saveDto.DictName, Tips = saveDto.Tips, ID = saveDto.ID, Pid = 0 };
                 var subDicts = GetSubDicts(saveDto.ID, saveDto.DictValues);
-                return await _systemManagerService.UpdateDicts(dict, subDicts);
+                await _systemManagerService.UpdateDicts(dict, subDicts);
             }
         }
 
-        private IEnumerable<SysDict> GetSubDicts(long pid, string dictValues)
+        private List<SysDict> GetSubDicts(long pid, string dictValues)
         {
-            IEnumerable<SysDict> subDicts = new List<SysDict>();
+            List<SysDict> subDicts = new List<SysDict>();
             if (!string.IsNullOrWhiteSpace(dictValues))
             {
                 //var snowflake = new Snowflake(1, 1);
@@ -101,7 +101,7 @@ namespace Adnc.Application.Services
                     Name = s.Split(":", StringSplitOptions.RemoveEmptyEntries)[1]
                     ,
                     Num = s.Split(":", StringSplitOptions.RemoveEmptyEntries)[0]
-                }); ;
+                }).ToList();
             }
             return subDicts;
         }

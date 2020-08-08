@@ -16,7 +16,6 @@ using Adnc.Application;
 using Adnc.Common;
 using Adnc.Common.Helper;
 using Adnc.Common.Models;
-using Adnc.WebApi.Infrastructures.Middleware;
 using Adnc.WebApi.Helper;
 using Adnc.Infr.Consul;
 using Adnc.Infr.Consul.Registration;
@@ -106,7 +105,7 @@ namespace Adnc.WebApi
                 endpoints.MapControllers().RequireAuthorization();
             });
 
-            //if (env.IsProduction() || env.IsStaging())
+            if (env.IsProduction() || env.IsStaging())
             {
                 app.RegisterToConsul(Configuration.GetSection("Consul").Get<ConsulOption>());
             }

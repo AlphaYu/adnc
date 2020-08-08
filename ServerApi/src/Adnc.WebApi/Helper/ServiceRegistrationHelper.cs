@@ -159,7 +159,11 @@ namespace Adnc.WebApi.Helper
             _services.AddScoped<IUnitOfWork, UnitOfWork<AdncDbContext>>();
             _services.AddDbContext<AdncDbContext>(options =>
             {
-                options.UseMySql(_mysqlConfig.WriteDbConnectionString, mySqlOptions => mySqlOptions.ServerVersion(new ServerVersion(new Version(10, 5, 4), ServerType.MariaDb)));
+                options.UseMySql(_mysqlConfig.WriteDbConnectionString, mySqlOptions => 
+                { 
+                    mySqlOptions.ServerVersion(new ServerVersion(new Version(10, 5, 4), ServerType.MariaDb));
+                    mySqlOptions.MinBatchSize(2);
+                });
                 options.AddInterceptors(new CustomCommandInterceptor());
             });
 

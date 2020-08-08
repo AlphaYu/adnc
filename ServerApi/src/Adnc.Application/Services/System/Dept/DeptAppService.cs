@@ -39,14 +39,13 @@ namespace Adnc.Application.Services
             _systemManagerService = systemManagerService;
         }
 
-        public async Task<int> Delete(long Id)
+        public async Task Delete(long Id)
         {
             var depts1 = (await _locaCahce.GetAsync<List<DeptNodeDto>>(EasyCachingConsts.DetpListCacheKey)).Value;
             var depts2 = (await _redisCache.GetAsync<List<DeptNodeDto>>(EasyCachingConsts.DetpListCacheKey)).Value;
             var depts3 = (await _cache.GetAsync<List<DeptNodeDto>>(EasyCachingConsts.DetpListCacheKey)).Value;
 
-            int result = await _systemManagerService.DeleteDept(Id);
-            return await Task.FromResult(result);
+            await _systemManagerService.DeleteDept(Id);
         }
 
         public async Task<List<DeptNodeDto>> GetList()
@@ -76,10 +75,8 @@ namespace Adnc.Application.Services
             return result;
         }
 
-        public async Task<int> Save(DeptSaveInputDto saveDto)
+        public async Task Save(DeptSaveInputDto saveDto)
         {
-            int result = 0;
-
             if (string.IsNullOrWhiteSpace(saveDto.FullName))
             {
                 throw new BusinessException(new ErrorModel(ErrorCode.BadRequest, "请输入部门全称"));
@@ -95,7 +92,7 @@ namespace Adnc.Application.Services
                 var dept = _mapper.Map<SysDept>(saveDto);
                 dept.ID = IdGeneraterHelper.GetNextId(IdGeneraterKey.DEPT);
                 await this.SetDeptPids(dept);
-                result = await _deptRepository.InsertAsync(dept);
+                await _deptRepository.InsertAsync(dept);
             }
             else
             {
@@ -107,10 +104,8 @@ namespace Adnc.Application.Services
                 oldDept.Tips = saveDto.Tips;
                 await this.SetDeptPids(oldDept);
 
-                result = await _deptRepository.UpdateAsync(oldDept);
+                await _deptRepository.UpdateAsync(oldDept);
             }
-
-            return  await Task.FromResult(result);
         }
 
         private async Task SetDeptPids(SysDept sysDept)

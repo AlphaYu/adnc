@@ -35,9 +35,9 @@ namespace Adnc.Application.Services
             _redis = factory.GetRedisProvider(EasyCachingConsts.RemoteCaching);
         }
 
-        public async Task<int> Delete(long Id)
+        public async Task Delete(long Id)
         {
-            return await _cfgRepository.UpdateAsync(new SysCfg { ID = Id, IsDeleted=true }, c => c.IsDeleted);
+            await _cfgRepository.UpdateAsync(new SysCfg { ID = Id, IsDeleted=true }, c => c.IsDeleted);
         }
 
         public async Task<PageModelDto<CfgDto>> GetPaged(CfgSearchDto searchDto)
@@ -60,7 +60,7 @@ namespace Adnc.Application.Services
             return result;
         }
 
-        public async Task<int> Save(CfgSaveInputDto inputDto)
+        public async Task Save(CfgSaveInputDto inputDto)
         {
             if (string.IsNullOrWhiteSpace(inputDto.CfgName))
             {
@@ -85,7 +85,7 @@ namespace Adnc.Application.Services
                 //enity.ID = new Snowflake(1, 1).NextId();
                 enity.ID = IdGeneraterHelper.GetNextId(IdGeneraterKey.CFG);
 
-                return await _cfgRepository.InsertAsync(enity);
+                await _cfgRepository.InsertAsync(enity);
             }
             //update
             else
@@ -96,7 +96,7 @@ namespace Adnc.Application.Services
 
                 var enity = _mapper.Map<SysCfg>(inputDto);
 
-                return await _cfgRepository.UpdateAsync(enity);
+                await _cfgRepository.UpdateAsync(enity);
             }
         }
     }

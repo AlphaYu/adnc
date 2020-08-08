@@ -5,8 +5,9 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Adnc.Core;
+using System.Data;
 
-namespace  Adnc.Infr.EfCore
+namespace Adnc.Infr.EfCore
 {
     public class UnitOfWork<TDbContext> : IUnitOfWork where TDbContext : DbContext
     {
@@ -19,22 +20,14 @@ namespace  Adnc.Infr.EfCore
             _database = _dbContext.Database;
         }
 
-        public IDbContextTransaction CurrentTransaction => _database.CurrentTransaction;
-
-        public bool AutoTransactionsEnabled => false;
-
         public string ProviderName => _database.ProviderName;
 
-        public IDbContextTransaction BeginTransaction()=> _database.BeginTransaction();
+        public IDbContextTransaction BeginTransaction() => _database.BeginTransaction();
+
+        public IDbContextTransaction BeginTransaction(IsolationLevel isolationLevel) => _database.BeginTransaction(isolationLevel);
 
         public Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken = default) => _database.BeginTransactionAsync(cancellationToken);
 
-        public bool CanConnect() => _database.CanConnect();
-
-        public Task<bool> CanConnectAsync(CancellationToken cancellationToken = default) => _database.CanConnectAsync(cancellationToken);
-
-        public void CommitTransaction() => _database.CommitTransaction();
-
-        public void RollbackTransaction() => _database.RollbackTransaction();
+        public Task<IDbContextTransaction> BeginTransactionAsync(IsolationLevel isolationLevel, CancellationToken cancellationToken = default) => _database.BeginTransactionAsync(isolationLevel, cancellationToken);
     }
 }

@@ -14,18 +14,18 @@ namespace Adnc.Application.Services
         Task<PageModelDto<UserDto>> GetPaged(UserSearchDto searchModel);
 
         [EasyCachingEvict(CacheKeyPrefix = EasyCachingConsts.SearchUsersKeyPrefix, IsAll = true)]
-        Task<int> Save(UserSaveInputDto saveDto);
+        Task Save(UserSaveInputDto saveDto);
 
         [EasyCachingEvict(CacheKeyPrefix = EasyCachingConsts.SearchUsersKeyPrefix, IsAll = true)]
-        Task<int> Delete(long Id);
+        Task Delete(long Id);
 
         [EasyCachingEvict(CacheKeyPrefix = EasyCachingConsts.SearchUsersKeyPrefix, IsAll = true)]
-        Task<int> SetRole(RoleSetInputDto setDto);
+        Task SetRole(RoleSetInputDto setDto);
 
         [EasyCachingEvict(CacheKeyPrefix = EasyCachingConsts.SearchUsersKeyPrefix, IsAll = true)]
-        Task<int> ChangeStatus(long Id);
+        Task ChangeStatus(long Id);
 
         [EasyCachingEvict(CacheKeyPrefix = EasyCachingConsts.SearchUsersKeyPrefix, IsAll = true)]
-        Task<int> ChangeStatus(UserChangeStatusInputDto changeDto);
+        Task ChangeStatus(UserChangeStatusInputDto changeDto);
     }
 }

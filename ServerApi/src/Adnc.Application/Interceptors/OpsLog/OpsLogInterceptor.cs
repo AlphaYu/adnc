@@ -1,9 +1,6 @@
-﻿using Castle.DynamicProxy;
+﻿using System;
+using Castle.DynamicProxy;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Adnc.Common.Extensions;
 using Adnc.Common.Models;
 using Adnc.Core.Entities;
 using Adnc.Core.IRepositories;

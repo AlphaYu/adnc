@@ -11,9 +11,9 @@ namespace Adnc.Infr.Consul
 
     public static class ConsulServiceCollectionExtensions
     {
-        public static void AddConsulConsumer(this IServiceCollection service)
-        {
-            service.AddSingleton<IServiceConsumer, ServiceConsumer>();
-        }
+        //public static void AddConsulConsumer(this IServiceCollection service)
+        //{
+        //    service.AddSingleton<IServiceConsumer, ServiceConsumer>();
+        //}
     }
 }

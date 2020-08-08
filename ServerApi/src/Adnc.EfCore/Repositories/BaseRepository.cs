@@ -33,18 +33,22 @@ namespace  Adnc.Infr.EfCore.Repositories
 
         public virtual async Task<int> InsertAsync(TEntity entity, CancellationToken cancellationToken = default)
         {
-            DbContext.Set<TEntity>().Add(entity);
+            await DbContext.Set<TEntity>().AddAsync(entity);
             return await DbContext.SaveChangesAsync(cancellationToken);
         }
 
-        public virtual async Task<int> InsertAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
+        public virtual async Task<int> InsertRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
         {
-            DbContext.Set<TEntity>().AddRange(entities);
+            await DbContext.Set<TEntity>().AddRangeAsync(entities);
             return await DbContext.SaveChangesAsync(cancellationToken);
         }
 
-        public virtual async Task<int> DeleteAsync<TKeyType>(TKeyType[] keyValues, CancellationToken cancellationToken = default)
+        public virtual async Task<int> DeleteAsync(long[] keyValues, CancellationToken cancellationToken = default)
         {
+            //if (keyValues.Length > 1)
+            //    return await DbContext.Set<TEntity>().Where(e => keyValues.Contains(e.ID)).DeleteAsync(cancellationToken);
+            //else
+            //    return await DbContext.Set<TEntity>().Where(e => e.ID == keyValues[0]).DeleteAsync(cancellationToken);
             var mapping = DbContext.Model.FindEntityType(typeof(TEntity)); //3.0
             var schema = mapping.GetSchema() ?? "dbo";
             var tableName = mapping.GetTableName();
@@ -64,7 +68,7 @@ namespace  Adnc.Infr.EfCore.Repositories
             {
                 sql = $"delete from {tableName} where {keyName}={keyValues[0]};";
             }
-            return  await DbContext.Database.ExecuteSqlRawAsync(sql,cancellationToken);
+            return await DbContext.Database.ExecuteSqlRawAsync(sql, cancellationToken);
         }
 
         public virtual async Task<int> DeleteRangeAsync(Expression<Func<TEntity, bool>> whereExpression, CancellationToken cancellationToken= default)

@@ -12,9 +12,9 @@ namespace Adnc.Application.Services
         Task<List<DictDto>> GetList(DictSearchDto searchDto);
 
         [EasyCachingEvict(CacheKeyPrefix = EasyCachingConsts.DictListCacheKey,IsAll=true)]
-        Task<int> Save(DictSaveInputDto saveDto);
+        Task Save(DictSaveInputDto saveDto);
 
         [EasyCachingEvict(CacheKeyPrefix = EasyCachingConsts.DictListCacheKey, IsAll = true)]
-        Task<int> Delete(long Id);
+        Task Delete(long Id);
     }
 }

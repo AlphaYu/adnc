@@ -9,15 +9,9 @@ using System.Threading.Tasks;
 namespace Adnc.Infr.Consul.Consumer
 {
 
-    public class ServiceConsumer : IServiceConsumer
+    public class ServiceConsumer
     {
-        private readonly string consulAddress;
-        public ServiceConsumer(IOptionsSnapshot<ConsulOption> serviceOptions)
-        {
-            consulAddress = serviceOptions.Value.ConsulUrl;
-        }
-
-        public async Task<List<string>> GetServices(string serviceName)
+        public static async Task<List<string>> GetServicesAsync(string consulAddress,string serviceName)
         {
             var consulClient = new ConsulClient(configuration =>
             {

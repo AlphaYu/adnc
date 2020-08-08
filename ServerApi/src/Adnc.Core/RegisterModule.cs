@@ -1,11 +1,6 @@
-﻿using System;
+﻿using Adnc.Core.Interceptors;
 using Autofac;
-using Humanizer;
-using Microsoft.Extensions.Options;
-using Microsoft.Extensions.Configuration;
-using Adnc.Common;
-using Adnc.Common.Helper;
-using Adnc.Core.IRepositories;
+using Autofac.Extras.DynamicProxy;
 
 namespace Adnc.Core
 {
@@ -15,11 +10,17 @@ namespace Adnc.Core
         //private IServiceProvider _serviceProvider;
         protected override void Load(ContainerBuilder builder)
         {
+            //注册事务拦截器
+            builder.RegisterType<UowInterceptor>()
+                   .InstancePerLifetimeScope();
+
             //注册Core服务
             builder.RegisterAssemblyTypes(this.ThisAssembly)
                 .Where(t => t.IsAssignableTo<IDomainService>())
                 .AsImplementedInterfaces()
-                .InstancePerLifetimeScope();
+                .InstancePerLifetimeScope()
+                .EnableInterfaceInterceptors()
+                .InterceptedBy(typeof(UowInterceptor));
         }
         
         //private void LoadEntityFramwork(ContainerBuilder builder)

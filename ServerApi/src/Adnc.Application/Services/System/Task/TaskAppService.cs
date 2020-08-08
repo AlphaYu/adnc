@@ -33,9 +33,9 @@ namespace Adnc.Application.Services
             _systemManagerService = systemManagerService;
         }
 
-        public async Task<int> Delete(long Id)
+        public async Task Delete(long Id)
         {
-            return await _taskRepository.DeleteAsync(new[] { Id });
+            await _taskRepository.DeleteAsync(new[] { Id });
         }
 
         public async Task<List<TaskDto>> GetList(TaskSearchDto searchDto)
@@ -53,7 +53,7 @@ namespace Adnc.Application.Services
             return  _mapper.Map<List<TaskDto>>(tasks);
         }
 
-        public async Task<int> Save(TaskSaveInputDto saveDto)
+        public async Task Save(TaskSaveInputDto saveDto)
         {
             if (string.IsNullOrWhiteSpace(saveDto.Name))
             {
@@ -70,7 +70,7 @@ namespace Adnc.Application.Services
                 //enity.ID = new Snowflake(1, 1).NextId();
                 enity.ID = IdGeneraterHelper.GetNextId(IdGeneraterKey.Task);
 
-                return await _taskRepository.InsertAsync(enity);
+                await _taskRepository.InsertAsync(enity);
             }
             //update
             else
@@ -81,7 +81,7 @@ namespace Adnc.Application.Services
 
                 var enity = _mapper.Map<SysTask>(saveDto);
 
-                return await _taskRepository.UpdateAsync(enity);
+                await _taskRepository.UpdateAsync(enity);
             }
         }
 

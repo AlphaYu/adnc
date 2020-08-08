@@ -79,9 +79,9 @@ namespace Adnc.WebApi.Controllers
         /// <returns></returns>
         [HttpPut("{userid}/status")]
         [Permission("userFreeze")]
-        public async ValueTask<int> ChangeStatus([FromRoute]long userId, [FromBody] SimpleInputDto<int> status)
+        public async Task ChangeStatus([FromRoute]long userId, [FromBody] SimpleInputDto<int> status)
         {
-            return await _userService.ChangeStatus(userId);
+            await _userService.ChangeStatus(userId);
         }
 
         /// <summary>
@@ -91,9 +91,9 @@ namespace Adnc.WebApi.Controllers
         /// <returns></returns>
         [HttpPut("batch/status")]
         [Permission("userFreeze")]
-        public async ValueTask<int> ChangeStatus([FromBody] UserChangeStatusInputDto changeStatusInputDto)
+        public async Task ChangeStatus([FromBody] UserChangeStatusInputDto changeStatusInputDto)
         {
-            return await _userService.ChangeStatus(changeStatusInputDto);
+            await _userService.ChangeStatus(changeStatusInputDto);
         }
     }
 }

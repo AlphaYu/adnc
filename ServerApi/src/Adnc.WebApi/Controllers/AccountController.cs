@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 using Adnc.Application.Dtos;
 using Adnc.Common.Models;
 using Adnc.Application.Services;
-using Microsoft.CodeAnalysis.Options;
+using Adnc.Infr.Consul.Consumer;
 
 namespace Adnc.WebApi.Controllers
 {
@@ -40,6 +40,8 @@ namespace Adnc.WebApi.Controllers
         [HttpPost()]
         public async Task<IActionResult> Login([FromBody]UserValidateInputDto userDto)
         {
+            var address = await ServiceConsumer.GetServicesAsync("http://193.112.75.77:8510", "andc-api-sys");
+
             var userValidateDto = await _accountService.Login(userDto);
 
             return new OkObjectResult(new

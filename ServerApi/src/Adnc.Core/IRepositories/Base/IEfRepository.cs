@@ -20,9 +20,9 @@ namespace Adnc.Core.IRepositories
 
         Task<int> InsertAsync(TEntity entity, CancellationToken cancellationToken = default);
 
-        Task<int> InsertAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default);
+        Task<int> InsertRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default);
 
-        Task<int> DeleteAsync<TKeyType>(TKeyType[] keyValues, CancellationToken cancellationToken = default);
+        Task<int> DeleteAsync(long[] keyValues, CancellationToken cancellationToken = default);
 
         Task<int> DeleteRangeAsync(Expression<Func<TEntity, bool>> whereExpression, CancellationToken cancellationToken = default);
 

@@ -12,9 +12,9 @@ namespace Adnc.Application.Services
         Task<PageModelDto<CfgDto>> GetPaged(CfgSearchDto searchDto);
 
         [EasyCachingEvict(CacheKeyPrefix = EasyCachingConsts.CfgListCacheKey, IsAll = true)]
-        Task<int> Save(CfgSaveInputDto saveInputDto);
+        Task Save(CfgSaveInputDto saveInputDto);
 
         [EasyCachingEvict(CacheKeyPrefix = EasyCachingConsts.CfgListCacheKey, IsAll = true)]
-        Task<int> Delete(long Id);
+        Task Delete(long Id);
     }
 }

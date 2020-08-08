@@ -10,9 +10,11 @@ namespace Adnc.Application
         protected override void Load(ContainerBuilder builder)
         {
             //注册操作日志拦截器
-            builder.RegisterType<OpsLogInterceptor>();
+            builder.RegisterType<OpsLogInterceptor>()
+                   .InstancePerLifetimeScope();
 
             //注册服务
+
             builder.RegisterAssemblyTypes(this.ThisAssembly)
                 .Where(t => t.IsAssignableTo<IAppService>())
                 .AsImplementedInterfaces()

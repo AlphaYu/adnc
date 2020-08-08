@@ -9,9 +9,9 @@ namespace Adnc.Application.Services
     {
         Task<List<TaskDto>> GetList(TaskSearchDto searchDto);
 
-        Task<int> Save(TaskSaveInputDto savetDto);
+        Task Save(TaskSaveInputDto savetDto);
 
-        Task<int> Delete(long Id);
+        Task Delete(long Id);
 
         Task<PageModelDto<TaskLogDto>> GetLogPaged(TaskSearchDto searchDto);
     }

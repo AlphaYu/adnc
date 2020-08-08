@@ -22,9 +22,9 @@ namespace Adnc.Application.Services
         Task<List<MenuDto>> GetMenusByRoleIds(long[] roleIds);
 
         [EasyCachingEvict(CacheKeyPrefix = EasyCachingConsts.MenuKesPrefix, IsAll = true)]
-        Task<int> Save(MenuSaveInputDto saveDto);
+        Task Save(MenuSaveInputDto saveDto);
 
         [EasyCachingEvict(CacheKeyPrefix = EasyCachingConsts.MenuKesPrefix, IsAll = true)]
-        Task<int> Delete(long Id);
+        Task Delete(long Id);
     }
 }

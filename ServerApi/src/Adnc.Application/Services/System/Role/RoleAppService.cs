@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
-using Castle.Core.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Threading;
 using System.Threading.Tasks;
 using Adnc.Application.Dtos;
 using Adnc.Common;
@@ -94,7 +92,7 @@ namespace Adnc.Application.Services
             return result;
         }
 
-        public async Task<int> Delete(long Id)
+        public async Task Delete(long Id)
         {
             if (Id < 2)
             {
@@ -106,25 +104,25 @@ namespace Adnc.Application.Services
                 throw new BusinessException(new ErrorModel(ErrorCode.Forbidden, "有用户使用该角色，禁止删除"));
             }
 
-            return await _roleRepository.DeleteAsync(new long[] { Id });
+            await _roleRepository.DeleteAsync(new long[] { Id });
         }
 
-        public async Task<int> SaveRolePermisson(PermissonSaveInputDto inputDto)
+        public async Task SaveRolePermisson(PermissonSaveInputDto inputDto)
         {
-            return await _systemManagerService.SaveRolePermisson(inputDto.RoleId, inputDto.Permissions);
+            await _systemManagerService.SaveRolePermisson(inputDto.RoleId, inputDto.Permissions);
         }
 
-        public async Task<int> Save(RoleSaveInputDto roleDto)
+        public async Task Save(RoleSaveInputDto roleDto)
         {
             var role = _mapper.Map<SysRole>(roleDto);
             if (roleDto.ID < 1)
             {
                 role.ID = IdGeneraterHelper.GetNextId(IdGeneraterKey.ROLE);
-                return await _roleRepository.InsertAsync(role);
+                await _roleRepository.InsertAsync(role);
             }
             else
             {
-                return await _roleRepository.UpdateAsync(role);
+                await _roleRepository.UpdateAsync(role);
             }
         }
 

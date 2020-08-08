@@ -11,9 +11,9 @@ namespace Adnc.Application.Services
         Task<List<DeptNodeDto>> GetList();
 
         [EasyCachingEvict(CacheKey = EasyCachingConsts.DetpListCacheKey)]
-        Task<int> Save(DeptSaveInputDto savetDto);
+        Task Save(DeptSaveInputDto savetDto);
 
         [EasyCachingEvict(CacheKey = EasyCachingConsts.DetpListCacheKey)]
-        Task<int> Delete(long Id);
+        Task Delete(long Id);
     }
 }

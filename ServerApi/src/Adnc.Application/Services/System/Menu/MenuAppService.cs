@@ -37,10 +37,10 @@ namespace Adnc.Application.Services
             _systemManagerService = systemManagerService;
         }
 
-        public async Task<int> Delete(long Id)
+        public async Task Delete(long Id)
         {
             var menu = await _menuRepository.FetchAsync(m => new { m.ID, m.Code }, x => x.ID == Id);
-            return await _systemManagerService.DeleteMenu(menu);
+            await _systemManagerService.DeleteMenu(menu);
         }
 
         public async Task<List<MenuNodeDto>> Getlist()
@@ -179,7 +179,7 @@ namespace Adnc.Application.Services
             };
         }
 
-        public async Task<int> Save(MenuSaveInputDto saveDto)
+        public async Task Save(MenuSaveInputDto saveDto)
         {
             if (saveDto.ID < 1)
             {
@@ -213,11 +213,11 @@ namespace Adnc.Application.Services
             if (menu.ID == 0)
             {
                 menu.ID = IdGeneraterHelper.GetNextId(IdGeneraterKey.MENU);
-                return await _menuRepository.InsertAsync(menu);
+                await _menuRepository.InsertAsync(menu);
             }
             else
             {
-                return await _menuRepository.UpdateAsync(menu);
+                await _menuRepository.UpdateAsync(menu);
             }
         }
 
