@@ -37,30 +37,53 @@ namespace Adnc.Core.Interceptors
             }
 
             //Async
-            InterceptAsync(invocation).Wait();
+            //InterceptAsync(invocation).Wait();
+            InterceptAsync(invocation);
         }
 
-        private async Task InterceptAsync(IInvocation invocation)
+        private void InterceptAsync(IInvocation invocation)
         {
-            using var transAsync = await _unitOfWork.BeginTransactionAsync();
+            using var transAsync =  _unitOfWork.BeginTransaction();
             try
             {
                 invocation.Proceed();
                 var result = invocation.ReturnValue as Task;
-                await result.ContinueWith(async x =>
+                result.ContinueWith(x =>
                 {
                     if (x.Status == TaskStatus.RanToCompletion)
-                        await transAsync.CommitAsync();
+                        transAsync.Commit();
                     else
-                        await transAsync.RollbackAsync();
-                });
+                        transAsync.Rollback();
+                }).Wait();
             }
             catch (Exception ex)
             {
-                await transAsync.RollbackAsync();
+                transAsync.Rollback();
                 throw ex;
             }
         }
+
+        //private async Task InterceptAsync(IInvocation invocation)
+        //{
+        //    using var transAsync = await _unitOfWork.BeginTransactionAsync();
+        //    try
+        //    {
+        //        invocation.Proceed();
+        //        var result = invocation.ReturnValue as Task;
+        //        await result.ContinueWith(async x =>
+        //        {
+        //            if (x.Status == TaskStatus.RanToCompletion)
+        //                await transAsync.CommitAsync();
+        //            else
+        //                await transAsync.RollbackAsync();
+        //        });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        await transAsync.RollbackAsync();
+        //        throw ex;
+        //    }
+        //}
 
         private bool IsAsyncMethod(MethodInfo method)
         {

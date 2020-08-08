@@ -19,6 +19,6 @@ namespace Adnc.Application.Services
         [EasyCachingEvict(CacheKeyPrefix = EasyCachingConsts.MenuKesPrefix, IsAll = true)]
         Task SaveRolePermisson(PermissonSaveInputDto inputDto);
 
-        Task<bool> ExistPermissions(RolePermissionsCheckInputDto inputDto);
+        ValueTask<bool> ExistPermissions(RolePermissionsCheckInputDto inputDto);
     }
 }

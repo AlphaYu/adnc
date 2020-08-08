@@ -120,6 +120,8 @@ namespace  Adnc.Infr.EfCore.Repositories
                 throw new Exception("该实体有RowVersion列，不能使用批量更新");
             }
 
+            
+
             return await DbContext.Set<TEntity>().Where(whereExpression).UpdateAsync(upDateExpression,cancellationToken);
         }
 

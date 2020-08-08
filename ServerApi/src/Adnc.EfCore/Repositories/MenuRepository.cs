@@ -19,16 +19,14 @@ namespace  Adnc.Infr.EfCore.Repositories
         {
             var query = DbContext.Set<SysRelation>()
                             .Where(r => roleIds.Contains(r.RoleId))
-                            .Select(u => new { u.Menu })
-                            .Distinct();
-
+                            .Select(u => new { u.Menu });
             if (enabledOnly)
                 query = query.Where(r => r.Menu.Status == true);
 
 
             var relations = await query.ToListAsync();
 
-            return relations.Select(d => d.Menu).ToList();
+            return relations.Select(d => d.Menu).Distinct().ToList();
         }
     }
 }

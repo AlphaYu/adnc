@@ -15,7 +15,6 @@ namespace Adnc.Application.Services
         [EasyCachingAble(CacheKey = EasyCachingConsts.MenuRouterCacheKey, Expiration = EasyCachingConsts.OneYear)]
         Task<List<RouterMenuDto>> GetMenusForRouter();
 
-        [EasyCachingAble(CacheKeyPrefix = EasyCachingConsts.MenuKesPrefix, Expiration = EasyCachingConsts.OneYear)]
         Task<dynamic> GetMenuTreeListByRoleId(long roleId);
 
         [EasyCachingAble(CacheKeyPrefix = EasyCachingConsts.MenuKesPrefix, Expiration = EasyCachingConsts.OneYear)]

@@ -126,7 +126,7 @@ namespace Adnc.Application.Services
             }
         }
 
-        public async Task<bool> ExistPermissions(RolePermissionsCheckInputDto inputDto)
+        public async ValueTask<bool> ExistPermissions(RolePermissionsCheckInputDto inputDto)
         {
             bool result = false;
 
@@ -150,7 +150,7 @@ namespace Adnc.Application.Services
                     result = true;
                 }
             }
-            return await Task.FromResult(result);
+            return result;
         }
     }
 }
