@@ -8,7 +8,7 @@ using Adnc.Common.Helper;
 using Adnc.Core.Entities;
 using Adnc.Core.IRepositories;
 
-namespace Adnc.Core.DomainServices
+namespace Adnc.Core.CoreServices
 {
     public class SystemManagerService : ISystemManagerService
     {

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using Adnc.Application.Dtos;
 using Adnc.Common;
 using Adnc.Common.Models;
-using Adnc.Core.DomainServices;
+using Adnc.Core.CoreServices;
 using Adnc.Core.Entities;
 using Adnc.Core.IRepositories;
 using Adnc.Common.Helper;
@@ -46,8 +46,6 @@ namespace Adnc.Application.Services
         public async Task<List<MenuNodeDto>> Getlist()
         {
             var result = new List<MenuNodeDto>();
-            //var menus = await _menuRepository.GetAsync(q => q.WithPredict(x => true)
-            //.WithOrderBy(o => o.OrderBy(x => x.Levels).ThenBy(x => x.Num)));
 
             var menus = await _menuRepository.GetAll().OrderBy(o => o.Levels).ThenBy(x => x.Num).ToListAsync();
 
@@ -135,7 +133,6 @@ namespace Adnc.Application.Services
         {
             var menuIds = await this.GetMenuIdsByRoleId(roleId) ?? new List<long>();
             List<ZTreeNodeDto<long, dynamic>> roleTreeList = new List<ZTreeNodeDto<long, dynamic>>();
-            //List<SysMenu> menus = await _menuRepository.GetAsync(q => q.WithOrderBy(o => o.OrderBy(x => x.ID)));
 
             var menus = await _menuRepository.SelectAsync(m=>m, q => true, q => q.ID, true);
 
@@ -221,16 +218,15 @@ namespace Adnc.Application.Services
             }
         }
 
-        public async Task<List<MenuDto>> GetMenusByRoleIds(long[] roleIds)
-        {
-            var menus = await _menuRepository.GetMenusByRoleIdsAsync(roleIds, true);
-
-            return _mapper.Map<List<MenuDto>>(menus);
-        }
-
         private async Task<List<long>> GetMenuIdsByRoleId(long roleId)
         {
             return await _relationRepository.SelectAsync(r => r.MenuId, x => x.RoleId == roleId);
+        }
+
+        public async Task<List<RelationDto>> GetAllRelations()
+        {
+            var result= await _relationRepository.GetAll().ToListAsync();
+            return _mapper.Map<List<RelationDto>>(result);
         }
     }
 }

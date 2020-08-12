@@ -11,7 +11,7 @@ using Adnc.Common.Extensions;
 using Adnc.Core.Entities;
 using System.Collections.Generic;
 using Adnc.Common.Helper;
-using Adnc.Core.DomainServices;
+using Adnc.Core.CoreServices;
 
 namespace Adnc.Application.Services
 {

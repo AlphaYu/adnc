@@ -3,9 +3,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Adnc.Core.Entities;
 
-namespace Adnc.Core.DomainServices
+namespace Adnc.Core.CoreServices
 {
-    public interface ISystemManagerService : IDomainService
+    public interface ISystemManagerService : ICoreService
     {
         Task AddUser(SysUser user,CancellationToken cancellationToken = default);
 

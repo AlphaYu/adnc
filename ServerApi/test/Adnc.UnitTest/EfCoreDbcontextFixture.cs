@@ -74,7 +74,7 @@ namespace Adnc.UnitTest
             //注册Domain服务
             assemblysRepositories = Assembly.Load("Andc.Core");
             builder.RegisterAssemblyTypes(assemblysRepositories)
-                .Where(t => t.IsAssignableTo<IDomainService>())
+                .Where(t => t.IsAssignableTo<ICoreService>())
                 .AsImplementedInterfaces()
                 .InstancePerLifetimeScope();
 

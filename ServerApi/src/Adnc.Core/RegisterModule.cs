@@ -16,7 +16,7 @@ namespace Adnc.Core
 
             //注册Core服务
             builder.RegisterAssemblyTypes(this.ThisAssembly)
-                .Where(t => t.IsAssignableTo<IDomainService>())
+                .Where(t => t.IsAssignableTo<ICoreService>())
                 .AsImplementedInterfaces()
                 .InstancePerLifetimeScope()
                 .EnableInterfaceInterceptors()

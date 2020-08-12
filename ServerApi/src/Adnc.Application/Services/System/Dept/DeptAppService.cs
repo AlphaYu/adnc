@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using Adnc.Application.Dtos;
 using Adnc.Common;
 using Adnc.Common.Models;
-using Adnc.Core.DomainServices;
+using Adnc.Core.CoreServices;
 using Adnc.Core.Entities;
 using Adnc.Core.IRepositories;
 using Adnc.Common.Helper;

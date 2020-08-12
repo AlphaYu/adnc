@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Adnc.Core
 {
-    public interface IDomainService
+    public interface ICoreService
     {
     }
 }

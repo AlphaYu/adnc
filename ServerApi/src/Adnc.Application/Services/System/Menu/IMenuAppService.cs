@@ -15,10 +15,10 @@ namespace Adnc.Application.Services
         [EasyCachingAble(CacheKey = EasyCachingConsts.MenuRouterCacheKey, Expiration = EasyCachingConsts.OneYear)]
         Task<List<RouterMenuDto>> GetMenusForRouter();
 
-        Task<dynamic> GetMenuTreeListByRoleId(long roleId);
+        [EasyCachingAble(CacheKey = EasyCachingConsts.MenuRelationCacheKey, Expiration = EasyCachingConsts.OneYear)]
+        Task<List<RelationDto>> GetAllRelations();
 
-        [EasyCachingAble(CacheKeyPrefix = EasyCachingConsts.MenuKesPrefix, Expiration = EasyCachingConsts.OneYear)]
-        Task<List<MenuDto>> GetMenusByRoleIds(long[] roleIds);
+        Task<dynamic> GetMenuTreeListByRoleId(long roleId);
 
         [EasyCachingEvict(CacheKeyPrefix = EasyCachingConsts.MenuKesPrefix, IsAll = true)]
         Task Save(MenuSaveInputDto saveDto);

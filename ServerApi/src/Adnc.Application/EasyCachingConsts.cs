@@ -23,6 +23,7 @@ namespace Adnc.Application
         public const string MenuKesPrefix = "sysname:service:menus";
         public const string MenuListCacheKey = "sysname:service:menus:list";
         public const string MenuRouterCacheKey = "sysname:service:menus:router";
+        public const string MenuRelationCacheKey = "sysname:service:menus:relation";
         public const string MenuCodesCacheKey = "sysname:service:menus:codes";
 
         public const string SearchUsersKeyPrefix = "sysname:servcie:users";

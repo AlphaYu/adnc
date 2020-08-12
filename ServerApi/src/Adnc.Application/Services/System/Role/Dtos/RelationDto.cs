@@ -9,11 +9,6 @@ namespace Adnc.Application.Dtos
     /// </summary>
     public class RelationDto : BaseDto
     {
-        /// <summary>
-        /// 关联ID
-        /// </summary>
-        public long ID { get; set; }
-
 		/// <summary>
 		/// 菜单ID
 		/// </summary>
