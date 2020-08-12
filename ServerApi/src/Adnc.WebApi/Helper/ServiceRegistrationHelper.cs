@@ -347,7 +347,7 @@ namespace Adnc.WebApi.Helper
                      .AddProcessAllocatedMemoryHealthCheck(maximumMegabytesAllocated: 200, tags: new[] { "memory" })
                      .AddMySql(_mysqlConfig.WriteDbConnectionString)
                      .AddMongoDb(_mongoConfig.ConnectionStrings);
-                    //.AddRedis("193.112.75.77:10888,password=,defaultDatabase=1,defaultDatabase=10", "redis1");
+                    //.AddRedis("localhost:10888,password=,defaultDatabase=1,defaultDatabase=10", "redis1");
                     //.AddCheck(name: "random", () =>
                     //{
                     //    return DateTime.UtcNow.Second % 3 == 0 ? HealthCheckResult.Healthy() : HealthCheckResult.Unhealthy();
