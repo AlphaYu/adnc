@@ -40,8 +40,6 @@ namespace Adnc.WebApi.Controllers
         [HttpPost()]
         public async Task<IActionResult> Login([FromBody]UserValidateInputDto userDto)
         {
-            var address = await ServiceConsumer.GetServicesAsync("http://localhost:8510", "andc-api-sys");
-
             var userValidateDto = await _accountService.Login(userDto);
 
             return new OkObjectResult(new

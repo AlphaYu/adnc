@@ -10,6 +10,7 @@
 6¡¢docker exec consul_server_1 consul operator raft list-peers
 --²¿Êðclient
 7¡¢docker run -d -p 8550:8500 --restart=always -v /data/consul/client1/config:/consul/config -e CONSUL_BIND_INTERFACE='eth0' --name=consul_client_1 consul agent -node=consul_client_1 -join=$JOIN_IP -client='0.0.0.0' -datacenter=adnc_dc -config-dir /consul/config
+7.5 docker run -d -p 8560:8500 --restart=always -v /data/consul/client2/config:/consul/config -e CONSUL_BIND_INTERFACE='eth0' --name=consul_client_2 consul agent -node=consul_client_2 -join=$JOIN_IP -client='0.0.0.0' -datacenter=adnc_dc -config-dir /consul/config
 --°²×°fabio
 8¡¢docker run --name fabio1 -d -p 9998:9998 -p 9999:9999 --restart=always -v /root/data/fabio/fabio.properties:/etc/fabio/fabio.properties magiconair/fabio
 ----------------------
