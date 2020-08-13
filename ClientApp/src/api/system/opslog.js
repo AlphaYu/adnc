@@ -7,3 +7,11 @@ export function getList(params) {
     params
   })
 }
+
+export function getListByUser(params) {
+  return request({
+    url: '/sys/users/opslogs',
+    method: 'get',
+    params
+  })
+}

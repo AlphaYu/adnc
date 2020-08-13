@@ -9,6 +9,7 @@ namespace Adnc.Application.Interceptors.OpsLog
 {
     public class OpsLogInterceptor : IInterceptor
     {
+        private bool _isLoging = false;
         private readonly IMongoRepository<SysOperationLog> _opsLogRepository;
         private readonly UserContext _userContext;
 
@@ -22,6 +23,11 @@ namespace Adnc.Application.Interceptors.OpsLog
         public void Intercept(IInvocation invocation)
         {
             invocation.Proceed();
+
+            if (_isLoging)
+                return;
+            else
+                _isLoging = true;
 
             var serviceMethod = invocation.Method ?? invocation.MethodInvocationTarget;
 

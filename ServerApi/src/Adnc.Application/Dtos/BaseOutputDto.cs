@@ -9,7 +9,7 @@ namespace Adnc.Application.Dtos
     /// OutputDto基类
     /// </summary>
     [Serializable]
-    public abstract class BaseOutputDto : BaseDto
+    public  class BaseOutputDto : BaseDto
     {
         /// <summary>
         /// 主键ID

@@ -24,9 +24,9 @@ export function logout(token) {
 
 export function updatePwd(params) {
   return request({
-    url: '/sys/session',
+    url: '/sys/session/password',
     method: 'put',
-    params
+    data: params
   })
 }
 

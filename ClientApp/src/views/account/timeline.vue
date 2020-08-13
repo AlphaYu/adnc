@@ -2,7 +2,7 @@
   <div class="app-container">
     <div class="user">
       <strong>{{ user.name }}</strong><br>
-      <small>{{ user.dept }} &nbsp;&nbsp; {{ user.roles }}</small>
+      <small>{{ user.deptFullName }} &nbsp;&nbsp; {{ user.roles }}</small>
     </div>
     <el-row class="user-content" style="">
       <el-col :span="6" class="profile">
@@ -10,7 +10,7 @@
         <p><span class="title"><i class="el-icon-phone" />&nbsp;&nbsp;{{ user.phone }}</span></p>
         <p><span class="title"><i class="el-icon-message" />&nbsp;&nbsp;{{ user.email }}</span></p>
         <p><span class="title"><i class="el-icon-open" />&nbsp;&nbsp;{{ user.status == '1'?'启用' : '禁用' }}</span></p>
-        <p><span class="title"><i class="el-icon-location-outline" />&nbsp;&nbsp;上海市浦东大道290弄</span></p>
+        <p><span class="title"><i class="el-icon-location-outline" />&nbsp;&nbsp;</span></p>
       </el-col>
       <el-col :span="18" style="padding-left:10px;">
         <el-tabs v-model="activeName" @tab-click="handleClick">
@@ -24,7 +24,7 @@
             :key="index"
             :timestamp="activity.createTime"
           >
-            {{ activity.logname }}
+            {{ activity.logName }}
           </el-timeline-item>
         </el-timeline>
       </el-col>

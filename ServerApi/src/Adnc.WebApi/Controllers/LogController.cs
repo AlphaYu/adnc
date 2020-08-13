@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Adnc.Application.Services;
 using Adnc.Application.Dtos;
 using Adnc.Core.Entities;
+using Adnc.Common.Models;
 
 namespace Adnc.WebApi.Controllers
 {
@@ -14,10 +15,13 @@ namespace Adnc.WebApi.Controllers
     public class LogController : Controller
     {
         private readonly ILogAppService _logService;
+        private readonly UserContext _userContext;
 
-        public LogController(ILogAppService logService)
+        public LogController(ILogAppService logService
+            , UserContext userContext)
         {
             _logService = logService;
+            _userContext = userContext;
         }
 
         /// <summary>
@@ -30,6 +34,23 @@ namespace Adnc.WebApi.Controllers
         public async Task<PageModelDto<OpsLogDto>> GetOpsLogsPaged([FromQuery] LogSearchDto searchDto)
         {
             return await _logService.GetOpsLogsPaged(searchDto);
+        }
+
+        /// <summary>
+        /// 查询用户操作日志
+        /// </summary>
+        /// <param name="searchDto">查询条件</param>
+        /// <returns></returns>
+        [HttpGet("users/opslogs")]
+        public async Task<PageModelDto<OpsLogDto>> GetUserOpsLogsPaged(BaseSearchDto searchDto)
+        {
+            var logSearchDto = new LogSearchDto()
+            {
+                Account = _userContext.Account,
+                PageIndex = searchDto.PageIndex,
+                PageSize = searchDto.PageSize
+            };
+            return await _logService.GetOpsLogsPaged(logSearchDto);
         }
 
         /// <summary>

@@ -13,5 +13,10 @@ namespace Adnc.Infr.EasyCaching.Interceptor.Castle
         /// </summary>
         /// <value>The expiration.</value>
         public int Expiration { get; set; } = 30;
+
+        /// <summary>
+        /// The cache key
+        /// </summary>
+        public string CacheKey { get; set; }
     }     
 }

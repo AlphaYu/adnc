@@ -56,9 +56,18 @@ export default {
           { required: true, message: '请输入用户名', trigger: 'blur' },
           { min: 2, max: 20, message: '长度在 2 到 20 个字符', trigger: 'blur' }
         ],
+        deptid: [
+          { required: true, message: '请选择部门', trigger: 'blur' }
+        ],
+        password: [
+          { required: true, message: '请输入密码', trigger: 'blur' }
+        ],
+        rePassword: [
+          { required: true, message: '请输入确认密码', trigger: 'blur' }
+        ],
         email: [
           { required: true, message: '请输入email', trigger: 'blur' }
-        ],      
+        ],
         phone: [
           { required: true, message: '请输入电话', trigger: 'blur' }
         ],
@@ -161,10 +170,11 @@ export default {
       this.formTitle = '添加用户'
       this.formVisible = true
       this.isAdd = true
+      if (this.$refs.form !== undefined) { this.$refs.form.resetFields() }
     },
     changeUserStatus(row) {
-      changeStatus(row.id,1).then(response => {
-        this.fetchData()
+      changeStatus(row.id, 1).then(response => {
+        row.status = row.status === 1 ? 0 : 1
         this.$notify({
           title: 'Success',
           message: '提交成功',
@@ -182,7 +192,10 @@ export default {
         status: state
       }
       changeStatusBatch(params).then(response => {
-        this.fetchData()
+        // this.fetchData()
+        this.checkedRows.forEach(function(item, index) {
+          item.status = params.status
+        })
         this.$notify({
           title: 'Success',
           message: '提交成功',
@@ -259,6 +272,7 @@ export default {
         this.form.password = ''
         this.formTitle = '修改用户'
         this.formVisible = true
+        if (this.$refs.form !== undefined) { this.$refs.form.resetFields() }
       }
     },
     remove() {
@@ -312,7 +326,7 @@ export default {
         roleIds += checkedRoleKeys[index] + ','
       }
       */
-      setRole(id,checkedRoleKeys).then(response => {
+      setRole(id, checkedRoleKeys).then(response => {
         this.roleDialog.visible = false
         this.fetchData()
         this.$notify({

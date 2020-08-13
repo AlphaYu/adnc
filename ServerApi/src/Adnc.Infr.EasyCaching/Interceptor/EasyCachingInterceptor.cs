@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -245,38 +246,25 @@ namespace Adnc.Infr.EasyCaching.Interceptor.Castle
             {
                 try
                 {
-                    if (attribute.IsAll)
-                    {
-                        //If is all , clear all cached items which cachekey start with the prefix.
-                        var cacheKeyPrefix = _keyGenerator.GetCacheKeyPrefix(serviceMethod, attribute.CacheKeyPrefix);
+                    var cacheKey = attribute.CacheKey;
+                    var cacheKeys = attribute.CacheKeys;
+                    var cacheKeyPrefix = _keyGenerator.GetCacheKeyPrefix(serviceMethod, attribute.CacheKeyPrefix);
 
-                        if (attribute.IsHybridProvider)
-                        {
-                            _hybridCachingProvider.RemoveByPrefix(cacheKeyPrefix);
-                        }
-                        else
-                        {
-                            var _cacheProvider = _cacheProviderFactory.GetCachingProvider(attribute.CacheProviderName ?? _options.Value.CacheProviderName);
-                            _cacheProvider.RemoveByPrefix(cacheKeyPrefix);
-                        }
-                    }
+                    dynamic cacheProvider = _hybridCachingProvider;
+                    if (!attribute.IsHybridProvider)
+                        cacheProvider = _cacheProviderFactory.GetCachingProvider(attribute.CacheProviderName ?? _options.Value.CacheProviderName);
+
+                    if (!string.IsNullOrEmpty(cacheKey))
+                        cacheProvider.Remove(cacheKey);
+                    else if (cacheKeys?.Length > 0)
+                        cacheProvider.RemoveAll(cacheKeys);
                     else
                     {
-                        //If not all , just remove the cached item by its cachekey.
-                        var cacheKey = string.IsNullOrEmpty(attribute.CacheKey)
-                            ? _keyGenerator.GetCacheKey(serviceMethod, invocation.Arguments, attribute.CacheKeyPrefix)
-                            : attribute.CacheKey
-                            ;
-
-                        if (attribute.IsHybridProvider)
-                        {
-                            _hybridCachingProvider.Remove(cacheKey);
-                        }
+                        //If is all , clear all cached items which cachekey start with the prefix.
+                        if (attribute.IsAll)
+                            cacheProvider.RemoveByPrefix(cacheKeyPrefix);
                         else
-                        {
-                            var _cacheProvider = _cacheProviderFactory.GetCachingProvider(attribute.CacheProviderName ?? _options.Value.CacheProviderName);
-                            _cacheProvider.Remove(cacheKey);
-                        }
+                            cacheProvider.Remove(cacheKeyPrefix);
                     }
                 }
                 catch (Exception ex)

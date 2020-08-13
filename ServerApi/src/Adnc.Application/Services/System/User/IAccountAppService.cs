@@ -12,7 +12,7 @@ namespace Adnc.Application.Services
 
         Task<UserInfoDto> GetCurrentUserInfo();
 
-        Task UpdatePassword(UserChangePwdInputDto passwordDto);
+        Task<UserValidateDto> UpdatePassword(UserChangePwdInputDto passwordDto);
 
         Task<UserValidateDto> GetUserValidateInfo(RefreshTokenInputDto tokenInfo);
     }

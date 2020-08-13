@@ -9,15 +9,22 @@ export default {
         rePassword: ''
       },
       activeName: 'updatePwd',
-      user: {}
-    }
-  },
-  computed: {
-    rules() {
-      return {
+      user: {},
+      formRules: {
+        oldPassword: [
+          { required: true, message: '原密码不能为空', trigger: 'blur' },
+          { min: 5, max: 100, message: '原密码长度不能小于5', trigger: 'blur' }
+        ],
         password: [
           { required: true, message: '密码不能为空', trigger: 'blur' },
           { min: 5, max: 100, message: '密码长度不能小于5', trigger: 'blur' }
+        ],
+        rePassword: [
+          { required: true, message: '重复密码不能为空', trigger: 'blur' },
+          { validator: (rule, value, callback) => {
+            if (value !== this.form.password) { callback(new Error('两次输入密码不一致!')) } else { callback() }
+          }
+          }
         ]
       }
     }

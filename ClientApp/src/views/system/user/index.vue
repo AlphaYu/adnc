@@ -146,12 +146,12 @@
               <el-input v-model="form.email" />
             </el-form-item>
           </el-col>
-          <el-col v-show="isAdd" :span="12">
+          <el-col v-if="isAdd" :span="12">
             <el-form-item label="密码" prop="password">
               <el-input v-model="form.password" type="password" />
             </el-form-item>
           </el-col>
-          <el-col v-show="isAdd" :span="12">
+          <el-col v-if="isAdd" :span="12">
             <el-form-item label="确认密码" prop="rePassword">
               <el-input v-model="form.rePassword" type="password" />
             </el-form-item>
@@ -162,11 +162,10 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="所属部门">
+            <el-form-item label="所属部门" prop="deptid">
               <el-input
                 v-model="form.deptName"
                 placeholder="请选择所属部门"
-                readonly="readonly"
                 @click.native="deptTree.show = !deptTree.show"
               />
               <el-tree
@@ -187,7 +186,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="出生日期">
+            <el-form-item label="出生日期" prop="birthday">
               <el-date-picker v-model="form.birthday" type="date" placeholder="选择日期" style="width: 100%;" />
             </el-form-item>
           </el-col>

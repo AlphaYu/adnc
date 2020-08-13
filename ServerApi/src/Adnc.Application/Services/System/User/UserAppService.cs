@@ -69,10 +69,9 @@ namespace Adnc.Application.Services
                     throw new BusinessException(new ErrorModel(ErrorCode.Forbidden,"用户已存在"));
                 }
 
+                user.ID = IdGeneraterHelper.GetNextId(IdGeneraterKey.USER);
                 user.Salt = SecurityHelper.GenerateRandomCode(5);
                 user.Password = HashHelper.GetHashedString(HashType.MD5, user.Password, user.Salt);
-                user.ID = IdGeneraterHelper.GetNextId(IdGeneraterKey.USER);
-                user.UserFinance = new SysUserFinance { ID = user.ID, Amount = 0.00M };
                 await _systemManagerService.AddUser(user);
             }
             else

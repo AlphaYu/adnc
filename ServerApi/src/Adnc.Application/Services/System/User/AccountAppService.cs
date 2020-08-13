@@ -43,15 +43,15 @@ namespace Adnc.Application.Services
 
         public async Task<UserInfoDto> GetCurrentUserInfo()
         {
-            var user = await _userRepository.FetchAsync(u => new { u.ID, u.RoleId, u.Name, Dept = new { u.Dept.FullName } }, x => x.ID == _currentUser.ID);
+            var user = await _userRepository.FetchAsync(u => new { u.Account, u.Avatar, u.Birthday, u.DeptId, Dept = new { u.Dept.FullName}, u.Email, u.ID, u.Name, u.Phone, u.RoleId, u.Sex, u.Status }
+            , x => x.ID == _currentUser.ID);
 
             UserInfoDto userContext = new UserInfoDto
             {
                 Name = user.Name,
-                Role = "admin"
             };
             userContext.Profile = _mapper.Map<UserProfileDto>(user);
-            userContext.Profile.Dept = user.Dept.FullName;
+            userContext.Profile.DeptFullName = user.Dept.FullName;
             if (!string.IsNullOrWhiteSpace(user.RoleId))
             {
                 var roleIds = user.RoleId.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(x => long.Parse(x));
@@ -72,7 +72,7 @@ namespace Adnc.Application.Services
             return userContext;
         }
 
-        public async Task UpdatePassword(UserChangePwdInputDto passwordDto)
+        public async Task<UserValidateDto> UpdatePassword(UserChangePwdInputDto passwordDto)
         {
             if (string.Equals(_currentUser.Account, "admin", StringComparison.OrdinalIgnoreCase))
             {
@@ -84,12 +84,14 @@ namespace Adnc.Application.Services
                 throw new BusinessException(new ErrorModel(ErrorCode.Forbidden,"新密码前后不一致"));
             }
 
-            var user = await _userRepository.FetchAsync(u => new { u.ID, u.Password,u.Salt }, x => x.ID == _currentUser.ID);
+            var user = (await _userRepository.FetchAsync(x => new { x.Password, x.Salt, x.Name, x.Email, x.RoleId, x.Account, x.ID, x.Status }, x => x.ID == _currentUser.ID)).To<SysUser>();
             if (!string.Equals(HashHelper.GetHashedString(HashType.MD5, passwordDto.OldPassword, user.Salt), user.Password, StringComparison.OrdinalIgnoreCase))
             {
-                throw new BusinessException(new ErrorModel(ErrorCode.Forbidden,"旧密码输入错误"));
+                throw new BusinessException(new ErrorModel(ErrorCode.Forbidden, "旧密码输入错误"));
             }
             await _userRepository.UpdateAsync(user, p => p.Password);
+
+            return _mapper.Map<UserValidateDto>(user);
         }
 
         public async Task<UserValidateDto> Login(UserValidateInputDto inputDto)

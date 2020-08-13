@@ -32,7 +32,7 @@ namespace Adnc.Application.Dtos
         /// <summary>
         /// 部门名称
         /// </summary>
-        public string Dept { get; set; }
+        public string DeptFullName { get; set; }
 
         /// <summary>
         /// 电邮
@@ -63,5 +63,10 @@ namespace Adnc.Application.Dtos
         /// 性别
         /// </summary>
         public int? Sex { get; set; }
+        
+        /// <summary>
+        /// 状态
+        /// </summary>
+        public int Status { get; set; }
     }
 }

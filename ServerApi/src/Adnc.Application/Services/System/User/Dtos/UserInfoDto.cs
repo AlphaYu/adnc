@@ -15,11 +15,6 @@ namespace Adnc.Application.Dtos
         public string Name { get; set; }
 
         /// <summary>
-        /// 角色
-        /// </summary>
-        public string Role { get; set; }
-
-        /// <summary>
         /// 用户个人信息
         /// </summary>
         public UserProfileDto Profile { get; set; }

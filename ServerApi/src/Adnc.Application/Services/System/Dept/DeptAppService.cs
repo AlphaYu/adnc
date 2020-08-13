@@ -112,7 +112,9 @@ namespace Adnc.Application.Services
         {
             if (sysDept.Pid.HasValue && sysDept.Pid.Value > 0)
             {
-                var dept = await _deptRepository.FetchAsync(d => new { d.ID, d.Pid, d.Pids }, x => x.ID == sysDept.Pid.Value);
+                var depts = await this.GetList();
+                var dept = depts.Select(d => new { d.ID, d.Pid, d.Pids }).Where(d => d.ID == sysDept.Pid.Value).FirstOrDefault();
+                //var dept = await _deptRepository.FetchAsync(d => new { d.ID, d.Pid, d.Pids }, x => x.ID == sysDept.Pid.Value);
                 string pids = dept?.Pids ?? "";
                 sysDept.Pids = $"{pids}[{sysDept.Pid}],";
             }
