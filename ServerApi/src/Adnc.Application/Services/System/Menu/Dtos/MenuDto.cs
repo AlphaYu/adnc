@@ -7,6 +7,7 @@ namespace Adnc.Application.Dtos
 	/// <summary>
 	/// 菜单
 	/// </summary>
+	[Serializable]
 	public class MenuDto : BaseInputDto
 	{
 		/// <summary>

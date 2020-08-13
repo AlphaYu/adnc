@@ -10,7 +10,7 @@ namespace Adnc.Application.Services
         [EasyCachingAble(CacheKey = EasyCachingConsts.DetpListCacheKey, Expiration = EasyCachingConsts.OneYear)]
         Task<List<DeptNodeDto>> GetList();
 
-        [EasyCachingPut(CacheKey = EasyCachingConsts.DetpListCacheKey)]
+        [EasyCachingEvict(CacheKey = EasyCachingConsts.DetpListCacheKey)]
         Task Save(DeptSaveInputDto savetDto);
 
         [EasyCachingEvict(CacheKey = EasyCachingConsts.DetpListCacheKey)]

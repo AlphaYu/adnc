@@ -10,24 +10,22 @@ namespace Adnc.Application
         public const int OneMonth = 30 * 24 * 60 * 60;
         public const int OneDay = 24 * 60 * 60;
 
-        public const string TopicName = "sysname_easycaching_synchronize_topic";
+        public const string TopicName = "adnc_sys_synchronize_topic";
         public const string LocalCaching = "l1";
         public const string RemoteCaching = "r1";
         public const string HybridCaching = "h1";
 
-        public const string DetpListCacheKey = "sysname:service:depts";
+        public const string DetpListCacheKey = "adnc:sys:depts";
 
-        public const string DictListCacheKey = "sysname:service:dicts";
-        public const string CfgListCacheKey = "sysname:service:cfgs";
+        public const string DictListCacheKey = "adnc:sys:dicts";
+        public const string CfgListCacheKey = "adnc:sys:cfgs";
 
-        public const string MenuKesPrefix = "sysname:service:menus";
-        public const string MenuListCacheKey = "sysname:service:menus:list";
-        public const string MenuRouterCacheKey = "sysname:service:menus:router";
-        public const string MenuRelationCacheKey = "sysname:service:menus:relation";
-        public const string MenuCodesCacheKey = "sysname:service:menus:codes";
+        public const string MenuListCacheKey = "adnc:sys:menus:list";
+        public const string MenuRelationCacheKey = "adnc:sys:menus:relation";
+        public const string MenuCodesCacheKey = "adnc:sys:menus:codes";
 
-        public const string SearchUsersKeyPrefix = "sysname:servcie:users";
-        public const string SearchOperationLogsKeyPrefix = "sysname:servcie:logs";
+        public const string SearchUsersKeyPrefix = "adnc:sys:users";
+        public const string SearchOperationLogsKeyPrefix = "adnc:sys:logs";
 
     }
 }

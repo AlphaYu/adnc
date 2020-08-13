@@ -27,8 +27,10 @@ namespace Adnc.Application
 
             CreateMap<MenuSaveInputDto, SysMenu>();
             CreateMap<SysMenu, MenuDto>().ReverseMap();
+            CreateMap<MenuDto, RouterMenuDto>();
             CreateMap<SysMenu, RouterMenuDto>();
             CreateMap<SysMenu, MenuNodeDto>();
+            CreateMap<MenuDto, MenuNodeDto>();
 
             CreateMap<SysNotice, NoticeDto>().ReverseMap();
 

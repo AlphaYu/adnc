@@ -13,28 +13,72 @@ using Adnc.Core.CoreServices;
 using Adnc.Core.Entities;
 using Adnc.Core.IRepositories;
 using Adnc.Common.Helper;
+using EasyCaching.Core;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Adnc.Application.Services
 {
     public class MenuAppService : IMenuAppService
     {
         private readonly IMapper _mapper;
-        private readonly UserContext _currentUser;
         private readonly IMenuRepository _menuRepository;
         private readonly IEfRepository<SysRelation> _relationRepository;
         private readonly ISystemManagerService _systemManagerService;
+        private readonly IHybridCachingProvider _cache;
 
         public MenuAppService(IMapper mapper,
-            UserContext currentUser,
             IMenuRepository menuRepository,
             IEfRepository<SysRelation> relationRepository,
-            ISystemManagerService systemManagerService)
+            ISystemManagerService systemManagerService,
+            IHybridProviderFactory hybridProviderFactory)
         {
             _mapper = mapper;
-            _currentUser = currentUser;
             _menuRepository = menuRepository;
             _relationRepository = relationRepository;
             _systemManagerService = systemManagerService;
+            _cache = hybridProviderFactory.GetHybridCachingProvider(EasyCachingConsts.HybridCaching);
+        }
+
+        public async Task Save(MenuSaveInputDto saveDto)
+        {
+            if (saveDto.ID < 1)
+            {
+                if (await _menuRepository.ExistAsync(x => x.Code == saveDto.Code))
+                {
+                    throw new BusinessException(new ErrorModel(ErrorCode.Forbidden, "同名菜单已存在"));
+                }
+                saveDto.Status = true;
+            }
+
+            if (string.IsNullOrWhiteSpace(saveDto.PCode) || string.Equals(saveDto.PCode, "0"))
+            {
+                saveDto.PCode = "0";
+                saveDto.PCodes = "[0],";
+                saveDto.Levels = 1;
+            }
+            else
+            {
+                var parentMenu = await _menuRepository.FetchAsync(m => new { m.Code, m.PCodes, m.Levels }, x => x.Code == saveDto.PCode);
+                saveDto.PCode = parentMenu.Code;
+                if (string.Equals(saveDto.Code, saveDto.PCode))
+                {
+                    throw new BusinessException(new ErrorModel(ErrorCode.Forbidden, "菜单编码冲突"));
+                }
+
+                saveDto.Levels = parentMenu.Levels + 1;
+                saveDto.PCodes = $"{parentMenu.PCodes}[{parentMenu.Code}]";
+            }
+
+            var menu = _mapper.Map<SysMenu>(saveDto);
+            if (menu.ID == 0)
+            {
+                menu.ID = IdGeneraterHelper.GetNextId(IdGeneraterKey.MENU);
+                await _menuRepository.InsertAsync(menu);
+            }
+            else
+            {
+                await _menuRepository.UpdateAsync(menu);
+            }
         }
 
         public async Task Delete(long Id)
@@ -47,7 +91,7 @@ namespace Adnc.Application.Services
         {
             var result = new List<MenuNodeDto>();
 
-            var menus = await _menuRepository.GetAll().OrderBy(o => o.Levels).ThenBy(x => x.Num).ToListAsync();
+            var menus = (await this.GetAllMenus()).OrderBy(o => o.Levels).ThenBy(x => x.Num);
 
             var menuNodes = _mapper.Map<List<MenuNodeDto>>(menus);
             foreach (var node in menuNodes)
@@ -76,23 +120,26 @@ namespace Adnc.Application.Services
             return result;
         }
 
-        public async Task<List<RouterMenuDto>> GetMenusForRouter()
+        public async Task<List<RouterMenuDto>> GetMenusForRouter(long[] roleIds)
         {
-            List<RouterMenuDto> result = new List<RouterMenuDto>();
+            var result = new List<RouterMenuDto>();
+            //所有菜单
+            var allMenus = await this.GetAllMenus();
+            //所有菜单角色关系
+            var allRelations = await this.GetAllRelations();
+            //角色拥有的菜单Ids
+            var menusIds = allRelations.Where(x => roleIds.Contains(x.RoleId.Value)).Select(x => x.MenuId).Distinct();
+            //更加菜单Id获取菜单实体
+            var menus = allMenus.Where(x => menusIds.Contains(x.ID));
 
-            var roleIds = _currentUser.RoleId.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(x => long.Parse(x));
-            var menus = await _menuRepository.GetMenusByRoleIdsAsync(roleIds.ToArray(), false);
             if (menus.Any())
             {
-                List<RouterMenuDto> routerMenus = new List<RouterMenuDto>();
-                foreach (var menu in menus)
-                {
-                    if (string.IsNullOrWhiteSpace(menu.Component))
-                    {
-                        continue;
-                    }
+                var routerMenus = new List<RouterMenuDto>();
 
-                    RouterMenuDto routerMenu = _mapper.Map<RouterMenuDto>(menu);
+                var componentMenus = menus.Where(x => !string.IsNullOrWhiteSpace(x.Component));
+                foreach (var menu in componentMenus)
+                {
+                    var routerMenu = _mapper.Map<RouterMenuDto>(menu);
                     routerMenu.Path = menu.Url;
                     routerMenu.Meta = new MenuMetaDto
                     {
@@ -131,7 +178,7 @@ namespace Adnc.Application.Services
 
         public async Task<dynamic> GetMenuTreeListByRoleId(long roleId)
         {
-            var menuIds = await this.GetMenuIdsByRoleId(roleId) ?? new List<long>();
+            var menuIds = (await this.GetAllRelations()).Where(x => x.RoleId.Value == roleId).Select(r => r.MenuId.Value) ?? new List<long>();
             List<ZTreeNodeDto<long, dynamic>> roleTreeList = new List<ZTreeNodeDto<long, dynamic>>();
 
             var menus = await _menuRepository.SelectAsync(m=>m, q => true, q => q.ID, true);
@@ -176,57 +223,26 @@ namespace Adnc.Application.Services
             };
         }
 
-        public async Task Save(MenuSaveInputDto saveDto)
+        private async Task<List<RelationDto>> GetAllRelations()
         {
-            if (saveDto.ID < 1)
+            var cahceValue = await _cache.GetAsync(EasyCachingConsts.MenuRelationCacheKey, async () =>
             {
-                if (await _menuRepository.ExistAsync(x => x.Code == saveDto.Code))
-                {
-                    throw new BusinessException(new ErrorModel(ErrorCode.Forbidden,"同名菜单已存在"));
-                }
-                saveDto.Status = true;
-            }
+                var allRelations = await _relationRepository.GetAll().ToListAsync();
+                return _mapper.Map<List<RelationDto>>(allRelations);
+            }, TimeSpan.FromSeconds(EasyCachingConsts.OneYear));
 
-            if (string.IsNullOrWhiteSpace(saveDto.PCode) || string.Equals(saveDto.PCode, "0"))
-            {
-                saveDto.PCode = "0";
-                saveDto.PCodes = "[0],";
-                saveDto.Levels = 1;
-            }
-            else
-            {
-                var parentMenu = await _menuRepository.FetchAsync(m => new { m.Code, m.PCodes,m.Levels }, x => x.Code == saveDto.PCode);
-                saveDto.PCode = parentMenu.Code;
-                if (string.Equals(saveDto.Code, saveDto.PCode))
-                {
-                    throw new BusinessException(new ErrorModel(ErrorCode.Forbidden,"菜单编码冲突"));
-                }
-
-                saveDto.Levels = parentMenu.Levels + 1;
-                saveDto.PCodes = $"{parentMenu.PCodes}[{parentMenu.Code}]";
-            }
-
-            var menu = _mapper.Map<SysMenu>(saveDto);
-            if (menu.ID == 0)
-            {
-                menu.ID = IdGeneraterHelper.GetNextId(IdGeneraterKey.MENU);
-                await _menuRepository.InsertAsync(menu);
-            }
-            else
-            {
-                await _menuRepository.UpdateAsync(menu);
-            }
+            return cahceValue.Value;
         }
 
-        private async Task<List<long>> GetMenuIdsByRoleId(long roleId)
+        private async Task<List<MenuDto>> GetAllMenus()
         {
-            return await _relationRepository.SelectAsync(r => r.MenuId, x => x.RoleId == roleId);
-        }
+            var cahceValue = await _cache.GetAsync(EasyCachingConsts.MenuListCacheKey, async () =>
+            {
+                var allMenus= await _menuRepository.GetAll().ToListAsync();
+                return _mapper.Map<List<MenuDto>>(allMenus);
+            }, TimeSpan.FromSeconds(EasyCachingConsts.OneYear));
 
-        public async Task<List<RelationDto>> GetAllRelations()
-        {
-            var result= await _relationRepository.GetAll().ToListAsync();
-            return _mapper.Map<List<RelationDto>>(result);
+            return cahceValue.Value;
         }
     }
 }

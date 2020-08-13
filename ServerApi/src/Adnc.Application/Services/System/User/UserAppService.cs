@@ -129,7 +129,8 @@ namespace Adnc.Application.Services
             {
                 throw new BusinessException(new ErrorModel(ErrorCode.Forbidden, "禁止修改管理员角色"));
             }
-            await _userRepository.UpdateAsync(new SysUser() { ID = setDto.ID, RoleId = setDto.RoleIds }, x => x.RoleId);
+            var roleIdStr = setDto.RoleIds == null ? null : string.Join(",", setDto.RoleIds);
+            await _userRepository.UpdateAsync(new SysUser() { ID = setDto.ID, RoleId = roleIdStr }, x => x.RoleId);
         }
     }
 }

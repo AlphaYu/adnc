@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Adnc.Application.Services;
 using Adnc.Application.Dtos;
+using Adnc.Common.Models;
 
 namespace Adnc.WebApi.Controllers
 {
@@ -16,10 +17,13 @@ namespace Adnc.WebApi.Controllers
     public class MenuController : ControllerBase
     {
         private readonly IMenuAppService _menuService;
+        private readonly UserContext _userContext;
 
-        public MenuController(IMenuAppService menuService)
+        public MenuController(IMenuAppService menuService
+            ,UserContext userContext)
         {
             _menuService = menuService;
+            _userContext = userContext;
         }
 
         /// <summary>
@@ -41,7 +45,7 @@ namespace Adnc.WebApi.Controllers
         [HttpGet("routers")]
         public async Task<List<RouterMenuDto>> GetMenusForRouter()
         {
-            return await _menuService.GetMenusForRouter();
+            return await _menuService.GetMenusForRouter(_userContext.RoleIds);
         }
 
         /// <summary>

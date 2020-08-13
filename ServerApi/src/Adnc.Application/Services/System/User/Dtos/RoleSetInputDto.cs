@@ -6,6 +6,6 @@ namespace Adnc.Application.Dtos
 {
     public class RoleSetInputDto : BaseInputDto
     {
-        public string RoleIds { get; set; }
+        public long[] RoleIds { get; set; }
     }
 }

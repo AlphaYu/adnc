@@ -229,7 +229,8 @@ namespace Adnc.WebApi.Helper
                         userContext.Account = claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
                         userContext.Name = claims.First(x => x.Type == ClaimTypes.Name).Value;
                         userContext.Email = claims.First(x => x.Type == JwtRegisteredClaimNames.Email).Value;
-                        userContext.RoleId = claims.First(x => x.Type == ClaimTypes.Role).Value;
+                        string[] roleIds = claims.First(x => x.Type == ClaimTypes.Role).Value.Split(",", StringSplitOptions.RemoveEmptyEntries);
+                        userContext.RoleIds = roleIds.Select(x => long.Parse(x)).ToArray();
                         userContext.RemoteIpAddress = $"{ context.HttpContext.Connection.RemoteIpAddress}:{ context.HttpContext.Connection.RemotePort}";
 
                         return Task.CompletedTask;

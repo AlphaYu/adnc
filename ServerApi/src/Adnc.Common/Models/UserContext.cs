@@ -17,7 +17,7 @@ namespace Adnc.Common.Models
 
         public string Email { get; set; }
 
-        public string RoleId { get; set; }
+        public long[] RoleIds { get; set; }
 
         public string RemoteIpAddress { get; set; }
     }

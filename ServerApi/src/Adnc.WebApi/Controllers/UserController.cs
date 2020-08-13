@@ -62,13 +62,14 @@ namespace Adnc.WebApi.Controllers
         /// 设置用户角色
         /// </summary>
         /// <param name="userId">用户Id</param>
-        /// <param name="roleIds">角色(逗号隔开,如1,3,4,9,30)</param>
+        /// <param name="roleIds">角色</param>
         /// <returns></returns>
         [HttpPut("{userid}/roles")]
         [Permission("userSetRole")]
         public async Task SetRole([FromRoute] long userId, [FromBody] long[] roleIds)
         {
-            await _userService.SetRole(new RoleSetInputDto { ID = userId, RoleIds = string.Join(",", roleIds) });
+            await _userService.SetRole(new RoleSetInputDto { ID = userId, RoleIds = roleIds});
+            
         }
 
         /// <summary>
