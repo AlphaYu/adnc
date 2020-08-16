@@ -226,8 +226,8 @@ namespace  Adnc.Infr.EfCore.Repositories
                 .Where(whereExpression);
             query = ascending ? query.OrderBy(orderByExpression) : query.OrderByDescending(orderByExpression);
             var data = await query.Skip((pageIndex - 1) * pageSize)
-                .Take(pageSize)
-                .ToArrayAsync(cancellationToken);
+                                  .Take(pageSize)
+                                  .ToArrayAsync(cancellationToken);
             return new PagedModel<TEntity>()
             {
                 PageIndex = pageIndex,

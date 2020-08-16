@@ -13,6 +13,7 @@ using Adnc.Core.CoreServices;
 using Adnc.Core.Entities;
 using Adnc.Core.IRepositories;
 using Adnc.Common.Helper;
+using Microsoft.EntityFrameworkCore;
 
 namespace Adnc.Application.Services
 {
@@ -50,9 +51,9 @@ namespace Adnc.Application.Services
 
         public async Task<List<DeptNodeDto>> GetList()
         {
-            List<DeptNodeDto> result = new List<DeptNodeDto>();
+            var result = new List<DeptNodeDto>();
 
-            var depts = await _deptRepository.SelectAsync(d => d, x => true);
+            var depts = await this.GetAll();
             if (depts.Any())
             {
                 var deptNodes = _mapper.Map<List<DeptNodeDto>>(depts);
@@ -102,17 +103,18 @@ namespace Adnc.Application.Services
                 oldDept.FullName = saveDto.FullName;
                 oldDept.Num = saveDto.Num;
                 oldDept.Tips = saveDto.Tips;
-                await this.SetDeptPids(oldDept);
 
-                await _deptRepository.UpdateAsync(oldDept);
+                var dept = await this.SetDeptPids(oldDept);
+
+                await _deptRepository.UpdateAsync(dept);
             }
         }
 
-        private async Task SetDeptPids(SysDept sysDept)
+        private async Task<SysDept> SetDeptPids(SysDept sysDept)
         {
             if (sysDept.Pid.HasValue && sysDept.Pid.Value > 0)
             {
-                var depts = await this.GetList();
+                var depts = await this.GetAll();
                 var dept = depts.Select(d => new { d.ID, d.Pid, d.Pids }).Where(d => d.ID == sysDept.Pid.Value).FirstOrDefault();
                 //var dept = await _deptRepository.FetchAsync(d => new { d.ID, d.Pid, d.Pids }, x => x.ID == sysDept.Pid.Value);
                 string pids = dept?.Pids ?? "";
@@ -123,6 +125,18 @@ namespace Adnc.Application.Services
                 sysDept.Pid = 0;
                 sysDept.Pids = "[0],";
             }
+            return sysDept;
+        }
+
+        private async Task<List<DeptDto>> GetAll()
+        {
+            var cahceValue = await _cache.GetAsync(EasyCachingConsts.DetpListCacheKey, async () =>
+            {
+                var allDepts = await _deptRepository.GetAll().ToListAsync();
+                return _mapper.Map<List<DeptDto>>(allDepts);
+            }, TimeSpan.FromSeconds(EasyCachingConsts.OneYear));
+
+            return cahceValue.Value;
         }
     }
 }

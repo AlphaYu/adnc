@@ -19,6 +19,7 @@ namespace Adnc.Application
             CreateMap<DeptSaveInputDto, SysDept>();
             CreateMap<SysDept, DeptDto>();
             CreateMap<SysDept, DeptNodeDto>();
+            CreateMap<DeptDto, DeptNodeDto>();
 
             CreateMap<DictSaveInputDto, SysDict>();
             CreateMap<SysDict, DictDto>();

@@ -1,20 +1,22 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Adnc.Infr.EasyCaching.Interceptor.Castle;
 using Adnc.Application.Dtos;
-using Adnc.Core.Entities;
+using Adnc.Application.Interceptors.OpsLog;
 
 namespace Adnc.Application.Services
 {
     public interface ICfgAppService : IAppService
     {
-        [EasyCachingAble(CacheKeyPrefix = EasyCachingConsts.CfgListCacheKey, Expiration = EasyCachingConsts.OneYear)]
         Task<PageModelDto<CfgDto>> GetPaged(CfgSearchDto searchDto);
 
-        [EasyCachingEvict(CacheKeyPrefix = EasyCachingConsts.CfgListCacheKey, IsAll = true)]
+        [OpsLog(LogName = "新增/修改参数")]
+        [EasyCachingEvict(CacheKey = EasyCachingConsts.CfgListCacheKey)]
         Task Save(CfgSaveInputDto saveInputDto);
 
-        [EasyCachingEvict(CacheKeyPrefix = EasyCachingConsts.CfgListCacheKey, IsAll = true)]
+        [OpsLog(LogName = "删除参数")]
+        [EasyCachingEvict(CacheKey = EasyCachingConsts.CfgListCacheKey)]
         Task Delete(long Id);
+
+        Task<CfgDto> Get(long Id);
     }
 }

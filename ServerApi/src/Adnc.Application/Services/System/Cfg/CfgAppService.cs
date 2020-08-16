@@ -21,18 +21,16 @@ namespace Adnc.Application.Services
     {
         private readonly IMapper _mapper;
         private readonly IEfRepository<SysCfg> _cfgRepository;
-        private readonly ISystemManagerService _systemManagerService;
         private readonly IRedisCachingProvider _redis;
+        private readonly IHybridCachingProvider _cache;
 
         public CfgAppService(IMapper mapper
             , IEfRepository<SysCfg> cfgRepository
-            , ISystemManagerService systemManagerService
-            , IEasyCachingProviderFactory factory)
+            , IHybridProviderFactory hybridProviderFactory)
         {
             _mapper = mapper;
             _cfgRepository = cfgRepository;
-            _systemManagerService = systemManagerService;
-            _redis = factory.GetRedisProvider(EasyCachingConsts.RemoteCaching);
+            _cache = hybridProviderFactory.GetHybridCachingProvider(EasyCachingConsts.HybridCaching);
         }
 
         public async Task Delete(long Id)
@@ -42,9 +40,9 @@ namespace Adnc.Application.Services
 
         public async Task<PageModelDto<CfgDto>> GetPaged(CfgSearchDto searchDto)
         {
-            PageModelDto<CfgDto> result = new PageModelDto<CfgDto>();
+            //var result = new PageModelDto<CfgDto>();
 
-            Expression<Func<SysCfg, bool>> whereCondition = x => true;
+            Expression<Func<CfgDto, bool>> whereCondition = x => true;
             if (!string.IsNullOrWhiteSpace(searchDto.CfgName))
             {
                 whereCondition = whereCondition.And(x => x.CfgName.Contains(searchDto.CfgName));
@@ -54,8 +52,31 @@ namespace Adnc.Application.Services
                 whereCondition = whereCondition.And(x => x.CfgValue.Contains(searchDto.CfgValue));
             }
 
-            var pagedModel = await _cfgRepository.PagedAsync(searchDto.PageIndex, searchDto.PageSize, whereCondition, c => c.CreateTime, false);
-            result = _mapper.Map<PageModelDto<CfgDto>>(pagedModel);
+            //var pagedModel = await _cfgRepository.PagedAsync(searchDto.PageIndex, searchDto.PageSize, whereCondition, c => c.CreateTime, false);
+            var allCfgs = await this.GetAll();
+
+            var pagedCfgs = allCfgs.Where(whereCondition.Compile())
+                                   .OrderByDescending(x => x.CreateTime)
+                                   .Skip((searchDto.PageIndex - 1) * searchDto.PageSize)
+                                   .Take(searchDto.PageSize)
+                                   .ToArray();
+
+            var result = new PageModelDto<CfgDto>()
+            {
+                Count = pagedCfgs.Count()
+                ,
+                Data = pagedCfgs
+                ,
+                TotalCount = allCfgs.Count
+                ,
+                PageIndex = searchDto.PageIndex
+                ,
+                PageSize = searchDto.PageSize
+                ,
+                PageCount = ((allCfgs.Count + searchDto.PageSize - 1) / searchDto.PageSize)
+            };
+
+            //result = _mapper.Map<PageModelDto<CfgDto>>(pagedModel);
 
             return result;
         }
@@ -98,6 +119,22 @@ namespace Adnc.Application.Services
 
                 await _cfgRepository.UpdateAsync(enity);
             }
+        }
+
+        public async Task<CfgDto> Get(long id)
+        {
+            return (await this.GetAll()).Where(x => x.ID == id).FirstOrDefault();
+        }
+
+        private async Task<List<CfgDto>> GetAll()
+        {
+            var cahceValue = await _cache.GetAsync(EasyCachingConsts.CfgListCacheKey, async () =>
+            {
+                var allCfgs = await _cfgRepository.GetAll().ToListAsync();
+                return _mapper.Map<List<CfgDto>>(allCfgs);
+            }, TimeSpan.FromSeconds(EasyCachingConsts.OneYear));
+
+            return cahceValue.Value;
         }
     }
 }

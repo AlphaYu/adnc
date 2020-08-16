@@ -13,6 +13,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="CustomEasyCachingServiceCollectionExtensions.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="Autofac" Version="5.1.2" />
 		<PackageReference Include="Castle.Core" Version="4.4.0" />
 		<PackageReference Include="Autofac.Extras.DynamicProxy" Version="5.0.0" />

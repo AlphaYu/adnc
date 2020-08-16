@@ -4,6 +4,8 @@ using Newtonsoft.Json;
 using Adnc.Common.Models;
 using Adnc.Core.Entities;
 using Adnc.Core.IRepositories;
+using System.Reflection;
+using Adnc.Common.Extensions;
 
 namespace Adnc.Application.Interceptors.OpsLog
 {
@@ -24,18 +26,21 @@ namespace Adnc.Application.Interceptors.OpsLog
         {
             invocation.Proceed();
 
+            var serviceMethod = invocation.Method ?? invocation.MethodInvocationTarget;
+            var attribute = serviceMethod.GetCustomAttribute<OpsLogAttribute>();
+            if (attribute == null)
+                return;
+
             if (_isLoging)
                 return;
             else
                 _isLoging = true;
 
-            var serviceMethod = invocation.Method ?? invocation.MethodInvocationTarget;
-
             var log = new SysOperationLog
             {
                 ClassName = serviceMethod.DeclaringType.FullName,
                 CreateTime = DateTime.Now,
-                LogName = serviceMethod.Name,
+                LogName = attribute.LogName,
                 LogType = "操作日志",
                 Message = JsonConvert.SerializeObject(invocation.Arguments),
                 Method = serviceMethod.Name,
@@ -46,7 +51,7 @@ namespace Adnc.Application.Interceptors.OpsLog
                 RemoteIpAddress = _userContext.RemoteIpAddress
             };
 
-            _opsLogRepository.AddAsync(log);     
+            _opsLogRepository.AddAsync(log);
 
         }
     }

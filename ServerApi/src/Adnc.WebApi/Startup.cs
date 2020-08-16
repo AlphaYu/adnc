@@ -55,7 +55,7 @@ namespace Adnc.WebApi
         {
             var module = new ConfigurationModule(Configuration);
             builder.RegisterModule(module);
-            builder.ConfigureCastleInterceptor();
+            //builder.ConfigureCastleInterceptor();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

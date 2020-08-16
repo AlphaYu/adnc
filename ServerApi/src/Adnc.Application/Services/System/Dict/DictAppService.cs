@@ -13,6 +13,7 @@ using Adnc.Common.Models;
 using Adnc.Core.CoreServices;
 using Adnc.Core.Entities;
 using Adnc.Core.IRepositories;
+using EasyCaching.Core;
 
 namespace Adnc.Application.Services
 {
@@ -21,14 +22,17 @@ namespace Adnc.Application.Services
         private readonly IMapper _mapper;
         private readonly IEfRepository<SysDict> _dictRepository;
         private readonly ISystemManagerService _systemManagerService;
+        private readonly IHybridCachingProvider _cache;
 
         public DictAppService(IMapper mapper
             , IEfRepository<SysDict> dictRepository
-            , ISystemManagerService systemManagerService)
+            , ISystemManagerService systemManagerService
+            , IHybridProviderFactory hybridProviderFactory)
         {
             _mapper = mapper;
             _dictRepository = dictRepository;
             _systemManagerService = systemManagerService;
+            _cache = hybridProviderFactory.GetHybridCachingProvider(EasyCachingConsts.HybridCaching);
         }
 
         public async Task Delete(long Id)
@@ -38,18 +42,18 @@ namespace Adnc.Application.Services
 
         public async Task<List<DictDto>> GetList(DictSearchDto searchDto)
         {
-            List<DictDto> result = new List<DictDto>();
+            var result = new List<DictDto>();
 
-            Expression<Func<SysDict, bool>> whereCondition = x => true;
+            Expression<Func<DictDto, bool>> whereCondition = x => true;
             if (!string.IsNullOrWhiteSpace(searchDto.Name))
             {
                 whereCondition = whereCondition.And(x => x.Name.Contains(searchDto.Name));
             }
 
-            var dicts = await _dictRepository.GetAll().Where(whereCondition).Select(d => d).OrderByDescending(d => d.CreateTime).ToListAsync();
+            var dicts = (await this.GetAll()).OrderBy(d => d.Num).ToList();
             if (dicts.Any())
             {
-                result = _mapper.Map<List<DictDto>>(dicts.Where(d => d.Pid == 0).OrderBy(d => d.Num));
+                result = dicts.Where(d => d.Pid == 0).OrderBy(d => d.Num).ToList();
                 foreach (var item in result)
                 {
                     var subDict = dicts.Where(d => d.Pid == item.ID).OrderBy(d => d.Num).Select(d => $"{d.Num}:{d.Name}");
@@ -82,6 +86,27 @@ namespace Adnc.Application.Services
                 var subDicts = GetSubDicts(saveDto.ID, saveDto.DictValues);
                 await _systemManagerService.UpdateDicts(dict, subDicts);
             }
+        }
+
+        public async Task<DictDto> Get(long id)
+        {
+            return (await this.GetAll()).Where(x => x.ID == id).FirstOrDefault();
+        }
+
+        public async Task<DictDto> GetInculdeSubs(long id)
+        {
+            return (await this.GetAll()).Where(x => x.ID == id || x.Pid == id).OrderBy(x => x.ID).ThenBy(x => x.Num).FirstOrDefault();
+        }
+
+        private async Task<List<DictDto>> GetAll()
+        {
+            var cahceValue = await _cache.GetAsync(EasyCachingConsts.DictListCacheKey, async () =>
+            {
+                var allDicts = await _dictRepository.GetAll().ToListAsync();
+                return _mapper.Map<List<DictDto>>(allDicts);
+            }, TimeSpan.FromSeconds(EasyCachingConsts.OneYear));
+
+            return cahceValue.Value;
         }
 
         private List<SysDict> GetSubDicts(long pid, string dictValues)
