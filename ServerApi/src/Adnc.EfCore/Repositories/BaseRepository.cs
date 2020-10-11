@@ -1,34 +1,52 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
-using Adnc.Common.Extensions;
-using Adnc.Core.IRepositories;
-using Adnc.Common.Models;
+using System.Text.Json;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Z.EntityFramework.Plus;
-using Newtonsoft.Json;
-using Adnc.Core.Entities;
+using Dapper;
+using Adnc.Common.Extensions;
+using Adnc.Core.Shared.IRepositories;
+using Adnc.Common.Models;
+using Adnc.Core.Shared.Entities;
+using System.Data;
 
-namespace  Adnc.Infr.EfCore.Repositories
+namespace Adnc.Infr.EfCore.Repositories
 {
-    public class BaseRepository<TDbContext, TEntity> : IEfRepository<TEntity>
+    public abstract class BaseRepository<TDbContext, TEntity> : IEfRepository<TEntity>
        where TDbContext : DbContext
        where TEntity : EfEntity
     {
-        protected TDbContext DbContext { get; }
+        protected virtual TDbContext DbContext { get; }
 
         public BaseRepository(TDbContext dbContext)
         {
             DbContext = dbContext;
         }
 
-        public DbSet<TEntity> GetAll()
+        public virtual async Task<IEnumerable<dynamic>> QueryAsync(string sql, object param = null, int? commandTimeout = null, CommandType? commandType = null)
+        {
+            return await DbContext.Database.GetDbConnection().QueryAsync(sql, param, null, commandTimeout, commandType);
+        }
+
+        public virtual async Task<IEnumerable<TrEntity>> QueryAsync<TrEntity>(string sql, object param = null, int? commandTimeout = null, CommandType? commandType = null)
+        {
+            return await DbContext.Database.GetDbConnection().QueryAsync<TrEntity>(sql, param, null, commandTimeout, commandType);
+        }
+
+        public virtual IQueryable<TEntity> GetAll()
         {
             return DbContext.Set<TEntity>();
+        }
+
+        public virtual IQueryable<TrdEntity> GetAll<TrdEntity>() where TrdEntity : EfEntity
+        {
+            return DbContext.Set<TrdEntity>();
         }
 
         public virtual async Task<int> InsertAsync(TEntity entity, CancellationToken cancellationToken = default)
@@ -164,7 +182,7 @@ namespace  Adnc.Infr.EfCore.Repositories
 
             return (typeof(TEntity) == typeof(TResult))
                 ? await Task.FromResult(result as TEntity)
-                : await Task.FromResult(JsonConvert.DeserializeObject<TEntity>(JsonConvert.SerializeObject(result)))
+                : await Task.FromResult(JsonSerializer.Deserialize<TEntity>(JsonSerializer.Serialize(result)))
                 ;
         }
 
@@ -237,7 +255,7 @@ namespace  Adnc.Infr.EfCore.Repositories
             };
         }
 
-        public EntityEntry<TEntity> Entry(TEntity entity)
+        protected EntityEntry<TEntity> Entry(TEntity entity)
         {
             return DbContext.Entry<TEntity>(entity);
         }

@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using MongoDB.Driver;
 using Adnc.Infr.Mongo.Models;
-using Adnc.Core.Entities;
+using Adnc.Core.Shared.Entities;
 
 namespace Adnc.Infr.Mongo.Interfaces
 {

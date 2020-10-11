@@ -9,6 +9,7 @@
 
 	<ItemGroup>
 		<!--<PackageReference Include="Kogel.Dapper.Extension.MySql" Version="3.1.9.8" />-->
+		<PackageReference Include="Autofac" Version="5.1.2" />
 		<PackageReference Include="Humanizer.Core" Version="2.8.26" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.6" />
 		<PackageReference Include="Microsoft.Extensions.Options" Version="3.1.6" />
@@ -16,7 +17,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\Adnc.Core\11.Adnc.Core.csproj" />
+	  <ProjectReference Include="..\Adnc.Core.Shared\12.Adnc.Core.Shared.csproj" />
 	</ItemGroup>
 	
 </Project>

@@ -43,7 +43,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Adnc.Application\10.Adnc.Application.csproj" />
     <ProjectReference Include="..\..\src\Adnc.Common\19.Adnc.Common.csproj" />
     <ProjectReference Include="..\..\src\Adnc.EfCore\22.Adnc.Infr.EfCore.csproj" />
     <ProjectReference Include="..\..\src\Adnc.Mongo\23.Adnc.Infr.Mongo.csproj" />

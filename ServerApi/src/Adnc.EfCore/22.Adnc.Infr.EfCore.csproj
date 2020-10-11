@@ -22,8 +22,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Autofac" Version="5.1.2" />
+    <PackageReference Include="Dapper" Version="2.0.35" />
     <PackageReference Include="Humanizer" Version="2.8.26" />
     <PackageReference Include="JetBrains.Annotations" Version="2020.1.0" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="2.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="3.1.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.6" />
@@ -37,7 +40,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Adnc.Core\11.Adnc.Core.csproj" />
+    <ProjectReference Include="..\Adnc.Core.Shared\12.Adnc.Core.Shared.csproj" />
   </ItemGroup>
 
 </Project>

@@ -2,7 +2,7 @@
 using MongoDB.Driver;
 using Adnc.Infr.Mongo.Configuration;
 using Adnc.Infr.Mongo.Models;
-using Adnc.Core.Entities;
+using Adnc.Core.Shared.Entities;
 
 namespace Adnc.Infr.Mongo.Extensions
 {

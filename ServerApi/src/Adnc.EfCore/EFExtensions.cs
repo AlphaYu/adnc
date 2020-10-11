@@ -7,7 +7,6 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Internal;
 using Adnc.Common.Extensions;
-using Adnc.Infr.EfCore.Models;
 
 namespace  Adnc.Infr.EfCore
 {

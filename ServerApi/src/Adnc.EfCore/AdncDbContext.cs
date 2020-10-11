@@ -7,19 +7,20 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Adnc.Common.Models;
-using Adnc.Core.Entities;
-using Adnc.Core.Entities.Config;
+using Adnc.Core.Shared.Entities;
 
 namespace Adnc.Infr.EfCore
 {
     public class AdncDbContext : DbContext
     {
         private readonly UserContext _userContext;
+        private IEntityInfo _entityInfo;
 
-        public AdncDbContext([NotNull] DbContextOptions options, UserContext userContext) 
+        public AdncDbContext([NotNull] DbContextOptions options, UserContext userContext,[NotNull] IEntityInfo entityInfo) 
             : base(options)
         {
             _userContext = userContext;
+            _entityInfo = entityInfo;
 
             //关闭DbContext默认事务
             Database.AutoTransactionsEnabled = false;
@@ -84,20 +85,28 @@ namespace Adnc.Infr.EfCore
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<SysCfg>();
-            modelBuilder.Entity<SysDept>();
-            modelBuilder.Entity<SysDict>();
-            //modelBuilder.Entity<SysFileInfo>();
-            modelBuilder.Entity<SysLoginLog>();
-            modelBuilder.Entity<SysMenu>();
-            modelBuilder.Entity<SysNotice>();
-            //modelBuilder.Entity<SysOperationLog>();
-            modelBuilder.Entity<SysRelation>();
-            modelBuilder.Entity<SysRole>();
-            modelBuilder.Entity<SysTask>();
-            modelBuilder.Entity<SysTaskLog>();
-            modelBuilder.Entity<SysUser>();
-            modelBuilder.Entity<SysUserFinance>();
+
+            var entitiesTypes = _entityInfo.GetEntities();
+
+            foreach(var entityType in entitiesTypes)
+            {
+                modelBuilder.Entity(entityType);
+            }
+
+            //modelBuilder.Entity<SysCfg>();
+            //modelBuilder.Entity<SysDept>();
+            //modelBuilder.Entity<SysDict>();
+            ////modelBuilder.Entity<SysFileInfo>();
+            //modelBuilder.Entity<SysLoginLog>();
+            //modelBuilder.Entity<SysMenu>();
+            //modelBuilder.Entity<SysNotice>();
+            ////modelBuilder.Entity<SysOperationLog>();
+            //modelBuilder.Entity<SysRelation>();
+            //modelBuilder.Entity<SysRole>();
+            //modelBuilder.Entity<SysTask>();
+            //modelBuilder.Entity<SysTaskLog>();
+            //modelBuilder.Entity<SysUser>();
+            //modelBuilder.Entity<SysUserFinance>();
             //种子数据
             //modelBuilder.Entity<SysLoginLog>().HasData(new SysLoginLog{});
             //种子数据初始化方法分为如下三种
@@ -109,16 +118,19 @@ namespace Adnc.Infr.EfCore
             //Script-Migration -From migrationName1 -To migrationName2  -Context ContextName
             //如：Script-Migration -From 0
 
-            modelBuilder.ApplyConfiguration(new UserConfig());
-            modelBuilder.ApplyConfiguration(new UserFinanceConfig());
-            modelBuilder.ApplyConfiguration(new DictConfig());
-            modelBuilder.ApplyConfiguration(new CfgConfig());
+            modelBuilder.ApplyConfigurationsFromAssembly(_entityInfo.GetType().Assembly);
+            //modelBuilder.ApplyConfiguration(new UserConfig());
+            //modelBuilder.ApplyConfiguration(new UserFinanceConfig());
+            //modelBuilder.ApplyConfiguration(new DictConfig());
+            //modelBuilder.ApplyConfiguration(new CfgConfig());
 
             base.OnModelCreating(modelBuilder);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            //用于设置是否启用缓存，暂时解决了可能出现的内存溢出的问题
+            optionsBuilder.EnableServiceProviderCaching(false);
             base.OnConfiguring(optionsBuilder);
         }
     }

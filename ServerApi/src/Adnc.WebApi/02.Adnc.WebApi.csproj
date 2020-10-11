@@ -48,7 +48,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Adnc.EfCore\22.Adnc.Infr.EfCore.csproj" />
     <ProjectReference Include="..\Adnc.Infr.Consul\20.Adnc.Infr.Consul.csproj" />
-    <ProjectReference Include="..\Adnc.Application\10.Adnc.Application.csproj" />
     <ProjectReference Include="..\Adnc.Mongo\23.Adnc.Infr.Mongo.csproj" />
   </ItemGroup>
 

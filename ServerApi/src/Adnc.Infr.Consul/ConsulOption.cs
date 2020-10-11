@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Adnc.Infr.Consul
 {
-    public class ConsulOption
+    public class ConsulConfig
     {
         public string ConsulUrl { get; set; }
         public string ServiceName { get; set; }

@@ -6,6 +6,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Threading;
 using Adnc.Common.Models;
+using Adnc.Core.Shared.Entities;
 
 namespace  Adnc.Infr.EfCore
 {
@@ -24,10 +25,12 @@ namespace  Adnc.Infr.EfCore
     {
         private readonly IConfiguration _configuration;
         private readonly UserContext _userContext;
-        public DbContextFactory(IConfiguration configuration,UserContext userContext)
+        private readonly IEntityInfo _entityInfo;
+        public DbContextFactory(IConfiguration configuration,UserContext userContext,IEntityInfo entityInfo)
         {
             _configuration = configuration;
             _userContext = userContext;
+            _entityInfo = entityInfo;
         }
 
         public DbContext CreateDbContext(WirteOrRead dbType)
@@ -43,7 +46,7 @@ namespace  Adnc.Infr.EfCore
                     optionsBuilder.UseMySql(_configuration.GetValue<string>("Mysql:WriteDb:ConnectionString")
                         , mySqlOptions => mySqlOptions.ServerVersion(new ServerVersion(new Version("5.5.56-MariaDB"), ServerType.MySql))
                     );
-                    dbContext = new AdncDbContext(optionsBuilder.Options, _userContext);           
+                    dbContext = new AdncDbContext(optionsBuilder.Options, _userContext, _entityInfo);           
                     CallContext.SetData(WirteOrRead.Write, dbContext);
                 }
             }

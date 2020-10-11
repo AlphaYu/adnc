@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Adnc.Core.Entities;
-using Adnc.Core.IRepositories;
+using Adnc.Core.Shared.Entities;
+using Adnc.Core.Shared.IRepositories;
 
 namespace  Adnc.Infr.EfCore.Repositories
 {

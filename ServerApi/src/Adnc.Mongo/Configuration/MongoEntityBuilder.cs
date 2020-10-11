@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Adnc.Core.Entities;
+using Adnc.Core.Shared.Entities;
 
 namespace Adnc.Infr.Mongo.Configuration
 {

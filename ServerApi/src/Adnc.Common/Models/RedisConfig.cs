@@ -9,6 +9,17 @@ namespace Adnc.Common.Models
     /// </summary>
     public class RedisConfig
     {
-        public string ConnectionStrings { get; set; }
+        public int MaxRdSecond { get; set; }
+        public bool EnableLogging { get; set; }
+        public int LockMs { get; set; }
+        public int SleepMs { get; set; }
+        public Dbconfig dbconfig { get; set; }
     }
+
+    public class Dbconfig
+    {
+        public string[] ConnectionStrings { get; set; }
+        public bool ReadOnly { get; set; }
+    }
+
 }

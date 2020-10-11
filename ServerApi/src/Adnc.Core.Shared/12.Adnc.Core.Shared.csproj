@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.1</TargetFramework>
+		<RootNamespace>Adnc.Core.Shared</RootNamespace>
+		<AssemblyName>Adnc.Core.Shared</AssemblyName>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Castle.Core" Version="4.4.0" />
+		<PackageReference Include="Refit.HttpClientFactory" Version="5.1.67" />
+		<PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0" />
+		<PackageReference Include="MongoDB.Bson" Version="2.10.4" />
+		<PackageReference Include="MongoDB.Driver" Version="2.10.4" />
+	</ItemGroup>
+	
+	<ItemGroup>
+		<ProjectReference Include="..\Adnc.Common\19.Adnc.Common.csproj" />
+	</ItemGroup>
+
+</Project>

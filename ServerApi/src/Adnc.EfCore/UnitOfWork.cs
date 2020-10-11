@@ -1,33 +1,51 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Storage;
-using System;
+﻿using System;
+using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
-using Adnc.Core;
-using System.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Storage;
+using Adnc.Core.Shared;
 
 namespace Adnc.Infr.EfCore
 {
     public class UnitOfWork<TDbContext> : IUnitOfWork where TDbContext : DbContext
     {
         private readonly TDbContext _dbContext;
-        private readonly DatabaseFacade _database;
+        private IDbContextTransaction _dbTransaction;
 
         public UnitOfWork(TDbContext context)
         {
             _dbContext = context ?? throw new ArgumentNullException(nameof(context));
-            _database = _dbContext.Database;
         }
 
-        public string ProviderName => _database.ProviderName;
+        public string ProviderName => _dbContext.Database.ProviderName;
 
-        public IDbContextTransaction BeginTransaction() => _database.BeginTransaction();
 
-        public IDbContextTransaction BeginTransaction(IsolationLevel isolationLevel) => _database.BeginTransaction(isolationLevel);
+        public void BeginTransaction()
+        {
+            _dbTransaction = _dbContext.Database.BeginTransaction();
+        }
 
-        public Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken = default) => _database.BeginTransactionAsync(cancellationToken);
+        public void BeginTransaction(IsolationLevel isolationLevel)
+        {
+            _dbTransaction = _dbContext.Database.BeginTransaction(isolationLevel);
+        }
 
-        public Task<IDbContextTransaction> BeginTransactionAsync(IsolationLevel isolationLevel, CancellationToken cancellationToken = default) => _database.BeginTransactionAsync(isolationLevel, cancellationToken);
+
+        public void Commit()
+        {
+            _dbTransaction?.Commit();
+        }
+
+        public void Rollback()
+        {
+            _dbTransaction?.Rollback();
+        }
+
+        public void Dispose()
+        {
+            _dbTransaction?.Dispose();
+        }
     }
 }

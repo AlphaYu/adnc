@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using Adnc.Infr.Mongo.Models;
-using Adnc.Core.IRepositories;
+using Adnc.Core.Shared.IRepositories;
 
 namespace Adnc.Infr.Mongo.Interfaces
 {

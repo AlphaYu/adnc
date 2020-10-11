@@ -11,7 +11,7 @@ namespace Adnc.Infr.Consul.Registration
 {
     public static class RegistrationExtension
     {
-        public static void RegisterToConsul(this IApplicationBuilder app, ConsulOption consulOption)
+        public static void RegisterToConsul(this IApplicationBuilder app, ConsulConfig consulOption)
         {
 
             CheckConfig(consulOption);
@@ -61,7 +61,7 @@ namespace Adnc.Infr.Consul.Registration
             });
         }
 
-        private static void CheckConfig(ConsulOption serviceOptions)
+        private static void CheckConfig(ConsulConfig serviceOptions)
         {
             if (serviceOptions == null)
                 throw new Exception("请正确配Consul");
@@ -80,7 +80,7 @@ namespace Adnc.Infr.Consul.Registration
 
         }
 
-        private static bool TryGetServiceUrl(IApplicationBuilder app, ConsulOption consulOption, out Uri serverListenUrl, out string errorMsg)
+        private static bool TryGetServiceUrl(IApplicationBuilder app, ConsulConfig consulOption, out Uri serverListenUrl, out string errorMsg)
         {
             errorMsg = string.Empty;
             serverListenUrl = default;
