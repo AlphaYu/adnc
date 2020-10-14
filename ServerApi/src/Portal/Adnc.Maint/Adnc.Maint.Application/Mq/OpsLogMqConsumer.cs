@@ -22,7 +22,7 @@ namespace Adnc.Maint.Application.Mq
         private readonly ILogger<OpsLogMqConsumer> _logger;
         private static string s_QueryName = "q-adnc-maint-opslog";
 
-        public OpsLogMqConsumer(IOptions<RabbitMqConfig> options
+        public OpsLogMqConsumer(IOptionsSnapshot<RabbitMqConfig> options
            , IHostApplicationLifetime appLifetime
            , ILogger<OpsLogMqConsumer> logger
            , IServiceProvider services) 

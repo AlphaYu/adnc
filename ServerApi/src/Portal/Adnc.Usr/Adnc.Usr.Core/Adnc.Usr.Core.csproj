@@ -22,13 +22,14 @@
 		<PackageReference Include="Autofac.Extras.DynamicProxy" Version="5.0.0" />
 		<PackageReference Include="Autofac.Extensions.DependencyInjection" Version="6.0.0" />
 	</ItemGroup>
+
 	<ItemGroup>
-	  <Folder Include="IRepositories\" />
-	  <Folder Include="RpcService\" />
+	  <ProjectReference Include="..\..\..\Adnc.Core.Shared\03.Adnc.Core.Shared.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\..\Adnc.Core.Shared\12.Adnc.Core.Shared.csproj" />
+	  <Folder Include="RpcService\" />
+	  <Folder Include="EventBus\" />
 	</ItemGroup>
 
 </Project>

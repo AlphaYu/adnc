@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.ComponentModel.DataAnnotations;
 
 namespace Adnc.Application.Shared.Dtos
 {
@@ -14,6 +13,7 @@ namespace Adnc.Application.Shared.Dtos
         /// <summary>
         /// 需要传递的值
         /// </summary>
+        [Required]
         public T Value { get; set; }
     }
 }

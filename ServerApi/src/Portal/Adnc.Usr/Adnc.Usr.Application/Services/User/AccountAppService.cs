@@ -12,7 +12,7 @@ using Adnc.Common.MqModels;
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Usr.Core.Entities;
 using Adnc.Infr.Mq.RabbitMq;
-using Adnc.Usr.Core.RepositoryExtensions;
+using Adnc.Usr.Core.IRepositories;
 using Adnc.Common.Consts;
 using Adnc.Core.Shared.Entities;
 

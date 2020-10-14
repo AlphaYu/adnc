@@ -56,10 +56,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Adnc.EfCore\22.Adnc.Infr.EfCore.csproj" />
+    <ProjectReference Include="..\..\..\Adnc.Infr.EfCore\22.Adnc.Infr.EfCore.csproj" />
     <ProjectReference Include="..\..\..\Adnc.Infr.Consul\20.Adnc.Infr.Consul.csproj" />
-    <ProjectReference Include="..\..\..\Adnc.Mongo\23.Adnc.Infr.Mongo.csproj" />
-    <ProjectReference Include="..\..\..\Adnc.WebApi.Shared\10.Adnc.WebApi.Shared.csproj" />
+    <ProjectReference Include="..\..\..\Adnc.Infr.Mongo\23.Adnc.Infr.Mongo.csproj" />
+    <ProjectReference Include="..\..\..\Adnc.WebApi.Shared\01.Adnc.WebApi.Shared.csproj" />
     <ProjectReference Include="..\Adnc.Maint.Application\Adnc.Maint.Application.csproj" />
   </ItemGroup>
 

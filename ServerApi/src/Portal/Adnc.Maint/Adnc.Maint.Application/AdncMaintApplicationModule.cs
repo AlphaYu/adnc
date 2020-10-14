@@ -29,7 +29,7 @@ namespace Adnc.Maint.Application
 
             //注册RabitMq生产者
             builder.RegisterType<RabbitMqProducer>()
-                   .SingleInstance();
+                   .InstancePerLifetimeScope();
 
             //注册操作日志拦截器
             builder.RegisterType<OpsLogInterceptor>()

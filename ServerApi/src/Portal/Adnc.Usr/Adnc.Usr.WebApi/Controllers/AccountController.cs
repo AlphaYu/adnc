@@ -22,7 +22,7 @@ namespace Adnc.Usr.WebApi.Controllers
         private readonly IAccountAppService _accountService;
         private readonly ILogger<AccountController> _logger;
 
-        public AccountController(IOptions<JWTConfig> jwtConfig
+        public AccountController(IOptionsSnapshot<JWTConfig> jwtConfig
             , IAccountAppService accountService
             , ILogger<AccountController> logger)
         {

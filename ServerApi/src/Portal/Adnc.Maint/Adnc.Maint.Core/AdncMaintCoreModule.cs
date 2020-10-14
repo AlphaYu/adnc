@@ -14,7 +14,7 @@ namespace Adnc.Maint.Core
             //注册EntityInfo
             builder.RegisterType<EntityInfo>()
                    .As<IEntityInfo>()
-                   .SingleInstance();
+                   .InstancePerLifetimeScope();
 
             //注册事务拦截器
             builder.RegisterType<UowInterceptor>()

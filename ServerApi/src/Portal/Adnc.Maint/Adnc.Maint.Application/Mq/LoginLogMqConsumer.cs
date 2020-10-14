@@ -21,7 +21,7 @@ namespace Adnc.Maint.Application.Mq
         private readonly ILogger<LoginLogMqConsumer> _logger;
         private static string s_QueryName = "q-adnc-maint-loginlog";
 
-        public LoginLogMqConsumer(IOptions<RabbitMqConfig> options
+        public LoginLogMqConsumer(IOptionsSnapshot<RabbitMqConfig> options
            , IHostApplicationLifetime appLifetime
            , ILogger<LoginLogMqConsumer> logger
            , IServiceProvider services)

@@ -13,13 +13,13 @@ namespace Adnc.Core.Shared.IRepositories
     public interface IEfRepository<TEntity> : IRepository<TEntity>
        where TEntity : EfEntity
     {
-        IQueryable<TEntity> GetAll();
-
         IQueryable<TrEntity> GetAll<TrEntity>() where TrEntity : EfEntity;
+
+        IQueryable<TEntity> GetAll();
 
         Task<IEnumerable<dynamic>> QueryAsync(string sql, object param = null,int? commandTimeout = null, CommandType? commandType = null);
 
-        Task<IEnumerable<TrEntity>> QueryAsync<TrEntity>(string sql, object param = null, int? commandTimeout = null, CommandType? commandType = null);
+        Task<IEnumerable<TrdEntity>> QueryAsync<TrdEntity>(string sql, object param = null, int? commandTimeout = null, CommandType? commandType = null);
 
         Task<int> InsertAsync(TEntity entity, CancellationToken cancellationToken = default);
 

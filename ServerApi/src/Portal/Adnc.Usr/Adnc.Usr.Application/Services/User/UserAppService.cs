@@ -22,19 +22,19 @@ namespace Adnc.Usr.Application.Services
         private readonly IEfRepository<SysUser> _userRepository;
         private readonly IEfRepository<SysDept> _deptRepository;
         private readonly IEfRepository<SysRole> _roleRepository;
-        private readonly IUsrManagerService _systemManagerService;
+        private readonly IUsrManagerService _usrManager;
 
         public UserAppService(IMapper mapper,
             IEfRepository<SysUser> userRepository,
             IEfRepository<SysDept> deptRepository,
             IEfRepository<SysRole> roleRepository,
-            IUsrManagerService systemManagerService)
+            IUsrManagerService usrManager)
         {
             _mapper = mapper;
             _userRepository = userRepository;
             _deptRepository = deptRepository;
             _roleRepository = roleRepository;
-            _systemManagerService = systemManagerService;
+            _usrManager = usrManager;
         }
 
         public async Task ChangeStatus(long Id)
@@ -73,7 +73,7 @@ namespace Adnc.Usr.Application.Services
                 user.ID = IdGeneraterHelper.GetNextId(IdGeneraterKey.USER);
                 user.Salt = SecurityHelper.GenerateRandomCode(5);
                 user.Password = HashHelper.GetHashedString(HashType.MD5, user.Password, user.Salt);
-                await _systemManagerService.AddUser(user);
+                await _usrManager.AddUser(user);
             }
             else
             {

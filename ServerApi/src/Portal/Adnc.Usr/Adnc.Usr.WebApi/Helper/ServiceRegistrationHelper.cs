@@ -42,6 +42,7 @@ namespace Adnc.Usr.WebApi.Helper
                 {
                     mySqlOptions.ServerVersion(new ServerVersion(new Version(10, 5, 4), ServerType.MariaDb));
                     mySqlOptions.MinBatchSize(2);
+                    mySqlOptions.MigrationsAssembly("Adnc.Usr.Migrations");
                 });
                 options.AddInterceptors(new CustomCommandInterceptor());
             });

@@ -18,13 +18,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\..\Adnc.Core.Shared\12.Adnc.Core.Shared.csproj" />
+		<ProjectReference Include="..\..\..\Adnc.Core.Shared\03.Adnc.Core.Shared.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<Folder Include="IRepositories\" />
-		<Folder Include="RepositoryExtensions\" />
 		<Folder Include="RpcService\" />
+		<Folder Include="EventBus\" />
 	</ItemGroup>
 
 	<ItemGroup>

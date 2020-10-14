@@ -21,9 +21,9 @@ namespace Adnc.Core.Shared.Interceptors
             //Sync
             if (!IsAsyncMethod(methodInfo))
             {
-                _unitOfWork.BeginTransaction();
                 try
                 {
+                    _unitOfWork.BeginTransaction();
                     invocation.Proceed();
                     _unitOfWork.Commit();
                 }
@@ -46,9 +46,9 @@ namespace Adnc.Core.Shared.Interceptors
 
         private void InterceptAsync(IInvocation invocation)
         {
-            _unitOfWork.BeginTransaction();
             try
             {
+                _unitOfWork.BeginTransaction();
                 invocation.Proceed();
                 var result = invocation.ReturnValue as Task;
                 result.ContinueWith(x =>
