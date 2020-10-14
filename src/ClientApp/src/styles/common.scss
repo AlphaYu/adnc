@@ -1,0 +1,42 @@
+.block {
+  padding: 10px 0px;
+}
+.el-form-item{
+  margin-bottom:20px;
+}
+.flash-table-expand {
+  font-size: 0;
+}
+
+.flash-table-expand .el-form-item {
+  margin-right: 0;
+  margin-bottom: 0;
+  width: 50%;
+}
+.user{
+  padding:10px;
+}
+.user > strong {
+  color: #777;
+  font-size:15px;
+  font-weight: 400;
+}
+
+.user > small {
+  color: #9E9E9E;
+}
+
+.user-content {
+  box-shadow: 2px 2px 4px #edecec;
+  min-height: 500px;
+}
+
+.user-content > .profile {
+  background: #edecec;
+  padding: 10px;
+  height: 500px;
+  width: 220px;
+}
+.user-content>.profile>img{
+  width:100%;
+}

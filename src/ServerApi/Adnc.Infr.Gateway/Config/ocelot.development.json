@@ -1,0 +1,79 @@
+{
+  "GlobalConfiguration": {
+    "BaseUrl": "http://localhost:8888"
+  },
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/usr{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5010
+        }
+      ],
+      "UpstreamPathTemplate": "/usr{everything}",
+      "UpstreamHttpMethod": [
+        "Get",
+        "Put",
+        "Post",
+        "Delete"
+      ],
+      "LoadBalancerOptions": {
+        //LeastConnection – 将请求发往最空闲的那个服务器
+        //RoundRobin – 轮流发送
+        //NoLoadBalance – 总是发往第一个请求或者是服务发现
+        //CookieStickySessions -性会话类型的负载平衡
+        "Type": "RoundRobin"
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/maint{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5020
+        }
+      ],
+      "UpstreamPathTemplate": "/maint{everything}",
+      "UpstreamHttpMethod": [
+        "Get",
+        "Put",
+        "Post",
+        "Delete"
+      ],
+      "LoadBalancerOptions": {
+        //LeastConnection – 将请求发往最空闲的那个服务器
+        //RoundRobin – 轮流发送
+        //NoLoadBalance – 总是发往第一个请求或者是服务发现
+        //CookieStickySessions -性会话类型的负载平衡
+        "Type": "RoundRobin"
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/cus{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5030
+        }
+      ],
+      "UpstreamPathTemplate": "/cus{everything}",
+      "UpstreamHttpMethod": [
+        "Get",
+        "Put",
+        "Post",
+        "Delete"
+      ],
+      "LoadBalancerOptions": {
+        //LeastConnection – 将请求发往最空闲的那个服务器
+        //RoundRobin – 轮流发送
+        //NoLoadBalance – 总是发往第一个请求或者是服务发现
+        //CookieStickySessions -性会话类型的负载平衡
+        "Type": "RoundRobin"
+      }
+    }
+  ]
+}
