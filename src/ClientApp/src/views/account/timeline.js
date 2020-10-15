@@ -1,4 +1,4 @@
-import { getListByUser } from '@/api/system/opslog'
+import { getListByUser } from '@/api/maint/opslog'
 
 export default {
   data() {

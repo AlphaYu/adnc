@@ -1,4 +1,4 @@
-import { listForRouter } from '@/api/system/menu'
+import { listForRouter } from '@/api/usr/menu'
 import { traverseRoutes } from '@/utils/route'
 import { constantRoutes } from '@/router'
 const state = {

@@ -40,7 +40,7 @@
 
 	<ItemGroup>
 		<None Update="Adnc.Usr.Application.xml">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
 	</ItemGroup>
 

@@ -1,4 +1,4 @@
-import { updatePwd } from '@/api/user'
+import { updatePwd } from '@/api/account'
 
 export default {
   data() {

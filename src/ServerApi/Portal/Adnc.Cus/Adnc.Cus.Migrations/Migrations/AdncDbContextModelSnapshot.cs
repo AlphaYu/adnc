@@ -29,7 +29,7 @@ namespace Adnc.Cus.Migrations.Migrations
                         .HasMaxLength(32);
 
                     b.Property<decimal>("Balance")
-                        .HasColumnType("decimal(65,30)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<long?>("CreateBy")
                         .HasColumnName("CreateBy")
@@ -64,13 +64,13 @@ namespace Adnc.Cus.Migrations.Migrations
                         .HasMaxLength(32);
 
                     b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(65,30)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("ChangedAmount")
-                        .HasColumnType("decimal(65,30)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("ChangingAmount")
-                        .HasColumnType("decimal(65,30)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<long?>("CreateBy")
                         .HasColumnName("CreateBy")

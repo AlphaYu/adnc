@@ -1,8 +1,8 @@
 export default {
   route: {
     dashboard: 'Dashboard',
-    system: 'System',
-    operationMgr: 'Operation',
+    usr: 'User Center',
+    maintain: 'Maintain',
     messageMgr: 'Message',
     cms: 'Cms',
     menu: 'Menu',

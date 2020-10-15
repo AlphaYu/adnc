@@ -161,8 +161,8 @@ namespace Adnc.Usr.Migrations.Migrations
 
                     b.Property<string>("Url")
                         .HasColumnName("Url")
-                        .HasColumnType("varchar(32) CHARACTER SET utf8mb4")
-                        .HasMaxLength(32);
+                        .HasColumnType("varchar(64) CHARACTER SET utf8mb4")
+                        .HasMaxLength(64);
 
                     b.HasKey("ID");
 

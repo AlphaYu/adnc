@@ -17,6 +17,7 @@ namespace Adnc.Cus.Core.Entities
         public string Account { get; set; }
 
         [Required]
+        [Column(TypeName = "decimal(18,2)")]
         public decimal Balance { get; set; }
 
         public virtual Customer Customer { get; set; }

@@ -1,4 +1,4 @@
-import { getList } from '@/api/system/notice'
+import { getList } from '@/api/maint/notice'
 import { mapGetters } from 'vuex'
 import ECharts from 'vue-echarts/components/ECharts'
 import 'echarts/lib/chart/bar'

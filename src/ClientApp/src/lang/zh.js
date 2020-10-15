@@ -1,8 +1,8 @@
 export default {
   route: {
     dashboard: '首页',
-    system: '系统管理',
-    operationMgr: '运维管理',
+    usr: '用户中心',
+    maintain: '运维中心',
     cms: 'CMS管理',
     banner: 'banner管理',
     article:'文章管理',

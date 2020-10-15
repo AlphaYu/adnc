@@ -54,7 +54,7 @@ namespace Adnc.Gateway
             {
                 endpoints.MapGet("/", async context =>
                 {
-                    await context.Response.WriteAsync("Hello Ocelot!");
+                    await context.Response.WriteAsync($"Hello Ocelot,{env.EnvironmentName}!");
                 });
             });
 

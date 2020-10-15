@@ -23,4 +23,10 @@
 		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <None Update="Adnc.Maint.Application.xml">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
+
 </Project>

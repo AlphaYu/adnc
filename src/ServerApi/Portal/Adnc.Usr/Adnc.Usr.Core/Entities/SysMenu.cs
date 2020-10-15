@@ -116,7 +116,7 @@ namespace Adnc.Usr.Core.Entities
 		/// 链接
 		/// </summary>
 		[Description("链接")]
-		[StringLength(32)]
+		[StringLength(64)]
 		[Column("Url")]
 		public string Url { get; set; }
 

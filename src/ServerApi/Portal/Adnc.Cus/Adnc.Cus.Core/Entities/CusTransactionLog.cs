@@ -23,10 +23,13 @@ namespace Adnc.Cus.Core.Entities
         [StringLength(3)]
         public string ExchageStatus { get; set; }
 
+        [Column(TypeName = "decimal(18,2)")]
         public decimal ChangingAmount { get; set; }
 
+        [Column(TypeName = "decimal(18,2)")]
         public decimal Amount { get; set; }
 
+        [Column(TypeName = "decimal(18,2)")]
         public decimal ChangedAmount { get; set; }
 
         [StringLength(200)]

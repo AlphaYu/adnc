@@ -20,6 +20,6 @@ namespace Adnc.Core.Shared.RpcServices
         /// </summary>
         /// <returns></returns>
         [Get("/usr/users/{userId}/permissions")]
-        Task<IEnumerable<string>> GetCurrenUserPermissions([Header("Authorization")] string jwtToken,long userId, string[] permissions);
+        Task<IEnumerable<string>> GetCurrenUserPermissions([Header("Authorization")] string jwtToken,long userId, [Query(CollectionFormat.Multi)] string[] permissions);
     }
 }

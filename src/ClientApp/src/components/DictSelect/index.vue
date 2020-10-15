@@ -12,7 +12,7 @@
 </template>
 
 <script>
-  import {getDicts} from '@/api/system/dict'
+  import {getDicts} from '@/api/maint/dict'
 
   export default {
     model: {

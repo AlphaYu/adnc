@@ -27,4 +27,10 @@
 	  <Folder Include="Mq\" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <None Update="Adnc.Cus.Application.xml">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
+
 </Project>
