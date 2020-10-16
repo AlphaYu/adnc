@@ -1,15 +1,15 @@
-# Adnc摘要
+# Adnc
 [![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://github.com/AlphaYu/Adnc)  
 Adnc是一个基于dotnetcore前后端分离的轻量级微服务(microservices)快速开发框架,同时也可以应用于单体架构系统的开发。框架基于JWT认证授权，包含基础的后台管理功能，代码简洁、易上手、学习成本低、开箱即用。MIT License Free Software, Hell Yeah!   
-- [演示地址](http://193.112.75.77)   alpha2008/alpha2008 
+- [演示地址](http://193.112.75.77)  alpha2008/alpha2008 
 - [接口地址](http://193.112.75.77:8888/sys/index.html)
 ## 代码结构
   - clientApp 前端项目(vue)
   - serverApi 后端项目(dotnetcore)
   - doc 项目相关文档(数据库脚本/docker-compose.yaml文件)
   - tools 工具软件  
-![image](31F2B808E9AA47AF9FCA3236FEDBE6BA)
-### ClientApp
+![image](http://193.112.75.77/adncimages/20201016154218.png)
+##### ClientApp
   - ClientApp基于Vue-element-adminy以及web-flash(https://github.com/PanJiaChen/vue-element-admin) 搭建，感谢两位作者。
   - 技术栈 Vue + Vue-Router + Vuex + Axios
   - 构建步骤
@@ -22,10 +22,10 @@ Adnc是一个基于dotnetcore前后端分离的轻量级微服务(microservices)
     npm run build:prod
     ```
 - 界面
-![image](4DB004CCD2E94A0AA4856E2973C57A10)
-![image](5FA7704E02A74A04966FC6C973D0BDDA)
+![image](http://193.112.75.77/adncimages/20201016160306.png)
+![image](http://193.112.75.77/adncimages/20201016160347.png)
 
-### ServerApi
+##### ServerApi
   - ServerApi基于dotnetcore3.1搭建。
   - 主要技术栈
  
@@ -53,16 +53,16 @@ Adnc是一个基于dotnetcore前后端分离的轻量级微服务(microservices)
 ### Adnc.Infras 基础架构层
 ##### 01.Adnc.WebApi.Shared
 该层定义认证、鉴权、异常捕获等公共类于中间件。所有微服务WebApi层的共享层，都需要依赖该层。   
-![image](372FFD2311C94142B03F766777096EB1)|
+![image](http://193.112.75.77/adncimages/20201016160419.png)
 ##### 02.Adnc.Application.Shared  
 该层定义了DTO对象的基类、应用服务类基类以及操作日志拦截器。所有微服务Application层的共享层，都需要依赖该层。   
-![image](4F868575DC80406885FB93E49AF045BF)
+![image](http://193.112.75.77/adncimages/20201016160452.png)
 ##### 03.Adnc.Core.Shared
 该层定义了Entity对象的基类、业务服务接口基类、Rpc服务通用服务、UOW接口与拦截器以及仓储接口。所有微服务Core层的共享层，都需要依赖该层。
-![image](E698EADDA03942C6A001400BA7497FCD)
+![image](http://193.112.75.77/adncimages/20201016160512.png)
 #### 04.Adnc.Common
 该层定义了一些公用模型与常量以及一些通用帮助类。该层不依赖任何层。
-![image](71925C8BD631460BAEE7F48D7D121791)
+![image](http://193.112.75.77/adncimages/20201016160550.png)
 
 License 
 ----
