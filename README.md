@@ -9,6 +9,73 @@ Adnc是一个基于dotnetcore前后端分离的轻量级微服务(microservices)
   - doc 项目相关文档(数据库脚本/docker-compose.yaml文件)
   - tools 工具软件  
 ![image](http://193.112.75.77/adncimages/20201016154218.png)
+##### 代码片段
+
+```csharp
+    [Route("usr/session")]
+    [ApiController]
+    public class AccountController : ControllerBase
+    {
+        private readonly JWTConfig _jwtConfig;
+        private readonly IAccountAppService _accountService;
+        private readonly ILogger<AccountController> _logger;
+
+        public AccountController(IOptionsSnapshot<JWTConfig> jwtConfig
+            , IAccountAppService accountService
+            , ILogger<AccountController> logger)
+        {
+            _jwtConfig = jwtConfig.Value;
+            _accountService = accountService;
+            _logger = logger;
+        }
+
+        /// <summary>
+        /// 登录/验证
+        /// </summary>
+        /// <param name="userDto"><see cref="UserValidateInputDto"/></param>
+        /// <returns></returns>
+        [AllowAnonymous]
+        [HttpPost()]
+        public async Task<UserTokenInfoDto> Login([FromBody]UserValidateInputDto userDto)
+        {
+            var userValidateDto = await _accountService.Login(userDto);
+
+            return new UserTokenInfoDto
+            {
+                Token = JwtTokenHelper.CreateAccessToken(_jwtConfig, userValidateDto),
+                RefreshToken = JwtTokenHelper.CreateRefreshToken(_jwtConfig, userValidateDto)
+            };
+        }
+    }
+```
+
+```csharp
+    public class AccountAppService : IAccountAppService
+    {
+        private readonly IMapper _mapper;
+        private readonly IEfRepository<SysUser> _userRepo;
+        private readonly RabbitMqProducer _mqProducer;
+        public AccountAppService(IMapper mapper,
+            IEfRepository<SysUser> userRepo,
+            RabbitMqProducer mqProducer)
+        {
+            _mapper = mapper;
+            _userRepo = userRepo;
+            _mqProducer = mqProducer;
+        }
+
+        public async Task<UserValidateDto> Login(UserValidateInputDto inputDto)
+        {
+            var user = await _userRepo.FetchAsync(x => new { x.Password, x.Salt, x.Name, x.Email, x.RoleId,x.Account,x.ID,x.Status }
+            , x => x.Account == inputDto.Account);
+            //todo......
+            //..........
+            _mqProducer.BasicPublish(MqConsts.Exchanges.Logs, MqConsts.RoutingKeys.Loginlog, log);
+            return _mapper.Map<UserValidateDto>(user);
+        }
+    }
+```
+
 ##### ClientApp
   - ClientApp基于Vue-element-adminy以及web-flash(https://github.com/PanJiaChen/vue-element-admin) 搭建，感谢两位作者。
   - 技术栈 Vue + Vue-Router + Vuex + Axios
