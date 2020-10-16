@@ -58,8 +58,9 @@ Adnc是一个基于dotnetcore前后端分离的轻量级微服务(microservices)
 该层定义了DTO对象的基类、应用服务类基类以及操作日志拦截器。所有微服务Application层的共享层，都需要依赖该层。   
 ![image](http://193.112.75.77/adncimages/20201016160452.png)
 ##### 03.Adnc.Core.Shared
-该层定义了Entity对象的基类、业务服务接口基类、Rpc服务通用服务、UOW接口与拦截器以及仓储接口。所有微服务Core层的共享层，都需要依赖该层。
+该层定义了Entity对象的基类、业务服务接口基类、Rpc服务通用服务、UOW接口与拦截器以及仓储接口。所有微服务Core层的共享层，都需要依赖该层。     
 ![image](http://193.112.75.77/adncimages/20201016160512.png)
+
 #### 04.Adnc.Common
 该层定义了一些公用模型与常量以及一些通用帮助类。该层不依赖任何层。
 ![image](http://193.112.75.77/adncimages/20201016160550.png)
