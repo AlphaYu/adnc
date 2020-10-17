@@ -1,7 +1,7 @@
 # 摘要
 [![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://github.com/AlphaYu/Adnc)  
-&ensp;&ensp;&ensp;&ensp;Adnc是一个基于dotnetcore前后端分离的轻量级微服务(microservices)快速开发框架,同时也可以应用于单体架构系统的开发。框架基于JWT认证授权，包含基础的后台管理功能，代码简洁、易上手、学习成本低、开箱即用。   
-&ensp;&ensp;&ensp;&ensp;Adnc对配置、依赖注入、日志、缓存、模型映射、认证/授权、仓储、服务注册/发现、健康检测、性能检测、Mq、Ef等模块进行更高一级的自动化封装，并规范了一套业务实现的代码规范与操作流程，使aspdotnetcore 框架更易于应用到实际项目开发中。
+&ensp;&ensp;&ensp;&ensp;Adnc是一个基于.NetCore前后端分离的轻量级微服务(microservices)快速开发框架,同时也可以应用于单体架构系统的开发。框架基于JWT认证授权，包含基础的后台管理功能，代码简洁、易上手、学习成本低、开箱即用。   
+&ensp;&ensp;&ensp;&ensp;Adnc对配置、依赖注入、日志、缓存、模型映射、认证/授权、仓储、服务注册/发现、健康检测、性能检测、Mq、Ef等模块进行更高一级的自动化封装，并规范了一套业务实现的代码规范与操作流程，Asp.NetCore 框架更易于应用到实际项目开发中。
 - 演示网址：http://193.112.75.77 alpha2008/alpha2008 
 - 接口网址：http://193.112.75.77:8888/sys/index.html
 ## 目录结构
@@ -22,7 +22,7 @@
     # Build for production with minification
     npm run build:prod
     ```
-- 界面
+- 界面<br/>
 ![image](http://193.112.75.77/adncimages/20201016160306.png)
 ![image](http://193.112.75.77/adncimages/20201016160347.png)
 
@@ -36,7 +36,7 @@
 | Consul | 配置中心、服务发现/注册组件|
 | Refit  | 一个声明式自动类型安全的restful服务调用组件|
 | SkyAPM.Agent.AspNetCore | skywalking .net core 探针，性能检测组件 |
-| AspNetCore.HealthChecks | 健康检测插件 |
+| AspNetCore.HealthChecks | 健康检测组件 |
 | Autofac | IOC容器组件 |
 | Autofac.Extras.DynamicProxy | Autfac AOP扩展 |
 | Efcore | ORM组件 |
@@ -61,11 +61,29 @@
 ##### 03.Adnc.Core.Shared
 该层定义了Entity对象的基类、业务服务接口基类、Rpc服务通用服务、UOW接口与拦截器以及仓储接口。所有微服务Core层的共享层，都需要依赖该层。     
 ![image](http://193.112.75.77/adncimages/20201016160512.png)
-
-#### 04.Adnc.Common
+##### 04.Adnc.Common
 该层定义了一些公用模型与常量以及一些通用帮助类。该层不依赖任何层。
 ![image](http://193.112.75.77/adncimages/20201016160550.png)
-
+##### 10.Adnc.Infr.Gateway 
+ 该层是一个输出项目，Api网关，基于ocelot实现，如果项目采用整体结构开发，该项目可以直接删除。ocelot网关包含路由、服务聚合、服务发现、认证、鉴权、限流、熔断、缓存、Header头传递等功能。市面上主流网关还有Kong，Traefik，Ambassador，Tyk等。
+ ![image](http://193.112.75.77/adncimages/20201017111155.png)
+##### 11.Adnc.Infr.HealthCheckUI
+该层是一个输出项目， AspNetCore.HealthChecks组件的Dashboard，直接配置需要监测的服务地址就可以了，没有代码。
+##### 20.Adnc.Infr.Consul
+该层集成了Consul。提供服务的注册、发现以及系统配置读取等公共类。
+![image](http://193.112.75.77/adncimages/20201017115934.png)
+##### 21.Adnc.Infr.EasyCaching
+该层集成了EasyCaching。重写了EasyCaching拦截器部分代码，负责一、二级缓存的管理。
+![image](http://193.112.75.77/adncimages/20201017120053.png)
+##### 22.Adnc.Infr.EfCore
+该层负责Adnc.Core.Shared仓储接口与Uow的Ef实现，负责mysql数据库的操作。同时也集成了Dapper部分接口，用来处理复杂查询。
+![image](http://193.112.75.77/adncimages/20201017120005.png)
+##### 23.Adnc.Infr.Mongo
+该层负责Adnc.Core.Shared仓储接口的Mongodb实现，负责mongodb数据库的操作。
+![image](http://193.112.75.77/adncimages/20201017120115.png)
+##### 23.Adnc.Infr.RabbitMq
+该层集成了RabbitMq。封装了发布者与订阅者等公共类。<br/>
+![image](http://193.112.75.77/adncimages/20201017120028.png)
 ## 代码片段
 ```csharp
     [Route("usr/session")]
