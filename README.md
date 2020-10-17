@@ -66,7 +66,7 @@
 ![image](http://193.112.75.77/adncimages/20201016160550.png)
 ##### 10.Adnc.Infr.Gateway 
  该层是一个输出项目，Api网关，基于ocelot实现，如果项目采用整体结构开发，该项目可以直接删除。ocelot网关包含路由、服务聚合、服务发现、认证、鉴权、限流、熔断、缓存、Header头传递等功能。市面上主流网关还有Kong，Traefik，Ambassador，Tyk等。
- ![image](http://193.112.75.77/adncimages/20201017111155.png)
+![image](http://193.112.75.77/adncimages/20201017111155.png)
 ##### 11.Adnc.Infr.HealthCheckUI
 该层是一个输出项目， AspNetCore.HealthChecks组件的Dashboard，直接配置需要监测的服务地址就可以了，没有代码。
 ##### 20.Adnc.Infr.Consul
