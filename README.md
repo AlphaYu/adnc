@@ -76,7 +76,7 @@
 该层集成了EasyCaching。重写了EasyCaching拦截器部分代码，负责一、二级缓存的管理。
 ![image](http://193.112.75.77/adncimages/20201017120053.png)
 ##### 22.Adnc.Infr.EfCore
-该层负责Adnc.Core.Shared仓储接口与Uow的Ef实现，负责mysql数据库的操作。同时也集成了Dapper部分接口，用来处理复杂查询。
+该层负责Adnc.Core.Shared仓储接口与Uow的Ef实现，负责mysql数据库的操作。同时也集成了Dapper部分接口，用来处理复杂查询。<br/>
 ![image](http://193.112.75.77/adncimages/20201017120005.png)
 ##### 23.Adnc.Infr.Mongo
 该层负责Adnc.Core.Shared仓储接口的Mongodb实现，负责mongodb数据库的操作。
