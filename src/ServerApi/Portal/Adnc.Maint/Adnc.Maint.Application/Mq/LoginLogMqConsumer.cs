@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -9,7 +10,6 @@ using Adnc.Maint.Core.Entities;
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Infr.Mq.RabbitMq;
 using Adnc.Common.Consts;
-using System.Collections.Generic;
 
 namespace Adnc.Maint.Application.Mq
 {
@@ -19,21 +19,42 @@ namespace Adnc.Maint.Application.Mq
         // 这里要调用其他的Service实例只能用IServiceProvider CreateScope后获取实例对象
         private readonly IServiceProvider _services;
         private readonly ILogger<LoginLogMqConsumer> _logger;
-        private static string s_QueryName = "q-adnc-maint-loginlog";
 
         public LoginLogMqConsumer(IOptionsSnapshot<RabbitMqConfig> options
            , IHostApplicationLifetime appLifetime
            , ILogger<LoginLogMqConsumer> logger
            , IServiceProvider services)
-            : base(options
-                  , appLifetime
-                  , logger
-                  , ExchangeType.Direct
-                  , MqConsts.Exchanges.Logs
-                  , new[] { MqConsts.RoutingKeys.Loginlog }
-                  , s_QueryName
-                  , MqConsts.Exchanges.Dead
-                  , new Dictionary<string, object>()
+            : base(options, appLifetime, logger)
+        {
+            _services = services;
+            _logger = logger;
+        }
+
+        protected override ExchageConfig GetExchageConfig()
+        {
+            return new ExchageConfig()
+            {
+                Name = MqConsts.Exchanges.Logs
+                ,
+                Type = ExchangeType.Direct
+                ,
+                DeadExchangeName = MqConsts.Exchanges.Dead
+            };
+        }
+
+        protected override string[] GetRoutingKeys()
+        {
+            return new[] { MqConsts.RoutingKeys.Loginlog }; 
+        }
+
+        protected override QueueConfig GetQueueConfig()
+        {
+            var config = GetCommonQueueConfig();
+
+            config.Name = "q-adnc-maint-loginlog";
+            config.AutoAck = false;
+            config.PrefetchCount = 5;
+            config.Arguments = new Dictionary<string, object>()
                   {
                      //设置当前队列的DLX
                     { "x-dead-letter-exchange",MqConsts.Exchanges.Dead} 
@@ -41,10 +62,8 @@ namespace Adnc.Maint.Application.Mq
                     ,{ "x-dead-letter-routing-key",MqConsts.RoutingKeys.Loginlog}
                     //设置消息的存活时间，即过期时间(毫秒)
                     ,{ "x-message-ttl",1000*60}
-                  })
-        {
-            _services = services;
-            _logger = logger;
+                  };
+            return config;
         }
 
         protected async override Task<bool> Process(string exchage, string routingKey, string message)

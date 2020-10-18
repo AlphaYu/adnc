@@ -51,7 +51,11 @@ namespace Adnc.Application.Shared.Interceptors
                 RemoteIpAddress = _userContext.RemoteIpAddress
             };
 
-            _mqProducer.BasicPublish(MqConsts.Exchanges.Logs, MqConsts.RoutingKeys.OpsLog, log);
+            
+            var properties = _mqProducer.CreateBasicProperties();
+            //设置消息持久化
+            properties.Persistent = true;
+            _mqProducer.BasicPublish(MqConsts.Exchanges.Logs, MqConsts.RoutingKeys.OpsLog, log, properties);
 
         }
     }

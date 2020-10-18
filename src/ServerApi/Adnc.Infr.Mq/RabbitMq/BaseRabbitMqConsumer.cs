@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,35 +15,16 @@ namespace Adnc.Infr.Mq.RabbitMq
         private readonly IConnection _connection;
         private readonly IModel _channel;
         private readonly IHostApplicationLifetime _appLifetime;
-        private readonly ExchangeType _exchangeType;
-        private readonly string _exchangeName;
-        private readonly string _queueName;
-        private readonly string[] _routingKeys;
-        private readonly string _deadExchangeName;
-        private Dictionary<string, object> _arguments;
-        private readonly string _deadQueueName;
         private readonly ILogger<dynamic> _logger;
 
         public BaseRabbitMqConsumer(IOptionsSnapshot<RabbitMqConfig> options
             , IHostApplicationLifetime appLifetime
-            , ILogger<dynamic> logger
-            , ExchangeType exchangeType
-            , string exchangeName
-            , string[] routingKeys
-            , string queueName
-            , string deadExchangeName = null
-            , Dictionary<string, object> arguments = null)
+            , ILogger<dynamic> logger)
         {
             _appLifetime = appLifetime;
-            _exchangeType = exchangeType;
-            _exchangeName = exchangeName;
-            _queueName = queueName;
-            _routingKeys = routingKeys;
-            _deadExchangeName = deadExchangeName;
-            _deadQueueName = $"dead-letter-{queueName}";
-            _arguments = arguments;
-            _connection = RabbitMqConnection.GetInstance(options, _logger).Connection;
+            _connection = RabbitMqConnection.GetInstance(options, logger).Connection;
             _channel = _connection.CreateModel();
+            _logger = logger;
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
@@ -67,52 +47,66 @@ namespace Adnc.Infr.Mq.RabbitMq
         /// </summary>
         protected virtual void Register()
         {
-            //注册死信交换机
-            this.RegiterDeadExchange();
+            //获取交换机配置
+            var exchange = GetExchageConfig();
+
+            //获取routingKeys
+            var routingKeys = GetRoutingKeys();
+
+            //获取队列配置
+            var queue = GetQueueConfig();
+
+            //声明死信交换与队列
+            this.RegiterDeadExchange(exchange.DeadExchangeName, queue.DeadQueueName, routingKeys, queue.Durable);
 
             //声明交换机
-            _channel.ExchangeDeclare(_exchangeName, type: _exchangeType.ToString().ToLower());
+            _channel.ExchangeDeclare(exchange.Name, type: exchange.Type.ToString().ToLower());
 
-            //声明一个队列
-            _channel.QueueDeclare(queue: _queueName, durable: false, exclusive: false, autoDelete: false, arguments: _arguments);
+            //声明队列
+            _channel.QueueDeclare(queue: queue.Name
+                , durable: queue.Durable
+                , exclusive: queue.Exclusive
+                , autoDelete: queue.AutoDelete
+                , arguments: queue.Arguments
+            );
 
             //将队列与交换机进行绑定
-            if (_routingKeys == null || _routingKeys.Length == 0)
+            if (routingKeys == null || routingKeys.Length == 0)
             {
-                _channel.QueueBind(queue: _queueName, exchange: _exchangeName, routingKey: string.Empty);
+                _channel.QueueBind(queue: queue.Name, exchange: exchange.Name, routingKey: string.Empty);
             }
             else
             {
-                foreach (var routingKey in _routingKeys)
+                foreach (var key in routingKeys)
                 {
-                    _channel.QueueBind(queue: _queueName, exchange: _exchangeName, routingKey: routingKey);
+                    _channel.QueueBind(queue: queue.Name, exchange: exchange.Name, routingKey: key);
                 }
             }
-            //每次只能向消费者发送一条信息,再消费者未确认之前,不再向他发送信息
-            _channel.BasicQos(prefetchSize: 0, prefetchCount: 1, global: false);
 
             var consumer = new EventingBasicConsumer(_channel);
+
+            //关闭自动确认,开启手动确认后需要配置这些
+            if (!queue.AutoAck)
+            {
+                _channel.BasicQos(prefetchSize: 0, prefetchCount: queue.PrefetchCount, global: queue.Global);
+                _channel.BasicConsume(queue: queue.Name, consumer: consumer, autoAck: queue.AutoAck);
+            }
 
             consumer.Received += async (model, ea) =>
             {
                 byte[] body = ea.Body.ToArray();
                 var message = Encoding.UTF8.GetString(body);
                 var result = await Process(ea.Exchange, ea.RoutingKey, message);
-                if (result)
-                {
-                    var multiple = false;
-                    _channel.BasicAck(ea.DeliveryTag, multiple);
-                }
-                else
-                {
-                    //requeue = true,重新放回队列
-                    //requeue = false,如果配置死信队列，会转义到死信队列,没有则丢弃。
-                    _channel.BasicReject(ea.DeliveryTag, requeue: false);
-                }
-            };
 
-            //autoAck=false 关闭自动确认,开启手动确认。
-            _channel.BasicConsume(queue: _queueName, consumer: consumer, autoAck: false);
+                _logger.LogDebug($"result:{result},message:{message}");
+
+                //关闭自动确认,开启手动确认后需要依据处理结果选择返回确认信息。
+                if (!queue.AutoAck)
+                    if (result)
+                        _channel.BasicAck(ea.DeliveryTag, multiple: queue.AckMultiple);
+                    else
+                        _channel.BasicReject(ea.DeliveryTag, requeue: queue.RejectRequeue);
+            };
         }
 
         /// <summary>
@@ -124,6 +118,53 @@ namespace Adnc.Infr.Mq.RabbitMq
                 _connection.Dispose();
         }
 
+        /// <summary>
+        /// 获取交互机列配置
+        /// </summary>
+        /// <returns></returns>
+        protected abstract ExchageConfig GetExchageConfig();
+
+        /// <summary>
+        /// 获取路由keys
+        /// </summary>
+        /// <returns></returns>
+        protected abstract string[] GetRoutingKeys();
+
+        /// <summary>
+        /// 获取队列配置
+        /// </summary>
+        /// <returns></returns>
+        protected abstract QueueConfig GetQueueConfig();
+
+        /// <summary>
+        /// 获取队列公共配置
+        /// </summary>
+        /// <returns></returns>
+        protected QueueConfig GetCommonQueueConfig()
+        {
+            return new QueueConfig()
+            {
+                Name = null
+                ,
+                AutoDelete = false
+                ,
+                Durable = false
+                ,
+                Exclusive = false
+                ,
+                Global = true
+                ,
+                AutoAck = false
+                ,
+                AckMultiple = false
+                ,
+                PrefetchCount = 1
+                ,
+                RejectRequeue = false
+                ,
+                Arguments = null
+            };
+        }
 
         /// <summary>
         /// 处理消息的方法
@@ -132,30 +173,18 @@ namespace Adnc.Infr.Mq.RabbitMq
         /// <returns></returns>
         protected abstract Task<bool> Process(string exchange, string routingKey, string message);
 
-        //private void OnStarted()
-        //{
-        //    _logger.LogInformation("OnStarted has been called.");
-        //}
-
-        //private void OnStoping()
-        //{
-        //    _logger.LogInformation("OnStoping has been called.");
-        //}
-
-        //private void OnStopped()
-        //{
-        //    _logger.LogInformation("OnStopped has been called.");
-        //}
-
-        protected virtual void RegiterDeadExchange()
+        /// <summary>
+        /// 声明死信交换与队列
+        /// </summary>
+        protected virtual void RegiterDeadExchange(string deadExchangeName, string deadQueueName, string[] routingKeys, bool durable)
         {
-            if (!string.IsNullOrWhiteSpace(_deadExchangeName))
+            if (!string.IsNullOrWhiteSpace(deadExchangeName))
             {
-                _channel.ExchangeDeclare(_deadExchangeName, ExchangeType.Direct.ToString().ToLower());
-                _channel.QueueDeclare(queue: _deadQueueName, durable: false, exclusive: false, autoDelete: false, arguments: null);
-                foreach (var routingKey in _routingKeys)
+                _channel.ExchangeDeclare(deadExchangeName, ExchangeType.Direct.ToString().ToLower());
+                _channel.QueueDeclare(queue: deadQueueName, durable: durable, exclusive: false, autoDelete: false, arguments: null);
+                foreach (var key in routingKeys)
                 {
-                    _channel.QueueBind(queue: _deadQueueName, exchange: _deadExchangeName, routingKey: routingKey);
+                    _channel.QueueBind(queue: deadQueueName, exchange: deadExchangeName, routingKey: key);
                 }
             }
         }
