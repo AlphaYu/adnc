@@ -18,6 +18,8 @@ using Adnc.WebApi.Shared;
 using Adnc.Core.Shared.RpcServices;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 
 namespace Adnc.Maint.WebApi.Helper
 {
@@ -70,7 +72,7 @@ namespace Adnc.Maint.WebApi.Helper
             _services.AddHostedService<OpsLogMqConsumer>();
         }
 
-        public void AddAllRpcService()
+        public void AddAllRpcService(IWebHostEnvironment env)
         {
             //重试策略
             var retryPolicy = Policy.Handle<HttpRequestException>()
@@ -96,7 +98,8 @@ namespace Adnc.Maint.WebApi.Helper
             };
 
             //注册用户认证、鉴权服务
-            base.AddRpcService<IAuthRpcService>("http://localhost:5010", policies, () => Task.FromResult(string.Empty));
+            var authServerAddress = (env.IsProduction() || env.IsStaging()) ? "andc-api-usr" : "http://localhost:5010";
+            base.AddRpcService<IAuthRpcService>(authServerAddress, policies);
         }
     }
 }

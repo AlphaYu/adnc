@@ -283,7 +283,7 @@ namespace Adnc.WebApi.Shared
             _services.AddCors(options =>
             {
                 var _corsHosts = _configuration.GetValue<string>("CorsHosts")?.Split(",", StringSplitOptions.RemoveEmptyEntries);
-                options.AddPolicy(corsPolicy, policy => 
+                options.AddPolicy(corsPolicy, policy =>
                 {
                     policy.WithOrigins(_corsHosts)
                     .AllowAnyHeader()
@@ -293,7 +293,7 @@ namespace Adnc.WebApi.Shared
             });
         }
 
-        public virtual void AddSwaggerGen(OpenApiInfo openApiInfo,List<string> filepaths)
+        public virtual void AddSwaggerGen(OpenApiInfo openApiInfo, List<string> filepaths)
         {
             _services.AddSwaggerGen(c =>
             {
@@ -327,7 +327,7 @@ namespace Adnc.WebApi.Shared
 
                 if (filepaths != null)
                 {
-                    foreach(var filepath in filepaths)
+                    foreach (var filepath in filepaths)
                     {
                         c.IncludeXmlComments(filepath);
                     }
@@ -341,36 +341,36 @@ namespace Adnc.WebApi.Shared
                      .AddProcessAllocatedMemoryHealthCheck(maximumMegabytesAllocated: 200, tags: new[] { "memory" })
                      .AddMySql(_mysqlConfig.WriteDbConnectionString)
                      .AddMongoDb(_mongoConfig.ConnectionStrings);
-                    //.AddRedis("localhost:10888,password=,defaultDatabase=1,defaultDatabase=10", "redis1");
-                    //.AddCheck(name: "random", () =>
-                    //{
-                    //    return DateTime.UtcNow.Second % 3 == 0 ? HealthCheckResult.Healthy() : HealthCheckResult.Unhealthy();
-                    //})
-                    //.AddAsyncCheck("Http", async () =>
-                    //{
-                    //    using (HttpClient client = new HttpClient())
-                    //    {
-                    //        try
-                    //        {
-                    //            var response = await client.GetAsync("http://localhost:5000/index.html");
-                    //            if (!response.IsSuccessStatusCode)
-                    //            {
-                    //                throw new Exception("Url not responding with 200 OK");
-                    //            }
-                    //        }
-                    //        catch (Exception)
-                    //        {
-                    //            return await Task.FromResult(HealthCheckResult.Unhealthy());
-                    //        }
-                    //    }
-                    //    return await Task.FromResult(HealthCheckResult.Healthy());
-                    //})
+            //.AddRedis("localhost:10888,password=,defaultDatabase=1,defaultDatabase=10", "redis1");
+            //.AddCheck(name: "random", () =>
+            //{
+            //    return DateTime.UtcNow.Second % 3 == 0 ? HealthCheckResult.Healthy() : HealthCheckResult.Unhealthy();
+            //})
+            //.AddAsyncCheck("Http", async () =>
+            //{
+            //    using (HttpClient client = new HttpClient())
+            //    {
+            //        try
+            //        {
+            //            var response = await client.GetAsync("http://localhost:5000/index.html");
+            //            if (!response.IsSuccessStatusCode)
+            //            {
+            //                throw new Exception("Url not responding with 200 OK");
+            //            }
+            //        }
+            //        catch (Exception)
+            //        {
+            //            return await Task.FromResult(HealthCheckResult.Unhealthy());
+            //        }
+            //    }
+            //    return await Task.FromResult(HealthCheckResult.Healthy());
+            //})
 
         }
 
         public virtual void AddRpcService<TRpcService>(string serviceName
             , List<IAsyncPolicy<HttpResponseMessage>> policies
-            , Func<Task<string>> token
+            , Func<Task<string>> token = null
             )
             where TRpcService : class, IRpcService
         {
@@ -380,7 +380,7 @@ namespace Adnc.WebApi.Shared
 
             //注册RefitClient,设置httpclient生命周期时间，默认也是2分钟。
             //var refitSettings = new RefitSettings(new SystemTextJsonContentSerializer()
-            var clientbuilder = _services.AddRefitClient<TRpcService>()                              
+            var clientbuilder = _services.AddRefitClient<TRpcService>()
                                          .SetHandlerLifetime(TimeSpan.FromMinutes(2));
             //从consul获取地址
             if (isConsulAdderss)
@@ -400,14 +400,14 @@ namespace Adnc.WebApi.Shared
             }
 
             //添加polly相关策略
-            if (policies!=null && policies.Any())
+            if (policies != null && policies.Any())
             {
                 foreach (var policy in policies)
                     clientbuilder.AddPolicyHandler(policy);
             }
         }
 
-        public virtual void AddEventBusSubscribers(string tableNamePrefix,string groupName,string version)
+        public virtual void AddEventBusSubscribers(string tableNamePrefix, string groupName, string version)
         {
             _services.AddCap(x =>
             {

@@ -32,11 +32,14 @@ namespace Adnc.Maint.WebApi
         private static readonly string _version = "v0.5.0";
         private static readonly OpenApiInfo _openApiInfo = new OpenApiInfo { Title = _serviceName, Version = _version };
         private ServiceRegistrationHelper _srvRegistration;
+        private readonly IWebHostEnvironment _env;
 
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration
+            , IWebHostEnvironment env)
         {
             Configuration = configuration;
             ConfigurationHelper.Initialize(configuration);
+            _env = env;
         }
 
         public IConfiguration Configuration { get; }
@@ -65,7 +68,7 @@ namespace Adnc.Maint.WebApi
                 Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml")
                 ,Path.Combine(AppContext.BaseDirectory, "Adnc.Maint.Application.xml")
             });
-            _srvRegistration.AddAllRpcService();
+            _srvRegistration.AddAllRpcService(_env);
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
