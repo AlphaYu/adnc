@@ -24,8 +24,8 @@ namespace Adnc.Maintaining
         {
 
             services.AddHealthChecksUI(setup=> { setup.MaximumHistoryEntriesPerEndpoint(100); })
-                    //.AddInMemoryStorage();
-                    .AddSqliteStorage($"Data Source=sqlitehealthchecks.db");
+                    .AddInMemoryStorage();
+                    //.AddSqliteStorage($"Data Source=sqlitehealthchecks.db");
 
             services.AddControllersWithViews();
         }

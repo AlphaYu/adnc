@@ -24,7 +24,6 @@ using Adnc.Infr.Mq.RabbitMq;
 using Adnc.Infr.Consul;
 using Adnc.Core.Shared;
 using Adnc.Infr.EfCore;
-using Adnc.Common.Consts;
 
 namespace Adnc.WebApi.Shared
 {
@@ -340,31 +339,8 @@ namespace Adnc.WebApi.Shared
             _services.AddHealthChecks()
                      .AddProcessAllocatedMemoryHealthCheck(maximumMegabytesAllocated: 200, tags: new[] { "memory" })
                      .AddMySql(_mysqlConfig.WriteDbConnectionString)
-                     .AddMongoDb(_mongoConfig.ConnectionStrings);
-            //.AddRedis("localhost:10888,password=,defaultDatabase=1,defaultDatabase=10", "redis1");
-            //.AddCheck(name: "random", () =>
-            //{
-            //    return DateTime.UtcNow.Second % 3 == 0 ? HealthCheckResult.Healthy() : HealthCheckResult.Unhealthy();
-            //})
-            //.AddAsyncCheck("Http", async () =>
-            //{
-            //    using (HttpClient client = new HttpClient())
-            //    {
-            //        try
-            //        {
-            //            var response = await client.GetAsync("http://localhost:5000/index.html");
-            //            if (!response.IsSuccessStatusCode)
-            //            {
-            //                throw new Exception("Url not responding with 200 OK");
-            //            }
-            //        }
-            //        catch (Exception)
-            //        {
-            //            return await Task.FromResult(HealthCheckResult.Unhealthy());
-            //        }
-            //    }
-            //    return await Task.FromResult(HealthCheckResult.Healthy());
-            //})
+                     .AddMongoDb(_mongoConfig.ConnectionStrings)
+                     .AddRedis(_redisConfig.dbconfig.ConnectionStrings[0].Replace(",prefix=", string.Empty));
 
         }
 

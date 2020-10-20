@@ -18,7 +18,8 @@ using Adnc.WebApi.Shared;
 using Adnc.Core.Shared.RpcServices;
 using Adnc.Cus.Core.EventBus;
 using Microsoft.AspNetCore.Mvc.Filters;
-
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 
 namespace Adnc.Cus.WebApi.Helper
 {
@@ -69,7 +70,7 @@ namespace Adnc.Cus.WebApi.Helper
         {
         }
 
-        public void AddAllRpcService()
+        public void AddAllRpcService(IWebHostEnvironment env)
         {
             //重试策略
             var retryPolicy = Policy.Handle<HttpRequestException>()
@@ -95,7 +96,8 @@ namespace Adnc.Cus.WebApi.Helper
             };
 
             //注册用户认证、鉴权服务
-            base.AddRpcService<IAuthRpcService>("http://localhost:5010", policies, () => Task.FromResult(string.Empty));
+            var authServerAddress = (env.IsProduction() || env.IsStaging()) ? "andc-api-usr" : "http://localhost:5010";
+            base.AddRpcService<IAuthRpcService>(authServerAddress, policies);
         }
 
         public override void AddEventBusSubscribers(string tableNamePrefix, string groupName, string version)
