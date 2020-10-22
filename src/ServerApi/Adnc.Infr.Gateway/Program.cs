@@ -1,4 +1,5 @@
 using System;
+using Adnc.Infr.Consul;
 using Adnc.Infr.Consul.Configuration;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -19,12 +20,13 @@ namespace Adnc.Gateway
             Host.CreateDefaultBuilder(args)
                             .ConfigureAppConfiguration((context, cb) =>
                             {
+                               //生产环境从consul配置中心读取配置
                                 var env = context.HostingEnvironment;
                                 if (env.IsProduction() || env.IsStaging())
                                 {
-                                    //生产环境从consul读取配置
                                     var configuration = cb.Build();
-                                    cb.AddConsul(new[] { configuration.GetValue<Uri>("ConsulUrl") }, configuration.GetValue<string>("ConsulKeyPath"));
+                                    var consulOption = configuration.GetSection("Consul").Get<ConsulConfig>();
+                                    cb.AddConsul(new[] { consulOption.ConsulUrl }, consulOption.ConsulKeyPath);
                                 }
                             })
                             .ConfigureAppConfiguration((hostingContext, config) =>

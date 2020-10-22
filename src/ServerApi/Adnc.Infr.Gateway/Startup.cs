@@ -24,7 +24,6 @@ namespace Adnc.Gateway
 
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddCors(options =>
             {
                 options.AddPolicy("default", policy =>
