@@ -1,5 +1,3 @@
-using System;
-using System.IO;
 using System.Reflection;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Builder;
@@ -14,57 +12,48 @@ using HealthChecks.UI.Client;
 using Autofac;
 using AutoMapper;
 using Adnc.Common;
-using Adnc.Common.Helper;
 using Adnc.Common.Models;
 using Adnc.Infr.Consul.Registration;
 using Adnc.Usr.Application;
-using Adnc.Common.Consts;
 using Adnc.Usr.WebApi.Helper;
+using Adnc.WebApi.Shared;
 
 namespace Adnc.Usr.WebApi
 {
     public class Startup
     {
-        private static readonly string _corsPolicy = "default";
-        private static readonly string _serviceName = "usr";
-        private static readonly string _serviceFullName = "adnc-usr";
-        private static readonly string _description = "用户管理中心相关Api";
-        private static readonly string _version = "v0.5.0";
-        private readonly OpenApiInfo _openApiInfo = new OpenApiInfo { Title = _serviceName, Version = _version };
+        private readonly IWebHostEnvironment _env;
+        private readonly ServiceInfo _serviceInfo;
         private ServiceRegistrationHelper _srvRegistration;
 
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration
+            , IWebHostEnvironment env)
         {
             Configuration = configuration;
-            ConfigurationHelper.Initialize(configuration);
+            _env = env;
+            _serviceInfo = ServiceInfo.Create(Assembly.GetExecutingAssembly());
         }
 
         public IConfiguration Configuration { get; }
-        public IServiceCollection ServiceCollection { get; set; }
 
         public void ConfigureServices(IServiceCollection services)
         {
-            ServiceCollection = services;
             services.AddScoped<UserContext>();
             services.AddAutoMapper(typeof(AdncUsrProfile));
             services.AddHttpContextAccessor();
 
-            _srvRegistration = new ServiceRegistrationHelper(Configuration, services);
+            _srvRegistration = new ServiceRegistrationHelper(Configuration, services, _env, _serviceInfo);
             _srvRegistration.Configure();
             _srvRegistration.AddControllers();
             _srvRegistration.AddJWTAuthentication();
             _srvRegistration.AddAuthorization();
-            _srvRegistration.AddCors(_corsPolicy);
+            _srvRegistration.AddCors();
             _srvRegistration.AddHealthChecks();
             _srvRegistration.AddMqHostedServices();
             _srvRegistration.AddEfCoreContext();
             _srvRegistration.AddMongoContext();
-            _srvRegistration.AddCaching(EasyCachingConsts.LocalCaching, EasyCachingConsts.RemoteCaching, EasyCachingConsts.HybridCaching, EasyCachingConsts.TopicName);
-            _srvRegistration.AddSwaggerGen(_openApiInfo, new List<string>()
-            {
-                Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml")
-                ,Path.Combine(AppContext.BaseDirectory, "Adnc.Usr.Application.xml")
-            });
+            _srvRegistration.AddCaching();
+            _srvRegistration.AddSwaggerGen();
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -95,19 +84,19 @@ namespace Adnc.Usr.WebApi
                 app.UseDeveloperExceptionPage();
             }
             app.UseForwardedHeaders();
-            app.UseCors(_corsPolicy);
+            app.UseCors(_serviceInfo.CorsPolicy);
             app.UseSwagger(c =>
             {
-                c.RouteTemplate = $"/{_serviceName}/swagger/{{documentName}}/swagger.json";
+                c.RouteTemplate = $"/{_serviceInfo.ShortName}/swagger/{{documentName}}/swagger.json";
                 c.PreSerializeFilters.Add((swaggerDoc, httpReq) =>
                 {
-                    swaggerDoc.Servers = new List<OpenApiServer> { new OpenApiServer { Url = $"/", Description = _description } };
+                    swaggerDoc.Servers = new List<OpenApiServer> { new OpenApiServer { Url = $"/", Description = _serviceInfo.Description } };
                 });
             });
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint($"/{_serviceName}/swagger/{_version}/swagger.json", $"{_serviceFullName}-{_version}");
-                c.RoutePrefix = $"{_serviceName}";
+                c.SwaggerEndpoint($"/{_serviceInfo.ShortName}/swagger/{_serviceInfo.Version}/swagger.json", $"{_serviceInfo.FullName}-{_serviceInfo.Version}");
+                c.RoutePrefix = $"{_serviceInfo.ShortName}";
             });
             //app.UseErrorHandling();
             app.UseHealthChecks($"/{_srvRegistration.GetConsulConfig().HealthCheckUrl}", new HealthCheckOptions()

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text.Json;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
@@ -18,8 +19,11 @@ namespace Adnc.Usr.WebApi.Helper
 {
     public sealed class ServiceRegistrationHelper : SharedServicesRegistration
     {
-        public ServiceRegistrationHelper(IConfiguration configuration, IServiceCollection services)
-          : base(configuration, services)
+        public ServiceRegistrationHelper(IConfiguration configuration
+            , IServiceCollection services
+            , IWebHostEnvironment env
+            , ServiceInfo serviceInfo)
+          : base(configuration, services, env, serviceInfo)
         {
         }
 
@@ -42,7 +46,7 @@ namespace Adnc.Usr.WebApi.Helper
                 {
                     mySqlOptions.ServerVersion(new ServerVersion(new Version(10, 5, 4), ServerType.MariaDb));
                     mySqlOptions.MinBatchSize(2);
-                    mySqlOptions.MigrationsAssembly("Adnc.Usr.Migrations");
+                    mySqlOptions.MigrationsAssembly(_serviceInfo.AssemblyName.Replace("WebApi", "Migrations"));
                 });
                 options.AddInterceptors(new CustomCommandInterceptor());
             });

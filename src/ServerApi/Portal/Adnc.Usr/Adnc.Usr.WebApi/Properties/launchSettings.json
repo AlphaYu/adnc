@@ -20,7 +20,7 @@
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
-        "SKYWALKING__SERVICENAME": "adnc-api-usr-dev",
+        "SKYWALKING__SERVICENAME": "adnc.usr.webapi.dev",
         "ASPNETCORE_ENVIRONMENT": "Development",
         "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "SkyAPM.Agent.AspNetCore"
       },

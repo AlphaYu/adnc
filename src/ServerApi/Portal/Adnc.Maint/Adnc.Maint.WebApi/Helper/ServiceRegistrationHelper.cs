@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Text.Json;
 using System.Net.Http;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 using Pomelo.EntityFrameworkCore.MySql.Storage;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using Polly;
@@ -16,17 +19,16 @@ using Adnc.Infr.EfCore;
 using Adnc.Maint.Application.Mq;
 using Adnc.WebApi.Shared;
 using Adnc.Core.Shared.RpcServices;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
 
 namespace Adnc.Maint.WebApi.Helper
 {
     public sealed class ServiceRegistrationHelper : SharedServicesRegistration
     {
-        public ServiceRegistrationHelper(IConfiguration configuration, IServiceCollection services) 
-          : base(configuration, services)
+        public ServiceRegistrationHelper(IConfiguration configuration
+            , IServiceCollection services
+            , IWebHostEnvironment env
+            , ServiceInfo serviceInfo)
+          : base(configuration, services, env, serviceInfo)
         {
         }
 
@@ -49,7 +51,7 @@ namespace Adnc.Maint.WebApi.Helper
                 {
                     mySqlOptions.ServerVersion(new ServerVersion(new Version(10, 5, 4), ServerType.MariaDb));
                     mySqlOptions.MinBatchSize(2);
-                    mySqlOptions.MigrationsAssembly("Adnc.Maint.Migrations");
+                    mySqlOptions.MigrationsAssembly(_serviceInfo.AssemblyName.Replace("WebApi", "Migrations"));
                 });
                 options.AddInterceptors(new CustomCommandInterceptor());
             });
@@ -71,8 +73,7 @@ namespace Adnc.Maint.WebApi.Helper
             _services.AddHostedService<LoginLogMqConsumer>();
             _services.AddHostedService<OpsLogMqConsumer>();
         }
-
-        public void AddAllRpcService(IWebHostEnvironment env)
+        public void AddAllRpcService()
         {
             //重试策略
             var retryPolicy = Policy.Handle<HttpRequestException>()
@@ -98,7 +99,7 @@ namespace Adnc.Maint.WebApi.Helper
             };
 
             //注册用户认证、鉴权服务
-            var authServerAddress = (env.IsProduction() || env.IsStaging()) ? "andc-api-usr" : "http://localhost:5010";
+            var authServerAddress = (_env.IsProduction() || _env.IsStaging()) ? "adnc.usr.webapi" : "http://localhost:5010";
             base.AddRpcService<IAuthRpcService>(authServerAddress, policies);
         }
     }

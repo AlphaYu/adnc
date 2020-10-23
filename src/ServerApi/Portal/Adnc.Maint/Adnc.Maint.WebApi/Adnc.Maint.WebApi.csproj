@@ -11,7 +11,14 @@
 	<AssemblyName>Adnc.Maint.WebApi</AssemblyName>
 	<Version>0.5.0</Version>
 	<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-	<DockerfileContext>..\..\..</DockerfileContext>  
+	<DockerfileContext>..\..\..</DockerfileContext>
+	<Authors>Alpha.Yu</Authors>
+	<Company>Alpha</Company>
+	<Product>Adnc</Product>
+	<Copyright>Alpha</Copyright>
+	<Description>运维中心服务</Description>
+	<RepositoryUrl>https://github.com/AlphaYu</RepositoryUrl>
+	<PackageProjectUrl>https://www.aspdotnetcore.net</PackageProjectUrl>  
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -23,14 +30,14 @@
 		<PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="3.1.1" />
 		<PackageReference Include="Autofac.Configuration" Version="5.1.0" />
 		<PackageReference Include="Autofac.Extensions.DependencyInjection" Version="6.0.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.6" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.7" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.6" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="3.1.6" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.6">
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="3.1.7" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.7">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.6">
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.7">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 using System.Linq;
 using System.Net.Http;
@@ -14,16 +15,21 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 using Polly;
 using Refit;
 using RefitConsul;
 using EasyCaching.InMemory;
+using DotNetCore.CAP.Dashboard;
+using DotNetCore.CAP.Dashboard.NodeDiscovery;
 using Adnc.Infr.EasyCaching.Interceptor.Castle;
 using Adnc.Common.Models;
 using Adnc.Infr.Mq.RabbitMq;
 using Adnc.Infr.Consul;
 using Adnc.Core.Shared;
 using Adnc.Infr.EfCore;
+using Adnc.Common.Consts;
 
 namespace Adnc.WebApi.Shared
 {
@@ -31,6 +37,8 @@ namespace Adnc.WebApi.Shared
     {
         protected readonly IConfiguration _configuration;
         protected readonly IServiceCollection _services;
+        protected readonly IWebHostEnvironment _env;
+        protected readonly ServiceInfo _serviceInfo;
         protected readonly JWTConfig _jwtConfig;
         protected readonly MongoConfig _mongoConfig;
         protected readonly MysqlConfig _mysqlConfig;
@@ -38,10 +46,15 @@ namespace Adnc.WebApi.Shared
         protected readonly RabbitMqConfig _rabbitMqConfig;
         protected readonly ConsulConfig _consulConfig;
 
-        public SharedServicesRegistration(IConfiguration configuration, IServiceCollection services)
+        public SharedServicesRegistration(IConfiguration configuration
+            , IServiceCollection services
+            , IWebHostEnvironment env
+            , ServiceInfo serviceInfo)
         {
             _services = services;
             _configuration = configuration;
+            _env = env;
+            _serviceInfo = serviceInfo;
 
             _jwtConfig = _configuration.GetSection("JWT").Get<JWTConfig>();
             _mongoConfig = _configuration.GetSection("MongoDb").Get<MongoConfig>();
@@ -212,7 +225,10 @@ namespace Adnc.WebApi.Shared
             _services.AddScoped<IAuthorizationHandler, PermissionHandlerRemote>();
         }
 
-        public virtual void AddCaching(string localCacheName, string remoteCacheName, string hyBridCacheName, string topicName)
+        public virtual void AddCaching(string localCacheName = EasyCachingConsts.LocalCaching
+            , string remoteCacheName = EasyCachingConsts.RemoteCaching
+            , string hyBridCacheName = EasyCachingConsts.HybridCaching
+            , string topicName = EasyCachingConsts.TopicName)
         {
             //初始化CSRedis，在系统中直接使用RedisHelper操作Redis
             //RedisHelper.Initialization(new CSRedis.CSRedisClient(Configuration.GetSection("Redis").Get<RedisConfig>().ConnectionString));
@@ -277,12 +293,12 @@ namespace Adnc.WebApi.Shared
             });
         }
 
-        public virtual void AddCors(string corsPolicy)
+        public virtual void AddCors()
         {
             _services.AddCors(options =>
             {
                 var _corsHosts = _configuration.GetValue<string>("CorsHosts")?.Split(",", StringSplitOptions.RemoveEmptyEntries);
-                options.AddPolicy(corsPolicy, policy =>
+                options.AddPolicy(_serviceInfo.CorsPolicy, policy =>
                 {
                     policy.WithOrigins(_corsHosts)
                     .AllowAnyHeader()
@@ -292,8 +308,10 @@ namespace Adnc.WebApi.Shared
             });
         }
 
-        public virtual void AddSwaggerGen(OpenApiInfo openApiInfo, List<string> filepaths)
+        public virtual void AddSwaggerGen()
         {
+            var openApiInfo = new OpenApiInfo { Title = _serviceInfo.ShortName, Version = _serviceInfo.Version };
+
             _services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc(openApiInfo.Version, openApiInfo);
@@ -323,24 +341,19 @@ namespace Adnc.WebApi.Shared
                         new string[] {}
                     }
                 });
-
-                if (filepaths != null)
-                {
-                    foreach (var filepath in filepaths)
-                    {
-                        c.IncludeXmlComments(filepath);
-                    }
-                }
+                c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{_serviceInfo.AssemblyName}.xml"));
+                c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{_serviceInfo.AssemblyName.Replace("WebApi", "Application")}.xml"));
             });
         }
 
         public virtual void AddHealthChecks()
         {
+            var redisString = _redisConfig.dbconfig.ConnectionStrings[0].Replace(",prefix=", string.Empty).Replace(",poolsize=50", string.Empty);
             _services.AddHealthChecks()
                      .AddProcessAllocatedMemoryHealthCheck(maximumMegabytesAllocated: 200, tags: new[] { "memory" })
                      .AddMySql(_mysqlConfig.WriteDbConnectionString)
                      .AddMongoDb(_mongoConfig.ConnectionStrings)
-                     .AddRedis(_redisConfig.dbconfig.ConnectionStrings[0].Replace(",prefix=", string.Empty));
+                     .AddRedis(redisString);
 
         }
 
@@ -383,7 +396,7 @@ namespace Adnc.WebApi.Shared
             }
         }
 
-        public virtual void AddEventBusSubscribers(string tableNamePrefix, string groupName, string version)
+        public virtual void AddEventBusSubscribers(string tableNamePrefix, string groupName)
         {
             _services.AddCap(x =>
             {
@@ -402,7 +415,7 @@ namespace Adnc.WebApi.Shared
                     option.UserName = _rabbitMqConfig.UserName;
                     option.Password = _rabbitMqConfig.Password;
                 });
-                x.Version = version;
+                x.Version = _serviceInfo.Version;
                 //默认值：cap.queue.{程序集名称},在 RabbitMQ 中映射到 Queue Names。
                 x.DefaultGroup = groupName;
                 //默认值：60 秒,重试 & 间隔
@@ -422,6 +435,34 @@ namespace Adnc.WebApi.Shared
                 x.SucceedMessageExpiredAfter = 24 * 3600;
                 //默认值：1,消费者线程并行处理消息的线程数，当这个值大于1时，将不能保证消息执行的顺序。
                 x.ConsumerThreadCount = 1;
+                x.UseDashboard(x=>
+                {
+                    x.PathMatch = $"/{_serviceInfo.ShortName}/cap";
+                    x.Authorization = new IDashboardAuthorizationFilter[] {
+                        new LocalRequestsOnlyAuthorizationFilter()
+                        ,
+                        new CapDashboardAuthorizationFilter()
+                    };
+                });
+                //必须是生产环境并且基于docker发布才注册cap服务到consul
+                if ((_env.IsProduction() || _env.IsStaging())
+                    && _consulConfig.IsDocker)
+                {
+                    x.UseDiscovery(x =>
+                    {
+                        var consulAdderss = new Uri(_consulConfig.ConsulUrl);
+                        var listenHostAndPort = Environment.GetEnvironmentVariable("DOCKER_LISTEN_HOSTANDPORT");
+                        var currenServerAddress = new Uri(listenHostAndPort);
+                        x.DiscoveryServerHostName = consulAdderss.Host;
+                        x.DiscoveryServerPort = consulAdderss.Port;
+                        x.CurrentNodeHostName = currenServerAddress.Host;
+                        x.CurrentNodePort = currenServerAddress.Port;
+                        x.NodeId = currenServerAddress.Host.Replace(".", string.Empty) + currenServerAddress.Port;
+                        //x.NodeId = "007";
+                        x.NodeName = _serviceInfo.FullName.Replace("webapi", "cap");
+                        x.MatchPath = $"/{_serviceInfo.ShortName}/cap";
+                    });
+                }
             });
         }
     }

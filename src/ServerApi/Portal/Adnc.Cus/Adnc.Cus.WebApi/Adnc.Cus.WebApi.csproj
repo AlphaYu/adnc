@@ -11,7 +11,14 @@
 	<AssemblyName>Adnc.Cus.WebApi</AssemblyName>
 	<Version>0.5.0</Version>
 	<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-	<DockerfileContext>..\..\..</DockerfileContext>  
+	<DockerfileContext>..\..\..</DockerfileContext>
+	<Authors>Alpha.Yu</Authors>
+	<Company>Alpha</Company>
+	<Product>Adnc</Product>
+	<Description>客户中心服务</Description>
+	<PackageProjectUrl>https://www.aspdotnetcore.net</PackageProjectUrl>
+	<Copyright>Alpha</Copyright>
+	<RepositoryUrl>https://github.com/AlphaYu/Adnc</RepositoryUrl>  
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

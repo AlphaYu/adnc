@@ -7,6 +7,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="DotNetCore.CAP.Dashboard" Version="3.0.4" />
 		<PackageReference Include="Microsoft.Extensions.Http.Polly" Version="3.1.6" />
 		<PackageReference Include="RefitConsul" Version="0.0.2" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.6" />

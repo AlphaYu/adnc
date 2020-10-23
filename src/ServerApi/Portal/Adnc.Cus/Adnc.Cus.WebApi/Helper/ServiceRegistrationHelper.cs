@@ -2,7 +2,9 @@
 using System.Text.Json;
 using System.Net.Http;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
@@ -17,16 +19,17 @@ using Adnc.Infr.EfCore;
 using Adnc.WebApi.Shared;
 using Adnc.Core.Shared.RpcServices;
 using Adnc.Cus.Core.EventBus;
-using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
+using Adnc.Common.Consts;
 
 namespace Adnc.Cus.WebApi.Helper
 {
     public sealed class ServiceRegistrationHelper : SharedServicesRegistration
     {
-        public ServiceRegistrationHelper(IConfiguration configuration, IServiceCollection services) 
-          : base(configuration, services)
+        public ServiceRegistrationHelper(IConfiguration configuration
+            , IServiceCollection services
+            , IWebHostEnvironment env
+            , ServiceInfo serviceInfo)
+          : base(configuration, services, env, serviceInfo)
         {
         }
 
@@ -49,7 +52,7 @@ namespace Adnc.Cus.WebApi.Helper
                 {
                     mySqlOptions.ServerVersion(new ServerVersion(new Version(10, 5, 4), ServerType.MariaDb));
                     mySqlOptions.MinBatchSize(2);
-                    mySqlOptions.MigrationsAssembly("Adnc.Cus.Migrations");
+                    mySqlOptions.MigrationsAssembly(_serviceInfo.AssemblyName.Replace("WebApi", "Migrations"));
                 });
                 options.AddInterceptors(new CustomCommandInterceptor());
             });
@@ -70,7 +73,7 @@ namespace Adnc.Cus.WebApi.Helper
         {
         }
 
-        public void AddAllRpcService(IWebHostEnvironment env)
+        public void AddAllRpcService()
         {
             //重试策略
             var retryPolicy = Policy.Handle<HttpRequestException>()
@@ -96,13 +99,13 @@ namespace Adnc.Cus.WebApi.Helper
             };
 
             //注册用户认证、鉴权服务
-            var authServerAddress = (env.IsProduction() || env.IsStaging()) ? "andc-api-usr" : "http://localhost:5010";
+            var authServerAddress = (_env.IsProduction() || _env.IsStaging()) ? "adnc.usr.webapi" : "http://localhost:5010";
             base.AddRpcService<IAuthRpcService>(authServerAddress, policies);
         }
 
-        public override void AddEventBusSubscribers(string tableNamePrefix, string groupName, string version)
+        public override void AddEventBusSubscribers(string tableNamePrefix="Cap", string groupName= EbConsts.CapDefaultGroup)
         {
-            base.AddEventBusSubscribers(tableNamePrefix, groupName, version);
+            base.AddEventBusSubscribers(tableNamePrefix, groupName);
             _services.AddScoped<IRechargeSubscriber, RechargeSubscriber>();
         }
     }
