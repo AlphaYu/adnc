@@ -64,10 +64,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="logs\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\..\Adnc.Infr.EfCore\22.Adnc.Infr.EfCore.csproj" />
     <ProjectReference Include="..\..\..\Adnc.Infr.Consul\20.Adnc.Infr.Consul.csproj" />
     <ProjectReference Include="..\..\..\Adnc.Infr.Mongo\23.Adnc.Infr.Mongo.csproj" />
