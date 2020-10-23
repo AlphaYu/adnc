@@ -3,7 +3,6 @@
 &ensp;&ensp;&ensp;&ensp;Adnc是一个基于.NetCore前后端分离的轻量级微服务(microservices)快速开发框架,同时也可以应用于单体架构系统的开发。框架基于JWT认证授权，包含基础的后台管理功能，代码简洁、易上手、学习成本低、开箱即用。   
 &ensp;&ensp;&ensp;&ensp;Adnc对配置、依赖注入、日志、缓存、模型映射、认证/授权、仓储、服务注册/发现、健康检测、性能检测、Mq、Ef等模块进行更高一级的自动化封装，并规范了一套业务实现的代码规范与操作流程，使Asp.NetCore 框架更易于应用到实际项目开发中。
 - 演示网址：http://193.112.75.77 alpha2008/alpha2008 
-- 接口网址：http://193.112.75.77:8888/sys/index.html
 ## 目录结构
   - clientApp 前端项目(vue)
   - serverApi 后端项目(dotnetcore)
