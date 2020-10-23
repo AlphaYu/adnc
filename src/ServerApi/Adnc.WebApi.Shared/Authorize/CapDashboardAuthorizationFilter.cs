@@ -10,7 +10,8 @@ namespace Microsoft.AspNetCore.Authorization
     {
         public async Task<bool> AuthorizeAsync(DashboardContext context)
         {
-            //需要完善
+            //这里定义capdashboard外网验证，需要完善
+            //默认内网可以访问
             if (context.Request.LocalIpAddress == "127.0.0.0.1")
             {
                 return await new ValueTask<bool>(true);
