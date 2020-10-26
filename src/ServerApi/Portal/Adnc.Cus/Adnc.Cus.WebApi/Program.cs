@@ -13,7 +13,7 @@ using NLog.Config;
 using NLog.Extensions.Logging;
 using NLog.Fluent;
 using NLog.Web;
-using Adnc.Common;
+using Adnc.Infr.Common;
 using Adnc.Infr.Consul.Configuration;
 using Adnc.Infr.Consul;
 

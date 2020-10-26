@@ -1,11 +1,12 @@
 ﻿using Microsoft.IdentityModel.Tokens;
-using Adnc.Common.Models;
+using Adnc.Infr.Common;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System;
 using System.Linq;
 using Adnc.Usr.Application.Dtos;
+using Adnc.WebApi.Shared;
 
 namespace Adnc.Usr.WebApi.Helper
 {

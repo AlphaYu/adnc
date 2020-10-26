@@ -5,8 +5,8 @@ using Pomelo.EntityFrameworkCore.MySql.Storage;
 using System;
 using System.Collections.Concurrent;
 using System.Threading;
-using Adnc.Common.Models;
 using Adnc.Core.Shared.Entities;
+using Adnc.Infr.Common;
 
 namespace  Adnc.Infr.EfCore
 {

@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using Adnc.Maint.Application.Dtos;
-using Adnc.Common.Models;
 using Adnc.Core.Maint.Entities;
 using Adnc.Application.Shared.Dtos;
 using Adnc.Maint.Core.Entities;
+using Adnc.Core.Shared;
 
 namespace Adnc.Maint.Application
 {
@@ -11,7 +11,7 @@ namespace Adnc.Maint.Application
     {
         public AdncMaintProfile()
         {
-            CreateMap(typeof(PagedModel<>), typeof(PageModelDto<>));
+            CreateMap(typeof(IPagedModel<>), typeof(PageModelDto<>));
             CreateMap<OpsLogSaveInputDto, SysOperationLog>();
             CreateMap<SysOperationLog, OpsLogDto>();
             CreateMap<SysLoginLog, LoginLogDto>();

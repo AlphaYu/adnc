@@ -1,14 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using DotNetCore.CAP;
-using DotNetCore.CAP.RabbitMQ;
-using DotNetCore.CAP.MySql;
 using Adnc.Cus.Core.Entities;
-using Adnc.Common.EbModels;
 using Adnc.Core.Shared.IRepositories;
-using Adnc.Common.Consts;
 
 namespace Adnc.Cus.Core.CoreServices
 {
@@ -41,7 +35,7 @@ namespace Adnc.Cus.Core.CoreServices
 
             await _cusTransactionLogRepo.InsertAsync(cusTransactionLog);
 
-            var regchargeEbModel = new RechargeEbModel()
+            var regchargeInfo = new
             {
                 ID = customerId
                 ,
@@ -50,7 +44,7 @@ namespace Adnc.Cus.Core.CoreServices
                 TransactionLogId = cusTransactionLog.ID
             };
 
-           await _capBus.PublishAsync(EbConsts.CustomerRechager, regchargeEbModel);
+            await _capBus.PublishAsync(EbConsts.CustomerRechager, regchargeInfo);
         }
     }
 }

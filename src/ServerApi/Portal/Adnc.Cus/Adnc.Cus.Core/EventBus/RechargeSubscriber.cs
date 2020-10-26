@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using DotNetCore.CAP;
-using Adnc.Common.Consts;
-using Adnc.Common.EbModels;
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Cus.Core.Entities;
 using Adnc.Core.Shared;

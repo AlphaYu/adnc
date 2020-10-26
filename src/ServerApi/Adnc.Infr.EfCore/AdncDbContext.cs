@@ -1,13 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
+﻿using System;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Adnc.Common.Models;
+using Microsoft.EntityFrameworkCore;
+using JetBrains.Annotations;
 using Adnc.Core.Shared.Entities;
+using Adnc.Infr.Common;
 
 namespace Adnc.Infr.EfCore
 {
@@ -16,7 +14,7 @@ namespace Adnc.Infr.EfCore
         private readonly UserContext _userContext;
         private IEntityInfo _entityInfo;
 
-        public AdncDbContext([NotNull] DbContextOptions options, UserContext userContext,[NotNull] IEntityInfo entityInfo) 
+        public AdncDbContext([NotNull] DbContextOptions options, UserContext userContext, [NotNull] IEntityInfo entityInfo)
             : base(options)
         {
             _userContext = userContext;
@@ -92,25 +90,11 @@ namespace Adnc.Infr.EfCore
         {
             var entitiesTypes = _entityInfo.GetEntities();
 
-            foreach(var entityType in entitiesTypes)
+            foreach (var entityType in entitiesTypes)
             {
                 modelBuilder.Entity(entityType);
             }
 
-            //modelBuilder.Entity<SysCfg>();
-            //modelBuilder.Entity<SysDept>();
-            //modelBuilder.Entity<SysDict>();
-            ////modelBuilder.Entity<SysFileInfo>();
-            //modelBuilder.Entity<SysLoginLog>();
-            //modelBuilder.Entity<SysMenu>();
-            //modelBuilder.Entity<SysNotice>();
-            ////modelBuilder.Entity<SysOperationLog>();
-            //modelBuilder.Entity<SysRelation>();
-            //modelBuilder.Entity<SysRole>();
-            //modelBuilder.Entity<SysTask>();
-            //modelBuilder.Entity<SysTaskLog>();
-            //modelBuilder.Entity<SysUser>();
-            //modelBuilder.Entity<SysUserFinance>();
             //种子数据
             //modelBuilder.Entity<SysLoginLog>().HasData(new SysLoginLog{});
             //种子数据初始化方法分为如下三种
@@ -123,10 +107,6 @@ namespace Adnc.Infr.EfCore
             //如：Script-Migration -From 0
 
             modelBuilder.ApplyConfigurationsFromAssembly(_entityInfo.GetType().Assembly);
-            //modelBuilder.ApplyConfiguration(new UserConfig());
-            //modelBuilder.ApplyConfiguration(new UserFinanceConfig());
-            //modelBuilder.ApplyConfiguration(new DictConfig());
-            //modelBuilder.ApplyConfiguration(new CfgConfig());
 
             base.OnModelCreating(modelBuilder);
         }

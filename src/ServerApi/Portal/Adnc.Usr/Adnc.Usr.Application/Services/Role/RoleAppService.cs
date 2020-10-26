@@ -5,17 +5,15 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Adnc.Usr.Application.Dtos;
-using Adnc.Common;
-using Adnc.Common.Extensions;
-using Adnc.Common.Models;
+using Adnc.Infr.Common.Extensions;
 using Adnc.Usr.Core.CoreServices;
 using Adnc.Usr.Core.Entities;
 using Adnc.Core.Shared.IRepositories;
-using Adnc.Common.Helper;
+using Adnc.Infr.Common.Helper;
 using Microsoft.EntityFrameworkCore;
 using EasyCaching.Core;
 using Adnc.Application.Shared.Dtos;
-using Adnc.Common.Consts;
+using Adnc.Application.Shared;
 
 namespace Adnc.Usr.Application.Services
 {

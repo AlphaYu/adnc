@@ -11,7 +11,7 @@ COPY ["Portal/Adnc.Usr/Adnc.Usr.Application/Adnc.Usr.Application.csproj", "Porta
 COPY ["Adnc.Infr.EasyCaching/21.Adnc.Infr.EasyCaching.csproj", "Adnc.Infr.EasyCaching/"]
 COPY ["Adnc.Application.Shared/02.Adnc.Application.Shared.csproj", "Adnc.Application.Shared/"]
 COPY ["Adnc.Core.Shared/03.Adnc.Core.Shared.csproj", "Adnc.Core.Shared/"]
-COPY ["Adnc.Common/04.Adnc.Common.csproj", "Adnc.Common/"]
+COPY ["Adnc.Infr.Common/04.Adnc.Infr.Common.csproj", "Adnc.Infr.Common/"]
 COPY ["Adnc.Infr.Mq/24.Adnc.Infr.Mq.csproj", "Adnc.Infr.Mq/"]
 COPY ["Portal/Adnc.Usr/Adnc.Usr.Core/Adnc.Usr.Core.csproj", "Portal/Adnc.Usr/Adnc.Usr.Core/"]
 COPY ["Adnc.Infr.Mongo/23.Adnc.Infr.Mongo.csproj", "Adnc.Infr.Mongo/"]

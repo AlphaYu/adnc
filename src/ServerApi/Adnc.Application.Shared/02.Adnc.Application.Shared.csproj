@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="JetBrains.Annotations" Version="2020.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Adnc.Core.Shared\03.Adnc.Core.Shared.csproj" />
     <ProjectReference Include="..\Adnc.Infr.Mq\24.Adnc.Infr.Mq.csproj" />  </ItemGroup>
 

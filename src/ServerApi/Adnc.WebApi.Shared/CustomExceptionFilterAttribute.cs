@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Adnc.Common;
-using Adnc.Common.Models;
+using Adnc.Infr.Common;
+using Adnc.Application.Shared;
 
 namespace Microsoft.AspNetCore.Mvc.Filters
 {

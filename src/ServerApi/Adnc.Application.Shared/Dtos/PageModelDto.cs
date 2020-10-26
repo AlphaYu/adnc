@@ -1,14 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using Adnc.Common.Helper;
+using JetBrains.Annotations;
 
 namespace Adnc.Application.Shared.Dtos
 {
     [Serializable]
     public class PageModelDto<T> : BaseDto
     {
-        public IReadOnlyList<T> Data { get; set; }
+        private IReadOnlyList<T> _data = Array.Empty<T>();
+
+        [NotNull]
+        public IReadOnlyList<T> Data
+        {
+            get => _data;
+            set
+            {
+                // ReSharper disable once ConditionIsAlwaysTrueOrFalse
+                if (value != null)
+                {
+                    _data = value;
+                }
+            }
+        }
 
         public int Count { get; set; }
 

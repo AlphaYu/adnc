@@ -1,13 +1,10 @@
-﻿using System.Threading;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Adnc.Usr.Application.Dtos;
 using Adnc.Application.Shared.Interceptors;
 using Adnc.Application.Shared.Services;
 using Adnc.Application.Shared.Dtos;
 using Adnc.Infr.EasyCaching.Interceptor.Castle;
-using Adnc.Common.Models;
-using System.Collections.Generic;
-using Adnc.Common.Consts;
 
 namespace Adnc.Usr.Application.Services
 {

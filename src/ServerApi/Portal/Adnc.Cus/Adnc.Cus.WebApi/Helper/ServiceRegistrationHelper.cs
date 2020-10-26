@@ -19,7 +19,7 @@ using Adnc.Infr.EfCore;
 using Adnc.WebApi.Shared;
 using Adnc.Core.Shared.RpcServices;
 using Adnc.Cus.Core.EventBus;
-using Adnc.Common.Consts;
+using Adnc.Cus.Core;
 
 namespace Adnc.Cus.WebApi.Helper
 {

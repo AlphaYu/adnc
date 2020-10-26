@@ -10,10 +10,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Z.EntityFramework.Plus;
 using Dapper;
-using Adnc.Common.Extensions;
+using Adnc.Infr.Common.Extensions;
 using Adnc.Core.Shared.IRepositories;
-using Adnc.Common.Models;
 using Adnc.Core.Shared.Entities;
+using Adnc.Core.Shared;
+using Adnc.Infr.EfCore.Extensions;
 
 namespace Adnc.Infr.EfCore.Repositories
 {
@@ -165,7 +166,6 @@ namespace Adnc.Infr.EfCore.Repositories
 
             if (orderByExpression == null)
             {
-                ///result = await query.Select(selector).FirstOrDefaultAsync();
                 result = await query.Select(selector).FirstOrDefaultAsync();
             }
             else

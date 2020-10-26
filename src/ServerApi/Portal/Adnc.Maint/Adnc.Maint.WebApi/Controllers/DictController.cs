@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Adnc.Maint.Application.Services;
 using Adnc.Maint.Application.Dtos;
-using Adnc.Common.Helper;
+using Adnc.Infr.Common.Helper;
 
 namespace Adnc.Maint.WebApi.Controllers
 {

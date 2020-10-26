@@ -5,9 +5,11 @@ using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Logging;
 using Adnc.Usr.WebApi.Helper;
 using Adnc.Usr.Application.Dtos;
-using Adnc.Common.Models;
+using Adnc.Infr.Common;
 using Adnc.Usr.Application.Services;
 using Adnc.Application.Shared.Dtos;
+using Adnc.WebApi.Shared;
+using Microsoft.AspNetCore.Http;
 
 namespace Adnc.Usr.WebApi.Controllers
 {
@@ -19,16 +21,22 @@ namespace Adnc.Usr.WebApi.Controllers
     public class AccountController : ControllerBase
     {
         private readonly JWTConfig _jwtConfig;
+        private readonly UserContext _userContext;
         private readonly IAccountAppService _accountService;
         private readonly ILogger<AccountController> _logger;
+        private readonly IHttpContextAccessor _contextAccessor;
 
         public AccountController(IOptionsSnapshot<JWTConfig> jwtConfig
             , IAccountAppService accountService
-            , ILogger<AccountController> logger)
+            , ILogger<AccountController> logger
+            ,UserContext userContext
+            , IHttpContextAccessor contextAccessor)
         {
             _jwtConfig = jwtConfig.Value;
             _accountService = accountService;
             _logger = logger;
+            _userContext = userContext;
+            _contextAccessor = contextAccessor;
         }
 
         /// <summary>
@@ -40,7 +48,12 @@ namespace Adnc.Usr.WebApi.Controllers
         [HttpPost()]
         public async Task<UserTokenInfoDto> Login([FromBody]UserValidateInputDto userDto)
         {
-            var userValidateDto = await _accountService.Login(userDto);
+            var ipAddress = _contextAccessor.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
+            var device = _contextAccessor.HttpContext.Request.Headers["device"].ToString();
+            if (string.IsNullOrWhiteSpace(device))
+                device = "web";
+
+            var userValidateDto = await _accountService.Login(userDto, new CurrenUserInfoDto { RemoteIpAddress = ipAddress, Device = device });
 
             return new UserTokenInfoDto
             {
@@ -56,7 +69,7 @@ namespace Adnc.Usr.WebApi.Controllers
         [HttpGet()]
         public async Task<UserInfoDto> GetCurrentUserInfo()
         {
-            return await _accountService.GetCurrentUserInfo();
+            return await _accountService.GetUserInfo(_userContext.ID);
         }
 
         /// <summary>
@@ -97,7 +110,7 @@ namespace Adnc.Usr.WebApi.Controllers
         [HttpPut("password")]
         public async Task<SimpleDto<bool>> ChangePassword([FromBody] UserChangePwdInputDto inputDto)
         {
-            await _accountService.UpdatePassword(inputDto);
+            await _accountService.UpdatePassword(inputDto, new CurrenUserInfoDto { ID = _userContext.ID, Account = _userContext.Account });
             return new SimpleDto<bool>
             {
                 Result = true

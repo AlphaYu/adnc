@@ -2,10 +2,8 @@
 using System.Reflection;
 using System.Text.Json;
 using Castle.DynamicProxy;
-using Adnc.Common.Models;
-using Adnc.Common.MqModels;
-using Adnc.Common.Consts;
 using Adnc.Infr.Mq.RabbitMq;
+using Adnc.Infr.Common;
 
 namespace Adnc.Application.Shared.Interceptors
 {
@@ -36,7 +34,7 @@ namespace Adnc.Application.Shared.Interceptors
             else
                 _isLoging = true;
 
-            var log = new OpsLogMqModel
+            var logInfo = new
             {
                 ClassName = serviceMethod.DeclaringType.FullName,
                 CreateTime = DateTime.Now,
@@ -55,7 +53,7 @@ namespace Adnc.Application.Shared.Interceptors
             var properties = _mqProducer.CreateBasicProperties();
             //设置消息持久化
             properties.Persistent = true;
-            _mqProducer.BasicPublish(MqConsts.Exchanges.Logs, MqConsts.RoutingKeys.OpsLog, log, properties);
+            _mqProducer.BasicPublish(BaseMqExchanges.Logs, BaseMqRoutingKeys.OpsLog, logInfo, properties);
 
         }
     }

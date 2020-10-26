@@ -11,12 +11,12 @@ using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using HealthChecks.UI.Client;
 using Autofac;
 using AutoMapper;
-using Adnc.Common;
-using Adnc.Common.Models;
+using Adnc.Infr.Common;
 using Adnc.Infr.Consul.Registration;
 using Adnc.Cus.WebApi.Helper;
 using Adnc.Cus.Application;
 using Adnc.WebApi.Shared;
+using Adnc.WebApi.Shared.Middleware;
 
 namespace Adnc.Cus.WebApi
 {
@@ -68,8 +68,6 @@ namespace Adnc.Cus.WebApi
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            ContainerContext.Initialize(new IocContainer(app.ApplicationServices));
-
             DefaultFilesOptions defaultFilesOptions = new DefaultFilesOptions();
             defaultFilesOptions.DefaultFileNames.Clear();
             defaultFilesOptions.DefaultFileNames.Add("index.html");
@@ -82,7 +80,11 @@ namespace Adnc.Cus.WebApi
                 IdentityModelEventSource.ShowPII = true;
                 app.UseDeveloperExceptionPage();
             }
-            app.UseForwardedHeaders();
+            app.UseRealIp(x =>
+            {
+                //new string[] { "X-Real-IP", "X-Forwarded-For" }
+                x.HeaderKeys = new string[] { "X-Real-IP" };
+            });
             app.UseCors(_serviceInfo.CorsPolicy);
             app.UseSwagger(c =>
             {

@@ -3,25 +3,22 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using AutoMapper;
-using Adnc.Common;
 using Adnc.Usr.Application.Dtos;
-using Adnc.Common.Models;
-using Adnc.Common.Extensions;
-using Adnc.Common.Helper;
-using Adnc.Common.MqModels;
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Usr.Core.Entities;
 using Adnc.Infr.Mq.RabbitMq;
 using Adnc.Usr.Core.IRepositories;
-using Adnc.Common.Consts;
 using Adnc.Core.Shared.Entities;
+using Adnc.Application.Shared;
+using Adnc.Infr.Common.Helper;
+using Adnc.Infr.Common.Extensions;
+using System.Dynamic;
 
 namespace Adnc.Usr.Application.Services
 {
     public class AccountAppService : IAccountAppService
     {
         private readonly IMapper _mapper;
-        private readonly UserContext _currentUser;
         private readonly IEfRepository<SysUser> _userRepository;
         private readonly IEfRepository<SysRole> _roleRepository;
         private readonly IEfRepository<SysMenu> _menuRepository;
@@ -29,7 +26,6 @@ namespace Adnc.Usr.Application.Services
         private readonly RabbitMqProducer _mqProducer;
 
         public AccountAppService(IMapper mapper,
-            UserContext currentUser,
             IEfRepository<SysUser> userRepository,
             IEfRepository<SysRole> roleRepository,
             IEfRepository<SysMenu> menuRepository,
@@ -37,7 +33,6 @@ namespace Adnc.Usr.Application.Services
             RabbitMqProducer mqProducer)
         {
             _mapper = mapper;
-            _currentUser = currentUser;
             _userRepository = userRepository;
             _roleRepository = roleRepository;
             _menuRepository = menuRepository;
@@ -45,10 +40,10 @@ namespace Adnc.Usr.Application.Services
             _mqProducer = mqProducer;
         }
 
-        public async Task<UserInfoDto> GetCurrentUserInfo()
+        public async Task<UserInfoDto> GetUserInfo(long id)
         {
             var user = await _userRepository.FetchAsync(u => new { u.Account, u.Avatar, u.Birthday, u.DeptId, Dept = new { u.Dept.FullName}, u.Email, u.ID, u.Name, u.Phone, u.RoleId, u.Sex, u.Status }
-            , x => x.ID == _currentUser.ID);
+            , x => x.ID == id);
 
             UserInfoDto userContext = new UserInfoDto
             {
@@ -76,9 +71,9 @@ namespace Adnc.Usr.Application.Services
             return userContext;
         }
 
-        public async Task<UserValidateDto> UpdatePassword(UserChangePwdInputDto passwordDto)
+        public async Task<UserValidateDto> UpdatePassword(UserChangePwdInputDto passwordDto, CurrenUserInfoDto currentUser)
         {
-            if (string.Equals(_currentUser.Account, "admin", StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(currentUser.Account, "admin", StringComparison.OrdinalIgnoreCase))
             {
                 throw new BusinessException(new ErrorModel(ErrorCode.Forbidden,"不能修改超级管理员密码"));
             }
@@ -88,7 +83,7 @@ namespace Adnc.Usr.Application.Services
                 throw new BusinessException(new ErrorModel(ErrorCode.Forbidden,"新密码前后不一致"));
             }
 
-            var user = (await _userRepository.FetchAsync(x => new { x.Password, x.Salt, x.Name, x.Email, x.RoleId, x.Account, x.ID, x.Status }, x => x.ID == _currentUser.ID)).To<SysUser>();
+            var user = (await _userRepository.FetchAsync(x => new { x.Password, x.Salt, x.Name, x.Email, x.RoleId, x.Account, x.ID, x.Status }, x => x.ID == currentUser.ID)).To<SysUser>();
             if (!string.Equals(HashHelper.GetHashedString(HashType.MD5, passwordDto.OldPassword, user.Salt), user.Password, StringComparison.OrdinalIgnoreCase))
             {
                 throw new BusinessException(new ErrorModel(ErrorCode.Forbidden, "旧密码输入错误"));
@@ -98,24 +93,22 @@ namespace Adnc.Usr.Application.Services
             return _mapper.Map<UserValidateDto>(user);
         }
 
-        public async Task<UserValidateDto> Login(UserValidateInputDto inputDto)
+        public async Task<UserValidateDto> Login(UserValidateInputDto inputDto, CurrenUserInfoDto currentUser)
         {
             //var user4 = _userRepository.GetAll<SysMenu>().FirstOrDefault();
             //var user0 = _rsp.GetAll<SysUser>().FirstOrDefault();
             var user = await _userRepository.FetchAsync(x => new { x.Password, x.Salt, x.Name, x.Email, x.RoleId,x.Account,x.ID,x.Status }, x => x.Account == inputDto.Account);
 
-            var log = new LoginLogMqModel()
-            {
-                ID = new Snowflake(1,1).NextId(),
-                Account = inputDto.Account,
-                CreateTime = DateTime.Now,
-                Device = "web",
-                RemoteIpAddress = _currentUser.RemoteIpAddress,
-                Message = string.Empty,
-                Succeed = false,
-                UserId = user?.ID,
-                UserName = user?.Name,
-            };
+            dynamic log = new ExpandoObject();
+            log.ID = new Snowflake(1, 1).NextId();
+            log.Account = inputDto.Account;
+            log.CreateTime = DateTime.Now;
+            log.Device = currentUser.Device;
+            log.RemoteIpAddress = currentUser.RemoteIpAddress;
+            log.Message = string.Empty;
+            log.Succeed = false;
+            log.UserId = user?.ID;
+            log.UserName = user?.Name;
 
             if (user == null)
             {
@@ -129,7 +122,7 @@ namespace Adnc.Usr.Application.Services
                 {
                     var errorModel = new ErrorModel(ErrorCode.TooManyRequests, "账号已锁定");
                     log.Message = JsonSerializer.Serialize(errorModel);
-                    _mqProducer.BasicPublish(MqConsts.Exchanges.Logs,MqConsts.RoutingKeys.Loginlog,log);                  
+                    _mqProducer.BasicPublish(MqExchanges.Logs, MqRoutingKeys.Loginlog, log);
                     throw new BusinessException(errorModel);
                 }
 
@@ -151,7 +144,7 @@ namespace Adnc.Usr.Application.Services
                 {
                     var errorModel = new ErrorModel(ErrorCode.NotFound,"用户名或密码错误");
                     log.Message = JsonSerializer.Serialize(errorModel);
-                    _mqProducer.BasicPublish(MqConsts.Exchanges.Logs, MqConsts.RoutingKeys.Loginlog, log);
+                    _mqProducer.BasicPublish(MqExchanges.Logs, MqRoutingKeys.Loginlog, log);
                     throw new BusinessException(errorModel);
                 }
 
@@ -159,14 +152,14 @@ namespace Adnc.Usr.Application.Services
                 {
                     var errorModel = new ErrorModel(ErrorCode.Forbidden, "未分配任务角色，请联系管理员");
                     log.Message = JsonSerializer.Serialize(errorModel);
-                    _mqProducer.BasicPublish(MqConsts.Exchanges.Logs, MqConsts.RoutingKeys.Loginlog, log);
+                    _mqProducer.BasicPublish(MqExchanges.Logs, MqRoutingKeys.Loginlog, log);
                     throw new BusinessException(errorModel);
                 }
             }
 
             log.Message = "登录成功";
             log.Succeed = true;
-            _mqProducer.BasicPublish(MqConsts.Exchanges.Logs, MqConsts.RoutingKeys.Loginlog, log);
+            _mqProducer.BasicPublish(MqExchanges.Logs, MqRoutingKeys.Loginlog, log);
             return _mapper.Map<UserValidateDto>(user);
         }
 

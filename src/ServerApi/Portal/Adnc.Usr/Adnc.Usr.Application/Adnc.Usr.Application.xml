@@ -737,9 +737,24 @@
             用户信息
             </summary>
         </member>
+        <member name="P:Adnc.Usr.Application.Dtos.UserInfoDto.ID">
+            <summary>
+            UserID
+            </summary>
+        </member>
+        <member name="P:Adnc.Usr.Application.Dtos.UserInfoDto.Account">
+            <summary>
+            账号
+            </summary>
+        </member>
         <member name="P:Adnc.Usr.Application.Dtos.UserInfoDto.Name">
             <summary>
             姓名
+            </summary>
+        </member>
+        <member name="P:Adnc.Usr.Application.Dtos.UserInfoDto.RemoteIpAddress">
+            <summary>
+            登录Ip
             </summary>
         </member>
         <member name="P:Adnc.Usr.Application.Dtos.UserInfoDto.Profile">

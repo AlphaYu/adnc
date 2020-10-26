@@ -14,9 +14,11 @@ using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Logging;
 using Polly;
 using Refit;
 using RefitConsul;
@@ -24,12 +26,12 @@ using EasyCaching.InMemory;
 using DotNetCore.CAP.Dashboard;
 using DotNetCore.CAP.Dashboard.NodeDiscovery;
 using Adnc.Infr.EasyCaching.Interceptor.Castle;
-using Adnc.Common.Models;
+using Adnc.Infr.Common;
 using Adnc.Infr.Mq.RabbitMq;
 using Adnc.Infr.Consul;
 using Adnc.Core.Shared;
 using Adnc.Infr.EfCore;
-using Adnc.Common.Consts;
+using Adnc.Application.Shared;
 
 namespace Adnc.WebApi.Shared
 {
@@ -98,11 +100,11 @@ namespace Adnc.WebApi.Shared
         {
             // 获取客户端真实Ip
             //https://docs.microsoft.com/zh-cn/aspnet/core/host-and-deploy/proxy-load-balancer?view=aspnetcore-3.0#configuration-for-an-ipv4-address-represented-as-an-ipv6-address
-            _services.Configure<ForwardedHeadersOptions>(options =>
-            {
-                options.ForwardedHeaders =
-                    ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
-            });
+            //_services.Configure<ForwardedHeadersOptions>(options =>
+            //{
+            //    options.ForwardedHeaders =
+            //        ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+            //});
             _services.Configure<JWTConfig>(_configuration.GetSection("JWT"));
             _services.Configure<MongoConfig>(_configuration.GetSection("MongoDb"));
             _services.Configure<MysqlConfig>(_configuration.GetSection("Mysql"));
@@ -166,7 +168,7 @@ namespace Adnc.WebApi.Shared
                         userContext.Email = claims.First(x => x.Type == JwtRegisteredClaimNames.Email).Value;
                         string[] roleIds = claims.First(x => x.Type == ClaimTypes.Role).Value.Split(",", StringSplitOptions.RemoveEmptyEntries);
                         userContext.RoleIds = roleIds.Select(x => long.Parse(x)).ToArray();
-                        userContext.RemoteIpAddress = $"{ context.HttpContext.Connection.RemoteIpAddress}:{ context.HttpContext.Connection.RemotePort}";
+                        userContext.RemoteIpAddress = context.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
 
                         return Task.CompletedTask;
                     }
@@ -225,10 +227,10 @@ namespace Adnc.WebApi.Shared
             _services.AddScoped<IAuthorizationHandler, PermissionHandlerRemote>();
         }
 
-        public virtual void AddCaching(string localCacheName = EasyCachingConsts.LocalCaching
-            , string remoteCacheName = EasyCachingConsts.RemoteCaching
-            , string hyBridCacheName = EasyCachingConsts.HybridCaching
-            , string topicName = EasyCachingConsts.TopicName)
+        public virtual void AddCaching(string localCacheName = BaseEasyCachingConsts.LocalCaching
+            , string remoteCacheName = BaseEasyCachingConsts.RemoteCaching
+            , string hyBridCacheName = BaseEasyCachingConsts.HybridCaching
+            , string topicName = BaseEasyCachingConsts.TopicName)
         {
             //初始化CSRedis，在系统中直接使用RedisHelper操作Redis
             //RedisHelper.Initialization(new CSRedis.CSRedisClient(Configuration.GetSection("Redis").Get<RedisConfig>().ConnectionString));
@@ -351,10 +353,18 @@ namespace Adnc.WebApi.Shared
             var redisString = _redisConfig.dbconfig.ConnectionStrings[0].Replace(",prefix=", string.Empty).Replace(",poolsize=50", string.Empty);
             _services.AddHealthChecks()
                      .AddProcessAllocatedMemoryHealthCheck(maximumMegabytesAllocated: 200, tags: new[] { "memory" })
+                     //.AddProcessHealthCheck("ProcessName", p => p.Length > 0) // check if process is running
                      .AddMySql(_mysqlConfig.WriteDbConnectionString)
                      .AddMongoDb(_mongoConfig.ConnectionStrings)
+                     .AddRabbitMQ(x =>
+                     {
+                         return
+                         RabbitMqConnection.GetInstance(x.GetService<IOptionsSnapshot<RabbitMqConfig>>()
+                             , x.GetService<ILogger<dynamic>>()
+                         ).Connection;
+                     })
+                     //.AddUrlGroup(new Uri("https://localhost:5001/weatherforecast"), "index endpoint")
                      .AddRedis(redisString);
-
         }
 
         public virtual void AddRpcService<TRpcService>(string serviceName

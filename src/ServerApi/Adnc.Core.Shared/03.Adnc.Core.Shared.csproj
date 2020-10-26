@@ -7,15 +7,15 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Castle.Core" Version="4.4.0" />
-		<PackageReference Include="Refit.HttpClientFactory" Version="5.1.67" />
+		<PackageReference Include="Castle.Core" Version="4.4.1" />
+		<PackageReference Include="Refit.HttpClientFactory" Version="5.2.1" />
 		<PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0" />
-		<PackageReference Include="MongoDB.Bson" Version="2.10.4" />
-		<PackageReference Include="MongoDB.Driver" Version="2.10.4" />
+		<PackageReference Include="MongoDB.Bson" Version="2.11.3" />
+		<PackageReference Include="MongoDB.Driver" Version="2.11.3" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\Adnc.Common\04.Adnc.Common.csproj" />
+	  <ProjectReference Include="..\Adnc.Infr.Common\04.Adnc.Infr.Common.csproj" />
 	</ItemGroup>
 
 </Project>

@@ -22,5 +22,6 @@ namespace Adnc.Usr.Application.Dtos
         /// </summary>
         [Required]
         public string Password { get; set; }
+
     }
 }

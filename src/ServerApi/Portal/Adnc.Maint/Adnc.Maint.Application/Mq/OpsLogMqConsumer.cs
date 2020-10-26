@@ -8,7 +8,6 @@ using Microsoft.Extensions.Options;
 using Microsoft.Extensions.DependencyInjection;
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Infr.Mq.RabbitMq;
-using Adnc.Common.Consts;
 using Adnc.Core.Maint.Entities;
 
 namespace Adnc.Maint.Application.Mq
@@ -34,17 +33,17 @@ namespace Adnc.Maint.Application.Mq
         {
             return new ExchageConfig()
             {
-                Name = MqConsts.Exchanges.Logs
+                Name = MqExchanges.Logs
                 ,
                 Type = ExchangeType.Direct
                 ,
-                DeadExchangeName = MqConsts.Exchanges.Dead
+                DeadExchangeName = MqExchanges.Dead
             };
         }
 
         protected override string[] GetRoutingKeys()
         {
-            return new[] { MqConsts.RoutingKeys.OpsLog };
+            return new[] { MqRoutingKeys.OpsLog };
         }
 
         protected override QueueConfig GetQueueConfig()
@@ -56,9 +55,9 @@ namespace Adnc.Maint.Application.Mq
             config.Arguments = new Dictionary<string, object>()
                   {
                      //设置当前队列的DLX
-                    { "x-dead-letter-exchange",MqConsts.Exchanges.Dead} 
+                    { "x-dead-letter-exchange",MqExchanges.Dead} 
                     //设置DLX的路由key，DLX会根据该值去找到死信消息存放的队列
-                    ,{ "x-dead-letter-routing-key",MqConsts.RoutingKeys.OpsLog}
+                    ,{ "x-dead-letter-routing-key",MqRoutingKeys.OpsLog}
                     //设置消息的存活时间，即过期时间(毫秒)
                     ,{ "x-message-ttl",1000*60}
                   };

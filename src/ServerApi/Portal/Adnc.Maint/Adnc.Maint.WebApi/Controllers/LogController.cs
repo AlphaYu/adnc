@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Adnc.Maint.Application.Services;
 using Adnc.Maint.Application.Dtos;
 using Adnc.Maint.Core.Entities;
-using Adnc.Common.Models;
+using Adnc.Infr.Common;
 using Adnc.Application.Shared.Dtos;
 
 namespace Adnc.Maint.WebApi.Controllers

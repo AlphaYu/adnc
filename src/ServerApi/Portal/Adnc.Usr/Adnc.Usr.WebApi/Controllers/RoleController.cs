@@ -3,9 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Adnc.Usr.Application.Dtos;
 using Adnc.Usr.Application.Services;
-using Adnc.Common.Models;
+using Adnc.Infr.Common;
 using Adnc.Application.Shared.Dtos;
 using System.Collections.Generic;
+using Adnc.Application.Shared;
 
 namespace Adnc.Usr.WebApi.Controllers
 {

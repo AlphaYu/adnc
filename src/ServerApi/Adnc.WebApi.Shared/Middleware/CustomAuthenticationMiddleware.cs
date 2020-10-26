@@ -2,24 +2,20 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.SignalR.Protocol;
-using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Adnc.Common;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Caching.Distributed;
-using Adnc.Common.Extensions;
+using Adnc.Infr.Common.Extensions;
 using System.IO;
 using System.IdentityModel.Tokens.Jwt;
 using Newtonsoft.Json.Linq;
 using Microsoft.Extensions.Options;
 using System.Security.Claims;
-using Adnc.Common.Models;
+using Adnc.Infr.Common;
 using EasyCaching.Core;
-using Adnc.Common.Consts;
+using Adnc.Application.Shared;
 
 namespace Adnc.WebApi.Shared.Middleware
 {
@@ -42,7 +38,7 @@ namespace Adnc.WebApi.Shared.Middleware
             _next = next ?? throw new ArgumentNullException(nameof(next));
             _currentUser = userContext ?? throw new ArgumentNullException(nameof(userContext));
             //_cache = cache ?? throw new ArgumentNullException(nameof(cache));
-            _cache = hybridProviderFactory.GetHybridCachingProvider(EasyCachingConsts.HybridCaching) ?? throw new ArgumentNullException(nameof(_cache));
+            _cache = hybridProviderFactory.GetHybridCachingProvider(BaseEasyCachingConsts.HybridCaching) ?? throw new ArgumentNullException(nameof(_cache));
             _jwtConfig = jwtConfig.Value;
         }
 

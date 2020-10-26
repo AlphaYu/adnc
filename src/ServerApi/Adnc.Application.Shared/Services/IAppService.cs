@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Text;
 using System.Collections.Generic;
-using Adnc.Common.Models;
 using Microsoft.Extensions.Logging;
 
 namespace Adnc.Application.Shared.Services

@@ -9,7 +9,7 @@ WORKDIR /src
 COPY ["Portal/Adnc.Maint/Adnc.Maint.WebApi/Adnc.Maint.WebApi.csproj", "Portal/Adnc.Maint/Adnc.Maint.WebApi/"]
 COPY ["Adnc.Infr.Mongo/23.Adnc.Infr.Mongo.csproj", "Adnc.Infr.Mongo/"]
 COPY ["Adnc.Core.Shared/03.Adnc.Core.Shared.csproj", "Adnc.Core.Shared/"]
-COPY ["Adnc.Common/04.Adnc.Common.csproj", "Adnc.Common/"]
+COPY ["Adnc.Infr.Common/04.Adnc.Infr.Common.csproj", "Adnc.Infr.Common/"]
 COPY ["Adnc.Infr.EfCore/22.Adnc.Infr.EfCore.csproj", "Adnc.Infr.EfCore/"]
 COPY ["Adnc.Infr.Consul/20.Adnc.Infr.Consul.csproj", "Adnc.Infr.Consul/"]
 COPY ["Portal/Adnc.Maint/Adnc.Maint.Application/Adnc.Maint.Application.csproj", "Portal/Adnc.Maint/Adnc.Maint.Application/"]

@@ -1,13 +1,12 @@
 ﻿using System.Threading.Tasks;
 using AutoMapper;
-using Adnc.Common;
 using Adnc.Cus.Application.Dtos;
 using Adnc.Cus.Core.CoreServices;
 using Adnc.Cus.Core.Entities;
-using Adnc.Common.Helper;
+using Adnc.Infr.Common.Helper;
 using Adnc.Core.Shared.IRepositories;
-using Adnc.Common.Models;
 using Adnc.Application.Shared.Dtos;
+using Adnc.Application.Shared;
 
 namespace Adnc.Cus.Application.Services
 {

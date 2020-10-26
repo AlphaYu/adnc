@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
-using Adnc.Common.Models;
 using Adnc.Core.Shared.Entities;
 
 namespace Adnc.Core.Shared.IRepositories

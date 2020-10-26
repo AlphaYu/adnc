@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Adnc.Common.Extensions;
-using Adnc.Common.Helper;
+using Adnc.Infr.Common.Helper;
 using Adnc.Usr.Core.Entities;
 using Adnc.Core.Shared.IRepositories;
+using Microsoft.EntityFrameworkCore.Internal;
 
 namespace Adnc.Usr.Core.CoreServices
 {

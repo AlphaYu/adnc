@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Maint.Core.Entities;
 using Adnc.Maint.Application.Dtos;
-using Adnc.Common.Extensions;
+using Adnc.Infr.Common.Extensions;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 using System.Collections.Generic;

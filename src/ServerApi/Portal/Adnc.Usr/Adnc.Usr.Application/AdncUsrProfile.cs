@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using Adnc.Usr.Application.Dtos;
 using Adnc.Usr.Application.Services;
-using Adnc.Common.Models;
 using Adnc.Application.Shared.Dtos;
 using Adnc.Usr.Core.Entities;
+using Adnc.Core.Shared;
 
 namespace Adnc.Usr.Application
 {
@@ -11,7 +11,7 @@ namespace Adnc.Usr.Application
     {
         public AdncUsrProfile()
         {
-            CreateMap(typeof(PagedModel<>), typeof(PageModelDto<>));
+            CreateMap(typeof(IPagedModel<>), typeof(PageModelDto<>));
             CreateMap(typeof(ZTreeNodeDto<,>), typeof(Node<>)).IgnoreAllPropertiesWithAnInaccessibleSetter();
             CreateMap<MenuSaveInputDto, SysMenu>();
             CreateMap<SysMenu, MenuDto>().ReverseMap();

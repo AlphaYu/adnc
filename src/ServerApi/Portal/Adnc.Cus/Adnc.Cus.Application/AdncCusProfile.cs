@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Adnc.Cus.Application.Dtos;
-using Adnc.Common.Models;
 using Adnc.Application.Shared.Dtos;
 using Adnc.Cus.Core.Entities;
+using Adnc.Core.Shared;
 
 namespace Adnc.Cus.Application
 {
@@ -10,7 +10,7 @@ namespace Adnc.Cus.Application
     {
         public AdncCusProfile()
         {
-            CreateMap(typeof(PagedModel<>), typeof(PageModelDto<>));
+            CreateMap(typeof(IPagedModel<>), typeof(PageModelDto<>));
             CreateMap<RegisterInputDto, Customer>();
         }
     }

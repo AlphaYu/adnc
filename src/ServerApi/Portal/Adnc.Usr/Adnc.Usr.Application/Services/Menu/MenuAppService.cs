@@ -3,19 +3,15 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 using Adnc.Usr.Application.Dtos;
-using Adnc.Common;
-using Adnc.Common.Models;
 using Adnc.Usr.Core.CoreServices;
 using Adnc.Usr.Core.Entities;
 using Adnc.Core.Shared.IRepositories;
-using Adnc.Common.Helper;
+using Adnc.Infr.Common.Helper;
 using EasyCaching.Core;
-using System.Security.Cryptography.X509Certificates;
-using Adnc.Common.Consts;
+using Adnc.Application.Shared;
+using Adnc.Infr.Common.Extensions;
 
 namespace Adnc.Usr.Application.Services
 {

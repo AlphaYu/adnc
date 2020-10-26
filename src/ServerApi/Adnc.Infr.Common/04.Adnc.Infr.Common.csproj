@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.1</TargetFramework>
+		<UserSecretsId>2589a77c-6951-43c5-9e81-b45436e1344c</UserSecretsId>
+		<AssemblyName>Adnc.Infr.Common</AssemblyName>
+		<RootNamespace>Adnc.Infr.Common</RootNamespace>
+		<Version>0.5.0</Version>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <Compile Remove="Obsolete\**" />
+	  <EmbeddedResource Remove="Obsolete\**" />
+	  <None Remove="Obsolete\**" />
+	</ItemGroup>
+
+  <ItemGroup>
+	  <PackageReference Include="JetBrains.Annotations" Version="2020.1.0" />
+	  <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.9" />
+	  <PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0" />
+	  <PackageReference Include="System.Text.Json" Version="4.7.2" />
+  </ItemGroup>
+
+</Project>

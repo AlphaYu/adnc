@@ -2,17 +2,16 @@
 using System.Threading.Tasks;
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Usr.Application.Dtos;
-using Adnc.Common.Models;
-using Adnc.Common;
 using System.Linq.Expressions;
 using System.Linq;
 using System;
-using Adnc.Common.Extensions;
+using Adnc.Infr.Common.Extensions;
 using Adnc.Usr.Core.Entities;
 using System.Collections.Generic;
-using Adnc.Common.Helper;
+using Adnc.Infr.Common.Helper;
 using Adnc.Usr.Core.CoreServices;
 using Adnc.Application.Shared.Dtos;
+using Adnc.Application.Shared;
 
 namespace Adnc.Usr.Application.Services
 {

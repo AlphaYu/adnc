@@ -4,7 +4,6 @@ using Adnc.Maint.Application.Dtos;
 using Adnc.Application.Shared.Interceptors;
 using Adnc.Application.Shared.Services;
 using Adnc.Infr.EasyCaching.Interceptor.Castle;
-using Adnc.Common.Consts;
 
 namespace  Adnc.Maint.Application.Services
 {
