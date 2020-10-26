@@ -8,7 +8,7 @@ using RabbitMQ.Client;
 
 namespace Adnc.Infr.Mq.RabbitMq
 {
-    public class RabbitMqProducer
+    public class RabbitMqProducer : IDisposable
     {
         private readonly IModel _channel;
         private readonly ILogger<RabbitMqProducer> _logger;
@@ -79,6 +79,12 @@ namespace Adnc.Infr.Mq.RabbitMq
         public virtual IBasicProperties CreateBasicProperties()
         {
             return _channel.CreateBasicProperties();
+        }
+
+        public void Dispose()
+        {
+            if (_channel != null)
+                _channel.Dispose();
         }
     }
 }

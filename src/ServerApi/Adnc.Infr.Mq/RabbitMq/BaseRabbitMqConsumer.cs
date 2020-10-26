@@ -114,6 +114,8 @@ namespace Adnc.Infr.Mq.RabbitMq
         /// </summary>
         protected virtual void DeRegister()
         {
+            if (_channel != null)
+                _channel.Dispose();
             if (_connection != null)
                 _connection.Dispose();
         }
