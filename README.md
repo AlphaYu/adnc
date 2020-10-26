@@ -8,7 +8,7 @@
 &ensp;&ensp;&ensp;&ensp;Adnc对配置、依赖注入、日志、缓存、模型映射、认证/授权、仓储、服务注册/发现、健康检测、性能检测、Mq、Ef等模块进行更高一级的自动化封装，并规范了一套业务实现的代码规范与操作流程，使Asp.NetCore 框架更易于应用到实际项目开发中。
 - 演示网址：http://193.112.75.77 alpha2008/alpha2008 
 ## 如何快速跑起来
-  - [请点击链接，查看详细介绍](https://github.com/AlphaYu/Adnc/wiki/%E5%A6%82%E6%9E%9C%E5%BF%AB%E9%80%9F%E8%B7%91%E8%B5%B7%E6%9D%A5)
+  - [请点击链接，查看详细介绍](https://github.com/AlphaYu/Adnc/wiki/%E5%A6%82%E4%BD%95%E5%BF%AB%E9%80%9F%E8%B7%91%E8%B5%B7%E6%9D%A5)
 ## 目录结构
   - clientApp 前端项目(vue)
   - serverApi 后端项目(dotnetcore)
