@@ -1,0 +1,39 @@
+version: '3.3'
+services:
+  elasticsearch:
+    image: elasticsearch:6.8.0
+    container_name: skywalking-es
+    restart: always
+    ports:
+      - 9200:9200
+      - 9300:9300
+    environment:
+      discovery.type: single-node
+      TZ: Asia/Shanghai
+      ES_JAVA_OPTS: -Xms256m
+  oap:
+    image: apache/skywalking-oap-server:6.1.0
+    container_name: skywalking-oap
+    depends_on:
+      - elasticsearch
+    links:
+      - elasticsearch
+    restart: always
+    ports:
+      - 11800:11800
+      - 12800:12800
+    environment:
+      TZ: Asia/Shanghai
+  ui:
+    image: apache/skywalking-ui:6.1.0
+    container_name: skywalking-ui
+    depends_on:
+      - oap
+    links:
+      - oap
+    restart: always
+    ports:
+      - 18886:8080
+    environment:
+      collector.ribbon.listOfServers: oap:12800
+      # security.user.admin.password:aspdotnetcore
