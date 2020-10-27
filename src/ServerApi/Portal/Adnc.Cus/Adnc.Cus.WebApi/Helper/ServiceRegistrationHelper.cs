@@ -98,7 +98,7 @@ namespace Adnc.Cus.WebApi.Helper
                 timeoutPolicy
             };
 
-            //注册用户认证、鉴权服务
+            //注册用户认证、鉴权服务Rpc服务到容器
             var authServerAddress = (_env.IsProduction() || _env.IsStaging()) ? "adnc.usr.webapi" : "http://localhost:5010";
             base.AddRpcService<IAuthRpcService>(authServerAddress, policies);
         }

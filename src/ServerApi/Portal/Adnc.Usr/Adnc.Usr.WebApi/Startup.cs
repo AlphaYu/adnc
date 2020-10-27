@@ -117,6 +117,7 @@ namespace Adnc.Usr.WebApi
             });
             if (env.IsProduction() || env.IsStaging())
             {
+                //注册本服务到consul
                 app.RegisterToConsul(_srvRegistration.GetConsulConfig());
             }
         }
