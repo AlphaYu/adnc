@@ -1,3 +1,4 @@
+![](https://discourse-cloud-file-uploads.s3.dualstack.us-west-2.amazonaws.com/github/original/2X/c/c0e0f8a6eae69b57a7465cdc578fc63874783f8d.png)
 ## 前言
 [![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://github.com/AlphaYu/Adnc)
 [![GitHub issues](https://img.shields.io/github/issues/AlphaYu/Adnc)](https://github.com/AlphaYu/Adnc/issues)
