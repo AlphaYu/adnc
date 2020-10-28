@@ -29,9 +29,9 @@ using Adnc.Infr.EasyCaching.Interceptor.Castle;
 using Adnc.Infr.Common;
 using Adnc.Infr.Mq.RabbitMq;
 using Adnc.Infr.Consul;
-using Adnc.Core.Shared;
 using Adnc.Infr.EfCore;
 using Adnc.Application.Shared;
+using Adnc.Application.Shared.RpcServices;
 
 namespace Adnc.WebApi.Shared
 {

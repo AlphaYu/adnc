@@ -3,10 +3,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Adnc.Core.Shared.RpcServices;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Routing;
-using Microsoft.AspNetCore.Http;
 
 namespace Microsoft.AspNetCore.Authorization
 {

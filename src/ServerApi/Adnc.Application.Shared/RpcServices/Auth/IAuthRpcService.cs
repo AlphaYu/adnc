@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Refit;
 
-namespace Adnc.Core.Shared.RpcServices
+namespace Adnc.Application.Shared.RpcServices
 {
     public interface IAuthRpcService : IRpcService
     {

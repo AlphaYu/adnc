@@ -46,6 +46,7 @@
 
 	<ItemGroup>
 	  <Folder Include="Mq\" />
+	  <Folder Include="RpcServices\" />
 	</ItemGroup>
 
 </Project>

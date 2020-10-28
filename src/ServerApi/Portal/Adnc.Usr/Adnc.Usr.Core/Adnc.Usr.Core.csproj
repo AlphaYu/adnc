@@ -28,7 +28,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="RpcService\" />
 	  <Folder Include="EventBus\" />
 	</ItemGroup>
 

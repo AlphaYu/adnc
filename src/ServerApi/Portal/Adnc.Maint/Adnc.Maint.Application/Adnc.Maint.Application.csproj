@@ -29,4 +29,8 @@
 	  </None>
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="RpcServices\" />
+	</ItemGroup>
+
 </Project>

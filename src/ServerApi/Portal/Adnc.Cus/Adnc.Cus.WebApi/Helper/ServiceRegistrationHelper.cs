@@ -17,9 +17,9 @@ using Adnc.Infr.Mongo.Extensions;
 using Adnc.Infr.Mongo.Configuration;
 using Adnc.Infr.EfCore;
 using Adnc.WebApi.Shared;
-using Adnc.Core.Shared.RpcServices;
 using Adnc.Cus.Core.EventBus;
 using Adnc.Cus.Core;
+using Adnc.Application.Shared.RpcServices;
 
 namespace Adnc.Cus.WebApi.Helper
 {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text.Encodings.Web;
 using System.Text.Json;
+using System.Text.Unicode;
 
 namespace Adnc.Application.Shared
 {
@@ -13,7 +14,7 @@ namespace Adnc.Application.Shared
                 ,
                 WriteIndented = true
                 ,
-                Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+                Encoder = JavaScriptEncoder.Create(UnicodeRanges.All)
             }))
         {
             base.HResult = (int)errorModel.StatusCode;

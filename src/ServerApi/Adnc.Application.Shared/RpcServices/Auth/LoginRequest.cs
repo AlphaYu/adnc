@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Adnc.Core.Shared.RpcServices
+namespace Adnc.Application.Shared.RpcServices
 {
     public class LoginRequest
     {

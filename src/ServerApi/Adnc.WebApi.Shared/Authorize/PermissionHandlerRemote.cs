@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authentication;
-using Adnc.Core.Shared.RpcServices;
+using Adnc.Application.Shared.RpcServices;
 
 namespace Microsoft.AspNetCore.Authorization
 {

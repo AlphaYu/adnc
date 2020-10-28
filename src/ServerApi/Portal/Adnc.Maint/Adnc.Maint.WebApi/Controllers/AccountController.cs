@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Adnc.Core.Shared.RpcServices;
+using Adnc.Application.Shared.RpcServices;
 using System.Text.Json;
 using Refit;
 

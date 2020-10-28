@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Adnc.Core.Shared
+namespace Adnc.Application.Shared.RpcServices
 {
     public interface IRpcService
     {

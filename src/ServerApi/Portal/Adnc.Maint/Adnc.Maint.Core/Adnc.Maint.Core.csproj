@@ -23,7 +23,6 @@
 
 	<ItemGroup>
 		<Folder Include="IRepositories\" />
-		<Folder Include="RpcService\" />
 		<Folder Include="EventBus\" />
 	</ItemGroup>
 
