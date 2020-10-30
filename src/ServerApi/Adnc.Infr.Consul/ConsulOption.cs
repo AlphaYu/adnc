@@ -13,6 +13,5 @@ namespace Adnc.Infr.Consul
         public int HealthCheckIntervalInSecond { get; set; }
         public string[] ServerTags { get; set; }
         public string ConsulKeyPath { get; set; }
-        public bool IsDocker { get; set; }
     }
 }

@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Builder;
 using Pomelo.EntityFrameworkCore.MySql.Storage;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using Polly;
@@ -25,11 +26,11 @@ namespace Adnc.Cus.WebApi.Helper
 {
     public sealed class ServiceRegistrationHelper : SharedServicesRegistration
     {
-        public ServiceRegistrationHelper(IConfiguration configuration
+        public ServiceRegistrationHelper(IConfiguration cfg
             , IServiceCollection services
             , IWebHostEnvironment env
             , ServiceInfo serviceInfo)
-          : base(configuration, services, env, serviceInfo)
+          : base(cfg, services, env, serviceInfo)
         {
         }
 
@@ -103,7 +104,7 @@ namespace Adnc.Cus.WebApi.Helper
             base.AddRpcService<IAuthRpcService>(authServerAddress, policies);
         }
 
-        public override void AddEventBusSubscribers(string tableNamePrefix="Cap", string groupName= EbConsts.CapDefaultGroup)
+        public override void AddEventBusSubscribers(string tableNamePrefix = "Cap", string groupName = EbConsts.CapDefaultGroup)
         {
             base.AddEventBusSubscribers(tableNamePrefix, groupName);
             _services.AddScoped<IRechargeSubscriber, RechargeSubscriber>();

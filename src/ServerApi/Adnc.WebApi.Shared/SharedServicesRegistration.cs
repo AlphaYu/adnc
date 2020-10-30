@@ -29,6 +29,7 @@ using Adnc.Infr.EasyCaching.Interceptor.Castle;
 using Adnc.Infr.Common;
 using Adnc.Infr.Mq.RabbitMq;
 using Adnc.Infr.Consul;
+using Adnc.Infr.Consul.Registration;
 using Adnc.Infr.EfCore;
 using Adnc.Application.Shared;
 using Adnc.Application.Shared.RpcServices;
@@ -37,7 +38,7 @@ namespace Adnc.WebApi.Shared
 {
     public abstract class SharedServicesRegistration
     {
-        protected readonly IConfiguration _configuration;
+        protected readonly IConfiguration _cfg;
         protected readonly IServiceCollection _services;
         protected readonly IWebHostEnvironment _env;
         protected readonly ServiceInfo _serviceInfo;
@@ -48,22 +49,22 @@ namespace Adnc.WebApi.Shared
         protected readonly RabbitMqConfig _rabbitMqConfig;
         protected readonly ConsulConfig _consulConfig;
 
-        public SharedServicesRegistration(IConfiguration configuration
+        public SharedServicesRegistration(IConfiguration cfg
             , IServiceCollection services
             , IWebHostEnvironment env
             , ServiceInfo serviceInfo)
         {
-            _services = services;
-            _configuration = configuration;
+            _cfg = cfg;
             _env = env;
+            _services = services;
             _serviceInfo = serviceInfo;
 
-            _jwtConfig = _configuration.GetSection("JWT").Get<JWTConfig>();
-            _mongoConfig = _configuration.GetSection("MongoDb").Get<MongoConfig>();
-            _mysqlConfig = _configuration.GetSection("Mysql").Get<MysqlConfig>();
-            _redisConfig = _configuration.GetSection("Redis").Get<RedisConfig>();
-            _rabbitMqConfig = _configuration.GetSection("RabbitMq").Get<RabbitMqConfig>();
-            _consulConfig = _configuration.GetSection("Consul").Get<ConsulConfig>();
+            _jwtConfig = _cfg.GetSection("JWT").Get<JWTConfig>();
+            _mongoConfig = _cfg.GetSection("MongoDb").Get<MongoConfig>();
+            _mysqlConfig = _cfg.GetSection("Mysql").Get<MysqlConfig>();
+            _redisConfig = _cfg.GetSection("Redis").Get<RedisConfig>();
+            _rabbitMqConfig = _cfg.GetSection("RabbitMq").Get<RabbitMqConfig>();
+            _consulConfig = _cfg.GetSection("Consul").Get<ConsulConfig>();
         }
 
         public JWTConfig GetJWTConfig()
@@ -105,10 +106,10 @@ namespace Adnc.WebApi.Shared
             //    options.ForwardedHeaders =
             //        ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
             //});
-            _services.Configure<JWTConfig>(_configuration.GetSection("JWT"));
-            _services.Configure<MongoConfig>(_configuration.GetSection("MongoDb"));
-            _services.Configure<MysqlConfig>(_configuration.GetSection("Mysql"));
-            _services.Configure<RabbitMqConfig>(_configuration.GetSection("RabbitMq"));
+            _services.Configure<JWTConfig>(_cfg.GetSection("JWT"));
+            _services.Configure<MongoConfig>(_cfg.GetSection("MongoDb"));
+            _services.Configure<MysqlConfig>(_cfg.GetSection("Mysql"));
+            _services.Configure<RabbitMqConfig>(_cfg.GetSection("RabbitMq"));
         }
 
         public virtual void AddControllers()
@@ -267,7 +268,7 @@ namespace Adnc.WebApi.Shared
                 }, localCacheName);
 
                 //Important step for Redis Caching
-                options.UseCSRedis(_configuration, remoteCacheName, "Redis");
+                options.UseCSRedis(_cfg, remoteCacheName, "Redis");
 
                 // combine local and distributed
                 options.UseHybrid(config =>
@@ -299,7 +300,7 @@ namespace Adnc.WebApi.Shared
         {
             _services.AddCors(options =>
             {
-                var _corsHosts = _configuration.GetValue<string>("CorsHosts")?.Split(",", StringSplitOptions.RemoveEmptyEntries);
+                var _corsHosts = _cfg.GetValue<string>("CorsHosts")?.Split(",", StringSplitOptions.RemoveEmptyEntries);
                 options.AddPolicy(_serviceInfo.CorsPolicy, policy =>
                 {
                     policy.WithOrigins(_corsHosts)
@@ -454,24 +455,10 @@ namespace Adnc.WebApi.Shared
                         new CapDashboardAuthorizationFilter()
                     };
                 });
-                //必须是生产环境并且基于docker发布才注册cap服务到consul
-                if ((_env.IsProduction() || _env.IsStaging())
-                    && _consulConfig.IsDocker)
+                //必须是生产环境才注册cap服务到consul
+                if ((_env.IsProduction() || _env.IsStaging()))
                 {
-                    x.UseDiscovery(x =>
-                    {
-                        var consulAdderss = new Uri(_consulConfig.ConsulUrl);
-                        var listenHostAndPort = Environment.GetEnvironmentVariable("DOCKER_LISTEN_HOSTANDPORT");
-                        var currenServerAddress = new Uri(listenHostAndPort);
-                        x.DiscoveryServerHostName = consulAdderss.Host;
-                        x.DiscoveryServerPort = consulAdderss.Port;
-                        x.CurrentNodeHostName = currenServerAddress.Host;
-                        x.CurrentNodePort = currenServerAddress.Port;
-                        x.NodeId = currenServerAddress.Host.Replace(".", string.Empty) + currenServerAddress.Port;
-                        //x.NodeId = "007";
-                        x.NodeName = _serviceInfo.FullName.Replace("webapi", "cap");
-                        x.MatchPath = $"/{_serviceInfo.ShortName}/cap";
-                    });
+                    x.UseDiscovery();
                 }
             });
         }
