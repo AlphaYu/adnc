@@ -84,7 +84,7 @@ namespace Adnc.Cus.WebApi
             app.UseRealIp(x =>
             {
                 //new string[] { "X-Real-IP", "X-Forwarded-For" }
-                x.HeaderKeys = new string[] { "X-Real-IP" };
+                x.HeaderKeys = new string[] { "X-Forwarded-For", "X-Real-IP" };
             });
             app.UseCors(_serviceInfo.CorsPolicy);
             app.UseSwagger(c =>
