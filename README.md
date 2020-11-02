@@ -10,9 +10,6 @@
 &ensp;&ensp;&ensp;&ensp;Adnc对配置中心、依赖注入、日志、缓存、模型映射、认证/授权、仓储、服务注册/发现、健康检测、性能检测、RabbitMq、EfCore、Dapper等模块进行更高一级的自动化封装，使Asp.Net Core 框架更易于应用到实际项目开发中。<br/>
 > 演示网址：<a href="http://193.112.75.77" target="_blank">http://193.112.75.77</a> <br/>
 > 账号/密码：alpha2008/alpha2008 <br/>
-> 如果您喜欢,请点个:star:<br/>
-#### 问题反馈
-  - [请点击链接，新建issues](https://github.com/AlphaYu/Adnc/issues/new)
 #### 下一步计划
   - 完善框架文档。
   - 集成<a href="https://github.com/ldqk/Masuit.Tools" target="_blank">Masuit.Tools</a>丰富adnc.infr.common工具层。
