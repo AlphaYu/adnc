@@ -6,8 +6,8 @@
 [![GitHub stars](https://img.shields.io/github/stars/AlphaYu/Adnc)](https://github.com/AlphaYu/Adnc/stargazers)
 [![GitHub license](https://img.shields.io/github/license/AlphaYu/Adnc)](https://github.com/AlphaYu/Adnc/blob/master/LICENSE)<br/>
 &ensp;&ensp;&ensp;&ensp;Adnc是一个轻量级的.Net Core微服务快速开发框架，同时也可以应用于单体架构系统的开发。框架基于JWT认证授权、集成了微服务相关配套组件，代码简洁、易上手、学习成本低、开箱即用。<br/>
-&ensp;&ensp;&ensp;&ensp;Adnc前端基于Vue、后端服务基于.Net Core 3.1搭建，也是一个前后端分离的框架。WebApi遵循RESTful风格，框架包含用户/角色/权限管理、字典/配置管理、登录/审计/异常日志管理等基础的后台模块。<br/>
-&ensp;&ensp;&ensp;&ensp;Adnc对配置中心、依赖注入、日志、缓存、模型映射、认证/授权、仓储、服务注册/发现、健康检测、性能检测、RabbitMq、EfCore、Dapper等模块进行更高一级的自动化封装，使Asp.Net Core 框架更易于应用到实际项目开发中。<br/>
+&ensp;&ensp;&ensp;&ensp;前端基于Vue、后端服务基于.Net Core 3.1搭建，也是一个前后端分离的框架。WebApi遵循RESTful风格，框架包含用户/角色/权限管理、字典/配置管理、登录/审计/异常日志管理等基础的后台模块。<br/>
+&ensp;&ensp;&ensp;&ensp;框架对配置中心、依赖注入、日志、缓存、模型映射、认证/授权、仓储、服务注册/发现、健康检测、性能检测、RabbitMq、EfCore、Dapper等模块进行更高一级的自动化封装，使Asp.Net Core 框架更易于应用到实际项目开发中。<br/>
 > 演示网址：<a href="http://193.112.75.77" target="_blank">http://193.112.75.77</a> <br/>
 > 账号/密码：alpha2008/alpha2008 <br/>
 #### 下一步计划
