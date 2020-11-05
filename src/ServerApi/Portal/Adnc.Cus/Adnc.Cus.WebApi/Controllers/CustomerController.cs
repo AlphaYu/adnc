@@ -1,11 +1,15 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authentication;
+using Adnc.Application.Shared.Dtos;
+using Adnc.Application.Shared.RpcServices;
 using Adnc.Cus.Application.Services;
 using Adnc.Cus.Application.Dtos;
-using Adnc.Application.Shared.Dtos;
+using Adnc.Cus.Application.RpcServices;
 
 namespace Adnc.Cus.WebApi.Controllers
 {
@@ -17,10 +21,19 @@ namespace Adnc.Cus.WebApi.Controllers
     public class CustomerController : ControllerBase
     {
         private readonly ICustomerAppService _cusService;
+        private readonly IMaintRpcService _maintRpcServcie;
+        private readonly IAuthRpcService _authRpcServcie;
+        private readonly IHttpContextAccessor _contextAccessor;
 
-        public CustomerController(ICustomerAppService cusService)
+        public CustomerController(ICustomerAppService cusService
+            , IMaintRpcService maintRpcServcie
+            , IHttpContextAccessor contextAccessor
+            , IAuthRpcService authRpcServices)
         {
+            _maintRpcServcie = maintRpcServcie;
             _cusService = cusService;
+            _contextAccessor = contextAccessor;
+            _authRpcServcie = authRpcServices;
         }
 
         /// <summary>
@@ -30,9 +43,9 @@ namespace Adnc.Cus.WebApi.Controllers
         /// <returns></returns>
         [HttpPost]
         //[Permission("customerRegister")]
-        public async Task Register([FromBody][NotNull] RegisterInputDto inputDto)
+        public async Task<SimpleDto<string>> Register([FromBody][NotNull] RegisterInputDto inputDto)
         {
-            await _cusService.Register(inputDto);
+            return await _cusService.Register(inputDto);
         }
 
         /// <summary>
@@ -41,7 +54,7 @@ namespace Adnc.Cus.WebApi.Controllers
         /// <returns></returns>
         [HttpPut("{id}/balance")]
         //[Permission("customerRecharge")]
-        public async Task<SimpleDto<string>> Recharge([FromRoute]string id,[FromBody] SimpleInputDto<decimal> inputDto)
+        public async Task<SimpleDto<string>> Recharge([FromRoute] string id, [FromBody] SimpleInputDto<decimal> inputDto)
         {
             return await _cusService.Recharge(new RechargeInputDto { ID = long.Parse(id), Amount = inputDto.Value });
         }
@@ -56,6 +69,30 @@ namespace Adnc.Cus.WebApi.Controllers
         public async Task<SimpleDto<bool>> GetRechargedStatus([FromRoute] string id)
         {
             return await new ValueTask<SimpleDto<bool>>(new SimpleDto<bool> { Result = true });
+        }
+
+        [HttpGet("testrpc")]
+        [AllowAnonymous]
+        public async Task<GetDictReply> TestCallRpcService()
+        {
+            GetDictReply result;
+            var jwtToken = await _contextAccessor.HttpContext.GetTokenAsync("access_token");
+            try
+            {
+                if (jwtToken == null)
+                {
+                    var reply = await _authRpcServcie.Login(new LoginRequest { Account = "alpha2008", Password = "alpha2008" });
+                    jwtToken = reply.Token;
+                }
+                result = await _maintRpcServcie.GetDict($"Bearer {jwtToken}", 29);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+
+            return result;
         }
     }
 }

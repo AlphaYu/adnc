@@ -30,7 +30,7 @@ namespace Adnc.Maint.WebApi.Controllers
         /// <returns></returns>
         [HttpDelete("{id}")]
         [Permission("dictDelete")]
-        public async Task DeleteDept([FromRoute]long Id)
+        public async Task DeleteDept([FromRoute] long Id)
         {
             await _dictService.Delete(Id);
         }
@@ -42,8 +42,19 @@ namespace Adnc.Maint.WebApi.Controllers
         [HttpGet()]
         [Permission("dict")]
         public async Task<List<DictDto>> GetDicttList([FromQuery] DictSearchDto searchDto)
-        {            
+        {
             return await _dictService.GetList(searchDto);
+        }
+
+        /// <summary>
+        /// 获取单个字典数据
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("{id}")]
+        [Permission("dict")]
+        public async Task<DictDto> Get([FromRoute]long id)
+        {
+            return await _dictService.Get(id);
         }
 
         /// <summary>

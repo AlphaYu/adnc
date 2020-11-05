@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Text.Json;
 using System.Security.Claims;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -11,17 +12,18 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.OpenApi.Models;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
+using Pomelo.EntityFrameworkCore.MySql.Storage;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using Polly;
 using Refit;
-using RefitConsul;
 using EasyCaching.InMemory;
 using DotNetCore.CAP.Dashboard;
 using DotNetCore.CAP.Dashboard.NodeDiscovery;
@@ -29,8 +31,12 @@ using Adnc.Infr.EasyCaching.Interceptor.Castle;
 using Adnc.Infr.Common;
 using Adnc.Infr.Mq.RabbitMq;
 using Adnc.Infr.Consul;
-using Adnc.Infr.Consul.Registration;
+using Adnc.Infr.Consul.Consumer;
 using Adnc.Infr.EfCore;
+using Adnc.Infr.EfCore.Interceptors;
+using Adnc.Infr.Mongo;
+using Adnc.Infr.Mongo.Extensions;
+using Adnc.Infr.Mongo.Configuration;
 using Adnc.Application.Shared;
 using Adnc.Application.Shared.RpcServices;
 
@@ -67,32 +73,32 @@ namespace Adnc.WebApi.Shared
             _consulConfig = _cfg.GetSection("Consul").Get<ConsulConfig>();
         }
 
-        public JWTConfig GetJWTConfig()
+        public virtual JWTConfig GetJWTConfig()
         {
             return _jwtConfig;
         }
 
-        public MongoConfig GetMongoConfig()
+        public virtual MongoConfig GetMongoConfig()
         {
             return _mongoConfig;
         }
 
-        public MysqlConfig GetMysqlConfig()
+        public virtual MysqlConfig GetMysqlConfig()
         {
             return _mysqlConfig;
         }
 
-        public RedisConfig GetRedisConfig()
+        public virtual RedisConfig GetRedisConfig()
         {
             return _redisConfig;
         }
 
-        public RabbitMqConfig GetRabbitMqConfig()
+        public virtual RabbitMqConfig GetRabbitMqConfig()
         {
             return _rabbitMqConfig;
         }
 
-        public ConsulConfig GetConsulConfig()
+        public virtual ConsulConfig GetConsulConfig()
         {
             return _consulConfig;
         }
@@ -114,18 +120,37 @@ namespace Adnc.WebApi.Shared
 
         public virtual void AddControllers()
         {
-        }
-
-        public virtual void AddMqHostedServices()
-        {
+            _services.AddControllers(options => options.Filters.Add(typeof(CustomExceptionFilterAttribute)))
+                     .AddJsonOptions(options =>
+                     {
+                        options.JsonSerializerOptions.Converters.Add(new DateTimeConverter());
+                        options.JsonSerializerOptions.Converters.Add(new DateTimeNullableConverter());
+                        //options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                     });
         }
 
         public virtual void AddEfCoreContext()
         {
+            _services.AddDbContext<AdncDbContext>(options =>
+            {
+                options.UseMySql(_mysqlConfig.WriteDbConnectionString, mySqlOptions =>
+                {
+                    mySqlOptions.ServerVersion(new ServerVersion(new Version(10, 5, 4), ServerType.MariaDb));
+                    mySqlOptions.MinBatchSize(2);
+                    mySqlOptions.MigrationsAssembly(_serviceInfo.AssemblyName.Replace("WebApi", "Migrations"));
+                });
+                options.AddInterceptors(new CustomCommandInterceptor());
+            });
         }
 
         public virtual void AddMongoContext()
         {
+            _services.AddMongo<MongoContext>(options =>
+            {
+                options.ConnectionString = _mongoConfig.ConnectionStrings;
+                options.PluralizeCollectionNames = _mongoConfig.PluralizeCollectionNames;
+                options.CollectionNamingConvention = (NamingConvention)_mongoConfig.CollectionNamingConvention;
+            });
         }
 
         public virtual void AddJWTAuthentication()
@@ -209,7 +234,8 @@ namespace Adnc.WebApi.Shared
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
         }
 
-        public virtual void AddAuthorization()
+        public virtual void AddAuthorization<THandler>()
+            where THandler: PermissionHandler
         {
             //自定义授权配置
             //services.AddSingleton<IAuthorizationHandler, PermissionHandler>();
@@ -218,14 +244,13 @@ namespace Adnc.WebApi.Shared
                 options.AddPolicy(Permission.Policy, policy =>
                     policy.Requirements.Add(new PermissionRequirement()));
             });
-
             // 注册成全局 dbcontext 会报如下错误
             // A second operation started on this context before a previous operation completed.
             // This is usually caused by different threads using the same instance of DbContext. 
             // For more information on how to avoid threading issues with DbContext
             // see https://go.microsoft.com/fwlink/?linkid=2097913.
             //services.AddSingleton<IAuthorizationHandler, PermissionHandler>();
-            _services.AddScoped<IAuthorizationHandler, PermissionHandlerRemote>();
+            _services.AddScoped<IAuthorizationHandler, THandler>();
         }
 
         public virtual void AddCaching(string localCacheName = BaseEasyCachingConsts.LocalCaching
@@ -368,46 +393,7 @@ namespace Adnc.WebApi.Shared
                      .AddRedis(redisString);
         }
 
-        public virtual void AddRpcService<TRpcService>(string serviceName
-            , List<IAsyncPolicy<HttpResponseMessage>> policies
-            , Func<Task<string>> token = null
-            )
-            where TRpcService : class, IRpcService
-        {
-
-            var prefix = serviceName.Substring(0, 7);
-            bool isConsulAdderss = (prefix == "http://" || prefix == "https:/") ? false : true;
-
-            //注册RefitClient,设置httpclient生命周期时间，默认也是2分钟。
-            //var refitSettings = new RefitSettings(new SystemTextJsonContentSerializer()
-            var clientbuilder = _services.AddRefitClient<TRpcService>()
-                                         .SetHandlerLifetime(TimeSpan.FromMinutes(2));
-            //从consul获取地址
-            if (isConsulAdderss)
-            {
-                clientbuilder.ConfigureHttpClient(c => c.BaseAddress = new Uri($"http://{serviceName}"))
-                             .AddHttpMessageHandler(() =>
-                              {
-                                  return new ConsulDiscoveryDelegatingHandler(_consulConfig.ConsulUrl, token);
-                              });
-            }
-            else
-            {
-                clientbuilder.ConfigureHttpClient((options) =>
-                {
-                    options.BaseAddress = new Uri(serviceName);
-                });
-            }
-
-            //添加polly相关策略
-            if (policies != null && policies.Any())
-            {
-                foreach (var policy in policies)
-                    clientbuilder.AddPolicyHandler(policy);
-            }
-        }
-
-        public virtual void AddEventBusSubscribers(string tableNamePrefix, string groupName)
+        protected virtual void AddEventBusSubscribers(string tableNamePrefix, string groupName, Action<IServiceCollection> func)
         {
             _services.AddCap(x =>
             {
@@ -446,7 +432,7 @@ namespace Adnc.WebApi.Shared
                 x.SucceedMessageExpiredAfter = 24 * 3600;
                 //默认值：1,消费者线程并行处理消息的线程数，当这个值大于1时，将不能保证消息执行的顺序。
                 x.ConsumerThreadCount = 1;
-                x.UseDashboard(x=>
+                x.UseDashboard(x =>
                 {
                     x.PathMatch = $"/{_serviceInfo.ShortName}/cap";
                     x.Authorization = new IDashboardAuthorizationFilter[] {
@@ -461,6 +447,71 @@ namespace Adnc.WebApi.Shared
                     x.UseDiscovery();
                 }
             });
+            func?.Invoke(_services);
+        }
+
+        protected virtual void AddRpcService<TRpcService>(string serviceName
+        , List<IAsyncPolicy<HttpResponseMessage>> policies
+        , Func<Task<string>> token = null
+        ) where TRpcService : class, IRpcService
+        {
+
+            var prefix = serviceName.Substring(0, 7);
+            bool isConsulAdderss = (prefix == "http://" || prefix == "https:/") ? false : true;
+
+            //注册RefitClient,设置httpclient生命周期时间，默认也是2分钟。
+            //var refitSettings = new RefitSettings(new SystemTextJsonContentSerializer());
+            var clientbuilder = _services.AddRefitClient<TRpcService>()
+                                         .SetHandlerLifetime(TimeSpan.FromMinutes(2));
+            //从consul获取地址
+            if (isConsulAdderss)
+            {
+                clientbuilder.ConfigureHttpClient(c => c.BaseAddress = new Uri($"http://{serviceName}"))
+                             .AddHttpMessageHandler(() =>
+                             {
+                                 return new ConsulDiscoveryDelegatingHandler(_consulConfig.ConsulUrl, token);
+                             });
+            }
+            else
+            {
+                clientbuilder.ConfigureHttpClient((options) =>
+                {
+                    options.BaseAddress = new Uri(serviceName);
+                });
+            }
+
+            //添加polly相关策略
+            if (policies != null && policies.Any())
+            {
+                foreach (var policy in policies)
+                    clientbuilder.AddPolicyHandler(policy);
+            }
+        }
+
+        protected virtual List<IAsyncPolicy<HttpResponseMessage>> GenerateDefaultRefitPolicies()
+        {
+            //重试策略
+            var retryPolicy = Policy.Handle<ApiException>()
+                                    .OrResult<HttpResponseMessage>(response => response.StatusCode == System.Net.HttpStatusCode.BadGateway)
+                                    .WaitAndRetryAsync(new[]
+                                    {
+                                        TimeSpan.FromSeconds(1),
+                                        TimeSpan.FromSeconds(5),
+                                        TimeSpan.FromSeconds(10)
+                                    });
+            //超时策略
+            var timeoutPolicy = Policy.TimeoutAsync<HttpResponseMessage>(10);
+            //隔离策略
+            var bulkheadPolicy = Policy.BulkheadAsync<HttpResponseMessage>(10, 100);
+            //回退策略
+            //断路策略
+            var circuitBreakerPolicy = Policy.Handle<ApiException>()
+                                     .CircuitBreakerAsync(2, TimeSpan.FromMinutes(1));
+
+            return new List<IAsyncPolicy<HttpResponseMessage>>()
+            {
+                timeoutPolicy
+            };
         }
     }
 }
