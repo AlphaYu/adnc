@@ -9,18 +9,17 @@ export function getSideMenus() {
   return JSON.parse(strMenus)
 }
 
-
-export function traverseRoutes(menus){
-  let routes = menus.map( menu =>{
-    if(menu.component){
-      let name = menu.component;
-      menu.component = ()=> import(`@/${name}`)
+export function traverseRoutes(menus) {
+  const routes = menus.map(menu => {
+    if (menu.component) {
+      const name = menu.component
+      menu.component = (resolve) => require([`@/${name}`], resolve)
     }
 
-    if(menu.children && menu.children.length){
-      menu.children = traverseRoutes(menu.children);
+    if (menu.children && menu.children.length) {
+      menu.children = traverseRoutes(menu.children)
     }
-    return menu;
+    return menu
   })
-  return routes;
+  return routes
 }

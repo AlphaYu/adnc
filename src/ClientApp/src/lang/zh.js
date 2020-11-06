@@ -21,8 +21,8 @@ export default {
     opsLog: '操作日志',
     nlogLog: 'Nlog日志',
     cfg: '参数管理',
-    health:'健康检测',
-    druid:'监控管理',
+    health:'健康检查',
+    druid:'性能链路监测',
     swagger:'接口文档',
     messageMgr:'消息管理',
     msg:'历史消息',
@@ -40,7 +40,7 @@ export default {
     size: '布局大小'
   },
   login: {
-    title: 'Adnc MIS',
+    title: 'Adnc',
     errorAccount:'请输入5到32位的数字和字母',
     errorPassword:'密码至少位5位',
     logIn: '登录',
