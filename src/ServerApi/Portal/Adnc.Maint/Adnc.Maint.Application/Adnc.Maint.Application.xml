@@ -59,6 +59,12 @@
             参数值
             </summary>
         </member>
+        <member name="F:Adnc.Maint.Application.Dtos.DictDto._data">
+            <summary>
+            该属性可以和Detail重复了。
+            考虑到合并需要修改前端代码，先这样。
+            </summary>
+        </member>
         <member name="T:Adnc.Maint.Application.Dtos.DictSearchDto">
             <summary>
             角色检索条件

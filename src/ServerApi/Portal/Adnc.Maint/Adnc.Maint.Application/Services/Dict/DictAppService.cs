@@ -14,6 +14,7 @@ using Adnc.Maint.Core.Entities;
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Application.Shared.Services;
 using Adnc.Application.Shared;
+using System.Text.Json;
 
 namespace  Adnc.Maint.Application.Services
 {
@@ -90,7 +91,16 @@ namespace  Adnc.Maint.Application.Services
 
         public async Task<DictDto> Get(long id)
         {
-            return (await this.GetAll()).Where(x => x.ID == id).FirstOrDefault();
+            var dictDto = (await this.GetAll()).Where(x => x.ID == id).FirstOrDefault();
+
+            if (dictDto == null)
+            {
+                var errorModel = new ErrorModel(ErrorCode.NotFound, "没有找到");
+                throw new BusinessException(errorModel);
+            }
+            dictDto.Children = (await this.GetAll()).Where(x => x.Pid == dictDto.ID).ToList();
+
+            return dictDto;
         }
 
         public async Task<DictDto> GetInculdeSubs(long id)

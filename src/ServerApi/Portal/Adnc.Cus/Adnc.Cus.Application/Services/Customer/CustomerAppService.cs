@@ -25,7 +25,7 @@ namespace Adnc.Cus.Application.Services
             _mapper = mapper;
         }
 
-        public async Task Register(RegisterInputDto inputDto)
+        public async Task<SimpleDto<string>> Register(RegisterInputDto inputDto)
         {
             var exists = await _customerRepo.ExistAsync(t => t.Account == inputDto.Account);
             if (exists)
@@ -44,6 +44,8 @@ namespace Adnc.Cus.Application.Services
             };
 
             await _cusManagerService.Register(customer, customerFinace);
+
+            return new SimpleDto<string> { Result = customer.ID.ToString() };
         }
 
         public async Task<SimpleDto<string>> Recharge(RechargeInputDto inputDto)

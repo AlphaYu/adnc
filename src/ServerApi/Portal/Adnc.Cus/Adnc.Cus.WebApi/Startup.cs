@@ -1,3 +1,4 @@
+using System;
 using System.Reflection;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Builder;
@@ -7,7 +8,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Microsoft.IdentityModel.Logging;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using DotNetCore.CAP.Dashboard.NodeDiscovery;
 using HealthChecks.UI.Client;
 using Autofac;
 using AutoMapper;
@@ -17,8 +20,6 @@ using Adnc.Cus.WebApi.Helper;
 using Adnc.Cus.Application;
 using Adnc.WebApi.Shared;
 using Adnc.WebApi.Shared.Middleware;
-using DotNetCore.CAP.Dashboard.NodeDiscovery;
-using System;
 
 namespace Adnc.Cus.WebApi
 {
@@ -47,16 +48,15 @@ namespace Adnc.Cus.WebApi
             _srvRegistration.Configure();
             _srvRegistration.AddControllers();
             _srvRegistration.AddJWTAuthentication();
-            _srvRegistration.AddAuthorization();
+            _srvRegistration.AddAuthorization<PermissionHandlerRemote>();
             _srvRegistration.AddCors();
             _srvRegistration.AddHealthChecks();
-            _srvRegistration.AddMqHostedServices();
             _srvRegistration.AddEfCoreContext();
             _srvRegistration.AddMongoContext();
             _srvRegistration.AddCaching();
             _srvRegistration.AddSwaggerGen();
-            _srvRegistration.AddAllRpcService();
-            _srvRegistration.AddEventBusSubscribers();
+            _srvRegistration.AddAllRpcServices();
+            _srvRegistration.AddAllEventBusSubscribers();
         }
 
         public void ConfigureContainer(ContainerBuilder builder)

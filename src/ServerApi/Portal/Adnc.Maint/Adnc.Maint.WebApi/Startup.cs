@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Microsoft.IdentityModel.Logging;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using HealthChecks.UI.Client;
 using Autofac;
@@ -48,15 +49,15 @@ namespace Adnc.Maint.WebApi
             _srvRegistration.Configure();
             _srvRegistration.AddControllers();
             _srvRegistration.AddJWTAuthentication();
-            _srvRegistration.AddAuthorization();
+            _srvRegistration.AddAuthorization<PermissionHandlerRemote>();
             _srvRegistration.AddCors();
             _srvRegistration.AddHealthChecks();
-            _srvRegistration.AddMqHostedServices();
             _srvRegistration.AddEfCoreContext();
             _srvRegistration.AddMongoContext();
             _srvRegistration.AddCaching();
             _srvRegistration.AddSwaggerGen();
-            _srvRegistration.AddAllRpcService();
+            _srvRegistration.AddAllMqServices();
+            _srvRegistration.AddAllRpcServices();
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
