@@ -3,7 +3,7 @@ import { getList, save, delMenu } from '@/api/usr/menu'
 import permission from '@/directive/permission/index.js'
 
 export default {
-  name: 'menu',
+  name: 'menus',
   components: { treeTable },
   directives: { permission },
   data() {

@@ -35,7 +35,7 @@ export default {
         account: undefined
       },
       total: 0,
-      list: null,
+      list: [],
       listLoading: true,
       selRow: {}
     }

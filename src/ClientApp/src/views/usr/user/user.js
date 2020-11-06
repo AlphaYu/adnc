@@ -82,7 +82,7 @@ export default {
         name: undefined
       },
       total: 0,
-      list: null,
+      list: [],
       listLoading: true,
       selRow: {},
       checkedRows: []
