@@ -3,11 +3,13 @@
     <div class="block">
       <el-button type="success" size="mini" icon="el-icon-plus" @click.native="add">{{ $t('button.add') }}</el-button>
     </div>
-    <tree-table
+    <el-table
       :data="data"
-      :expand-all="expandAll"
-      highlight-current-row
+      style="width: 100%;margin-bottom: 20px;"
+      row-key="id"
       border
+      :default-expand-all="true"
+      :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
     >
       <el-table-column label="简称">
         <template slot-scope="scope">
@@ -25,12 +27,12 @@
         </template>
       </el-table-column>
       <el-table-column label="操作">
-        <template slot-scope="{row}">
-          <el-button v-permission="['/dept/update']" type="primary" size="mini" @click="edit(row)">编辑</el-button>
-          <el-button v-permission="['/dept/delete']" type="danger" size="mini" @click="remove(row)">删除</el-button>
+        <template slot-scope="scope">
+          <el-button v-permission="['/dept/update']" type="primary" size="mini" @click="edit(scope.row)">编辑</el-button>
+          <el-button v-permission="['/dept/delete']" type="danger" size="mini" @click="remove(scope.row)">删除</el-button>
         </template>
       </el-table-column>
-    </tree-table>
+    </el-table>
     <el-dialog
       :title="formTitle"
       :visible.sync="formVisible"

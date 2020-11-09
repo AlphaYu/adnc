@@ -64,7 +64,18 @@ namespace Adnc.Usr.Application.Dtos
         /// <summary>
         /// 菜单图标
         /// </summary>
-        public string Icon { get; set; }
+        private string _icon;
+        public string Icon
+        {
+            set
+            {
+                _icon = value;
+            }
+            get
+            {
+                return _icon ?? string.Empty;
+            }
+        }
 
         /// <summary>
         /// 菜单编码

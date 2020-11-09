@@ -53,7 +53,7 @@ export default {
       this.listLoading = true
       list().then(data => {
         this.data = data
-        this.listLoading = false
+        this.listLoading = true
       })
     },
     handleNodeClick(data, node) {

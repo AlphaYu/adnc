@@ -4,13 +4,13 @@ Navicat MariaDB Data Transfer
 Source Server         : 193.112.75.77
 Source Server Version : 100504
 Source Host           : 193.112.75.77:13308
-Source Database       : adnc_cus
+Source Database       : adnc_cus_dev
 
 Target Server Type    : MariaDB
 Target Server Version : 100504
 File Encoding         : 65001
 
-Date: 2020-10-15 14:54:19
+Date: 2020-11-09 12:48:07
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -24,6 +24,10 @@ CREATE TABLE `__EFMigrationsHistory` (
   `ProductVersion` varchar(32) NOT NULL,
   PRIMARY KEY (`MigrationId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of __EFMigrationsHistory
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for CusFinance
@@ -42,6 +46,11 @@ CREATE TABLE `CusFinance` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
+-- Records of CusFinance
+-- ----------------------------
+INSERT INTO `CusFinance` VALUES ('108684515530117120', '23', '2020-10-26 21:53:28.214149', '0', '2020-10-26 22:26:18.670169', 'alpha', '414.00');
+
+-- ----------------------------
 -- Table structure for Customer
 -- ----------------------------
 DROP TABLE IF EXISTS `Customer`;
@@ -55,7 +64,12 @@ CREATE TABLE `Customer` (
   `Nickname` varchar(32) CHARACTER SET utf8mb4 NOT NULL,
   `Realname` varchar(20) CHARACTER SET utf8mb4 NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=104367721055129601 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=108684515530117121 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of Customer
+-- ----------------------------
+INSERT INTO `Customer` VALUES ('108684515530117120', '23', '2020-10-26 21:53:28.053480', null, null, 'alpha', 'alpha', 'alpha');
 
 -- ----------------------------
 -- Table structure for CusTransactionLog
@@ -74,4 +88,12 @@ CREATE TABLE `CusTransactionLog` (
   `Remark` varchar(200) CHARACTER SET utf8mb4 DEFAULT NULL,
   `CustomerId` bigint(20) NOT NULL DEFAULT 0,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=103946664171147265 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=108684825703092225 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of CusTransactionLog
+-- ----------------------------
+INSERT INTO `CusTransactionLog` VALUES ('108684775623102464', '23', '2020-10-26 21:54:29.865121', 'alpha', '100', '20', '0.00', '101.00', '101.00', '', '0');
+INSERT INTO `CusTransactionLog` VALUES ('108684789619494912', '23', '2020-10-26 21:54:33.185242', 'alpha', '100', '20', '101.00', '101.00', '202.00', '', '0');
+INSERT INTO `CusTransactionLog` VALUES ('108684808409976832', '23', '2020-10-26 21:54:37.672477', 'alpha', '100', '20', '202.00', '104.00', '306.00', '', '0');
+INSERT INTO `CusTransactionLog` VALUES ('108684825703092224', '23', '2020-10-26 21:54:41.794151', 'alpha', '100', '20', '306.00', '108.00', '414.00', '', '0');
