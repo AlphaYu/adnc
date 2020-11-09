@@ -295,7 +295,7 @@
             菜单路径
             </summary>
         </member>
-        <member name="P:Adnc.Usr.Application.Dtos.MenuNodeDto.Icon">
+        <member name="F:Adnc.Usr.Application.Dtos.MenuNodeDto._icon">
             <summary>
             菜单图标
             </summary>

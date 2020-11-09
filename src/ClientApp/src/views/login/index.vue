@@ -53,18 +53,12 @@
         @click.native.prevent="handleLogin"
       >{{ $t("login.logIn") }}</el-button>
 
-      <!--
       <div style="position:relative">
         <div class="tips">
-          <span>{{ $t('login.username') }} : admin</span>
-          <span>{{ $t('login.password') }} : admin</span>
-        </div>
-        <div class="tips">
-          <span style="margin-right:18px;">{{ $t('login.username') }} : developer</span>
-          <span>{{ $t('login.password') }} : developer</span>
+          <span>{{ $t('login.username') }} : alpha2008</span>
+          <span>{{ $t('login.password') }} : alpha2008</span>
         </div>
       </div>
-      -->
     </el-form>
   </div>
 </template>

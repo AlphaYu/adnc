@@ -14,7 +14,7 @@ namespace Adnc.Usr.Core.CoreServices
 
         Task DeleteMenu(SysMenu menu, CancellationToken cancellationToken = default);
 
-        Task DeleteDept(long deptId, CancellationToken cancellationToken = default);
+        Task UpdateDept(string oldDeptPids,SysDept dept,CancellationToken cancellationToken = default);
 
         //Task UpdateDicts(SysDict dict, List<SysDict> subDicts, CancellationToken cancellationToken = default);
     }

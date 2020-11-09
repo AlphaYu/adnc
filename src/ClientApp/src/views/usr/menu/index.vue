@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div class="block">
-      <el-button type="success" size="mini" icon="el-icon-plus" @click.native="add">{{ $t('button.add') }}</el-button>
+      <el-button v-permission="['/menu/add']" type="success" size="mini" icon="el-icon-plus" @click.native="add">{{ $t('button.add') }}</el-button>
     </div>
     <el-table
       :data="data"
@@ -21,13 +21,11 @@
           <span>{{ scope.row.code }}</span>
         </template>
       </el-table-column>
-      <!--
       <el-table-column label="图标">
         <template slot-scope="scope">
           <svg-icon :icon-class="scope.row.icon" />
         </template>
       </el-table-column>
-      -->
       <el-table-column label="组件">
         <template slot-scope="scope">
           <span>{{ scope.row.component }}</span>

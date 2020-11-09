@@ -22,20 +22,20 @@ namespace Adnc.Usr.Application.Services
         private readonly IEasyCachingProvider _locaCahce;
         private readonly IEasyCachingProvider _redisCache;
         private readonly IEfRepository<SysDept> _deptRepository;
-        private readonly IUsrManagerService _systemManagerService;
+        private readonly IUsrManagerService _usrManagerService;
 
         public DeptAppService(IMapper mapper
             , IHybridProviderFactory hybridProviderFactory
             , IEasyCachingProviderFactory simpleProviderFactory
             , IEfRepository<SysDept> deptRepository
-            , IUsrManagerService systemManagerService)
+            , IUsrManagerService usrManagerService)
         {
             _mapper = mapper;
             _cache = hybridProviderFactory.GetHybridCachingProvider(EasyCachingConsts.HybridCaching);
             _locaCahce = simpleProviderFactory.GetCachingProvider(EasyCachingConsts.LocalCaching);
             _redisCache = simpleProviderFactory.GetCachingProvider(EasyCachingConsts.RemoteCaching);
             _deptRepository = deptRepository;
-            _systemManagerService = systemManagerService;
+            _usrManagerService = usrManagerService;
         }
 
         public async Task Delete(long Id)
@@ -43,8 +43,9 @@ namespace Adnc.Usr.Application.Services
             //var depts1 = (await _locaCahce.GetAsync<List<DeptNodeDto>>(EasyCachingConsts.DetpListCacheKey)).Value;
             //var depts2 = (await _redisCache.GetAsync<List<DeptNodeDto>>(EasyCachingConsts.DetpListCacheKey)).Value;
             //var depts3 = (await _cache.GetAsync<List<DeptNodeDto>>(EasyCachingConsts.DetpListCacheKey)).Value;
-
-            await _systemManagerService.DeleteDept(Id);
+            var dept = await _deptRepository.FindAsync(new object[] { Id });
+            var deletingPids = $"{dept.Pids}[{Id}],";
+            await _deptRepository.DeleteRangeAsync(d => d.Pids.StartsWith(deletingPids) || d.ID == dept.ID);
         }
 
         public async Task<List<DeptNodeDto>> GetList()
@@ -52,25 +53,32 @@ namespace Adnc.Usr.Application.Services
             var result = new List<DeptNodeDto>();
 
             var depts = await this.GetAll();
-            if (depts.Any())
+            if (!depts.Any())
+                return result;
+
+            var allDeptNodes = _mapper.Map<List<DeptNodeDto>>(depts);
+
+            var roots = allDeptNodes.Where(d => d.Pid == 0).OrderBy(d => d.Num);
+            foreach (var node in roots)
             {
-                var deptNodes = _mapper.Map<List<DeptNodeDto>>(depts);
-                var dictDepts = deptNodes.ToDictionary(x => x.ID);
-                foreach (var pair in dictDepts)
+                GetChildren(node, allDeptNodes);
+                result.Add(node);
+            }
+
+            void GetChildren(DeptNodeDto currentNode, List<DeptNodeDto> allDeptNodes)
+            {
+                var childrenNodes = allDeptNodes.Where(d => d.Pid == currentNode.ID).OrderBy(d => d.Num);
+                if (childrenNodes.Count() == 0)
+                    return;
+                else
                 {
-                    var currentDept = pair.Value;
-                    var parentDept = deptNodes.FirstOrDefault(x => x.ID == currentDept.Pid);
-                    if (parentDept != null)
+                    currentNode.Children.AddRange(childrenNodes);
+                    foreach(var node in childrenNodes)
                     {
-                        parentDept.Children.Add(currentDept);
-                    }
-                    else
-                    {
-                        result.Add(currentDept);
+                        GetChildren(node, allDeptNodes);
                     }
                 }
             }
-
             return result;
         }
 
@@ -95,26 +103,43 @@ namespace Adnc.Usr.Application.Services
             }
             else
             {
-                var oldDept = await _deptRepository.FetchAsync(d => d, x => x.ID == saveDto.ID);
-                oldDept.Pid = saveDto.Pid;
-                oldDept.SimpleName = saveDto.SimpleName;
-                oldDept.FullName = saveDto.FullName;
-                oldDept.Num = saveDto.Num;
-                oldDept.Tips = saveDto.Tips;
+                var dept = await _deptRepository.FetchAsync(d => d, x => x.ID == saveDto.ID);
+                if (dept.Pid == 0 && saveDto.Pid > 0)
+                    throw new BusinessException(new ErrorModel(ErrorCode.BadRequest, "一级单位不能修改等级"));
 
-                var dept = await this.SetDeptPids(oldDept);
+                var oldPids = dept.Pids;
 
-                await _deptRepository.UpdateAsync(dept);
+                dept.SimpleName = saveDto.SimpleName;
+                dept.FullName = saveDto.FullName;
+                dept.Num = saveDto.Num;
+                dept.Tips = saveDto.Tips;
+
+                if (dept.Pid == saveDto.Pid)
+                {
+                    await _deptRepository.UpdateAsync(dept);
+                }
+                else
+                {
+                    dept.Pid = saveDto.Pid;
+                    await this.SetDeptPids(dept);
+                    await _usrManagerService.UpdateDept(oldPids, dept);
+                }
+                //var subDetps = _deptRepository.GetAll().Where(d => d.Pids.Contains($"[{dept.ID}]")).ToList();
+                //subDetps.ForEach(c =>
+                //{
+                //    c.Pids = c.Pids.Replace(oldPids,dept.Pids);
+                //});    
             }
         }
 
         private async Task<SysDept> SetDeptPids(SysDept sysDept)
         {
+
             if (sysDept.Pid.HasValue && sysDept.Pid.Value > 0)
             {
                 var depts = await this.GetAll();
-                var dept = depts.Select(d => new { d.ID, d.Pid, d.Pids }).Where(d => d.ID == sysDept.Pid.Value).FirstOrDefault();
-                //var dept = await _deptRepository.FetchAsync(d => new { d.ID, d.Pid, d.Pids }, x => x.ID == sysDept.Pid.Value);
+                //var dept = depts.Select(d => new { d.ID, d.Pid, d.Pids }).Where(d => d.ID == sysDept.Pid.Value).FirstOrDefault();
+                var dept = await _deptRepository.FetchAsync(d => new { d.ID, d.Pid, d.Pids }, x => x.ID == sysDept.Pid.Value);
                 string pids = dept?.Pids ?? "";
                 sysDept.Pids = $"{pids}[{sysDept.Pid}],";
             }
@@ -128,7 +153,9 @@ namespace Adnc.Usr.Application.Services
 
         private async Task<List<DeptDto>> GetAll()
         {
-            var cahceValue = await _cache.GetAsync(EasyCachingConsts.DetpListCacheKey, async () =>
+            var tempcache = await _cache.GetAsync<List<DeptDto>>(EasyCachingConsts.DetpListCacheKey);
+
+            var cahceValue = await _cache.GetAsync(EasyCachingConsts.DetpListCacheKey, async() =>
             {
                 var allDepts = await _deptRepository.GetAll().ToListAsync();
                 return _mapper.Map<List<DeptDto>>(allDepts);

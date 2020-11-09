@@ -63,10 +63,21 @@ namespace Adnc.Usr.Core.CoreServices
             await _relationRepository.InsertRangeAsync(relations);
         }
 
-        public async Task DeleteDept(long deptId, CancellationToken cancellationToken = default)
+        public async Task UpdateDept(string oldDeptPids, SysDept dept, CancellationToken cancellationToken = default)
         {
-            await _deptRepository.DeleteRangeAsync(x => x.Pids.Contains($"[{deptId}]"));
-            await _deptRepository.DeleteAsync(new[] { deptId });
+            await _deptRepository.UpdateAsync(dept);
+            //zz.efcore 不支持
+            //await _deptRepository.UpdateRangeAsync(d => d.Pids.Contains($"[{dept.ID}]"), c => new SysDept { Pids = c.Pids.Replace(oldDeptPids, dept.Pids) });
+            var originalDeptPids = $"{oldDeptPids}[{dept.ID}],";
+            var nowDeptPids = $"{dept.Pids}[{dept.ID}],";
+
+            var subDepts = await _deptRepository.SelectAsync(d => new { d.ID, d.Pids }
+                                                            , d => d.Pids.StartsWith(originalDeptPids)
+                                                            );
+            subDepts.ForEach(c =>
+            {
+                _deptRepository.UpdateAsync(new SysDept { ID = c.ID, Pids = c.Pids.Replace(originalDeptPids, nowDeptPids) }, c => c.Pids).Wait();
+            });
         }
     }
 }

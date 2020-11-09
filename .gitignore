@@ -1,3 +1,7 @@
 .vs
 bin
 obj
+*.user
+*.pubxml
+node_modules
+/src/ClientApp/package-lock.json
