@@ -6,17 +6,17 @@
 [![GitHub stars](https://img.shields.io/github/stars/AlphaYu/Adnc)](https://github.com/AlphaYu/Adnc/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/AlphaYu/Adnc)](https://github.com/AlphaYu/Adnc/network)<br/>
 &ensp;&ensp;&ensp;&ensp;Adnc是一个轻量级的`.Net Core`微服务快速开发框架，同时也可以应用于单体架构系统的开发。框架基于JWT认证授权、集成了微服务相关配套组件，代码简洁、易上手、学习成本低、开箱即用。<br/>
-&ensp;&ensp;&ensp;&ensp;前端基于`Vue`、后端服务基于`.Net Core 3.1`搭建，也是一个前后端分离的框架。webapi遵循RESTful风格，框架包含用户、角色、权限部门、管理；字典、配置管理；登录、审计、异常日志管理等基础的后台模块。<br/>
+&ensp;&ensp;&ensp;&ensp;前端基于`Vue`、后端服务基于`.Net Core 3.1`搭建，也是一个前后端分离的框架。webapi遵循RESTful风格，框架包含用户、角色、权限、部门管理；字典、配置管理；登录、审计、异常日志管理等基础的后台模块。<br/>
 &ensp;&ensp;&ensp;&ensp;框架对配置中心、依赖注入、日志、缓存、模型映射、认证/授权、仓储、服务注册/发现、健康检测、性能与链路监测、队列、ORM、EventBus等模块进行更高一级的自动化封装，更易于开发`Asp.NET Core`微服务项目。<br/>
 ## **演示**
-- 后台管理(Vue版本)：<a href="http://193.112.75.77" target="_blank">http://193.112.75.77</a>
+- 后台管理(`Vue`版本)：<a href="http://193.112.75.77" target="_blank">http://193.112.75.77</a>
 ## **相关文档**
 ### **如何快速跑起来**
 - 详细介绍如何使用docker安装reids、mysql、rabbitmq、mongodb，以及如何在本地配置ClientApp、ServerApi。<br/>
 [请点击链接，查看详细介绍](https://github.com/AlphaYu/Adnc/wiki/%E5%A6%82%E4%BD%95%E5%BF%AB%E9%80%9F%E8%B7%91%E8%B5%B7%E6%9D%A5)
 
 ### **如何手动速部署到服务器**
-- 详细介绍如何使用docker安装consul集群、使用consul注册中心、安装配置Skywalking，以及相关项目项目的dockfile文件编写和配置等。<br/>
+- 详细介绍如何使用docker安装consul集群、使用consul注册中心、安装配置Skywalking，以及相关项目dockfile文件编写和配置等。<br/>
 [请点击链接，查看详细介绍](https://github.com/AlphaYu/Adnc/wiki/Adnc%E5%A6%82%E4%BD%95%E6%89%8B%E5%8A%A8%E9%83%A8%E7%BD%B2(docker,consul,skywalking,nginx))
 
 ## **目录结构**
@@ -64,12 +64,14 @@
 | RabbitMq  | 异步消息队列组件 |
 | Polly  | 一个 .NET 弹性和瞬态故障处理库，允许开发人员以 Fluent 和线程安全的方式来实现重试、断路、超时、隔离和回退策略 |
 
-## 后端主要项目
+## 后端解决方案
 #### **整体架构图**
+Adnc.Infras 基础架构项目<br/>
+Adnc.Portal 相关微服务项目<br/>
 ![.NET Core微服务开源框架-整体架构图](https://aspdotnetcore.net/wp-content/uploads/2020/11/adnc-serverapi-structure.png)
-#### **Adnc.Infras 基础架构层**
+#### **Adnc.Infras 基础架构项目**
 ##### 01.Adnc.WebApi.Shared
-该层定义认证、鉴权、异常捕获等公共类于中间件。所有微服务WebApi层的共享层，并且都需要依赖该层。<br/>
+该层实现了认证、鉴权、异常捕获等公共类和中间件。所有微服务WebApi层的共享层，并且都需要依赖该层。<br/>
 ![.NET Core微服务开源框架-webpai-shared层](https://aspdotnetcore.net/wp-content/uploads/2020/11/adnc-serverapi-webapishared.png)
 ##### 02.Adnc.Application.Shared  
 该层定义了DTO对象的基类、Rpc服务通用服务、应用服务类基类以及操作日志拦截器。所有微服务Application层的共享层，并且都需要依赖该层。<br/>
@@ -78,7 +80,7 @@
 该层定义了Entity对象的基类、业务服务接口基类、UOW接口与拦截器、仓储接口、以及处理本地事务与分布式事务。所有微服务Core层的共享层，并且都需要依赖该层。<br/>
 ![.NET Core微服务开源框架-core-shared层](https://aspdotnetcore.net/wp-content/uploads/2020/11/adnc-serverapi-coreshared.png)
 ##### 04.Adnc.Infr.Common
-该层定义了一些通用帮助类。该层不依赖任何层。<br/>
+该层实现了一些通用帮助类。该层不依赖任何层。<br/>
 ![.NET Core微服务开源框架-基础机构-common层](https://aspdotnetcore.net/wp-content/uploads/2020/11/adnc-serverapi-infr-common.png)
 ##### 10.Adnc.Infr.Gateway 
  该层是一个输出项目，基于Ocelot实现的Api网关，如果项目采用整体结构开发，该项目可以直接删除。ocelot网关包含路由、服务聚合、服务发现、认证、鉴权、限流、熔断、缓存、Header头传递等功能。市面上主流网关还有Kong，Traefik，Ambassador，Tyk等。<br/>
@@ -101,7 +103,7 @@
 ##### 23.Adnc.Infr.RabbitMq
 该层集成了RabbitMq。封装了发布者与订阅者等公共类，方便更加便捷的调用rabbitmq。<br/>
 ![.NET Core微服务开源框架-基础机构-rabbitmq层](https://aspdotnetcore.net/wp-content/uploads/2020/11/adnc-serverapi-infr-rabbitmq.png)
-#### **Adnc.Portal 微服务层**
+#### **Adnc.Portal 相关微服务项目**
 该层都是具体微服务业务的实现。<br/>
 Adnc.Usr 用户中心微服务，实现了用户、角色、权限、部门管理。<br/>
 Adnc.Maint 运维中心微服务，实现了登录、审计、异常日志管理以及一些配套组件的外链。<br/>
