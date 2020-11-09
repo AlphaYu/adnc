@@ -1,4 +1,8 @@
-![](https://discourse-cloud-file-uploads.s3.dualstack.us-west-2.amazonaws.com/github/original/2X/c/c0e0f8a6eae69b57a7465cdc578fc63874783f8d.png)
+[![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://github.com/AlphaYu/Adnc)
+[![GitHub license](https://img.shields.io/github/license/AlphaYu/Adnc)](https://github.com/AlphaYu/Adnc/blob/master/LICENSE)
+[![GitHub issues](https://img.shields.io/github/issues/AlphaYu/Adnc)](https://github.com/AlphaYu/Adnc/issues)
+[![GitHub stars](https://img.shields.io/github/stars/AlphaYu/Adnc)](https://github.com/AlphaYu/Adnc/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/AlphaYu/Adnc)](https://github.com/AlphaYu/Adnc/network)
 # Adnc
 &ensp;&ensp;&ensp;&ensp;Adnc是一个轻量级的`.Net Core`微服务快速开发框架，同时也可以应用于单体架构系统的开发。框架基于JWT认证授权、集成了微服务相关配套组件，代码简洁、易上手、学习成本低、开箱即用。<br/>
 &ensp;&ensp;&ensp;&ensp;前端基于`Vue`、后端服务基于`.Net Core 3.1`搭建，也是一个前后端分离的框架。webapi遵循RESTful风格，框架包含用户、角色、权限、部门管理；字典、配置管理；登录、审计、异常日志管理等基础的后台模块。<br/>
