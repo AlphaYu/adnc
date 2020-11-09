@@ -61,10 +61,10 @@
 
 ## 后端解决方案
 #### **整体架构图**
-Adnc.Infras 基础架构项目<br/>
-Adnc.Portal 相关微服务项目<br/>
+`Adnc.Infras` 基础架构相关工程<br/>
+`Adnc.Portal` 微服务相关工程<br/>
 ![.NET Core微服务开源框架-整体架构图](https://aspdotnetcore.net/wp-content/uploads/2020/11/adnc-serverapi-structure.png)
-#### **Adnc.Infras 基础架构项目**
+#### **Adnc.Infras 基础架构相关工程**
 ##### 01.Adnc.WebApi.Shared
 该层实现了认证、鉴权、异常捕获等公共类和中间件。所有微服务WebApi层的共享层，并且都需要依赖该层。<br/>
 ![.NET Core微服务开源框架-webpai-shared层](https://aspdotnetcore.net/wp-content/uploads/2020/11/adnc-serverapi-webapishared.png)
@@ -98,11 +98,11 @@ Adnc.Portal 相关微服务项目<br/>
 ##### 23.Adnc.Infr.RabbitMq
 该层集成了RabbitMq。封装了发布者与订阅者等公共类，方便更加便捷的调用rabbitmq。<br/>
 ![.NET Core微服务开源框架-基础机构-rabbitmq层](https://aspdotnetcore.net/wp-content/uploads/2020/11/adnc-serverapi-infr-rabbitmq.png)
-#### **Adnc.Portal 相关微服务项目**
+#### **Adnc.Portal 微服务相关工程**
 该层都是具体微服务业务的实现。<br/>
-Adnc.Usr 用户中心微服务，实现了用户、角色、权限、部门管理。<br/>
-Adnc.Maint 运维中心微服务，实现了登录、审计、异常日志管理以及一些配套组件的外链。<br/>
-Adnc.Cus 客户中心微服务，该层主要是一些demo。<br/>
+`Adnc.Usr` 用户中心微服务，实现了用户、角色、权限、部门管理。<br/>
+`Adnc.Maint` 运维中心微服务，实现了登录、审计、异常日志管理以及一些配套组件的外链。<br/>
+`Adnc.Cus` 客户中心微服务，该层主要是一些demo。<br/>
 每个微服务的Migrations层是Efcore用来做数据迁移的，迁移的日志文件存放在各自Migrations目录中。<br/>
 ![.NET Core微服务开源框架-微服务层](https://aspdotnetcore.net/wp-content/uploads/2020/11/adnc-serverapi-potral.png)
 ### 代码片段
