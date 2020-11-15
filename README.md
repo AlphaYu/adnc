@@ -2,12 +2,14 @@
 # Adnc是一个微服务开发框架
 &ensp;&ensp;&ensp;&ensp;<a target="_blank" title="一个轻量级的.Net Core微服务开发框架" href="https://aspdotnetcore.net">Adnc</a>是一个轻量级的<a target="_blank" href="https://github.com/dotnet/core">.Net Core</a>微服务快速开发框架，同时也可以应用于单体架构系统的开发。框架基于JWT认证授权、集成了一系列微服务配套组件，代码简洁、易上手、学习成本低、开箱即用。<br/><br/>
 &ensp;&ensp;&ensp;&ensp;框架前端基于<a target="_blank" href="https://github.com/vuejs/vue">Vue</a>、后端服务基于<a target="_blank" href="https://github.com/dotnet/core">.Net Core 3.1</a>搭建，也是一个前后端分离的框架。webapi遵循RESTful风格，框架包含用户、角色、权限、部门管理；字典、配置管理；登录、审计、异常日志管理等基础的后台管理模块。<br/><br/>
-&ensp;&ensp;&ensp;&ensp;框架对配置中心、依赖注入、日志、缓存、模型映射、认证/授权、仓储、服务注册/发现、健康检测、性能与链路监测、队列、ORM、EventBus等模块进行更高一级的自动化封装，更易于开发<a target="_blank" href="https://github.com/dotnet/aspnetcore">Asp.NET Core</a>微服务项目。
+&ensp;&ensp;&ensp;&ensp;框架对配置中心、依赖注入、日志、缓存、模型映射、认证/授权、仓储、服务注册/发现、健康检测、性能与链路监测、队列、ORM、EventBus等模块进行更高一级的自动化封装，更易于开发<a target="_blank" href="https://github.com/dotnet/aspnetcore">Asp.NET Core</a>微服务项目。<br/>
+
 ## 演示
 - <a href="http://adnc.aspdotnetcore.net" target="_blank">http://adnc.aspdotnetcore.net</a>
 
-## GitHub
-- <a href="https://github.com/alphayu/adnc" target="_blank">https://github.com/alphayu/adnc</a>
+## 给个星星 ⭐️
+- 如果您喜欢这个项目或者它帮助到了您, 请给个 Star~
+
 ## 文档
 #### 如何快速跑起来
 - 详细介绍如何使用docker安装reids、mysql、rabbitmq、mongodb，以及如何在本地配置ClientApp、ServerApi。<br/>
