@@ -54,7 +54,7 @@ namespace Adnc.Usr.Core.CoreServices
                 relations.Add(
                     new SysRelation
                     {
-                        ID = IdGeneraterHelper.GetNextId(IdGeneraterKey.PEMS, permissionIds.IndexOf(permissionId)),
+                        ID = IdGenerater.GetNextId(),
                         RoleId = roleId,
                         MenuId = permissionId
                     }

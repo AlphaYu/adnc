@@ -50,7 +50,7 @@ namespace Adnc.Infr.Consul.Consumer
             catch (Exception ex)
             {
                 CacheManager.Remove(cacheKey);
-                throw;
+                throw ex;
             }
             finally
             {

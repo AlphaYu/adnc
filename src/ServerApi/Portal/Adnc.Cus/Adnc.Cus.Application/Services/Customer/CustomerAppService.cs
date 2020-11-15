@@ -32,7 +32,7 @@ namespace Adnc.Cus.Application.Services
                 throw new BusinessException(new ErrorModel(ErrorCode.Forbidden, "该账号已经存在"));
 
             var customer = _mapper.Map<Customer>(inputDto);
-            customer.ID = new Snowflake(1, 1).NextId();
+            customer.ID = IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId);
 
             var customerFinace = new CusFinance()
             {
@@ -59,7 +59,7 @@ namespace Adnc.Cus.Application.Services
 
             var cusTransactionLog = new CusTransactionLog()
             {
-                ID = new Snowflake(1, 1).NextId()
+                ID = IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId)
                 ,
                 Account = customer.Account
                 ,

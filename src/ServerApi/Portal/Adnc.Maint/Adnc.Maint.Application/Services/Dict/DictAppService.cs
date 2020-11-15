@@ -76,7 +76,7 @@ namespace  Adnc.Maint.Application.Services
             if (saveDto.ID == 0)
             {
                 //long Id = new Snowflake(1, 1).NextId();
-                long Id = IdGeneraterHelper.GetNextId(IdGeneraterKey.DICT);
+                long Id = IdGenerater.GetNextId();
                 var subDicts = GetSubDicts(Id, saveDto.DictValues);
                 await _dictRepository.InsertRangeAsync(subDicts.Append(new SysDict { ID = Id, Pid = 0, Name = saveDto.DictName, Tips = saveDto.Tips,Num="0" }));
             }
@@ -129,7 +129,7 @@ namespace  Adnc.Maint.Application.Services
                 subDicts = values.Select((s,Index) => new SysDict
                 {
                     //ID = snowflake.NextId()
-                    ID = IdGeneraterHelper.GetNextId(IdGeneraterKey.DICT, Index)
+                    ID = IdGenerater.GetNextId()
                     ,
                     Pid = pid
                     ,

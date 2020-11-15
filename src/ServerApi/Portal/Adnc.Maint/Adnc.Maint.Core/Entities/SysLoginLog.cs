@@ -40,9 +40,5 @@ namespace Adnc.Maint.Core.Entities
         [Column("RemoteIpAddress")]
         [StringLength(22)]
         public string RemoteIpAddress { get; set; }
-
-		[Description("创建时间")]
-		[Column("CreateTime")]
-		public DateTime? CreateTime { get; set; }
 	}
 }

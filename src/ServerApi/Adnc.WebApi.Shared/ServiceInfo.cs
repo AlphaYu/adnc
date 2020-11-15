@@ -1,19 +1,19 @@
-﻿using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Text;
+﻿using System.Reflection;
 
 namespace Adnc.WebApi.Shared
 {
-    public class ServiceInfo
+    public sealed class ServiceInfo
     {
         public string CorsPolicy { get; set; } = "default";
-        public string ShortName { get; set; }
-        public string FullName { get; set; }
-        public string Version { get; set; }
-        public string Description { get; set; }
-        public string AssemblyName { get; set; }
+        public string ShortName { get; private set; }
+        public string FullName { get; private set; }
+        public string Version { get; private set; }
+        public string Description { get; private set; }
+        public string AssemblyName { get; private set; }
+
+        private ServiceInfo()
+        {
+        }
 
         public static ServiceInfo Create(Assembly assembly)
         {

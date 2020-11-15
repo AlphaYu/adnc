@@ -69,7 +69,7 @@ namespace Adnc.Usr.Application.Services
             var menu = _mapper.Map<SysMenu>(saveDto);
             if (menu.ID == 0)
             {
-                menu.ID = IdGeneraterHelper.GetNextId(IdGeneraterKey.MENU);
+                menu.ID = IdGenerater.GetNextId();
                 await _menuRepository.InsertAsync(menu);
             }
             else

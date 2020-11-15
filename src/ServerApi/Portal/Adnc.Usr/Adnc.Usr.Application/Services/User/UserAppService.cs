@@ -69,7 +69,7 @@ namespace Adnc.Usr.Application.Services
                     throw new BusinessException(new ErrorModel(ErrorCode.Forbidden,"用户已存在"));
                 }
 
-                user.ID = IdGeneraterHelper.GetNextId(IdGeneraterKey.USER);
+                user.ID = IdGenerater.GetNextId();
                 user.Salt = SecurityHelper.GenerateRandomCode(5);
                 user.Password = HashHelper.GetHashedString(HashType.MD5, user.Password, user.Salt);
                 await _usrManager.AddUser(user);

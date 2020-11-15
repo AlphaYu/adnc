@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
 
 namespace Adnc.Infr.Common.Helper
@@ -19,7 +18,7 @@ namespace Adnc.Infr.Common.Helper
     /// SnowFlake的优点是，整体上按照时间自增排序，并且整个分布式系统内不会产生ID碰撞(由数据中心ID和机器ID作区分)，
     /// 并且效率较高，经测试，SnowFlake单机每秒都能够产生出极限4,096,000个ID来
     /// </summary>
-    public class Snowflake
+    internal class Snowflake
     {
 
         // 开始时间截 (new DateTime(2020, 1, 1).ToUniversalTime() - Jan1st1970).TotalMilliseconds
@@ -65,13 +64,39 @@ namespace Adnc.Infr.Common.Helper
         // 上次生成ID的时间截 
         public long lastTimestamp { get; private set; }
 
+        private static readonly DateTime Jan1st1970 = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
+        private static readonly object _syncRoot = new object(); //加锁对象
+
+        private static Snowflake _snowflake;
+
+        /// <summary>
+        /// 创建一个实例
+        /// </summary>
+        /// <returns></returns>
+        public static Snowflake GetInstance(long datacenterId = 1, long workerId = 1)
+        {
+            if (_snowflake == null)
+            {
+                lock (_syncRoot)
+                {
+                    _snowflake ??= new Snowflake(datacenterId, workerId);
+                }
+            }
+            else
+            {
+                if (_snowflake.datacenterId != datacenterId || _snowflake.workerId != workerId)
+                    throw new Exception($"原始datacenterId:{_snowflake.datacenterId},workerId={_snowflake.workerId}");
+            }
+            return _snowflake;
+        }
 
         /// <summary>
         /// 雪花ID
         /// </summary>
         /// <param name="datacenterId">数据中心ID</param>
         /// <param name="workerId">工作机器ID</param>
-        public Snowflake(long datacenterId, long workerId)
+        private Snowflake(long datacenterId, long workerId)
         {
             if (datacenterId > maxDatacenterId || datacenterId < 0)
             {
@@ -93,7 +118,7 @@ namespace Adnc.Infr.Common.Helper
         /// <returns></returns>
         public long NextId()
         {
-            lock (this)
+            lock (_syncRoot)
             {
                 long timestamp = GetCurrentTimestamp();
                 if (timestamp > lastTimestamp) //时间戳改变，毫秒内序列重置
@@ -133,6 +158,31 @@ namespace Adnc.Infr.Common.Helper
             }
         }
 
+
+        /// <summary>
+        /// 阻塞到下一个毫秒，直到获得新的时间戳
+        /// </summary>
+        /// <param name="lastTimestamp">上次生成ID的时间截</param>
+        /// <returns>当前时间戳</returns>
+        private long GetNextTimestamp(long lastTimestamp)
+        {
+            long timestamp = GetCurrentTimestamp();
+            while (timestamp <= lastTimestamp)
+            {
+                timestamp = GetCurrentTimestamp();
+            }
+            return timestamp;
+        }
+
+        /// <summary>
+        /// 获取当前时间戳
+        /// </summary>
+        /// <returns></returns>
+        private long GetCurrentTimestamp()
+        {
+            return (long)(DateTime.UtcNow - Jan1st1970).TotalMilliseconds;
+        }
+
         /// <summary>
         /// 解析雪花ID
         /// </summary>
@@ -156,31 +206,5 @@ namespace Adnc.Infr.Common.Helper
 
             return sb.ToString();
         }
-
-        /// <summary>
-        /// 阻塞到下一个毫秒，直到获得新的时间戳
-        /// </summary>
-        /// <param name="lastTimestamp">上次生成ID的时间截</param>
-        /// <returns>当前时间戳</returns>
-        private static long GetNextTimestamp(long lastTimestamp)
-        {
-            long timestamp = GetCurrentTimestamp();
-            while (timestamp <= lastTimestamp)
-            {
-                timestamp = GetCurrentTimestamp();
-            }
-            return timestamp;
-        }
-
-        /// <summary>
-        /// 获取当前时间戳
-        /// </summary>
-        /// <returns></returns>
-        private static long GetCurrentTimestamp()
-        {
-            return (long)(DateTime.UtcNow - Jan1st1970).TotalMilliseconds;
-        }
-
-        private static readonly DateTime Jan1st1970 = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
     }
 }

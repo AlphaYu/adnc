@@ -100,7 +100,7 @@ namespace Adnc.Usr.Application.Services
             var user = await _userRepository.FetchAsync(x => new { x.Password, x.Salt, x.Name, x.Email, x.RoleId,x.Account,x.ID,x.Status }, x => x.Account == inputDto.Account);
 
             dynamic log = new ExpandoObject();
-            log.ID = new Snowflake(1, 1).NextId();
+            log.ID = IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId);
             log.Account = inputDto.Account;
             log.CreateTime = DateTime.Now;
             log.Device = currentUser.Device;
