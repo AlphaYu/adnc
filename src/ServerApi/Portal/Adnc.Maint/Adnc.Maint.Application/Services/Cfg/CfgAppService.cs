@@ -104,7 +104,7 @@ namespace  Adnc.Maint.Application.Services
 
                 //Vue处理大数字有问题，暂时不用Snowflake算法,以后完善。
                 //enity.ID = new Snowflake(1, 1).NextId();
-                enity.ID = IdGeneraterHelper.GetNextId(IdGeneraterKey.CFG);
+                enity.ID = IdGenerater.GetNextId();
 
                 await _cfgRepository.InsertAsync(enity);
             }

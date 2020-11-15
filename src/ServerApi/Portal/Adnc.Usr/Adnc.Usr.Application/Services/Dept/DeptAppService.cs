@@ -97,7 +97,7 @@ namespace Adnc.Usr.Application.Services
             if (saveDto.ID == 0)
             {
                 var dept = _mapper.Map<SysDept>(saveDto);
-                dept.ID = IdGeneraterHelper.GetNextId(IdGeneraterKey.DEPT);
+                dept.ID = IdGenerater.GetNextId();
                 await this.SetDeptPids(dept);
                 await _deptRepository.InsertAsync(dept);
             }

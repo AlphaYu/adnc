@@ -11,7 +11,7 @@
           <el-col :span="12" >
             <div class="card-panel-text">{{ $t('dashboard.document') }}</div>
             <div class="card-panel-num">
-              <a href="http://enilu.gitee.io/web-flash" target="_blank">Document</a>
+              <a href="https://aspdotnetcore.net/category/dotnet-microservice/" target="_blank">Document</a>
             </div>
           </el-col>
         </el-card>
@@ -62,23 +62,23 @@
     <el-row :gutter="20" >
       <el-col :span="12">
         <el-collapse   class="section">
-          <el-collapse-item title="2019双11All in cloud低至一折" name="1">
-            <div><a href="https://www.aliyun.com/1111/2019/home?userCode=alts44ap" target="_blank">点击查看详情</a></div>
+          <el-collapse-item title="Adnc是一个.NET Core微服务开源框架" name="1">
+            <div><a href="https://aspdotnetcore.net/aspnet/" target="_blank">点击查看详情</a></div>
           </el-collapse-item>
-          <el-collapse-item title="主机爆款限时优惠" name="2">
-            <div><a href="https://www.aliyun.com/acts/hotsale?userCode=alts44ap" target="_blank">点击查看详情</a> </div>
+          <el-collapse-item title="如何本地调试 docker安装redis mysql rabbitmq mongodb" name="2">
+            <div><a href="https://aspdotnetcore.net/dotnet-docker/" target="_blank">点击查看详情</a> </div>
           </el-collapse-item>
-          <el-collapse-item title="企业级云服务器五折优惠" name="3">
-            <div><a href="https://promotion.aliyun.com/ntms/act/enterprise-discount.html?userCode=alts44ap" target="_blank">点击查看详情</a> </div>
+          <el-collapse-item title="如何用docker consul 部署到服务器" name="3">
+            <div><a href="https://aspdotnetcore.net/docker-consul/" target="_blank">点击查看详情</a> </div>
           </el-collapse-item>
-          <el-collapse-item title="全民云计算云主机低至4折" name="4">
-            <div><a href="https://promotion.aliyun.com/ntms/act/qwbk.html?userCode=alts44ap" target="_blank">点击查看详情</a> </div>
+          <el-collapse-item title="Refit 集成consul在asp.net core中的实践" name="4">
+            <div><a href="https://aspdotnetcore.net/refit-consul/" target="_blank">点击查看详情</a> </div>
           </el-collapse-item>
-          <el-collapse-item title="商标注册服务低至8折" name="5">
-            <div><a href="https://tm.aliyun.com/?userCode=alts44ap" target="_blank">点击查看详情</a> </div>
+          <el-collapse-item title="DotNETer的青春" name="5">
+            <div><a href="https://aspdotnetcore.net/category/dotneter-1024/" target="_blank">点击查看详情</a> </div>
           </el-collapse-item>
-          <el-collapse-item title="云短信产品低至8折" name="6">
-            <div><a href="https://www.aliyun.com/acts/alicomcloud/new-discount?userCode=alts44ap" target="_blank">点击查看详情</a> </div>
+          <el-collapse-item title="新时代的.NET" name="6">
+            <div><a href="https://aspdotnetcore.net/category/dotnetcore_dotnet5/" target="_blank">点击查看详情</a> </div>
           </el-collapse-item>
 
 

@@ -117,7 +117,7 @@ namespace Adnc.Usr.Application.Services
             var role = _mapper.Map<SysRole>(roleDto);
             if (roleDto.ID < 1)
             {
-                role.ID = IdGeneraterHelper.GetNextId(IdGeneraterKey.ROLE);
+                role.ID = IdGenerater.GetNextId();
                 await _roleRepository.InsertAsync(role);
             }
             else

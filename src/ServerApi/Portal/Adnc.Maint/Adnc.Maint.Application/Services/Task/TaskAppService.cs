@@ -65,7 +65,7 @@ namespace  Adnc.Maint.Application.Services
 
                 var enity = _mapper.Map<SysTask>(saveDto);
                 //enity.ID = new Snowflake(1, 1).NextId();
-                enity.ID = IdGeneraterHelper.GetNextId(IdGeneraterKey.Task);
+                enity.ID = IdGenerater.GetNextId();
 
                 await _taskRepository.InsertAsync(enity);
             }

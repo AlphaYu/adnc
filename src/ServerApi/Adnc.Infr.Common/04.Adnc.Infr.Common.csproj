@@ -14,6 +14,10 @@
 	  <None Remove="Obsolete\**" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Compile Remove="Extensions\CoreExtension.cs" />
+	</ItemGroup>
+
   <ItemGroup>
 	  <PackageReference Include="JetBrains.Annotations" Version="2020.1.0" />
 	  <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.9" />

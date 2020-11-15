@@ -1,7 +1,7 @@
 <template>
   <div
     class="login-container"
-    style="background-image: url('/img/bg.jpg')"
+    style="background-image: url('/img/bg.webp')"
   >
     <el-form
       ref="loginForm"

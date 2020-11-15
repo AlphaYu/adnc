@@ -85,7 +85,8 @@ namespace Adnc.Infr.Common.Helper
             var stringBuilder = new StringBuilder(length);
             for (var i = 0; i < length; i++)
             {
-                stringBuilder.Append(array[Random.Next(array.Length)]);
+                //stringBuilder.Append(array[Random.Next(array.Length)]);
+                stringBuilder.Append(array[Random.StrictNext(array.Length)]);
             }
             return stringBuilder.ToString();
         }
