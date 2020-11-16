@@ -88,7 +88,7 @@ namespace Adnc.Usr.Application.Services
         {
             var result = new List<MenuNodeDto>();
 
-            var menus = (await this.GetAllMenus()).OrderBy(o => o.Levels).ThenBy(x => x.Num);
+            var menus = (await this.GetAllMenusFromCache()).OrderBy(o => o.Levels).ThenBy(x => x.Num);
 
             var menuNodes = _mapper.Map<List<MenuNodeDto>>(menus);
             foreach (var node in menuNodes)
@@ -121,7 +121,7 @@ namespace Adnc.Usr.Application.Services
         {
             var result = new List<RouterMenuDto>();
             //所有菜单
-            var allMenus = await this.GetAllMenus();
+            var allMenus = await this.GetAllMenusFromCache();
             //所有菜单角色关系
             var allRelations = await this.GetAllRelations();
             //角色拥有的菜单Ids
@@ -231,7 +231,7 @@ namespace Adnc.Usr.Application.Services
             return cahceValue.Value;
         }
 
-        private async Task<List<MenuDto>> GetAllMenus()
+        private async Task<List<MenuDto>> GetAllMenusFromCache()
         {
             var cahceValue = await _cache.GetAsync(EasyCachingConsts.MenuListCacheKey, async () =>
             {

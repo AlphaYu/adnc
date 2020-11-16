@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using Adnc.Application;
+using Adnc.Infr.Common.Extensions;
 using Adnc.Maint.Application.Dtos;
 using Adnc.Maint.Core.Entities;
 using Adnc.Core.Shared.IRepositories;
@@ -24,7 +24,7 @@ namespace  Adnc.Maint.Application.Services
         public async Task<List<NoticeDto>> GetList(string title)
         {
             List<SysNotice> notices = null;
-            if (string.IsNullOrWhiteSpace(title))
+            if (title.IsNotNullOrWhiteSpace())
             {
                 notices = await _noticeRepository.SelectAsync(n => n, x => true);
             }

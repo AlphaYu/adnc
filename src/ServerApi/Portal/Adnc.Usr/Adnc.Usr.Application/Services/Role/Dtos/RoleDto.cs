@@ -8,6 +8,7 @@ namespace Adnc.Usr.Application.Dtos
 	/// <summary>
 	/// 角色
 	/// </summary>
+	[Serializable]
 	public class RoleDto :BaseOutputDto
 	{
 		/// <summary>

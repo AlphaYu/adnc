@@ -40,7 +40,7 @@ namespace  Adnc.Maint.Application.Services
             List<TaskDto> result = new List<TaskDto>();
 
             Expression<Func<SysTask, bool>> whereCondition = x => true;
-            if (!string.IsNullOrWhiteSpace(searchDto.Name))
+            if (searchDto.Name.IsNotNullOrWhiteSpace())
             {
                 whereCondition = whereCondition.And(x => x.Name.Contains(searchDto.Name));
             }
@@ -52,7 +52,7 @@ namespace  Adnc.Maint.Application.Services
 
         public async Task Save(TaskSaveInputDto saveDto)
         {
-            if (string.IsNullOrWhiteSpace(saveDto.Name))
+            if (saveDto.Name.IsNullOrWhiteSpace())
             {
                 throw new BusinessException(new ErrorModel(ErrorCode.BadRequest,"请输入任务名称"));
             }

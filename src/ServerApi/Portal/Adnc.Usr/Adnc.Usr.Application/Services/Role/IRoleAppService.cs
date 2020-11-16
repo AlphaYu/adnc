@@ -13,10 +13,11 @@ namespace Adnc.Usr.Application.Services
         Task<PageModelDto<RoleDto>> GetPaged(RoleSearchDto searchDto);
 
         [OpsLog(LogName = "新增/修改角色")]
+        [EasyCachingEvict(CacheKey = EasyCachingConsts.RoleAllCacheKey)]
         Task Save(RoleSaveInputDto saveDto);
 
         [OpsLog(LogName = "删除角色")]
-        [EasyCachingEvict(CacheKeys = new[] { EasyCachingConsts.MenuRelationCacheKey, EasyCachingConsts.MenuCodesCacheKey })]
+        [EasyCachingEvict(CacheKeys = new[] { EasyCachingConsts.MenuRelationCacheKey, EasyCachingConsts.MenuCodesCacheKey, EasyCachingConsts.RoleAllCacheKey })]
         Task Delete(long Id);
 
         Task<dynamic> GetRoleTreeListByUserId(long UserId);
@@ -28,5 +29,7 @@ namespace Adnc.Usr.Application.Services
         ValueTask<bool> ExistPermissions(RolePermissionsCheckInputDto inputDto);
 
         Task<IEnumerable<string>> GetPermissions(RolePermissionsCheckInputDto inputDto);
+
+        Task<List<RoleDto>> GetAllFromCache();
     }
 }

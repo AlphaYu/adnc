@@ -44,7 +44,7 @@ namespace Adnc.Usr.Application.Services
         public async Task<PageModelDto<RoleDto>> GetPaged(RoleSearchDto searchModel)
         {
             Expression<Func<SysRole, bool>> whereCondition = x => true;
-            if (!string.IsNullOrWhiteSpace(searchModel.RoleName))
+            if (searchModel.RoleName.IsNotNullOrWhiteSpace())
             {
                 whereCondition = whereCondition.And(x => x.Name.Contains(searchModel.RoleName));
             }
@@ -153,6 +153,17 @@ namespace Adnc.Usr.Application.Services
             if (codes != null && codes.Any())
                 return codes.Intersect(inputDto.Permissions.Select(x => x.ToUpper()));
             return null;
+        }
+
+        public async Task<List<RoleDto>> GetAllFromCache()
+        {
+            var cahceValue = await _cache.GetAsync(EasyCachingConsts.RoleAllCacheKey, async () =>
+            {
+                var allRoles = await _roleRepository.GetAll().ToListAsync();
+                return _mapper.Map<List<RoleDto>>(allRoles);
+            }, TimeSpan.FromSeconds(EasyCachingConsts.OneYear));
+
+            return cahceValue.Value;
         }
     }
 }

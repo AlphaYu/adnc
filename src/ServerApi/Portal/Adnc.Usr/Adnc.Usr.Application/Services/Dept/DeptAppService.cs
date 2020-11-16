@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using EasyCaching.Core;
 using Adnc.Usr.Application.Dtos;
 using Adnc.Usr.Core.CoreServices;
 using Adnc.Usr.Core.Entities;
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Infr.Common.Helper;
-using Microsoft.EntityFrameworkCore;
 using Adnc.Application.Shared.Services;
 using Adnc.Application.Shared;
+using Adnc.Infr.Common.Extensions;
 
 namespace Adnc.Usr.Application.Services
 {
@@ -52,7 +53,7 @@ namespace Adnc.Usr.Application.Services
         {
             var result = new List<DeptNodeDto>();
 
-            var depts = await this.GetAll();
+            var depts = await this.GetAllFromCache();
             if (!depts.Any())
                 return result;
 
@@ -84,12 +85,12 @@ namespace Adnc.Usr.Application.Services
 
         public async Task Save(DeptSaveInputDto saveDto)
         {
-            if (string.IsNullOrWhiteSpace(saveDto.FullName))
+            if (saveDto.FullName.IsNullOrWhiteSpace())
             {
                 throw new BusinessException(new ErrorModel(ErrorCode.BadRequest, "请输入部门全称"));
             }
 
-            if (string.IsNullOrWhiteSpace(saveDto.SimpleName))
+            if (saveDto.SimpleName.IsNullOrWhiteSpace())
             {
                 throw new BusinessException(new ErrorModel(ErrorCode.BadRequest,"请输入部门简称"));
             }
@@ -137,7 +138,7 @@ namespace Adnc.Usr.Application.Services
 
             if (sysDept.Pid.HasValue && sysDept.Pid.Value > 0)
             {
-                var depts = await this.GetAll();
+                var depts = await this.GetAllFromCache();
                 //var dept = depts.Select(d => new { d.ID, d.Pid, d.Pids }).Where(d => d.ID == sysDept.Pid.Value).FirstOrDefault();
                 var dept = await _deptRepository.FetchAsync(d => new { d.ID, d.Pid, d.Pids }, x => x.ID == sysDept.Pid.Value);
                 string pids = dept?.Pids ?? "";
@@ -151,10 +152,8 @@ namespace Adnc.Usr.Application.Services
             return sysDept;
         }
 
-        private async Task<List<DeptDto>> GetAll()
+        public async Task<List<DeptDto>> GetAllFromCache()
         {
-            var tempcache = await _cache.GetAsync<List<DeptDto>>(EasyCachingConsts.DetpListCacheKey);
-
             var cahceValue = await _cache.GetAsync(EasyCachingConsts.DetpListCacheKey, async() =>
             {
                 var allDepts = await _deptRepository.GetAll().ToListAsync();

@@ -18,5 +18,7 @@ namespace Adnc.Usr.Application.Services
         [OpsLog(LogName = "删除部门")]
         [EasyCachingEvict(CacheKey = EasyCachingConsts.DetpListCacheKey)]
         Task Delete(long Id);
+
+        Task<List<DeptDto>> GetAllFromCache();
     }
 }
