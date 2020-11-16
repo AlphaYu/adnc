@@ -43,17 +43,17 @@ namespace  Adnc.Maint.Application.Services
             //var result = new PageModelDto<CfgDto>();
 
             Expression<Func<CfgDto, bool>> whereCondition = x => true;
-            if (!string.IsNullOrWhiteSpace(searchDto.CfgName))
+            if (searchDto.CfgName.IsNotNullOrWhiteSpace())
             {
                 whereCondition = whereCondition.And(x => x.CfgName.Contains(searchDto.CfgName));
             }
-            if (!string.IsNullOrWhiteSpace(searchDto.CfgValue))
+            if (searchDto.CfgName.IsNotNullOrWhiteSpace())
             {
                 whereCondition = whereCondition.And(x => x.CfgValue.Contains(searchDto.CfgValue));
             }
 
             //var pagedModel = await _cfgRepository.PagedAsync(searchDto.PageIndex, searchDto.PageSize, whereCondition, c => c.CreateTime, false);
-            var allCfgs = await this.GetAll();
+            var allCfgs = await this.GetAllFromCache();
 
             var pagedCfgs = allCfgs.Where(whereCondition.Compile())
                                    .OrderByDescending(x => x.CreateTime)
@@ -83,12 +83,12 @@ namespace  Adnc.Maint.Application.Services
 
         public async Task Save(CfgSaveInputDto inputDto)
         {
-            if (string.IsNullOrWhiteSpace(inputDto.CfgName))
+            if (inputDto.CfgName.IsNullOrWhiteSpace())
             {
                 throw new BusinessException(new ErrorModel(ErrorCode.BadRequest, "请输入参数名称"));
             }
 
-            if (string.IsNullOrWhiteSpace(inputDto.CfgValue))
+            if (inputDto.CfgValue.IsNullOrWhiteSpace())
             {
                 throw new BusinessException(new ErrorModel(ErrorCode.BadRequest, "请输入参数值"));
             }
@@ -123,10 +123,10 @@ namespace  Adnc.Maint.Application.Services
 
         public async Task<CfgDto> Get(long id)
         {
-            return (await this.GetAll()).Where(x => x.ID == id).FirstOrDefault();
+            return (await this.GetAllFromCache()).Where(x => x.ID == id).FirstOrDefault();
         }
 
-        private async Task<List<CfgDto>> GetAll()
+        private async Task<List<CfgDto>> GetAllFromCache()
         {
             var cahceValue = await _cache.GetAsync(EasyCachingConsts.CfgListCacheKey, async () =>
             {

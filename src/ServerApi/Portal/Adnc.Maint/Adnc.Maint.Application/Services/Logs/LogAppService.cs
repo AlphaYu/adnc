@@ -48,12 +48,12 @@ namespace  Adnc.Maint.Application.Services
                 whereCondition = whereCondition.And(x => x.CreateTime <= searchDto.EndTime.Value);
             }
 
-            if (!string.IsNullOrWhiteSpace(searchDto.Account))
+            if (searchDto.Account.IsNotNullOrWhiteSpace())
             {
                 whereCondition = whereCondition.And(x => x.Account == searchDto.Account);
             }
 
-            if (!string.IsNullOrWhiteSpace(searchDto.Device))
+            if (searchDto.Device.IsNotNullOrWhiteSpace())
             {
                 whereCondition = whereCondition.And(x => x.Device == searchDto.Device);
             }
@@ -81,12 +81,12 @@ namespace  Adnc.Maint.Application.Services
                 filters.Add(builder.Lte(l => l.CreateTime, searchDto.EndTime));
             }
 
-            if (!string.IsNullOrWhiteSpace(searchDto.Account))
+            if (searchDto.Account.IsNotNullOrWhiteSpace())
             {
                 filters.Add(builder.Eq(l => l.Account, searchDto.Account));
             }
 
-            if (!string.IsNullOrWhiteSpace(searchDto.Method))
+            if (searchDto.Method.IsNotNullOrWhiteSpace())
             {
                 filters.Add(builder.Eq(l => l.Method, searchDto.Method));
             }
@@ -120,7 +120,7 @@ namespace  Adnc.Maint.Application.Services
             //    filters.Add(builder.Eq(l => l.Properties., searchDto.Account));
             //}
 
-            if (!string.IsNullOrWhiteSpace(searchDto.Method))
+            if (searchDto.Method.IsNotNullOrWhiteSpace())
             {
                 filters.Add(builder.Eq(l => l.Properties.Method, searchDto.Method));
             }

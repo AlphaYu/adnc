@@ -1,15 +1,15 @@
-﻿using AutoMapper;
-using System.Threading.Tasks;
-using Adnc.Core.Shared.IRepositories;
-using Adnc.Usr.Application.Dtos;
-using System.Linq.Expressions;
+﻿using System;
 using System.Linq;
-using System;
+using System.Threading.Tasks;
+using System.Linq.Expressions;
+using System.Collections.Generic;
+using AutoMapper;
+using Adnc.Core.Shared.IRepositories;
+using Adnc.Infr.Common.Helper;
 using Adnc.Infr.Common.Extensions;
 using Adnc.Usr.Core.Entities;
-using System.Collections.Generic;
-using Adnc.Infr.Common.Helper;
 using Adnc.Usr.Core.CoreServices;
+using Adnc.Usr.Application.Dtos;
 using Adnc.Application.Shared.Dtos;
 using Adnc.Application.Shared;
 
@@ -19,20 +19,20 @@ namespace Adnc.Usr.Application.Services
     {
         private readonly IMapper _mapper;
         private readonly IEfRepository<SysUser> _userRepository;
-        private readonly IEfRepository<SysDept> _deptRepository;
-        private readonly IEfRepository<SysRole> _roleRepository;
+        private readonly IDeptAppService _deptAppService;
+        private readonly IRoleAppService _roleAppService;
         private readonly IUsrManagerService _usrManager;
 
         public UserAppService(IMapper mapper,
             IEfRepository<SysUser> userRepository,
-            IEfRepository<SysDept> deptRepository,
-            IEfRepository<SysRole> roleRepository,
+            IDeptAppService deptAppService,
+            IRoleAppService roleAppService,
             IUsrManagerService usrManager)
         {
             _mapper = mapper;
             _userRepository = userRepository;
-            _deptRepository = deptRepository;
-            _roleRepository = roleRepository;
+            _deptAppService = deptAppService;
+            _roleAppService = roleAppService;
             _usrManager = usrManager;
         }
 
@@ -90,12 +90,12 @@ namespace Adnc.Usr.Application.Services
         public async Task<PageModelDto<UserDto>> GetPaged(UserSearchDto searchDto)
         {
             Expression<Func<SysUser, bool>> whereCondition = x => x.Status > 0;
-            if (!string.IsNullOrWhiteSpace(searchDto.Account))
+            if (searchDto.Account.IsNotNullOrWhiteSpace())
             {
                 whereCondition = whereCondition.And(x => x.Account.Contains(searchDto.Account));
             }
 
-            if (!string.IsNullOrWhiteSpace(searchDto.Name))
+            if (searchDto.Name.IsNotNullOrWhiteSpace())
             {
                 whereCondition = whereCondition.And(x => x.Name.Contains(searchDto.Name));
             }
@@ -105,10 +105,14 @@ namespace Adnc.Usr.Application.Services
             if (result.Count > 0)
             {
                 var deptIds = result.Data.Where(d => d.DeptId != null).Select(d => d.DeptId).Distinct().ToList();
-                //var roleIds = roleIdstring.ToArray().Distinct().Where(x => x!=char.MinValue && x != ',').ToArray();
-
-                var depts = await _deptRepository.SelectAsync(d => new { d.ID, d.FullName }, x => deptIds.Contains(x.ID));
-                var roles = await _roleRepository.SelectAsync(r => new { r.ID, r.Name }, x => true);
+                //var depts = await _deptRepository.SelectAsync(d => new { d.ID, d.FullName }, x => deptIds.Contains(x.ID));
+                var depts = (await _deptAppService.GetAllFromCache())
+                            .Where(x => deptIds.Contains(x.ID))
+                            .Select(d => new { d.ID, d.FullName });
+                //var roles = await _roleRepository.SelectAsync(r => new { r.ID, r.Name }, x => true);
+                var roles = (await _roleAppService.GetAllFromCache())
+                            .Select(r => new { r.ID, r.Name });
+                            
                 foreach (var user in result.Data)
                 {
                     user.DeptName = depts.FirstOrDefault(x => x.ID == user.DeptId)?.FullName;
