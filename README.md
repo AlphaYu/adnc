@@ -7,8 +7,9 @@
 ## 演示
 - <a href="http://adnc.aspdotnetcore.net" target="_blank">http://adnc.aspdotnetcore.net</a>
 
-## 给个星星 ⭐️
-- 如果您喜欢这个项目或者它帮助到了您, 请给个 Star~
+## GitHub
+- <a href="https://github.com/alphayu/adnc" target="_blank">https://github.com/alphayu/adnc</a>
+- 给个星星⭐️，如果您喜欢这个项目或者它帮助到了您, 请给个 Star~
 
 ## 文档
 #### 如何快速跑起来
