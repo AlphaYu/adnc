@@ -40,7 +40,7 @@ namespace Adnc.Maint.WebApi.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet()]
-        [Permission("dict")]
+        [Permission("dictList")]
         public async Task<List<DictDto>> GetDicttList([FromQuery] DictSearchDto searchDto)
         {
             return await _dictService.GetList(searchDto);

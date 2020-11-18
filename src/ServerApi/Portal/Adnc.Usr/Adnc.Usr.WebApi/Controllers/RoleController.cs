@@ -30,7 +30,7 @@ namespace Adnc.Usr.WebApi.Controllers
         /// <param name="searchModel">角色查询条件</param>
         /// <returns></returns>
         [HttpGet()]
-        [Permission("role")]
+        [Permission("roleList")]
         public async Task<PageModelDto<RoleDto>> GetPaged([FromQuery] RoleSearchDto searchModel)
         {
             return await _roleService.GetPaged(searchModel);

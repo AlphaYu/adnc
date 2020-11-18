@@ -13,7 +13,7 @@ namespace  Adnc.Maint.Application.Services
 
         Task<DictDto> Get(long id);
 
-        Task<DictDto> GetInculdeSubs(long id);
+        //Task<DictDto> GetInculdeSubs(long id);
 
         [OpsLog(LogName = "新增/修改字典")]
         [EasyCachingEvict(CacheKey = EasyCachingConsts.DictListCacheKey)]

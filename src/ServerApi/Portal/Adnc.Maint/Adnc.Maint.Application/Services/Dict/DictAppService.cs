@@ -14,7 +14,6 @@ using Adnc.Maint.Core.Entities;
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Application.Shared.Services;
 using Adnc.Application.Shared;
-using System.Text.Json;
 
 namespace  Adnc.Maint.Application.Services
 {
@@ -51,7 +50,7 @@ namespace  Adnc.Maint.Application.Services
                 whereCondition = whereCondition.And(x => x.Name.Contains(searchDto.Name));
             }
 
-            var dicts = (await this.GetAllFromCache()).OrderBy(d => d.Num).ToList();
+            var dicts = (await this.GetAllFromCache()).Where(whereCondition.Compile()).OrderBy(d => d.Num).ToList();
             if (dicts.Any())
             {
                 result = dicts.Where(d => d.Pid == 0).OrderBy(d => d.Num).ToList();
@@ -103,10 +102,10 @@ namespace  Adnc.Maint.Application.Services
             return dictDto;
         }
 
-        public async Task<DictDto> GetInculdeSubs(long id)
-        {
-            return (await this.GetAllFromCache()).Where(x => x.ID == id || x.Pid == id).OrderBy(x => x.ID).ThenBy(x => x.Num).FirstOrDefault();
-        }
+        //public async Task<DictDto> GetInculdeSubs(long id)
+        //{
+        //    return (await this.GetAllFromCache()).Where(x => x.ID == id || x.Pid == id).OrderBy(x => x.ID).ThenBy(x => x.Num).FirstOrDefault();
+        //}
 
         private async Task<List<DictDto>> GetAllFromCache()
         {

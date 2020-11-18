@@ -40,7 +40,7 @@ namespace Adnc.Maint.WebApi.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet()]
-        [Permission("task")]
+        [Permission("taskList")]
         public async Task<List<TaskDto>> GetList([FromQuery] TaskSearchDto searchDto)
         {
             return await _taskAppService.GetList(searchDto);

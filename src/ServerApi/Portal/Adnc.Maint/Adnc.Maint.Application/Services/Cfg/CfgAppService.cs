@@ -47,7 +47,7 @@ namespace  Adnc.Maint.Application.Services
             {
                 whereCondition = whereCondition.And(x => x.CfgName.Contains(searchDto.CfgName));
             }
-            if (searchDto.CfgName.IsNotNullOrWhiteSpace())
+            if (searchDto.CfgValue.IsNotNullOrWhiteSpace())
             {
                 whereCondition = whereCondition.And(x => x.CfgValue.Contains(searchDto.CfgValue));
             }

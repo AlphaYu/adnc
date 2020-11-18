@@ -44,9 +44,9 @@ namespace Adnc.Infr.EfCore.Repositories
             return await DbContext.Database.GetDbConnection().QueryAsync(sql, param, null, commandTimeout, commandType);
         }
 
-        public virtual async Task<IEnumerable<TrEntity>> QueryAsync<TrEntity>(string sql, object param = null, int? commandTimeout = null, CommandType? commandType = null)
+        public virtual async Task<IEnumerable<TResult>> QueryAsync<TResult>(string sql, object param = null, int? commandTimeout = null, CommandType? commandType = null)
         {
-            return await DbContext.Database.GetDbConnection().QueryAsync<TrEntity>(sql, param, null, commandTimeout, commandType);
+            return await DbContext.Database.GetDbConnection().QueryAsync<TResult>(sql, param, null, commandTimeout, commandType);
         }
 
         public virtual async Task<int> InsertAsync(TEntity entity, CancellationToken cancellationToken = default)

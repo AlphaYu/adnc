@@ -36,7 +36,7 @@ namespace Adnc.Usr.WebApi.Controllers
         /// <param name="searchModel">查询条件</param>
         /// <returns></returns>
         [HttpGet()]
-        [Permission("user")]
+        [Permission("userList")]
         public async Task<PageModelDto<UserDto>> GetPaged([FromQuery]UserSearchDto searchModel)
         {
             return await _userService.GetPaged(searchModel);

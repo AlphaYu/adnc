@@ -24,12 +24,6 @@ namespace Adnc.Maint.Application
             CreateMap<SysDict, DictDto>();
             CreateMap<SysNotice, NoticeDto>().ReverseMap();
 
-            CreateMap<OpsLogSaveInputDto, SysOperationLog>();
-
-            CreateMap<SysOperationLog, OpsLogDto>();
-            CreateMap<SysLoginLog, LoginLogDto>();
-            CreateMap<SysNloglog, NlogLogDto>();
-
             CreateMap<TaskSaveInputDto, SysTask>();
             CreateMap<SysTask, TaskDto>();
             CreateMap<SysTaskLog, TaskLogDto>().ReverseMap();
