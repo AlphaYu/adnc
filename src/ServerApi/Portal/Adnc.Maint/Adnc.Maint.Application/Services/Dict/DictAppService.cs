@@ -37,7 +37,8 @@ namespace  Adnc.Maint.Application.Services
 
         public async Task Delete(long Id)
         {
-            await _dictRepository.UpdateRangeAsync(d => (d.ID == Id) || (d.Pid == Id), d => new SysDict { IsDeleted = true });
+            //await _dictRepository.UpdateRangeAsync(d => (d.ID == Id) || (d.Pid == Id), d => new SysDict { IsDeleted = true });
+            await _dictRepository.DeleteRangeAsync(d => (d.ID == Id) || (d.Pid == Id));
         }
 
         public async Task<List<DictDto>> GetList(DictSearchDto searchDto)

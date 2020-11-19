@@ -35,7 +35,8 @@ namespace  Adnc.Maint.Application.Services
 
         public async Task Delete(long Id)
         {
-            await _cfgRepository.UpdateAsync(new SysCfg { ID = Id, IsDeleted=true }, c => c.IsDeleted);
+            //await _cfgRepository.UpdateAsync(new SysCfg { ID = Id, IsDeleted=true }, c => c.IsDeleted);
+            await _cfgRepository.DeleteAsync(new[] { Id });
         }
 
         public async Task<PageModelDto<CfgDto>> GetPaged(CfgSearchDto searchDto)
