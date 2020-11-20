@@ -39,6 +39,7 @@ using Adnc.Infr.Mongo.Extensions;
 using Adnc.Infr.Mongo.Configuration;
 using Adnc.Application.Shared;
 using Adnc.Application.Shared.RpcServices;
+using Adnc.Infr.Common.Helper;
 
 namespace Adnc.WebApi.Shared
 {
@@ -168,7 +169,8 @@ namespace Adnc.WebApi.Shared
                      {
                         options.JsonSerializerOptions.Converters.Add(new DateTimeConverter());
                         options.JsonSerializerOptions.Converters.Add(new DateTimeNullableConverter());
-                        //options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                         //options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                        options.JsonSerializerOptions.Encoder = SystemTextJsonHelper.GetAdncDefaultEncoder();
                      });
         }
 
@@ -539,9 +541,9 @@ namespace Adnc.WebApi.Shared
             var prefix = serviceName.Substring(0, 7);
             bool isConsulAdderss = (prefix == "http://" || prefix == "https:/") ? false : true;
 
+            var refitSettings = new RefitSettings(new SystemTextJsonContentSerializer(SystemTextJsonHelper.GetAdncDefaultOptions()));
             //注册RefitClient,设置httpclient生命周期时间，默认也是2分钟。
-            //var refitSettings = new RefitSettings(new SystemTextJsonContentSerializer());
-            var clientbuilder = _services.AddRefitClient<TRpcService>()
+            var clientbuilder = _services.AddRefitClient<TRpcService>(refitSettings)
                                          .SetHandlerLifetime(TimeSpan.FromMinutes(2));
             //从consul获取地址
             if (isConsulAdderss)
@@ -594,7 +596,7 @@ namespace Adnc.WebApi.Shared
 
             return new List<IAsyncPolicy<HttpResponseMessage>>()
             {
-                timeoutPolicy
+                //timeoutPolicy
             };
         }
     }

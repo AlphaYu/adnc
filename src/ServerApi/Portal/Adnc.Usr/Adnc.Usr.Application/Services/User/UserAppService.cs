@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Linq.Expressions;
@@ -54,7 +55,7 @@ namespace Adnc.Usr.Application.Services
         {
             if (Id <= 2)
             {
-                throw new BusinessException(new ErrorModel(ErrorCode.Forbidden,"不能删除初始用户"));
+                throw new BusinessException(new ErrorModel(HttpStatusCode.Forbidden,"不能删除初始用户"));
             }
             await _userRepository.UpdateAsync(new SysUser() { ID = Id, Status = (int)ManageStatus.Deleted }, x => x.Status);
         }
@@ -66,7 +67,7 @@ namespace Adnc.Usr.Application.Services
             {
                 if (await _userRepository.ExistAsync(x => x.Account == user.Account))
                 {
-                    throw new BusinessException(new ErrorModel(ErrorCode.Forbidden,"用户已存在"));
+                    throw new BusinessException(new ErrorModel(HttpStatusCode.Forbidden,"用户已存在"));
                 }
 
                 user.ID = IdGenerater.GetNextId();
@@ -131,7 +132,7 @@ namespace Adnc.Usr.Application.Services
         {
             if (setDto.ID < 1)
             {
-                throw new BusinessException(new ErrorModel(ErrorCode.Forbidden, "禁止修改管理员角色"));
+                throw new BusinessException(new ErrorModel(HttpStatusCode.Forbidden, "禁止修改管理员角色"));
             }
             var roleIdStr = setDto.RoleIds == null ? null : string.Join(",", setDto.RoleIds);
             await _userRepository.UpdateAsync(new SysUser() { ID = setDto.ID, RoleId = roleIdStr }, x => x.RoleId);

@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Adnc.Application.Shared.RpcServices;
-using System.Text.Json;
-using Refit;
 
 namespace Adnc.Maint.WebApi.Controllers
 {
@@ -23,12 +18,17 @@ namespace Adnc.Maint.WebApi.Controllers
 
         [AllowAnonymous]
         [HttpPost()]
-        public async Task<LoginReply> Login([FromBody] LoginRequest loginRequest)
+        public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
         {
             var result = await _authRpcService.Login(loginRequest);
-            return result;
-            //var result = await RestService.For<IAuthRpcService>("http://localhost:5010").Login(loginRequest);
-            //return result;
+
+            if (result.IsSuccessStatusCode)
+                return new OkObjectResult(result.Content);
+
+            return new JsonResult(result.Error.Content)
+            {
+                StatusCode = (int)result.StatusCode
+            };
         }
     }
 }

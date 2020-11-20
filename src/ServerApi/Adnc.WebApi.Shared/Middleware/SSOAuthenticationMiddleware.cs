@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
+using System.Net;
 using System.IO;
-using System.Text.Json;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.IdentityModel.Tokens.Jwt;
@@ -119,10 +119,10 @@ namespace Adnc.WebApi.Shared.Middleware
                 }
                 else
                 {
-                    context.Response.StatusCode = (int)ErrorCode.Unauthorized;
-                    var message = new ErrorModel(ErrorCode.Unauthorized, "账号已经在其他地方登录");
+                    context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                    var message = new ErrorModel(HttpStatusCode.Unauthorized, "账号已经在其他地方登录");
                     context.Response.ContentType = "application/json;charset=utf-8";
-                    await context.Response.WriteAsync(JsonSerializer.Serialize(message));
+                    await context.Response.WriteAsync(message.ToString());
                     return;
                 }
             }
@@ -161,11 +161,13 @@ namespace Adnc.WebApi.Shared.Middleware
 
             if (context.Response.StatusCode == 200)
             {
-                var tokenTxt = JObject.Parse(responseContent).GetValue("token").ToString();
+                var tokenTxt = JObject.Parse(responseContent).GetValue("token")?.ToString();
+                if (tokenTxt.IsNullOrWhiteSpace())
+                    return;
                 //refreshTokenTxt = JObject.Parse(responseContent).GetValue("refreshToken").ToString();
 
                 var claimsInfo = GetClaimsInfo(tokenTxt);
-                if (!string.IsNullOrEmpty(claimsInfo.Account))
+                if (claimsInfo.Account.IsNotNullOrWhiteSpace())
                 {
                     var tokenKey = $"{tokenPrefx}:{claimsInfo.Account}:{claimsInfo.Id}";
                     _cache.Set(tokenKey, claimsInfo.Token, claimsInfo.Expire - DateTime.Now);

@@ -1,9 +1,9 @@
-﻿using AutoMapper;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Data;
+using System.Net;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using AutoMapper;
 using Adnc.Maint.Application.Dtos;
 using Adnc.Infr.Common.Extensions;
 using Adnc.Infr.Common.Helper;
@@ -54,14 +54,14 @@ namespace  Adnc.Maint.Application.Services
         {
             if (saveDto.Name.IsNullOrWhiteSpace())
             {
-                throw new BusinessException(new ErrorModel(ErrorCode.BadRequest,"请输入任务名称"));
+                throw new BusinessException(new ErrorModel(HttpStatusCode.BadRequest,"请输入任务名称"));
             }
             //add
             if (saveDto.ID == 0)
             {
                 var exist = await _taskRepository.ExistAsync(c => c.Name == saveDto.Name);
                 if (exist)
-                    throw new BusinessException(new ErrorModel(ErrorCode.BadRequest,"任务名称已经存在"));
+                    throw new BusinessException(new ErrorModel(HttpStatusCode.BadRequest,"任务名称已经存在"));
 
                 var enity = _mapper.Map<SysTask>(saveDto);
                 //enity.ID = new Snowflake(1, 1).NextId();
@@ -74,7 +74,7 @@ namespace  Adnc.Maint.Application.Services
             {
                 var exist = await _taskRepository.ExistAsync(c => c.Name == saveDto.Name && c.ID != saveDto.ID);
                 if (exist)
-                    throw new BusinessException(new ErrorModel(ErrorCode.BadRequest,"任务名称已经存在"));
+                    throw new BusinessException(new ErrorModel(HttpStatusCode.BadRequest,"任务名称已经存在"));
 
                 var enity = _mapper.Map<SysTask>(saveDto);
 

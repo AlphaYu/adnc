@@ -100,7 +100,7 @@ namespace Adnc.Usr.WebApi
                 c.SwaggerEndpoint($"/{_serviceInfo.ShortName}/swagger/{_serviceInfo.Version}/swagger.json", $"{_serviceInfo.FullName}-{_serviceInfo.Version}");
                 c.RoutePrefix = $"{_serviceInfo.ShortName}";
             });
-            //app.UseErrorHandling();
+            app.UseErrorHandling();
             app.UseHealthChecks($"/{_srvRegistration.GetConsulConfig().HealthCheckUrl}", new HealthCheckOptions()
             {
                 Predicate = _ => true,
@@ -109,8 +109,8 @@ namespace Adnc.Usr.WebApi
             });
             app.UseRouting();
             app.UseAuthentication();
+            app.UseSSOAuthentication();
             app.UseAuthorization();
-            //app.UseSSOAuthentication();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers().RequireAuthorization();

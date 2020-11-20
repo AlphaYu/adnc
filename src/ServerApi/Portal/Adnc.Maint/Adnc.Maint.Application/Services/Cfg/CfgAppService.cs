@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -86,12 +87,12 @@ namespace  Adnc.Maint.Application.Services
         {
             if (inputDto.CfgName.IsNullOrWhiteSpace())
             {
-                throw new BusinessException(new ErrorModel(ErrorCode.BadRequest, "请输入参数名称"));
+                throw new BusinessException(new ErrorModel(HttpStatusCode.BadRequest, "请输入参数名称"));
             }
 
             if (inputDto.CfgValue.IsNullOrWhiteSpace())
             {
-                throw new BusinessException(new ErrorModel(ErrorCode.BadRequest, "请输入参数值"));
+                throw new BusinessException(new ErrorModel(HttpStatusCode.BadRequest, "请输入参数值"));
             }
 
             //add
@@ -99,7 +100,7 @@ namespace  Adnc.Maint.Application.Services
             {
                 var exist = await _cfgRepository.ExistAsync(c => c.CfgName == inputDto.CfgName);
                 if (exist)
-                    throw new BusinessException(new ErrorModel(ErrorCode.BadRequest, "参数名称已经存在"));
+                    throw new BusinessException(new ErrorModel(HttpStatusCode.BadRequest, "参数名称已经存在"));
 
                 var enity = _mapper.Map<SysCfg>(inputDto);
 
@@ -114,7 +115,7 @@ namespace  Adnc.Maint.Application.Services
             {
                 var exist = await _cfgRepository.ExistAsync(c => c.CfgName == inputDto.CfgName && c.ID != inputDto.ID);
                 if (exist)
-                    throw new BusinessException(new ErrorModel(ErrorCode.BadRequest, "参数名称已经存在"));
+                    throw new BusinessException(new ErrorModel(HttpStatusCode.BadRequest, "参数名称已经存在"));
 
                 var enity = _mapper.Map<SysCfg>(inputDto);
 

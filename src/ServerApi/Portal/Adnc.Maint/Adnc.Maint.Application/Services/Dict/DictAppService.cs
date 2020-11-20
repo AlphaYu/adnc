@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -69,7 +70,7 @@ namespace  Adnc.Maint.Application.Services
         {
             if (saveDto.DictName.IsNullOrWhiteSpace())
             {
-                throw new BusinessException(new ErrorModel(ErrorCode.BadRequest,"请输入字典名称"));
+                throw new BusinessException(new ErrorModel(HttpStatusCode.BadRequest,"请输入字典名称"));
             }
 
             //add
@@ -95,7 +96,7 @@ namespace  Adnc.Maint.Application.Services
 
             if (dictDto == null)
             {
-                var errorModel = new ErrorModel(ErrorCode.NotFound, "没有找到");
+                var errorModel = new ErrorModel(HttpStatusCode.NotFound, "没有找到");
                 throw new BusinessException(errorModel);
             }
             dictDto.Children = (await this.GetAllFromCache()).Where(x => x.Pid == dictDto.ID).ToList();

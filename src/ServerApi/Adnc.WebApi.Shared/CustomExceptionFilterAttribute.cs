@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Adnc.Infr.Common;
 using Adnc.Application.Shared;
+using Adnc.Infr.Common.Helper;
 
 namespace Microsoft.AspNetCore.Mvc.Filters
 {
@@ -23,17 +25,17 @@ namespace Microsoft.AspNetCore.Mvc.Filters
             JsonResult result = null;
             if (exception is BusinessException)
             {
-                result = new JsonResult(exception.Message)
+                result = new JsonResult(
+                    JsonSerializer.Deserialize<ErrorModel>(exception.Message, SystemTextJsonHelper.GetAdncDefaultOptions())
+                    , SystemTextJsonHelper.GetAdncDefaultOptions())
                 {
                     StatusCode = exception.HResult
                 };
             }
             else
             {
-                result = new JsonResult(new ErrorModel(ErrorCode.InternalServerError, "服务器异常"))
-                {
-                    StatusCode = 500
-                };
+                result = new JsonResult(new ErrorModel(System.Net.HttpStatusCode.InternalServerError, "服务器异常")
+                                        , SystemTextJsonHelper.GetAdncDefaultOptions());
 
                 var userContext = context.HttpContext.RequestServices.GetService<UserContext>();
 

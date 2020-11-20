@@ -1,9 +1,10 @@
-﻿using AutoMapper;
-using System;
+﻿using System;
+using System.Net;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using AutoMapper;
 using Adnc.Usr.Application.Dtos;
 using Adnc.Infr.Common.Extensions;
 using Adnc.Usr.Core.CoreServices;
@@ -96,12 +97,12 @@ namespace Adnc.Usr.Application.Services
         {
             if (Id < 2)
             {
-                throw new BusinessException(new ErrorModel(ErrorCode.Forbidden, "不能删除初始角色"));
+                throw new BusinessException(new ErrorModel(HttpStatusCode.Forbidden, "不能删除初始角色"));
             }
 
             if (await _userRepository.ExistAsync(x => x.RoleId == Id.ToString()))
             {
-                throw new BusinessException(new ErrorModel(ErrorCode.Forbidden, "有用户使用该角色，禁止删除"));
+                throw new BusinessException(new ErrorModel(HttpStatusCode.Forbidden, "有用户使用该角色，禁止删除"));
             }
 
             await _roleRepository.DeleteAsync(new long[] { Id });

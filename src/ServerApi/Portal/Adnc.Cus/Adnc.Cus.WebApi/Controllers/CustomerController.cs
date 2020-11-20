@@ -81,8 +81,9 @@ namespace Adnc.Cus.WebApi.Controllers
             {
                 if (jwtToken == null)
                 {
-                    var reply = await _authRpcServcie.Login(new LoginRequest { Account = "alpha2008", Password = "alpha2008" });
-                    jwtToken = reply.Token;
+                    var rpcResult = await _authRpcServcie.Login(new LoginRequest { Account = "alpha2008", Password = "alpha2008" });
+
+                    jwtToken = rpcResult.Content.Token;
                 }
                 result = await _maintRpcServcie.GetDict($"Bearer {jwtToken}", 29);
             }
