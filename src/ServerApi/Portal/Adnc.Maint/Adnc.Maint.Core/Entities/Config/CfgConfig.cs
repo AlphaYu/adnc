@@ -11,7 +11,7 @@ namespace Adnc.Maint.Core.Entities.Config
             //    .HasDefaultValue(false);
             //builder.HasQueryFilter(d => EF.Property<bool>(d, "IsDeleted") == false);
             builder.Property(d => d.IsDeleted)
-                .HasDefaultValue(false);
+                   .HasDefaultValue(false);
             builder.HasQueryFilter(d => d.IsDeleted == false);
         }
     }

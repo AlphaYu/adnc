@@ -39,6 +39,7 @@ using Adnc.Infr.Mongo.Extensions;
 using Adnc.Infr.Mongo.Configuration;
 using Adnc.Application.Shared;
 using Adnc.Application.Shared.RpcServices;
+using Adnc.Infr.Common.Helper;
 
 namespace Adnc.WebApi.Shared
 {
@@ -55,6 +56,13 @@ namespace Adnc.WebApi.Shared
         protected readonly RabbitMqConfig _rabbitMqConfig;
         protected readonly ConsulConfig _consulConfig;
 
+        /// <summary>
+        /// 服务注册与系统配置
+        /// </summary>
+        /// <param name="cfg"><see cref="IConfiguration"/></param>
+        /// <param name="services"><see cref="IServiceCollection"/></param>
+        /// <param name="env"><see cref="IWebHostEnvironment"/></param>
+        /// <param name="serviceInfo"><see cref="ServiceInfo"/></param>
         public SharedServicesRegistration(IConfiguration cfg
             , IServiceCollection services
             , IWebHostEnvironment env
@@ -65,44 +73,77 @@ namespace Adnc.WebApi.Shared
             _services = services;
             _serviceInfo = serviceInfo;
 
+            //读取Jwt配置
             _jwtConfig = _cfg.GetSection("JWT").Get<JWTConfig>();
+            //读取mongodb配置
             _mongoConfig = _cfg.GetSection("MongoDb").Get<MongoConfig>();
+            //读取mysql配置
             _mysqlConfig = _cfg.GetSection("Mysql").Get<MysqlConfig>();
+            //读取redis配置
             _redisConfig = _cfg.GetSection("Redis").Get<RedisConfig>();
+            //读取rabbitmq配置
             _rabbitMqConfig = _cfg.GetSection("RabbitMq").Get<RabbitMqConfig>();
+            //读取consul配置
             _consulConfig = _cfg.GetSection("Consul").Get<ConsulConfig>();
         }
 
+        /// <summary>
+        /// 获取Jwt配置
+        /// </summary>
+        /// <returns><see cref="JWTConfig"/></returns>
         public virtual JWTConfig GetJWTConfig()
         {
             return _jwtConfig;
         }
 
+        /// <summary>
+        /// 获取mongdb配置
+        /// </summary>
+        /// <returns><see cref="MongoConfig"/></returns>
         public virtual MongoConfig GetMongoConfig()
         {
             return _mongoConfig;
         }
 
+        /// <summary>
+        /// 获取mysql配置
+        /// </summary>
+        /// <returns><see cref="MysqlConfig"/></returns>
         public virtual MysqlConfig GetMysqlConfig()
         {
             return _mysqlConfig;
         }
 
+        /// <summary>
+        /// 获取reids配置
+        /// </summary>
+        /// <returns><see cref="RedisConfig"/></returns>
         public virtual RedisConfig GetRedisConfig()
         {
             return _redisConfig;
         }
 
+        /// <summary>
+        /// 获取rabbitmq配置
+        /// </summary>
+        /// <returns><see cref="RabbitMqConfig"/></returns>
         public virtual RabbitMqConfig GetRabbitMqConfig()
         {
             return _rabbitMqConfig;
         }
 
+        /// <summary>
+        /// 获取consul配置
+        /// </summary>
+        /// <returns><see cref="ConsulConfig"/></returns>
         public virtual ConsulConfig GetConsulConfig()
         {
             return _consulConfig;
         }
 
+        /// <summary>
+        /// 注册配置类到IOC容器
+        /// </summary>
         public virtual void Configure()
         {
             // 获取客户端真实Ip
@@ -118,6 +159,9 @@ namespace Adnc.WebApi.Shared
             _services.Configure<RabbitMqConfig>(_cfg.GetSection("RabbitMq"));
         }
 
+        /// <summary>
+        /// 注册Controllers
+        /// </summary>
         public virtual void AddControllers()
         {
             _services.AddControllers(options => options.Filters.Add(typeof(CustomExceptionFilterAttribute)))
@@ -125,10 +169,14 @@ namespace Adnc.WebApi.Shared
                      {
                         options.JsonSerializerOptions.Converters.Add(new DateTimeConverter());
                         options.JsonSerializerOptions.Converters.Add(new DateTimeNullableConverter());
-                        //options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                         //options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                        options.JsonSerializerOptions.Encoder = SystemTextJsonHelper.GetAdncDefaultEncoder();
                      });
         }
 
+        /// <summary>
+        /// 注册EfcoreContext
+        /// </summary>
         public virtual void AddEfCoreContext()
         {
             _services.AddDbContext<AdncDbContext>(options =>
@@ -143,6 +191,9 @@ namespace Adnc.WebApi.Shared
             });
         }
 
+        /// <summary>
+        /// 注册MongdbContext
+        /// </summary>
         public virtual void AddMongoContext()
         {
             _services.AddMongo<MongoContext>(options =>
@@ -153,6 +204,9 @@ namespace Adnc.WebApi.Shared
             });
         }
 
+        /// <summary>
+        /// 注册Jwt认证组件
+        /// </summary>
         public virtual void AddJWTAuthentication()
         {
             //认证配置
@@ -234,6 +288,12 @@ namespace Adnc.WebApi.Shared
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
         }
 
+        /// <summary>
+        /// 注册授权组件
+        /// PermissionHandlerRemote 跨服务授权
+        /// PermissionHandlerLocal  本地授权,adnc.usr走本地授权，其他服务走Rpc授权
+        /// </summary>
+        /// <typeparam name="THandler"></typeparam>
         public virtual void AddAuthorization<THandler>()
             where THandler: PermissionHandler
         {
@@ -321,6 +381,9 @@ namespace Adnc.WebApi.Shared
             });
         }
 
+        /// <summary>
+        /// 注册跨域组件
+        /// </summary>
         public virtual void AddCors()
         {
             _services.AddCors(options =>
@@ -336,6 +399,9 @@ namespace Adnc.WebApi.Shared
             });
         }
 
+        /// <summary>
+        /// 注册swagger组件
+        /// </summary>
         public virtual void AddSwaggerGen()
         {
             var openApiInfo = new OpenApiInfo { Title = _serviceInfo.ShortName, Version = _serviceInfo.Version };
@@ -374,6 +440,9 @@ namespace Adnc.WebApi.Shared
             });
         }
 
+        /// <summary>
+        /// 注册健康监测组件
+        /// </summary>
         public virtual void AddHealthChecks()
         {
             var redisString = _redisConfig.dbconfig.ConnectionStrings[0].Replace(",prefix=", string.Empty).Replace(",poolsize=50", string.Empty);
@@ -393,6 +462,12 @@ namespace Adnc.WebApi.Shared
                      .AddRedis(redisString);
         }
 
+        /// <summary>
+        /// 注册CAP组件(实现事件总线及最终一致性（分布式事务）的一个开源的组件)
+        /// </summary>
+        /// <param name="tableNamePrefix">cap表面前缀</param>
+        /// <param name="groupName">群组名子</param>
+        /// <param name="func">回调函数</param>
         protected virtual void AddEventBusSubscribers(string tableNamePrefix, string groupName, Action<IServiceCollection> func)
         {
             _services.AddCap(x =>
@@ -450,6 +525,13 @@ namespace Adnc.WebApi.Shared
             func?.Invoke(_services);
         }
 
+        /// <summary>
+        /// 注册Rpc服务(跨服务之间的同步通讯)
+        /// </summary>
+        /// <typeparam name="TRpcService">Rpc服务接口</typeparam>
+        /// <param name="serviceName">在注册中心注册的服务名称，或者服务的Url</param>
+        /// <param name="policies">Polly策略</param>
+        /// <param name="token">Token，可空</param>
         protected virtual void AddRpcService<TRpcService>(string serviceName
         , List<IAsyncPolicy<HttpResponseMessage>> policies
         , Func<Task<string>> token = null
@@ -459,9 +541,9 @@ namespace Adnc.WebApi.Shared
             var prefix = serviceName.Substring(0, 7);
             bool isConsulAdderss = (prefix == "http://" || prefix == "https:/") ? false : true;
 
+            var refitSettings = new RefitSettings(new SystemTextJsonContentSerializer(SystemTextJsonHelper.GetAdncDefaultOptions()));
             //注册RefitClient,设置httpclient生命周期时间，默认也是2分钟。
-            //var refitSettings = new RefitSettings(new SystemTextJsonContentSerializer());
-            var clientbuilder = _services.AddRefitClient<TRpcService>()
+            var clientbuilder = _services.AddRefitClient<TRpcService>(refitSettings)
                                          .SetHandlerLifetime(TimeSpan.FromMinutes(2));
             //从consul获取地址
             if (isConsulAdderss)
@@ -488,6 +570,10 @@ namespace Adnc.WebApi.Shared
             }
         }
 
+        /// <summary>
+        /// 生成默认的Polly策略
+        /// </summary>
+        /// <returns></returns>
         protected virtual List<IAsyncPolicy<HttpResponseMessage>> GenerateDefaultRefitPolicies()
         {
             //重试策略
@@ -510,7 +596,7 @@ namespace Adnc.WebApi.Shared
 
             return new List<IAsyncPolicy<HttpResponseMessage>>()
             {
-                timeoutPolicy
+                //timeoutPolicy
             };
         }
     }

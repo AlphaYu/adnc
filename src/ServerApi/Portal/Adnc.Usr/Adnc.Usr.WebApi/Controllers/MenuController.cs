@@ -31,7 +31,7 @@ namespace Adnc.Usr.WebApi.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet()]
-        [Permission("menu")]
+        [Permission("menuList")]
         public async Task<List<MenuNodeDto>> GetMenus()
         {
             return await _menuService.Getlist();

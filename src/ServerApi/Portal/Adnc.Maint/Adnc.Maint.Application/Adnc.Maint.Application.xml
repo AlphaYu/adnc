@@ -80,11 +80,6 @@
             登录日志
             </summary>
         </member>
-        <member name="T:Adnc.Maint.Application.Dtos.LoginLogSaveInputDto">
-            <summary>
-            操作日志
-            </summary>
-        </member>
         <member name="T:Adnc.Maint.Application.Dtos.LogSearchDto">
             <summary>
             日志检索条件

@@ -145,7 +145,7 @@ namespace Adnc.Infr.Consul.Registration
                 return serviceAddress;
             }
 
-            //匹配多个，直接放回第一个
+            //匹配多个，直接返回第一个
             serviceAddress = new Uri($"{finalMatches[0].Protocol}://{ finalMatches[0].ServiceIP}:{finalMatches[0].Port}");
             return serviceAddress;
         }

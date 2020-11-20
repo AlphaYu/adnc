@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Net;
+using System.Threading.Tasks;
 using AutoMapper;
 using Adnc.Cus.Application.Dtos;
 using Adnc.Cus.Core.CoreServices;
@@ -29,7 +30,7 @@ namespace Adnc.Cus.Application.Services
         {
             var exists = await _customerRepo.ExistAsync(t => t.Account == inputDto.Account);
             if (exists)
-                throw new BusinessException(new ErrorModel(ErrorCode.Forbidden, "该账号已经存在"));
+                throw new BusinessException(new ErrorModel(HttpStatusCode.Forbidden, "该账号已经存在"));
 
             var customer = _mapper.Map<Customer>(inputDto);
             customer.ID = IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId);
@@ -51,11 +52,11 @@ namespace Adnc.Cus.Application.Services
         public async Task<SimpleDto<string>> Recharge(RechargeInputDto inputDto)
         {
             if (inputDto.Amount == 0)
-                throw new BusinessException(new ErrorModel(ErrorCode.BadRequest, "充值金额不能等于0"));
+                throw new BusinessException(new ErrorModel(HttpStatusCode.BadRequest, "充值金额不能等于0"));
 
             var customer = await _customerRepo.FindAsync(new object[] { inputDto.ID });
             if (customer == null)
-                throw new BusinessException(new ErrorModel(ErrorCode.Forbidden, "不存在该账号"));
+                throw new BusinessException(new ErrorModel(HttpStatusCode.Forbidden, "不存在该账号"));
 
             var cusTransactionLog = new CusTransactionLog()
             {

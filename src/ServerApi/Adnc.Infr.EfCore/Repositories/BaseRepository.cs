@@ -44,9 +44,9 @@ namespace Adnc.Infr.EfCore.Repositories
             return await DbContext.Database.GetDbConnection().QueryAsync(sql, param, null, commandTimeout, commandType);
         }
 
-        public virtual async Task<IEnumerable<TrEntity>> QueryAsync<TrEntity>(string sql, object param = null, int? commandTimeout = null, CommandType? commandType = null)
+        public virtual async Task<IEnumerable<TResult>> QueryAsync<TResult>(string sql, object param = null, int? commandTimeout = null, CommandType? commandType = null)
         {
-            return await DbContext.Database.GetDbConnection().QueryAsync<TrEntity>(sql, param, null, commandTimeout, commandType);
+            return await DbContext.Database.GetDbConnection().QueryAsync<TResult>(sql, param, null, commandTimeout, commandType);
         }
 
         public virtual async Task<int> InsertAsync(TEntity entity, CancellationToken cancellationToken = default)
@@ -63,10 +63,6 @@ namespace Adnc.Infr.EfCore.Repositories
 
         public virtual async Task<int> DeleteAsync(long[] keyValues, CancellationToken cancellationToken = default)
         {
-            //if (keyValues.Length > 1)
-            //    return await DbContext.Set<TEntity>().Where(e => keyValues.Contains(e.ID)).DeleteAsync(cancellationToken);
-            //else
-            //    return await DbContext.Set<TEntity>().Where(e => e.ID == keyValues[0]).DeleteAsync(cancellationToken);
             var mapping = DbContext.Model.FindEntityType(typeof(TEntity)); //3.0
             var schema = mapping.GetSchema() ?? "dbo";
             var tableName = mapping.GetTableName();
@@ -75,22 +71,34 @@ namespace Adnc.Infr.EfCore.Repositories
             if (keyNames.Count() > 1 || keyValues?.Length < 1)
                 return 0;
 
-            string keyName = keyNames.First();
-            string sql = string.Empty;
+            var keyName = keyNames.First();
 
-            if (keyValues.Length > 1)
-            {
-                sql = $"delete from {tableName} where {keyName} in {(string.Join(",", keyValues))};";
-            }
-            else
-            {
-                sql = $"delete from {tableName} where {keyName}={keyValues[0]};";
-            }
-            return await DbContext.Database.ExecuteSqlRawAsync(sql, cancellationToken);
+            var isSoftDelete = typeof(ISoftDelete).IsAssignableFrom(typeof(TEntity));
+
+            var sql = isSoftDelete
+                      ? $"update {tableName} set IsDeleted=true "
+                      : $"delete from {tableName} "
+                      ;
+
+            var where = keyValues.Length > 1
+                        ? $" where {keyName} in {(string.Join(",", keyValues))};"
+                        : $" where {keyName}={keyValues[0]};"
+                        ;
+            return await DbContext.Database.ExecuteSqlRawAsync(string.Concat(sql, where), cancellationToken);
         }
 
-        public virtual async Task<int> DeleteRangeAsync(Expression<Func<TEntity, bool>> whereExpression, CancellationToken cancellationToken= default)
+        public virtual async Task<int> DeleteRangeAsync(Expression<Func<TEntity, bool>> whereExpression, CancellationToken cancellationToken = default)
         {
+            var isSoftDelete = typeof(ISoftDelete).IsAssignableFrom(typeof(TEntity));
+            if (isSoftDelete)
+            {
+                var paramExpression = Expression.Parameter(typeof(TEntity), "e");
+                var newExpression = Expression.New(typeof(TEntity));
+                var binding = Expression.Bind(typeof(TEntity).GetMember("IsDeleted")[0], Expression.Constant(true));
+                var memberInitExpression = Expression.MemberInit(newExpression, new List<MemberBinding>() { binding });
+                var updateFactory = Expression.Lambda<Func<TEntity, TEntity>>(memberInitExpression, paramExpression);
+                return await DbContext.Set<TEntity>().Where(whereExpression).UpdateAsync(updateFactory, cancellationToken);
+            }
             return await DbContext.Set<TEntity>().Where(whereExpression).DeleteAsync(cancellationToken);
         }
 

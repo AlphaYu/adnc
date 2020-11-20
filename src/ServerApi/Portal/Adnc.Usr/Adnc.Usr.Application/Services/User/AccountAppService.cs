@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Net;
 using System.Linq;
+using System.Dynamic;
 using System.Text.Json;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -12,7 +14,6 @@ using Adnc.Core.Shared.Entities;
 using Adnc.Application.Shared;
 using Adnc.Infr.Common.Helper;
 using Adnc.Infr.Common.Extensions;
-using System.Dynamic;
 
 namespace Adnc.Usr.Application.Services
 {
@@ -75,18 +76,18 @@ namespace Adnc.Usr.Application.Services
         {
             if (string.Equals(currentUser.Account, "admin", StringComparison.OrdinalIgnoreCase))
             {
-                throw new BusinessException(new ErrorModel(ErrorCode.Forbidden,"不能修改超级管理员密码"));
+                throw new BusinessException(new ErrorModel(HttpStatusCode.Conflict, "不能修改超级管理员密码"));
             }
 
             if (!string.Equals(passwordDto.Password, passwordDto.RePassword))
             {
-                throw new BusinessException(new ErrorModel(ErrorCode.Forbidden,"新密码前后不一致"));
+                throw new BusinessException(new ErrorModel(HttpStatusCode.Conflict, "新密码前后不一致"));
             }
 
             var user = (await _userRepository.FetchAsync(x => new { x.Password, x.Salt, x.Name, x.Email, x.RoleId, x.Account, x.ID, x.Status }, x => x.ID == currentUser.ID)).To<SysUser>();
             if (!string.Equals(HashHelper.GetHashedString(HashType.MD5, passwordDto.OldPassword, user.Salt), user.Password, StringComparison.OrdinalIgnoreCase))
             {
-                throw new BusinessException(new ErrorModel(ErrorCode.Forbidden, "旧密码输入错误"));
+                throw new BusinessException(new ErrorModel(HttpStatusCode.Forbidden, "旧密码输入错误"));
             }
             await _userRepository.UpdateAsync(user, p => p.Password);
 
@@ -112,16 +113,15 @@ namespace Adnc.Usr.Application.Services
 
             if (user == null)
             {
-                var errorModel = new ErrorModel(ErrorCode.NotFound,"用户名或密码错误");
-                log.Message = JsonSerializer.Serialize(errorModel);
+                var errorModel = new ErrorModel(HttpStatusCode.NotFound,"用户名或密码错误");
                 throw new BusinessException(errorModel);
             }
             else
             {
                 if (user.Status != 1)
                 {
-                    var errorModel = new ErrorModel(ErrorCode.TooManyRequests, "账号已锁定");
-                    log.Message = JsonSerializer.Serialize(errorModel);
+                    var errorModel = new ErrorModel(HttpStatusCode.TooManyRequests, "账号已锁定");
+                    log.Message = errorModel.ToString();
                     _mqProducer.BasicPublish(MqExchanges.Logs, MqRoutingKeys.Loginlog, log);
                     throw new BusinessException(errorModel);
                 }
@@ -133,25 +133,25 @@ namespace Adnc.Usr.Application.Services
 
                 if (failLoginCount == 5)
                 {
-                    var errorModel = new ErrorModel(ErrorCode.TooManyRequests,"连续登录失败次数超过5次，账号已锁定");
-                    log.Message = JsonSerializer.Serialize(errorModel);
+                    var errorModel = new ErrorModel(HttpStatusCode.TooManyRequests,"连续登录失败次数超过5次，账号已锁定");
+                    log.Message = errorModel.ToString();
                     await _userRepository.UpdateAsync(new SysUser() { ID = user.ID, Status = 2 }, x => x.Status);
-
+                    _mqProducer.BasicPublish(MqExchanges.Logs, MqRoutingKeys.Loginlog, log);
                     throw new BusinessException(errorModel);
                 }
 
                 if (HashHelper.GetHashedString(HashType.MD5, inputDto.Password, user.Salt) != user.Password)
                 {
-                    var errorModel = new ErrorModel(ErrorCode.NotFound,"用户名或密码错误");
-                    log.Message = JsonSerializer.Serialize(errorModel);
+                    var errorModel = new ErrorModel(HttpStatusCode.NotFound,"用户名或密码错误");
+                    log.Message = errorModel.ToString();
                     _mqProducer.BasicPublish(MqExchanges.Logs, MqRoutingKeys.Loginlog, log);
                     throw new BusinessException(errorModel);
                 }
 
-                if (string.IsNullOrEmpty(user.RoleId))
+                if (user.RoleId.IsNullOrEmpty())
                 {
-                    var errorModel = new ErrorModel(ErrorCode.Forbidden, "未分配任务角色，请联系管理员");
-                    log.Message = JsonSerializer.Serialize(errorModel);
+                    var errorModel = new ErrorModel(HttpStatusCode.Forbidden, "未分配任务角色，请联系管理员");
+                    log.Message = errorModel.ToString();
                     _mqProducer.BasicPublish(MqExchanges.Logs, MqRoutingKeys.Loginlog, log);
                     throw new BusinessException(errorModel);
                 }
@@ -169,7 +169,7 @@ namespace Adnc.Usr.Application.Services
 
             if (user == null)
             {
-                throw new BusinessException(new ErrorModel(ErrorCode.NotFound,"用户不存在,参数信息不完整"));
+                throw new BusinessException(new ErrorModel(HttpStatusCode.NotFound,"用户不存在,参数信息不完整"));
             }
 
             return _mapper.Map<UserValidateDto>(user);

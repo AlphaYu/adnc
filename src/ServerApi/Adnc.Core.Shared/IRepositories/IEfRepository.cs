@@ -18,7 +18,7 @@ namespace Adnc.Core.Shared.IRepositories
 
         Task<IEnumerable<dynamic>> QueryAsync(string sql, object param = null,int? commandTimeout = null, CommandType? commandType = null);
 
-        Task<IEnumerable<TrdEntity>> QueryAsync<TrdEntity>(string sql, object param = null, int? commandTimeout = null, CommandType? commandType = null);
+        Task<IEnumerable<TResult>> QueryAsync<TResult>(string sql, object param = null, int? commandTimeout = null, CommandType? commandType = null);
 
         Task<int> InsertAsync(TEntity entity, CancellationToken cancellationToken = default);
 

@@ -1,15 +1,16 @@
-﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
+using EasyCaching.Core;
+using AutoMapper;
 using Adnc.Usr.Application.Dtos;
 using Adnc.Usr.Core.CoreServices;
 using Adnc.Usr.Core.Entities;
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Infr.Common.Helper;
-using EasyCaching.Core;
 using Adnc.Application.Shared;
 using Adnc.Infr.Common.Extensions;
 
@@ -42,7 +43,7 @@ namespace Adnc.Usr.Application.Services
             {
                 if (await _menuRepository.ExistAsync(x => x.Code == saveDto.Code))
                 {
-                    throw new BusinessException(new ErrorModel(ErrorCode.Forbidden, "同名菜单已存在"));
+                    throw new BusinessException(new ErrorModel(HttpStatusCode.Forbidden, "同名菜单已存在"));
                 }
                 saveDto.Status = true;
             }
@@ -59,7 +60,7 @@ namespace Adnc.Usr.Application.Services
                 saveDto.PCode = parentMenu.Code;
                 if (string.Equals(saveDto.Code, saveDto.PCode))
                 {
-                    throw new BusinessException(new ErrorModel(ErrorCode.Forbidden, "菜单编码冲突"));
+                    throw new BusinessException(new ErrorModel(HttpStatusCode.Forbidden, "菜单编码冲突"));
                 }
 
                 saveDto.Levels = parentMenu.Levels + 1;

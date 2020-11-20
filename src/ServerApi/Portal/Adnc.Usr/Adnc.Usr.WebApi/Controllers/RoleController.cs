@@ -1,11 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System.Net;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Adnc.Usr.Application.Dtos;
 using Adnc.Usr.Application.Services;
-using Adnc.Infr.Common;
 using Adnc.Application.Shared.Dtos;
-using System.Collections.Generic;
 using Adnc.Application.Shared;
 
 namespace Adnc.Usr.WebApi.Controllers
@@ -30,7 +29,7 @@ namespace Adnc.Usr.WebApi.Controllers
         /// <param name="searchModel">角色查询条件</param>
         /// <returns></returns>
         [HttpGet()]
-        [Permission("role")]
+        [Permission("roleList")]
         public async Task<PageModelDto<RoleDto>> GetPaged([FromQuery] RoleSearchDto searchModel)
         {
             return await _roleService.GetPaged(searchModel);
@@ -46,7 +45,7 @@ namespace Adnc.Usr.WebApi.Controllers
         {
             dynamic result = await _roleService.GetRoleTreeListByUserId(userId);
             if (result == null)
-                return new NotFoundObjectResult(new ErrorModel(ErrorCode.NotFound, "没有数据"));
+                return new NotFoundObjectResult(new ErrorModel(HttpStatusCode.NotFound, "没有数据"));
             return result;
         }
 

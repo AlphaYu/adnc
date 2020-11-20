@@ -13,13 +13,13 @@ namespace Adnc.Application.Shared.RpcServices
         /// </summary>
         /// <returns></returns>
         [Post("/usr/session")]
-        Task<LoginReply> Login(LoginRequest loginRequest);
+        Task<ApiResponse<LoginReply>> Login(LoginRequest loginRequest);
 
         /// <summary>
         /// 获取当前用户权限
         /// </summary>
         /// <returns></returns>
         [Get("/usr/users/{userId}/permissions")]
-        Task<IEnumerable<string>> GetCurrenUserPermissions([Header("Authorization")] string jwtToken,long userId, [Query(CollectionFormat.Multi)] string[] permissions);
+        Task<ApiResponse<IEnumerable<string>>> GetCurrenUserPermissions([Header("Authorization")] string jwtToken, long userId, [Query(CollectionFormat.Multi)] string[] permissions);
     }
 }

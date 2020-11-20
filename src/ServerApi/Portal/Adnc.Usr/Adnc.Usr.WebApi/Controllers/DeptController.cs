@@ -39,7 +39,7 @@ namespace Adnc.Usr.WebApi.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet()]
-        [Permission("dept")]
+        [Permission("deptList")]
         public async Task<List<DeptNodeDto>> GetList()
         {            
             return await _deptService.GetList();

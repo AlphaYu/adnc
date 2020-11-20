@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -87,12 +88,12 @@ namespace Adnc.Usr.Application.Services
         {
             if (saveDto.FullName.IsNullOrWhiteSpace())
             {
-                throw new BusinessException(new ErrorModel(ErrorCode.BadRequest, "请输入部门全称"));
+                throw new BusinessException(new ErrorModel(HttpStatusCode.BadRequest, "请输入部门全称"));
             }
 
             if (saveDto.SimpleName.IsNullOrWhiteSpace())
             {
-                throw new BusinessException(new ErrorModel(ErrorCode.BadRequest,"请输入部门简称"));
+                throw new BusinessException(new ErrorModel(HttpStatusCode.BadRequest,"请输入部门简称"));
             }
 
             if (saveDto.ID == 0)
@@ -106,7 +107,7 @@ namespace Adnc.Usr.Application.Services
             {
                 var dept = await _deptRepository.FetchAsync(d => d, x => x.ID == saveDto.ID);
                 if (dept.Pid == 0 && saveDto.Pid > 0)
-                    throw new BusinessException(new ErrorModel(ErrorCode.BadRequest, "一级单位不能修改等级"));
+                    throw new BusinessException(new ErrorModel(HttpStatusCode.BadRequest, "一级单位不能修改等级"));
 
                 var oldPids = dept.Pids;
 

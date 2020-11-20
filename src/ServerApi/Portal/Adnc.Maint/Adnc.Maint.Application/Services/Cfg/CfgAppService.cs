@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -35,7 +36,8 @@ namespace  Adnc.Maint.Application.Services
 
         public async Task Delete(long Id)
         {
-            await _cfgRepository.UpdateAsync(new SysCfg { ID = Id, IsDeleted=true }, c => c.IsDeleted);
+            //await _cfgRepository.UpdateAsync(new SysCfg { ID = Id, IsDeleted=true }, c => c.IsDeleted);
+            await _cfgRepository.DeleteAsync(new[] { Id });
         }
 
         public async Task<PageModelDto<CfgDto>> GetPaged(CfgSearchDto searchDto)
@@ -47,7 +49,7 @@ namespace  Adnc.Maint.Application.Services
             {
                 whereCondition = whereCondition.And(x => x.CfgName.Contains(searchDto.CfgName));
             }
-            if (searchDto.CfgName.IsNotNullOrWhiteSpace())
+            if (searchDto.CfgValue.IsNotNullOrWhiteSpace())
             {
                 whereCondition = whereCondition.And(x => x.CfgValue.Contains(searchDto.CfgValue));
             }
@@ -85,12 +87,12 @@ namespace  Adnc.Maint.Application.Services
         {
             if (inputDto.CfgName.IsNullOrWhiteSpace())
             {
-                throw new BusinessException(new ErrorModel(ErrorCode.BadRequest, "请输入参数名称"));
+                throw new BusinessException(new ErrorModel(HttpStatusCode.BadRequest, "请输入参数名称"));
             }
 
             if (inputDto.CfgValue.IsNullOrWhiteSpace())
             {
-                throw new BusinessException(new ErrorModel(ErrorCode.BadRequest, "请输入参数值"));
+                throw new BusinessException(new ErrorModel(HttpStatusCode.BadRequest, "请输入参数值"));
             }
 
             //add
@@ -98,7 +100,7 @@ namespace  Adnc.Maint.Application.Services
             {
                 var exist = await _cfgRepository.ExistAsync(c => c.CfgName == inputDto.CfgName);
                 if (exist)
-                    throw new BusinessException(new ErrorModel(ErrorCode.BadRequest, "参数名称已经存在"));
+                    throw new BusinessException(new ErrorModel(HttpStatusCode.BadRequest, "参数名称已经存在"));
 
                 var enity = _mapper.Map<SysCfg>(inputDto);
 
@@ -113,7 +115,7 @@ namespace  Adnc.Maint.Application.Services
             {
                 var exist = await _cfgRepository.ExistAsync(c => c.CfgName == inputDto.CfgName && c.ID != inputDto.ID);
                 if (exist)
-                    throw new BusinessException(new ErrorModel(ErrorCode.BadRequest, "参数名称已经存在"));
+                    throw new BusinessException(new ErrorModel(HttpStatusCode.BadRequest, "参数名称已经存在"));
 
                 var enity = _mapper.Map<SysCfg>(inputDto);
 

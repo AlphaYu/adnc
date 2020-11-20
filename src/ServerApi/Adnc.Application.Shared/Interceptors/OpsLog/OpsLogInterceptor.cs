@@ -4,6 +4,7 @@ using System.Text.Json;
 using Castle.DynamicProxy;
 using Adnc.Infr.Mq.RabbitMq;
 using Adnc.Infr.Common;
+using Adnc.Infr.Common.Helper;
 
 namespace Adnc.Application.Shared.Interceptors
 {
@@ -40,7 +41,7 @@ namespace Adnc.Application.Shared.Interceptors
                 CreateTime = DateTime.Now,
                 LogName = attribute.LogName,
                 LogType = "操作日志",
-                Message = JsonSerializer.Serialize(invocation.Arguments),
+                Message = JsonSerializer.Serialize(invocation.Arguments, SystemTextJsonHelper.GetAdncDefaultOptions()),
                 Method = serviceMethod.Name,
                 Succeed = "",
                 UserId = _userContext.ID,

@@ -40,7 +40,7 @@ namespace Adnc.Maint.WebApi.Controllers
         /// <param name="searchDto"><see cref="CfgSearchDto"/></param>
         /// <returns><see cref="PageModelDto{CfgDto}"/></returns>
         [HttpGet()]
-        [Permission("cfg")]
+        [Permission("cfgList")]
         public async Task<PageModelDto<CfgDto>> GetList([FromQuery] CfgSearchDto searchDto)
         {            
             return await _cfgAppService.GetPaged(searchDto);

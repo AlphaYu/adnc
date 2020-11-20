@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -14,7 +15,6 @@ using Adnc.Maint.Core.Entities;
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Application.Shared.Services;
 using Adnc.Application.Shared;
-using System.Text.Json;
 
 namespace  Adnc.Maint.Application.Services
 {
@@ -38,7 +38,8 @@ namespace  Adnc.Maint.Application.Services
 
         public async Task Delete(long Id)
         {
-            await _dictRepository.UpdateRangeAsync(d => (d.ID == Id) || (d.Pid == Id), d => new SysDict { IsDeleted = true });
+            //await _dictRepository.UpdateRangeAsync(d => (d.ID == Id) || (d.Pid == Id), d => new SysDict { IsDeleted = true });
+            await _dictRepository.DeleteRangeAsync(d => (d.ID == Id) || (d.Pid == Id));
         }
 
         public async Task<List<DictDto>> GetList(DictSearchDto searchDto)
@@ -51,7 +52,7 @@ namespace  Adnc.Maint.Application.Services
                 whereCondition = whereCondition.And(x => x.Name.Contains(searchDto.Name));
             }
 
-            var dicts = (await this.GetAllFromCache()).OrderBy(d => d.Num).ToList();
+            var dicts = (await this.GetAllFromCache()).Where(whereCondition.Compile()).OrderBy(d => d.Num).ToList();
             if (dicts.Any())
             {
                 result = dicts.Where(d => d.Pid == 0).OrderBy(d => d.Num).ToList();
@@ -69,7 +70,7 @@ namespace  Adnc.Maint.Application.Services
         {
             if (saveDto.DictName.IsNullOrWhiteSpace())
             {
-                throw new BusinessException(new ErrorModel(ErrorCode.BadRequest,"请输入字典名称"));
+                throw new BusinessException(new ErrorModel(HttpStatusCode.BadRequest,"请输入字典名称"));
             }
 
             //add
@@ -95,7 +96,7 @@ namespace  Adnc.Maint.Application.Services
 
             if (dictDto == null)
             {
-                var errorModel = new ErrorModel(ErrorCode.NotFound, "没有找到");
+                var errorModel = new ErrorModel(HttpStatusCode.NotFound, "没有找到");
                 throw new BusinessException(errorModel);
             }
             dictDto.Children = (await this.GetAllFromCache()).Where(x => x.Pid == dictDto.ID).ToList();
@@ -103,10 +104,10 @@ namespace  Adnc.Maint.Application.Services
             return dictDto;
         }
 
-        public async Task<DictDto> GetInculdeSubs(long id)
-        {
-            return (await this.GetAllFromCache()).Where(x => x.ID == id || x.Pid == id).OrderBy(x => x.ID).ThenBy(x => x.Num).FirstOrDefault();
-        }
+        //public async Task<DictDto> GetInculdeSubs(long id)
+        //{
+        //    return (await this.GetAllFromCache()).Where(x => x.ID == id || x.Pid == id).OrderBy(x => x.ID).ThenBy(x => x.Num).FirstOrDefault();
+        //}
 
         private async Task<List<DictDto>> GetAllFromCache()
         {
