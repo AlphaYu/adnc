@@ -17,11 +17,6 @@ namespace Adnc.Usr.Application.Services
         /// <summary>
         /// 禁用
         /// </summary>
-        Disabled = 2,
-
-        /// <summary>
-        /// 删除
-        /// </summary>
-        Deleted = 3
+        Disabled = 2
     }
 }
