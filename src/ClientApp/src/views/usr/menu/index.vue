@@ -121,12 +121,12 @@
               <treeselect v-model="form.pCode" :options="treeData" placeholder="请选择父节点/顶级节点目录无需选择" />
             </el-form-item>
           </el-col>
-          <el-col v-show="form.isMenu" :span="12">
+          <el-col v-if="form.isMenu" :span="12">
             <el-form-item label="组件" prop="component">
               <el-input v-model="form.component" @focus="componentTips" />
             </el-form-item>
           </el-col>
-          <el-col v-show="form.isMenu" :span="12">
+          <el-col v-if="form.isMenu" :span="12">
             <el-form-item label="图标" prop="icon">
               <el-popover
                 placement="bottom-start"
