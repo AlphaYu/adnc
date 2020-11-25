@@ -9,14 +9,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Adnc.Cus.Migrations.Migrations
 {
     [DbContext(typeof(AdncDbContext))]
-    [Migration("20201013084320_Init_First")]
-    partial class Init_First
+    [Migration("20201124033501_20201124_init")]
+    partial class _20201124_init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.6")
+                .HasAnnotation("ProductVersion", "3.1.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("Adnc.Cus.Core.Entities.CusFinance", b =>
@@ -27,11 +27,11 @@ namespace Adnc.Cus.Migrations.Migrations
 
                     b.Property<string>("Account")
                         .IsRequired()
-                        .HasColumnType("varchar(32) CHARACTER SET utf8mb4")
-                        .HasMaxLength(32);
+                        .HasColumnType("varchar(16) CHARACTER SET utf8mb4")
+                        .HasMaxLength(16);
 
                     b.Property<decimal>("Balance")
-                        .HasColumnType("decimal(65,30)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<long?>("CreateBy")
                         .HasColumnName("CreateBy")
@@ -40,9 +40,6 @@ namespace Adnc.Cus.Migrations.Migrations
                     b.Property<DateTime?>("CreateTime")
                         .HasColumnName("CreateTime")
                         .HasColumnType("datetime(6)");
-
-                    b.Property<long>("CustomerId")
-                        .HasColumnType("bigint");
 
                     b.Property<long?>("ModifyBy")
                         .HasColumnName("ModifyBy")
@@ -65,18 +62,17 @@ namespace Adnc.Cus.Migrations.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<string>("Account")
-                        .IsRequired()
-                        .HasColumnType("varchar(32) CHARACTER SET utf8mb4")
-                        .HasMaxLength(32);
+                        .HasColumnType("varchar(16) CHARACTER SET utf8mb4")
+                        .HasMaxLength(16);
 
                     b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(65,30)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("ChangedAmount")
-                        .HasColumnType("decimal(65,30)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("ChangingAmount")
-                        .HasColumnType("decimal(65,30)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<long?>("CreateBy")
                         .HasColumnName("CreateBy")
@@ -86,20 +82,20 @@ namespace Adnc.Cus.Migrations.Migrations
                         .HasColumnName("CreateTime")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<long>("CustomerId")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("ExchageStatus")
-                        .IsRequired()
                         .HasColumnType("varchar(3) CHARACTER SET utf8mb4")
                         .HasMaxLength(3);
 
                     b.Property<string>("ExchangeType")
-                        .IsRequired()
                         .HasColumnType("varchar(3) CHARACTER SET utf8mb4")
                         .HasMaxLength(3);
 
                     b.Property<string>("Remark")
-                        .IsRequired()
-                        .HasColumnType("varchar(200) CHARACTER SET utf8mb4")
-                        .HasMaxLength(200);
+                        .HasColumnType("varchar(64) CHARACTER SET utf8mb4")
+                        .HasMaxLength(64);
 
                     b.HasKey("ID");
 
@@ -115,8 +111,8 @@ namespace Adnc.Cus.Migrations.Migrations
 
                     b.Property<string>("Account")
                         .IsRequired()
-                        .HasColumnType("varchar(32) CHARACTER SET utf8mb4")
-                        .HasMaxLength(32);
+                        .HasColumnType("varchar(16) CHARACTER SET utf8mb4")
+                        .HasMaxLength(16);
 
                     b.Property<long?>("CreateBy")
                         .HasColumnName("CreateBy")
@@ -136,13 +132,13 @@ namespace Adnc.Cus.Migrations.Migrations
 
                     b.Property<string>("Nickname")
                         .IsRequired()
-                        .HasColumnType("varchar(32) CHARACTER SET utf8mb4")
-                        .HasMaxLength(32);
+                        .HasColumnType("varchar(16) CHARACTER SET utf8mb4")
+                        .HasMaxLength(16);
 
                     b.Property<string>("Realname")
                         .IsRequired()
-                        .HasColumnType("varchar(20) CHARACTER SET utf8mb4")
-                        .HasMaxLength(20);
+                        .HasColumnType("varchar(16) CHARACTER SET utf8mb4")
+                        .HasMaxLength(16);
 
                     b.HasKey("ID");
 

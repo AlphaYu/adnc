@@ -10,15 +10,15 @@ namespace Adnc.Cus.Core.Entities
     public class Customer : EfAuditEntity
     {
         [Required]
-        [StringLength(32)]
+        [StringLength(16)]
         public string Account { get; set; }
 
         [Required]
-        [StringLength(32)]
+        [StringLength(16)]
         public string Nickname { get; set; }
 
         [Required]
-        [StringLength(20)]
+        [StringLength(16)]
         public string Realname { get; set; }
 
         public virtual CusFinance CusFinance { get; set; }

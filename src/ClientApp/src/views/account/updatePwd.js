@@ -13,11 +13,11 @@ export default {
       formRules: {
         oldPassword: [
           { required: true, message: '原密码不能为空', trigger: 'blur' },
-          { min: 5, max: 100, message: '原密码长度不能小于5', trigger: 'blur' }
+          { min: 5, max: 16, message: '原密码长度不能小于5,大于16', trigger: 'blur' }
         ],
         password: [
           { required: true, message: '密码不能为空', trigger: 'blur' },
-          { min: 5, max: 100, message: '密码长度不能小于5', trigger: 'blur' }
+          { min: 5, max: 16, message: '密码长度不能小于5,大于16', trigger: 'blur' }
         ],
         rePassword: [
           { required: true, message: '重复密码不能为空', trigger: 'blur' },

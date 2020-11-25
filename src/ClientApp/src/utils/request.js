@@ -1,6 +1,6 @@
 import axios from 'axios'
 // 超大数字处理 https://juejin.im/post/5cd3a87bf265da0393788246
-//import JSONbig from 'json-bigint'
+// import JSONbig from 'json-bigint'
 import { MessageBox, Message } from 'element-ui'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
@@ -48,7 +48,6 @@ service.interceptors.response.use(
     return response.data
   },
   error => {
-    console.log(error.response)
     if (typeof error.response === 'undefined') {
       Message({
         message: error,
@@ -66,8 +65,17 @@ service.interceptors.response.use(
       })
       return
     }
+    if (error.response.status === 500) {
+      Message({
+        message: error.response.data || error.message || error,
+        type: 'error',
+        duration: 5 * 1000
+      })
+      return Promise.reject(error)
+    }
     Message({
-      message: error.response.data || error.message || error,
+      dangerouslyUseHTMLString: true,
+      message: error.response.data.error || error.response.data || error.message || error,
       type: 'error',
       duration: 5 * 1000
     })

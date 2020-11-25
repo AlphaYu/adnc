@@ -24,7 +24,7 @@ namespace  Adnc.Maint.Application.Services
         public async Task<List<NoticeDto>> GetList(string title)
         {
             List<SysNotice> notices = null;
-            if (title.IsNotNullOrWhiteSpace())
+            if (title.IsNullOrEmpty())
             {
                 notices = await _noticeRepository.SelectAsync(n => n, x => true);
             }

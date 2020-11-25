@@ -85,16 +85,6 @@ namespace  Adnc.Maint.Application.Services
 
         public async Task Save(CfgSaveInputDto inputDto)
         {
-            if (inputDto.CfgName.IsNullOrWhiteSpace())
-            {
-                throw new BusinessException(new ErrorModel(HttpStatusCode.BadRequest, "请输入参数名称"));
-            }
-
-            if (inputDto.CfgValue.IsNullOrWhiteSpace())
-            {
-                throw new BusinessException(new ErrorModel(HttpStatusCode.BadRequest, "请输入参数值"));
-            }
-
             //add
             if (inputDto.ID == 0)
             {

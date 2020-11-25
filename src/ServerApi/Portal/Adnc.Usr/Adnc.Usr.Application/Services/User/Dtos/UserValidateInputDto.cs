@@ -14,13 +14,13 @@ namespace Adnc.Usr.Application.Dtos
         /// <summary>
         /// 账户
         /// </summary>
-        [Required]
+        //[Required]
         public string Account { get; set; }
 
         /// <summary>
         /// 密码
         /// </summary>
-        [Required]
+        //[Required]
         public string Password { get; set; }
 
     }

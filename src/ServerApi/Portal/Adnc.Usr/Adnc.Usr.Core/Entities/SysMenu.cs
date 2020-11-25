@@ -18,7 +18,7 @@ namespace Adnc.Usr.Core.Entities
 		/// 编号
 		/// </summary>
 		[Description("编号")]
-		[StringLength(32)]
+		[StringLength(16)]
 		[Column("Code")]
 		public string Code { get; set; }
 
@@ -41,7 +41,7 @@ namespace Adnc.Usr.Core.Entities
 		/// 图标
 		/// </summary>
 		[Description("图标")]
-		[StringLength(32)]
+		[StringLength(16)]
 		[Column("Icon")]
 		public string Icon { get; set; }
 
@@ -70,7 +70,7 @@ namespace Adnc.Usr.Core.Entities
 		/// 名称
 		/// </summary>
 		[Description("名称")]
-		[StringLength(64)]
+		[StringLength(16)]
 		[Column("Name")]
 		public string Name { get; set; }
 
@@ -85,7 +85,7 @@ namespace Adnc.Usr.Core.Entities
 		/// 父菜单编号
 		/// </summary>
 		[Description("父菜单编号")]
-		[StringLength(64)]
+		[StringLength(16)]
 		[Column("PCode")]
 		public string PCode { get; set; }
 

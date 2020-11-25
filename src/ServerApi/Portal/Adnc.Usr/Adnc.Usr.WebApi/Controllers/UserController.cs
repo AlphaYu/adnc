@@ -1,12 +1,11 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Adnc.Usr.Application.Dtos;
 using Adnc.Usr.Application.Services;
 using Adnc.Infr.Common;
 using Adnc.Application.Shared.Dtos;
-using System.Collections.Generic;
 
 namespace Adnc.Usr.WebApi.Controllers
 {
@@ -90,7 +89,7 @@ namespace Adnc.Usr.WebApi.Controllers
         [Permission("userFreeze")]
         public async Task ChangeStatus([FromRoute]long userId, [FromBody] SimpleInputDto<int> status)
         {
-            await _userService.ChangeStatus(userId);
+            await _userService.ChangeStatus(userId, status.Value);
         }
 
         /// <summary>

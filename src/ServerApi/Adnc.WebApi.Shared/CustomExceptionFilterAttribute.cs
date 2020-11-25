@@ -35,7 +35,10 @@ namespace Microsoft.AspNetCore.Mvc.Filters
             else
             {
                 result = new JsonResult(new ErrorModel(System.Net.HttpStatusCode.InternalServerError, "服务器异常")
-                                        , SystemTextJsonHelper.GetAdncDefaultOptions());
+                                        , SystemTextJsonHelper.GetAdncDefaultOptions())
+                {
+                    StatusCode = (int)System.Net.HttpStatusCode.InternalServerError
+                };
 
                 var userContext = context.HttpContext.RequestServices.GetService<UserContext>();
 

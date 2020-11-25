@@ -11,7 +11,7 @@ namespace Adnc.Usr.Core.Entities
 	/// </summary>
 	[Table("SysUser")]
 	[Description("账号")]
-	public class SysUser : EfAuditEntity
+	public class SysUser : EfAuditEntity,ISoftDelete
 	{
 
 		//private SysDept _dept;
@@ -28,11 +28,11 @@ namespace Adnc.Usr.Core.Entities
 		/// 账户
 		/// </summary>
 		[Description("账户")]
-		[StringLength(32)]
+		[StringLength(16)]
 		[Column("Account")]
 		public string Account { get; set; }
 
-		[StringLength(255)]
+		[StringLength(64)]
 		[Column("Avatar")]
 		public string Avatar { get; set; }
 
@@ -54,7 +54,7 @@ namespace Adnc.Usr.Core.Entities
         /// email
         /// </summary>
         [Description("email")]
-		[StringLength(64)]
+		[StringLength(32)]
 		[Column("Email")]
 		public string Email { get; set; }
 
@@ -62,7 +62,7 @@ namespace Adnc.Usr.Core.Entities
 		/// 姓名
 		/// </summary>
 		[Description("姓名")]
-		[StringLength(64)]
+		[StringLength(16)]
 		[Column("Name")]
 		public string Name { get; set; }
 
@@ -70,7 +70,7 @@ namespace Adnc.Usr.Core.Entities
 		/// 密码
 		/// </summary>
 		[Description("密码")]
-		[StringLength(64)]
+		[StringLength(32)]
 		[Column("Password")]
 		public string Password { get; set; }
 
@@ -78,7 +78,7 @@ namespace Adnc.Usr.Core.Entities
 		/// 手机号
 		/// </summary>
 		[Description("手机号")]
-		[StringLength(16)]
+		[StringLength(11)]
 		[Column("Phone")]
 		public string Phone { get; set; }
 
@@ -86,7 +86,7 @@ namespace Adnc.Usr.Core.Entities
 		/// 角色id列表，以逗号分隔
 		/// </summary>
 		[Description("角色id列表，以逗号分隔")]
-		[StringLength(128)]
+		[StringLength(72)]
 		[Column("RoleId")]
 		public string RoleId { get; set; }
 
@@ -94,7 +94,7 @@ namespace Adnc.Usr.Core.Entities
 		/// 密码盐
 		/// </summary>
 		[Description("密码盐")]
-		[StringLength(16)]
+		[StringLength(6)]
 		[Column("Salt")]
 		public string Salt { get; set; }
 
@@ -106,6 +106,8 @@ namespace Adnc.Usr.Core.Entities
 
 		[Column("Version")]
 		public int? Version { get; set; }
+
+        public bool IsDeleted { get; set; }
 
 		public virtual SysUserFinance UserFinance { get; set; }
 	}

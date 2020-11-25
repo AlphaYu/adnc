@@ -14,18 +14,18 @@ namespace Adnc.Maint.Core.Entities
     {
         public override long ID { get; set; }
 
-        [StringLength(255)]
+        [StringLength(16)]
         [Column("Name")]
         public string Name { get; set; }
 
-        [StringLength(255)]
+        [StringLength(16)]
         [Column("Num")]
         public string Num { get; set; }
 
         [Column("Pid")]
         public long? Pid { get; set; }
 
-        [StringLength(255)]
+        [StringLength(64)]
         [Column("Tips")]
         public string Tips { get; set; }
 

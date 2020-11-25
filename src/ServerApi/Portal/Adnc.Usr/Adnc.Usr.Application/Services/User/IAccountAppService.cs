@@ -10,12 +10,12 @@ namespace Adnc.Usr.Application.Services
 {
     public interface IAccountAppService : IAppService
     {
-        Task<UserValidateDto> Login(UserValidateInputDto userDto, CurrenUserInfoDto currentUser);
+        Task<UserValidateDto> Login(UserValidateInputDto userDto);
 
-        Task<UserInfoDto> GetUserInfo(long id);
+        Task<UserInfoDto> GetUserInfo(long userId);
 
         [OpsLog(LogName = "修改密码")]
-        Task<UserValidateDto> UpdatePassword(UserChangePwdInputDto passwordDto, CurrenUserInfoDto currentUser);
+        Task<UserValidateDto> UpdatePassword(UserChangePwdInputDto passwordDto, long userId);
 
         Task<UserValidateDto> GetUserValidateInfo(RefreshTokenInputDto tokenInfo);
     }

@@ -40,26 +40,6 @@
             users 只缓存30秒，其他写操作无需修改缓存。
             </summary>
         </member>
-        <member name="T:Adnc.Usr.Application.Services.ManageStatus">
-            <summary>
-            实体管理状态
-            </summary>
-        </member>
-        <member name="F:Adnc.Usr.Application.Services.ManageStatus.Enabled">
-            <summary>
-            启用
-            </summary>
-        </member>
-        <member name="F:Adnc.Usr.Application.Services.ManageStatus.Disabled">
-            <summary>
-            禁用
-            </summary>
-        </member>
-        <member name="F:Adnc.Usr.Application.Services.ManageStatus.Deleted">
-            <summary>
-            删除
-            </summary>
-        </member>
         <member name="T:Adnc.Usr.Application.Dtos.DeptDto">
             <summary>
             部门
@@ -130,19 +110,9 @@
             父级ID
             </summary>
         </member>
-        <member name="P:Adnc.Usr.Application.Dtos.DeptSaveInputDto.Pids">
-            <summary>
-            父级ID集合
-            </summary>
-        </member>
         <member name="P:Adnc.Usr.Application.Dtos.DeptSaveInputDto.SimpleName">
             <summary>
             部门简称
-            </summary>
-        </member>
-        <member name="P:Adnc.Usr.Application.Dtos.DeptSaveInputDto.Tips">
-            <summary>
-            部门描述
             </summary>
         </member>
         <member name="P:Adnc.Usr.Application.Dtos.DeptSaveInputDto.Version">
@@ -737,29 +707,14 @@
             用户信息
             </summary>
         </member>
-        <member name="P:Adnc.Usr.Application.Dtos.UserInfoDto.ID">
+        <member name="P:Adnc.Usr.Application.Dtos.UserInfoDto.Id">
             <summary>
-            UserID
-            </summary>
-        </member>
-        <member name="P:Adnc.Usr.Application.Dtos.UserInfoDto.Account">
-            <summary>
-            账号
-            </summary>
-        </member>
-        <member name="P:Adnc.Usr.Application.Dtos.UserInfoDto.Name">
-            <summary>
-            姓名
-            </summary>
-        </member>
-        <member name="P:Adnc.Usr.Application.Dtos.UserInfoDto.RemoteIpAddress">
-            <summary>
-            登录Ip
+            用户Id
             </summary>
         </member>
         <member name="P:Adnc.Usr.Application.Dtos.UserInfoDto.Profile">
             <summary>
-            用户个人信息
+            基本信息
             </summary>
         </member>
         <member name="P:Adnc.Usr.Application.Dtos.UserInfoDto.Roles">
@@ -842,11 +797,6 @@
             账户
             </summary>
         </member>
-        <member name="P:Adnc.Usr.Application.Dtos.UserSaveInputDto.Avatar">
-            <summary>
-            头像
-            </summary>
-        </member>
         <member name="P:Adnc.Usr.Application.Dtos.UserSaveInputDto.Birthday">
             <summary>
             生日
@@ -875,11 +825,6 @@
         <member name="P:Adnc.Usr.Application.Dtos.UserSaveInputDto.Phone">
             <summary>
             手机号
-            </summary>
-        </member>
-        <member name="P:Adnc.Usr.Application.Dtos.UserSaveInputDto.RoleId">
-            <summary>
-            角色id列表，以逗号分隔
             </summary>
         </member>
         <member name="P:Adnc.Usr.Application.Dtos.UserSaveInputDto.Sex">

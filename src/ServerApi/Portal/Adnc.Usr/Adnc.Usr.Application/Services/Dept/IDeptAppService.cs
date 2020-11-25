@@ -11,6 +11,8 @@ namespace Adnc.Usr.Application.Services
     {
         Task<List<DeptNodeDto>> GetList();
 
+        Task<dynamic[]> GetSimpleList();
+
         [OpsLog(LogName = "新增/修改部门")]
         [EasyCachingEvict(CacheKey = EasyCachingConsts.DetpListCacheKey)]
         Task Save(DeptSaveInputDto savetDto);

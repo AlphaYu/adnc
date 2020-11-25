@@ -14,7 +14,7 @@ namespace Adnc.Maint.Core.Entities
     public class SysLoginLog : EfEntity
     {
 
-        [StringLength(20)]
+        [StringLength(16)]
 		[Column("Device")]
 		public string Device { get; set; }
 
@@ -28,17 +28,17 @@ namespace Adnc.Maint.Core.Entities
 		[Column("UserId")]
 		public long? UserId { get; set; }
 
-		[StringLength(32)]
+		[StringLength(16)]
 		[Column("Account")]
 		public string Account { get; set; }
 
-        [StringLength(64)]
+        [StringLength(16)]
         [Column("UserName")]
 
         public string UserName { get; set; }
 
         [Column("RemoteIpAddress")]
-        [StringLength(22)]
+        [StringLength(15)]
         public string RemoteIpAddress { get; set; }
 	}
 }

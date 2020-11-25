@@ -8,7 +8,6 @@ export function getList(params) {
   })
 }
 
-
 export function save(data) {
   return request({
     url: '/usr/roles',
@@ -24,13 +23,12 @@ export function remove(roleId) {
   })
 }
 
-export  function roleTreeListByUserId(userId){
+export function roleTreeListByUserId(userId) {
   return request({
     url: `/usr/roles/${userId}/rolestree`,
     method: 'get'
   })
 }
-
 
 export function changePermissons(roleId, permissons) {
   return request({

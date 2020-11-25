@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Adnc.Cus.Migrations.Migrations
 {
-    public partial class Init_First : Migration
+    public partial class _20201124_init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -18,9 +18,9 @@ namespace Adnc.Cus.Migrations.Migrations
                     CreateTime = table.Column<DateTime>(nullable: true),
                     ModifyBy = table.Column<long>(nullable: true),
                     ModifyTime = table.Column<DateTime>(nullable: true),
-                    Account = table.Column<string>(maxLength: 32, nullable: false),
-                    Nickname = table.Column<string>(maxLength: 32, nullable: false),
-                    Realname = table.Column<string>(maxLength: 20, nullable: false)
+                    Account = table.Column<string>(maxLength: 16, nullable: false),
+                    Nickname = table.Column<string>(maxLength: 16, nullable: false),
+                    Realname = table.Column<string>(maxLength: 16, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -35,13 +35,14 @@ namespace Adnc.Cus.Migrations.Migrations
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     CreateBy = table.Column<long>(nullable: true),
                     CreateTime = table.Column<DateTime>(nullable: true),
-                    Account = table.Column<string>(maxLength: 32, nullable: false),
-                    ExchangeType = table.Column<string>(maxLength: 3, nullable: false),
-                    ExchageStatus = table.Column<string>(maxLength: 3, nullable: false),
-                    ChangingAmount = table.Column<decimal>(nullable: false),
-                    Amount = table.Column<decimal>(nullable: false),
-                    ChangedAmount = table.Column<decimal>(nullable: false),
-                    Remark = table.Column<string>(maxLength: 200, nullable: false)
+                    CustomerId = table.Column<long>(nullable: false),
+                    Account = table.Column<string>(maxLength: 16, nullable: true),
+                    ExchangeType = table.Column<string>(maxLength: 3, nullable: true),
+                    ExchageStatus = table.Column<string>(maxLength: 3, nullable: true),
+                    ChangingAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    ChangedAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Remark = table.Column<string>(maxLength: 64, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -57,9 +58,8 @@ namespace Adnc.Cus.Migrations.Migrations
                     CreateTime = table.Column<DateTime>(nullable: true),
                     ModifyBy = table.Column<long>(nullable: true),
                     ModifyTime = table.Column<DateTime>(nullable: true),
-                    CustomerId = table.Column<long>(nullable: false),
-                    Account = table.Column<string>(maxLength: 32, nullable: false),
-                    Balance = table.Column<decimal>(nullable: false)
+                    Account = table.Column<string>(maxLength: 16, nullable: false),
+                    Balance = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
                 {

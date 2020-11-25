@@ -68,11 +68,6 @@ namespace  Adnc.Maint.Application.Services
 
         public async Task Save(DictSaveInputDto saveDto)
         {
-            if (saveDto.DictName.IsNullOrWhiteSpace())
-            {
-                throw new BusinessException(new ErrorModel(HttpStatusCode.BadRequest,"请输入字典名称"));
-            }
-
             //add
             if (saveDto.ID == 0)
             {

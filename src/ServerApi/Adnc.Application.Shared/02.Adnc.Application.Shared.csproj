@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
@@ -7,7 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="JetBrains.Annotations" Version="2020.1.0" />
+	  <PackageReference Include="Refit.HttpClientFactory" Version="5.2.1" />
+	  <PackageReference Include="JetBrains.Annotations" Version="2020.1.0" />
+	  <PackageReference Include="Autofac" Version="6.0.0" />
+	  <PackageReference Include="Castle.Core" Version="4.4.1" />
+	  <PackageReference Include="Autofac.Extras.DynamicProxy" Version="6.0.0" />
+	  <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.0.2" />
+	  <PackageReference Include="AutoMapper" Version="10.1.1" />
+	  <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.0" />
+	  <PackageReference Include="FluentValidation" Version="9.3.0" />
   </ItemGroup>
 
   <ItemGroup>

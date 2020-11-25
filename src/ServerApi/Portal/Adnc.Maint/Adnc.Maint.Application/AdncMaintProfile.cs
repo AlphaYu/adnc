@@ -11,7 +11,7 @@ namespace Adnc.Maint.Application
     {
         public AdncMaintProfile()
         {
-            CreateMap(typeof(IPagedModel<>), typeof(PageModelDto<>));
+            CreateMap(typeof(IPagedModel<>), typeof(PageModelDto<>)).ForMember("XData", opt => opt.Ignore());
             CreateMap<OpsLogSaveInputDto, SysOperationLog>();
             CreateMap<SysOperationLog, OpsLogDto>();
             CreateMap<SysLoginLog, LoginLogDto>();

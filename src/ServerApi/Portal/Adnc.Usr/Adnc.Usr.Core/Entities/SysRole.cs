@@ -17,7 +17,7 @@ namespace Adnc.Usr.Core.Entities
 		[Column("DeptId")]
 		public long? DeptId { get; set; }
 
-		[StringLength(255)]
+		[StringLength(32)]
 		[Column("Name")]
 		public string Name { get; set; }
 
@@ -27,7 +27,7 @@ namespace Adnc.Usr.Core.Entities
 		[Column("Pid")]
 		public long? PID { get; set; }
 
-		[StringLength(255)]
+		[StringLength(64)]
 		[Column("Tips")]
 		public string Tips { get; set; }
 

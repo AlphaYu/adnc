@@ -21,17 +21,7 @@
 	<ItemGroup>
 	  <Compile Remove="CustomEasyCachingServiceCollectionExtensions.cs" />
 	</ItemGroup>
-
-	<ItemGroup>
-		<PackageReference Include="Autofac" Version="6.0.0" />
-		<PackageReference Include="Castle.Core" Version="4.4.1" />
-		<PackageReference Include="Autofac.Extras.DynamicProxy" Version="6.0.0" />
-		<PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.0.2" />
-		<PackageReference Include="AutoMapper" Version="10.1.1" />
-		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.0" />
-	</ItemGroup>
-
-
+	
 	<ItemGroup>
 	  <ProjectReference Include="..\..\..\Adnc.Application.Shared\02.Adnc.Application.Shared.csproj" />
 	  <ProjectReference Include="..\..\..\Adnc.Infr.EasyCaching\21.Adnc.Infr.EasyCaching.csproj" />

@@ -9,6 +9,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20201124031130_20201124_1.cs" />
+    <Compile Remove="Migrations\20201124031130_20201124_1.Designer.cs" />
+    <Compile Remove="Migrations\20201124031915_20201124_2.cs" />
+    <Compile Remove="Migrations\20201124031915_20201124_2.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\..\Adnc.Infr.EfCore\22.Adnc.Infr.EfCore.csproj" />
   </ItemGroup>
 

@@ -8,7 +8,9 @@ namespace Adnc.Usr.Core.Entities.Config
         public void Configure(EntityTypeBuilder<SysUser> builder)
         {
             //查询过滤器 Query Filter
-            //builder.HasQueryFilter(e => !e.IsDeleted);
+            builder.Property(d => d.IsDeleted)
+                   .HasDefaultValue(false);
+            builder.HasQueryFilter(d => d.IsDeleted == false);
             //一对多,SysDept没有UserId字段
             builder.HasOne(d => d.Dept)
                 .WithMany(p => p.Users)

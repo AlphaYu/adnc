@@ -51,9 +51,6 @@ namespace Adnc.Cus.Application.Services
 
         public async Task<SimpleDto<string>> Recharge(RechargeInputDto inputDto)
         {
-            if (inputDto.Amount == 0)
-                throw new BusinessException(new ErrorModel(HttpStatusCode.BadRequest, "充值金额不能等于0"));
-
             var customer = await _customerRepo.FindAsync(new object[] { inputDto.ID });
             if (customer == null)
                 throw new BusinessException(new ErrorModel(HttpStatusCode.Forbidden, "不存在该账号"));

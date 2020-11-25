@@ -14,18 +14,10 @@ namespace Adnc.Maint.Core.Entities
     public class SysCfg : EfAuditEntity, ISoftDelete
     {
         /// <summary>
-        /// 备注
-        /// </summary>
-        [Description("备注")]
-        [StringLength(65535)]
-        [Column("CfgDesc")]
-        public string CfgDesc { get; set; }
-
-        /// <summary>
         /// 参数名
         /// </summary>
         [Description("参数名")]
-        [StringLength(256)]
+        [StringLength(64)]
         [Column("CfgName")]
         public string CfgName { get; set; }
 
@@ -33,9 +25,17 @@ namespace Adnc.Maint.Core.Entities
         /// 参数值
         /// </summary>
         [Description("参数值")]
-        [StringLength(512)]
+        [StringLength(128)]
         [Column("CfgValue")]
         public string CfgValue { get; set; }
+
+        /// <summary>
+        /// 备注
+        /// </summary>
+        [Description("备注")]
+        [StringLength(256)]
+        [Column("CfgDesc")]
+        public string CfgDesc { get; set; }
 
         public bool IsDeleted { get; set; }
     }

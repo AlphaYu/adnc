@@ -37,12 +37,9 @@ namespace Adnc.Usr.Application.Services
             _usrManager = usrManager;
         }
 
-        public async Task ChangeStatus(long Id)
+        public async Task ChangeStatus(long Id,int status)
         {
-            var user = await _userRepository.FetchAsync(u => new { u.ID, u.Status }, x => x.ID == Id);
-            user.Status = (int)(user.Status == (int)ManageStatus.Enabled ? ManageStatus.Disabled : ManageStatus.Enabled);
-
-            await _userRepository.UpdateAsync(user, x => x.Status);
+            await _userRepository.UpdateAsync(new SysUser { ID = Id, Status = status }, x => x.Status);
         }
 
         public async Task ChangeStatus(UserChangeStatusInputDto changeDto)
@@ -53,11 +50,7 @@ namespace Adnc.Usr.Application.Services
 
         public async Task Delete(long Id)
         {
-            if (Id <= 2)
-            {
-                throw new BusinessException(new ErrorModel(HttpStatusCode.Forbidden,"不能删除初始用户"));
-            }
-            await _userRepository.UpdateAsync(new SysUser() { ID = Id, Status = (int)ManageStatus.Deleted }, x => x.Status);
+            await _userRepository.DeleteAsync(new long[] { Id });
         }
 
         public async Task Save(UserSaveInputDto saveDto)
@@ -66,9 +59,7 @@ namespace Adnc.Usr.Application.Services
             if (user.ID < 1)
             {
                 if (await _userRepository.ExistAsync(x => x.Account == user.Account))
-                {
-                    throw new BusinessException(new ErrorModel(HttpStatusCode.Forbidden,"用户已存在"));
-                }
+                    throw new BusinessException(new ErrorModel(HttpStatusCode.Forbidden, "用户已存在"));
 
                 user.ID = IdGenerater.GetNextId();
                 user.Salt = SecurityHelper.GenerateRandomCode(5);
@@ -90,7 +81,7 @@ namespace Adnc.Usr.Application.Services
 
         public async Task<PageModelDto<UserDto>> GetPaged(UserSearchDto searchDto)
         {
-            Expression<Func<SysUser, bool>> whereCondition = x => x.Status > 0;
+            Expression<Func<SysUser, bool>> whereCondition = x => true;
             if (searchDto.Account.IsNotNullOrWhiteSpace())
             {
                 whereCondition = whereCondition.And(x => x.Account.Contains(searchDto.Account));
@@ -103,6 +94,9 @@ namespace Adnc.Usr.Application.Services
 
             var pagedModel = await _userRepository.PagedAsync(searchDto.PageIndex, searchDto.PageSize, whereCondition, x => x.ID, false);
             var result = _mapper.Map<PageModelDto<UserDto>>(pagedModel);
+
+            result.XData = await _deptAppService.GetSimpleList();
+
             if (result.Count > 0)
             {
                 var deptIds = result.Data.Where(d => d.DeptId != null).Select(d => d.DeptId).Distinct().ToList();
@@ -130,10 +124,6 @@ namespace Adnc.Usr.Application.Services
 
         public async Task SetRole(RoleSetInputDto setDto)
         {
-            if (setDto.ID < 1)
-            {
-                throw new BusinessException(new ErrorModel(HttpStatusCode.Forbidden, "禁止修改管理员角色"));
-            }
             var roleIdStr = setDto.RoleIds == null ? null : string.Join(",", setDto.RoleIds);
             await _userRepository.UpdateAsync(new SysUser() { ID = setDto.ID, RoleId = roleIdStr }, x => x.RoleId);
         }

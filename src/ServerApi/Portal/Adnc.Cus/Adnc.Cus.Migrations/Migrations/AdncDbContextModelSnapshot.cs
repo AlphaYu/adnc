@@ -14,7 +14,7 @@ namespace Adnc.Cus.Migrations.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.6")
+                .HasAnnotation("ProductVersion", "3.1.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("Adnc.Cus.Core.Entities.CusFinance", b =>
@@ -25,8 +25,8 @@ namespace Adnc.Cus.Migrations.Migrations
 
                     b.Property<string>("Account")
                         .IsRequired()
-                        .HasColumnType("varchar(32) CHARACTER SET utf8mb4")
-                        .HasMaxLength(32);
+                        .HasColumnType("varchar(16) CHARACTER SET utf8mb4")
+                        .HasMaxLength(16);
 
                     b.Property<decimal>("Balance")
                         .HasColumnType("decimal(18,2)");
@@ -60,8 +60,8 @@ namespace Adnc.Cus.Migrations.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<string>("Account")
-                        .HasColumnType("varchar(32) CHARACTER SET utf8mb4")
-                        .HasMaxLength(32);
+                        .HasColumnType("varchar(16) CHARACTER SET utf8mb4")
+                        .HasMaxLength(16);
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18,2)");
@@ -92,8 +92,8 @@ namespace Adnc.Cus.Migrations.Migrations
                         .HasMaxLength(3);
 
                     b.Property<string>("Remark")
-                        .HasColumnType("varchar(200) CHARACTER SET utf8mb4")
-                        .HasMaxLength(200);
+                        .HasColumnType("varchar(64) CHARACTER SET utf8mb4")
+                        .HasMaxLength(64);
 
                     b.HasKey("ID");
 
@@ -109,8 +109,8 @@ namespace Adnc.Cus.Migrations.Migrations
 
                     b.Property<string>("Account")
                         .IsRequired()
-                        .HasColumnType("varchar(32) CHARACTER SET utf8mb4")
-                        .HasMaxLength(32);
+                        .HasColumnType("varchar(16) CHARACTER SET utf8mb4")
+                        .HasMaxLength(16);
 
                     b.Property<long?>("CreateBy")
                         .HasColumnName("CreateBy")
@@ -130,13 +130,13 @@ namespace Adnc.Cus.Migrations.Migrations
 
                     b.Property<string>("Nickname")
                         .IsRequired()
-                        .HasColumnType("varchar(32) CHARACTER SET utf8mb4")
-                        .HasMaxLength(32);
+                        .HasColumnType("varchar(16) CHARACTER SET utf8mb4")
+                        .HasMaxLength(16);
 
                     b.Property<string>("Realname")
                         .IsRequired()
-                        .HasColumnType("varchar(20) CHARACTER SET utf8mb4")
-                        .HasMaxLength(20);
+                        .HasColumnType("varchar(16) CHARACTER SET utf8mb4")
+                        .HasMaxLength(16);
 
                     b.HasKey("ID");
 

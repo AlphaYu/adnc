@@ -29,7 +29,7 @@ namespace Adnc.Usr.Application.Dtos
 		/// <summary>
 		/// 父级ID集合
 		/// </summary>
-		public string Pids { get; set; }
+		//public string Pids { get; set; }
 
 		/// <summary>
 		/// 部门简称
@@ -39,7 +39,7 @@ namespace Adnc.Usr.Application.Dtos
 		/// <summary>
 		/// 部门描述
 		/// </summary>
-		public string Tips { get; set; }
+		//public string Tips { get; set; }
 
 		/// <summary>
 		/// 版本号

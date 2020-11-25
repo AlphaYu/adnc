@@ -1,5 +1,4 @@
 import { getList, saveUser, remove, setRole, changeStatus, changeStatusBatch } from '@/api/usr/user'
-import { list as deptList } from '@/api/usr/dept'
 import { parseTime } from '@/utils/index'
 import { roleTreeListByUserId } from '@/api/usr/role'
 // 权限判断指令
@@ -23,18 +22,10 @@ export default {
       },
       formVisible: false,
       formTitle: '添加用户',
-      deptTree: {
-        show: false,
-        data: [],
-        defaultProps: {
-          id: 'id',
-          label: 'simpleName',
-          children: 'children'
-        }
-      },
+      deptTreeData: [],
       isAdd: true,
       form: {
-        id: '',
+        id: 0,
         account: '',
         name: '',
         birthday: '',
@@ -42,34 +33,40 @@ export default {
         email: '',
         password: '',
         rePassword: '',
-        dept: '',
-        status: true,
-        deptid: 1,
-        deptName: ''
+        status: 1,
+        deptId: undefined
       },
       rules: {
         account: [
           { required: true, message: '请输入登录账号', trigger: 'blur' },
-          { min: 3, max: 20, message: '长度在 3 到 20 个字符', trigger: 'blur' }
+          { min: 5, max: 16, message: '长度在 5 到 16 个字符', trigger: 'blur' }
         ],
         name: [
-          { required: true, message: '请输入用户名', trigger: 'blur' },
-          { min: 2, max: 20, message: '长度在 2 到 20 个字符', trigger: 'blur' }
+          { required: true, message: '请输入姓名', trigger: 'blur' },
+          { min: 2, max: 16, message: '长度在 2 到 16 个字符', trigger: 'blur' }
         ],
-        deptName: [
+        deptId: [
           { required: true, message: '请选择部门', trigger: 'blur' }
         ],
         password: [
-          { required: true, message: '请输入密码', trigger: 'blur' }
+          { required: true, message: '请输入密码', trigger: 'blur' },
+          { min: 5, max: 16, message: '长度在 5 到 16 个字符', trigger: 'blur' }
         ],
         rePassword: [
-          { required: true, message: '请输入确认密码', trigger: 'blur' }
+          { required: true, message: '请输入确认密码', trigger: 'blur' },
+          {
+            validator: (rule, value, callback) => {
+              if (value !== this.form.password) { callback(new Error('两次输入密码不一致!')) } else { callback() }
+            }
+          }
         ],
         email: [
-          { required: true, message: '请输入email', trigger: 'blur' }
+          { required: true, message: '请输入email', trigger: 'blur' },
+          { min: 5, max: 32, message: '长度在 5 到 32 个字符', trigger: 'blur' }
         ],
         phone: [
-          { required: true, message: '请输入电话', trigger: 'blur' }
+          { required: true, message: '请输入手机号', trigger: 'blur' },
+          { min: 11, max: 11, message: '长度为11个字符', trigger: 'blur' }
         ],
         birthday: [
           { required: true, message: '请输入出生日期', trigger: 'blur' }
@@ -77,7 +74,7 @@ export default {
       },
       listQuery: {
         pageIndex: 1,
-        pageSize: 5,
+        pageSize: 10,
         account: undefined,
         name: undefined
       },
@@ -103,9 +100,6 @@ export default {
   },
   methods: {
     init() {
-      deptList().then(data => {
-        this.deptTree.data = data
-      })
       this.fetchData()
     },
     fetchData() {
@@ -114,6 +108,7 @@ export default {
         this.list = response.data
         this.listLoading = false
         this.total = response.totalCount
+        this.deptTreeData = response.xData
       })
     },
     search() {
@@ -150,28 +145,14 @@ export default {
     handleCurrentChange(currentRow, oldCurrentRow) {
       this.selRow = currentRow
     },
-    resetForm() {
-      this.form = {
-        id: '',
-        account: '',
-        name: '',
-        birthday: '',
-        sex: 1,
-        email: '',
-        password: '',
-        rePassword: '',
-        dept: '',
-        status: true,
-        deptid: 1,
-        deptName: ''
-      }
-    },
     add() {
-      this.resetForm()
+      this.form = { status: 1, sex: 1 }
       this.formTitle = '添加用户'
       this.formVisible = true
       this.isAdd = true
-      if (this.$refs.form !== undefined) { this.$refs.form.resetFields() }
+      if (this.$refs['form'] !== undefined) {
+        this.$refs['form'].resetFields()
+      }
     },
     changeUserStatus(row) {
       changeStatus(row.id, 1).then(response => {
@@ -205,49 +186,21 @@ export default {
         })
       })
     },
-    validPasswd() {
-      if (!this.isAdd) {
-        return true
-      }
-      if (this.form.password !== this.form.rePassword) {
-        return false
-      }
-      if (this.form.password === '' || this.form.rePassword === '') {
-        return false
-      }
-      return true
-    },
     saveUser() {
       var self = this
-      console.log(self.form)
       this.$refs['form'].validate((valid) => {
         if (valid) {
-          if (this.validPasswd()) {
-            var form = self.form
-            if (form.status === true) {
-              // 启用
-              form.status = 1
-            } else {
-              // 冻结
-              form.status = 2
-            }
-            form.id = parseInt(form.id) || 0
-            form.birthday = parseTime(form.birthday, '{y}-{m}-{d}')
-            form.createtime = parseTime(form.createtime)
-            saveUser(form).then(response => {
-              this.$message({
-                message: '提交成功',
-                type: 'success'
-              })
-              this.fetchData()
-              this.formVisible = false
-            })
-          } else {
+          var form = self.form
+          form.id = parseInt(form.id) || 0
+          form.birthday = parseTime(form.birthday, '{y}-{m}-{d}')
+          saveUser(form).then(response => {
             this.$message({
-              message: '确认密码不正确',
-              type: 'error'
+              message: '提交成功',
+              type: 'success'
             })
-          }
+            this.fetchData()
+            this.formVisible = false
+          })
         } else {
           console.log('输入信息不完整!!')
           return false
@@ -265,16 +218,17 @@ export default {
       return false
     },
     edit(row) {
+      if (this.$refs['form'] !== undefined) {
+        this.$refs['form'].resetFields()
+      }
       // if (this.checkSel(row)) {
       // eslint-disable-next-line no-lone-blocks
       {
+        this.form = Object.assign({}, row)
         this.isAdd = false
-        this.form = row
-        this.form.status = row.statusName === '启用'
         this.form.password = ''
         this.formTitle = '修改用户'
         this.formVisible = true
-        if (this.$refs.form !== undefined) { this.$refs.form.resetFields() }
       }
     },
     remove() {
@@ -301,11 +255,6 @@ export default {
         }).catch(() => {
         })
       }
-    },
-    handleNodeClick(data, node) {
-      this.form.deptid = data.id
-      this.form.deptName = data.simpleName
-      this.deptTree.show = false
     },
     openRole(row) {
       // if (this.checkSel()) {
