@@ -15,6 +15,7 @@
     "svgo": "svgo -f src/icons/svg --config=src/icons/svgo.yml"
   },
   "dependencies": {
+    "@riophae/vue-treeselect": "^0.4.0",
     "axios": "0.18.1",
     "element-ui": "^2.13.2",
     "jquery": "^3.5.1",

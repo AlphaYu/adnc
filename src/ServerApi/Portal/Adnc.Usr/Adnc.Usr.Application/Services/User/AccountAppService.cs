@@ -2,7 +2,6 @@
 using System.Net;
 using System.Linq;
 using System.Dynamic;
-using System.Text.Json;
 using System.Threading.Tasks;
 using AutoMapper;
 using Adnc.Usr.Application.Dtos;
@@ -46,55 +45,46 @@ namespace Adnc.Usr.Application.Services
             var user = await _userRepository.FetchAsync(u => new { u.Account, u.Avatar, u.Birthday, u.DeptId, Dept = new { u.Dept.FullName}, u.Email, u.ID, u.Name, u.Phone, u.RoleId, u.Sex, u.Status }
             , x => x.ID == id);
 
-            UserInfoDto userContext = new UserInfoDto
-            {
-                Name = user.Name,
-            };
-            userContext.Profile = _mapper.Map<UserProfileDto>(user);
-            userContext.Profile.DeptFullName = user.Dept.FullName;
-            if (!string.IsNullOrWhiteSpace(user.RoleId))
+            var userInfoDto = new UserInfoDto { Id = user.ID };
+
+            userInfoDto.Profile = _mapper.Map<UserProfileDto>(user);
+
+            if (user.RoleId.IsNotNullOrEmpty())
             {
                 var roleIds = user.RoleId.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(x => long.Parse(x));
                 var roles = await _roleRepository.SelectAsync(r => new { r.ID, r.Tips, r.Name }, x => roleIds.Contains(x.ID));
                 foreach (var role in roles)
                 {
-                    userContext.Roles.Add(role.Tips);
-                    userContext.Profile.Roles.Add(role.Name);
+                    userInfoDto.Roles.Add(role.Tips);
+                    userInfoDto.Profile.Roles.Add(role.Name);
                 }
 
                 var roleMenus = await _menuRepository.GetMenusByRoleIdsAsync(roleIds.ToArray(), true);
                 if (roleMenus.Any())
                 {
-                    userContext.Permissions.AddRange(roleMenus.Select(x => x.Url).Distinct());
+                    userInfoDto.Permissions.AddRange(roleMenus.Select(x => x.Url).Distinct());
                 }
             }
 
-            return userContext;
+            return userInfoDto;
         }
 
-        public async Task<UserValidateDto> UpdatePassword(UserChangePwdInputDto passwordDto, CurrenUserInfoDto currentUser)
+        public async Task<UserValidateDto> UpdatePassword(UserChangePwdInputDto passwordDto,long userId)
         {
-            if (string.Equals(currentUser.Account, "admin", StringComparison.OrdinalIgnoreCase))
-            {
-                throw new BusinessException(new ErrorModel(HttpStatusCode.Conflict, "不能修改超级管理员密码"));
-            }
+            var user = await _userRepository.FetchAsync(x => new { x.Password, x.Salt, x.Name, x.Email, x.RoleId, x.Account, x.ID, x.Status }, x => x.ID == userId);
+            if (user == null)
+                throw new BusinessException(new ErrorModel(HttpStatusCode.NotFound, "用户不存在,参数信息不完整"));
 
-            if (!string.Equals(passwordDto.Password, passwordDto.RePassword))
-            {
-                throw new BusinessException(new ErrorModel(HttpStatusCode.Conflict, "新密码前后不一致"));
-            }
-
-            var user = (await _userRepository.FetchAsync(x => new { x.Password, x.Salt, x.Name, x.Email, x.RoleId, x.Account, x.ID, x.Status }, x => x.ID == currentUser.ID)).To<SysUser>();
-            if (!string.Equals(HashHelper.GetHashedString(HashType.MD5, passwordDto.OldPassword, user.Salt), user.Password, StringComparison.OrdinalIgnoreCase))
-            {
+            var md5OldPwdString = HashHelper.GetHashedString(HashType.MD5, passwordDto.OldPassword, user.Salt);
+            if (!md5OldPwdString.EqualsIgnoreCase(user.Password))
                 throw new BusinessException(new ErrorModel(HttpStatusCode.Forbidden, "旧密码输入错误"));
-            }
+
             await _userRepository.UpdateAsync(user, p => p.Password);
 
             return _mapper.Map<UserValidateDto>(user);
         }
 
-        public async Task<UserValidateDto> Login(UserValidateInputDto inputDto, CurrenUserInfoDto currentUser)
+        public async Task<UserValidateDto> Login(UserValidateInputDto inputDto)
         {
             //var user4 = _userRepository.GetAll<SysMenu>().FirstOrDefault();
             //var user0 = _rsp.GetAll<SysUser>().FirstOrDefault();
@@ -104,18 +94,16 @@ namespace Adnc.Usr.Application.Services
             log.ID = IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId);
             log.Account = inputDto.Account;
             log.CreateTime = DateTime.Now;
-            log.Device = currentUser.Device;
-            log.RemoteIpAddress = currentUser.RemoteIpAddress;
+            var httpContext = HttpContextUtility.GetCurrentHttpContext();
+            log.Device = httpContext.Request.Headers["device"].ToString() ?? "web";
+            log.RemoteIpAddress = httpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
             log.Message = string.Empty;
             log.Succeed = false;
             log.UserId = user?.ID;
             log.UserName = user?.Name;
 
             if (user == null)
-            {
-                var errorModel = new ErrorModel(HttpStatusCode.NotFound,"用户名或密码错误");
-                throw new BusinessException(errorModel);
-            }
+                throw new BusinessException(new ErrorModel(HttpStatusCode.NotFound, "用户名或密码错误"));
             else
             {
                 if (user.Status != 1)
@@ -168,9 +156,7 @@ namespace Adnc.Usr.Application.Services
             var user = await _userRepository.FetchAsync(x => new { x.Name, x.Email, x.RoleId, x.Account, x.ID, x.Status }, x => x.Account == tokenInfo.Account);
 
             if (user == null)
-            {
-                throw new BusinessException(new ErrorModel(HttpStatusCode.NotFound,"用户不存在,参数信息不完整"));
-            }
+                throw new BusinessException(new ErrorModel(HttpStatusCode.NotFound, "用户不存在,参数信息不完整"));
 
             return _mapper.Map<UserValidateDto>(user);
         }

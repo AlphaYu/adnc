@@ -50,12 +50,12 @@ export default {
       },
       rules: {
         tips: [
-          { required: true, message: '请输入角色编码', trigger: 'blur' },
-          { min: 3, max: 20, message: '长度在 3 到 20 个字符', trigger: 'blur' }
+          { required: true, message: '请输入角色描述', trigger: 'blur' },
+          { min: 2, max: 64, message: '长度在 2 到 64 个字符', trigger: 'blur' }
         ],
         name: [
           { required: true, message: '请输入角色名称', trigger: 'blur' },
-          { min: 2, max: 20, message: '长度在 2 到 20 个字符', trigger: 'blur' }
+          { min: 2, max: 32, message: '长度在 2 到 32 个字符', trigger: 'blur' }
         ]
       },
       listQuery: {

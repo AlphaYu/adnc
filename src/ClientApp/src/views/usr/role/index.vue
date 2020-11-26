@@ -18,32 +18,26 @@
       </el-row>
     </div>
 
-
-    <el-table :data="list" v-loading="listLoading" element-loading-text="Loading" border fit highlight-current-row
-              @current-change="handleCurrentChange">
+    <el-table
+      v-loading="listLoading"
+      :data="list"
+      element-loading-text="Loading"
+      border
+      fit
+      highlight-current-row
+      @current-change="handleCurrentChange"
+    >
 
       <el-table-column label="名称">
         <template slot-scope="scope">
-          {{scope.row.name}}
+          {{ scope.row.name }}
         </template>
       </el-table-column>
-      <el-table-column label="编码">
+      <el-table-column label="描述">
         <template slot-scope="scope">
-          {{scope.row.tips}}
-        </template>
-      </el-table-column>      
-      <!--
-      <el-table-column label="所在部门">
-        <template slot-scope="scope">
-          {{scope.row.deptName}}
+          {{ scope.row.tips }}
         </template>
       </el-table-column>
-      <el-table-column label="上级角色">
-        <template slot-scope="scope">
-          {{scope.row.pName}}
-        </template>
-      </el-table-column>
-      -->
       <el-table-column
         fixed="right"
         label="操作"
@@ -66,71 +60,31 @@
       @size-change="changeSize"
       @current-change="fetchPage"
       @prev-click="fetchPrev"
-      @next-click="fetchNext">
-    </el-pagination>
+      @next-click="fetchNext"
+    />
 
     <el-dialog
       :title="formTitle"
       :visible.sync="formVisible"
-      width="70%">
+      width="70%"
+    >
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-row>
           <el-col :span="12">
-            <el-form-item label="编码" prop="tips">
-              <el-input v-model="form.tips" minlength=1></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
             <el-form-item label="名称" prop="name">
-              <el-input v-model="form.name" minlength=1></el-input>
+              <el-input v-model="form.name" minlength="1" />
             </el-form-item>
           </el-col>
-          <!--
           <el-col :span="12">
-            <el-form-item label="上级角色">
-              <el-input
-                placeholder="请选择上级角色"
-                v-model="form.pName"
-                readonly="readonly"
-                @click.native="roleTree.show = !roleTree.show">
-              </el-input>
-              <el-tree v-if="roleTree.show"
-                       empty-text="暂无数据"
-                       :expand-on-click-node="false"
-                       :data="list"
-                       :props="roleTree.defaultProps"
-                       @node-click="handleRoleNodeClick"
-                       class="input-tree">
-              </el-tree>
+            <el-form-item label="描述" prop="tips">
+              <el-input v-model="form.tips" minlength="1" />
             </el-form-item>
           </el-col>
-          -->
           <el-col :span="12">
             <el-form-item label="排序">
-              <el-input v-model="form.num" type="number"></el-input>
+              <el-input v-model="form.num" type="number" />
             </el-form-item>
           </el-col>
-          <!--
-          <el-col :span="12">
-            <el-form-item label="所在部门">
-              <el-input
-                placeholder="请选择所在部门"
-                v-model="form.deptName"
-                readonly="readonly"
-                @click.native="deptTree.show = !deptTree.show">
-              </el-input>
-              <el-tree v-if="deptTree.show"
-                       empty-text="暂无数据"
-                       :expand-on-click-node="false"
-                       :data="deptList"
-                       :props="deptTree.defaultProps"
-                       @node-click="handleDeptNodeClick"
-                       class="input-tree">
-              </el-tree>
-            </el-form-item>
-          </el-col>
-          -->
-
         </el-row>
         <el-form-item>
           <el-button type="primary" @click="save">{{ $t('button.submit') }}</el-button>
@@ -141,18 +95,19 @@
     <el-dialog
       title="权限配置"
       :visible.sync="permissonVisible"
-      width="50%">
+      width="50%"
+    >
       <el-form>
         <el-row>
           <el-col :span="12">
             <el-tree
-              :data="permissons"
               ref="permissonTree"
+              :data="permissons"
               show-checkbox
               node-key="id"
               :default-checked-keys="checkedPermissionKeys"
-              :props="defaultProps">
-            </el-tree>
+              :props="defaultProps"
+            />
 
           </el-col>
         </el-row>

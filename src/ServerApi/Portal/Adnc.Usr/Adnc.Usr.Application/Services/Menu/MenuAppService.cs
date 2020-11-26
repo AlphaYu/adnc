@@ -1,9 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using EasyCaching.Core;
 using AutoMapper;
 using Adnc.Usr.Application.Dtos;
@@ -39,16 +39,31 @@ namespace Adnc.Usr.Application.Services
 
         public async Task Save(MenuSaveInputDto saveDto)
         {
+            //新增
             if (saveDto.ID < 1)
             {
-                if (await _menuRepository.ExistAsync(x => x.Code == saveDto.Code))
-                {
-                    throw new BusinessException(new ErrorModel(HttpStatusCode.Forbidden, "同名菜单已存在"));
-                }
-                saveDto.Status = true;
+                var isExistsCode = (await this.GetAllMenusFromCache()).Where(x => x.Code == saveDto.Code).Any();
+                if (isExistsCode)
+                    throw new BusinessException(new ErrorModel(HttpStatusCode.Forbidden, "该菜单编码已经存在"));
+
+                var isExistsName = (await this.GetAllMenusFromCache()).Where(x => x.Name == saveDto.Name).Any();
+                if (isExistsName)
+                    throw new BusinessException(new ErrorModel(HttpStatusCode.Forbidden, "该菜单名称已经存在"));
+            }
+            //修改
+            else
+            {
+                var isExistsCode = (await this.GetAllMenusFromCache()).Where(x => x.Code == saveDto.Code && x.ID != saveDto.ID).Any();
+                if (isExistsCode)
+                    throw new BusinessException(new ErrorModel(HttpStatusCode.Forbidden, "该菜单编码已经存在"));
+
+                var isExistsName = (await this.GetAllMenusFromCache()).Where(x => x.Name == saveDto.Name && x.ID != saveDto.ID).Any();
+                if (isExistsName)
+                    throw new BusinessException(new ErrorModel(HttpStatusCode.Forbidden, "该菜单名称已经存在"));
             }
 
-            if (string.IsNullOrWhiteSpace(saveDto.PCode) || string.Equals(saveDto.PCode, "0"))
+            //父节点处理
+            if (saveDto.PCode.IsNullOrWhiteSpace() || saveDto.PCode.EqualsIgnoreCase("0"))
             {
                 saveDto.PCode = "0";
                 saveDto.PCodes = "[0],";
@@ -56,19 +71,18 @@ namespace Adnc.Usr.Application.Services
             }
             else
             {
-                var parentMenu = await _menuRepository.FetchAsync(m => new { m.Code, m.PCodes, m.Levels }, x => x.Code == saveDto.PCode);
+                var parentMenu = (await this.GetAllMenusFromCache()).Where(x => x.Code == saveDto.PCode).FirstOrDefault();
                 saveDto.PCode = parentMenu.Code;
-                if (string.Equals(saveDto.Code, saveDto.PCode))
-                {
+                if (saveDto.Code.EqualsIgnoreCase(parentMenu.Code))
                     throw new BusinessException(new ErrorModel(HttpStatusCode.Forbidden, "菜单编码冲突"));
-                }
 
                 saveDto.Levels = parentMenu.Levels + 1;
                 saveDto.PCodes = $"{parentMenu.PCodes}[{parentMenu.Code}]";
             }
 
+            //保存
             var menu = _mapper.Map<SysMenu>(saveDto);
-            if (menu.ID == 0)
+            if (saveDto.ID < 1)
             {
                 menu.ID = IdGenerater.GetNextId();
                 await _menuRepository.InsertAsync(menu);
@@ -81,8 +95,8 @@ namespace Adnc.Usr.Application.Services
 
         public async Task Delete(long Id)
         {
-            var menu = await _menuRepository.FetchAsync(m => new { m.ID, m.Code }, x => x.ID == Id);
-            await _systemManagerService.DeleteMenu(menu);
+            var menu = (await this.GetAllMenusFromCache()).Where(x => x.ID == Id).FirstOrDefault();
+            await _menuRepository.DeleteRangeAsync(x => x.PCodes.Contains($"[{menu.Code}]") || x.ID == Id);
         }
 
         public async Task<List<MenuNodeDto>> Getlist()

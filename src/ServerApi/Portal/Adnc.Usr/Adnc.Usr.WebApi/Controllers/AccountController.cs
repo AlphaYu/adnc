@@ -3,13 +3,13 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Http;
 using Adnc.Usr.WebApi.Helper;
 using Adnc.Usr.Application.Dtos;
 using Adnc.Infr.Common;
 using Adnc.Usr.Application.Services;
 using Adnc.Application.Shared.Dtos;
 using Adnc.WebApi.Shared;
-using Microsoft.AspNetCore.Http;
 
 namespace Adnc.Usr.WebApi.Controllers
 {
@@ -48,12 +48,7 @@ namespace Adnc.Usr.WebApi.Controllers
         [HttpPost()]
         public async Task<UserTokenInfoDto> Login([FromBody]UserValidateInputDto userDto)
         {
-            var ipAddress = _contextAccessor.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
-            var device = _contextAccessor.HttpContext.Request.Headers["device"].ToString();
-            if (string.IsNullOrWhiteSpace(device))
-                device = "web";
-
-            var userValidateDto = await _accountService.Login(userDto, new CurrenUserInfoDto { RemoteIpAddress = ipAddress, Device = device });
+            var userValidateDto = await _accountService.Login(userDto);
 
             return new UserTokenInfoDto
             {
@@ -110,7 +105,7 @@ namespace Adnc.Usr.WebApi.Controllers
         [HttpPut("password")]
         public async Task<SimpleDto<bool>> ChangePassword([FromBody] UserChangePwdInputDto inputDto)
         {
-            await _accountService.UpdatePassword(inputDto, new CurrenUserInfoDto { ID = _userContext.ID, Account = _userContext.Account });
+            await _accountService.UpdatePassword(inputDto, _userContext.ID);
             return new SimpleDto<bool>
             {
                 Result = true

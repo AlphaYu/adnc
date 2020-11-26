@@ -15,7 +15,7 @@ namespace Adnc.Usr.Application.Dtos
         /// <summary>
         /// 头像
         /// </summary>
-        public string Avatar { get; set; }
+        //public string Avatar { get; set; }
 
         /// <summary>
         /// 生日
@@ -50,7 +50,7 @@ namespace Adnc.Usr.Application.Dtos
         /// <summary>
         /// 角色id列表，以逗号分隔
         /// </summary>
-        public string RoleId { get; set; }
+        //public string RoleId { get; set; }
 
         /// <summary>
         /// 性别

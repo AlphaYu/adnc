@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Adnc.Infr.Common.Helper;
 using Adnc.Usr.Core.Entities;
 using Adnc.Core.Shared.IRepositories;
-using Microsoft.EntityFrameworkCore.Internal;
 
 namespace Adnc.Usr.Core.CoreServices
 {
@@ -36,12 +35,6 @@ namespace Adnc.Usr.Core.CoreServices
         {
             await _userRepository.InsertAsync(user, cancellationToken);
             await _financeRepository.InsertAsync(new SysUserFinance { ID = user.ID, Amount = 0.00M }, cancellationToken);
-        }
-
-        public async Task DeleteMenu(SysMenu menu, CancellationToken cancellationToken = default)
-        {
-            await _menuRepository.DeleteRangeAsync(x => x.PCodes.Contains($"[{menu.Code}]"));
-            await _menuRepository.DeleteAsync(new[] { menu.ID });
         }
 
         public async Task SaveRolePermisson(long roleId, long[] permissionIds, CancellationToken cancellationToken = default)

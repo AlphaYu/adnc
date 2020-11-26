@@ -13,7 +13,7 @@ using Adnc.Core.Shared.IRepositories;
 using Adnc.Infr.Common.Helper;
 using Adnc.Application.Shared.Services;
 using Adnc.Application.Shared;
-using Adnc.Infr.Common.Extensions;
+using System.Dynamic;
 
 namespace Adnc.Usr.Application.Services
 {
@@ -86,17 +86,7 @@ namespace Adnc.Usr.Application.Services
 
         public async Task Save(DeptSaveInputDto saveDto)
         {
-            if (saveDto.FullName.IsNullOrWhiteSpace())
-            {
-                throw new BusinessException(new ErrorModel(HttpStatusCode.BadRequest, "请输入部门全称"));
-            }
-
-            if (saveDto.SimpleName.IsNullOrWhiteSpace())
-            {
-                throw new BusinessException(new ErrorModel(HttpStatusCode.BadRequest,"请输入部门简称"));
-            }
-
-            if (saveDto.ID == 0)
+            if (saveDto.ID < 1)
             {
                 var dept = _mapper.Map<SysDept>(saveDto);
                 dept.ID = IdGenerater.GetNextId();
@@ -105,6 +95,9 @@ namespace Adnc.Usr.Application.Services
             }
             else
             {
+                if(saveDto.ID==saveDto.Pid)
+                    throw new BusinessException(new ErrorModel(HttpStatusCode.BadRequest, "部门与父部门冲突"));
+
                 var dept = await _deptRepository.FetchAsync(d => d, x => x.ID == saveDto.ID);
                 if (dept.Pid == 0 && saveDto.Pid > 0)
                     throw new BusinessException(new ErrorModel(HttpStatusCode.BadRequest, "一级单位不能修改等级"));
@@ -114,7 +107,7 @@ namespace Adnc.Usr.Application.Services
                 dept.SimpleName = saveDto.SimpleName;
                 dept.FullName = saveDto.FullName;
                 dept.Num = saveDto.Num;
-                dept.Tips = saveDto.Tips;
+                //dept.Tips = saveDto.Tips;
 
                 if (dept.Pid == saveDto.Pid)
                 {
@@ -162,6 +155,31 @@ namespace Adnc.Usr.Application.Services
             }, TimeSpan.FromSeconds(EasyCachingConsts.OneYear));
 
             return cahceValue.Value;
+        }
+
+        public async Task<dynamic[]> GetSimpleList()
+        {
+            var depts = await this.GetList();
+            if (!depts.Any())
+                return default(dynamic[]);
+
+            return GetSimpleNodes(depts);
+
+            dynamic[] GetSimpleNodes(List<DeptNodeDto> deptNodes)
+            {
+                var result = new dynamic[deptNodes.Count];
+
+                for (var index = 0; index < deptNodes.Count; index++)
+                {
+                    dynamic simpleNode = new ExpandoObject();
+                    simpleNode.Id = deptNodes[index].ID;
+                    simpleNode.Label = deptNodes[index].SimpleName;
+                    if (deptNodes[index].Children.Any())
+                        simpleNode.children = GetSimpleNodes(deptNodes[index].Children);
+                    result[index] = simpleNode;
+                }
+                return result;
+            }
         }
     }
 }

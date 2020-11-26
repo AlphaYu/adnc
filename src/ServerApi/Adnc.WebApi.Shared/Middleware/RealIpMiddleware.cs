@@ -39,9 +39,9 @@ namespace Adnc.WebApi.Shared.Middleware
                     }
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                throw ex;
+                throw;
             }
             finally
             {

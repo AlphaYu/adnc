@@ -11,14 +11,14 @@ export default {
     return {
       expandAll: true,
       data: [],
+      deptTreeData: [],
       formVisible: false,
       formTitle: '',
       isAdd: false,
-
       showTree: false,
       defaultProps: {
         id: 'id',
-        label: 'simpleName',
+        label: 'name',
         children: 'children'
       },
       form: {
@@ -31,12 +31,12 @@ export default {
       },
       rules: {
         simpleName: [
-          { required: true, message: '请输入菜单名称', trigger: 'blur' },
-          { min: 3, max: 20, message: '长度在 3 到 20 个字符', trigger: 'blur' }
+          { required: true, message: '请输入部门简称', trigger: 'blur' },
+          { min: 2, max: 16, message: '长度在 2 到 16 个字符', trigger: 'blur' }
         ],
         fullName: [
-          { required: true, message: '请输入编码', trigger: 'blur' },
-          { min: 2, max: 20, message: '长度在 2 到 20 个字符', trigger: 'blur' }
+          { required: true, message: '请输入部门全称', trigger: 'blur' },
+          { min: 2, max: 32, message: '长度在 2 到 32 个字符', trigger: 'blur' }
         ],
         num: [
           { required: true, message: '请输入排序', trigger: 'blur' }
@@ -53,14 +53,19 @@ export default {
       this.listLoading = true
       list().then(data => {
         this.data = data
-        this.listLoading = true
+        this.deptTreeData = this.convertToTreeData(data)
       })
     },
-    handleNodeClick(data, node) {
-      console.log(data)
-      this.form.pid = data.id
-      this.form.pname = data.simpleName
-      this.showTree = false
+    convertToTreeData(listData) {
+      var params = []
+      for (var index in listData) {
+        var obj = {}
+        obj['id'] = listData[index].id
+        obj['label'] = listData[index].simpleName
+        if (listData[index].children != null && listData[index].children.length > 0) { obj['children'] = this.convertToTreeData(listData[index].children) }
+        params.push(obj)
+      }
+      return params
     },
     checkSel() {
       if (this.selRow && this.selRow.id) {
@@ -73,27 +78,27 @@ export default {
       return false
     },
     add() {
-      this.form = {}
-      this.formTitle = '添加菜单'
+      this.form = { num: 1 }
+      this.formTitle = '添加部门'
       this.formVisible = true
       this.isAdd = true
+      if (this.$refs['form'] !== undefined) {
+        this.$refs['form'].resetFields()
+      }
     },
     save() {
       var self = this
       this.$refs['form'].validate((valid) => {
         if (valid) {
-          console.log('form', self.form)
-          const menuData = { 
-            id: self.form.id, 
-            simpleName: self.form.simpleName, 
-            fullName: self.form.fullName, 
-            num: parseInt(self.form.num), 
-            pid: self.form.pid, 
-            tips: self.form.tips 
+          const deptData = {
+            id: self.form.id,
+            simpleName: self.form.simpleName,
+            fullName: self.form.fullName,
+            num: parseInt(self.form.num),
+            pid: self.form.pid,
+            tips: self.form.tips
           }
-          menuData.parent = null
-          save(menuData).then(response => {
-            console.log(response)
+          save(deptData).then(response => {
             this.$message({
               message: '提交成功',
               type: 'success'
@@ -107,11 +112,12 @@ export default {
       })
     },
     edit(row) {
-      this.form = row
-
-      if (row.parent) {
-        this.form.pid = row.parent.id
-        this.form.pname = row.parent.simpleName
+      if (this.$refs['form'] !== undefined) {
+        this.$refs['form'].resetFields()
+      }
+      this.form = Object.assign({}, row)
+      if (this.form.pid === 0) {
+        this.form.pid = undefined
       }
       this.formTitle = '编辑部门'
       this.formVisible = true

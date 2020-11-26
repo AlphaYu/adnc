@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
+using System.Net;
 using System.Security.Claims;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -20,10 +21,12 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 using Pomelo.EntityFrameworkCore.MySql.Storage;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using Polly;
 using Refit;
+using FluentValidation.AspNetCore;
 using EasyCaching.InMemory;
 using DotNetCore.CAP.Dashboard;
 using DotNetCore.CAP.Dashboard.NodeDiscovery;
@@ -40,6 +43,7 @@ using Adnc.Infr.Mongo.Configuration;
 using Adnc.Application.Shared;
 using Adnc.Application.Shared.RpcServices;
 using Adnc.Infr.Common.Helper;
+
 
 namespace Adnc.WebApi.Shared
 {
@@ -167,11 +171,39 @@ namespace Adnc.WebApi.Shared
             _services.AddControllers(options => options.Filters.Add(typeof(CustomExceptionFilterAttribute)))
                      .AddJsonOptions(options =>
                      {
-                        options.JsonSerializerOptions.Converters.Add(new DateTimeConverter());
-                        options.JsonSerializerOptions.Converters.Add(new DateTimeNullableConverter());
-                         //options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-                        options.JsonSerializerOptions.Encoder = SystemTextJsonHelper.GetAdncDefaultEncoder();
+                         options.JsonSerializerOptions.Converters.Add(new DateTimeConverter());
+                         options.JsonSerializerOptions.Converters.Add(new DateTimeNullableConverter());
+                         //该值指示是否允许、不允许或跳过注释。
+                         options.JsonSerializerOptions.ReadCommentHandling = JsonCommentHandling.Skip;
+                         options.JsonSerializerOptions.Encoder = SystemTextJsonHelper.GetAdncDefaultEncoder();
+                         //dynamic与匿名类型序列化设置
+                         options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+                         //dynamic
+                         options.JsonSerializerOptions.DictionaryKeyPolicy = JsonNamingPolicy.CamelCase;
+                         //匿名类型
+                         options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+
+                     })
+                     .AddFluentValidation(cfg =>
+                     {
+                         //Continue 验证失败，继续验证其他项
+                         cfg.ValidatorOptions.CascadeMode = FluentValidation.CascadeMode.Continue;
                      });
+
+            //参数验证返回信息格式调整
+            _services.Configure<ApiBehaviorOptions>(options =>
+            {
+                //关闭自动验证
+                //options.SuppressModelStateInvalidFilter = true;
+                options.InvalidModelStateResponseFactory = (context) =>
+                {
+                    var result = new JsonResult(new { error = context.ModelState.GetValidationSummary("<br>") })
+                    {
+                        StatusCode = (int)HttpStatusCode.BadRequest
+                    };
+                    return result;
+                };
+            });
         }
 
         /// <summary>

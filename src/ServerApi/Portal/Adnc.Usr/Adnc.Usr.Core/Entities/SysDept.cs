@@ -26,7 +26,7 @@ namespace Adnc.Usr.Core.Entities
         {
         }
 
-		[StringLength(255)]
+		[StringLength(32)]
 		[Column("FullName")]
 		public string FullName { get; set; }
 
@@ -36,15 +36,15 @@ namespace Adnc.Usr.Core.Entities
 		[Column("Pid")]
 		public long? Pid { get; set; }
 
-		[StringLength(255)]
+		[StringLength(80)]
 		[Column("Pids")]
 		public string Pids { get; set; }
 
-		[StringLength(255)]
+		[StringLength(16)]
 		[Column("SimpleName")]
 		public string SimpleName { get; set; }
 
-		[StringLength(255)]
+		[StringLength(64)]
 		[Column("Tips")]
 		public string Tips { get; set; }
 

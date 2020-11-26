@@ -13,7 +13,7 @@ namespace Adnc.Cus.Core.Entities
     public class CusFinance : EfAuditEntity
     {
         [Required]
-        [StringLength(32)]
+        [StringLength(16)]
         public string Account { get; set; }
 
         [Required]

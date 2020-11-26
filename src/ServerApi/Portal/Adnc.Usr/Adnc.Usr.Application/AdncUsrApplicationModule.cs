@@ -7,6 +7,7 @@ using Adnc.Infr.Mq.RabbitMq;
 using Adnc.Usr.Core;
 using Adnc.Application.Shared.Interceptors;
 using Adnc.Application.Shared.Services;
+using FluentValidation;
 
 namespace Adnc.Usr.Application
 {
@@ -51,6 +52,12 @@ namespace Adnc.Usr.Application
                 .InstancePerLifetimeScope()
                 .EnableInterfaceInterceptors()
                 .InterceptedBy(typeof(OpsLogInterceptor),typeof(EasyCachingInterceptor));
+
+            //注册DtoValidators
+            builder.RegisterAssemblyTypes(this.ThisAssembly)
+                .Where(t => t.IsClosedTypeOf(typeof(IValidator<>)))
+                .AsImplementedInterfaces()
+                .InstancePerLifetimeScope();
         }
 
         private void LoadDepends(ContainerBuilder builder)

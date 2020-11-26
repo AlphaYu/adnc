@@ -42,11 +42,11 @@ export default {
       return {
         cfgName: [
           { required: true, message: this.$t('config.name') + this.$t('common.isRequired'), trigger: 'blur' },
-          { min: 3, max: 2000, message: this.$t('config.name') + this.$t('config.lengthValidation'), trigger: 'blur' }
+          { min: 2, max: 64, message: this.$t('config.name') + '长度在 2 到 64 个字符', trigger: 'blur' }
         ],
         cfgValue: [
           { required: true, message: this.$t('config.value') + this.$t('common.isRequired'), trigger: 'blur' },
-          { min: 2, max: 2000, message: this.$t('config.value') + this.$t('config.lengthValidation'), trigger: 'blur' }
+          { min: 2, max: 128, message: this.$t('config.value') + '长度在 2 到 128 个字符', trigger: 'blur' }
         ]
       }
     }
@@ -154,8 +154,8 @@ export default {
     },
     edit() {
       if (this.checkSel()) {
+        this.form = Object.assign({}, this.selRow)
         this.isAdd = false
-        this.form = this.selRow
         this.formTitle = this.$t('config.edit')
         this.formVisible = true
       }

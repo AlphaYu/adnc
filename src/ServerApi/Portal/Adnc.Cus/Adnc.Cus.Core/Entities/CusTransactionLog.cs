@@ -14,7 +14,7 @@ namespace Adnc.Cus.Core.Entities
     {
         public long CustomerId { get; set; }
 
-        [StringLength(32)]
+        [StringLength(16)]
         public string Account { get; set; }
 
         [StringLength(3)]
@@ -32,7 +32,7 @@ namespace Adnc.Cus.Core.Entities
         [Column(TypeName = "decimal(18,2)")]
         public decimal ChangedAmount { get; set; }
 
-        [StringLength(200)]
+        [StringLength(64)]
         public string Remark { get; set; }
 
     }

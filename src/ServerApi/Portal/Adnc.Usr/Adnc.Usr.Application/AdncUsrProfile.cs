@@ -11,7 +11,7 @@ namespace Adnc.Usr.Application
     {
         public AdncUsrProfile()
         {
-            CreateMap(typeof(IPagedModel<>), typeof(PageModelDto<>));
+            CreateMap(typeof(IPagedModel<>), typeof(PageModelDto<>)).ForMember("XData", opt => opt.Ignore());
             CreateMap(typeof(ZTreeNodeDto<,>), typeof(Node<>)).IgnoreAllPropertiesWithAnInaccessibleSetter();
             CreateMap<MenuSaveInputDto, SysMenu>();
             CreateMap<SysMenu, MenuDto>().ReverseMap();
@@ -23,8 +23,8 @@ namespace Adnc.Usr.Application
             CreateMap<RoleSaveInputDto, SysRole>();
             CreateMap<SysRole, RoleDto>().ReverseMap();
             CreateMap<UserSaveInputDto, SysUser>();
-            CreateMap<SysUser, UserDto>().ReverseMap();
-            CreateMap<SysUser, UserProfileDto>();
+            CreateMap<SysUser, UserDto>().ForMember(dest => dest.Password, opt => opt.Ignore());
+            CreateMap<SysUser, UserProfileDto>().ForMember(d => d.DeptFullName, opt => opt.MapFrom(s => s.Dept.FullName));
             CreateMap<SysUser, UserValidateDto>();
             CreateMap<DeptSaveInputDto, SysDept>();
             CreateMap<SysDept, DeptDto>();

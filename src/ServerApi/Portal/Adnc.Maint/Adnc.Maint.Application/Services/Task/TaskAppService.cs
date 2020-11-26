@@ -52,10 +52,6 @@ namespace  Adnc.Maint.Application.Services
 
         public async Task Save(TaskSaveInputDto saveDto)
         {
-            if (saveDto.Name.IsNullOrWhiteSpace())
-            {
-                throw new BusinessException(new ErrorModel(HttpStatusCode.BadRequest,"请输入任务名称"));
-            }
             //add
             if (saveDto.ID == 0)
             {

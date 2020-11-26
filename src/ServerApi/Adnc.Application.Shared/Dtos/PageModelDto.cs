@@ -33,5 +33,10 @@ namespace Adnc.Application.Shared.Dtos
 
         public int PageCount { get; set; }
 
+        /// <summary>
+        /// 扩展数据
+        /// </summary>
+        public dynamic XData { get; set; }
+
     }
 }

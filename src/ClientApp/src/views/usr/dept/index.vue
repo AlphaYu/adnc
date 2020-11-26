@@ -36,45 +36,31 @@
     <el-dialog
       :title="formTitle"
       :visible.sync="formVisible"
-      width="70%">
+      width="70%"
+    >
       <el-form ref="form" :model="form" :rules="rules" label-width="120px">
         <el-row>
           <el-col :span="12">
             <el-form-item label="名称" prop="simpleName">
-              <el-input v-model="form.simpleName" minlength=1></el-input>
+              <el-input v-model="form.simpleName" minlength="1" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="全称" prop="fullName">
-              <el-input v-model="form.fullName"  minlength=1></el-input>
+              <el-input v-model="form.fullName" minlength="1" />
             </el-form-item>
           </el-col>
 
           <el-col :span="12">
             <el-form-item label="排序" prop="num">
-              <el-input type="number" v-model="form.num"></el-input>
+              <el-input v-model="form.num" type="number" />
             </el-form-item>
           </el-col>
-          <el-col :span="12">
-            <el-form-item label="父部门" >
-              <el-input
-                placeholder="请选择父部门"
-                v-model="form.pname"
-                readonly="readonly"
-                @click.native="showTree = !showTree">
-              </el-input>
-              <el-tree v-if="showTree"
-                       empty-text="暂无数据"
-                       :expand-on-click-node="false"
-                       :data="data"
-                       :props="defaultProps"
-                       @node-click="handleNodeClick"
-                       class="input-tree">
-              </el-tree>
-
+          <el-col :span="12" prop="pid">
+            <el-form-item label="父部门">
+              <treeselect v-model="form.pid" :options="deptTreeData" placeholder="请选择父部门" />
             </el-form-item>
           </el-col>
-
 
         </el-row>
         <el-form-item>

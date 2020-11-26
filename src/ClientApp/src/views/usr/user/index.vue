@@ -16,13 +16,13 @@
       <br>
       <el-row>
         <el-col :span="24">
-          <el-button v-permission="['/user/add']" type="success" size="mini" icon="el-icon-plus" @click.native="add">
+          <el-button v-permission="['/user/add']" type="primary" size="mini" icon="el-icon-plus" @click.native="add">
             {{ $t('button.add') }}
           </el-button>
-          <el-button v-permission="['/user/freeze']" type="primary" size="mini" icon="el-icon-delete" @click.native="changeUserStatusBatch(1)">
+          <el-button v-permission="['/user/freeze']" type="success" size="mini" icon="el-icon-delete" @click.native="changeUserStatusBatch(1)">
             {{ $t('button.enable') }}
           </el-button>
-          <el-button v-permission="['/user/freeze']" type="danger" size="mini" icon="el-icon-delete" @click.native="changeUserStatusBatch(2)">
+          <el-button v-permission="['/user/freeze']" type="danger" size="mini" icon="el-icon-delete" @click.native="changeUserStatusBatch(0)">
             {{ $t('button.disable') }}
           </el-button>
         </el-col>
@@ -41,6 +41,11 @@
       @selection-change="handleSelectionChange"
     >
       <el-table-column type="selection" width="50" />
+      <el-table-column label="ID">
+        <template slot-scope="scope">
+          {{ scope.row.id }}
+        </template>
+      </el-table-column>
       <el-table-column label="账号">
         <template slot-scope="scope">
           {{ scope.row.account }}
@@ -51,9 +56,11 @@
           {{ scope.row.name }}
         </template>
       </el-table-column>
-      <el-table-column label="性别">
+      <el-table-column label="性别" width="50">
         <template slot-scope="scope">
-          {{ scope.row.sexName }}
+          <el-tag :type="scope.row.sex === 1 ? 'success' : 'warning'">
+            {{ scope.row.sex===1?"男":"女" }}
+          </el-tag>
         </template>
       </el-table-column>
       <el-table-column label="角色">
@@ -81,14 +88,21 @@
           {{ scope.row.createTime }}
         </template>
       </el-table-column>
-      <el-table-column label="状态">
+      <el-table-column label="状态" width="80">
         <template slot-scope="scope">
-          <!--
-            <el-tag :type="row.statusName === '启用' ? 'success' : 'danger'">
-            {{ row.statusName }}
+          <el-tag :type="scope.row.status === 1 ? 'success' : 'danger'">
+            {{ scope.row.status===1?"启用":"禁用" }}
           </el-tag>
-          -->
-          <el-switch v-model="scope.row.status==1" @change="changeUserStatus(scope.row)" />
+          <!--
+          <el-switch
+            v-model="scope.row.status"
+            active-color="#13ce66"
+            inactive-color="#cccccc"
+            :active-value="1"
+            :inactive-value="0"
+            @change="changeUserStatus(scope.row)"
+          />
+           -->
         </template>
       </el-table-column>
       <el-table-column
@@ -124,7 +138,7 @@
         <el-row>
           <el-col :span="12">
             <el-form-item label="账户" prop="account">
-              <el-input v-model="form.account" minlength="1" />
+              <el-input v-model="form.account" minlength="1" :readonly="!isAdd" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -162,27 +176,16 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="所属部门" prop="deptid">
-              <el-input
-                v-model="form.deptName"
-                placeholder="请选择所属部门"
-                @click.native="deptTree.show = !deptTree.show"
-              />
-              <el-tree
-                v-if="deptTree.show"
-                empty-text="暂无数据"
-                :expand-on-click-node="false"
-                :data="deptTree.data"
-                :props="deptTree.defaultProps"
-                class="input-tree"
-                @node-click="handleNodeClick"
-              />
-
+            <el-form-item label="所属部门" prop="deptId">
+              <treeselect v-model="form.deptId" :options="deptTreeData" placeholder="请选择所属部门" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="是否启用" prop="status">
-              <el-switch v-model="form.status" />
+              <el-radio-group v-model="form.status">
+                <el-radio :label="1">启用</el-radio>
+                <el-radio :label="0">禁用</el-radio>
+              </el-radio-group>
             </el-form-item>
           </el-col>
           <el-col :span="12">

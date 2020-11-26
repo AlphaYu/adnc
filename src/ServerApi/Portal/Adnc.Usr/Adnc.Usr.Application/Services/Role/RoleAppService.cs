@@ -118,11 +118,19 @@ namespace Adnc.Usr.Application.Services
             var role = _mapper.Map<SysRole>(roleDto);
             if (roleDto.ID < 1)
             {
+                var isExists = (await this.GetAllFromCache()).Where(x => x.Name == roleDto.Name).Any();
+                if (isExists)
+                    throw new BusinessException(new ErrorModel(HttpStatusCode.BadRequest, "该角色名称已经存在"));
+
                 role.ID = IdGenerater.GetNextId();
                 await _roleRepository.InsertAsync(role);
             }
             else
             {
+                var isExists = (await this.GetAllFromCache()).Where(x => x.Name == roleDto.Name && x.ID != roleDto.ID).Any();
+                if(isExists)
+                    throw new BusinessException(new ErrorModel(HttpStatusCode.BadRequest, "该角色名称已经存在"));
+
                 await _roleRepository.UpdateAsync(role);
             }
         }

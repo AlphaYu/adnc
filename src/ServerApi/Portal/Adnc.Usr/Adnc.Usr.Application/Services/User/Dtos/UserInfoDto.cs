@@ -11,27 +11,12 @@ namespace Adnc.Usr.Application.Dtos
     public class UserInfoDto : BaseDto
     {
         /// <summary>
-        /// UserID
+        /// 用户Id
         /// </summary>
-        public long ID { get; set; }
+        public long Id { get; set; }
 
         /// <summary>
-        /// 账号
-        /// </summary>
-        public string Account { get; set; }
-
-        /// <summary>
-        /// 姓名
-        /// </summary>
-        public string Name { get; set; }
-
-        /// <summary>
-        /// 登录Ip
-        /// </summary>
-        public string RemoteIpAddress { get; set; }
-
-        /// <summary>
-        /// 用户个人信息
+        /// 基本信息
         /// </summary>
         public UserProfileDto Profile { get; set; }
 

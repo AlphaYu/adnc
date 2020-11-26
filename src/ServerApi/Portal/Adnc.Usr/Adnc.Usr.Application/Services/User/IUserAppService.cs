@@ -24,7 +24,7 @@ namespace Adnc.Usr.Application.Services
         Task SetRole(RoleSetInputDto setDto);
 
         [OpsLog(LogName = "修改用户状态")]
-        Task ChangeStatus(long Id);
+        Task ChangeStatus(long Id, int status);
 
         [OpsLog(LogName = "批量修改用户状态")]
         Task ChangeStatus(UserChangeStatusInputDto changeDto);

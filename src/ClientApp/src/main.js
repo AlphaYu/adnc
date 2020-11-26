@@ -22,6 +22,10 @@ import i18n from './lang'
 import '@/icons' // icon
 import '@/permission' // permission control
 
+import Treeselect from '@riophae/vue-treeselect'
+import '@riophae/vue-treeselect/dist/vue-treeselect.css'
+Vue.component('treeselect', Treeselect)
+
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api
