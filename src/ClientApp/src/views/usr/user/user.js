@@ -169,22 +169,30 @@ export default {
       var checkUserIds = this.checkedRows.map(function(value) {
         return value.id
       })
-      var params = {
-        userIds: checkUserIds,
-        status: state
-      }
-      changeStatusBatch(params).then(response => {
-        // this.fetchData()
-        this.checkedRows.forEach(function(item, index) {
-          item.status = params.status
-        })
-        this.$notify({
-          title: 'Success',
-          message: '提交成功',
-          type: 'success',
+      if (checkUserIds.length < 1) {
+        this.$message({
+          message: '请选中操作项',
+          type: 'error',
           duration: 2000
         })
-      })
+      } else {
+        var params = {
+          userIds: checkUserIds,
+          status: state
+        }
+        changeStatusBatch(params).then(response => {
+          // this.fetchData()
+          this.checkedRows.forEach(function(item, index) {
+            item.status = params.status
+          })
+          this.$notify({
+            title: 'Success',
+            message: '提交成功',
+            type: 'success',
+            duration: 2000
+          })
+        })
+      }
     },
     saveUser() {
       var self = this
