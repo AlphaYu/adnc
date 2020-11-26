@@ -7,3 +7,4 @@ node_modules
 /src/ClientApp/package-lock.json
 /README.html
 /src/ClientApp/dist
+*.logs
