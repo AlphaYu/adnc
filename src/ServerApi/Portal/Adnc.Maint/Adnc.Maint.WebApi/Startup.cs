@@ -110,7 +110,7 @@ namespace Adnc.Maint.WebApi
             });
             app.UseRouting();
             app.UseAuthentication();
-            app.UseSSOAuthentication();
+            app.UseSSOAuthentication(_srvRegistration.IsSSOAuthentication);
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {

@@ -59,6 +59,7 @@ namespace Adnc.WebApi.Shared
         protected readonly RedisConfig _redisConfig;
         protected readonly RabbitMqConfig _rabbitMqConfig;
         protected readonly ConsulConfig _consulConfig;
+        protected readonly bool _isSSOAuthentication;
 
         /// <summary>
         /// 服务注册与系统配置
@@ -89,6 +90,8 @@ namespace Adnc.WebApi.Shared
             _rabbitMqConfig = _cfg.GetSection("RabbitMq").Get<RabbitMqConfig>();
             //读取consul配置
             _consulConfig = _cfg.GetSection("Consul").Get<ConsulConfig>();
+            //读取是否开启SSOAuthentication(单点登录验证)
+            _isSSOAuthentication = _cfg.GetValue("SSOAuthentication", false);
         }
 
         /// <summary>
@@ -146,6 +149,11 @@ namespace Adnc.WebApi.Shared
         }
 
         /// <summary>
+        /// 获取SSOAuthentication是否开启
+        /// </summary>
+        public virtual bool IsSSOAuthentication { get { return _isSSOAuthentication; } }
+
+        /// <summary>
         /// 注册配置类到IOC容器
         /// </summary>
         public virtual void Configure()
@@ -164,7 +172,10 @@ namespace Adnc.WebApi.Shared
         }
 
         /// <summary>
-        /// 注册Controllers
+        /// Controllers 注册
+        /// Sytem.Text.Json 配置
+        /// FluentValidation 注册
+        /// ApiBehaviorOptions 配置
         /// </summary>
         public virtual void AddControllers()
         {
@@ -173,9 +184,9 @@ namespace Adnc.WebApi.Shared
                      {
                          options.JsonSerializerOptions.Converters.Add(new DateTimeConverter());
                          options.JsonSerializerOptions.Converters.Add(new DateTimeNullableConverter());
+                         options.JsonSerializerOptions.Encoder = SystemTextJsonHelper.GetAdncDefaultEncoder();
                          //该值指示是否允许、不允许或跳过注释。
                          options.JsonSerializerOptions.ReadCommentHandling = JsonCommentHandling.Skip;
-                         options.JsonSerializerOptions.Encoder = SystemTextJsonHelper.GetAdncDefaultEncoder();
                          //dynamic与匿名类型序列化设置
                          options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
                          //dynamic
@@ -195,6 +206,7 @@ namespace Adnc.WebApi.Shared
             {
                 //关闭自动验证
                 //options.SuppressModelStateInvalidFilter = true;
+                //格式化验证信息
                 options.InvalidModelStateResponseFactory = (context) =>
                 {
                     var result = new JsonResult(new { error = context.ModelState.GetValidationSummary("<br>") })
@@ -345,6 +357,13 @@ namespace Adnc.WebApi.Shared
             _services.AddScoped<IAuthorizationHandler, THandler>();
         }
 
+        /// <summary>
+        /// 注册easycaching缓存组件
+        /// </summary>
+        /// <param name="localCacheName"></param>
+        /// <param name="remoteCacheName"></param>
+        /// <param name="hyBridCacheName"></param>
+        /// <param name="topicName"></param>
         public virtual void AddCaching(string localCacheName = BaseEasyCachingConsts.LocalCaching
             , string remoteCacheName = BaseEasyCachingConsts.RemoteCaching
             , string hyBridCacheName = BaseEasyCachingConsts.HybridCaching

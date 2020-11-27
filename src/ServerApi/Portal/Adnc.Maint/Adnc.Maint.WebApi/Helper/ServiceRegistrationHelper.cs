@@ -18,12 +18,18 @@ namespace Adnc.Maint.WebApi.Helper
         {
         }
 
+        /// <summary>
+        /// 注册MQ消费者
+        /// </summary>
         public void AddAllMqServices()
         {
             _services.AddHostedService<LoginLogMqConsumer>();
             _services.AddHostedService<OpsLogMqConsumer>();
         }
 
+        /// <summary>
+        /// 注册Rpc调用服务
+        /// </summary>
         public void AddAllRpcServices()
         {
             var policies = base.GenerateDefaultRefitPolicies();

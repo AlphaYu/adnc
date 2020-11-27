@@ -243,9 +243,12 @@ namespace Adnc.WebApi.Shared.Middleware
     /// </summary>
     public static class SSOAuthenticationMiddlewareExtensions
     {
-        public static IApplicationBuilder UseSSOAuthentication(this IApplicationBuilder builder)
+        public static IApplicationBuilder UseSSOAuthentication(this IApplicationBuilder builder, bool isOpenSSOAuthentication = true)
         {
-            return builder.UseMiddleware<SSOAuthenticationMiddleware>();
+            if(isOpenSSOAuthentication)
+                return builder.UseMiddleware<SSOAuthenticationMiddleware>();
+
+            return builder;
         }
     }
 }
