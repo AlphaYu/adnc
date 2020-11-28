@@ -15,7 +15,7 @@ using EasyCaching.Core;
 using Newtonsoft.Json.Linq;
 using Adnc.Infr.Common.Extensions;
 using Adnc.Application.Shared;
-
+using Adnc.Infr.Common.Helper;
 
 namespace Adnc.WebApi.Shared.Middleware
 {
@@ -23,7 +23,7 @@ namespace Adnc.WebApi.Shared.Middleware
     {
         private readonly RequestDelegate _next;
         private readonly JWTConfig _jwtConfig;
-        private readonly string tokenPrefx = "accesstoken:";
+        private readonly string tokenPrefx = "accesstoken";
         //private readonly string refreshTokenPrefx = "refreshtoken";
         private readonly IHybridCachingProvider _cache;
 
@@ -88,7 +88,7 @@ namespace Adnc.WebApi.Shared.Middleware
                 if (controller == "account" && action == "password")
                 {
                     await _next(context);
-                    if (context.Response.StatusCode == 200)
+                    if (StatusCodeChecker.Is2xx(context.Response.StatusCode))
                         await RemoveToken(context);
                     return;
                 }
@@ -97,7 +97,7 @@ namespace Adnc.WebApi.Shared.Middleware
                 if (controller == "account" && action == "logout")
                 {
                     await _next(context);
-                    if (context.Response.StatusCode == 200)
+                    if (StatusCodeChecker.Is2xx(context.Response.StatusCode))
                     {
                         //主动注销，从cahce移除token
                         if (await CheckToken(context) == true)
@@ -108,7 +108,7 @@ namespace Adnc.WebApi.Shared.Middleware
             }
 
             //API需要认证，并且验证成功，需要检查accesstoken是否在缓存中。
-            if (context.Response.StatusCode == 200)
+            if (StatusCodeChecker.Is2xx(context.Response.StatusCode))
             {
                 //需要先检查token是否是最新的，再走其它中间件
                 var result = await CheckToken(context);
@@ -159,7 +159,7 @@ namespace Adnc.WebApi.Shared.Middleware
                 }
             }
 
-            if (context.Response.StatusCode == 200)
+            if (StatusCodeChecker.Is2xx(context.Response.StatusCode))
             {
                 var tokenTxt = JObject.Parse(responseContent).GetValue("token")?.ToString();
                 if (tokenTxt.IsNullOrWhiteSpace())
