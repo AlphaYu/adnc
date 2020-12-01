@@ -11,9 +11,16 @@ namespace Adnc.Application.Shared.Dtos
     [Serializable]
     public class SimpleDto<T> : BaseDto
     {
+        public SimpleDto() { }
+
+        public SimpleDto(T value)
+        {
+            Value = value;
+        }
+
         /// <summary>
         /// 需要传递的值
         /// </summary>
-        public T Result { get; set; }
+        public T Value { get; set; }
     }
 }

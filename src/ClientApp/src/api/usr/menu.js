@@ -16,9 +16,11 @@ export function listForRouter(params) {
 }
 
 export function save(data) {
+  let methodName = 'post'
+  if (data.id > 0) { methodName = 'put' }
   return request({
     url: '/usr/menus',
-    method: 'post',
+    method: methodName,
     data
   })
 }

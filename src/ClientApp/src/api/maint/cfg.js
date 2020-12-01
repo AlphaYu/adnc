@@ -17,15 +17,16 @@ export function exportXls(params) {
 }
 
 export function save(params) {
+  let methodName = 'post'
+  if (params.id > 0) { methodName = 'put' }
   return request({
     url: '/maint/cfgs',
-    method: 'post',
+    method: methodName,
     data: params
   })
 }
 
 export function remove(id) {
-  console.log(id)
   return request({
     url: `/maint/cfgs/${id}`,
     method: 'delete'

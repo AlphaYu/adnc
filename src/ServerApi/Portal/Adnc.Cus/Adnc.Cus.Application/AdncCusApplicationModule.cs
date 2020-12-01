@@ -34,6 +34,8 @@ namespace Adnc.Cus.Application
             //注册操作日志拦截器
             builder.RegisterType<OpsLogInterceptor>()
                    .InstancePerLifetimeScope();
+            builder.RegisterType<OpsLogAsyncInterceptor>()
+                   .InstancePerLifetimeScope();
 
             //注册cache拦截器
             builder.RegisterType<EasyCachingInterceptor>()

@@ -12,94 +12,78 @@ using Adnc.Usr.Core.Entities;
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Infr.Common.Helper;
 using Adnc.Application.Shared;
+using Adnc.Application.Shared.Services;
 using Adnc.Infr.Common.Extensions;
 
 namespace Adnc.Usr.Application.Services
 {
-    public class MenuAppService : IMenuAppService
+    public class MenuAppService :AppService,IMenuAppService
     {
         private readonly IMapper _mapper;
         private readonly IEfRepository<SysMenu> _menuRepository;
         private readonly IEfRepository<SysRelation> _relationRepository;
-        private readonly IUsrManagerService _systemManagerService;
+        private readonly IUsrManagerService _usrManagerService;
         private readonly IHybridCachingProvider _cache;
 
         public MenuAppService(IMapper mapper,
             IEfRepository<SysMenu> menuRepository,
             IEfRepository<SysRelation> relationRepository,
-            IUsrManagerService systemManagerService,
+            IUsrManagerService usrManagerService,
             IHybridProviderFactory hybridProviderFactory)
         {
             _mapper = mapper;
             _menuRepository = menuRepository;
             _relationRepository = relationRepository;
-            _systemManagerService = systemManagerService;
+            _usrManagerService = usrManagerService;
             _cache = hybridProviderFactory.GetHybridCachingProvider(EasyCachingConsts.HybridCaching);
         }
 
-        public async Task Save(MenuSaveInputDto saveDto)
+        public async Task<AppSrvResult<long>> Add(MenuSaveInputDto saveDto)
         {
-            //新增
-            if (saveDto.ID < 1)
-            {
-                var isExistsCode = (await this.GetAllMenusFromCache()).Where(x => x.Code == saveDto.Code).Any();
-                if (isExistsCode)
-                    throw new BusinessException(new ErrorModel(HttpStatusCode.Forbidden, "该菜单编码已经存在"));
+            var isExistsCode = (await this.GetAllMenusFromCache()).Where(x => x.Code == saveDto.Code).Any();
+            if (isExistsCode)
+                return Problem(HttpStatusCode.Forbidden, "该菜单编码已经存在");
 
-                var isExistsName = (await this.GetAllMenusFromCache()).Where(x => x.Name == saveDto.Name).Any();
-                if (isExistsName)
-                    throw new BusinessException(new ErrorModel(HttpStatusCode.Forbidden, "该菜单名称已经存在"));
-            }
-            //修改
-            else
-            {
-                var isExistsCode = (await this.GetAllMenusFromCache()).Where(x => x.Code == saveDto.Code && x.ID != saveDto.ID).Any();
-                if (isExistsCode)
-                    throw new BusinessException(new ErrorModel(HttpStatusCode.Forbidden, "该菜单编码已经存在"));
+            var isExistsName = (await this.GetAllMenusFromCache()).Where(x => x.Name == saveDto.Name).Any();
+            if (isExistsName)
+                return Problem(HttpStatusCode.Forbidden, "该菜单名称已经存在");
 
-                var isExistsName = (await this.GetAllMenusFromCache()).Where(x => x.Name == saveDto.Name && x.ID != saveDto.ID).Any();
-                if (isExistsName)
-                    throw new BusinessException(new ErrorModel(HttpStatusCode.Forbidden, "该菜单名称已经存在"));
-            }
+            var parentMenu = (await this.GetAllMenusFromCache()).Where(x => x.Code == saveDto.PCode).FirstOrDefault();
+            var addDto = ProducePCodes(saveDto, parentMenu);
+            var menu = _mapper.Map<SysMenu>(addDto);
+            menu.ID = IdGenerater.GetNextId();
+            await _menuRepository.InsertAsync(menu);
 
-            //父节点处理
-            if (saveDto.PCode.IsNullOrWhiteSpace() || saveDto.PCode.EqualsIgnoreCase("0"))
-            {
-                saveDto.PCode = "0";
-                saveDto.PCodes = "[0],";
-                saveDto.Levels = 1;
-            }
-            else
-            {
-                var parentMenu = (await this.GetAllMenusFromCache()).Where(x => x.Code == saveDto.PCode).FirstOrDefault();
-                saveDto.PCode = parentMenu.Code;
-                if (saveDto.Code.EqualsIgnoreCase(parentMenu.Code))
-                    throw new BusinessException(new ErrorModel(HttpStatusCode.Forbidden, "菜单编码冲突"));
-
-                saveDto.Levels = parentMenu.Levels + 1;
-                saveDto.PCodes = $"{parentMenu.PCodes}[{parentMenu.Code}]";
-            }
-
-            //保存
-            var menu = _mapper.Map<SysMenu>(saveDto);
-            if (saveDto.ID < 1)
-            {
-                menu.ID = IdGenerater.GetNextId();
-                await _menuRepository.InsertAsync(menu);
-            }
-            else
-            {
-                await _menuRepository.UpdateAsync(menu);
-            }
+            return menu.ID;
         }
 
-        public async Task Delete(long Id)
+        public async Task<AppSrvResult> Update(MenuSaveInputDto saveDto)
+        {
+            var isExistsCode = (await this.GetAllMenusFromCache()).Where(x => x.Code == saveDto.Code && x.ID != saveDto.ID).Any();
+            if (isExistsCode)
+                return Problem(HttpStatusCode.BadRequest, "该菜单编码已经存在");
+
+            var isExistsName = (await this.GetAllMenusFromCache()).Where(x => x.Name == saveDto.Name && x.ID != saveDto.ID).Any();
+            if (isExistsName)
+                return Problem(HttpStatusCode.BadRequest, "该菜单名称已经存在");
+
+            var parentMenu = (await this.GetAllMenusFromCache()).Where(x => x.Code == saveDto.PCode).FirstOrDefault();
+            var updateDto = ProducePCodes(saveDto, parentMenu);
+            var menu = _mapper.Map<SysMenu>(updateDto);
+            await _menuRepository.UpdateAsync(menu);
+
+            return DefaultResult();
+        }
+
+        public async Task<AppSrvResult> Delete(long Id)
         {
             var menu = (await this.GetAllMenusFromCache()).Where(x => x.ID == Id).FirstOrDefault();
             await _menuRepository.DeleteRangeAsync(x => x.PCodes.Contains($"[{menu.Code}]") || x.ID == Id);
+
+            return DefaultResult();
         }
 
-        public async Task<List<MenuNodeDto>> Getlist()
+        public async Task<AppSrvResult<List<MenuNodeDto>>> Getlist()
         {
             var result = new List<MenuNodeDto>();
 
@@ -132,7 +116,7 @@ namespace Adnc.Usr.Application.Services
             return result;
         }
 
-        public async Task<List<RouterMenuDto>> GetMenusForRouter(long[] roleIds)
+        public async Task<AppSrvResult<List<RouterMenuDto>>> GetMenusForRouter(long[] roleIds)
         {
             var result = new List<RouterMenuDto>();
             //所有菜单
@@ -188,7 +172,7 @@ namespace Adnc.Usr.Application.Services
             return result;
         }
 
-        public async Task<dynamic> GetMenuTreeListByRoleId(long roleId)
+        public async Task<AppSrvResult<dynamic>> GetMenuTreeListByRoleId(long roleId)
         {
             var menuIds = (await this.GetAllRelations()).Where(x => x.RoleId.Value == roleId).Select(r => r.MenuId.Value) ?? new List<long>();
             List<ZTreeNodeDto<long, dynamic>> roleTreeList = new List<ZTreeNodeDto<long, dynamic>>();
@@ -255,6 +239,22 @@ namespace Adnc.Usr.Application.Services
             }, TimeSpan.FromSeconds(EasyCachingConsts.OneYear));
 
             return cahceValue.Value;
+        }
+
+        private MenuSaveInputDto ProducePCodes(MenuSaveInputDto saveDto, MenuDto parentMenuDto)
+        {
+            if (saveDto.PCode.IsNullOrWhiteSpace() || saveDto.PCode.EqualsIgnoreCase("0"))
+            {
+                saveDto.PCode = "0";
+                saveDto.PCodes = "[0],";
+                saveDto.Levels = 1;
+                return saveDto;
+            }
+
+            saveDto.Levels = parentMenuDto.Levels + 1;
+            saveDto.PCodes = $"{parentMenuDto.PCodes}[{parentMenuDto.Code}]";
+
+            return saveDto;
         }
     }
 }

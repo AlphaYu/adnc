@@ -16,6 +16,6 @@ namespace Adnc.Cus.Application.RpcServices
         /// <param name="id">id</param>
         /// <returns></returns>
         [Get("/maint/dicts/{id}")]
-        Task<GetDictReply> GetDict([Header("Authorization")] string jwtToken, long id);
+        Task<ApiResponse<GetDictReply>> GetDict([Header("Authorization")] string jwtToken, long id);
     }
 }

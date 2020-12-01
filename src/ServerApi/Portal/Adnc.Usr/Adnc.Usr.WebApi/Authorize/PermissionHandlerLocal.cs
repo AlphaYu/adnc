@@ -18,8 +18,11 @@ namespace Microsoft.AspNetCore.Authorization
 
         protected override async Task<bool> CheckUserPermissions(long userId, long[] roleIds, string[] codes)
         {
-            bool result = await _roleAppService.ExistPermissions(new RolePermissionsCheckInputDto() { RoleIds = roleIds, Permissions = codes });
-            return result;
+            var result = await _roleAppService.ExistPermissions(new RolePermissionsCheckInputDto() { RoleIds = roleIds, Permissions = codes });
+            if (result.IsSuccess)
+                return result.Content;
+
+            return false;
         }
     }
 }

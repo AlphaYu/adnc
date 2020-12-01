@@ -37,7 +37,7 @@
         </member>
         <member name="T:Adnc.Usr.Application.Services.IUserAppService">
             <summary>
-            users 只缓存30秒，其他写操作无需修改缓存。
+            用户管理
             </summary>
         </member>
         <member name="T:Adnc.Usr.Application.Dtos.DeptDto">
@@ -537,24 +537,9 @@
             角色ID
             </summary>
         </member>
-        <member name="P:Adnc.Usr.Application.Dtos.RoleSaveInputDto.DeptId">
-            <summary>
-            部门ID
-            </summary>
-        </member>
         <member name="P:Adnc.Usr.Application.Dtos.RoleSaveInputDto.Name">
             <summary>
             角色名
-            </summary>
-        </member>
-        <member name="P:Adnc.Usr.Application.Dtos.RoleSaveInputDto.Num">
-            <summary>
-            排序
-            </summary>
-        </member>
-        <member name="P:Adnc.Usr.Application.Dtos.RoleSaveInputDto.Pid">
-            <summary>
-            父级角色ID
             </summary>
         </member>
         <member name="P:Adnc.Usr.Application.Dtos.RoleSaveInputDto.Tips">
@@ -562,14 +547,9 @@
             角色描述
             </summary>
         </member>
-        <member name="P:Adnc.Usr.Application.Dtos.RoleSaveInputDto.Permissions">
+        <member name="P:Adnc.Usr.Application.Dtos.RoleSaveInputDto.Num">
             <summary>
-            权限集合
-            </summary>
-        </member>
-        <member name="P:Adnc.Usr.Application.Dtos.RoleSaveInputDto.Version">
-            <summary>
-            角色版本号
+            排序
             </summary>
         </member>
         <member name="T:Adnc.Usr.Application.Dtos.RoleSearchDto">

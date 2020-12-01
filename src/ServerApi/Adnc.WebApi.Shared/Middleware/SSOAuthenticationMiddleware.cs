@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net;
 using System.IO;
+using System.Text.Json;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.IdentityModel.Tokens.Jwt;
@@ -9,13 +10,14 @@ using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using EasyCaching.Core;
 using Newtonsoft.Json.Linq;
 using Adnc.Infr.Common.Extensions;
 using Adnc.Application.Shared;
-
+using Adnc.Infr.Common.Helper;
 
 namespace Adnc.WebApi.Shared.Middleware
 {
@@ -23,7 +25,7 @@ namespace Adnc.WebApi.Shared.Middleware
     {
         private readonly RequestDelegate _next;
         private readonly JWTConfig _jwtConfig;
-        private readonly string tokenPrefx = "accesstoken:";
+        private readonly string tokenPrefx = "accesstoken";
         //private readonly string refreshTokenPrefx = "refreshtoken";
         private readonly IHybridCachingProvider _cache;
 
@@ -88,7 +90,7 @@ namespace Adnc.WebApi.Shared.Middleware
                 if (controller == "account" && action == "password")
                 {
                     await _next(context);
-                    if (context.Response.StatusCode == 200)
+                    if (StatusCodeChecker.Is2xx(context.Response.StatusCode))
                         await RemoveToken(context);
                     return;
                 }
@@ -97,7 +99,7 @@ namespace Adnc.WebApi.Shared.Middleware
                 if (controller == "account" && action == "logout")
                 {
                     await _next(context);
-                    if (context.Response.StatusCode == 200)
+                    if (StatusCodeChecker.Is2xx(context.Response.StatusCode))
                     {
                         //主动注销，从cahce移除token
                         if (await CheckToken(context) == true)
@@ -108,21 +110,46 @@ namespace Adnc.WebApi.Shared.Middleware
             }
 
             //API需要认证，并且验证成功，需要检查accesstoken是否在缓存中。
-            if (context.Response.StatusCode == 200)
+            if (StatusCodeChecker.Is2xx(context.Response.StatusCode))
             {
                 //需要先检查token是否是最新的，再走其它中间件
                 var result = await CheckToken(context);
                 if (result)
                 {
-                    await _next(context);
+                    try
+                    {
+                        await _next(context);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new Exception(ex.Message, ex);
+                    }
                     return;
                 }
                 else
                 {
-                    context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                    var message = new ErrorModel(HttpStatusCode.Unauthorized, "账号已经在其他地方登录");
-                    context.Response.ContentType = "application/json;charset=utf-8";
-                    await context.Response.WriteAsync(message.ToString());
+                    var status = (int)HttpStatusCode.Unauthorized;
+                    var hostAndPort = context.Request.Host.HasValue ? context.Request.Host.Value : string.Empty;
+                    var requestUrl = string.Concat(hostAndPort, context.Request.Path);
+                    var type = string.Concat("https://httpstatuses.com/", status);
+                    var title = "Token已经过期";
+                    var detial = "Token已经过期,请重新登录";
+                    var problemDetails = new ProblemDetails
+                    {
+                        Title = title
+                        ,
+                        Detail = detial
+                        ,
+                        Type = type
+                        ,
+                        Status = status
+                        ,
+                        Instance = requestUrl
+                    };
+                    context.Response.StatusCode = status;
+                    context.Response.ContentType = "application/problem+json";
+                    var stream = context.Response.Body;
+                    await JsonSerializer.SerializeAsync(stream, problemDetails);
                     return;
                 }
             }
@@ -159,7 +186,7 @@ namespace Adnc.WebApi.Shared.Middleware
                 }
             }
 
-            if (context.Response.StatusCode == 200)
+            if (StatusCodeChecker.Is2xx(context.Response.StatusCode))
             {
                 var tokenTxt = JObject.Parse(responseContent).GetValue("token")?.ToString();
                 if (tokenTxt.IsNullOrWhiteSpace())
@@ -243,9 +270,12 @@ namespace Adnc.WebApi.Shared.Middleware
     /// </summary>
     public static class SSOAuthenticationMiddlewareExtensions
     {
-        public static IApplicationBuilder UseSSOAuthentication(this IApplicationBuilder builder)
+        public static IApplicationBuilder UseSSOAuthentication(this IApplicationBuilder builder, bool isOpenSSOAuthentication = true)
         {
-            return builder.UseMiddleware<SSOAuthenticationMiddleware>();
+            if(isOpenSSOAuthentication)
+                return builder.UseMiddleware<SSOAuthenticationMiddleware>();
+
+            return builder;
         }
     }
 }

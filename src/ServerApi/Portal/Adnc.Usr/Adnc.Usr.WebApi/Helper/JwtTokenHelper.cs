@@ -1,10 +1,9 @@
-﻿using Microsoft.IdentityModel.Tokens;
-using Adnc.Infr.Common;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
+﻿using System;
 using System.Text;
-using System;
 using System.Linq;
+using System.Security.Claims;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.IdentityModel.Tokens;
 using Adnc.Usr.Application.Dtos;
 using Adnc.WebApi.Shared;
 

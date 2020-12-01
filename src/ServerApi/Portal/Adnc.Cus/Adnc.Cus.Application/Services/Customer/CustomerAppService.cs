@@ -8,10 +8,11 @@ using Adnc.Infr.Common.Helper;
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Application.Shared.Dtos;
 using Adnc.Application.Shared;
+using Adnc.Application.Shared.Services;
 
 namespace Adnc.Cus.Application.Services
 {
-    public class CustomerAppService : ICustomerAppService
+    public class CustomerAppService :AppService,ICustomerAppService
     {
         private readonly ICusManagerService _cusManagerService;
         private readonly IEfRepository<Customer> _customerRepo;
@@ -26,11 +27,11 @@ namespace Adnc.Cus.Application.Services
             _mapper = mapper;
         }
 
-        public async Task<SimpleDto<string>> Register(RegisterInputDto inputDto)
+        public async Task<AppSrvResult<SimpleDto<string>>> Register(RegisterInputDto inputDto)
         {
             var exists = await _customerRepo.ExistAsync(t => t.Account == inputDto.Account);
             if (exists)
-                throw new BusinessException(new ErrorModel(HttpStatusCode.Forbidden, "该账号已经存在"));
+                return Problem(HttpStatusCode.Forbidden, "该账号已经存在");
 
             var customer = _mapper.Map<Customer>(inputDto);
             customer.ID = IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId);
@@ -46,14 +47,14 @@ namespace Adnc.Cus.Application.Services
 
             await _cusManagerService.Register(customer, customerFinace);
 
-            return new SimpleDto<string> { Result = customer.ID.ToString() };
+            return new SimpleDto<string>(customer.ID.ToString());
         }
 
-        public async Task<SimpleDto<string>> Recharge(RechargeInputDto inputDto)
+        public async Task<AppSrvResult<SimpleDto<string>>> Recharge(RechargeInputDto inputDto)
         {
             var customer = await _customerRepo.FindAsync(new object[] { inputDto.ID });
             if (customer == null)
-                throw new BusinessException(new ErrorModel(HttpStatusCode.Forbidden, "不存在该账号"));
+                return Problem(HttpStatusCode.NotFound, "不存在该账号");
 
             var cusTransactionLog = new CusTransactionLog()
             {
@@ -72,10 +73,7 @@ namespace Adnc.Cus.Application.Services
 
             await _cusManagerService.Recharge(customer.ID, inputDto.Amount, cusTransactionLog);
 
-            return new SimpleDto<string>()
-            {
-                Result = cusTransactionLog.ID.ToString()
-            };
+            return new SimpleDto<string>(cusTransactionLog.ID.ToString());
         }
     }
 }

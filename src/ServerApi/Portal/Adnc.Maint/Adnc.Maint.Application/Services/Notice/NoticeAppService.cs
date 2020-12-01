@@ -1,16 +1,15 @@
-﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
 using Adnc.Infr.Common.Extensions;
 using Adnc.Maint.Application.Dtos;
 using Adnc.Maint.Core.Entities;
 using Adnc.Core.Shared.IRepositories;
+using Adnc.Application.Shared.Services;
 
 namespace  Adnc.Maint.Application.Services
 {
-    public class NoticeAppService : INoticeAppService
+    public class NoticeAppService : AppService, INoticeAppService
     {
         private readonly IMapper _mapper;
         private readonly IEfRepository<SysNotice> _noticeRepository;
@@ -21,7 +20,7 @@ namespace  Adnc.Maint.Application.Services
             _noticeRepository = noticeRepository;
         }
 
-        public async Task<List<NoticeDto>> GetList(string title)
+        public async Task<AppSrvResult<List<NoticeDto>>> GetList(string title)
         {
             List<SysNotice> notices = null;
             if (title.IsNullOrEmpty())

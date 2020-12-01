@@ -1,5 +1,4 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Adnc.Usr.Application.Dtos;
 using Adnc.Application.Shared.Interceptors;
 using Adnc.Application.Shared.Services;
@@ -8,25 +7,28 @@ using Adnc.Application.Shared.Dtos;
 namespace Adnc.Usr.Application.Services
 {
     /// <summary>
-    /// users 只缓存30秒，其他写操作无需修改缓存。
+    /// 用户管理
     /// </summary>
     public interface IUserAppService : IAppService
     {
-        Task<PageModelDto<UserDto>> GetPaged(UserSearchDto searchModel);
+        Task<AppSrvResult<PageModelDto<UserDto>>> GetPaged(UserSearchDto searchModel);
 
-        [OpsLog(LogName = "新增/修改用户")]
-        Task Save(UserSaveInputDto saveDto);
+        [OpsLog(LogName = "新增用户")]
+        Task<AppSrvResult<long>> Add(UserSaveInputDto saveDto);
+
+        [OpsLog(LogName = "修改用户")]
+        Task<AppSrvResult> Update(UserSaveInputDto saveDto);
 
         [OpsLog(LogName = "删除用户")]
-        Task Delete(long Id);
+        Task<AppSrvResult> Delete(long Id);
 
         [OpsLog(LogName = "设置用户角色")]
-        Task SetRole(RoleSetInputDto setDto);
+        Task<AppSrvResult> SetRole(RoleSetInputDto setDto);
 
         [OpsLog(LogName = "修改用户状态")]
-        Task ChangeStatus(long Id, int status);
+        Task<AppSrvResult> ChangeStatus(long Id, int status);
 
         [OpsLog(LogName = "批量修改用户状态")]
-        Task ChangeStatus(UserChangeStatusInputDto changeDto);
+        Task<AppSrvResult> ChangeStatus(UserChangeStatusInputDto changeDto);
     }
 }

@@ -30,6 +30,7 @@ using FluentValidation.AspNetCore;
 using EasyCaching.InMemory;
 using DotNetCore.CAP.Dashboard;
 using DotNetCore.CAP.Dashboard.NodeDiscovery;
+using Swashbuckle.AspNetCore.Swagger;
 using Adnc.Infr.EasyCaching.Interceptor.Castle;
 using Adnc.Infr.Common;
 using Adnc.Infr.Mq.RabbitMq;
@@ -43,7 +44,8 @@ using Adnc.Infr.Mongo.Configuration;
 using Adnc.Application.Shared;
 using Adnc.Application.Shared.RpcServices;
 using Adnc.Infr.Common.Helper;
-
+using Adnc.WebApi.Shared.Extensions;
+using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
 
 namespace Adnc.WebApi.Shared
 {
@@ -59,6 +61,7 @@ namespace Adnc.WebApi.Shared
         protected readonly RedisConfig _redisConfig;
         protected readonly RabbitMqConfig _rabbitMqConfig;
         protected readonly ConsulConfig _consulConfig;
+        protected readonly bool _isSSOAuthentication;
 
         /// <summary>
         /// 服务注册与系统配置
@@ -89,6 +92,8 @@ namespace Adnc.WebApi.Shared
             _rabbitMqConfig = _cfg.GetSection("RabbitMq").Get<RabbitMqConfig>();
             //读取consul配置
             _consulConfig = _cfg.GetSection("Consul").Get<ConsulConfig>();
+            //读取是否开启SSOAuthentication(单点登录验证)
+            _isSSOAuthentication = _cfg.GetValue("SSOAuthentication", false);
         }
 
         /// <summary>
@@ -146,6 +151,11 @@ namespace Adnc.WebApi.Shared
         }
 
         /// <summary>
+        /// 获取SSOAuthentication是否开启
+        /// </summary>
+        public virtual bool IsSSOAuthentication { get { return _isSSOAuthentication; } }
+
+        /// <summary>
         /// 注册配置类到IOC容器
         /// </summary>
         public virtual void Configure()
@@ -164,7 +174,10 @@ namespace Adnc.WebApi.Shared
         }
 
         /// <summary>
-        /// 注册Controllers
+        /// Controllers 注册
+        /// Sytem.Text.Json 配置
+        /// FluentValidation 注册
+        /// ApiBehaviorOptions 配置
         /// </summary>
         public virtual void AddControllers()
         {
@@ -173,9 +186,9 @@ namespace Adnc.WebApi.Shared
                      {
                          options.JsonSerializerOptions.Converters.Add(new DateTimeConverter());
                          options.JsonSerializerOptions.Converters.Add(new DateTimeNullableConverter());
+                         options.JsonSerializerOptions.Encoder = SystemTextJsonHelper.GetAdncDefaultEncoder();
                          //该值指示是否允许、不允许或跳过注释。
                          options.JsonSerializerOptions.ReadCommentHandling = JsonCommentHandling.Skip;
-                         options.JsonSerializerOptions.Encoder = SystemTextJsonHelper.GetAdncDefaultEncoder();
                          //dynamic与匿名类型序列化设置
                          options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
                          //dynamic
@@ -188,6 +201,8 @@ namespace Adnc.WebApi.Shared
                      {
                          //Continue 验证失败，继续验证其他项
                          cfg.ValidatorOptions.CascadeMode = FluentValidation.CascadeMode.Continue;
+                         // Optionally set validator factory if you have problems with scope resolve inside validators.
+                         // cfg.ValidatorFactoryType = typeof(HttpContextServiceProviderValidatorFactory);
                      });
 
             //参数验证返回信息格式调整
@@ -195,13 +210,26 @@ namespace Adnc.WebApi.Shared
             {
                 //关闭自动验证
                 //options.SuppressModelStateInvalidFilter = true;
+                //格式化验证信息
                 options.InvalidModelStateResponseFactory = (context) =>
                 {
-                    var result = new JsonResult(new { error = context.ModelState.GetValidationSummary("<br>") })
+                    var problemDetails = new ProblemDetails
                     {
-                        StatusCode = (int)HttpStatusCode.BadRequest
+                        Detail = context.ModelState.GetValidationSummary("<br>")
+                        ,
+                        Title = "参数错误"
+                        ,
+                        Status = (int)HttpStatusCode.BadRequest
+                        ,
+                        Type = "https://httpstatuses.com/400"
+                        ,
+                        Instance = context.HttpContext.Request.Path
                     };
-                    return result;
+
+                    return new ObjectResult(problemDetails)
+                    {
+                        StatusCode = problemDetails.Status
+                    };
                 };
             });
         }
@@ -345,6 +373,13 @@ namespace Adnc.WebApi.Shared
             _services.AddScoped<IAuthorizationHandler, THandler>();
         }
 
+        /// <summary>
+        /// 注册easycaching缓存组件
+        /// </summary>
+        /// <param name="localCacheName"></param>
+        /// <param name="remoteCacheName"></param>
+        /// <param name="hyBridCacheName"></param>
+        /// <param name="topicName"></param>
         public virtual void AddCaching(string localCacheName = BaseEasyCachingConsts.LocalCaching
             , string remoteCacheName = BaseEasyCachingConsts.RemoteCaching
             , string hyBridCacheName = BaseEasyCachingConsts.HybridCaching
@@ -469,6 +504,8 @@ namespace Adnc.WebApi.Shared
                 });
                 c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{_serviceInfo.AssemblyName}.xml"));
                 c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{_serviceInfo.AssemblyName.Replace("WebApi", "Application")}.xml"));
+                // Adds fluent validation rules to swagger
+                c.AddFluentValidationRules();
             });
         }
 

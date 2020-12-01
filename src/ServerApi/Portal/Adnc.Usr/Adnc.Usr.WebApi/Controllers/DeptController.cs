@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Http;
 using Adnc.Usr.Application.Services;
 using Adnc.Usr.Application.Dtos;
+using Adnc.WebApi.Shared;
 
 namespace Adnc.Usr.WebApi.Controllers
 {
@@ -13,7 +15,7 @@ namespace Adnc.Usr.WebApi.Controllers
     /// </summary>
     [Route("usr/depts")]
     [ApiController]
-    public class DeptController : ControllerBase
+    public class DeptController : AdncControllerBase
     {
         private readonly IDeptAppService _deptService;
 
@@ -25,13 +27,14 @@ namespace Adnc.Usr.WebApi.Controllers
         /// <summary>
         /// 删除部门
         /// </summary>
-        /// <param name="Id">部门ID</param>
+        /// <param name="id">部门ID</param>
         /// <returns></returns>
         [HttpDelete("{id}")]
         [Permission("deptDelete")]
-        public async Task Delete([FromRoute]long id)
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<ActionResult> Delete([FromRoute] long id)
         {
-            await _deptService.Delete(id);
+            return Result(await _deptService.Delete(id));
         }
 
         /// <summary>
@@ -40,21 +43,36 @@ namespace Adnc.Usr.WebApi.Controllers
         /// <returns></returns>
         [HttpGet()]
         [Permission("deptList")]
-        public async Task<List<DeptNodeDto>> GetList()
-        {            
-            return await _deptService.GetList();
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<List<DeptNodeDto>>> GetList()
+        {
+            return Result(await _deptService.GetList());
         }
 
         /// <summary>
-        /// 保存部门信息
+        /// 新增部门
         /// </summary>
         /// <param name="saveDto">部门</param>
         /// <returns></returns>
         [HttpPost]
-        [Permission("deptAdd", "deptEdit")]
-        public async Task Save([FromBody]DeptSaveInputDto saveDto)
+        [Permission("deptAdd")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        public async Task<ActionResult<long>> Add([FromBody] DeptSaveInputDto saveDto)
         {
-            await _deptService.Save(saveDto);
+            return CreatedResult(await _deptService.Add(saveDto));
+        }
+
+        /// <summary>
+        /// 修改部门
+        /// </summary>
+        /// <param name="saveDto">部门</param>
+        /// <returns></returns>
+        [HttpPut]
+        [Permission("deptEdit")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<ActionResult<long>> Update([FromBody] DeptSaveInputDto saveDto)
+        {
+            return Result(await _deptService.Update(saveDto));
         }
     }
 }

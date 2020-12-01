@@ -1,21 +1,21 @@
-﻿using AutoMapper;
-using System;
+﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using MongoDB.Driver;
+using AutoMapper;
+using System.Collections.Generic;
+using Adnc.Core.Maint.Entities;
+using Adnc.Application.Shared.Dtos;
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Maint.Core.Entities;
 using Adnc.Maint.Application.Dtos;
 using Adnc.Infr.Common.Extensions;
-using Microsoft.Extensions.Logging;
-using MongoDB.Driver;
-using System.Collections.Generic;
-using Adnc.Core.Maint.Entities;
-using Adnc.Application.Shared.Dtos;
+using Adnc.Application.Shared.Services;
 
 namespace  Adnc.Maint.Application.Services
 {
-    public class LogAppService : ILogAppService
+    public class LogAppService :AppService,ILogAppService
     {
         private readonly IMapper _mapper;
         private readonly IMongoRepository<SysOperationLog> _opsLogRepository;
@@ -33,7 +33,7 @@ namespace  Adnc.Maint.Application.Services
             _nlogLogRepository = nlogLogRepository;
         }
 
-        public async Task<PageModelDto<LoginLogDto>> GetLoginLogsPaged(LogSearchDto searchDto)
+        public async Task<AppSrvResult<PageModelDto<LoginLogDto>>> GetLoginLogsPaged(LogSearchDto searchDto)
         {
 
             Expression<Func<SysLoginLog, bool>> whereCondition = x => true;
@@ -66,7 +66,7 @@ namespace  Adnc.Maint.Application.Services
         }
 
 
-        public async Task<PageModelDto<OpsLogDto>> GetOpsLogsPaged(LogSearchDto searchDto)
+        public async Task<AppSrvResult<PageModelDto<OpsLogDto>>> GetOpsLogsPaged(LogSearchDto searchDto)
         {
             var builder = Builders<SysOperationLog>.Filter;
             var filters = new List<FilterDefinition<SysOperationLog>>();
@@ -100,7 +100,7 @@ namespace  Adnc.Maint.Application.Services
             return result;
         }
 
-        public async Task<PageModelDto<NlogLogDto>> GetNlogLogsPaged(LogSearchDto searchDto)
+        public async Task<AppSrvResult<PageModelDto<NlogLogDto>>> GetNlogLogsPaged(LogSearchDto searchDto)
         {
             var builder = Builders<SysNloglog>.Filter;
             var filters = new List<FilterDefinition<SysNloglog>>();
