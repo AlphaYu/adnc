@@ -1,20 +1,22 @@
 ﻿using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Adnc.Usr.Application.Dtos;
 using Adnc.Usr.Application.Services;
 using Adnc.Infr.Common;
 using Adnc.Application.Shared.Dtos;
+using Adnc.WebApi.Shared;
 
 namespace Adnc.Usr.WebApi.Controllers
 {
     /// <summary>
-    /// 用户
+    /// 用户管理
     /// </summary>
     [Route("usr/users")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class UserController : AdncControllerBase
     {
         private readonly IUserAppService _userService;
         private readonly IRoleAppService _roleService;
@@ -36,22 +38,38 @@ namespace Adnc.Usr.WebApi.Controllers
         /// <returns></returns>
         [HttpGet()]
         [Permission("userList")]
-        public async Task<PageModelDto<UserDto>> GetPaged([FromQuery]UserSearchDto searchModel)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<PageModelDto<UserDto>>> GetPaged([FromQuery]UserSearchDto searchModel)
         {
-            return await _userService.GetPaged(searchModel);
+            return Result(await _userService.GetPaged(searchModel));
         }
 
         /// <summary>
-        /// 保存用户(新增/修改)
+        /// 新增用户
         /// </summary>
         /// <param name="userDto">用户信息</param>
         /// <returns></returns>
         [HttpPost]
-        [Permission("userAdd", "userEdit")]
-        public async Task Save([FromBody] UserSaveInputDto userDto)
+        [Permission("userAdd")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        public async Task<ActionResult<long>> Add([FromBody] UserSaveInputDto userDto)
         {
-            await _userService.Save(userDto);
+            return CreatedResult(await _userService.Add(userDto));
         }
+
+        /// <summary>
+        /// 修改用户
+        /// </summary>
+        /// <param name="userDto">用户信息</param>
+        /// <returns></returns>
+        [HttpPut]
+        [Permission("userEdit")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<ActionResult> Update([FromBody] UserSaveInputDto userDto)
+        {
+            return Result(await _userService.Update(userDto));
+        }
+
 
         /// <summary>
         /// 删除用户
@@ -60,9 +78,10 @@ namespace Adnc.Usr.WebApi.Controllers
         /// <returns></returns>
         [HttpDelete("{userid}")]
         [Permission("userDelete")]
-        public async Task Delete([FromRoute] long userId)
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<ActionResult> Delete([FromRoute] long userId)
         {
-            await _userService.Delete(userId);
+            return Result(await _userService.Delete(userId));
         }
 
         /// <summary>
@@ -73,9 +92,10 @@ namespace Adnc.Usr.WebApi.Controllers
         /// <returns></returns>
         [HttpPut("{userid}/roles")]
         [Permission("userSetRole")]
-        public async Task SetRole([FromRoute] long userId, [FromBody] long[] roleIds)
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<ActionResult> SetRole([FromRoute] long userId, [FromBody] long[] roleIds)
         {
-            await _userService.SetRole(new RoleSetInputDto { ID = userId, RoleIds = roleIds});
+           return Result(await _userService.SetRole(new RoleSetInputDto { ID = userId, RoleIds = roleIds}));
             
         }
 
@@ -87,9 +107,10 @@ namespace Adnc.Usr.WebApi.Controllers
         /// <returns></returns>
         [HttpPut("{userid}/status")]
         [Permission("userFreeze")]
-        public async Task ChangeStatus([FromRoute]long userId, [FromBody] SimpleInputDto<int> status)
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<ActionResult> ChangeStatus([FromRoute]long userId, [FromBody] SimpleInputDto<int> status)
         {
-            await _userService.ChangeStatus(userId, status.Value);
+            return Result(await _userService.ChangeStatus(userId, status.Value));
         }
 
         /// <summary>
@@ -99,13 +120,15 @@ namespace Adnc.Usr.WebApi.Controllers
         /// <returns></returns>
         [HttpPut("batch/status")]
         [Permission("userFreeze")]
-        public async Task ChangeStatus([FromBody] UserChangeStatusInputDto changeStatusInputDto)
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<ActionResult> ChangeStatus([FromBody] UserChangeStatusInputDto changeStatusInputDto)
         {
-            await _userService.ChangeStatus(changeStatusInputDto);
+            return Result(await _userService.ChangeStatus(changeStatusInputDto));
         }
 
         [HttpGet("{id}/permissions")]
-        public async Task<IEnumerable<string>> GetCurrenUserPermissions([FromRoute] long id, [FromQuery]string[] permissions)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<List<string>>> GetCurrenUserPermissions([FromRoute] long id, [FromQuery]string[] permissions)
         {
             var inputDto = new RolePermissionsCheckInputDto()
             {
@@ -113,7 +136,7 @@ namespace Adnc.Usr.WebApi.Controllers
                 ,
                 Permissions = permissions
             };
-            return await _roleService.GetPermissions(inputDto);
+            return Result(await _roleService.GetPermissions(inputDto));
         }
     }
 }

@@ -34,16 +34,15 @@ namespace  Adnc.Maint.Application.Services
             _cache = hybridProviderFactory.GetHybridCachingProvider(EasyCachingConsts.HybridCaching);
         }
 
-        public async Task Delete(long Id)
+        public async Task<AppSrvResult> Delete(long Id)
         {
             //await _cfgRepository.UpdateAsync(new SysCfg { ID = Id, IsDeleted=true }, c => c.IsDeleted);
             await _cfgRepository.DeleteAsync(new[] { Id });
+            return DefaultResult();
         }
 
-        public async Task<PageModelDto<CfgDto>> GetPaged(CfgSearchDto searchDto)
+        public async Task<AppSrvResult<PageModelDto<CfgDto>>> GetPaged(CfgSearchDto searchDto)
         {
-            //var result = new PageModelDto<CfgDto>();
-
             Expression<Func<CfgDto, bool>> whereCondition = x => true;
             if (searchDto.CfgName.IsNotNullOrWhiteSpace())
             {
@@ -78,42 +77,36 @@ namespace  Adnc.Maint.Application.Services
                 PageCount = ((allCfgs.Count + searchDto.PageSize - 1) / searchDto.PageSize)
             };
 
-            //result = _mapper.Map<PageModelDto<CfgDto>>(pagedModel);
-
             return result;
         }
 
-        public async Task Save(CfgSaveInputDto inputDto)
+        public async Task<AppSrvResult<long>> Add(CfgSaveInputDto inputDto)
         {
-            //add
-            if (inputDto.ID == 0)
-            {
-                var exist = await _cfgRepository.ExistAsync(c => c.CfgName == inputDto.CfgName);
-                if (exist)
-                    throw new BusinessException(new ErrorModel(HttpStatusCode.BadRequest, "参数名称已经存在"));
+            var exist = (await this.GetAllFromCache()).Exists(c => c.CfgName.EqualsIgnoreCase(inputDto.CfgName));
+            if (exist)
+                return Problem(HttpStatusCode.BadRequest, "参数名称已经存在");
 
-                var enity = _mapper.Map<SysCfg>(inputDto);
+            var cfg = _mapper.Map<SysCfg>(inputDto);
+            cfg.ID = IdGenerater.GetNextId();
 
-                //Vue处理大数字有问题，暂时不用Snowflake算法,以后完善。
-                //enity.ID = new Snowflake(1, 1).NextId();
-                enity.ID = IdGenerater.GetNextId();
+            await _cfgRepository.InsertAsync(cfg);
 
-                await _cfgRepository.InsertAsync(enity);
-            }
-            //update
-            else
-            {
-                var exist = await _cfgRepository.ExistAsync(c => c.CfgName == inputDto.CfgName && c.ID != inputDto.ID);
-                if (exist)
-                    throw new BusinessException(new ErrorModel(HttpStatusCode.BadRequest, "参数名称已经存在"));
-
-                var enity = _mapper.Map<SysCfg>(inputDto);
-
-                await _cfgRepository.UpdateAsync(enity);
-            }
+            return cfg.ID;
         }
 
-        public async Task<CfgDto> Get(long id)
+        public async Task<AppSrvResult> Update(CfgSaveInputDto inputDto)
+        {
+            var exist = (await this.GetAllFromCache()).Exists(c => c.CfgName.EqualsIgnoreCase(inputDto.CfgName) && c.ID != inputDto.ID);
+            if (exist)
+                return Problem(HttpStatusCode.BadRequest, "参数名称已经存在");
+
+            var enity = _mapper.Map<SysCfg>(inputDto);
+            await _cfgRepository.UpdateAsync(enity);
+
+            return DefaultResult();
+        }
+
+        public async Task<AppSrvResult<CfgDto>> Get(long id)
         {
             return (await this.GetAllFromCache()).Where(x => x.ID == id).FirstOrDefault();
         }

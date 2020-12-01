@@ -9,9 +9,9 @@ namespace Adnc.Cus.Application.Services
     public interface ICustomerAppService : IAppService
     {
         [OpsLog(LogName = "注册")]
-        Task<SimpleDto<string>> Register(RegisterInputDto inputDto);
+        Task<AppSrvResult<SimpleDto<string>>> Register(RegisterInputDto inputDto);
 
         [OpsLog(LogName = "充值")]
-        Task<SimpleDto<string>> Recharge(RechargeInputDto inputDto);
+        Task<AppSrvResult<SimpleDto<string>>> Recharge(RechargeInputDto inputDto);
     }
 }

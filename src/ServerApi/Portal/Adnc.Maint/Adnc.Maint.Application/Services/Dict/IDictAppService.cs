@@ -9,18 +9,20 @@ namespace  Adnc.Maint.Application.Services
 {
     public interface IDictAppService : IAppService
     {
-        Task<List<DictDto>> GetList(DictSearchDto searchDto);
+        Task<AppSrvResult<List<DictDto>>> GetList(DictSearchDto searchDto);
 
-        Task<DictDto> Get(long id);
+        Task<AppSrvResult<DictDto>> Get(long id);
 
-        //Task<DictDto> GetInculdeSubs(long id);
-
-        [OpsLog(LogName = "新增/修改字典")]
+        [OpsLog(LogName = "新增字典")]
         [EasyCachingEvict(CacheKey = EasyCachingConsts.DictListCacheKey)]
-        Task Save(DictSaveInputDto saveDto);
+        Task<AppSrvResult<long>> Add(DictSaveInputDto saveDto);
+
+        [OpsLog(LogName = "修改字典")]
+        [EasyCachingEvict(CacheKey = EasyCachingConsts.DictListCacheKey)]
+        Task<AppSrvResult> Update(DictSaveInputDto saveDto);
 
         [OpsLog(LogName = "删除字典")]
         [EasyCachingEvict(CacheKey = EasyCachingConsts.DictListCacheKey)]
-        Task Delete(long Id);
+        Task<AppSrvResult> Delete(long Id);
     }
 }

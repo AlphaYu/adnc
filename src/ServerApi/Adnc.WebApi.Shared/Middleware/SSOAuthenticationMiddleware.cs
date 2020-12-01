@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net;
 using System.IO;
+using System.Text.Json;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.IdentityModel.Tokens.Jwt;
@@ -9,6 +10,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using EasyCaching.Core;
@@ -114,15 +116,40 @@ namespace Adnc.WebApi.Shared.Middleware
                 var result = await CheckToken(context);
                 if (result)
                 {
-                    await _next(context);
+                    try
+                    {
+                        await _next(context);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new Exception(ex.Message, ex);
+                    }
                     return;
                 }
                 else
                 {
-                    context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                    var message = new ErrorModel(HttpStatusCode.Unauthorized, "账号已经在其他地方登录");
-                    context.Response.ContentType = "application/json;charset=utf-8";
-                    await context.Response.WriteAsync(message.ToString());
+                    var status = (int)HttpStatusCode.Unauthorized;
+                    var hostAndPort = context.Request.Host.HasValue ? context.Request.Host.Value : string.Empty;
+                    var requestUrl = string.Concat(hostAndPort, context.Request.Path);
+                    var type = string.Concat("https://httpstatuses.com/", status);
+                    var title = "Token已经过期";
+                    var detial = "Token已经过期,请重新登录";
+                    var problemDetails = new ProblemDetails
+                    {
+                        Title = title
+                        ,
+                        Detail = detial
+                        ,
+                        Type = type
+                        ,
+                        Status = status
+                        ,
+                        Instance = requestUrl
+                    };
+                    context.Response.StatusCode = status;
+                    context.Response.ContentType = "application/problem+json";
+                    var stream = context.Response.Body;
+                    await JsonSerializer.SerializeAsync(stream, problemDetails);
                     return;
                 }
             }

@@ -2,12 +2,13 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Adnc.Application.Shared.RpcServices;
+using Adnc.WebApi.Shared;
 
 namespace Adnc.Maint.WebApi.Controllers
 {
     [Route("maint/session")]
     [ApiController]
-    public class AccountController : ControllerBase
+    public class AccountController : AdncControllerBase
     {
         private readonly IAuthRpcService _authRpcService;
 
@@ -23,12 +24,10 @@ namespace Adnc.Maint.WebApi.Controllers
             var result = await _authRpcService.Login(loginRequest);
 
             if (result.IsSuccessStatusCode)
-                return new OkObjectResult(result.Content);
+                return Ok(result.Content);
 
-            return new JsonResult(result.Error.Content)
-            {
-                StatusCode = (int)result.StatusCode
-            };
+            var apiError = ((Refit.ValidationApiException)result.Error).Content;
+            return Problem(apiError.Detail, result.Error.Uri.ToString(), apiError.Status,apiError.Title,apiError.Type);
         }
     }
 }

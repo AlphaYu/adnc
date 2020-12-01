@@ -65,7 +65,7 @@ service.interceptors.response.use(
       })
       return
     }
-    if (error.response.status === 500) {
+    if (error.response.status >= 500) {
       Message({
         message: error.response.data || error.message || error,
         type: 'error',
@@ -75,7 +75,7 @@ service.interceptors.response.use(
     }
     Message({
       dangerouslyUseHTMLString: true,
-      message: error.response.data.error || error.response.data || error.message || error,
+      message: error.response.data.detail || error.response.data.error || error.message || error,
       type: 'error',
       duration: 5 * 1000
     })

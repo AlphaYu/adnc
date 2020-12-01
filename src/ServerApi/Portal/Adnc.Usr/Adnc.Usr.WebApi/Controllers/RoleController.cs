@@ -1,11 +1,11 @@
-﻿using System.Net;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Adnc.Usr.Application.Dtos;
 using Adnc.Usr.Application.Services;
 using Adnc.Application.Shared.Dtos;
-using Adnc.Application.Shared;
+using Adnc.WebApi.Shared;
 
 namespace Adnc.Usr.WebApi.Controllers
 {
@@ -14,7 +14,7 @@ namespace Adnc.Usr.WebApi.Controllers
     /// </summary>
     [Route("usr/roles")]
     [ApiController]
-    public class RoleController : ControllerBase
+    public class RoleController : AdncControllerBase
     {
         private readonly IRoleAppService _roleService;
 
@@ -30,9 +30,10 @@ namespace Adnc.Usr.WebApi.Controllers
         /// <returns></returns>
         [HttpGet()]
         [Permission("roleList")]
-        public async Task<PageModelDto<RoleDto>> GetPaged([FromQuery] RoleSearchDto searchModel)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<PageModelDto<RoleDto>>> GetPaged([FromQuery] RoleSearchDto searchModel)
         {
-            return await _roleService.GetPaged(searchModel);
+            return Result(await _roleService.GetPaged(searchModel));
         }
 
         /// <summary>
@@ -41,12 +42,10 @@ namespace Adnc.Usr.WebApi.Controllers
         /// <param name="userId">用户ID</param>
         /// <returns></returns>
         [HttpGet("{userid}/rolestree")]
-        public async Task<dynamic> GetRoleTreeListByUserId([FromRoute]long userId)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<dynamic>> GetRoleTreeListByUserId([FromRoute]long userId)
         {
-            dynamic result = await _roleService.GetRoleTreeListByUserId(userId);
-            if (result == null)
-                return new NotFoundObjectResult(new ErrorModel(HttpStatusCode.NotFound, "没有数据"));
-            return result;
+             return Result(await _roleService.GetRoleTreeListByUserId(userId));
         }
 
         /// <summary>
@@ -56,9 +55,10 @@ namespace Adnc.Usr.WebApi.Controllers
         /// <returns></returns>
         [HttpDelete("{id}")]
         [Permission("roleDelete")]
-        public async Task Delete([FromRoute]long Id)
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<ActionResult> Delete([FromRoute]long Id)
         {
-            await _roleService.Delete(Id);
+            return Result(await _roleService.Delete(Id));
         }
 
         /// <summary>
@@ -69,21 +69,36 @@ namespace Adnc.Usr.WebApi.Controllers
         /// <returns></returns>
         [HttpPut("{roleid}/permissons")]
         [Permission("roleSetAuthority")]
-        public async Task SavePermisson([FromRoute] long roleId,[FromBody]long[] permissions)
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<ActionResult> SavePermisson([FromRoute] long roleId,[FromBody]long[] permissions)
         {
-            await _roleService.SaveRolePermisson(new PermissonSaveInputDto() { RoleId = roleId, Permissions = permissions });
+            return Result(await _roleService.SaveRolePermisson(new PermissonSaveInputDto() { RoleId = roleId, Permissions = permissions }));
         }
 
         /// <summary>
-        /// 保存角色信息
+        /// 新增角色
         /// </summary>
         /// <param name="saveDto">角色</param>
         /// <returns></returns>
         [HttpPost]
-        [Permission("roleAdd", "roleEdit")]
-        public async Task Save([FromBody]RoleSaveInputDto saveDto)
+        [Permission("roleAdd")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        public async Task<ActionResult<long>> Add([FromBody] RoleSaveInputDto saveDto)
         {
-            await _roleService.Save(saveDto);
+            return CreatedResult(await _roleService.Add(saveDto));
+        }
+
+        /// <summary>
+        /// 修改角色
+        /// </summary>
+        /// <param name="saveDto">角色</param>
+        /// <returns></returns>
+        [HttpPut]
+        [Permission("roleEdit")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<ActionResult> Update([FromBody] RoleSaveInputDto saveDto)
+        {
+            return Result(await _roleService.Update(saveDto));
         }
     }
 }

@@ -10,6 +10,7 @@ using Adnc.Application.Shared.RpcServices;
 using Adnc.Cus.Application.Services;
 using Adnc.Cus.Application.Dtos;
 using Adnc.Cus.Application.RpcServices;
+using Adnc.WebApi.Shared;
 
 namespace Adnc.Cus.WebApi.Controllers
 {
@@ -18,7 +19,7 @@ namespace Adnc.Cus.WebApi.Controllers
     /// </summary>
     [Route("cus/customer")]
     [ApiController]
-    public class CustomerController : ControllerBase
+    public class CustomerController : AdncControllerBase
     {
         private readonly ICustomerAppService _cusService;
         private readonly IMaintRpcService _maintRpcServcie;
@@ -43,9 +44,9 @@ namespace Adnc.Cus.WebApi.Controllers
         /// <returns></returns>
         [HttpPost]
         //[Permission("customerRegister")]
-        public async Task<SimpleDto<string>> Register([FromBody][NotNull] RegisterInputDto inputDto)
+        public async Task<ActionResult<SimpleDto<string>>> Register([FromBody][NotNull] RegisterInputDto inputDto)
         {
-            return await _cusService.Register(inputDto);
+            return Result(await _cusService.Register(inputDto));
         }
 
         /// <summary>
@@ -54,9 +55,9 @@ namespace Adnc.Cus.WebApi.Controllers
         /// <returns></returns>
         [HttpPut("{id}/balance")]
         //[Permission("customerRecharge")]
-        public async Task<SimpleDto<string>> Recharge([FromRoute] string id, [FromBody] SimpleInputDto<decimal> inputDto)
+        public async Task<ActionResult<SimpleDto<string>>> Recharge([FromRoute] string id, [FromBody] SimpleInputDto<decimal> inputDto)
         {
-            return await _cusService.Recharge(new RechargeInputDto { ID = long.Parse(id), Amount = inputDto.Value });
+            return Result(await _cusService.Recharge(new RechargeInputDto { ID = long.Parse(id), Amount = inputDto.Value }));
         }
 
         /// <summary>
@@ -66,34 +67,29 @@ namespace Adnc.Cus.WebApi.Controllers
         /// <returns></returns>
         [HttpGet("tranlogs/{id}")]
         //[Permission("customerRecharge")]
-        public async Task<SimpleDto<bool>> GetRechargedStatus([FromRoute] string id)
+        public async Task<ActionResult<SimpleDto<bool>>> GetRechargedStatus([FromRoute] string id)
         {
-            return await new ValueTask<SimpleDto<bool>>(new SimpleDto<bool> { Result = true });
+            return await new ValueTask<SimpleDto<bool>>(new SimpleDto<bool> { Value = true });
         }
 
         [HttpGet("testrpc")]
         [AllowAnonymous]
-        public async Task<GetDictReply> TestCallRpcService()
+        public async Task<ActionResult<GetDictReply>> TestCallRpcService()
         {
-            GetDictReply result;
             var jwtToken = await _contextAccessor.HttpContext.GetTokenAsync("access_token");
-            try
+            if (jwtToken == null)
             {
-                if (jwtToken == null)
-                {
-                    var rpcResult = await _authRpcServcie.Login(new LoginRequest { Account = "alpha2008", Password = "alpha2008" });
-
-                    jwtToken = rpcResult.Content.Token;
-                }
-                result = await _maintRpcServcie.GetDict($"Bearer {jwtToken}", 29);
+                var authRpcResult = await _authRpcServcie.Login(new LoginRequest { Account = "alpha2008", Password = "alpha2008" });
+                if (authRpcResult.IsSuccessStatusCode)
+                    jwtToken = authRpcResult.Content.Token;
+                return NotFound();
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            var dictRpcResult = await _maintRpcServcie.GetDict($"Bearer {jwtToken}", 29);
+            if (dictRpcResult.IsSuccessStatusCode)
+                return dictRpcResult.Content;
 
-
-            return result;
+            var apiError = ((Refit.ValidationApiException)dictRpcResult.Error).Content;
+            return Problem(apiError.Detail, dictRpcResult.Error.Uri.ToString(), apiError.Status, apiError.Title, apiError.Type);
         }
     }
 }

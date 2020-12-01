@@ -30,6 +30,7 @@ using FluentValidation.AspNetCore;
 using EasyCaching.InMemory;
 using DotNetCore.CAP.Dashboard;
 using DotNetCore.CAP.Dashboard.NodeDiscovery;
+using Swashbuckle.AspNetCore.Swagger;
 using Adnc.Infr.EasyCaching.Interceptor.Castle;
 using Adnc.Infr.Common;
 using Adnc.Infr.Mq.RabbitMq;
@@ -43,7 +44,8 @@ using Adnc.Infr.Mongo.Configuration;
 using Adnc.Application.Shared;
 using Adnc.Application.Shared.RpcServices;
 using Adnc.Infr.Common.Helper;
-
+using Adnc.WebApi.Shared.Extensions;
+using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
 
 namespace Adnc.WebApi.Shared
 {
@@ -199,6 +201,8 @@ namespace Adnc.WebApi.Shared
                      {
                          //Continue 验证失败，继续验证其他项
                          cfg.ValidatorOptions.CascadeMode = FluentValidation.CascadeMode.Continue;
+                         // Optionally set validator factory if you have problems with scope resolve inside validators.
+                         // cfg.ValidatorFactoryType = typeof(HttpContextServiceProviderValidatorFactory);
                      });
 
             //参数验证返回信息格式调整
@@ -209,11 +213,23 @@ namespace Adnc.WebApi.Shared
                 //格式化验证信息
                 options.InvalidModelStateResponseFactory = (context) =>
                 {
-                    var result = new JsonResult(new { error = context.ModelState.GetValidationSummary("<br>") })
+                    var problemDetails = new ProblemDetails
                     {
-                        StatusCode = (int)HttpStatusCode.BadRequest
+                        Detail = context.ModelState.GetValidationSummary("<br>")
+                        ,
+                        Title = "参数错误"
+                        ,
+                        Status = (int)HttpStatusCode.BadRequest
+                        ,
+                        Type = "https://httpstatuses.com/400"
+                        ,
+                        Instance = context.HttpContext.Request.Path
                     };
-                    return result;
+
+                    return new ObjectResult(problemDetails)
+                    {
+                        StatusCode = problemDetails.Status
+                    };
                 };
             });
         }
@@ -488,6 +504,8 @@ namespace Adnc.WebApi.Shared
                 });
                 c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{_serviceInfo.AssemblyName}.xml"));
                 c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{_serviceInfo.AssemblyName.Replace("WebApi", "Application")}.xml"));
+                // Adds fluent validation rules to swagger
+                c.AddFluentValidationRules();
             });
         }
 

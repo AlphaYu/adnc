@@ -14,7 +14,6 @@ using Adnc.Maint.Core.CoreServices;
 using Adnc.Maint.Core.Entities;
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Application.Shared.Services;
-using Adnc.Application.Shared;
 
 namespace  Adnc.Maint.Application.Services
 {
@@ -36,13 +35,13 @@ namespace  Adnc.Maint.Application.Services
             _cache = hybridProviderFactory.GetHybridCachingProvider(EasyCachingConsts.HybridCaching);
         }
 
-        public async Task Delete(long Id)
+        public async Task<AppSrvResult> Delete(long Id)
         {
-            //await _dictRepository.UpdateRangeAsync(d => (d.ID == Id) || (d.Pid == Id), d => new SysDict { IsDeleted = true });
             await _dictRepository.DeleteRangeAsync(d => (d.ID == Id) || (d.Pid == Id));
+            return DefaultResult();
         }
 
-        public async Task<List<DictDto>> GetList(DictSearchDto searchDto)
+        public async Task<AppSrvResult<List<DictDto>>> GetList(DictSearchDto searchDto)
         {
             var result = new List<DictDto>();
 
@@ -66,43 +65,43 @@ namespace  Adnc.Maint.Application.Services
             return result;
         }
 
-        public async Task Save(DictSaveInputDto saveDto)
+        public async Task<AppSrvResult<long>> Add(DictSaveInputDto saveDto)
         {
-            //add
-            if (saveDto.ID == 0)
-            {
-                //long Id = new Snowflake(1, 1).NextId();
-                long Id = IdGenerater.GetNextId();
-                var subDicts = GetSubDicts(Id, saveDto.DictValues);
-                await _dictRepository.InsertRangeAsync(subDicts.Append(new SysDict { ID = Id, Pid = 0, Name = saveDto.DictName, Tips = saveDto.Tips,Num="0" }));
-            }
-            //update
-            else
-            {
-                var dict = new SysDict { Name = saveDto.DictName, Tips = saveDto.Tips, ID = saveDto.ID, Pid = 0 };
-                var subDicts = GetSubDicts(saveDto.ID, saveDto.DictValues);
-                await _maintManagerService.UpdateDicts(dict, subDicts);
-            }
+            var exists = (await GetAllFromCache()).Exists(x => x.Name.EqualsIgnoreCase(saveDto.DictName));
+            if (exists)
+                return Problem(HttpStatusCode.BadRequest, "字典名字已经存在");
+
+            long Id = IdGenerater.GetNextId();
+            var subDicts = GetSubDicts(Id, saveDto.DictValues);
+            await _dictRepository.InsertRangeAsync(subDicts.Append(new SysDict { ID = Id, Pid = 0, Name = saveDto.DictName, Tips = saveDto.Tips, Num = "0" }));
+
+            return Id;
         }
 
-        public async Task<DictDto> Get(long id)
+        public async Task<AppSrvResult> Update(DictSaveInputDto saveDto)
+        {
+            var exists = (await GetAllFromCache()).Exists(x => x.Name.EqualsIgnoreCase(saveDto.DictName) && x.ID != saveDto.ID);
+            if (exists)
+                return Problem(HttpStatusCode.BadRequest, "字典名字已经存在");
+
+            var dict = new SysDict { Name = saveDto.DictName, Tips = saveDto.Tips, ID = saveDto.ID, Pid = 0 };
+            var subDicts = GetSubDicts(saveDto.ID, saveDto.DictValues);
+            await _maintManagerService.UpdateDicts(dict, subDicts);
+
+            return DefaultResult();
+        }
+
+        public async Task<AppSrvResult<DictDto>> Get(long id)
         {
             var dictDto = (await this.GetAllFromCache()).Where(x => x.ID == id).FirstOrDefault();
 
             if (dictDto == null)
-            {
-                var errorModel = new ErrorModel(HttpStatusCode.NotFound, "没有找到");
-                throw new BusinessException(errorModel);
-            }
+                return Problem(HttpStatusCode.NotFound, "没有找到");
+
             dictDto.Children = (await this.GetAllFromCache()).Where(x => x.Pid == dictDto.ID).ToList();
 
             return dictDto;
         }
-
-        //public async Task<DictDto> GetInculdeSubs(long id)
-        //{
-        //    return (await this.GetAllFromCache()).Where(x => x.ID == id || x.Pid == id).OrderBy(x => x.ID).ThenBy(x => x.Num).FirstOrDefault();
-        //}
 
         private async Task<List<DictDto>> GetAllFromCache()
         {

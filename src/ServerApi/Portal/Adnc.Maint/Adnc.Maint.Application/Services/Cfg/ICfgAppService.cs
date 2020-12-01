@@ -9,16 +9,20 @@ namespace  Adnc.Maint.Application.Services
 {
     public interface ICfgAppService : IAppService
     {
-        Task<PageModelDto<CfgDto>> GetPaged(CfgSearchDto searchDto);
+        Task<AppSrvResult<PageModelDto<CfgDto>>> GetPaged(CfgSearchDto searchDto);
 
-        [OpsLog(LogName = "新增/修改参数")]
+        [OpsLog(LogName = "新增参数")]
         [EasyCachingEvict(CacheKey = EasyCachingConsts.CfgListCacheKey)]
-        Task Save(CfgSaveInputDto saveInputDto);
+        Task<AppSrvResult<long>> Add(CfgSaveInputDto saveInputDto);
+
+        [OpsLog(LogName = "修改参数")]
+        [EasyCachingEvict(CacheKey = EasyCachingConsts.CfgListCacheKey)]
+        Task<AppSrvResult> Update(CfgSaveInputDto saveInputDto);
 
         [OpsLog(LogName = "删除参数")]
         [EasyCachingEvict(CacheKey = EasyCachingConsts.CfgListCacheKey)]
-        Task Delete(long Id);
+        Task<AppSrvResult> Delete(long Id);
 
-        Task<CfgDto> Get(long Id);
+        Task<AppSrvResult<CfgDto>> Get(long Id);
     }
 }

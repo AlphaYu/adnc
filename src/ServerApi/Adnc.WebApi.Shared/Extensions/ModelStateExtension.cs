@@ -1,10 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Text;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace Adnc.WebApi.Shared
+namespace Adnc.WebApi.Shared.Extensions
 {
     public static class ModelStateExtensions
     {

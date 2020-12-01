@@ -40,7 +40,7 @@ namespace Adnc.Usr.Application.Services
             _usrManagerService = usrManagerService;
         }
 
-        public async Task Delete(long Id)
+        public async Task<AppSrvResult> Delete(long Id)
         {
             //var depts1 = (await _locaCahce.GetAsync<List<DeptNodeDto>>(EasyCachingConsts.DetpListCacheKey)).Value;
             //var depts2 = (await _redisCache.GetAsync<List<DeptNodeDto>>(EasyCachingConsts.DetpListCacheKey)).Value;
@@ -48,9 +48,11 @@ namespace Adnc.Usr.Application.Services
             var dept = await _deptRepository.FindAsync(new object[] { Id });
             var deletingPids = $"{dept.Pids}[{Id}],";
             await _deptRepository.DeleteRangeAsync(d => d.Pids.StartsWith(deletingPids) || d.ID == dept.ID);
+
+            return DefaultResult();
         }
 
-        public async Task<List<DeptNodeDto>> GetList()
+        public async Task<AppSrvResult<List<DeptNodeDto>>> GetList()
         {
             var result = new List<DeptNodeDto>();
 
@@ -84,47 +86,45 @@ namespace Adnc.Usr.Application.Services
             return result;
         }
 
-        public async Task Save(DeptSaveInputDto saveDto)
+        public async Task<AppSrvResult<long>> Add(DeptSaveInputDto saveDto)
         {
-            if (saveDto.ID < 1)
+            var isExists = (await GetAllFromCache()).Exists(x => x.FullName == saveDto.FullName);
+            if (isExists)
+                return Problem(HttpStatusCode.BadRequest, "该部门全称已经存在");
+
+            var dept = _mapper.Map<SysDept>(saveDto);
+            dept.ID = IdGenerater.GetNextId();
+            await this.SetDeptPids(dept);
+            await _deptRepository.InsertAsync(dept);
+
+            return dept.ID;
+        }
+
+        public async Task<AppSrvResult> Update(DeptSaveInputDto saveDto)
+        {
+            var oldDeptDto = (await GetAllFromCache()).FirstOrDefault(x => x.ID == saveDto.ID);
+            if (oldDeptDto.Pid == 0 && saveDto.Pid > 0)
+                return Problem(HttpStatusCode.BadRequest, "一级单位不能修改等级");
+
+            var isExists = (await GetAllFromCache()).Exists(x => x.FullName == saveDto.FullName && x.ID != saveDto.ID);
+            if (isExists)
+                return Problem(HttpStatusCode.BadRequest, "该部门全称已经存在");
+
+            var oldPids = oldDeptDto.Pids;
+
+            var deptEnity = _mapper.Map<SysDept>(saveDto);
+
+            if (oldDeptDto.Pid == saveDto.Pid)
             {
-                var dept = _mapper.Map<SysDept>(saveDto);
-                dept.ID = IdGenerater.GetNextId();
-                await this.SetDeptPids(dept);
-                await _deptRepository.InsertAsync(dept);
+                await _deptRepository.UpdateAsync(deptEnity);
             }
             else
             {
-                if(saveDto.ID==saveDto.Pid)
-                    throw new BusinessException(new ErrorModel(HttpStatusCode.BadRequest, "部门与父部门冲突"));
-
-                var dept = await _deptRepository.FetchAsync(d => d, x => x.ID == saveDto.ID);
-                if (dept.Pid == 0 && saveDto.Pid > 0)
-                    throw new BusinessException(new ErrorModel(HttpStatusCode.BadRequest, "一级单位不能修改等级"));
-
-                var oldPids = dept.Pids;
-
-                dept.SimpleName = saveDto.SimpleName;
-                dept.FullName = saveDto.FullName;
-                dept.Num = saveDto.Num;
-                //dept.Tips = saveDto.Tips;
-
-                if (dept.Pid == saveDto.Pid)
-                {
-                    await _deptRepository.UpdateAsync(dept);
-                }
-                else
-                {
-                    dept.Pid = saveDto.Pid;
-                    await this.SetDeptPids(dept);
-                    await _usrManagerService.UpdateDept(oldPids, dept);
-                }
-                //var subDetps = _deptRepository.GetAll().Where(d => d.Pids.Contains($"[{dept.ID}]")).ToList();
-                //subDetps.ForEach(c =>
-                //{
-                //    c.Pids = c.Pids.Replace(oldPids,dept.Pids);
-                //});    
+                await this.SetDeptPids(deptEnity);
+                await _usrManagerService.UpdateDept(oldPids, deptEnity);
             }
+
+            return DefaultResult();
         }
 
         private async Task<SysDept> SetDeptPids(SysDept sysDept)
@@ -132,9 +132,9 @@ namespace Adnc.Usr.Application.Services
 
             if (sysDept.Pid.HasValue && sysDept.Pid.Value > 0)
             {
-                var depts = await this.GetAllFromCache();
+                //var depts = await this.GetAllFromCache();
                 //var dept = depts.Select(d => new { d.ID, d.Pid, d.Pids }).Where(d => d.ID == sysDept.Pid.Value).FirstOrDefault();
-                var dept = await _deptRepository.FetchAsync(d => new { d.ID, d.Pid, d.Pids }, x => x.ID == sysDept.Pid.Value);
+                var dept = (await GetAllFromCache()).FirstOrDefault(x => x.ID == sysDept.Pid.Value);
                 string pids = dept?.Pids ?? "";
                 sysDept.Pids = $"{pids}[{sysDept.Pid}],";
             }
@@ -159,7 +159,7 @@ namespace Adnc.Usr.Application.Services
 
         public async Task<dynamic[]> GetSimpleList()
         {
-            var depts = await this.GetList();
+            var depts = (await this.GetList()).Content;
             if (!depts.Any())
                 return default(dynamic[]);
 

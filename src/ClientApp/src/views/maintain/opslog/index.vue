@@ -97,6 +97,14 @@
         label="日志类型"
         prop="logType"
       />
+       <el-table-column
+        label="日志名称"
+        prop="logName"
+      />     
+      <el-table-column
+        label="状态"
+        prop="succeed"
+      />      
       <el-table-column
         width="500px"
         label="类名"
@@ -104,7 +112,7 @@
       />
       <el-table-column
         label="方法名"
-        prop="logName"
+        prop="method"
       />
       <el-table-column
         label="时间"

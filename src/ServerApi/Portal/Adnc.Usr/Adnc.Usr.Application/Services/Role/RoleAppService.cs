@@ -14,11 +14,12 @@ using Adnc.Infr.Common.Helper;
 using Microsoft.EntityFrameworkCore;
 using EasyCaching.Core;
 using Adnc.Application.Shared.Dtos;
+using Adnc.Application.Shared.Services;
 using Adnc.Application.Shared;
 
 namespace Adnc.Usr.Application.Services
 {
-    public class RoleAppService : IRoleAppService
+    public class RoleAppService :AppService,IRoleAppService
     {
         private readonly IMapper _mapper;
         private readonly IEfRepository<SysRole> _roleRepository;
@@ -42,7 +43,7 @@ namespace Adnc.Usr.Application.Services
             _cache = hybridProviderFactory.GetHybridCachingProvider(EasyCachingConsts.HybridCaching);
         }
 
-        public async Task<PageModelDto<RoleDto>> GetPaged(RoleSearchDto searchModel)
+        public async Task<AppSrvResult<PageModelDto<RoleDto>>> GetPaged(RoleSearchDto searchModel)
         {
             Expression<Func<SysRole, bool>> whereCondition = x => true;
             if (searchModel.RoleName.IsNotNullOrWhiteSpace())
@@ -55,7 +56,7 @@ namespace Adnc.Usr.Application.Services
             return _mapper.Map<PageModelDto<RoleDto>>(pagedModel);
         }
 
-        public async Task<dynamic> GetRoleTreeListByUserId(long userId)
+        public async Task<AppSrvResult<dynamic>> GetRoleTreeListByUserId(long userId)
         {
             dynamic result = null;
             IEnumerable<ZTreeNodeDto<long, dynamic>> treeNodes = null;
@@ -93,61 +94,65 @@ namespace Adnc.Usr.Application.Services
             return result;
         }
 
-        public async Task Delete(long Id)
+        public async Task<AppSrvResult> Delete(long Id)
         {
-            if (Id < 2)
-            {
-                throw new BusinessException(new ErrorModel(HttpStatusCode.Forbidden, "不能删除初始角色"));
-            }
+            if (Id == 1600000000010)
+                return Problem(HttpStatusCode.Forbidden, "禁止删除初始角色");
 
             if (await _userRepository.ExistAsync(x => x.RoleId == Id.ToString()))
-            {
-                throw new BusinessException(new ErrorModel(HttpStatusCode.Forbidden, "有用户使用该角色，禁止删除"));
-            }
+                return Problem(HttpStatusCode.Forbidden, "有用户使用该角色，禁止删除");
 
             await _roleRepository.DeleteAsync(new long[] { Id });
+
+            return DefaultResult();
         }
 
-        public async Task SaveRolePermisson(PermissonSaveInputDto inputDto)
+        public async Task<AppSrvResult> SaveRolePermisson(PermissonSaveInputDto inputDto)
         {
+            if (inputDto.RoleId == 1600000000010)
+                return Problem(HttpStatusCode.Forbidden, "禁止设置初始角色");
+
             await _systemManagerService.SaveRolePermisson(inputDto.RoleId, inputDto.Permissions);
+
+            return DefaultResult();
         }
 
-        public async Task Save(RoleSaveInputDto roleDto)
+        public async Task<AppSrvResult<long>> Add(RoleSaveInputDto roleDto)
         {
+            var isExists = (await this.GetAllFromCache()).Where(x => x.Name == roleDto.Name).Any();
+            if (isExists)
+                return Problem(HttpStatusCode.BadRequest, "该角色名称已经存在");
+
             var role = _mapper.Map<SysRole>(roleDto);
-            if (roleDto.ID < 1)
-            {
-                var isExists = (await this.GetAllFromCache()).Where(x => x.Name == roleDto.Name).Any();
-                if (isExists)
-                    throw new BusinessException(new ErrorModel(HttpStatusCode.BadRequest, "该角色名称已经存在"));
+            role.ID = IdGenerater.GetNextId();
+            await _roleRepository.InsertAsync(role);
 
-                role.ID = IdGenerater.GetNextId();
-                await _roleRepository.InsertAsync(role);
-            }
-            else
-            {
-                var isExists = (await this.GetAllFromCache()).Where(x => x.Name == roleDto.Name && x.ID != roleDto.ID).Any();
-                if(isExists)
-                    throw new BusinessException(new ErrorModel(HttpStatusCode.BadRequest, "该角色名称已经存在"));
-
-                await _roleRepository.UpdateAsync(role);
-            }
+            return role.ID;
         }
 
-        public async ValueTask<bool> ExistPermissions(RolePermissionsCheckInputDto inputDto)
+        public async Task<AppSrvResult> Update(RoleSaveInputDto roleDto)
         {
-            bool result = false;
+            var isExists = (await this.GetAllFromCache()).Where(x => x.Name == roleDto.Name && x.ID != roleDto.ID).Any();
+            if (isExists)
+                return Problem(HttpStatusCode.BadRequest, "该角色名称已经存在");
 
+            var role = _mapper.Map<SysRole>(roleDto);
+            await _roleRepository.UpdateAsync(role);
+
+            return DefaultResult();
+        }
+
+        public async ValueTask<AppSrvResult<bool>> ExistPermissions(RolePermissionsCheckInputDto inputDto)
+        {
             var codes = await this.GetPermissions(inputDto);
 
-            if (codes != null && codes.Count() > 0)
-                result = true;
+            if (codes.IsSuccess && codes.Content.Any())
+                return true;
 
-            return result;
+            return false;
         }
 
-        public async Task<IEnumerable<string>> GetPermissions(RolePermissionsCheckInputDto inputDto)
+        public async Task<AppSrvResult<List<string>>> GetPermissions(RolePermissionsCheckInputDto inputDto)
         {
             var cahceValue = await _cache.GetAsync(EasyCachingConsts.MenuCodesCacheKey, async () =>
             {
@@ -160,7 +165,11 @@ namespace Adnc.Usr.Application.Services
 
             var codes = cahceValue.Value?.Where(x => inputDto.RoleIds.Contains(x.RoleId)).Select(x => x.Code.ToUpper());
             if (codes != null && codes.Any())
-                return codes.Intersect(inputDto.Permissions.Select(x => x.ToUpper()));
+            {
+                var result = codes.Intersect(inputDto.Permissions.Select(x => x.ToUpper()));
+                return result.ToList();
+            } 
+
             return null;
         }
 

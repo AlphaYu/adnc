@@ -11,18 +11,22 @@ namespace Adnc.Usr.Application.Services
 {
     public interface IMenuAppService : IAppService
     {
-        Task<List<MenuNodeDto>> Getlist();
+        Task<AppSrvResult<List<MenuNodeDto>>> Getlist();
 
-        Task<List<RouterMenuDto>> GetMenusForRouter(long[] roleIds);
+        Task<AppSrvResult<List<RouterMenuDto>>> GetMenusForRouter(long[] roleIds);
 
-        Task<dynamic> GetMenuTreeListByRoleId(long roleId);
+        Task<AppSrvResult<dynamic>> GetMenuTreeListByRoleId(long roleId);
 
-        [OpsLog(LogName = "新增/修改菜单")]
+        [OpsLog(LogName = "新增菜单")]
         [EasyCachingEvict(CacheKeys = new[] { EasyCachingConsts.MenuListCacheKey, EasyCachingConsts.MenuRelationCacheKey, EasyCachingConsts.MenuCodesCacheKey })]
-        Task Save(MenuSaveInputDto saveDto);
+        Task<AppSrvResult<long>> Add(MenuSaveInputDto saveDto);
+
+        [OpsLog(LogName = "修改菜单")]
+        [EasyCachingEvict(CacheKeys = new[] { EasyCachingConsts.MenuListCacheKey, EasyCachingConsts.MenuRelationCacheKey, EasyCachingConsts.MenuCodesCacheKey })]
+        Task<AppSrvResult> Update(MenuSaveInputDto saveDto);
 
         [OpsLog(LogName = "删除菜单")]
         [EasyCachingEvict(CacheKeys = new[] { EasyCachingConsts.MenuListCacheKey, EasyCachingConsts.MenuRelationCacheKey, EasyCachingConsts.MenuCodesCacheKey })]
-        Task Delete(long Id);
+        Task<AppSrvResult> Delete(long Id);
     }
 }

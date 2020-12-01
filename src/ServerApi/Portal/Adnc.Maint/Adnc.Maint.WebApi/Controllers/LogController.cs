@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Adnc.Maint.Application.Services;
 using Adnc.Maint.Application.Dtos;
-using Adnc.Maint.Core.Entities;
 using Adnc.Infr.Common;
 using Adnc.Application.Shared.Dtos;
+using Adnc.WebApi.Shared;
 
 namespace Adnc.Maint.WebApi.Controllers
 {
@@ -13,7 +13,7 @@ namespace Adnc.Maint.WebApi.Controllers
     /// 操作日志
     /// </summary>
     [Route("maint")]
-    public class LogController : Controller
+    public class LogController : AdncControllerBase
     {
         private readonly ILogAppService _logService;
         private readonly UserContext _userContext;
@@ -32,9 +32,9 @@ namespace Adnc.Maint.WebApi.Controllers
         /// <returns></returns>
         [HttpGet("opslogs")]
         [Permission("opsLog")]
-        public async Task<PageModelDto<OpsLogDto>> GetOpsLogsPaged([FromQuery] LogSearchDto searchDto)
+        public async Task<ActionResult<PageModelDto<OpsLogDto>>> GetOpsLogsPaged([FromQuery] LogSearchDto searchDto)
         {
-            return await _logService.GetOpsLogsPaged(searchDto);
+            return Result(await _logService.GetOpsLogsPaged(searchDto));
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace Adnc.Maint.WebApi.Controllers
         /// <param name="searchDto">查询条件</param>
         /// <returns></returns>
         [HttpGet("users/opslogs")]
-        public async Task<PageModelDto<OpsLogDto>> GetUserOpsLogsPaged(BaseSearchDto searchDto)
+        public async Task<ActionResult<PageModelDto<OpsLogDto>>> GetUserOpsLogsPaged(BaseSearchDto searchDto)
         {
             var logSearchDto = new LogSearchDto()
             {
@@ -51,7 +51,7 @@ namespace Adnc.Maint.WebApi.Controllers
                 PageIndex = searchDto.PageIndex,
                 PageSize = searchDto.PageSize
             };
-            return await _logService.GetOpsLogsPaged(logSearchDto);
+            return Result(await _logService.GetOpsLogsPaged(logSearchDto));
         }
 
         /// <summary>
@@ -61,9 +61,9 @@ namespace Adnc.Maint.WebApi.Controllers
         /// <returns></returns>
         [HttpGet("loginlogs")]
         [Permission("loginLog")]
-        public async Task<PageModelDto<LoginLogDto>> GetLoginLogsPaged([FromQuery] LogSearchDto searchDto)
+        public async Task<ActionResult<PageModelDto<LoginLogDto>>> GetLoginLogsPaged([FromQuery] LogSearchDto searchDto)
         {
-            return await _logService.GetLoginLogsPaged(searchDto);
+            return Result(await _logService.GetLoginLogsPaged(searchDto));
         }
 
         /// <summary>
@@ -73,9 +73,9 @@ namespace Adnc.Maint.WebApi.Controllers
         /// <returns></returns>
         [HttpGet("nloglogs")]
         [Permission("nlogLog")]
-        public async Task<PageModelDto<NlogLogDto>> GetNlogLogsPaged([FromQuery] LogSearchDto searchDto)
+        public async Task<ActionResult<PageModelDto<NlogLogDto>>> GetNlogLogsPaged([FromQuery] LogSearchDto searchDto)
         {
-            return await _logService.GetNlogLogsPaged(searchDto);
+            return Result(await _logService.GetNlogLogsPaged(searchDto));
         }
     }
 }
