@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Xunit.Abstractions;
+﻿using Xunit.Abstractions;
 
-namespace Adnc.UnitTest
+namespace Adnc.UnitTest.Base
 {
     public class TestBase
     {

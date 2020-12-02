@@ -9,22 +9,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="nlog.config" />
+    <Compile Remove="ApplicationServicesTests.cs" />
+    <Compile Remove="MyDatabaseTests.cs" />
+    <Compile Remove="RemoteTests.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="nlog.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Autofac" Version="5.1.2" />
-    <PackageReference Include="AutoMapper" Version="9.0.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.6" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.6" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.1.6" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.6.1" />
     <PackageReference Include="NLog.Mongo" Version="4.6.0.86" />
@@ -43,9 +34,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Adnc.Common\19.Adnc.Common.csproj" />
-    <ProjectReference Include="..\..\src\Adnc.EfCore\22.Adnc.Infr.EfCore.csproj" />
-    <ProjectReference Include="..\..\src\Adnc.Mongo\23.Adnc.Infr.Mongo.csproj" />
+    <ProjectReference Include="..\..\src\ServerApi\Adnc.Core.Shared\03.Adnc.Core.Shared.csproj" />
+    <ProjectReference Include="..\..\src\ServerApi\Adnc.Infr.EfCore\22.Adnc.Infr.EfCore.csproj" />
+    <ProjectReference Include="..\..\src\ServerApi\Portal\Adnc.Cus\Adnc.Cus.Core\Adnc.Cus.Core.csproj" />
   </ItemGroup>
 
 </Project>
