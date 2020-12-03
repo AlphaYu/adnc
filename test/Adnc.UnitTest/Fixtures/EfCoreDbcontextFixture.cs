@@ -1,20 +1,12 @@
 ﻿using Autofac;
-using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 using System;
-using System.Reflection;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using Pomelo.EntityFrameworkCore.MySql.Storage;
 using Adnc.Infr.EfCore;
 using Adnc.Infr.Common;
-using Adnc.Cus.Core;
-using Adnc.Cus.Core.CoreServices;
 using Adnc.Cus.Core.Entities;
-using Adnc.Cus.Core.EventBus;
-using Adnc.Core.Shared;
-using Adnc.Infr.EfCore.Repositories;
-using Adnc.Core.Shared.IRepositories;
 using Adnc.Core.Shared.Entities;
 
 namespace Adnc.UnitTest.Fixtures
@@ -68,23 +60,8 @@ namespace Adnc.UnitTest.Fixtures
             containerBuilder.RegisterType<AdncDbContext>()
                             .InstancePerLifetimeScope();
 
-            //注册UOW
-            containerBuilder.RegisterType<UnitOfWork<AdncDbContext>>()
-                            .As<IUnitOfWork>()
-                            .InstancePerLifetimeScope();
-
-
-            //注册ef公共Repository
-            containerBuilder.RegisterGeneric(typeof(EfRepository<>))
-                            .UsingConstructor(typeof(AdncDbContext))
-                            .AsImplementedInterfaces()
-                            .InstancePerLifetimeScope();
-
-            //注册Repository服务
-            containerBuilder.RegisterAssemblyTypes(Assembly.Load("Adnc.Infr.EfCore"))
-                            .Where(t => t.IsClosedTypeOf(typeof(IRepository<>)))
-                            .AsImplementedInterfaces()
-                            .InstancePerLifetimeScope();
+            //注册Adnc.Infr.EfCore
+            AdncInfrEfCoreModule.Register(containerBuilder);
 
             var services = Container = containerBuilder.Build();          
         }
