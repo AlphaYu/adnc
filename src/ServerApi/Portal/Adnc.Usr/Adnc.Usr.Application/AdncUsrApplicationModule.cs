@@ -64,7 +64,7 @@ namespace Adnc.Usr.Application
 
         private void LoadDepends(ContainerBuilder builder)
         {
-            builder.RegisterModule<AdncSysCoreModule>();
+            builder.RegisterModule<AdncUsrCoreModule>();
         }
     }
 }

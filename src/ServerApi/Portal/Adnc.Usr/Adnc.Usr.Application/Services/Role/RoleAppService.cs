@@ -102,7 +102,7 @@ namespace Adnc.Usr.Application.Services
             if (await _userRepository.ExistAsync(x => x.RoleId == Id.ToString()))
                 return Problem(HttpStatusCode.Forbidden, "有用户使用该角色，禁止删除");
 
-            await _roleRepository.DeleteAsync(new long[] { Id });
+            await _roleRepository.DeleteAsync(Id);
 
             return DefaultResult();
         }

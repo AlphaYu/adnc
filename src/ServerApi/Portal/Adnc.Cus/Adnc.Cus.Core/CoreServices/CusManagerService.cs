@@ -24,6 +24,15 @@ namespace Adnc.Cus.Core.CoreServices
             _capBus = capBus;
         }
 
+        public CusManagerService(IEfRepository<Customer> cusRepo
+            , IEfRepository<CusFinance> cusFinaceRepo
+            , IEfRepository<CusTransactionLog> cusTransactionLogRepo)
+        {
+            _cusRepo = cusRepo;
+            _cusFinaceRepo = cusFinaceRepo;
+            _cusTransactionLogRepo = cusTransactionLogRepo;
+        }
+
         public async Task Register(Customer customer, CusFinance cusFinance, CancellationToken cancellationToken = default)
         {
             await _cusRepo.InsertAsync(customer);

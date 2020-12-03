@@ -7,7 +7,7 @@ using Adnc.Core.Shared.Interceptors;
 
 namespace Adnc.Usr.Core
 {
-    public class AdncSysCoreModule : Module
+    public class AdncUsrCoreModule : Module
     {
         //拿不到
         //private IServiceProvider _serviceProvider;
@@ -21,6 +21,9 @@ namespace Adnc.Usr.Core
             //注册事务拦截器
             builder.RegisterType<UowInterceptor>()
                    .InstancePerLifetimeScope();
+            builder.RegisterType<UowAsyncInterceptor>()
+                   .InstancePerLifetimeScope();
+
 
             //注册Core服务
             builder.RegisterAssemblyTypes(this.ThisAssembly)

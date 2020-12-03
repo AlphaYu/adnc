@@ -19,6 +19,8 @@ namespace Adnc.Maint.Core
             //注册事务拦截器
             builder.RegisterType<UowInterceptor>()
                    .InstancePerLifetimeScope();
+            builder.RegisterType<UowAsyncInterceptor>()
+                   .InstancePerLifetimeScope();
 
             //注册Core服务
             builder.RegisterAssemblyTypes(this.ThisAssembly)

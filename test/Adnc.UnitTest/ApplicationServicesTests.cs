@@ -8,7 +8,7 @@ using Adnc.Common.Helper;
 
 namespace Adnc.UnitTest
 {
-    public class AppServicesTests : IClassFixture<EfCoreDbcontextFixture>
+    public class ApplicationServicesTests : IClassFixture<EfCoreDbcontextFixture>
     {
         //private readonly ITestOutputHelper _output;
         private readonly ILogAppService _logAppService;
@@ -17,7 +17,7 @@ namespace Adnc.UnitTest
 
         private EfCoreDbcontextFixture _fixture;
 
-        public AppServicesTests(EfCoreDbcontextFixture fixture)
+        public ApplicationServicesTests(EfCoreDbcontextFixture fixture)
         {
             _fixture = fixture;
             //_output = output;

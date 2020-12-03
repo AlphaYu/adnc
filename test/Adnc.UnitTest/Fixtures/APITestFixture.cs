@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 
-namespace Adnc.UnitTest
+namespace Adnc.UnitTest.Fixtures
 {
     /// <summary>	
     /// Shared Context https://xunit.github.io/docs/shared-context.html	

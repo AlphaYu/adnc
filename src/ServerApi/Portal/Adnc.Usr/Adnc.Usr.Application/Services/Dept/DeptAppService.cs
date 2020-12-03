@@ -45,7 +45,7 @@ namespace Adnc.Usr.Application.Services
             //var depts1 = (await _locaCahce.GetAsync<List<DeptNodeDto>>(EasyCachingConsts.DetpListCacheKey)).Value;
             //var depts2 = (await _redisCache.GetAsync<List<DeptNodeDto>>(EasyCachingConsts.DetpListCacheKey)).Value;
             //var depts3 = (await _cache.GetAsync<List<DeptNodeDto>>(EasyCachingConsts.DetpListCacheKey)).Value;
-            var dept = await _deptRepository.FindAsync(new object[] { Id });
+            var dept = await _deptRepository.FindAsync(Id);
             var deletingPids = $"{dept.Pids}[{Id}],";
             await _deptRepository.DeleteRangeAsync(d => d.Pids.StartsWith(deletingPids) || d.ID == dept.ID);
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Text;
 
-namespace Adnc.UnitTest
+namespace Adnc.UnitTest.Fixtures
 {
 
     //针对 Scoped 的对象可以借助 XUnit 中的 IClassFixture 来实现

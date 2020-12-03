@@ -5,45 +5,32 @@ using Castle.DynamicProxy;
 
 namespace Adnc.Core.Shared.Interceptors
 {
+    /// <summary>
+    /// 工作单元拦截器
+    /// </summary>
     public class UowInterceptor : IInterceptor
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly UowAsyncInterceptor _uowAsyncInterceptor;
 
-        public UowInterceptor(IUnitOfWork unitOfWork)
+        public UowInterceptor(UowAsyncInterceptor uowAsyncInterceptor )
         {
-            _unitOfWork = unitOfWork;
+            _uowAsyncInterceptor = uowAsyncInterceptor;
         }
 
         public void Intercept(IInvocation invocation)
         {
-            var methodInfo = invocation.MethodInvocationTarget ?? invocation.Method;
-
-            //Sync
-            if (!IsAsyncMethod(methodInfo))
-            {
-                try
-                {
-                    _unitOfWork.BeginTransaction();
-                    invocation.Proceed();
-                    _unitOfWork.Commit();
-                }
-                catch(Exception ex)
-                {
-                    _unitOfWork.Rollback();
-                    throw ex;
-                }
-                finally
-                {
-                    _unitOfWork.Dispose();
-                }
-                return;
-            }
-
-            //Async
-            //InterceptAsync(invocation).Wait();
-            InterceptAsync(invocation);
+            //var methodInfo = invocation.Method ?? invocation.MethodInvocationTarget;
+            //var attribute = methodInfo.GetCustomAttribute<UowAttribute>();
+            //if (attribute == null || _isIntercepting)
+            //{
+            //    invocation.Proceed();
+            //    return;
+            //}
+            this._uowAsyncInterceptor.ToInterceptor().Intercept(invocation);
         }
 
+        #region old code
+        /*
         private void InterceptAsync(IInvocation invocation)
         {
             try
@@ -70,28 +57,6 @@ namespace Adnc.Core.Shared.Interceptors
             }
         }
 
-        //private async Task InterceptAsync(IInvocation invocation)
-        //{
-        //    using var transAsync = await _unitOfWork.BeginTransactionAsync();
-        //    try
-        //    {
-        //        invocation.Proceed();
-        //        var result = invocation.ReturnValue as Task;
-        //        await result.ContinueWith(async x =>
-        //        {
-        //            if (x.Status == TaskStatus.RanToCompletion)
-        //                await transAsync.CommitAsync();
-        //            else
-        //                await transAsync.RollbackAsync();
-        //        });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        await transAsync.RollbackAsync();
-        //        throw ex;
-        //    }
-        //}
-
         private bool IsAsyncMethod(MethodInfo method)
         {
             return (
@@ -99,5 +64,7 @@ namespace Adnc.Core.Shared.Interceptors
             || (method.ReturnType.IsGenericType && method.ReturnType.GetGenericTypeDefinition() == typeof(Task<>))
             );
         }
+        */
+        #endregion old  code
     }
 }

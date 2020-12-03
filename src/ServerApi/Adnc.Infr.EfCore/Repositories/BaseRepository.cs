@@ -31,12 +31,12 @@ namespace Adnc.Infr.EfCore.Repositories
 
         public virtual IQueryable<TrdEntity> GetAll<TrdEntity>() where TrdEntity : EfEntity
         {
-            return DbContext.Set<TrdEntity>();
+            return DbContext.Set<TrdEntity>().AsNoTracking();
         }
 
         public virtual IQueryable<TEntity> GetAll()
         {
-            return DbContext.Set<TEntity>();
+            return DbContext.Set<TEntity>().AsNoTracking();
         }
 
         public virtual async Task<IEnumerable<dynamic>> QueryAsync(string sql, object param = null, int? commandTimeout = null, CommandType? commandType = null)
@@ -61,40 +61,33 @@ namespace Adnc.Infr.EfCore.Repositories
             return await DbContext.SaveChangesAsync(cancellationToken);
         }
 
-        public virtual async Task<int> DeleteAsync(long[] keyValues, CancellationToken cancellationToken = default)
+        public virtual async Task<int> DeleteAsync(long keyValue, CancellationToken cancellationToken = default)
         {
             var mapping = DbContext.Model.FindEntityType(typeof(TEntity)); //3.0
+            var properties = mapping.GetProperties();
             var schema = mapping.GetSchema() ?? "dbo";
             var tableName = mapping.GetTableName();
-            var keyNames = mapping.GetProperties().Where(p => p.IsPrimaryKey()).Select(p => p.PropertyInfo.Name);
-
-            if (keyNames.Count() > 1 || keyValues?.Length < 1)
-                return 0;
-
-            var keyName = keyNames.First();
-
-            var isSoftDelete = typeof(ISoftDelete).IsAssignableFrom(typeof(TEntity));
+            var keyName = properties.Where(p => p.IsPrimaryKey()).Select(p => p.PropertyInfo.Name).First();
+            var isSoftDelete = properties.Where(p => p.Name == "IsDeleted").Any();
 
             var sql = isSoftDelete
                       ? $"update {tableName} set IsDeleted=true "
                       : $"delete from {tableName} "
                       ;
+            var where = $" where {keyName}={keyValue};";
 
-            var where = keyValues.Length > 1
-                        ? $" where {keyName} in {(string.Join(",", keyValues))};"
-                        : $" where {keyName}={keyValues[0]};"
-                        ;
             return await DbContext.Database.ExecuteSqlRawAsync(string.Concat(sql, where), cancellationToken);
         }
 
         public virtual async Task<int> DeleteRangeAsync(Expression<Func<TEntity, bool>> whereExpression, CancellationToken cancellationToken = default)
         {
-            var isSoftDelete = typeof(ISoftDelete).IsAssignableFrom(typeof(TEntity));
+            var enityType = typeof(TEntity);
+            var isSoftDelete = typeof(ISoftDelete).IsAssignableFrom(enityType);
             if (isSoftDelete)
             {
-                var paramExpression = Expression.Parameter(typeof(TEntity), "e");
-                var newExpression = Expression.New(typeof(TEntity));
-                var binding = Expression.Bind(typeof(TEntity).GetMember("IsDeleted")[0], Expression.Constant(true));
+                var paramExpression = Expression.Parameter(enityType, "e");
+                var newExpression = Expression.New(enityType);
+                var binding = Expression.Bind(enityType.GetMember("IsDeleted")[0], Expression.Constant(true));
                 var memberInitExpression = Expression.MemberInit(newExpression, new List<MemberBinding>() { binding });
                 var updateFactory = Expression.Lambda<Func<TEntity, TEntity>>(memberInitExpression, paramExpression);
                 return await DbContext.Set<TEntity>().Where(whereExpression).UpdateAsync(updateFactory, cancellationToken);
@@ -153,17 +146,17 @@ namespace Adnc.Infr.EfCore.Repositories
 
         public virtual async Task<bool> ExistAsync(Expression<Func<TEntity, bool>> whereExpression, CancellationToken cancellationToken = default)
         {
-            return await DbContext.Set<TEntity>().AnyAsync(whereExpression, cancellationToken);
+            return await DbContext.Set<TEntity>().AsNoTracking().AnyAsync(whereExpression, cancellationToken);
         }
 
         public virtual async Task<int> CountAsync(Expression<Func<TEntity, bool>> whereExpression, CancellationToken cancellationToken = default)
         {
-            return await DbContext.Set<TEntity>().CountAsync(whereExpression);
+            return await DbContext.Set<TEntity>().AsNoTracking().CountAsync(whereExpression);
         }
 
-        public virtual async Task<TEntity> FindAsync(object[] keyValues, CancellationToken cancellationToken = default)
+        public virtual async Task<TEntity> FindAsync(long keyValue, CancellationToken cancellationToken = default)
         {
-            return await DbContext.Set<TEntity>().FindAsync(keyValues, cancellationToken);
+            return await DbContext.Set<TEntity>().AsNoTracking().Where(t => t.ID == keyValue).FirstOrDefaultAsync(cancellationToken);
         }
 
         public virtual async Task<TEntity> FetchAsync<TResult>(Expression<Func<TEntity, TResult>> selector, Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, object>> orderByExpression = null, bool ascending = false, CancellationToken cancellationToken = default)

@@ -24,7 +24,7 @@ namespace Adnc.Core.Shared.IRepositories
 
         Task<int> InsertRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default);
 
-        Task<int> DeleteAsync(long[] keyValues, CancellationToken cancellationToken = default);
+        Task<int> DeleteAsync(long keyValue, CancellationToken cancellationToken = default);
 
         Task<int> DeleteRangeAsync(Expression<Func<TEntity, bool>> whereExpression, CancellationToken cancellationToken = default);
 
@@ -36,7 +36,7 @@ namespace Adnc.Core.Shared.IRepositories
 
         Task<int> CountAsync(Expression<Func<TEntity, bool>> whereExpression, CancellationToken cancellationToken = default);
 
-        Task<TEntity> FindAsync(object[] keyValues, CancellationToken cancellationToken = default);
+        Task<TEntity> FindAsync(long keyValue, CancellationToken cancellationToken = default);
 
         Task<TEntity> FetchAsync<TResult>(Expression<Func<TEntity, TResult>> selector, Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, object>> orderByExpression = null, bool ascending = false, CancellationToken cancellationToken = default);
 
