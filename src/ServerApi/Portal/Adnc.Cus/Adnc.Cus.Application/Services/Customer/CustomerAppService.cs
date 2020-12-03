@@ -52,7 +52,7 @@ namespace Adnc.Cus.Application.Services
 
         public async Task<AppSrvResult<SimpleDto<string>>> Recharge(RechargeInputDto inputDto)
         {
-            var customer = await _customerRepo.FindAsync(new object[] { inputDto.ID });
+            var customer = await _customerRepo.FindAsync(inputDto.ID);
             if (customer == null)
                 return Problem(HttpStatusCode.NotFound, "不存在该账号");
 

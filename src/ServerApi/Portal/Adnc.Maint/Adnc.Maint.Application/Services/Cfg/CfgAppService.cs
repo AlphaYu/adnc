@@ -37,7 +37,7 @@ namespace  Adnc.Maint.Application.Services
         public async Task<AppSrvResult> Delete(long Id)
         {
             //await _cfgRepository.UpdateAsync(new SysCfg { ID = Id, IsDeleted=true }, c => c.IsDeleted);
-            await _cfgRepository.DeleteAsync(new[] { Id });
+            await _cfgRepository.DeleteAsync(Id);
             return DefaultResult();
         }
 

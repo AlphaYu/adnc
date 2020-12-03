@@ -29,13 +29,13 @@ namespace Adnc.Cus.Core.EventBus
         [CapSubscribe(EbConsts.CustomerRechager)]
         public async Task Process(RechargeEbModel rechargeEbModel)
         {
-            var transLog = await _cusTranlog.FindAsync(new object[] { rechargeEbModel.TransactionLogId });
+            var transLog = await _cusTranlog.FindAsync(rechargeEbModel.TransactionLogId);
             if (transLog == null || transLog.ExchageStatus == "20")
                 return;
 
             try
             {
-                var finance = await _cusFinanceReop.FindAsync(new object[] { rechargeEbModel.ID });
+                var finance = await _cusFinanceReop.FindAsync(rechargeEbModel.ID);
                 var newBalance = finance.Balance + rechargeEbModel.Amount;
 
                 transLog.ExchageStatus = "20";

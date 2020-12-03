@@ -52,7 +52,7 @@ namespace Adnc.Usr.Application.Services
 
         public async Task<AppSrvResult> Delete(long Id)
         {
-            await _userRepository.DeleteAsync(new long[] { Id });
+            await _userRepository.DeleteAsync(Id);
             return DefaultResult();
         }
 

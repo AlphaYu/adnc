@@ -111,7 +111,7 @@ namespace Adnc.Application.Shared.Services
             Type = type ?? string.Concat("https://httpstatuses.com/", status);
         }
 
-        public string ToString()
+        public override string ToString()
         {
             return JsonSerializer.Serialize(this);
         }

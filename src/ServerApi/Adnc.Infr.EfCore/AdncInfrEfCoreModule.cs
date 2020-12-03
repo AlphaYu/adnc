@@ -2,18 +2,21 @@
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Infr.EfCore.Repositories;
 using Adnc.Core.Shared;
-using Microsoft.EntityFrameworkCore;
 
 namespace  Adnc.Infr.EfCore
 {
     public class AdncInfrEfCoreModule : Module
     {
+        /// <summary>
+        /// Autofac注册
+        /// </summary>
+        /// <param name="builder"></param>
         protected override void Load(ContainerBuilder builder)
         {
             //注册UOW
-            builder.RegisterType(typeof(UnitOfWork<AdncDbContext>))
-                   .As(typeof(IUnitOfWork))
-                   .InstancePerLifetimeScope();
+            builder.RegisterType<UnitOfWork<AdncDbContext>>()
+                .As<IUnitOfWork>()
+                .InstancePerLifetimeScope();
 
             //注册ef公共Repository
             builder.RegisterGeneric(typeof(EfRepository<>))
@@ -26,6 +29,15 @@ namespace  Adnc.Infr.EfCore
                 .Where(t => t.IsClosedTypeOf(typeof(IRepository<>)))
                 .AsImplementedInterfaces()
                 .InstancePerLifetimeScope();
+        }
+
+        /// <summary>
+        /// Autofac注册,该方法供UnitTest工程使用
+        /// </summary>
+        /// <param name="builder"></param>
+        public static void Register(ContainerBuilder builder)
+        {
+            new AdncInfrEfCoreModule().Load(builder);
         }
     }
 }
