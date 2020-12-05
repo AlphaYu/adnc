@@ -46,6 +46,8 @@ using Adnc.Application.Shared.RpcServices;
 using Adnc.Infr.Common.Helper;
 using Adnc.WebApi.Shared.Extensions;
 using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
+using Microsoft.EntityFrameworkCore.Query;
+using Pomelo.EntityFrameworkCore.MySql.Query.ExpressionVisitors.Internal;
 
 namespace Adnc.WebApi.Shared
 {
@@ -247,7 +249,8 @@ namespace Adnc.WebApi.Shared
                     mySqlOptions.MinBatchSize(2);
                     mySqlOptions.MigrationsAssembly(_serviceInfo.AssemblyName.Replace("WebApi", "Migrations"));
                 });
-                options.AddInterceptors(new CustomCommandInterceptor());
+                //替换默认查询sql生成器,为后面集成mycat实现读写分离做准备,
+                //options.ReplaceService<IQuerySqlGeneratorFactory, AdncMySqlQuerySqlGeneratorFactory>();
             });
         }
 
