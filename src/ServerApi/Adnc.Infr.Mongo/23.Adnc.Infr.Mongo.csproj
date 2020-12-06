@@ -1,11 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
-    <RootNamespace>Adnc.Infr.Mongo</RootNamespace>
-    <AssemblyName>Adnc.Infr.Mongo</AssemblyName>
-	  <Version>0.5.0</Version>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>netstandard2.1</TargetFramework>
+		<RootNamespace>Adnc.Infr.Mongo</RootNamespace>
+		<AssemblyName>Adnc.Infr.Mongo</AssemblyName>
+		<Version>0.6.0</Version>
+		<Authors>Alpha.Yu</Authors>
+		<Product>Adnc</Product>
+		<RepositoryUrl>https://github.com/AlphaYu</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageProjectUrl>https://www.aspdotnetcore.net</PackageProjectUrl>
+		<Copyright>Alpha</Copyright>
+	</PropertyGroup>
 
 	<ItemGroup>
 		<!--<PackageReference Include="Kogel.Dapper.Extension.MySql" Version="3.1.9.8" />-->
@@ -18,7 +24,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\Adnc.Core.Shared\03.Adnc.Core.Shared.csproj" />
+		<ProjectReference Include="..\Adnc.Core.Shared\03.Adnc.Core.Shared.csproj" />
 	</ItemGroup>
-	
+
 </Project>

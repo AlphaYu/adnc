@@ -1,48 +1,59 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <RootNamespace>Adnc.Infr.Gateway</RootNamespace>
-    <AssemblyName>Adnc.Infr.Gateway</AssemblyName>
-	  <SatelliteResourceLanguages>zh-Hans</SatelliteResourceLanguages>
-	  <SatelliteResourceLanguages>zh-Hant</SatelliteResourceLanguages>
-	  <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>netcoreapp3.1</TargetFramework>
+		<RootNamespace>Adnc.Infr.Gateway</RootNamespace>
+		<AssemblyName>Adnc.Infr.Gateway</AssemblyName>
+		<SatelliteResourceLanguages>zh-Hans</SatelliteResourceLanguages>
+		<SatelliteResourceLanguages>zh-Hant</SatelliteResourceLanguages>
+		<SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+		<Version>0.6.0</Version>
+		<Authors>Alpha.Yu</Authors>
+		<Product>Adnc</Product>
+		<RepositoryUrl>https://github.com/AlphaYu</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageProjectUrl>https://www.aspdotnetcore.net</PackageProjectUrl>
+		<Copyright>Alpha</Copyright>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="Controllers\AuthController.cs" />
-    <Compile Remove="WebUtiliy\JwtTokenUtil.cs" />
-  </ItemGroup>
+	<ItemGroup>
+		<Compile Remove="Controllers\AuthController.cs" />
+		<Compile Remove="WebUtiliy\JwtTokenUtil.cs" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Ocelot" Version="16.0.1" />
-    <PackageReference Include="Ocelot.Provider.Consul" Version="16.0.1" />
-	<PackageReference Include="SkyAPM.Agent.AspNetCore" Version="0.9.0" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.8.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Ocelot" Version="16.0.1" />
+		<PackageReference Include="Ocelot.Provider.Consul" Version="16.0.1" />
+		<PackageReference Include="SkyAPM.Agent.AspNetCore" Version="0.9.0" />
+		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.8.0" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Content Update="Config\ocelot.production.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="Config\ocelot.test.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="Config\ocelot.development.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
+	<ItemGroup>
+		<Content Update="Config\ocelot.production.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Update="Config\ocelot.test.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Update="Config\ocelot.development.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-    <Folder Include="WebUtiliy\" />
-  </ItemGroup>
+	<ItemGroup>
+		<Folder Include="Controllers\" />
+		<Folder Include="WebUtiliy\" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Adnc.Infr.Common\04.Adnc.Infr.Common.csproj" />
-    <ProjectReference Include="..\Adnc.Infr.Consul\20.Adnc.Infr.Consul.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Adnc.Infr.Common\04.Adnc.Infr.Common.csproj" />
+		<ProjectReference Include="..\Adnc.Infr.Consul\20.Adnc.Infr.Consul.csproj" />
+	</ItemGroup>
 
-  <ProjectExtensions><VisualStudio><UserProperties properties_4launchsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
+	<ProjectExtensions>
+		<VisualStudio>
+			<UserProperties properties_4launchsettings_1json__JsonSchema="" />
+		</VisualStudio>
+	</ProjectExtensions>
 
 </Project>

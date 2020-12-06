@@ -8,10 +8,10 @@
 	<SatelliteResourceLanguages>en</SatelliteResourceLanguages>
 	<RootNamespace>Adnc.Usr.WebApi</RootNamespace>
 	<AssemblyName>Adnc.Usr.WebApi</AssemblyName>
-	<Version>0.5.0</Version>
 	<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
 	<DockerfileContext>..\..\..</DockerfileContext>
-	<Authors>Alpha.Yu</Authors>
+	<Version>0.6.0</Version>
+    <Authors>Alpha.Yu</Authors>
 	<Product>Adnc</Product>
 	<Description>用户中心服务</Description>
 	<RepositoryUrl>https://github.com/AlphaYu</RepositoryUrl>

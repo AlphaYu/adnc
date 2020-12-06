@@ -9,7 +9,7 @@
 	<SatelliteResourceLanguages>en</SatelliteResourceLanguages>
 	<RootNamespace>Adnc.Cus.WebApi</RootNamespace>
 	<AssemblyName>Adnc.Cus.WebApi</AssemblyName>
-	<Version>0.5.0</Version>
+	<Version>0.6.0</Version>
 	<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
 	<DockerfileContext>..\..\..</DockerfileContext>
 	<Authors>Alpha.Yu</Authors>
