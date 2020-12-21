@@ -4,6 +4,13 @@
 		<TargetFramework>netcoreapp3.1</TargetFramework>
 		<RootNamespace>Adnc.WebApi.Shared</RootNamespace>
 		<AssemblyName>Adnc.WebApi.Shared</AssemblyName>
+		<Version>0.6.0</Version>
+		<Authors>Alpha.Yu</Authors>
+		<Product>Adnc</Product>
+		<RepositoryUrl>https://github.com/AlphaYu</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageProjectUrl>https://www.aspdotnetcore.net</PackageProjectUrl>
+		<Copyright>Alpha</Copyright>
 	</PropertyGroup>
 
 	<ItemGroup>

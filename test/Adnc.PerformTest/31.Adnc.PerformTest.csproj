@@ -1,9 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <RootNamespace>Adnc.PerformTest</RootNamespace>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>netcoreapp3.1</TargetFramework>
+		<RootNamespace>Adnc.PerformTest</RootNamespace>
+		<Version>0.6.0</Version>
+		<Authors>Alpha.Yu</Authors>
+		<Product>Adnc</Product>
+		<RepositoryUrl>https://github.com/AlphaYu</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageProjectUrl>https://www.aspdotnetcore.net</PackageProjectUrl>
+		<Copyright>Alpha</Copyright>
+	</PropertyGroup>
 
 </Project>

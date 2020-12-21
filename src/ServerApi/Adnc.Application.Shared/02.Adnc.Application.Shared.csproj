@@ -1,26 +1,34 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
-    <RootNamespace>Adnc.Application.Shared</RootNamespace>
-    <AssemblyName>Adnc.Application.Shared</AssemblyName>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>netstandard2.1</TargetFramework>
+		<RootNamespace>Adnc.Application.Shared</RootNamespace>
+		<AssemblyName>Adnc.Application.Shared</AssemblyName>
+		<Version>0.6.0</Version>
+		<Authors>Alpha.Yu</Authors>
+		<Product>Adnc</Product>
+		<RepositoryUrl>https://github.com/AlphaYu</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageProjectUrl>https://www.aspdotnetcore.net</PackageProjectUrl>
+		<Copyright>Alpha</Copyright>
+	</PropertyGroup>
 
-  <ItemGroup>
-	  <PackageReference Include="Castle.Core.AsyncInterceptor" Version="1.7.0" />
-	  <PackageReference Include="Refit.HttpClientFactory" Version="5.2.1" />
-	  <PackageReference Include="JetBrains.Annotations" Version="2020.1.0" />
-	  <PackageReference Include="Autofac" Version="6.0.0" />
-	  <PackageReference Include="Castle.Core" Version="4.4.1" />
-	  <PackageReference Include="Autofac.Extras.DynamicProxy" Version="6.0.0" />
-	  <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.0.2" />
-	  <PackageReference Include="AutoMapper" Version="10.1.1" />
-	  <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.0" />
-	  <PackageReference Include="FluentValidation" Version="9.3.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Castle.Core.AsyncInterceptor" Version="1.7.0" />
+		<PackageReference Include="Refit.HttpClientFactory" Version="5.2.1" />
+		<PackageReference Include="JetBrains.Annotations" Version="2020.1.0" />
+		<PackageReference Include="Autofac" Version="6.0.0" />
+		<PackageReference Include="Castle.Core" Version="4.4.1" />
+		<PackageReference Include="Autofac.Extras.DynamicProxy" Version="6.0.0" />
+		<PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.0.2" />
+		<PackageReference Include="AutoMapper" Version="10.1.1" />
+		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.0" />
+		<PackageReference Include="FluentValidation" Version="9.3.0" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Adnc.Core.Shared\03.Adnc.Core.Shared.csproj" />
-    <ProjectReference Include="..\Adnc.Infr.Mq\24.Adnc.Infr.Mq.csproj" />  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Adnc.Core.Shared\03.Adnc.Core.Shared.csproj" />
+		<ProjectReference Include="..\Adnc.Infr.Mq\24.Adnc.Infr.Mq.csproj" />
+	</ItemGroup>
 
 </Project>
