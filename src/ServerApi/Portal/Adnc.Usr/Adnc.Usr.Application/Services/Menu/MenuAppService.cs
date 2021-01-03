@@ -223,7 +223,7 @@ namespace Adnc.Usr.Application.Services
         {
             var cahceValue = await _cache.GetAsync(EasyCachingConsts.MenuRelationCacheKey, async () =>
             {
-                var allRelations = await _relationRepository.GetAll().ToListAsync();
+                var allRelations = await _relationRepository.GetAll(writeDb:true).ToListAsync();
                 return _mapper.Map<List<RelationDto>>(allRelations);
             }, TimeSpan.FromSeconds(EasyCachingConsts.OneYear));
 
@@ -234,7 +234,7 @@ namespace Adnc.Usr.Application.Services
         {
             var cahceValue = await _cache.GetAsync(EasyCachingConsts.MenuListCacheKey, async () =>
             {
-                var allMenus= await _menuRepository.GetAll().ToListAsync();
+                var allMenus= await _menuRepository.GetAll(writeDb:true).ToListAsync();
                 return _mapper.Map<List<MenuDto>>(allMenus);
             }, TimeSpan.FromSeconds(EasyCachingConsts.OneYear));
 
