@@ -31,6 +31,9 @@ using EasyCaching.InMemory;
 using DotNetCore.CAP.Dashboard;
 using DotNetCore.CAP.Dashboard.NodeDiscovery;
 using Swashbuckle.AspNetCore.Swagger;
+using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
+using Microsoft.EntityFrameworkCore.Query;
+using Pomelo.EntityFrameworkCore.MySql.Query.ExpressionVisitors.Internal;
 using Adnc.Infr.EasyCaching.Interceptor.Castle;
 using Adnc.Infr.Common;
 using Adnc.Infr.Mq.RabbitMq;
@@ -45,9 +48,7 @@ using Adnc.Application.Shared;
 using Adnc.Application.Shared.RpcServices;
 using Adnc.Infr.Common.Helper;
 using Adnc.WebApi.Shared.Extensions;
-using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
-using Microsoft.EntityFrameworkCore.Query;
-using Pomelo.EntityFrameworkCore.MySql.Query.ExpressionVisitors.Internal;
+
 
 namespace Adnc.WebApi.Shared
 {
@@ -243,13 +244,14 @@ namespace Adnc.WebApi.Shared
         {
             _services.AddDbContext<AdncDbContext>(options =>
             {
-                options.UseMySql(_mysqlConfig.WriteDbConnectionString, mySqlOptions =>
+                options.UseMySql(_mysqlConfig.ConnectionString, mySqlOptions =>
                 {
                     mySqlOptions.ServerVersion(new ServerVersion(new Version(10, 5, 4), ServerType.MariaDb));
                     mySqlOptions.MinBatchSize(2);
                     mySqlOptions.MigrationsAssembly(_serviceInfo.AssemblyName.Replace("WebApi", "Migrations"));
+                    mySqlOptions.CharSet(CharSet.Utf8Mb4);
                 });
-                //替换默认查询sql生成器,为后面集成mycat实现读写分离做准备,
+                //替换默认查询sql生成器,如果通过mycat中间件实现读写分离需要替换默认SQL工厂。
                 //options.ReplaceService<IQuerySqlGeneratorFactory, AdncMySqlQuerySqlGeneratorFactory>();
             });
         }
@@ -521,7 +523,7 @@ namespace Adnc.WebApi.Shared
             _services.AddHealthChecks()
                      .AddProcessAllocatedMemoryHealthCheck(maximumMegabytesAllocated: 200, tags: new[] { "memory" })
                      //.AddProcessHealthCheck("ProcessName", p => p.Length > 0) // check if process is running
-                     .AddMySql(_mysqlConfig.WriteDbConnectionString)
+                     .AddMySql(_mysqlConfig.ConnectionString)
                      .AddMongoDb(_mongoConfig.ConnectionStrings)
                      .AddRabbitMQ(x =>
                      {
