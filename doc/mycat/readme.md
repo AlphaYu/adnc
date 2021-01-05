@@ -1,9 +1,11 @@
 <div align="center">
 <a href="https://github.com/alphayu/adnc" target="_blank" title="Adnc是一个微服务开发框架 代码改变世界 开源推动社区"><img src="https://aspdotnetcore.net/wp-content/uploads/2020/12/adnc-homepage-logo-3.webp" alt="Adnc是一个微服务开发框架 代码改变世界 开源推动社区"></a>
 </div>
+
 # docker安装mycat
 mycat目前稳定版本是1.6.7.x版本，本文选择了1.6.7.6。
-
+mycat安装前必须已经部署好mariadb集群。
+如何部署，请参考<a href="https://github.com/AlphaYu/Adnc/tree/master/doc/mariadb" target="_blank" alt="mariadb基于GTID主从复制搭建">mariadb基于GTID主从复制搭建</a>。
 ## 下载mycat安装包
 ```
 mkdir /root/data/mycat
