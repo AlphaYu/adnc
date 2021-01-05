@@ -1,8 +1,22 @@
-[![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://github.com/AlphaYu/Adnc) [![GitHub license](https://img.shields.io/github/license/AlphaYu/Adnc)](https://github.com/AlphaYu/Adnc/blob/master/LICENSE) [![GitHub issues](https://img.shields.io/github/issues/AlphaYu/Adnc)](https://github.com/AlphaYu/Adnc/issues) [![GitHub stars](https://img.shields.io/github/stars/AlphaYu/Adnc)](https://github.com/AlphaYu/Adnc/stargazers) [![GitHub forks](https://img.shields.io/github/forks/AlphaYu/Adnc)](https://github.com/AlphaYu/Adnc/network)
+<div align='center'>
+<a href="https://github.com/AlphaYu/Adnc/blob/master/LICENSE">
+<img alt="GitHub license" src="https://img.shields.io/github/license/AlphaYu/Adnc"/>
+</a>
+<a href="https://github.com/AlphaYu/Adnc/issues">
+<img alt="GitHub issues" src="https://img.shields.io/github/issues/AlphaYu/Adnc"/>
+</a>
+<a href="https://github.com/AlphaYu/Adnc/stargazers">
+<img alt="GitHub stars" src="https://img.shields.io/github/stars/AlphaYu/Adnc"/>
+</a>
+<a href="https://github.com/AlphaYu/Adnc/network">
+<img alt="GitHub forks" src="https://img.shields.io/github/forks/AlphaYu/Adnc"/>
+</a>
+</div>
+
 # <div align="center">![Adnc是一个微服务开发框架 代码改变世界 开源活跃社区](https://aspdotnetcore.net/wp-content/uploads/2020/12/adnc-homepage-logo-3.webp)</div>
-&ensp;&ensp;&ensp;&ensp;<a target="_blank" title="一个轻量级的.Net Core微服务开发框架" href="https://aspdotnetcore.net">Adnc</a>是一个轻量级的<a target="_blank" href="https://github.com/dotnet/core">.Net Core</a>微服务快速开发框架，同时也可以应用于单体架构系统的开发。框架基于JWT认证授权、集成了一系列微服务配套组件，代码简洁、易上手、学习成本低、开箱即用。<br/><br/>
+&ensp;&ensp;&ensp;&ensp;<a target="_blank" title="一个轻量级的.Net Core微服务开发框架" href="https://aspdotnetcore.net">Adnc</a>是一个轻量级的<a target="_blank" href="https://github.com/dotnet/core">.Net Core</a>微服务快速开发框架，同时也可以应用于单体架构系统的开发。框架基于JWT认证授权、集成了一系列微服务配套组件，基于Maxscale实现了读写分离。代码简洁、易上手、学习成本低、开箱即用。<br/><br/>
 &ensp;&ensp;&ensp;&ensp;框架前端基于<a target="_blank" href="https://github.com/vuejs/vue">Vue</a>、后端服务基于<a target="_blank" href="https://github.com/dotnet/core">.Net Core 3.1</a>搭建，也是一个前后端分离的框架。webapi遵循RESTful风格，框架包含用户、角色、权限、部门管理；字典、配置管理；登录、审计、异常日志管理等基础的后台管理模块。<br/><br/>
-&ensp;&ensp;&ensp;&ensp;框架对配置中心、依赖注入、日志、缓存、模型映射、认证/授权、仓储、服务注册/发现、健康检测、性能与链路监测、队列、ORM、EventBus等模块进行更高一级的自动化封装，更易于开发<a target="_blank" href="https://github.com/dotnet/aspnetcore">Asp.NET Core</a>微服务项目。<br/>
+&ensp;&ensp;&ensp;&ensp;框架对配置中心、依赖注入、日志、缓存、模型映射、认证/授权、仓储、服务注册/发现、健康检测、性能与链路监测、队列、ORM、EventBus等模块进行更高一级的自动化封装，更易于开发<a target="_blank" href="https://github.com/dotnet/aspnetcore">Asp.NET Core</a>项目。<br/>
 
 ## 演示
 - <a href="http://adnc.aspdotnetcore.net" target="_blank">http://adnc.aspdotnetcore.net</a>
@@ -19,6 +33,10 @@
 #### 如何手动部署到服务器
 - 详细介绍如何使用docker安装consul集群、使用consul注册中心、安装配置Skywalking，以及相关项目dockerfile文件编写和配置等。<br/>
 [请点击链接，查看详细介绍](https://github.com/AlphaYu/Adnc/wiki/Adnc%E5%A6%82%E4%BD%95%E6%89%8B%E5%8A%A8%E9%83%A8%E7%BD%B2(docker,consul,skywalking,nginx))
+
+#### 如何实现读写分离
+- 详细介绍为什么要通过中间件实现读写分离以及EFCore基于中间件如何写代码。<br/>
+[请点击链接，查看详细介绍](https://github.com/AlphaYu/Adnc/wiki/%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E8%AF%BB%E5%86%99%E5%88%86%E7%A6%BB)
 
 ## 目录结构
   - ClientApp 前端项目(`Vue`)
@@ -54,7 +72,7 @@
 | <a target="_blank" href="https://github.com/Xabaril/AspNetCore.Diagnostics.HealthChecks">AspNetCore.HealthChecks</a> | 健康监测组件,搭配consul的健康监测 |
 | <a target="_blank" href="https://github.com/autofac/Autofac">Autofac</a> | IOC容器组件 |
 | <a target="_blank" href="https://github.com/autofac/Autofac">Autofac.Extras.DynamicProxy</a> | Autfac AOP扩展 |
-| <a target="_blank" href="https://github.com/dotnet/efcore">Efcore</a> | 微软的ORM组件 |
+| <a target="_blank" href="https://github.com/PomeloFoundation/Pomelo.EntityFrameworkCore.MySql">Pomelo.EntityFrameworkCore.MySql</a> | EFCore ORM组件 |
 | <a target="_blank" href="https://github.com/StackExchange/Dapper">Dapper</a> | 轻量级ORM组件 |
 | <a target="_blank" href="https://entityframework-plus.net">Z.EntityFramework.Plus.EFCore</a> | 第三方高性能的EfCore组件 |
 | <a target="_blank" href="https://github.com/NLog/NLog">NLog</a> | 日志记录组件 |
@@ -65,6 +83,7 @@
 | <a target="_blank" href="https://github.com/rabbitmq/rabbitmq-dotnet-client">RabbitMq</a>  | 异步消息队列组件 |
 | <a target="_blank" href="https://github.com/App-vNext/Polly">Polly</a>  | 一个 .NET 弹性和瞬态故障处理库，允许开发人员以 Fluent 和线程安全的方式来实现重试、断路、超时、隔离和回退策略 |
 | <a target="_blank" href="https://github.com/FluentValidation">FluentValidation</a>  | 一个 .NET 验证框架，支持链式操作，易于理解，功能完善，组件内提供十几种常用验证器，可扩展性好，支持自定义验证器，支持本地化多语言 |
+| <a target="_blank" href="https://github.com/mariadb-corporation/MaxScale">Maxscale</a>  | Mariadb开发的一款成熟、高性能、免费开源的数据库中间件 |
 
 ## 后端解决方案
 #### 整体架构图
