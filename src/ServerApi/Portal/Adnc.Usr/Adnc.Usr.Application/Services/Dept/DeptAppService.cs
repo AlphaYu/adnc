@@ -150,7 +150,7 @@ namespace Adnc.Usr.Application.Services
         {
             var cahceValue = await _cache.GetAsync(EasyCachingConsts.DetpListCacheKey, async() =>
             {
-                var allDepts = await _deptRepository.GetAll().ToListAsync();
+                var allDepts = await _deptRepository.GetAll(writeDb:true).ToListAsync();
                 return _mapper.Map<List<DeptDto>>(allDepts);
             }, TimeSpan.FromSeconds(EasyCachingConsts.OneYear));
 

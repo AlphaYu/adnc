@@ -52,7 +52,7 @@ namespace Adnc.Cus.Core.EventBus
             catch (Exception ex)
             {
                 _uow.Rollback();
-                throw ex;
+                throw new Exception(ex.Message,ex);
             }
             finally
             {

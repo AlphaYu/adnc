@@ -14,31 +14,16 @@ using Pomelo.EntityFrameworkCore.MySql.Query.ExpressionVisitors.Internal;
 
 namespace Adnc.UnitTest.Fixtures
 {
-    public class EfCoreDbcontextFixture: IDisposable
+    public class MaxscaleDbcontextFixture : IDisposable
     {
         public IContainer Container { get; private set; }
 
-        public EfCoreDbcontextFixture()
+        public MaxscaleDbcontextFixture()
         {
             var containerBuilder = new ContainerBuilder();
-            //内存数据库
-            //var option = new DbContextOptionsBuilder<MyDbContext>().UseInMemoryDatabase("My.D3").Options;
-            //MyDbContext context = new MyDbContext(option);            //InitializeDbForTests  初始化测试数据
-            //new TestDataBuilder(context).Build();
-            //注入
-            //Server.ContentRootPath = Path.GetFullPath(@"..\..\..\..\..\") + @"src\My.D3";
-            //IConfigurationRoot configuration = AppConfigurationHelper.Get(Server.ContentRootPath);
-
-            //builder.RegisterType<SimpleDbContextProvider<MyDbContext>>().As<IDbContextProvider<MyDbContext>>().InstancePerLifetimeScope();
-            //var assemblysServices = Assembly.Load("My.D3.Application");
-            //builder.RegisterAssemblyTypes(assemblysServices).AsImplementedInterfaces();
-            //builder.RegisterAssemblyTypes(typeof(DbFixture).GetTypeInfo().Assembly);
-            //var config = new MapperConfiguration(c => c.AddProfile(typeof(AdncProfile)));
-            //IMapper mapper = config.CreateMapper();
-            //builder.RegisterInstance(mapper).As<IMapper>();
-            //var userContext = new UserContext() { ID = 1600000000000, Account = "alpha2008", Name = "余小猫" };
-
-            var dbstring = "Server=193.112.75.77;Port=13308;database=adnc_cus_dev;uid=root;pwd=alpha.netcore;";
+            //maxscale连接地址
+            //var dbstring = "Server=193.112.75.77;Port=14006;database=adnc_cus;uid=adnc;pwd=123abc;";
+            var dbstring = "server=193.112.75.77;port=14006;user=adnc;password=123abc;database=adnc_cus";
 
             //注册操作用户
             containerBuilder.RegisterType<UserContext>()
@@ -47,10 +32,15 @@ namespace Adnc.UnitTest.Fixtures
             //注册DbContext Options
             containerBuilder.Register<DbContextOptions>(c =>
             {
-                return new DbContextOptionsBuilder<AdncDbContext>()
+                var options = new DbContextOptionsBuilder<AdncDbContext>()
                 .UseLoggerFactory(LoggerFactory.Create(builder => builder.AddDebug()))
-                .UseMySql(dbstring, mySqlOptions => mySqlOptions.ServerVersion(new ServerVersion(new Version(10, 5, 4), ServerType.MariaDb)))
+                .UseMySql(dbstring, mySqlOptions => {
+                    mySqlOptions.ServerVersion(new ServerVersion(new Version(10, 5, 8), ServerType.MariaDb));
+                    mySqlOptions.CharSet(CharSet.Utf8Mb4);
+                })
+                .AddInterceptors(new CustomCommandInterceptor())
                 .Options;
+                return options;
             }).InstancePerLifetimeScope();
 
 

@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!DOCTYPE mycat:schema SYSTEM "schema.dtd">
+<mycat:schema xmlns:mycat="http://io.mycat/">
+	<schema name="adnc_usr" checkSQLschema="true" sqlMaxLimit="100" dataNode="dn_usr"></schema>
+	<schema name="adnc_maint" checkSQLschema="true" sqlMaxLimit="100" dataNode="dn_maint"></schema>
+	<schema name="adnc_cus" checkSQLschema="true" sqlMaxLimit="100" dataNode="dn_cus"></schema>
+
+	<dataNode name="dn_usr" dataHost="dh_adnc" database="adnc_usr" />
+	<dataNode name="dn_maint" dataHost="dh_adnc" database="adnc_maint" />
+	<dataNode name="dn_cus" dataHost="dh_adnc" database="adnc_cus" />
+
+	<dataHost name="dh_adnc" maxCon="1000" minCon="10" balance="1" writeType="0" dbType="mysql" dbDriver="native">
+		<heartbeat>select user()</heartbeat>
+		<writeHost host="hostM1" url="172.20.0.11:3306" user="root" password="alpha.abc" >
+			<readHost host="hostS2" url="172.20.0.13:3306" user="root" password="alpha.abc" />
+		</writeHost>
+		<writeHost host="hostS1" url="172.20.0.12:3306" user="root" password="alpha.abc" />
+	</dataHost>
+
+</mycat:schema>

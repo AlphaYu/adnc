@@ -40,9 +40,9 @@ namespace Adnc.UnitTest
 
         private async Task Initialize()
         {
+            await _cusLogsRsp.DeleteRangeAsync(x => true);
             await _cusFinanceRsp.DeleteRangeAsync(x => true);
             await _cusRsp.DeleteRangeAsync(x => true);
-            await _cusLogsRsp.DeleteRangeAsync(x => true);
 
             _userContext.ID = 1600000000000;
             _userContext.Account = "alpha2008";
@@ -201,6 +201,40 @@ namespace Adnc.UnitTest
             //SELECT * FROM Customer WHERE ID in (122314219994615808,122314220174970880)
             var result2 = await _cusRsp.QueryAsync<Customer>("SELECT * FROM Customer WHERE ID in @ids", new { ids = new[] { cus1.ID, cus2.ID } });
             Assert.Empty(result2);
+        }
+
+        
+        [Fact]
+        public async void TestUpdate()
+        {
+            var newRealName = "测试用户";
+            var newNickname = "测试";
+            long id = 0;
+
+            try
+            {
+                _unitOfWork.BeginTransaction();
+
+                var result = await InsertCustomer();
+                id = result.ID;
+
+                await _cusRsp.UpdateAsync(new Customer { ID = result.ID, Realname = newRealName, Nickname = newNickname }, c => c.Realname, c => c.Nickname);
+
+                _unitOfWork.Commit();
+            }
+            catch(Exception)
+            {
+                _unitOfWork.Rollback();
+            }
+            finally
+            {
+                _unitOfWork.Dispose();
+            }
+
+
+            var newCus = await _cusRsp.FindAsync(id, writeDb: true);
+            Assert.Equal(newRealName, newCus.Realname);
+            Assert.Equal(newNickname, newCus.Nickname);
         }
 
         /// <summary>

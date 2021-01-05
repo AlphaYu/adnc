@@ -29,23 +29,34 @@ namespace Adnc.Infr.EfCore.Repositories
             DbContext = dbContext;
         }
 
-        public virtual IQueryable<TrdEntity> GetAll<TrdEntity>() where TrdEntity : EfEntity
+        public virtual IQueryable<TrdEntity> GetAll<TrdEntity>(bool writeDb = false) where TrdEntity : EfEntity
         {
-            return DbContext.Set<TrdEntity>().AsNoTracking();
+            var dbSet = DbContext.Set<TrdEntity>().AsNoTracking();
+            if (writeDb)
+                return dbSet.TagWith(EfCoreConsts.MAXSCALE_ROUTE_TO_MASTER);
+            return dbSet;
         }
 
-        public virtual IQueryable<TEntity> GetAll()
+        public virtual IQueryable<TEntity> GetAll(bool writeDb = false)
         {
-            return DbContext.Set<TEntity>().AsNoTracking();
+            
+            var dbSet= DbContext.Set<TEntity>().AsNoTracking();
+            if(writeDb)
+                return dbSet.TagWith(EfCoreConsts.MAXSCALE_ROUTE_TO_MASTER);
+            return dbSet;
         }
 
-        public virtual async Task<IEnumerable<dynamic>> QueryAsync(string sql, object param = null, int? commandTimeout = null, CommandType? commandType = null)
+        public virtual async Task<IEnumerable<dynamic>> QueryAsync(string sql, object param = null, int? commandTimeout = null, CommandType? commandType = null, bool writeDb = false)
         {
+            if (writeDb)
+                sql = string.Concat("/* ", EfCoreConsts.MAXSCALE_ROUTE_TO_MASTER, " */", sql);
             return await DbContext.Database.GetDbConnection().QueryAsync(sql, param, null, commandTimeout, commandType);
         }
 
-        public virtual async Task<IEnumerable<TResult>> QueryAsync<TResult>(string sql, object param = null, int? commandTimeout = null, CommandType? commandType = null)
+        public virtual async Task<IEnumerable<TResult>> QueryAsync<TResult>(string sql, object param = null, int? commandTimeout = null, CommandType? commandType = null, bool writeDb = false)
         {
+            if (writeDb)
+                sql = string.Concat("/* ", EfCoreConsts.MAXSCALE_ROUTE_TO_MASTER, " */", sql);
             return await DbContext.Database.GetDbConnection().QueryAsync<TResult>(sql, param, null, commandTimeout, commandType);
         }
 
@@ -144,26 +155,39 @@ namespace Adnc.Infr.EfCore.Repositories
             return await DbContext.Set<TEntity>().Where(whereExpression).UpdateAsync(upDateExpression,cancellationToken);
         }
 
-        public virtual async Task<bool> ExistAsync(Expression<Func<TEntity, bool>> whereExpression, CancellationToken cancellationToken = default)
+        public virtual async Task<bool> ExistAsync(Expression<Func<TEntity, bool>> whereExpression, bool writeDb = false, CancellationToken cancellationToken = default)
         {
-            return await DbContext.Set<TEntity>().AsNoTracking().AnyAsync(whereExpression, cancellationToken);
+            var dbSet = DbContext.Set<TEntity>().AsNoTracking();
+            if (writeDb)
+                dbSet = dbSet.TagWith(EfCoreConsts.MAXSCALE_ROUTE_TO_MASTER);
+            return await dbSet.AnyAsync(whereExpression, cancellationToken);
         }
 
-        public virtual async Task<int> CountAsync(Expression<Func<TEntity, bool>> whereExpression, CancellationToken cancellationToken = default)
+        public virtual async Task<int> CountAsync(Expression<Func<TEntity, bool>> whereExpression, bool writeDb = false, CancellationToken cancellationToken = default)
         {
-            return await DbContext.Set<TEntity>().AsNoTracking().CountAsync(whereExpression);
+            var dbSet = DbContext.Set<TEntity>().AsNoTracking();
+            if (writeDb)
+                dbSet = dbSet.TagWith(EfCoreConsts.MAXSCALE_ROUTE_TO_MASTER);
+            return await dbSet.CountAsync(whereExpression);
         }
 
-        public virtual async Task<TEntity> FindAsync(long keyValue, CancellationToken cancellationToken = default)
+        public virtual async Task<TEntity> FindAsync(long keyValue, bool writeDb = false,CancellationToken cancellationToken = default)
         {
-            return await DbContext.Set<TEntity>().AsNoTracking().Where(t => t.ID == keyValue).FirstOrDefaultAsync(cancellationToken);
+            var dbSet = DbContext.Set<TEntity>().AsNoTracking();
+            if (writeDb)
+                dbSet = dbSet.TagWith(EfCoreConsts.MAXSCALE_ROUTE_TO_MASTER);
+            return await dbSet.Where(t => t.ID == keyValue).FirstOrDefaultAsync(cancellationToken);
         }
 
-        public virtual async Task<TEntity> FetchAsync<TResult>(Expression<Func<TEntity, TResult>> selector, Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, object>> orderByExpression = null, bool ascending = false, CancellationToken cancellationToken = default)
+        public virtual async Task<TEntity> FetchAsync<TResult>(Expression<Func<TEntity, TResult>> selector, Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, object>> orderByExpression = null, bool ascending = false, bool writeDb = false,CancellationToken cancellationToken = default)
         {
             dynamic result;
-            
-            var query = DbContext.Set<TEntity>().Where(whereExpression).AsNoTracking();
+
+            var dbSet = DbContext.Set<TEntity>().AsNoTracking();
+            if (writeDb)
+                dbSet = dbSet.TagWith(EfCoreConsts.MAXSCALE_ROUTE_TO_MASTER);
+
+            var query = dbSet.Where(whereExpression);
 
             if (orderByExpression == null)
             {
@@ -186,9 +210,13 @@ namespace Adnc.Infr.EfCore.Repositories
                 ;
         }
 
-        public virtual async Task<List<TResult>> SelectAsync<TResult>(Expression<Func<TEntity, TResult>> selector, Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, object>> orderByExpression = null, bool ascending = false, CancellationToken cancellationToken = default)
+        public virtual async Task<List<TResult>> SelectAsync<TResult>(Expression<Func<TEntity, TResult>> selector, Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, object>> orderByExpression = null, bool ascending = false, bool writeDb = false,CancellationToken cancellationToken = default)
         {
-            var query = DbContext.Set<TEntity>().AsNoTracking().Where(whereExpression);
+            var dbSet = DbContext.Set<TEntity>().AsNoTracking();
+            if (writeDb)
+                dbSet = dbSet.TagWith(EfCoreConsts.MAXSCALE_ROUTE_TO_MASTER);
+
+            var query = dbSet.Where(whereExpression);
             if (orderByExpression != null)
             {
                 if (ascending)
@@ -204,9 +232,13 @@ namespace Adnc.Infr.EfCore.Repositories
             return await query.Select(selector).ToListAsync();
         }
 
-        public virtual async Task<List<TResult>> SelectAsync<TResult>(int count, Expression<Func<TEntity, TResult>> selector, Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, object>> orderByExpression=null, bool ascending = false, CancellationToken cancellationToken = default)
+        public virtual async Task<List<TResult>> SelectAsync<TResult>(int count, Expression<Func<TEntity, TResult>> selector, Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, object>> orderByExpression=null, bool ascending = false, bool writeDb = false, CancellationToken cancellationToken = default)
         {
-            var query = DbContext.Set<TEntity>().AsNoTracking().Where(whereExpression);
+            var dbSet = DbContext.Set<TEntity>().AsNoTracking();
+            if (writeDb)
+                dbSet = dbSet.TagWith(EfCoreConsts.MAXSCALE_ROUTE_TO_MASTER);
+
+            var query = dbSet.Where(whereExpression);
             if (orderByExpression != null)
             {
                 if (ascending)
@@ -222,9 +254,13 @@ namespace Adnc.Infr.EfCore.Repositories
             return await query.Select(selector).Take(count).ToListAsync(cancellationToken);
         }
 
-        public virtual async Task<IPagedModel<TEntity>> PagedAsync(int pageIndex, int pageSize, Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, object>> orderByExpression, bool ascending = false, CancellationToken cancellationToken = default)
+        public virtual async Task<IPagedModel<TEntity>> PagedAsync(int pageIndex, int pageSize, Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, object>> orderByExpression, bool ascending = false, bool writeDb = false,CancellationToken cancellationToken = default)
         {
-            var total = await DbContext.Set<TEntity>().AsNoTracking().CountAsync(whereExpression, cancellationToken);
+            var dbSet = DbContext.Set<TEntity>().AsNoTracking();
+            if (writeDb)
+                dbSet = dbSet.TagWith(EfCoreConsts.MAXSCALE_ROUTE_TO_MASTER);
+
+            var total = await dbSet.CountAsync(whereExpression, cancellationToken);
             if (total == 0)
             {
                 return new PagedModel<TEntity>() { PageSize = pageSize };
@@ -240,8 +276,7 @@ namespace Adnc.Infr.EfCore.Repositories
                 pageSize = 10;
             }
 
-            var query = DbContext.Set<TEntity>().AsNoTracking()
-                .Where(whereExpression);
+            var query = dbSet.Where(whereExpression);
             query = ascending ? query.OrderBy(orderByExpression) : query.OrderByDescending(orderByExpression);
             var data = await query.Skip((pageIndex - 1) * pageSize)
                                   .Take(pageSize)

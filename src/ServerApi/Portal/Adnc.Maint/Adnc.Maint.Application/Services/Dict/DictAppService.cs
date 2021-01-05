@@ -107,7 +107,7 @@ namespace  Adnc.Maint.Application.Services
         {
             var cahceValue = await _cache.GetAsync(EasyCachingConsts.DictListCacheKey, async () =>
             {
-                var allDicts = await _dictRepository.GetAll().ToListAsync();
+                var allDicts = await _dictRepository.GetAll(writeDb:true).ToListAsync();
                 return _mapper.Map<List<DictDto>>(allDicts);
             }, TimeSpan.FromSeconds(EasyCachingConsts.OneYear));
 

@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using Pomelo.EntityFrameworkCore.MySql.Query.Internal;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure.Internal;
+using Adnc.Infr.EfCore;
 
 namespace Pomelo.EntityFrameworkCore.MySql.Query.ExpressionVisitors.Internal
 {
@@ -61,16 +62,15 @@ namespace Pomelo.EntityFrameworkCore.MySql.Query.ExpressionVisitors.Internal
         }
 
         /// <summary>
-        /// 获取IQueryable的tags,并生成注解
+        /// 获取IQueryable的tags
         /// </summary>
         /// <param name="selectExpression"></param>
         protected override void GenerateTagsHeaderComment(SelectExpression selectExpression)
         {
-            var mycatTag = "db_type=master";
-            if(selectExpression.Tags.Contains(mycatTag))
+            if(selectExpression.Tags.Contains(EfCoreConsts.MASTER))
             {
                 _isQueryMaseter = true;
-                selectExpression.Tags.Remove(mycatTag);
+                selectExpression.Tags.Remove(EfCoreConsts.MASTER);
             }
             base.GenerateTagsHeaderComment(selectExpression);
         }
@@ -103,7 +103,7 @@ namespace Pomelo.EntityFrameworkCore.MySql.Query.ExpressionVisitors.Internal
             LIMIT 1
             */
             if (_isQueryMaseter)
-                Sql.Append("/*#mycat:db_type=master*/ ");
+                Sql.Append(EfCoreConsts.MyCAT_ANNOTATION);
 
             return base.VisitSelect(selectExpression);
         }

@@ -115,7 +115,7 @@ namespace  Adnc.Maint.Application.Services
         {
             var cahceValue = await _cache.GetAsync(EasyCachingConsts.CfgListCacheKey, async () =>
             {
-                var allCfgs = await _cfgRepository.GetAll().ToListAsync();
+                var allCfgs = await _cfgRepository.GetAll(writeDb:true).ToListAsync();
                 return _mapper.Map<List<CfgDto>>(allCfgs);
             }, TimeSpan.FromSeconds(EasyCachingConsts.OneYear));
 

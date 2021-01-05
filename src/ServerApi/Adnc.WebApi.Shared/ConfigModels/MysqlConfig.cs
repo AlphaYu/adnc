@@ -9,7 +9,6 @@ namespace Adnc.WebApi.Shared
     /// </summary>
     public class MysqlConfig
     {
-        public string WriteDbConnectionString { get; set; }
-        //public DbInfo[] ReadDbs { get; set; }
+        public string ConnectionString { get; set; }
     }
 }

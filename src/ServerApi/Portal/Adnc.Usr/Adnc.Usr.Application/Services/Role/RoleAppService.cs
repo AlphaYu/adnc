@@ -156,7 +156,7 @@ namespace Adnc.Usr.Application.Services
         {
             var cahceValue = await _cache.GetAsync(EasyCachingConsts.MenuCodesCacheKey, async () =>
             {
-                var allMenus = await _relationRepository.GetAll()
+                var allMenus = await _relationRepository.GetAll(writeDb:true)
                .Where(x => x.Menu.Status == true)
                .Select(x => new RoleMenuCodesDto { RoleId = x.RoleId, Code = x.Menu.Code })
                .ToArrayAsync();
@@ -177,7 +177,7 @@ namespace Adnc.Usr.Application.Services
         {
             var cahceValue = await _cache.GetAsync(EasyCachingConsts.RoleAllCacheKey, async () =>
             {
-                var allRoles = await _roleRepository.GetAll().ToListAsync();
+                var allRoles = await _roleRepository.GetAll(writeDb:true).ToListAsync();
                 return _mapper.Map<List<RoleDto>>(allRoles);
             }, TimeSpan.FromSeconds(EasyCachingConsts.OneYear));
 
