@@ -29,6 +29,7 @@ namespace Microsoft.AspNetCore.Mvc.Filters
         {
             var status = 500;
             var exception = context.Exception;
+            var eventId = new EventId(exception.HResult);
             var userContext = context.HttpContext.RequestServices.GetService<UserContext>();
             var descriptor = context.ActionDescriptor as ControllerActionDescriptor;
             //string className = descriptor.ControllerName;
@@ -36,10 +37,8 @@ namespace Microsoft.AspNetCore.Mvc.Filters
             var hostAndPort = context.HttpContext.Request.Host.HasValue ? context.HttpContext.Request.Host.Value : string.Empty;
             var requestUrl = string.Concat(hostAndPort, context.HttpContext.Request.Path);
             var type = string.Concat("https://httpstatuses.com/", status);
-            var title = _env.IsDevelopment() ? exception.Message : "系统异常";
-            var detial = _env.IsDevelopment() ? this.GetExceptionDetail(exception) : "系统异常,请联系管理员";
-
-            var eventId = new EventId(exception.HResult);
+            var title = _env.IsDevelopment() ? exception.Message : $"系统异常";
+            var detial = _env.IsDevelopment() ? this.GetExceptionDetail(exception) : $"系统异常,请联系管理员({eventId})";
 
             _logger.LogError(eventId, exception, exception.Message, requestUrl, userContext.ID);
 

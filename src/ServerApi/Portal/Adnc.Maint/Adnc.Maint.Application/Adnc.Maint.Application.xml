@@ -4,6 +4,70 @@
         <name>Adnc.Maint.Application</name>
     </assembly>
     <members>
+        <member name="T:Adnc.Maint.Application.Mq.LoginLogMqConsumer">
+            <summary>
+            登录日志消费者
+            </summary>
+        </member>
+        <member name="M:Adnc.Maint.Application.Mq.LoginLogMqConsumer.GetExchageConfig">
+            <summary>
+            配置Exchange
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Adnc.Maint.Application.Mq.LoginLogMqConsumer.GetRoutingKeys">
+            <summary>
+            设置路由Key
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Adnc.Maint.Application.Mq.LoginLogMqConsumer.GetQueueConfig">
+            <summary>
+            配置队列
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Adnc.Maint.Application.Mq.LoginLogMqConsumer.Process(System.String,System.String,System.String)">
+            <summary>
+            消息处理
+            </summary>
+            <param name="exchage">交换机</param>
+            <param name="routingKey">路由Key</param>
+            <param name="message">消息内容</param>
+            <returns></returns>
+        </member>
+        <member name="T:Adnc.Maint.Application.Mq.OpsLogMqConsumer">
+            <summary>
+            操作日志消费者
+            </summary>
+        </member>
+        <member name="M:Adnc.Maint.Application.Mq.OpsLogMqConsumer.GetExchageConfig">
+            <summary>
+            配置Exchange
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Adnc.Maint.Application.Mq.OpsLogMqConsumer.GetRoutingKeys">
+            <summary>
+            设置路由Key
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Adnc.Maint.Application.Mq.OpsLogMqConsumer.GetQueueConfig">
+            <summary>
+            配置队列
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Adnc.Maint.Application.Mq.OpsLogMqConsumer.Process(System.String,System.String,System.String)">
+            <summary>
+            消息处理
+            </summary>
+            <param name="exchage">交换机</param>
+            <param name="routingKey">路由Key</param>
+            <param name="message">消息内容</param>
+            <returns></returns>
+        </member>
         <member name="T:Adnc.Maint.Application.Dtos.CfgDto">
             <summary>
             系统配置

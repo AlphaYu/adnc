@@ -8,7 +8,6 @@ namespace Adnc.Maint.Core.Entities
     {
         private static readonly ConcurrentBag<Type> bag = new ConcurrentBag<Type>()
         {
-             typeof(SysLoginLog),
              typeof(SysTask),
              typeof(SysTaskLog),
              typeof(SysCfg),
