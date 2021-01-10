@@ -41,7 +41,7 @@ namespace Adnc.Usr.WebApi.Controllers
         /// </summary>
         /// <param name="userId">用户ID</param>
         /// <returns></returns>
-        [HttpGet("{userid}/rolestree")]
+        [HttpGet("{userId}/rolestree")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<dynamic>> GetRoleTreeListByUserId([FromRoute]long userId)
         {
@@ -51,14 +51,14 @@ namespace Adnc.Usr.WebApi.Controllers
         /// <summary>
         /// 删除角色
         /// </summary>
-        /// <param name="Id">角色ID</param>
+        /// <param name="id">角色ID</param>
         /// <returns></returns>
         [HttpDelete("{id}")]
         [Permission("roleDelete")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<ActionResult> Delete([FromRoute]long Id)
+        public async Task<ActionResult> Delete([FromRoute]long id)
         {
-            return Result(await _roleService.Delete(Id));
+            return Result(await _roleService.Delete(id));
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace Adnc.Usr.WebApi.Controllers
         /// <param name="roleId">角色Id</param>
         /// <param name="permissions">用户权限Ids</param>
         /// <returns></returns>
-        [HttpPut("{roleid}/permissons")]
+        [HttpPut("{roleId}/permissons")]
         [Permission("roleSetAuthority")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult> SavePermisson([FromRoute] long roleId,[FromBody]long[] permissions)

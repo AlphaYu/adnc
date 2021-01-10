@@ -56,7 +56,7 @@ namespace Adnc.Usr.WebApi.Controllers
         /// </summary>
         /// <param name="roleId">角色ID</param>
         /// <returns></returns>
-        [HttpGet("{roleid}/menutree")]
+        [HttpGet("{roleId}/menutree")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<dynamic>> GetMenuTreeListByRoleId([FromRoute]long roleId)
         {
@@ -92,14 +92,14 @@ namespace Adnc.Usr.WebApi.Controllers
         /// <summary>
         /// 删除菜单
         /// </summary>
-        /// <param name="menuId">菜单ID</param>
+        /// <param name="id">菜单ID</param>
         /// <returns></returns>
-        [HttpDelete("{menuid}")]
+        [HttpDelete("{id}")]
         [Permission("menuDelete")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<ActionResult> Delete([FromRoute] long menuId)
+        public async Task<ActionResult> Delete([FromRoute] long id)
         {
-            return Result(await _menuService.Delete(menuId));
+            return Result(await _menuService.Delete(id));
         }
     }
 }

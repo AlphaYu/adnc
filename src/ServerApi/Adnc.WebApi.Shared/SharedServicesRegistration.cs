@@ -263,7 +263,7 @@ namespace Adnc.WebApi.Shared
         {
             _services.AddMongo<MongoContext>(options =>
             {
-                options.ConnectionString = _mongoConfig.ConnectionStrings;
+                options.ConnectionString = _mongoConfig.ConnectionString;
                 options.PluralizeCollectionNames = _mongoConfig.PluralizeCollectionNames;
                 options.CollectionNamingConvention = (NamingConvention)_mongoConfig.CollectionNamingConvention;
             });
@@ -524,7 +524,7 @@ namespace Adnc.WebApi.Shared
                      .AddProcessAllocatedMemoryHealthCheck(maximumMegabytesAllocated: 200, tags: new[] { "memory" })
                      //.AddProcessHealthCheck("ProcessName", p => p.Length > 0) // check if process is running
                      .AddMySql(_mysqlConfig.ConnectionString)
-                     .AddMongoDb(_mongoConfig.ConnectionStrings)
+                     .AddMongoDb(_mongoConfig.ConnectionString)
                      .AddRabbitMQ(x =>
                      {
                          return

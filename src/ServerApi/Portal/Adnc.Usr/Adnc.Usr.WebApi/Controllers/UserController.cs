@@ -76,7 +76,7 @@ namespace Adnc.Usr.WebApi.Controllers
         /// </summary>
         /// <param name="userId">用户ID</param>
         /// <returns></returns>
-        [HttpDelete("{userid}")]
+        [HttpDelete("{userId}")]
         [Permission("userDelete")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult> Delete([FromRoute] long userId)
@@ -90,7 +90,7 @@ namespace Adnc.Usr.WebApi.Controllers
         /// <param name="userId">用户Id</param>
         /// <param name="roleIds">角色</param>
         /// <returns></returns>
-        [HttpPut("{userid}/roles")]
+        [HttpPut("{userId}/roles")]
         [Permission("userSetRole")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult> SetRole([FromRoute] long userId, [FromBody] long[] roleIds)
@@ -105,7 +105,7 @@ namespace Adnc.Usr.WebApi.Controllers
         /// <param name="userId">用户ID</param>
         /// <param name="status">状态</param>
         /// <returns></returns>
-        [HttpPut("{userid}/status")]
+        [HttpPut("{userId}/status")]
         [Permission("userFreeze")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult> ChangeStatus([FromRoute]long userId, [FromBody] SimpleInputDto<int> status)

@@ -27,14 +27,14 @@ namespace Adnc.Maint.WebApi.Controllers
         /// <summary>
         /// 删除字典
         /// </summary>
-        /// <param name="Id">字典ID</param>
+        /// <param name="id">字典ID</param>
         /// <returns></returns>
         [HttpDelete("{id}")]
         [Permission("dictDelete")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<ActionResult> Delete([FromRoute] long Id)
+        public async Task<ActionResult> Delete([FromRoute] long id)
         {
-            return Result(await _dictService.Delete(Id));
+            return Result(await _dictService.Delete(id));
         }
 
         /// <summary>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
@@ -30,9 +31,11 @@ namespace Adnc.WebApi.Shared.Middleware
                 {
                     foreach (var headerKey in _option.HeaderKeys)
                     {
-                        if (headers.ContainsKey(headerKey))
+                        var ips = headers[headerKey].FirstOrDefault();
+                        if (!string.IsNullOrWhiteSpace(ips))
                         {
-                            context.Connection.RemoteIpAddress = IPAddress.Parse(headers[headerKey].ToString().Split(',', StringSplitOptions.RemoveEmptyEntries)[0]);
+                            var realIp = ips.Split(",", StringSplitOptions.RemoveEmptyEntries)[0];
+                            context.Connection.RemoteIpAddress = IPAddress.Parse(realIp);
                             _logger.LogDebug($"Resolve real ip success: {context.Connection.RemoteIpAddress}");
                             break;
                         }
