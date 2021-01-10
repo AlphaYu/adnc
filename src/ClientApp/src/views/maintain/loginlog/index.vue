@@ -65,11 +65,6 @@
       <el-table-column label="日志类型" width="120px">
         <span>登录日志</span>
       </el-table-column>
-      <el-table-column label="状态" width="60px">
-        <template slot-scope="scope">
-          {{ scope.row.succeed }}
-        </template>
-      </el-table-column>
       <el-table-column label="设备" width="100px">
         <template slot-scope="scope">
           {{ scope.row.device }}
@@ -80,6 +75,16 @@
           {{ scope.row.remoteIpAddress }}
         </template>
       </el-table-column>
+      <el-table-column label="成功" width="60px">
+        <template slot-scope="scope">
+          {{ scope.row.succeed }}
+        </template>
+      </el-table-column>
+      <el-table-column label="状态码" width="70px">
+        <template slot-scope="scope">
+          {{ scope.row.statusCode }}
+        </template>
+      </el-table-column>      
       <el-table-column label="登录信息">
         <template slot-scope="scope">
           {{ scope.row.message }}
