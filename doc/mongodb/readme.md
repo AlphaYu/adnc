@@ -4,18 +4,15 @@
 
 # mongodb安装与配置
 
-## 拉取镜像并运行容器
 ```
 docker pull mongo:4.4.3
-docker run --name mongo -p 13017:27017 -e TZ="Asia/Shanghai" -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=football -v /root/data/mongo:/data/db -v /root/data/mongo/backup:/data/backup -d mongo:4.4.3 --auth
-```
-
-## 新建数据库
-```
+docker run --name mongo -p 13017:27017 -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=football -e TZ=Asia/Shanghai -v /root/data/mongo:/data/db -v /root/data/mongo/backup:/data/backup -d mongo:4.4.3 --auth
 进入mongo容器
 docker exec -it mongo mongo admin
-# 新建Logs数据库
-use Logs
+use admin
+db.auth("admin","football")
+# 新建logs_dev数据库
+use logs_dev
 # 创建用户
-db.createUser({user:'alpha',pwd:'football',roles:[{role:'readWrite',db:'Logs'}]})
+db.createUser({user:'alpha',pwd:'football',roles:[{role:'readWrite',db:'logs_dev'}]})
 ```
