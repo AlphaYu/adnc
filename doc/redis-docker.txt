@@ -1,1 +1,0 @@
-docker run -p 50379:6379 --name redis -v /usr/redis/redis.conf:/etc/redis/redis.conf -v /usr/redis/data:/data -d redis redis-server /etc/redis/redis.conf

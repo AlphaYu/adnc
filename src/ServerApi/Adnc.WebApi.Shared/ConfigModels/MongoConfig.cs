@@ -12,7 +12,7 @@ namespace Adnc.WebApi.Shared
         /// <summary>
         /// Gets or sets the MongoDB connection string.
         /// </summary>
-        public string ConnectionStrings { get; set; }
+        public string ConnectionString { get; set; }
 
         /// <summary>
         /// Gets or sets the collection naming convention.

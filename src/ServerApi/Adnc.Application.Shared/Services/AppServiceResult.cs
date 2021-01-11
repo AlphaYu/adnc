@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Adnc.Infr.Common.Helper;
 
 namespace Adnc.Application.Shared.Services
 {
@@ -113,7 +114,7 @@ namespace Adnc.Application.Shared.Services
 
         public override string ToString()
         {
-            return JsonSerializer.Serialize(this);
+            return JsonSerializer.Serialize(this, SystemTextJsonHelper.GetAdncDefaultOptions());
         }
 
         [JsonPropertyName("detail")]

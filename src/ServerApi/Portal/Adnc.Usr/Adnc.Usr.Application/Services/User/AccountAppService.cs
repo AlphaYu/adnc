@@ -97,13 +97,11 @@ namespace Adnc.Usr.Application.Services
                 return Problem(HttpStatusCode.NotFound, "用户名或密码错误");
 
             dynamic log = new ExpandoObject();
-            log.ID = IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId);
             log.Account = inputDto.Account;
             log.CreateTime = DateTime.Now;
             var httpContext = HttpContextUtility.GetCurrentHttpContext();
-            log.Device = httpContext.Request.Headers["device"].ToString() ?? "web";
+            log.Device = httpContext.Request.Headers["device"].FirstOrDefault() ?? "web";
             log.RemoteIpAddress = httpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
-            log.Message = string.Empty;
             log.Succeed = false;
             log.UserId = user?.ID;
             log.UserName = user?.Name;
@@ -111,7 +109,8 @@ namespace Adnc.Usr.Application.Services
             if (user.Status != 1)
             {
                 var problem = Problem(HttpStatusCode.TooManyRequests, "账号已锁定");
-                log.Message = problem.ToString();
+                log.Message = problem.Detail;
+                log.StatusCode = problem.Status;
                 _mqProducer.BasicPublish(MqExchanges.Logs, MqRoutingKeys.Loginlog, log);
                 return problem;
             }
@@ -124,7 +123,8 @@ namespace Adnc.Usr.Application.Services
             if (failLoginCount == 5)
             {
                 var problem = Problem(HttpStatusCode.TooManyRequests, "连续登录失败次数超过5次，账号已锁定");
-                log.Message = problem.ToString();
+                log.Message = problem.Detail;
+                log.StatusCode = problem.Status;
                 await _userRepository.UpdateAsync(new SysUser() { ID = user.ID, Status = 2 }, x => x.Status);
                 _mqProducer.BasicPublish(MqExchanges.Logs, MqRoutingKeys.Loginlog, log);
                 return problem;
@@ -133,7 +133,8 @@ namespace Adnc.Usr.Application.Services
             if (HashHelper.GetHashedString(HashType.MD5, inputDto.Password, user.Salt) != user.Password)
             {
                 var problem = Problem(HttpStatusCode.BadRequest, "用户名或密码错误");
-                log.Message = problem.ToString();
+                log.Message = problem.Detail;
+                log.StatusCode = problem.Status;
                 _mqProducer.BasicPublish(MqExchanges.Logs, MqRoutingKeys.Loginlog, log);
                 return problem;
             }
@@ -141,12 +142,14 @@ namespace Adnc.Usr.Application.Services
             if (user.RoleId.IsNullOrEmpty())
             {
                 var problem = Problem(HttpStatusCode.Forbidden, "未分配任务角色，请联系管理员");
-                log.Message = problem.ToString();
+                log.Message = problem.Detail;
+                log.StatusCode = problem.Status;
                 _mqProducer.BasicPublish(MqExchanges.Logs, MqRoutingKeys.Loginlog, log);
                 return problem;
             }
 
             log.Message = "登录成功";
+            log.StatusCode = (int)HttpStatusCode.Created;
             log.Succeed = true;
             _mqProducer.BasicPublish(MqExchanges.Logs, MqRoutingKeys.Loginlog, log);
 

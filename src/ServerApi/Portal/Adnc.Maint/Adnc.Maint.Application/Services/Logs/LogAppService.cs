@@ -13,20 +13,20 @@ using Adnc.Maint.Application.Dtos;
 using Adnc.Infr.Common.Extensions;
 using Adnc.Application.Shared.Services;
 
-namespace  Adnc.Maint.Application.Services
+namespace Adnc.Maint.Application.Services
 {
-    public class LogAppService :AppService,ILogAppService
+    public class LogAppService : AppService, ILogAppService
     {
         private readonly IMapper _mapper;
         private readonly IMongoRepository<SysOperationLog> _opsLogRepository;
         private readonly IMongoRepository<SysNloglog> _nlogLogRepository;
-        private readonly IEfRepository<SysLoginLog> _loginLogRepository;
+        private readonly IMongoRepository<SysLoginLog> _loginLogRepository;
 
         public LogAppService(IMapper mapper,
             IMongoRepository<SysOperationLog> opsLogRepository
-            , IEfRepository<SysLoginLog> loginLogRepository
+            , IMongoRepository<SysLoginLog> loginLogRepository
             , IMongoRepository<SysNloglog> nlogLogRepository)
-       {
+        {
             _mapper = mapper;
             _opsLogRepository = opsLogRepository;
             _loginLogRepository = loginLogRepository;
@@ -35,30 +35,32 @@ namespace  Adnc.Maint.Application.Services
 
         public async Task<AppSrvResult<PageModelDto<LoginLogDto>>> GetLoginLogsPaged(LogSearchDto searchDto)
         {
-
-            Expression<Func<SysLoginLog, bool>> whereCondition = x => true;
+            var builder = Builders<SysLoginLog>.Filter;
+            var filters = new List<FilterDefinition<SysLoginLog>>();
 
             if (searchDto.BeginTime.HasValue)
             {
-                whereCondition = whereCondition.And(x => x.CreateTime >= searchDto.BeginTime.Value);
+                filters.Add(builder.Gte(l => l.CreateTime, searchDto.BeginTime));
             }
 
             if (searchDto.EndTime.HasValue)
             {
-                whereCondition = whereCondition.And(x => x.CreateTime <= searchDto.EndTime.Value);
+                filters.Add(builder.Lte(l => l.CreateTime, searchDto.EndTime));
             }
 
             if (searchDto.Account.IsNotNullOrWhiteSpace())
             {
-                whereCondition = whereCondition.And(x => x.Account == searchDto.Account);
+                filters.Add(builder.Eq(l => l.Account, searchDto.Account));
             }
 
-            if (searchDto.Device.IsNotNullOrWhiteSpace())
+            if (searchDto.Method.IsNotNullOrWhiteSpace())
             {
-                whereCondition = whereCondition.And(x => x.Device == searchDto.Device);
+                filters.Add(builder.Eq(l => l.Device, searchDto.Device));
             }
 
-            var pagedModel = await _loginLogRepository.PagedAsync(searchDto.PageIndex, searchDto.PageSize, whereCondition, x => x.CreateTime, false);
+            var filter = filters.Count > 0 ? builder.And(filters) : builder.Where(x => true);
+
+            var pagedModel = await _loginLogRepository.PagedAsync(searchDto.PageIndex, searchDto.PageSize, filter, x => x.CreateTime, false);
 
             var result = _mapper.Map<PageModelDto<LoginLogDto>>(pagedModel);
 

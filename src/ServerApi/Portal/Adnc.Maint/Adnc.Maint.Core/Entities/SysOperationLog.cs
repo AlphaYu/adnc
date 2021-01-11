@@ -12,7 +12,7 @@ namespace Adnc.Core.Maint.Entities
 	/// 操作日志
 	/// </summary>
 	//[Table("SysOperationLog")]
-	[Description("操作日志")]
+	//[Description("操作日志")]
     public class SysOperationLog : MongoEntity
     {
 		//[StringLength(255)]

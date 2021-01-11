@@ -27,14 +27,14 @@ namespace Adnc.Maint.WebApi.Controllers
         /// <summary>
         /// 删除配置节点
         /// </summary>
-        /// <param name="Id">ID</param>
+        /// <param name="id">节点id</param>
         /// <returns></returns>
         [HttpDelete("{id}")]
         [Permission("cfgDelete")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<ActionResult> Delete([FromRoute] long Id)
+        public async Task<ActionResult> Delete([FromRoute] long id)
         {
-            return Result(await _cfgAppService.Delete(Id));
+            return Result(await _cfgAppService.Delete(id));
         }
 
         /// <summary>

@@ -9,9 +9,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Adnc.Maint.Core.Entities;
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Infr.Mq.RabbitMq;
+using Adnc.Infr.Common.Helper;
 
 namespace Adnc.Maint.Application.Mq
 {
+    /// <summary>
+    /// 登录日志消费者
+    /// </summary>
     public sealed class LoginLogMqConsumer : BaseRabbitMqConsumer
     {
         // 因为Process函数是委托回调,直接将其他Service注入的话两者不在一个scope,
@@ -29,6 +33,10 @@ namespace Adnc.Maint.Application.Mq
             _logger = logger;
         }
 
+        /// <summary>
+        /// 配置Exchange
+        /// </summary>
+        /// <returns></returns>
         protected override ExchageConfig GetExchageConfig()
         {
             return new ExchageConfig()
@@ -41,11 +49,19 @@ namespace Adnc.Maint.Application.Mq
             };
         }
 
+        /// <summary>
+        /// 设置路由Key
+        /// </summary>
+        /// <returns></returns>
         protected override string[] GetRoutingKeys()
         {
             return new[] { MqRoutingKeys.Loginlog }; 
         }
 
+        /// <summary>
+        /// 配置队列
+        /// </summary>
+        /// <returns></returns>
         protected override QueueConfig GetQueueConfig()
         {
             var config = GetCommonQueueConfig();
@@ -65,6 +81,13 @@ namespace Adnc.Maint.Application.Mq
             return config;
         }
 
+        /// <summary>
+        /// 消息处理
+        /// </summary>
+        /// <param name="exchage">交换机</param>
+        /// <param name="routingKey">路由Key</param>
+        /// <param name="message">消息内容</param>
+        /// <returns></returns>
         protected async override Task<bool> Process(string exchage, string routingKey, string message)
         {
             bool result = false;
@@ -72,9 +95,9 @@ namespace Adnc.Maint.Application.Mq
             {
                 using (var scope = _services.CreateScope())
                 {
-                    var _loginLogRepository = scope.ServiceProvider.GetRequiredService<IEfRepository<SysLoginLog>>();
+                    var repository = scope.ServiceProvider.GetRequiredService<IMongoRepository<SysLoginLog>>();
                     var entity = JsonSerializer.Deserialize<SysLoginLog>(message);
-                    await _loginLogRepository.InsertAsync(entity);
+                    await repository.AddAsync(entity);
                     result = true;
                 }
             }

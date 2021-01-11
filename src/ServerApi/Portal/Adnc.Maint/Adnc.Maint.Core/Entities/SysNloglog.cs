@@ -14,6 +14,7 @@ namespace Adnc.Core.Maint.Entities
     [BsonIgnoreExtraElements]
     public class SysNloglog : MongoEntity
     {
+        [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         public DateTime Date { get; set; }
         public string Level { get; set; }
         public string Message { get; set; }

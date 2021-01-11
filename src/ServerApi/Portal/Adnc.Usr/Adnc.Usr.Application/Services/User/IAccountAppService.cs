@@ -7,7 +7,6 @@ namespace Adnc.Usr.Application.Services
 {
     public interface IAccountAppService : IAppService
     {
-        [OpsLog(LogName = "登录")]
         Task<AppSrvResult<UserValidateDto>> Login(UserValidateInputDto userDto);
 
         Task<AppSrvResult<UserInfoDto>> GetUserInfo(long userId);
