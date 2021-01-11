@@ -12,16 +12,16 @@ docker network create --driver bridge --subnet=172.20.0.0/16 --gateway=172.20.0.
 ### 拉取镜像文件并运行容器
 ```
 #拉取mariadb镜像
-docker pull mariadb
+docker pull mariadb:10.5.8
 
 #启动mariadb01容器
-docker run --name mariadb01 -p 13311:3306 -e MYSQL_ROOT_PASSWORD=alpha.abc --restart=always -v /root/data/mariadb01/conf:/etc/mysql -v /root/data/mariadb01/logs:/var/log/mysql -v /root/data/mariadb01/data:/var/lib/mysql --network=adnc_net --ip 172.20.0.11 -d mariadb
+docker run --name mariadb01 -p 13311:3306 -e MYSQL_ROOT_PASSWORD=alpha.abc -e TZ=Asia/Shanghai --restart=always -v /root/data/mariadb01/conf:/etc/mysql -v /root/data/mariadb01/logs:/var/log/mysql -v /root/data/mariadb01/data:/var/lib/mysql --network=adnc_net --ip 172.20.0.11 -d mariadb:10.5.8
 
 #启动mariadb02容器
-docker run --name mariadb02 -p 13312:3306 -e MYSQL_ROOT_PASSWORD=alpha.abc --restart=always -v /root/data/mariadb02/conf:/etc/mysql -v /root/data/mariadb02/logs:/var/log/mysql -v /root/data/mariadb02/data:/var/lib/mysql --network=adnc_net --ip 172.20.0.12 -d mariadb
+docker run --name mariadb02 -p 13312:3306 -e MYSQL_ROOT_PASSWORD=alpha.abc -e TZ=Asia/Shanghai --restart=always -v /root/data/mariadb02/conf:/etc/mysql -v /root/data/mariadb02/logs:/var/log/mysql -v /root/data/mariadb02/data:/var/lib/mysql --network=adnc_net --ip 172.20.0.12 -d mariadb:10.5.8
 
 #启动mariadb03容器
-docker run --name mariadb03 -p 13313:3306 -e MYSQL_ROOT_PASSWORD=alpha.abc --restart=always -v /root/data/mariadb03/conf:/etc/mysql -v /root/data/mariadb03/logs:/var/log/mysql -v /root/data/mariadb03/data:/var/lib/mysql --network=adnc_net --ip 172.20.0.13 -d mariadb
+docker run --name mariadb03 -p 13313:3306 -e MYSQL_ROOT_PASSWORD=alpha.abc -e TZ=Asia/Shanghai --restart=always -v /root/data/mariadb03/conf:/etc/mysql -v /root/data/mariadb03/logs:/var/log/mysql -v /root/data/mariadb03/data:/var/lib/mysql --network=adnc_net --ip 172.20.0.13 -d mariadb:10.5.8
 
 #查看mariadb三个容器是否正常运行
 docker container ls
