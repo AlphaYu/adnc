@@ -1,14 +1,15 @@
 <div align="center">
 <a href="https://github.com/alphayu/adnc" target="_blank" title="Adnc是一个微服务开发框架 代码改变世界 开源推动社区"><img src="https://aspdotnetcore.net/wp-content/uploads/2020/12/adnc-homepage-logo-3.webp" alt="Adnc是一个微服务开发框架 代码改变世界 开源推动社区"></a>
 </div>
+
 # docker实用命令记录
-```
+```shell
 # 查看已下载的Docker镜像latest具体版本
 # docker image inspect redis:latest|grep -i version
 docker image inspect 镜像名:latest|grep -i version
 ```
 
-```
+```shell
 # 容器日志过大处理
 # Docker 的日志文件存在 /var/lib/docker/containers 目录中，通过下面的命令可以将日志文件夹根据升序的方式罗列出来。
 du -d1 -h /var/lib/docker/containers | sort -h
