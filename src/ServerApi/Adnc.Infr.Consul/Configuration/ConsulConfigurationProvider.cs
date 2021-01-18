@@ -79,29 +79,43 @@ namespace Adnc.Infr.Consul.Configuration
 
         private async Task<IDictionary<string, string>> ExecuteQueryAsync(bool isBlocking = false)
         {
-            var requestUri = isBlocking ? $"?recurse=true&index={_consulConfigurationIndex}" : "?recurse=true";
-            using (var request = new HttpRequestMessage(HttpMethod.Get, new Uri(_consulUrls[_consulUrlIndex], requestUri)))
-            using (var response = await _httpClient.SendAsync(request))
+            IDictionary<string, string> result;
+            var relativeUri = isBlocking ? $"?recurse=true&index={_consulConfigurationIndex}" : "?recurse=true";
+            var fullUri = string.Empty;
+            using (var request = new HttpRequestMessage(HttpMethod.Get, new Uri(_consulUrls[_consulUrlIndex], relativeUri)))
             {
-                response.EnsureSuccessStatusCode();
-                if (response.Headers.Contains(ConsulIndexHeader))
+                fullUri = request.RequestUri.ToString();
+                try
                 {
-                    var indexValue = response.Headers.GetValues(ConsulIndexHeader).FirstOrDefault();
-                    int.TryParse(indexValue, out _consulConfigurationIndex);
-                }
+                    using (var response = await _httpClient.SendAsync(request))
+                    {
+                        response.EnsureSuccessStatusCode();
+                        if (response.Headers.Contains(ConsulIndexHeader))
+                        {
+                            var indexValue = response.Headers.GetValues(ConsulIndexHeader).FirstOrDefault();
+                            int.TryParse(indexValue, out _consulConfigurationIndex);
+                        }
 
-                var tokens = JToken.Parse(await response.Content.ReadAsStringAsync());
-                return tokens
-                    .Select(k => KeyValuePair.Create
-                        (
-                            //k.Value<string>("Key").Substring(_path.Length + 1),
-                            k.Value<string>("Key"),
-                            k.Value<string>("Value") != null ? JToken.Parse(Encoding.UTF8.GetString(Convert.FromBase64String(k.Value<string>("Value")))) : null
-                        ))
-                    .Where(v => !string.IsNullOrWhiteSpace(v.Key))
-                    .SelectMany(Flatten)
-                    .ToDictionary(v => ConfigurationPath.Combine(v.Key.Split('/')), v => v.Value, StringComparer.OrdinalIgnoreCase);
+                        var tokens = JToken.Parse(await response.Content.ReadAsStringAsync());
+                        result = tokens
+                            .Select(k => KeyValuePair.Create
+                                (
+                                    //k.Value<string>("Key").Substring(_path.Length + 1),
+                                    k.Value<string>("Key"),
+                                    k.Value<string>("Value") != null ? JToken.Parse(Encoding.UTF8.GetString(Convert.FromBase64String(k.Value<string>("Value")))) : null
+                                ))
+                            .Where(v => !string.IsNullOrWhiteSpace(v.Key))
+                            .SelectMany(Flatten)
+                            .ToDictionary(v => ConfigurationPath.Combine(v.Key.Split('/')), v => v.Value, StringComparer.OrdinalIgnoreCase);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception($"{ex.Message}({fullUri})", ex);
+                }
             }
+
+            return result;
         }
 
         private IEnumerable<KeyValuePair<string, string>> Flatten(KeyValuePair<string, JToken> tuple)
