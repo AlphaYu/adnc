@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Adnc.Infr.Common;
+using Adnc.Infr.Common.Helper;
 
 namespace Microsoft.AspNetCore.Mvc.Filters
 {
@@ -38,7 +39,7 @@ namespace Microsoft.AspNetCore.Mvc.Filters
             var requestUrl = string.Concat(hostAndPort, context.HttpContext.Request.Path);
             var type = string.Concat("https://httpstatuses.com/", status);
             var title = _env.IsDevelopment() ? exception.Message : $"系统异常";
-            var detial = _env.IsDevelopment() ? this.GetExceptionDetail(exception) : $"系统异常,请联系管理员({eventId})";
+            var detial = _env.IsDevelopment() ? ExceptionHelper.GetExceptionDetail(exception) : $"系统异常,请联系管理员({eventId})";
 
             _logger.LogError(eventId, exception, exception.Message, requestUrl, userContext.ID);
 
@@ -65,20 +66,6 @@ namespace Microsoft.AspNetCore.Mvc.Filters
             return Task.CompletedTask;
         }
 
-        private string GetExceptionDetail(Exception exception)
-        {
-            var detail = new StringBuilder();
-            detail.Append(@"***************************************");
-            detail.AppendFormat(@" 异常发生时间： {0} ", DateTime.Now);
-            detail.AppendFormat(@" 异常类型： {0} ", exception.HResult);
-            detail.AppendFormat(@" 导致当前异常的 Exception 实例： {0} ", exception.InnerException);
-            detail.AppendFormat(@" 导致异常的应用程序或对象的名称： {0} ", exception.Source);
-            detail.AppendFormat(@" 引发异常的方法： {0} ", exception.TargetSite);
-            detail.AppendFormat(@" 异常堆栈信息： {0} ", exception.StackTrace);
-            detail.AppendFormat(@" 异常消息： {0} ", exception.Message);
-            detail.Append(@"***************************************");
 
-            return detail.ToString();
-        }
     }
 }

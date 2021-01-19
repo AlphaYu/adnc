@@ -75,12 +75,12 @@ namespace Adnc.Maint.WebApi
             defaultFilesOptions.DefaultFileNames.Add("index.html");
             app.UseDefaultFiles(defaultFilesOptions);
             app.UseStaticFiles();
+            app.UseCustomExceptionHandler();
             if (env.IsDevelopment())
             {
                 //开启验证异常显示
                 //PII is hidden 异常处理
                 IdentityModelEventSource.ShowPII = true;
-                app.UseDeveloperExceptionPage();
             }
             app.UseRealIp(x =>
             {
@@ -101,7 +101,6 @@ namespace Adnc.Maint.WebApi
                 c.SwaggerEndpoint($"/{_serviceInfo.ShortName}/swagger/{_serviceInfo.Version}/swagger.json", $"{_serviceInfo.FullName}-{_serviceInfo.Version}");
                 c.RoutePrefix = $"{_serviceInfo.ShortName}";
             });
-            //app.UseErrorHandling();
             app.UseHealthChecks($"/{_srvRegistration.GetConsulConfig().HealthCheckUrl}", new HealthCheckOptions()
             {
                 Predicate = _ => true,

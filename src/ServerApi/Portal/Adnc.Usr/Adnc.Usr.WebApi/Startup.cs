@@ -79,8 +79,8 @@ namespace Adnc.Usr.WebApi
                 //开启验证异常显示
                 //PII is hidden 异常处理
                 IdentityModelEventSource.ShowPII = true;
-                app.UseDeveloperExceptionPage();
             }
+            app.UseCustomExceptionHandler();
             app.UseRealIp(x =>
             {
                 //new string[] { "X-Real-IP", "X-Forwarded-For" }
@@ -100,7 +100,6 @@ namespace Adnc.Usr.WebApi
                 c.SwaggerEndpoint($"/{_serviceInfo.ShortName}/swagger/{_serviceInfo.Version}/swagger.json", $"{_serviceInfo.FullName}-{_serviceInfo.Version}");
                 c.RoutePrefix = $"{_serviceInfo.ShortName}";
             });
-            app.UseErrorHandling();
             app.UseHealthChecks($"/{_srvRegistration.GetConsulConfig().HealthCheckUrl}", new HealthCheckOptions()
             {
                 Predicate = _ => true,
