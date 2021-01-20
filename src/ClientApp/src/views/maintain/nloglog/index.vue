@@ -40,23 +40,23 @@
     <el-table v-loading="listLoading" :data="list" element-loading-text="Loading" border fit highlight-current-row>
       <el-table-column type="expand">
         <template slot-scope="scope">
-          <el-input v-model="scope.row.exception" type="textarea" rows="30" />
+          <el-input v-show="scope.row.exception!=null && scope.row.exception!=''" v-model="scope.row.exception" type="textarea" rows="20" />
+          <el-input v-show="scope.row.message!=null && scope.row.message!=''" v-model="scope.row.message" type="textarea" rows="10" />
         </template>
       </el-table-column>
-
+      <el-table-column
+        label="Id"
+        prop="id"
+        width="220px"
+      />
       <el-table-column
         label="级别"
         prop="level"
         width="60px"
       />
       <el-table-column
-        label="控制器"
-        prop="properties.controller"
-        width="200px"
-      />
-      <el-table-column
-        label="方法"
-        prop="properties.method"
+        label="eventId_Id"
+        prop="properties.eventId_Id"
         width="200px"
       />
       <el-table-column
