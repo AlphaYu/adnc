@@ -5,7 +5,7 @@
 		<IsPackable>false</IsPackable>
 		<RootNamespace>Adnc.UnitTest</RootNamespace>
 		<AssemblyName>Adnc.UnitTest</AssemblyName>
-		<Version>0.6.0</Version>
+		<Version>0.7.0</Version>
 		<Authors>Alpha.Yu</Authors>
 		<Product>Adnc</Product>
 		<RepositoryUrl>https://github.com/AlphaYu</RepositoryUrl>
