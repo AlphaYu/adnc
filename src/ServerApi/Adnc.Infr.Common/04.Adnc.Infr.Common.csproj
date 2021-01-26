@@ -5,7 +5,7 @@
 		<UserSecretsId>2589a77c-6951-43c5-9e81-b45436e1344c</UserSecretsId>
 		<AssemblyName>Adnc.Infr.Common</AssemblyName>
 		<RootNamespace>Adnc.Infr.Common</RootNamespace>
-		<Version>0.6.0</Version>
+		<Version>0.7.0</Version>
 		<Authors>Alpha.Yu</Authors>
 		<Product>Adnc</Product>
 		<RepositoryUrl>https://github.com/AlphaYu</RepositoryUrl>
