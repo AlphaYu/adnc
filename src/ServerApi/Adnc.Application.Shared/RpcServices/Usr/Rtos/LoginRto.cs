@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Adnc.Application.Shared.RpcServices
+namespace Adnc.Application.Shared.RpcServices.Rtos
 {
-    public class LoginRequest
+    public class LoginRto
     {
         /// <summary>
         /// 账户

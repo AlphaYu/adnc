@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Adnc.Application.Shared.RpcServices
+namespace Adnc.Application.Shared.RpcServices.Rtos
 {
-    public class LoginReply
+    public class LoginReplyRto
     {
         public string Token { get; set; }
 

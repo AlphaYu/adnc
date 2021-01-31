@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Adnc.Application.Shared.RpcServices;
 using Adnc.WebApi.Shared;
-using Adnc.Application.Shared.RpcServices.Rtos;
 
 namespace Adnc.Cus.WebApi.Controllers
 {
@@ -20,9 +19,9 @@ namespace Adnc.Cus.WebApi.Controllers
 
         [AllowAnonymous]
         [HttpPost()]
-        public async Task<IActionResult> Login([FromBody] LoginRto loginRequest)
+        public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
         {
-            var result = await _authRpcService.LoginAsync(loginRequest);
+            var result = await _authRpcService.Login(loginRequest);
 
             if (result.IsSuccessStatusCode)
                 return Ok(result.Content);

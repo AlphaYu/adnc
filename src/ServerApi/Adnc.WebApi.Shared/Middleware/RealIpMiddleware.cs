@@ -41,14 +41,11 @@ namespace Adnc.WebApi.Shared.Middleware
                         }
                     }
                 }
+                await _next(context);
             }
             catch(Exception ex)
             {
                 throw new Exception(ex.Message, ex);
-            }
-            finally
-            {
-                await _next(context);
             }
         }
     }
