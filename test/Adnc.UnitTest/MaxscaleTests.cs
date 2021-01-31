@@ -35,10 +35,10 @@ namespace Adnc.UnitTests
             _cusFinanceRsp = _fixture.Container.Resolve<IEfRepository<CusFinance>>();
             _cusLogsRsp = _fixture.Container.Resolve<IEfRepository<CusTransactionLog>>();
 
-            Initialize().Wait();
+            Initialize();
         }
 
-        private async Task Initialize()
+        private void Initialize()
         {           
             _userContext.ID = 1600000000000;
             _userContext.Account = "alpha2008";
