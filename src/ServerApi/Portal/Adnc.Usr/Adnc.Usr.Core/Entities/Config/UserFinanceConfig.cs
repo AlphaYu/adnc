@@ -16,7 +16,7 @@ namespace Adnc.Usr.Core.Entities.Config
 
             builder.HasOne(d => d.User)
                 .WithOne(p => p.UserFinance)
-                .HasForeignKey<SysUserFinance>(d => d.ID)
+                .HasForeignKey<SysUserFinance>(d => d.Id)
                 .OnDelete(DeleteBehavior.ClientSetNull);
         }
     }

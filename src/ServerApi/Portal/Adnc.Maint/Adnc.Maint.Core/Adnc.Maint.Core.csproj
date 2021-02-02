@@ -12,6 +12,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Entities\SysTask.cs" />
+	  <Compile Remove="Entities\SysTaskLog.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<ProjectReference Include="..\..\..\Adnc.Core.Shared\03.Adnc.Core.Shared.csproj" />
 	</ItemGroup>
 

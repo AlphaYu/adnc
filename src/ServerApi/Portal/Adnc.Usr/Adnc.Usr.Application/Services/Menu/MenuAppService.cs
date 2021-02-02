@@ -7,7 +7,6 @@ using Microsoft.EntityFrameworkCore;
 using EasyCaching.Core;
 using AutoMapper;
 using Adnc.Usr.Application.Dtos;
-using Adnc.Usr.Core.CoreServices;
 using Adnc.Usr.Core.Entities;
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Infr.Common.Helper;
@@ -22,19 +21,16 @@ namespace Adnc.Usr.Application.Services
         private readonly IMapper _mapper;
         private readonly IEfRepository<SysMenu> _menuRepository;
         private readonly IEfRepository<SysRelation> _relationRepository;
-        private readonly IUsrManagerService _usrManagerService;
         private readonly IHybridCachingProvider _cache;
 
         public MenuAppService(IMapper mapper,
             IEfRepository<SysMenu> menuRepository,
             IEfRepository<SysRelation> relationRepository,
-            IUsrManagerService usrManagerService,
             IHybridProviderFactory hybridProviderFactory)
         {
             _mapper = mapper;
             _menuRepository = menuRepository;
             _relationRepository = relationRepository;
-            _usrManagerService = usrManagerService;
             _cache = hybridProviderFactory.GetHybridCachingProvider(EasyCachingConsts.HybridCaching);
         }
 
@@ -51,19 +47,19 @@ namespace Adnc.Usr.Application.Services
             var parentMenu = (await this.GetAllMenusFromCache()).Where(x => x.Code == saveDto.PCode).FirstOrDefault();
             var addDto = ProducePCodes(saveDto, parentMenu);
             var menu = _mapper.Map<SysMenu>(addDto);
-            menu.ID = IdGenerater.GetNextId();
+            menu.Id = IdGenerater.GetNextId();
             await _menuRepository.InsertAsync(menu);
 
-            return menu.ID;
+            return menu.Id;
         }
 
         public async Task<AppSrvResult> Update(MenuSaveInputDto saveDto)
         {
-            var isExistsCode = (await this.GetAllMenusFromCache()).Where(x => x.Code == saveDto.Code && x.ID != saveDto.ID).Any();
+            var isExistsCode = (await this.GetAllMenusFromCache()).Where(x => x.Code == saveDto.Code && x.Id != saveDto.Id).Any();
             if (isExistsCode)
                 return Problem(HttpStatusCode.BadRequest, "该菜单编码已经存在");
 
-            var isExistsName = (await this.GetAllMenusFromCache()).Where(x => x.Name == saveDto.Name && x.ID != saveDto.ID).Any();
+            var isExistsName = (await this.GetAllMenusFromCache()).Where(x => x.Name == saveDto.Name && x.Id != saveDto.Id).Any();
             if (isExistsName)
                 return Problem(HttpStatusCode.BadRequest, "该菜单名称已经存在");
 
@@ -77,8 +73,8 @@ namespace Adnc.Usr.Application.Services
 
         public async Task<AppSrvResult> Delete(long Id)
         {
-            var menu = (await this.GetAllMenusFromCache()).Where(x => x.ID == Id).FirstOrDefault();
-            await _menuRepository.DeleteRangeAsync(x => x.PCodes.Contains($"[{menu.Code}]") || x.ID == Id);
+            var menu = (await this.GetAllMenusFromCache()).Where(x => x.Id == Id).FirstOrDefault();
+            await _menuRepository.DeleteRangeAsync(x => x.PCodes.Contains($"[{menu.Code}]") || x.Id == Id);
 
             return DefaultResult();
         }
@@ -95,11 +91,11 @@ namespace Adnc.Usr.Application.Services
                 var parentNode = menuNodes.FirstOrDefault(x => x.Code == node.PCode);
                 if (parentNode != null)
                 {
-                    node.ParentId = parentNode.ID;
+                    node.ParentId = parentNode.Id;
                 }
             }
 
-            var dictNodes = menuNodes.ToDictionary(x => x.ID);
+            var dictNodes = menuNodes.ToDictionary(x => x.Id);
             foreach (var pair in dictNodes)
             {
                 var currentNode = pair.Value;
@@ -126,7 +122,7 @@ namespace Adnc.Usr.Application.Services
             //角色拥有的菜单Ids
             var menusIds = allRelations.Where(x => roleIds.Contains(x.RoleId.Value)).Select(x => x.MenuId).Distinct();
             //更加菜单Id获取菜单实体
-            var menus = allMenus.Where(x => menusIds.Contains(x.ID));
+            var menus = allMenus.Where(x => menusIds.Contains(x.Id));
 
             if (menus.Any())
             {
@@ -150,11 +146,11 @@ namespace Adnc.Usr.Application.Services
                     var parentNode = routerMenus.FirstOrDefault(x => x.Code == node.PCode);
                     if (parentNode != null)
                     {
-                        node.ParentId = parentNode.ID;
+                        node.ParentId = parentNode.Id;
                     }
                 }
 
-                var dictNodes = routerMenus.ToDictionary(x => x.ID);
+                var dictNodes = routerMenus.ToDictionary(x => x.Id);
                 foreach (var pair in dictNodes.OrderBy(x => x.Value.Num))
                 {
                     var currentNode = pair.Value;
@@ -177,7 +173,7 @@ namespace Adnc.Usr.Application.Services
             var menuIds = (await this.GetAllRelations()).Where(x => x.RoleId.Value == roleId).Select(r => r.MenuId.Value) ?? new List<long>();
             List<ZTreeNodeDto<long, dynamic>> roleTreeList = new List<ZTreeNodeDto<long, dynamic>>();
 
-            var menus = await _menuRepository.SelectAsync(m=>m, q => true, q => q.ID, true);
+            var menus = await _menuRepository.SelectAsync(m=>m, q => true, q => q.Id, true);
 
 
             foreach (var menu in menus)
@@ -185,11 +181,11 @@ namespace Adnc.Usr.Application.Services
                 var parentMenu = menus.FirstOrDefault(x => x.Code == menu.PCode);
                 ZTreeNodeDto<long, dynamic> node = new ZTreeNodeDto<long, dynamic>
                 {
-                    ID = menu.ID,
-                    PID = parentMenu != null ? parentMenu.ID : 0,
+                    Id = menu.Id,
+                    PID = parentMenu != null ? parentMenu.Id : 0,
                     Name = menu.Name,
                     Open = parentMenu != null,
-                    Checked = menuIds.Contains(menu.ID)
+                    Checked = menuIds.Contains(menu.Id)
                 };
                 roleTreeList.Add(node);
             }
@@ -199,7 +195,7 @@ namespace Adnc.Usr.Application.Services
             {
                 foreach (var child in nodes)
                 {
-                    if (child.PID == node.ID)
+                    if (child.PID == node.Id)
                     {
                         node.Children.Add(child);
                     }
@@ -209,13 +205,13 @@ namespace Adnc.Usr.Application.Services
             var groups = roleTreeList.GroupBy(x => x.PID).Where(x => x.Key > 1);
             foreach(var group in groups)
             {
-                roleTreeList.RemoveAll(x => x.ID == group.Key);
+                roleTreeList.RemoveAll(x => x.Id == group.Key);
             }
 
             return new
             {
                 treeData = nodes.Where(x => x.PID == 0),
-                checkedIds = roleTreeList.Where(x => x.Checked && x.PID != 0).Select(x => x.ID)
+                checkedIds = roleTreeList.Where(x => x.Checked && x.PID != 0).Select(x => x.Id)
             };
         }
 

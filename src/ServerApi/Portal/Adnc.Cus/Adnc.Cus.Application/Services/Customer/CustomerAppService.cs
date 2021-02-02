@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using AutoMapper;
 using Adnc.Cus.Application.Dtos;
-using Adnc.Cus.Core.CoreServices;
+using Adnc.Cus.Core.Services;
 using Adnc.Cus.Core.Entities;
 using Adnc.Infr.Common.Helper;
 using Adnc.Core.Shared.IRepositories;
@@ -14,12 +14,12 @@ namespace Adnc.Cus.Application.Services
 {
     public class CustomerAppService :AppService,ICustomerAppService
     {
-        private readonly ICusManagerService _cusManagerService;
+        private readonly CustomerManagerService _cusManagerService;
         private readonly IEfRepository<Customer> _customerRepo;
         private readonly IMapper _mapper;
         public CustomerAppService(
              IEfRepository<Customer> customerRepo
-            , ICusManagerService cusManagerService
+            , CustomerManagerService cusManagerService
             , IMapper mapper)
         {
             _customerRepo = customerRepo;
@@ -34,7 +34,7 @@ namespace Adnc.Cus.Application.Services
                 return Problem(HttpStatusCode.Forbidden, "该账号已经存在");
 
             var customer = _mapper.Map<Customer>(inputDto);
-            customer.ID = IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId);
+            customer.Id = IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId);
 
             var customerFinace = new CusFinance()
             {
@@ -42,12 +42,12 @@ namespace Adnc.Cus.Application.Services
                ,
                 Balance = 0
                 ,
-                ID = customer.ID
+                Id = customer.Id
             };
 
             await _cusManagerService.Register(customer, customerFinace);
 
-            return new SimpleDto<string>(customer.ID.ToString());
+            return new SimpleDto<string>(customer.Id.ToString());
         }
 
         public async Task<AppSrvResult<SimpleDto<string>>> Recharge(RechargeInputDto inputDto)
@@ -58,7 +58,7 @@ namespace Adnc.Cus.Application.Services
 
             var cusTransactionLog = new CusTransactionLog()
             {
-                ID = IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId)
+                Id = IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId)
                 ,
                 Account = customer.Account
                 ,
@@ -71,9 +71,9 @@ namespace Adnc.Cus.Application.Services
                 ExchageStatus = "10"
             };
 
-            await _cusManagerService.Recharge(customer.ID, inputDto.Amount, cusTransactionLog);
+            await _cusManagerService.Recharge(customer.Id, inputDto.Amount, cusTransactionLog);
 
-            return new SimpleDto<string>(cusTransactionLog.ID.ToString());
+            return new SimpleDto<string>(cusTransactionLog.Id.ToString());
         }
     }
 }

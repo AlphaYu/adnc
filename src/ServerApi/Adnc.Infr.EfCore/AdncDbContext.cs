@@ -23,7 +23,7 @@ namespace Adnc.Infr.EfCore
             //关闭DbContext默认事务
             Database.AutoTransactionsEnabled = false;
             //关闭查询跟踪
-            ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+            //ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
 
             //生成数据库表有下面的三种方式：
             //1、代码生生成数据库
@@ -65,22 +65,24 @@ namespace Adnc.Infr.EfCore
         private void SetAuditFields()
         {
 
-            var allEntities = ChangeTracker.Entries<EfEntity>().Where(x => x.State == EntityState.Added);
+            var allEntities = ChangeTracker.Entries<IBasicAuditInfo>().Where(x => x.State == EntityState.Added);
             foreach (var entry in allEntities)
             {
                 var entity = entry.Entity;
                 {
-                    entity.CreateBy = _userContext.ID;
+                    entity.CreateBy = _userContext.Id;
                     entity.CreateTime = DateTime.Now;
                 }
             }
 
-            var auditEntities = ChangeTracker.Entries<IAudit>().Where(x => x.State == EntityState.Modified);
+            var auditEntities = ChangeTracker.Entries<IFullAuditInfo>().Where(x => x.State == EntityState.Modified);
             foreach (var entry in auditEntities)
             {
                 var entity = entry.Entity;
                 {
-                    entity.ModifyBy = _userContext.ID;
+                    entity.CreateBy = _userContext.Id;
+                    entity.CreateTime = DateTime.Now;
+                    entity.ModifyBy = _userContext.Id;
                     entity.ModifyTime = DateTime.Now;
                 }
             }

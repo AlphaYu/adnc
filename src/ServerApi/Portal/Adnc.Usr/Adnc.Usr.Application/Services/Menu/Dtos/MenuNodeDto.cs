@@ -12,7 +12,7 @@ namespace Adnc.Usr.Application.Dtos
     public class MenuNodeDto : BaseOutputDto
     {
         /// <summary>
-        /// 父菜单ID
+        /// 父菜单Id
         /// </summary>
         public long? ParentId { get; set; }
 

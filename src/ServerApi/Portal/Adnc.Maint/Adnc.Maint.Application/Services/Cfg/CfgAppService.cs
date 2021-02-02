@@ -87,16 +87,16 @@ namespace  Adnc.Maint.Application.Services
                 return Problem(HttpStatusCode.BadRequest, "参数名称已经存在");
 
             var cfg = _mapper.Map<SysCfg>(inputDto);
-            cfg.ID = IdGenerater.GetNextId();
+            cfg.Id = IdGenerater.GetNextId();
 
             await _cfgRepository.InsertAsync(cfg);
 
-            return cfg.ID;
+            return cfg.Id;
         }
 
         public async Task<AppSrvResult> Update(CfgSaveInputDto inputDto)
         {
-            var exist = (await this.GetAllFromCache()).Exists(c => c.CfgName.EqualsIgnoreCase(inputDto.CfgName) && c.ID != inputDto.ID);
+            var exist = (await this.GetAllFromCache()).Exists(c => c.CfgName.EqualsIgnoreCase(inputDto.CfgName) && c.Id != inputDto.Id);
             if (exist)
                 return Problem(HttpStatusCode.BadRequest, "参数名称已经存在");
 
@@ -108,7 +108,7 @@ namespace  Adnc.Maint.Application.Services
 
         public async Task<AppSrvResult<CfgDto>> Get(long id)
         {
-            return (await this.GetAllFromCache()).Where(x => x.ID == id).FirstOrDefault();
+            return (await this.GetAllFromCache()).Where(x => x.Id == id).FirstOrDefault();
         }
 
         private async Task<List<CfgDto>> GetAllFromCache()

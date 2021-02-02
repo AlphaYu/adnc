@@ -7,7 +7,7 @@ namespace Adnc.Usr.Application.Dtos
 {
     public class UserValidateDto : BaseDto
     {
-        public long ID { get; set; }
+        public long Id { get; set; }
 
         public string Account { get; set; }
 

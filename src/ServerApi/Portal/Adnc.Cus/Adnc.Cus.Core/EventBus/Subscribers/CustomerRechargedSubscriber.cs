@@ -4,20 +4,22 @@ using DotNetCore.CAP;
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Cus.Core.Entities;
 using Adnc.Core.Shared;
+using Adnc.Core.Shared.EventBus;
+using Adnc.Cus.Core.EventBus.Etos;
 
-namespace Adnc.Cus.Core.EventBus
+namespace Adnc.Cus.Core.EventBus.Subscribers
 {
-    public interface IRechargeSubscriber
+    public interface ICustomerRechargedSubscriber
     {
-        Task Process(RechargeEbModel rechargeEbModel);
+        Task Process(CustomerRechargedEto rechargeEbModel);
     }
 
-    public class RechargeSubscriber : IRechargeSubscriber, ICapSubscribe
+    public class CustomerRechargedSubscriber : ICustomerRechargedSubscriber, ICapSubscribe
     {
         private readonly IUnitOfWork _uow;
         private readonly IEfRepository<CusFinance> _cusFinanceReop;
         private readonly IEfRepository<CusTransactionLog> _cusTranlog;
-        public RechargeSubscriber(IUnitOfWork uow
+        public CustomerRechargedSubscriber(IUnitOfWork uow
             , IEfRepository<CusFinance> cusFinanceReop
             , IEfRepository<CusTransactionLog> cusTranlog)
         {
@@ -26,25 +28,27 @@ namespace Adnc.Cus.Core.EventBus
             _cusTranlog = cusTranlog;
         }
 
-        [CapSubscribe(EbConsts.CustomerRechager)]
-        public async Task Process(RechargeEbModel rechargeEbModel)
-        {
-            var transLog = await _cusTranlog.FindAsync(rechargeEbModel.TransactionLogId);
-            if (transLog == null || transLog.ExchageStatus == "20")
-                return;
 
+        [CapSubscribe(EbConsts.CustomerRechagered)]
+        public async Task Process(CustomerRechargedEto rechargeEbModel)
+        {
             try
             {
-                var finance = await _cusFinanceReop.FindAsync(rechargeEbModel.ID);
+                _uow.BeginTransaction();
+
+                var transLog = await _cusTranlog.FindAsync(rechargeEbModel.TransactionLogId);
+                if (transLog == null || transLog.ExchageStatus == "20")
+                    return;
+
+                var finance = await _cusFinanceReop.FindAsync(rechargeEbModel.Id);
                 var newBalance = finance.Balance + rechargeEbModel.Amount;
 
                 transLog.ExchageStatus = "20";
                 transLog.ChangingAmount = finance.Balance;
                 transLog.ChangedAmount = newBalance;
 
-                _uow.BeginTransaction();
 
-                await _cusFinanceReop.UpdateAsync(new CusFinance() { ID = finance.ID, Balance = newBalance }, t => t.Balance);
+                await _cusFinanceReop.UpdateAsync(new CusFinance() { Id = finance.Id, Balance = newBalance }, t => t.Balance);
                 await _cusTranlog.UpdateAsync(transLog, t => t.ExchageStatus, t => t.ChangingAmount, t => t.ChangedAmount);
 
                 _uow.Commit();
@@ -52,7 +56,7 @@ namespace Adnc.Cus.Core.EventBus
             catch (Exception ex)
             {
                 _uow.Rollback();
-                throw new Exception(ex.Message,ex);
+                throw new Exception(ex.Message, ex);
             }
             finally
             {

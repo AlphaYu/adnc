@@ -22,12 +22,12 @@ namespace Adnc.Usr.Application.Dtos
 		public int? Num { get; set; }
 
 		/// <summary>
-		/// 父级ID
+		/// 父级Id
 		/// </summary>
 		public long? Pid { get; set; }
 
 		/// <summary>
-		/// 父级ID集合
+		/// 父级Id集合
 		/// </summary>
 		public string Pids { get; set; }
 

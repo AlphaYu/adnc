@@ -3,17 +3,20 @@ using System.Threading.Tasks;
 using DotNetCore.CAP;
 using Adnc.Cus.Core.Entities;
 using Adnc.Core.Shared.IRepositories;
+using Adnc.Core.Shared;
+using Adnc.Core.Shared.Interceptors;
+using Adnc.Cus.Core.EventBus.Etos;
 
-namespace Adnc.Cus.Core.CoreServices
+namespace Adnc.Cus.Core.Services
 {
-    public class CusManagerService : ICusManagerService
+    public class CustomerManagerService : ICoreService
     {
         private readonly IEfRepository<Customer> _cusRepo;
         private readonly IEfRepository<CusFinance> _cusFinaceRepo;
         private readonly IEfRepository<CusTransactionLog> _cusTransactionLogRepo;
         private readonly ICapPublisher _capBus;
 
-        public CusManagerService(IEfRepository<Customer> cusRepo
+        public CustomerManagerService(IEfRepository<Customer> cusRepo
             , IEfRepository<CusFinance> cusFinaceRepo
             , IEfRepository<CusTransactionLog> cusTransactionLogRepo
             , ICapPublisher capBus)
@@ -24,7 +27,7 @@ namespace Adnc.Cus.Core.CoreServices
             _capBus = capBus;
         }
 
-        public CusManagerService(IEfRepository<Customer> cusRepo
+        public CustomerManagerService(IEfRepository<Customer> cusRepo
             , IEfRepository<CusFinance> cusFinaceRepo
             , IEfRepository<CusTransactionLog> cusTransactionLogRepo)
         {
@@ -33,27 +36,31 @@ namespace Adnc.Cus.Core.CoreServices
             _cusTransactionLogRepo = cusTransactionLogRepo;
         }
 
-        public async Task Register(Customer customer, CusFinance cusFinance, CancellationToken cancellationToken = default)
+        [UnitOfWork]
+        public virtual async Task Register(Customer customer, CusFinance cusFinance, CancellationToken cancellationToken = default)
         {
             await _cusRepo.InsertAsync(customer);
             await _cusFinaceRepo.InsertAsync(cusFinance);
         }
 
-        public async Task Recharge(long customerId, decimal amount, CusTransactionLog cusTransactionLog, CancellationToken cancellationToken = default)
+        [UnitOfWork(SharedToCap = true)]
+        public virtual async Task Recharge(long customerId, decimal amount, CusTransactionLog cusTransactionLog, CancellationToken cancellationToken = default)
         {
 
             await _cusTransactionLogRepo.InsertAsync(cusTransactionLog);
 
-            var regchargeInfo = new
+            var regchargeInfo = new CustomerRechargedEto
             {
-                ID = customerId
+                Id = customerId
                 ,
                 Amount = amount
                 ,
-                TransactionLogId = cusTransactionLog.ID
+                TransactionLogId = cusTransactionLog.Id
+                ,
+                EventSource = nameof(this.Recharge)
             };
 
-            await _capBus.PublishAsync(EbConsts.CustomerRechager, regchargeInfo);
+            await _capBus.PublishAsync(EbConsts.CustomerRechagered, regchargeInfo);
         }
     }
 }

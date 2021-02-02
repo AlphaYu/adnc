@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Adnc.Usr.Core.Entities
 {
-    public class SysUserFinance: EfAuditEntity
+    public class SysUserFinance: EfFullAuditEntity
     {
 
         [Column("Amount")]

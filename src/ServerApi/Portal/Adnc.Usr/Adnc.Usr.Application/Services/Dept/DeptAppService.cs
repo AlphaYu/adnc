@@ -7,7 +7,7 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using EasyCaching.Core;
 using Adnc.Usr.Application.Dtos;
-using Adnc.Usr.Core.CoreServices;
+using Adnc.Usr.Core.Services;
 using Adnc.Usr.Core.Entities;
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Infr.Common.Helper;
@@ -24,13 +24,13 @@ namespace Adnc.Usr.Application.Services
         private readonly IEasyCachingProvider _locaCahce;
         private readonly IEasyCachingProvider _redisCache;
         private readonly IEfRepository<SysDept> _deptRepository;
-        private readonly IUsrManagerService _usrManagerService;
+        private readonly UsrManagerService _usrManagerService;
 
         public DeptAppService(IMapper mapper
             , IHybridProviderFactory hybridProviderFactory
             , IEasyCachingProviderFactory simpleProviderFactory
             , IEfRepository<SysDept> deptRepository
-            , IUsrManagerService usrManagerService)
+            , UsrManagerService usrManagerService)
         {
             _mapper = mapper;
             _cache = hybridProviderFactory.GetHybridCachingProvider(EasyCachingConsts.HybridCaching);
@@ -47,7 +47,7 @@ namespace Adnc.Usr.Application.Services
             //var depts3 = (await _cache.GetAsync<List<DeptNodeDto>>(EasyCachingConsts.DetpListCacheKey)).Value;
             var dept = await _deptRepository.FindAsync(Id);
             var deletingPids = $"{dept.Pids}[{Id}],";
-            await _deptRepository.DeleteRangeAsync(d => d.Pids.StartsWith(deletingPids) || d.ID == dept.ID);
+            await _deptRepository.DeleteRangeAsync(d => d.Pids.StartsWith(deletingPids) || d.Id == dept.Id);
 
             return DefaultResult();
         }
@@ -71,7 +71,7 @@ namespace Adnc.Usr.Application.Services
 
             void GetChildren(DeptNodeDto currentNode, List<DeptNodeDto> allDeptNodes)
             {
-                var childrenNodes = allDeptNodes.Where(d => d.Pid == currentNode.ID).OrderBy(d => d.Num);
+                var childrenNodes = allDeptNodes.Where(d => d.Pid == currentNode.Id).OrderBy(d => d.Num);
                 if (childrenNodes.Count() == 0)
                     return;
                 else
@@ -93,20 +93,20 @@ namespace Adnc.Usr.Application.Services
                 return Problem(HttpStatusCode.BadRequest, "该部门全称已经存在");
 
             var dept = _mapper.Map<SysDept>(saveDto);
-            dept.ID = IdGenerater.GetNextId();
+            dept.Id = IdGenerater.GetNextId();
             await this.SetDeptPids(dept);
             await _deptRepository.InsertAsync(dept);
 
-            return dept.ID;
+            return dept.Id;
         }
 
         public async Task<AppSrvResult> Update(DeptSaveInputDto saveDto)
         {
-            var oldDeptDto = (await GetAllFromCache()).FirstOrDefault(x => x.ID == saveDto.ID);
+            var oldDeptDto = (await GetAllFromCache()).FirstOrDefault(x => x.Id == saveDto.Id);
             if (oldDeptDto.Pid == 0 && saveDto.Pid > 0)
                 return Problem(HttpStatusCode.BadRequest, "一级单位不能修改等级");
 
-            var isExists = (await GetAllFromCache()).Exists(x => x.FullName == saveDto.FullName && x.ID != saveDto.ID);
+            var isExists = (await GetAllFromCache()).Exists(x => x.FullName == saveDto.FullName && x.Id != saveDto.Id);
             if (isExists)
                 return Problem(HttpStatusCode.BadRequest, "该部门全称已经存在");
 
@@ -133,8 +133,8 @@ namespace Adnc.Usr.Application.Services
             if (sysDept.Pid.HasValue && sysDept.Pid.Value > 0)
             {
                 //var depts = await this.GetAllFromCache();
-                //var dept = depts.Select(d => new { d.ID, d.Pid, d.Pids }).Where(d => d.ID == sysDept.Pid.Value).FirstOrDefault();
-                var dept = (await GetAllFromCache()).FirstOrDefault(x => x.ID == sysDept.Pid.Value);
+                //var dept = depts.Select(d => new { d.Id, d.Pid, d.Pids }).Where(d => d.Id == sysDept.Pid.Value).FirstOrDefault();
+                var dept = (await GetAllFromCache()).FirstOrDefault(x => x.Id == sysDept.Pid.Value);
                 string pids = dept?.Pids ?? "";
                 sysDept.Pids = $"{pids}[{sysDept.Pid}],";
             }
@@ -172,7 +172,7 @@ namespace Adnc.Usr.Application.Services
                 for (var index = 0; index < deptNodes.Count; index++)
                 {
                     dynamic simpleNode = new ExpandoObject();
-                    simpleNode.Id = deptNodes[index].ID;
+                    simpleNode.Id = deptNodes[index].Id;
                     simpleNode.Label = deptNodes[index].SimpleName;
                     if (deptNodes[index].Children.Any())
                         simpleNode.children = GetSimpleNodes(deptNodes[index].Children);

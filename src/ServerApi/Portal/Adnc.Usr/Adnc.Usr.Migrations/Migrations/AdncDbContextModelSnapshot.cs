@@ -19,17 +19,14 @@ namespace Adnc.Usr.Migrations.Migrations
 
             modelBuilder.Entity("Adnc.Usr.Core.Entities.SysDept", b =>
                 {
-                    b.Property<long>("ID")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("ID")
                         .HasColumnType("bigint");
 
                     b.Property<long?>("CreateBy")
-                        .HasColumnName("CreateBy")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime?>("CreateTime")
-                        .HasColumnName("CreateTime")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("FullName")
@@ -38,11 +35,9 @@ namespace Adnc.Usr.Migrations.Migrations
                         .HasMaxLength(32);
 
                     b.Property<long?>("ModifyBy")
-                        .HasColumnName("ModifyBy")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime?>("ModifyTime")
-                        .HasColumnName("ModifyTime")
                         .HasColumnType("datetime(6)");
 
                     b.Property<int?>("Num")
@@ -72,16 +67,15 @@ namespace Adnc.Usr.Migrations.Migrations
                         .HasColumnName("Version")
                         .HasColumnType("int");
 
-                    b.HasKey("ID");
+                    b.HasKey("Id");
 
                     b.ToTable("SysDept");
                 });
 
             modelBuilder.Entity("Adnc.Usr.Core.Entities.SysMenu", b =>
                 {
-                    b.Property<long>("ID")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("ID")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Code")
@@ -95,11 +89,9 @@ namespace Adnc.Usr.Migrations.Migrations
                         .HasMaxLength(64);
 
                     b.Property<long?>("CreateBy")
-                        .HasColumnName("CreateBy")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime?>("CreateTime")
-                        .HasColumnName("CreateTime")
                         .HasColumnType("datetime(6)");
 
                     b.Property<bool?>("Hidden")
@@ -124,11 +116,9 @@ namespace Adnc.Usr.Migrations.Migrations
                         .HasColumnType("int");
 
                     b.Property<long?>("ModifyBy")
-                        .HasColumnName("ModifyBy")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime?>("ModifyTime")
-                        .HasColumnName("ModifyTime")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Name")
@@ -164,25 +154,16 @@ namespace Adnc.Usr.Migrations.Migrations
                         .HasColumnType("varchar(64) CHARACTER SET utf8mb4")
                         .HasMaxLength(64);
 
-                    b.HasKey("ID");
+                    b.HasKey("Id");
 
                     b.ToTable("SysMenu");
                 });
 
             modelBuilder.Entity("Adnc.Usr.Core.Entities.SysRelation", b =>
                 {
-                    b.Property<long>("ID")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("ID")
                         .HasColumnType("bigint");
-
-                    b.Property<long?>("CreateBy")
-                        .HasColumnName("CreateBy")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime?>("CreateTime")
-                        .HasColumnName("CreateTime")
-                        .HasColumnType("datetime(6)");
 
                     b.Property<long>("MenuId")
                         .HasColumnName("MenuId")
@@ -192,7 +173,7 @@ namespace Adnc.Usr.Migrations.Migrations
                         .HasColumnName("RoleId")
                         .HasColumnType("bigint");
 
-                    b.HasKey("ID");
+                    b.HasKey("Id");
 
                     b.HasIndex("MenuId");
 
@@ -203,17 +184,14 @@ namespace Adnc.Usr.Migrations.Migrations
 
             modelBuilder.Entity("Adnc.Usr.Core.Entities.SysRole", b =>
                 {
-                    b.Property<long>("ID")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("ID")
                         .HasColumnType("bigint");
 
                     b.Property<long?>("CreateBy")
-                        .HasColumnName("CreateBy")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime?>("CreateTime")
-                        .HasColumnName("CreateTime")
                         .HasColumnType("datetime(6)");
 
                     b.Property<long?>("DeptId")
@@ -221,11 +199,9 @@ namespace Adnc.Usr.Migrations.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<long?>("ModifyBy")
-                        .HasColumnName("ModifyBy")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime?>("ModifyTime")
-                        .HasColumnName("ModifyTime")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Name")
@@ -250,16 +226,15 @@ namespace Adnc.Usr.Migrations.Migrations
                         .HasColumnName("Version")
                         .HasColumnType("int");
 
-                    b.HasKey("ID");
+                    b.HasKey("Id");
 
                     b.ToTable("SysRole");
                 });
 
             modelBuilder.Entity("Adnc.Usr.Core.Entities.SysUser", b =>
                 {
-                    b.Property<long>("ID")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("ID")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Account")
@@ -277,11 +252,9 @@ namespace Adnc.Usr.Migrations.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<long?>("CreateBy")
-                        .HasColumnName("CreateBy")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime?>("CreateTime")
-                        .HasColumnName("CreateTime")
                         .HasColumnType("datetime(6)");
 
                     b.Property<long?>("DeptId")
@@ -299,11 +272,9 @@ namespace Adnc.Usr.Migrations.Migrations
                         .HasDefaultValue(false);
 
                     b.Property<long?>("ModifyBy")
-                        .HasColumnName("ModifyBy")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime?>("ModifyTime")
-                        .HasColumnName("ModifyTime")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Name")
@@ -343,7 +314,7 @@ namespace Adnc.Usr.Migrations.Migrations
                         .HasColumnName("Version")
                         .HasColumnType("int");
 
-                    b.HasKey("ID");
+                    b.HasKey("Id");
 
                     b.HasIndex("DeptId");
 
@@ -352,8 +323,7 @@ namespace Adnc.Usr.Migrations.Migrations
 
             modelBuilder.Entity("Adnc.Usr.Core.Entities.SysUserFinance", b =>
                 {
-                    b.Property<long>("ID")
-                        .HasColumnName("ID")
+                    b.Property<long>("Id")
                         .HasColumnType("bigint");
 
                     b.Property<decimal>("Amount")
@@ -361,19 +331,15 @@ namespace Adnc.Usr.Migrations.Migrations
                         .HasColumnType("decimal(18,4)");
 
                     b.Property<long?>("CreateBy")
-                        .HasColumnName("CreateBy")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime?>("CreateTime")
-                        .HasColumnName("CreateTime")
                         .HasColumnType("datetime(6)");
 
                     b.Property<long?>("ModifyBy")
-                        .HasColumnName("ModifyBy")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime?>("ModifyTime")
-                        .HasColumnName("ModifyTime")
                         .HasColumnType("datetime(6)");
 
                     b.Property<DateTime?>("RowVersion")
@@ -383,7 +349,7 @@ namespace Adnc.Usr.Migrations.Migrations
                         .HasColumnType("timestamp(3)")
                         .HasDefaultValueSql("'2000-07-01 22:33:02.559'");
 
-                    b.HasKey("ID");
+                    b.HasKey("Id");
 
                     b.ToTable("SysUserFinance");
                 });
@@ -415,7 +381,7 @@ namespace Adnc.Usr.Migrations.Migrations
                 {
                     b.HasOne("Adnc.Usr.Core.Entities.SysUser", "User")
                         .WithOne("UserFinance")
-                        .HasForeignKey("Adnc.Usr.Core.Entities.SysUserFinance", "ID")
+                        .HasForeignKey("Adnc.Usr.Core.Entities.SysUserFinance", "Id")
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

@@ -4,6 +4,6 @@ namespace Adnc.Cus.Core
 {
     public sealed class EbConsts: BaseEbConsts
     {
-        public const string CustomerRechager = "adnc-customer-rechager";
+        public const string CustomerRechagered = "CustomerRechagered";
     }
 }

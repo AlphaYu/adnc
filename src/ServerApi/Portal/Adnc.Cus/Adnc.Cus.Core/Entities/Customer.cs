@@ -7,7 +7,7 @@ namespace Adnc.Cus.Core.Entities
 {
     [Table("Customer")]
     [Description("客户表")]
-    public class Customer : EfAuditEntity
+    public class Customer : EfFullAuditEntity
     {
         [Required]
         [StringLength(16)]

@@ -3,7 +3,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Adnc.WebApi.Shared;
-using Adnc.Cus.Core.EventBus;
+using Adnc.Cus.Core.EventBus.Subscribers;
 using Adnc.Cus.Core;
 using Adnc.Application.Shared.RpcServices;
 using System;
@@ -36,10 +36,9 @@ namespace Adnc.Cus.WebApi.Helper
 
         public void AddAllEventBusSubscribers(string tableNamePrefix = "Cap", string groupName = EbConsts.CapDefaultGroup)
         {
-            base.AddEventBusSubscribers(tableNamePrefix, groupName, s =>
+            base.AddEventBusSubscribers(tableNamePrefix, groupName,(s)=>
             {
-                s.AddScoped<IRechargeSubscriber, RechargeSubscriber>();
-                //add others......
+                s.AddScoped<ICustomerRechargedSubscriber, CustomerRechargedSubscriber>();
             });
         }
     }

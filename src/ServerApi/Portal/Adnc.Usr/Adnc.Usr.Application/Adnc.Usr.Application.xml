@@ -10,14 +10,14 @@
             </summary>
             <typeparam name="T"></typeparam>
         </member>
-        <member name="P:Adnc.Usr.Application.Services.Node`1.ID">
+        <member name="P:Adnc.Usr.Application.Services.Node`1.Id">
             <summary>
-            节点ID
+            节点Id
             </summary>
         </member>
         <member name="P:Adnc.Usr.Application.Services.Node`1.PID">
             <summary>
-            父级ID
+            父级Id
             </summary>
         </member>
         <member name="P:Adnc.Usr.Application.Services.Node`1.Name">
@@ -57,12 +57,12 @@
         </member>
         <member name="P:Adnc.Usr.Application.Dtos.DeptDto.Pid">
             <summary>
-            父级ID
+            父级Id
             </summary>
         </member>
         <member name="P:Adnc.Usr.Application.Dtos.DeptDto.Pids">
             <summary>
-            父级ID集合
+            父级Id集合
             </summary>
         </member>
         <member name="P:Adnc.Usr.Application.Dtos.DeptDto.SimpleName">
@@ -107,7 +107,7 @@
         </member>
         <member name="P:Adnc.Usr.Application.Dtos.DeptSaveInputDto.Pid">
             <summary>
-            父级ID
+            父级Id
             </summary>
         </member>
         <member name="P:Adnc.Usr.Application.Dtos.DeptSaveInputDto.SimpleName">
@@ -217,7 +217,7 @@
         </member>
         <member name="P:Adnc.Usr.Application.Dtos.MenuNodeDto.ParentId">
             <summary>
-            父菜单ID
+            父菜单Id
             </summary>
         </member>
         <member name="P:Adnc.Usr.Application.Dtos.MenuNodeDto.Name">
@@ -375,14 +375,14 @@
             路由菜单
             </summary>
         </member>
-        <member name="P:Adnc.Usr.Application.Dtos.RouterMenuDto.ID">
+        <member name="P:Adnc.Usr.Application.Dtos.RouterMenuDto.Id">
             <summary>
-            菜单ID
+            菜单Id
             </summary>
         </member>
         <member name="P:Adnc.Usr.Application.Dtos.RouterMenuDto.ParentId">
             <summary>
-            父菜单ID
+            父菜单Id
             </summary>
         </member>
         <member name="P:Adnc.Usr.Application.Dtos.RouterMenuDto.Code">
@@ -437,14 +437,14 @@
             <typeparam name="TKey"></typeparam>
             <typeparam name="TData"></typeparam>
         </member>
-        <member name="P:Adnc.Usr.Application.Dtos.ZTreeNodeDto`2.ID">
+        <member name="P:Adnc.Usr.Application.Dtos.ZTreeNodeDto`2.Id">
             <summary>
-            节点ID
+            节点Id
             </summary>
         </member>
         <member name="P:Adnc.Usr.Application.Dtos.ZTreeNodeDto`2.PID">
             <summary>
-            父节点ID
+            父节点Id
             </summary>
         </member>
         <member name="P:Adnc.Usr.Application.Dtos.ZTreeNodeDto`2.Name">
@@ -474,12 +474,12 @@
         </member>
         <member name="P:Adnc.Usr.Application.Dtos.RelationDto.MenuId">
             <summary>
-            菜单ID
+            菜单Id
             </summary>
         </member>
         <member name="P:Adnc.Usr.Application.Dtos.RelationDto.RoleId">
             <summary>
-            角色ID
+            角色Id
             </summary>
         </member>
         <member name="T:Adnc.Usr.Application.Dtos.RoleDto">
@@ -489,7 +489,7 @@
         </member>
         <member name="P:Adnc.Usr.Application.Dtos.RoleDto.DeptId">
             <summary>
-            部门ID
+            部门Id
             </summary>
         </member>
         <member name="P:Adnc.Usr.Application.Dtos.RoleDto.Name">
@@ -504,7 +504,7 @@
         </member>
         <member name="P:Adnc.Usr.Application.Dtos.RoleDto.Pid">
             <summary>
-            父级角色ID
+            父级角色Id
             </summary>
         </member>
         <member name="P:Adnc.Usr.Application.Dtos.RoleDto.Tips">
@@ -534,7 +534,7 @@
         </member>
         <member name="P:Adnc.Usr.Application.Dtos.RoleMenuCodesDto.RoleId">
             <summary>
-            角色ID
+            角色Id
             </summary>
         </member>
         <member name="P:Adnc.Usr.Application.Dtos.RoleSaveInputDto.Name">
@@ -619,7 +619,7 @@
         </member>
         <member name="P:Adnc.Usr.Application.Dtos.UserDto.DeptId">
             <summary>
-            部门ID
+            部门Id
             </summary>
         </member>
         <member name="P:Adnc.Usr.Application.Dtos.UserDto.DeptName">
@@ -649,7 +649,7 @@
         </member>
         <member name="P:Adnc.Usr.Application.Dtos.UserDto.RoleId">
             <summary>
-            角色id列表，以逗号分隔
+            角色Id列表，以逗号分隔
             </summary>
         </member>
         <member name="P:Adnc.Usr.Application.Dtos.UserDto.RoleName">
@@ -729,7 +729,7 @@
         </member>
         <member name="P:Adnc.Usr.Application.Dtos.UserProfileDto.DeptId">
             <summary>
-            部门ID
+            部门Id
             </summary>
         </member>
         <member name="P:Adnc.Usr.Application.Dtos.UserProfileDto.DeptFullName">
@@ -754,7 +754,7 @@
         </member>
         <member name="P:Adnc.Usr.Application.Dtos.UserProfileDto.RoleId">
             <summary>
-            角色ID
+            角色Id
             </summary>
         </member>
         <member name="P:Adnc.Usr.Application.Dtos.UserProfileDto.Roles">
@@ -784,7 +784,7 @@
         </member>
         <member name="P:Adnc.Usr.Application.Dtos.UserSaveInputDto.DeptId">
             <summary>
-            部门ID
+            部门Id
             </summary>
         </member>
         <member name="P:Adnc.Usr.Application.Dtos.UserSaveInputDto.Email">

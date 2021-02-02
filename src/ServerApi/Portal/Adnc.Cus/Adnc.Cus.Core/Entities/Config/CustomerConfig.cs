@@ -9,7 +9,7 @@ namespace Adnc.Cus.Core.Entities.Config
         {
             builder.HasOne(d => d.CusFinance)
                 .WithOne(p => p.Customer)
-                .HasForeignKey<CusFinance>(d => d.ID)
+                .HasForeignKey<CusFinance>(d => d.Id)
                 .OnDelete(DeleteBehavior.ClientSetNull);
         }
     }

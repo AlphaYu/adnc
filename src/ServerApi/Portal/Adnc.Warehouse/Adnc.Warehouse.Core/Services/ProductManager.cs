@@ -90,7 +90,7 @@ namespace Adnc.Warehouse.Core.Services
         /// <returns></returns>
         public async Task PutOnSale(Product product,WarehouseInfo warehouseInfo,string reason)
         {
-            if (warehouseInfo?.Qty > 0 && product.AssignedWarehouseId == warehouseInfo.ID)
+            if (warehouseInfo?.Qty > 0 && product.AssignedWarehouseId == warehouseInfo.Id)
                 product.Status = new ProductStatus(ProductStatusEnum.SaleOn, reason);
             else
                 throw new ArgumentException("warehouseInfo");

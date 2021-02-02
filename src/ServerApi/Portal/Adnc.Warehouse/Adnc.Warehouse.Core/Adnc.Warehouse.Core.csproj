@@ -16,7 +16,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="EventBus\" />
 		<Folder Include="IRepositories\" />
 	</ItemGroup>
 </Project>

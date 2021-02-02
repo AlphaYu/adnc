@@ -13,7 +13,7 @@ namespace Adnc.Usr.Core.Entities
 	/// </summary>
 	[Table("SysDept")]
 	[Description("部门")]
-	public class SysDept : EfAuditEntity
+	public class SysDept : EfFullAuditEntity
 	{
 		//private ICollection<SysUser> _users;
 		//private Action<object, string> LazyLoader { get; set; }

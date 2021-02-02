@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Adnc.Warehouse.Core.Entities
+namespace Adnc.Core.Shared.Domain.Entities
 {
-    public class ValueObject
+    public class ValueObject:IValueObject
     {
     }
 }

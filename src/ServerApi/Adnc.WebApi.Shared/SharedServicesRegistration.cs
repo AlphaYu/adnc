@@ -309,7 +309,7 @@ namespace Adnc.WebApi.Shared
                     {
                         var userContext = context.HttpContext.RequestServices.GetService<UserContext>();
                         var claims = context.Principal.Claims;
-                        userContext.ID = long.Parse(claims.First(x => x.Type == JwtRegisteredClaimNames.Sub).Value);
+                        userContext.Id = long.Parse(claims.First(x => x.Type == JwtRegisteredClaimNames.Sub).Value);
                         userContext.Account = claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
                         userContext.Name = claims.First(x => x.Type == ClaimTypes.Name).Value;
                         userContext.Email = claims.First(x => x.Type == JwtRegisteredClaimNames.Email).Value;
@@ -544,8 +544,10 @@ namespace Adnc.WebApi.Shared
         /// <param name="tableNamePrefix">cap表面前缀</param>
         /// <param name="groupName">群组名子</param>
         /// <param name="func">回调函数</param>
-        protected virtual void AddEventBusSubscribers(string tableNamePrefix, string groupName, Action<IServiceCollection> func)
+        protected virtual void AddEventBusSubscribers(string tableNamePrefix, string groupName, Action<IServiceCollection> func = null)
         {
+            func?.Invoke(_services);
+
             _services.AddCap(x =>
             {
                 //如果你使用的 EF 进行数据操作，你需要添加如下配置：
@@ -598,7 +600,6 @@ namespace Adnc.WebApi.Shared
                     x.UseDiscovery();
                 }
             });
-            func?.Invoke(_services);
         }
 
         /// <summary>

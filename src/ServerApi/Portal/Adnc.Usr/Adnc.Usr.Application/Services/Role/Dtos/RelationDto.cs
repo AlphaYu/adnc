@@ -12,12 +12,12 @@ namespace Adnc.Usr.Application.Dtos
     public class RelationDto : BaseDto
     {
 		/// <summary>
-		/// 菜单ID
+		/// 菜单Id
 		/// </summary>
 		public long? MenuId { get; set; }
 
 		/// <summary>
-		/// 角色ID
+		/// 角色Id
 		/// </summary>
 		public long? RoleId { get; set; }
 	}

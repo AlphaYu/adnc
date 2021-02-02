@@ -140,9 +140,9 @@ namespace Adnc.Warehouse.Application.Services
             Expression<Func<Product, bool>> whereCondition = x => true;
             if (search.Id > 0)
             {
-                whereCondition = whereCondition.And(x => x.ID == search.Id);
+                whereCondition = whereCondition.And(x => x.Id == search.Id);
             }
-            var pagedEntity = _productRepo.PagedAsync(search.PageIndex, search.PageSize, whereCondition, x => x.CreateTime);
+            var pagedEntity = _productRepo.PagedAsync(search.PageIndex, search.PageSize, whereCondition, x => x.Id);
 
             var pagedDto = _mapper.Map<PageModelDto<ProductDto>>(pagedEntity);
 

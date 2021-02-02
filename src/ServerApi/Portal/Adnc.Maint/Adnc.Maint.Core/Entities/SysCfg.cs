@@ -11,7 +11,7 @@ namespace Adnc.Maint.Core.Entities
     /// </summary>
     [Table("SysCfg")]
     [Description("系统参数")]
-    public class SysCfg : EfAuditEntity, ISoftDelete
+    public class SysCfg : EfFullAuditEntity, ISoftDelete
     {
         /// <summary>
         /// 参数名

@@ -176,7 +176,7 @@ namespace Adnc.Infr.EfCore.Repositories
             var dbSet = DbContext.Set<TEntity>().AsNoTracking();
             if (writeDb)
                 dbSet = dbSet.TagWith(EfCoreConsts.MAXSCALE_ROUTE_TO_MASTER);
-            return await dbSet.Where(t => t.ID == keyValue).FirstOrDefaultAsync(cancellationToken);
+            return await dbSet.Where(t => t.Id == keyValue).FirstOrDefaultAsync(cancellationToken);
         }
 
         public virtual async Task<TEntity> FetchAsync<TResult>(Expression<Func<TEntity, TResult>> selector, Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, object>> orderByExpression = null, bool ascending = false, bool writeDb = false,CancellationToken cancellationToken = default)

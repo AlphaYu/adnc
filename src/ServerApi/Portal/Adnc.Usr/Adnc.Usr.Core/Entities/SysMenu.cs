@@ -12,7 +12,7 @@ namespace Adnc.Usr.Core.Entities
 	/// </summary>
 	[Table("SysMenu")]
 	[Description("菜单")]
-	public class SysMenu : EfAuditEntity
+	public class SysMenu : EfFullAuditEntity
 	{
 		/// <summary>
 		/// 编号

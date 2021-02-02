@@ -22,40 +22,37 @@ namespace Adnc.Usr.Application.Services
         private readonly IEfRepository<SysUser> _userRepository;
         private readonly IEfRepository<SysRole> _roleRepository;
         private readonly IEfRepository<SysMenu> _menuRepository;
-        private readonly IEfRepository<NullEntity> _rsp;
         private readonly RabbitMqProducer _mqProducer;
 
         public AccountAppService(IMapper mapper,
             IEfRepository<SysUser> userRepository,
             IEfRepository<SysRole> roleRepository,
             IEfRepository<SysMenu> menuRepository,
-            IEfRepository<NullEntity> rsp,
             RabbitMqProducer mqProducer)
         {
             _mapper = mapper;
             _userRepository = userRepository;
             _roleRepository = roleRepository;
             _menuRepository = menuRepository;
-            _rsp = rsp;
             _mqProducer = mqProducer;
         }
 
-        public async Task<AppSrvResult<UserInfoDto>> GetUserInfo(long id)
+        public async Task<AppSrvResult<UserInfoDto>> GetUserInfo(long Id)
         {
-            var user = await _userRepository.FetchAsync(u => new { u.Account, u.Avatar, u.Birthday, u.DeptId, Dept = new { u.Dept.FullName }, u.Email, u.ID, u.Name, u.Phone, u.RoleId, u.Sex, u.Status }
-            , x => x.ID == id);
+            var user = await _userRepository.FetchAsync(u => new { u.Account, u.Avatar, u.Birthday, u.DeptId, Dept = new { u.Dept.FullName }, u.Email, u.Id, u.Name, u.Phone, u.RoleId, u.Sex, u.Status }
+            , x => x.Id == Id);
 
             if (user == null)
                 return Problem(HttpStatusCode.NotFound, "用户不存在");
 
-            var userInfoDto = new UserInfoDto { Id = user.ID };
+            var userInfoDto = new UserInfoDto { Id = user.Id };
 
             userInfoDto.Profile = _mapper.Map<UserProfileDto>(user);
 
             if (user.RoleId.IsNotNullOrEmpty())
             {
                 var roleIds = user.RoleId.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(x => long.Parse(x));
-                var roles = await _roleRepository.SelectAsync(r => new { r.ID, r.Tips, r.Name }, x => roleIds.Contains(x.ID));
+                var roles = await _roleRepository.SelectAsync(r => new { r.Id, r.Tips, r.Name }, x => roleIds.Contains(x.Id));
                 foreach (var role in roles)
                 {
                     userInfoDto.Roles.Add(role.Tips);
@@ -74,7 +71,7 @@ namespace Adnc.Usr.Application.Services
 
         public async Task<AppSrvResult> UpdatePassword(UserChangePwdInputDto passwordDto,long userId)
         {
-            var user = await _userRepository.FetchAsync(x => new { x.Password, x.Salt, x.Name, x.Email, x.RoleId, x.Account, x.ID, x.Status }, x => x.ID == userId);
+            var user = await _userRepository.FetchAsync(x => new { x.Password, x.Salt, x.Name, x.Email, x.RoleId, x.Account, x.Id, x.Status }, x => x.Id == userId);
             if (user == null)
                 return Problem(HttpStatusCode.NotFound, "用户不存在,参数信息不完整");
 
@@ -84,14 +81,14 @@ namespace Adnc.Usr.Application.Services
 
             var newPwdString = HashHelper.GetHashedString(HashType.MD5, passwordDto.Password, user.Salt);
 
-            await _userRepository.UpdateAsync(new SysUser { ID = userId, Password = newPwdString }, p => p.Password);
+            await _userRepository.UpdateAsync(new SysUser { Id = userId, Password = newPwdString }, p => p.Password);
 
             return DefaultResult();
         }
 
         public async Task<AppSrvResult<UserValidateDto>> Login(UserValidateInputDto inputDto)
         {
-            var user = await _userRepository.FetchAsync(x => new { x.Password, x.Salt, x.Name, x.Email, x.RoleId,x.Account,x.ID,x.Status }, x => x.Account == inputDto.Account);
+            var user = await _userRepository.FetchAsync(x => new { x.Password, x.Salt, x.Name, x.Email, x.RoleId,x.Account,x.Id,x.Status }, x => x.Account == inputDto.Account);
 
             if (user == null)
                 return Problem(HttpStatusCode.NotFound, "用户名或密码错误");
@@ -103,7 +100,7 @@ namespace Adnc.Usr.Application.Services
             log.Device = httpContext.Request.Headers["device"].FirstOrDefault() ?? "web";
             log.RemoteIpAddress = httpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
             log.Succeed = false;
-            log.UserId = user?.ID;
+            log.UserId = user?.Id;
             log.UserName = user?.Name;
 
             if (user.Status != 1)
@@ -115,7 +112,7 @@ namespace Adnc.Usr.Application.Services
                 return problem;
             }
 
-            //var logins = await _loginLogRepository.SelectAsync(5, x => new { x.ID, x.Succeed,x.CreateTime }, x => x.UserId == user.ID, x => x.ID, false);
+            //var logins = await _loginLogRepository.SelectAsync(5, x => new { x.Id, x.Succeed,x.CreateTime }, x => x.UserId == user.Id, x => x.Id, false);
             //var failLoginCount = logins.Count(x => x.Succeed == false);
 
             var failLoginCount = 2;
@@ -125,7 +122,7 @@ namespace Adnc.Usr.Application.Services
                 var problem = Problem(HttpStatusCode.TooManyRequests, "连续登录失败次数超过5次，账号已锁定");
                 log.Message = problem.Detail;
                 log.StatusCode = problem.Status;
-                await _userRepository.UpdateAsync(new SysUser() { ID = user.ID, Status = 2 }, x => x.Status);
+                await _userRepository.UpdateAsync(new SysUser() { Id = user.Id, Status = 2 }, x => x.Status);
                 _mqProducer.BasicPublish(MqExchanges.Logs, MqRoutingKeys.Loginlog, log);
                 return problem;
             }
@@ -158,7 +155,7 @@ namespace Adnc.Usr.Application.Services
 
         public async Task<AppSrvResult<UserValidateDto>> GetUserValidateInfo(RefreshTokenInputDto tokenInfo)
         {
-            var user = await _userRepository.FetchAsync(x => new { x.Name, x.Email, x.RoleId, x.Account, x.ID, x.Status }, x => x.Account == tokenInfo.Account);
+            var user = await _userRepository.FetchAsync(x => new { x.Name, x.Email, x.RoleId, x.Account, x.Id, x.Status }, x => x.Account == tokenInfo.Account);
 
             if (user == null)
                 return Problem(HttpStatusCode.NotFound, "用户不存在,参数信息不完整");

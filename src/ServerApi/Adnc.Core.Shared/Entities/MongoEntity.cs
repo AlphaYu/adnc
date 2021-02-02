@@ -7,7 +7,7 @@ namespace Adnc.Core.Shared.Entities
     /// <summary>
     /// An entity in a MongoDB repository.
     /// </summary>
-    public abstract class MongoEntity
+    public abstract class MongoEntity : IEntity<string>
     {
         /// <summary>
         /// Gets or sets the identifier.

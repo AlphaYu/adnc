@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Adnc.Cus.Core.Services
+namespace Adnc.Core.Shared.Domain.Entities
 {
-    public class CustmerManager
+    public interface IValueObject
     {
-        
     }
 }

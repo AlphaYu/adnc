@@ -2,6 +2,7 @@
 using System.Reflection;
 using System.Threading.Tasks;
 using Castle.DynamicProxy;
+using DotNetCore.CAP;
 
 namespace Adnc.Core.Shared.Interceptors
 {
@@ -11,10 +12,16 @@ namespace Adnc.Core.Shared.Interceptors
     public class UowAsyncInterceptor : IAsyncInterceptor
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly ICapPublisher _capPublisher;
+        private readonly ICapTransaction _capTransaction;
 
-        public UowAsyncInterceptor(IUnitOfWork unitOfWork)
+        public UowAsyncInterceptor(IUnitOfWork unitOfWork
+            , ICapPublisher capPublisher = null
+            , ICapTransaction capTransaction=null)
         {
             _unitOfWork = unitOfWork;
+            _capPublisher = capPublisher;
+            _capTransaction = capTransaction;
         }
 
         /// <summary>
@@ -47,74 +54,110 @@ namespace Adnc.Core.Shared.Interceptors
 
         private void InternalInterceptSynchronous(IInvocation invocation)
         {
+            var attribute = GetAttribute(invocation);
+            if (attribute == null)
+            {
+                invocation.Proceed();
+                return;
+            }
+
             try
             {
-                _unitOfWork.BeginTransaction();
+                using (var trans = _unitOfWork.GetDbContextTransaction())
+                {
+                    if (_capPublisher != null && attribute.SharedToCap)
+                    {
+                        _capPublisher.Transaction.Value = _capTransaction;
+                        _capPublisher.Transaction.Value.Begin(trans, autoCommit: false);
+                    }
 
-                invocation.Proceed();
-                
-                _unitOfWork.Commit();
+                    invocation.Proceed();
+
+                    trans.Commit();
+                }
             }
             catch (Exception ex)
             {
-                _unitOfWork.Rollback();
-
                 throw new Exception(ex.Message, ex);
-            }
-            finally
-            {
-                _unitOfWork.Dispose();
             }
         }
 
         private async Task InternalInterceptAsynchronous(IInvocation invocation)
         {
-            try
+            var attribute = GetAttribute(invocation);
+            if (attribute == null)
             {
-                _unitOfWork.BeginTransaction();
-
                 invocation.Proceed();
                 var task = (Task)invocation.ReturnValue;
                 await task;
+                return;
+            }
 
-                _unitOfWork.Commit();
+            try
+            {
+                using (var trans = _unitOfWork.GetDbContextTransaction())
+                {
+                    if (_capPublisher != null && attribute.SharedToCap)
+                    {
+                        _capPublisher.Transaction.Value = _capTransaction;
+                        _capPublisher.Transaction.Value.Begin(trans, autoCommit: false);
+                    }
+
+                    invocation.Proceed();
+                    var task = (Task)invocation.ReturnValue;
+                    await task;
+
+                    trans.Commit();
+                }
             }
             catch (Exception ex)
             {
-                _unitOfWork.Rollback();
-
                 throw new Exception(ex.Message, ex);
-            }
-            finally
-            {
-                _unitOfWork.Dispose();
             }
         }
 
         private async Task<TResult> InternalInterceptAsynchronous<TResult>(IInvocation invocation)
         {
             TResult result;
-            try
-            {
-                _unitOfWork.BeginTransaction();
 
+            var attribute = GetAttribute(invocation);
+            if (attribute == null)
+            {
                 invocation.Proceed();
                 var task = (Task<TResult>)invocation.ReturnValue;
                 result = await task;
+                return result;
+            }
 
-                _unitOfWork.Commit();
+            try
+            {
+                using (var trans = _unitOfWork.GetDbContextTransaction())
+                {
+                    if (_capPublisher != null && attribute.SharedToCap)
+                    {
+                        _capPublisher.Transaction.Value = _capTransaction;
+                        _capPublisher.Transaction.Value.Begin(trans, autoCommit: false);
+                    }
+
+                    invocation.Proceed();
+                    var task = (Task<TResult>)invocation.ReturnValue;
+                    result = await task;
+
+                    trans.Commit();
+                }
             }
             catch (Exception ex)
             {
-                _unitOfWork.Rollback();
-
                 throw new Exception(ex.Message, ex);
             }
-            finally
-            {
-                _unitOfWork.Dispose();
-            }
             return result;
+        }
+
+        public UnitOfWorkAttribute GetAttribute(IInvocation invocation)
+        {
+            var methodInfo = invocation.Method ?? invocation.MethodInvocationTarget;
+            var attribute = methodInfo.GetCustomAttribute<UnitOfWorkAttribute>();
+            return attribute;
         }
     }
 }

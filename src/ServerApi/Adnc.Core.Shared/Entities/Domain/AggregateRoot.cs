@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using Adnc.Core.Shared.Entities;
 
-namespace Adnc.Warehouse.Core.Entities
+namespace Adnc.Core.Shared.Domain.Entities
 {
-    public class AggregateRoot<TKey> : EfEntity
+    public abstract class AggregateRoot : EfEntity, IAggregateRoot
     {
 
     }

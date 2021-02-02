@@ -9,7 +9,7 @@ namespace Adnc.Infr.Common
     /// </summary>
     public class UserContext
     {
-        public long ID { get; set; }
+        public long Id { get; set; }
 
         public string Account { get; set; }
 

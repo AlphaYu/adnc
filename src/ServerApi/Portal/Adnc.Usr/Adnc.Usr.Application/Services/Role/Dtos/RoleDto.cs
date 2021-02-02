@@ -12,7 +12,7 @@ namespace Adnc.Usr.Application.Dtos
 	public class RoleDto :BaseOutputDto
 	{
 		/// <summary>
-		/// 部门ID
+		/// 部门Id
 		/// </summary>
 		public long? DeptId { get; set; }
 
@@ -27,7 +27,7 @@ namespace Adnc.Usr.Application.Dtos
 		public int? Num { get; set; }
 
 		/// <summary>
-		/// 父级角色ID
+		/// 父级角色Id
 		/// </summary>
 		public long? Pid { get; set; }
 

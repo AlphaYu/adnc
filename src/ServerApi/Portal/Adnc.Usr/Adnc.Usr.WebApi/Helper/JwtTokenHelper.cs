@@ -47,7 +47,7 @@ namespace Adnc.Usr.WebApi.Helper
                 new Claim(ClaimTypes.NameIdentifier, user.Account),
                 new Claim(ClaimTypes.Name, user.Name),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                new Claim(JwtRegisteredClaimNames.Sub, user.ID.ToString()),
+                new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
                 new Claim(ClaimTypes.Role, user.RoleId??"0")
             };
             return CreateToken(jwtConfig, claims, TokenType.AccessToken);
