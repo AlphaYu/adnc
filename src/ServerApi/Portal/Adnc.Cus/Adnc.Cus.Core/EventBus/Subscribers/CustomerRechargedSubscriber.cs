@@ -11,7 +11,7 @@ namespace Adnc.Cus.Core.EventBus.Subscribers
 {
     public interface ICustomerRechargedSubscriber
     {
-        Task Process(CustomerRechargedEto rechargeEbModel);
+        Task Process(CustomerRechargedEto eto);
     }
 
     public class CustomerRechargedSubscriber : ICustomerRechargedSubscriber, ICapSubscribe
@@ -30,18 +30,18 @@ namespace Adnc.Cus.Core.EventBus.Subscribers
 
 
         [CapSubscribe(EbConsts.CustomerRechagered)]
-        public async Task Process(CustomerRechargedEto rechargeEbModel)
+        public async Task Process(CustomerRechargedEto eto)
         {
             try
             {
                 _uow.BeginTransaction();
 
-                var transLog = await _cusTranlog.FindAsync(rechargeEbModel.TransactionLogId);
+                var transLog = await _cusTranlog.FindAsync(eto.TransactionLogId);
                 if (transLog == null || transLog.ExchageStatus == "20")
                     return;
 
-                var finance = await _cusFinanceReop.FindAsync(rechargeEbModel.Id);
-                var newBalance = finance.Balance + rechargeEbModel.Amount;
+                var finance = await _cusFinanceReop.FindAsync(eto.Id);
+                var newBalance = finance.Balance + eto.Amount;
 
                 transLog.ExchageStatus = "20";
                 transLog.ChangingAmount = finance.Balance;

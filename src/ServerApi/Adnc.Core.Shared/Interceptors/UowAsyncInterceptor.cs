@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Threading.Tasks;
 using Castle.DynamicProxy;
@@ -7,7 +8,7 @@ using DotNetCore.CAP;
 namespace Adnc.Core.Shared.Interceptors
 {
     /// <summary>
-    /// 工作单元异步拦截器
+    /// 工作单元拦截器
     /// </summary>
     public class UowAsyncInterceptor : IAsyncInterceptor
     {
@@ -17,7 +18,7 @@ namespace Adnc.Core.Shared.Interceptors
 
         public UowAsyncInterceptor(IUnitOfWork unitOfWork
             , ICapPublisher capPublisher = null
-            , ICapTransaction capTransaction=null)
+            , ICapTransaction capTransaction = null)
         {
             _unitOfWork = unitOfWork;
             _capPublisher = capPublisher;
@@ -30,7 +31,12 @@ namespace Adnc.Core.Shared.Interceptors
         /// <param name="invocation"></param>
         public void InterceptSynchronous(IInvocation invocation)
         {
-            InternalInterceptSynchronous(invocation);
+            var attribute = GetAttribute(invocation);
+
+            if (attribute == null)
+                invocation.Proceed();
+            else
+                InternalInterceptSynchronous(invocation, attribute);
         }
 
         /// <summary>
@@ -39,7 +45,12 @@ namespace Adnc.Core.Shared.Interceptors
         /// <param name="invocation"></param>
         public void InterceptAsynchronous(IInvocation invocation)
         {
-            invocation.ReturnValue = InternalInterceptAsynchronous(invocation);
+            var attribute = GetAttribute(invocation);
+
+            invocation.ReturnValue = attribute == null
+                                    ? InternalInterceptAsynchronousWithoutUow(invocation)
+                                    : InternalInterceptAsynchronous(invocation, attribute)
+                                    ;
         }
 
         /// <summary>
@@ -49,30 +60,26 @@ namespace Adnc.Core.Shared.Interceptors
         /// <param name="invocation"></param>
         public void InterceptAsynchronous<TResult>(IInvocation invocation)
         {
-            invocation.ReturnValue = InternalInterceptAsynchronous<TResult>(invocation);
+            var attribute = GetAttribute(invocation);
+
+            invocation.ReturnValue = attribute == null
+                                    ? InternalInterceptAsynchronousWithoutUow<TResult>(invocation)
+                                    : InternalInterceptAsynchronous<TResult>(invocation,attribute)
+                                    ;
         }
 
-        private void InternalInterceptSynchronous(IInvocation invocation)
+        /// <summary>
+        /// 同步拦截器事务处理
+        /// </summary>
+        /// <param name="invocation"></param>
+        /// <param name="attribute"></param>
+        private void InternalInterceptSynchronous(IInvocation invocation, [NotNull] UnitOfWorkAttribute attribute)
         {
-            var attribute = GetAttribute(invocation);
-            if (attribute == null)
-            {
-                invocation.Proceed();
-                return;
-            }
-
             try
             {
-                using (var trans = _unitOfWork.GetDbContextTransaction())
+                using (var trans = this.GetDbTransaction(attribute))
                 {
-                    if (_capPublisher != null && attribute.SharedToCap)
-                    {
-                        _capPublisher.Transaction.Value = _capTransaction;
-                        _capPublisher.Transaction.Value.Begin(trans, autoCommit: false);
-                    }
-
                     invocation.Proceed();
-
                     trans.Commit();
                 }
             }
@@ -82,27 +89,18 @@ namespace Adnc.Core.Shared.Interceptors
             }
         }
 
-        private async Task InternalInterceptAsynchronous(IInvocation invocation)
+        /// <summary>
+        /// 异步拦截器事务处理-无返回值
+        /// </summary>
+        /// <param name="invocation"></param>
+        /// <param name="attribute"></param>
+        /// <returns></returns>
+        private async Task InternalInterceptAsynchronous(IInvocation invocation, [NotNull] UnitOfWorkAttribute attribute)
         {
-            var attribute = GetAttribute(invocation);
-            if (attribute == null)
-            {
-                invocation.Proceed();
-                var task = (Task)invocation.ReturnValue;
-                await task;
-                return;
-            }
-
             try
             {
-                using (var trans = _unitOfWork.GetDbContextTransaction())
+                using (var trans = this.GetDbTransaction(attribute))
                 {
-                    if (_capPublisher != null && attribute.SharedToCap)
-                    {
-                        _capPublisher.Transaction.Value = _capTransaction;
-                        _capPublisher.Transaction.Value.Begin(trans, autoCommit: false);
-                    }
-
                     invocation.Proceed();
                     var task = (Task)invocation.ReturnValue;
                     await task;
@@ -116,29 +114,21 @@ namespace Adnc.Core.Shared.Interceptors
             }
         }
 
-        private async Task<TResult> InternalInterceptAsynchronous<TResult>(IInvocation invocation)
+        /// <summary>
+        /// 异步拦截器事务处理-有返回值
+        /// </summary>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="invocation"></param>
+        /// <param name="attribute"></param>
+        /// <returns></returns>
+        private async Task<TResult> InternalInterceptAsynchronous<TResult>(IInvocation invocation, [NotNull] UnitOfWorkAttribute attribute)
         {
             TResult result;
 
-            var attribute = GetAttribute(invocation);
-            if (attribute == null)
-            {
-                invocation.Proceed();
-                var task = (Task<TResult>)invocation.ReturnValue;
-                result = await task;
-                return result;
-            }
-
             try
             {
-                using (var trans = _unitOfWork.GetDbContextTransaction())
+                using (var trans = this.GetDbTransaction(attribute))
                 {
-                    if (_capPublisher != null && attribute.SharedToCap)
-                    {
-                        _capPublisher.Transaction.Value = _capTransaction;
-                        _capPublisher.Transaction.Value.Begin(trans, autoCommit: false);
-                    }
-
                     invocation.Proceed();
                     var task = (Task<TResult>)invocation.ReturnValue;
                     result = await task;
@@ -153,11 +143,66 @@ namespace Adnc.Core.Shared.Interceptors
             return result;
         }
 
-        public UnitOfWorkAttribute GetAttribute(IInvocation invocation)
+        /// <summary>
+        /// 异步拦截器无事务处理-无返回值
+        /// </summary>
+        /// <param name="invocation"></param>
+        /// <returns></returns>
+        private async Task InternalInterceptAsynchronousWithoutUow(IInvocation invocation)
+        {
+            invocation.Proceed();
+            var task = (Task)invocation.ReturnValue;
+            await task;
+        }
+
+        /// <summary>
+        /// 异步拦截器无事务处理-有返回值
+        /// </summary>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="invocation"></param>
+        /// <returns></returns>
+        private async Task<TResult> InternalInterceptAsynchronousWithoutUow<TResult>(IInvocation invocation)
+        {
+            TResult result;
+            invocation.Proceed();
+            var task = (Task<TResult>)invocation.ReturnValue;
+            result = await task;
+            return result;
+        }
+
+        /// <summary>
+        /// 获取拦截器attrbute
+        /// </summary>
+        /// <param name="invocation"></param>
+        /// <returns></returns>
+        private UnitOfWorkAttribute GetAttribute(IInvocation invocation)
         {
             var methodInfo = invocation.Method ?? invocation.MethodInvocationTarget;
             var attribute = methodInfo.GetCustomAttribute<UnitOfWorkAttribute>();
             return attribute;
+        }
+
+        /// <summary>
+        /// 获取事务
+        /// </summary>
+        /// <param name="attribute"></param>
+        /// <returns></returns>
+        private dynamic GetDbTransaction(UnitOfWorkAttribute attribute)
+        {
+            dynamic trans = null;
+            var adncTrans = _unitOfWork.GetDbContextTransaction();
+            if (_capPublisher != null && attribute.SharedToCap)
+            {
+                _capPublisher.Transaction.Value = _capTransaction;
+                var capTrans = _capPublisher.Transaction.Value.Begin(adncTrans, autoCommit: false);
+                trans = capTrans;
+            }
+            else
+            {
+                trans = adncTrans;
+            }
+
+            return trans;
         }
     }
 }
