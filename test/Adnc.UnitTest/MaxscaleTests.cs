@@ -40,7 +40,7 @@ namespace Adnc.UnitTests
 
         private void Initialize()
         {           
-            _userContext.ID = 1600000000000;
+            _userContext.Id = 1600000000000;
             _userContext.Account = "alpha2008";
             _userContext.Name = "余小猫";
         }
@@ -49,41 +49,41 @@ namespace Adnc.UnitTests
         public async void TestReadFromWirteDb()
         {
             var result = await InsertCustomer();
-            var cusFinance = await InsertCusFinance(result.ID);
+            var cusFinance = await InsertCusFinance(result.Id);
 
-            var cus = await _cusRsp.FetchAsync(c => c, c => c.ID == result.ID, writeDb: true);
+            var cus = await _cusRsp.FetchAsync(c => c, c => c.Id == result.Id, writeDb: true);
             Assert.NotNull(cus);
 
-            await _cusFinanceRsp.DeleteAsync(result.ID);
-            await _cusRsp.DeleteAsync(result.ID);
+            await _cusFinanceRsp.DeleteAsync(result.Id);
+            await _cusRsp.DeleteAsync(result.Id);
         }
 
         [Fact]
         public async void TestDapperReadFromWirteDb()
         {
             var result = await InsertCustomer();
-            var cusFinance = await InsertCusFinance(result.ID);
+            var cusFinance = await InsertCusFinance(result.Id);
 
-            var cus = await _cusRsp.QueryAsync<Customer>("select * from customer where id=@id", new { id = result.ID }, writeDb: true);
+            var cus = await _cusRsp.QueryAsync<Customer>("select * from customer where id=@id", new { id = result.Id }, writeDb: true);
             Assert.NotNull(cus);
 
-            await _cusFinanceRsp.DeleteAsync(result.ID);
-            await _cusRsp.DeleteAsync(result.ID);
+            await _cusFinanceRsp.DeleteAsync(result.Id);
+            await _cusRsp.DeleteAsync(result.Id);
         }
 
         [Fact]
         public async void TestInsertRange()
         {
             var list = await InsertRangeCustomer(10);
-            var ids = list.Select(c => c.ID).ToArray();
-            var cusCount = await _cusRsp.CountAsync(c => ids.Contains(c.ID), writeDb: true);
-            var cusFinanceCount = await _cusFinanceRsp.CountAsync(c => ids.Contains(c.ID), writeDb: true);
+            var ids = list.Select(c => c.Id).ToArray();
+            var cusCount = await _cusRsp.CountAsync(c => ids.Contains(c.Id), writeDb: true);
+            var cusFinanceCount = await _cusFinanceRsp.CountAsync(c => ids.Contains(c.Id), writeDb: true);
 
             Assert.Equal(10, cusCount);
             Assert.Equal(10, cusFinanceCount);
 
-            await _cusFinanceRsp.DeleteRangeAsync(c => ids.Contains(c.ID));
-            await _cusRsp.DeleteRangeAsync(c => ids.Contains(c.ID));
+            await _cusFinanceRsp.DeleteRangeAsync(c => ids.Contains(c.Id));
+            await _cusRsp.DeleteRangeAsync(c => ids.Contains(c.Id));
         }
 
         [Fact]
@@ -98,7 +98,7 @@ namespace Adnc.UnitTests
                 _unitOfWork.BeginTransaction();
 
                 var result = await InsertCustomer();
-                id = result.ID;
+                id = result.Id;
 
                 result.Realname = newRealName;
                 result.Nickname = newNickname;
@@ -133,7 +133,7 @@ namespace Adnc.UnitTests
                 _unitOfWork.BeginTransaction();
 
                 var result = await InsertCustomer();
-                id = result.ID;
+                id = result.Id;
 
                 result.Realname = newRealName;
                 result.Nickname = newNickname;
@@ -160,19 +160,19 @@ namespace Adnc.UnitTests
         public async void TestUpdateRange()
         {
             var list = await InsertRangeCustomer(10);
-            var ids = list.Select(c => c.ID).ToArray();
+            var ids = list.Select(c => c.Id).ToArray();
             var newRealName = "测试用户001";
             var newNickname = "测试";
 
-            await _cusRsp.UpdateRangeAsync(c => ids.Contains(c.ID), c => new Customer { Realname = newRealName, Nickname = newNickname });
+            await _cusRsp.UpdateRangeAsync(c => ids.Contains(c.Id), c => new Customer { Realname = newRealName, Nickname = newNickname });
 
-            var newCus = await _cusRsp.FindAsync(list[0].ID, writeDb: true);
+            var newCus = await _cusRsp.FindAsync(list[0].Id, writeDb: true);
             
             Assert.Equal(newRealName, newCus.Realname);
             Assert.Equal(newNickname, newCus.Nickname);
 
-            await _cusFinanceRsp.DeleteRangeAsync(c => ids.Contains(c.ID));
-            await _cusRsp.DeleteRangeAsync(c=>ids.Contains(c.ID));
+            await _cusFinanceRsp.DeleteRangeAsync(c => ids.Contains(c.Id));
+            await _cusRsp.DeleteRangeAsync(c=>ids.Contains(c.Id));
         }
 
         /// <summary>
@@ -185,8 +185,8 @@ namespace Adnc.UnitTests
             for (int i = 0; i < rows; i++)
             {
                 var id = IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId);
-                var customer = new Customer() { ID = id, Account = "alpha2008", Nickname = IdGenerater.GetNextId().ToString(), Realname = IdGenerater.GetNextId().ToString() };
-                customer.CusFinance = new CusFinance { Account = "alpha2008", ID = id, Balance = 0 };
+                var customer = new Customer() { Id = id, Account = "alpha2008", Nickname = IdGenerater.GetNextId().ToString(), Realname = IdGenerater.GetNextId().ToString() };
+                customer.CusFinance = new CusFinance { Account = "alpha2008", Id = id, Balance = 0 };
                 list.Add(customer);
             }
             await _cusRsp.InsertRangeAsync(list);
@@ -201,7 +201,7 @@ namespace Adnc.UnitTests
         private async Task<Customer> InsertCustomer()
         {
             var id = IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId);
-            var customer = new Customer() { ID = id, Account = "alpha2008", Nickname = IdGenerater.GetNextId().ToString(), Realname = IdGenerater.GetNextId().ToString() };
+            var customer = new Customer() { Id = id, Account = "alpha2008", Nickname = IdGenerater.GetNextId().ToString(), Realname = IdGenerater.GetNextId().ToString() };
             await _cusRsp.InsertAsync(customer);
             return customer;
         }
@@ -213,7 +213,7 @@ namespace Adnc.UnitTests
         /// <returns></returns>
         private async Task<CusFinance> InsertCusFinance(long id)
         {
-            var cusFinance = new CusFinance { Account = "alpha2008", ID = id, Balance = 0 };
+            var cusFinance = new CusFinance { Account = "alpha2008", Id = id, Balance = 0 };
             await _cusFinanceRsp.InsertAsync(cusFinance);
             return cusFinance;
         }

@@ -11,7 +11,7 @@ using Adnc.Cus.Core.Entities;
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Infr.Common;
 using Adnc.Infr.Common.Helper;
-using Adnc.Cus.Core.CoreServices;
+using Adnc.Cus.Core.Services;
 
 namespace Adnc.UnitTest
 {
@@ -19,7 +19,7 @@ namespace Adnc.UnitTest
     {
         private readonly ITestOutputHelper _output;
         private readonly UserContext _userContext;
-        private readonly ICusManagerService _cusManger;
+        private readonly CustomerManagerService _cusManger;
         private readonly IEfRepository<Customer> _cusRsp;
         private CoreServiceFixture _fixture;
 
@@ -29,14 +29,14 @@ namespace Adnc.UnitTest
             _fixture = fixture;
             _output = output;
             _cusRsp = _fixture.Container.Resolve<IEfRepository<Customer>>();
-            _cusManger = _fixture.Container.Resolve<ICusManagerService>();
+            _cusManger = _fixture.Container.Resolve<CustomerManagerService>();
             _userContext = _fixture.Container.Resolve<UserContext>();
             Initialize();
         }
 
         private void Initialize()
         {
-            _userContext.ID = 1600000000000;
+            _userContext.Id = 1600000000000;
             _userContext.Account = "alpha2008";
             _userContext.Name = "余小猫";
         }
@@ -49,8 +49,8 @@ namespace Adnc.UnitTest
         public async Task TestUowInterceptor()
         {
             var id = IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId);
-            var customer = new Customer() { ID = id, Account = "alpha2008", Nickname = IdGenerater.GetNextId().ToString(), Realname = IdGenerater.GetNextId().ToString() };
-            var cusFinance = new CusFinance { Account = "alpha2008", ID = id, Balance = 0 };
+            var customer = new Customer() { Id = id, Account = "alpha2008", Nickname = IdGenerater.GetNextId().ToString(), Realname = IdGenerater.GetNextId().ToString() };
+            var cusFinance = new CusFinance { Account = "alpha2008", Id = id, Balance = 0 };
             /*
                 set session transaction isolation level repeatable read
                 start transaction
@@ -62,7 +62,7 @@ namespace Adnc.UnitTest
              */ 
             await _cusManger.Register(customer, cusFinance);
 
-            bool exists = await _cusRsp.ExistAsync(c => c.ID == id);
+            bool exists = await _cusRsp.ExistAsync(c => c.Id == id);
             Assert.True(exists);
         }
     }

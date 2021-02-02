@@ -49,7 +49,10 @@ namespace Adnc.UnitTest.Fixtures
             {
                 return new DbContextOptionsBuilder<AdncDbContext>()
                 .UseLoggerFactory(LoggerFactory.Create(builder => builder.AddDebug()))
-                .UseMySql(dbstring, mySqlOptions => mySqlOptions.ServerVersion(new ServerVersion(new Version(10, 5, 4), ServerType.MariaDb)))
+                .UseMySql(dbstring, mySqlOptions => {
+                    mySqlOptions.ServerVersion(new ServerVersion(new Version(10, 5, 4), ServerType.MariaDb));
+                    mySqlOptions.CharSet(CharSet.Utf8Mb4);
+                })
                 .Options;
             }).InstancePerLifetimeScope();
 
