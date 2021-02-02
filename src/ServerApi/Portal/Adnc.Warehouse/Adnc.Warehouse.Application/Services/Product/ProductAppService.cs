@@ -24,7 +24,7 @@ namespace Adnc.Warehouse.Application.Services
     {
         private readonly ProductManager _productMgr;
         private readonly IEfRepository<Product> _productRepo;
-        private readonly IEfRepository<WarehouseInfo> _warehouseInfoRepo;
+        private readonly IEfRepository<Shlef> _warehouseInfoRepo;
         private readonly IMaintRpcService _maintRpcSrv;
         private readonly IMapper _mapper;
 
@@ -38,7 +38,7 @@ namespace Adnc.Warehouse.Application.Services
         /// <param name="mapper"></param>
         public ProductAppService(
              IEfRepository<Product> productRepo
-            , IEfRepository<WarehouseInfo> warehouseInfoRepo
+            , IEfRepository<Shlef> warehouseInfoRepo
             , IMaintRpcService maintRpcSrv
             , ProductManager productMgr
             , IMapper mapper)
@@ -64,11 +64,12 @@ namespace Adnc.Warehouse.Application.Services
         /// <summary>
         /// 修改商品
         /// </summary>
+        /// <param name="id"></param>
         /// <param name="input"></param>
         /// <returns></returns>
-        public async Task<ProductDto> UpdateAsync(ProductUpdationDto input)
+        public async Task<ProductDto> UpdateAsync(long id, ProductUpdationDto input)
         {
-            var product = await _productRepo.FindAsync(input.ID);
+            var product = await _productRepo.FindAsync(id);
 
             product.Describe = input.Describe;
             product.Unit = input.Unit;
@@ -87,11 +88,12 @@ namespace Adnc.Warehouse.Application.Services
         /// <summary>
         /// 调整价格
         /// </summary>
+        /// <param name="id"></param>
         /// <param name="input"></param>
         /// <returns></returns>
-        public async Task<ProductDto> ChangePriceAsync(ProducChangePriceDto input)
+        public async Task<ProductDto> ChangePriceAsync(long id, ProducChangePriceDto input)
         {
-            var product = await _productRepo.FindAsync(input.ID);
+            var product = await _productRepo.FindAsync(id);
 
             product.SetPrice(input.Price);
 
@@ -103,13 +105,14 @@ namespace Adnc.Warehouse.Application.Services
         /// <summary>
         /// 上架商品
         /// </summary>
+        /// <param name="id"></param>
         /// <param name="input"></param>
         /// <returns></returns>
-        public async Task<ProductDto> PutOnSale(ProductPutOnSaleDto input)
+        public async Task<ProductDto> PutOnSaleAsync(long id,ProductPutOnSaleDto input)
         {
-            var product = await _productRepo.FindAsync(input.ID);
+            var product = await _productRepo.FindAsync(id);
 
-            var warehouseInfo = await _warehouseInfoRepo.FetchAsync(x => x, x => x.ProductId == input.ID);
+            var warehouseInfo = await _warehouseInfoRepo.FetchAsync(x => x, x => x.ProductId == id);
 
             await _productMgr.PutOnSale(product, warehouseInfo, input.Reason);
 
@@ -121,9 +124,9 @@ namespace Adnc.Warehouse.Application.Services
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public async Task<ProductDto> PutOffSale(ProductPutOffSaleDto input)
+        public async Task<ProductDto> PutOffSaleAsync(long id, ProductPutOffSaleDto input)
         {
-            var product = await _productRepo.FindAsync(input.ID);
+            var product = await _productRepo.FindAsync(id);
 
             product.PutOffSale(input.Reason);
 
@@ -135,7 +138,7 @@ namespace Adnc.Warehouse.Application.Services
         /// </summary>
         /// <param name="search"></param>
         /// <returns></returns>
-        public async Task<AppSrvResult<PageModelDto<ProductDto>>> GetPaged(ProductSearchDto search)
+        public async Task<AppSrvResult<PageModelDto<ProductDto>>> GetPagedAsync(ProductSearchDto search)
         {
             Expression<Func<Product, bool>> whereCondition = x => true;
             if (search.Id > 0)
@@ -155,7 +158,7 @@ namespace Adnc.Warehouse.Application.Services
                     var dicts = rpcReuslt.Content.Children;
                     pagedDto.Data.ForEach(x =>
                     {
-                        x.StatusName = dicts.FirstOrDefault(d => d.Name == x.Status.ToSafeString())?.Name;
+                        x.ProductStatus.StatusDescription = dicts.FirstOrDefault(d => d.Name == x.ProductStatus.Status.ToSafeString())?.Name;
                     });
                 }
             }

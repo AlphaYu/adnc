@@ -7,7 +7,7 @@ namespace Adnc.Warehouse.Application.Dtos
 {
     public class ProductDto : BaseDto
     {
-        public long ID { set; get; }
+        public string Id { set; get; }
 
         public string Sku { set; get; }
 
@@ -17,9 +17,7 @@ namespace Adnc.Warehouse.Application.Dtos
 
         public float Price { set; get; }
 
-        public int Status { set; get; }
-
-        public string StatusName { get; set; }
+        public ProductStatus ProductStatus { get; set; }
 
         public string ChangeStatusReason { get; set; }
 
@@ -27,5 +25,14 @@ namespace Adnc.Warehouse.Application.Dtos
 
         public string Unit { set; get; }
 
+    }
+
+    public class ProductStatus
+    {
+        public int Status { get; set; }
+
+        public string StatusDescription { get; set; }
+
+        public string ChangeStatusReason { get; set; }
     }
 }

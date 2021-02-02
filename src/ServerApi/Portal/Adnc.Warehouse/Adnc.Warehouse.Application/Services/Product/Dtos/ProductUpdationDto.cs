@@ -8,8 +8,6 @@ namespace Adnc.Warehouse.Application.Dtos
 {
     public class ProductUpdationDto : BaseDto
     {
-        public long ID { set; get; }
-
         public string Sku { set; get; }
 
         public string Name { set; get; }

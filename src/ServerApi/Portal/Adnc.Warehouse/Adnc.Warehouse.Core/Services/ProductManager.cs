@@ -88,7 +88,7 @@ namespace Adnc.Warehouse.Core.Services
         /// <param name="warehouseInfo"></param>
         /// <param name="reason"></param>
         /// <returns></returns>
-        public async Task PutOnSale(Product product,WarehouseInfo warehouseInfo,string reason)
+        public async Task PutOnSale(Product product,Shlef warehouseInfo,string reason)
         {
             if (warehouseInfo?.Qty > 0 && product.AssignedWarehouseId == warehouseInfo.Id)
                 product.Status = new ProductStatus(ProductStatusEnum.SaleOn, reason);

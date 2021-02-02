@@ -8,7 +8,6 @@ namespace Adnc.Warehouse.Application.Dtos
 {
     public class ProductPutOnSaleDto : BaseDto
     {
-        public long ID { get; set; }
         public string Reason { get; set; }
     }
 }

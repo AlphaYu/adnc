@@ -12,16 +12,16 @@
       "commandName": "IISExpress",
       "launchBrowser": true,
       "environmentVariables": {
-        "SKYWALKING__SERVICENAME": "adnc.cus.webapi.dev",
+        "SKYWALKING__SERVICENAME": "adnc.Warehouse.webapi.dev",
         "ASPNETCORE_ENVIRONMENT": "Development",
         "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "SkyAPM.Agent.AspNetCore"
       }
     },
-    "Adnc.Cus.WebApi": {
+    "Adnc.Warehouse.WebApi": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
-        "SKYWALKING__SERVICENAME": "adnc.cus.webapi.dev",
+        "SKYWALKING__SERVICENAME": "adnc.Warehouse.webapi.dev",
         "ASPNETCORE_ENVIRONMENT": "Development",
         "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "SkyAPM.Agent.AspNetCore"
       },

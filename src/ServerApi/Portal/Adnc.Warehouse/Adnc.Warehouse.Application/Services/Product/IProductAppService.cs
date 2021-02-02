@@ -9,20 +9,20 @@ namespace Adnc.Warehouse.Application.Services
     public interface IProductAppService : IAppService
     {
         [OpsLog(LogName = "创建商品")]
-        Task<ProductDto> CreateAsync(ProductCreationDto inputDto);
+        Task<ProductDto> CreateAsync(ProductCreationDto input);
 
         [OpsLog(LogName = "更新商品")]
-        Task<ProductDto> UpdateAsync(ProductUpdationDto inputDto);
+        Task<ProductDto> UpdateAsync(long id, ProductUpdationDto input);
 
         [OpsLog(LogName = "调整商品价格")]
-        Task<ProductDto> ChangePriceAsync(ProducChangePriceDto inputDto);
+        Task<ProductDto> ChangePriceAsync(long id, ProducChangePriceDto input);
 
         [OpsLog(LogName = "上架商品")]
-        Task<ProductDto> PutOnSale(ProductPutOnSaleDto input);
+        Task<ProductDto> PutOnSaleAsync(long id, ProductPutOnSaleDto input);
 
         [OpsLog(LogName = "下架商品")]
-        Task<ProductDto> PutOffSale(ProductPutOffSaleDto input);
+        Task<ProductDto> PutOffSaleAsync(long id, ProductPutOffSaleDto input);
 
-        Task<AppSrvResult<PageModelDto<ProductDto>>> GetPaged(ProductSearchDto search);
+        Task<AppSrvResult<PageModelDto<ProductDto>>> GetPagedAsync(ProductSearchDto search);
     }
 }

@@ -5,23 +5,23 @@ using System.Text;
 
 namespace Adnc.Warehouse.Core.Entities
 {
-    public class WarehouseInfo : AggregateRoot
+    public class Shlef : AggregateRoot
     {
         public long? ProductId { protected set; get; }
         public int Qty { protected set; get; }
         public int FreezedQty { protected set; get; }
-        public string Shelf { protected set; get; }
+        public string Code { protected set; get; }
 
-        protected WarehouseInfo()
+        protected Shlef()
         {
         }
 
-        internal WarehouseInfo(long Id,string shelf)
+        internal Shlef(long Id,string code)
         {
             this.Id = Id;
-            if (string.IsNullOrEmpty(shelf))
-                throw new ArgumentException("shelf");
-            this.Shelf = shelf;
+            if (string.IsNullOrEmpty(code))
+                throw new ArgumentException("code");
+            this.Code = code;
             this.Qty = 0;
             this.FreezedQty = 0;
         }
