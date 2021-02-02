@@ -11,7 +11,7 @@ namespace Adnc.Maint.Core.Entities
 	/// </summary>
 	[Table("SysTask")]
 	[Description("定时任务")]
-	public class SysTask : EfAuditEntity
+	public class SysTask : EfFullAuditEntity
 	{
 		/// <summary>
 		/// 是否允许并发

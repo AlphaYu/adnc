@@ -63,8 +63,8 @@ namespace Adnc.Usr.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<UserInfoDto>> GetCurrentUserInfo()
         {
-            var userId = _userContext.ID;
-            var result = await _accountService.GetUserInfo(_userContext.ID);
+            var userId = _userContext.Id;
+            var result = await _accountService.GetUserInfo(_userContext.Id);
             return Result(result);
         }
 
@@ -112,7 +112,7 @@ namespace Adnc.Usr.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult> ChangePassword([FromBody] UserChangePwdInputDto inputDto)
         {
-            return Result(await _accountService.UpdatePassword(inputDto, _userContext.ID));
+            return Result(await _accountService.UpdatePassword(inputDto, _userContext.Id));
         }
     }
 }

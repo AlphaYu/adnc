@@ -12,7 +12,7 @@ namespace Adnc.Usr.Core.Entities
 	/// </summary>
 	[Table("SysRole")]
 	[Description("角色")]
-	public class SysRole : EfAuditEntity
+	public class SysRole : EfFullAuditEntity
 	{
 		[Column("DeptId")]
 		public long? DeptId { get; set; }

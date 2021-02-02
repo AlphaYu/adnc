@@ -10,20 +10,20 @@ namespace Microsoft.AspNetCore.Authorization
     public class PermissionHandlerRemote : PermissionHandler
     {
         private readonly IAuthRpcService _authRpcService;
-        private readonly IHttpContextAccessor _contextAccessor;
+        //private readonly IHttpContextAccessor _contextAccessor;
 
-        public PermissionHandlerRemote(IAuthRpcService authRpcService
-            , IHttpContextAccessor contextAccessor) 
+        public PermissionHandlerRemote(IAuthRpcService authRpcService) 
             : base()
         {
             _authRpcService = authRpcService;
-            _contextAccessor = contextAccessor;
+            //_contextAccessor = contextAccessor;
         }
 
         protected override async Task<bool> CheckUserPermissions(long userId, long[] roleIds, string[] codes)
         {
-            var jwtToken = await _contextAccessor.HttpContext.GetTokenAsync("access_token");
-            var refitResult = await _authRpcService.GetCurrenUserPermissions($"Bearer {jwtToken}", userId, codes);
+            //var jwtToken = await _contextAccessor.HttpContext.GetTokenAsync("access_token");
+            //var refitResult = await _authRpcService.GetCurrenUserPermissions($"Bearer {jwtToken}", userId, codes);
+            var refitResult = await _authRpcService.GetCurrenUserPermissionsAsync(userId, codes);
             if (!refitResult.IsSuccessStatusCode)
                 return false;
 

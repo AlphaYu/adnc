@@ -10,7 +10,7 @@ namespace Adnc.Cus.Core.Entities
 {
     [Table("CusTransactionLog")]
     [Description("客户财务变动记录")]
-    public class CusTransactionLog : EfEntity
+    public class CusTransactionLog : EfBasicAuditEntity
     {
         public long CustomerId { get; set; }
 

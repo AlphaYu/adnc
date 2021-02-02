@@ -12,6 +12,7 @@ namespace Adnc.Infr.Consul.Consumer
     {
         private readonly ConsulClient _consulClient;
         private readonly Func<Task<string>> _token;
+
         public ConsulDiscoveryDelegatingHandler(string consulAddress
             , Func<Task<string>> token = null)
         {
@@ -68,6 +69,12 @@ namespace Adnc.Infr.Consul.Consumer
                 return $"{entry.Service.Address}:{entry.Service.Port}";
             }
             return null;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            _consulClient.Dispose();
+            base.Dispose(disposing);
         }
     }
 }

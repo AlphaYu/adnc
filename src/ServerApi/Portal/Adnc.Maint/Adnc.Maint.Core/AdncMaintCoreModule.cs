@@ -25,9 +25,11 @@ namespace Adnc.Maint.Core
             //注册Core服务
             builder.RegisterAssemblyTypes(this.ThisAssembly)
                 .Where(t => t.IsAssignableTo<ICoreService>())
-                .AsImplementedInterfaces()
+                //.AsImplementedInterfaces()
+                //.EnableInterfaceInterceptors()
+                .AsSelf()
+                .EnableClassInterceptors()
                 .InstancePerLifetimeScope()
-                .EnableInterfaceInterceptors()
                 .InterceptedBy(typeof(UowInterceptor));
         }
     }

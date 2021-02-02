@@ -133,7 +133,7 @@ namespace Adnc.Application.Shared.Interceptors
             log.Message = JsonSerializer.Serialize(arguments, SystemTextJsonHelper.GetAdncDefaultOptions());
             log.Method = methodName;
             log.Succeed = "false";
-            log.UserId = userContext.ID;
+            log.UserId = userContext.Id;
             log.UserName = userContext.Name;
             log.Account = userContext.Account;
             log.RemoteIpAddress = userContext.RemoteIpAddress;

@@ -11,7 +11,7 @@ namespace Adnc.Usr.Core.Entities
 	/// </summary>
 	[Table("SysUser")]
 	[Description("账号")]
-	public class SysUser : EfAuditEntity,ISoftDelete
+	public class SysUser : EfFullAuditEntity,ISoftDelete
 	{
 
 		//private SysDept _dept;

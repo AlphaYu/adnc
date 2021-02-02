@@ -10,7 +10,7 @@ namespace Adnc.Cus.Core.Entities
 {
     [Table("CusFinance")]
     [Description("客户财务表")]
-    public class CusFinance : EfAuditEntity
+    public class CusFinance : EfFullAuditEntity
     {
         [Required]
         [StringLength(16)]

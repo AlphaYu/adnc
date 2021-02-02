@@ -5,7 +5,7 @@ using Adnc.Core.Shared.Entities;
 
 namespace Adnc.Usr.Core.Entities
 {
-    public class UserRechargeLogs : EfEntity
+    public class UserRechargeLogs : EfBasicAuditEntity
     {
         public long UserId { get; set; }
 

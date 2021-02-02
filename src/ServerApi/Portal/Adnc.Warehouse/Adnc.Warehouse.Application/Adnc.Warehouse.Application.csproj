@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.1</TargetFramework>
+		<Version>0.7.0</Version>
+		<Authors>Alpha.Yu</Authors>
+		<Product>Adnc</Product>
+		<RepositoryUrl>https://github.com/AlphaYu</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageProjectUrl>https://www.aspdotnetcore.net</PackageProjectUrl>
+		<Copyright>Alpha</Copyright>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+	  <DocumentationFile>.\Adnc.Warehouse.Application.xml</DocumentationFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\Adnc.Application.Shared\02.Adnc.Application.Shared.csproj" />
+		<ProjectReference Include="..\..\..\Adnc.Infr.EasyCaching\21.Adnc.Infr.EasyCaching.csproj" />
+		<ProjectReference Include="..\Adnc.Warehouse.Core\Adnc.Warehouse.Core.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Mq\" />
+	  <Folder Include="RpcServices\Rtos\" />
+	</ItemGroup>
+
+</Project>

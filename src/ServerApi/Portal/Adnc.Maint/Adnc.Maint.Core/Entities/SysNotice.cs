@@ -11,7 +11,7 @@ namespace Adnc.Maint.Core.Entities
 	/// </summary>
 	[Table("SysNotice")]
 	[Description("通知")]
-	public class SysNotice : EfAuditEntity
+	public class SysNotice : EfFullAuditEntity
 	{
 		[StringLength(255)]
 		[Column("Content")]

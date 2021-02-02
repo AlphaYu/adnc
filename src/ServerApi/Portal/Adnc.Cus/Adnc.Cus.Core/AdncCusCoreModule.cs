@@ -4,6 +4,9 @@ using Adnc.Cus.Core.Entities;
 using Adnc.Core.Shared;
 using Adnc.Core.Shared.Entities;
 using Adnc.Core.Shared.Interceptors;
+using Adnc.Core.Shared.EventBus;
+using DotNetCore.CAP;
+using Adnc.Cus.Core.EventBus;
 
 namespace Adnc.Cus.Core
 {
@@ -29,10 +32,16 @@ namespace Adnc.Cus.Core
             //注册Core服务
             builder.RegisterAssemblyTypes(this.ThisAssembly)
                 .Where(t => t.IsAssignableTo<ICoreService>())
-                .AsImplementedInterfaces()
+                .AsSelf()
                 .InstancePerLifetimeScope()
-                .EnableInterfaceInterceptors()
+                .EnableClassInterceptors()
                 .InterceptedBy(typeof(UowInterceptor));
+
+            //注册eventbus订阅服务
+            //builder.RegisterAssemblyTypes(this.ThisAssembly)
+            //    .Where(t => t.IsAssignableTo<ICapSubscribe>())
+            //    .AsImplementedInterfaces()
+            //    .InstancePerLifetimeScope();
         }
 
         /// <summary>

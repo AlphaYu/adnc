@@ -14,7 +14,7 @@ namespace Adnc.Application.Shared.Dtos
         /// <summary>
         /// 主键ID
         /// </summary>
-        public long ID { get; set; }
+        public long Id { get; set; }
 
         /// <summary>
         /// 创建人

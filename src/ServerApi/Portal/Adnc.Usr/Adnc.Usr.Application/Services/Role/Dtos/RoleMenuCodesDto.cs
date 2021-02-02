@@ -17,7 +17,7 @@ namespace Adnc.Usr.Application.Dtos
         public string Code { get; set; }
 
 		/// <summary>
-		/// 角色ID
+		/// 角色Id
 		/// </summary>
 		public long RoleId { get; set; }
 	}

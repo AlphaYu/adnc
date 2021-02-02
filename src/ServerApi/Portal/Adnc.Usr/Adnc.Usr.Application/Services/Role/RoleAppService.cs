@@ -7,15 +7,14 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Adnc.Usr.Application.Dtos;
 using Adnc.Infr.Common.Extensions;
-using Adnc.Usr.Core.CoreServices;
 using Adnc.Usr.Core.Entities;
+using Adnc.Usr.Core.Services;
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Infr.Common.Helper;
 using Microsoft.EntityFrameworkCore;
 using EasyCaching.Core;
 using Adnc.Application.Shared.Dtos;
 using Adnc.Application.Shared.Services;
-using Adnc.Application.Shared;
 
 namespace Adnc.Usr.Application.Services
 {
@@ -25,21 +24,21 @@ namespace Adnc.Usr.Application.Services
         private readonly IEfRepository<SysRole> _roleRepository;
         private readonly IEfRepository<SysUser> _userRepository;
         private readonly IEfRepository<SysRelation> _relationRepository;
-        private readonly IUsrManagerService _systemManagerService;
+        private readonly UsrManagerService _usrManagerService;
         private readonly IHybridCachingProvider _cache;
 
         public RoleAppService(IMapper mapper,
             IEfRepository<SysRole> roleRepository,
             IEfRepository<SysUser> userRepository,
             IEfRepository<SysRelation> relationRepository,
-            IUsrManagerService systemManagerService,
+            UsrManagerService usrManagerService,
             IHybridProviderFactory hybridProviderFactory)
         {
             _mapper = mapper;
             _roleRepository = roleRepository;
             _userRepository = userRepository;
-            _systemManagerService = systemManagerService;
             _relationRepository = relationRepository;
+            _usrManagerService = usrManagerService;
             _cache = hybridProviderFactory.GetHybridCachingProvider(EasyCachingConsts.HybridCaching);
         }
 
@@ -51,7 +50,7 @@ namespace Adnc.Usr.Application.Services
                 whereCondition = whereCondition.And(x => x.Name.Contains(searchModel.RoleName));
             }
 
-            var pagedModel = await _roleRepository.PagedAsync(searchModel.PageIndex, searchModel.PageSize, whereCondition, x => x.ID, true);
+            var pagedModel = await _roleRepository.PagedAsync(searchModel.PageIndex, searchModel.PageSize, whereCondition, x => x.Id, true);
 
             return _mapper.Map<PageModelDto<RoleDto>>(pagedModel);
         }
@@ -60,7 +59,7 @@ namespace Adnc.Usr.Application.Services
         {
             dynamic result = null;
             IEnumerable<ZTreeNodeDto<long, dynamic>> treeNodes = null;
-            var user = await _userRepository.FetchAsync(u => new { u.ID, u.RoleId }, x => x.ID == userId);
+            var user = await _userRepository.FetchAsync(u => new { u.Id, u.RoleId }, x => x.Id == userId);
 
             if (user == null)
                 return null;
@@ -71,23 +70,23 @@ namespace Adnc.Usr.Application.Services
             {
                 treeNodes = roles.Select(x => new ZTreeNodeDto<long, dynamic>
                 {
-                    ID = x.ID,
+                    Id = x.Id,
                     PID = x.PID.HasValue ? x.PID.Value : 0,
                     Name = x.Name,
                     Open = x.PID.HasValue && x.PID.Value > 0 ? false : true,
-                    Checked = roleIds.Contains(x.ID)
+                    Checked = roleIds.Contains(x.Id)
                 });
 
                 result = new
                 {
                     treeData = treeNodes.Select(x => new Node<long>
                     {
-                        ID = x.ID,
+                        Id = x.Id,
                         PID = x.PID,
                         Name = x.Name,
                         Checked = x.Checked
                     }),
-                    checkedIds = treeNodes.Where(x => x.Checked).Select(x => x.ID)
+                    checkedIds = treeNodes.Where(x => x.Checked).Select(x => x.Id)
                 };
             }
 
@@ -112,7 +111,7 @@ namespace Adnc.Usr.Application.Services
             if (inputDto.RoleId == 1600000000010)
                 return Problem(HttpStatusCode.Forbidden, "禁止设置初始角色");
 
-            await _systemManagerService.SaveRolePermisson(inputDto.RoleId, inputDto.Permissions);
+            await _usrManagerService.SaveRolePermisson(inputDto.RoleId, inputDto.Permissions);
 
             return DefaultResult();
         }
@@ -124,15 +123,15 @@ namespace Adnc.Usr.Application.Services
                 return Problem(HttpStatusCode.BadRequest, "该角色名称已经存在");
 
             var role = _mapper.Map<SysRole>(roleDto);
-            role.ID = IdGenerater.GetNextId();
+            role.Id = IdGenerater.GetNextId();
             await _roleRepository.InsertAsync(role);
 
-            return role.ID;
+            return role.Id;
         }
 
         public async Task<AppSrvResult> Update(RoleSaveInputDto roleDto)
         {
-            var isExists = (await this.GetAllFromCache()).Where(x => x.Name == roleDto.Name && x.ID != roleDto.ID).Any();
+            var isExists = (await this.GetAllFromCache()).Where(x => x.Name == roleDto.Name && x.Id != roleDto.Id).Any();
             if (isExists)
                 return Problem(HttpStatusCode.BadRequest, "该角色名称已经存在");
 

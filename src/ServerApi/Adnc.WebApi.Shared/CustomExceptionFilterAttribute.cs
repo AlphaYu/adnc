@@ -41,7 +41,7 @@ namespace Microsoft.AspNetCore.Mvc.Filters
             var title = _env.IsDevelopment() ? exception.Message : $"系统异常";
             var detial = _env.IsDevelopment() ? ExceptionHelper.GetExceptionDetail(exception) : $"系统异常,请联系管理员({eventId})";
 
-            _logger.LogError(eventId, exception, exception.Message, requestUrl, userContext.ID);
+            _logger.LogError(eventId, exception, exception.Message, requestUrl, userContext.Id);
 
             var problemDetails = new ProblemDetails
             {

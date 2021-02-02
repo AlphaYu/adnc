@@ -13,6 +13,6 @@ namespace Adnc.Application.Shared.Dtos
         /// <summary>
         /// 主键ID
         /// </summary>
-        public virtual long ID { get; set; }
+        public virtual long Id { get; set; }
     }
 }

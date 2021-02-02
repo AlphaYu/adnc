@@ -12,12 +12,12 @@ namespace Adnc.Usr.Application.Services
     public class Node<T>
     {
         /// <summary>
-        /// 节点ID
+        /// 节点Id
         /// </summary>
-        public T ID { get; set; }
+        public T Id { get; set; }
 
         /// <summary>
-        /// 父级ID
+        /// 父级Id
         /// </summary>
         public T PID { get; set; }
 

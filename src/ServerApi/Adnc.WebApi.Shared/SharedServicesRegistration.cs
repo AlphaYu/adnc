@@ -48,7 +48,9 @@ using Adnc.Application.Shared;
 using Adnc.Application.Shared.RpcServices;
 using Adnc.Infr.Common.Helper;
 using Adnc.WebApi.Shared.Extensions;
-
+using System.Net.Http.Headers;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authentication;
 
 namespace Adnc.WebApi.Shared
 {
@@ -307,7 +309,7 @@ namespace Adnc.WebApi.Shared
                     {
                         var userContext = context.HttpContext.RequestServices.GetService<UserContext>();
                         var claims = context.Principal.Claims;
-                        userContext.ID = long.Parse(claims.First(x => x.Type == JwtRegisteredClaimNames.Sub).Value);
+                        userContext.Id = long.Parse(claims.First(x => x.Type == JwtRegisteredClaimNames.Sub).Value);
                         userContext.Account = claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
                         userContext.Name = claims.First(x => x.Type == ClaimTypes.Name).Value;
                         userContext.Email = claims.First(x => x.Type == JwtRegisteredClaimNames.Email).Value;
@@ -542,8 +544,10 @@ namespace Adnc.WebApi.Shared
         /// <param name="tableNamePrefix">cap表面前缀</param>
         /// <param name="groupName">群组名子</param>
         /// <param name="func">回调函数</param>
-        protected virtual void AddEventBusSubscribers(string tableNamePrefix, string groupName, Action<IServiceCollection> func)
+        protected virtual void AddEventBusSubscribers(string tableNamePrefix, string groupName, Action<IServiceCollection> func = null)
         {
+            func?.Invoke(_services);
+
             _services.AddCap(x =>
             {
                 //如果你使用的 EF 进行数据操作，你需要添加如下配置：
@@ -596,11 +600,10 @@ namespace Adnc.WebApi.Shared
                     x.UseDiscovery();
                 }
             });
-            func?.Invoke(_services);
         }
 
         /// <summary>
-        /// 注册Rpc服务(跨服务之间的同步通讯)
+        /// 注册Rpc服务(跨微服务之间的同步通讯)
         /// </summary>
         /// <typeparam name="TRpcService">Rpc服务接口</typeparam>
         /// <param name="serviceName">在注册中心注册的服务名称，或者服务的Url</param>
@@ -608,10 +611,9 @@ namespace Adnc.WebApi.Shared
         /// <param name="token">Token，可空</param>
         protected virtual void AddRpcService<TRpcService>(string serviceName
         , List<IAsyncPolicy<HttpResponseMessage>> policies
-        , Func<Task<string>> token = null
+        , Func<Task<string>> getToken =null
         ) where TRpcService : class, IRpcService
         {
-
             var prefix = serviceName.Substring(0, 7);
             bool isConsulAdderss = (prefix == "http://" || prefix == "https:/") ? false : true;
 
@@ -621,27 +623,20 @@ namespace Adnc.WebApi.Shared
                                          .SetHandlerLifetime(TimeSpan.FromMinutes(2));
             //从consul获取地址
             if (isConsulAdderss)
-            {
-                clientbuilder.ConfigureHttpClient(c => c.BaseAddress = new Uri($"http://{serviceName}"))
+                clientbuilder.ConfigureHttpClient(client => client.BaseAddress = new Uri($"http://{serviceName}"))
                              .AddHttpMessageHandler(() =>
                              {
-                                 return new ConsulDiscoveryDelegatingHandler(_consulConfig.ConsulUrl, token);
-                             });
-            }
+                                 return new ConsulDiscoveryDelegatingHandler(_consulConfig.ConsulUrl, getToken);
+                             });                      
             else
-            {
-                clientbuilder.ConfigureHttpClient((options) =>
-                {
-                    options.BaseAddress = new Uri(serviceName);
-                });
-            }
+                clientbuilder.ConfigureHttpClient(client => client.BaseAddress = new Uri(serviceName))
+                             .AddHttpMessageHandler(() =>
+                             {
+                                 return new SimpleAuthHeaderHandler(getToken);
+                             });
 
             //添加polly相关策略
-            if (policies != null && policies.Any())
-            {
-                foreach (var policy in policies)
-                    clientbuilder.AddPolicyHandler(policy);
-            }
+            policies?.ForEach(policy => clientbuilder.AddPolicyHandler(policy));
         }
 
         /// <summary>
@@ -672,6 +667,15 @@ namespace Adnc.WebApi.Shared
             {
                 //timeoutPolicy
             };
+        }
+
+        /// <summary>
+        /// 默认获取Token的方法
+        /// </summary>
+        /// <returns></returns>
+        protected virtual async Task<string> GetTokenDefaultFunc()
+        {
+            return await HttpContextUtility.GetCurrentHttpContext().GetTokenAsync("access_token");
         }
     }
 }

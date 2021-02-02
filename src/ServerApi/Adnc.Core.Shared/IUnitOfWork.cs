@@ -1,15 +1,18 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore.Storage;
+using System;
 using System.Data;
 
 namespace Adnc.Core.Shared
 {
     public interface IUnitOfWork: IDisposable
     {
+        bool IsStartingUow { get;}
+
+        IDbContextTransaction GetDbContextTransaction(IsolationLevel isolationLevel = IsolationLevel.ReadCommitted);
+
         string ProviderName { get; }
 
-        void BeginTransaction();
-
-        void BeginTransaction(IsolationLevel isolationLevel);
+        void BeginTransaction(IsolationLevel isolationLevel = IsolationLevel.ReadCommitted);
 
         void Rollback();
 

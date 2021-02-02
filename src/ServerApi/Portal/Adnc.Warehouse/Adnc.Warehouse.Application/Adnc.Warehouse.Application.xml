@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Adnc.Warehouse.Application</name>
+    </assembly>
+    <members>
+        <member name="T:Adnc.Warehouse.Application.Services.ProductAppService">
+            <summary>
+            商品管理
+            </summary>
+        </member>
+        <member name="M:Adnc.Warehouse.Application.Services.ProductAppService.#ctor(Adnc.Core.Shared.IRepositories.IEfRepository{Adnc.Warehouse.Core.Entities.Product},Adnc.Core.Shared.IRepositories.IEfRepository{Adnc.Warehouse.Core.Entities.WarehouseInfo},Adnc.Application.Shared.RpcServices.IMaintRpcService,Adnc.Warehouse.Core.Services.ProductManager,AutoMapper.IMapper)">
+            <summary>
+            商品管理构造函数
+            </summary>
+            <param name="productRepo"></param>
+            <param name="warehouseInfoRepo"></param>
+            <param name="maintRpcSrv"></param>
+            <param name="productMgr"></param>
+            <param name="mapper"></param>
+        </member>
+        <member name="M:Adnc.Warehouse.Application.Services.ProductAppService.CreateAsync(Adnc.Warehouse.Application.Dtos.ProductCreationDto)">
+            <summary>
+            创建商品
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Adnc.Warehouse.Application.Services.ProductAppService.UpdateAsync(Adnc.Warehouse.Application.Dtos.ProductUpdationDto)">
+            <summary>
+            修改商品
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Adnc.Warehouse.Application.Services.ProductAppService.ChangePriceAsync(Adnc.Warehouse.Application.Dtos.ProducChangePriceDto)">
+            <summary>
+            调整价格
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Adnc.Warehouse.Application.Services.ProductAppService.PutOnSale(Adnc.Warehouse.Application.Dtos.ProductPutOnSaleDto)">
+            <summary>
+            上架商品
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Adnc.Warehouse.Application.Services.ProductAppService.PutOffSale(Adnc.Warehouse.Application.Dtos.ProductPutOffSaleDto)">
+            <summary>
+            下架商品
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Adnc.Warehouse.Application.Services.ProductAppService.GetPaged(Adnc.Warehouse.Application.Dtos.ProductSearchDto)">
+            <summary>
+            商品分页列表
+            </summary>
+            <param name="search"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

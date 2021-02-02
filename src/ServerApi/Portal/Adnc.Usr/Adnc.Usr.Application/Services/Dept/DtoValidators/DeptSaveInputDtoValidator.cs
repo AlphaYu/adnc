@@ -11,7 +11,7 @@ namespace Adnc.Usr.Application.DtoValidators
             RuleFor(x => x.FullName).NotEmpty().Length(2, 32);
             //RuleFor(x => x.Tips).NotEmpty().MaximumLength(64);
             RuleFor(x => x.Pid).GreaterThan(1).WithMessage("{PropertyName} 不能为空")
-                                              .NotEqual(x => x.ID).When(x => x.ID > 0);
+                                              .NotEqual(x => x.Id).When(x => x.Id > 0);
         }
     }
 }

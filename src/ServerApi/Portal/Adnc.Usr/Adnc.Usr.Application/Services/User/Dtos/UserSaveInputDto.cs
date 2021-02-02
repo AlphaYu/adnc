@@ -23,7 +23,7 @@ namespace Adnc.Usr.Application.Dtos
         public DateTime? Birthday { get; set; }
 
         /// <summary>
-        /// 部门ID
+        /// 部门Id
         /// </summary>
         public long? DeptId { get; set; }
 
@@ -48,7 +48,7 @@ namespace Adnc.Usr.Application.Dtos
         public string Phone { get; set; }
 
         /// <summary>
-        /// 角色id列表，以逗号分隔
+        /// 角色Id列表，以逗号分隔
         /// </summary>
         //public string RoleId { get; set; }
 

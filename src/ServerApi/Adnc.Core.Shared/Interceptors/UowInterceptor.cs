@@ -12,20 +12,13 @@ namespace Adnc.Core.Shared.Interceptors
     {
         private readonly UowAsyncInterceptor _uowAsyncInterceptor;
 
-        public UowInterceptor(UowAsyncInterceptor uowAsyncInterceptor )
+        public UowInterceptor(UowAsyncInterceptor uowAsyncInterceptor)
         {
             _uowAsyncInterceptor = uowAsyncInterceptor;
         }
 
         public void Intercept(IInvocation invocation)
         {
-            //var methodInfo = invocation.Method ?? invocation.MethodInvocationTarget;
-            //var attribute = methodInfo.GetCustomAttribute<UowAttribute>();
-            //if (attribute == null || _isIntercepting)
-            //{
-            //    invocation.Proceed();
-            //    return;
-            //}
             this._uowAsyncInterceptor.ToInterceptor().Intercept(invocation);
         }
 

@@ -19,8 +19,7 @@ namespace Adnc.Cus.Migrations.Migrations
 
             modelBuilder.Entity("Adnc.Cus.Core.Entities.CusFinance", b =>
                 {
-                    b.Property<long>("ID")
-                        .HasColumnName("ID")
+                    b.Property<long>("Id")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Account")
@@ -32,31 +31,26 @@ namespace Adnc.Cus.Migrations.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<long?>("CreateBy")
-                        .HasColumnName("CreateBy")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime?>("CreateTime")
-                        .HasColumnName("CreateTime")
                         .HasColumnType("datetime(6)");
 
                     b.Property<long?>("ModifyBy")
-                        .HasColumnName("ModifyBy")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime?>("ModifyTime")
-                        .HasColumnName("ModifyTime")
                         .HasColumnType("datetime(6)");
 
-                    b.HasKey("ID");
+                    b.HasKey("Id");
 
                     b.ToTable("CusFinance");
                 });
 
             modelBuilder.Entity("Adnc.Cus.Core.Entities.CusTransactionLog", b =>
                 {
-                    b.Property<long>("ID")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("ID")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Account")
@@ -73,11 +67,9 @@ namespace Adnc.Cus.Migrations.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<long?>("CreateBy")
-                        .HasColumnName("CreateBy")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime?>("CreateTime")
-                        .HasColumnName("CreateTime")
                         .HasColumnType("datetime(6)");
 
                     b.Property<long>("CustomerId")
@@ -95,16 +87,15 @@ namespace Adnc.Cus.Migrations.Migrations
                         .HasColumnType("varchar(64) CHARACTER SET utf8mb4")
                         .HasMaxLength(64);
 
-                    b.HasKey("ID");
+                    b.HasKey("Id");
 
                     b.ToTable("CusTransactionLog");
                 });
 
             modelBuilder.Entity("Adnc.Cus.Core.Entities.Customer", b =>
                 {
-                    b.Property<long>("ID")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("ID")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Account")
@@ -113,19 +104,15 @@ namespace Adnc.Cus.Migrations.Migrations
                         .HasMaxLength(16);
 
                     b.Property<long?>("CreateBy")
-                        .HasColumnName("CreateBy")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime?>("CreateTime")
-                        .HasColumnName("CreateTime")
                         .HasColumnType("datetime(6)");
 
                     b.Property<long?>("ModifyBy")
-                        .HasColumnName("ModifyBy")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime?>("ModifyTime")
-                        .HasColumnName("ModifyTime")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Nickname")
@@ -138,7 +125,7 @@ namespace Adnc.Cus.Migrations.Migrations
                         .HasColumnType("varchar(16) CHARACTER SET utf8mb4")
                         .HasMaxLength(16);
 
-                    b.HasKey("ID");
+                    b.HasKey("Id");
 
                     b.ToTable("Customer");
                 });
@@ -147,7 +134,7 @@ namespace Adnc.Cus.Migrations.Migrations
                 {
                     b.HasOne("Adnc.Cus.Core.Entities.Customer", "Customer")
                         .WithOne("CusFinance")
-                        .HasForeignKey("Adnc.Cus.Core.Entities.CusFinance", "ID")
+                        .HasForeignKey("Adnc.Cus.Core.Entities.CusFinance", "Id")
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

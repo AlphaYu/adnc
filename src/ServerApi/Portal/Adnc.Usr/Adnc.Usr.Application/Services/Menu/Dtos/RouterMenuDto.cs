@@ -12,12 +12,12 @@ namespace Adnc.Usr.Application.Dtos
     public class RouterMenuDto : BaseDto
     {
         /// <summary>
-        /// 菜单ID
+        /// 菜单Id
         /// </summary>
-        public long ID { get; set; }
+        public long Id { get; set; }
 
         /// <summary>
-        /// 父菜单ID
+        /// 父菜单Id
         /// </summary>
         public long? ParentId { get; set; }
 

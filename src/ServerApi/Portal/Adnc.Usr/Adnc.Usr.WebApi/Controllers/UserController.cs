@@ -95,7 +95,7 @@ namespace Adnc.Usr.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult> SetRole([FromRoute] long userId, [FromBody] long[] roleIds)
         {
-           return Result(await _userService.SetRole(new RoleSetInputDto { ID = userId, RoleIds = roleIds}));
+           return Result(await _userService.SetRole(new RoleSetInputDto { Id = userId, RoleIds = roleIds}));
             
         }
 

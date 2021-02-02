@@ -4,8 +4,7 @@ using System.Text;
 
 namespace Adnc.Core.Shared.Entities
 {
-    public interface IEfEntity<T>
+    public interface IEfEntity<TKey> :IEntity<TKey>
     {
-        public T ID { get; set; }
     }
 }
