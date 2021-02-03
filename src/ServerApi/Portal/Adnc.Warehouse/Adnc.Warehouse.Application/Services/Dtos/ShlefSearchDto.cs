@@ -6,8 +6,7 @@ using Adnc.Application.Shared.Dtos;
 
 namespace Adnc.Warehouse.Application.Dtos
 {
-    public class ProductSearchDto : BaseSearchDto
+    public class ShlefSearchDto : BaseSearchDto
     {
-        public long? Id { get; set; }
     }
 }

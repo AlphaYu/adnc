@@ -7,6 +7,7 @@ namespace Adnc.Application.Shared.Dtos
     [Serializable]
     public class PageModelDto<T> : BaseDto
     {
+
         private IReadOnlyList<T> _data = Array.Empty<T>();
 
         [NotNull]

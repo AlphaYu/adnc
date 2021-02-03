@@ -28,11 +28,11 @@ namespace Adnc.Warehouse.Core
 
             //注册Core服务
             builder.RegisterAssemblyTypes(this.ThisAssembly)
-                .Where(t => t.IsAssignableTo<ICoreService>())
-                .AsImplementedInterfaces()
-                .InstancePerLifetimeScope()
-                .EnableInterfaceInterceptors()
-                .InterceptedBy(typeof(UowInterceptor));
+                   .Where(t => t.IsAssignableTo<ICoreService>())
+                   .AsSelf()
+                   .InstancePerLifetimeScope()
+                   .EnableClassInterceptors()
+                   .InterceptedBy(typeof(UowInterceptor));
         }
 
         /// <summary>

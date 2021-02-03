@@ -23,6 +23,6 @@ namespace Adnc.Warehouse.Application.Services
         [OpsLog(LogName = "下架商品")]
         Task<ProductDto> PutOffSaleAsync(long id, ProductPutOffSaleDto input);
 
-        Task<AppSrvResult<PageModelDto<ProductDto>>> GetPagedAsync(ProductSearchDto search);
+        Task<PageModelDto<ProductDto>> GetPagedAsync(ProductSearchDto search);
     }
 }

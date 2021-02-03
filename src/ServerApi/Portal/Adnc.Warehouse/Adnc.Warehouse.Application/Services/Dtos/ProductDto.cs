@@ -17,19 +17,19 @@ namespace Adnc.Warehouse.Application.Dtos
 
         public float Price { set; get; }
 
-        public ProductStatus ProductStatus { get; set; }
+        public ProductStatusDto Status { get; set; }
 
         public string ChangeStatusReason { get; set; }
 
-        public long AssignedWarehouseId { set; get; }
+        public string ShelfId { set; get; }
 
         public string Unit { set; get; }
 
     }
 
-    public class ProductStatus
+    public class ProductStatusDto
     {
-        public int Status { get; set; }
+        public int StatusCode { get; set; }
 
         public string StatusDescription { get; set; }
 

@@ -11,7 +11,12 @@ namespace Adnc.Warehouse.Application
         public AdncWarehouseProfile()
         {
             CreateMap(typeof(IPagedModel<>), typeof(PageModelDto<>)).ForMember("XData", opt => opt.Ignore());
+            
             CreateMap<Product, ProductDto>();
+            CreateMap<ProductStatus, ProductStatusDto>();
+
+            CreateMap<Shelf, ShelfDto>();
+            CreateMap<ShelfPosition, ShelfPositionDto>();
         }
     }
 }

@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Adnc.Core.Shared;
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Infr.Common.Helper;
 using Adnc.Warehouse.Core.Entities;
 
 namespace Adnc.Warehouse.Core.Services
 {
-    public class ProductManager
+    public class ProductManager : ICoreService
     {
         private readonly IEfRepository<Product> _productRepo;
         public ProductManager(IEfRepository<Product> productRepo)
@@ -24,7 +25,7 @@ namespace Adnc.Warehouse.Core.Services
         /// <param name="unit"></param>
         /// <param name="describe"></param>
         /// <returns></returns>
-        public async Task<Product> CreateAsync(string sku, float price, string name, string unit, string describe = null)
+        public virtual async Task<Product> CreateAsync(string sku, float price, string name, string unit, string describe = null)
         {
             var product = await _productRepo.FetchAsync(x => x, x => x.Sku == sku || x.Name == name);
             if (product != null)
@@ -51,13 +52,13 @@ namespace Adnc.Warehouse.Core.Services
         /// <param name="product"></param>
         /// <param name="newSku"></param>
         /// <returns></returns>
-        public async Task ChangeSkuAsync(Product product,string newSku)
+        public virtual async Task ChangeSkuAsync(Product product, string newSku)
         {
             if (product.Sku == newSku)
                 return;
 
             var exists = await _productRepo.ExistAsync(x => x.Sku == newSku);
-            if(exists)
+            if (exists)
                 throw new ArgumentException("newsku");
 
             product.SetSku(newSku);
@@ -69,7 +70,7 @@ namespace Adnc.Warehouse.Core.Services
         /// <param name="product"></param>
         /// <param name="newName"></param>
         /// <returns></returns>
-        public async Task ChangeNameAsync(Product product, string newName)
+        public virtual async Task ChangeNameAsync(Product product, string newName)
         {
             if (product.Name == newName)
                 return;
@@ -88,7 +89,7 @@ namespace Adnc.Warehouse.Core.Services
         /// <param name="warehouseInfo"></param>
         /// <param name="reason"></param>
         /// <returns></returns>
-        public async Task PutOnSale(Product product,Shelf warehouseInfo,string reason)
+        public virtual async Task PutOnSale(Product product, Shelf warehouseInfo, string reason)
         {
             if (warehouseInfo?.Qty > 0 && product.ShlefId == warehouseInfo.Id)
                 product.Status = new ProductStatus(ProductStatusEnum.SaleOn, reason);

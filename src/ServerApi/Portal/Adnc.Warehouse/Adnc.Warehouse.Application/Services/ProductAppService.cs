@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
 using Adnc.Warehouse.Application.Dtos;
 using Adnc.Warehouse.Core.Services;
 using Adnc.Warehouse.Core.Entities;
-using Adnc.Infr.Common.Helper;
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Application.Shared.Dtos;
-using Adnc.Application.Shared;
 using Adnc.Application.Shared.Services;
 using System.Linq;
 using System.Linq.Expressions;
@@ -57,7 +54,10 @@ namespace Adnc.Warehouse.Application.Services
         /// <returns></returns>
         public async Task<ProductDto> CreateAsync(ProductCreationDto input)
         {
-            var product = await _productMgr.CreateAsync(input.Sku, input.Price, input.Unit, input.Describe);
+            var product = await _productMgr.CreateAsync(input.Sku, input.Price, input.Name,input.Unit, input.Describe);
+
+            await _productRepo.InsertAsync(product);
+
             return _mapper.Map<ProductDto>(product);
         }
 
@@ -116,6 +116,8 @@ namespace Adnc.Warehouse.Application.Services
 
             await _productMgr.PutOnSale(product, warehouseInfo, input.Reason);
 
+            await _productRepo.UpdateAsync(product);
+
             return _mapper.Map<ProductDto>(product);
         }
 
@@ -130,6 +132,8 @@ namespace Adnc.Warehouse.Application.Services
 
             product.PutOffSale(input.Reason);
 
+            await _productRepo.UpdateAsync(product);
+
             return _mapper.Map<ProductDto>(product);
         }
 
@@ -138,7 +142,7 @@ namespace Adnc.Warehouse.Application.Services
         /// </summary>
         /// <param name="search"></param>
         /// <returns></returns>
-        public async Task<AppSrvResult<PageModelDto<ProductDto>>> GetPagedAsync(ProductSearchDto search)
+        public async Task<PageModelDto<ProductDto>> GetPagedAsync(ProductSearchDto search)
         {
             Expression<Func<Product, bool>> whereCondition = x => true;
             if (search.Id > 0)
@@ -158,7 +162,7 @@ namespace Adnc.Warehouse.Application.Services
                     var dicts = rpcReuslt.Content.Children;
                     pagedDto.Data.ForEach(x =>
                     {
-                        x.ProductStatus.StatusDescription = dicts.FirstOrDefault(d => d.Name == x.ProductStatus.Status.ToSafeString())?.Name;
+                        x.Status.StatusDescription = dicts.FirstOrDefault(d => d.Name == x.Status.StatusCode.ToSafeString())?.Name;
                     });
                 }
             }
