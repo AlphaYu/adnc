@@ -12,11 +12,17 @@ namespace Adnc.Warehouse.Core.Entities.Config
         {
             builder.HasKey(x => x.Id);
 
-            builder.Property(x => x.Position.Code)
-                   .HasColumnName("PositionCode")
+            builder.Property(x => x.Id)
+                   .ValueGeneratedNever();
+
+            builder.OwnsOne(x=>x.Position)
+                   .Property(x => x.Code)
                    .IsRequired()
+                   .HasColumnName("PositionCode")
                    .HasMaxLength(32);
-            builder.Property(x => x.Position.Description)
+
+            builder.OwnsOne(x=>x.Position)
+                   .Property(x => x.Description)
                    .HasColumnName("PositionDescription")
                    .HasMaxLength(64);
         }

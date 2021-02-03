@@ -9,6 +9,9 @@ namespace Adnc.Warehouse.Core.Entities.Config
         {
             builder.HasKey(x => x.Id);
 
+            builder.Property(x => x.Id)
+                   .ValueGeneratedNever();
+
             builder.Property(x => x.Name)
                    .IsRequired()
                    .HasMaxLength(64);
@@ -20,15 +23,20 @@ namespace Adnc.Warehouse.Core.Entities.Config
                    .IsRequired()
                    .HasMaxLength(32);
 
-            builder.Property(x => x.Status.StatusCode)
+            builder.OwnsOne(x => x.Status)
+                   .Property(x => x.StatusCode)
                    .IsRequired()
                    .HasColumnName("StatusCode");
-            builder.Property(x => x.Status.ChangeStatusReason)
+
+            builder.OwnsOne(x => x.Status)
+                   .Property(x => x.ChangeStatusReason)
+                   .HasColumnName("ChangeStatusReason")
                    .HasMaxLength(32);
 
             builder.Property(x => x.Unit)
                    .IsRequired()
                    .HasMaxLength(4);
+           
         }
     }
 }

@@ -10,18 +10,12 @@
 		<PackageProjectUrl>https://www.aspdotnetcore.net</PackageProjectUrl>
 		<Copyright>Alpha</Copyright>
 	</PropertyGroup>
-
-	<ItemGroup>
-	  <Compile Remove="Entities\Config\ProductConfig.cs" />
-	  <Compile Remove="Entities\Config\ShelfConfig.cs" />
-	</ItemGroup>
 	
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\Adnc.Core.Shared\03.Adnc.Core.Shared.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="Entities\Config\" />
 		<Folder Include="IRepositories\" />
 	</ItemGroup>
 </Project>

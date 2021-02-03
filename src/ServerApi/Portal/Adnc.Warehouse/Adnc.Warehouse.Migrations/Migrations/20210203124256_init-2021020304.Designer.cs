@@ -3,14 +3,16 @@ using System;
 using Adnc.Infr.EfCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Adnc.Warehouse.Migrations.Migrations
 {
     [DbContext(typeof(AdncDbContext))]
-    partial class AdncDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210203124256_init-2021020304")]
+    partial class init2021020304
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

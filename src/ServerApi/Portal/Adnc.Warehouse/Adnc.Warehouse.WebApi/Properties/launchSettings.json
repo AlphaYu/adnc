@@ -3,7 +3,7 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:5040",
+      "applicationUrl": "http://localhost:8064",
       "sslPort": 0
     }
   },
@@ -25,7 +25,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development",
         "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "SkyAPM.Agent.AspNetCore"
       },
-      "applicationUrl": "http://localhost:5040"
+      "applicationUrl": "http://localhost:8064"
     },
     "Docker": {
       "commandName": "Docker",
