@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Infr.Common.Helper;
@@ -10,13 +8,13 @@ using Adnc.Warehouse.Core.EventBus.Etos;
 
 namespace Adnc.Warehouse.Core.Services
 {
-    public class WarehouseInfoManager
+    public class ShelfManager
     {
         private readonly IEfRepository<Product> _productRepo;
-        private readonly IEfRepository<Shlef> _shelfRepo;
+        private readonly IEfRepository<Shelf> _shelfRepo;
         private readonly Publisher _publisher;
-        public WarehouseInfoManager(IEfRepository<Product> productRepo
-            , IEfRepository<Shlef> shelfRepo
+        public ShelfManager(IEfRepository<Product> productRepo
+            , IEfRepository<Shelf> shelfRepo
             , Publisher publisher)
         {
             _productRepo = productRepo;
@@ -32,13 +30,13 @@ namespace Adnc.Warehouse.Core.Services
         /// <param name="unit"></param>
         /// <param name="describe"></param>
         /// <returns></returns>
-        public async Task<Shlef> CreateAsync(string code)
+        public async Task<Shelf> CreateAsync(string code)
         {
             var shelf = await _shelfRepo.FetchAsync(x => x, x => x.Code == code);
             if (shelf != null)
                 throw new ArgumentException("warehouseInfo");
 
-            return new Shlef(
+            return new Shelf(
                 IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId)
                 , code
             );
@@ -50,9 +48,9 @@ namespace Adnc.Warehouse.Core.Services
         /// <param name="shelf"></param>
         /// <param name="productId"></param>
         /// <returns></returns>
-        public async Task AllocateShelfToProductAsync(Shlef shelf,Product product)
+        public async Task AllocateShelfToProductAsync(Shelf shelf,Product product)
         {
-            if (product.AssignedWarehouseId.HasValue)
+            if (product.ShlefId.HasValue)
                 throw new ArgumentException("AssignedWarehouseId");
 
             var exists = await _shelfRepo.ExistAsync(x => x.ProductId == product.Id);

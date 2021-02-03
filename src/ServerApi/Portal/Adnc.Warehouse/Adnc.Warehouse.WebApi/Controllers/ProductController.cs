@@ -1,15 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
-using System.Diagnostics.CodeAnalysis;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Authentication;
-using Adnc.Application.Shared.Dtos;
-using Adnc.Application.Shared.RpcServices;
 using Adnc.Warehouse.Application.Services;
 using Adnc.Warehouse.Application.Dtos;
-using Adnc.Warehouse.Application.RpcServices;
 using Adnc.WebApi.Shared;
 using Adnc.Infr.Common.Extensions;
 

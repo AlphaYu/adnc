@@ -5,18 +5,18 @@ using System.Text;
 
 namespace Adnc.Warehouse.Core.Entities
 {
-    public class Shlef : AggregateRoot
+    public class Shelf : AggregateRoot
     {
         public long? ProductId { protected set; get; }
         public int Qty { protected set; get; }
         public int FreezedQty { protected set; get; }
         public string Code { protected set; get; }
 
-        protected Shlef()
+        protected Shelf()
         {
         }
 
-        internal Shlef(long Id,string code)
+        internal Shelf(long Id,string code)
         {
             this.Id = Id;
             if (string.IsNullOrEmpty(code))

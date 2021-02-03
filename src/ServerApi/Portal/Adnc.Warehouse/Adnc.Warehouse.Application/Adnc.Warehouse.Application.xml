@@ -9,7 +9,7 @@
             商品管理
             </summary>
         </member>
-        <member name="M:Adnc.Warehouse.Application.Services.ProductAppService.#ctor(Adnc.Core.Shared.IRepositories.IEfRepository{Adnc.Warehouse.Core.Entities.Product},Adnc.Core.Shared.IRepositories.IEfRepository{Adnc.Warehouse.Core.Entities.Shlef},Adnc.Application.Shared.RpcServices.IMaintRpcService,Adnc.Warehouse.Core.Services.ProductManager,AutoMapper.IMapper)">
+        <member name="M:Adnc.Warehouse.Application.Services.ProductAppService.#ctor(Adnc.Core.Shared.IRepositories.IEfRepository{Adnc.Warehouse.Core.Entities.Product},Adnc.Core.Shared.IRepositories.IEfRepository{Adnc.Warehouse.Core.Entities.Shelf},Adnc.Application.Shared.RpcServices.IMaintRpcService,Adnc.Warehouse.Core.Services.ProductManager,AutoMapper.IMapper)">
             <summary>
             商品管理构造函数
             </summary>
