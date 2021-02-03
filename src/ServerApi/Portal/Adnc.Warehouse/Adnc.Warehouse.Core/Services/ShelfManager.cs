@@ -30,15 +30,15 @@ namespace Adnc.Warehouse.Core.Services
         /// <param name="unit"></param>
         /// <param name="describe"></param>
         /// <returns></returns>
-        public async Task<Shelf> CreateAsync(string code)
+        public async Task<Shelf> CreateAsync(string positionCode,string positionDescription)
         {
-            var shelf = await _shelfRepo.FetchAsync(x => x, x => x.Code == code);
+            var shelf = await _shelfRepo.FetchAsync(x => x, x => x.Position.Code == positionCode);
             if (shelf != null)
                 throw new ArgumentException("warehouseInfo");
 
             return new Shelf(
                 IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId)
-                , code
+                , new ShelfPosition(positionCode, positionDescription)
             );
         }
 
