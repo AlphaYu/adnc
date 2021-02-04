@@ -16,12 +16,12 @@ using Autofac;
 using AutoMapper;
 using Adnc.Infr.Common;
 using Adnc.Infr.Consul.Registration;
-using Adnc.Cus.WebApi.Helper;
-using Adnc.Cus.Application;
+using Adnc.Warehouse.WebApi.Helper;
+using Adnc.Warehouse.Application;
 using Adnc.WebApi.Shared;
 using Adnc.WebApi.Shared.Middleware;
 
-namespace Adnc.Cus.WebApi
+namespace Adnc.Warehouse.WebApi
 {
     public class Startup
     {
@@ -41,7 +41,7 @@ namespace Adnc.Cus.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<UserContext>();
-            services.AddAutoMapper(typeof(AdncCusProfile));
+            services.AddAutoMapper(typeof(AdncWarehouseProfile));
             services.AddHttpContextAccessor();
 
             _srvRegistration = new ServiceRegistrationHelper(_cfg, services, _env, _serviceInfo);
@@ -64,7 +64,7 @@ namespace Adnc.Cus.WebApi
             //×¢²áÒÀÀµÄ£¿é
             builder.RegisterModule<Adnc.Infr.Mongo.AdncInfrMongoModule>();
             builder.RegisterModule<Adnc.Infr.EfCore.AdncInfrEfCoreModule>();
-            builder.RegisterModule(new Adnc.Cus.Application.AdncCusApplicationModule());
+            builder.RegisterModule(new Adnc.Warehouse.Application.AdncWarehouseApplicationModule());
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)

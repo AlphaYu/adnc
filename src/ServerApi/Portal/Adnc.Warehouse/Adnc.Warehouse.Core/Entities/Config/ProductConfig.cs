@@ -7,10 +7,36 @@ namespace Adnc.Warehouse.Core.Entities.Config
     {
         public void Configure(EntityTypeBuilder<Product> builder)
         {
-            //builder.HasOne(d => d.CusFinance)
-            //    .WithOne(p => p.Customer)
-            //    .HasForeignKey<CusFinance>(d => d.ID)
-            //    .OnDelete(DeleteBehavior.ClientSetNull);
+            builder.HasKey(x => x.Id);
+
+            builder.Property(x => x.Id)
+                   .ValueGeneratedNever();
+
+            builder.Property(x => x.Name)
+                   .IsRequired()
+                   .HasMaxLength(64);
+
+            builder.Property(x => x.Describe)
+                   .HasMaxLength(128);
+
+            builder.Property(x => x.Sku)
+                   .IsRequired()
+                   .HasMaxLength(32);
+
+            builder.OwnsOne(x => x.Status)
+                   .Property(x => x.StatusCode)
+                   .IsRequired()
+                   .HasColumnName("StatusCode");
+
+            builder.OwnsOne(x => x.Status)
+                   .Property(x => x.ChangeStatusReason)
+                   .HasColumnName("ChangeStatusReason")
+                   .HasMaxLength(32);
+
+            builder.Property(x => x.Unit)
+                   .IsRequired()
+                   .HasMaxLength(4);
+           
         }
     }
 }

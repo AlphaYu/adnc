@@ -12,6 +12,6 @@ namespace Adnc.Core.Shared.Entities
         /// 唯一标识
         /// </summary>
         [Key]
-        public long Id { get; set; }
+        public virtual long Id { get; set; }
     }
 }

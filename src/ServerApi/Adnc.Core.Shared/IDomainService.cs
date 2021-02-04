@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Adnc.Warehouse.Core.Services
+namespace Adnc.Core.Shared
 {
     public interface IDomainService
     {
-
     }
 }

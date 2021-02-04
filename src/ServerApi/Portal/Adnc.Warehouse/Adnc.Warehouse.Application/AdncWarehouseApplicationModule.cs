@@ -52,7 +52,7 @@ namespace Adnc.Warehouse.Application
 
         private void LoadDepends(ContainerBuilder builder)
         {
-            builder.RegisterModule<AdncWarehouseApplicationModule>();
+            builder.RegisterModule<AdncWarehouseCoreModule>();
         }
     }
 }

@@ -3,7 +3,7 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:5030",
+      "applicationUrl": "http://localhost:8064",
       "sslPort": 0
     }
   },
@@ -12,20 +12,20 @@
       "commandName": "IISExpress",
       "launchBrowser": true,
       "environmentVariables": {
-        "SKYWALKING__SERVICENAME": "adnc.cus.webapi.dev",
+        "SKYWALKING__SERVICENAME": "adnc.warehouse.webapi.dev",
         "ASPNETCORE_ENVIRONMENT": "Development",
         "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "SkyAPM.Agent.AspNetCore"
       }
     },
-    "Adnc.Cus.WebApi": {
+    "Adnc.Warehouse.WebApi": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
-        "SKYWALKING__SERVICENAME": "adnc.cus.webapi.dev",
+        "SKYWALKING__SERVICENAME": "adnc.warehouse.webapi.dev",
         "ASPNETCORE_ENVIRONMENT": "Development",
         "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "SkyAPM.Agent.AspNetCore"
       },
-      "applicationUrl": "http://localhost:5030"
+      "applicationUrl": "http://localhost:8064"
     },
     "Docker": {
       "commandName": "Docker",

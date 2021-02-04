@@ -17,7 +17,7 @@ using Adnc.Infr.Common;
 using Adnc.Infr.Consul.Configuration;
 using Adnc.Infr.Consul;
 
-namespace Adnc.Cus.WebApi
+namespace Adnc.Warehouse.WebApi
 {
     public class Program
     {

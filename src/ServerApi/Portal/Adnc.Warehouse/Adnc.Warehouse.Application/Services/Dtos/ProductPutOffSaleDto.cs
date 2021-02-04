@@ -6,9 +6,7 @@ using Adnc.Application.Shared.Dtos;
 
 namespace Adnc.Warehouse.Application.Dtos
 {
-    public class ProductPutOffSaleDto : BaseDto
+    public class ProductPutOffSaleDto : ProductPutOnSaleDto
     {
-        public long ID { get; set; }
-        public string Reason { get; set; }
     }
 }

@@ -3,14 +3,16 @@ using System;
 using Adnc.Infr.EfCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Adnc.Warehouse.Migrations.Migrations
 {
     [DbContext(typeof(AdncDbContext))]
-    partial class AdncDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210203122338_init-20210203")]
+    partial class init20210203
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -20,6 +22,7 @@ namespace Adnc.Warehouse.Migrations.Migrations
             modelBuilder.Entity("Adnc.Warehouse.Core.Entities.Product", b =>
                 {
                     b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
                     b.Property<string>("Describe")
@@ -55,6 +58,7 @@ namespace Adnc.Warehouse.Migrations.Migrations
             modelBuilder.Entity("Adnc.Warehouse.Core.Entities.Shelf", b =>
                 {
                     b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
                     b.Property<int>("FreezedQty")
@@ -79,12 +83,10 @@ namespace Adnc.Warehouse.Migrations.Migrations
                                 .HasColumnType("bigint");
 
                             b1.Property<string>("ChangeStatusReason")
-                                .HasColumnName("ChangeStatusReason")
                                 .HasColumnType("varchar(32) CHARACTER SET utf8mb4")
                                 .HasMaxLength(32);
 
                             b1.Property<int>("StatusCode")
-                                .HasColumnName("StatusCode")
                                 .HasColumnType("int");
 
                             b1.HasKey("ProductId");

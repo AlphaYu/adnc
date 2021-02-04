@@ -9,6 +9,7 @@ namespace Adnc.Warehouse.Core.Entities
         private static readonly ConcurrentBag<Type> bag = new ConcurrentBag<Type>()
         {
              typeof(Product),
+             typeof(Shelf)
         };
 
         public ConcurrentBag<Type> GetEntities()

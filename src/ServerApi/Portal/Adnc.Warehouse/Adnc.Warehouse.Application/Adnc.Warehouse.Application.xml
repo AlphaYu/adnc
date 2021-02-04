@@ -9,7 +9,7 @@
             商品管理
             </summary>
         </member>
-        <member name="M:Adnc.Warehouse.Application.Services.ProductAppService.#ctor(Adnc.Core.Shared.IRepositories.IEfRepository{Adnc.Warehouse.Core.Entities.Product},Adnc.Core.Shared.IRepositories.IEfRepository{Adnc.Warehouse.Core.Entities.WarehouseInfo},Adnc.Application.Shared.RpcServices.IMaintRpcService,Adnc.Warehouse.Core.Services.ProductManager,AutoMapper.IMapper)">
+        <member name="M:Adnc.Warehouse.Application.Services.ProductAppService.#ctor(Adnc.Core.Shared.IRepositories.IEfRepository{Adnc.Warehouse.Core.Entities.Product},Adnc.Core.Shared.IRepositories.IEfRepository{Adnc.Warehouse.Core.Entities.Shelf},Adnc.Application.Shared.RpcServices.IMaintRpcService,Adnc.Warehouse.Core.Services.ProductManager,AutoMapper.IMapper)">
             <summary>
             商品管理构造函数
             </summary>
@@ -26,35 +26,38 @@
             <param name="input"></param>
             <returns></returns>
         </member>
-        <member name="M:Adnc.Warehouse.Application.Services.ProductAppService.UpdateAsync(Adnc.Warehouse.Application.Dtos.ProductUpdationDto)">
+        <member name="M:Adnc.Warehouse.Application.Services.ProductAppService.UpdateAsync(System.Int64,Adnc.Warehouse.Application.Dtos.ProductUpdationDto)">
             <summary>
             修改商品
             </summary>
+            <param name="id"></param>
             <param name="input"></param>
             <returns></returns>
         </member>
-        <member name="M:Adnc.Warehouse.Application.Services.ProductAppService.ChangePriceAsync(Adnc.Warehouse.Application.Dtos.ProducChangePriceDto)">
+        <member name="M:Adnc.Warehouse.Application.Services.ProductAppService.ChangePriceAsync(System.Int64,Adnc.Warehouse.Application.Dtos.ProducChangePriceDto)">
             <summary>
             调整价格
             </summary>
+            <param name="id"></param>
             <param name="input"></param>
             <returns></returns>
         </member>
-        <member name="M:Adnc.Warehouse.Application.Services.ProductAppService.PutOnSale(Adnc.Warehouse.Application.Dtos.ProductPutOnSaleDto)">
+        <member name="M:Adnc.Warehouse.Application.Services.ProductAppService.PutOnSaleAsync(System.Int64,Adnc.Warehouse.Application.Dtos.ProductPutOnSaleDto)">
             <summary>
             上架商品
             </summary>
+            <param name="id"></param>
             <param name="input"></param>
             <returns></returns>
         </member>
-        <member name="M:Adnc.Warehouse.Application.Services.ProductAppService.PutOffSale(Adnc.Warehouse.Application.Dtos.ProductPutOffSaleDto)">
+        <member name="M:Adnc.Warehouse.Application.Services.ProductAppService.PutOffSaleAsync(System.Int64,Adnc.Warehouse.Application.Dtos.ProductPutOffSaleDto)">
             <summary>
             下架商品
             </summary>
             <param name="input"></param>
             <returns></returns>
         </member>
-        <member name="M:Adnc.Warehouse.Application.Services.ProductAppService.GetPaged(Adnc.Warehouse.Application.Dtos.ProductSearchDto)">
+        <member name="M:Adnc.Warehouse.Application.Services.ProductAppService.GetPagedAsync(Adnc.Warehouse.Application.Dtos.ProductSearchDto)">
             <summary>
             商品分页列表
             </summary>

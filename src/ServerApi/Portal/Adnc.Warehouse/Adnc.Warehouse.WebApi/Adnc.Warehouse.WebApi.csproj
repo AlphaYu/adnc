@@ -7,15 +7,15 @@
 	<SatelliteResourceLanguages>zh-Hans</SatelliteResourceLanguages>
 	<SatelliteResourceLanguages>zh-Hant</SatelliteResourceLanguages>
 	<SatelliteResourceLanguages>en</SatelliteResourceLanguages>
-	<RootNamespace>Adnc.Cus.WebApi</RootNamespace>
-	<AssemblyName>Adnc.Cus.WebApi</AssemblyName>
+	<RootNamespace>Adnc.Warehouse.WebApi</RootNamespace>
+	<AssemblyName>Adnc.Warehouse.WebApi</AssemblyName>
 	<Version>0.7.0</Version>
 	<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
 	<DockerfileContext>..\..\..</DockerfileContext>
 	<Authors>Alpha.Yu</Authors>
 	<Company>Alpha</Company>
 	<Product>Adnc</Product>
-	<Description>客户中心服务</Description>
+	<Description>仓储中心服务</Description>
 	<PackageProjectUrl>https://www.aspdotnetcore.net</PackageProjectUrl>
 	<Copyright>Alpha</Copyright>
 	<RepositoryUrl>https://github.com/AlphaYu/Adnc</RepositoryUrl>  
@@ -48,7 +48,11 @@
     <ProjectReference Include="..\..\..\Adnc.Infr.Consul\20.Adnc.Infr.Consul.csproj" />
     <ProjectReference Include="..\..\..\Adnc.Infr.Mongo\23.Adnc.Infr.Mongo.csproj" />
     <ProjectReference Include="..\..\..\Adnc.WebApi.Shared\01.Adnc.WebApi.Shared.csproj" />
-    <ProjectReference Include="..\Adnc.Cus.Application\Adnc.Cus.Application.csproj" />
+    <ProjectReference Include="..\Adnc.Warehouse.Application\Adnc.Warehouse.Application.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="logs\" />
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties properties_4launchsettings_1json__JsonSchema="http://json.schemastore.org/launchsettings.json" /></VisualStudio></ProjectExtensions>

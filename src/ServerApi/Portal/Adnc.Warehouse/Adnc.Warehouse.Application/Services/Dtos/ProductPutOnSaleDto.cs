@@ -6,9 +6,8 @@ using Adnc.Application.Shared.Dtos;
 
 namespace Adnc.Warehouse.Application.Dtos
 {
-    public class ProducChangePriceDto : BaseDto
+    public class ProductPutOnSaleDto : BaseDto
     {
-        public long ID { set; get; }
-        public float Price { set; get; }
+        public string Reason { get; set; }
     }
 }

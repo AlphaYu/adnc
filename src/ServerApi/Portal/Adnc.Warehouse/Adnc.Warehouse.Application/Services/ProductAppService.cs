@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
 using Adnc.Warehouse.Application.Dtos;
 using Adnc.Warehouse.Core.Services;
 using Adnc.Warehouse.Core.Entities;
-using Adnc.Infr.Common.Helper;
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Application.Shared.Dtos;
-using Adnc.Application.Shared;
 using Adnc.Application.Shared.Services;
 using System.Linq;
 using System.Linq.Expressions;
@@ -24,7 +21,7 @@ namespace Adnc.Warehouse.Application.Services
     {
         private readonly ProductManager _productMgr;
         private readonly IEfRepository<Product> _productRepo;
-        private readonly IEfRepository<WarehouseInfo> _warehouseInfoRepo;
+        private readonly IEfRepository<Shelf> _warehouseInfoRepo;
         private readonly IMaintRpcService _maintRpcSrv;
         private readonly IMapper _mapper;
 
@@ -38,7 +35,7 @@ namespace Adnc.Warehouse.Application.Services
         /// <param name="mapper"></param>
         public ProductAppService(
              IEfRepository<Product> productRepo
-            , IEfRepository<WarehouseInfo> warehouseInfoRepo
+            , IEfRepository<Shelf> warehouseInfoRepo
             , IMaintRpcService maintRpcSrv
             , ProductManager productMgr
             , IMapper mapper)
@@ -57,18 +54,22 @@ namespace Adnc.Warehouse.Application.Services
         /// <returns></returns>
         public async Task<ProductDto> CreateAsync(ProductCreationDto input)
         {
-            var product = await _productMgr.CreateAsync(input.Sku, input.Price, input.Unit, input.Describe);
+            var product = await _productMgr.CreateAsync(input.Sku, input.Price, input.Name,input.Unit, input.Describe);
+
+            await _productRepo.InsertAsync(product);
+
             return _mapper.Map<ProductDto>(product);
         }
 
         /// <summary>
         /// 修改商品
         /// </summary>
+        /// <param name="id"></param>
         /// <param name="input"></param>
         /// <returns></returns>
-        public async Task<ProductDto> UpdateAsync(ProductUpdationDto input)
+        public async Task<ProductDto> UpdateAsync(long id, ProductUpdationDto input)
         {
-            var product = await _productRepo.FindAsync(input.ID);
+            var product = await _productRepo.FindAsync(id);
 
             product.Describe = input.Describe;
             product.Unit = input.Unit;
@@ -87,11 +88,12 @@ namespace Adnc.Warehouse.Application.Services
         /// <summary>
         /// 调整价格
         /// </summary>
+        /// <param name="id"></param>
         /// <param name="input"></param>
         /// <returns></returns>
-        public async Task<ProductDto> ChangePriceAsync(ProducChangePriceDto input)
+        public async Task<ProductDto> ChangePriceAsync(long id, ProducChangePriceDto input)
         {
-            var product = await _productRepo.FindAsync(input.ID);
+            var product = await _productRepo.FindAsync(id);
 
             product.SetPrice(input.Price);
 
@@ -103,15 +105,18 @@ namespace Adnc.Warehouse.Application.Services
         /// <summary>
         /// 上架商品
         /// </summary>
+        /// <param name="id"></param>
         /// <param name="input"></param>
         /// <returns></returns>
-        public async Task<ProductDto> PutOnSale(ProductPutOnSaleDto input)
+        public async Task<ProductDto> PutOnSaleAsync(long id,ProductPutOnSaleDto input)
         {
-            var product = await _productRepo.FindAsync(input.ID);
+            var product = await _productRepo.FindAsync(id);
 
-            var warehouseInfo = await _warehouseInfoRepo.FetchAsync(x => x, x => x.ProductId == input.ID);
+            var warehouseInfo = await _warehouseInfoRepo.FetchAsync(x => x, x => x.ProductId == id);
 
             await _productMgr.PutOnSale(product, warehouseInfo, input.Reason);
+
+            await _productRepo.UpdateAsync(product);
 
             return _mapper.Map<ProductDto>(product);
         }
@@ -121,11 +126,13 @@ namespace Adnc.Warehouse.Application.Services
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public async Task<ProductDto> PutOffSale(ProductPutOffSaleDto input)
+        public async Task<ProductDto> PutOffSaleAsync(long id, ProductPutOffSaleDto input)
         {
-            var product = await _productRepo.FindAsync(input.ID);
+            var product = await _productRepo.FindAsync(id);
 
             product.PutOffSale(input.Reason);
+
+            await _productRepo.UpdateAsync(product);
 
             return _mapper.Map<ProductDto>(product);
         }
@@ -135,7 +142,7 @@ namespace Adnc.Warehouse.Application.Services
         /// </summary>
         /// <param name="search"></param>
         /// <returns></returns>
-        public async Task<AppSrvResult<PageModelDto<ProductDto>>> GetPaged(ProductSearchDto search)
+        public async Task<PageModelDto<ProductDto>> GetPagedAsync(ProductSearchDto search)
         {
             Expression<Func<Product, bool>> whereCondition = x => true;
             if (search.Id > 0)
@@ -155,7 +162,7 @@ namespace Adnc.Warehouse.Application.Services
                     var dicts = rpcReuslt.Content.Children;
                     pagedDto.Data.ForEach(x =>
                     {
-                        x.StatusName = dicts.FirstOrDefault(d => d.Name == x.Status.ToSafeString())?.Name;
+                        x.Status.StatusDescription = dicts.FirstOrDefault(d => d.Name == x.Status.StatusCode.ToSafeString())?.Name;
                     });
                 }
             }

@@ -1,29 +1,30 @@
 ﻿using Adnc.Core.Shared.Domain.Entities;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace Adnc.Warehouse.Core.Entities
 {
-    public class WarehouseInfo : AggregateRoot
+    public class Shelf : AggregateRoot
     {
         public long? ProductId { protected set; get; }
         public int Qty { protected set; get; }
-        public int FreezedQty { protected set; get; }
-        public string Shelf { protected set; get; }
+        public int FreezedQty { protected set; get; }      
+        public ShelfPosition Position { get;private set; }
 
-        protected WarehouseInfo()
+        protected Shelf()
         {
         }
 
-        internal WarehouseInfo(long Id,string shelf)
+        internal Shelf(long id,ShelfPosition position)
         {
-            this.Id = Id;
-            if (string.IsNullOrEmpty(shelf))
-                throw new ArgumentException("shelf");
-            this.Shelf = shelf;
+            if(string.IsNullOrWhiteSpace(position?.Code))
+                throw new ArgumentException("code");
+            this.Id = id;
             this.Qty = 0;
             this.FreezedQty = 0;
+            this.Position = position;
         }
 
         /// <summary>

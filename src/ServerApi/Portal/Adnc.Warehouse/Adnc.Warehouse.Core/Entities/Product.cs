@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Adnc.Core.Shared.Domain.Entities;
@@ -18,7 +19,7 @@ namespace Adnc.Warehouse.Core.Entities
 
         public ProductStatus Status { internal set; get; }
 
-        public long? AssignedWarehouseId { private set; get; }
+        public long? ShlefId { private set; get; }
 
         public string Unit {set; get; }
 
@@ -97,10 +98,10 @@ namespace Adnc.Warehouse.Core.Entities
         /// <param name="shelfId"></param>
         public void SetShelf(long shelfId)
         {
-            if(this.AssignedWarehouseId.HasValue)
+            if(this.ShlefId.HasValue)
                 throw new ArgumentException("newPrice");
 
-            this.AssignedWarehouseId = shelfId;
+            this.ShlefId = shelfId;
         }
     }
 }

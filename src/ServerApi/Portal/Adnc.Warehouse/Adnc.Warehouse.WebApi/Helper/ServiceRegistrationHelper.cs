@@ -3,12 +3,11 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Adnc.WebApi.Shared;
-using Adnc.Cus.Core.EventBus;
-using Adnc.Cus.Core;
+using Adnc.Warehouse.Core.EventBus.Subscriber;
+using Adnc.Warehouse.Core;
 using Adnc.Application.Shared.RpcServices;
-using Adnc.Cus.Application.RpcServices;
 
-namespace Adnc.Cus.WebApi.Helper
+namespace Adnc.Warehouse.WebApi.Helper
 {
     public sealed class ServiceRegistrationHelper : SharedServicesRegistration
     {
@@ -36,7 +35,7 @@ namespace Adnc.Cus.WebApi.Helper
         {
             base.AddEventBusSubscribers(tableNamePrefix, groupName, s =>
             {
-                s.AddScoped<IRechargeSubscriber, RechargeSubscriber>();
+                s.AddScoped<IShelfToProductAllocatedEventSubscirber, ShelfToProductAllocatedEventSubscirber>();
                 //add others......
             });
         }

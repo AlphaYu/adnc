@@ -12,13 +12,8 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>..\Adnc.Cus.WebApi\bin\$(Configuration)</OutputPath>
+    <OutputPath>..\Adnc.Warehouse.WebApi\bin\$(Configuration)</OutputPath>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="Migrations\20201123161344_20201123_01.cs" />
-    <Compile Remove="Migrations\20201123161344_20201123_01.Designer.cs" />
-  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Adnc.Infr.EfCore\22.Adnc.Infr.EfCore.csproj" />

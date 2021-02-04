@@ -30,11 +30,21 @@ namespace Adnc.Warehouse.Core.EventBus.Subscriber
         [CapSubscribe(EventBusConsts.ShelfToProductAllocated)]
         public async Task Process(ShelfToProductAllocatedEto eto)
         {
+            try
+            {
+                using (var trans = _uow.GetDbContextTransaction())
+                {
+                    var produdct = await _productReop.FindAsync(eto.ProductId);
+                    produdct.SetShelf(eto.ShelfId);
+                    await _productReop.UpdateAsync(produdct);
 
-            var produdct = await _productReop.FindAsync(eto.ProductId);
-            produdct.SetShelf(eto.ShelfId);
-
-            await _productReop.UpdateAsync(produdct);
+                    _uow.Commit();
+                }
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+            }
         }
     }
 }
