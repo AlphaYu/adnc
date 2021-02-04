@@ -7,8 +7,8 @@ namespace Adnc.Warehouse.Core.EventBus.Etos
 {
     public class ShelfToProductAllocatedEto : BaseEto
     {
-        public long ShelfId { get; internal set; }
+        public long ShelfId { get; set; }
 
-        public long ProductId { get; internal set; }
+        public long ProductId { get; set; }
     }
 }

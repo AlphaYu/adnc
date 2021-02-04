@@ -35,10 +35,12 @@ namespace Adnc.Warehouse.Core.EventBus.Subscriber
                 using (var trans = _uow.GetDbContextTransaction())
                 {
                     var produdct = await _productReop.FindAsync(eto.ProductId);
-                    produdct.SetShelf(eto.ShelfId);
-                    await _productReop.UpdateAsync(produdct);
-
-                    _uow.Commit();
+                    if (produdct != null)
+                    {
+                        produdct.SetShelf(eto.ShelfId);
+                        await _productReop.UpdateAsync(produdct);
+                        _uow.Commit();
+                    }
                 }
             }
             catch(Exception ex)

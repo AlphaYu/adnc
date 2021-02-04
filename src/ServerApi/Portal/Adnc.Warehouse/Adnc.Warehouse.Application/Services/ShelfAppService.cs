@@ -41,6 +41,8 @@ namespace Adnc.Warehouse.Application.Services
 
         public async Task<ShelfDto> AllocateShelfToProductAsync(long shelfId, ShelfAllocateToProductDto input)
         {
+            await Test();
+
             var shelf = await _shelfRepo.FindAsync(shelfId);
             var product = await _productRepo.FindAsync(input.ProductId.ToLong().Value);
 
@@ -107,6 +109,12 @@ namespace Adnc.Warehouse.Application.Services
                 ,
                 Data = data
             };
+        }
+
+        public async Task Test()
+        {
+            await Task.Delay(1000);
+            await _shelfRepo.CountAsync(x=>true);
         }
     }
 }

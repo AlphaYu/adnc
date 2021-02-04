@@ -98,8 +98,11 @@ namespace Adnc.Warehouse.Core.Entities
         /// <param name="shelfId"></param>
         public void SetShelf(long shelfId)
         {
-            if(this.ShlefId.HasValue)
+            if (this.ShlefId == 0)
                 throw new ArgumentException("newPrice");
+
+            if (this.ShlefId == shelfId)
+                return;
 
             this.ShlefId = shelfId;
         }

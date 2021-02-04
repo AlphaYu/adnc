@@ -61,7 +61,8 @@ namespace Adnc.Warehouse.Core.Services
             shelf.SetProductId(product.Id);
 
             //发布领域事件，Product会订阅该事件，调整商品对应的货架号。
-            await _capBus.PublishAsync(EventBusConsts.ShelfToProductAllocated, new ShelfToProductAllocatedEto
+            await _capBus.PublishAsync(EventBusConsts.ShelfToProductAllocated
+            , new ShelfToProductAllocatedEto
             {
                 Id = IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId)
                 ,

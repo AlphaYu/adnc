@@ -96,13 +96,17 @@ namespace Adnc.Warehouse.Core.Entities
         }
 
         /// <summary>
-        /// 分配商品
+        /// 分配货架给商品
         /// </summary>
         /// <param name="productId"></param>
         internal void SetProductId(long productId)
         {
-            if(this.ProductId.HasValue)
+            if (this.ProductId.HasValue && this.ProductId == productId)
                 throw new ArgumentException("ProductId");
+
+            if (productId == 0)
+                throw new ArgumentException("ProductId");
+
             this.ProductId = productId;
         }
     }
