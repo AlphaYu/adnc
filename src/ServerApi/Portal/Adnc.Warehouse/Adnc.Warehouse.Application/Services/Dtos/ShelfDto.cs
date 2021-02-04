@@ -7,8 +7,8 @@ namespace Adnc.Warehouse.Application.Dtos
 {
     public class ShelfDto : BaseDto
     {
-        public long Id { get; set; }
-        public long? ProductId { set; get; }
+        public string Id { get; set; }
+        public string ProductId { set; get; }
         public int Qty { set; get; }
         public int FreezedQty { set; get; }
         public ShelfPositionDto Position { get; set; }

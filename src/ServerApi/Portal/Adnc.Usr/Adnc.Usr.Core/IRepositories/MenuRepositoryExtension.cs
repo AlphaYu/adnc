@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
 using Adnc.Usr.Core.Entities;
 using Adnc.Core.Shared.IRepositories;
 

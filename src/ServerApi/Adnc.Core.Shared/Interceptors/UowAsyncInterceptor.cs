@@ -189,12 +189,17 @@ namespace Adnc.Core.Shared.Interceptors
         /// <returns></returns>
         private dynamic GetDbTransaction(UnitOfWorkAttribute attribute)
         {
-            dynamic trans = null;
+            dynamic trans;
             var adncTrans = _unitOfWork.GetDbContextTransaction();
+
             if (_capPublisher != null && attribute.SharedToCap)
             {
                 _capPublisher.Transaction.Value = _capTransaction;
-                var capTrans = _capPublisher.Transaction.Value.Begin(adncTrans, autoCommit: false);
+                //var capTrans = _capPublisher.Transaction.Value.Begin(adncTrans, autoCommit: false);
+                var capTrans = _capPublisher.Transaction.Value;
+                capTrans.DbTransaction = adncTrans;
+                capTrans.AutoCommit = false;
+
                 trans = capTrans;
             }
             else

@@ -69,9 +69,14 @@ namespace Adnc.Usr.Core.Services
             var originalDeptPids = $"{oldDeptPids}[{dept.Id}],";
             var nowDeptPids = $"{dept.Pids}[{dept.Id}],";
 
-            var subDepts = await _deptRepository.SelectAsync(d => new { d.Id, d.Pids }
-                                                            , d => d.Pids.StartsWith(originalDeptPids)
-                                                            );
+            var subDepts = await _deptRepository
+                                 .Where(d => d.Pids.StartsWith(originalDeptPids))
+                                 .Select(d => new { d.Id, d.Pids })
+                                 .ToListAsync();
+
+            //var subDepts = await _deptRepository.SelectAsync(d => new { d.Id, d.Pids }
+            //                                                , d => d.Pids.StartsWith(originalDeptPids)
+            //                                                );
             subDepts.ForEach(c =>
             {
                 _deptRepository.UpdateAsync(new SysDept { Id = c.Id, Pids = c.Pids.Replace(originalDeptPids, nowDeptPids) }, c => c.Pids).Wait();

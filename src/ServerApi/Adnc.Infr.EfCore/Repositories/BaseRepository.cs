@@ -46,6 +46,11 @@ namespace Adnc.Infr.EfCore.Repositories
             return dbSet;
         }
 
+        public IQueryable<TEntity> Where(Expression<Func<TEntity, bool>> expression, bool writeDb = false)
+        {
+            return this.GetAll<TEntity>(writeDb).Where(expression);
+        }
+
         public virtual async Task<IEnumerable<dynamic>> QueryAsync(string sql, object param = null, int? commandTimeout = null, CommandType? commandType = null, bool writeDb = false)
         {
             if (writeDb)
@@ -70,6 +75,14 @@ namespace Adnc.Infr.EfCore.Repositories
         {
             await DbContext.Set<TEntity>().AddRangeAsync(entities);
             return await DbContext.SaveChangesAsync(cancellationToken);
+        }
+
+        public virtual async Task<int> DeleteAsync(TEntity entity, CancellationToken cancellationToken = default)
+        {
+            DbContext.Attach(entity);
+            DbContext.Remove(entity);
+            var result = await DbContext.SaveChangesAsync(cancellationToken);
+            return result;
         }
 
         public virtual async Task<int> DeleteAsync(long keyValue, CancellationToken cancellationToken = default)
@@ -110,6 +123,9 @@ namespace Adnc.Infr.EfCore.Repositories
         {
             if (propertyExpressions == null || propertyExpressions.Length == 0)
             {
+                //var entry = DbContext.Entry(entity);
+                //DbContext.Attach(entity);
+                //DbContext.Entry(entity).State= EntityState.Modified;
                 DbContext.Update(entity);
             }
             else
@@ -208,50 +224,6 @@ namespace Adnc.Infr.EfCore.Repositories
                 ? await Task.FromResult(result as TEntity)
                 : await Task.FromResult(JsonSerializer.Deserialize<TEntity>(JsonSerializer.Serialize(result)))
                 ;
-        }
-
-        public virtual async Task<List<TResult>> SelectAsync<TResult>(Expression<Func<TEntity, TResult>> selector, Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, object>> orderByExpression = null, bool ascending = false, bool writeDb = false,CancellationToken cancellationToken = default)
-        {
-            var dbSet = DbContext.Set<TEntity>().AsNoTracking();
-            if (writeDb)
-                dbSet = dbSet.TagWith(EfCoreConsts.MAXSCALE_ROUTE_TO_MASTER);
-
-            var query = dbSet.Where(whereExpression);
-            if (orderByExpression != null)
-            {
-                if (ascending)
-                {
-                    query = query.OrderBy(orderByExpression);
-                }
-                else
-                {
-                    query = query.OrderByDescending(orderByExpression);
-                }
-            }
-
-            return await query.Select(selector).ToListAsync();
-        }
-
-        public virtual async Task<List<TResult>> SelectAsync<TResult>(int count, Expression<Func<TEntity, TResult>> selector, Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, object>> orderByExpression=null, bool ascending = false, bool writeDb = false, CancellationToken cancellationToken = default)
-        {
-            var dbSet = DbContext.Set<TEntity>().AsNoTracking();
-            if (writeDb)
-                dbSet = dbSet.TagWith(EfCoreConsts.MAXSCALE_ROUTE_TO_MASTER);
-
-            var query = dbSet.Where(whereExpression);
-            if (orderByExpression != null)
-            {
-                if (ascending)
-                {
-                    query = query.OrderBy(orderByExpression);
-                }
-                else
-                {
-                    query = query.OrderByDescending(orderByExpression);
-                }
-            }
-
-            return await query.Select(selector).Take(count).ToListAsync(cancellationToken);
         }
 
         public virtual async Task<IPagedModel<TEntity>> PagedAsync(int pageIndex, int pageSize, Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, object>> orderByExpression, bool ascending = false, bool writeDb = false,CancellationToken cancellationToken = default)

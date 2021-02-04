@@ -11,7 +11,6 @@ using Adnc.Usr.Core.Entities;
 using Adnc.Usr.Core.Services;
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Infr.Common.Helper;
-using Microsoft.EntityFrameworkCore;
 using EasyCaching.Core;
 using Adnc.Application.Shared.Dtos;
 using Adnc.Application.Shared.Services;
@@ -64,7 +63,8 @@ namespace Adnc.Usr.Application.Services
             if (user == null)
                 return null;
 
-            var roles = await _roleRepository.SelectAsync(r => r, x => true);
+            //var roles = await _roleRepository.SelectAsync(r => r, x => true);
+            var roles = await _roleRepository.Where(x => true).ToListAsync();
             var roleIds = user.RoleId?.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(x => long.Parse(x)) ?? new List<long>();
             if (roles.Any())
             {
@@ -158,7 +158,7 @@ namespace Adnc.Usr.Application.Services
                 var allMenus = await _relationRepository.GetAll(writeDb:true)
                .Where(x => x.Menu.Status == true)
                .Select(x => new RoleMenuCodesDto { RoleId = x.RoleId, Code = x.Menu.Code })
-               .ToArrayAsync();
+               .ToListAsync();
                 return allMenus.Distinct().ToArray();
             }, TimeSpan.FromSeconds(EasyCachingConsts.OneYear));
 

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using EasyCaching.Core;
 using AutoMapper;
 using Adnc.Maint.Application.Dtos;
@@ -14,7 +13,6 @@ using Adnc.Maint.Core.Entities;
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Application.Shared.Services;
 using Adnc.Application.Shared.Dtos;
-using Adnc.Application.Shared;
 
 namespace  Adnc.Maint.Application.Services
 {
