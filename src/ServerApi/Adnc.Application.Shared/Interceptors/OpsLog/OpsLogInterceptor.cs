@@ -8,7 +8,6 @@ namespace Adnc.Application.Shared.Interceptors
     /// </summary>
     public class OpsLogInterceptor : IInterceptor
     {
-        private bool _isLoging = false;
         private readonly OpsLogAsyncInterceptor _opsLogAsyncInterceptor;
 
         public OpsLogInterceptor(OpsLogAsyncInterceptor opsLogAsyncInterceptor)
@@ -18,16 +17,6 @@ namespace Adnc.Application.Shared.Interceptors
 
         public void Intercept(IInvocation invocation)
         {
-            var methodInfo = invocation.Method ?? invocation.MethodInvocationTarget;
-            var attribute = methodInfo.GetCustomAttribute<OpsLogAttribute>();
-            if (attribute == null || _isLoging)
-            {
-                invocation.Proceed();
-                return;
-            }
-
-            _isLoging = true;
-
             this._opsLogAsyncInterceptor.ToInterceptor().Intercept(invocation);
         }
     }

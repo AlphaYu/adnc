@@ -7,23 +7,26 @@ using Adnc.Infr.Common;
 using Adnc.Infr.Common.Helper;
 using Adnc.Infr.Mq.RabbitMq;
 using Castle.DynamicProxy;
-
+using Microsoft.Extensions.Logging;
 
 namespace Adnc.Application.Shared.Interceptors
 {
     /// <summary>
-    /// 操作日志异步拦截器
+    /// 操作日志拦截器
     /// </summary>
     public sealed class OpsLogAsyncInterceptor : IAsyncInterceptor
     {
         private readonly UserContext _userContext;
         private readonly RabbitMqProducer _mqProducer;
+        private readonly ILogger<OpsLogAsyncInterceptor> _logger;
 
         public OpsLogAsyncInterceptor(UserContext userContext
-            , RabbitMqProducer mqProducer)
+            , RabbitMqProducer mqProducer
+            , ILogger<OpsLogAsyncInterceptor> logger)
         {
             _userContext = userContext;
             _mqProducer = mqProducer;
+            _logger = logger;
         }
 
         /// <summary>
@@ -32,7 +35,11 @@ namespace Adnc.Application.Shared.Interceptors
         /// <param name="invocation"></param>
         public void InterceptSynchronous(IInvocation invocation)
         {
-            InternalInterceptSynchronous(invocation);
+            var attribute = GetAttribute(invocation);
+            if (attribute == null)
+                invocation.Proceed();
+            else
+                InternalInterceptSynchronous(invocation, attribute);
         }
 
         /// <summary>
@@ -41,7 +48,12 @@ namespace Adnc.Application.Shared.Interceptors
         /// <param name="invocation"></param>
         public void InterceptAsynchronous(IInvocation invocation)
         {
-            invocation.ReturnValue = InternalInterceptAsynchronous(invocation);
+            var attribute = GetAttribute(invocation);
+
+            invocation.ReturnValue = attribute == null
+                                     ? InternalInterceptAsynchronousWithOutOpsLog(invocation)
+                                     : InternalInterceptAsynchronous(invocation, attribute)
+                                     ;
         }
 
         /// <summary>
@@ -51,13 +63,17 @@ namespace Adnc.Application.Shared.Interceptors
         /// <param name="invocation"></param>
         public void InterceptAsynchronous<TResult>(IInvocation invocation)
         {
-            invocation.ReturnValue = InternalInterceptAsynchronous<TResult>(invocation);
+            var attribute = GetAttribute(invocation);
+
+            invocation.ReturnValue = attribute == null
+                                     ? InternalInterceptAsynchronousWithOutOpsLog<TResult>(invocation)
+                                     : InternalInterceptAsynchronous<TResult>(invocation, attribute)
+                                     ;
         }
 
-        private void InternalInterceptSynchronous(IInvocation invocation)
+        private void InternalInterceptSynchronous(IInvocation invocation,OpsLogAttribute attribute)
         {
             var methodInfo = invocation.Method ?? invocation.MethodInvocationTarget;
-            var attribute = methodInfo.GetCustomAttribute<OpsLogAttribute>();
             var log = CreateOpsLog(methodInfo.DeclaringType.FullName, methodInfo.Name, attribute.LogName, invocation.Arguments, _userContext);
             try
             {
@@ -74,10 +90,9 @@ namespace Adnc.Application.Shared.Interceptors
             }
         }
 
-        private async Task InternalInterceptAsynchronous(IInvocation invocation)
+        private async Task InternalInterceptAsynchronous(IInvocation invocation,OpsLogAttribute attribute)
         {
             var methodInfo = invocation.Method ?? invocation.MethodInvocationTarget;
-            var attribute = methodInfo.GetCustomAttribute<OpsLogAttribute>();
             var log = CreateOpsLog(methodInfo.DeclaringType.FullName, methodInfo.Name, attribute.LogName, invocation.Arguments, _userContext);
 
             try
@@ -97,12 +112,19 @@ namespace Adnc.Application.Shared.Interceptors
             }
         }
 
-        private async Task<TResult> InternalInterceptAsynchronous<TResult>(IInvocation invocation)
+        private async Task InternalInterceptAsynchronousWithOutOpsLog(IInvocation invocation)
+        {
+            invocation.Proceed();
+            var task = (Task)invocation.ReturnValue;
+            await task;
+
+        }
+
+        private async Task<TResult> InternalInterceptAsynchronous<TResult>(IInvocation invocation,OpsLogAttribute attribute)
         {
             TResult result;
 
             var methodInfo = invocation.Method ?? invocation.MethodInvocationTarget;
-            var attribute = methodInfo.GetCustomAttribute<OpsLogAttribute>();
             var log = CreateOpsLog(methodInfo.DeclaringType.FullName, methodInfo.Name, attribute.LogName, invocation.Arguments, _userContext);
 
             try
@@ -122,6 +144,17 @@ namespace Adnc.Application.Shared.Interceptors
             }
             return result;
         }
+
+        private async Task<TResult> InternalInterceptAsynchronousWithOutOpsLog<TResult>(IInvocation invocation)
+        {
+            TResult result;
+            invocation.Proceed();
+            var task = (Task<TResult>)invocation.ReturnValue;
+            result = await task;
+
+            return result;
+        }
+
 
         private dynamic CreateOpsLog(string className, string methodName, string logName, object[] arguments, UserContext userContext)
         {
@@ -151,8 +184,20 @@ namespace Adnc.Application.Shared.Interceptors
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message, ex);
+                _logger.LogError(ex.Message, ex);
             }
+        }
+
+        /// <summary>
+        /// 获取拦截器attrbute
+        /// </summary>
+        /// <param name="invocation"></param>
+        /// <returns></returns>
+        private OpsLogAttribute GetAttribute(IInvocation invocation)
+        {
+            var methodInfo = invocation.Method ?? invocation.MethodInvocationTarget;
+            var attribute = methodInfo.GetCustomAttribute<OpsLogAttribute>();
+            return attribute;
         }
     }
 }

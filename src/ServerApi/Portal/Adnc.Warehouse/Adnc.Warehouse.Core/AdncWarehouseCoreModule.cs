@@ -20,19 +20,11 @@ namespace Adnc.Warehouse.Core
                    .As<IEntityInfo>()
                    .InstancePerLifetimeScope();
 
-            //注册事务拦截器
-            builder.RegisterType<UowInterceptor>()
-                   .InstancePerLifetimeScope();
-            builder.RegisterType<UowAsyncInterceptor>()
-                   .InstancePerLifetimeScope();
-
             //注册Core服务
             builder.RegisterAssemblyTypes(this.ThisAssembly)
                    .Where(t => t.IsAssignableTo<ICoreService>())
                    .AsSelf()
-                   .InstancePerLifetimeScope()
-                   .EnableClassInterceptors()
-                   .InterceptedBy(typeof(UowInterceptor));
+                   .InstancePerLifetimeScope();
         }
 
         /// <summary>
