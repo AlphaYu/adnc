@@ -101,8 +101,8 @@ namespace Adnc.Warehouse.Core.Entities
         /// <param name="productId"></param>
         internal void SetProductId(long productId)
         {
-            if (this.ProductId.HasValue && this.ProductId == productId)
-                throw new ArgumentException("ProductId");
+            //if (this.ProductId.HasValue && this.ProductId == productId)
+            //    throw new ArgumentException("ProductId");
 
             if (productId == 0)
                 throw new ArgumentException("ProductId");

@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Storage;
-using System;
+﻿using System;
 using System.Data;
 
 namespace Adnc.Core.Shared
@@ -8,7 +7,7 @@ namespace Adnc.Core.Shared
     {
         bool IsStartingUow { get;}
 
-        IDbContextTransaction GetDbContextTransaction(IsolationLevel isolationLevel = IsolationLevel.ReadCommitted);
+        dynamic GetDbContextTransaction(IsolationLevel isolationLevel = IsolationLevel.ReadCommitted);
 
         string ProviderName { get; }
 

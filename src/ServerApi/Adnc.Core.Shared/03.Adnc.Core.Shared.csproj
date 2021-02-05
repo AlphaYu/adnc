@@ -17,18 +17,16 @@
 		<PackageReference Include="Humanizer" Version="2.8.26" />
 		<PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0" />
 		<PackageReference Include="DotNetCore.CAP" Version="3.0.4" />
-		<PackageReference Include="DotNetCore.CAP.MySql" Version="3.0.4" />
-		<PackageReference Include="DotNetCore.CAP.RabbitMQ" Version="3.0.4" />
 		<PackageReference Include="Humanizer" Version="2.8.26" />
 		<PackageReference Include="AutoMapper" Version="10.1.1" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.9" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.9" />
 		<PackageReference Include="MongoDB.Bson" Version="2.11.3" />
 		<PackageReference Include="MongoDB.Driver" Version="2.11.3" />
 		<PackageReference Include="Castle.Core" Version="4.4.1" />
 		<PackageReference Include="Autofac.Extras.DynamicProxy" Version="6.0.0" />
 		<PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.0.2" />
 		<PackageReference Include="Castle.Core.AsyncInterceptor" Version="1.7.0" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.9" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.9" />
 	</ItemGroup>
 
 	<ItemGroup>

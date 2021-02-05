@@ -80,8 +80,6 @@ namespace Adnc.Infr.EfCore
             {
                 var entity = entry.Entity;
                 {
-                    entity.CreateBy = _userContext.Id;
-                    entity.CreateTime = DateTime.Now;
                     entity.ModifyBy = _userContext.Id;
                     entity.ModifyTime = DateTime.Now;
                 }

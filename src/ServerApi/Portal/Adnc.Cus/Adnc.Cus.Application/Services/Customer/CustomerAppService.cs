@@ -29,7 +29,7 @@ namespace Adnc.Cus.Application.Services
 
         public async Task<AppSrvResult<SimpleDto<string>>> Register(RegisterInputDto inputDto)
         {
-            var exists = await _customerRepo.ExistAsync(t => t.Account == inputDto.Account);
+            var exists = await _customerRepo.AnyAsync(t => t.Account == inputDto.Account);
             if (exists)
                 return Problem(HttpStatusCode.Forbidden, "该账号已经存在");
 

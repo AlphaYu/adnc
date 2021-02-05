@@ -57,7 +57,7 @@ namespace Adnc.Warehouse.Core.Services
             if (product.Sku == newSku)
                 return;
 
-            var exists = await _productRepo.ExistAsync(x => x.Sku == newSku);
+            var exists = await _productRepo.AnyAsync(x => x.Sku == newSku);
             if (exists)
                 throw new ArgumentException("newsku");
 
@@ -75,7 +75,7 @@ namespace Adnc.Warehouse.Core.Services
             if (product.Name == newName)
                 return;
 
-            var exists = await _productRepo.ExistAsync(x => x.Name == newName);
+            var exists = await _productRepo.AnyAsync(x => x.Name == newName);
             if (exists)
                 throw new ArgumentException("newName");
 

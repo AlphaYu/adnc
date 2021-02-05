@@ -20,7 +20,7 @@ namespace Adnc.Infr.EfCore
             _dbContext = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public IDbContextTransaction GetDbContextTransaction(IsolationLevel isolationLevel = IsolationLevel.ReadCommitted)
+        public dynamic GetDbContextTransaction(IsolationLevel isolationLevel = IsolationLevel.ReadCommitted)
         {
             if (this.IsStartingUow)
                 throw new Exception("UnitOfWork Error");

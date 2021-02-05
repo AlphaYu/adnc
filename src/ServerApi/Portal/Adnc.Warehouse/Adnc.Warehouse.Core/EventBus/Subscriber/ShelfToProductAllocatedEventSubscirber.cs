@@ -39,7 +39,7 @@ namespace Adnc.Warehouse.Core.EventBus.Subscriber
                     {
                         produdct.SetShelf(eto.ShelfId);
                         await _productReop.UpdateAsync(produdct);
-                        _uow.Commit();
+                        trans.Commit();
                     }
                 }
             }

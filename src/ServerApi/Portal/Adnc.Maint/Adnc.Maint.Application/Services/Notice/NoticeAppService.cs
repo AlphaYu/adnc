@@ -25,11 +25,13 @@ namespace  Adnc.Maint.Application.Services
             List<SysNotice> notices = null;
             if (title.IsNullOrEmpty())
             {
-                notices = await _noticeRepository.SelectAsync(n => n, x => true);
+                notices = await _noticeRepository.Where(x => true).ToListAsync();
+                //notices = await _noticeRepository.SelectAsync(n => n, x => true);
             }
             else
             {
-                notices = await _noticeRepository.SelectAsync(n => n, x => x.Title.Contains(title));
+                notices = await _noticeRepository.Where(x => x.Title.Contains(title)).ToListAsync();
+                //notices = await _noticeRepository.SelectAsync(n => n, x => x.Title.Contains(title));
             }
 
             return _mapper.Map<List<NoticeDto>>(notices);

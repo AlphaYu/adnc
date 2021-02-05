@@ -8,7 +8,6 @@ using AutoMapper;
 using Adnc.Infr.Common.Extensions;
 using Adnc.Application.Shared.Dtos;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
 
 namespace Adnc.Warehouse.Application.Services
 {
@@ -75,29 +74,29 @@ namespace Adnc.Warehouse.Application.Services
             var skipNumber = (search.PageIndex - 1) * search.PageSize;
 
             var data = await (from s in shelfs
-                             join p in products
-                             on s.Id equals p.ShlefId into sp
-                             from x in sp.DefaultIfEmpty()
-                             select new ShelfDto()
-                             {
-                                 Id = s.Id
-                                 ,
-                                 FreezedQty = s.FreezedQty
-                                 //,
-                                 //Position = _mapper.Map<ShelfPositionDto>(s.Position)
-                                 ,
-                                 ProductId = s.ProductId
-                                 ,
-                                 ProductName = x.Name
-                                 ,
-                                 ProductSku = x.Name
-                                 ,
-                                 Qty = s.Qty
-                             })
+                              join p in products
+                              on s.Id equals p.ShlefId into sp
+                              from x in sp.DefaultIfEmpty()
+                              select new ShelfDto()
+                              {
+                                  Id = s.Id.ToString()
+                                  ,
+                                  FreezedQty = s.FreezedQty
+                                  //,
+                                  //Position = _mapper.Map<ShelfPositionDto>(s.Position)
+                                  ,
+                                  ProductId = s.ToSafeString()
+                                  ,
+                                  ProductName = x.Name
+                                  ,
+                                  ProductSku = x.Name
+                                  ,
+                                  Qty = s.Qty
+                              })
                            .Skip(skipNumber)
                            .Take(search.PageSize)
-                           .OrderByDescending(x=>x.Id)
-                           .ToArrayAsync();
+                           .OrderByDescending(x => x.Id)
+                           .ToListAsync();
 
             return new PageModelDto<ShelfDto>()
             {
