@@ -98,7 +98,7 @@ namespace Adnc.Usr.Application.Services
             if (Id == 1600000000010)
                 return Problem(HttpStatusCode.Forbidden, "禁止删除初始角色");
 
-            if (await _userRepository.ExistAsync(x => x.RoleId == Id.ToString()))
+            if (await _userRepository.AnyAsync(x => x.RoleId == Id.ToString()))
                 return Problem(HttpStatusCode.Forbidden, "有用户使用该角色，禁止删除");
 
             await _roleRepository.DeleteAsync(Id);

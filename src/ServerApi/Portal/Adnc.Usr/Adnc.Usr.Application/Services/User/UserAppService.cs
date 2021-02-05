@@ -58,7 +58,7 @@ namespace Adnc.Usr.Application.Services
 
         public async Task<AppSrvResult<long>> Add(UserSaveInputDto saveDto)
         {
-            if (await _userRepository.ExistAsync(x => x.Account == saveDto.Account))
+            if (await _userRepository.AnyAsync(x => x.Account == saveDto.Account))
                 return Problem(HttpStatusCode.BadRequest, "账号已经存在");
 
             var user = _mapper.Map<SysUser>(saveDto);

@@ -39,9 +39,9 @@ namespace Adnc.Infr.EfCore.Repositories
 
         public virtual IQueryable<TEntity> GetAll(bool writeDb = false)
         {
-            
-            var dbSet= DbContext.Set<TEntity>().AsNoTracking();
-            if(writeDb)
+
+            var dbSet = DbContext.Set<TEntity>().AsNoTracking();
+            if (writeDb)
                 return dbSet.TagWith(EfCoreConsts.MAXSCALE_ROUTE_TO_MASTER);
             return dbSet;
         }
@@ -77,16 +77,18 @@ namespace Adnc.Infr.EfCore.Repositories
             return await DbContext.SaveChangesAsync(cancellationToken);
         }
 
-        public virtual async Task<int> DeleteAsync(TEntity entity, CancellationToken cancellationToken = default)
-        {
-            DbContext.Attach(entity);
-            DbContext.Remove(entity);
-            var result = await DbContext.SaveChangesAsync(cancellationToken);
-            return result;
-        }
-
         public virtual async Task<int> DeleteAsync(long keyValue, CancellationToken cancellationToken = default)
         {
+            //获取实体是否被跟踪
+            var entity = DbContext.Set<TEntity>().Local.FirstOrDefault(x => x.Id == keyValue);
+
+            //如果实体被跟踪，调用Ef原生方法删除
+            if (entity != null)
+            {
+                DbContext.Remove(entity);
+                return await DbContext.SaveChangesAsync();
+            }
+
             var mapping = DbContext.Model.FindEntityType(typeof(TEntity)); //3.0
             var properties = mapping.GetProperties();
             var schema = mapping.GetSchema() ?? "dbo";
@@ -121,39 +123,71 @@ namespace Adnc.Infr.EfCore.Repositories
 
         public async virtual Task<int> UpdateAsync(TEntity entity, params Expression<Func<TEntity, object>>[] propertyExpressions)
         {
-            if (propertyExpressions == null || propertyExpressions.Length == 0)
+            //获取实体状态
+            var entry = DbContext.Entry(entity);
+
+            //实体被为没有更改
+            if(entry.State == EntityState.Unchanged)
+                return await Task.FromResult(0);
+
+            //实体被标记为Added或者Deleted，抛出异常。
+            //ADNC应该不会出现这种状态
+            if (entry.State == EntityState.Added || entry.State == EntityState.Deleted)
+                throw new ArgumentException($"{nameof(entity)},实体状态为{nameof(entry.State)}");
+
+            //没有指定需要更新的列
+            if (propertyExpressions?.Length == 0)
+                //如果实体没有被跟踪，直接抛出异常
+                if (entry.State == EntityState.Detached)
+                    throw new ArgumentException($"{nameof(propertyExpressions)},不能为空");
+                //如果实体被跟踪，调用EF原生方法
+                else if (entry.State == EntityState.Modified)
+                    return await DbContext.SaveChangesAsync();
+
+            //有指定需要更新的列
+            //实体被跟踪
+            if (entry.State == EntityState.Modified)
             {
-                //var entry = DbContext.Entry(entity);
-                //DbContext.Attach(entity);
-                //DbContext.Entry(entity).State= EntityState.Modified;
-                DbContext.Update(entity);
+                //备选方案直接抛异常throw new ArgumentException($"{nameof(entity)},实体已经被跟踪,不需要指定更新列");
+                var propNames = propertyExpressions.Select(x => x.GetMemberName()).ToArray();
+                entry.Properties.ForEach(propEntry =>
+                {
+                    if (!propNames.Contains(propEntry.Metadata.Name))
+                    {
+                        propEntry.IsModified = false;
+                    }
+                });
             }
+            //实体没有被跟踪
             else
             {
-                var entry = DbContext.GetEntityEntry(entity, out var existBefore);
-
-                if (existBefore)
+                var originalEntity = DbContext.Set<TEntity>().Local.FirstOrDefault(x => x.Id == entity.Id);
+                //当前上下文中，没有同Id实体
+                if (originalEntity == null)
                 {
+                    DbContext.Attach(entity);
+                    propertyExpressions.ForEach(expression =>
+                    {
+                        entry.Property(expression).IsModified = true;
+                    });
+                }
+                else
+                {
+                    //当前上下文中，有同Id实体
+                    var originaEntry = DbContext.Entry(originalEntity);
+                    originaEntry.CurrentValues.SetValues(entity);
                     var propNames = propertyExpressions.Select(x => x.GetMemberName()).ToArray();
-
-                    foreach (var propEntry in entry.Properties)
+                    originaEntry.Properties.ForEach(propEntry =>
                     {
                         if (!propNames.Contains(propEntry.Metadata.Name))
                         {
                             propEntry.IsModified = false;
                         }
-                    }
-                }
-                else
-                {
-                    entry.State = EntityState.Unchanged;
-                    foreach (var expression in propertyExpressions)
-                    {
-                        entry.Property(expression).IsModified = true;
-                    }
+                    });
                 }
             }
-            return await DbContext.SaveChangesAsync(default);
+
+            return await DbContext.SaveChangesAsync();
         }
 
         public virtual async Task<int> UpdateRangeAsync(Expression<Func<TEntity, bool>> whereExpression,Expression<Func<TEntity, TEntity>> upDateExpression, CancellationToken cancellationToken = default)
@@ -165,13 +199,10 @@ namespace Adnc.Infr.EfCore.Repositories
             {
                 throw new Exception("该实体有RowVersion列，不能使用批量更新");
             }
-
-            
-
             return await DbContext.Set<TEntity>().Where(whereExpression).UpdateAsync(upDateExpression,cancellationToken);
         }
 
-        public virtual async Task<bool> ExistAsync(Expression<Func<TEntity, bool>> whereExpression, bool writeDb = false, CancellationToken cancellationToken = default)
+        public virtual async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> whereExpression, bool writeDb = false, CancellationToken cancellationToken = default)
         {
             var dbSet = DbContext.Set<TEntity>().AsNoTracking();
             if (writeDb)
