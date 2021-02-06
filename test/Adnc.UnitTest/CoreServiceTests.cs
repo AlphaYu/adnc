@@ -62,7 +62,7 @@ namespace Adnc.UnitTest
              */ 
             await _cusManger.Register(customer, cusFinance);
 
-            bool exists = await _cusRsp.ExistAsync(c => c.Id == id);
+            bool exists = await _cusRsp.AnyAsync(c => c.Id == id);
             Assert.True(exists);
         }
     }
