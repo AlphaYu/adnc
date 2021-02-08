@@ -46,7 +46,7 @@ export default {
         version: '',
         deptName: '',
         pName: '',
-        num: 1
+        ordinal: 1
       },
       rules: {
         tips: [
@@ -59,7 +59,9 @@ export default {
         ]
       },
       listQuery: {
-        roleName: ''
+        pageIndex: 1,
+        pageSize: 10,
+        roleName: undefined
       },
       total: 0,
       list: null,
@@ -134,7 +136,7 @@ export default {
         version: '',
         deptName: '',
         pName: '',
-        num: 1
+        ordinal: 1
       }
     },
     add() {
@@ -148,7 +150,7 @@ export default {
         if (valid) {
           save({
             id: this.form.id,
-            num: parseInt(this.form.num),
+            ordinal: parseInt(this.form.ordinal),
             // deptid: this.form.deptid,
             // pid: this.form.pid,
             name: this.form.name,
@@ -203,10 +205,10 @@ export default {
               type: 'success'
             })
             this.fetchData()
-          }).catch( err=> {
+          }).catch(err => {
             this.$notify.error({
               title: '错误',
-              message:err,
+              message: err
             })
           })
         }).catch(() => {

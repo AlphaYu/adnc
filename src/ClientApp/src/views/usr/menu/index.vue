@@ -53,7 +53,7 @@
       </el-table-column>
       <el-table-column label="顺序">
         <template slot-scope="scope">
-          <span>{{ scope.row.num }}</span>
+          <span>{{ scope.row.ordinal }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" width="200">
@@ -112,8 +112,8 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="排序" prop="num">
-              <el-input v-model="form.num" type="number" />
+            <el-form-item label="排序" prop="ordinal">
+              <el-input v-model="form.ordinal" type="number" />
             </el-form-item>
           </el-col>
           <el-col :span="12">

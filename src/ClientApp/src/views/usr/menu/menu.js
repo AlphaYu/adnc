@@ -27,7 +27,7 @@ export default {
         url: '',
         pCode: '',
         isMenu: true,
-        num: 1,
+        ordinal: 1,
         component: '',
         icon: '',
         status: true,
@@ -54,7 +54,7 @@ export default {
           { required: true, message: '请选择图标', trigger: 'blur' },
           { min: 2, max: 16, message: '长度在 2 到 16 个字符', trigger: 'blur' }
         ],
-        num: [
+        ordinal: [
           { required: true, message: '请输入排序', trigger: 'blur' }
         ]
       },
@@ -103,7 +103,7 @@ export default {
       return false
     },
     add() {
-      this.form = { isMenu: true, status: true, hidden: false, icon: '', num: 1 }
+      this.form = { isMenu: true, status: true, hidden: false, icon: '', ordinal: 1 }
       this.formTitle = '添加菜单'
       this.formVisible = true
       this.isAdd = true
@@ -118,7 +118,7 @@ export default {
           const menuData = self.form
           delete menuData.parent
           delete menuData.children
-          menuData.num = parseInt(menuData.num)
+          menuData.ordinal = parseInt(menuData.ordinal)
           save(menuData).then(response => {
             this.$message({
               message: '提交成功',

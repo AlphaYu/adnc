@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div class="block">
-      <el-button type="success" size="mini" icon="el-icon-plus" @click.native="add">{{ $t('button.add') }}</el-button>
+      <el-button v-permission="['/dept/add']" type="success" size="mini" icon="el-icon-plus" @click.native="add">{{ $t('button.add') }}</el-button>
     </div>
     <el-table
       :data="data"
@@ -23,7 +23,7 @@
       </el-table-column>
       <el-table-column label="顺序">
         <template slot-scope="scope">
-          <span>{{ scope.row.num }}</span>
+          <span>{{ scope.row.ordinal }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作">
@@ -52,8 +52,8 @@
           </el-col>
 
           <el-col :span="12">
-            <el-form-item label="排序" prop="num">
-              <el-input v-model="form.num" type="number" />
+            <el-form-item label="排序" prop="ordinal">
+              <el-input v-model="form.ordinal" type="number" />
             </el-form-item>
           </el-col>
           <el-col :span="12" prop="pid">
