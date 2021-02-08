@@ -8,7 +8,7 @@ namespace Adnc.Usr.Application.Dtos
     /// <summary>
     /// 用户信息
     /// </summary>
-    public class UserInfoDto : BaseDto
+    public class UserInfoDto : IDto
     {
         /// <summary>
         /// 用户Id

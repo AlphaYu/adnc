@@ -5,7 +5,7 @@ using Adnc.Application.Shared.Dtos;
 
 namespace Adnc.Warehouse.Application.Dtos
 {
-    public class ShelfDto : BaseDto
+    public class ShelfDto : IDto
     {
         public string Id { get; set; }
         public string ProductId { set; get; }

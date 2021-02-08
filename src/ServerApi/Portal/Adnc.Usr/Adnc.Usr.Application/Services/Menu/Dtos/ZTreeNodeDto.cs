@@ -1,7 +1,4 @@
 ﻿using Adnc.Application.Shared.Dtos;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Adnc.Usr.Application.Dtos
 {
@@ -10,7 +7,7 @@ namespace Adnc.Usr.Application.Dtos
     /// </summary>
     /// <typeparam name="TKey"></typeparam>
     /// <typeparam name="TData"></typeparam>
-    public class ZTreeNodeDto<TKey, TData> : BaseDto
+    public class ZTreeNodeDto<TKey, TData> : IDto
     {
         /// <summary>
         /// 节点Id

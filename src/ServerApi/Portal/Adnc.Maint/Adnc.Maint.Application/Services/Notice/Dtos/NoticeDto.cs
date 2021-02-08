@@ -8,7 +8,7 @@ namespace  Adnc.Maint.Application.Dtos
 	/// <summary>
 	/// 系统通知
 	/// </summary>
-	public class NoticeDto : BaseOutputDto
+	public class NoticeDto : OutputBaseAuditDto<long>
 	{ 
 		/// <summary>
 		/// 内容

@@ -5,9 +5,7 @@ using System.Threading.Tasks;
 
 namespace Adnc.Core.Shared.EventBus
 {
-    public interface IEventHandler<TEto>
-        where TEto : BaseEto
+    public interface IEventHandler
     {
-        Task Process(TEto rechargeEbModel);
     }
 }

@@ -20,9 +20,9 @@ namespace Adnc.Maint.WebApi.Controllers
 
         [AllowAnonymous]
         [HttpPost()]
-        public async Task<IActionResult> Login([FromBody] LoginRto loginRequest)
+        public async Task<IActionResult> Login([FromBody] LoginRto input)
         {
-            var result = await _authRpcService.LoginAsync(loginRequest);
+            var result = await _authRpcService.LoginAsync(input);
 
             if (result.IsSuccessStatusCode)
                 return Ok(result.Content);

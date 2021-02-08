@@ -9,7 +9,7 @@ namespace Adnc.Application.Shared.Dtos
     /// </summary>
     /// <typeparam name="T"></typeparam>
     [Serializable]
-    public class SimpleDto<T> : BaseDto
+    public class SimpleDto<T> : IDto
     {
         public SimpleDto() { }
 

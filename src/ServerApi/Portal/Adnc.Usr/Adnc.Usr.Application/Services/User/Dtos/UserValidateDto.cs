@@ -5,16 +5,14 @@ using System.Text;
 
 namespace Adnc.Usr.Application.Dtos
 {
-    public class UserValidateDto : BaseDto
+    public class UserValidateDto : OutputDto<long>
     {
-        public long Id { get; set; }
-
         public string Account { get; set; }
 
         public string Name { get; set; }
 
         public string Email { get; set; }
 
-        public string RoleId { get; set; }
+        public string RoleIds { get; set; }
     }
 }

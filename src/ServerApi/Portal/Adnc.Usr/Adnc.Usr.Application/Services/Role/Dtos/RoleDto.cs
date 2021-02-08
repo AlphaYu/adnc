@@ -9,12 +9,12 @@ namespace Adnc.Usr.Application.Dtos
 	/// 角色
 	/// </summary>
 	[Serializable]
-	public class RoleDto :BaseOutputDto
+	public class RoleDto :OutputDto<long>
 	{
-		/// <summary>
-		/// 部门Id
-		/// </summary>
-		public long? DeptId { get; set; }
+		///// <summary>
+		///// 部门Id
+		///// </summary>
+		////public long? DeptId { get; set; }
 
 		/// <summary>
 		/// 角色名
@@ -22,9 +22,9 @@ namespace Adnc.Usr.Application.Dtos
 		public string Name { get; set; }
 
 		/// <summary>
-		/// 排序
+		/// 序号
 		/// </summary>
-		public int? Num { get; set; }
+		public int Ordinal { get; set; }
 
 		/// <summary>
 		/// 父级角色Id
@@ -41,9 +41,9 @@ namespace Adnc.Usr.Application.Dtos
 		/// </summary>
 		public string Permissions { get; set; }
 
-		/// <summary>
-		/// 角色版本号
-		/// </summary>
-		public int? Version { get; set; }
+		///// <summary>
+		///// 角色版本号
+		///// </summary>
+		////public int? Version { get; set; }
 	}
 }

@@ -3,6 +3,7 @@ using Adnc.Usr.Application.Dtos;
 using Adnc.Application.Shared.Interceptors;
 using Adnc.Application.Shared.Services;
 using Adnc.Application.Shared.Dtos;
+using Adnc.Infr.EasyCaching.Interceptor.Castle;
 
 namespace Adnc.Usr.Application.Services
 {
@@ -11,24 +12,25 @@ namespace Adnc.Usr.Application.Services
     /// </summary>
     public interface IUserAppService : IAppService
     {
-        Task<AppSrvResult<PageModelDto<UserDto>>> GetPaged(UserSearchDto searchModel);
+        Task<AppSrvResult<PageModelDto<UserDto>>> GetPagedAsync(UserSearchPagedDto search);
 
         [OpsLog(LogName = "新增用户")]
-        Task<AppSrvResult<long>> Add(UserSaveInputDto saveDto);
+        Task<AppSrvResult<long>> CreateAsync(UserCreationDto input);
 
         [OpsLog(LogName = "修改用户")]
-        Task<AppSrvResult> Update(UserSaveInputDto saveDto);
+        Task<AppSrvResult> UpdateAsync(long id, UserUpdationDto input);
 
         [OpsLog(LogName = "删除用户")]
-        Task<AppSrvResult> Delete(long Id);
+        Task<AppSrvResult> DeleteAsync(long id);
 
         [OpsLog(LogName = "设置用户角色")]
-        Task<AppSrvResult> SetRole(RoleSetInputDto setDto);
+        [EasyCachingEvict(CacheKeys = new[] { EasyCachingConsts.MenuRelationCacheKey, EasyCachingConsts.MenuCodesCacheKey })]
+        Task<AppSrvResult> SetRoleAsync(long id,UserSetRoleDto input);
 
         [OpsLog(LogName = "修改用户状态")]
-        Task<AppSrvResult> ChangeStatus(long Id, int status);
+        Task<AppSrvResult> ChangeStatusAsync(long id, int status);
 
         [OpsLog(LogName = "批量修改用户状态")]
-        Task<AppSrvResult> ChangeStatus(UserChangeStatusInputDto changeDto);
+        Task<AppSrvResult> ChangeStatusAsync(UserChangeStatusDto input);
     }
 }

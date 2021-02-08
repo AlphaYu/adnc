@@ -32,48 +32,49 @@ namespace Adnc.Maint.WebApi.Controllers
         [HttpDelete("{id}")]
         [Permission("cfgDelete")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<ActionResult> Delete([FromRoute] long id)
+        public async Task<ActionResult> DeleteAsync([FromRoute] long id)
         {
-            return Result(await _cfgAppService.Delete(id));
+            return Result(await _cfgAppService.DeleteAsync(id));
         }
 
         /// <summary>
         /// 获取配置列表
         /// </summary>
-        /// <param name="searchDto"><see cref="CfgSearchDto"/></param>
+        /// <param name="search"><see cref="CfgSearchPagedDto"/></param>
         /// <returns><see cref="PageModelDto{CfgDto}"/></returns>
         [HttpGet()]
         [Permission("cfgList")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<PageModelDto<CfgDto>>> GetList([FromQuery] CfgSearchDto searchDto)
+        public async Task<ActionResult<PageModelDto<CfgDto>>> GetPagedAsync([FromQuery] CfgSearchPagedDto search)
         {
-            return Result(await _cfgAppService.GetPaged(searchDto));
+            return Result(await _cfgAppService.GetPagedAsync(search));
         }
 
         /// <summary>
         /// 新增配置
         /// </summary>
-        /// <param name="saveDto"><see cref="CfgSaveInputDto"/></param>
+        /// <param name="input"><see cref="CfgCreationDto"/></param>
         /// <returns></returns>
         [HttpPost]
         [Permission("cfgAdd")]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public async Task<ActionResult<long>> Add([FromBody] CfgSaveInputDto saveDto)
+        public async Task<ActionResult<long>> CreateAsync([FromBody] CfgCreationDto input)
         {
-            return CreatedResult(await _cfgAppService.Add(saveDto));
+            return CreatedResult(await _cfgAppService.CreateAsync(input));
         }
 
         /// <summary>
         /// 新增配置
         /// </summary>
-        /// <param name="saveDto"><see cref="CfgSaveInputDto"/></param>
+        /// <param name="id">id</param>
+        /// <param name="input"><see cref="CfgUpdationDto"/></param>
         /// <returns></returns>
-        [HttpPut]
+        [HttpPut("{id}")]
         [Permission("cfgEdit")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<ActionResult<long>> Update([FromBody] CfgSaveInputDto saveDto)
+        public async Task<ActionResult<long>> UpdateAsync([FromRoute] long id, [FromBody] CfgUpdationDto input)
         {
-            return Result(await _cfgAppService.Update(saveDto));
+            return Result(await _cfgAppService.UpdateAsync(id, input));
         }
     }
 }

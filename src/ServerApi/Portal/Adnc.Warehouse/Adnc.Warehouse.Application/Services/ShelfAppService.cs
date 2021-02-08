@@ -64,8 +64,6 @@ namespace Adnc.Warehouse.Application.Services
                     PageIndex = search.PageIndex
                     ,
                     PageSize = search.PageSize
-                    ,
-                    PageCount = 0
                 };
 
             var products = _productRepo.GetAll();

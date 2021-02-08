@@ -21,8 +21,8 @@ namespace Adnc.Usr.Core.Entities
 		[Column("Name")]
 		public string Name { get; set; }
 
-		[Column("Num")]
-		public int? Num { get; set; }
+		[Column("Ordinal")]
+		public int Ordinal { get; set; }
 
 		[Column("Pid")]
 		public long? PID { get; set; }

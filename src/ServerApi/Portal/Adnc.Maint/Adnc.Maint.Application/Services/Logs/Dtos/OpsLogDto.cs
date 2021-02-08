@@ -8,7 +8,7 @@ namespace  Adnc.Maint.Application.Dtos
     /// <summary>
     /// 操作日志
     /// </summary>
-    public class OpsLogDto : BaseMongoDto
+    public class OpsLogDto : MongoDto
     {
         /// <summary>
         /// 控制器类名

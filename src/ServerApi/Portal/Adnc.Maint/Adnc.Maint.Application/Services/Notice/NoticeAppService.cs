@@ -6,6 +6,8 @@ using Adnc.Maint.Application.Dtos;
 using Adnc.Maint.Core.Entities;
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Application.Shared.Services;
+using System.Linq.Expressions;
+using System;
 
 namespace  Adnc.Maint.Application.Services
 {
@@ -20,19 +22,15 @@ namespace  Adnc.Maint.Application.Services
             _noticeRepository = noticeRepository;
         }
 
-        public async Task<AppSrvResult<List<NoticeDto>>> GetList(string title)
+        public async Task<AppSrvResult<List<NoticeDto>>> GetListAsync(NoticeSearchDto search)
         {
-            List<SysNotice> notices = null;
-            if (title.IsNullOrEmpty())
+            Expression<Func<SysNotice, bool>> whereCondition = x => true;
+            if (search.Title.IsNotNullOrWhiteSpace())
             {
-                notices = await _noticeRepository.Where(x => true).ToListAsync();
-                //notices = await _noticeRepository.SelectAsync(n => n, x => true);
+                whereCondition = whereCondition.And(x => x.Title==search.Title.Trim());
             }
-            else
-            {
-                notices = await _noticeRepository.Where(x => x.Title.Contains(title)).ToListAsync();
-                //notices = await _noticeRepository.SelectAsync(n => n, x => x.Title.Contains(title));
-            }
+
+            var notices = await _noticeRepository.Where(whereCondition).ToListAsync();
 
             return _mapper.Map<List<NoticeDto>>(notices);
         }

@@ -12,19 +12,16 @@ namespace Adnc.Maint.Core.Entities
     [Description("字典")]
     public class SysDict : EfFullAuditEntity, ISoftDelete
     {
-        [StringLength(16)]
-        [Column("Name")]
+        [MaxLength(16)]
         public string Name { get; set; }
 
-        [StringLength(16)]
-        [Column("Num")]
-        public string Num { get; set; }
+        [Description("排序号")]
+        public int Ordinal { get; set; }
 
-        [Column("Pid")]
-        public long? Pid { get; set; }
+        [Description("父节点Id")]
+        public long Pid { get; set; }
 
-        [StringLength(64)]
-        [Column("Tips")]
+        [MaxLength(64)]
         public string Tips { get; set; }
 
         public bool IsDeleted { get; set; }

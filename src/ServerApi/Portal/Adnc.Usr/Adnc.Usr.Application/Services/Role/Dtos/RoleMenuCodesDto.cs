@@ -9,7 +9,7 @@ namespace Adnc.Usr.Application.Dtos
 	/// 角色，权限
 	/// </summary>
 	[Serializable]
-    public class RoleMenuCodesDto : BaseDto
+    public class RoleMenuCodesDto : IDto
     {
         /// <summary>
         /// 菜单Code

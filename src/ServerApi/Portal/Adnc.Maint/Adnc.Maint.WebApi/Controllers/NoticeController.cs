@@ -12,7 +12,7 @@ namespace Adnc.Maint.WebApi.Controllers
     /// </summary>
     [Route("maint/notices")]
     [ApiController]
-    public class NoticeController :AdncControllerBase
+    public class NoticeController : AdncControllerBase
     {
         private readonly INoticeAppService _noticeService;
 
@@ -24,12 +24,12 @@ namespace Adnc.Maint.WebApi.Controllers
         /// <summary>
         /// 获取通知消息列表
         /// </summary>
-        /// <param name="title">消息标题</param>
+        /// <param name="search"><see cref="NoticeSearchDto"/></param>
         /// <returns></returns>
         [HttpGet()]
-        public async Task<ActionResult<List<NoticeDto>>> GetList([FromQuery] string title)
+        public async Task<ActionResult<List<NoticeDto>>> GetList([FromQuery] NoticeSearchDto search)
         {
-            return Result(await _noticeService.GetList(title));
+            return Result(await _noticeService.GetListAsync(search));
         }
     }
 }

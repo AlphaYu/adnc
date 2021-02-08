@@ -40,8 +40,8 @@ namespace Adnc.Usr.Migrations.Migrations
                     b.Property<DateTime?>("ModifyTime")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<int?>("Num")
-                        .HasColumnName("Num")
+                    b.Property<int>("Ordinal")
+                        .HasColumnName("Ordinal")
                         .HasColumnType("int");
 
                     b.Property<long?>("Pid")
@@ -126,8 +126,8 @@ namespace Adnc.Usr.Migrations.Migrations
                         .HasColumnType("varchar(16) CHARACTER SET utf8mb4")
                         .HasMaxLength(16);
 
-                    b.Property<int>("Num")
-                        .HasColumnName("Num")
+                    b.Property<int>("Ordinal")
+                        .HasColumnName("Ordinal")
                         .HasColumnType("int");
 
                     b.Property<string>("PCode")
@@ -209,8 +209,8 @@ namespace Adnc.Usr.Migrations.Migrations
                         .HasColumnType("varchar(32) CHARACTER SET utf8mb4")
                         .HasMaxLength(32);
 
-                    b.Property<int?>("Num")
-                        .HasColumnName("Num")
+                    b.Property<int>("Ordinal")
+                        .HasColumnName("Ordinal")
                         .HasColumnType("int");
 
                     b.Property<long?>("PID")
@@ -292,8 +292,8 @@ namespace Adnc.Usr.Migrations.Migrations
                         .HasColumnType("varchar(11) CHARACTER SET utf8mb4")
                         .HasMaxLength(11);
 
-                    b.Property<string>("RoleId")
-                        .HasColumnName("RoleId")
+                    b.Property<string>("RoleIds")
+                        .HasColumnName("RoleIds")
                         .HasColumnType("varchar(72) CHARACTER SET utf8mb4")
                         .HasMaxLength(72);
 

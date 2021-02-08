@@ -6,7 +6,7 @@ using Adnc.Application.Shared.Dtos;
 
 namespace Adnc.Warehouse.Application.Dtos
 {
-    public class ProductUpdationDto : BaseDto
+    public class ProductUpdationDto : IDto
     {
         public string Sku { set; get; }
 

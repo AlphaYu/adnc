@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Adnc.Application.Shared.Dtos;
-using Adnc.Maint.Core.Entities;
+﻿using Adnc.Maint.Core.Entities;
 
 namespace  Adnc.Maint.Application.Dtos
 {

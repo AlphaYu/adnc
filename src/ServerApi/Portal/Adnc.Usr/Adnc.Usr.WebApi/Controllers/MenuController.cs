@@ -22,7 +22,7 @@ namespace Adnc.Usr.WebApi.Controllers
         private readonly UserContext _userContext;
 
         public MenuController(IMenuAppService menuService
-            ,UserContext userContext)
+            , UserContext userContext)
         {
             _menuService = menuService;
             _userContext = userContext;
@@ -35,9 +35,9 @@ namespace Adnc.Usr.WebApi.Controllers
         [HttpGet()]
         [Permission("menuList")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<List<MenuNodeDto>>> GetMenus()
+        public async Task<ActionResult<List<MenuNodeDto>>> GetlistAsync()
         {
-            return Result(await _menuService.Getlist());
+            return Result(await _menuService.GetlistAsync());
         }
 
         /// <summary>
@@ -46,9 +46,9 @@ namespace Adnc.Usr.WebApi.Controllers
         /// <returns></returns>
         [HttpGet("routers")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<List<RouterMenuDto>>> GetMenusForRouter()
+        public async Task<ActionResult<List<MenuRouterDto>>> GetMenusForRouterAsync()
         {
-            return Result(await _menuService.GetMenusForRouter(_userContext.RoleIds));
+            return Result(await _menuService.GetMenusForRouterAsync(_userContext.RoleIds));
         }
 
         /// <summary>
@@ -58,9 +58,9 @@ namespace Adnc.Usr.WebApi.Controllers
         /// <returns></returns>
         [HttpGet("{roleId}/menutree")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<dynamic>> GetMenuTreeListByRoleId([FromRoute]long roleId)
+        public async Task<ActionResult<dynamic>> GetMenuTreeListByRoleIdAsync([FromRoute] long roleId)
         {
-            return Result(await _menuService.GetMenuTreeListByRoleId(roleId));
+            return Result(await _menuService.GetMenuTreeListByRoleIdAsync(roleId));
         }
 
         /// <summary>
@@ -71,22 +71,23 @@ namespace Adnc.Usr.WebApi.Controllers
         [HttpPost]
         [Permission("menuAdd")]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public async Task<ActionResult<long>> Add([FromBody] MenuSaveInputDto menuDto)
+        public async Task<ActionResult<long>> CreateAsync([FromBody] MenuCreationDto menuDto)
         {
-            return CreatedResult(await _menuService.Add(menuDto));
+            return CreatedResult(await _menuService.CreateAsync(menuDto));
         }
 
         /// <summary>
         /// 修改菜单
         /// </summary>
-        /// <param name="menuDto">菜单</param>
+        /// <param name="id">id</param>
+        /// <param name="input">菜单</param>
         /// <returns></returns>
-        [HttpPut]
+        [HttpPut("{id}")]
         [Permission("menuEdit")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<ActionResult> Update([FromBody] MenuSaveInputDto menuDto)
+        public async Task<ActionResult> UpdateAsync([FromRoute] long id, [FromBody] MenuUpdationDto input)
         {
-            return Result(await _menuService.Update(menuDto));
+            return Result(await _menuService.UpdateAsync(id, input));
         }
 
         /// <summary>
@@ -97,9 +98,9 @@ namespace Adnc.Usr.WebApi.Controllers
         [HttpDelete("{id}")]
         [Permission("menuDelete")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<ActionResult> Delete([FromRoute] long id)
+        public async Task<ActionResult> DeleteAsync([FromRoute] long id)
         {
-            return Result(await _menuService.Delete(id));
+            return Result(await _menuService.DeleteAsync(id));
         }
     }
 }

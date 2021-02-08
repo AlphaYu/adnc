@@ -12,15 +12,15 @@ namespace Adnc.Maint.Application
         public AdncMaintProfile()
         {
             CreateMap(typeof(IPagedModel<>), typeof(PageModelDto<>)).ForMember("XData", opt => opt.Ignore());
-            CreateMap<OpsLogSaveInputDto, SysOperationLog>();
+            CreateMap<OpsLogCreationDto, SysOperationLog>();
             CreateMap<SysOperationLog, OpsLogDto>();
             CreateMap<SysLoginLog, LoginLogDto>();
             CreateMap<SysNloglog, NlogLogDto>();
-            CreateMap<CfgSaveInputDto, SysCfg>();
+            CreateMap<CfgCreationDto, SysCfg>();
             CreateMap<SysCfg, CfgDto>();
 
 
-            CreateMap<DictSaveInputDto, SysDict>();
+            CreateMap<DictCreationDto, SysDict>();
             CreateMap<SysDict, DictDto>();
             CreateMap<SysNotice, NoticeDto>().ReverseMap();
 

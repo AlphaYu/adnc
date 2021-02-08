@@ -33,18 +33,18 @@ namespace Adnc.Usr.Application.Services
             _cache = hybridProviderFactory.GetHybridCachingProvider(EasyCachingConsts.HybridCaching);
         }
 
-        public async Task<AppSrvResult<long>> Add(MenuSaveInputDto saveDto)
+        public async Task<AppSrvResult<long>> CreateAsync(MenuCreationDto input)
         {
-            var isExistsCode = (await this.GetAllMenusFromCache()).Where(x => x.Code == saveDto.Code).Any();
+            var isExistsCode = (await this.GetAllMenusFromCacheAsync()).Where(x => x.Code == input.Code).Any();
             if (isExistsCode)
                 return Problem(HttpStatusCode.Forbidden, "该菜单编码已经存在");
 
-            var isExistsName = (await this.GetAllMenusFromCache()).Where(x => x.Name == saveDto.Name).Any();
+            var isExistsName = (await this.GetAllMenusFromCacheAsync()).Where(x => x.Name == input.Name).Any();
             if (isExistsName)
                 return Problem(HttpStatusCode.Forbidden, "该菜单名称已经存在");
 
-            var parentMenu = (await this.GetAllMenusFromCache()).Where(x => x.Code == saveDto.PCode).FirstOrDefault();
-            var addDto = ProducePCodes(saveDto, parentMenu);
+            var parentMenu = (await this.GetAllMenusFromCacheAsync()).Where(x => x.Code == input.PCode).FirstOrDefault();
+            var addDto = ProducePCodes(input, parentMenu);
             var menu = _mapper.Map<SysMenu>(addDto);
             menu.Id = IdGenerater.GetNextId();
             await _menuRepository.InsertAsync(menu);
@@ -52,37 +52,57 @@ namespace Adnc.Usr.Application.Services
             return menu.Id;
         }
 
-        public async Task<AppSrvResult> Update(MenuSaveInputDto saveDto)
+        public async Task<AppSrvResult> UpdateAsync(long id, MenuUpdationDto input)
         {
-            var isExistsCode = (await this.GetAllMenusFromCache()).Where(x => x.Code == saveDto.Code && x.Id != saveDto.Id).Any();
+            var isExistsCode = (await this.GetAllMenusFromCacheAsync()).Where(x => x.Code == input.Code && x.Id != id).Any();
             if (isExistsCode)
                 return Problem(HttpStatusCode.BadRequest, "该菜单编码已经存在");
 
-            var isExistsName = (await this.GetAllMenusFromCache()).Where(x => x.Name == saveDto.Name && x.Id != saveDto.Id).Any();
+            var isExistsName = (await this.GetAllMenusFromCacheAsync()).Where(x => x.Name == input.Name && x.Id != id).Any();
             if (isExistsName)
                 return Problem(HttpStatusCode.BadRequest, "该菜单名称已经存在");
 
-            var parentMenu = (await this.GetAllMenusFromCache()).Where(x => x.Code == saveDto.PCode).FirstOrDefault();
-            var updateDto = ProducePCodes(saveDto, parentMenu);
+            var parentMenu = (await this.GetAllMenusFromCacheAsync()).Where(x => x.Code == input.PCode).FirstOrDefault();
+            var updateDto = ProducePCodes(input, parentMenu);
             var menu = _mapper.Map<SysMenu>(updateDto);
-            await _menuRepository.UpdateAsync(menu);
 
-            return DefaultResult();
+            menu.Id = id;
+
+            var updatingProps = UpdatingProps<SysMenu>(
+                                                        x => x.Code
+                                                        , x => x.Component
+                                                        , x => x.Hidden
+                                                        , x => x.Icon
+                                                        , x => x.IsMenu
+                                                        , x => x.IsOpen
+                                                        , x => x.Levels
+                                                        , x => x.Name
+                                                        , x => x.Ordinal
+                                                        , x => x.PCode
+                                                        , x => x.PCodes
+                                                        , x => x.Status
+                                                        , x => x.Tips
+                                                        , x => x.Url
+                                                    );
+
+            await _menuRepository.UpdateAsync(menu, updatingProps);
+
+            return AppSrvResult();
         }
 
-        public async Task<AppSrvResult> Delete(long Id)
+        public async Task<AppSrvResult> DeleteAsync(long Id)
         {
-            var menu = (await this.GetAllMenusFromCache()).Where(x => x.Id == Id).FirstOrDefault();
+            var menu = (await this.GetAllMenusFromCacheAsync()).Where(x => x.Id == Id).FirstOrDefault();
             await _menuRepository.DeleteRangeAsync(x => x.PCodes.Contains($"[{menu.Code}]") || x.Id == Id);
 
-            return DefaultResult();
+            return AppSrvResult();
         }
 
-        public async Task<AppSrvResult<List<MenuNodeDto>>> Getlist()
+        public async Task<AppSrvResult<List<MenuNodeDto>>> GetlistAsync()
         {
             var result = new List<MenuNodeDto>();
 
-            var menus = (await this.GetAllMenusFromCache()).OrderBy(o => o.Levels).ThenBy(x => x.Num);
+            var menus = (await this.GetAllMenusFromCacheAsync()).OrderBy(o => o.Levels).ThenBy(x => x.Ordinal);
 
             var menuNodes = _mapper.Map<List<MenuNodeDto>>(menus);
             foreach (var node in menuNodes)
@@ -111,11 +131,11 @@ namespace Adnc.Usr.Application.Services
             return result;
         }
 
-        public async Task<AppSrvResult<List<RouterMenuDto>>> GetMenusForRouter(long[] roleIds)
+        public async Task<AppSrvResult<List<MenuRouterDto>>> GetMenusForRouterAsync(long[] roleIds)
         {
-            var result = new List<RouterMenuDto>();
+            var result = new List<MenuRouterDto>();
             //所有菜单
-            var allMenus = await this.GetAllMenusFromCache();
+            var allMenus = await this.GetAllMenusFromCacheAsync();
             //所有菜单角色关系
             var allRelations = await this.GetAllRelations();
             //角色拥有的菜单Ids
@@ -125,12 +145,12 @@ namespace Adnc.Usr.Application.Services
 
             if (menus.Any())
             {
-                var routerMenus = new List<RouterMenuDto>();
+                var routerMenus = new List<MenuRouterDto>();
 
                 var componentMenus = menus.Where(x => !string.IsNullOrWhiteSpace(x.Component));
                 foreach (var menu in componentMenus)
                 {
-                    var routerMenu = _mapper.Map<RouterMenuDto>(menu);
+                    var routerMenu = _mapper.Map<MenuRouterDto>(menu);
                     routerMenu.Path = menu.Url;
                     routerMenu.Meta = new MenuMetaDto
                     {
@@ -150,7 +170,7 @@ namespace Adnc.Usr.Application.Services
                 }
 
                 var dictNodes = routerMenus.ToDictionary(x => x.Id);
-                foreach (var pair in dictNodes.OrderBy(x => x.Value.Num))
+                foreach (var pair in dictNodes.OrderBy(x => x.Value.Ordinal))
                 {
                     var currentNode = pair.Value;
                     if (currentNode.ParentId.HasValue && dictNodes.ContainsKey(currentNode.ParentId.Value))
@@ -167,13 +187,13 @@ namespace Adnc.Usr.Application.Services
             return result;
         }
 
-        public async Task<AppSrvResult<dynamic>> GetMenuTreeListByRoleId(long roleId)
+        public async Task<AppSrvResult<dynamic>> GetMenuTreeListByRoleIdAsync(long roleId)
         {
             var menuIds = (await this.GetAllRelations()).Where(x => x.RoleId.Value == roleId).Select(r => r.MenuId.Value) ?? new List<long>();
             List<ZTreeNodeDto<long, dynamic>> roleTreeList = new List<ZTreeNodeDto<long, dynamic>>();
 
             //var menus = await _menuRepository.SelectAsync(m=>m, q => true, q => q.Id, true);
-            var menus = await _menuRepository.Where(w => true).OrderByDescending(x => x.Id).ToListAsync();
+            var menus = await _menuRepository.Where(w => true).OrderBy(x=>x.Ordinal).ToListAsync();
 
             foreach (var menu in menus)
             {
@@ -225,18 +245,18 @@ namespace Adnc.Usr.Application.Services
             return cahceValue.Value;
         }
 
-        private async Task<List<MenuDto>> GetAllMenusFromCache()
+        private async Task<List<MenuDto>> GetAllMenusFromCacheAsync()
         {
             var cahceValue = await _cache.GetAsync(EasyCachingConsts.MenuListCacheKey, async () =>
             {
-                var allMenus= await _menuRepository.GetAll(writeDb:true).ToListAsync();
+                var allMenus = await _menuRepository.GetAll(writeDb: true).OrderBy(x=>x.Ordinal).ToListAsync();
                 return _mapper.Map<List<MenuDto>>(allMenus);
             }, TimeSpan.FromSeconds(EasyCachingConsts.OneYear));
 
             return cahceValue.Value;
         }
 
-        private MenuSaveInputDto ProducePCodes(MenuSaveInputDto saveDto, MenuDto parentMenuDto)
+        private MenuCreationDto ProducePCodes(MenuCreationDto saveDto, MenuDto parentMenuDto)
         {
             if (saveDto.PCode.IsNullOrWhiteSpace() || saveDto.PCode.EqualsIgnoreCase("0"))
             {

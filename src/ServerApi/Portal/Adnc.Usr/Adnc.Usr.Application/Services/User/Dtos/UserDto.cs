@@ -9,7 +9,7 @@ namespace Adnc.Usr.Application.Dtos
 	/// 用户
 	/// </summary>
     [Serializable]
-	public class UserDto : BaseOutputDto
+	public class UserDto : OutputBaseAuditDto<long>
 	{
         /// <summary>
         /// 账户
@@ -59,12 +59,12 @@ namespace Adnc.Usr.Application.Dtos
         /// <summary>
         /// 角色Id列表，以逗号分隔
         /// </summary>
-        public string RoleId { get; set; }
+        public string RoleIds { get; set; }
 
         /// <summary>
         /// 角色名称
         /// </summary>
-        public string RoleName { get; set; }
+        public string RoleNames { get; set; }
 
         /// <summary>
         /// 性别
@@ -98,9 +98,9 @@ namespace Adnc.Usr.Application.Dtos
         /// </summary>
         public string StatusName => this.Status == 1 ? "启用" : "禁用";
 
-        /// <summary>
-        /// 账户版本号
-        /// </summary>
-        public int? Version { get; set; }
+        ///// <summary>
+        ///// 账户版本号
+        ///// </summary>
+        //public int? Version { get; set; }
     }
 }

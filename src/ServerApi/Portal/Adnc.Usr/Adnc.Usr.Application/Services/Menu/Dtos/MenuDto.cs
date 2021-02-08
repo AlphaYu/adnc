@@ -9,7 +9,7 @@ namespace Adnc.Usr.Application.Dtos
 	/// 菜单
 	/// </summary>
 	[Serializable]
-	public class MenuDto : BaseInputDto
+	public class MenuDto : OutputDto<long>
 	{
 		/// <summary>
 		/// 编号
@@ -52,9 +52,9 @@ namespace Adnc.Usr.Application.Dtos
 		public string Name { get; set; }
 
 		/// <summary>
-		/// 顺序
+		/// 序号
 		/// </summary>
-		public int Num { get; set; }
+		public int Ordinal { get; set; }
 
 		/// <summary>
 		/// 父菜单编号

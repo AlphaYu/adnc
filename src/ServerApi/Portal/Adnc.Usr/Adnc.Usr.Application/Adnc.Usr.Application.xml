@@ -40,6 +40,31 @@
             用户管理
             </summary>
         </member>
+        <member name="T:Adnc.Usr.Application.Dtos.DeptCreationDto">
+            <summary>
+            部门
+            </summary>
+        </member>
+        <member name="P:Adnc.Usr.Application.Dtos.DeptCreationDto.FullName">
+            <summary>
+            部门全称
+            </summary>
+        </member>
+        <member name="P:Adnc.Usr.Application.Dtos.DeptCreationDto.Ordinal">
+            <summary>
+            序号
+            </summary>
+        </member>
+        <member name="P:Adnc.Usr.Application.Dtos.DeptCreationDto.Pid">
+            <summary>
+            父级Id
+            </summary>
+        </member>
+        <member name="P:Adnc.Usr.Application.Dtos.DeptCreationDto.SimpleName">
+            <summary>
+            部门简称
+            </summary>
+        </member>
         <member name="T:Adnc.Usr.Application.Dtos.DeptDto">
             <summary>
             部门
@@ -50,7 +75,7 @@
             部门全称
             </summary>
         </member>
-        <member name="P:Adnc.Usr.Application.Dtos.DeptDto.Num">
+        <member name="P:Adnc.Usr.Application.Dtos.DeptDto.Ordinal">
             <summary>
             排序
             </summary>
@@ -80,44 +105,94 @@
             版本号
             </summary>
         </member>
-        <member name="T:Adnc.Usr.Application.Dtos.DeptNodeDto">
+        <member name="T:Adnc.Usr.Application.Dtos.DeptTreeeDto">
             <summary>
             部门节点
             </summary>
         </member>
-        <member name="P:Adnc.Usr.Application.Dtos.DeptNodeDto.Children">
+        <member name="P:Adnc.Usr.Application.Dtos.DeptTreeeDto.Children">
             <summary>
             子部门
             </summary>
         </member>
-        <member name="T:Adnc.Usr.Application.Dtos.DeptSaveInputDto">
+        <member name="T:Adnc.Usr.Application.Dtos.DeptUpdationDto">
             <summary>
             部门
             </summary>
         </member>
-        <member name="P:Adnc.Usr.Application.Dtos.DeptSaveInputDto.FullName">
+        <member name="T:Adnc.Usr.Application.Dtos.MenuCreationDto">
             <summary>
-            部门全称
+            菜单
             </summary>
         </member>
-        <member name="P:Adnc.Usr.Application.Dtos.DeptSaveInputDto.Num">
+        <member name="P:Adnc.Usr.Application.Dtos.MenuCreationDto.Code">
             <summary>
-            排序
+            编号
             </summary>
         </member>
-        <member name="P:Adnc.Usr.Application.Dtos.DeptSaveInputDto.Pid">
+        <member name="P:Adnc.Usr.Application.Dtos.MenuCreationDto.Component">
             <summary>
-            父级Id
+            組件配置
             </summary>
         </member>
-        <member name="P:Adnc.Usr.Application.Dtos.DeptSaveInputDto.SimpleName">
+        <member name="P:Adnc.Usr.Application.Dtos.MenuCreationDto.Hidden">
             <summary>
-            部门简称
+            是否隐藏
             </summary>
         </member>
-        <member name="P:Adnc.Usr.Application.Dtos.DeptSaveInputDto.Version">
+        <member name="P:Adnc.Usr.Application.Dtos.MenuCreationDto.Icon">
             <summary>
-            版本号
+            图标
+            </summary>
+        </member>
+        <member name="P:Adnc.Usr.Application.Dtos.MenuCreationDto.IsMenu">
+            <summary>
+            是否是菜单1:菜单,0:按钮
+            </summary>
+        </member>
+        <member name="P:Adnc.Usr.Application.Dtos.MenuCreationDto.IsOpen">
+            <summary>
+            是否默认打开1:是,0:否
+            </summary>
+        </member>
+        <member name="P:Adnc.Usr.Application.Dtos.MenuCreationDto.Levels">
+            <summary>
+            级别
+            </summary>
+        </member>
+        <member name="P:Adnc.Usr.Application.Dtos.MenuCreationDto.Name">
+            <summary>
+            名称
+            </summary>
+        </member>
+        <member name="P:Adnc.Usr.Application.Dtos.MenuCreationDto.Ordinal">
+            <summary>
+            序号
+            </summary>
+        </member>
+        <member name="P:Adnc.Usr.Application.Dtos.MenuCreationDto.PCode">
+            <summary>
+            父菜单编号
+            </summary>
+        </member>
+        <member name="P:Adnc.Usr.Application.Dtos.MenuCreationDto.PCodes">
+            <summary>
+            递归父级菜单编号
+            </summary>
+        </member>
+        <member name="P:Adnc.Usr.Application.Dtos.MenuCreationDto.Status">
+            <summary>
+            状态1:启用,0:禁用
+            </summary>
+        </member>
+        <member name="P:Adnc.Usr.Application.Dtos.MenuCreationDto.Tips">
+            <summary>
+            鼠标悬停提示信息
+            </summary>
+        </member>
+        <member name="P:Adnc.Usr.Application.Dtos.MenuCreationDto.Url">
+            <summary>
+            链接
             </summary>
         </member>
         <member name="T:Adnc.Usr.Application.Dtos.MenuDto">
@@ -165,9 +240,9 @@
             名称
             </summary>
         </member>
-        <member name="P:Adnc.Usr.Application.Dtos.MenuDto.Num">
+        <member name="P:Adnc.Usr.Application.Dtos.MenuDto.Ordinal">
             <summary>
-            顺序
+            序号
             </summary>
         </member>
         <member name="P:Adnc.Usr.Application.Dtos.MenuDto.PCode">
@@ -250,9 +325,9 @@
             菜单状态
             </summary>
         </member>
-        <member name="P:Adnc.Usr.Application.Dtos.MenuNodeDto.Num">
+        <member name="P:Adnc.Usr.Application.Dtos.MenuNodeDto.Ordinal">
             <summary>
-            排序
+            序号
             </summary>
         </member>
         <member name="P:Adnc.Usr.Application.Dtos.MenuNodeDto.Url">
@@ -295,139 +370,64 @@
             子菜单
             </summary>
         </member>
-        <member name="T:Adnc.Usr.Application.Dtos.MenuSaveInputDto">
-            <summary>
-            菜单
-            </summary>
-        </member>
-        <member name="P:Adnc.Usr.Application.Dtos.MenuSaveInputDto.Code">
-            <summary>
-            编号
-            </summary>
-        </member>
-        <member name="P:Adnc.Usr.Application.Dtos.MenuSaveInputDto.Component">
-            <summary>
-            組件配置
-            </summary>
-        </member>
-        <member name="P:Adnc.Usr.Application.Dtos.MenuSaveInputDto.Hidden">
-            <summary>
-            是否隐藏
-            </summary>
-        </member>
-        <member name="P:Adnc.Usr.Application.Dtos.MenuSaveInputDto.Icon">
-            <summary>
-            图标
-            </summary>
-        </member>
-        <member name="P:Adnc.Usr.Application.Dtos.MenuSaveInputDto.IsMenu">
-            <summary>
-            是否是菜单1:菜单,0:按钮
-            </summary>
-        </member>
-        <member name="P:Adnc.Usr.Application.Dtos.MenuSaveInputDto.IsOpen">
-            <summary>
-            是否默认打开1:是,0:否
-            </summary>
-        </member>
-        <member name="P:Adnc.Usr.Application.Dtos.MenuSaveInputDto.Levels">
-            <summary>
-            级别
-            </summary>
-        </member>
-        <member name="P:Adnc.Usr.Application.Dtos.MenuSaveInputDto.Name">
-            <summary>
-            名称
-            </summary>
-        </member>
-        <member name="P:Adnc.Usr.Application.Dtos.MenuSaveInputDto.Num">
-            <summary>
-            顺序
-            </summary>
-        </member>
-        <member name="P:Adnc.Usr.Application.Dtos.MenuSaveInputDto.PCode">
-            <summary>
-            父菜单编号
-            </summary>
-        </member>
-        <member name="P:Adnc.Usr.Application.Dtos.MenuSaveInputDto.PCodes">
-            <summary>
-            递归父级菜单编号
-            </summary>
-        </member>
-        <member name="P:Adnc.Usr.Application.Dtos.MenuSaveInputDto.Status">
-            <summary>
-            状态1:启用,0:禁用
-            </summary>
-        </member>
-        <member name="P:Adnc.Usr.Application.Dtos.MenuSaveInputDto.Tips">
-            <summary>
-            鼠标悬停提示信息
-            </summary>
-        </member>
-        <member name="P:Adnc.Usr.Application.Dtos.MenuSaveInputDto.Url">
-            <summary>
-            链接
-            </summary>
-        </member>
-        <member name="T:Adnc.Usr.Application.Dtos.RouterMenuDto">
+        <member name="T:Adnc.Usr.Application.Dtos.MenuRouterDto">
             <summary>
             路由菜单
             </summary>
         </member>
-        <member name="P:Adnc.Usr.Application.Dtos.RouterMenuDto.Id">
-            <summary>
-            菜单Id
-            </summary>
-        </member>
-        <member name="P:Adnc.Usr.Application.Dtos.RouterMenuDto.ParentId">
+        <member name="P:Adnc.Usr.Application.Dtos.MenuRouterDto.ParentId">
             <summary>
             父菜单Id
             </summary>
         </member>
-        <member name="P:Adnc.Usr.Application.Dtos.RouterMenuDto.Code">
+        <member name="P:Adnc.Usr.Application.Dtos.MenuRouterDto.Code">
             <summary>
             菜编码
             </summary>
         </member>
-        <member name="P:Adnc.Usr.Application.Dtos.RouterMenuDto.PCode">
+        <member name="P:Adnc.Usr.Application.Dtos.MenuRouterDto.PCode">
             <summary>
             父菜单编码
             </summary>
         </member>
-        <member name="P:Adnc.Usr.Application.Dtos.RouterMenuDto.Path">
+        <member name="P:Adnc.Usr.Application.Dtos.MenuRouterDto.Path">
             <summary>
             菜单路径
             </summary>
         </member>
-        <member name="P:Adnc.Usr.Application.Dtos.RouterMenuDto.Component">
+        <member name="P:Adnc.Usr.Application.Dtos.MenuRouterDto.Component">
             <summary>
             菜单对应视图组件
             </summary>
         </member>
-        <member name="P:Adnc.Usr.Application.Dtos.RouterMenuDto.Name">
+        <member name="P:Adnc.Usr.Application.Dtos.MenuRouterDto.Name">
             <summary>
             菜单名称
             </summary>
         </member>
-        <member name="P:Adnc.Usr.Application.Dtos.RouterMenuDto.Num">
+        <member name="P:Adnc.Usr.Application.Dtos.MenuRouterDto.Ordinal">
             <summary>
-            菜单排序
+            序号
             </summary>
         </member>
-        <member name="P:Adnc.Usr.Application.Dtos.RouterMenuDto.Hidden">
+        <member name="P:Adnc.Usr.Application.Dtos.MenuRouterDto.Hidden">
             <summary>
             是否隐藏
             </summary>
         </member>
-        <member name="P:Adnc.Usr.Application.Dtos.RouterMenuDto.Meta">
+        <member name="P:Adnc.Usr.Application.Dtos.MenuRouterDto.Meta">
             <summary>
             菜单元数据
             </summary>
         </member>
-        <member name="P:Adnc.Usr.Application.Dtos.RouterMenuDto.Children">
+        <member name="P:Adnc.Usr.Application.Dtos.MenuRouterDto.Children">
             <summary>
             子菜单
+            </summary>
+        </member>
+        <member name="T:Adnc.Usr.Application.Dtos.MenuUpdationDto">
+            <summary>
+            菜单
             </summary>
         </member>
         <member name="T:Adnc.Usr.Application.Dtos.ZTreeNodeDto`2">
@@ -482,14 +482,24 @@
             角色Id
             </summary>
         </member>
+        <member name="P:Adnc.Usr.Application.Dtos.RoleCreationDto.Name">
+            <summary>
+            角色名
+            </summary>
+        </member>
+        <member name="P:Adnc.Usr.Application.Dtos.RoleCreationDto.Tips">
+            <summary>
+            角色描述
+            </summary>
+        </member>
+        <member name="P:Adnc.Usr.Application.Dtos.RoleCreationDto.Ordinal">
+            <summary>
+            序号
+            </summary>
+        </member>
         <member name="T:Adnc.Usr.Application.Dtos.RoleDto">
             <summary>
             角色
-            </summary>
-        </member>
-        <member name="P:Adnc.Usr.Application.Dtos.RoleDto.DeptId">
-            <summary>
-            部门Id
             </summary>
         </member>
         <member name="P:Adnc.Usr.Application.Dtos.RoleDto.Name">
@@ -497,9 +507,9 @@
             角色名
             </summary>
         </member>
-        <member name="P:Adnc.Usr.Application.Dtos.RoleDto.Num">
+        <member name="P:Adnc.Usr.Application.Dtos.RoleDto.Ordinal">
             <summary>
-            排序
+            序号
             </summary>
         </member>
         <member name="P:Adnc.Usr.Application.Dtos.RoleDto.Pid">
@@ -517,11 +527,6 @@
             权限集合
             </summary>
         </member>
-        <member name="P:Adnc.Usr.Application.Dtos.RoleDto.Version">
-            <summary>
-            角色版本号
-            </summary>
-        </member>
         <member name="T:Adnc.Usr.Application.Dtos.RoleMenuCodesDto">
             <summary>
             角色，权限
@@ -537,64 +542,79 @@
             角色Id
             </summary>
         </member>
-        <member name="P:Adnc.Usr.Application.Dtos.RoleSaveInputDto.Name">
-            <summary>
-            角色名
-            </summary>
-        </member>
-        <member name="P:Adnc.Usr.Application.Dtos.RoleSaveInputDto.Tips">
-            <summary>
-            角色描述
-            </summary>
-        </member>
-        <member name="P:Adnc.Usr.Application.Dtos.RoleSaveInputDto.Num">
-            <summary>
-            排序
-            </summary>
-        </member>
-        <member name="T:Adnc.Usr.Application.Dtos.RoleSearchDto">
+        <member name="T:Adnc.Usr.Application.Dtos.RolePagedSearchDto">
             <summary>
             角色检索条件
             </summary>
         </member>
-        <member name="P:Adnc.Usr.Application.Dtos.RoleSearchDto.RoleName">
+        <member name="P:Adnc.Usr.Application.Dtos.RolePagedSearchDto.RoleName">
             <summary>
             角色名
             </summary>
         </member>
-        <member name="T:Adnc.Usr.Application.Dtos.RefreshTokenInputDto">
+        <member name="T:Adnc.Usr.Application.Dtos.UserChangePwdDto">
             <summary>
-            刷新Token实体
+            修改密码数据模型
             </summary>
         </member>
-        <member name="P:Adnc.Usr.Application.Dtos.RefreshTokenInputDto.Account">
-            <summary>
-            账号
-            </summary>
-        </member>
-        <member name="P:Adnc.Usr.Application.Dtos.RefreshTokenInputDto.RefreshToken">
-            <summary>
-            RefreshToken
-            </summary>
-        </member>
-        <member name="T:Adnc.Usr.Application.Dtos.UserChangePwdInputDto">
-            <summary>
-            修改密码Model
-            </summary>
-        </member>
-        <member name="P:Adnc.Usr.Application.Dtos.UserChangePwdInputDto.OldPassword">
+        <member name="P:Adnc.Usr.Application.Dtos.UserChangePwdDto.OldPassword">
             <summary>
             旧密码
             </summary>
         </member>
-        <member name="P:Adnc.Usr.Application.Dtos.UserChangePwdInputDto.Password">
+        <member name="P:Adnc.Usr.Application.Dtos.UserChangePwdDto.Password">
             <summary>
             当前密码
             </summary>
         </member>
-        <member name="P:Adnc.Usr.Application.Dtos.UserChangePwdInputDto.RePassword">
+        <member name="P:Adnc.Usr.Application.Dtos.UserChangePwdDto.RePassword">
             <summary>
             确认密码
+            </summary>
+        </member>
+        <member name="P:Adnc.Usr.Application.Dtos.UserCreationAndUpdationDto.Account">
+            <summary>
+            账户
+            </summary>
+        </member>
+        <member name="P:Adnc.Usr.Application.Dtos.UserCreationAndUpdationDto.Birthday">
+            <summary>
+            生日
+            </summary>
+        </member>
+        <member name="P:Adnc.Usr.Application.Dtos.UserCreationAndUpdationDto.DeptId">
+            <summary>
+            部门Id
+            </summary>
+        </member>
+        <member name="P:Adnc.Usr.Application.Dtos.UserCreationAndUpdationDto.Email">
+            <summary>
+            邮件地址
+            </summary>
+        </member>
+        <member name="P:Adnc.Usr.Application.Dtos.UserCreationAndUpdationDto.Name">
+            <summary>
+            姓名
+            </summary>
+        </member>
+        <member name="P:Adnc.Usr.Application.Dtos.UserCreationAndUpdationDto.Phone">
+            <summary>
+            手机号
+            </summary>
+        </member>
+        <member name="P:Adnc.Usr.Application.Dtos.UserCreationAndUpdationDto.Sex">
+            <summary>
+            性别
+            </summary>
+        </member>
+        <member name="P:Adnc.Usr.Application.Dtos.UserCreationAndUpdationDto.Status">
+            <summary>
+            账户状态
+            </summary>
+        </member>
+        <member name="P:Adnc.Usr.Application.Dtos.UserCreationDto.Password">
+            <summary>
+            密码
             </summary>
         </member>
         <member name="T:Adnc.Usr.Application.Dtos.UserDto">
@@ -647,12 +667,12 @@
             手机号
             </summary>
         </member>
-        <member name="P:Adnc.Usr.Application.Dtos.UserDto.RoleId">
+        <member name="P:Adnc.Usr.Application.Dtos.UserDto.RoleIds">
             <summary>
             角色Id列表，以逗号分隔
             </summary>
         </member>
-        <member name="P:Adnc.Usr.Application.Dtos.UserDto.RoleName">
+        <member name="P:Adnc.Usr.Application.Dtos.UserDto.RoleNames">
             <summary>
             角色名称
             </summary>
@@ -675,11 +695,6 @@
         <member name="P:Adnc.Usr.Application.Dtos.UserDto.StatusName">
             <summary>
             账户状态描述
-            </summary>
-        </member>
-        <member name="P:Adnc.Usr.Application.Dtos.UserDto.Version">
-            <summary>
-            账户版本号
             </summary>
         </member>
         <member name="T:Adnc.Usr.Application.Dtos.UserInfoDto">
@@ -705,6 +720,21 @@
         <member name="P:Adnc.Usr.Application.Dtos.UserInfoDto.Permissions">
             <summary>
             权限集合
+            </summary>
+        </member>
+        <member name="T:Adnc.Usr.Application.Dtos.UserLoginDto">
+            <summary>
+            登录信息
+            </summary>
+        </member>
+        <member name="P:Adnc.Usr.Application.Dtos.UserLoginDto.Account">
+            <summary>
+            账户
+            </summary>
+        </member>
+        <member name="P:Adnc.Usr.Application.Dtos.UserLoginDto.Password">
+            <summary>
+            密码
             </summary>
         </member>
         <member name="T:Adnc.Usr.Application.Dtos.UserProfileDto">
@@ -752,7 +782,7 @@
             手机号
             </summary>
         </member>
-        <member name="P:Adnc.Usr.Application.Dtos.UserProfileDto.RoleId">
+        <member name="P:Adnc.Usr.Application.Dtos.UserProfileDto.RoleIds">
             <summary>
             角色Id
             </summary>
@@ -772,67 +802,32 @@
             状态
             </summary>
         </member>
-        <member name="P:Adnc.Usr.Application.Dtos.UserSaveInputDto.Account">
+        <member name="T:Adnc.Usr.Application.Dtos.UserRefreshTokenDto">
             <summary>
-            账户
+            刷新Token实体
             </summary>
         </member>
-        <member name="P:Adnc.Usr.Application.Dtos.UserSaveInputDto.Birthday">
+        <member name="P:Adnc.Usr.Application.Dtos.UserRefreshTokenDto.Account">
             <summary>
-            生日
+            账号
             </summary>
         </member>
-        <member name="P:Adnc.Usr.Application.Dtos.UserSaveInputDto.DeptId">
+        <member name="P:Adnc.Usr.Application.Dtos.UserRefreshTokenDto.RefreshToken">
             <summary>
-            部门Id
+            RefreshToken
             </summary>
         </member>
-        <member name="P:Adnc.Usr.Application.Dtos.UserSaveInputDto.Email">
-            <summary>
-            邮件地址
-            </summary>
-        </member>
-        <member name="P:Adnc.Usr.Application.Dtos.UserSaveInputDto.Name">
-            <summary>
-            姓名
-            </summary>
-        </member>
-        <member name="P:Adnc.Usr.Application.Dtos.UserSaveInputDto.Password">
-            <summary>
-            密码
-            </summary>
-        </member>
-        <member name="P:Adnc.Usr.Application.Dtos.UserSaveInputDto.Phone">
-            <summary>
-            手机号
-            </summary>
-        </member>
-        <member name="P:Adnc.Usr.Application.Dtos.UserSaveInputDto.Sex">
-            <summary>
-            性别
-            </summary>
-        </member>
-        <member name="P:Adnc.Usr.Application.Dtos.UserSaveInputDto.Status">
-            <summary>
-            账户状态
-            </summary>
-        </member>
-        <member name="P:Adnc.Usr.Application.Dtos.UserSaveInputDto.Version">
-            <summary>
-            账户版本号
-            </summary>
-        </member>
-        <member name="T:Adnc.Usr.Application.Dtos.UserSearchDto">
+        <member name="T:Adnc.Usr.Application.Dtos.UserSearchPagedDto">
             <summary>
             用户检索条件
             </summary>
         </member>
-        <member name="P:Adnc.Usr.Application.Dtos.UserSearchDto.Name">
+        <member name="P:Adnc.Usr.Application.Dtos.UserSearchPagedDto.Name">
             <summary>
             用户姓名
             </summary>
         </member>
-        <member name="P:Adnc.Usr.Application.Dtos.UserSearchDto.Account">
+        <member name="P:Adnc.Usr.Application.Dtos.UserSearchPagedDto.Account">
             <summary>
             用户账户
             </summary>
@@ -845,21 +840,6 @@
         <member name="P:Adnc.Usr.Application.Dtos.UserTokenInfoDto.RefreshToken">
             <summary>
             刷新Token
-            </summary>
-        </member>
-        <member name="T:Adnc.Usr.Application.Dtos.UserValidateInputDto">
-            <summary>
-            登录信息
-            </summary>
-        </member>
-        <member name="P:Adnc.Usr.Application.Dtos.UserValidateInputDto.Account">
-            <summary>
-            账户
-            </summary>
-        </member>
-        <member name="P:Adnc.Usr.Application.Dtos.UserValidateInputDto.Password">
-            <summary>
-            密码
             </summary>
         </member>
     </members>

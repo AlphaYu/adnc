@@ -17,11 +17,11 @@ namespace Adnc.Maint.WebApi.Controllers
     [ApiController]
     public class DictController : AdncControllerBase
     {
-        private readonly IDictAppService _dictService;
+        private readonly IDictAppService _dictAppService;
 
-        public DictController(IDictAppService dicttService)
+        public DictController(IDictAppService dictAppService)
         {
-            _dictService = dicttService;
+            _dictAppService = dictAppService;
         }
 
         /// <summary>
@@ -32,9 +32,9 @@ namespace Adnc.Maint.WebApi.Controllers
         [HttpDelete("{id}")]
         [Permission("dictDelete")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<ActionResult> Delete([FromRoute] long id)
+        public async Task<ActionResult> DeleteAsync([FromRoute] long id)
         {
-            return Result(await _dictService.Delete(id));
+            return Result(await _dictAppService.DeleteAsync(id));
         }
 
         /// <summary>
@@ -44,9 +44,9 @@ namespace Adnc.Maint.WebApi.Controllers
         [HttpGet()]
         [Permission("dictList")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<List<DictDto>>> GetDicttList([FromQuery] DictSearchDto searchDto)
+        public async Task<ActionResult<List<DictDto>>> GetListAsync([FromQuery] DictSearchDto search)
         {
-            return Result(await _dictService.GetList(searchDto));
+            return Result(await _dictAppService.GetListAsync(search));
         }
 
         /// <summary>
@@ -56,35 +56,36 @@ namespace Adnc.Maint.WebApi.Controllers
         [HttpGet("{id}")]
         [Permission("dict")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<DictDto>> Get([FromRoute]long id)
+        public async Task<ActionResult<DictDto>> GetAsync([FromRoute] long id)
         {
-            return Result(await _dictService.Get(id));
+            return Result(await _dictAppService.GetAsync(id));
         }
 
         /// <summary>
         /// 新增字典
         /// </summary>
-        /// <param name="dictDto">字典</param>
+        /// <param name="input"><see cref="DictCreationDto"/></param>
         /// <returns></returns>
         [HttpPost]
         [Permission("dictAdd")]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public async Task<ActionResult<long>> Add([FromBody]DictSaveInputDto dictDto)
+        public async Task<ActionResult<long>> CreateAsync([FromBody] DictCreationDto input)
         {
-            return CreatedResult(await _dictService.Add(dictDto));
+            return CreatedResult(await _dictAppService.CreateAsync(input));
         }
 
         /// <summary>
         /// 修改字典
         /// </summary>
-        /// <param name="dictDto">字典</param>
+        /// <param name="id">id</param>
+        /// <param name="input"><see cref="DictUpdationDto"/></param>
         /// <returns></returns>
-        [HttpPut]
+        [HttpPut("{id}")]
         [Permission("dictEdit")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<ActionResult<long>> Update([FromBody] DictSaveInputDto dictDto)
+        public async Task<ActionResult<long>> UpdateAsync([FromRoute] long id, [FromBody] DictUpdationDto input)
         {
-            return Result(await _dictService.Update(dictDto));
+            return Result(await _dictAppService.UpdateAsync(id, input));
         }
     }
 }

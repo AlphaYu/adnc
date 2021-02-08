@@ -6,7 +6,7 @@ using Adnc.Application.Shared.Dtos;
 
 namespace Adnc.Warehouse.Application.Dtos
 {
-    public class ShelfCreationDto : BaseDto
+    public class ShelfCreationDto : IDto
     {
         public string PositionCode { get; set; }
 
