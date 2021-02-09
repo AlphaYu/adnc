@@ -7,7 +7,7 @@ namespace Adnc.Maint.Application.Dtos
     {
         public string Name { get; set; }
 
-        public string Tips { get; set; }
+        public string Value { get; set; }
 
         public int Ordinal { get; set; }
 

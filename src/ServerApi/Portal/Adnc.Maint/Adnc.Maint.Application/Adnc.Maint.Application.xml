@@ -130,12 +130,17 @@
         </member>
         <member name="T:Adnc.Maint.Application.Dtos.DictSearchDto">
             <summary>
-            角色检索条件
+            字典检索条件
             </summary>
         </member>
         <member name="P:Adnc.Maint.Application.Dtos.DictSearchDto.Name">
             <summary>
-            角色名
+            字典名
+            </summary>
+        </member>
+        <member name="P:Adnc.Maint.Application.Dtos.DictSearchDto.Value">
+            <summary>
+            字典值
             </summary>
         </member>
         <member name="T:Adnc.Maint.Application.Dtos.LoginLogDto">

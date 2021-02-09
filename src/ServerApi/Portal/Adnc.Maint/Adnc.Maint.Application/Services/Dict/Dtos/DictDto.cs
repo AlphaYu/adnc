@@ -10,11 +10,11 @@ namespace Adnc.Maint.Application.Dtos
     {
         public string Name { get; set; }
 
-        public string Ordinal { get; set; }
+        public int Ordinal { get; set; }
 
         public long? Pid { get; set; }
 
-        public string Tips { get; set; }
+        public string Value { get; set; }
 
         private IList<DictDto> _data = Array.Empty<DictDto>();
         [NotNull]

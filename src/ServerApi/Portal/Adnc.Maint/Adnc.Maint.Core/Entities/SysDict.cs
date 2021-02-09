@@ -22,7 +22,7 @@ namespace Adnc.Maint.Core.Entities
         public long Pid { get; set; }
 
         [MaxLength(64)]
-        public string Tips { get; set; }
+        public string Value { get; set; }
 
         public bool IsDeleted { get; set; }
     }

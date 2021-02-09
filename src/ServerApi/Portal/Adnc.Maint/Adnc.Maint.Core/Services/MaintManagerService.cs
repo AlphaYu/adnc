@@ -20,7 +20,7 @@ namespace Adnc.Maint.Core.Services
         [UnitOfWork]
         public virtual async Task UpdateDictsAsync(SysDict dict, List<SysDict> subDicts, CancellationToken cancellationToken = default)
         {
-            await _dictRepository.UpdateAsync(dict, UpdatingProps<SysDict>(d => d.Name, d => d.Tips, d => d.Ordinal), cancellationToken);
+            await _dictRepository.UpdateAsync(dict, UpdatingProps<SysDict>(d => d.Name, d => d.Value, d => d.Ordinal), cancellationToken);
             await _dictRepository.DeleteRangeAsync(d => d.Pid == dict.Id, cancellationToken);
             if (subDicts?.Count > 0)
             {

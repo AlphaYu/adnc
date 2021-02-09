@@ -8,7 +8,7 @@ namespace Adnc.Maint.Application.DtoValidators
         public DictCreationDtoValidator()
         {
             RuleFor(x => x.Name).NotEmpty().MaximumLength(16);
-            RuleFor(x => x.Tips).MaximumLength(64);
+            RuleFor(x => x.Value).MaximumLength(64);
         }
     }
 }

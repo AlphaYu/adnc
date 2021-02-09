@@ -14,7 +14,7 @@ using Adnc.Maint.Core.Entities;
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Application.Shared.Services;
 
-namespace  Adnc.Maint.Application.Services
+namespace Adnc.Maint.Application.Services
 {
     public class DictAppService : AppService, IDictAppService
     {
@@ -73,7 +73,7 @@ namespace  Adnc.Maint.Application.Services
             var dists = new List<SysDict>();
             long id = IdGenerater.GetNextId();
             //var subDicts = GetSubDicts(id, input.DictValues);
-            var dict = new SysDict { Id = id, Name = input.Name, Tips = input.Tips, Ordinal = input.Ordinal, Pid = 0 };
+            var dict = new SysDict { Id = id, Name = input.Name, Value = input.Value, Ordinal = input.Ordinal, Pid = 0 };
 
             dists.Add(dict);
             input.Children?.ForEach(x =>
@@ -86,7 +86,7 @@ namespace  Adnc.Maint.Application.Services
                     ,
                     Name = x.Name
                     ,
-                    Tips = x.Tips
+                    Value = x.Value
                     ,
                     Ordinal = x.Ordinal
                 });
@@ -97,13 +97,14 @@ namespace  Adnc.Maint.Application.Services
             return id;
         }
 
-        public async Task<AppSrvResult> UpdateAsync(long id,DictUpdationDto input)
+        public async Task<AppSrvResult> UpdateAsync(long id, DictUpdationDto input)
         {
             var exists = (await GetAllFromCacheAsync()).Exists(x => x.Name.EqualsIgnoreCase(input.Name) && x.Id != id);
             if (exists)
                 return Problem(HttpStatusCode.BadRequest, "字典名字已经存在");
 
-            var dict = new SysDict { Name = input.Name, Tips = input.Tips, Id = id, Pid = 0, Ordinal = input.Ordinal };
+            var dict = new SysDict { Name = input.Name, Value = input.Value, Id = id, Pid = 0, Ordinal = input.Ordinal };
+
             var subDicts = new List<SysDict>();
             input.Children?.ForEach(x =>
             {
@@ -115,7 +116,7 @@ namespace  Adnc.Maint.Application.Services
                     ,
                     Name = x.Name
                     ,
-                    Tips = x.Tips
+                    Value = x.Value
                     ,
                     Ordinal = x.Ordinal
                 });
@@ -143,7 +144,7 @@ namespace  Adnc.Maint.Application.Services
         {
             var cahceValue = await _cache.GetAsync(EasyCachingConsts.DictListCacheKey, async () =>
             {
-                var allDicts = await _dictRepository.GetAll(writeDb:true).ToListAsync();
+                var allDicts = await _dictRepository.GetAll(writeDb: true).OrderBy(x => x.Ordinal).ToListAsync();
                 return _mapper.Map<List<DictDto>>(allDicts);
             }, TimeSpan.FromSeconds(EasyCachingConsts.OneYear));
 

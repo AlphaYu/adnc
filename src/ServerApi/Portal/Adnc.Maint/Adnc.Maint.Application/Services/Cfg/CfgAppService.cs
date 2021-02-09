@@ -92,10 +92,13 @@ namespace Adnc.Maint.Application.Services
             if (exist)
                 return Problem(HttpStatusCode.BadRequest, "参数名称已经存在");
 
-            var enity = _mapper.Map<SysCfg>(input);
+            var entity = _mapper.Map<SysCfg>(input);
+
+            entity.Id = id;
+
             var updatingProps = UpdatingProps<SysCfg>(x => x.Name, x => x.Value, x => x.Description);
 
-            await _cfgRepository.UpdateAsync(enity, updatingProps);
+            await _cfgRepository.UpdateAsync(entity, updatingProps);
 
             return AppSrvResult();
         }
