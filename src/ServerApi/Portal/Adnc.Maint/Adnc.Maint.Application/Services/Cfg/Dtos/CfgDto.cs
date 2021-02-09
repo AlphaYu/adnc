@@ -3,27 +3,27 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace  Adnc.Maint.Application.Dtos
+namespace Adnc.Maint.Application.Dtos
 {
     /// <summary>
     /// 系统配置
     /// </summary>
     [Serializable]
-    public class CfgDto : BaseOutputDto
+    public class CfgDto : OutputFullAuditInfoDto<long>
     {
         /// <summary>
         /// 备注
         /// </summary>
-        public string CfgDesc { get; set; }
+        public string Description { get; set; }
 
         /// <summary>
         /// 参数名
         /// </summary>
-        public string CfgName { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// 参数值
         /// </summary>
-        public string CfgValue { get; set; }
+        public string Value { get; set; }
     }
 }

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Adnc.Usr.Application.Dtos
 {
-    public class UserTokenInfoDto : BaseDto
+    public class UserTokenInfoDto : IDto
     {
         /// <summary>
         /// 访问Token

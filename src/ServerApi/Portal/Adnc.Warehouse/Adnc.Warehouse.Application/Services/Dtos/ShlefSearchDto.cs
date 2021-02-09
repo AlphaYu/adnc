@@ -6,7 +6,7 @@ using Adnc.Application.Shared.Dtos;
 
 namespace Adnc.Warehouse.Application.Dtos
 {
-    public class ShlefSearchDto : BaseSearchDto
+    public class ShlefSearchDto : SearchPagedDto
     {
     }
 }

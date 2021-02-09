@@ -26,7 +26,7 @@ export default {
         simpleName: '',
         fullName: '',
         pid: '',
-        num: '',
+        ordinal: '',
         tips: ''
       },
       rules: {
@@ -38,7 +38,7 @@ export default {
           { required: true, message: '请输入部门全称', trigger: 'blur' },
           { min: 2, max: 32, message: '长度在 2 到 32 个字符', trigger: 'blur' }
         ],
-        num: [
+        ordinal: [
           { required: true, message: '请输入排序', trigger: 'blur' }
         ]
       }
@@ -78,7 +78,7 @@ export default {
       return false
     },
     add() {
-      this.form = { num: 1 }
+      this.form = { ordinal: 1 }
       this.formTitle = '添加部门'
       this.formVisible = true
       this.isAdd = true
@@ -94,7 +94,7 @@ export default {
             id: self.form.id,
             simpleName: self.form.simpleName,
             fullName: self.form.fullName,
-            num: parseInt(self.form.num),
+            ordinal: parseInt(self.form.ordinal),
             pid: self.form.pid,
             tips: self.form.tips
           }

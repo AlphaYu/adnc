@@ -12,6 +12,7 @@ using Adnc.Core.Shared.IRepositories;
 using Adnc.Infr.Common;
 using Adnc.Infr.Common.Helper;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace Adnc.UnitTests
 {
@@ -44,6 +45,12 @@ namespace Adnc.UnitTests
             _userContext.Account = "alpha2008";
             _userContext.Name = "余小猫";
         }
+
+        protected Expression<Func<TEntity, object>>[] UpdatingProps<TEntity>(params Expression<Func<TEntity, object>>[] expressions)
+        {
+            return expressions;
+        }
+
 
         [Fact]
         public async void TestReadFromWirteDb()
@@ -102,7 +109,7 @@ namespace Adnc.UnitTests
 
                 result.Realname = newRealName;
                 result.Nickname = newNickname;
-                await _cusRsp.UpdateAsync(result, c => c.Realname, c => c.Nickname);
+                await _cusRsp.UpdateAsync(result, UpdatingProps<Customer>(c => c.Realname, c => c.Nickname));
 
                 _unitOfWork.Commit();
             }

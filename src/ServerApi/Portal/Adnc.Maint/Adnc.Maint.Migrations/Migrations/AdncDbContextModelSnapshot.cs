@@ -23,26 +23,16 @@ namespace Adnc.Maint.Migrations.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    b.Property<string>("CfgDesc")
-                        .HasColumnName("CfgDesc")
-                        .HasColumnType("varchar(256) CHARACTER SET utf8mb4")
-                        .HasMaxLength(256);
-
-                    b.Property<string>("CfgName")
-                        .HasColumnName("CfgName")
-                        .HasColumnType("varchar(64) CHARACTER SET utf8mb4")
-                        .HasMaxLength(64);
-
-                    b.Property<string>("CfgValue")
-                        .HasColumnName("CfgValue")
-                        .HasColumnType("varchar(128) CHARACTER SET utf8mb4")
-                        .HasMaxLength(128);
-
                     b.Property<long?>("CreateBy")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime?>("CreateTime")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Description")
+                        .HasColumnName("Description")
+                        .HasColumnType("varchar(256) CHARACTER SET utf8mb4")
+                        .HasMaxLength(256);
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
@@ -54,6 +44,16 @@ namespace Adnc.Maint.Migrations.Migrations
 
                     b.Property<DateTime?>("ModifyTime")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Name")
+                        .HasColumnName("Name")
+                        .HasColumnType("varchar(64) CHARACTER SET utf8mb4")
+                        .HasMaxLength(64);
+
+                    b.Property<string>("Value")
+                        .HasColumnName("Value")
+                        .HasColumnType("varchar(128) CHARACTER SET utf8mb4")
+                        .HasMaxLength(128);
 
                     b.HasKey("Id");
 
@@ -84,21 +84,16 @@ namespace Adnc.Maint.Migrations.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Name")
-                        .HasColumnName("Name")
                         .HasColumnType("varchar(16) CHARACTER SET utf8mb4")
                         .HasMaxLength(16);
 
-                    b.Property<string>("Num")
-                        .HasColumnName("Num")
-                        .HasColumnType("varchar(16) CHARACTER SET utf8mb4")
-                        .HasMaxLength(16);
+                    b.Property<int>("Ordinal")
+                        .HasColumnType("int");
 
-                    b.Property<long?>("Pid")
-                        .HasColumnName("Pid")
+                    b.Property<long>("Pid")
                         .HasColumnType("bigint");
 
-                    b.Property<string>("Tips")
-                        .HasColumnName("Tips")
+                    b.Property<string>("Value")
                         .HasColumnType("varchar(64) CHARACTER SET utf8mb4")
                         .HasMaxLength(64);
 

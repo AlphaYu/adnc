@@ -9,7 +9,7 @@ namespace Adnc.Usr.Application.Dtos
     /// 菜单节点
     /// </summary>
     [Serializable]
-    public class MenuNodeDto : BaseOutputDto
+    public class MenuNodeDto : OutputDto<long>
     {
         /// <summary>
         /// 父菜单Id
@@ -47,9 +47,9 @@ namespace Adnc.Usr.Application.Dtos
         public string StatusName => this.Status == 1 ? "启用" : "禁用";
 
         /// <summary>
-        /// 排序
+        /// 序号
         /// </summary>
-        public int Num { get; set; }
+        public int Ordinal { get; set; }
 
         /// <summary>
         /// 菜单URL

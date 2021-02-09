@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 namespace Adnc.Application.Shared.Dtos
 {
     [Serializable]
-    public class PageModelDto<T> : BaseDto
+    public class PageModelDto<T> : IDto
     {
 
         private IReadOnlyList<T> _data = Array.Empty<T>();
@@ -24,7 +24,7 @@ namespace Adnc.Application.Shared.Dtos
             }
         }
 
-        public int Count { get; set; }
+        public int RowsCount { get { return _data.Count; } }
 
         public int PageIndex { get; set; }
 
@@ -32,7 +32,7 @@ namespace Adnc.Application.Shared.Dtos
 
         public long TotalCount { get; set; }
 
-        public int PageCount { get; set; }
+        public int PageCount { get { return ((this.RowsCount + this.PageSize - 1) / this.PageSize); } }
 
         /// <summary>
         /// 扩展数据

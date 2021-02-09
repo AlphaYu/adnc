@@ -30,8 +30,8 @@ namespace Adnc.Usr.Core.Entities
 		[Column("FullName")]
 		public string FullName { get; set; }
 
-		[Column("Num")]
-		public int? Num { get; set; }
+		[Column("Ordinal")]
+		public int Ordinal { get; set; }
 
 		[Column("Pid")]
 		public long? Pid { get; set; }

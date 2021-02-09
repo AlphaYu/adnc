@@ -1,4 +1,4 @@
-import { remove, getList, save, update } from '@/api/maint/dict'
+import { remove, getList, save } from '@/api/maint/dict'
 // 权限判断指令
 import permission from '@/directive/permission/index.js'
 
@@ -16,7 +16,8 @@ export default {
       form: {
         name: '',
         id: '',
-        detail: '',
+        value: '',
+        children: [],
         details: []
       },
       rules: {
@@ -60,16 +61,13 @@ export default {
       })
     },
     search() {
-      this.listQuery.page = 1
       this.fetchData()
     },
     reset() {
       this.listQuery.name = ''
-      this.listQuery.page = 1
       this.fetchData()
     },
     handleFilter() {
-      this.listQuery.page = 1
       this.getList()
     },
     handleClose() {
@@ -83,8 +81,9 @@ export default {
       this.form = {
         name: '',
         id: '',
+        value: '',
         details: [],
-        detail: []
+        children: []
 
       }
     },
@@ -98,31 +97,24 @@ export default {
       var self = this
       this.$refs['form'].validate((valid) => {
         if (valid) {
-          var dictName = self.form.name
-          var dictValues = ''
+          var name = self.form.name
+          var dictValues = []
           for (var key in self.form.details) {
             var item = self.form.details[key]
-            dictValues += item['key'] + ':' + item['value'] + ';'
+            dictValues.push({ 'name': item['name'], 'value': item['value'], 'ordinal': parseInt(item['ordinal']) })
           }
+          var id = 0
           if (this.form.id !== '') {
-            update({ id: self.form.id, dictName: dictName, dictValues: dictValues }).then(response => {
-              this.$message({
-                message: '提交成功',
-                type: 'success'
-              })
-              self.fetchData()
-              self.formVisible = false
-            })
-          } else {
-            save({ dictName: dictName, dictValues: dictValues }).then(response => {
-              this.$message({
-                message: '提交成功',
-                type: 'success'
-              })
-              self.fetchData()
-              self.formVisible = false
-            })
+            id = self.form.id
           }
+          save({ id: id, name: name, children: dictValues }).then(response => {
+            this.$message({
+              message: '提交成功',
+              type: 'success'
+            })
+            self.fetchData()
+            self.formVisible = false
+          })
         } else {
           return false
         }
@@ -138,7 +130,7 @@ export default {
       })
       return false
     },
-    editItem(record){
+    editItem(record) {
       this.selRow = record
       this.edit()
     },
@@ -146,17 +138,16 @@ export default {
       if (this.checkSel()) {
         this.isAdd = false
         this.formTitle = '修改字典'
-        var detail = this.selRow.detail.split(';')
+        var children = this.selRow.children
         var details = []
-        detail.forEach(function(val, index) {
-          var arr = val.split(':')
-          details.push({ 'key': arr[0], 'value': arr[1] })
+        children.forEach(function(val, index) {
+          details.push({ 'name': val['name'], 'value': val['value'], 'ordinal': val['ordinal'] })
         })
-        this.form = { name: this.selRow.name, id: this.selRow.id, details: details, detail: this.selRow.detail }
+        this.form = { name: this.selRow.name, id: this.selRow.id, details: details, children: children }
         this.formVisible = true
       }
     },
-    removeItem(record){
+    removeItem(record) {
       this.selRow = record
       this.remove()
     },
@@ -185,16 +176,18 @@ export default {
       var details = this.form.details
 
       details.push({
+        name: '',
         value: '',
-        key: ''
+        ordinal: 1
       })
       this.form.details = details
     },
     removeDetail(detail) {
-      var details = []
-      this.form.details.forEach(function(val, index) {
-        if (detail.key !== val.key) {
-          details.push(val)
+      var details = this.form.details
+      details.forEach(function(val, index) {
+        if (detail.value === val.value) {
+          console.log(detail.key)
+          details.splice(index, 1)
         }
       })
       this.form.details = details

@@ -40,11 +40,11 @@ namespace Adnc.Cus.WebApi.Controllers
         /// <summary>
         /// 注册
         /// </summary>
-        /// <param name="inputDto"><see cref="RegisterInputDto"/></param>
+        /// <param name="inputDto"><see cref="CustomerRegisterDto"/></param>
         /// <returns></returns>
         [HttpPost]
         //[Permission("customerRegister")]
-        public async Task<ActionResult<SimpleDto<string>>> Register([FromBody][NotNull] RegisterInputDto inputDto)
+        public async Task<ActionResult<SimpleDto<string>>> Register([FromBody][NotNull] CustomerRegisterDto inputDto)
         {
             return Result(await _cusService.Register(inputDto));
         }
@@ -57,7 +57,7 @@ namespace Adnc.Cus.WebApi.Controllers
         //[Permission("customerRecharge")]
         public async Task<ActionResult<SimpleDto<string>>> Recharge([FromRoute] string id, [FromBody] SimpleInputDto<decimal> inputDto)
         {
-            return Result(await _cusService.Recharge(new RechargeInputDto { ID = long.Parse(id), Amount = inputDto.Value }));
+            return Result(await _cusService.Recharge(new CustomerRechargeDto { ID = long.Parse(id), Amount = inputDto.Value }));
         }
 
         /// <summary>

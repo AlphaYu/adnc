@@ -68,75 +68,79 @@
             <param name="message">消息内容</param>
             <returns></returns>
         </member>
+        <member name="T:Adnc.Maint.Application.Dtos.CfgCreationDto">
+            <summary>
+            系统配置
+            </summary>
+        </member>
+        <member name="P:Adnc.Maint.Application.Dtos.CfgCreationDto.Description">
+            <summary>
+            备注
+            </summary>
+        </member>
+        <member name="P:Adnc.Maint.Application.Dtos.CfgCreationDto.Name">
+            <summary>
+            参数名
+            </summary>
+        </member>
+        <member name="P:Adnc.Maint.Application.Dtos.CfgCreationDto.Value">
+            <summary>
+            参数值
+            </summary>
+        </member>
         <member name="T:Adnc.Maint.Application.Dtos.CfgDto">
             <summary>
             系统配置
             </summary>
         </member>
-        <member name="P:Adnc.Maint.Application.Dtos.CfgDto.CfgDesc">
+        <member name="P:Adnc.Maint.Application.Dtos.CfgDto.Description">
             <summary>
             备注
             </summary>
         </member>
-        <member name="P:Adnc.Maint.Application.Dtos.CfgDto.CfgName">
+        <member name="P:Adnc.Maint.Application.Dtos.CfgDto.Name">
             <summary>
             参数名
             </summary>
         </member>
-        <member name="P:Adnc.Maint.Application.Dtos.CfgDto.CfgValue">
+        <member name="P:Adnc.Maint.Application.Dtos.CfgDto.Value">
             <summary>
             参数值
             </summary>
         </member>
-        <member name="T:Adnc.Maint.Application.Dtos.CfgSaveInputDto">
+        <member name="T:Adnc.Maint.Application.Dtos.CfgSearchPagedDto">
             <summary>
             系统配置
             </summary>
         </member>
-        <member name="P:Adnc.Maint.Application.Dtos.CfgSaveInputDto.CfgDesc">
-            <summary>
-            备注
-            </summary>
-        </member>
-        <member name="P:Adnc.Maint.Application.Dtos.CfgSaveInputDto.CfgName">
+        <member name="P:Adnc.Maint.Application.Dtos.CfgSearchPagedDto.Name">
             <summary>
             参数名
             </summary>
         </member>
-        <member name="P:Adnc.Maint.Application.Dtos.CfgSaveInputDto.CfgValue">
+        <member name="P:Adnc.Maint.Application.Dtos.CfgSearchPagedDto.Value">
             <summary>
             参数值
             </summary>
         </member>
-        <member name="T:Adnc.Maint.Application.Dtos.CfgSearchDto">
+        <member name="T:Adnc.Maint.Application.Dtos.CfgUpdationDto">
             <summary>
             系统配置
-            </summary>
-        </member>
-        <member name="P:Adnc.Maint.Application.Dtos.CfgSearchDto.CfgName">
-            <summary>
-            参数名
-            </summary>
-        </member>
-        <member name="P:Adnc.Maint.Application.Dtos.CfgSearchDto.CfgValue">
-            <summary>
-            参数值
-            </summary>
-        </member>
-        <member name="F:Adnc.Maint.Application.Dtos.DictDto._data">
-            <summary>
-            该属性可以和Detail重复了。
-            考虑到合并需要修改前端代码，先这样。
             </summary>
         </member>
         <member name="T:Adnc.Maint.Application.Dtos.DictSearchDto">
             <summary>
-            角色检索条件
+            字典检索条件
             </summary>
         </member>
         <member name="P:Adnc.Maint.Application.Dtos.DictSearchDto.Name">
             <summary>
-            角色名
+            字典名
+            </summary>
+        </member>
+        <member name="P:Adnc.Maint.Application.Dtos.DictSearchDto.Value">
+            <summary>
+            字典值
             </summary>
         </member>
         <member name="T:Adnc.Maint.Application.Dtos.LoginLogDto">
@@ -144,32 +148,32 @@
             登录日志
             </summary>
         </member>
-        <member name="T:Adnc.Maint.Application.Dtos.LogSearchDto">
+        <member name="T:Adnc.Maint.Application.Dtos.LogSearchPagedDto">
             <summary>
             日志检索条件
             </summary>
         </member>
-        <member name="P:Adnc.Maint.Application.Dtos.LogSearchDto.BeginTime">
+        <member name="P:Adnc.Maint.Application.Dtos.LogSearchPagedDto.BeginTime">
             <summary>
             日志范围开始时间
             </summary>
         </member>
-        <member name="P:Adnc.Maint.Application.Dtos.LogSearchDto.EndTime">
+        <member name="P:Adnc.Maint.Application.Dtos.LogSearchPagedDto.EndTime">
             <summary>
             日志范围结束时间
             </summary>
         </member>
-        <member name="P:Adnc.Maint.Application.Dtos.LogSearchDto.Account">
+        <member name="P:Adnc.Maint.Application.Dtos.LogSearchPagedDto.Account">
             <summary>
             账号
             </summary>
         </member>
-        <member name="P:Adnc.Maint.Application.Dtos.LogSearchDto.Method">
+        <member name="P:Adnc.Maint.Application.Dtos.LogSearchPagedDto.Method">
             <summary>
             方法名
             </summary>
         </member>
-        <member name="P:Adnc.Maint.Application.Dtos.LogSearchDto.Device">
+        <member name="P:Adnc.Maint.Application.Dtos.LogSearchPagedDto.Device">
             <summary>
             设备
             </summary>
@@ -177,6 +181,66 @@
         <member name="T:Adnc.Maint.Application.Dtos.NlogLogDto">
             <summary>
             Nlog日志
+            </summary>
+        </member>
+        <member name="T:Adnc.Maint.Application.Dtos.OpsLogCreationDto">
+            <summary>
+            操作日志
+            </summary>
+        </member>
+        <member name="P:Adnc.Maint.Application.Dtos.OpsLogCreationDto.ClassName">
+            <summary>
+            控制器类名
+            </summary>
+        </member>
+        <member name="P:Adnc.Maint.Application.Dtos.OpsLogCreationDto.CreateTime">
+            <summary>
+            创建时间
+            </summary>
+        </member>
+        <member name="P:Adnc.Maint.Application.Dtos.OpsLogCreationDto.LogName">
+            <summary>
+            日志业务名称
+            </summary>
+        </member>
+        <member name="P:Adnc.Maint.Application.Dtos.OpsLogCreationDto.LogType">
+            <summary>
+            日志类型
+            </summary>
+        </member>
+        <member name="P:Adnc.Maint.Application.Dtos.OpsLogCreationDto.Message">
+            <summary>
+            详细信息
+            </summary>
+        </member>
+        <member name="P:Adnc.Maint.Application.Dtos.OpsLogCreationDto.Method">
+            <summary>
+            控制器方法
+            </summary>
+        </member>
+        <member name="P:Adnc.Maint.Application.Dtos.OpsLogCreationDto.Succeed">
+            <summary>
+            是否操作成功
+            </summary>
+        </member>
+        <member name="P:Adnc.Maint.Application.Dtos.OpsLogCreationDto.UserId">
+            <summary>
+            操作用户ID
+            </summary>
+        </member>
+        <member name="P:Adnc.Maint.Application.Dtos.OpsLogCreationDto.Account">
+            <summary>
+            操作用户账号
+            </summary>
+        </member>
+        <member name="P:Adnc.Maint.Application.Dtos.OpsLogCreationDto.UserName">
+            <summary>
+            操作用户姓名
+            </summary>
+        </member>
+        <member name="P:Adnc.Maint.Application.Dtos.OpsLogCreationDto.RemoteIpAddress">
+            <summary>
+            操作用户Ip
             </summary>
         </member>
         <member name="T:Adnc.Maint.Application.Dtos.OpsLogDto">
@@ -237,66 +301,6 @@
         <member name="P:Adnc.Maint.Application.Dtos.OpsLogDto.CreateTime">
             <summary>
             操作时间
-            </summary>
-        </member>
-        <member name="T:Adnc.Maint.Application.Dtos.OpsLogSaveInputDto">
-            <summary>
-            操作日志
-            </summary>
-        </member>
-        <member name="P:Adnc.Maint.Application.Dtos.OpsLogSaveInputDto.ClassName">
-            <summary>
-            控制器类名
-            </summary>
-        </member>
-        <member name="P:Adnc.Maint.Application.Dtos.OpsLogSaveInputDto.CreateTime">
-            <summary>
-            创建时间
-            </summary>
-        </member>
-        <member name="P:Adnc.Maint.Application.Dtos.OpsLogSaveInputDto.LogName">
-            <summary>
-            日志业务名称
-            </summary>
-        </member>
-        <member name="P:Adnc.Maint.Application.Dtos.OpsLogSaveInputDto.LogType">
-            <summary>
-            日志类型
-            </summary>
-        </member>
-        <member name="P:Adnc.Maint.Application.Dtos.OpsLogSaveInputDto.Message">
-            <summary>
-            详细信息
-            </summary>
-        </member>
-        <member name="P:Adnc.Maint.Application.Dtos.OpsLogSaveInputDto.Method">
-            <summary>
-            控制器方法
-            </summary>
-        </member>
-        <member name="P:Adnc.Maint.Application.Dtos.OpsLogSaveInputDto.Succeed">
-            <summary>
-            是否操作成功
-            </summary>
-        </member>
-        <member name="P:Adnc.Maint.Application.Dtos.OpsLogSaveInputDto.UserId">
-            <summary>
-            操作用户ID
-            </summary>
-        </member>
-        <member name="P:Adnc.Maint.Application.Dtos.OpsLogSaveInputDto.Account">
-            <summary>
-            操作用户账号
-            </summary>
-        </member>
-        <member name="P:Adnc.Maint.Application.Dtos.OpsLogSaveInputDto.UserName">
-            <summary>
-            操作用户姓名
-            </summary>
-        </member>
-        <member name="P:Adnc.Maint.Application.Dtos.OpsLogSaveInputDto.RemoteIpAddress">
-            <summary>
-            操作用户Ip
             </summary>
         </member>
         <member name="T:Adnc.Maint.Application.Dtos.NoticeDto">

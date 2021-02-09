@@ -7,6 +7,6 @@ namespace  Adnc.Maint.Application.Services
 { 
     public interface INoticeAppService : IAppService
     {
-        Task<AppSrvResult<List<NoticeDto>>> GetList(string title);
+        Task<AppSrvResult<List<NoticeDto>>> GetListAsync(NoticeSearchDto search);
     }
 }

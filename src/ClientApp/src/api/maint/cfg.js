@@ -18,9 +18,13 @@ export function exportXls(params) {
 
 export function save(params) {
   let methodName = 'post'
-  if (params.id > 0) { methodName = 'put' }
+  let url = '/maint/cfgs'
+  if (params.id > 0) {
+    methodName = 'put'
+    url = url + '/' + params.id
+  }
   return request({
-    url: '/maint/cfgs',
+    url: url,
     method: methodName,
     data: params
   })

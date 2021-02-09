@@ -7,13 +7,13 @@ namespace Adnc.Usr.Application.Services
 {
     public interface IAccountAppService : IAppService
     {
-        Task<AppSrvResult<UserValidateDto>> Login(UserValidateInputDto userDto);
+        Task<AppSrvResult<UserValidateDto>> LoginAsync(UserLoginDto input);
 
-        Task<AppSrvResult<UserInfoDto>> GetUserInfo(long userId);
+        Task<AppSrvResult<UserInfoDto>> GetUserInfoAsync(long userId);
 
         [OpsLog(LogName = "修改密码")]
-        Task<AppSrvResult> UpdatePassword(UserChangePwdInputDto passwordDto, long userId);
+        Task<AppSrvResult> UpdatePasswordAsync(long id, UserChangePwdDto input);
 
-        Task<AppSrvResult<UserValidateDto>> GetUserValidateInfo(RefreshTokenInputDto tokenInfo);
+        Task<AppSrvResult<UserValidateDto>> GetUserValidateInfoAsync(string account);
     }
 }

@@ -9,7 +9,7 @@ namespace Adnc.Usr.Application.Dtos
     /// 菜单-角色关联
     /// </summary>
 	[Serializable]
-    public class RelationDto : BaseDto
+    public class RelationDto : IDto
     {
 		/// <summary>
 		/// 菜单Id

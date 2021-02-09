@@ -4,7 +4,7 @@ using Adnc.Application.Shared.DtoValidators;
 
 namespace Adnc.Cus.Application.DtoValidators
 {
-    public class RechargeInputDtoValidator : AbstractValidator<RechargeInputDto>
+    public class RechargeInputDtoValidator : AbstractValidator<CustomerRechargeDto>
     {
         public RechargeInputDtoValidator()
         {

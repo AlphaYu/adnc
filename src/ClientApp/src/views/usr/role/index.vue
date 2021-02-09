@@ -46,8 +46,8 @@
       >
         <template slot-scope="{row}">
           <el-button v-permission="['/role/edit']" type="primary" size="mini" icon="el-icon-edit" @click="edit(row)">{{ $t('button.edit') }}</el-button>
-          <el-button v-permission="['/role/delete']" type="primary" size="mini" icon="el-icon-setting" @click.native="openPermissions(row)">权限配置</el-button>
-          <el-button v-permission="['/role/setAuthority']" type="danger" size="mini" icon="el-icon-delete" @click.native="remove(row)">{{ $t('button.delete') }}</el-button>
+          <el-button v-permission="['/role/setAuthority']" type="primary" size="mini" icon="el-icon-setting" @click.native="openPermissions(row)">权限配置</el-button>
+          <el-button v-permission="['/role/delete']" type="danger" size="mini" icon="el-icon-delete" @click.native="remove(row)">{{ $t('button.delete') }}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -82,7 +82,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="排序">
-              <el-input v-model="form.num" type="number" />
+              <el-input v-model="form.ordinal" type="number" />
             </el-form-item>
           </el-col>
         </el-row>

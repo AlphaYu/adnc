@@ -35,18 +35,19 @@ namespace Adnc.Usr.WebApi.Controllers
         /// <summary>
         /// 登录/验证
         /// </summary>
-        /// <param name="userDto"><see cref="UserValidateInputDto"/></param>
+        /// <param name="input"><see cref="UserLoginDto"/></param>
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost()]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public async Task<ActionResult<UserTokenInfoDto>> Login([FromBody] UserValidateInputDto userDto)
+        public async Task<ActionResult<UserTokenInfoDto>> LoginAsync([FromBody] UserLoginDto input)
         {
-            var result = await _accountService.Login(userDto);
+            var result = await _accountService.LoginAsync(input);
 
             if (result.IsSuccess)
-                return CreatedAtAction(nameof(GetCurrentUserInfo)
-                        , new UserTokenInfoDto
+                return Created($"/usr/session"
+                        ,
+                        new UserTokenInfoDto
                         {
                             Token = JwtTokenHelper.CreateAccessToken(_jwtConfig, result.Content),
                             RefreshToken = JwtTokenHelper.CreateRefreshToken(_jwtConfig, result.Content)
@@ -61,10 +62,10 @@ namespace Adnc.Usr.WebApi.Controllers
         /// <returns></returns>
         [HttpGet()]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<UserInfoDto>> GetCurrentUserInfo()
+        public async Task<ActionResult<UserInfoDto>> GetCurrentUserInfoAsync()
         {
             var userId = _userContext.Id;
-            var result = await _accountService.GetUserInfo(_userContext.Id);
+            var result = await _accountService.GetUserInfoAsync(_userContext.Id);
             return Result(result);
         }
 
@@ -84,20 +85,20 @@ namespace Adnc.Usr.WebApi.Controllers
         /// <summary>
         /// 刷新Token
         /// </summary>
-        /// <param name="tokenInfo"><see cref="RefreshTokenInputDto"/></param>
+        /// <param name="input"><see cref="UserRefreshTokenDto"/></param>
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPut()]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<UserTokenInfoDto>> RefreshAccessToken([FromBody] RefreshTokenInputDto tokenInfo)
+        public async Task<ActionResult<UserTokenInfoDto>> RefreshAccessTokenAsync([FromBody] UserRefreshTokenDto input)
         {
-            var result = await _accountService.GetUserValidateInfo(tokenInfo);
+            var result = await _accountService.GetUserValidateInfoAsync(input.Account);
 
             if (result.IsSuccess)
                 return Ok(new UserTokenInfoDto
                 {
-                    Token = JwtTokenHelper.CreateAccessToken(_jwtConfig, result.Content, tokenInfo.RefreshToken),
-                    RefreshToken = tokenInfo.RefreshToken
+                    Token = JwtTokenHelper.CreateAccessToken(_jwtConfig, result.Content, input.RefreshToken),
+                    RefreshToken = input.RefreshToken
                 });
 
             return Problem(result.ProblemDetails);
@@ -106,13 +107,13 @@ namespace Adnc.Usr.WebApi.Controllers
         /// <summary>
         /// 修改登录用户密码
         /// </summary>
-        /// <param name="inputDto"><see cref="UserChangePwdInputDto"/></param>
+        /// <param name="input"><see cref="UserChangePwdDto"/></param>
         /// <returns></returns>
         [HttpPut("password")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<ActionResult> ChangePassword([FromBody] UserChangePwdInputDto inputDto)
+        public async Task<ActionResult> ChangePassword([FromBody] UserChangePwdDto input)
         {
-            return Result(await _accountService.UpdatePassword(inputDto, _userContext.Id));
+            return Result(await _accountService.UpdatePasswordAsync(_userContext.Id, input));
         }
     }
 }

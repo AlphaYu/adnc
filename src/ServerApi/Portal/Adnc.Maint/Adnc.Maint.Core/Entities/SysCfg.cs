@@ -17,25 +17,25 @@ namespace Adnc.Maint.Core.Entities
         /// 参数名
         /// </summary>
         [Description("参数名")]
-        [StringLength(64)]
-        [Column("CfgName")]
-        public string CfgName { get; set; }
+        [MaxLength(64)]
+        [Column("Name")]
+        public string Name { get; set; }
 
         /// <summary>
         /// 参数值
         /// </summary>
         [Description("参数值")]
-        [StringLength(128)]
-        [Column("CfgValue")]
-        public string CfgValue { get; set; }
+        [MaxLength(128)]
+        [Column("Value")]
+        public string Value { get; set; }
 
         /// <summary>
         /// 备注
         /// </summary>
         [Description("备注")]
-        [StringLength(256)]
-        [Column("CfgDesc")]
-        public string CfgDesc { get; set; }
+        [MaxLength(256)]
+        [Column("Description")]
+        public string Description { get; set; }
 
         public bool IsDeleted { get; set; }
     }

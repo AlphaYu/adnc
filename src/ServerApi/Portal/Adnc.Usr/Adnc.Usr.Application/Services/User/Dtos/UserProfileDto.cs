@@ -8,7 +8,7 @@ namespace Adnc.Usr.Application.Dtos
     /// <summary>
     /// 用户个人信息
     /// </summary>
-    public class UserProfileDto : BaseDto
+    public class UserProfileDto : IDto
     {
         /// <summary>
         /// 账户
@@ -53,7 +53,7 @@ namespace Adnc.Usr.Application.Dtos
         /// <summary>
         /// 角色Id
         /// </summary>
-        public string RoleId { get; set; }
+        public string RoleIds { get; set; }
 
         /// <summary>
         /// 角色集合

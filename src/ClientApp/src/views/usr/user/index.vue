@@ -65,7 +65,7 @@
       </el-table-column>
       <el-table-column label="角色">
         <template slot-scope="scope">
-          {{ scope.row.roleName }}
+          {{ scope.row.roleNames }}
         </template>
       </el-table-column>
       <el-table-column label="部门">

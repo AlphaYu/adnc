@@ -1,18 +1,20 @@
 ﻿using Adnc.Application.Shared.Dtos;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace  Adnc.Maint.Application.Dtos
+namespace Adnc.Maint.Application.Dtos
 {
     /// <summary>
-    /// 角色检索条件
+    /// 字典检索条件
     /// </summary>
-    public class DictSearchDto : BaseSearchDto
+    public class DictSearchDto : SearchDto
     {
         /// <summary>
-        /// 角色名
+        /// 字典名
         /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        /// 字典值
+        /// </summary>
+        public string Value { get; set; }
     }
 }

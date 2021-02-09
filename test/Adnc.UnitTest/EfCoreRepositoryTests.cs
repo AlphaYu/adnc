@@ -12,6 +12,7 @@ using Adnc.Core.Shared.IRepositories;
 using Adnc.Infr.Common;
 using Adnc.Infr.Common.Helper;
 using Adnc.Infr.EfCore;
+using System.Linq.Expressions;
 
 namespace Adnc.UnitTest
 {
@@ -39,6 +40,11 @@ namespace Adnc.UnitTest
             _dbContext = _fixture.Container.Resolve<AdncDbContext>();
 
             Initialize().Wait();
+        }
+
+        protected Expression<Func<TEntity, object>>[] UpdatingProps<TEntity>(params Expression<Func<TEntity, object>>[] expressions)
+        {
+            return expressions;
         }
 
         private async Task Initialize()
@@ -116,14 +122,14 @@ namespace Adnc.UnitTest
 
                 //update single 
                 customer.Nickname = newNickName;
-                await _cusRsp.UpdateAsync(customer, c => c.Nickname);
+                await _cusRsp.UpdateAsync(customer,UpdatingProps<Customer>(c => c.Nickname));
                 var customerFromDb = await _cusRsp.FindAsync(customer.Id);
                 Assert.Equal(newNickName, customerFromDb.Nickname);
                 Assert.NotEqual(newRealName, customerFromDb.Realname);
 
 
                 cusFinance.Balance = newBalance;
-                await _cusFinanceRsp.UpdateAsync(cusFinance, c => c.Balance);
+                await _cusFinanceRsp.UpdateAsync(cusFinance, UpdatingProps<CusFinance>(c => c.Balance));
                 var financeFromDb = await _cusRsp.FetchAsync(c => c, x => x.Id == cusFinance.Id);
                 Assert.Equal(newBalance, cusFinance.Balance);
 
@@ -179,9 +185,9 @@ namespace Adnc.UnitTest
 
                 //update single 
                 customer.Nickname = newNickName;
-                await _cusRsp.UpdateAsync(customer, c => c.Nickname);
+                await _cusRsp.UpdateAsync(customer,UpdatingProps<Customer>(c => c.Nickname));
                 cusFinance.Balance = newBalance;
-                await _cusFinanceRsp.UpdateAsync(cusFinance, c => c.Balance);
+                await _cusFinanceRsp.UpdateAsync(cusFinance, UpdatingProps<CusFinance>(c => c.Balance));
 
                 //update batchs         
                 await _cusRsp.UpdateRangeAsync(x => x.Id == id, c => new Customer { Realname = newRealName });
@@ -252,7 +258,7 @@ namespace Adnc.UnitTest
         {
 
             try
-            {
+            {  
                 long id = 0;
 
                 //using (dynamic trans = _unitOfWork.GetDbContextTransaction())
@@ -270,7 +276,7 @@ namespace Adnc.UnitTest
 
                 //实体已经被跟踪并且指定更新列
                 insertedCustomer.Nickname = "跟踪指定列";
-                await _cusRsp.UpdateAsync(insertedCustomer, c => c.Nickname);
+                await _cusRsp.UpdateAsync(insertedCustomer, UpdatingProps<Customer>(c => c.Nickname));
                 newCus = await _cusRsp.FindAsync(id, writeDb: true);
                 Assert.Equal("跟踪指定列", newCus.Nickname);
 
@@ -278,7 +284,7 @@ namespace Adnc.UnitTest
                 //实体没有被跟踪，但dbcontext中已经有同Id实体
                 //UPDATE `Customer` SET `ModifyTime` = timestamp('2021-02-05 23:14:07.451520'), `Nickname` = '新昵称', `Realname` = '没被跟踪01'
                 //WHERE `Id` = 145668356337438720;
-                await _cusRsp.UpdateAsync(new Customer { Id = id, Realname = "没被跟踪01", Nickname = "新昵称" }, c => c.Realname, c => c.Nickname);
+                await _cusRsp.UpdateAsync(new Customer { Id = id, Realname = "没被跟踪01", Nickname = "新昵称" }, UpdatingProps<Customer>(c => c.Realname, c => c.Nickname));
                 newCus = await _cusRsp.FindAsync(id, writeDb: true);
                 Assert.Equal("没被跟踪01", newCus.Realname);
                 Assert.Equal("新昵称", newCus.Nickname);
@@ -288,7 +294,7 @@ namespace Adnc.UnitTest
                 //UPDATE `Customer` SET `ModifyBy` = 1600000000000, `ModifyTime` = timestamp('2021-02-05 23:14:10.354529'), `Nickname` = '新昵称', `Realname` = '没被跟踪02'
                 //WHERE `Id` = 145649264331198464;
                 id = 145649264331198464;
-                await _cusRsp.UpdateAsync(new Customer { Id = id, Realname = "没被跟踪02", Nickname = "新昵称" }, c => c.Realname, c => c.Nickname);
+                await _cusRsp.UpdateAsync(new Customer { Id = id, Realname = "没被跟踪02", Nickname = "新昵称" }, UpdatingProps<Customer>(c => c.Realname, c => c.Nickname));
                 newCus = await _cusRsp.FindAsync(id, writeDb: true);
                 Assert.Equal("没被跟踪02", newCus.Realname);
                 Assert.Equal("新昵称", newCus.Nickname);
@@ -298,7 +304,7 @@ namespace Adnc.UnitTest
                 //id = 145656816196521984;
                 newCus = await _cusRsp.FindAsync(id);
                 newCus.Realname = "没被跟踪03";
-                await _cusRsp.UpdateAsync(newCus, c => c.Realname);
+                await _cusRsp.UpdateAsync(newCus, UpdatingProps<Customer>(c => c.Realname));
                 newCus = await _cusRsp.FindAsync(id, writeDb: true);
                 Assert.Equal("没被跟踪03", newCus.Realname);
 

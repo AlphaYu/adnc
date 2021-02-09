@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Adnc.Warehouse.Application.Dtos
 {
-    public class ProductDto : BaseDto
+    public class ProductDto : IDto
     {
         public string Id { set; get; }
 

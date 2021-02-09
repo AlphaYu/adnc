@@ -18,9 +18,13 @@ export function list() {
 
 export function save(data) {
   let methodName = 'post'
-  if (data.id > 0) { methodName = 'put' }
+  let url = '/usr/depts'
+  if (data.id > 0) {
+    methodName = 'put'
+    url = url + '/' + data.id
+  }
   return request({
-    url: '/usr/depts',
+    url: url,
     method: methodName,
     data
   })

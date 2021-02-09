@@ -26,14 +26,14 @@ namespace Adnc.Usr.WebApi.Controllers
         /// <summary>
         /// 查询角色
         /// </summary>
-        /// <param name="searchModel">角色查询条件</param>
+        /// <param name="input">角色查询条件</param>
         /// <returns></returns>
         [HttpGet()]
         [Permission("roleList")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<PageModelDto<RoleDto>>> GetPaged([FromQuery] RoleSearchDto searchModel)
+        public async Task<ActionResult<PageModelDto<RoleDto>>> GetPagedAsync([FromQuery] RolePagedSearchDto input)
         {
-            return Result(await _roleService.GetPaged(searchModel));
+            return Result(await _roleService.GetPagedAsync(input));
         }
 
         /// <summary>
@@ -43,9 +43,9 @@ namespace Adnc.Usr.WebApi.Controllers
         /// <returns></returns>
         [HttpGet("{userId}/rolestree")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<dynamic>> GetRoleTreeListByUserId([FromRoute]long userId)
+        public async Task<ActionResult<dynamic>> GetRoleTreeListByUserIdAsync([FromRoute] long userId)
         {
-             return Result(await _roleService.GetRoleTreeListByUserId(userId));
+            return Result(await _roleService.GetRoleTreeListByUserIdAsync(userId));
         }
 
         /// <summary>
@@ -56,49 +56,50 @@ namespace Adnc.Usr.WebApi.Controllers
         [HttpDelete("{id}")]
         [Permission("roleDelete")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<ActionResult> Delete([FromRoute]long id)
+        public async Task<ActionResult> DeleteAsync([FromRoute] long id)
         {
-            return Result(await _roleService.Delete(id));
+            return Result(await _roleService.DeleteAsync(id));
         }
 
         /// <summary>
         /// 保存角色权限
         /// </summary>
-        /// <param name="roleId">角色Id</param>
+        /// <param name="id">角色Id</param>
         /// <param name="permissions">用户权限Ids</param>
         /// <returns></returns>
-        [HttpPut("{roleId}/permissons")]
+        [HttpPut("{id}/permissons")]
         [Permission("roleSetAuthority")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<ActionResult> SavePermisson([FromRoute] long roleId,[FromBody]long[] permissions)
+        public async Task<ActionResult> SetPermissonsAsync([FromRoute] long id, [FromBody] long[] permissions)
         {
-            return Result(await _roleService.SaveRolePermisson(new PermissonSaveInputDto() { RoleId = roleId, Permissions = permissions }));
+            return Result(await _roleService.SetPermissonsAsync(new RoleSetPermissonsDto() { RoleId = id, Permissions = permissions }));
         }
 
         /// <summary>
         /// 新增角色
         /// </summary>
-        /// <param name="saveDto">角色</param>
+        /// <param name="input">角色</param>
         /// <returns></returns>
         [HttpPost]
         [Permission("roleAdd")]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public async Task<ActionResult<long>> Add([FromBody] RoleSaveInputDto saveDto)
+        public async Task<ActionResult<long>> CreateAsync([FromBody] RoleCreationDto input)
         {
-            return CreatedResult(await _roleService.Add(saveDto));
+            return CreatedResult(await _roleService.CreateAsync(input));
         }
 
         /// <summary>
         /// 修改角色
         /// </summary>
-        /// <param name="saveDto">角色</param>
+        /// <param name="id">id</param>
+        /// <param name="input">角色</param>
         /// <returns></returns>
-        [HttpPut]
+        [HttpPut("{id}")]
         [Permission("roleEdit")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<ActionResult> Update([FromBody] RoleSaveInputDto saveDto)
+        public async Task<ActionResult> UpdateAsync([FromRoute]long id, [FromBody] RoleUpdationDto input)
         {
-            return Result(await _roleService.Update(saveDto));
+            return Result(await _roleService.UpdateAsync(id, input));
         }
     }
 }

@@ -34,109 +34,115 @@ namespace Adnc.Usr.WebApi.Controllers
         /// <summary>
         /// 获取用户列表
         /// </summary>
-        /// <param name="searchModel">查询条件</param>
+        /// <param name="search">查询条件</param>
         /// <returns></returns>
         [HttpGet()]
         [Permission("userList")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<PageModelDto<UserDto>>> GetPaged([FromQuery]UserSearchDto searchModel)
+        public async Task<ActionResult<PageModelDto<UserDto>>> GetPagedAsync([FromQuery] UserSearchPagedDto search)
         {
-            return Result(await _userService.GetPaged(searchModel));
+            return Result(await _userService.GetPagedAsync(search));
         }
 
         /// <summary>
         /// 新增用户
         /// </summary>
-        /// <param name="userDto">用户信息</param>
+        /// <param name="input">用户信息</param>
         /// <returns></returns>
         [HttpPost]
         [Permission("userAdd")]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public async Task<ActionResult<long>> Add([FromBody] UserSaveInputDto userDto)
+        public async Task<ActionResult<long>> CreateAsync([FromBody] UserCreationDto input)
         {
-            return CreatedResult(await _userService.Add(userDto));
+            return CreatedResult(await _userService.CreateAsync(input));
         }
 
         /// <summary>
         /// 修改用户
         /// </summary>
-        /// <param name="userDto">用户信息</param>
+        /// <param name="id">id</param>
+        /// <param name="input">用户信息</param>
         /// <returns></returns>
-        [HttpPut]
+        [HttpPut("{id}")]
         [Permission("userEdit")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<ActionResult> Update([FromBody] UserSaveInputDto userDto)
+        public async Task<ActionResult> UpdateAsync([FromRoute] long id, [FromBody] UserUpdationDto input)
         {
-            return Result(await _userService.Update(userDto));
+            return Result(await _userService.UpdateAsync(id, input));
         }
 
 
         /// <summary>
         /// 删除用户
         /// </summary>
-        /// <param name="userId">用户ID</param>
+        /// <param name="id">用户ID</param>
         /// <returns></returns>
-        [HttpDelete("{userId}")]
+        [HttpDelete("{id}")]
         [Permission("userDelete")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<ActionResult> Delete([FromRoute] long userId)
+        public async Task<ActionResult> DeleteAsync([FromRoute] long id)
         {
-            return Result(await _userService.Delete(userId));
+            return Result(await _userService.DeleteAsync(id));
         }
 
         /// <summary>
         /// 设置用户角色
         /// </summary>
-        /// <param name="userId">用户Id</param>
+        /// <param name="id">用户Id</param>
         /// <param name="roleIds">角色</param>
         /// <returns></returns>
-        [HttpPut("{userId}/roles")]
+        [HttpPut("{id}/roles")]
         [Permission("userSetRole")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<ActionResult> SetRole([FromRoute] long userId, [FromBody] long[] roleIds)
+        public async Task<ActionResult> SetRoleAsync([FromRoute] long id, [FromBody] long[] roleIds)
         {
-           return Result(await _userService.SetRole(new RoleSetInputDto { Id = userId, RoleIds = roleIds}));
-            
+            return Result(await _userService.SetRoleAsync(id, new UserSetRoleDto { RoleIds = roleIds }));
         }
 
         /// <summary>
         /// 变更用户状态
         /// </summary>
-        /// <param name="userId">用户ID</param>
+        /// <param name="id">用户ID</param>
         /// <param name="status">状态</param>
         /// <returns></returns>
-        [HttpPut("{userId}/status")]
+        [HttpPut("{id}/status")]
         [Permission("userFreeze")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<ActionResult> ChangeStatus([FromRoute]long userId, [FromBody] SimpleInputDto<int> status)
+        public async Task<ActionResult> ChangeStatus([FromRoute] long id, [FromBody] SimpleInputDto<int> status)
         {
-            return Result(await _userService.ChangeStatus(userId, status.Value));
+            return Result(await _userService.ChangeStatusAsync(id, status.Value));
         }
 
         /// <summary>
         /// 批量变更用户状态
         /// </summary>
-        /// <param name="changeStatusInputDto">用户Ids与状态</param>
+        /// <param name="input">用户Ids与状态</param>
         /// <returns></returns>
         [HttpPut("batch/status")]
         [Permission("userFreeze")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<ActionResult> ChangeStatus([FromBody] UserChangeStatusInputDto changeStatusInputDto)
+        public async Task<ActionResult> ChangeStatus([FromBody] UserChangeStatusDto input)
         {
-            return Result(await _userService.ChangeStatus(changeStatusInputDto));
+            return Result(await _userService.ChangeStatusAsync(input));
         }
 
+        /// <summary>
+        /// 获取当前用户权限
+        /// </summary>
+        /// <param name="id">用户id</param>
+        /// <param name="permissions"></param>
+        /// <returns></returns>
         [HttpGet("{id}/permissions")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<List<string>>> GetCurrenUserPermissions([FromRoute] long id, [FromQuery]string[] permissions)
+        public async Task<ActionResult<List<string>>> GetCurrenUserPermissions([FromRoute] long id, [FromQuery] string[] permissions)
         {
-            var inputDto = new RolePermissionsCheckInputDto()
+            var inputDto = new RolePermissionsCheckerDto()
             {
                 RoleIds = _userContext.RoleIds
                 ,
                 Permissions = permissions
             };
-            return Result(await _roleService.GetPermissions(inputDto));
+            return Result(await _roleService.GetPermissionsAsync(inputDto));
         }
     }
 }
