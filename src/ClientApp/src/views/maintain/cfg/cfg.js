@@ -11,15 +11,15 @@ export default {
       isAdd: true,
       form: {
         id: 0,
-        cfgName: '',
-        cfgValue: '',
-        cfgDesc: ''
+        name: '',
+        value: '',
+        description: ''
       },
       listQuery: {
         pageIndex: 1,
         pageSize: 20,
-        cfgName: undefined,
-        cfgValue: undefined
+        name: undefined,
+        value: undefined
       },
       total: 0,
       list: null,
@@ -40,11 +40,11 @@ export default {
   computed: {
     rules() {
       return {
-        cfgName: [
+        name: [
           { required: true, message: this.$t('config.name') + this.$t('common.isRequired'), trigger: 'blur' },
           { min: 2, max: 64, message: this.$t('config.name') + '长度在 2 到 64 个字符', trigger: 'blur' }
         ],
-        cfgValue: [
+        value: [
           { required: true, message: this.$t('config.value') + this.$t('common.isRequired'), trigger: 'blur' },
           { min: 2, max: 128, message: this.$t('config.value') + '长度在 2 到 128 个字符', trigger: 'blur' }
         ]
@@ -72,8 +72,8 @@ export default {
       this.fetchData()
     },
     reset() {
-      this.listQuery.cfgName = ''
-      this.listQuery.cfgValue = ''
+      this.listQuery.name = ''
+      this.listQuery.value = ''
       this.listQuery.pageIndex = 1
       this.fetchData()
     },
@@ -106,9 +106,9 @@ export default {
     resetForm() {
       this.form = {
         id: 0,
-        cfgName: '',
-        cfgValue: '',
-        cfgDesc: ''
+        name: '',
+        value: '',
+        description: ''
       }
     },
     add() {
@@ -122,9 +122,9 @@ export default {
         if (valid) {
           save({
             id: this.form.id,
-            cfgName: this.form.cfgName,
-            cfgValue: this.form.cfgValue,
-            cfgDesc: this.form.cfgDesc
+            name: this.form.name,
+            value: this.form.value,
+            description: this.form.description
           }).then(response => {
             this.$message({
               message: this.$t('common.optionSuccess'),

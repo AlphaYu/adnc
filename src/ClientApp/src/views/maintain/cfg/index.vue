@@ -3,10 +3,10 @@
     <div class="block">
       <el-row  :gutter="20">
         <el-col :span="4">
-          <el-input v-model="listQuery.cfgName" size="mini" :placeholder="$t('config.name')"></el-input>
+          <el-input v-model="listQuery.name" size="mini" :placeholder="$t('config.name')"></el-input>
         </el-col>
         <el-col :span="4">
-          <el-input v-model="listQuery.cfgValue" size="mini"  :placeholder="$t('config.value')"></el-input>
+          <el-input v-model="listQuery.value" size="mini"  :placeholder="$t('config.value')"></el-input>
         </el-col>
         <el-col :span="6">
           <el-button type="success" size="mini" icon="el-icon-search" @click.native="search">{{ $t('button.search') }}</el-button>
@@ -33,17 +33,17 @@
       </el-table-column>
       <el-table-column :label="$t('config.name')">
         <template slot-scope="scope">
-          {{scope.row.cfgName}}
+          {{scope.row.name}}
         </template>
       </el-table-column>
       <el-table-column :label="$t('config.value')">
         <template slot-scope="scope">
-          {{scope.row.cfgValue}}
+          {{scope.row.value}}
         </template>
       </el-table-column>
       <el-table-column :label="$t('config.descript')">
         <template slot-scope="scope">
-          {{scope.row.cfgDesc}}
+          {{scope.row.description}}
         </template>
       </el-table-column>
       <el-table-column label="最后修改时间">
@@ -80,20 +80,20 @@
       <el-form ref="form" :model="form" :rules="rules" label-width="120px">
         <el-row>
           <el-col :span="12">
-            <el-form-item :label="$t('config.name')" prop="cfgName">
-              <el-input v-model="form.cfgName" minlength=1></el-input>
+            <el-form-item :label="$t('config.name')" prop="name">
+              <el-input v-model="form.name" minlength=1></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="$t('config.value')" prop="cfgValue">
-              <el-input v-model="form.cfgValue"  minlength=1></el-input>
+            <el-form-item :label="$t('config.value')" prop="value">
+              <el-input v-model="form.value"  minlength=1></el-input>
             </el-form-item>
           </el-col>
 
 
           <el-col :span="12">
-            <el-form-item :label="$t('config.descript')" prop="cfgDesc">
-              <el-input v-model="form.cfgDesc"></el-input>
+            <el-form-item :label="$t('config.descript')" prop="description">
+              <el-input v-model="form.description"></el-input>
             </el-form-item>
           </el-col>
         </el-row>

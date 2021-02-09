@@ -38,7 +38,14 @@
       </el-table-column>
       <el-table-column label="详情">
         <template slot-scope="scope">
-          {{ scope.row.detail }}
+          <el-select v-model="scope.row.value" placeholder="请选择">
+            <el-option
+              v-for="item in scope.row.children"
+              :key="item.id"
+              :label="item.name"
+              :value="item.value"
+            />
+          </el-select>
         </template>
       </el-table-column>
       <el-table-column label="操作">
@@ -62,19 +69,23 @@
         </el-form-item>
         <el-form-item
           v-for="(rec, index) in form.details"
-          :key="rec.key"
+          :key="rec.index"
           :label="'字典' + (index+1)"
           :prop="'details.' + index + '.value'"
           :rules="{
             required: true, message: '不能为空', trigger: 'blur'
           }"
         >
-          <el-col :span="9">
-            <el-input v-model="rec.key" placeholder="值" />
+          <el-col :span="6">
+            <el-input v-model="rec.value" placeholder="值" />
           </el-col>
           <el-col class="line" :span="1">&nbsp; </el-col>
-          <el-col :span="9">
-            <el-input v-model="rec.value" placeholder="名称" />
+          <el-col :span="6">
+            <el-input v-model="rec.name" placeholder="名称" />
+          </el-col>
+          <el-col class="line" :span="1">&nbsp; </el-col>
+          <el-col :span="6">
+            <el-input v-model="rec.ordinal" placeholder="序号" type="number" />
           </el-col>
           <el-col :span="4">&nbsp;
             <el-button type="danger" icon="el-icon-delete" @click.prevent="removeDetail(rec)">{{ $t('button.delete')

@@ -9,17 +9,15 @@ export function getList(params) {
 }
 
 export function save(params) {
+  let methodName = 'post'
+  let url = '/maint/dicts'
+  if (params.id > 0) {
+    methodName = 'put'
+    url = url + '/' + params.id
+  }
   return request({
-    url: '/maint/dicts',
-    method: 'post',
-    data: params
-  })
-}
-
-export function update(params) {
-  return request({
-    url: '/maint/dicts',
-    method: 'put',
+    url: url,
+    method: methodName,
     data: params
   })
 }
