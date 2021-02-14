@@ -26,7 +26,7 @@ namespace Adnc.Gateway
                                 {
                                     var configuration = cb.Build();
                                     var consulOption = configuration.GetSection("Consul").Get<ConsulConfig>();
-                                    cb.AddConsul(new[] { consulOption.ConsulUrl }, consulOption.ConsulKeyPath);
+                                    cb.AddConsulConfiguration(new[] { consulOption.ConsulUrl }, consulOption.ConsulKeyPath);
                                 }
                             })
                             .ConfigureAppConfiguration((hostingContext, config) =>

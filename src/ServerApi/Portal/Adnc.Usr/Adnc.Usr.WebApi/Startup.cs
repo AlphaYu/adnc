@@ -18,6 +18,7 @@ using Adnc.Usr.Application;
 using Adnc.Usr.WebApi.Helper;
 using Adnc.WebApi.Shared;
 using Adnc.WebApi.Shared.Middleware;
+using Adnc.Infr.Consul;
 
 namespace Adnc.Usr.WebApi
 {
@@ -54,6 +55,8 @@ namespace Adnc.Usr.WebApi
             _srvRegistration.AddMongoContext();
             _srvRegistration.AddCaching();
             _srvRegistration.AddSwaggerGen();
+
+            services.AddConsulServices(_srvRegistration.GetConsulConfig());
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -117,7 +120,7 @@ namespace Adnc.Usr.WebApi
             if (env.IsProduction() || env.IsStaging())
             {
                 //注册本服务到consul
-                app.RegisterToConsul(_srvRegistration.GetConsulConfig());
+                app.RegisterToConsul();
             }
         }
     }

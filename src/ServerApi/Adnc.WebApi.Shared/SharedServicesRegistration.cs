@@ -605,10 +605,8 @@ namespace Adnc.WebApi.Shared
         /// <typeparam name="TRpcService">Rpc服务接口</typeparam>
         /// <param name="serviceName">在注册中心注册的服务名称，或者服务的Url</param>
         /// <param name="policies">Polly策略</param>
-        /// <param name="token">Token，可空</param>
         protected virtual void AddRpcService<TRpcService>(string serviceName
         , List<IAsyncPolicy<HttpResponseMessage>> policies
-        , Func<Task<string>> getToken = null
         ) where TRpcService : class, IRpcService
         {
             var prefix = serviceName.Substring(0, 7);
@@ -621,19 +619,13 @@ namespace Adnc.WebApi.Shared
             //从consul获取地址
             if (isConsulAdderss)
                 clientbuilder.ConfigureHttpClient(client => client.BaseAddress = new Uri($"http://{serviceName}"))
-                             .AddHttpMessageHandler(() =>
-                             {
-                                 return new ConsulDiscoveryDelegatingHandler(_consulConfig.ConsulUrl, getToken);
-                             });
+                             .AddHttpMessageHandler<ConsulDiscoveryHandler>();
             else
                 clientbuilder.ConfigureHttpClient(client => client.BaseAddress = new Uri(serviceName))
-                             .AddHttpMessageHandler(() =>
-                             {
-                                 return new SimpleAuthHeaderHandler(getToken);
-                             });
+                             .AddHttpMessageHandler<SimpleDiscoveryHandler>();
 
             //添加polly相关策略
-            policies?.ForEach(policy => clientbuilder.AddPolicyHandler(policy));
+            //policies?.ForEach(policy => clientbuilder.AddPolicyHandler(policy));
         }
 
         /// <summary>
@@ -708,7 +700,7 @@ namespace Adnc.WebApi.Shared
             {
                 retryPolicy
                ,timeoutPolicy
-               ,circuitBreakerPolicy.AsAsyncPolicy<HttpResponseMessage>()
+              ,circuitBreakerPolicy.AsAsyncPolicy<HttpResponseMessage>()
             };
         }
 

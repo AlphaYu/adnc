@@ -136,7 +136,7 @@ namespace Adnc.Usr.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<List<string>>> GetCurrenUserPermissions([FromRoute] long id, [FromQuery] string[] permissions)
         {
-            throw new System.Exception("测试");
+            //throw new System.Exception("测试");
 
             var inputDto = new RolePermissionsCheckerDto()
             {

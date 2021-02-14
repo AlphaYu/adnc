@@ -11,14 +11,15 @@ namespace Adnc.Infr.Consul.Registration
 {
     public static class RegistrationExtension
     {
-        public static void RegisterToConsul(this IApplicationBuilder app, ConsulConfig consulOption)
+        public static void RegisterToConsul(this IApplicationBuilder app)
         {
+            var lifetime = app.ApplicationServices.GetRequiredService<IHostApplicationLifetime>();
+            var consulOption = app.ApplicationServices.GetRequiredService<ConsulConfig>();
+            var consulClient = app.ApplicationServices.GetRequiredService<ConsulClient>();
+
             var serviceAddress = GetServiceAddressInternal(app, consulOption);
             var serverId = $"{consulOption.ServiceName}.{(DateTime.UtcNow.Ticks - 621355968000000000) / 10000000}";
 
-            var consulClient = new ConsulClient(ConsulClientConfiguration => ConsulClientConfiguration.Address = new Uri(consulOption.ConsulUrl));
-
-            var lifetime = app.ApplicationServices.GetRequiredService<IHostApplicationLifetime>();
             lifetime.ApplicationStarted.Register(() =>
             {
                 var protocol = serviceAddress.Scheme;

@@ -1,23 +1,26 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
+﻿using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Linq;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Adnc.Infr.Consul.Consumer
 {
-    public class SimpleAuthHeaderHandler : DelegatingHandler
+    public class SimpleDiscoveryHandler : DelegatingHandler
     {
-        private readonly Func<Task<string>> _token;
+        private readonly ITokenGenerator _tokenGenerator;
+        private readonly IMemoryCache _memoryCache;
         public Guid ContextId { get; private set; }
 
-        public SimpleAuthHeaderHandler(Func<Task<string>> token = null)
+        public SimpleDiscoveryHandler(ITokenGenerator tokenGenerator
+            , IMemoryCache memoryCache)
         {
-            _token = token;
             this.ContextId = Guid.NewGuid();
+            _tokenGenerator = tokenGenerator;
+            _memoryCache = memoryCache;
         }
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
@@ -25,10 +28,12 @@ namespace Adnc.Infr.Consul.Consumer
             var headers = request.Headers;
 
             var auth = headers.Authorization;
-            if (auth != null && _token != null)
+            if (auth != null)
             {
-                var tokenTxt = await _token();
-                request.Headers.Authorization = new AuthenticationHeaderValue(auth.Scheme, tokenTxt);
+                var tokenTxt = _tokenGenerator?.Create();
+
+                if (!string.IsNullOrEmpty(tokenTxt))
+                    request.Headers.Authorization = new AuthenticationHeaderValue(auth.Scheme, tokenTxt);
             }
 
             if (request.Method == HttpMethod.Get)
@@ -43,7 +48,7 @@ namespace Adnc.Infr.Consul.Consumer
                     {
                         var cacheKey = request.RequestUri.AbsoluteUri.GetHashCode();
 
-                        bool existCache = CacheManager.TryGetValue(cacheKey, out string content);
+                        var existCache = _memoryCache.TryGetValue(cacheKey, out string content);
                         if (existCache)
                         {
                             var resp = new HttpResponseMessage
@@ -58,7 +63,7 @@ namespace Adnc.Infr.Consul.Consumer
                         //服务端异常，不会抛出
                         var responseResult = await base.SendAsync(request, cancellationToken).ConfigureAwait(false);
                         if (responseResult.IsSuccessStatusCode)
-                            CacheManager.Set(cacheKey, await responseResult.Content.ReadAsStringAsync());
+                            _memoryCache.Set(cacheKey, await responseResult.Content.ReadAsStringAsync());
 
                         return responseResult;
                     }
