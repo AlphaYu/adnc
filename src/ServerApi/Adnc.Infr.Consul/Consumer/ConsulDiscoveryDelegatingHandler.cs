@@ -40,7 +40,7 @@ namespace Adnc.Infr.Consul.Consumer
 
                 var serverUrl = CacheManager.GetOrCreate<string>(cacheKey, entry =>
                 {
-                    entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(3);
+                    entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(5);
                     return GetServiceAddress(current.Host);
                 });
 
