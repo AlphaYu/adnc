@@ -13,7 +13,6 @@ using HealthChecks.UI.Client;
 using Autofac;
 using AutoMapper;
 using Adnc.Infr.Common;
-using Adnc.Infr.Consul.Registration;
 using Adnc.Usr.Application;
 using Adnc.Usr.WebApi.Helper;
 using Adnc.WebApi.Shared;

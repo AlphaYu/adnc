@@ -9,16 +9,17 @@ using Consul;
 
 namespace Adnc.Infr.Consul.Registration
 {
-    public static class RegistrationExtension
+    public static class ConsulRegistration
     {
-        public static void RegisterToConsul(this IApplicationBuilder app)
+        public static void Register(IApplicationBuilder app)
         {
             var lifetime = app.ApplicationServices.GetRequiredService<IHostApplicationLifetime>();
             var consulOption = app.ApplicationServices.GetRequiredService<ConsulConfig>();
             var consulClient = app.ApplicationServices.GetRequiredService<ConsulClient>();
 
             var serviceAddress = GetServiceAddressInternal(app, consulOption);
-            var serverId = $"{consulOption.ServiceName}.{(DateTime.UtcNow.Ticks - 621355968000000000) / 10000000}";
+            //var serverId = $"{consulOption.ServiceName}.{(DateTime.UtcNow.Ticks - 621355968000000000) / 10000000}";
+            string serverId = new Random().Next(10000, 99999).ToString();
 
             lifetime.ApplicationStarted.Register(() =>
             {
@@ -27,12 +28,17 @@ namespace Adnc.Infr.Consul.Registration
                 var port = serviceAddress.Port;
                 var check = new AgentServiceCheck
                 {
-                    ////服务启动多久后注册
-                    DeregisterCriticalServiceAfter = TimeSpan.FromSeconds(3),
-                    Interval = TimeSpan.FromSeconds(10),
+                    //服务停止多久后进行注销
+                    DeregisterCriticalServiceAfter = TimeSpan.FromSeconds(60),
+                    //健康检查间隔,心跳间隔
+                    Interval = TimeSpan.FromSeconds(6),
+                    //健康检查地址
                     HTTP = $"{protocol}://{host}:{port}/{consulOption.HealthCheckUrl}",
-                    //Timeout = TimeSpan.FromSeconds(5)
+                    //超时时间
+                    Timeout = TimeSpan.FromSeconds(6),
                 };
+
+                serverId = string.IsNullOrEmpty(check.DockerContainerID) ? serverId : check.DockerContainerID;
 
                 var registration = new AgentServiceRegistration()
                 {
@@ -42,7 +48,7 @@ namespace Adnc.Infr.Consul.Registration
                     Port = port,
                     Meta = new Dictionary<string, string>() { ["Protocol"] = protocol },
                     Tags = consulOption.ServerTags,
-                    Checks = new AgentServiceCheck[] { check }
+                    Check = check
                 };
 
                 consulClient.Agent.ServiceRegister(registration).Wait();
@@ -54,7 +60,7 @@ namespace Adnc.Infr.Consul.Registration
             });
         }
 
-        public static Uri GetServiceAddress(this IApplicationBuilder app, ConsulConfig consulOption)
+        public static Uri GetServiceAddress(IApplicationBuilder app, ConsulConfig consulOption)
         {
             return GetServiceAddressInternal(app, consulOption);
         }
@@ -97,7 +103,7 @@ namespace Adnc.Infr.Consul.Registration
 
                 listenUrls.Add(new Uri(address));
             });
-           
+
             //第一种注册方式，在配置文件中指定服务地址
             //如果配置了服务地址, 只需要检测是否在listenUrls里面即可
             if (!string.IsNullOrEmpty(consulOption.ServiceUrl))

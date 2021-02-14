@@ -9,13 +9,13 @@ using Microsoft.Extensions.Caching.Memory;
 
 namespace Adnc.Infr.Consul.Consumer
 {
-    public class SimpleDiscoveryHandler : DelegatingHandler
+    public class SimpleDiscoveryDelegatingHandler : DelegatingHandler
     {
         private readonly ITokenGenerator _tokenGenerator;
         private readonly IMemoryCache _memoryCache;
         public Guid ContextId { get; private set; }
 
-        public SimpleDiscoveryHandler(ITokenGenerator tokenGenerator
+        public SimpleDiscoveryDelegatingHandler(ITokenGenerator tokenGenerator
             , IMemoryCache memoryCache)
         {
             this.ContextId = Guid.NewGuid();

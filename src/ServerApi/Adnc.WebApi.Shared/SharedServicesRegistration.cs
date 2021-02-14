@@ -619,10 +619,10 @@ namespace Adnc.WebApi.Shared
             //从consul获取地址
             if (isConsulAdderss)
                 clientbuilder.ConfigureHttpClient(client => client.BaseAddress = new Uri($"http://{serviceName}"))
-                             .AddHttpMessageHandler<ConsulDiscoveryHandler>();
+                             .AddHttpMessageHandler<ConsulDiscoverDelegatingHandler>();
             else
                 clientbuilder.ConfigureHttpClient(client => client.BaseAddress = new Uri(serviceName))
-                             .AddHttpMessageHandler<SimpleDiscoveryHandler>();
+                             .AddHttpMessageHandler<SimpleDiscoveryDelegatingHandler>();
 
             //添加polly相关策略
             //policies?.ForEach(policy => clientbuilder.AddPolicyHandler(policy));

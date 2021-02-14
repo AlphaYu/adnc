@@ -9,13 +9,13 @@ using Consul;
 
 namespace Adnc.Infr.Consul.Consumer
 {
-    public class ConsulDiscoveryHandler : DelegatingHandler
+    public class ConsulDiscoverDelegatingHandler : DelegatingHandler
     {
         private readonly ConsulClient _consulClient;
         private readonly ITokenGenerator _tokenGenerator;
         private readonly IMemoryCache _memoryCache;
 
-        public ConsulDiscoveryHandler(ConsulClient consulClient
+        public ConsulDiscoverDelegatingHandler(ConsulClient consulClient
             , ITokenGenerator tokenGenerator
             , IMemoryCache memoryCache)
         {
