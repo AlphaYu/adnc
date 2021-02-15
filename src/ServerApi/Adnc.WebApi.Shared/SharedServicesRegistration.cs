@@ -173,6 +173,7 @@ namespace Adnc.WebApi.Shared
             _services.Configure<MongoConfig>(_cfg.GetSection("MongoDb"));
             _services.Configure<MysqlConfig>(_cfg.GetSection("Mysql"));
             _services.Configure<RabbitMqConfig>(_cfg.GetSection("RabbitMq"));
+            _services.Configure<ConsulConfig>(_cfg.GetSection("Consul"));
         }
 
         /// <summary>

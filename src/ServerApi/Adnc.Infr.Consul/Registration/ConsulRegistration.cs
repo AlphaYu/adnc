@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Consul;
+using Microsoft.Extensions.Options;
 
 namespace Adnc.Infr.Consul.Registration
 {
@@ -13,14 +14,13 @@ namespace Adnc.Infr.Consul.Registration
     {
         public static void Register(IApplicationBuilder app)
         {
-            var lifetime = app.ApplicationServices.GetRequiredService<IHostApplicationLifetime>();
-            var consulOption = app.ApplicationServices.GetRequiredService<ConsulConfig>();
+            var consulOption = app.ApplicationServices.GetRequiredService<IOptions<ConsulConfig>>().Value;
             var consulClient = app.ApplicationServices.GetRequiredService<ConsulClient>();
 
             var serviceAddress = GetServiceAddressInternal(app, consulOption);
-            //var serverId = $"{consulOption.ServiceName}.{(DateTime.UtcNow.Ticks - 621355968000000000) / 10000000}";
-            string serverId = new Random().Next(10000, 99999).ToString();
+            var serverId = $"{consulOption.ServiceName}.{(DateTime.UtcNow.Ticks - 621355968000000000) / 10000000}";
 
+            var lifetime = app.ApplicationServices.GetRequiredService<IHostApplicationLifetime>();
             lifetime.ApplicationStarted.Register(() =>
             {
                 var protocol = serviceAddress.Scheme;
@@ -38,8 +38,6 @@ namespace Adnc.Infr.Consul.Registration
                     Timeout = TimeSpan.FromSeconds(6),
                 };
 
-                serverId = string.IsNullOrEmpty(check.DockerContainerID) ? serverId : check.DockerContainerID;
-
                 var registration = new AgentServiceRegistration()
                 {
                     ID = serverId,
@@ -52,6 +50,7 @@ namespace Adnc.Infr.Consul.Registration
                 };
 
                 consulClient.Agent.ServiceRegister(registration).Wait();
+
             });
 
             lifetime.ApplicationStopping.Register(() =>
