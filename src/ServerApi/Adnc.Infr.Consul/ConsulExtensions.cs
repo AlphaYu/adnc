@@ -32,7 +32,7 @@ namespace Adnc.Infr.Consul
             services.AddScoped<ConsulDiscoverDelegatingHandler>();
             services.AddMemoryCache();
             services.AddHttpContextAccessor();
-            services.AddSingleton(new ConsulClient(cfg =>
+            services.AddScoped(p => new ConsulClient(cfg =>
             {
                 cfg.Address = new Uri(config.ConsulUrl);
             }));
