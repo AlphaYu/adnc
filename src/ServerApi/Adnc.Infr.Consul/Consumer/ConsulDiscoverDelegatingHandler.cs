@@ -70,11 +70,5 @@ namespace Adnc.Infr.Consul.Consumer
             }
             return null;
         }
-
-        protected override void Dispose(bool disposing)
-        {
-            _consulClient.Dispose();
-            base.Dispose(disposing);
-        }
     }
 }

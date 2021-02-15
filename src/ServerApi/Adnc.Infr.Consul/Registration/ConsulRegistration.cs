@@ -15,7 +15,7 @@ namespace Adnc.Infr.Consul.Registration
         public static void Register(IApplicationBuilder app)
         {
             var consulOption = app.ApplicationServices.GetRequiredService<IOptions<ConsulConfig>>().Value;
-            var consulClient = app.ApplicationServices.GetRequiredService<ConsulClient>();
+            var consulClient = new ConsulClient(cfg => cfg.Address = new Uri(consulOption.ConsulUrl));
 
             var serviceAddress = GetServiceAddressInternal(app, consulOption);
             var serverId = $"{consulOption.ServiceName}.{(DateTime.UtcNow.Ticks - 621355968000000000) / 10000000}";
