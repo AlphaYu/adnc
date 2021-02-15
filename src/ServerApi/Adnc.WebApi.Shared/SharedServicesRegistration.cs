@@ -32,15 +32,12 @@ using DotNetCore.CAP.Dashboard;
 using DotNetCore.CAP.Dashboard.NodeDiscovery;
 using Swashbuckle.AspNetCore.Swagger;
 using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
-using Microsoft.EntityFrameworkCore.Query;
-using Pomelo.EntityFrameworkCore.MySql.Query.ExpressionVisitors.Internal;
 using Adnc.Infr.EasyCaching.Interceptor.Castle;
 using Adnc.Infr.Common;
 using Adnc.Infr.Mq.RabbitMq;
 using Adnc.Infr.Consul;
 using Adnc.Infr.Consul.Consumer;
 using Adnc.Infr.EfCore;
-using Adnc.Infr.EfCore.Interceptors;
 using Adnc.Infr.Mongo;
 using Adnc.Infr.Mongo.Extensions;
 using Adnc.Infr.Mongo.Configuration;
@@ -48,9 +45,9 @@ using Adnc.Application.Shared;
 using Adnc.Application.Shared.RpcServices;
 using Adnc.Infr.Common.Helper;
 using Adnc.WebApi.Shared.Extensions;
-using System.Net.Http.Headers;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authentication;
+using Polly.Timeout;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Adnc.WebApi.Shared
 {
@@ -176,6 +173,7 @@ namespace Adnc.WebApi.Shared
             _services.Configure<MongoConfig>(_cfg.GetSection("MongoDb"));
             _services.Configure<MysqlConfig>(_cfg.GetSection("Mysql"));
             _services.Configure<RabbitMqConfig>(_cfg.GetSection("RabbitMq"));
+            _services.Configure<ConsulConfig>(_cfg.GetSection("Consul"));
         }
 
         /// <summary>
@@ -362,7 +360,7 @@ namespace Adnc.WebApi.Shared
         /// </summary>
         /// <typeparam name="THandler"></typeparam>
         public virtual void AddAuthorization<THandler>()
-            where THandler: PermissionHandler
+            where THandler : PermissionHandler
         {
             //自定义授权配置
             //services.AddSingleton<IAuthorizationHandler, PermissionHandler>();
@@ -408,7 +406,7 @@ namespace Adnc.WebApi.Shared
                         // scan time, default value is 60s
                         ExpirationScanFrequency = 60,
                         // total count of cache items, default value is 10000
-                        SizeLimit = 100,
+                        SizeLimit = 500,
 
                         // below two settings are added in v0.8.0
                         // enable deep clone when reading object from cache or not, default value is true.
@@ -608,10 +606,8 @@ namespace Adnc.WebApi.Shared
         /// <typeparam name="TRpcService">Rpc服务接口</typeparam>
         /// <param name="serviceName">在注册中心注册的服务名称，或者服务的Url</param>
         /// <param name="policies">Polly策略</param>
-        /// <param name="token">Token，可空</param>
         protected virtual void AddRpcService<TRpcService>(string serviceName
         , List<IAsyncPolicy<HttpResponseMessage>> policies
-        , Func<Task<string>> getToken =null
         ) where TRpcService : class, IRpcService
         {
             var prefix = serviceName.Substring(0, 7);
@@ -624,19 +620,13 @@ namespace Adnc.WebApi.Shared
             //从consul获取地址
             if (isConsulAdderss)
                 clientbuilder.ConfigureHttpClient(client => client.BaseAddress = new Uri($"http://{serviceName}"))
-                             .AddHttpMessageHandler(() =>
-                             {
-                                 return new ConsulDiscoveryDelegatingHandler(_consulConfig.ConsulUrl, getToken);
-                             });                      
+                             .AddHttpMessageHandler<ConsulDiscoverDelegatingHandler>();
             else
                 clientbuilder.ConfigureHttpClient(client => client.BaseAddress = new Uri(serviceName))
-                             .AddHttpMessageHandler(() =>
-                             {
-                                 return new SimpleAuthHeaderHandler(getToken);
-                             });
+                             .AddHttpMessageHandler<SimpleDiscoveryDelegatingHandler>();
 
             //添加polly相关策略
-            policies?.ForEach(policy => clientbuilder.AddPolicyHandler(policy));
+            //policies?.ForEach(policy => clientbuilder.AddPolicyHandler(policy));
         }
 
         /// <summary>
@@ -645,27 +635,73 @@ namespace Adnc.WebApi.Shared
         /// <returns></returns>
         protected virtual List<IAsyncPolicy<HttpResponseMessage>> GenerateDefaultRefitPolicies()
         {
-            //重试策略
-            var retryPolicy = Policy.Handle<ApiException>()
-                                    .OrResult<HttpResponseMessage>(response => response.StatusCode == System.Net.HttpStatusCode.BadGateway)
+            //隔离策略
+            //var bulkheadPolicy = Policy.BulkheadAsync<HttpResponseMessage>(10, 100);
+
+            //回退策略
+            //回退也称服务降级，用来指定发生故障时的备用方案。
+            //目前用不上
+            //var fallbackPolicy = Policy<string>.Handle<HttpRequestException>().FallbackAsync("substitute data");
+
+            //缓存策略
+            //缓存策略无效
+            //https://github.com/App-vNext/Polly/wiki/Polly-and-HttpClientFactory?WT.mc_id=-blog-scottha#user-content-use-case-cachep
+            //var cache = new MemoryCache(Options.Create(new MemoryCacheOptions()));
+            //var cacheProvider = new MemoryCacheProvider(cache);
+            //var cachePolicy = Policy.CacheAsync<HttpResponseMessage>(cacheProvider, TimeSpan.FromSeconds(100));
+
+            //重试策略,超时或者API返回>500的错误,重试3次。
+            //重试次数会统计到失败次数
+            var retryPolicy = Policy.Handle<TimeoutRejectedException>()
+                                    .OrResult<HttpResponseMessage>(response => (int)response.StatusCode >= 500)
                                     .WaitAndRetryAsync(new[]
                                     {
                                         TimeSpan.FromSeconds(1),
-                                        TimeSpan.FromSeconds(5),
-                                        TimeSpan.FromSeconds(10)
+                                        TimeSpan.FromSeconds(2),
+                                        TimeSpan.FromSeconds(4)
                                     });
             //超时策略
-            var timeoutPolicy = Policy.TimeoutAsync<HttpResponseMessage>(10);
-            //隔离策略
-            var bulkheadPolicy = Policy.BulkheadAsync<HttpResponseMessage>(10, 100);
-            //回退策略
-            //断路策略
-            var circuitBreakerPolicy = Policy.Handle<ApiException>()
-                                     .CircuitBreakerAsync(2, TimeSpan.FromMinutes(1));
+            var timeoutPolicy = Policy.TimeoutAsync<HttpResponseMessage>(3);
+
+            //熔断策略
+            //如下，如果我们的业务代码连续失败50次，就触发熔断(onBreak),就不会再调用我们的业务代码，而是直接抛出BrokenCircuitException异常。
+            //当熔断时间10分钟后(durationOfBreak)，切换为HalfOpen状态，触发onHalfOpen事件，此时会再调用一次我们的业务代码
+            //，如果调用成功，则触发onReset事件，并解除熔断，恢复初始状态，否则立即切回熔断状态。
+            var circuitBreakerPolicy = Policy.Handle<Exception>()
+                                             .CircuitBreakerAsync
+                                             (
+                                                 // 熔断前允许出现几次错误
+                                                 exceptionsAllowedBeforeBreaking: 10
+                                                 ,
+                                                 // 熔断时间,熔断10分钟
+                                                 durationOfBreak: TimeSpan.FromMinutes(3)
+                                                 ,
+                                                 // 熔断时触发
+                                                 onBreak: (ex, breakDelay) =>
+                                                 {
+                                                     //todo
+                                                     var e = ex;
+                                                     var delay = breakDelay;
+                                                 }
+                                                 ,
+                                                 //熔断恢复时触发
+                                                 onReset: () =>
+                                                 {
+                                                     //todo
+                                                 }
+                                                 ,
+                                                 //在熔断时间到了之后触发
+                                                 onHalfOpen: () =>
+                                                 {
+                                                     //todo
+                                                 }
+                                             );
 
             return new List<IAsyncPolicy<HttpResponseMessage>>()
             {
-                //timeoutPolicy
+                retryPolicy
+               ,timeoutPolicy
+              ,circuitBreakerPolicy.AsAsyncPolicy<HttpResponseMessage>()
             };
         }
 

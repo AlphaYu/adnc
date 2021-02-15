@@ -10,6 +10,8 @@ using Adnc.Infr.Common.Helper;
 using Microsoft.AspNetCore.Authentication;
 using System;
 using System.Threading.Tasks;
+using Adnc.Infr.Consul;
+using Consul;
 
 namespace Adnc.Maint.WebApi.Helper
 {
@@ -34,15 +36,14 @@ namespace Adnc.Maint.WebApi.Helper
 
         /// <summary>
         /// 注册Rpc调用服务
-        /// </summary>s
+        /// </summary>
         public void AddAllRpcServices()
         {
             var defaultPolicies = base.GenerateDefaultRefitPolicies();
-            Func<Task<string>> defaultGetToken = GetTokenDefaultFunc;
 
             //注册用户认证、鉴权服务Rpc服务到容器
             var authServerAddress = (_env.IsProduction() || _env.IsStaging()) ? "adnc.usr.webapi" : "http://localhost:5010";
-            base.AddRpcService<IAuthRpcService>(authServerAddress, defaultPolicies, defaultGetToken);
+            base.AddRpcService<IAuthRpcService>(authServerAddress, defaultPolicies);
         }
     }
 }

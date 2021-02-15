@@ -15,11 +15,11 @@ using HealthChecks.UI.Client;
 using Autofac;
 using AutoMapper;
 using Adnc.Infr.Common;
-using Adnc.Infr.Consul.Registration;
 using Adnc.Cus.WebApi.Helper;
 using Adnc.Cus.Application;
 using Adnc.WebApi.Shared;
 using Adnc.WebApi.Shared.Middleware;
+using Adnc.Infr.Consul;
 
 namespace Adnc.Cus.WebApi
 {
@@ -57,6 +57,8 @@ namespace Adnc.Cus.WebApi
             _srvRegistration.AddSwaggerGen();
             _srvRegistration.AddAllRpcServices();
             _srvRegistration.AddAllEventBusSubscribers();
+
+            services.AddConsulServices(_srvRegistration.GetConsulConfig());
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -130,7 +132,7 @@ namespace Adnc.Cus.WebApi
                 discoverOptions.MatchPath = $"/{_serviceInfo.ShortName}/cap";
 
                 //注册本服务到consul
-                app.RegisterToConsul(consulOption);
+                app.RegisterToConsul();
             }
         }
     }

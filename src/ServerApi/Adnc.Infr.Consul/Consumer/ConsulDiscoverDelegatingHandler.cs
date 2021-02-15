@@ -4,24 +4,24 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Caching.Memory;
 using Consul;
 
 namespace Adnc.Infr.Consul.Consumer
 {
-    public class ConsulDiscoveryDelegatingHandler : DelegatingHandler
+    public class ConsulDiscoverDelegatingHandler : DelegatingHandler
     {
         private readonly ConsulClient _consulClient;
-        private readonly Func<Task<string>> _token;
+        private readonly ITokenGenerator _tokenGenerator;
+        private readonly IMemoryCache _memoryCache;
 
-        public ConsulDiscoveryDelegatingHandler(string consulAddress
-            , Func<Task<string>> token = null)
+        public ConsulDiscoverDelegatingHandler(ConsulClient consulClient
+            , ITokenGenerator tokenGenerator
+            , IMemoryCache memoryCache)
         {
-            _consulClient = new ConsulClient(x =>
-            {
-                x.Address = new Uri(consulAddress);
-            });
-
-            _token = token;
+            _consulClient = consulClient;
+            _tokenGenerator = tokenGenerator;
+            _memoryCache = memoryCache;
         }
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request
@@ -32,15 +32,15 @@ namespace Adnc.Infr.Consul.Consumer
             try
             {
                 var auth = request.Headers.Authorization;
-                if (auth != null && _token != null)
+                if (auth != null)
                 {
-                    var tokenTxt = await _token();
+                    var tokenTxt = _tokenGenerator?.Create();
                     request.Headers.Authorization = new AuthenticationHeaderValue(auth.Scheme, tokenTxt);
                 }
 
-                var serverUrl = CacheManager.GetOrCreate<string>(cacheKey, entry =>
+                var serverUrl = _memoryCache.GetOrCreate(cacheKey, entry =>
                 {
-                    entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(3);
+                    entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(5);
                     return GetServiceAddress(current.Host);
                 });
 
@@ -50,8 +50,8 @@ namespace Adnc.Infr.Consul.Consumer
             }
             catch (Exception ex)
             {
-                CacheManager.Remove(cacheKey);
-                throw ex;
+                _memoryCache.Remove(cacheKey);
+                throw new Exception(ex.Message, ex);
             }
             finally
             {

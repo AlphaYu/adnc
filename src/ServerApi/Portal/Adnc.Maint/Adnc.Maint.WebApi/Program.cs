@@ -46,7 +46,7 @@ namespace Adnc.Maint.WebApi
                         var configuration = cb.Build();
                         //从consul配置中心读取配置
                         var consulOption = configuration.GetSection("Consul").Get<ConsulConfig>();
-                        cb.AddConsul(new[] { consulOption.ConsulUrl }, consulOption.ConsulKeyPath);
+                        cb.AddConsulConfiguration(consulOption, true);
                     }
                     //cb.AddJsonFile("autofac.json", optional: true);
                 })

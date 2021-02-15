@@ -20,6 +20,7 @@ using Adnc.Warehouse.WebApi.Helper;
 using Adnc.Warehouse.Application;
 using Adnc.WebApi.Shared;
 using Adnc.WebApi.Shared.Middleware;
+using Adnc.Infr.Consul;
 
 namespace Adnc.Warehouse.WebApi
 {
@@ -57,6 +58,8 @@ namespace Adnc.Warehouse.WebApi
             _srvRegistration.AddSwaggerGen();
             _srvRegistration.AddAllRpcServices();
             _srvRegistration.AddAllEventBusSubscribers();
+
+            services.AddConsulServices(_srvRegistration.GetConsulConfig());
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -130,7 +133,7 @@ namespace Adnc.Warehouse.WebApi
                 discoverOptions.MatchPath = $"/{_serviceInfo.ShortName}/cap";
 
                 //注册本服务到consul
-                app.RegisterToConsul(consulOption);
+                app.RegisterToConsul();
             }
         }
     }
