@@ -1,11 +1,13 @@
 ﻿using Autofac;
 using Autofac.Extras.DynamicProxy;
-using Adnc.Warehouse.Core.Entities;
+using Adnc.Warehouse.Domain.Entities;
 using Adnc.Core.Shared;
 using Adnc.Core.Shared.Entities;
 using Adnc.Core.Shared.Interceptors;
+using Adnc.Warehouse.Domain.Events;
+using Adnc.Core.Shared.Events;
 
-namespace Adnc.Warehouse.Core
+namespace Adnc.Warehouse.Domain
 {
     public class AdncWarehouseCoreModule : Module
     {
@@ -25,6 +27,11 @@ namespace Adnc.Warehouse.Core
                    .Where(t => t.IsAssignableTo<ICoreService>())
                    .AsSelf()
                    .InstancePerLifetimeScope();
+
+            //注册事件发布者
+            builder.RegisterType<EventPublisher>()
+                   .As<IEventPublisher>()
+                   .SingleInstance();
         }
 
         /// <summary>

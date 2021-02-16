@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Adnc.Warehouse.Core.Entities.Config
+namespace Adnc.Warehouse.Domain.Entities.Config
 {
     public class ProductConfig : IEntityTypeConfiguration<Product>
     {

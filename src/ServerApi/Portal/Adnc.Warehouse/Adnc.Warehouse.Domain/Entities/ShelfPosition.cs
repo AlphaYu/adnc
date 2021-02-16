@@ -1,9 +1,7 @@
 ﻿using Adnc.Core.Shared.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Adnc.Infr.Common.Exceptions;
 
-namespace Adnc.Warehouse.Core.Entities
+namespace Adnc.Warehouse.Domain.Entities
 {
     public class ShelfPosition: ValueObject
     {
@@ -14,11 +12,16 @@ namespace Adnc.Warehouse.Core.Entities
 
         internal ShelfPosition(string code,string description)
         {
-            this.Code = code;
+            SetCode(code);
             this.Description = description;
         }
 
         public string Code { get; private set; }
         public string Description { get; private set; }
+
+        private void SetCode(string code)
+        {
+            this.Code = Checker.NotNullOrEmpty(code, nameof(code));
+        }
     }
 }

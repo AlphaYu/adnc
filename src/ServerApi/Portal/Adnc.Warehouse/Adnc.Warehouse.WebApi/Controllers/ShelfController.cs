@@ -12,7 +12,7 @@ namespace Adnc.Warehouse.WebApi.Controllers
     /// <summary>
     /// 货架管理
     /// </summary>
-    [Route("warehouse/shelf")]
+    [Route("warehouse/shelfs")]
     [ApiController]
     public class ShelfController : AdncControllerBase
     {

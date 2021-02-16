@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Adnc.Warehouse.Core.Entities.Config
+namespace Adnc.Warehouse.Domain.Entities.Config
 {
     public class ShelfConfig : IEntityTypeConfiguration<Shelf>
     {

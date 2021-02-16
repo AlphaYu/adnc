@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Adnc.Core.Shared.EventBus
+namespace Adnc.Core.Shared.Events
 {
     public abstract class BaseEto
     {

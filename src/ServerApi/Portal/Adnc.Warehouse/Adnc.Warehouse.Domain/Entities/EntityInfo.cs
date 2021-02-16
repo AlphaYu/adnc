@@ -2,7 +2,7 @@
 using System.Collections.Concurrent;
 using Adnc.Core.Shared.Entities;
 
-namespace Adnc.Warehouse.Core.Entities
+namespace Adnc.Warehouse.Domain.Entities
 {
     public class EntityInfo : IEntityInfo
     {

@@ -4,7 +4,7 @@ using Adnc.Cus.Core.Entities;
 using Adnc.Core.Shared;
 using Adnc.Core.Shared.Entities;
 using Adnc.Core.Shared.Interceptors;
-using Adnc.Core.Shared.EventBus;
+using Adnc.Core.Shared.Events;
 using DotNetCore.CAP;
 using Adnc.Cus.Core.EventBus;
 

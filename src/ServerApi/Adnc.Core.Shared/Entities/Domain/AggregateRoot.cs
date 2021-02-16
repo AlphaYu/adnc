@@ -7,6 +7,5 @@ namespace Adnc.Core.Shared.Domain.Entities
 {
     public abstract class AggregateRoot : EfEntity, IAggregateRoot
     {
-
     }
 }

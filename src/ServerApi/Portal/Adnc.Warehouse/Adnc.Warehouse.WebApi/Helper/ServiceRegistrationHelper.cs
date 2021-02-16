@@ -3,20 +3,22 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Adnc.WebApi.Shared;
-using Adnc.Warehouse.Core.EventBus.Subscriber;
-using Adnc.Warehouse.Core;
 using Adnc.Application.Shared.RpcServices;
+using Adnc.Warehouse.Application.EventSubscribers;
 
 namespace Adnc.Warehouse.WebApi.Helper
 {
     public sealed class ServiceRegistrationHelper : SharedServicesRegistration
     {
+        public IServiceCollection Services;
+
         public ServiceRegistrationHelper(IConfiguration cfg
             , IServiceCollection services
             , IWebHostEnvironment env
             , ServiceInfo serviceInfo)
           : base(cfg, services, env, serviceInfo)
         {
+            Services = services;
         }
 
         public void AddAllRpcServices()
@@ -31,11 +33,11 @@ namespace Adnc.Warehouse.WebApi.Helper
             base.AddRpcService<IMaintRpcService>(maintServiceAddress, policies);
         }
 
-        public void AddAllEventBusSubscribers(string tableNamePrefix = "Cap", string groupName = EbConsts.CapDefaultGroup)
+        public void AddAllEventBusSubscribers(string tableNamePrefix = "Cap", string groupName = "adnc-cap")
         {
             base.AddEventBusSubscribers(tableNamePrefix, groupName, s =>
             {
-                s.AddScoped<IShelfToProductAllocatedEventSubscirber, ShelfToProductAllocatedEventSubscirber>();
+                s.AddSingleton<ShelfToProductAllocatedEventSubscirber>();
                 //add others......
             });
         }

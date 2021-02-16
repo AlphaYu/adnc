@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Adnc.Warehouse.Core.Entities
+namespace Adnc.Warehouse.Domain.Entities
 {
     public class ProductStatus : ValueObject
     {
@@ -17,7 +17,7 @@ namespace Adnc.Warehouse.Core.Entities
         public ProductStatus(ProductStatusEnum statusCode,string reason)
         {
             this.StatusCode = statusCode;
-            this.ChangeStatusReason = reason;
+            this.ChangeStatusReason = reason ?? reason.Trim();
         }
     }
 

@@ -1,16 +1,18 @@
-﻿using Adnc.Core.Shared.Domain.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
+using Adnc.Infr.Common.Exceptions;
+using Adnc.Core.Shared.Domain.Entities;
 
-namespace Adnc.Warehouse.Core.Entities
+
+namespace Adnc.Warehouse.Domain.Entities
 {
     public class Shelf : AggregateRoot
     {
-        public long? ProductId { protected set; get; }
-        public int Qty { protected set; get; }
-        public int FreezedQty { protected set; get; }      
+        public long? ProductId { private set; get; }
+        public int Qty { private set; get; }
+        public int FreezedQty { private set; get; }      
         public ShelfPosition Position { get;private set; }
 
         protected Shelf()
@@ -19,12 +21,10 @@ namespace Adnc.Warehouse.Core.Entities
 
         internal Shelf(long id,ShelfPosition position)
         {
-            if(string.IsNullOrWhiteSpace(position?.Code))
-                throw new ArgumentException("code");
             this.Id = id;
             this.Qty = 0;
             this.FreezedQty = 0;
-            this.Position = position;
+            this.Position = Checker.NotNull<ShelfPosition>(position,nameof(position));
         }
 
         /// <summary>
@@ -34,9 +34,9 @@ namespace Adnc.Warehouse.Core.Entities
         internal void Freeze(int needFreezedQty)
         {
             if (this.Qty < needFreezedQty)
-                throw new ArgumentException("Qty<needFreezedQty");
+                throw new AdncArgumentException("Qty<needFreezedQty",nameof(needFreezedQty));
             if (!this.ProductId.HasValue)
-                throw new ArgumentException("ProductId");
+                throw new AdncArgumentNullException("ProductId",nameof(ProductId));
             this.FreezedQty += needFreezedQty;
             this.Qty -= needFreezedQty;
         }
@@ -48,9 +48,9 @@ namespace Adnc.Warehouse.Core.Entities
         internal void Unfreeze(int needUnfreezeQty)
         {
             if (this.FreezedQty < needUnfreezeQty)
-                throw new ArgumentException("FreezedQty<needUnfreezeQty");
+                throw new AdncArgumentException("FreezedQty<needUnfreezeQty",nameof(needUnfreezeQty));
             if (!this.ProductId.HasValue)
-                throw new ArgumentException("ProductId");
+                throw new ArgumentNullException("ProductId",nameof(ProductId));
 
             this.FreezedQty -= needUnfreezeQty;
             this.Qty += needUnfreezeQty;
@@ -63,9 +63,9 @@ namespace Adnc.Warehouse.Core.Entities
         internal void Outbound(int qty)
         {
             if (this.FreezedQty < qty)
-                throw new ArgumentException("FreezedQty<qty");
+                throw new AdncArgumentException("FreezedQty<qty",nameof(qty));
             if (!this.ProductId.HasValue)
-                throw new ArgumentException("ProductId");
+                throw new AdncArgumentException("ProductId",nameof(ProductId));
             this.FreezedQty -= qty;
         }
 
@@ -76,24 +76,12 @@ namespace Adnc.Warehouse.Core.Entities
         internal void Inbound(int qty)
         {
             if (qty <= 0)
-                throw new ArgumentException("qty <= 0");
+                throw new AdncArgumentException("qty <= 0",nameof(qty));
             if (!this.ProductId.HasValue)
-                throw new ArgumentException("ProductId");
+                throw new AdncArgumentException("ProductId",nameof(ProductId));
             this.Qty += qty;
         }
 
-        /// <summary>
-        /// 入库
-        /// </summary>
-        /// <param name="qty"></param>
-        internal void Bind(int qty)
-        {
-            if (qty <= 0)
-                throw new ArgumentException("qty <= 0");
-            if (!this.ProductId.HasValue)
-                throw new ArgumentException("ProductId");
-            this.Qty += qty;
-        }
 
         /// <summary>
         /// 分配货架给商品

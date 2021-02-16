@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 using Adnc.Core.Shared;
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Infr.Common.Helper;
-using Adnc.Warehouse.Core.Entities;
+using Adnc.Warehouse.Domain.Entities;
 
-namespace Adnc.Warehouse.Core.Services
+namespace Adnc.Warehouse.Domain.Services
 {
     public class ProductManager : ICoreService
     {
@@ -27,7 +27,7 @@ namespace Adnc.Warehouse.Core.Services
         /// <returns></returns>
         public virtual async Task<Product> CreateAsync(string sku, float price, string name, string unit, string describe = null)
         {
-            var product = await _productRepo.FetchAsync(x => x, x => x.Sku == sku || x.Name == name);
+            var product = await _productRepo.FetchAsync(x => x, x => x.Sku == sku || x.Name == name, noTracking: false);
             if (product != null)
             {
                 if (product.Sku == sku)

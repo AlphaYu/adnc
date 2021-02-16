@@ -3,25 +3,26 @@ using System.Threading.Tasks;
 using Adnc.Core.Shared;
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Infr.Common.Helper;
-using Adnc.Warehouse.Core.Entities;
-using Adnc.Warehouse.Core.EventBus;
-using Adnc.Warehouse.Core.EventBus.Etos;
-using DotNetCore.CAP;
+using Adnc.Infr.Common.Exceptions;
+using Adnc.Warehouse.Domain.Entities;
+using Adnc.Warehouse.Domain.Events;
+using Adnc.Warehouse.Domain.Events.Etos;
+using Adnc.Core.Shared.Events;
 
-namespace Adnc.Warehouse.Core.Services
+namespace Adnc.Warehouse.Domain.Services
 {
     public class ShelfManager : ICoreService
     {
         private readonly IEfRepository<Product> _productRepo;
         private readonly IEfRepository<Shelf> _shelfRepo;
-        private readonly ICapPublisher _capBus;
+        private readonly IEventPublisher _eventPublisher;
         public ShelfManager(IEfRepository<Product> productRepo
             , IEfRepository<Shelf> shelfRepo
-            , ICapPublisher capBus)
+            , IEventPublisher eventPublisher)
         {
             _productRepo = productRepo;
             _shelfRepo = shelfRepo;
-            _capBus = capBus;
+            _eventPublisher = eventPublisher;
         }
 
         /// <summary>
@@ -34,9 +35,9 @@ namespace Adnc.Warehouse.Core.Services
         /// <returns></returns>
         public async Task<Shelf> CreateAsync(string positionCode, string positionDescription)
         {
-            var shelf = await _shelfRepo.FetchAsync(x => x, x => x.Position.Code == positionCode);
+            var shelf = await _shelfRepo.FetchAsync(x => x, x => x.Position.Code == positionCode, noTracking: false);
             if (shelf != null)
-                throw new ArgumentException("warehouseInfo");
+                throw new AdncArgumentException("warehouseInfo");
 
             return new Shelf(
                 IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId)
@@ -52,17 +53,17 @@ namespace Adnc.Warehouse.Core.Services
         /// <returns></returns>
         public async Task AllocateShelfToProductAsync(Shelf shelf, Product product)
         {
-            var existShelf = await _shelfRepo.FetchAsync(x=>x,x => x.ProductId == product.Id);
+            var existShelf = await _shelfRepo.FetchAsync(x => x, x => x.ProductId == product.Id, noTracking: false);
 
             //一个商品只能分配一个货架，但可以调整货架。
             if (existShelf != null && existShelf.Id != shelf.Id)
-                throw new ArgumentException("AssignedWarehouseId");
+                throw new AdncArgumentException("AssignedWarehouseId", nameof(shelf));
 
             shelf.SetProductId(product.Id);
 
             //发布领域事件，Product会订阅该事件，调整商品对应的货架号。
-            await _capBus.PublishAsync(EventBusConsts.ShelfToProductAllocated
-            , new ShelfToProductAllocatedEto
+            await _eventPublisher.PublishAsync(EventConsts.ShelfToProductAllocatedEvent
+            , new ShelfToProductAllocatedEventEto
             {
                 Id = IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId)
                 ,

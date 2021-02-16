@@ -4,10 +4,11 @@ using Autofac;
 using Autofac.Extras.DynamicProxy;
 using Adnc.Infr.EasyCaching.Interceptor.Castle;
 using Adnc.Infr.Mq.RabbitMq;
-using Adnc.Warehouse.Core;
+using Adnc.Warehouse.Domain;
 using Adnc.Application.Shared.Interceptors;
 using Adnc.Application.Shared.Services;
 using Adnc.Core.Shared.Interceptors;
+using Adnc.Warehouse.Application.EventSubscribers;
 
 namespace Adnc.Warehouse.Application
 {
@@ -51,13 +52,18 @@ namespace Adnc.Warehouse.Application
             //注册App服务
             //拦截器执行顺序OpsLogInterceptor=>EasyCachingInterceptor=>UowInterceptor
             builder.RegisterAssemblyTypes(this.ThisAssembly)
-                .Where(t => t.IsAssignableTo<IAppService>())
-                .AsImplementedInterfaces()
-                .InstancePerLifetimeScope()
-                .EnableInterfaceInterceptors()
-                .InterceptedBy(typeof(OpsLogInterceptor)
-                , typeof(EasyCachingInterceptor)
-                , typeof(UowInterceptor));
+                   .Where(t => t.IsAssignableTo<IAppService>())
+                   .AsImplementedInterfaces()
+                   .InstancePerLifetimeScope()
+                   .EnableInterfaceInterceptors()
+                   .InterceptedBy(typeof(OpsLogInterceptor)
+                    , typeof(EasyCachingInterceptor)
+                    , typeof(UowInterceptor));
+
+            //注册领域事件订阅者
+            //builder.RegisterType<ShelfToProductAllocatedEventSubscirber>()
+            //       .AsSelf()
+            //       .SingleInstance();
         }
 
         private void LoadDepends(ContainerBuilder builder)

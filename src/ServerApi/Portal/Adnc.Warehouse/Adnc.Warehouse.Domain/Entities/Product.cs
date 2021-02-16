@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
-using System.Text;
+using Adnc.Infr.Common.Exceptions;
 using Adnc.Core.Shared.Domain.Entities;
 
-namespace Adnc.Warehouse.Core.Entities
+namespace Adnc.Warehouse.Domain.Entities
 {
     public class Product : AggregateRoot
     {
@@ -21,7 +18,7 @@ namespace Adnc.Warehouse.Core.Entities
 
         public long? ShlefId { private set; get; }
 
-        public string Unit {set; get; }
+        public string Unit {private set; get; }
 
         protected Product()
         {
@@ -39,49 +36,54 @@ namespace Adnc.Warehouse.Core.Entities
         internal Product(long id, string sku,float price, string name,string unit, string describe = null)
         {
             this.Id = id;
-            this.Sku = sku.Trim();
-            this.Name = name.Trim();
-            this.Unit = unit.Trim();
-            this.Price = price;
+            SetSku(sku);
+            SetName(name);
+            SetPrice(price);
+            SetUnit(unit);
             this.Describe = describe ?? string.Empty;
             this.Status = new ProductStatus(ProductStatusEnum.UnKnow, string.Empty);
+        }
+
+
+
+        /// <summary>
+        /// 设置unit
+        /// </summary>
+        /// <param name="newSku"></param>
+        public void SetUnit(string unit)
+        {
+            this.Unit = Checker.NotNullOrEmpty(unit.Trim(), nameof(unit));
         }
 
         /// <summary>
         /// 设置sku
         /// </summary>
-        /// <param name="newSku"></param>
-        internal void SetSku(string newSku)
+        /// <param name="sku"></param>
+        internal void SetSku(string sku)
         {
-            if(string.IsNullOrWhiteSpace(newSku))
-                throw new ArgumentException("newSku");
-
-            this.Sku = newSku;
+            this.Sku = Checker.NotNullOrEmpty(sku.Trim(), nameof(sku));
         }
 
 
         /// <summary>
         /// 设置Name
         /// </summary>
-        /// <param name="newName"></param>
-        internal void SetName(string newName)
+        /// <param name="name"></param>
+        internal void SetName(string name)
         {
-            if (string.IsNullOrWhiteSpace(newName))
-                throw new ArgumentException("newName");
-
-            this.Name = newName;
+            this.Name = Checker.NotNullOrEmpty(name.Trim(),nameof(name));
         }
 
         /// <summary>
         /// 设置Price
         /// </summary>
-        /// <param name="newPrice"></param>
-        public void SetPrice(float newPrice)
+        /// <param name="price"></param>
+        public void SetPrice(float price)
         {
-            if (newPrice <= 0)
-                throw new ArgumentException("newPrice");
+            if (price <= 0)
+                throw new AdncArgumentException("不能小于等于0", nameof(price));
 
-            this.Price = newPrice;
+            this.Price = price;
         }
 
         /// <summary>
@@ -98,13 +100,10 @@ namespace Adnc.Warehouse.Core.Entities
         /// <param name="shelfId"></param>
         public void SetShelf(long shelfId)
         {
-            if (this.ShlefId == 0)
-                throw new ArgumentException("newPrice");
-
             if (this.ShlefId == shelfId)
                 return;
 
-            this.ShlefId = shelfId;
+            this.ShlefId = Checker.GTZero(shelfId, nameof(shelfId));
         }
     }
 }
