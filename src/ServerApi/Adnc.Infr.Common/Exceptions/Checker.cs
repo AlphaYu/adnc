@@ -8,6 +8,21 @@ namespace Adnc.Infr.Common.Exceptions
 {
     public static class Checker
     {
+        public static decimal GTZero(decimal value
+        , [InvokerParameterName][NotNull] string parameterName)
+        {
+            if (value <= 0)
+                throw new AdncArgumentException("不能小于0", parameterName);
+            return value;
+        }
+
+        public static int GTZero(int value
+        , [InvokerParameterName][NotNull] string parameterName)
+        {
+            if (value <= 0)
+                throw new AdncArgumentException("不能小于0", parameterName);
+            return value;
+        }
 
         public static long GTZero(long value
             , [InvokerParameterName][NotNull] string parameterName)

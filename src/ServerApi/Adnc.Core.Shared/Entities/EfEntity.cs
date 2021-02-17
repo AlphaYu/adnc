@@ -9,17 +9,17 @@ namespace Adnc.Core.Shared.Entities
         /// 唯一标识
         /// </summary>
         [Key]
-        private long _id;
-        public virtual long Id
-        {
-            get { return _id; }
-            set
-            {
-                if (_id > 0)
-                    throw new AdncArgumentException("Id不能被修改", nameof(Id));
-                _id = Checker.GTZero(value, nameof(Id));
-                _id = value;
-            }
-        }
+        public long Id { get; set; }
+        //private long _id;
+        //public virtual long Id
+        //{
+        //    get { return _id; }
+        //    set
+        //    {
+        //        if (_id > 0)
+        //            throw new AdncArgumentException("Id不能被修改", nameof(Id));
+        //        _id = Checker.GTZero(value, nameof(Id));
+        //    }
+        //}
     }
 }

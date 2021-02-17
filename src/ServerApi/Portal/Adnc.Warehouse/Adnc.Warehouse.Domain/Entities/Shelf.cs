@@ -31,7 +31,7 @@ namespace Adnc.Warehouse.Domain.Entities
         /// 冻结库存
         /// </summary>
         /// <param name="needFreezedQty"></param>
-        internal void Freeze(int needFreezedQty)
+        public void FreezeInventory(int needFreezedQty)
         {
             if (this.Qty < needFreezedQty)
                 throw new AdncArgumentException("Qty<needFreezedQty",nameof(needFreezedQty));

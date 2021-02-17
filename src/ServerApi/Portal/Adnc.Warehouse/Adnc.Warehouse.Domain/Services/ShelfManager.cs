@@ -8,6 +8,7 @@ using Adnc.Warehouse.Domain.Entities;
 using Adnc.Warehouse.Domain.Events;
 using Adnc.Warehouse.Domain.Events.Etos;
 using Adnc.Core.Shared.Events;
+using System.Collections.Generic;
 
 namespace Adnc.Warehouse.Domain.Services
 {
@@ -71,7 +72,49 @@ namespace Adnc.Warehouse.Domain.Services
                 ,
                 ProductId = product.Id
                 ,
-                EventSource = nameof(this.AllocateShelfToProductAsync)
+                EventSource = nameof(ShelfManager.AllocateShelfToProductAsync)
+            });
+        }
+
+        public async Task FreezeInventorys(long orderId, List<Shelf> shelfs, Dictionary<long, int> products)
+        {
+            bool isSuccess = false;
+
+            if (shelfs.Count == products.Count)
+            {
+                try
+                {
+                    //这里需要捕获业务逻辑的异常
+                    foreach (var shelf in shelfs)
+                    {
+                        var qty = products[shelf.ProductId.Value];
+                        shelf.FreezeInventory(qty);
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                }
+
+                //成功冻结所有库存
+                isSuccess = true;
+            }
+
+            //这里不需要捕获系统异常
+            await _shelfRepo.UpdateAsync(null);
+
+            //发布冻结库存事件
+            await _eventPublisher.PublishAsync(""
+            ,
+            new OrderInventoryFreezedEventEto
+            {
+                Id = IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId)
+                ,
+                OrderId = orderId
+                ,
+                IsSuccess = isSuccess
+                ,
+                EventSource = nameof(ShelfManager.FreezeInventorys)
             });
         }
     }
