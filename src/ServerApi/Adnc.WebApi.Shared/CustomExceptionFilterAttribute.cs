@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Adnc.Infr.Common;
 using Adnc.Infr.Common.Helper;
+using Adnc.Infr.Common.Exceptions;
 
 namespace Microsoft.AspNetCore.Mvc.Filters
 {
@@ -38,10 +39,20 @@ namespace Microsoft.AspNetCore.Mvc.Filters
             var hostAndPort = context.HttpContext.Request.Host.HasValue ? context.HttpContext.Request.Host.Value : string.Empty;
             var requestUrl = string.Concat(hostAndPort, context.HttpContext.Request.Path);
             var type = string.Concat("https://httpstatuses.com/", status);
-            var title = _env.IsDevelopment() ? exception.Message : $"系统异常";
-            var detial = _env.IsDevelopment() ? ExceptionHelper.GetExceptionDetail(exception) : $"系统异常,请联系管理员({eventId})";
-
-            _logger.LogError(eventId, exception, exception.Message, requestUrl, userContext.Id);
+            
+            string title;
+            string detial;
+            if (exception is IAdncException)
+            {
+                title = "参数错误";
+                detial = exception.Message;
+            }
+            else
+            {
+                title = _env.IsDevelopment() ? exception.Message : $"系统异常";
+                detial = _env.IsDevelopment() ? ExceptionHelper.GetExceptionDetail(exception) : $"系统异常,请联系管理员({eventId})";
+                _logger.LogError(eventId, exception, exception.Message, requestUrl, userContext.Id);
+            }
 
             var problemDetails = new ProblemDetails
             {

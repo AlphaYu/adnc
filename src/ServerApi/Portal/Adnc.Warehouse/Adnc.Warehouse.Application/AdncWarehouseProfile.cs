@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Adnc.Warehouse.Application.Dtos;
 using Adnc.Application.Shared.Dtos;
-using Adnc.Warehouse.Core.Entities;
+using Adnc.Warehouse.Domain.Entities;
 using Adnc.Core.Shared;
 
 namespace Adnc.Warehouse.Application

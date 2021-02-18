@@ -1,13 +1,14 @@
 ﻿using Adnc.Application.Shared.Services;
-using Adnc.Warehouse.Core.Entities;
+using Adnc.Warehouse.Domain.Entities;
 using System.Threading.Tasks;
-using Adnc.Warehouse.Core.Services;
+using Adnc.Warehouse.Domain.Services;
 using Adnc.Warehouse.Application.Dtos;
 using Adnc.Core.Shared.IRepositories;
 using AutoMapper;
 using Adnc.Infr.Common.Extensions;
 using Adnc.Application.Shared.Dtos;
 using System.Linq;
+using Adnc.Core.Shared.Interceptors;
 
 namespace Adnc.Warehouse.Application.Services
 {
@@ -38,11 +39,12 @@ namespace Adnc.Warehouse.Application.Services
             return _mapper.Map<ShelfDto>(shelf);
         }
 
+        [UnitOfWork(SharedToCap = true)]
         public async Task<ShelfDto> AllocateShelfToProductAsync(long shelfId, ShelfAllocateToProductDto input)
         {
             await Test();
 
-            var shelf = await _shelfRepo.FindAsync(shelfId);
+            var shelf = await _shelfRepo.FindAsync(shelfId, noTracking: false);
             var product = await _productRepo.FindAsync(input.ProductId.ToLong().Value);
 
             await _shelfManager.AllocateShelfToProductAsync(shelf, product);
@@ -80,14 +82,14 @@ namespace Adnc.Warehouse.Application.Services
                                   Id = s.Id.ToString()
                                   ,
                                   FreezedQty = s.FreezedQty
-                                  //,
-                                  //Position = _mapper.Map<ShelfPositionDto>(s.Position)
                                   ,
-                                  ProductId = s.ToSafeString()
+                                  Position = new ShelfPositionDto { Code = s.Position.Code, Description = s.Position.Description }
+                                  ,
+                                  ProductId = s.ProductId.Value.ToString()
                                   ,
                                   ProductName = x.Name
                                   ,
-                                  ProductSku = x.Name
+                                  ProductSku = x.Sku
                                   ,
                                   Qty = s.Qty
                               })

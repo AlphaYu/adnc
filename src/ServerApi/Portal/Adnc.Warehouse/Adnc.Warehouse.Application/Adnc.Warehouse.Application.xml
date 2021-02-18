@@ -4,12 +4,48 @@
         <name>Adnc.Warehouse.Application</name>
     </assembly>
     <members>
+        <member name="T:Adnc.Warehouse.Application.EventSubscribers.OrderCreatedEventSubscirber">
+            <summary>
+            订单创建事件订阅者
+            </summary>
+        </member>
+        <member name="M:Adnc.Warehouse.Application.EventSubscribers.OrderCreatedEventSubscirber.#ctor(Adnc.Core.Shared.IRepositories.IEfRepository{Adnc.Warehouse.Domain.Entities.Shelf})">
+            <summary>
+            构造函数
+            </summary>
+            <param name="shelfReop"><see cref="T:Adnc.Warehouse.Domain.Entities.Shelf"/></param>
+        </member>
+        <member name="M:Adnc.Warehouse.Application.EventSubscribers.OrderCreatedEventSubscirber.Process(Adnc.Warehouse.Application.OrderCreatedEventEto)">
+            <summary>
+            冻结库存
+            </summary>
+            <param name="eto"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Adnc.Warehouse.Application.EventSubscribers.ShelfToProductAllocatedEventSubscirber">
+            <summary>
+            分配货架事件订阅者
+            </summary>
+        </member>
+        <member name="M:Adnc.Warehouse.Application.EventSubscribers.ShelfToProductAllocatedEventSubscirber.#ctor(Adnc.Core.Shared.IRepositories.IEfRepository{Adnc.Warehouse.Domain.Entities.Product})">
+            <summary>
+            构造函数
+            </summary>
+            <param name="productReop"><see cref="T:Adnc.Warehouse.Domain.Entities.Product"/></param>
+        </member>
+        <member name="M:Adnc.Warehouse.Application.EventSubscribers.ShelfToProductAllocatedEventSubscirber.Process(Adnc.Warehouse.Application.EventSubscribers.ShelfToProductAllocatedEventEto)">
+            <summary>
+            事件处理逻辑
+            </summary>
+            <param name="eto"></param>
+            <returns></returns>
+        </member>
         <member name="T:Adnc.Warehouse.Application.Services.ProductAppService">
             <summary>
             商品管理
             </summary>
         </member>
-        <member name="M:Adnc.Warehouse.Application.Services.ProductAppService.#ctor(Adnc.Core.Shared.IRepositories.IEfRepository{Adnc.Warehouse.Core.Entities.Product},Adnc.Core.Shared.IRepositories.IEfRepository{Adnc.Warehouse.Core.Entities.Shelf},Adnc.Application.Shared.RpcServices.IMaintRpcService,Adnc.Warehouse.Core.Services.ProductManager,AutoMapper.IMapper)">
+        <member name="M:Adnc.Warehouse.Application.Services.ProductAppService.#ctor(Adnc.Core.Shared.IRepositories.IEfRepository{Adnc.Warehouse.Domain.Entities.Product},Adnc.Core.Shared.IRepositories.IEfRepository{Adnc.Warehouse.Domain.Entities.Shelf},Adnc.Application.Shared.RpcServices.IMaintRpcService,Adnc.Warehouse.Domain.Services.ProductManager,AutoMapper.IMapper)">
             <summary>
             商品管理构造函数
             </summary>

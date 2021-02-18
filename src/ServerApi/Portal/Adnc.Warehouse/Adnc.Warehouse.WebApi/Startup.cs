@@ -15,7 +15,6 @@ using HealthChecks.UI.Client;
 using Autofac;
 using AutoMapper;
 using Adnc.Infr.Common;
-using Adnc.Infr.Consul.Registration;
 using Adnc.Warehouse.WebApi.Helper;
 using Adnc.Warehouse.Application;
 using Adnc.WebApi.Shared;

@@ -2,8 +2,8 @@
 using System.Threading.Tasks;
 using AutoMapper;
 using Adnc.Warehouse.Application.Dtos;
-using Adnc.Warehouse.Core.Services;
-using Adnc.Warehouse.Core.Entities;
+using Adnc.Warehouse.Domain.Services;
+using Adnc.Warehouse.Domain.Entities;
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Application.Shared.Dtos;
 using Adnc.Application.Shared.Services;
@@ -69,11 +69,10 @@ namespace Adnc.Warehouse.Application.Services
         /// <returns></returns>
         public async Task<ProductDto> UpdateAsync(long id, ProductUpdationDto input)
         {
-            var product = await _productRepo.FindAsync(id);
+            var product = await _productRepo.FindAsync(id, noTracking: false);
 
             product.Describe = input.Describe;
-            product.Unit = input.Unit;
-
+            product.SetUnit(input.Unit);
             product.SetPrice(input.Price);
 
 
@@ -93,7 +92,7 @@ namespace Adnc.Warehouse.Application.Services
         /// <returns></returns>
         public async Task<ProductDto> ChangePriceAsync(long id, ProducChangePriceDto input)
         {
-            var product = await _productRepo.FindAsync(id);
+            var product = await _productRepo.FindAsync(id, noTracking: false);
 
             product.SetPrice(input.Price);
 
@@ -110,9 +109,9 @@ namespace Adnc.Warehouse.Application.Services
         /// <returns></returns>
         public async Task<ProductDto> PutOnSaleAsync(long id,ProductPutOnSaleDto input)
         {
-            var product = await _productRepo.FindAsync(id);
+            var product = await _productRepo.FindAsync(id, noTracking: false);
 
-            var warehouseInfo = await _warehouseInfoRepo.FetchAsync(x => x, x => x.ProductId == id);
+            var warehouseInfo = await _warehouseInfoRepo.FetchAsync(x => x, x => x.ProductId == id, noTracking: false);
 
             await _productMgr.PutOnSale(product, warehouseInfo, input.Reason);
 
@@ -128,7 +127,7 @@ namespace Adnc.Warehouse.Application.Services
         /// <returns></returns>
         public async Task<ProductDto> PutOffSaleAsync(long id, ProductPutOffSaleDto input)
         {
-            var product = await _productRepo.FindAsync(id);
+            var product = await _productRepo.FindAsync(id, noTracking: false);
 
             product.PutOffSale(input.Reason);
 

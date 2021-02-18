@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Adnc.Core.Shared.EventBus;
+using Adnc.Core.Shared.Events;
 
 namespace Adnc.Cus.Core.EventBus.Etos
 {
