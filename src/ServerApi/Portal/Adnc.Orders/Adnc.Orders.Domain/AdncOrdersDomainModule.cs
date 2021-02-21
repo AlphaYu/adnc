@@ -9,7 +9,7 @@ using Adnc.Core.Shared.Events;
 
 namespace Adnc.Orders.Domain
 {
-    public class AdncOrderDomainModule : Module
+    public class AdncOrdersDomainModule : Module
     {
         /// <summary>
         /// Autofac注册
@@ -40,7 +40,7 @@ namespace Adnc.Orders.Domain
         /// <param name="builder"></param>
         public static void Register(ContainerBuilder builder)
         {
-            new AdncOrderDomainModule().Load(builder);
+            new AdncOrdersDomainModule().Load(builder);
         }
     }
 }

@@ -3,6 +3,7 @@ using Adnc.Application.Shared.Services;
 using Adnc.Application.Shared.Interceptors;
 using Adnc.Warehouse.Application.Dtos;
 using Adnc.Application.Shared.Dtos;
+using System.Collections.Generic;
 
 namespace Adnc.Warehouse.Application.Services
 {
@@ -23,6 +24,9 @@ namespace Adnc.Warehouse.Application.Services
         [OpsLog(LogName = "下架商品")]
         Task<ProductDto> PutOffSaleAsync(long id, ProductPutOffSaleDto input);
 
-        Task<PageModelDto<ProductDto>> GetPagedAsync(ProductSearchDto search);
+        Task<PageModelDto<ProductDto>> GetPagedAsync(ProductSearchPagedDto search);
+
+        Task<List<ProductDto>> GetListAsync(ProductSearchListDto search);
+
     }
 }

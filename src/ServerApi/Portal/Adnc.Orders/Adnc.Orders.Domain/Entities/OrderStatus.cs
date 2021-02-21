@@ -17,7 +17,7 @@ namespace Adnc.Orders.Domain.Entities
         {
         }
 
-        public OrderStatus(OrderStatusEnum statusCode, string reason)
+        public OrderStatus(OrderStatusEnum statusCode, string reason = null)
         {
             this.StatusCode = statusCode;
             this.ChangeStatusReason = reason ?? reason.Trim();
@@ -26,10 +26,25 @@ namespace Adnc.Orders.Domain.Entities
 
     public enum OrderStatusEnum
     {
-        UnKnow = 1000
+        Creating = 1000
         ,
-        SaleOff = 1003
+        WaitPay = 1008
         ,
-        SaleOn = 1006
+        Paying = 1016
+        ,
+        WaitSend = 1040
+        ,
+        WaitConfirm = 1048
+        ,
+        WaitRate = 1056
+        ,
+        Finished = 1064
+        ,
+        Canceling = 1023
+        ,
+        Cancelled = 1024
+        ,
+        Deleted = 1032
+
     }
 }

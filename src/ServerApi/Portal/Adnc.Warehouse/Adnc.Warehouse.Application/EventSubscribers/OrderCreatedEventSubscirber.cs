@@ -1,10 +1,13 @@
 ﻿using System.Threading.Tasks;
 using System.Linq;
-using Adnc.Core.Shared.IRepositories;
+using System.Text.Json;
+using DotNetCore.CAP;
 using Adnc.Infr.Common.Helper;
+using Adnc.Core.Shared.IRepositories;
+using Adnc.Core.Shared.Events;
 using Adnc.Warehouse.Domain.Entities;
 using Adnc.Warehouse.Domain.Events;
-using DotNetCore.CAP;
+using System.Collections.Generic;
 
 namespace Adnc.Warehouse.Application.EventSubscribers
 {
@@ -30,9 +33,11 @@ namespace Adnc.Warehouse.Application.EventSubscribers
         /// <param name="eto"></param>
         /// <returns></returns>
         [CapSubscribe("OrderCreatedEvent")]
-        public async Task<OrderInventoryFreezedEventEto> Process(OrderCreatedEventEto eto)
+        public async Task Process(BaseEvent obj)
         {
             bool isSuccess = false;
+
+            var eto = obj.Data as EventData;
 
             var orderId = eto.OrderId;
             var products = eto.Products.ToDictionary(x => x.ProductId, x => x.Qty);
@@ -49,14 +54,21 @@ namespace Adnc.Warehouse.Application.EventSubscribers
 
             isSuccess = true;
 
-            return new OrderInventoryFreezedEventEto
-            {
-                Id = IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId)
-                ,
-                OrderId = eto.OrderId
-                ,
-                IsSuccess = isSuccess
-            };
+            //return new OrderInventoryFreezedEventEto
+            //{
+            //    Id = IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId)
+            //    ,
+            //    OrderId = eto.OrderId
+            //    ,
+            //    IsSuccess = isSuccess
+            //};
+        }
+
+        public class EventData
+        {
+            public long OrderId { get; set; }
+
+            public ICollection<(long ProductId, int Qty)> Products { get; set; }
         }
     }
 }

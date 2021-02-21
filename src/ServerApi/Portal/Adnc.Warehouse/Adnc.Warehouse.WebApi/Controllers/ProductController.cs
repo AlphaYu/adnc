@@ -5,13 +5,15 @@ using Adnc.Warehouse.Application.Services;
 using Adnc.Warehouse.Application.Dtos;
 using Adnc.WebApi.Shared;
 using Adnc.Infr.Common.Extensions;
+using System.Collections.Generic;
+using Adnc.Application.Shared.Dtos;
 
 namespace Adnc.Warehouse.WebApi.Controllers
 {
     /// <summary>
     /// 商品管理
     /// </summary>
-    [Route("warehouse/product")]
+    [Route("warehouse/products")]
     [ApiController]
     public class ProductController : AdncControllerBase
     {
@@ -81,6 +83,29 @@ namespace Adnc.Warehouse.WebApi.Controllers
         {
             var productId = id.ToLong();
             return await _productSrv.PutOffSaleAsync(productId.Value, input);
+        }
+
+        /// <summary>
+        /// 商品列表
+        /// </summary>
+        /// <param name="search"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<ActionResult<List<ProductDto>>> GetListAsync([FromQuery] ProductSearchListDto search)
+        {
+            return await _productSrv.GetListAsync(search);
+        }
+
+
+        /// <summary>
+        /// 商品分页列表
+        /// </summary>
+        /// <param name="search"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<ActionResult<PageModelDto<ProductDto>>> GetPagedAsync([FromQuery] ProductSearchPagedDto search)
+        {
+            return await _productSrv.GetPagedAsync(search);
         }
     }
 }

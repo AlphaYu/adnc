@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Collections.Generic;
 using AutoMapper;
 using Adnc.Warehouse.Application.Dtos;
 using Adnc.Warehouse.Domain.Services;
@@ -7,8 +10,6 @@ using Adnc.Warehouse.Domain.Entities;
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Application.Shared.Dtos;
 using Adnc.Application.Shared.Services;
-using System.Linq;
-using System.Linq.Expressions;
 using Adnc.Infr.Common.Extensions;
 using Adnc.Application.Shared.RpcServices;
 
@@ -54,7 +55,7 @@ namespace Adnc.Warehouse.Application.Services
         /// <returns></returns>
         public async Task<ProductDto> CreateAsync(ProductCreationDto input)
         {
-            var product = await _productMgr.CreateAsync(input.Sku, input.Price, input.Name,input.Unit, input.Describe);
+            var product = await _productMgr.CreateAsync(input.Sku, input.Price, input.Name, input.Unit, input.Describe);
 
             await _productRepo.InsertAsync(product);
 
@@ -107,7 +108,7 @@ namespace Adnc.Warehouse.Application.Services
         /// <param name="id"></param>
         /// <param name="input"></param>
         /// <returns></returns>
-        public async Task<ProductDto> PutOnSaleAsync(long id,ProductPutOnSaleDto input)
+        public async Task<ProductDto> PutOnSaleAsync(long id, ProductPutOnSaleDto input)
         {
             var product = await _productRepo.FindAsync(id, noTracking: false);
 
@@ -141,12 +142,12 @@ namespace Adnc.Warehouse.Application.Services
         /// </summary>
         /// <param name="search"></param>
         /// <returns></returns>
-        public async Task<PageModelDto<ProductDto>> GetPagedAsync(ProductSearchDto search)
+        public async Task<PageModelDto<ProductDto>> GetPagedAsync(ProductSearchPagedDto search)
         {
             Expression<Func<Product, bool>> whereCondition = x => true;
-            if (search.Id > 0)
+            if (!search.Id.IsNullOrEmpty())
             {
-                whereCondition = whereCondition.And(x => x.Id == search.Id);
+                whereCondition = whereCondition.And(x => x.Id == search.Id.ToLong());
             }
             var pagedEntity = _productRepo.PagedAsync(search.PageIndex, search.PageSize, whereCondition, x => x.Id);
 
@@ -166,6 +167,28 @@ namespace Adnc.Warehouse.Application.Services
                 }
             }
             return pagedDto;
+        }
+
+
+        /// <summary>
+        /// 商品列表
+        /// </summary>
+        /// <param name="search"></param>
+        /// <returns></returns>
+        public async Task<List<ProductDto>> GetListAsync(ProductSearchListDto search)
+        {
+            Expression<Func<Product, bool>> whereCondition = x => true;
+            if (!search.Ids.IsNullOrEmpty())
+            {
+                var ids = search.Ids.Where(x => x.IsNullOrEmpty()).Select(x => x.ToLong().Value);
+
+                whereCondition = whereCondition.And(x => ids.Contains(x.Id));
+            }
+            var products = await _productRepo.Where(whereCondition).ToListAsync();
+
+            var productsDto = _mapper.Map<List<ProductDto>>(products);
+
+            return productsDto;
         }
     }
 }
