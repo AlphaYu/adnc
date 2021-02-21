@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using Adnc.Core.Shared;
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Infr.Common.Helper;
 using Adnc.Infr.Common.Exceptions;
 using Adnc.Warehouse.Domain.Entities;
 using Adnc.Warehouse.Domain.Events;
-using Adnc.Warehouse.Domain.Events.Etos;
 using Adnc.Core.Shared.Events;
-using System.Collections.Generic;
 
 namespace Adnc.Warehouse.Domain.Services
 {
@@ -63,17 +62,9 @@ namespace Adnc.Warehouse.Domain.Services
             shelf.SetProductId(product.Id);
 
             //发布领域事件，Product会订阅该事件，调整商品对应的货架号。
-            await _eventPublisher.PublishAsync(EventConsts.ShelfToProductAllocatedEvent
-            , new ShelfToProductAllocatedEventEto
-            {
-                Id = IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId)
-                ,
-                ShelfId = shelf.Id
-                ,
-                ProductId = product.Id
-                ,
-                EventSource = nameof(ShelfManager.AllocateShelfToProductAsync)
-            });
+            var eventId = IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId);
+            var eventData = new ShelfToProductAllocatedEvent.EventData() { ShelfId = shelf.Id, ProductId = product.Id };
+            await _eventPublisher.PublishAsync(new ShelfToProductAllocatedEvent(eventId, eventData));
         }
 
         public async Task FreezeInventorys(long orderId, List<Shelf> shelfs, Dictionary<long, int> products)
@@ -104,18 +95,18 @@ namespace Adnc.Warehouse.Domain.Services
             await _shelfRepo.UpdateAsync(null);
 
             //发布冻结库存事件
-            await _eventPublisher.PublishAsync(""
-            ,
-            new OrderInventoryFreezedEventEto
-            {
-                Id = IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId)
-                ,
-                OrderId = orderId
-                ,
-                IsSuccess = isSuccess
-                ,
-                EventSource = nameof(ShelfManager.FreezeInventorys)
-            });
+            //await _eventPublisher.PublishAsync(""
+            //,
+            //new OrderInventoryFreezedEventEto
+            //{
+            //    Id = IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId)
+            //    ,
+            //    OrderId = orderId
+            //    ,
+            //    IsSuccess = isSuccess
+            //    ,
+            //    EventSource = nameof(ShelfManager.FreezeInventorys)
+            //});
         }
     }
 }

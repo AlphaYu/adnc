@@ -14,28 +14,28 @@ namespace Adnc.Core.Shared.Events
             _eventBus = capPublisher;
         }
 
-        public virtual async Task PublishAsync<T>(string name, T contentObj, string callbackName = null, CancellationToken cancellationToken = default(CancellationToken))
-            where T : BaseEto
+        public virtual async Task PublishAsync<T>(T eventObj, string callbackName = null, CancellationToken cancellationToken = default(CancellationToken))
+            where T : BaseEvent
         {
-            await _eventBus.PublishAsync(name, contentObj, callbackName, cancellationToken);
+            await _eventBus.PublishAsync(nameof(T), eventObj, callbackName, cancellationToken);
         }
 
-        public virtual async Task PublishAsync<T>(string name, T contentObj, IDictionary<string, string> headers, CancellationToken cancellationToken = default(CancellationToken))
-            where T : BaseEto
+        public virtual async Task PublishAsync<T>(T eventObj, IDictionary<string, string> headers, CancellationToken cancellationToken = default(CancellationToken))
+            where T : BaseEvent
         {
-            await _eventBus.PublishAsync<T>(name, contentObj, headers, cancellationToken);
+            await _eventBus.PublishAsync<T>(nameof(T), eventObj, headers, cancellationToken);
         }
 
-        public virtual void Publish<T>(string name, T contentObj, string callbackName = null)
-            where T : BaseEto
+        public virtual void Publish<T>(T eventObj, string callbackName = null)
+            where T : BaseEvent
         {
-            _eventBus.Publish(name, contentObj, callbackName);
+            _eventBus.Publish(nameof(T), eventObj, callbackName);
         }
 
-        public virtual void Publish<T>(string name, T contentObj, IDictionary<string, string> headers)
-            where T : BaseEto
+        public virtual void Publish<T>(T eventObj, IDictionary<string, string> headers)
+            where T : BaseEvent
         {
-            _eventBus.Publish(name, contentObj, headers);
+            _eventBus.Publish(nameof(T), eventObj, headers);
         }
     }
 }

@@ -18,15 +18,15 @@ namespace Adnc.Orders.Domain.Entities
 
         private OrderItem() { }
 
-        public OrderItem(long orderId, OrderItemProduct product, int count)
+        internal OrderItem(long orderId, OrderItemProduct product, int count)
         {
+            this.Id = product.Id;
             this.OrderId = Checker.GTZero(orderId, nameof(orderId));
             this.Product = Checker.NotNull(product, nameof(product));
             this.Count = Checker.GTZero(count, nameof(count));
-            this.Id = product.Id;
         }
 
-        public void ChangeCount(int count)
+        internal void ChangeCount(int count)
         {
             Checker.GTZero(count, nameof(count));
             this.Count += count;

@@ -43,7 +43,7 @@ namespace Adnc.Cus.Core.Services
             await _cusFinaceRepo.InsertAsync(cusFinance);
         }
 
-        [UnitOfWork(SharedToCap =true)]
+        [UnitOfWork(SharedToCap = true)]
         public virtual async Task Recharge(long customerId, decimal amount, CusTransactionLog cusTransactionLog, CancellationToken cancellationToken = default)
         {
 
