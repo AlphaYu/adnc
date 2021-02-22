@@ -81,7 +81,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Orders.Domain", "Porta
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Orders.Application", "Portal\Adnc.Orders\Adnc.Orders.Application\Adnc.Orders.Application.csproj", "{62BF59EF-F28A-4989-8423-A89819A34431}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "25.Adnc.Infr.EventBus", "Adnc.Infr.EventBus\25.Adnc.Infr.EventBus\25.Adnc.Infr.EventBus.csproj", "{28CBA3C8-5025-472E-99AD-FFA051936C94}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "25.Adnc.Infr.EventBus", "Adnc.Infr.EventBus\25.Adnc.Infr.EventBus.csproj", "{28CBA3C8-5025-472E-99AD-FFA051936C94}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
