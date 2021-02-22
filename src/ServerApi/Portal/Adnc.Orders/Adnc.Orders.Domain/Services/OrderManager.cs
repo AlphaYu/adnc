@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Adnc.Core.Shared;
-using Adnc.Core.Shared.Events;
+using Adnc.Infr.EventBus;
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Infr.Common.Helper;
 using Adnc.Orders.Domain.Entities;
@@ -12,6 +10,9 @@ using Adnc.Orders.Domain.Events;
 
 namespace Adnc.Orders.Domain.Services
 {
+    /// <summary>
+    /// 订单领域服务
+    /// </summary>
     public class OrderManager : ICoreService
     {
         private readonly IEfRepository<Order> _orderRepo;
@@ -58,7 +59,8 @@ namespace Adnc.Orders.Domain.Services
 
             var eventId = IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId);
             var eventData = new OrderCreatedEvent.EventData() { OrderId = order.Id, Products = products };
-            await _eventPubliser.PublishAsync(new OrderCreatedEvent(eventId, eventData));
+            var eventSource = System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.FullName;
+            await _eventPubliser.PublishAsync(new OrderCreatedEvent(eventId, eventData, eventSource));
             return order;
         }
 
@@ -75,22 +77,24 @@ namespace Adnc.Orders.Domain.Services
             //发布领域事件，通知仓储中心解冻被冻结的库存
             var eventId = IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId);
             var eventData = new OrderCanceledEvent.EventData() { OrderId = order.Id };
-            await _eventPubliser.PublishAsync(new OrderCanceledEvent(eventId, eventData));
+            var eventSource = System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.FullName;
+            await _eventPubliser.PublishAsync(new OrderCanceledEvent(eventId, eventData, eventSource));
         }
 
         /// <summary>
-        /// 订单申请付款
+        /// 订单付款
         /// </summary>
         /// <returns></returns>
-        public virtual async Task RequestPaymentAsync(Order order)
+        public virtual async Task PayAsync(Order order)
         {
             order.ChangeStatus(OrderStatusEnum.Paying);
             await _orderRepo.UpdateAsync(order);
 
             //发布领域事件，通知客户中心扣款(Demo是从余额中扣款)
             var eventId = IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId);
-            var eventData = new OrderRequestedPaymentEvent.EventData() { OrderId = order.Id, Amount = order.Amount };
-            await _eventPubliser.PublishAsync(new OrderRequestedPaymentEvent(eventId, eventData));
+            var eventData = new OrderPaidEvent.EventData() { OrderId = order.Id, Amount = order.Amount };
+            var eventSource = System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.FullName;
+            await _eventPubliser.PublishAsync(new OrderPaidEvent(eventId, eventData, eventSource));
         }
     }
 }

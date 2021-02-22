@@ -1,12 +1,12 @@
-﻿using Adnc.Core.Shared.Events;
+﻿using Adnc.Infr.EventBus;
 
 namespace Adnc.Warehouse.Domain.Events
 {
-    public class ShelfToProductAllocatedEvent : BaseEvent
+    public class ShelfToProductAllocatedEvent : BaseEvent<ShelfToProductAllocatedEvent.EventData>
     {
 
-        public ShelfToProductAllocatedEvent(long id, EventData eventData)
-            : base(id, eventData)
+        public ShelfToProductAllocatedEvent(long id, EventData eventData, string source)
+            : base(id, eventData, source)
         {
         }
 

@@ -3,12 +3,10 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Adnc.WebApi.Shared;
-using Adnc.Cus.Core.EventBus.Subscribers;
-using Adnc.Cus.Core;
 using Adnc.Application.Shared.RpcServices;
 using Adnc.Infr.Consul;
-using System;
-using System.Threading.Tasks;
+using Adnc.Cus.Core.Eventss.Subscribers;
+using Adnc.Infr.EventBus;
 
 namespace Adnc.Cus.WebApi.Helper
 {
@@ -37,11 +35,11 @@ namespace Adnc.Cus.WebApi.Helper
             base.AddRpcService<IMaintRpcService>(maintServiceAddress, defaultPolicies);
         }
 
-        public void AddAllEventBusSubscribers(string tableNamePrefix = "Cap", string groupName = EbConsts.CapDefaultGroup)
+        public void AddAllEventBusSubscribers(string tableNamePrefix = EbConsts.CapTableNamePrefix, string groupName = EbConsts.CapDefaultGroup)
         {
             base.AddEventBusSubscribers(tableNamePrefix, groupName,(s)=>
             {
-                s.AddScoped<ICustomerRechargedSubscriber, CustomerRechargedSubscriber>();
+                s.AddScoped<CustomerRechargedSubscriber>();
             });
         }
     }

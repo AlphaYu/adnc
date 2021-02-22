@@ -153,7 +153,7 @@ namespace Adnc.Orders.Application.Services
         {
             var order = await _orderRepo.FindAsync(id);
 
-            await _orderMgr.RequestPaymentAsync(order);
+            await _orderMgr.PayAsync(order);
 
             return _mapper.Map<OrderDto>(order);
         }

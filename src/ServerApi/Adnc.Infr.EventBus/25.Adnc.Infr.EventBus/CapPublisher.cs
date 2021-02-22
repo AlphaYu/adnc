@@ -3,39 +3,39 @@ using System.Threading;
 using System.Threading.Tasks;
 using DotNetCore.CAP;
 
-namespace Adnc.Core.Shared.Events
+namespace Adnc.Infr.EventBus
 {
-    public class EventPublisher : IEventPublisher
+    public class CapPublisher : IEventPublisher
     {
         private readonly ICapPublisher _eventBus;
 
-        public EventPublisher(ICapPublisher capPublisher)
+        public CapPublisher(ICapPublisher capPublisher)
         {
             _eventBus = capPublisher;
         }
 
         public virtual async Task PublishAsync<T>(T eventObj, string callbackName = null, CancellationToken cancellationToken = default(CancellationToken))
-            where T : BaseEvent
+            where T : IEvent
         {
-            await _eventBus.PublishAsync(nameof(T), eventObj, callbackName, cancellationToken);
+            await _eventBus.PublishAsync(typeof(T).Name, eventObj, callbackName, cancellationToken);
         }
 
         public virtual async Task PublishAsync<T>(T eventObj, IDictionary<string, string> headers, CancellationToken cancellationToken = default(CancellationToken))
-            where T : BaseEvent
+            where T : IEvent
         {
-            await _eventBus.PublishAsync<T>(nameof(T), eventObj, headers, cancellationToken);
+            await _eventBus.PublishAsync<T>(typeof(T).Name, eventObj, headers, cancellationToken);
         }
 
         public virtual void Publish<T>(T eventObj, string callbackName = null)
-            where T : BaseEvent
+            where T : IEvent
         {
-            _eventBus.Publish(nameof(T), eventObj, callbackName);
+            _eventBus.Publish(typeof(T).Name, eventObj, callbackName);
         }
 
         public virtual void Publish<T>(T eventObj, IDictionary<string, string> headers)
-            where T : BaseEvent
+            where T : IEvent
         {
-            _eventBus.Publish(nameof(T), eventObj, headers);
+            _eventBus.Publish(typeof(T).Name, eventObj, headers);
         }
     }
 }
