@@ -15,7 +15,7 @@
             </summary>
             <param name="shelfReop"><see cref="T:Adnc.Warehouse.Domain.Entities.Shelf"/></param>
         </member>
-        <member name="M:Adnc.Warehouse.Application.EventSubscribers.OrderCreatedEventSubscirber.Process(Adnc.Core.Shared.Events.BaseEvent)">
+        <member name="M:Adnc.Warehouse.Application.EventSubscribers.OrderCreatedEventSubscirber.Process(Adnc.Infr.EventBus.BaseEvent{Adnc.Warehouse.Application.EventSubscribers.OrderCreatedEventSubscirber.EventData})">
             <summary>
             冻结库存
             </summary>
@@ -33,7 +33,7 @@
             </summary>
             <param name="productReop"><see cref="T:Adnc.Warehouse.Domain.Entities.Product"/></param>
         </member>
-        <member name="M:Adnc.Warehouse.Application.EventSubscribers.ShelfToProductAllocatedEventSubscirber.Process(Adnc.Core.Shared.Events.BaseEvent)">
+        <member name="M:Adnc.Warehouse.Application.EventSubscribers.ShelfToProductAllocatedEventSubscirber.Process(Adnc.Warehouse.Domain.Events.ShelfToProductAllocatedEvent)">
             <summary>
             事件处理逻辑
             </summary>

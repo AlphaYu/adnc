@@ -7,7 +7,7 @@ using Adnc.Infr.Common.Helper;
 using Adnc.Infr.Common.Exceptions;
 using Adnc.Warehouse.Domain.Entities;
 using Adnc.Warehouse.Domain.Events;
-using Adnc.Core.Shared.Events;
+using Adnc.Infr.EventBus;
 
 namespace Adnc.Warehouse.Domain.Services
 {
@@ -64,7 +64,8 @@ namespace Adnc.Warehouse.Domain.Services
             //发布领域事件，Product会订阅该事件，调整商品对应的货架号。
             var eventId = IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId);
             var eventData = new ShelfToProductAllocatedEvent.EventData() { ShelfId = shelf.Id, ProductId = product.Id };
-            await _eventPublisher.PublishAsync(new ShelfToProductAllocatedEvent(eventId, eventData));
+            var eventSource = System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.FullName;
+            await _eventPublisher.PublishAsync(new ShelfToProductAllocatedEvent(eventId, eventData, eventSource));
         }
 
         public async Task FreezeInventorys(long orderId, List<Shelf> shelfs, Dictionary<long, int> products)

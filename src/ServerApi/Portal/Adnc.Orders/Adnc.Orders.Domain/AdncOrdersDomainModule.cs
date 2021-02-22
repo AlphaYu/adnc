@@ -5,7 +5,7 @@ using Adnc.Core.Shared;
 using Adnc.Core.Shared.Entities;
 using Adnc.Core.Shared.Interceptors;
 using Adnc.Orders.Domain.Events;
-using Adnc.Core.Shared.Events;
+using Adnc.Infr.EventBus;
 
 namespace Adnc.Orders.Domain
 {
@@ -29,7 +29,7 @@ namespace Adnc.Orders.Domain
                    .InstancePerLifetimeScope();
 
             //注册事件发布者
-            builder.RegisterType<EventPublisher>()
+            builder.RegisterType<CapPublisher>()
                    .As<IEventPublisher>()
                    .SingleInstance();
         }

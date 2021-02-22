@@ -4,7 +4,7 @@ using System.Text.Json;
 using DotNetCore.CAP;
 using Adnc.Infr.Common.Helper;
 using Adnc.Core.Shared.IRepositories;
-using Adnc.Core.Shared.Events;
+using Adnc.Infr.EventBus;
 using Adnc.Warehouse.Domain.Entities;
 using Adnc.Warehouse.Domain.Events;
 using System.Collections.Generic;
@@ -33,14 +33,12 @@ namespace Adnc.Warehouse.Application.EventSubscribers
         /// <param name="eto"></param>
         /// <returns></returns>
         [CapSubscribe("OrderCreatedEvent")]
-        public async Task Process(BaseEvent obj)
+        public async Task Process(BaseEvent<EventData> eto)
         {
             bool isSuccess = false;
 
-            var eto = obj.Data as EventData;
-
-            var orderId = eto.OrderId;
-            var products = eto.Products.ToDictionary(x => x.ProductId, x => x.Qty);
+            var orderId = eto.Data.OrderId;
+            var products = eto.Data.Products.ToDictionary(x => x.ProductId, x => x.Qty);
             var shelfs = await _shelfReop.Where(x => products.Keys.Contains(x.ProductId.Value), noTracking: false).ToListAsync();
 
 

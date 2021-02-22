@@ -2,9 +2,9 @@
 
 namespace Adnc.Orders.Domain.Events
 {
-    public sealed class OrderCanceledEvent : BaseEvent<OrderCanceledEvent.EventData>
+    public sealed class OrderPaidEvent : BaseEvent<OrderPaidEvent.EventData>
     {
-        public OrderCanceledEvent(long id, EventData eventData,string eventSource)
+        public OrderPaidEvent(long id, EventData eventData, string eventSource)
             : base(id, eventData, eventSource)
         {
         }
@@ -12,6 +12,7 @@ namespace Adnc.Orders.Domain.Events
         public class EventData
         {
             public long OrderId { get; set; }
+            public decimal Amount { get; set; }
         }
     }
 }

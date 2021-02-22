@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Adnc.Core.Shared.Events;
+using Adnc.Infr.EventBus;
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Warehouse.Domain.Entities;
 using Adnc.Warehouse.Domain.Events;
@@ -29,23 +29,14 @@ namespace Adnc.Warehouse.Application.EventSubscribers
         /// <param name="eto"></param>
         /// <returns></returns>
         [CapSubscribe(nameof(ShelfToProductAllocatedEvent))]
-        public async Task Process(BaseEvent obj)
+        public async Task Process(ShelfToProductAllocatedEvent eto)
         {
-            var eto = obj.Data as EventData;
-
-            var produdct = await _productReop.FindAsync(eto.ProductId, noTracking: false);
+            var produdct = await _productReop.FindAsync(eto.Data.ProductId, noTracking: false);
             if (produdct != null)
             {
-                produdct.SetShelf(eto.ShelfId);
+                produdct.SetShelf(eto.Data.ShelfId);
                 await _productReop.UpdateAsync(produdct);
             }
-        }
-
-        public class EventData
-        {
-            public long ShelfId { get; set; }
-
-            public long ProductId { get; set; }
         }
     }
 }

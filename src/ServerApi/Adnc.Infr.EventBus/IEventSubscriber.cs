@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Adnc.Core.Shared.Events
+namespace Adnc.Infr.EventBus
 {
-    public interface IEventHandler
+    public interface IEventSubscriber
     {
     }
 }

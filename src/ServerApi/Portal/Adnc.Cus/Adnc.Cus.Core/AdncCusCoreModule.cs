@@ -1,12 +1,10 @@
 ﻿using Autofac;
 using Autofac.Extras.DynamicProxy;
-using Adnc.Cus.Core.Entities;
+using Adnc.Infr.EventBus;
 using Adnc.Core.Shared;
 using Adnc.Core.Shared.Entities;
 using Adnc.Core.Shared.Interceptors;
-using Adnc.Core.Shared.Events;
-using DotNetCore.CAP;
-using Adnc.Cus.Core.EventBus;
+using Adnc.Cus.Core.Entities;
 
 namespace Adnc.Cus.Core
 {
@@ -36,6 +34,11 @@ namespace Adnc.Cus.Core
                 .InstancePerLifetimeScope()
                 .EnableClassInterceptors()
                 .InterceptedBy(typeof(UowInterceptor));
+
+            //注册事件发布者
+            builder.RegisterType<CapPublisher>()
+                   .As<IEventPublisher>()
+                   .SingleInstance();
 
             //注册eventbus订阅服务
             //builder.RegisterAssemblyTypes(this.ThisAssembly)

@@ -1,20 +1,14 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using DotNetCore.CAP;
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Cus.Core.Entities;
 using Adnc.Core.Shared;
-using Adnc.Core.Shared.Events;
-using Adnc.Cus.Core.EventBus.Etos;
+using Adnc.Infr.EventBus;
+using Adnc.Cus.Core.Events;
 
-namespace Adnc.Cus.Core.EventBus.Subscribers
+namespace Adnc.Cus.Core.Eventss.Subscribers
 {
-    public interface ICustomerRechargedSubscriber
-    {
-        Task Process(CustomerRechargedEto eto);
-    }
-
-    public class CustomerRechargedSubscriber : Adnc.Core.Shared.Events.EventHandler, ICustomerRechargedSubscriber, ICapSubscribe
+    public class CustomerRechargedSubscriber : CapSubscriber
     {
         private readonly IUnitOfWork _uow;
         private readonly IEfRepository<CusFinance> _cusFinanceReop;
@@ -29,19 +23,17 @@ namespace Adnc.Cus.Core.EventBus.Subscribers
         }
 
 
-        [CapSubscribe(EbConsts.CustomerRechagered)]
-        public async Task Process(CustomerRechargedEto eto)
+        [CapSubscribe(nameof(CustomerRechargedEvent))]
+        public async Task Process(CustomerRechargedEvent eto)
         {
-            try
+            using (var trans = _uow.GetDbContextTransaction())
             {
-                _uow.BeginTransaction();
-
-                var transLog = await _cusTranlog.FindAsync(eto.TransactionLogId);
+                var transLog = await _cusTranlog.FindAsync(eto.Data.TransactionLogId);
                 if (transLog == null || transLog.ExchageStatus == "20")
                     return;
 
-                var finance = await _cusFinanceReop.FindAsync(eto.Id);
-                var newBalance = finance.Balance + eto.Amount;
+                var finance = await _cusFinanceReop.FindAsync(eto.Data.CustomerId);
+                var newBalance = finance.Balance + eto.Data.Amount;
 
                 transLog.ExchageStatus = "20";
                 transLog.ChangingAmount = finance.Balance;
@@ -52,15 +44,6 @@ namespace Adnc.Cus.Core.EventBus.Subscribers
                 await _cusTranlog.UpdateAsync(transLog, UpdatingProps<CusTransactionLog>(t => t.ExchageStatus, t => t.ChangingAmount, t => t.ChangedAmount));
 
                 _uow.Commit();
-            }
-            catch (Exception ex)
-            {
-                _uow.Rollback();
-                throw new Exception(ex.Message, ex);
-            }
-            finally
-            {
-                _uow.Dispose();
             }
         }
     }

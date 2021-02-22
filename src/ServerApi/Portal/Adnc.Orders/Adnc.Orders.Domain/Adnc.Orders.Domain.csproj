@@ -13,6 +13,7 @@
 	
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\Adnc.Core.Shared\03.Adnc.Core.Shared.csproj" />
+		<ProjectReference Include="..\..\..\Adnc.Infr.EventBus\25.Adnc.Infr.EventBus.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

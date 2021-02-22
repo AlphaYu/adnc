@@ -1,12 +1,12 @@
-﻿using Adnc.Core.Shared.Events;
+﻿using Adnc.Infr.EventBus;
 using System.Collections.Generic;
 
 namespace Adnc.Orders.Domain.Events
 {
-    public sealed class OrderCreatedEvent : BaseEvent
+    public sealed class OrderCreatedEvent : BaseEvent<OrderCreatedEvent.EventData>
     {
-        public OrderCreatedEvent(long id, EventData eventData)
-            : base(id, eventData)
+        public OrderCreatedEvent(long id, EventData eventData,string eventSource)
+            : base(id, eventData,eventSource)
         {
         }
 

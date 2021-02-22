@@ -45,7 +45,7 @@ namespace Adnc.Cus.Application.Services
                 Id = customer.Id
             };
 
-            await _cusManagerService.Register(customer, customerFinace);
+            await _cusManagerService.RegisterAsync(customer, customerFinace);
 
             return new SimpleDto<string>(customer.Id.ToString());
         }
@@ -60,6 +60,8 @@ namespace Adnc.Cus.Application.Services
             {
                 Id = IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId)
                 ,
+                CustomerId = customer.Id
+                ,
                 Account = customer.Account
                 ,
                 ExchangeType = "100"
@@ -71,7 +73,7 @@ namespace Adnc.Cus.Application.Services
                 ExchageStatus = "10"
             };
 
-            await _cusManagerService.Recharge(customer.Id, inputDto.Amount, cusTransactionLog);
+            await _cusManagerService.RechargeAsync(cusTransactionLog);
 
             return new SimpleDto<string>(cusTransactionLog.Id.ToString());
         }

@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Text;
+using DotNetCore.CAP;
 
-namespace Adnc.Core.Shared.Events
+namespace Adnc.Infr.EventBus
 {
-    public abstract class EventHandler : IEventHandler
+    public abstract class CapSubscriber : IEventSubscriber, ICapSubscribe
     {
         protected Expression<Func<TEntity, object>>[] UpdatingProps<TEntity>(params Expression<Func<TEntity, object>>[] expressions)
         {

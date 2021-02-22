@@ -60,7 +60,7 @@ namespace Adnc.UnitTest
                 VALUES (122339207606833152, 'alpha2008', 0, 1600000000000, timestamp('2020-12-03 14:12:20.756977'), NULL, NULL)
                 commit
              */ 
-            await _cusManger.Register(customer, cusFinance);
+            await _cusManger.RegisterAsync(customer, cusFinance);
 
             bool exists = await _cusRsp.AnyAsync(c => c.Id == id);
             Assert.True(exists);
