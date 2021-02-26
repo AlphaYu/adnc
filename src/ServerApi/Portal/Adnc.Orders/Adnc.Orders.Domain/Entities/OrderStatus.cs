@@ -7,11 +7,9 @@ namespace Adnc.Orders.Domain.Entities
 {
     public class OrderStatus : ValueObject
     {
-        public OrderStatusEnum StatusCode { get; private set; }
+        public OrderStatusEnum StatusCode { get;}
 
-        public string StatusName { get; private set; }
-
-        public string ChangeStatusReason { get; private set; }
+        public string ChangeStatusReason { get;}
 
         private OrderStatus()
         {

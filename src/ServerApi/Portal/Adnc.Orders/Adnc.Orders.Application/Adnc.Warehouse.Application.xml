@@ -42,6 +42,96 @@
             订单子项
             </summary>
         </member>
+        <member name="T:Adnc.Orders.Application.Dtos.OrderDto">
+            <summary>
+            订单输出Dto
+            </summary>
+        </member>
+        <member name="P:Adnc.Orders.Application.Dtos.OrderDto.CustomerId">
+            <summary>
+            客户Id
+            </summary>
+        </member>
+        <member name="P:Adnc.Orders.Application.Dtos.OrderDto.Amount">
+            <summary>
+            订单金额
+            </summary>
+        </member>
+        <member name="P:Adnc.Orders.Application.Dtos.OrderDto.Remark">
+            <summary>
+            备注
+            </summary>
+        </member>
+        <member name="P:Adnc.Orders.Application.Dtos.OrderDto.StatusCode">
+            <summary>
+            订单状态-状态码
+            </summary>
+        </member>
+        <member name="P:Adnc.Orders.Application.Dtos.OrderDto.StatusName">
+            <summary>
+            订单状态-状态名称
+            </summary>
+        </member>
+        <member name="P:Adnc.Orders.Application.Dtos.OrderDto.ChangeStatusReason">
+            <summary>
+            订单状态-状态变动原因
+            </summary>
+        </member>
+        <member name="P:Adnc.Orders.Application.Dtos.OrderDto.DeliveryName">
+            <summary>
+            收货信息-收货人
+            </summary>
+        </member>
+        <member name="P:Adnc.Orders.Application.Dtos.OrderDto.DeliveryPhone">
+            <summary>
+            收货信息-收货电话
+            </summary>
+        </member>
+        <member name="P:Adnc.Orders.Application.Dtos.OrderDto.DeliveryAddress">
+            <summary>
+            收货信息-收货地址
+            </summary>
+        </member>
+        <member name="P:Adnc.Orders.Application.Dtos.OrderDto.Items">
+            <summary>
+            订单子项
+            </summary>
+        </member>
+        <member name="T:Adnc.Orders.Application.Dtos.OrderDto.OrderItemDto">
+            <summary>
+            订单子项Dto
+            </summary>
+        </member>
+        <member name="P:Adnc.Orders.Application.Dtos.OrderDto.OrderItemDto.OrderId">
+            <summary>
+            订单编号
+            </summary>
+        </member>
+        <member name="P:Adnc.Orders.Application.Dtos.OrderDto.OrderItemDto.Count">
+            <summary>
+            数量
+            </summary>
+        </member>
+        <member name="P:Adnc.Orders.Application.Dtos.OrderDto.OrderItemDto.Amount">
+            <summary>
+            金额
+            </summary>
+        </member>
+        <member name="P:Adnc.Orders.Application.Dtos.OrderDto.OrderItemDto.ProductId">
+            <summary>
+            商品信息-商品Id
+            </summary>
+        </member>
+        <member name="P:Adnc.Orders.Application.Dtos.OrderDto.OrderItemDto.ProductName">
+            <summary>
+            商品信息-商品名
+            </summary>
+        </member>
+        <member name="P:Adnc.Orders.Application.Dtos.OrderDto.OrderItemDto.ProductPrice">
+            <summary>
+            商品信息-商品价格
+            </summary>
+        </member>
         <member name="P:Adnc.Orders.Application.Dtos.OrderUpdationDto.DeliveryInfomaton">
             <summary>
             收货信息
@@ -63,6 +153,7 @@
             </summary>
             <param name="orderRepo"></param>
             <param name="orderMgr"></param>
+            <param name="warehouseRpc"></param>
             <param name="mapper"></param>
         </member>
         <member name="M:Adnc.Orders.Application.Services.OrderAppService.CreateAsync(Adnc.Orders.Application.Dtos.OrderCreationDto)">
@@ -104,6 +195,13 @@
         <member name="M:Adnc.Orders.Application.Services.OrderAppService.CancelAsync(System.Int64)">
             <summary>
             取消订单
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Adnc.Orders.Application.Services.OrderAppService.GetAsync(System.Int64)">
+            <summary>
+            获取订单信息
             </summary>
             <param name="id"></param>
             <returns></returns>

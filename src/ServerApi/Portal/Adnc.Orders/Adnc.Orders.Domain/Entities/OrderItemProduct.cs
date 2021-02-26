@@ -5,11 +5,11 @@ namespace Adnc.Orders.Domain.Entities
 {
     public class OrderItemProduct : ValueObject
     {
-        public long Id { get; private set; }
+        public long Id { get;}
 
-        public string Name { get; private set; }
+        public string Name { get; }
 
-        public decimal Price { get; private set; }
+        public decimal Price { get; }
 
         private OrderItemProduct() { }
 

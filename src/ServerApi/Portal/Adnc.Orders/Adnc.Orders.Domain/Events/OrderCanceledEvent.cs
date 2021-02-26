@@ -2,6 +2,9 @@
 
 namespace Adnc.Orders.Domain.Events
 {
+    /// <summary>
+    /// 订单取消事件
+    /// </summary>
     public sealed class OrderCanceledEvent : BaseEvent<OrderCanceledEvent.EventData>
     {
         public OrderCanceledEvent(long id, EventData eventData,string eventSource)

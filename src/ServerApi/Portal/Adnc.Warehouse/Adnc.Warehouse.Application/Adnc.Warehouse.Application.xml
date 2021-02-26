@@ -22,6 +22,11 @@
             <param name="eto"></param>
             <returns></returns>
         </member>
+        <member name="T:Adnc.Warehouse.Application.EventSubscribers.OrderCreatedEventSubscirber.EventData">
+            <summary>
+            订单创建事件数据
+            </summary>
+        </member>
         <member name="T:Adnc.Warehouse.Application.EventSubscribers.ShelfToProductAllocatedEventSubscirber">
             <summary>
             分配货架事件订阅者

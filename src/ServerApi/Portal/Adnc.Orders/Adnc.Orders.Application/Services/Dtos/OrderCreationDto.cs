@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
+﻿using System.Collections.Generic;
 using Adnc.Application.Shared.Dtos;
 
 namespace Adnc.Orders.Application.Dtos
@@ -26,13 +23,13 @@ namespace Adnc.Orders.Application.Dtos
         /// <summary>
         /// 订单子项
         /// </summary>
-        public virtual ICollection<OrderItemDto> Items { get; set; }
-    }
+        public virtual ICollection<OrderCreationItemDto> Items { get; set; }
 
-    public class OrderItemDto: IDto
-    {
-        public string ProductId { get; set; }
+        public class OrderCreationItemDto : IDto
+        {
+            public string ProductId { get; set; }
 
-        public int Count { get; set; }
+            public int Count { get; set; }
+        }
     }
 }

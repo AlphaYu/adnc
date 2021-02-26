@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace Adnc.Orders.Domain.Events
 {
+    /// <summary>
+    /// 订单创建事件
+    /// </summary>
     public sealed class OrderCreatedEvent : BaseEvent<OrderCreatedEvent.EventData>
     {
         public OrderCreatedEvent(long id, EventData eventData,string eventSource)

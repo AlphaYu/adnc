@@ -1,20 +1,21 @@
 ﻿using System;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using AutoMapper;
+using Adnc.Infr.Common.Exceptions;
+using Adnc.Infr.Common.Helper;
+using Adnc.Infr.Common.Extensions;
+using Adnc.Application.Shared.Dtos;
+using Adnc.Application.Shared.Services;
+using Adnc.Application.Shared.RpcServices;
+using Adnc.Core.Shared.IRepositories;
+using Adnc.Core.Shared.Domain.Entities;
 using Adnc.Orders.Application.Dtos;
 using Adnc.Orders.Domain.Services;
 using Adnc.Orders.Domain.Entities;
-using Adnc.Core.Shared.IRepositories;
-using Adnc.Application.Shared.Dtos;
-using Adnc.Application.Shared.Services;
-using System.Linq;
-using System.Linq.Expressions;
-using Adnc.Infr.Common.Extensions;
-using Adnc.Application.Shared.RpcServices;
 using Adnc.Orders.Application.RpcServices;
-using Adnc.Infr.Common.Exceptions;
-using System.Collections.Generic;
-using Adnc.Infr.Common.Helper;
 
 namespace Adnc.Orders.Application.Services
 {
@@ -28,12 +29,12 @@ namespace Adnc.Orders.Application.Services
         private readonly IWarehouseRpcService _warehouseRpc;
         private readonly IMapper _mapper;
 
-
         /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="orderRepo"></param>
         /// <param name="orderMgr"></param>
+        /// <param name="warehouseRpc"></param>
         /// <param name="mapper"></param>
         public OrderAppService(
              IEfRepository<Order> orderRepo
@@ -59,7 +60,7 @@ namespace Adnc.Orders.Application.Services
             //获取产品的价格,名字
             var rpcResult = await _warehouseRpc.GetListAsync(productIds);
             if (!rpcResult.IsSuccessStatusCode)
-                throw new AdncException(rpcResult.StatusCode, "");
+                throw new BusinessException(rpcResult.StatusCode, "");
 
             var orderId = IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId);
 
@@ -88,6 +89,7 @@ namespace Adnc.Orders.Application.Services
         public async Task<OrderDto> UpdateAsync(long id, OrderUpdationDto input)
         {
             var order = await _orderRepo.FindAsync(id, noTracking: false);
+            order.CheckIsNormal();
 
             order.ChangeDeliveryInfomation(new OrderDeliveryInfomation(
                 input.DeliveryInfomaton.Name
@@ -108,6 +110,8 @@ namespace Adnc.Orders.Application.Services
         public async Task DeleteAsync(long id)
         {
             var order = await _orderRepo.FindAsync(id);
+            order.CheckIsNormal();
+
             order.ChangeStatus(OrderStatusEnum.Deleted);
             await _orderRepo.UpdateAsync(order);
         }
@@ -152,6 +156,7 @@ namespace Adnc.Orders.Application.Services
         public async Task<OrderDto> PayAsync(long id)
         {
             var order = await _orderRepo.FindAsync(id);
+            order.CheckIsNormal();
 
             await _orderMgr.PayAsync(order);
 
@@ -166,8 +171,22 @@ namespace Adnc.Orders.Application.Services
         public async Task<OrderDto> CancelAsync(long id)
         {
             var order = await _orderRepo.FindAsync(id);
+            order.CheckIsNormal();
 
             await _orderMgr.CancelAsync(order);
+
+            return _mapper.Map<OrderDto>(order);
+        }
+
+        /// <summary>
+        /// 获取订单信息
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<OrderDto> GetAsync(long id)
+        {
+            var order = await _orderRepo.FindAsync(id);
+            order.CheckIsNormal();
 
             return _mapper.Map<OrderDto>(order);
         }
