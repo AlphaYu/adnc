@@ -2421,7 +2421,7 @@ namespace Adnc.Core.Shared.IRepositories
         /// <returns>
         ///     A new query where the result set will not be tracked by the context.
         /// </returns>
-        public static IQueryable<TEntity> AsNoTracking<TEntity>(
+        internal static IQueryable<TEntity> AsNoTracking<TEntity>(
             [NotNull] this IQueryable<TEntity> source)
             where TEntity : class
         {
@@ -2458,7 +2458,7 @@ namespace Adnc.Core.Shared.IRepositories
         /// <returns>
         ///     A new query where the result set will be tracked by the context.
         /// </returns>
-        public static IQueryable<TEntity> AsTracking<TEntity>(
+        internal static IQueryable<TEntity> AsTracking<TEntity>(
             [NotNull] this IQueryable<TEntity> source)
             where TEntity : class
         {
@@ -2499,7 +2499,7 @@ namespace Adnc.Core.Shared.IRepositories
         /// <returns>
         ///     A new query where the result set will be tracked by the context.
         /// </returns>
-        public static IQueryable<TEntity> AsTracking<TEntity>(
+        internal static IQueryable<TEntity> AsTracking<TEntity>(
             [NotNull] this IQueryable<TEntity> source,
             QueryTrackingBehavior track)
             where TEntity : class
@@ -2525,7 +2525,7 @@ namespace Adnc.Core.Shared.IRepositories
         /// <returns>
         ///     A new query annotated with the given tag.
         /// </returns>
-        public static IQueryable<T> TagWith<T>(
+        internal static IQueryable<T> TagWith<T>(
             [NotNull] this IQueryable<T> source, [NotNull][NotParameterized] string tag)
         {
             Check.NotNull(source, nameof(source));
