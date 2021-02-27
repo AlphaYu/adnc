@@ -7,6 +7,5 @@ namespace Adnc.Core.Shared.Domain.Entities
 {
     public interface IAggregateRoot : IEfEntity<long>
     {
-        public DateTime? RowVersion { get; set; }
     }
 }

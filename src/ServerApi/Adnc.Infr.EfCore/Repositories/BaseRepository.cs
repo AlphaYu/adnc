@@ -118,9 +118,13 @@ namespace Adnc.Infr.EfCore.Repositories
             return await dbSet.CountAsync(whereExpression);
         }
 
-        public virtual async Task<TEntity> FindAsync(long keyValue, bool writeDb = false, bool noTracking = true, CancellationToken cancellationToken = default)
+        public virtual async Task<TEntity> FindAsync(long keyValue, Expression<Func<TEntity, dynamic>> navigationPropertyPath = null, bool writeDb = false, bool noTracking = true, CancellationToken cancellationToken = default)
         {
-            return await this.GetDbSet(writeDb, noTracking).Where(t => t.Id == keyValue).FirstOrDefaultAsync(cancellationToken);
+            var query = this.GetDbSet(writeDb, noTracking).Where(t => t.Id == keyValue);
+            if (navigationPropertyPath != null)
+                return await query.Include(navigationPropertyPath).FirstOrDefaultAsync(cancellationToken);
+            else
+                return await query.FirstOrDefaultAsync(cancellationToken);
         }
 
         public virtual async Task<int> UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)

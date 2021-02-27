@@ -135,7 +135,7 @@ namespace Adnc.Maint.Application.Services
             if (dictDto == null)
                 return Problem(HttpStatusCode.NotFound, "没有找到");
 
-            dictDto.Children = (await this.GetAllFromCacheAsync()).Where(x => x.Pid == dictDto.Id).ToList();
+            dictDto.Children = (await this.GetAllFromCacheAsync()).Where(x => x.Pid == id).ToList();
 
             return dictDto;
         }
