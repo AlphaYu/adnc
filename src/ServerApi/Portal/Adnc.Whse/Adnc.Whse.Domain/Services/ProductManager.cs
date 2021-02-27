@@ -89,7 +89,7 @@ namespace Adnc.Whse.Domain.Services
         /// <param name="warehouseInfo"></param>
         /// <param name="reason"></param>
         /// <returns></returns>
-        public virtual async Task PutOnSale(Product product, Shelf warehouseInfo, string reason)
+        public virtual async Task PutOnSale(Product product, Warehouse warehouseInfo, string reason)
         {
             //if (warehouseInfo?.Qty > 0 && product.ShlefId == warehouseInfo.Id)
             //    product.Status = new ProductStatus(ProductStatusEnum.SaleOn, reason);

@@ -9,7 +9,7 @@ namespace Adnc.Whse.Domain.Entities
         private static readonly ConcurrentBag<Type> bag = new ConcurrentBag<Type>()
         {
              typeof(Product),
-             typeof(Shelf)
+             typeof(Warehouse)
         };
 
         public ConcurrentBag<Type> GetEntities()

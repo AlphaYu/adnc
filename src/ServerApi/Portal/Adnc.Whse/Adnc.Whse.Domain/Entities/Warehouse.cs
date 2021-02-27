@@ -7,75 +7,75 @@ namespace Adnc.Whse.Domain.Entities
     /// <summary>
     /// 货架
     /// </summary>
-    public class Shelf : AggregateRootWithBasicAuditInfo
+    public class Warehouse : AggregateRootWithBasicAuditInfo
     {
         public long? ProductId { get; private set; }
 
         public int Qty { get; private set; }
 
-        public int FreezedQty { get; private set; }
+        public int BlockedQty { get; private set; }
 
-        public ShelfPosition Position { get; private set; }
+        public WarehousePosition Position { get; private set; }
 
-        private Shelf()
+        private Warehouse()
         {
         }
 
-        internal Shelf(long id, ShelfPosition position)
+        internal Warehouse(long id, WarehousePosition position)
         {
             this.Id = id;
             this.Qty = 0;
-            this.FreezedQty = 0;
+            this.BlockedQty = 0;
             this.Position = Checker.NotNull(position, nameof(position));
         }
 
         /// <summary>
         /// 冻结库存
         /// </summary>
-        /// <param name="needFreezedQty"></param>
-        public void FreezeInventory(int needFreezedQty)
+        /// <param name="needBlockedQty"></param>
+        public void BlockQty(int needBlockedQty)
         {
-            if (this.Qty < needFreezedQty)
-                throw new AdncArgumentException("Qty<needFreezedQty", nameof(needFreezedQty));
+            if (this.Qty < needBlockedQty)
+                throw new AdncArgumentException("Qty<needFreezedQty", nameof(needBlockedQty));
             if (!this.ProductId.HasValue)
                 throw new AdncArgumentNullException("ProductId", nameof(ProductId));
-            this.FreezedQty += needFreezedQty;
-            this.Qty -= needFreezedQty;
+            this.BlockedQty += needBlockedQty;
+            this.Qty -= needBlockedQty;
         }
 
         /// <summary>
-        /// 解冻库存
+        /// 移除被冻结的库存
         /// </summary>
-        /// <param name="needUnfreezeQty"></param>
-        internal void UnfreezeInventory(int needUnfreezeQty)
+        /// <param name="needRemoveQty"></param>
+        internal void RemoveBlockedQty(int needRemoveQty)
         {
-            if (this.FreezedQty < needUnfreezeQty)
-                throw new AdncArgumentException("FreezedQty<needUnfreezeQty", nameof(needUnfreezeQty));
+            if (this.BlockedQty < needRemoveQty)
+                throw new AdncArgumentException("FreezedQty<needUnfreezeQty", nameof(needRemoveQty));
             if (!this.ProductId.HasValue)
                 throw new ArgumentNullException("ProductId", nameof(ProductId));
 
-            this.FreezedQty -= needUnfreezeQty;
-            this.Qty += needUnfreezeQty;
+            this.BlockedQty -= needRemoveQty;
+            this.Qty += needRemoveQty;
         }
 
         /// <summary>
         /// 出库
         /// </summary>
         /// <param name="qty"></param>
-        internal void Outbound(int qty)
+        internal void Deliver(int qty)
         {
-            if (this.FreezedQty < qty)
+            if (this.BlockedQty < qty)
                 throw new AdncArgumentException("FreezedQty<qty", nameof(qty));
             if (!this.ProductId.HasValue)
                 throw new AdncArgumentException("ProductId", nameof(ProductId));
-            this.FreezedQty -= qty;
+            this.BlockedQty -= qty;
         }
 
         /// <summary>
         /// 入库
         /// </summary>
         /// <param name="qty"></param>
-        internal void Inbound(int qty)
+        internal void Entry(int qty)
         {
             if (qty <= 0)
                 throw new AdncArgumentException("qty <= 0", nameof(qty));

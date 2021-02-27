@@ -19,8 +19,4 @@
     <ProjectReference Include="..\..\..\Adnc.Infr.EfCore\22.Adnc.Infr.EfCore.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Migrations\" />
-  </ItemGroup>
-
 </Project>

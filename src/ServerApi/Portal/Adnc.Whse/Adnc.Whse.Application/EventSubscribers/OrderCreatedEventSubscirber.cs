@@ -13,13 +13,13 @@ namespace Adnc.Whse.Application.EventSubscribers
     /// </summary>
     public class OrderCreatedEventSubscirber : ICapSubscribe
     {
-        private readonly IEfRepository<Shelf> _shelfReop;
+        private readonly IEfRepository<Warehouse> _shelfReop;
 
         /// <summary>
         /// 构造函数
         /// </summary>
-        /// <param name="shelfReop"><see cref="Shelf"/></param>
-        public OrderCreatedEventSubscirber(IEfRepository<Shelf> shelfReop)
+        /// <param name="shelfReop"><see cref="Warehouse"/></param>
+        public OrderCreatedEventSubscirber(IEfRepository<Warehouse> shelfReop)
         {
             _shelfReop = shelfReop;
         }
@@ -39,7 +39,7 @@ namespace Adnc.Whse.Application.EventSubscribers
             foreach (var produdct in eto.Data.Products)
             {
                 var shelf = await _shelfReop.FetchAsync(x => x, x => x.ProductId == produdct.ProductId);
-                shelf.FreezeInventory(produdct.Qty);
+                shelf.BlockQty(produdct.Qty);
                 await _shelfReop.UpdateAsync(shelf);
             }
         }

@@ -9,11 +9,11 @@
             订单创建事件订阅者
             </summary>
         </member>
-        <member name="M:Adnc.Whse.Application.EventSubscribers.OrderCreatedEventSubscirber.#ctor(Adnc.Core.Shared.IRepositories.IEfRepository{Adnc.Whse.Domain.Entities.Shelf})">
+        <member name="M:Adnc.Whse.Application.EventSubscribers.OrderCreatedEventSubscirber.#ctor(Adnc.Core.Shared.IRepositories.IEfRepository{Adnc.Whse.Domain.Entities.Warehouse})">
             <summary>
             构造函数
             </summary>
-            <param name="shelfReop"><see cref="T:Adnc.Whse.Domain.Entities.Shelf"/></param>
+            <param name="shelfReop"><see cref="T:Adnc.Whse.Domain.Entities.Warehouse"/></param>
         </member>
         <member name="M:Adnc.Whse.Application.EventSubscribers.OrderCreatedEventSubscirber.Process(Adnc.Infr.EventBus.BaseEvent{Adnc.Whse.Application.EventSubscribers.OrderCreatedEventSubscirber.EventData})">
             <summary>
@@ -32,7 +32,7 @@
             商品管理
             </summary>
         </member>
-        <member name="M:Adnc.Whse.Application.Services.ProductAppService.#ctor(Adnc.Core.Shared.IRepositories.IEfRepository{Adnc.Whse.Domain.Entities.Product},Adnc.Core.Shared.IRepositories.IEfRepository{Adnc.Whse.Domain.Entities.Shelf},Adnc.Application.Shared.RpcServices.IMaintRpcService,Adnc.Whse.Domain.Services.ProductManager,AutoMapper.IMapper)">
+        <member name="M:Adnc.Whse.Application.Services.ProductAppService.#ctor(Adnc.Core.Shared.IRepositories.IEfRepository{Adnc.Whse.Domain.Entities.Product},Adnc.Core.Shared.IRepositories.IEfRepository{Adnc.Whse.Domain.Entities.Warehouse},Adnc.Application.Shared.RpcServices.IMaintRpcService,Adnc.Whse.Domain.Services.ProductManager,AutoMapper.IMapper)">
             <summary>
             商品管理构造函数
             </summary>

@@ -7,15 +7,15 @@ using Adnc.Core.Shared.Interceptors;
 
 namespace Adnc.Whse.Application.Services
 {
-    public interface IShelfAppService: IAppService
+    public interface IWarehouseAppService: IAppService
     {
         [OpsLog(LogName = "创建货架")]
-        Task<ShelfDto> CreateAsync(ShelfCreationDto input);
+        Task<WarehouseDto> CreateAsync(WarehouseCreationDto input);
 
         [UnitOfWork(SharedToCap = true)]
         [OpsLog(LogName = "分配货架")]
-        Task<ShelfDto> AllocateShelfToProductAsync(long shelfId, ShelfAllocateToProductDto input);
+        Task<WarehouseDto> AllocateShelfToProductAsync(long shelfId, WarehouseAllocateToProductDto input);
 
-        Task<PageModelDto<ShelfDto>> GetPagedAsync(ShlefSearchDto search);
+        Task<PageModelDto<WarehouseDto>> GetPagedAsync(WarehouseSearchDto search);
     }
 }

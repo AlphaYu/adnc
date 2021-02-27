@@ -22,7 +22,7 @@ namespace Adnc.Whse.Application.Services
     {
         private readonly ProductManager _productMgr;
         private readonly IEfRepository<Product> _productRepo;
-        private readonly IEfRepository<Shelf> _warehouseInfoRepo;
+        private readonly IEfRepository<Warehouse> _warehouseInfoRepo;
         private readonly IMaintRpcService _maintRpcSrv;
         private readonly IMapper _mapper;
 
@@ -36,7 +36,7 @@ namespace Adnc.Whse.Application.Services
         /// <param name="mapper"></param>
         public ProductAppService(
              IEfRepository<Product> productRepo
-            , IEfRepository<Shelf> warehouseInfoRepo
+            , IEfRepository<Warehouse> warehouseInfoRepo
             , IMaintRpcService maintRpcSrv
             , ProductManager productMgr
             , IMapper mapper)

@@ -5,7 +5,7 @@ using Adnc.Application.Shared.Dtos;
 
 namespace Adnc.Whse.Application.Dtos
 {
-    public class ShelfDto : IDto
+    public class WarehouseDto : IDto
     {
         public string Id { get; set; }
 

@@ -16,9 +16,9 @@ namespace Adnc.Whse.WebApi.Controllers
     [ApiController]
     public class ShelfController : AdncControllerBase
     {
-        private readonly IShelfAppService _shelfSrv;
+        private readonly IWarehouseAppService _shelfSrv;
 
-        public ShelfController(IShelfAppService shelfSrv)
+        public ShelfController(IWarehouseAppService shelfSrv)
         {
             _shelfSrv = shelfSrv;
         }
@@ -26,10 +26,10 @@ namespace Adnc.Whse.WebApi.Controllers
         /// <summary>
         /// 新建货架
         /// </summary>
-        /// <param name="input"><see cref="ShelfCreationDto"/></param>
+        /// <param name="input"><see cref="WarehouseCreationDto"/></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<ActionResult<ShelfDto>> CreateAsync([FromBody] ShelfCreationDto input)
+        public async Task<ActionResult<WarehouseDto>> CreateAsync([FromBody] WarehouseCreationDto input)
         {
             return await _shelfSrv.CreateAsync(input);
         }
@@ -39,7 +39,7 @@ namespace Adnc.Whse.WebApi.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPatch("{id}/product")]
-        public async Task<ActionResult<ShelfDto>> AllocateShelfToProductAsync([FromRoute] long id, [FromBody] ShelfAllocateToProductDto input)
+        public async Task<ActionResult<WarehouseDto>> AllocateShelfToProductAsync([FromRoute] long id, [FromBody] WarehouseAllocateToProductDto input)
         {
             return await _shelfSrv.AllocateShelfToProductAsync(id, input);
         }
@@ -50,7 +50,7 @@ namespace Adnc.Whse.WebApi.Controllers
         /// <param name="search"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<PageModelDto<ShelfDto>> GetPagedAsync([FromQuery]ShlefSearchDto search)
+        public async Task<PageModelDto<WarehouseDto>> GetPagedAsync([FromQuery]WarehouseSearchDto search)
         {
             return await _shelfSrv.GetPagedAsync(search);
         }

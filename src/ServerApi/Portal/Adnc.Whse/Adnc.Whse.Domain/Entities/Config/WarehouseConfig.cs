@@ -4,13 +4,13 @@ using Adnc.Core.Shared.Entities;
 
 namespace Adnc.Whse.Domain.Entities.Config
 {
-    public class ShelfConfig : EntityTypeConfiguration<Shelf>
+    public class WarehouseConfig : EntityTypeConfiguration<Warehouse>
     {
-        public override void Configure(EntityTypeBuilder<Shelf> builder)
+        public override void Configure(EntityTypeBuilder<Warehouse> builder)
         {
             base.Configure(builder);
 
-            builder.Property(x => x.FreezedQty).IsRequired();
+            builder.Property(x => x.BlockedQty).IsRequired();
             builder.Property(x => x.Qty).IsRequired();
 
             builder.OwnsOne(x => x.Position, y =>

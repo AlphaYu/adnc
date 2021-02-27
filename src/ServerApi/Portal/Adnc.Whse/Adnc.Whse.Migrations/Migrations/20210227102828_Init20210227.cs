@@ -29,7 +29,7 @@ namespace Adnc.Whse.Migrations.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Shelf",
+                name: "Warehouse",
                 columns: table => new
                 {
                     Id = table.Column<long>(nullable: false),
@@ -38,13 +38,13 @@ namespace Adnc.Whse.Migrations.Migrations
                     CreateTime = table.Column<DateTime>(nullable: true),
                     ProductId = table.Column<long>(nullable: true),
                     Qty = table.Column<int>(nullable: false),
-                    FreezedQty = table.Column<int>(nullable: false),
+                    BlockedQty = table.Column<int>(nullable: false),
                     PositionCode = table.Column<string>(maxLength: 32, nullable: true),
                     PositionDescription = table.Column<string>(maxLength: 64, nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Shelf", x => x.Id);
+                    table.PrimaryKey("PK_Warehouse", x => x.Id);
                 });
         }
 
@@ -54,7 +54,7 @@ namespace Adnc.Whse.Migrations.Migrations
                 name: "Product");
 
             migrationBuilder.DropTable(
-                name: "Shelf");
+                name: "Warehouse");
         }
     }
 }

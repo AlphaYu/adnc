@@ -14,7 +14,7 @@ namespace Adnc.Whse.Application
             
             CreateMap<Product, ProductDto>();
 
-            CreateMap<Shelf, ShelfDto>();
+            CreateMap<Warehouse, WarehouseDto>();
         }
     }
 }

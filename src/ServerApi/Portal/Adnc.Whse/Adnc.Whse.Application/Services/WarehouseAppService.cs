@@ -12,52 +12,52 @@ using Adnc.Core.Shared.Interceptors;
 
 namespace Adnc.Whse.Application.Services
 {
-    public class ShelfAppService : AppService, IShelfAppService
+    public class WarehouseAppService : AppService, IWarehouseAppService
     {
         private readonly IMapper _mapper;
-        private readonly IEfRepository<Shelf> _shelfRepo;
+        private readonly IEfRepository<Warehouse> _shelfRepo;
         private readonly IEfRepository<Product> _productRepo;
-        private readonly ShelfManager _shelfManager;
+        private readonly WarehouseManager _warehouseManager;
 
-        public ShelfAppService(ShelfManager shelfManager
+        public WarehouseAppService(WarehouseManager warehouseManager
             , IMapper mapper
-            , IEfRepository<Shelf> shelfRepo
+            , IEfRepository<Warehouse> shelfRepo
             , IEfRepository<Product> productRepo)
         {
-            _shelfManager = shelfManager;
+            _warehouseManager = warehouseManager;
             _shelfRepo = shelfRepo;
             _productRepo = productRepo;
             _mapper = mapper;
         }
 
-        public async Task<ShelfDto> CreateAsync(ShelfCreationDto input)
+        public async Task<WarehouseDto> CreateAsync(WarehouseCreationDto input)
         {
-            var shelf = await _shelfManager.CreateAsync(input.PositionCode, input.PositionDescription);
+            var shelf = await _warehouseManager.CreateAsync(input.PositionCode, input.PositionDescription);
 
             await _shelfRepo.InsertAsync(shelf);
 
-            return _mapper.Map<ShelfDto>(shelf);
+            return _mapper.Map<WarehouseDto>(shelf);
         }
 
         [UnitOfWork(SharedToCap = true)]
-        public async Task<ShelfDto> AllocateShelfToProductAsync(long shelfId, ShelfAllocateToProductDto input)
+        public async Task<WarehouseDto> AllocateShelfToProductAsync(long shelfId, WarehouseAllocateToProductDto input)
         {
             var shelf = await _shelfRepo.FindAsync(shelfId, noTracking: false);
             var product = await _productRepo.FindAsync(input.ProductId.ToLong().Value);
 
-            await _shelfManager.AllocateShelfToProductAsync(shelf, product);
+            await _warehouseManager.AllocateShelfToProductAsync(shelf, product);
 
             await _shelfRepo.UpdateAsync(shelf);
 
-            return _mapper.Map<ShelfDto>(shelf);
+            return _mapper.Map<WarehouseDto>(shelf);
         }
 
-        public async Task<PageModelDto<ShelfDto>> GetPagedAsync(ShlefSearchDto search)
+        public async Task<PageModelDto<WarehouseDto>> GetPagedAsync(WarehouseSearchDto search)
         {
             var total = await _shelfRepo.CountAsync(x => true);
 
             if (total == 0)
-                return new PageModelDto<ShelfDto>
+                return new PageModelDto<WarehouseDto>
                 {
                     TotalCount = 0
                     ,
@@ -75,11 +75,11 @@ namespace Adnc.Whse.Application.Services
                               join p in products
                               on s.ProductId equals p.Id into sp
                               from x in sp.DefaultIfEmpty()
-                              select new ShelfDto()
+                              select new WarehouseDto()
                               {
                                   Id = s.Id.ToString()
                                   ,
-                                  FreezedQty = s.FreezedQty
+                                  FreezedQty = s.BlockedQty
                                   ,
                                   PositionCode = s.Position.Code
                                   ,
@@ -98,7 +98,7 @@ namespace Adnc.Whse.Application.Services
                            .OrderByDescending(x => x.Id)
                            .ToListAsync();
 
-            return new PageModelDto<ShelfDto>()
+            return new PageModelDto<WarehouseDto>()
             {
                 PageIndex = search.PageIndex
                 ,

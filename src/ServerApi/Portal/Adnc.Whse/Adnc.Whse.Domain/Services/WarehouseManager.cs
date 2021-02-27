@@ -10,17 +10,17 @@ using Adnc.Infr.EventBus;
 
 namespace Adnc.Whse.Domain.Services
 {
-    public class ShelfManager : ICoreService
+    public class WarehouseManager : ICoreService
     {
         private readonly IEfRepository<Product> _productRepo;
-        private readonly IEfRepository<Shelf> _shelfRepo;
+        private readonly IEfRepository<Warehouse> _warehouseRepo;
         private readonly IEventPublisher _eventPublisher;
-        public ShelfManager(IEfRepository<Product> productRepo
-            , IEfRepository<Shelf> shelfRepo
+        public WarehouseManager(IEfRepository<Product> productRepo
+            , IEfRepository<Warehouse> warehouseRepo
             , IEventPublisher eventPublisher)
         {
             _productRepo = productRepo;
-            _shelfRepo = shelfRepo;
+            _warehouseRepo = warehouseRepo;
             _eventPublisher = eventPublisher;
         }
 
@@ -32,15 +32,15 @@ namespace Adnc.Whse.Domain.Services
         /// <param name="unit"></param>
         /// <param name="describe"></param>
         /// <returns></returns>
-        public async Task<Shelf> CreateAsync(string positionCode, string positionDescription)
+        public async Task<Warehouse> CreateAsync(string positionCode, string positionDescription)
         {
-            var shelf = await _shelfRepo.FetchAsync(x => x, x => x.Position.Code == positionCode, noTracking: false);
+            var shelf = await _warehouseRepo.FetchAsync(x => x, x => x.Position.Code == positionCode, noTracking: false);
             if (shelf != null)
                 throw new AdncArgumentException("warehouseInfo");
 
-            return new Shelf(
+            return new Warehouse(
                 IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId)
-                , new ShelfPosition(positionCode, positionDescription)
+                , new WarehousePosition(positionCode, positionDescription)
             );
         }
 
@@ -50,12 +50,12 @@ namespace Adnc.Whse.Domain.Services
         /// <param name="shelf"></param>
         /// <param name="productId"></param>
         /// <returns></returns>
-        public async Task AllocateShelfToProductAsync(Shelf shelf, Product product)
+        public async Task AllocateShelfToProductAsync(Warehouse shelf, Product product)
         {
             Checker.NotNull(shelf, nameof(shelf));
             Checker.NotNull(product, nameof(product));
 
-            var existShelf = await _shelfRepo.FetchAsync(x => x, x => x.ProductId == product.Id, noTracking: false);
+            var existShelf = await _warehouseRepo.FetchAsync(x => x, x => x.ProductId == product.Id, noTracking: false);
 
             //一个商品只能分配一个货架，但可以调整货架。
             if (existShelf != null && existShelf.Id != shelf.Id)
@@ -65,7 +65,7 @@ namespace Adnc.Whse.Domain.Services
 
         }
 
-        public async Task FreezeInventorys(long orderId, List<Shelf> shelfs, Dictionary<long, int> products)
+        public async Task FreezeInventorys(long orderId, List<Warehouse> shelfs, Dictionary<long, int> products)
         {
             bool isSuccess = false;
 
@@ -77,7 +77,7 @@ namespace Adnc.Whse.Domain.Services
                     foreach (var shelf in shelfs)
                     {
                         var qty = products[shelf.ProductId.Value];
-                        shelf.FreezeInventory(qty);
+                        shelf.BlockQty(qty);
                     }
                 }
                 catch (Exception ex)
@@ -90,7 +90,7 @@ namespace Adnc.Whse.Domain.Services
             }
 
             //这里不需要捕获系统异常
-            await _shelfRepo.UpdateAsync(null);
+            await _warehouseRepo.UpdateAsync(null);
 
             //发布冻结库存事件
             //await _eventPublisher.PublishAsync(""

@@ -58,19 +58,19 @@ namespace Adnc.Whse.Migrations.Migrations
                     b.ToTable("Product");
                 });
 
-            modelBuilder.Entity("Adnc.Whse.Domain.Entities.Shelf", b =>
+            modelBuilder.Entity("Adnc.Whse.Domain.Entities.Warehouse", b =>
                 {
                     b.Property<long>("Id")
                         .HasColumnType("bigint");
+
+                    b.Property<int>("BlockedQty")
+                        .HasColumnType("int");
 
                     b.Property<long?>("CreateBy")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime?>("CreateTime")
                         .HasColumnType("datetime(6)");
-
-                    b.Property<int>("FreezedQty")
-                        .HasColumnType("int");
 
                     b.Property<long?>("ProductId")
                         .HasColumnType("bigint");
@@ -83,7 +83,7 @@ namespace Adnc.Whse.Migrations.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Shelf");
+                    b.ToTable("Warehouse");
                 });
 
             modelBuilder.Entity("Adnc.Whse.Domain.Entities.Product", b =>
@@ -111,11 +111,11 @@ namespace Adnc.Whse.Migrations.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Adnc.Whse.Domain.Entities.Shelf", b =>
+            modelBuilder.Entity("Adnc.Whse.Domain.Entities.Warehouse", b =>
                 {
-                    b.OwnsOne("Adnc.Whse.Domain.Entities.ShelfPosition", "Position", b1 =>
+                    b.OwnsOne("Adnc.Whse.Domain.Entities.WarehousePosition", "Position", b1 =>
                         {
-                            b1.Property<long>("ShelfId")
+                            b1.Property<long>("WarehouseId")
                                 .HasColumnType("bigint");
 
                             b1.Property<string>("Code")
@@ -129,12 +129,12 @@ namespace Adnc.Whse.Migrations.Migrations
                                 .HasColumnType("varchar(64) CHARACTER SET utf8mb4")
                                 .HasMaxLength(64);
 
-                            b1.HasKey("ShelfId");
+                            b1.HasKey("WarehouseId");
 
-                            b1.ToTable("Shelf");
+                            b1.ToTable("Warehouse");
 
                             b1.WithOwner()
-                                .HasForeignKey("ShelfId");
+                                .HasForeignKey("WarehouseId");
                         });
                 });
 #pragma warning restore 612, 618
