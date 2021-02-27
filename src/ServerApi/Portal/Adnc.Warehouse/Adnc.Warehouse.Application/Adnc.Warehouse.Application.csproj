@@ -24,7 +24,6 @@
 
 	<ItemGroup>
 	  <Folder Include="Mq\" />
-	  <Folder Include="RpcServices\Rtos\" />
 	</ItemGroup>
 
 </Project>

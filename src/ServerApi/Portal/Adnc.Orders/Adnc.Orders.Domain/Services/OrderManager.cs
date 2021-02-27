@@ -1,12 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using Adnc.Core.Shared;
 using Adnc.Infr.EventBus;
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Infr.Common.Helper;
 using Adnc.Orders.Domain.Entities;
 using Adnc.Orders.Domain.Events;
+using Adnc.Infr.Common.Exceptions;
 
 namespace Adnc.Orders.Domain.Services
 {
@@ -47,9 +48,9 @@ namespace Adnc.Orders.Domain.Services
             );
 
             //AddProduct会判断是否有重复的产品
-            foreach (var item in items)
+            foreach (var (Product, Count) in items)
             {
-                order.AddProduct(new OrderItemProduct(item.Product.Id, item.Product.Name, item.Product.Price), item.Count);
+                order.AddProduct(new OrderItemProduct(Product.Id, Product.Name, Product.Price), Count);
             }
 
             await _orderRepo.InsertAsync(order);
@@ -71,6 +72,8 @@ namespace Adnc.Orders.Domain.Services
         /// <returns></returns>
         public virtual async Task CancelAsync(Order order)
         {
+            Checker.NotNull(order, nameof(order));
+
             order.ChangeStatus(OrderStatusEnum.Canceling);
             await _orderRepo.UpdateAsync(order);
 
@@ -87,6 +90,8 @@ namespace Adnc.Orders.Domain.Services
         /// <returns></returns>
         public virtual async Task PayAsync(Order order)
         {
+            Checker.NotNull(order, nameof(order));
+
             order.ChangeStatus(OrderStatusEnum.Paying);
             await _orderRepo.UpdateAsync(order);
 

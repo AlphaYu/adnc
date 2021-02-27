@@ -14,7 +14,7 @@ namespace Adnc.Orders.Domain.Entities
 
         public int Count { get; private set; }
 
-        public decimal Amount { get; }
+        public decimal Amount { get; private set; }
 
         private OrderItem() { }
 
@@ -24,12 +24,14 @@ namespace Adnc.Orders.Domain.Entities
             this.OrderId = Checker.GTZero(orderId, nameof(orderId));
             this.Product = Checker.NotNull(product, nameof(product));
             this.Count = Checker.GTZero(count, nameof(count));
+            this.Amount = product.Price * count;
         }
 
         internal void ChangeCount(int count)
         {
             Checker.GTZero(count, nameof(count));
             this.Count += count;
+            this.Amount += this.Product.Price * count;
         }
     }
 }

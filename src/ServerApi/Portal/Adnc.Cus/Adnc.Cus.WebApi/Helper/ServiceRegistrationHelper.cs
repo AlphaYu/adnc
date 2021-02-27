@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Adnc.WebApi.Shared;
 using Adnc.Application.Shared.RpcServices;
 using Adnc.Infr.Consul;
-using Adnc.Cus.Core.Eventss.Subscribers;
+using Adnc.Cus.Application.EventSubscribers;
 using Adnc.Infr.EventBus;
 
 namespace Adnc.Cus.WebApi.Helper
@@ -39,7 +39,7 @@ namespace Adnc.Cus.WebApi.Helper
         {
             base.AddEventBusSubscribers(tableNamePrefix, groupName,(s)=>
             {
-                s.AddScoped<CustomerRechargedSubscriber>();
+                s.AddScoped<CustomerRechargedEventSubscriber>();
             });
         }
     }

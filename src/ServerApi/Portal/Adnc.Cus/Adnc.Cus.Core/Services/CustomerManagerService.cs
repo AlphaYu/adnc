@@ -10,7 +10,7 @@ using Adnc.Infr.Common.Helper;
 
 namespace Adnc.Cus.Core.Services
 {
-    public class CustomerManagerService : ICoreService
+    public class CustomerManagerService : CoreService
     {
         private readonly IEfRepository<Customer> _cusRepo;
         private readonly IEfRepository<CusFinance> _cusFinaceRepo;
@@ -54,6 +54,26 @@ namespace Adnc.Cus.Core.Services
             var eventData = new CustomerRechargedEvent.EventData() { CustomerId = cusTransactionLog.CustomerId, TransactionLogId = cusTransactionLog.Id, Amount = cusTransactionLog.Amount };
             var eventSource = System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.FullName;
             await _eventPublisher.PublishAsync(new CustomerRechargedEvent(eventId, eventData, eventSource));
+        }
+
+        [UnitOfWork]
+        public virtual async Task ProcessRechargingAsync(long transactionLogId, long customerId, decimal amount)
+        {
+            var transLog = await _cusTransactionLogRepo.FindAsync(transactionLogId);
+            if (transLog == null || transLog.ExchageStatus == "20")
+                return;
+
+            var finance = await _cusFinaceRepo.FindAsync(customerId);
+            var newBalance = finance.Balance + amount;
+
+            transLog.ExchageStatus = "20";
+            transLog.ChangingAmount = finance.Balance;
+            transLog.ChangedAmount = newBalance;
+
+
+            await _cusFinaceRepo.UpdateAsync(new CusFinance() { Id = finance.Id, Balance = newBalance }, UpdatingProps<CusFinance>(t => t.Balance));
+
+            await _cusTransactionLogRepo.UpdateAsync(transLog, UpdatingProps<CusTransactionLog>(t => t.ExchageStatus, t => t.ChangingAmount, t => t.ChangedAmount));
         }
     }
 }

@@ -13,7 +13,7 @@ namespace Adnc.Orders.Application
             CreateMap(typeof(IPagedModel<>), typeof(PageModelDto<>)).ForMember("XData", opt => opt.Ignore());
             
             CreateMap<Order, OrderDto>();
-            CreateMap<OrderItem, OrderItemDto>();
+            CreateMap<OrderItem, OrderDto.OrderItemDto>();
 
         }
     }

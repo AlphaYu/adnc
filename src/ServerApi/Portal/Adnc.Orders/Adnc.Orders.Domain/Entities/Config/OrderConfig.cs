@@ -12,6 +12,12 @@ namespace Adnc.Orders.Domain.Entities.Config
             builder.Property(x => x.Id)
                    .ValueGeneratedNever();
 
+            builder.Property(e => e.RowVersion)
+                   .IsConcurrencyToken()
+                   .HasColumnType("timestamp(3)")
+                   .HasDefaultValueSql("'2000-07-01 22:33:02.559'")
+                   .ValueGeneratedOnAddOrUpdate();
+
             builder.Property(x => x.CustomerId)
                    .IsRequired();
 

@@ -4,5 +4,23 @@
         <name>Adnc.Cus.Application</name>
     </assembly>
     <members>
+        <member name="T:Adnc.Cus.Application.EventSubscribers.CustomerRechargedEventSubscriber">
+            <summary>
+            充值事件订阅者
+            </summary>
+        </member>
+        <member name="M:Adnc.Cus.Application.EventSubscribers.CustomerRechargedEventSubscriber.#ctor(Adnc.Cus.Core.Services.CustomerManagerService)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="customerMgr"></param>
+        </member>
+        <member name="M:Adnc.Cus.Application.EventSubscribers.CustomerRechargedEventSubscriber.Process(Adnc.Cus.Core.Events.CustomerRechargedEvent)">
+            <summary>
+            事件处理方法
+            </summary>
+            <param name="eto"></param>
+            <returns></returns>
+        </member>
     </members>
 </doc>
