@@ -12,11 +12,11 @@ namespace Adnc.Whse.Domain.Services
 {
     public class WarehouseManager : ICoreService
     {
-        private readonly IEfRepository<Product> _productRepo;
-        private readonly IEfRepository<Warehouse> _warehouseRepo;
+        private readonly IEfBasicRepository<Product> _productRepo;
+        private readonly IEfBasicRepository<Warehouse> _warehouseRepo;
         private readonly IEventPublisher _eventPublisher;
-        public WarehouseManager(IEfRepository<Product> productRepo
-            , IEfRepository<Warehouse> warehouseRepo
+        public WarehouseManager(IEfBasicRepository<Product> productRepo
+            , IEfBasicRepository<Warehouse> warehouseRepo
             , IEventPublisher eventPublisher)
         {
             _productRepo = productRepo;
@@ -34,8 +34,8 @@ namespace Adnc.Whse.Domain.Services
         /// <returns></returns>
         public async Task<Warehouse> CreateAsync(string positionCode, string positionDescription)
         {
-            var shelf = await _warehouseRepo.FetchAsync(x => x, x => x.Position.Code == positionCode, noTracking: false);
-            if (shelf != null)
+            var exists = await _warehouseRepo.AnyAsync(x => x.Position.Code == positionCode);
+            if (exists)
                 throw new AdncArgumentException("warehouseInfo");
 
             return new Warehouse(
@@ -47,64 +47,64 @@ namespace Adnc.Whse.Domain.Services
         /// <summary>
         /// 分配货架给商品
         /// </summary>
-        /// <param name="shelf"></param>
+        /// <param name="warehouse"></param>
         /// <param name="productId"></param>
         /// <returns></returns>
-        public async Task AllocateShelfToProductAsync(Warehouse shelf, Product product)
+        public async Task AllocateShelfToProductAsync(Warehouse warehouse, Product product)
         {
-            Checker.NotNull(shelf, nameof(shelf));
+            Checker.NotNull(warehouse, nameof(warehouse));
             Checker.NotNull(product, nameof(product));
 
-            var existShelf = await _warehouseRepo.FetchAsync(x => x, x => x.ProductId == product.Id, noTracking: false);
+            var existWarehouse = await _warehouseRepo.Where(x => x.ProductId == product.Id).SingleOrDefaultAsync();
 
             //一个商品只能分配一个货架，但可以调整货架。
-            if (existShelf != null && existShelf.Id != shelf.Id)
-                throw new AdncArgumentException("AssignedWarehouseId", nameof(shelf));
+            if (existWarehouse != null && existWarehouse.Id != warehouse.Id)
+                throw new AdncArgumentException("AssignedWarehouseId", nameof(warehouse));
 
-            shelf.SetProductId(product.Id);
+            warehouse.SetProductId(product.Id);
 
         }
 
-        public async Task FreezeInventorys(long orderId, List<Warehouse> shelfs, Dictionary<long, int> products)
-        {
-            bool isSuccess = false;
+        //public async Task FreezeInventorys(long orderId, List<Warehouse> shelfs, Dictionary<long, int> products)
+        //{
+        //    bool isSuccess = false;
 
-            if (shelfs.Count == products.Count)
-            {
-                try
-                {
-                    //这里需要捕获业务逻辑的异常
-                    foreach (var shelf in shelfs)
-                    {
-                        var qty = products[shelf.ProductId.Value];
-                        shelf.BlockQty(qty);
-                    }
-                }
-                catch (Exception ex)
-                {
+        //    if (shelfs.Count == products.Count)
+        //    {
+        //        try
+        //        {
+        //            //这里需要捕获业务逻辑的异常
+        //            foreach (var shelf in shelfs)
+        //            {
+        //                var qty = products[shelf.ProductId.Value];
+        //                shelf.BlockQty(qty);
+        //            }
+        //        }
+        //        catch (Exception ex)
+        //        {
 
-                }
+        //        }
 
-                //成功冻结所有库存
-                isSuccess = true;
-            }
+        //        //成功冻结所有库存
+        //        isSuccess = true;
+        //    }
 
-            //这里不需要捕获系统异常
-            await _warehouseRepo.UpdateAsync(null);
+        //    //这里不需要捕获系统异常
+        //    await _warehouseRepo.UpdateAsync(null);
 
-            //发布冻结库存事件
-            //await _eventPublisher.PublishAsync(""
-            //,
-            //new OrderInventoryFreezedEventEto
-            //{
-            //    Id = IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId)
-            //    ,
-            //    OrderId = orderId
-            //    ,
-            //    IsSuccess = isSuccess
-            //    ,
-            //    EventSource = nameof(ShelfManager.FreezeInventorys)
-            //});
-        }
+        //    //发布冻结库存事件
+        //    //await _eventPublisher.PublishAsync(""
+        //    //,
+        //    //new OrderInventoryFreezedEventEto
+        //    //{
+        //    //    Id = IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId)
+        //    //    ,
+        //    //    OrderId = orderId
+        //    //    ,
+        //    //    IsSuccess = isSuccess
+        //    //    ,
+        //    //    EventSource = nameof(ShelfManager.FreezeInventorys)
+        //    //});
+        //}
     }
 }

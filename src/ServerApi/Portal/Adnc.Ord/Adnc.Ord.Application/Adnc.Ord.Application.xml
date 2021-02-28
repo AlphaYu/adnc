@@ -153,7 +153,7 @@
             订单管理
             </summary>
         </member>
-        <member name="M:Adnc.Ord.Application.Services.OrderAppService.#ctor(Adnc.Core.Shared.IRepositories.IEfRepository{Adnc.Ord.Domain.Entities.Order},Adnc.Ord.Domain.Services.OrderManager,Adnc.Ord.Application.RpcServices.IWhseRpcService,Adnc.Application.Shared.RpcServices.IMaintRpcService,AutoMapper.IMapper)">
+        <member name="M:Adnc.Ord.Application.Services.OrderAppService.#ctor(Adnc.Core.Shared.IRepositories.IEfBasicRepository{Adnc.Ord.Domain.Entities.Order},Adnc.Ord.Domain.Services.OrderManager,Adnc.Ord.Application.RpcServices.IWhseRpcService,Adnc.Application.Shared.RpcServices.IMaintRpcService,AutoMapper.IMapper)">
             <summary>
             构造函数
             </summary>
@@ -185,13 +185,6 @@
             <param name="id"></param>
             <returns></returns>
         </member>
-        <member name="M:Adnc.Ord.Application.Services.OrderAppService.GetPagedAsync(Adnc.Ord.Application.Dtos.OrderSearchPagedDto)">
-            <summary>
-            订单分页列表
-            </summary>
-            <param name="search"></param>
-            <returns></returns>
-        </member>
         <member name="M:Adnc.Ord.Application.Services.OrderAppService.PayAsync(System.Int64)">
             <summary>
             订单付款
@@ -211,6 +204,13 @@
             获取订单信息
             </summary>
             <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Adnc.Ord.Application.Services.OrderAppService.GetPagedAsync(Adnc.Ord.Application.Dtos.OrderSearchPagedDto)">
+            <summary>
+            订单分页列表
+            </summary>
+            <param name="search"></param>
             <returns></returns>
         </member>
     </members>

@@ -1,60 +1,60 @@
-﻿using Adnc.Application.Shared.Services;
-using Adnc.Whse.Domain.Entities;
+﻿using System.Linq;
 using System.Threading.Tasks;
-using Adnc.Whse.Domain.Services;
-using Adnc.Whse.Application.Dtos;
-using Adnc.Core.Shared.IRepositories;
 using AutoMapper;
+using Adnc.Core.Shared.IRepositories;
 using Adnc.Infr.Common.Extensions;
 using Adnc.Application.Shared.Dtos;
-using System.Linq;
 using Adnc.Core.Shared.Interceptors;
+using Adnc.Application.Shared.Services;
+using Adnc.Whse.Domain.Entities;
+using Adnc.Whse.Domain.Services;
+using Adnc.Whse.Application.Dtos;
 
 namespace Adnc.Whse.Application.Services
 {
     public class WarehouseAppService : AppService, IWarehouseAppService
     {
         private readonly IMapper _mapper;
-        private readonly IEfRepository<Warehouse> _shelfRepo;
-        private readonly IEfRepository<Product> _productRepo;
+        private readonly IEfBasicRepository<Warehouse> _warehouseRepo;
+        private readonly IEfBasicRepository<Product> _productRepo;
         private readonly WarehouseManager _warehouseManager;
 
         public WarehouseAppService(WarehouseManager warehouseManager
             , IMapper mapper
-            , IEfRepository<Warehouse> shelfRepo
-            , IEfRepository<Product> productRepo)
+            , IEfBasicRepository<Warehouse> warehouseRepo
+            , IEfBasicRepository<Product> productRepo)
         {
             _warehouseManager = warehouseManager;
-            _shelfRepo = shelfRepo;
+            _warehouseRepo = warehouseRepo;
             _productRepo = productRepo;
             _mapper = mapper;
         }
 
         public async Task<WarehouseDto> CreateAsync(WarehouseCreationDto input)
         {
-            var shelf = await _warehouseManager.CreateAsync(input.PositionCode, input.PositionDescription);
+            var warehouse = await _warehouseManager.CreateAsync(input.PositionCode, input.PositionDescription);
 
-            await _shelfRepo.InsertAsync(shelf);
+            await _warehouseRepo.InsertAsync(warehouse);
 
-            return _mapper.Map<WarehouseDto>(shelf);
+            return _mapper.Map<WarehouseDto>(warehouse);
         }
 
         [UnitOfWork(SharedToCap = true)]
-        public async Task<WarehouseDto> AllocateShelfToProductAsync(long shelfId, WarehouseAllocateToProductDto input)
+        public async Task<WarehouseDto> AllocateShelfToProductAsync(long warehouseId, WarehouseAllocateToProductDto input)
         {
-            var shelf = await _shelfRepo.FindAsync(shelfId, noTracking: false);
-            var product = await _productRepo.FindAsync(input.ProductId.ToLong().Value);
+            var warehouse = await _warehouseRepo.GetAsync(warehouseId);
+            var product = await _productRepo.GetAsync(input.ProductId.ToLong().Value);
 
-            await _warehouseManager.AllocateShelfToProductAsync(shelf, product);
+            await _warehouseManager.AllocateShelfToProductAsync(warehouse, product);
 
-            await _shelfRepo.UpdateAsync(shelf);
+            await _warehouseRepo.UpdateAsync(warehouse);
 
-            return _mapper.Map<WarehouseDto>(shelf);
+            return _mapper.Map<WarehouseDto>(warehouse);
         }
 
         public async Task<PageModelDto<WarehouseDto>> GetPagedAsync(WarehouseSearchDto search)
         {
-            var total = await _shelfRepo.CountAsync(x => true);
+            var total = await _warehouseRepo.CountAsync(x => true);
 
             if (total == 0)
                 return new PageModelDto<WarehouseDto>
@@ -66,12 +66,12 @@ namespace Adnc.Whse.Application.Services
                     PageSize = search.PageSize
                 };
 
-            var products = _productRepo.GetAll();
-            var shelfs = _shelfRepo.GetAll();
+            var products = _productRepo.Where(x => true);
+            var warehouses = _warehouseRepo.Where(x => true);
 
             var skipNumber = (search.PageIndex - 1) * search.PageSize;
 
-            var data = await (from s in shelfs
+            var data = await (from s in warehouses
                               join p in products
                               on s.ProductId equals p.Id into sp
                               from x in sp.DefaultIfEmpty()

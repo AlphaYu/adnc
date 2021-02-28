@@ -13,6 +13,7 @@
 		<Copyright>Alpha</Copyright>
 	</PropertyGroup>
 	<ItemGroup>
+		<Compile Remove="DbContextFactory.cs" />
 		<Compile Remove="Repositories\EfDDDRepository.cs" />
 		<Compile Remove="Repositories\RepositoryModule.cs" />
 	</ItemGroup>

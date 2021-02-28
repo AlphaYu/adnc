@@ -33,8 +33,8 @@ namespace Adnc.Whse.Domain.Entities
             this.Id = id;
             SetSku(sku);
             SetName(name);
-            ChangePrice(price);
-            ChangeUnit(unit);
+            SetPrice(price);
+            SetUnit(unit);
             this.Describe = describe != null ? describe.Trim() : string.Empty;
             this.Status = new ProductStatus(ProductStatusEnum.UnKnow, string.Empty);
         }
@@ -57,11 +57,21 @@ namespace Adnc.Whse.Domain.Entities
             this.Name = Checker.NotNullOrEmpty(name.Trim(), nameof(name));
         }
 
+
+        /// <summary>
+        /// 设置商品状态
+        /// </summary>
+        /// <param name="status"></param>
+        internal void SetStatus(ProductStatus status)
+        {
+            this.Status = Checker.NotNull(status, nameof(status));
+        }
+
         /// <summary>
         /// 修改unit
         /// </summary>
         /// <param name="newSku"></param>
-        public void ChangeUnit(string unit)
+        public void SetUnit(string unit)
         {
             this.Unit = Checker.NotNullOrEmpty(unit.Trim(), nameof(unit));
         }
@@ -70,7 +80,7 @@ namespace Adnc.Whse.Domain.Entities
         /// 修改Price
         /// </summary>
         /// <param name="price"></param>
-        public void ChangePrice(decimal price)
+        public void SetPrice(decimal price)
         {
             if (price <= 0)
                 throw new AdncArgumentException("不能小于等于0", nameof(price));
@@ -85,6 +95,5 @@ namespace Adnc.Whse.Domain.Entities
         {
             this.Status = new ProductStatus(ProductStatusEnum.SaleOff, reason);
         }
-
     }
 }

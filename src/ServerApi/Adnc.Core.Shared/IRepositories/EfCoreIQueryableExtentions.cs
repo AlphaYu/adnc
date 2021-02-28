@@ -19,7 +19,7 @@ namespace Adnc.Core.Shared.IRepositories
     /// <summary>
     /// Entity Framework LINQ related extension methods.
     /// </summary>
-    public static class EntityFrameworkQueryableExtensions
+    public static class EfCoreIQueryableExtentions
     {
         #region Any/All
 
@@ -43,7 +43,7 @@ namespace Adnc.Core.Shared.IRepositories
         ///     A task that represents the asynchronous operation.
         ///     The task result contains <c>true</c> if the source sequence contains any elements; otherwise, <c>false</c>.
         /// </returns>
-        public static Task<bool> AnyAsync<TSource>(
+        internal static Task<bool> AnyAsync<TSource>(
             [NotNull] this IQueryable<TSource> source,
             CancellationToken cancellationToken = default)
         {
@@ -74,7 +74,7 @@ namespace Adnc.Core.Shared.IRepositories
         ///     The task result contains <c>true</c> if any elements in the source sequence pass the test in the specified
         ///     predicate; otherwise, <c>false</c>.
         /// </returns>
-        public static Task<bool> AnyAsync<TSource>(
+        internal static Task<bool> AnyAsync<TSource>(
             [NotNull] this IQueryable<TSource> source,
             [NotNull] Expression<Func<TSource, bool>> predicate,
             CancellationToken cancellationToken = default)
@@ -142,7 +142,7 @@ namespace Adnc.Core.Shared.IRepositories
         ///     A task that represents the asynchronous operation.
         ///     The task result contains the number of elements in the input sequence.
         /// </returns>
-        public static Task<int> CountAsync<TSource>(
+        internal static Task<int> CountAsync<TSource>(
             [NotNull] this IQueryable<TSource> source,
             CancellationToken cancellationToken = default)
         {
@@ -173,7 +173,7 @@ namespace Adnc.Core.Shared.IRepositories
         ///     The task result contains the number of elements in the sequence that satisfy the condition in the predicate
         ///     function.
         /// </returns>
-        public static Task<int> CountAsync<TSource>(
+        internal static Task<int> CountAsync<TSource>(
             [NotNull] this IQueryable<TSource> source,
             [NotNull] Expression<Func<TSource, bool>> predicate,
             CancellationToken cancellationToken = default)

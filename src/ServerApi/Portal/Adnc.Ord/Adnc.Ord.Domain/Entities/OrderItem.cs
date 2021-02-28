@@ -1,4 +1,4 @@
-﻿using Adnc.Core.Shared.Domain.Entities;
+﻿using Adnc.Core.Shared.Entities;
 using Adnc.Infr.Common.Exceptions;
 
 namespace Adnc.Ord.Domain.Entities
@@ -6,7 +6,7 @@ namespace Adnc.Ord.Domain.Entities
     /// <summary>
     /// 订单条目
     /// </summary>
-    public class OrderItem : DomainEntity
+    public class OrderItem : Entity
     {
         public long OrderId { get; private set; }
 

@@ -16,10 +16,10 @@ namespace Adnc.Ord.Domain.Services
     /// </summary>
     public class OrderManager : ICoreService
     {
-        private readonly IEfRepository<Order> _orderRepo;
+        private readonly IEfBasicRepository<Order> _orderRepo;
         private readonly IEventPublisher _eventPubliser;
 
-        public OrderManager(IEfRepository<Order> orderRepo
+        public OrderManager(IEfBasicRepository<Order> orderRepo
             , IEventPublisher eventPublisher)
         {
             _orderRepo = orderRepo;
@@ -53,11 +53,8 @@ namespace Adnc.Ord.Domain.Services
                 order.AddProduct(new OrderItemProduct(Product.Id, Product.Name, Product.Price), Count);
             }
 
-            await _orderRepo.InsertAsync(order);
-
             //发送OrderCreatedEvent事件，通知仓储中心冻结库存
             var products = order.Items.Select(x => (x.Id, x.Count)).ToArray();
-
             var eventId = IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId);
             var eventData = new OrderCreatedEvent.EventData() { OrderId = order.Id, Products = products };
             var eventSource = System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.FullName;
@@ -75,7 +72,6 @@ namespace Adnc.Ord.Domain.Services
             Checker.NotNull(order, nameof(order));
 
             order.ChangeStatus(OrderStatusEnum.Canceling);
-            await _orderRepo.UpdateAsync(order);
 
             //发布领域事件，通知仓储中心解冻被冻结的库存
             var eventId = IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId);
@@ -93,7 +89,6 @@ namespace Adnc.Ord.Domain.Services
             Checker.NotNull(order, nameof(order));
 
             order.ChangeStatus(OrderStatusEnum.Paying);
-            await _orderRepo.UpdateAsync(order);
 
             //发布领域事件，通知客户中心扣款(Demo是从余额中扣款)
             var eventId = IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId);

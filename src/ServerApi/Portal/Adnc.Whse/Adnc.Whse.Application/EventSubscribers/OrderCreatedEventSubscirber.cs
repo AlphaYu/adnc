@@ -13,15 +13,15 @@ namespace Adnc.Whse.Application.EventSubscribers
     /// </summary>
     public class OrderCreatedEventSubscirber : ICapSubscribe
     {
-        private readonly IEfRepository<Warehouse> _shelfReop;
+        private readonly IEfBasicRepository<Warehouse> _warehouseRepo;
 
         /// <summary>
         /// 构造函数
         /// </summary>
-        /// <param name="shelfReop"><see cref="Warehouse"/></param>
-        public OrderCreatedEventSubscirber(IEfRepository<Warehouse> shelfReop)
+        /// <param name="warehouseRepo"><see cref="Warehouse"/></param>
+        public OrderCreatedEventSubscirber(IEfBasicRepository<Warehouse> warehouseRepo)
         {
-            _shelfReop = shelfReop;
+            _warehouseRepo = warehouseRepo;
         }
 
         /// <summary>
@@ -34,13 +34,13 @@ namespace Adnc.Whse.Application.EventSubscribers
         {
             var orderId = eto.Data.OrderId;
             var products = eto.Data.Products.ToDictionary(x => x.ProductId, x => x.Qty);
-            var shelfs = await _shelfReop.Where(x => products.Keys.Contains(x.ProductId.Value), noTracking: false).ToListAsync();
+            var warehouses = await _warehouseRepo.Where(x => products.Keys.Contains(x.ProductId.Value), noTracking: false).ToListAsync();
 
             foreach (var produdct in eto.Data.Products)
             {
-                var shelf = await _shelfReop.FetchAsync(x => x, x => x.ProductId == produdct.ProductId);
-                shelf.BlockQty(produdct.Qty);
-                await _shelfReop.UpdateAsync(shelf);
+                var warehouse = warehouses.Where(x => x.ProductId == produdct.ProductId).SingleOrDefault();
+                warehouse.BlockQty(produdct.Qty);
+                await _warehouseRepo.UpdateAsync(warehouse);
             }
         }
 

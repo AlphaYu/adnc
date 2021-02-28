@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Adnc.Core.Shared;
 using Adnc.Core.Shared.IRepositories;
+using Adnc.Infr.Common.Exceptions;
 using Adnc.Infr.Common.Helper;
 using Adnc.Whse.Domain.Entities;
 
@@ -11,8 +10,8 @@ namespace Adnc.Whse.Domain.Services
 {
     public class ProductManager : ICoreService
     {
-        private readonly IEfRepository<Product> _productRepo;
-        public ProductManager(IEfRepository<Product> productRepo)
+        private readonly IEfBasicRepository<Product> _productRepo;
+        public ProductManager(IEfBasicRepository<Product> productRepo)
         {
             _productRepo = productRepo;
         }
@@ -27,7 +26,7 @@ namespace Adnc.Whse.Domain.Services
         /// <returns></returns>
         public virtual async Task<Product> CreateAsync(string sku, decimal price, string name, string unit, string describe = null)
         {
-            var product = await _productRepo.FetchAsync(x => x, x => x.Sku == sku || x.Name == name, noTracking: false);
+            var product = await _productRepo.Where(x => x.Sku == sku || x.Name == name).FirstOrDefaultAsync();
             if (product != null)
             {
                 if (product.Sku == sku)
@@ -89,13 +88,16 @@ namespace Adnc.Whse.Domain.Services
         /// <param name="warehouseInfo"></param>
         /// <param name="reason"></param>
         /// <returns></returns>
-        public virtual async Task PutOnSale(Product product, Warehouse warehouseInfo, string reason)
+        public virtual void PutOnSale(Product product, Warehouse warehouseInfo, string reason)
         {
-            //if (warehouseInfo?.Qty > 0 && product.ShlefId == warehouseInfo.Id)
-            //    product.Status = new ProductStatus(ProductStatusEnum.SaleOn, reason);
-            //else
-            //    throw new ArgumentException("warehouseInfo");
-            //await Task.CompletedTask;
+            Checker.NotNull(product, nameof(product));
+
+            Checker.NotNull(warehouseInfo, nameof(warehouseInfo));
+
+            if (warehouseInfo.Qty > 0 && warehouseInfo.ProductId == product.Id)
+                product.SetStatus(new ProductStatus(ProductStatusEnum.SaleOn, reason));
+            else
+                throw new ArgumentException("warehouseInfo");
         }
     }
 }

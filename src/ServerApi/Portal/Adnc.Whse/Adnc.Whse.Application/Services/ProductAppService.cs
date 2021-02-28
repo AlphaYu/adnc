@@ -12,6 +12,7 @@ using Adnc.Application.Shared.Dtos;
 using Adnc.Application.Shared.Services;
 using Adnc.Infr.Common.Extensions;
 using Adnc.Application.Shared.RpcServices;
+using Adnc.Infr.Common.Exceptions;
 
 namespace Adnc.Whse.Application.Services
 {
@@ -21,8 +22,8 @@ namespace Adnc.Whse.Application.Services
     public class ProductAppService : AppService, IProductAppService
     {
         private readonly ProductManager _productMgr;
-        private readonly IEfRepository<Product> _productRepo;
-        private readonly IEfRepository<Warehouse> _warehouseInfoRepo;
+        private readonly IEfBasicRepository<Product> _productRepo;
+        private readonly IEfBasicRepository<Warehouse> _warehouseInfoRepo;
         private readonly IMaintRpcService _maintRpcSrv;
         private readonly IMapper _mapper;
 
@@ -35,8 +36,8 @@ namespace Adnc.Whse.Application.Services
         /// <param name="productMgr"></param>
         /// <param name="mapper"></param>
         public ProductAppService(
-             IEfRepository<Product> productRepo
-            , IEfRepository<Warehouse> warehouseInfoRepo
+             IEfBasicRepository<Product> productRepo
+            , IEfBasicRepository<Warehouse> warehouseInfoRepo
             , IMaintRpcService maintRpcSrv
             , ProductManager productMgr
             , IMapper mapper)
@@ -70,11 +71,13 @@ namespace Adnc.Whse.Application.Services
         /// <returns></returns>
         public async Task<ProductDto> UpdateAsync(long id, ProductUpdationDto input)
         {
-            var product = await _productRepo.FindAsync(id, noTracking: false);
+            var product = await _productRepo.GetAsync(id);
+
+            Checker.NotNull(product, nameof(product));
 
             product.Describe = input.Describe;
-            product.ChangeUnit(input.Unit);
-            product.ChangePrice(input.Price);
+            product.SetUnit(input.Unit);
+            product.SetPrice(input.Price);
 
 
             await _productMgr.ChangeSkuAsync(product, input.Sku);
@@ -93,9 +96,11 @@ namespace Adnc.Whse.Application.Services
         /// <returns></returns>
         public async Task<ProductDto> ChangePriceAsync(long id, ProducChangePriceDto input)
         {
-            var product = await _productRepo.FindAsync(id, noTracking: false);
+            var product = await _productRepo.GetAsync(id);
 
-            product.ChangePrice(input.Price);
+            Checker.NotNull(product, nameof(product));
+
+            product.SetPrice(input.Price);
 
             await _productRepo.UpdateAsync(product);
 
@@ -110,11 +115,11 @@ namespace Adnc.Whse.Application.Services
         /// <returns></returns>
         public async Task<ProductDto> PutOnSaleAsync(long id, ProductPutOnSaleDto input)
         {
-            var product = await _productRepo.FindAsync(id, noTracking: false);
+            var product = await _productRepo.GetAsync(id);
 
-            var warehouseInfo = await _warehouseInfoRepo.FetchAsync(x => x, x => x.ProductId == id, noTracking: false);
+            var warehouseInfo = await _warehouseInfoRepo.Where(x => x.ProductId == id, noTracking: false).FirstOrDefaultAsync();
 
-            await _productMgr.PutOnSale(product, warehouseInfo, input.Reason);
+            _productMgr.PutOnSale(product, warehouseInfo, input.Reason);
 
             await _productRepo.UpdateAsync(product);
 
@@ -128,7 +133,7 @@ namespace Adnc.Whse.Application.Services
         /// <returns></returns>
         public async Task<ProductDto> PutOffSaleAsync(long id, ProductPutOffSaleDto input)
         {
-            var product = await _productRepo.FindAsync(id, noTracking: false);
+            var product = await _productRepo.GetAsync(id);
 
             product.PutOffSale(input.Reason);
 

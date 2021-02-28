@@ -10,7 +10,6 @@ using Adnc.Application.Shared.Dtos;
 using Adnc.Application.Shared.Services;
 using Adnc.Application.Shared.RpcServices;
 using Adnc.Core.Shared.IRepositories;
-using Adnc.Core.Shared.Domain.Entities;
 using Adnc.Ord.Application.Dtos;
 using Adnc.Ord.Domain.Services;
 using Adnc.Ord.Domain.Entities;
@@ -25,7 +24,7 @@ namespace Adnc.Ord.Application.Services
     public class OrderAppService : AppService, IOrderAppService
     {
         private readonly OrderManager _orderMgr;
-        private readonly IEfRepository<Order> _orderRepo;
+        private readonly IEfBasicRepository<Order> _orderRepo;
         private readonly IWhseRpcService _warehouseRpc;
         private readonly IMaintRpcService _maintRpc;
         private readonly IMapper _mapper;
@@ -39,7 +38,7 @@ namespace Adnc.Ord.Application.Services
         /// <param name="maintRpc"></param>
         /// <param name="mapper"></param>
         public OrderAppService(
-             IEfRepository<Order> orderRepo
+             IEfBasicRepository<Order> orderRepo
             , OrderManager orderMgr
             , IWhseRpcService warehouseRpc
             , IMaintRpcService maintRpc
@@ -84,6 +83,8 @@ namespace Adnc.Ord.Application.Services
                 new OrderReceiver(input.DeliveryInfomaton?.Name, input.DeliveryInfomaton?.Phone, input.DeliveryInfomaton?.Address)
                 );
 
+            await _orderRepo.InsertAsync(order);
+
             return _mapper.Map<OrderDto>(order);
         }
 
@@ -95,8 +96,9 @@ namespace Adnc.Ord.Application.Services
         /// <returns></returns>
         public async Task<OrderDto> UpdateAsync(long id, OrderUpdationDto input)
         {
-            var order = await _orderRepo.FindAsync(id, noTracking: false);
-            order.CheckIsNormal();
+            var order = await _orderRepo.GetAsync(id);
+
+            Checker.NotNull(order, nameof(order));
 
             order.ChangeReceiver(new OrderReceiver(
                 input.DeliveryInfomaton.Name
@@ -116,11 +118,60 @@ namespace Adnc.Ord.Application.Services
         /// <returns></returns>
         public async Task DeleteAsync(long id)
         {
-            var order = await _orderRepo.FindAsync(id);
-            order.CheckIsNormal();
+            var order = await _orderRepo.GetAsync(id);
+
+            Checker.NotNull(order, nameof(order));
 
             order.ChangeStatus(OrderStatusEnum.Deleted);
+
             await _orderRepo.UpdateAsync(order);
+        }
+
+        /// <summary>
+        /// 订单付款
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<OrderDto> PayAsync(long id)
+        {
+            var order = await _orderRepo.GetAsync(id);
+
+            Checker.NotNull(order, nameof(order));
+
+            await _orderMgr.PayAsync(order);
+
+            await _orderRepo.UpdateAsync(order);
+
+            return _mapper.Map<OrderDto>(order);
+        }
+
+        /// <summary>
+        /// 取消订单
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<OrderDto> CancelAsync(long id)
+        {
+            var order = await _orderRepo.GetAsync(id);
+
+            Checker.NotNull(order, nameof(order));
+
+            await _orderMgr.CancelAsync(order);
+
+            await _orderRepo.UpdateAsync(order);
+
+            return _mapper.Map<OrderDto>(order);
+        }
+
+        /// <summary>
+        /// 获取订单信息
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<OrderDto> GetAsync(long id)
+        {
+            var order = await _orderRepo.GetAsync(id, x => x.Items);
+            return _mapper.Map<OrderDto>(order);
         }
 
         /// <summary>
@@ -153,48 +204,6 @@ namespace Adnc.Ord.Application.Services
                 }
             }
             return pagedDto;
-        }
-
-        /// <summary>
-        /// 订单付款
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public async Task<OrderDto> PayAsync(long id)
-        {
-            var order = await _orderRepo.FindAsync(id);
-            order.CheckIsNormal();
-
-            await _orderMgr.PayAsync(order);
-
-            return _mapper.Map<OrderDto>(order);
-        }
-
-        /// <summary>
-        /// 取消订单
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public async Task<OrderDto> CancelAsync(long id)
-        {
-            var order = await _orderRepo.FindAsync(id);
-            order.CheckIsNormal();
-
-            await _orderMgr.CancelAsync(order);
-
-            return _mapper.Map<OrderDto>(order);
-        }
-
-        /// <summary>
-        /// 获取订单信息
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public async Task<OrderDto> GetAsync(long id)
-        {
-            var order = await _orderRepo.FindAsync(id, x => x.Items);
-
-            return _mapper.Map<OrderDto>(order);
         }
     }
 }
