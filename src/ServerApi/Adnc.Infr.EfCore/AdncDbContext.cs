@@ -12,13 +12,15 @@ namespace Adnc.Infr.EfCore
     public class AdncDbContext : DbContext
     {
         private readonly UserContext _userContext;
-        private IEntityInfo _entityInfo;
+        private readonly IEntityInfo _entityInfo;
+        private readonly UnitOfWorkStatus _unitOfWorkStatus;
 
-        public AdncDbContext([NotNull] DbContextOptions options, UserContext userContext, [NotNull] IEntityInfo entityInfo)
+        public AdncDbContext([NotNull] DbContextOptions options, UserContext userContext, [NotNull] IEntityInfo entityInfo, UnitOfWorkStatus unitOfWorkStatus)
             : base(options)
         {
             _userContext = userContext;
             _entityInfo = entityInfo;
+            _unitOfWorkStatus = unitOfWorkStatus;
 
             //关闭DbContext默认事务
             Database.AutoTransactionsEnabled = false;
@@ -38,17 +40,17 @@ namespace Adnc.Infr.EfCore
             //(3)、dotnet ef database update
         }
 
-        public override int SaveChanges()
-        {
-            this.SetAuditFields();
-            return base.SaveChanges();
-        }
+        //public override int SaveChanges()
+        //{
+        //    this.SetAuditFields();
+        //    return base.SaveChanges();
+        //}
 
-        public override int SaveChanges(bool acceptAllChangesOnSuccess)
-        {
-            this.SetAuditFields();
-            return base.SaveChanges(acceptAllChangesOnSuccess);
-        }
+        //public override int SaveChanges(bool acceptAllChangesOnSuccess)
+        //{
+        //    this.SetAuditFields();
+        //    return base.SaveChanges(acceptAllChangesOnSuccess);
+        //}
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
@@ -56,11 +58,11 @@ namespace Adnc.Infr.EfCore
             return base.SaveChangesAsync(cancellationToken);
         }
 
-        public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
-        {
-            this.SetAuditFields();
-            return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
-        }
+        //public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
+        //{
+        //    this.SetAuditFields();
+        //    return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+        //}
 
         private void SetAuditFields()
         {

@@ -5,11 +5,15 @@ namespace Adnc.Core.Shared
 {
     public interface IUnitOfWork: IDisposable
     {
+        [Obsolete("还没有相到好的方案")]
         bool IsStartingUow { get;}
 
-        dynamic GetDbContextTransaction(IsolationLevel isolationLevel = IsolationLevel.ReadCommitted);
+        [Obsolete("还没有相到好的方案")]
+        bool SharedToCap { get; set; }
 
         string ProviderName { get; }
+
+        dynamic GetDbContextTransaction(IsolationLevel isolationLevel = IsolationLevel.ReadCommitted);
 
         void BeginTransaction(IsolationLevel isolationLevel = IsolationLevel.ReadCommitted);
 

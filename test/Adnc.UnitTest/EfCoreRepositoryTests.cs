@@ -293,7 +293,7 @@ namespace Adnc.UnitTest
                 //实体没有被跟踪
                 //UPDATE `Customer` SET `ModifyBy` = 1600000000000, `ModifyTime` = timestamp('2021-02-05 23:14:10.354529'), `Nickname` = '新昵称', `Realname` = '没被跟踪02'
                 //WHERE `Id` = 145649264331198464;
-                id = 145649264331198464;
+                id = 144487932374421504;
                 await _cusRsp.UpdateAsync(new Customer { Id = id, Realname = "没被跟踪02", Nickname = "新昵称" }, UpdatingProps<Customer>(c => c.Realname, c => c.Nickname));
                 newCus = await _cusRsp.FindAsync(id, writeDb: true);
                 Assert.Equal("没被跟踪02", newCus.Realname);

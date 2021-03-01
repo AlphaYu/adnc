@@ -7,6 +7,8 @@ using Pomelo.EntityFrameworkCore.MySql.Storage;
 using Adnc.Infr.EfCore;
 using Adnc.Infr.Common;
 using Adnc.Cus.Core;
+using DotNetCore.CAP;
+using Adnc.Infr.EventBus;
 
 namespace Adnc.UnitTest.Fixtures
 {
@@ -37,6 +39,10 @@ namespace Adnc.UnitTest.Fixtures
             containerBuilder.RegisterType<AdncDbContext>()
                             .InstancePerLifetimeScope();
 
+            //注册事件发布者
+            containerBuilder.RegisterType<NullCapPublisher>()
+                   .As<ICapPublisher>()
+                   .SingleInstance();
 
             //注册Adnc.Infr.EfCore
             AdncInfrEfCoreModule.Register(containerBuilder);

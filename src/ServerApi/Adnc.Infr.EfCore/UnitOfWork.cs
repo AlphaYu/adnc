@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Data;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Storage;
 using Adnc.Core.Shared;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Adnc.Infr.EfCore
 {
@@ -13,26 +10,29 @@ namespace Adnc.Infr.EfCore
     {
         private readonly TDbContext _dbContext;
         private IDbContextTransaction _dbTransaction;
+        private UnitOfWorkStatus _unitOfWorkStatus;
 
-        public UnitOfWork(TDbContext context)
+        public UnitOfWork(TDbContext context, UnitOfWorkStatus unitOfWorkStatus)
         {
-            this.IsStartingUow = false;
+            _unitOfWorkStatus = unitOfWorkStatus;
             _dbContext = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         public dynamic GetDbContextTransaction(IsolationLevel isolationLevel = IsolationLevel.ReadCommitted)
         {
-            if (this.IsStartingUow)
+            if (_unitOfWorkStatus.IsStartingUow)
                 throw new Exception("UnitOfWork Error");
             else
-                this.IsStartingUow = true;
+                _unitOfWorkStatus.IsStartingUow = true;
 
             return _dbContext.Database.BeginTransaction(isolationLevel);
         }
 
         public string ProviderName => _dbContext.Database.ProviderName;
 
-        public bool IsStartingUow { get; private set; }
+        public bool IsStartingUow { get { return _unitOfWorkStatus.IsStartingUow; } }
+
+        public bool SharedToCap { get; set; }
 
         public void BeginTransaction(IsolationLevel isolationLevel = IsolationLevel.ReadCommitted)
         {
@@ -42,19 +42,20 @@ namespace Adnc.Infr.EfCore
         public void Commit()
         {
             _dbTransaction?.Commit();
-            this.IsStartingUow = false;
+            _unitOfWorkStatus.IsStartingUow = false;
         }
 
         public void Rollback()
         {
             _dbTransaction?.Rollback();
-            this.IsStartingUow = false;
+            _unitOfWorkStatus.IsStartingUow = false;
         }
 
         public void Dispose()
         {
             _dbTransaction?.Dispose();
-            this.IsStartingUow = false;
+            if (_unitOfWorkStatus != null)
+                _unitOfWorkStatus.IsStartingUow = false;
         }
     }
 }

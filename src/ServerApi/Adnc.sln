@@ -1,5 +1,4 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29728.190
 MinimumVisualStudioVersion = 10.0.40219.1
@@ -47,7 +46,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Maint.Core", "Portal\A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Maint.Application", "Portal\Adnc.Maint\Adnc.Maint.Application\Adnc.Maint.Application.csproj", "{70B486FC-97DC-4E4F-B624-35597256AA1B}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "63.Adnc.Customer", "63.Adnc.Customer", "{59BC5307-F242-4DA0-8113-2200008A8A06}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "63.Adnc.Cust", "63.Adnc.Cust", "{59BC5307-F242-4DA0-8113-2200008A8A06}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Cus.Core", "Portal\Adnc.Cus\Adnc.Cus.Core\Adnc.Cus.Core.csproj", "{E51585C7-9FA3-49E5-B137-050F7EF50067}"
 EndProject
@@ -65,23 +64,27 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "31.Adnc.PerformTest", "..\.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "30.Adnc.UnitTest", "..\..\test\Adnc.UnitTest\30.Adnc.UnitTest.csproj", "{0E0FA7F9-116D-48F3-93DE-A7C5DE582DB5}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "64.Adnc.Orders", "64.Adnc.Orders", "{6659C0D2-F08D-40B3-99ED-AA85505A5DA7}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "64.Adnc.Ord", "64.Adnc.Ord", "{6659C0D2-F08D-40B3-99ED-AA85505A5DA7}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "65.Adnc.Warehouse", "65.Adnc.Warehouse", "{F66B1CBA-1C4E-424B-B558-2BB9FD8797D2}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "65.Adnc.Whse", "65.Adnc.Whse", "{F66B1CBA-1C4E-424B-B558-2BB9FD8797D2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Warehouse.Application", "Portal\Adnc.Warehouse\Adnc.Warehouse.Application\Adnc.Warehouse.Application.csproj", "{0EACA3ED-36B3-4ED2-9235-93D24422A396}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Whse.Application", "Portal\Adnc.Whse\Adnc.Whse.Application\Adnc.Whse.Application.csproj", "{0EACA3ED-36B3-4ED2-9235-93D24422A396}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Warehouse.WebApi", "Portal\Adnc.Warehouse\Adnc.Warehouse.WebApi\Adnc.Warehouse.WebApi.csproj", "{F3C046F9-85FF-4934-90E7-E043E4DF33F8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Whse.WebApi", "Portal\Adnc.Whse\Adnc.Whse.WebApi\Adnc.Whse.WebApi.csproj", "{F3C046F9-85FF-4934-90E7-E043E4DF33F8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Warehouse.Migrations", "Portal\Adnc.Warehouse\Adnc.Warehouse.Migrations\Adnc.Warehouse.Migrations.csproj", "{B2A1BC7F-8C12-4A7C-8681-ECE83A66965C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Whse.Migrations", "Portal\Adnc.Whse\Adnc.Whse.Migrations\Adnc.Whse.Migrations.csproj", "{B2A1BC7F-8C12-4A7C-8681-ECE83A66965C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Warehouse.Domain", "Portal\Adnc.Warehouse\Adnc.Warehouse.Domain\Adnc.Warehouse.Domain.csproj", "{98D4EE34-0543-4078-A2FB-326A275B2E06}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Whse.Domain", "Portal\Adnc.Whse\Adnc.Whse.Domain\Adnc.Whse.Domain.csproj", "{98D4EE34-0543-4078-A2FB-326A275B2E06}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Orders.Domain", "Portal\Adnc.Orders\Adnc.Orders.Domain\Adnc.Orders.Domain.csproj", "{C14D5DA6-321B-4649-B8F1-EE11007B0B28}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Ord.Domain", "Portal\Adnc.Ord\Adnc.Ord.Domain\Adnc.Ord.Domain.csproj", "{C14D5DA6-321B-4649-B8F1-EE11007B0B28}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Orders.Application", "Portal\Adnc.Orders\Adnc.Orders.Application\Adnc.Orders.Application.csproj", "{62BF59EF-F28A-4989-8423-A89819A34431}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Ord.Application", "Portal\Adnc.Ord\Adnc.Ord.Application\Adnc.Ord.Application.csproj", "{62BF59EF-F28A-4989-8423-A89819A34431}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "25.Adnc.Infr.EventBus", "Adnc.Infr.EventBus\25.Adnc.Infr.EventBus.csproj", "{28CBA3C8-5025-472E-99AD-FFA051936C94}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "25.Adnc.Infr.EventBus", "Adnc.Infr.EventBus\25.Adnc.Infr.EventBus.csproj", "{28CBA3C8-5025-472E-99AD-FFA051936C94}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Ord.Migrations", "Portal\Adnc.Ord\Adnc.Ord.Migrations\Adnc.Ord.Migrations.csproj", "{65A612B2-CF1F-4EFC-BC4E-32AF75FAFC37}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Ord.WebApi", "Portal\Adnc.Ord\Adnc.Ord.WebApi\Adnc.Ord.WebApi.csproj", "{660C5BA1-B2F6-45CA-8EF0-CC760F0A4C0B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -347,6 +350,22 @@ Global
 		{28CBA3C8-5025-472E-99AD-FFA051936C94}.Release|Any CPU.Build.0 = Release|Any CPU
 		{28CBA3C8-5025-472E-99AD-FFA051936C94}.Release|x64.ActiveCfg = Release|Any CPU
 		{28CBA3C8-5025-472E-99AD-FFA051936C94}.Release|x64.Build.0 = Release|Any CPU
+		{65A612B2-CF1F-4EFC-BC4E-32AF75FAFC37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65A612B2-CF1F-4EFC-BC4E-32AF75FAFC37}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65A612B2-CF1F-4EFC-BC4E-32AF75FAFC37}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{65A612B2-CF1F-4EFC-BC4E-32AF75FAFC37}.Debug|x64.Build.0 = Debug|Any CPU
+		{65A612B2-CF1F-4EFC-BC4E-32AF75FAFC37}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65A612B2-CF1F-4EFC-BC4E-32AF75FAFC37}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65A612B2-CF1F-4EFC-BC4E-32AF75FAFC37}.Release|x64.ActiveCfg = Release|Any CPU
+		{65A612B2-CF1F-4EFC-BC4E-32AF75FAFC37}.Release|x64.Build.0 = Release|Any CPU
+		{660C5BA1-B2F6-45CA-8EF0-CC760F0A4C0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{660C5BA1-B2F6-45CA-8EF0-CC760F0A4C0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{660C5BA1-B2F6-45CA-8EF0-CC760F0A4C0B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{660C5BA1-B2F6-45CA-8EF0-CC760F0A4C0B}.Debug|x64.Build.0 = Debug|Any CPU
+		{660C5BA1-B2F6-45CA-8EF0-CC760F0A4C0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{660C5BA1-B2F6-45CA-8EF0-CC760F0A4C0B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{660C5BA1-B2F6-45CA-8EF0-CC760F0A4C0B}.Release|x64.ActiveCfg = Release|Any CPU
+		{660C5BA1-B2F6-45CA-8EF0-CC760F0A4C0B}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -389,6 +408,8 @@ Global
 		{C14D5DA6-321B-4649-B8F1-EE11007B0B28} = {6659C0D2-F08D-40B3-99ED-AA85505A5DA7}
 		{62BF59EF-F28A-4989-8423-A89819A34431} = {6659C0D2-F08D-40B3-99ED-AA85505A5DA7}
 		{28CBA3C8-5025-472E-99AD-FFA051936C94} = {3B899133-BEAC-4438-977F-B28FDFF3AE27}
+		{65A612B2-CF1F-4EFC-BC4E-32AF75FAFC37} = {6659C0D2-F08D-40B3-99ED-AA85505A5DA7}
+		{660C5BA1-B2F6-45CA-8EF0-CC760F0A4C0B} = {6659C0D2-F08D-40B3-99ED-AA85505A5DA7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3DED72E8-74C9-4A51-A9CE-62ECFEEA1921}
