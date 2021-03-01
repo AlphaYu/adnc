@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Adnc.Whse.Application.Services;
 using Adnc.Whse.Application.Dtos;
 using Adnc.WebApi.Shared;
-using Adnc.Infr.Common.Extensions;
 using Adnc.Application.Shared.Dtos;
 
 namespace Adnc.Whse.WebApi.Controllers
@@ -12,15 +11,15 @@ namespace Adnc.Whse.WebApi.Controllers
     /// <summary>
     /// 货架管理
     /// </summary>
-    [Route("whse/shelfs")]
+    [Route("whse/warehouses")]
     [ApiController]
-    public class ShelfController : AdncControllerBase
+    public class WarehouseController : AdncControllerBase
     {
-        private readonly IWarehouseAppService _shelfSrv;
+        private readonly IWarehouseAppService _warehouseSrv;
 
-        public ShelfController(IWarehouseAppService shelfSrv)
+        public WarehouseController(IWarehouseAppService warehouseSrv)
         {
-            _shelfSrv = shelfSrv;
+            _warehouseSrv = warehouseSrv;
         }
 
         /// <summary>
@@ -31,7 +30,7 @@ namespace Adnc.Whse.WebApi.Controllers
         [HttpPost]
         public async Task<ActionResult<WarehouseDto>> CreateAsync([FromBody] WarehouseCreationDto input)
         {
-            return await _shelfSrv.CreateAsync(input);
+            return await _warehouseSrv.CreateAsync(input);
         }
 
         /// <summary>
@@ -41,7 +40,7 @@ namespace Adnc.Whse.WebApi.Controllers
         [HttpPatch("{id}/product")]
         public async Task<ActionResult<WarehouseDto>> AllocateShelfToProductAsync([FromRoute] long id, [FromBody] WarehouseAllocateToProductDto input)
         {
-            return await _shelfSrv.AllocateShelfToProductAsync(id, input);
+            return await _warehouseSrv.AllocateShelfToProductAsync(id, input);
         }
 
         /// <summary>
@@ -52,7 +51,7 @@ namespace Adnc.Whse.WebApi.Controllers
         [HttpGet]
         public async Task<PageModelDto<WarehouseDto>> GetPagedAsync([FromQuery]WarehouseSearchDto search)
         {
-            return await _shelfSrv.GetPagedAsync(search);
+            return await _warehouseSrv.GetPagedAsync(search);
         }
     }
 }

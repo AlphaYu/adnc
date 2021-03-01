@@ -17,7 +17,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="Events\" />
 		<Folder Include="IRepositories\" />
 	</ItemGroup>
 </Project>

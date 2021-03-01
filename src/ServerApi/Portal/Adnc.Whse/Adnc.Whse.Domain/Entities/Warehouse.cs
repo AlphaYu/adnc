@@ -33,7 +33,7 @@ namespace Adnc.Whse.Domain.Entities
         /// 冻结库存
         /// </summary>
         /// <param name="needBlockedQty"></param>
-        public void BlockQty(int needBlockedQty)
+        internal void BlockQty(int needBlockedQty)
         {
             if (this.Qty < needBlockedQty)
                 throw new AdncArgumentException("Qty<needFreezedQty", nameof(needBlockedQty));

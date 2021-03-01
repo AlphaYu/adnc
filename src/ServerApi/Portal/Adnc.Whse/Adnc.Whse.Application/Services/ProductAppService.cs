@@ -117,7 +117,7 @@ namespace Adnc.Whse.Application.Services
         {
             var product = await _productRepo.GetAsync(id);
 
-            var warehouseInfo = await _warehouseInfoRepo.Where(x => x.ProductId == id, noTracking: false).FirstOrDefaultAsync();
+            var warehouseInfo = await _warehouseInfoRepo.Where(x => x.ProductId == id).FirstOrDefaultAsync();
 
             _productMgr.PutOnSale(product, warehouseInfo, input.Reason);
 
@@ -154,20 +154,20 @@ namespace Adnc.Whse.Application.Services
             {
                 whereCondition = whereCondition.And(x => x.Id == search.Id.ToLong());
             }
-            var pagedEntity = _productRepo.PagedAsync(search.PageIndex, search.PageSize, whereCondition, x => x.Id);
+            var pagedEntity = await _productRepo.PagedAsync(search.PageIndex, search.PageSize, whereCondition, x => x.Id);
 
             var pagedDto = _mapper.Map<PageModelDto<ProductDto>>(pagedEntity);
 
             if (pagedDto.Data.Count > 0)
             {
                 //调用maint微服务获取字典,组合商品状态信息
-                var rpcReuslt = await _maintRpcSrv.GetDictAsync(10000);
+                var rpcReuslt = await _maintRpcSrv.GetDictAsync(DictConsts.ProdunctStatusId);
                 if (rpcReuslt.IsSuccessStatusCode && rpcReuslt.Content.Children.Count > 0)
                 {
                     var dicts = rpcReuslt.Content.Children;
                     pagedDto.Data.ForEach(x =>
                     {
-                        x.StatusDescription = dicts.FirstOrDefault(d => d.Name == x.StatusCode.ToSafeString())?.Name;
+                        x.StatusDescription = dicts.FirstOrDefault(d => d.Name == x.StatusCode.ToString())?.Value;
                     });
                 }
             }

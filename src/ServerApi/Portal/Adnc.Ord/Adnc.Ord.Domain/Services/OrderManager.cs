@@ -71,7 +71,7 @@ namespace Adnc.Ord.Domain.Services
         {
             Checker.NotNull(order, nameof(order));
 
-            order.ChangeStatus(OrderStatusEnum.Canceling);
+            order.ChangeStatus(OrderStatusEnum.Canceling,string.Empty);
 
             //发布领域事件，通知仓储中心解冻被冻结的库存
             var eventId = IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId);
@@ -88,7 +88,7 @@ namespace Adnc.Ord.Domain.Services
         {
             Checker.NotNull(order, nameof(order));
 
-            order.ChangeStatus(OrderStatusEnum.Paying);
+            order.ChangeStatus(OrderStatusEnum.Paying,string.Empty);
 
             //发布领域事件，通知客户中心扣款(Demo是从余额中扣款)
             var eventId = IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId);

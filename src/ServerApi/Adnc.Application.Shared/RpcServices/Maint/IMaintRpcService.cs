@@ -16,7 +16,7 @@ namespace Adnc.Application.Shared.RpcServices
         /// <param name="id">id</param>
         /// <returns></returns>
         [Get("/maint/dicts/{id}")]
-        [Headers("Authorization: Bearer")]
+        [Headers("Authorization: Bearer", "Cache: 2000")]
         Task<ApiResponse<DictRto>> GetDictAsync(long id);
     }
 }

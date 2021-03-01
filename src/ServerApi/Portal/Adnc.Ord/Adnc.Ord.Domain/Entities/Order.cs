@@ -85,15 +85,37 @@ namespace Adnc.Ord.Domain.Entities
         }
 
         /// <summary>
+        /// 标记订单创建状态
+        /// </summary>
+        /// <param name="isCreatedResult"></param>
+        /// <param name="changesReason"></param>
+        public void MarkCreatedStatus(bool isCreatedResult, string changesReason)
+        {
+            var status = isCreatedResult ? OrderStatusEnum.WaitPay : OrderStatusEnum.Canceling;
+
+            this.ChangeStatus(status, changesReason);
+        }
+
+        /// <summary>
+        /// 标记订单删除状态
+        /// </summary>
+        /// <param name="isCreatedResult"></param>
+        /// <param name="changesReason"></param>
+        public void MarkDeletedStatus(string changesReason)
+        {
+            this.ChangeStatus(OrderStatusEnum.Deleted, changesReason);
+        }
+
+        /// <summary>
         /// 调整订单状态
         /// </summary>
         /// <param name="id"></param>
-        public void ChangeStatus(OrderStatusEnum newStatus)
+        internal void ChangeStatus(OrderStatusEnum newStatus,string changesReason)
         {
             if (newStatus == OrderStatusEnum.Canceling)
             {
                 if (this.Status.Code == OrderStatusEnum.WaitPay)
-                    this.Status = new OrderStatus(newStatus);
+                    this.Status = new OrderStatus(newStatus, changesReason);
                 else
                     throw new Exception();
             }
@@ -101,7 +123,7 @@ namespace Adnc.Ord.Domain.Entities
             if (newStatus == OrderStatusEnum.Cancelled)
             {
                 if (this.Status.Code == OrderStatusEnum.Canceling)
-                    this.Status = new OrderStatus(newStatus);
+                    this.Status = new OrderStatus(newStatus, changesReason);
                 else
                     throw new Exception();
             }
@@ -109,7 +131,7 @@ namespace Adnc.Ord.Domain.Entities
             if (newStatus == OrderStatusEnum.Deleted)
             {
                 if (this.Status.Code == OrderStatusEnum.Cancelled)
-                    this.Status = new OrderStatus(newStatus);
+                    this.Status = new OrderStatus(newStatus, changesReason);
                 else
                     throw new Exception();
             }
@@ -117,7 +139,7 @@ namespace Adnc.Ord.Domain.Entities
             if (newStatus == OrderStatusEnum.Paying)
             {
                 if (this.Status.Code == OrderStatusEnum.WaitPay)
-                    this.Status = new OrderStatus(newStatus);
+                    this.Status = new OrderStatus(newStatus, changesReason);
                 else
                     throw new Exception();
             }
@@ -125,7 +147,7 @@ namespace Adnc.Ord.Domain.Entities
             if (newStatus == OrderStatusEnum.WaitSend)
             {
                 if (this.Status.Code == OrderStatusEnum.Paying)
-                    this.Status = new OrderStatus(newStatus);
+                    this.Status = new OrderStatus(newStatus, changesReason);
                 else
                     throw new Exception();
             }
@@ -133,7 +155,7 @@ namespace Adnc.Ord.Domain.Entities
             if (newStatus == OrderStatusEnum.WaitConfirm)
             {
                 if (this.Status.Code == OrderStatusEnum.WaitSend)
-                    this.Status = new OrderStatus(newStatus);
+                    this.Status = new OrderStatus(newStatus, changesReason);
                 else
                     throw new Exception();
             }
@@ -141,7 +163,7 @@ namespace Adnc.Ord.Domain.Entities
             if (newStatus == OrderStatusEnum.WaitRate)
             {
                 if (this.Status.Code == OrderStatusEnum.WaitConfirm)
-                    this.Status = new OrderStatus(newStatus);
+                    this.Status = new OrderStatus(newStatus, changesReason);
                 else
                     throw new Exception();
             }
@@ -150,7 +172,7 @@ namespace Adnc.Ord.Domain.Entities
             if (newStatus == OrderStatusEnum.Finished)
             {
                 if (this.Status.Code == OrderStatusEnum.WaitRate)
-                    this.Status = new OrderStatus(newStatus);
+                    this.Status = new OrderStatus(newStatus, changesReason);
                 else
                     throw new Exception();
             }

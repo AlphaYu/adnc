@@ -16,6 +16,9 @@ namespace Adnc.Ord.Application.Services
         [UnitOfWork(SharedToCap = true)]
         Task<OrderDto> CreateAsync(OrderCreationDto input);
 
+        [OpsLog(LogName = "调整订单状态")]
+        Task MarkCreatedStatusAsync(long id, OrderMarkCreatedStatusDto input);
+
         [OpsLog(LogName = "订单付款")]
         [UnitOfWork(SharedToCap = true)]
         Task<OrderDto> PayAsync(long id);

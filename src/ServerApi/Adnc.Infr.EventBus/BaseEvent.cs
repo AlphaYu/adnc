@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace Adnc.Infr.EventBus
 {
-    public abstract class BaseEvent<TData> : IEvent
+    public class BaseEvent<TData> : IEvent
     {
         public BaseEvent(long id, TData data, string source)
         {

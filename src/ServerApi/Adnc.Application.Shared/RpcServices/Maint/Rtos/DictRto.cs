@@ -15,7 +15,7 @@ namespace Adnc.Application.Shared.RpcServices.Rtos
 
         public long? Pid { get; set; }
 
-        public string Tips { get; set; }
+        public string Value { get; set; }
 
         private IReadOnlyList<DictRto> _data = Array.Empty<DictRto>();
         [NotNull]

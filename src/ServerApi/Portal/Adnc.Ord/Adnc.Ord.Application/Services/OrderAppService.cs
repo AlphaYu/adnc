@@ -89,6 +89,22 @@ namespace Adnc.Ord.Application.Services
         }
 
         /// <summary>
+        /// 标记订单创建状态
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public async Task MarkCreatedStatusAsync(long id, OrderMarkCreatedStatusDto input)
+        {
+            var order = await _orderRepo.GetAsync(id);
+            Checker.NotNull(order, nameof(order));
+
+            order.MarkCreatedStatus(input.IsSuccess, input.Remark);
+
+            await _orderRepo.UpdateAsync(order);
+        }
+
+        /// <summary>
         /// 修改订单
         /// </summary>
         /// <param name="id"></param>
@@ -122,7 +138,7 @@ namespace Adnc.Ord.Application.Services
 
             Checker.NotNull(order, nameof(order));
 
-            order.ChangeStatus(OrderStatusEnum.Deleted);
+            order.MarkDeletedStatus("");
 
             await _orderRepo.UpdateAsync(order);
         }
@@ -135,8 +151,6 @@ namespace Adnc.Ord.Application.Services
         public async Task<OrderDto> PayAsync(long id)
         {
             var order = await _orderRepo.GetAsync(id);
-
-            Checker.NotNull(order, nameof(order));
 
             await _orderMgr.PayAsync(order);
 
@@ -153,8 +167,6 @@ namespace Adnc.Ord.Application.Services
         public async Task<OrderDto> CancelAsync(long id)
         {
             var order = await _orderRepo.GetAsync(id);
-
-            Checker.NotNull(order, nameof(order));
 
             await _orderMgr.CancelAsync(order);
 

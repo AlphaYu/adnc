@@ -16,6 +16,10 @@ namespace Adnc.Whse.Application.Services
         [OpsLog(LogName = "分配货架")]
         Task<WarehouseDto> AllocateShelfToProductAsync(long shelfId, WarehouseAllocateToProductDto input);
 
+        [UnitOfWork]
+        [OpsLog(LogName = "锁定库存")]
+        Task BlockQtyAsync(WarehouseBlockQtyDto input);
+
         Task<PageModelDto<WarehouseDto>> GetPagedAsync(WarehouseSearchDto search);
     }
 }

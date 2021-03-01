@@ -18,6 +18,7 @@ namespace Adnc.Core.Shared.Entities
             if (entityType is IConcurrency)
             {
                 builder.Property<DateTime>("RowVersion")
+                       .IsRowVersion()
                        .IsConcurrencyToken()
                        .HasColumnType("timestamp(3)")
                        .HasDefaultValueSql("'2000-07-01 22:33:02.559'")

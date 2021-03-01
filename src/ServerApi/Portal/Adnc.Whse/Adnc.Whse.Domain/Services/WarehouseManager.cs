@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Adnc.Core.Shared;
@@ -7,6 +8,7 @@ using Adnc.Infr.Common.Helper;
 using Adnc.Infr.Common.Exceptions;
 using Adnc.Whse.Domain.Entities;
 using Adnc.Infr.EventBus;
+using Adnc.Whse.Domain.Events;
 
 namespace Adnc.Whse.Domain.Services
 {
@@ -65,46 +67,66 @@ namespace Adnc.Whse.Domain.Services
 
         }
 
-        //public async Task FreezeInventorys(long orderId, List<Warehouse> shelfs, Dictionary<long, int> products)
-        //{
-        //    bool isSuccess = false;
+        /// <summary>
+        /// 锁定库存
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <param name="blockQtyProductsInfo"></param>
+        /// <param name="warehouses"></param>
+        /// <param name="products"></param>
+        /// <returns></returns>
+        public async Task<bool> BlockQtyAsync(long orderId, Dictionary<long, int> blockQtyProductsInfo, List<Warehouse> warehouses, List<Product> products)
+        {
+            bool isSuccess = false;
+            string remark = string.Empty;
 
-        //    if (shelfs.Count == products.Count)
-        //    {
-        //        try
-        //        {
-        //            //这里需要捕获业务逻辑的异常
-        //            foreach (var shelf in shelfs)
-        //            {
-        //                var qty = products[shelf.ProductId.Value];
-        //                shelf.BlockQty(qty);
-        //            }
-        //        }
-        //        catch (Exception ex)
-        //        {
+            if (orderId <= 0)
+                remark +=$"{orderId}订单号错误";
+            else if (blockQtyProductsInfo?.Count == 0)
+                remark += $"商品数量为空";
+            else if (warehouses?.Count == 0)
+                remark += $"仓储数量为空";
+            else if (products?.Count == 0)
+                remark += remark + $"产品数量为空";
+            else if (warehouses.Count != blockQtyProductsInfo.Count)
+                remark += remark + $"商品数量与库存数量不一致";
+            else
+            {
+                try
+                {
+                    //这里需要捕获业务逻辑的异常
+                    foreach (var productId in blockQtyProductsInfo.Keys)
+                    {
+                        var product = products.FirstOrDefault(x => x.Id == productId);
 
-        //        }
+                        if (product == null)
+                            remark += $"{productId}已经被删除;";
+                        else if (product.Status.Code != ProductStatusEnum.SaleOn)
+                            remark += $"{productId}已经下架;";
+                        else
+                        {
+                            var needBlockQty = blockQtyProductsInfo[productId];
+                            var warehouse = warehouses.FirstOrDefault(x => x.ProductId == productId);
+                            warehouse.BlockQty(needBlockQty);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    remark += ex.Message;
+                }
+            }
 
-        //        //成功冻结所有库存
-        //        isSuccess = true;
-        //    }
+            //成功冻结所有库存
+            isSuccess = string.IsNullOrEmpty(remark);
 
-        //    //这里不需要捕获系统异常
-        //    await _warehouseRepo.UpdateAsync(null);
+            //发布冻结库存事件(不管是否冻结成功)
+            var eventId = IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId);
+            var eventData = new WarehouseQtyBlockedEvent.EventData() { OrderId = orderId, IsSuccess = isSuccess, Remark = remark };
+            var eventSource = System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.FullName;
+            await _eventPublisher.PublishAsync(new WarehouseQtyBlockedEvent(eventId, eventData, eventSource));
 
-        //    //发布冻结库存事件
-        //    //await _eventPublisher.PublishAsync(""
-        //    //,
-        //    //new OrderInventoryFreezedEventEto
-        //    //{
-        //    //    Id = IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId)
-        //    //    ,
-        //    //    OrderId = orderId
-        //    //    ,
-        //    //    IsSuccess = isSuccess
-        //    //    ,
-        //    //    EventSource = nameof(ShelfManager.FreezeInventorys)
-        //    //});
-        //}
+            return isSuccess;
+        }
     }
 }

@@ -40,10 +40,9 @@ namespace Adnc.Whse.WebApi.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPut("{id}")]
-        public async Task<ActionResult<ProductDto>> UpdateAsync([FromRoute] string id, [FromBody] ProductUpdationDto input)
+        public async Task<ActionResult<ProductDto>> UpdateAsync([FromRoute] long id, [FromBody] ProductUpdationDto input)
         {
-            var productId = id.ToLong();
-            return await _productSrv.UpdateAsync(productId.Value, input);
+            return await _productSrv.UpdateAsync(id, input);
         }
 
         /// <summary>
@@ -53,10 +52,9 @@ namespace Adnc.Whse.WebApi.Controllers
         /// <param name="input"></param>
         /// <returns></returns>
         [HttpPatch("{id}/price")]
-        public async Task<ActionResult<ProductDto>> ChangePriceAsync([FromRoute] string id, ProducChangePriceDto input)
+        public async Task<ActionResult<ProductDto>> ChangePriceAsync([FromRoute] long id, ProducChangePriceDto input)
         {
-            var productId = id.ToLong();
-            return await _productSrv.ChangePriceAsync(productId.Value, input);
+            return await _productSrv.ChangePriceAsync(id, input);
         }
 
         /// <summary>
@@ -66,10 +64,9 @@ namespace Adnc.Whse.WebApi.Controllers
         /// <param name="input"></param>
         /// <returns></returns>
         [HttpPatch("{id}/status/1001")]
-        public async Task<ActionResult<ProductDto>> PutOnSaleAsync([FromRoute] string id, ProductPutOnSaleDto input)
+        public async Task<ActionResult<ProductDto>> PutOnSaleAsync([FromRoute] long id, ProductPutOnSaleDto input)
         {
-            var productId = id.ToLong();
-            return await _productSrv.PutOnSaleAsync(productId.Value, input);
+            return await _productSrv.PutOnSaleAsync(id, input);
         }
 
         /// <summary>
@@ -79,10 +76,9 @@ namespace Adnc.Whse.WebApi.Controllers
         /// <param name="input"></param>
         /// <returns></returns>
         [HttpPatch("{id}/status/1002")]
-        public async Task<ActionResult<ProductDto>> PutOffSaleAsync([FromRoute] string id, ProductPutOffSaleDto input)
+        public async Task<ActionResult<ProductDto>> PutOffSaleAsync([FromRoute] long id, ProductPutOffSaleDto input)
         {
-            var productId = id.ToLong();
-            return await _productSrv.PutOffSaleAsync(productId.Value, input);
+             return await _productSrv.PutOffSaleAsync(id, input);
         }
 
         /// <summary>
