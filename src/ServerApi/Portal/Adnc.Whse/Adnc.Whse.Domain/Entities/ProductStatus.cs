@@ -12,8 +12,8 @@ namespace Adnc.Whse.Domain.Entities
 
         internal ProductStatus(ProductStatusEnum statusCode, string reason)
         {
-            this.Code = statusCode;
-            this.ChangesReason = reason != null ? reason.Trim() : string.Empty;
+            Code = statusCode;
+            ChangesReason = reason != null ? reason.Trim() : string.Empty;
         }
     }
 

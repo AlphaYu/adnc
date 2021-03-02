@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Adnc.Core.Shared.Entities;
+using Adnc.Core.Shared.Entities.Config;
 
 namespace Adnc.Ord.Domain.Entities.Config
 {
