@@ -11,6 +11,7 @@ using Z.EntityFramework.Plus;
 using Adnc.Core.Shared;
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Core.Shared.Entities;
+using Adnc.Core.Shared.Domain.Entities;
 
 namespace Adnc.Infr.EfCore.Repositories
 {
@@ -100,7 +101,18 @@ namespace Adnc.Infr.EfCore.Repositories
 
             //实体没有被更改
             if (entry.State == EntityState.Unchanged)
-                return await Task.FromResult(0);
+            {
+                var navigations = entry.Navigations.Where(x => x.CurrentValue is ValueObject);
+                if (navigations?.Count() > 0)
+                {
+                    foreach (var navigation in navigations)
+                    {
+                        DbContext.Add(navigation.CurrentValue);
+                    }
+                }
+                else
+                    return await Task.FromResult(0);
+            }
 
             //实体被标记为Added或者Deleted，抛出异常。
             //ADNC应该不会出现这种状态

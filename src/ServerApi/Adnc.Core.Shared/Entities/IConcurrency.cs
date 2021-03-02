@@ -6,6 +6,9 @@ namespace Adnc.Core.Shared.Entities
 {
     public interface IConcurrency
     {
-        public DateTime? RowVersion { get; set; }
+        /// <summary>
+        /// 并发控制列
+        /// </summary>
+        public byte[] RowVersion { get; set; }
     }
 }
