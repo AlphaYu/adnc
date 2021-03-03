@@ -74,6 +74,7 @@ namespace Adnc.Ord.Application.Services
                         join p in rpcResult.Content on o.ProductId equals p.Id
                         select (new OrderItemProduct(p.Id.ToLong().Value, p.Name, p.Price), o.Count);
 
+            //需要发布领域事件,订单中心订阅该事件
             var order = await _orderMgr.CreateAsync(orderId
                 ,
                 input.CustomerId
@@ -99,6 +100,7 @@ namespace Adnc.Ord.Application.Services
             var order = await _orderRepo.GetAsync(id);
             Checker.NotNull(order, nameof(order));
 
+            //需要发布领域事件，仓储中心订阅该事件
             order.MarkCreatedStatus(input.IsSuccess, input.Remark);
 
             await _orderRepo.UpdateAsync(order);
@@ -152,6 +154,7 @@ namespace Adnc.Ord.Application.Services
         {
             var order = await _orderRepo.GetAsync(id);
 
+            //需要发布领域事件，客户中心订阅该事件
             await _orderMgr.PayAsync(order);
 
             await _orderRepo.UpdateAsync(order);
@@ -168,6 +171,7 @@ namespace Adnc.Ord.Application.Services
         {
             var order = await _orderRepo.GetAsync(id);
 
+            //需要发布领域事件，仓储中心订阅该事件
             await _orderMgr.CancelAsync(order);
 
             await _orderRepo.UpdateAsync(order);

@@ -28,8 +28,8 @@ namespace Adnc.Cus.Application.EventSubscribers
         /// </summary>
         /// <param name="eto"></param>
         /// <returns></returns>
-        [CapSubscribe(nameof(CustomerRechargedEvent))]
-        public async Task Process(CustomerRechargedEvent eto)
+        [CapSubscribe(nameof(Core.Events.CustomerRechargedEvent))]
+        public async Task Process(Core.Events.CustomerRechargedEvent eto)
         {
             await _customerMgr.ProcessRechargingAsync(eto.Data.TransactionLogId, eto.Data.CustomerId, eto.Data.Amount);
         }

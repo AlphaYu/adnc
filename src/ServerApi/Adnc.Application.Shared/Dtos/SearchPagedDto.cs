@@ -42,5 +42,10 @@ namespace Adnc.Application.Shared.Dtos
                 _pageSize = value;
             }
         }
+
+        public int SkipRows()
+        {
+            return (this.PageIndex - 1) * this.PageSize;
+        }
     }
 }

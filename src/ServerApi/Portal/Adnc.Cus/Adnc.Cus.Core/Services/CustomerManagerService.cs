@@ -13,13 +13,13 @@ namespace Adnc.Cus.Core.Services
     public class CustomerManagerService : CoreService
     {
         private readonly IEfRepository<Customer> _cusRepo;
-        private readonly IEfRepository<CusFinance> _cusFinaceRepo;
-        private readonly IEfRepository<CusTransactionLog> _cusTransactionLogRepo;
+        private readonly IEfRepository<CustomerFinance> _cusFinaceRepo;
+        private readonly IEfRepository<CustomerTransactionLog> _cusTransactionLogRepo;
         private readonly IEventPublisher _eventPublisher;
 
         public CustomerManagerService(IEfRepository<Customer> cusRepo
-            , IEfRepository<CusFinance> cusFinaceRepo
-            , IEfRepository<CusTransactionLog> cusTransactionLogRepo
+            , IEfRepository<CustomerFinance> cusFinaceRepo
+            , IEfRepository<CustomerTransactionLog> cusTransactionLogRepo
             , IEventPublisher eventPublisher)
         {
             _cusRepo = cusRepo;
@@ -29,8 +29,8 @@ namespace Adnc.Cus.Core.Services
         }
 
         public CustomerManagerService(IEfRepository<Customer> cusRepo
-            , IEfRepository<CusFinance> cusFinaceRepo
-            , IEfRepository<CusTransactionLog> cusTransactionLogRepo)
+            , IEfRepository<CustomerFinance> cusFinaceRepo
+            , IEfRepository<CustomerTransactionLog> cusTransactionLogRepo)
         {
             _cusRepo = cusRepo;
             _cusFinaceRepo = cusFinaceRepo;
@@ -38,14 +38,13 @@ namespace Adnc.Cus.Core.Services
         }
 
         [UnitOfWork]
-        public virtual async Task RegisterAsync(Customer customer, CusFinance cusFinance, CancellationToken cancellationToken = default)
+        public virtual async Task RegisterAsync(Customer customer, CancellationToken cancellationToken = default)
         {
             await _cusRepo.InsertAsync(customer);
-            await _cusFinaceRepo.InsertAsync(cusFinance);
         }
 
         [UnitOfWork(SharedToCap = true)]
-        public virtual async Task RechargeAsync(CusTransactionLog cusTransactionLog, CancellationToken cancellationToken = default)
+        public virtual async Task RechargeAsync(CustomerTransactionLog cusTransactionLog, CancellationToken cancellationToken = default)
         {
             await _cusTransactionLogRepo.InsertAsync(cusTransactionLog);
 
@@ -59,21 +58,41 @@ namespace Adnc.Cus.Core.Services
         [UnitOfWork]
         public virtual async Task ProcessRechargingAsync(long transactionLogId, long customerId, decimal amount)
         {
-            var transLog = await _cusTransactionLogRepo.FindAsync(transactionLogId);
-            if (transLog == null || transLog.ExchageStatus == "20")
+            var transLog = await _cusTransactionLogRepo.FindAsync(transactionLogId, noTracking: false);
+            if (transLog == null || transLog.ExchageStatus != ExchageStatusEnum.Processing)
                 return;
 
-            var finance = await _cusFinaceRepo.FindAsync(customerId);
-            var newBalance = finance.Balance + amount;
+            var finance = await _cusFinaceRepo.FindAsync(customerId, noTracking: false);
+            var originalBalance = finance.Balance;
+            var newBalance = originalBalance + amount;
 
-            transLog.ExchageStatus = "20";
-            transLog.ChangingAmount = finance.Balance;
+            finance.Balance = newBalance;
+            await _cusFinaceRepo.UpdateAsync(finance);
+
+            transLog.ExchageStatus = ExchageStatusEnum.Finished;
+            transLog.ChangingAmount = originalBalance;
             transLog.ChangedAmount = newBalance;
+            await _cusTransactionLogRepo.UpdateAsync(transLog);
+        }
 
+        [UnitOfWork(SharedToCap =true)]
+        public virtual async Task ProcessPayingAsync(long transactionLogId, long customerId, decimal amount)
+        {
+            var transLog = await _cusTransactionLogRepo.FindAsync(transactionLogId, noTracking: false);
+            if (transLog == null || transLog.ExchageStatus != ExchageStatusEnum.Processing)
+                return;
 
-            await _cusFinaceRepo.UpdateAsync(new CusFinance() { Id = finance.Id, Balance = newBalance }, UpdatingProps<CusFinance>(t => t.Balance));
+            var finance = await _cusFinaceRepo.FindAsync(customerId, noTracking: false);
+            var originalBalance = finance.Balance;
+            var newBalance = originalBalance + amount;
 
-            await _cusTransactionLogRepo.UpdateAsync(transLog, UpdatingProps<CusTransactionLog>(t => t.ExchageStatus, t => t.ChangingAmount, t => t.ChangedAmount));
+            finance.Balance = newBalance;
+            await _cusFinaceRepo.UpdateAsync(finance);
+
+            transLog.ExchageStatus = ExchageStatusEnum.Finished;
+            transLog.ChangingAmount = originalBalance;
+            transLog.ChangedAmount = newBalance;
+            await _cusTransactionLogRepo.UpdateAsync(transLog);
         }
     }
 }

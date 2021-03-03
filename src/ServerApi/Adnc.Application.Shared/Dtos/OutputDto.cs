@@ -9,4 +9,8 @@ namespace Adnc.Application.Shared.Dtos
     {
         public TKey Id { get; set; }
     }
+
+    public abstract class OutputDto : OutputDto<long>
+    {
+    }
 }

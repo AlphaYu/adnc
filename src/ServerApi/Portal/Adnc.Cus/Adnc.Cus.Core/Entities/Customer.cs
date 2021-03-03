@@ -1,26 +1,20 @@
-﻿using Adnc.Core.Shared.Entities;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using Adnc.Core.Shared.Entities;
 
 namespace Adnc.Cus.Core.Entities
 {
-    [Table("Customer")]
     [Description("客户表")]
     public class Customer : EfFullAuditEntity
     {
-        [Required]
-        [StringLength(16)]
         public string Account { get; set; }
 
-        [Required]
-        [StringLength(16)]
         public string Nickname { get; set; }
 
-        [Required]
-        [StringLength(16)]
         public string Realname { get; set; }
 
-        public virtual CusFinance CusFinance { get; set; }
+        public virtual CustomerFinance FinanceInfo { get; set; }
+
+        public virtual ICollection<CustomerTransactionLog> TransactionLogs { get; set; }
     }
 }

@@ -27,6 +27,40 @@
             订单创建事件数据
             </summary>
         </member>
+        <member name="T:Adnc.Whse.Application.Services.IWarehouseAppService">
+            <summary>
+            仓储管理
+            </summary>
+        </member>
+        <member name="M:Adnc.Whse.Application.Services.IWarehouseAppService.CreateAsync(Adnc.Whse.Application.Dtos.WarehouseCreationDto)">
+            <summary>
+            创建仓储
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Adnc.Whse.Application.Services.IWarehouseAppService.AllocateShelfToProductAsync(System.Int64,Adnc.Whse.Application.Dtos.WarehouseAllocateToProductDto)">
+            <summary>
+            分配仓储给商品
+            </summary>
+            <param name="shelfId"></param>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Adnc.Whse.Application.Services.IWarehouseAppService.BlockQtyAsync(Adnc.Whse.Application.Dtos.WarehouseBlockQtyDto)">
+            <summary>
+            锁定商品库存
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Adnc.Whse.Application.Services.IWarehouseAppService.GetPagedAsync(Adnc.Whse.Application.Dtos.WarehouseSearchDto)">
+            <summary>
+            分页列表
+            </summary>
+            <param name="search"></param>
+            <returns></returns>
+        </member>
         <member name="T:Adnc.Whse.Application.Services.ProductAppService">
             <summary>
             商品管理
@@ -90,6 +124,42 @@
         <member name="M:Adnc.Whse.Application.Services.ProductAppService.GetListAsync(Adnc.Whse.Application.Dtos.ProductSearchListDto)">
             <summary>
             商品列表
+            </summary>
+            <param name="search"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Adnc.Whse.Application.Services.WarehouseAppService">
+            <summary>
+            仓储管理
+            </summary>
+        </member>
+        <member name="M:Adnc.Whse.Application.Services.WarehouseAppService.#ctor(Adnc.Whse.Domain.Services.WarehouseManager,AutoMapper.IMapper,Adnc.Core.Shared.IRepositories.IEfBasicRepository{Adnc.Whse.Domain.Entities.Warehouse},Adnc.Core.Shared.IRepositories.IEfBasicRepository{Adnc.Whse.Domain.Entities.Product})">
+            <summary>
+            构造函数
+            </summary>
+            <param name="warehouseManager"></param>
+            <param name="mapper"></param>
+            <param name="warehouseRepo"></param>
+            <param name="productRepo"></param>
+        </member>
+        <member name="M:Adnc.Whse.Application.Services.WarehouseAppService.CreateAsync(Adnc.Whse.Application.Dtos.WarehouseCreationDto)">
+            <summary>
+            创建仓储
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Adnc.Whse.Application.Services.WarehouseAppService.AllocateShelfToProductAsync(System.Int64,Adnc.Whse.Application.Dtos.WarehouseAllocateToProductDto)">
+            <summary>
+            分配仓储给商品
+            </summary>
+            <param name="warehouseId"></param>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Adnc.Whse.Application.Services.WarehouseAppService.GetPagedAsync(Adnc.Whse.Application.Dtos.WarehouseSearchDto)">
+            <summary>
+            分页列表
             </summary>
             <param name="search"></param>
             <returns></returns>
