@@ -2,9 +2,6 @@
 <a href="https://github.com/AlphaYu/Adnc/blob/master/LICENSE">
 <img alt="GitHub license" src="https://img.shields.io/github/license/AlphaYu/Adnc"/>
 </a>
-<a href="https://github.com/AlphaYu/Adnc/issues">
-<img alt="GitHub issues" src="https://img.shields.io/github/issues/AlphaYu/Adnc"/>
-</a>
 <a href="https://github.com/AlphaYu/Adnc/stargazers">
 <img alt="GitHub stars" src="https://img.shields.io/github/stars/AlphaYu/Adnc"/>
 </a>
@@ -14,16 +11,25 @@
 </div>
 
 # <div align="center">![Adnc是一个微服务开发框架 代码改变世界 开源活跃社区](https://aspdotnetcore.net/wp-content/uploads/2020/12/adnc-homepage-logo-3.webp)</div>
-&ensp;&ensp;&ensp;&ensp;<a target="_blank" title="一个轻量级的.Net Core微服务开发框架" href="https://aspdotnetcore.net">Adnc</a>是一个轻量级的<a target="_blank" href="https://github.com/dotnet/core">.Net Core</a>微服务快速开发框架，同时也可以应用于单体架构系统的开发。框架基于JWT认证授权、集成了一系列微服务配套组件，基于Maxscale实现了读写分离。代码简洁、易上手、学习成本低、开箱即用。<br/><br/>
-&ensp;&ensp;&ensp;&ensp;框架前端基于<a target="_blank" href="https://github.com/vuejs/vue">Vue</a>、后端服务基于<a target="_blank" href="https://github.com/dotnet/core">.Net Core 3.1</a>搭建，也是一个前后端分离的框架。webapi遵循RESTful风格，框架包含用户、角色、权限、部门管理；字典、配置管理；登录、审计、异常日志管理等基础的后台管理模块。<br/><br/>
-&ensp;&ensp;&ensp;&ensp;框架对配置中心、依赖注入、日志、缓存、模型映射、认证/授权、仓储、服务注册/发现、健康检测、性能与链路监测、队列、ORM、EventBus等模块进行更高一级的自动化封装，更易于开发<a target="_blank" href="https://github.com/dotnet/aspnetcore">Asp.NET Core</a>项目。<br/>
+&ensp;&ensp;&ensp;&ensp;<a target="_blank" title="一个轻量级的.Net Core微服务开发框架" href="https://aspdotnetcore.net">Adnc</a>是一个轻量级的<a target="_blank" href="https://github.com/dotnet/core">.Net Core</a>微服务开发框架，同时也适用于单体架构系统的开发。框架支持传统三层与DDD架构开发模式、集成了一系列主流稳定的微服务配套组件，基于Maxscale实现了读写分离。代码简洁、易上手、学习成本低、开箱即用。<br/><br/>
+&ensp;&ensp;&ensp;&ensp;一个前后端分离的架构，前端基于<a target="_blank" href="https://github.com/vuejs/vue">Vue</a>、后端服务基于<a target="_blank" href="https://github.com/dotnet/core">.Net Core 3.1</a>搭建。Webapi遵循RESTful风格，框架对配置中心、依赖注入、日志、缓存、模型映射、认证/授权、仓储、服务注册/发现、健康检测、性能与链路监测、队列、ORM、EventBus等模块进行更高一级的自动化封装，更易于开发<a target="_blank" href="https://github.com/dotnet/aspnetcore">Asp.NET Core</a>项目。<br/><br/>
+
+| | 名称 | 描述 |
+| ------ | ---- | ---------------------------|
+| 01 | Adnc.Usr | 用户中心服务，系统支撑服务，该服务采用传统三层模式架构。实现了用户管理、角色管理、权限管理、菜单管理、组织架构管理。 |
+| 02 | Adnc.Maint | 运维中心服务，系统支撑服务，该服务采用传统三层模式架构。实现了登录日志、审计日志、异常日志、字典管理、配置参数管理。 |
+| 03 | Adnc.Cust | 客户中心服务，Demo，该服务采用传统三层模式架构。|
+| 04 | Adnc.Ord | 订单中心服务，Demo，该服务采用DDD模式架构。|
+| 05 | Adnc.Whse | 仓储中心服务，Demo，该服务采用DDD模式架构。|
+
+## 
 
 ## 演示
 - <a href="http://adnc.aspdotnetcore.net" target="_blank">http://adnc.aspdotnetcore.net</a>
 
 ## GitHub
 - <a href="https://github.com/alphayu/adnc" target="_blank">https://github.com/alphayu/adnc</a>
-- 给个星星⭐️，如果您喜欢这个项目或者它帮助到了您, 请给个 Star~
+- 开源不易，如果您喜欢这个项目, 请给个星星⭐️。
 
 ## 文档
 #### 如何快速跑起来
