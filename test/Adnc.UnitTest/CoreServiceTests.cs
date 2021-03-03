@@ -50,7 +50,7 @@ namespace Adnc.UnitTest
         {
             var id = IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId);
             var customer = new Customer() { Id = id, Account = "alpha2008", Nickname = IdGenerater.GetNextId().ToString(), Realname = IdGenerater.GetNextId().ToString() };
-            var cusFinance = new CusFinance { Account = "alpha2008", Id = id, Balance = 0 };
+            customer.FinanceInfo = new CustomerFinance { Account = "alpha2008", Id = id, Balance = 0 };
             /*
                 set session transaction isolation level repeatable read
                 start transaction
@@ -60,7 +60,7 @@ namespace Adnc.UnitTest
                 VALUES (122339207606833152, 'alpha2008', 0, 1600000000000, timestamp('2020-12-03 14:12:20.756977'), NULL, NULL)
                 commit
              */ 
-            await _cusManger.RegisterAsync(customer, cusFinance);
+            await _cusManger.RegisterAsync(customer);
 
             bool exists = await _cusRsp.AnyAsync(c => c.Id == id);
             Assert.True(exists);

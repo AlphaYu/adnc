@@ -22,8 +22,8 @@ namespace Adnc.UnitTest
         private readonly IUnitOfWork _unitOfWork;
         private readonly UserContext _userContext;
         private readonly IEfRepository<Customer> _cusRsp;
-        private readonly IEfRepository<CusFinance> _cusFinanceRsp;
-        private readonly IEfRepository<CusTransactionLog> _cusLogsRsp;
+        private readonly IEfRepository<CustomerFinance> _cusFinanceRsp;
+        private readonly IEfRepository<CustomerTransactionLog> _cusLogsRsp;
         private readonly AdncDbContext _dbContext;
 
         private EfCoreDbcontextFixture _fixture;
@@ -35,8 +35,8 @@ namespace Adnc.UnitTest
             _unitOfWork = _fixture.Container.Resolve<IUnitOfWork>();
             _userContext = _fixture.Container.Resolve<UserContext>();
             _cusRsp = _fixture.Container.Resolve<IEfRepository<Customer>>();
-            _cusFinanceRsp = _fixture.Container.Resolve<IEfRepository<CusFinance>>();
-            _cusLogsRsp = _fixture.Container.Resolve<IEfRepository<CusTransactionLog>>();
+            _cusFinanceRsp = _fixture.Container.Resolve<IEfRepository<CustomerFinance>>();
+            _cusLogsRsp = _fixture.Container.Resolve<IEfRepository<CustomerTransactionLog>>();
             _dbContext = _fixture.Container.Resolve<AdncDbContext>();
 
             Initialize().Wait();
@@ -106,7 +106,7 @@ namespace Adnc.UnitTest
             var account = "alpha008";
             var customer = new Customer() { Id = id, Account = account, Nickname = "招财猫", Realname = "张发财" };
             var customer2 = new Customer() { Id = id2, Account = account, Nickname = "招财猫02", Realname = "张发财02" };
-            var cusFinance = new CusFinance { Account = account, Id = id, Balance = 0 };
+            var cusFinance = new CustomerFinance { Account = account, Id = id, Balance = 0 };
 
             var newNickName = "招财猫008";
             var newRealName = "张发财008";
@@ -129,7 +129,7 @@ namespace Adnc.UnitTest
 
 
                 cusFinance.Balance = newBalance;
-                await _cusFinanceRsp.UpdateAsync(cusFinance, UpdatingProps<CusFinance>(c => c.Balance));
+                await _cusFinanceRsp.UpdateAsync(cusFinance, UpdatingProps<CustomerFinance>(c => c.Balance));
                 var financeFromDb = await _cusRsp.FetchAsync(c => c, x => x.Id == cusFinance.Id);
                 Assert.Equal(newBalance, cusFinance.Balance);
 
@@ -169,7 +169,7 @@ namespace Adnc.UnitTest
             var account = "alpha008";
             var customer = new Customer() { Id = id, Account = account, Nickname = "招财猫", Realname = "张发财" };
             var customer2 = new Customer() { Id = id2, Account = account, Nickname = "招财猫02", Realname = "张发财02" };
-            var cusFinance = new CusFinance { Account = account, Id = id, Balance = 0 };
+            var cusFinance = new CustomerFinance { Account = account, Id = id, Balance = 0 };
 
             var newNickName = "招财猫008";
             var newRealName = "张发财008";
@@ -187,7 +187,7 @@ namespace Adnc.UnitTest
                 customer.Nickname = newNickName;
                 await _cusRsp.UpdateAsync(customer,UpdatingProps<Customer>(c => c.Nickname));
                 cusFinance.Balance = newBalance;
-                await _cusFinanceRsp.UpdateAsync(cusFinance, UpdatingProps<CusFinance>(c => c.Balance));
+                await _cusFinanceRsp.UpdateAsync(cusFinance, UpdatingProps<CustomerFinance>(c => c.Balance));
 
                 //update batchs         
                 await _cusRsp.UpdateRangeAsync(x => x.Id == id, c => new Customer { Realname = newRealName });
@@ -335,9 +335,9 @@ namespace Adnc.UnitTest
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        private async Task<CusFinance> InsertCusFinance(long id)
+        private async Task<CustomerFinance> InsertCusFinance(long id)
         {
-            var cusFinance = new CusFinance { Account = "alpha2008", Id = id, Balance = 0 };
+            var cusFinance = new CustomerFinance { Account = "alpha2008", Id = id, Balance = 0 };
             await _cusFinanceRsp.InsertAsync(cusFinance);
             return cusFinance;
         }
