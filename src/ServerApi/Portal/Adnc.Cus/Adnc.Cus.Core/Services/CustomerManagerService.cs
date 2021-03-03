@@ -75,24 +75,52 @@ namespace Adnc.Cus.Core.Services
             await _cusTransactionLogRepo.UpdateAsync(transLog);
         }
 
-        [UnitOfWork(SharedToCap =true)]
+        [UnitOfWork(SharedToCap = true)]
         public virtual async Task ProcessPayingAsync(long transactionLogId, long customerId, decimal amount)
         {
-            var transLog = await _cusTransactionLogRepo.FindAsync(transactionLogId, noTracking: false);
-            if (transLog == null || transLog.ExchageStatus != ExchageStatusEnum.Processing)
+            bool paidResult = false;
+
+            var transLog = await _cusTransactionLogRepo.FindAsync(transactionLogId);
+            if (transLog != null)
                 return;
+
+            var account = await _cusRepo.FetchAsync(x => x.Account, x => x.Id == customerId);
 
             var finance = await _cusFinaceRepo.FindAsync(customerId, noTracking: false);
             var originalBalance = finance.Balance;
-            var newBalance = originalBalance + amount;
+            var newBalance = originalBalance - amount;
 
-            finance.Balance = newBalance;
-            await _cusFinaceRepo.UpdateAsync(finance);
+            if (newBalance >= 0)
+            {
+                finance.Balance = newBalance;
+                await _cusFinaceRepo.UpdateAsync(finance);
 
-            transLog.ExchageStatus = ExchageStatusEnum.Finished;
-            transLog.ChangingAmount = originalBalance;
-            transLog.ChangedAmount = newBalance;
-            await _cusTransactionLogRepo.UpdateAsync(transLog);
+                transLog = new CustomerTransactionLog
+                {
+                    Id = transactionLogId
+                    ,
+                    CustomerId = customerId
+                    ,
+                    Account = account
+                    ,
+                    ChangingAmount = originalBalance
+                    ,
+                    Amount = 0 - amount
+                    ,
+                    ChangedAmount = newBalance
+                    ,
+                    ExchangeType = ExchangeTypeEnum.Order
+                    ,
+                    ExchageStatus = ExchageStatusEnum.Finished
+
+                };
+
+                await _cusTransactionLogRepo.InsertAsync(transLog);
+
+                paidResult = true;
+            }
+
+            //_eventPublisher.PublishAsync()
         }
     }
 }

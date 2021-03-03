@@ -17,6 +17,13 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="logs\**" />
+	  <Content Remove="logs\**" />
+	  <EmbeddedResource Remove="logs\**" />
+	  <None Remove="logs\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<Compile Remove="Controllers\AuthController.cs" />
 		<Compile Remove="WebUtiliy\JwtTokenUtil.cs" />
 	</ItemGroup>

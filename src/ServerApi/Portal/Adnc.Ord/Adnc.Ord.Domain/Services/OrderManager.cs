@@ -92,7 +92,7 @@ namespace Adnc.Ord.Domain.Services
 
             //发布领域事件，通知客户中心扣款(Demo是从余额中扣款)
             var eventId = IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId);
-            var eventData = new OrderPaidEvent.EventData() { OrderId = order.Id, Amount = order.Amount };
+            var eventData = new OrderPaidEvent.EventData() { OrderId = order.Id, CustomerId = order.CustomerId, Amount = order.Amount };
             var eventSource = System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.FullName;
             await _eventPubliser.PublishAsync(new OrderPaidEvent(eventId, eventData, eventSource));
         }
