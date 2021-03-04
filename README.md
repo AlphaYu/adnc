@@ -18,20 +18,20 @@
         <th colspan="4">Adnc包含的微服务介绍</th>
     </tr>
     <tr>
-        <td>Adnc.Usr</td>
-        <td>用户中心服务</td>
-        <td>经典三层</td>        
+        <td width="40px">Adnc.Usr</td>
+        <td width="100px">用户中心</td>
+        <td width="100px">经典三层</td>        
         <td>系统支撑服务，实现了用户管理、角色管理、权限管理、菜单管理、组织架构管理。</td>
     </tr>
     <tr>
         <td>Adnc.Maint</td>
-        <td>运维中心服务</td>
+        <td>运维中心</td>
         <td>经典三层</td>       
         <td>系统支撑服务，实现了登录日志、审计日志、异常日志、字典管理、配置参数管理。</td>
     </tr>
     <tr>
         <td>Adnc.Cust</td>
-        <td>客户中心服务</td>
+        <td>客户中心</td>
         <td>经典三层</td>       
         <td rowspan="3">三个demos，完整的演示了如何使用服务注册/发现、配置中心、仓储、Refit调用微服务、异步消息队列、EventBus、领域事件的发布订阅、领域服务/聚合根/实体/值对象设计、组件依赖注入、异常拦截、日志拦截、缓存配置、DTO参数校验、RESTful规范的API设计、模型映射、工作单元、健康检测配置、性能与链路监测配置等。
         </td>
@@ -39,14 +39,14 @@
     </tr>
         <tr>
         <td>Adnc.Ord</td>
-        <td>订单中心服务</td>
-        <td>DDD</td>
+        <td>订单中心</td>
+        <td>DDD架构</td>
     </tr>
     </tr>
         <tr>
         <td>Adnc.Whse</td>
-        <td>仓储中心服务</td>
-        <td>DDD</td>       
+        <td>仓储中心</td>
+        <td>DDD架构</td>       
     </tr>
 </table>
 
