@@ -228,7 +228,7 @@
 ## 下一步计划
   - 完善框架文档。
   - 优化现有功能
-  - 采用DDD理念改造Core层
+  - 开发微服务项目生成工具
   - 集成<a href="https://github.com/quartznet/quartznet" target="_blank">Quartz.Net</a>实现框架计划调度功能。
 
 ## 问题交流
