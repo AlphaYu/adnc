@@ -22,8 +22,8 @@ namespace Adnc.UnitTests
         private readonly IUnitOfWork _unitOfWork;
         private readonly UserContext _userContext;
         private readonly IEfRepository<Customer> _cusRsp;
-        private readonly IEfRepository<CusFinance> _cusFinanceRsp;
-        private readonly IEfRepository<CusTransactionLog> _cusLogsRsp;
+        private readonly IEfRepository<CustomerFinance> _cusFinanceRsp;
+        private readonly IEfRepository<CustomerTransactionLog> _cusLogsRsp;
         private MaxscaleDbcontextFixture _fixture;
 
         public MaxscaleTests(MaxscaleDbcontextFixture fixture, ITestOutputHelper output)
@@ -33,8 +33,8 @@ namespace Adnc.UnitTests
             _unitOfWork = _fixture.Container.Resolve<IUnitOfWork>();
             _userContext = _fixture.Container.Resolve<UserContext>();
             _cusRsp = _fixture.Container.Resolve<IEfRepository<Customer>>();
-            _cusFinanceRsp = _fixture.Container.Resolve<IEfRepository<CusFinance>>();
-            _cusLogsRsp = _fixture.Container.Resolve<IEfRepository<CusTransactionLog>>();
+            _cusFinanceRsp = _fixture.Container.Resolve<IEfRepository<CustomerFinance>>();
+            _cusLogsRsp = _fixture.Container.Resolve<IEfRepository<CustomerTransactionLog>>();
 
             Initialize();
         }
@@ -193,7 +193,7 @@ namespace Adnc.UnitTests
             {
                 var id = IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId);
                 var customer = new Customer() { Id = id, Account = "alpha2008", Nickname = IdGenerater.GetNextId().ToString(), Realname = IdGenerater.GetNextId().ToString() };
-                customer.CusFinance = new CusFinance { Account = "alpha2008", Id = id, Balance = 0 };
+                customer.FinanceInfo = new CustomerFinance { Account = "alpha2008", Id = id, Balance = 0 };
                 list.Add(customer);
             }
             await _cusRsp.InsertRangeAsync(list);
@@ -218,9 +218,9 @@ namespace Adnc.UnitTests
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        private async Task<CusFinance> InsertCusFinance(long id)
+        private async Task<CustomerFinance> InsertCusFinance(long id)
         {
-            var cusFinance = new CusFinance { Account = "alpha2008", Id = id, Balance = 0 };
+            var cusFinance = new CustomerFinance { Account = "alpha2008", Id = id, Balance = 0 };
             await _cusFinanceRsp.InsertAsync(cusFinance);
             return cusFinance;
         }

@@ -12,6 +12,7 @@ namespace Adnc.Cus.Application
         {
             CreateMap(typeof(IPagedModel<>), typeof(PageModelDto<>)).ForMember("XData", opt => opt.Ignore());
             CreateMap<CustomerRegisterDto, Customer>();
+            CreateMap<Customer, CustomerDto>();
         }
     }
 }

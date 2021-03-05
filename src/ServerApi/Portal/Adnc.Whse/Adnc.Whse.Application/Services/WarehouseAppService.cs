@@ -4,7 +4,6 @@ using AutoMapper;
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Infr.Common.Extensions;
 using Adnc.Application.Shared.Dtos;
-using Adnc.Core.Shared.Interceptors;
 using Adnc.Application.Shared.Services;
 using Adnc.Whse.Domain.Entities;
 using Adnc.Whse.Domain.Services;
@@ -12,6 +11,9 @@ using Adnc.Whse.Application.Dtos;
 
 namespace Adnc.Whse.Application.Services
 {
+    /// <summary>
+    /// 仓储管理
+    /// </summary>
     public class WarehouseAppService : AppService, IWarehouseAppService
     {
         private readonly IMapper _mapper;
@@ -19,6 +21,13 @@ namespace Adnc.Whse.Application.Services
         private readonly IEfBasicRepository<Product> _productRepo;
         private readonly WarehouseManager _warehouseManager;
 
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="warehouseManager"></param>
+        /// <param name="mapper"></param>
+        /// <param name="warehouseRepo"></param>
+        /// <param name="productRepo"></param>
         public WarehouseAppService(WarehouseManager warehouseManager
             , IMapper mapper
             , IEfBasicRepository<Warehouse> warehouseRepo
@@ -30,6 +39,11 @@ namespace Adnc.Whse.Application.Services
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// 创建仓储
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         public async Task<WarehouseDto> CreateAsync(WarehouseCreationDto input)
         {
             var warehouse = await _warehouseManager.CreateAsync(input.PositionCode, input.PositionDescription);
@@ -39,7 +53,12 @@ namespace Adnc.Whse.Application.Services
             return _mapper.Map<WarehouseDto>(warehouse);
         }
 
-        [UnitOfWork(SharedToCap = true)]
+        /// <summary>
+        /// 分配仓储给商品
+        /// </summary>
+        /// <param name="warehouseId"></param>
+        /// <param name="input"></param>
+        /// <returns></returns>
         public async Task<WarehouseDto> AllocateShelfToProductAsync(long warehouseId, WarehouseAllocateToProductDto input)
         {
             var warehouse = await _warehouseRepo.GetAsync(warehouseId);
@@ -52,6 +71,11 @@ namespace Adnc.Whse.Application.Services
             return _mapper.Map<WarehouseDto>(warehouse);
         }
 
+        /// <summary>
+        /// 分页列表
+        /// </summary>
+        /// <param name="search"></param>
+        /// <returns></returns>
         public async Task<PageModelDto<WarehouseDto>> GetPagedAsync(WarehouseSearchDto search)
         {
             var total = await _warehouseRepo.CountAsync(x => true);

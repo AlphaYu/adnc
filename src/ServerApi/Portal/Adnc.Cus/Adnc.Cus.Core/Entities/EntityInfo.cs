@@ -9,8 +9,8 @@ namespace Adnc.Cus.Core.Entities
         private static readonly ConcurrentBag<Type> bag = new ConcurrentBag<Type>()
         {
              typeof(Customer),
-             typeof(CusFinance),
-             typeof(CusTransactionLog)
+             typeof(CustomerFinance),
+             typeof(CustomerTransactionLog)
         };
 
         public ConcurrentBag<Type> GetEntities()

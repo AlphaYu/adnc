@@ -8,3 +8,4 @@ node_modules
 /README.html
 /src/ClientApp/dist
 *.log
+logs

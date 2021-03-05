@@ -15,6 +15,9 @@ namespace Adnc.Ord.Domain.Events
         public class EventData
         {
             public long OrderId { get; set; }
+
+            public long CustomerId { get; set; }
+
             public decimal Amount { get; set; }
         }
     }

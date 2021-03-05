@@ -15,4 +15,9 @@ namespace Adnc.Application.Shared.Dtos
         /// </summary>
         public DateTime? CreateTime { get; set; }
     }
+
+    [Serializable]
+    public abstract class OutputBaseAuditDto : OutputBaseAuditDto<long>
+    {
+    }
 }
