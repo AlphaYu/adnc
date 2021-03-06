@@ -52,6 +52,7 @@ namespace Adnc.UnitTest.Fixtures
                 .UseMySql(dbstring, mySqlOptions => {
                     mySqlOptions.ServerVersion(new ServerVersion(new Version(10, 5, 4), ServerType.MariaDb));
                     mySqlOptions.CharSet(CharSet.Utf8Mb4);
+                    mySqlOptions.MinBatchSize(4);
                 })
                 .Options;
             }).InstancePerLifetimeScope();
@@ -62,7 +63,7 @@ namespace Adnc.UnitTest.Fixtures
                             .As<IEntityInfo>()
                             .InstancePerLifetimeScope();
 
-            //注册DbContext
+            //注册DbContext2
             containerBuilder.RegisterType<AdncDbContext>()
                             .InstancePerLifetimeScope();
 
