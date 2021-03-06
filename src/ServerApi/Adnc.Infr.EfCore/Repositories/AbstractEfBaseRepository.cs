@@ -7,7 +7,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Dapper;
-using Z.EntityFramework.Plus;
 using Adnc.Core.Shared;
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Core.Shared.Entities;

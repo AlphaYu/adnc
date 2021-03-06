@@ -54,8 +54,18 @@ namespace Adnc.Infr.EfCore
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            this.SetAuditFields();
-            return base.SaveChangesAsync(cancellationToken);
+            var changedEntities =  this.SetAuditFields();
+
+            //没有开启事务的情况下,保证主从表插入，主从表更新开启事务。
+            if (changedEntities > 1 && !_unitOfWorkStatus.IsStartingUow)
+                Database.AutoTransactionsEnabled = true;
+
+            var result = base.SaveChangesAsync(cancellationToken);
+
+            if (Database.AutoTransactionsEnabled)
+                Database.AutoTransactionsEnabled = false;
+
+            return result;
         }
 
         //public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
@@ -64,11 +74,12 @@ namespace Adnc.Infr.EfCore
         //    return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
         //}
 
-        private void SetAuditFields()
+        private int SetAuditFields()
         {
+            var allEntities = ChangeTracker.Entries<Entity>();
 
-            var allEntities = ChangeTracker.Entries<IBasicAuditInfo>().Where(x => x.State == EntityState.Added);
-            foreach (var entry in allEntities)
+            var allBasicAuditEntities = ChangeTracker.Entries<IBasicAuditInfo>().Where(x => x.State == EntityState.Added);
+            foreach (var entry in allBasicAuditEntities)
             {
                 var entity = entry.Entity;
                 {
@@ -77,8 +88,8 @@ namespace Adnc.Infr.EfCore
                 }
             }
 
-            var auditEntities = ChangeTracker.Entries<IFullAuditInfo>().Where(x => x.State == EntityState.Modified);
-            foreach (var entry in auditEntities)
+            var auditFullEntities = ChangeTracker.Entries<IFullAuditInfo>().Where(x => x.State == EntityState.Modified);
+            foreach (var entry in auditFullEntities)
             {
                 var entity = entry.Entity;
                 {
@@ -86,6 +97,8 @@ namespace Adnc.Infr.EfCore
                     entity.ModifyTime = DateTime.Now;
                 }
             }
+
+            return allEntities.Count();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
