@@ -1,10 +1,11 @@
 ﻿using System;
-using System.Threading.Tasks;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Linq.Expressions;
+using System.Collections.Generic;
 using Xunit;
 using Autofac;
 using Xunit.Abstractions;
-using Adnc.UnitTest.Base;
 using Adnc.UnitTest.Fixtures;
 using Adnc.Core.Shared;
 using Adnc.Cus.Core.Entities;
@@ -12,8 +13,6 @@ using Adnc.Core.Shared.IRepositories;
 using Adnc.Infr.Common;
 using Adnc.Infr.Common.Helper;
 using Adnc.Infr.EfCore;
-using System.Linq.Expressions;
-using System.Collections.Generic;
 
 namespace Adnc.UnitTest
 {
@@ -75,7 +74,7 @@ namespace Adnc.UnitTest
                 await _customerRsp.DeleteRangeAsync(x => x.Id <= 10000);
 
                 var id = IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId);
-                var customer = new Customer() { Id = id, Account = account, Nickname = "招财猫", Realname = "张发财" };
+                var customer = new Customer() { Id = id, Account = account, Nickname = "招财猫", Realname = "张发财", FinanceInfo = new CustomerFinance { Id = id, Account = account, Balance = 0 } };
 
                 _dbContext.Add<Customer>(customer);
 
@@ -83,7 +82,7 @@ namespace Adnc.UnitTest
 
 
                 var id2 = IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId);
-                var customer2 = new Customer() { Id = id2, Account = account, Nickname = "招财猫02", Realname = "张发财02" };
+                var customer2 = new Customer() { Id = id2, Account = account, Nickname = "招财猫02", Realname = "张发财02", FinanceInfo = new CustomerFinance { Id = id2, Account = account, Balance = 0 } };
 
                 _dbContext.Add<Customer>(customer2);
                 //_unitOfWork.Commit();
@@ -93,6 +92,40 @@ namespace Adnc.UnitTest
                 await db.CommitAsync();
             }
 
+        }
+
+        [Fact]
+        public async Task TestAutoTransactions()
+        {
+            var defaultAutoTransaction = _dbContext.Database.AutoTransactionsEnabled;
+            if (defaultAutoTransaction == false)
+                _dbContext.Database.AutoTransactionsEnabled = true;
+
+            var id = IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId);
+            var radmon = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
+            var cusotmer = new Customer
+            {
+                Id = id
+                ,
+                Account = $"a{radmon}"
+                ,
+                Realname = $"r{radmon}"
+                ,
+                Nickname = $"n{radmon}"
+            };
+
+            _dbContext.Add(cusotmer);
+
+            //不受自动事务控制
+            await _customerRsp.DeleteAsync(10000);
+
+            //不受自动事务控制
+            await _customerRsp.DeleteRangeAsync(x => x.Id == id);
+
+            _dbContext.SaveChanges();
+
+            if (defaultAutoTransaction == false)
+                _dbContext.Database.AutoTransactionsEnabled = false;
         }
 
         [Fact]
@@ -297,6 +330,22 @@ namespace Adnc.UnitTest
             newCus = await _customerRsp.FindAsync(id);
             Assert.Equal("没被跟踪02", newCus.Realname);
             Assert.Equal("新昵称", newCus.Nickname);
+        }
+
+        [Fact]
+        public async void TestUpdateRange()
+        {
+            //batch hand delete
+            var cus1 = await this.InsertCustomer();
+            var cus2 = await this.InsertCustomer();
+            var total = await _customerRsp.CountAsync(c => c.Id == cus1.Id || c.Id == cus2.Id);
+            Assert.Equal(2, total);
+
+            await _customerRsp.UpdateRangeAsync(c => c.Id == cus1.Id || c.Id == cus2.Id, x => new Customer { Realname = "批量更新" });
+            var result2 = await _customerRsp.QueryAsync<Customer>("SELECT * FROM Customer WHERE ID in @ids", new { ids = new[] { cus1.Id, cus2.Id } });
+            Assert.NotEmpty(result2);
+            Assert.Equal("批量更新", result2.FirstOrDefault().Realname);
+            Assert.Equal("批量更新", result2.LastOrDefault().Realname);
         }
 
         /// <summary>
