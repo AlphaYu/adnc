@@ -37,6 +37,12 @@ namespace Adnc.Cus.Core.Services
             _cusTransactionLogRepo = cusTransactionLogRepo;
         }
 
+        /// <summary>
+        /// 拦截器单元测试使用
+        /// </summary>
+        /// <param name="customer"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         [UnitOfWork]
         public virtual async Task RegisterAsync(Customer customer, CancellationToken cancellationToken = default)
         {

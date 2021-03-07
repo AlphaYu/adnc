@@ -63,8 +63,7 @@ namespace Adnc.Cus.Application.Services
                 Id = customer.Id
             };
 
-            await _cusManagerService.RegisterAsync(customer);
-            //await _customerRepo.InsertAsync(customer);
+            await _customerRepo.InsertAsync(customer);
 
             var dto = _mapper.Map<CustomerDto>(customer);
             return dto;
