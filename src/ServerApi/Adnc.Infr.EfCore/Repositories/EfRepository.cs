@@ -101,6 +101,12 @@ namespace Adnc.Infr.EfCore.Repositories
             //获取实体是否被跟踪
             var entity = DbContext.Set<TEntity>().Local.FirstOrDefault(x => x.Id == keyValue);
 
+            //if (entity == null)
+            //    entity = new TEntity() { Id = keyValue };
+
+            //DbContext.Remove(entity);
+            //return await DbContext.SaveChangesAsync();
+
             //如果实体被跟踪，调用Ef原生方法删除
             if (entity != null)
             {

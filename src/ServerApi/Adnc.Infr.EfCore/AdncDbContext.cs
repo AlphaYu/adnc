@@ -54,8 +54,23 @@ namespace Adnc.Infr.EfCore
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            this.SetAuditFields();
-            return base.SaveChangesAsync(cancellationToken);
+            var changedEntities = this.SetAuditFields();
+
+            //没有自动开启事务的情况下,保证主从表插入，主从表更新开启事务。
+            var isManualTransaction = false;
+            if (!Database.AutoTransactionsEnabled && !_unitOfWorkStatus.IsStartingUow && changedEntities > 1)
+            {
+                isManualTransaction = true;
+                Database.AutoTransactionsEnabled = true;
+            }
+
+            var result = base.SaveChangesAsync(cancellationToken);
+
+            //如果手工开启了自动事务，用完后关闭。
+            if (isManualTransaction)
+                Database.AutoTransactionsEnabled = false;
+
+            return result;
         }
 
         //public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
@@ -64,11 +79,12 @@ namespace Adnc.Infr.EfCore
         //    return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
         //}
 
-        private void SetAuditFields()
+        private int SetAuditFields()
         {
+            var allEntities = ChangeTracker.Entries<Entity>();
 
-            var allEntities = ChangeTracker.Entries<IBasicAuditInfo>().Where(x => x.State == EntityState.Added);
-            foreach (var entry in allEntities)
+            var allBasicAuditEntities = ChangeTracker.Entries<IBasicAuditInfo>().Where(x => x.State == EntityState.Added);
+            foreach (var entry in allBasicAuditEntities)
             {
                 var entity = entry.Entity;
                 {
@@ -77,8 +93,8 @@ namespace Adnc.Infr.EfCore
                 }
             }
 
-            var auditEntities = ChangeTracker.Entries<IFullAuditInfo>().Where(x => x.State == EntityState.Modified);
-            foreach (var entry in auditEntities)
+            var auditFullEntities = ChangeTracker.Entries<IFullAuditInfo>().Where(x => x.State == EntityState.Modified);
+            foreach (var entry in auditFullEntities)
             {
                 var entity = entry.Entity;
                 {
@@ -86,6 +102,8 @@ namespace Adnc.Infr.EfCore
                     entity.ModifyTime = DateTime.Now;
                 }
             }
+
+            return allEntities.Count();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
