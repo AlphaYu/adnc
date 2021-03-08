@@ -73,8 +73,8 @@
 
 ## 目录结构
   - src
-    clientApp 前端项目(`Vue`)
-    serverApi 后端项目(`.NET Core 3.1`)
+    - clientApp 前端项目(`Vue`)
+    - serverApi 后端项目(`.NET Core 3.1`)
   - doc 项目相关文档(sql脚本、docker脚本、docker-compose.yaml文件)
   - tools 工具软件  
   - test 测试工程
