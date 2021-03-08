@@ -65,7 +65,8 @@ namespace Adnc.Usr.Application.Services
             user.Id = IdGenerater.GetNextId();
             user.Salt = SecurityHelper.GenerateRandomCode(5);
             user.Password = HashHelper.GetHashedString(HashType.MD5, user.Password, user.Salt);
-            await _usrManager.CreateUserAsync(user);
+            user.UserFinance = new SysUserFinance { Id = user.Id, Amount = 0.00M };
+            await _userRepository.InsertAsync(user);
 
             return user.Id;
         }

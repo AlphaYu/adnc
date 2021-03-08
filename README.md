@@ -72,13 +72,14 @@
 [请点击链接，查看详细介绍](https://github.com/AlphaYu/Adnc/wiki/%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E4%BB%93%E5%82%A8(%E4%B8%80)-%E5%9F%BA%E7%A1%80%E5%8A%9F%E8%83%BD)
 
 ## 目录结构
-  - ClientApp 前端项目(`Vue`)
-  - ServerApi 后端项目(`.NET Core 3.1`)
-  - Doc 项目相关文档(sql脚本、docker脚本、docker-compose.yaml文件)
-  - Tools 工具软件  
-  - Test 测试工程
+  - src
+    - clientApp 前端项目(`Vue`)
+    - serverApi 后端项目(`.NET Core 3.1`)
+  - doc 项目相关文档(sql脚本、docker脚本、docker-compose.yaml文件)
+  - tools 工具软件  
+  - test 测试工程
 #### ClientApp
-  - ClientApp基于<a target="_blank" href="https://github.com/PanJiaChen/vue-element-admin">Vue-Element-Admin</a>以及<a target="_blank" href="https://github.com/enilu/web-flash">Web-Flash</a>搭建，感谢两位作者。
+  - clientApp基于<a target="_blank" href="https://github.com/PanJiaChen/vue-element-admin">Vue-Element-Admin</a>以及<a target="_blank" href="https://github.com/enilu/web-flash">Web-Flash</a>搭建，感谢两位作者。
   - 前端主要技术栈 Vue + Vue-Router + Vuex + Axios
   - 构建步骤
     ```bash 

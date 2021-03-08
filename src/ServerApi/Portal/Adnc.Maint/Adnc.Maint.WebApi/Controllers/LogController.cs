@@ -43,7 +43,7 @@ namespace Adnc.Maint.WebApi.Controllers
         /// <param name="searchDto">查询条件</param>
         /// <returns></returns>
         [HttpGet("users/opslogs")]
-        public async Task<ActionResult<PageModelDto<OpsLogDto>>> GetUserOpsLogsPagedAsync([FromQuery] SearchPagedDto searchDto)
+        public async Task<ActionResult<PageModelDto<OpsLogDto>>> GetUserOpsLogsPagedAsync([FromQuery] LogSearchPagedDto searchDto)
         {
             var logSearchDto = new LogSearchPagedDto()
             {
