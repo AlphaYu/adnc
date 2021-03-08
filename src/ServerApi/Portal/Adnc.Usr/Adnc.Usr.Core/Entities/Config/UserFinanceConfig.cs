@@ -13,11 +13,6 @@ namespace Adnc.Usr.Core.Entities.Config
                 .HasColumnType("timestamp(3)")
                 .HasDefaultValueSql("'2000-07-01 22:33:02.559'") //默认值
                 .ValueGeneratedOnAddOrUpdate();
-
-            builder.HasOne(d => d.User)
-                .WithOne(p => p.UserFinance)
-                .HasForeignKey<SysUserFinance>(d => d.Id)
-                .OnDelete(DeleteBehavior.ClientSetNull);
         }
     }
 }

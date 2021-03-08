@@ -11,6 +11,12 @@ namespace Adnc.Usr.Core.Entities.Config
             builder.Property(d => d.IsDeleted)
                    .HasDefaultValue(false);
             builder.HasQueryFilter(d => d.IsDeleted == false);
+
+            builder.HasOne(d => d.UserFinance)
+                   .WithOne(p => p.User)
+                   .HasForeignKey<SysUserFinance>(p=>p.Id)
+                   .OnDelete(DeleteBehavior.Cascade);
+
             //一对多,SysDept没有UserId字段
             builder.HasOne(d => d.Dept)
                 .WithMany(p => p.Users)
