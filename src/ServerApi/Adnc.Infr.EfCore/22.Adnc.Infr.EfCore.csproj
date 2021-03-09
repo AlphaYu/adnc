@@ -34,6 +34,8 @@
 		<PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.2.3" />
 		<PackageReference Include="System.Threading.Tasks" Version="4.3.0" />
 		<PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="3.0.67" />
+		<PackageReference Include="DotNetCore.CAP" Version="3.0.4" />
+		<PackageReference Include="DotNetCore.CAP.MySql" Version="3.0.4" />
 	</ItemGroup>
 
 	<ItemGroup>

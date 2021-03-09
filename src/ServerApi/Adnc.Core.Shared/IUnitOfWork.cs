@@ -1,32 +1,25 @@
 ﻿using System;
 using System.Data;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Adnc.Core.Shared
 {
     public interface IUnitOfWork: IDisposable
     {
-        [Obsolete("还没有相到好的方案")]
         bool IsStartingUow { get;}
 
-        [Obsolete("还没有相到好的方案")]
-        bool SharedToCap { get; set; }
+        [Obsolete("已经废弃，请使用BeginTransaction")]
+        dynamic GetDbContextTransaction() { throw new Exception("已经放弃，请使用BeginTransaction"); }
 
-        string ProviderName { get; }
-
-        dynamic GetDbContextTransaction(IsolationLevel isolationLevel = IsolationLevel.ReadCommitted);
-
-        void BeginTransaction(IsolationLevel isolationLevel = IsolationLevel.ReadCommitted);
+        void BeginTransaction(IsolationLevel isolationLevel = IsolationLevel.RepeatableRead,bool sharedToCap = false);
 
         void Rollback();
 
         void Commit();
 
-        //IDbContextTransaction BeginTransaction();
+        Task RollbackAsync(CancellationToken cancellationToken = default(CancellationToken));
 
-        //IDbContextTransaction BeginTransaction(IsolationLevel isolationLevel);
-
-        //Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken = default);
-
-        //Task<IDbContextTransaction> BeginTransactionAsync(IsolationLevel isolationLevel, CancellationToken cancellationToken = default);
+        Task CommitAsync(CancellationToken cancellationToken = default(CancellationToken));
     }
 }

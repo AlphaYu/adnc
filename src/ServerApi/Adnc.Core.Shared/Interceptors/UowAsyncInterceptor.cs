@@ -3,7 +3,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Threading.Tasks;
 using Castle.DynamicProxy;
-using DotNetCore.CAP;
 
 namespace Adnc.Core.Shared.Interceptors
 {
@@ -13,16 +12,10 @@ namespace Adnc.Core.Shared.Interceptors
     public class UowAsyncInterceptor : IAsyncInterceptor
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly ICapPublisher _capPublisher;
-        private readonly ICapTransaction _capTransaction;
 
-        public UowAsyncInterceptor(IUnitOfWork unitOfWork
-            , ICapPublisher capPublisher = null
-            , ICapTransaction capTransaction = null)
+        public UowAsyncInterceptor(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _capPublisher = capPublisher;
-            _capTransaction = capTransaction;
         }
 
         /// <summary>
@@ -77,15 +70,18 @@ namespace Adnc.Core.Shared.Interceptors
         {
             try
             {
-                using (var trans = this.GetDbTransaction(attribute))
-                {
-                    invocation.Proceed();
-                    trans.Commit();
-                }
+                _unitOfWork.BeginTransaction(sharedToCap: attribute.SharedToCap);
+                invocation.Proceed();
+                _unitOfWork.Commit();
             }
             catch (Exception ex)
             {
+                _unitOfWork.Rollback();
                 throw new Exception(ex.Message, ex);
+            }
+            finally
+            {
+                _unitOfWork.Dispose();
             }
         }
 
@@ -99,18 +95,22 @@ namespace Adnc.Core.Shared.Interceptors
         {
             try
             {
-                using (var trans = this.GetDbTransaction(attribute))
-                {
-                    invocation.Proceed();
-                    var task = (Task)invocation.ReturnValue;
-                    await task;
+                _unitOfWork.BeginTransaction(sharedToCap: attribute.SharedToCap);
 
-                    trans.Commit();
-                }
+                invocation.Proceed();
+                var task = (Task)invocation.ReturnValue;
+                await task;
+
+                await _unitOfWork.CommitAsync();
             }
             catch (Exception ex)
             {
+                await _unitOfWork.RollbackAsync();
                 throw new Exception(ex.Message, ex);
+            }
+            finally
+            {
+                _unitOfWork.Dispose();
             }
         }
 
@@ -127,19 +127,24 @@ namespace Adnc.Core.Shared.Interceptors
 
             try
             {
-                using (var trans = this.GetDbTransaction(attribute))
-                {
-                    invocation.Proceed();
-                    var task = (Task<TResult>)invocation.ReturnValue;
-                    result = await task;
+                _unitOfWork.BeginTransaction(sharedToCap: attribute.SharedToCap);
 
-                    trans.Commit();
-                }
+                invocation.Proceed();
+                var task = (Task<TResult>)invocation.ReturnValue;
+                result = await task;
+
+                await _unitOfWork.CommitAsync();
             }
             catch (Exception ex)
             {
+                await _unitOfWork.RollbackAsync();
                 throw new Exception(ex.Message, ex);
             }
+            finally
+            {
+                _unitOfWork.Dispose();
+            }
+
             return result;
         }
 
@@ -187,27 +192,28 @@ namespace Adnc.Core.Shared.Interceptors
         /// </summary>
         /// <param name="attribute"></param>
         /// <returns></returns>
-        private dynamic GetDbTransaction(UnitOfWorkAttribute attribute)
-        {
-            dynamic trans;
-            var adncTrans = _unitOfWork.GetDbContextTransaction();
+        //[Obsolete("已经废弃")]
+        //private dynamic GetDbTransaction(UnitOfWorkAttribute attribute)
+        //{
+        //    dynamic trans;
+        //    var adncTrans = _unitOfWork.GetDbContextTransaction();
 
-            if (_capPublisher != null && attribute.SharedToCap)
-            {
-                _capPublisher.Transaction.Value = _capTransaction;
-                //var capTrans = _capPublisher.Transaction.Value.Begin(adncTrans, autoCommit: false);
-                var capTrans = _capPublisher.Transaction.Value;
-                capTrans.DbTransaction = adncTrans;
-                capTrans.AutoCommit = false;
+        //    if (_capPublisher != null && attribute.SharedToCap)
+        //    {
+        //        _capPublisher.Transaction.Value = _capTransaction;
+        //        //var capTrans = _capPublisher.Transaction.Value.Begin(adncTrans, autoCommit: false);
+        //        var capTrans = _capPublisher.Transaction.Value;
+        //        capTrans.DbTransaction = adncTrans;
+        //        capTrans.AutoCommit = false;
 
-                trans = capTrans;
-            }
-            else
-            {
-                trans = adncTrans;
-            }
+        //        trans = capTrans;
+        //    }
+        //    else
+        //    {
+        //        trans = adncTrans;
+        //    }
 
-            return trans;
-        }
+        //    return trans;
+        //}
     }
 }
