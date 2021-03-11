@@ -1,23 +1,18 @@
 ﻿using System;
-using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Reflection;
 using Adnc.Core.Shared.Entities;
 
 namespace Adnc.Usr.Core.Entities
 {
-    public class EntityInfo : IEntityInfo
+    public class EntityInfo : AbstractEntityInfo
     {
-        private static readonly ConcurrentBag<Type> bag = new ConcurrentBag<Type>()
-        { 
-             typeof(SysMenu),
-             typeof(SysRelation),
-             typeof(SysRole),
-             typeof(SysUser),
-             typeof(SysUserFinance)
-        };
-
-        public ConcurrentBag<Type> GetEntities()
+        public override (Assembly Assembly, IEnumerable<Type> Types) GetEntitiesInfo()
         {
-            return bag;
+            var assembly = this.GetType().Assembly;
+            var entityTypes = base.GetEntityTypes(assembly);
+
+            return (assembly, entityTypes);
         }
     }
 }

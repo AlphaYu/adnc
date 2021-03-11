@@ -251,6 +251,13 @@ namespace Adnc.WebApi.Shared
                     mySqlOptions.MigrationsAssembly(_serviceInfo.AssemblyName.Replace("WebApi", "Migrations"));
                     mySqlOptions.CharSet(CharSet.Utf8Mb4);
                 });
+
+                if (_env.IsDevelopment())
+                {
+                    options.EnableSensitiveDataLogging();
+                    options.EnableDetailedErrors();
+                }
+
                 //替换默认查询sql生成器,如果通过mycat中间件实现读写分离需要替换默认SQL工厂。
                 //options.ReplaceService<IQuerySqlGeneratorFactory, AdncMySqlQuerySqlGeneratorFactory>();
             });

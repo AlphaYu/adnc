@@ -1,20 +1,18 @@
 ﻿using System;
-using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Reflection;
 using Adnc.Core.Shared.Entities;
 
 namespace Adnc.Whse.Domain.Entities
 {
-    public class EntityInfo : IEntityInfo
+    public class EntityInfo : AbstractEntityInfo
     {
-        private static readonly ConcurrentBag<Type> bag = new ConcurrentBag<Type>()
+        public override (Assembly Assembly, IEnumerable<Type> Types) GetEntitiesInfo()
         {
-             typeof(Product),
-             typeof(Warehouse)
-        };
+            var assembly = this.GetType().Assembly;
+            var entityTypes = base.GetDDDObjectTypes(assembly);
 
-        public ConcurrentBag<Type> GetEntities()
-        {
-            return bag;
+            return (assembly, entityTypes);
         }
     }
 }

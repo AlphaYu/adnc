@@ -1,21 +1,18 @@
 ﻿using System;
-using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Reflection;
 using Adnc.Core.Shared.Entities;
 
 namespace Adnc.Cus.Core.Entities
 {
-    public class EntityInfo : IEntityInfo
+    public class EntityInfo : AbstractEntityInfo
     {
-        private static readonly ConcurrentBag<Type> bag = new ConcurrentBag<Type>()
+        public override (Assembly Assembly, IEnumerable<Type> Types) GetEntitiesInfo()
         {
-             typeof(Customer),
-             typeof(CustomerFinance),
-             typeof(CustomerTransactionLog)
-        };
+            var assembly = this.GetType().Assembly;
+            var entityTypes = base.GetEntityTypes(assembly);
 
-        public ConcurrentBag<Type> GetEntities()
-        {
-            return bag;
+            return (assembly, entityTypes);
         }
     }
 }

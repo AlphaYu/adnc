@@ -40,18 +40,6 @@ namespace Adnc.Infr.EfCore
             //(3)、dotnet ef database update
         }
 
-        //public override int SaveChanges()
-        //{
-        //    this.SetAuditFields();
-        //    return base.SaveChanges();
-        //}
-
-        //public override int SaveChanges(bool acceptAllChangesOnSuccess)
-        //{
-        //    this.SetAuditFields();
-        //    return base.SaveChanges(acceptAllChangesOnSuccess);
-        //}
-
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             var changedEntities = this.SetAuditFields();
@@ -72,12 +60,6 @@ namespace Adnc.Infr.EfCore
 
             return result;
         }
-
-        //public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
-        //{
-        //    this.SetAuditFields();
-        //    return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
-        //}
 
         private int SetAuditFields()
         {
@@ -108,12 +90,17 @@ namespace Adnc.Infr.EfCore
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            var entitiesTypes = _entityInfo.GetEntities();
 
-            foreach (var entityType in entitiesTypes)
+            var (Assembly, Types) = _entityInfo.GetEntitiesInfo();
+
+            foreach (var entityType in Types)
             {
                 modelBuilder.Entity(entityType);
             }
+
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly);
+
+            base.OnModelCreating(modelBuilder);
 
             //种子数据
             //modelBuilder.Entity<SysLoginLog>().HasData(new SysLoginLog{});
@@ -125,16 +112,13 @@ namespace Adnc.Infr.EfCore
             //生成迁移sql
             //Script-Migration -From migrationName1 -To migrationName2  -Context ContextName
             //如：Script-Migration -From 0
-
-            modelBuilder.ApplyConfigurationsFromAssembly(_entityInfo.GetType().Assembly);
-
-            base.OnModelCreating(modelBuilder);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            //用于设置是否启用缓存，暂时解决了可能出现的内存溢出的问题
-            optionsBuilder.EnableServiceProviderCaching(false);
+            //关闭缓存，每次都会调用OnModelCreating
+            //用于设置是否启用缓存
+            //optionsBuilder.EnableServiceProviderCaching(false);
             base.OnConfiguring(optionsBuilder);
         }
     }
