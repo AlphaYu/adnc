@@ -25,6 +25,10 @@ namespace Adnc.Infr.Consul.Consumer
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
+            //如果调用地址是https,使用http2
+            if (request.RequestUri.Scheme.Equals("https", StringComparison.OrdinalIgnoreCase))
+                request.Version = new Version(2, 0);
+
             var headers = request.Headers;
 
             var auth = headers.Authorization;
@@ -36,6 +40,7 @@ namespace Adnc.Infr.Consul.Consumer
                     request.Headers.Authorization = new AuthenticationHeaderValue(auth.Scheme, tokenTxt);
             }
 
+            #region 缓存处理
             if (request.Method == HttpMethod.Get)
             {
                 var cache = headers.FirstOrDefault(x => x.Key == "Cache");
@@ -61,33 +66,17 @@ namespace Adnc.Infr.Consul.Consumer
 
                         //SendAsync异常(请求、超时异常)，会throw
                         //服务端异常，不会抛出
-                        var responseResult = await base.SendAsync(request, cancellationToken).ConfigureAwait(false);
+                        var responseResult = await base.SendAsync(request, cancellationToken).ConfigureAwait(true);
                         if (responseResult.IsSuccessStatusCode)
-                            _memoryCache.Set(cacheKey, await responseResult.Content.ReadAsStringAsync());
+                            _memoryCache.Set(cacheKey, await responseResult.Content.ReadAsStringAsync(), TimeSpan.FromMilliseconds(milliseconds));
 
                         return responseResult;
                     }
                 }
             }
+            #endregion
 
-
-            var result = await base.SendAsync(request, cancellationToken).ConfigureAwait(false);
-            return result;
-
-            //var content = await CacheManager.GetOrCreateAsync<string>(cacheKey, async entry =>
-            //{
-            //    //SendAsync异常(请求、超时异常)，会throw
-            //    //服务端异常，不会抛出
-            //    var responseResult = await base.SendAsync(request, cancellationToken).ConfigureAwait(false);
-            //    if (!responseResult.IsSuccessStatusCode)
-            //    {
-            //        entry.AbsoluteExpirationRelativeToNow = null;
-            //        return null;
-            //    }
-
-            //    entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMilliseconds(milliseconds);
-            //    return await responseResult.Content.ReadAsStringAsync();
-            //});
+            return await base.SendAsync(request, cancellationToken).ConfigureAwait(false);
         }
     }
 }
