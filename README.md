@@ -139,7 +139,7 @@
 - `Adnc.Maint` 运维中心微服务，系统支撑服务，实现了登录日志、审计日志、异常日志、字典管理、配置参数管理。
 - `Adnc.Cus` 客户中心微服务，经典三层开发模式demo。
 - `Adnc.Ord` 订单中心微服务，DDD开发模式demo。
-- `Adnc.Whse` 物流中心微服务，DDD开发模式demo。
+- `Adnc.Whse` 仓储中心微服务，DDD开发模式demo。
 
 每个微服务的Migrations层是Efcore用来做数据迁移的，迁移的日志文件存放在各自Migrations目录中。<br/>
 ![.NET微服务开源框架-微服务层](https://aspdotnetcore.net/wp-content/uploads/2020/11/adnc-serverapi-potral.webp)
