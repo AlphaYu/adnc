@@ -22,6 +22,9 @@
 ## 演示
 - <a href="http://adnc.aspdotnetcore.net" target="_blank">http://adnc.aspdotnetcore.net</a>
 
+## 问题交流
+- 780634162(QQ群)
+
 ## GitHub
 - <a href="https://github.com/alphayu/adnc" target="_blank">https://github.com/alphayu/adnc</a>
 - 开源不易，如果您喜欢这个项目, 请给个星星⭐️。
