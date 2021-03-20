@@ -20,26 +20,26 @@ namespace  Adnc.Infr.EfCore
 
             //注册UOW
             builder.RegisterType<UnitOfWork<AdncDbContext>>()
-                .As<IUnitOfWork>()
-                .InstancePerLifetimeScope();
+                   .As<IUnitOfWork>()
+                   .InstancePerLifetimeScope();
 
             //注册ef公共EfRepository
             builder.RegisterGeneric(typeof(EfRepository<>))
-                .UsingConstructor(typeof(AdncDbContext))
-                .AsImplementedInterfaces()
-                .InstancePerLifetimeScope();
+                   .UsingConstructor(typeof(AdncDbContext))
+                   .AsImplementedInterfaces()
+                   .InstancePerLifetimeScope();
 
             //注册ef公共EfBasicRepository
             builder.RegisterGeneric(typeof(EfBasicRepository<>))
-                .UsingConstructor(typeof(AdncDbContext))
-                .AsImplementedInterfaces()
-                .InstancePerLifetimeScope();
+                   .UsingConstructor(typeof(AdncDbContext))
+                   .AsImplementedInterfaces()
+                   .InstancePerLifetimeScope();
 
             //注册Repository服务
             builder.RegisterAssemblyTypes(this.ThisAssembly)
-                .Where(t => t.IsClosedTypeOf(typeof(IRepository<>)))
-                .AsImplementedInterfaces()
-                .InstancePerLifetimeScope();
+                   .Where(t => t.IsClosedTypeOf(typeof(IRepository<>)))
+                   .AsImplementedInterfaces()
+                   .InstancePerLifetimeScope();
         }
 
         /// <summary>
