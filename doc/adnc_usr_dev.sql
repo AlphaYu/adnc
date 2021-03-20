@@ -21,15 +21,15 @@ USE `adnc_usr_dev`;
 DROP TABLE IF EXISTS `SysDept`;
 
 CREATE TABLE `SysDept` (
-  `Id` bigint(20) NOT NULL DEFAULT 0,
-  `CreateBy` bigint(20) DEFAULT NULL COMMENT '创建人',
-  `CreateTime` datetime(6) DEFAULT NULL,
+  `Id` bigint(20) NOT NULL,
+  `CreateBy` bigint(20) NOT NULL,
+  `CreateTime` datetime(6) NOT NULL,
   `ModifyBy` bigint(20) DEFAULT NULL COMMENT '最后更新人',
   `ModifyTime` datetime(6) DEFAULT NULL,
-  `FullName` varchar(32) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `FullName` varchar(32) CHARACTER SET utf8mb4 NOT NULL,
   `Pid` bigint(20) DEFAULT NULL,
   `Pids` varchar(80) CHARACTER SET utf8mb4 DEFAULT NULL,
-  `SimpleName` varchar(16) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `SimpleName` varchar(16) CHARACTER SET utf8mb4 NOT NULL,
   `Tips` varchar(64) CHARACTER SET utf8mb4 DEFAULT NULL,
   `Version` int(11) DEFAULT NULL,
   `Ordinal` int(11) NOT NULL DEFAULT 0,
@@ -45,28 +45,29 @@ insert  into `SysDept`(`Id`,`CreateBy`,`CreateTime`,`ModifyBy`,`ModifyTime`,`Ful
 (1606155393003,1600000000000,'2020-11-24 02:16:33.336059',1600000000000,'2021-02-08 23:40:42.477252','csharp组',1606155335002,'[0],[1600000001000],[1606155335002],','csharp组',NULL,NULL,6),
 (1606155436004,1600000000000,'2021-02-02 12:45:35.079665',1600000000000,'2021-02-08 23:19:00.342879','go组',1606155335002,'[0],[1600000001000],[1606155335002],','go组',NULL,NULL,3),
 (1612796969001,1600000000000,'2021-02-08 23:09:29.757253',1600000000000,'2021-02-08 23:17:57.831845','测试部',1600000001000,'[0],[1600000001000],','测试部',NULL,NULL,1),
-(1612797557001,1600000000000,'2021-02-08 23:19:17.938562',NULL,NULL,'java组',1606155335002,'[0],[1600000001000],[1606155335002],','java组',NULL,NULL,1);
+(1612797557001,1600000000000,'2021-02-08 23:19:17.938562',NULL,NULL,'java组',1606155335002,'[0],[1600000001000],[1606155335002],','java组',NULL,NULL,1),
+(1616044463001,1600000000000,'2021-03-18 13:14:23.793179',NULL,NULL,'云南知轮汽车科技有限公司',1600000001000,'[0],[1600000001000],','知轮科技',NULL,NULL,1);
 
 /*Table structure for table `SysMenu` */
 
 DROP TABLE IF EXISTS `SysMenu`;
 
 CREATE TABLE `SysMenu` (
-  `Id` bigint(20) NOT NULL DEFAULT 0,
-  `CreateBy` bigint(20) DEFAULT NULL COMMENT '创建人',
-  `CreateTime` datetime(6) DEFAULT NULL,
+  `Id` bigint(20) NOT NULL,
+  `CreateBy` bigint(20) NOT NULL,
+  `CreateTime` datetime(6) NOT NULL,
   `ModifyBy` bigint(20) DEFAULT NULL COMMENT '最后更新人',
   `ModifyTime` datetime(6) DEFAULT NULL,
-  `Code` varchar(16) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `Code` varchar(16) CHARACTER SET utf8mb4 NOT NULL,
   `Component` varchar(64) CHARACTER SET utf8mb4 DEFAULT NULL,
   `Hidden` bit(1) DEFAULT NULL COMMENT '是否隐藏',
   `Icon` varchar(16) CHARACTER SET utf8mb4 DEFAULT NULL,
   `IsMenu` bit(1) NOT NULL COMMENT '是否是菜单1:菜单,0:按钮',
   `IsOpen` bit(1) DEFAULT NULL COMMENT '是否默认打开1:是,0:否',
   `Levels` int(11) NOT NULL COMMENT '级别',
-  `Name` varchar(16) CHARACTER SET utf8mb4 DEFAULT NULL,
-  `PCode` varchar(16) CHARACTER SET utf8mb4 DEFAULT NULL,
-  `PCodes` varchar(128) DEFAULT NULL COMMENT '递归父级菜单编号',
+  `Name` varchar(16) CHARACTER SET utf8mb4 NOT NULL,
+  `PCode` varchar(16) CHARACTER SET utf8mb4 NOT NULL,
+  `PCodes` varchar(128) CHARACTER SET utf8mb4 NOT NULL,
   `Status` bit(1) NOT NULL COMMENT '状态1:启用,0:禁用',
   `Tips` varchar(32) DEFAULT NULL COMMENT '鼠标悬停提示信息',
   `Url` varchar(64) CHARACTER SET utf8mb4 DEFAULT NULL,
@@ -78,14 +79,14 @@ CREATE TABLE `SysMenu` (
 /*Data for the table `SysMenu` */
 
 insert  into `SysMenu`(`Id`,`CreateBy`,`CreateTime`,`ModifyBy`,`ModifyTime`,`Code`,`Component`,`Hidden`,`Icon`,`IsMenu`,`IsOpen`,`Levels`,`Name`,`PCode`,`PCodes`,`Status`,`Tips`,`Url`,`Ordinal`) values 
-(1600000000001,NULL,NULL,1600000000000,'2021-02-08 23:40:04.403976','usr','layout','\0','peoples','',NULL,1,'用户中心','0','[0],','',NULL,'/usr',0),
+(1600000000001,1600000000000,'2020-08-08 08:08:08.888888',1600000000000,'2021-02-08 23:40:04.403976','usr','layout','\0','peoples','',NULL,1,'用户中心','0','[0],','',NULL,'/usr',0),
 (1600000000003,1600000000000,'2020-08-08 08:08:08.888888',1600000000000,'2021-02-08 23:39:40.812082','maintain','layout','\0','operation','',NULL,1,'运维中心','0','[0],','',NULL,'/maintain',1),
-(1600000000004,NULL,NULL,1600000000000,'2020-11-25 00:21:11.459114','user','views/usr/user/index','\0','user','',NULL,2,'用户管理','usr','[0],[usr]','',NULL,'/user',0),
-(1600000000005,NULL,NULL,1600000000000,'2020-11-25 00:21:23.738379','userAdd',NULL,'\0','','\0',NULL,3,'添加用户','user','[0],[usr][user]','',NULL,'/user/add',0),
-(1600000000006,NULL,NULL,1600000000000,'2020-11-25 00:21:44.038549','userEdit',NULL,'\0','','\0',NULL,3,'修改用户','user','[0],[usr][user]','',NULL,'/user/edit',0),
+(1600000000004,1600000000000,'2020-08-08 08:08:08.888888',1600000000000,'2020-11-25 00:21:11.459114','user','views/usr/user/index','\0','user','',NULL,2,'用户管理','usr','[0],[usr]','',NULL,'/user',0),
+(1600000000005,1600000000000,'2020-08-08 08:08:08.888888',1600000000000,'2020-11-25 00:21:23.738379','userAdd',NULL,'\0','','\0',NULL,3,'添加用户','user','[0],[usr][user]','',NULL,'/user/add',0),
+(1600000000006,1600000000000,'2020-08-08 08:08:08.888888',1600000000000,'2020-11-25 00:21:44.038549','userEdit',NULL,'\0','','\0',NULL,3,'修改用户','user','[0],[usr][user]','',NULL,'/user/edit',0),
 (1600000000007,1600000000000,'2020-08-08 08:08:08.888888',1600000000000,'2020-08-08 08:08:08.888888','userDelete',NULL,'\0',NULL,'\0','\0',3,'删除用户','user','[0],[usr],[user],','',NULL,'/user/delete',0),
 (1600000000008,1600000000000,'2020-08-08 08:08:08.888888',1600000000000,'2020-08-08 08:08:08.888888','userReset',NULL,'\0',NULL,'\0','\0',3,'重置密码','user','[0],[usr],[user],','',NULL,'/user/reset',0),
-(1600000000009,NULL,NULL,1600000000000,'2020-11-25 00:21:48.244064','userFreeze',NULL,'\0','','\0',NULL,3,'冻结用户','user','[0],[usr][user]','',NULL,'/user/freeze',0),
+(1600000000009,1600000000000,'2020-08-08 08:08:08.888888',1600000000000,'2020-11-25 00:21:48.244064','userFreeze',NULL,'\0','','\0',NULL,3,'冻结用户','user','[0],[usr][user]','',NULL,'/user/freeze',0),
 (1600000000010,1600000000000,'2020-08-08 08:08:08.888888',1600000000000,'2020-08-08 08:08:08.888888','userUnfreeze',NULL,'\0',NULL,'\0','\0',3,'解除冻结用户','user','[0],[usr],[user],','',NULL,'/user/unfreeze',0),
 (1600000000011,1600000000000,'2020-08-08 08:08:08.888888',1600000000000,'2020-08-08 08:08:08.888888','userSetRole',NULL,'\0',NULL,'\0','\0',3,'分配角色','user','[0],[usr],[user],','',NULL,'/user/setRole',0),
 (1600000000012,1600000000000,'2020-08-08 08:08:08.888888',1600000000000,'2020-08-08 08:08:08.888888','role','views/usr/role/index','\0','people','',NULL,2,'角色管理','usr','[0],[usr]','',NULL,'/role',0),
@@ -101,7 +102,7 @@ insert  into `SysMenu`(`Id`,`CreateBy`,`CreateTime`,`ModifyBy`,`ModifyTime`,`Cod
 (1600000000022,1600000000000,'2020-08-08 08:08:08.888888',1600000000000,'2020-08-08 08:08:08.888888','dict','views/maintain/dict/index','\0','dict','',NULL,2,'字典管理','maintain','[0],[maintain],','',NULL,'/dict',0),
 (1600000000023,1600000000000,'2020-08-08 08:08:08.888888',1600000000000,'2020-08-08 08:08:08.888888','deptEdit',NULL,'\0',NULL,'\0',NULL,3,'修改部门','dept','[0],[usr],[dept],','',NULL,'/dept/update',0),
 (1600000000024,1600000000000,'2020-08-08 08:08:08.888888',1600000000000,'2020-08-08 08:08:08.888888','deptDelete',NULL,'\0',NULL,'\0',NULL,3,'删除部门','dept','[0],[usr],[dept],','',NULL,'/dept/delete',0),
-(1600000000025,NULL,NULL,1600000000000,'2020-11-24 23:45:06.337465','dictAdd',NULL,'\0','','\0',NULL,3,'添加字典','dict','[0],[maintain],[dict]','',NULL,'/dict/add',0),
+(1600000000025,1600000000000,'2020-08-08 08:08:08.888888',1600000000000,'2020-11-24 23:45:06.337465','dictAdd',NULL,'\0','','\0',NULL,3,'添加字典','dict','[0],[maintain],[dict]','',NULL,'/dict/add',0),
 (1600000000026,1600000000000,'2020-08-08 08:08:08.888888',1600000000000,'2020-08-08 08:08:08.888888','dictEdit',NULL,'\0',NULL,'\0',NULL,3,'修改字典','dict','[0],[maintain],[dict],','',NULL,'/dict/update',0),
 (1600000000027,1600000000000,'2020-08-08 08:08:08.888888',1600000000000,'2020-08-08 08:08:08.888888','dictDelete',NULL,'\0',NULL,'\0',NULL,3,'删除字典','dict','[0],[maintain],[dict],','',NULL,'/dict/delete',0),
 (1600000000028,1600000000000,'2020-08-08 08:08:08.888888',1600000000000,'2020-08-08 08:08:08.888888','deptList',NULL,'\0',NULL,'\0',NULL,3,'部门列表','dept','[0],[usr],[dept],','',NULL,'/dept/list',0),
@@ -111,30 +112,30 @@ insert  into `SysMenu`(`Id`,`CreateBy`,`CreateTime`,`ModifyBy`,`ModifyTime`,`Cod
 (1600000000034,1600000000000,'2020-08-08 08:08:08.888888',1600000000000,'2020-08-08 08:08:08.888888','cfgAdd',NULL,'\0',NULL,'\0',NULL,3,'添加系统参数','cfg','[0],[maintain],[cfg],','',NULL,'/cfg/add',0),
 (1600000000035,1600000000000,'2020-08-08 08:08:08.888888',1600000000000,'2020-08-08 08:08:08.888888','cfgEdit',NULL,'\0',NULL,'\0',NULL,3,'修改系统参数','cfg','[0],[maintain],[cfg],','',NULL,'/cfg/update',0),
 (1600000000036,1600000000000,'2020-08-08 08:08:08.888888',1600000000000,'2020-08-08 08:08:08.888888','cfgDelete',NULL,'\0',NULL,'\0',NULL,3,'删除系统参数','cfg','[0],[maintain],[cfg],','',NULL,'/cfg/delete',0),
-(1600000000037,1600000000000,'2021-02-02 12:45:20.451187',1600000000000,'2021-02-02 12:45:20.451193','task','views/maintain/task/index','','task','',NULL,2,'任务管理','maintain','[0],[maintain]','',NULL,'/task',0),
+(1600000000037,1600000000000,'2020-08-08 08:08:08.888888',1600000000000,'2021-02-02 12:45:20.451193','task','views/maintain/task/index','','task','',NULL,2,'任务管理','maintain','[0],[maintain]','',NULL,'/task',0),
 (1600000000038,1600000000000,'2020-08-08 08:08:08.888888',1600000000000,'2020-08-08 08:08:08.888888','taskAdd',NULL,'\0',NULL,'\0',NULL,3,'添加任务','task','[0],[maintain],[task],','',NULL,'/task/add',0),
 (1600000000039,1600000000000,'2020-08-08 08:08:08.888888',1600000000000,'2020-08-08 08:08:08.888888','taskEdit',NULL,'\0',NULL,'\0',NULL,3,'修改任务','task','[0],[maintain],[task],','',NULL,'/task/update',0),
 (1600000000040,1600000000000,'2020-08-08 08:08:08.888888',1600000000000,'2020-08-08 08:08:08.888888','taskDelete',NULL,'\0',NULL,'\0',NULL,3,'删除任务','task','[0],[maintain],[task],','',NULL,'/task/delete',0),
 (1600000000047,1600000000000,'2020-08-08 08:08:08.888888',1600000000000,'2020-08-08 08:08:08.888888','taskLog','views/maintain/task/taskLog','','task','',NULL,3,'任务日志','task','[0],[maintain],[task],','',NULL,'/task/taskLog',0),
 (1600000000048,1600000000000,'2020-08-08 08:08:08.888888',1600000000000,'2020-08-08 08:08:08.888888','opsLog','views/maintain/opslog/index','\0','log','',NULL,2,'操作日志','maintain','[0],[maintain]','',NULL,'/opslog',0),
 (1600000000049,1600000000000,'2020-08-08 08:08:08.888888',1600000000000,'2020-08-08 08:08:08.888888','loginLog','views/maintain/loginlog/index','\0','logininfor','',NULL,2,'登录日志','maintain','[0],[maintain]','',NULL,'/loginlog',0),
-(1600000000054,NULL,NULL,1600000000000,'2021-01-11 00:01:02.425962','druid','layout','\0','link','',NULL,2,'性能检测','maintain','[0],[maintain]','',NULL,'http://193.112.75.77:18886',0),
-(1600000000055,NULL,NULL,1600000000000,'2020-11-25 19:30:04.982175','swagger','views/maintain/swagger/index','\0','swagger','',NULL,2,'接口文档','maintain','[0],[maintain]','',NULL,'/swagger',0),
-(1600000000071,NULL,NULL,1600000000000,'2020-11-24 23:44:04.045778','nlogLog','views/maintain/nloglog/index','\0','logininfor','',NULL,2,'Nlog日志','maintain','[0],[maintain]','',NULL,'/nloglogs',0),
+(1600000000054,1600000000000,'2020-08-08 08:08:08.888888',1600000000000,'2021-01-11 00:01:02.425962','druid','layout','\0','link','',NULL,2,'性能检测','maintain','[0],[maintain]','',NULL,'http://193.112.75.77:18886',0),
+(1600000000055,1600000000000,'2020-08-08 08:08:08.888888',1600000000000,'2020-11-25 19:30:04.982175','swagger','views/maintain/swagger/index','\0','swagger','',NULL,2,'接口文档','maintain','[0],[maintain]','',NULL,'/swagger',0),
+(1600000000071,1600000000000,'2020-08-08 08:08:08.888888',1600000000000,'2020-11-24 23:44:04.045778','nlogLog','views/maintain/nloglog/index','\0','logininfor','',NULL,2,'Nlog日志','maintain','[0],[maintain]','',NULL,'/nloglogs',0),
 (1600000000072,1600000000000,'2020-08-08 08:08:08.888888',1600000000000,'2020-08-08 08:08:08.888888','health','layout','\0','monitor','',NULL,2,'健康检测','maintain','[0],[maintain]','',NULL,'http://193.112.75.77:8666/healthchecks-ui',0),
 (1600000000073,1600000000000,'2020-08-08 08:08:08.888888',1600000000000,'2020-08-08 08:08:08.888888','menuList',NULL,'\0','','\0',NULL,3,'菜单列表','menu','[0],[usr][menu]','',NULL,'/menu/list',0),
 (1600000000074,1600000000000,'2020-08-08 08:08:08.888888',1600000000000,'2021-02-08 23:29:43.628024','roleList',NULL,'\0','','\0',NULL,3,'角色列表','role','[0],[usr][role]','',NULL,'/role/list',1),
 (1600000000075,1600000000000,'2020-08-08 08:08:08.888888',1600000000000,'2020-08-08 08:08:08.888888','userList',NULL,'\0','','\0',NULL,3,'用户列表','user','[0],[usr][user]','',NULL,'user/list',0),
 (1600000000076,1600000000000,'2020-08-08 08:08:08.888888',1600000000000,'2020-08-08 08:08:08.888888','cfgList',NULL,'\0','','\0',NULL,3,'系统参数列表','cfg','[0],[maintain][cfg]','',NULL,'/cfg/list',0),
 (1600000000077,1600000000000,'2020-08-08 08:08:08.888888',1600000000000,'2020-08-08 08:08:08.888888','taskList',NULL,'\0',NULL,'\0',NULL,3,'任务列表','task','[0],[maintain][task]','',NULL,'/task/list',0),
-(1600000000078,NULL,NULL,1600000000000,'2020-11-24 23:43:13.041844','eventBus','layout','\0','server','',NULL,2,'EventBus','maintain','[0],[maintain]','',NULL,'http://193.112.75.77:8888/cus/cap/',0);
+(1600000000078,1600000000000,'2020-08-08 08:08:08.888888',1600000000000,'2020-11-24 23:43:13.041844','eventBus','layout','\0','server','',NULL,2,'EventBus','maintain','[0],[maintain]','',NULL,'http://193.112.75.77:8888/cus/cap/',0);
 
 /*Table structure for table `SysRelation` */
 
 DROP TABLE IF EXISTS `SysRelation`;
 
 CREATE TABLE `SysRelation` (
-  `Id` bigint(20) NOT NULL DEFAULT 0,
+  `Id` bigint(20) NOT NULL,
   `MenuId` bigint(20) DEFAULT NULL,
   `RoleId` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`Id`) USING BTREE,
@@ -227,13 +228,13 @@ insert  into `SysRelation`(`Id`,`MenuId`,`RoleId`) values
 DROP TABLE IF EXISTS `SysRole`;
 
 CREATE TABLE `SysRole` (
-  `Id` bigint(20) NOT NULL DEFAULT 0,
-  `CreateBy` bigint(20) DEFAULT NULL COMMENT '创建人',
-  `CreateTime` datetime(6) DEFAULT NULL,
+  `Id` bigint(20) NOT NULL,
+  `CreateBy` bigint(20) NOT NULL,
+  `CreateTime` datetime(6) NOT NULL,
   `ModifyBy` bigint(20) DEFAULT NULL COMMENT '最后更新人',
   `ModifyTime` datetime(6) DEFAULT NULL,
   `DeptId` bigint(20) DEFAULT NULL,
-  `Name` varchar(32) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `Name` varchar(32) CHARACTER SET utf8mb4 NOT NULL,
   `Pid` bigint(20) DEFAULT NULL,
   `Tips` varchar(64) CHARACTER SET utf8mb4 DEFAULT NULL,
   `Version` int(11) DEFAULT NULL,
@@ -244,28 +245,29 @@ CREATE TABLE `SysRole` (
 /*Data for the table `SysRole` */
 
 insert  into `SysRole`(`Id`,`CreateBy`,`CreateTime`,`ModifyBy`,`ModifyTime`,`DeptId`,`Name`,`Pid`,`Tips`,`Version`,`Ordinal`) values 
-(1600000000010,NULL,NULL,1600000000000,'2021-02-08 23:39:16.907337',NULL,'系统管理员',NULL,'administrator',NULL,0),
-(1606156061057,1600000000000,'2021-02-02 12:52:04.375809',1600000000000,'2021-02-08 22:44:29.701775',NULL,'只读用户',NULL,'readonly',NULL,1);
+(1600000000010,1600000000000,'2020-08-08 08:08:08.888888',1600000000000,'2021-02-08 23:39:16.907337',NULL,'系统管理员',NULL,'administrator',NULL,0),
+(1606156061057,1600000000000,'2020-08-08 08:08:08.888888',1600000000000,'2021-02-08 22:44:29.701775',NULL,'只读用户',NULL,'readonly',NULL,1),
+(1615989759001,1600000000000,'2020-08-08 08:08:08.888888',NULL,NULL,NULL,'aaaa',NULL,'bbbb',NULL,1);
 
 /*Table structure for table `SysUser` */
 
 DROP TABLE IF EXISTS `SysUser`;
 
 CREATE TABLE `SysUser` (
-  `Id` bigint(20) NOT NULL DEFAULT 0,
-  `CreateBy` bigint(20) DEFAULT NULL COMMENT '创建人',
-  `CreateTime` datetime(6) DEFAULT NULL,
+  `Id` bigint(20) NOT NULL,
+  `CreateBy` bigint(20) NOT NULL,
+  `CreateTime` datetime(6) NOT NULL,
   `ModifyBy` bigint(20) DEFAULT NULL COMMENT '最后更新人',
   `ModifyTime` datetime(6) DEFAULT NULL,
-  `Account` varchar(16) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `Account` varchar(16) CHARACTER SET utf8mb4 NOT NULL,
   `Avatar` varchar(64) CHARACTER SET utf8mb4 DEFAULT NULL,
   `Birthday` datetime(6) DEFAULT NULL,
   `DeptId` bigint(20) DEFAULT NULL,
   `Email` varchar(32) CHARACTER SET utf8mb4 DEFAULT NULL,
-  `Name` varchar(16) CHARACTER SET utf8mb4 DEFAULT NULL,
-  `Password` varchar(32) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `Name` varchar(16) CHARACTER SET utf8mb4 NOT NULL,
+  `Password` varchar(32) CHARACTER SET utf8mb4 NOT NULL,
   `Phone` varchar(11) CHARACTER SET utf8mb4 DEFAULT NULL,
-  `Salt` varchar(6) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `Salt` varchar(6) CHARACTER SET utf8mb4 NOT NULL,
   `Sex` int(11) DEFAULT NULL,
   `Status` int(11) DEFAULT NULL,
   `Version` int(11) DEFAULT NULL,
@@ -279,33 +281,9 @@ CREATE TABLE `SysUser` (
 /*Data for the table `SysUser` */
 
 insert  into `SysUser`(`Id`,`CreateBy`,`CreateTime`,`ModifyBy`,`ModifyTime`,`Account`,`Avatar`,`Birthday`,`DeptId`,`Email`,`Name`,`Password`,`Phone`,`Salt`,`Sex`,`Status`,`Version`,`IsDeleted`,`RoleIds`) values 
-(0,1600000000000,'2021-02-08 19:37:47.428320',NULL,NULL,'adncgo3',NULL,'2020-11-25 00:00:00.000000',1606155294001,'beta2009@tom.com','余三猫','','18898737334',NULL,1,0,NULL,1,NULL),
 (1600000000000,1600000000000,'2020-08-08 08:08:08.888888',1600000000000,'2021-02-08 19:36:59.797137','alpha2008',NULL,'2020-11-04 00:00:00.000000',1600000001000,'alpha2008@tom.com','余小猫','C1FE6E4E238DD6812856995AEC16AD9D','18898658888','2mh6e',1,1,NULL,0,'1600000000010,1606156061057'),
 (1606291099001,1600000000000,'2020-11-25 15:58:20.255014',1600000000000,'2021-02-08 23:41:01.034853','adncgo2',NULL,'2020-11-25 00:00:00.000000',1606155393003,'beta2009@tom.com','余二猫','A9B7CDA2D9001025FC02C40AF6A80D4E','18987656789','880qx',2,1,NULL,0,'1606156061057'),
 (1606293242002,1600000000000,'2020-11-25 16:34:03.074970',1600000000000,'2021-02-08 23:20:03.098985','adncgo3',NULL,'2020-11-25 00:00:00.000000',1606155436004,'beta2009@tom.com','余三猫','B273093C82A8E58C4E6E9673A8062092','18898737334','p110y',1,1,NULL,0,'1600000000010,1606156061057');
-
-/*Table structure for table `SysUserFinance` */
-
-DROP TABLE IF EXISTS `SysUserFinance`;
-
-CREATE TABLE `SysUserFinance` (
-  `Id` bigint(20) NOT NULL DEFAULT 0,
-  `CreateBy` bigint(20) DEFAULT NULL,
-  `CreateTime` datetime(6) DEFAULT NULL,
-  `ModifyBy` bigint(20) DEFAULT NULL,
-  `ModifyTime` datetime(6) DEFAULT NULL,
-  `Amount` decimal(18,4) NOT NULL,
-  `RowVersion` timestamp(3) NULL DEFAULT '2000-07-01 22:33:02.559',
-  PRIMARY KEY (`Id`) USING BTREE,
-  CONSTRAINT `FK_SysUserFinance_SysUser_Id` FOREIGN KEY (`Id`) REFERENCES `SysUser` (`Id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
-
-/*Data for the table `SysUserFinance` */
-
-insert  into `SysUserFinance`(`Id`,`CreateBy`,`CreateTime`,`ModifyBy`,`ModifyTime`,`Amount`,`RowVersion`) values 
-(1600000000000,1600000000000,'2020-08-08 08:08:08.888888',1600000000000,'2020-08-08 08:08:08.888888',0.0000,'2000-07-01 22:33:02.559'),
-(1606291099001,1600000000000,'2020-11-25 15:58:20.403093',NULL,NULL,0.0000,'2000-07-01 22:33:02.559'),
-(1606293242002,1600000000000,'2020-11-25 16:34:03.123400',NULL,NULL,0.0000,'2000-07-01 22:33:02.559');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
