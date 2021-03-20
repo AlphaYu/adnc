@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Configuration;
-using Autofac;
+﻿using Autofac;
 using Autofac.Extras.DynamicProxy;
 using Adnc.Infr.EasyCaching.Interceptor.Castle;
 using Adnc.Infr.Mq.RabbitMq;
@@ -8,22 +6,18 @@ using Adnc.Whse.Domain;
 using Adnc.Application.Shared.Interceptors;
 using Adnc.Application.Shared.Services;
 using Adnc.Core.Shared.Interceptors;
-using Adnc.Whse.Application.EventSubscribers;
 
 namespace Adnc.Whse.Application
 {
+    /// <summary>
+    /// Autofac注册
+    /// </summary>
     public class AdncWhseApplicationModule : Module
     {
-
-        public AdncWhseApplicationModule()
-        {
-        }
-
-        public AdncWhseApplicationModule(IServiceCollection services, IConfiguration configuration)
-            :base()
-        {
-        }
-
+        /// <summary>
+        /// 注册
+        /// </summary>
+        /// <param name="builder"><see cref="ContainerBuilder"/></param>
         protected override void Load(ContainerBuilder builder)
         {
             //注册依赖模块
@@ -66,6 +60,10 @@ namespace Adnc.Whse.Application
             //       .SingleInstance();
         }
 
+        /// <summary>
+        /// 注册依赖模块
+        /// </summary>
+        /// <param name="builder"><see cref="ContainerBuilder"/></param>
         private void LoadDepends(ContainerBuilder builder)
         {
             builder.RegisterModule<AdncWhseCoreModule>();

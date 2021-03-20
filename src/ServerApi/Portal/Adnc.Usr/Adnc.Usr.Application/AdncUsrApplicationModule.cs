@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Configuration;
-using Autofac;
+﻿using Autofac;
 using Autofac.Extras.DynamicProxy;
 using Adnc.Infr.EasyCaching.Interceptor.Castle;
 using Adnc.Infr.Mq.RabbitMq;
@@ -11,23 +9,11 @@ using FluentValidation;
 
 namespace Adnc.Usr.Application
 {
+    /// <summary>
+    /// Autofac注册
+    /// </summary>
     public class AdncUsrApplicationModule : Module
     {
-
-        public AdncUsrApplicationModule()
-        {
-        }
-
-        public AdncUsrApplicationModule(IServiceCollection services, IConfiguration configuration)
-            :base()
-        {
-            //注册automapper
-            //services.AddAutoMapper(typeof(AdncSysProfile));
-            //注册easycache
-            //this.AddCaching(services, configuration);
-            //builder.Populate(services);
-        }
-
         protected override void Load(ContainerBuilder builder)
         {
             //注册依赖模块
@@ -49,17 +35,17 @@ namespace Adnc.Usr.Application
 
             //注册服务
             builder.RegisterAssemblyTypes(this.ThisAssembly)
-                .Where(t => t.IsAssignableTo<IAppService>())
-                .AsImplementedInterfaces()
-                .InstancePerLifetimeScope()
-                .EnableInterfaceInterceptors()
-                .InterceptedBy(typeof(OpsLogInterceptor),typeof(EasyCachingInterceptor));
+                   .Where(t => t.IsAssignableTo<IAppService>())
+                   .AsImplementedInterfaces()
+                   .InstancePerLifetimeScope()
+                   .EnableInterfaceInterceptors()
+                   .InterceptedBy(typeof(OpsLogInterceptor), typeof(EasyCachingInterceptor));
 
             //注册DtoValidators
             builder.RegisterAssemblyTypes(this.ThisAssembly)
-                .Where(t => t.IsClosedTypeOf(typeof(IValidator<>)))
-                .AsImplementedInterfaces()
-                .InstancePerLifetimeScope();
+                   .Where(t => t.IsClosedTypeOf(typeof(IValidator<>)))
+                   .AsImplementedInterfaces()
+                   .InstancePerLifetimeScope();
         }
 
         private void LoadDepends(ContainerBuilder builder)

@@ -66,7 +66,7 @@ namespace Adnc.Usr.WebApi
             //builder.RegisterModule(module);
             builder.RegisterModule<Adnc.Infr.Mongo.AdncInfrMongoModule>();
             builder.RegisterModule<Adnc.Infr.EfCore.AdncInfrEfCoreModule>();
-            builder.RegisterModule(new Adnc.Usr.Application.AdncUsrApplicationModule());
+            builder.RegisterModule<Adnc.Usr.Application.AdncUsrApplicationModule>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -85,7 +85,6 @@ namespace Adnc.Usr.WebApi
             app.UseCustomExceptionHandler();
             app.UseRealIp(x =>
             {
-                //new string[] { "X-Real-IP", "X-Forwarded-For" }
                 x.HeaderKeys = new string[] { "X-Forwarded-For", "X-Real-IP" };
             });
             app.UseCors(_serviceInfo.CorsPolicy);

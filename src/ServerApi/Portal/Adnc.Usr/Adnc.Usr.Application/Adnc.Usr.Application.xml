@@ -4,6 +4,11 @@
         <name>Adnc.Usr.Application</name>
     </assembly>
     <members>
+        <member name="T:Adnc.Usr.Application.AdncUsrApplicationModule">
+            <summary>
+            Autofac注册
+            </summary>
+        </member>
         <member name="T:Adnc.Usr.Application.Services.Node`1">
             <summary>
             业务节点

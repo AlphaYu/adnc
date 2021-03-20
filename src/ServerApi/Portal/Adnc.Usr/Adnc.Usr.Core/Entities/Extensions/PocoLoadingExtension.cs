@@ -1,11 +1,11 @@
-﻿using JetBrains.Annotations;
-using System;
-using System.Linq.Expressions;
-using System.Reflection;
+﻿using System;
 using System.Runtime.CompilerServices;
 
 namespace Adnc.Usr.Core.Entities
 {
+    /// <summary>
+    /// 延时加载扩展方法
+    /// </summary>
     public static class PocoLoadingExtension
     {
         public static TRelated Load<TRelated>(

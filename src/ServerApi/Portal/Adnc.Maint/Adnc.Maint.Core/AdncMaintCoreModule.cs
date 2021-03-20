@@ -7,8 +7,15 @@ using Adnc.Core.Shared.Interceptors;
 
 namespace Adnc.Maint.Core
 {
+    /// <summary>
+    /// Autofac注册
+    /// </summary>
     public class AdncMaintCoreModule : Module
     {
+        /// <summary>
+        /// 注册
+        /// </summary>
+        /// <param name="builder"><see cref="ContainerBuilder"/></param>
         protected override void Load(ContainerBuilder builder)
         {
             //注册EntityInfo
@@ -24,13 +31,11 @@ namespace Adnc.Maint.Core
 
             //注册Core服务
             builder.RegisterAssemblyTypes(this.ThisAssembly)
-                .Where(t => t.IsAssignableTo<ICoreService>())
-                //.AsImplementedInterfaces()
-                //.EnableInterfaceInterceptors()
-                .AsSelf()
-                .EnableClassInterceptors()
-                .InstancePerLifetimeScope()
-                .InterceptedBy(typeof(UowInterceptor));
+                   .Where(t => t.IsAssignableTo<ICoreService>())
+                   .AsSelf()
+                   .EnableClassInterceptors()
+                   .InstancePerLifetimeScope()
+                   .InterceptedBy(typeof(UowInterceptor));
         }
     }
 }

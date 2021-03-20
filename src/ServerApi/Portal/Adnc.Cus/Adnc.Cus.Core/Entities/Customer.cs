@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel;
 using Adnc.Core.Shared.Entities;
 
 namespace Adnc.Cus.Core.Entities
 {
-    [Description("客户表")]
+    /// <summary>
+    /// 客户表
+    /// </summary>
     public class Customer : EfFullAuditEntity
     {
         public string Account { get; set; }

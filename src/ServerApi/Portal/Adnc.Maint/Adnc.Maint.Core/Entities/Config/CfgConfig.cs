@@ -1,18 +1,17 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Adnc.Core.Shared.Entities.Config;
 
 namespace Adnc.Maint.Core.Entities.Config
 {
-    public class CfgConfig : IEntityTypeConfiguration<SysCfg>
+    public class CfgConfig : EntityTypeConfiguration<SysCfg>
     {
-        public void Configure(EntityTypeBuilder<SysCfg> builder)
+        public override void Configure(EntityTypeBuilder<SysCfg> builder)
         {
-            //builder.Property<bool>("IsDeleted")
-            //    .HasDefaultValue(false);
-            //builder.HasQueryFilter(d => EF.Property<bool>(d, "IsDeleted") == false);
-            builder.Property(d => d.IsDeleted)
-                   .HasDefaultValue(false);
-            builder.HasQueryFilter(d => d.IsDeleted == false);
+            base.Configure(builder);
+
+            builder.Property(x => x.Name).IsRequired().HasMaxLength(64);
+            builder.Property(x => x.Value).IsRequired().HasMaxLength(128);
+            builder.Property(x => x.Description).HasMaxLength(256);
         }
     }
 }

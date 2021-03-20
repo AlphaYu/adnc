@@ -66,7 +66,7 @@ namespace Adnc.Whse.WebApi
             //×¢²áÒÀÀµÄ£¿é
             builder.RegisterModule<Adnc.Infr.Mongo.AdncInfrMongoModule>();
             builder.RegisterModule<Adnc.Infr.EfCore.AdncInfrEfCoreModule>();
-            builder.RegisterModule(new Adnc.Whse.Application.AdncWhseApplicationModule());
+            builder.RegisterModule<Adnc.Whse.Application.AdncWhseApplicationModule>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)

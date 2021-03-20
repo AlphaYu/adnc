@@ -1,9 +1,10 @@
-﻿using System.ComponentModel;
-using Adnc.Core.Shared.Entities;
+﻿using Adnc.Core.Shared.Entities;
 
 namespace Adnc.Cus.Core.Entities
 {
-    [Description("客户财务表")]
+    /// <summary>
+    /// 客户财务表
+    /// </summary>
     public class CustomerFinance : EfFullAuditEntity, IConcurrency
     {
         public string Account { get; set; }

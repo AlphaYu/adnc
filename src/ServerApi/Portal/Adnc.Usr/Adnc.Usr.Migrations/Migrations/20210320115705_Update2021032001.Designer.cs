@@ -3,14 +3,16 @@ using System;
 using Adnc.Infr.EfCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Adnc.Usr.Migrations.Migrations
 {
     [DbContext(typeof(AdncDbContext))]
-    partial class AdncDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210320115705_Update2021032001")]
+    partial class Update2021032001
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,10 +24,10 @@ namespace Adnc.Usr.Migrations.Migrations
                     b.Property<long>("Id")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("CreateBy")
+                    b.Property<long?>("CreateBy")
                         .HasColumnType("bigint");
 
-                    b.Property<DateTime>("CreateTime")
+                    b.Property<DateTime?>("CreateTime")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("FullName")
@@ -80,10 +82,10 @@ namespace Adnc.Usr.Migrations.Migrations
                         .HasColumnType("varchar(64) CHARACTER SET utf8mb4")
                         .HasMaxLength(64);
 
-                    b.Property<long>("CreateBy")
+                    b.Property<long?>("CreateBy")
                         .HasColumnType("bigint");
 
-                    b.Property<DateTime>("CreateTime")
+                    b.Property<DateTime?>("CreateTime")
                         .HasColumnType("datetime(6)");
 
                     b.Property<bool?>("Hidden")
@@ -165,10 +167,10 @@ namespace Adnc.Usr.Migrations.Migrations
                     b.Property<long>("Id")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("CreateBy")
+                    b.Property<long?>("CreateBy")
                         .HasColumnType("bigint");
 
-                    b.Property<DateTime>("CreateTime")
+                    b.Property<DateTime?>("CreateTime")
                         .HasColumnType("datetime(6)");
 
                     b.Property<long?>("DeptId")
@@ -220,10 +222,10 @@ namespace Adnc.Usr.Migrations.Migrations
                     b.Property<DateTime?>("Birthday")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<long>("CreateBy")
+                    b.Property<long?>("CreateBy")
                         .HasColumnType("bigint");
 
-                    b.Property<DateTime>("CreateTime")
+                    b.Property<DateTime?>("CreateTime")
                         .HasColumnType("datetime(6)");
 
                     b.Property<long?>("DeptId")
@@ -263,7 +265,6 @@ namespace Adnc.Usr.Migrations.Migrations
                         .HasMaxLength(72);
 
                     b.Property<string>("Salt")
-                        .IsRequired()
                         .HasColumnType("varchar(6) CHARACTER SET utf8mb4")
                         .HasMaxLength(6);
 

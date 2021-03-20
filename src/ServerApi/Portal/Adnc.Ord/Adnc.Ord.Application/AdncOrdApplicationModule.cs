@@ -17,7 +17,7 @@ namespace Adnc.Ord.Application
         /// <summary>
         /// 注册方法
         /// </summary>
-        /// <param name="builder"></param>
+        /// <param name="builder"><see cref="ContainerBuilder"/></param>
         protected override void Load(ContainerBuilder builder)
         {
             //注册依赖模块
@@ -60,6 +60,10 @@ namespace Adnc.Ord.Application
             //       .SingleInstance();
         }
 
+        /// <summary>
+        /// 注册依赖模块
+        /// </summary>
+        /// <param name="builder"><see cref="ContainerBuilder"/></param>
         private void LoadDepends(ContainerBuilder builder)
         {
             builder.RegisterModule<AdncOrdDomainModule>();

@@ -1,20 +1,24 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Adnc.Core.Shared.Entities.Config;
 
 namespace Adnc.Usr.Core.Entities.Config
 {
-    public class RoleConfig : IEntityTypeConfiguration<SysRole>
+    public class RoleConfig : EntityTypeConfiguration<SysRole>
     {
-        public void Configure(EntityTypeBuilder<SysRole> builder)
+        public override void Configure(EntityTypeBuilder<SysRole> builder)
         {
-            //查询过滤器 Query Filter
-            //builder.HasQueryFilter(e => !e.IsDeleted);
+            base.Configure(builder);
+
+            builder.Property(x => x.Name).IsRequired().HasMaxLength(32);
+            builder.Property(x => x.Tips).HasMaxLength(64);
+
             //一对多,SysDept没有UserId字段
             builder.HasMany(d => d.Relations)
-                .WithOne(p => p.Role)
-                .HasForeignKey(d => d.RoleId)
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Cascade);
+                   .WithOne(p => p.Role)
+                   .HasForeignKey(d => d.RoleId)
+                   .IsRequired()
+                   .OnDelete(DeleteBehavior.Cascade);
 
         }
     }

@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Configuration;
-using Autofac;
+﻿using Autofac;
 using Autofac.Extras.DynamicProxy;
 using Adnc.Infr.EasyCaching.Interceptor.Castle;
 using Adnc.Infr.Mq.RabbitMq;
@@ -12,15 +10,6 @@ namespace Adnc.Cus.Application
 {
     public class AdncCusApplicationModule : Module
     {
-
-        public AdncCusApplicationModule()
-        {
-        }
-
-        public AdncCusApplicationModule(IServiceCollection services, IConfiguration configuration)
-            :base()
-        {
-        }
 
         protected override void Load(ContainerBuilder builder)
         {
@@ -43,11 +32,11 @@ namespace Adnc.Cus.Application
 
             //注册服务
             builder.RegisterAssemblyTypes(this.ThisAssembly)
-                .Where(t => t.IsAssignableTo<IAppService>())
-                .AsImplementedInterfaces()
-                .InstancePerLifetimeScope()
-                .EnableInterfaceInterceptors()
-                .InterceptedBy(typeof(OpsLogInterceptor),typeof(EasyCachingInterceptor));
+                   .Where(t => t.IsAssignableTo<IAppService>())
+                   .AsImplementedInterfaces()
+                   .InstancePerLifetimeScope()
+                   .EnableInterfaceInterceptors()
+                   .InterceptedBy(typeof(OpsLogInterceptor),typeof(EasyCachingInterceptor));
         }
 
         private void LoadDepends(ContainerBuilder builder)

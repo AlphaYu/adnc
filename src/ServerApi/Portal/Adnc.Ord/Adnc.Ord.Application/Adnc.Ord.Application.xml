@@ -13,7 +13,13 @@
             <summary>
             注册方法
             </summary>
-            <param name="builder"></param>
+            <param name="builder"><see cref="T:Autofac.ContainerBuilder"/></param>
+        </member>
+        <member name="M:Adnc.Ord.Application.AdncOrdApplicationModule.LoadDepends(Autofac.ContainerBuilder)">
+            <summary>
+            注册依赖模块
+            </summary>
+            <param name="builder"><see cref="T:Autofac.ContainerBuilder"/></param>
         </member>
         <member name="T:Adnc.Ord.Application.EventSubscribers.WarehouseQtyBlockedEventSubscriber">
             <summary>

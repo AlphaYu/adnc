@@ -20,8 +20,14 @@
 
 	<ItemGroup>
 	  <Compile Remove="Interceptors\**" />
+	  <Compile Remove="Mq\**" />
+	  <Compile Remove="RpcServices\**" />
 	  <EmbeddedResource Remove="Interceptors\**" />
+	  <EmbeddedResource Remove="Mq\**" />
+	  <EmbeddedResource Remove="RpcServices\**" />
 	  <None Remove="Interceptors\**" />
+	  <None Remove="Mq\**" />
+	  <None Remove="RpcServices\**" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -38,11 +44,6 @@
 		<None Update="Adnc.Usr.Application.xml">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Mq\" />
-	  <Folder Include="RpcServices\" />
 	</ItemGroup>
 
 </Project>

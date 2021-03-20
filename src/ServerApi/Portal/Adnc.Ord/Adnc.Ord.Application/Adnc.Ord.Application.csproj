@@ -15,6 +15,12 @@
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
 	  <DocumentationFile>.\Adnc.Ord.Application.xml</DocumentationFile>
 	</PropertyGroup>
+
+	<ItemGroup>
+	  <Compile Remove="Mq\**" />
+	  <EmbeddedResource Remove="Mq\**" />
+	  <None Remove="Mq\**" />
+	</ItemGroup>
 	
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\Adnc.Application.Shared\02.Adnc.Application.Shared.csproj" />
@@ -23,7 +29,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Mq\" />
 	  <Folder Include="Services\DtoValidators\" />
 	</ItemGroup>
 
