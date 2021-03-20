@@ -10,7 +10,7 @@ namespace Adnc.Usr.Core.Entities.Config
             base.Configure(builder);
 
             builder.Property(x => x.RoleId).IsRequired();
-            builder.Property(x => x.RoleId).IsRequired();
+            builder.Property(x => x.MenuId).IsRequired();
         }
     }
 }
