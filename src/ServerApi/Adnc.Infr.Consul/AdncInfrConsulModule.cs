@@ -1,8 +1,7 @@
-﻿using Adnc.Infr.Consul.Consumer;
+﻿using System;
 using Autofac;
 using Consul;
-using Microsoft.Extensions.Options;
-using System;
+using Adnc.Infr.Consul.Consumer;
 
 namespace Adnc.Infr.Consul
 {
@@ -11,17 +10,15 @@ namespace Adnc.Infr.Consul
     /// </summary>
     public class AdncInfrConsulModule : Module
     {
-        private readonly ConsulConfig _config;
-        public AdncInfrConsulModule(IOptions<ConsulConfig> options)
+        private readonly string _consulAddress;
+
+        public AdncInfrConsulModule(string consulAddress)
         {
-            _config = options.Value;
+            _consulAddress = consulAddress;
         }
 
         protected override void Load(ContainerBuilder builder)
         {
-            //注册依赖模块
-            this.LoadDepends(builder);
-
             builder.RegisterType<DefaultTokenGenerator>()
                    .As<ITokenGenerator>()
                    .InstancePerLifetimeScope();
@@ -36,14 +33,10 @@ namespace Adnc.Infr.Consul
 
             builder.Register(x => new ConsulClient(cfg =>
             {
-                cfg.Address = new Uri(_config.ConsulUrl);
+                cfg.Address = new Uri(_consulAddress);
             }))
             .AsSelf()
             .InstancePerLifetimeScope();
-        }
-
-        private void LoadDepends(ContainerBuilder builder)
-        {
         }
     }
 }

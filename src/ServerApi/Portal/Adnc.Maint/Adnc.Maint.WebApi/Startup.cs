@@ -11,11 +11,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using HealthChecks.UI.Client;
 using Autofac;
-using AutoMapper;
 using Adnc.Infr.Common;
 using Adnc.Infr.Consul;
-using Adnc.Maint.WebApi.Helper;
+using Adnc.Infr.Mongo;
+using Adnc.Infr.EfCore;
 using Adnc.Maint.Application;
+using Adnc.Maint.WebApi.Helper;
 using Adnc.WebApi.Shared;
 using Adnc.WebApi.Shared.Middleware;
 
@@ -36,14 +37,15 @@ namespace Adnc.Maint.WebApi
         }
 
         public IConfiguration Configuration { get; }
+
         public IServiceCollection ServiceCollection { get; set; }
 
         public void ConfigureServices(IServiceCollection services)
         {
             ServiceCollection = services;
             services.AddScoped<UserContext>();
-            services.AddAutoMapper(typeof(AdncMaintProfile));
             services.AddHttpContextAccessor();
+            services.AddMemoryCache();
 
             _srvRegistration = new ServiceRegistrationHelper(Configuration, services, _env, _serviceInfo);
             _srvRegistration.Configure();
@@ -56,18 +58,16 @@ namespace Adnc.Maint.WebApi
             _srvRegistration.AddMongoContext();
             _srvRegistration.AddCaching();
             _srvRegistration.AddSwaggerGen();
-            _srvRegistration.AddAllMqServices();
             _srvRegistration.AddAllRpcServices();
-
-            services.AddConsulServices(_srvRegistration.GetConsulConfig());
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
             //×¢²áÒÀÀµÄ£¿é
-            builder.RegisterModule<Adnc.Infr.Mongo.AdncInfrMongoModule>();
-            builder.RegisterModule<Adnc.Infr.EfCore.AdncInfrEfCoreModule>();
-            builder.RegisterModule<Adnc.Maint.Application.AdncMaintApplicationModule>();
+            builder.RegisterModule<AdncInfrMongoModule>();
+            builder.RegisterModule<AdncInfrEfCoreModule>();
+            builder.RegisterModule<AdncMaintApplicationModule>();
+            builder.RegisterModule(new AdncInfrConsulModule(_srvRegistration.GetConsulConfig().ConsulUrl));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

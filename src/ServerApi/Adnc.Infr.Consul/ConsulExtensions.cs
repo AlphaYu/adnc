@@ -25,19 +25,6 @@ namespace Adnc.Infr.Consul
         }
 
 
-        public static void AddConsulServices(this IServiceCollection services, ConsulConfig config)
-        {
-            services.AddScoped<ITokenGenerator, DefaultTokenGenerator>();
-            services.AddScoped<SimpleDiscoveryDelegatingHandler>();
-            services.AddScoped<ConsulDiscoverDelegatingHandler>();
-            services.AddMemoryCache();
-            services.AddHttpContextAccessor();
-            services.AddScoped(p => new ConsulClient(cfg =>
-            {
-                cfg.Address = new Uri(config.ConsulUrl);
-            }));
-        }
-
         public static IConfigurationBuilder AddConsulConfiguration(this IConfigurationBuilder configurationBuilder, ConsulConfig config, bool reloadOnChanges = false)
         {
             return configurationBuilder.Add(new DefaultConsulConfigurationSource(config, reloadOnChanges));

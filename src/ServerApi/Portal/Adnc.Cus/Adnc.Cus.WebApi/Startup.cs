@@ -13,13 +13,14 @@ using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using DotNetCore.CAP.Dashboard.NodeDiscovery;
 using HealthChecks.UI.Client;
 using Autofac;
-using AutoMapper;
 using Adnc.Infr.Common;
-using Adnc.Cus.WebApi.Helper;
+using Adnc.Infr.Consul;
+using Adnc.Infr.Mongo;
+using Adnc.Infr.EfCore;
 using Adnc.Cus.Application;
+using Adnc.Cus.WebApi.Helper;
 using Adnc.WebApi.Shared;
 using Adnc.WebApi.Shared.Middleware;
-using Adnc.Infr.Consul;
 
 namespace Adnc.Cus.WebApi
 {
@@ -41,8 +42,8 @@ namespace Adnc.Cus.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<UserContext>();
-            services.AddAutoMapper(typeof(AdncCusProfile));
             services.AddHttpContextAccessor();
+            services.AddMemoryCache();
 
             _srvRegistration = new ServiceRegistrationHelper(_cfg, services, _env, _serviceInfo);
             _srvRegistration.Configure();
@@ -57,16 +58,15 @@ namespace Adnc.Cus.WebApi
             _srvRegistration.AddSwaggerGen();
             _srvRegistration.AddAllRpcServices();
             _srvRegistration.AddAllEventBusSubscribers();
-
-            services.AddConsulServices(_srvRegistration.GetConsulConfig());
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
             //×¢²áÒÀÀµÄ£¿é
-            builder.RegisterModule<Adnc.Infr.Mongo.AdncInfrMongoModule>();
-            builder.RegisterModule<Adnc.Infr.EfCore.AdncInfrEfCoreModule>();
-            builder.RegisterModule<Adnc.Cus.Application.AdncCusApplicationModule>();
+            builder.RegisterModule<AdncInfrMongoModule>();
+            builder.RegisterModule<AdncInfrEfCoreModule>();
+            builder.RegisterModule<AdncCusApplicationModule>();
+            builder.RegisterModule(new AdncInfrConsulModule(_srvRegistration.GetConsulConfig().ConsulUrl));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)

@@ -25,7 +25,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\Adnc.Application.Shared\02.Adnc.Application.Shared.csproj" />
 		<ProjectReference Include="..\..\..\Adnc.Infr.EasyCaching\21.Adnc.Infr.EasyCaching.csproj" />
-		<ProjectReference Include="..\Adnc.Whse.Domain\Adnc.Whse.Domain.csproj" />
+		<ProjectReference Include="..\Adnc.Whse.Core\Adnc.Whse.Core.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

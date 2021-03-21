@@ -75,9 +75,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Whse.WebApi", "Portal\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Whse.Migrations", "Portal\Adnc.Whse\Adnc.Whse.Migrations\Adnc.Whse.Migrations.csproj", "{B2A1BC7F-8C12-4A7C-8681-ECE83A66965C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Whse.Domain", "Portal\Adnc.Whse\Adnc.Whse.Domain\Adnc.Whse.Domain.csproj", "{98D4EE34-0543-4078-A2FB-326A275B2E06}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Whse.Core", "Portal\Adnc.Whse\Adnc.Whse.Core\Adnc.Whse.Core.csproj", "{98D4EE34-0543-4078-A2FB-326A275B2E06}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Ord.Domain", "Portal\Adnc.Ord\Adnc.Ord.Domain\Adnc.Ord.Domain.csproj", "{C14D5DA6-321B-4649-B8F1-EE11007B0B28}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Ord.Core", "Portal\Adnc.Ord\Adnc.Ord.Core\Adnc.Ord.Core.csproj", "{C14D5DA6-321B-4649-B8F1-EE11007B0B28}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Ord.Application", "Portal\Adnc.Ord\Adnc.Ord.Application\Adnc.Ord.Application.csproj", "{62BF59EF-F28A-4989-8423-A89819A34431}"
 EndProject

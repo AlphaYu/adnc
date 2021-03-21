@@ -2,16 +2,8 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
-using Adnc.Maint.Application.Mq;
 using Adnc.WebApi.Shared;
 using Adnc.Application.Shared.RpcServices;
-using Adnc.Infr.Consul.Consumer;
-using Adnc.Infr.Common.Helper;
-using Microsoft.AspNetCore.Authentication;
-using System;
-using System.Threading.Tasks;
-using Adnc.Infr.Consul;
-using Consul;
 
 namespace Adnc.Maint.WebApi.Helper
 {
@@ -23,15 +15,6 @@ namespace Adnc.Maint.WebApi.Helper
             , ServiceInfo serviceInfo)
           : base(cfg, services, env, serviceInfo)
         {
-        }
-
-        /// <summary>
-        /// 注册MQ消费者
-        /// </summary>
-        public void AddAllMqServices()
-        {
-            _services.AddHostedService<LoginLogMqConsumer>();
-            _services.AddHostedService<OpsLogMqConsumer>();
         }
 
         /// <summary>

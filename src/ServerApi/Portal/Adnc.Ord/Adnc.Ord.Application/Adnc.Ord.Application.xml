@@ -9,15 +9,14 @@
             订单中心Autofac注册模块
             </summary>
         </member>
+        <member name="M:Adnc.Ord.Application.AdncOrdApplicationModule.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
         <member name="M:Adnc.Ord.Application.AdncOrdApplicationModule.Load(Autofac.ContainerBuilder)">
             <summary>
             注册方法
-            </summary>
-            <param name="builder"><see cref="T:Autofac.ContainerBuilder"/></param>
-        </member>
-        <member name="M:Adnc.Ord.Application.AdncOrdApplicationModule.LoadDepends(Autofac.ContainerBuilder)">
-            <summary>
-            注册依赖模块
             </summary>
             <param name="builder"><see cref="T:Autofac.ContainerBuilder"/></param>
         </member>
@@ -181,7 +180,7 @@
             订单管理
             </summary>
         </member>
-        <member name="M:Adnc.Ord.Application.Services.OrderAppService.#ctor(Adnc.Core.Shared.IRepositories.IEfBasicRepository{Adnc.Ord.Domain.Entities.Order},Adnc.Ord.Domain.Services.OrderManager,Adnc.Ord.Application.RpcServices.IWhseRpcService,Adnc.Application.Shared.RpcServices.IMaintRpcService,AutoMapper.IMapper)">
+        <member name="M:Adnc.Ord.Application.Services.OrderAppService.#ctor(Adnc.Core.Shared.IRepositories.IEfBasicRepository{Adnc.Ord.Core.Entities.Order},Adnc.Ord.Core.Services.OrderManager,Adnc.Ord.Application.RpcServices.IWhseRpcService,Adnc.Application.Shared.RpcServices.IMaintRpcService,AutoMapper.IMapper)">
             <summary>
             构造函数
             </summary>

@@ -28,6 +28,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\Adnc.Core.Shared\03.Adnc.Core.Shared.csproj" />
+		<ProjectReference Include="..\Adnc.Infr.EasyCaching\21.Adnc.Infr.EasyCaching.csproj" />
 		<ProjectReference Include="..\Adnc.Infr.Mq\24.Adnc.Infr.Mq.csproj" />
 	</ItemGroup>
 

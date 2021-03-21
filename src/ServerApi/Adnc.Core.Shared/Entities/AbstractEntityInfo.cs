@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Adnc.Core.Shared.Domain.Entities;
 
 namespace Adnc.Core.Shared.Entities
 {
