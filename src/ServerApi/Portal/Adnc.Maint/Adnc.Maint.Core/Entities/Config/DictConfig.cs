@@ -1,18 +1,17 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Adnc.Core.Shared.Entities.Config;
 
 namespace Adnc.Maint.Core.Entities.Config
 {
-    public class DictConfig : IEntityTypeConfiguration<SysDict>
+    public class DictConfig : EntityTypeConfiguration<SysDict>
     {
-        public void Configure(EntityTypeBuilder<SysDict> builder)
+        public override void Configure(EntityTypeBuilder<SysDict> builder)
         {
-            //builder.Property<bool>("IsDeleted")
-            //    .HasDefaultValue(false);
-            //builder.HasQueryFilter(d => EF.Property<bool>(d, "IsDeleted") == false);
-            builder.Property(d => d.IsDeleted)
-                   .HasDefaultValue(false);
-            builder.HasQueryFilter(d => d.IsDeleted == false);
+            base.Configure(builder);
+
+            builder.Property(x => x.Value).HasMaxLength(16);
+            builder.Property(x => x.Name).IsRequired().HasMaxLength(64);
+            builder.Property(x => x.Pid).IsRequired();
         }
     }
 }

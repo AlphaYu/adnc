@@ -18,6 +18,10 @@
   <ItemGroup>
     <Compile Remove="Migrations\20210208052540_2021020801.cs" />
     <Compile Remove="Migrations\20210208052540_2021020801.Designer.cs" />
+    <Compile Remove="Migrations\20210320161536_Update2021032004.cs" />
+    <Compile Remove="Migrations\20210320161536_Update2021032004.Designer.cs" />
+    <Compile Remove="Migrations\20210320161901_Update2021032004.cs" />
+    <Compile Remove="Migrations\20210320161901_Update2021032004.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -12,17 +12,21 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Events\**" />
+	  <Compile Remove="IRepositories\**" />
+	  <EmbeddedResource Remove="Events\**" />
+	  <EmbeddedResource Remove="IRepositories\**" />
+	  <None Remove="Events\**" />
+	  <None Remove="IRepositories\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <Compile Remove="Entities\SysTask.cs" />
 	  <Compile Remove="Entities\SysTaskLog.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\Adnc.Core.Shared\03.Adnc.Core.Shared.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Folder Include="IRepositories\" />
-		<Folder Include="EventBus\" />
 	</ItemGroup>
 
 	<ItemGroup>

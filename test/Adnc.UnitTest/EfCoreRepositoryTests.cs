@@ -114,18 +114,17 @@ namespace Adnc.UnitTest
                 Nickname = $"n{radmon}"
             };
 
-            _dbContext.Add(cusotmer);
+            await _customerRsp.InsertAsync(cusotmer);
 
             //不受自动事务控制
             await _customerRsp.DeleteAsync(10000);
 
             //不受自动事务控制
-            await _customerRsp.DeleteRangeAsync(x => x.Id == id);
+            await _customerRsp.DeleteRangeAsync(x => x.Id == 10000);
 
             _dbContext.SaveChanges();
 
-            if (defaultAutoTransaction == false)
-                _dbContext.Database.AutoTransactionsEnabled = false;
+            _dbContext.Database.AutoTransactionsEnabled = false;
         }
 
         [Fact]

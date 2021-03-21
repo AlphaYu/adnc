@@ -16,8 +16,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="RpcServices\**" />
 	  <Compile Remove="Services\Task\**" />
+	  <EmbeddedResource Remove="RpcServices\**" />
 	  <EmbeddedResource Remove="Services\Task\**" />
+	  <None Remove="RpcServices\**" />
 	  <None Remove="Services\Task\**" />
 	</ItemGroup>
 
@@ -31,10 +34,6 @@
 	  <None Update="Adnc.Maint.Application.xml">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="RpcServices\" />
 	</ItemGroup>
 
 </Project>

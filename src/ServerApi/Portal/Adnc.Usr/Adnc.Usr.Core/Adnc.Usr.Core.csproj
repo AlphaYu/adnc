@@ -18,11 +18,13 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\..\Adnc.Core.Shared\03.Adnc.Core.Shared.csproj" />
+	  <Compile Remove="EventBus\**" />
+	  <EmbeddedResource Remove="EventBus\**" />
+	  <None Remove="EventBus\**" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="EventBus\" />
+	  <ProjectReference Include="..\..\..\Adnc.Core.Shared\03.Adnc.Core.Shared.csproj" />
 	</ItemGroup>
 
 </Project>

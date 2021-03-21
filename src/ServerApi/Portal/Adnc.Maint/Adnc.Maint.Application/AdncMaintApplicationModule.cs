@@ -1,7 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Configuration;
-using Autofac;
+﻿using Autofac;
 using Autofac.Extras.DynamicProxy;
+using FluentValidation;
 using Adnc.Infr.EasyCaching.Interceptor.Castle;
 using Adnc.Infr.Mq.RabbitMq;
 using Adnc.Maint.Core;
@@ -10,18 +9,15 @@ using Adnc.Application.Shared.Services;
 
 namespace Adnc.Maint.Application
 {
+    /// <summary>
+    /// Autofac注册
+    /// </summary>
     public class AdncMaintApplicationModule : Module
     {
-
-        public AdncMaintApplicationModule()
-        {
-        }
-
-        public AdncMaintApplicationModule(IServiceCollection services, IConfiguration configuration)
-            :base()
-        {
-        }
-
+        /// <summary>
+        /// 注册
+        /// </summary>
+        /// <param name="builder"><see cref="ContainerBuilder"/></param>
         protected override void Load(ContainerBuilder builder)
         {
             //注册依赖模块
@@ -43,11 +39,17 @@ namespace Adnc.Maint.Application
 
             //注册服务
             builder.RegisterAssemblyTypes(this.ThisAssembly)
-                .Where(t => t.IsAssignableTo<IAppService>())
-                .AsImplementedInterfaces()
-                .InstancePerLifetimeScope()
-                .EnableInterfaceInterceptors()
-                .InterceptedBy(typeof(OpsLogInterceptor),typeof(EasyCachingInterceptor));
+                   .Where(t => t.IsAssignableTo<IAppService>())
+                   .AsImplementedInterfaces()
+                   .InstancePerLifetimeScope()
+                   .EnableInterfaceInterceptors()
+                   .InterceptedBy(typeof(OpsLogInterceptor), typeof(EasyCachingInterceptor));
+
+            //注册DtoValidators
+            builder.RegisterAssemblyTypes(this.ThisAssembly)
+                   .Where(t => t.IsClosedTypeOf(typeof(IValidator<>)))
+                   .AsImplementedInterfaces()
+                   .InstancePerLifetimeScope();
         }
 
         private void LoadDepends(ContainerBuilder builder)

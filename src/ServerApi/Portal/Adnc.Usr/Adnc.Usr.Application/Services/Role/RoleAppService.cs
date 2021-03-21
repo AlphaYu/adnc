@@ -63,7 +63,6 @@ namespace Adnc.Usr.Application.Services
             if (user == null)
                 return null;
 
-            //var roles = await _roleRepository.SelectAsync(r => r, x => true);
             var roles = await _roleRepository.Where(x => true).ToListAsync();
             var roleIds = user.RoleIds?.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(x => long.Parse(x)) ?? new List<long>();
             if (roles.Any())
@@ -71,9 +70,9 @@ namespace Adnc.Usr.Application.Services
                 treeNodes = roles.Select(x => new ZTreeNodeDto<long, dynamic>
                 {
                     Id = x.Id,
-                    PID = x.PID.HasValue ? x.PID.Value : 0,
+                    PID = x.Pid.HasValue ? x.Pid.Value : 0,
                     Name = x.Name,
-                    Open = x.PID.HasValue && x.PID.Value > 0 ? false : true,
+                    Open = x.Pid.HasValue && x.Pid.Value > 0 ? false : true,
                     Checked = roleIds.Contains(x.Id)
                 });
 

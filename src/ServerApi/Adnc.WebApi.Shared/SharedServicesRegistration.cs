@@ -624,7 +624,7 @@ namespace Adnc.WebApi.Shared
             //注册RefitClient,设置httpclient生命周期时间，默认也是2分钟。
             var clientbuilder = _services.AddRefitClient<TRpcService>(refitSettings)
                                          .SetHandlerLifetime(TimeSpan.FromMinutes(2));
-            //从consul获取地址
+            //如果参数是服务名字，那么需要从consul获取地址
             if (isConsulAdderss)
                 clientbuilder.ConfigureHttpClient(client => client.BaseAddress = new Uri($"http://{serviceName}"))
                              .AddHttpMessageHandler<ConsulDiscoverDelegatingHandler>();
@@ -633,7 +633,7 @@ namespace Adnc.WebApi.Shared
                              .AddHttpMessageHandler<SimpleDiscoveryDelegatingHandler>();
 
             //添加polly相关策略
-            //policies?.ForEach(policy => clientbuilder.AddPolicyHandler(policy));
+            policies?.ForEach(policy => clientbuilder.AddPolicyHandler(policy));
         }
 
         /// <summary>
@@ -668,7 +668,7 @@ namespace Adnc.WebApi.Shared
                                         TimeSpan.FromSeconds(4)
                                     });
             //超时策略
-            var timeoutPolicy = Policy.TimeoutAsync<HttpResponseMessage>(3);
+            var timeoutPolicy = Policy.TimeoutAsync<HttpResponseMessage>(_env.IsDevelopment() ? 10 : 3);
 
             //熔断策略
             //如下，如果我们的业务代码连续失败50次，就触发熔断(onBreak),就不会再调用我们的业务代码，而是直接抛出BrokenCircuitException异常。

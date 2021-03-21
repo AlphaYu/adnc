@@ -65,7 +65,6 @@ namespace Adnc.Usr.Application.Services
             user.Id = IdGenerater.GetNextId();
             user.Salt = SecurityHelper.GenerateRandomCode(5);
             user.Password = HashHelper.GetHashedString(HashType.MD5, user.Password, user.Salt);
-            user.UserFinance = new SysUserFinance { Id = user.Id, Amount = 0.00M };
             await _userRepository.InsertAsync(user);
 
             return user.Id;
@@ -111,11 +110,9 @@ namespace Adnc.Usr.Application.Services
             if (pageModelDto.RowsCount > 0)
             {
                 var deptIds = pageModelDto.Data.Where(d => d.DeptId != null).Select(d => d.DeptId).Distinct().ToList();
-                //var depts = await _deptRepository.SelectAsync(d => new { d.Id, d.FullName }, x => deptIds.Contains(x.Id));
                 var depts = (await _deptAppService.GetAllFromCacheAsync())
                             .Where(x => deptIds.Contains(x.Id))
                             .Select(d => new { d.Id, d.FullName });
-                //var roles = await _roleRepository.SelectAsync(r => new { r.Id, r.Name }, x => true);
                 var roles = (await _roleAppService.GetAllFromCacheAsync())
                             .Select(r => new { r.Id, r.Name });
 

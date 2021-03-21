@@ -13,12 +13,11 @@ using HealthChecks.UI.Client;
 using Autofac;
 using AutoMapper;
 using Adnc.Infr.Common;
-using Adnc.Infr.Consul.Registration;
+using Adnc.Infr.Consul;
 using Adnc.Maint.WebApi.Helper;
 using Adnc.Maint.Application;
 using Adnc.WebApi.Shared;
 using Adnc.WebApi.Shared.Middleware;
-using Adnc.Infr.Consul;
 
 namespace Adnc.Maint.WebApi
 {
@@ -68,7 +67,7 @@ namespace Adnc.Maint.WebApi
             //×¢²áÒÀÀµÄ£¿é
             builder.RegisterModule<Adnc.Infr.Mongo.AdncInfrMongoModule>();
             builder.RegisterModule<Adnc.Infr.EfCore.AdncInfrEfCoreModule>();
-            builder.RegisterModule(new Adnc.Maint.Application.AdncMaintApplicationModule());
+            builder.RegisterModule<Adnc.Maint.Application.AdncMaintApplicationModule>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

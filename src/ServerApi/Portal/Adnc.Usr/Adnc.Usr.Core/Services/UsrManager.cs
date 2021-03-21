@@ -59,9 +59,6 @@ namespace Adnc.Usr.Core.Services
                                  .Select(d => new { d.Id, d.Pids })
                                  .ToListAsync();
 
-            //var subDepts = await _deptRepository.SelectAsync(d => new { d.Id, d.Pids }
-            //                                                , d => d.Pids.StartsWith(originalDeptPids)
-            //                                                );
             foreach (var c in subDepts)
             {
                 await _deptRepository.UpdateAsync(new SysDept { Id = c.Id, Pids = c.Pids.Replace(originalDeptPids, nowDeptPids) }, UpdatingProps<SysDept>(c => c.Pids));

@@ -133,8 +133,6 @@ namespace Adnc.Usr.Application.Services
 
             if (sysDept.Pid.HasValue && sysDept.Pid.Value > 0)
             {
-                //var depts = await this.GetAllFromCache();
-                //var dept = depts.Select(d => new { d.Id, d.Pid, d.Pids }).Where(d => d.Id == sysDept.Pid.Value).FirstOrDefault();
                 var dept = (await GetAllFromCacheAsync()).FirstOrDefault(x => x.Id == sysDept.Pid.Value);
                 string pids = dept?.Pids ?? "";
                 sysDept.Pids = $"{pids}[{sysDept.Pid}],";

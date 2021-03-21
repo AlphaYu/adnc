@@ -192,7 +192,6 @@ namespace Adnc.Usr.Application.Services
             var menuIds = (await this.GetAllRelations()).Where(x => x.RoleId.Value == roleId).Select(r => r.MenuId.Value) ?? new List<long>();
             List<ZTreeNodeDto<long, dynamic>> roleTreeList = new List<ZTreeNodeDto<long, dynamic>>();
 
-            //var menus = await _menuRepository.SelectAsync(m=>m, q => true, q => q.Id, true);
             var menus = await _menuRepository.Where(w => true).OrderBy(x=>x.Ordinal).ToListAsync();
 
             foreach (var menu in menus)

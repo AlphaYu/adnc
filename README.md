@@ -11,44 +11,19 @@
 </div>
 
 # <div align="center">![Adnc是一个微服务开发框架 代码改变世界 开源活跃社区](https://aspdotnetcore.net/wp-content/uploads/2020/12/adnc-homepage-logo-3.webp)</div>
-&ensp;&ensp;&ensp;&ensp;<a target="_blank" title="一个轻量级的.Net Core微服务开发框架" href="https://aspdotnetcore.net">Adnc</a>是一个轻量级的<a target="_blank" href="https://github.com/dotnet/core">.Net Core</a>微服务开发框架，同时也适用于单体架构系统的开发。支持经典三层与DDD架构开发模式、集成了一系列主流稳定的微服务配套技术栈。一个前后端分离的框架，前端基于<a target="_blank" href="https://github.com/vuejs/vue">Vue</a>、后端基于<a target="_blank" href="https://github.com/dotnet/core">.Net Core 3.1</a>构建。Webapi遵循RESTful设计规范、基于JWT认证授权、基于<a target="_blank" href="https://github.com/mariadb-corporation/MaxScalehttps://github.com/mariadb-corporation/MaxScale">Maxscale</a>实现了读写分离、部署灵活、代码简洁、开箱即用、容器化微服务的最佳实践。<br/>
+&ensp;&ensp;&ensp;&ensp;<a target="_blank" title="一个轻量级的.Net Core微服务开发框架" href="https://aspdotnetcore.net">Adnc</a>是一个轻量级的<a target="_blank" href="https://github.com/dotnet/core">.Net Core</a>微服务开发框架，同时也适用于单体架构系统的开发。支持经典三层与DDD架构开发模式、集成了一系列主流稳定的微服务配套技术栈。一个前后端分离的框架，前端基于<a target="_blank" href="https://github.com/vuejs/vue">Vue</a>、后端基于<a target="_blank" href="https://github.com/dotnet/core">.Net Core 3.1</a>构建。Webapi遵循RESTful设计规范、基于JWT认证授权、基于<a target="_blank" href="https://github.com/mariadb-corporation/MaxScalehttps://github.com/mariadb-corporation/MaxScale">Maxscale</a>实现了读写分离、部署灵活、代码简洁、开箱即用、容器化微服务的最佳实践。
 
-<table style="font-size:13px;">
-    <tr>
-        <th colspan="4">Adnc包含的微服务介绍</th>
-    </tr>
-    <tr>
-        <td width="40px">Adnc.Usr</td>
-        <td width="100px">用户中心</td>
-        <td width="100px"  rowspan="3">经典三层</td>        
-        <td>系统支撑服务，实现了用户管理、角色管理、权限管理、菜单管理、组织架构管理。</td>
-    </tr>
-    <tr>
-        <td>Adnc.Maint</td>
-        <td>运维中心</td>    
-        <td>系统支撑服务，实现了登录日志、审计日志、异常日志、字典管理、配置参数管理。</td>
-    </tr>
-    <tr>
-        <td>Adnc.Cust</td>
-        <td>客户中心</td> 
-        <td rowspan="3">三个demos，完整的演示了如何使用服务注册/发现、配置中心、仓储、Refit调用微服务、异步消息队列、EventBus、领域事件的发布订阅、领域服务/聚合根/实体/值对象设计、组件依赖注入、异常拦截、日志拦截、缓存配置、DTO参数校验、RESTful规范的API设计、模型映射、工作单元、健康检测配置、性能与链路监测配置等。
-        </td>
-    </tr>
-    </tr>
-        <tr>
-        <td>Adnc.Ord</td>
-        <td>订单中心</td>
-        <td  rowspan="2">DDD架构</td>   
-    </tr>
-    </tr>
-        <tr>
-        <td>Adnc.Whse</td>
-        <td>仓储中心</td>
-    </tr>
-</table>
+- 用户中心：系统支撑服务，实现了用户管理、角色管理、权限管理、菜单管理、组织架构管理
+- 运维中心：系统支撑服务，实现了登录日志、审计日志、异常日志、字典管理、配置参数管理
+- 客户中心：经典三层开发模式demo
+- 订单中心：DDD开发模式demo
+- 仓储中心：DDD开发模式demo
 
 ## 演示
 - <a href="http://adnc.aspdotnetcore.net" target="_blank">http://adnc.aspdotnetcore.net</a>
+
+## 问题交流
+- 780634162(QQ群)
 
 ## GitHub
 - <a href="https://github.com/alphayu/adnc" target="_blank">https://github.com/alphayu/adnc</a>
@@ -68,7 +43,7 @@
 [请点击链接，查看详细介绍](https://github.com/AlphaYu/Adnc/wiki/%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E8%AF%BB%E5%86%99%E5%88%86%E7%A6%BB)
 
 #### 如何使用EFCore仓储
-- 详细介绍`EFCore`仓储基础功能与工作单元的使用，提供了丰富的演示代码以及演示代码对应的Sql语句。<br/>
+- 详细介绍EFCore仓储基础功能、工作单元、CodeFirst，提供了丰富的演示代码以及演示代码对应的Sql语句。<br/>
 [请点击链接，查看详细介绍](https://github.com/AlphaYu/Adnc/wiki/%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E4%BB%93%E5%82%A8(%E4%B8%80)-%E5%9F%BA%E7%A1%80%E5%8A%9F%E8%83%BD)
 
 ## 目录结构
@@ -122,9 +97,11 @@
 
 ## 后端解决方案
 #### 整体架构图
-`Adnc.Infras` 基础架构相关工程<br/>
-`Adnc.Portal` 微服务相关工程<br/>
-![.NET微服务开源框架-整体架构图](https://aspdotnetcore.net/wp-content/uploads/2020/11/adnc-serverapi-structure.webp)
+- `Adnc.Infras` 基础架构相关工程
+- `Adnc.Portal` 微服务相关工程
+- `Adnc.Tests` 框架测试相关工程
+
+![.NET微服务开源框架-整体架构图](https://aspdotnetcore.net/wp-content/uploads/2021/03/adnc_solution.jpg)
 #### Adnc.Infras 基础架构相关工程
 ##### 01.Adnc.WebApi.Shared
 该层实现了认证、鉴权、异常捕获等公共类和中间件。所有微服务WebApi层的共享层，并且都需要依赖该层。<br/>
@@ -160,10 +137,13 @@
 该层集成了RabbitMq。封装了发布者与订阅者等公共类，方便更加便捷的调用rabbitmq。<br/>
 ![.NET微服务开源框架-基础机构-rabbitmq层](https://aspdotnetcore.net/wp-content/uploads/2020/11/adnc-serverapi-infr-rabbitmq.webp)
 #### Adnc.Portal 微服务相关工程
-该层都是具体微服务业务的实现。<br/>
-`Adnc.Usr` 用户中心微服务，实现了用户、角色、权限、部门管理。<br/>
-`Adnc.Maint` 运维中心微服务，实现了登录、审计、异常日志管理以及一些配套组件的外链。<br/>
-`Adnc.Cus` 客户中心微服务，该层主要是一些demo。<br/>
+该目录都是具体微服务业务的实现。<br/>
+- `Adnc.Usr` 用户中心微服务，系统支撑服务，实现了用户管理、角色管理、权限管理、菜单管理、组织架构管理。
+- `Adnc.Maint` 运维中心微服务，系统支撑服务，实现了登录日志、审计日志、异常日志、字典管理、配置参数管理。
+- `Adnc.Cus` 客户中心微服务，经典三层开发模式demo。
+- `Adnc.Ord` 订单中心微服务，DDD开发模式demo。
+- `Adnc.Whse` 仓储中心微服务，DDD开发模式demo。
+
 每个微服务的Migrations层是Efcore用来做数据迁移的，迁移的日志文件存放在各自Migrations目录中。<br/>
 ![.NET微服务开源框架-微服务层](https://aspdotnetcore.net/wp-content/uploads/2020/11/adnc-serverapi-potral.webp)
 ### 代码片段

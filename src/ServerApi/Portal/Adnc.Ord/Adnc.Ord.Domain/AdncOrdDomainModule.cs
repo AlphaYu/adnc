@@ -1,10 +1,7 @@
 ﻿using Autofac;
-using Autofac.Extras.DynamicProxy;
 using Adnc.Ord.Domain.Entities;
 using Adnc.Core.Shared;
 using Adnc.Core.Shared.Entities;
-using Adnc.Core.Shared.Interceptors;
-using Adnc.Ord.Domain.Events;
 using Adnc.Infr.EventBus;
 
 namespace Adnc.Ord.Domain
@@ -14,7 +11,7 @@ namespace Adnc.Ord.Domain
         /// <summary>
         /// Autofac注册
         /// </summary>
-        /// <param name="builder"></param>
+        /// <param name="builder"><see cref="ContainerBuilder"/></param>
         protected override void Load(ContainerBuilder builder)
         {
             //注册EntityInfo
@@ -32,15 +29,6 @@ namespace Adnc.Ord.Domain
             builder.RegisterType<CapPublisher>()
                    .As<IEventPublisher>()
                    .SingleInstance();
-        }
-
-        /// <summary>
-        /// Autofac注册,该方法供UnitTest工程使用
-        /// </summary>
-        /// <param name="builder"></param>
-        public static void Register(ContainerBuilder builder)
-        {
-            new AdncOrdDomainModule().Load(builder);
         }
     }
 }

@@ -1,9 +1,10 @@
-﻿using System.ComponentModel;
-using Adnc.Core.Shared.Entities;
+﻿using Adnc.Core.Shared.Entities;
 
 namespace Adnc.Cus.Core.Entities
 {
-    [Description("客户财务变动记录")]
+    /// <summary>
+    /// 客户财务变动记录
+    /// </summary>
     public class CustomerTransactionLog : EfBasicAuditEntity
     {
         public long CustomerId { get; set; }

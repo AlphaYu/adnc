@@ -27,10 +27,10 @@ namespace Adnc.Cus.Migrations.Migrations
                         .HasColumnType("varchar(16) CHARACTER SET utf8mb4")
                         .HasMaxLength(16);
 
-                    b.Property<long?>("CreateBy")
+                    b.Property<long>("CreateBy")
                         .HasColumnType("bigint");
 
-                    b.Property<DateTime?>("CreateTime")
+                    b.Property<DateTime>("CreateTime")
                         .HasColumnType("datetime(6)");
 
                     b.Property<long?>("ModifyBy")
@@ -67,10 +67,10 @@ namespace Adnc.Cus.Migrations.Migrations
                     b.Property<decimal>("Balance")
                         .HasColumnType("decimal(18,4)");
 
-                    b.Property<long?>("CreateBy")
+                    b.Property<long>("CreateBy")
                         .HasColumnType("bigint");
 
-                    b.Property<DateTime?>("CreateTime")
+                    b.Property<DateTime>("CreateTime")
                         .HasColumnType("datetime(6)");
 
                     b.Property<long?>("ModifyBy")
@@ -108,10 +108,10 @@ namespace Adnc.Cus.Migrations.Migrations
                     b.Property<decimal>("ChangingAmount")
                         .HasColumnType("decimal(18,4)");
 
-                    b.Property<long?>("CreateBy")
+                    b.Property<long>("CreateBy")
                         .HasColumnType("bigint");
 
-                    b.Property<DateTime?>("CreateTime")
+                    b.Property<DateTime>("CreateTime")
                         .HasColumnType("datetime(6)");
 
                     b.Property<long>("CustomerId")

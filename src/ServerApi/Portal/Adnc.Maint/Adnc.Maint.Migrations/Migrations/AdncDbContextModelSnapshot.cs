@@ -20,17 +20,15 @@ namespace Adnc.Maint.Migrations.Migrations
             modelBuilder.Entity("Adnc.Maint.Core.Entities.SysCfg", b =>
                 {
                     b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    b.Property<long?>("CreateBy")
+                    b.Property<long>("CreateBy")
                         .HasColumnType("bigint");
 
-                    b.Property<DateTime?>("CreateTime")
+                    b.Property<DateTime>("CreateTime")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Description")
-                        .HasColumnName("Description")
                         .HasColumnType("varchar(256) CHARACTER SET utf8mb4")
                         .HasMaxLength(256);
 
@@ -46,12 +44,12 @@ namespace Adnc.Maint.Migrations.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Name")
-                        .HasColumnName("Name")
+                        .IsRequired()
                         .HasColumnType("varchar(64) CHARACTER SET utf8mb4")
                         .HasMaxLength(64);
 
                     b.Property<string>("Value")
-                        .HasColumnName("Value")
+                        .IsRequired()
                         .HasColumnType("varchar(128) CHARACTER SET utf8mb4")
                         .HasMaxLength(128);
 
@@ -63,13 +61,12 @@ namespace Adnc.Maint.Migrations.Migrations
             modelBuilder.Entity("Adnc.Maint.Core.Entities.SysDict", b =>
                 {
                     b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    b.Property<long?>("CreateBy")
+                    b.Property<long>("CreateBy")
                         .HasColumnType("bigint");
 
-                    b.Property<DateTime?>("CreateTime")
+                    b.Property<DateTime>("CreateTime")
                         .HasColumnType("datetime(6)");
 
                     b.Property<bool>("IsDeleted")
@@ -84,8 +81,9 @@ namespace Adnc.Maint.Migrations.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("varchar(16) CHARACTER SET utf8mb4")
-                        .HasMaxLength(16);
+                        .IsRequired()
+                        .HasColumnType("varchar(64) CHARACTER SET utf8mb4")
+                        .HasMaxLength(64);
 
                     b.Property<int>("Ordinal")
                         .HasColumnType("int");
@@ -94,8 +92,8 @@ namespace Adnc.Maint.Migrations.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<string>("Value")
-                        .HasColumnType("varchar(64) CHARACTER SET utf8mb4")
-                        .HasMaxLength(64);
+                        .HasColumnType("varchar(16) CHARACTER SET utf8mb4")
+                        .HasMaxLength(16);
 
                     b.HasKey("Id");
 
@@ -105,18 +103,17 @@ namespace Adnc.Maint.Migrations.Migrations
             modelBuilder.Entity("Adnc.Maint.Core.Entities.SysNotice", b =>
                 {
                     b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
                     b.Property<string>("Content")
-                        .HasColumnName("Content")
+                        .IsRequired()
                         .HasColumnType("varchar(255) CHARACTER SET utf8mb4")
                         .HasMaxLength(255);
 
-                    b.Property<long?>("CreateBy")
+                    b.Property<long>("CreateBy")
                         .HasColumnType("bigint");
 
-                    b.Property<DateTime?>("CreateTime")
+                    b.Property<DateTime>("CreateTime")
                         .HasColumnType("datetime(6)");
 
                     b.Property<long?>("ModifyBy")
@@ -126,12 +123,10 @@ namespace Adnc.Maint.Migrations.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Title")
-                        .HasColumnName("Title")
-                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4")
-                        .HasMaxLength(255);
+                        .HasColumnType("varchar(64) CHARACTER SET utf8mb4")
+                        .HasMaxLength(64);
 
                     b.Property<int?>("Type")
-                        .HasColumnName("Type")
                         .HasColumnType("int");
 
                     b.HasKey("Id");

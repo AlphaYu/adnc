@@ -1,7 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Adnc.Core.Shared.Entities
 {
@@ -10,12 +7,12 @@ namespace Adnc.Core.Shared.Entities
         /// <summary>
         /// 创建人
         /// </summary>
-        public long? CreateBy { get; set; }
+        public long CreateBy { get; set; }
 
         /// <summary>
         /// 创建时间/注册时间
         /// </summary>
-        public DateTime? CreateTime { get; set; }
+        public DateTime CreateTime { get; set; }
 
         /// <summary>
         /// 最后更新人

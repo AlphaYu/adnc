@@ -4,6 +4,23 @@
         <name>Adnc.Whse.Application</name>
     </assembly>
     <members>
+        <member name="T:Adnc.Whse.Application.AdncWhseApplicationModule">
+            <summary>
+            Autofac注册
+            </summary>
+        </member>
+        <member name="M:Adnc.Whse.Application.AdncWhseApplicationModule.Load(Autofac.ContainerBuilder)">
+            <summary>
+            注册
+            </summary>
+            <param name="builder"><see cref="T:Autofac.ContainerBuilder"/></param>
+        </member>
+        <member name="M:Adnc.Whse.Application.AdncWhseApplicationModule.LoadDepends(Autofac.ContainerBuilder)">
+            <summary>
+            注册依赖模块
+            </summary>
+            <param name="builder"><see cref="T:Autofac.ContainerBuilder"/></param>
+        </member>
         <member name="T:Adnc.Whse.Application.EventSubscribers.OrderCreatedEventSubscirber">
             <summary>
             订单创建事件订阅者
