@@ -29,6 +29,11 @@
 - <a href="https://github.com/alphayu/adnc" target="_blank">https://github.com/alphayu/adnc</a>
 - 开源不易，如果您喜欢这个项目, 请给个星星⭐️。
 
+## Roadmap
+  - 开发微服务项目生成工具
+  - 集成Dapr
+  - 集成<a href="https://github.com/quartznet/quartznet" target="_blank">Quartz.Net</a>实现框架计划调度功能。
+
 ## 文档
 #### 如何快速跑起来
 - 详细介绍如何使用docker安装reids、mysql、rabbitmq、mongodb，以及如何在本地配置ClientApp、ServerApi。<br/>
@@ -211,11 +216,6 @@
         }
     }
 ```
-## 下一步计划
-  - 完善框架文档。
-  - 优化现有功能
-  - 开发微服务项目生成工具
-  - 集成<a href="https://github.com/quartznet/quartznet" target="_blank">Quartz.Net</a>实现框架计划调度功能。
 
 ## 问题交流
 -  企&ensp;鹅&ensp;群：780634162
