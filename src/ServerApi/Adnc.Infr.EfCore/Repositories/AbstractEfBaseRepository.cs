@@ -10,7 +10,6 @@ using Dapper;
 using Adnc.Core.Shared;
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Core.Shared.Entities;
-using Adnc.Core.Shared.Domain.Entities;
 
 namespace Adnc.Infr.EfCore.Repositories
 {

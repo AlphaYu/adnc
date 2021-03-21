@@ -11,8 +11,8 @@ using Adnc.Application.Shared.Services;
 using Adnc.Application.Shared.RpcServices;
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Ord.Application.Dtos;
-using Adnc.Ord.Domain.Services;
-using Adnc.Ord.Domain.Entities;
+using Adnc.Ord.Core.Services;
+using Adnc.Ord.Core.Entities;
 using Adnc.Ord.Application.RpcServices;
 using Adnc.Ord.Application.RpcServices.Rtos;
 

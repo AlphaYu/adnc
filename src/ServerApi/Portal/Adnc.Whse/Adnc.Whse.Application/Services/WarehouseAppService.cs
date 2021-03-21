@@ -5,8 +5,8 @@ using Adnc.Core.Shared.IRepositories;
 using Adnc.Infr.Common.Extensions;
 using Adnc.Application.Shared.Dtos;
 using Adnc.Application.Shared.Services;
-using Adnc.Whse.Domain.Entities;
-using Adnc.Whse.Domain.Services;
+using Adnc.Whse.Core.Entities;
+using Adnc.Whse.Core.Services;
 using Adnc.Whse.Application.Dtos;
 
 namespace Adnc.Whse.Application.Services

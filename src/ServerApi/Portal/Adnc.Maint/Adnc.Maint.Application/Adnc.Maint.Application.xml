@@ -9,11 +9,16 @@
             Autofac注册
             </summary>
         </member>
+        <member name="M:Adnc.Maint.Application.AdncMaintApplicationModule.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
         <member name="M:Adnc.Maint.Application.AdncMaintApplicationModule.Load(Autofac.ContainerBuilder)">
             <summary>
-            注册
+            注册方法
             </summary>
-            <param name="builder"><see cref="T:Autofac.ContainerBuilder"/></param>
+            <param name="builder"></param>
         </member>
         <member name="T:Adnc.Maint.Application.Mq.LoginLogMqConsumer">
             <summary>

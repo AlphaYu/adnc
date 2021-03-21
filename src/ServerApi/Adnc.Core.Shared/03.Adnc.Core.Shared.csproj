@@ -30,6 +30,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\Adnc.Infr.Common\04.Adnc.Infr.Common.csproj" />
+	  <ProjectReference Include="..\Adnc.Infr.EventBus\25.Adnc.Infr.EventBus.csproj" />
 	</ItemGroup>
 
 </Project>

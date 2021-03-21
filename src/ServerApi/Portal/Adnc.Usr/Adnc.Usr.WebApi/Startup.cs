@@ -11,13 +11,14 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using HealthChecks.UI.Client;
 using Autofac;
-using AutoMapper;
 using Adnc.Infr.Common;
+using Adnc.Infr.Consul;
+using Adnc.Infr.Mongo;
+using Adnc.Infr.EfCore;
 using Adnc.Usr.Application;
 using Adnc.Usr.WebApi.Helper;
 using Adnc.WebApi.Shared;
 using Adnc.WebApi.Shared.Middleware;
-using Adnc.Infr.Consul;
 
 namespace Adnc.Usr.WebApi
 {
@@ -40,8 +41,8 @@ namespace Adnc.Usr.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<UserContext>();
-            services.AddAutoMapper(typeof(AdncUsrProfile));
             services.AddHttpContextAccessor();
+            services.AddMemoryCache();
 
             _srvRegistration = new ServiceRegistrationHelper(Configuration, services, _env, _serviceInfo);
             _srvRegistration.Configure();
@@ -54,8 +55,6 @@ namespace Adnc.Usr.WebApi
             _srvRegistration.AddMongoContext();
             _srvRegistration.AddCaching();
             _srvRegistration.AddSwaggerGen();
-
-            services.AddConsulServices(_srvRegistration.GetConsulConfig());
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -64,9 +63,10 @@ namespace Adnc.Usr.WebApi
             //通过配置文件(autofac)注册
             //var module = new ConfigurationModule(Configuration);
             //builder.RegisterModule(module);
-            builder.RegisterModule<Adnc.Infr.Mongo.AdncInfrMongoModule>();
-            builder.RegisterModule<Adnc.Infr.EfCore.AdncInfrEfCoreModule>();
-            builder.RegisterModule<Adnc.Usr.Application.AdncUsrApplicationModule>();
+            builder.RegisterModule<AdncInfrMongoModule>();
+            builder.RegisterModule<AdncInfrEfCoreModule>();
+            builder.RegisterModule<AdncUsrApplicationModule>();
+            builder.RegisterModule(new AdncInfrConsulModule(_srvRegistration.GetConsulConfig().ConsulUrl));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

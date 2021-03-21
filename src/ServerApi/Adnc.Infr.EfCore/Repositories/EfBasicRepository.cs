@@ -6,7 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Adnc.Core.Shared.IRepositories;
-using Adnc.Core.Shared.Domain.Entities;
+using Adnc.Core.Shared.Entities;
 
 namespace Adnc.Infr.EfCore.Repositories
 {

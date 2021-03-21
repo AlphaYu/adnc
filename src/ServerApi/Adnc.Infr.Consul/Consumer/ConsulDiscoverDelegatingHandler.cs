@@ -56,6 +56,7 @@ namespace Adnc.Infr.Consul.Consumer
                     request.Version = new Version(2, 0);
 
                 #region 缓存处理
+                /* 这里高并发会有问题，需要优化，先注释
                 if (request.Method == HttpMethod.Get)
                 {
                     var cache = headers.FirstOrDefault(x => x.Key == "Cache");
@@ -89,6 +90,7 @@ namespace Adnc.Infr.Consul.Consumer
                         }
                     }
                 }
+                */
                 #endregion
 
                 var responseMessage = await base.SendAsync(request, cancellationToken).ConfigureAwait(false);

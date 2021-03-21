@@ -9,15 +9,14 @@
             Autofac注册
             </summary>
         </member>
+        <member name="M:Adnc.Whse.Application.AdncWhseApplicationModule.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
         <member name="M:Adnc.Whse.Application.AdncWhseApplicationModule.Load(Autofac.ContainerBuilder)">
             <summary>
             注册
-            </summary>
-            <param name="builder"><see cref="T:Autofac.ContainerBuilder"/></param>
-        </member>
-        <member name="M:Adnc.Whse.Application.AdncWhseApplicationModule.LoadDepends(Autofac.ContainerBuilder)">
-            <summary>
-            注册依赖模块
             </summary>
             <param name="builder"><see cref="T:Autofac.ContainerBuilder"/></param>
         </member>
@@ -83,7 +82,7 @@
             商品管理
             </summary>
         </member>
-        <member name="M:Adnc.Whse.Application.Services.ProductAppService.#ctor(Adnc.Core.Shared.IRepositories.IEfBasicRepository{Adnc.Whse.Domain.Entities.Product},Adnc.Core.Shared.IRepositories.IEfBasicRepository{Adnc.Whse.Domain.Entities.Warehouse},Adnc.Application.Shared.RpcServices.IMaintRpcService,Adnc.Whse.Domain.Services.ProductManager,AutoMapper.IMapper)">
+        <member name="M:Adnc.Whse.Application.Services.ProductAppService.#ctor(Adnc.Core.Shared.IRepositories.IEfBasicRepository{Adnc.Whse.Core.Entities.Product},Adnc.Core.Shared.IRepositories.IEfBasicRepository{Adnc.Whse.Core.Entities.Warehouse},Adnc.Application.Shared.RpcServices.IMaintRpcService,Adnc.Whse.Core.Services.ProductManager,AutoMapper.IMapper)">
             <summary>
             商品管理构造函数
             </summary>
@@ -150,7 +149,7 @@
             仓储管理
             </summary>
         </member>
-        <member name="M:Adnc.Whse.Application.Services.WarehouseAppService.#ctor(Adnc.Whse.Domain.Services.WarehouseManager,AutoMapper.IMapper,Adnc.Core.Shared.IRepositories.IEfBasicRepository{Adnc.Whse.Domain.Entities.Warehouse},Adnc.Core.Shared.IRepositories.IEfBasicRepository{Adnc.Whse.Domain.Entities.Product})">
+        <member name="M:Adnc.Whse.Application.Services.WarehouseAppService.#ctor(Adnc.Whse.Core.Services.WarehouseManager,AutoMapper.IMapper,Adnc.Core.Shared.IRepositories.IEfBasicRepository{Adnc.Whse.Core.Entities.Warehouse},Adnc.Core.Shared.IRepositories.IEfBasicRepository{Adnc.Whse.Core.Entities.Product})">
             <summary>
             构造函数
             </summary>

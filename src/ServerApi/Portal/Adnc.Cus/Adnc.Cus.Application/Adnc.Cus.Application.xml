@@ -4,6 +4,22 @@
         <name>Adnc.Cus.Application</name>
     </assembly>
     <members>
+        <member name="T:Adnc.Cus.Application.AdncCusApplicationModule">
+            <summary>
+            Autofac注册
+            </summary>
+        </member>
+        <member name="M:Adnc.Cus.Application.AdncCusApplicationModule.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:Adnc.Cus.Application.AdncCusApplicationModule.Load(Autofac.ContainerBuilder)">
+            <summary>
+            注册方法
+            </summary>
+            <param name="builder"></param>
+        </member>
         <member name="T:Adnc.Cus.Application.EventSubscribers.CustomerRechargedEventSubscriber">
             <summary>
             充值事件订阅者
