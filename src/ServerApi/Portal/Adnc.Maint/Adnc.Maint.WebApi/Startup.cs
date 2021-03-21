@@ -45,6 +45,7 @@ namespace Adnc.Maint.WebApi
             ServiceCollection = services;
             services.AddScoped<UserContext>();
             services.AddHttpContextAccessor();
+            services.AddMemoryCache();
 
             _srvRegistration = new ServiceRegistrationHelper(Configuration, services, _env, _serviceInfo);
             _srvRegistration.Configure();
