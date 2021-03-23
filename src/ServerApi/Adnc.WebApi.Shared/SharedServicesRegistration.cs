@@ -32,6 +32,9 @@ using DotNetCore.CAP.Dashboard;
 using DotNetCore.CAP.Dashboard.NodeDiscovery;
 using Swashbuckle.AspNetCore.Swagger;
 using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
+using Microsoft.AspNetCore.Authentication;
+using Polly.Timeout;
+using Microsoft.Extensions.Caching.Memory;
 using Adnc.Infr.EasyCaching.Interceptor.Castle;
 using Adnc.Infr.Common;
 using Adnc.Infr.Mq.RabbitMq;
@@ -45,117 +48,33 @@ using Adnc.Application.Shared;
 using Adnc.Application.Shared.RpcServices;
 using Adnc.Infr.Common.Helper;
 using Adnc.WebApi.Shared.Extensions;
-using Microsoft.AspNetCore.Authentication;
-using Polly.Timeout;
-using Microsoft.Extensions.Caching.Memory;
 
 namespace Adnc.WebApi.Shared
 {
-    public abstract class SharedServicesRegistration
+    public class SharedServicesRegistration
     {
-        protected readonly IConfiguration _cfg;
+        protected readonly IConfiguration _configuration;
         protected readonly IServiceCollection _services;
-        protected readonly IWebHostEnvironment _env;
+        protected readonly IWebHostEnvironment _environment;
         protected readonly ServiceInfo _serviceInfo;
-        protected readonly JWTConfig _jwtConfig;
-        protected readonly MongoConfig _mongoConfig;
-        protected readonly MysqlConfig _mysqlConfig;
-        protected readonly RedisConfig _redisConfig;
-        protected readonly RabbitMqConfig _rabbitMqConfig;
-        protected readonly ConsulConfig _consulConfig;
-        protected readonly bool _isSSOAuthentication;
 
         /// <summary>
         /// 服务注册与系统配置
         /// </summary>
-        /// <param name="cfg"><see cref="IConfiguration"/></param>
+        /// <param name="configuration"><see cref="IConfiguration"/></param>
         /// <param name="services"><see cref="IServiceCollection"/></param>
-        /// <param name="env"><see cref="IWebHostEnvironment"/></param>
+        /// <param name="environment"><see cref="IWebHostEnvironment"/></param>
         /// <param name="serviceInfo"><see cref="ServiceInfo"/></param>
-        public SharedServicesRegistration(IConfiguration cfg
+        public SharedServicesRegistration(IConfiguration configuration
             , IServiceCollection services
-            , IWebHostEnvironment env
+            , IWebHostEnvironment environment
             , ServiceInfo serviceInfo)
         {
-            _cfg = cfg;
-            _env = env;
+            _configuration = configuration;
+            _environment = environment;
             _services = services;
             _serviceInfo = serviceInfo;
-
-            //读取Jwt配置
-            _jwtConfig = _cfg.GetSection("JWT").Get<JWTConfig>();
-            //读取mongodb配置
-            _mongoConfig = _cfg.GetSection("MongoDb").Get<MongoConfig>();
-            //读取mysql配置
-            _mysqlConfig = _cfg.GetSection("Mysql").Get<MysqlConfig>();
-            //读取redis配置
-            _redisConfig = _cfg.GetSection("Redis").Get<RedisConfig>();
-            //读取rabbitmq配置
-            _rabbitMqConfig = _cfg.GetSection("RabbitMq").Get<RabbitMqConfig>();
-            //读取consul配置
-            _consulConfig = _cfg.GetSection("Consul").Get<ConsulConfig>();
-            //读取是否开启SSOAuthentication(单点登录验证)
-            _isSSOAuthentication = _cfg.GetValue("SSOAuthentication", false);
         }
-
-        /// <summary>
-        /// 获取Jwt配置
-        /// </summary>
-        /// <returns><see cref="JWTConfig"/></returns>
-        public virtual JWTConfig GetJWTConfig()
-        {
-            return _jwtConfig;
-        }
-
-        /// <summary>
-        /// 获取mongdb配置
-        /// </summary>
-        /// <returns><see cref="MongoConfig"/></returns>
-        public virtual MongoConfig GetMongoConfig()
-        {
-            return _mongoConfig;
-        }
-
-        /// <summary>
-        /// 获取mysql配置
-        /// </summary>
-        /// <returns><see cref="MysqlConfig"/></returns>
-        public virtual MysqlConfig GetMysqlConfig()
-        {
-            return _mysqlConfig;
-        }
-
-        /// <summary>
-        /// 获取reids配置
-        /// </summary>
-        /// <returns><see cref="RedisConfig"/></returns>
-        public virtual RedisConfig GetRedisConfig()
-        {
-            return _redisConfig;
-        }
-
-        /// <summary>
-        /// 获取rabbitmq配置
-        /// </summary>
-        /// <returns><see cref="RabbitMqConfig"/></returns>
-        public virtual RabbitMqConfig GetRabbitMqConfig()
-        {
-            return _rabbitMqConfig;
-        }
-
-        /// <summary>
-        /// 获取consul配置
-        /// </summary>
-        /// <returns><see cref="ConsulConfig"/></returns>
-        public virtual ConsulConfig GetConsulConfig()
-        {
-            return _consulConfig;
-        }
-
-        /// <summary>
-        /// 获取SSOAuthentication是否开启
-        /// </summary>
-        public virtual bool IsSSOAuthentication { get { return _isSSOAuthentication; } }
 
         /// <summary>
         /// 注册配置类到IOC容器
@@ -169,11 +88,11 @@ namespace Adnc.WebApi.Shared
             //    options.ForwardedHeaders =
             //        ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
             //});
-            _services.Configure<JWTConfig>(_cfg.GetSection("JWT"));
-            _services.Configure<MongoConfig>(_cfg.GetSection("MongoDb"));
-            _services.Configure<MysqlConfig>(_cfg.GetSection("Mysql"));
-            _services.Configure<RabbitMqConfig>(_cfg.GetSection("RabbitMq"));
-            _services.Configure<ConsulConfig>(_cfg.GetSection("Consul"));
+            _services.Configure<JWTConfig>(_configuration.GetJWTSection());
+            _services.Configure<MongoConfig>(_configuration.GetMongoDbSection());
+            _services.Configure<MysqlConfig>(_configuration.GetMysqlSection());
+            _services.Configure<RabbitMqConfig>(_configuration.GetRabbitMqSection());
+            _services.Configure<ConsulConfig>(_configuration.GetConsulSection());
         }
 
         /// <summary>
@@ -242,9 +161,10 @@ namespace Adnc.WebApi.Shared
         /// </summary>
         public virtual void AddEfCoreContext()
         {
+            var mysqlConfig = _configuration.GetMysqlSection().Get<MysqlConfig>();
             _services.AddDbContext<AdncDbContext>(options =>
             {
-                options.UseMySql(_mysqlConfig.ConnectionString, mySqlOptions =>
+                options.UseMySql(mysqlConfig.ConnectionString, mySqlOptions =>
                 {
                     mySqlOptions.ServerVersion(new ServerVersion(new Version(10, 5, 4), ServerType.MariaDb));
                     mySqlOptions.MinBatchSize(2);
@@ -252,7 +172,7 @@ namespace Adnc.WebApi.Shared
                     mySqlOptions.CharSet(CharSet.Utf8Mb4);
                 });
 
-                if (_env.IsDevelopment())
+                if (_environment.IsDevelopment())
                 {
                     options.EnableSensitiveDataLogging();
                     options.EnableDetailedErrors();
@@ -268,11 +188,12 @@ namespace Adnc.WebApi.Shared
         /// </summary>
         public virtual void AddMongoContext()
         {
+            var mongoConfig = _configuration.GetMongoDbSection().Get<MongoConfig>();
             _services.AddMongo<MongoContext>(options =>
             {
-                options.ConnectionString = _mongoConfig.ConnectionString;
-                options.PluralizeCollectionNames = _mongoConfig.PluralizeCollectionNames;
-                options.CollectionNamingConvention = (NamingConvention)_mongoConfig.CollectionNamingConvention;
+                options.ConnectionString = mongoConfig.ConnectionString;
+                options.PluralizeCollectionNames = mongoConfig.PluralizeCollectionNames;
+                options.CollectionNamingConvention = (NamingConvention)mongoConfig.CollectionNamingConvention;
             });
         }
 
@@ -281,6 +202,8 @@ namespace Adnc.WebApi.Shared
         /// </summary>
         public virtual void AddJWTAuthentication()
         {
+            var jwtConfig = _configuration.GetJWTSection().Get<JWTConfig>();
+
             //认证配置
             _services.AddAuthentication(options =>
             {
@@ -294,12 +217,12 @@ namespace Adnc.WebApi.Shared
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = true,
-                    ValidIssuer = _jwtConfig.Issuer,
+                    ValidIssuer = jwtConfig.Issuer,
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtConfig.SymmetricSecurityKey)),
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtConfig.SymmetricSecurityKey)),
                     ValidateAudience = false,
                     ValidateLifetime = true,
-                    ClockSkew = TimeSpan.FromMinutes(_jwtConfig.ClockSkew)
+                    ClockSkew = TimeSpan.FromMinutes(jwtConfig.ClockSkew)
                 };
                 options.Events = new JwtBearerEvents
                 {
@@ -403,6 +326,7 @@ namespace Adnc.WebApi.Shared
             //services.AddSingleton<IDistributedCache>(new Microsoft.Extensions.Caching.Redis.CSRedisCache(RedisHelper.Instance));
 
             //配置EasyCaching
+            var redisConfig = _configuration.GetRedisSection().Get<RedisConfig>();
             _services.AddEasyCaching(options =>
             {
                 // use memory cache with your own configuration
@@ -432,7 +356,7 @@ namespace Adnc.WebApi.Shared
                 }, localCacheName);
 
                 //Important step for Redis Caching
-                options.UseCSRedis(_cfg, remoteCacheName, "Redis");
+                options.UseCSRedis(_configuration, remoteCacheName, "Redis");
 
                 // combine local and distributed
                 options.UseHybrid(config =>
@@ -448,7 +372,7 @@ namespace Adnc.WebApi.Shared
                 // use csredis bus
                 .WithCSRedisBus(busConf =>
                 {
-                    busConf.ConnectionStrings = _redisConfig.dbconfig.ConnectionStrings.ToList<string>();
+                    busConf.ConnectionStrings = redisConfig.dbconfig.ConnectionStrings.ToList<string>();
                 });
 
                 //options.WithJson();
@@ -467,7 +391,7 @@ namespace Adnc.WebApi.Shared
         {
             _services.AddCors(options =>
             {
-                var _corsHosts = _cfg.GetValue<string>("CorsHosts")?.Split(",", StringSplitOptions.RemoveEmptyEntries);
+                var _corsHosts = _configuration.GetAllowCorsHosts().Split(",", StringSplitOptions.RemoveEmptyEntries);
                 options.AddPolicy(_serviceInfo.CorsPolicy, policy =>
                 {
                     policy.WithOrigins(_corsHosts)
@@ -526,12 +450,15 @@ namespace Adnc.WebApi.Shared
         /// </summary>
         public virtual void AddHealthChecks()
         {
-            var redisString = _redisConfig.dbconfig.ConnectionStrings[0].Replace(",prefix=", string.Empty).Replace(",poolsize=50", string.Empty);
+            var mysqlConfig = _configuration.GetMysqlSection().Get<MysqlConfig>();
+            var mongoConfig = _configuration.GetMongoDbSection().Get<MongoConfig>();
+            var redisConfig = _configuration.GetRedisSection().Get<RedisConfig>();
+            var redisString = redisConfig.dbconfig.ConnectionStrings[0].Replace(",prefix=", string.Empty).Replace(",poolsize=50", string.Empty);
             _services.AddHealthChecks()
                      .AddProcessAllocatedMemoryHealthCheck(maximumMegabytesAllocated: 200, tags: new[] { "memory" })
                      //.AddProcessHealthCheck("ProcessName", p => p.Length > 0) // check if process is running
-                     .AddMySql(_mysqlConfig.ConnectionString)
-                     .AddMongoDb(_mongoConfig.ConnectionString)
+                     .AddMySql(mysqlConfig.ConnectionString)
+                     .AddMongoDb(mongoConfig.ConnectionString)
                      .AddRabbitMQ(x =>
                      {
                          return
@@ -544,15 +471,16 @@ namespace Adnc.WebApi.Shared
         }
 
         /// <summary>
-        /// 注册CAP组件(实现事件总线及最终一致性（分布式事务）的一个开源的组件)
+        /// 注册CAP组件的订阅者(实现事件总线及最终一致性（分布式事务）的一个开源的组件)
         /// </summary>
         /// <param name="tableNamePrefix">cap表面前缀</param>
         /// <param name="groupName">群组名子</param>
         /// <param name="func">回调函数</param>
-        protected virtual void AddEventBusSubscribers(string tableNamePrefix, string groupName, Action<IServiceCollection> func = null)
+        public virtual void AddEventBusSubscribers(string tableNamePrefix, string groupName, Action<IServiceCollection> func = null)
         {
             func?.Invoke(_services);
 
+            var rabbitMqConfig = _configuration.GetRabbitMqSection().Get<RabbitMqConfig>();
             _services.AddCap(x =>
             {
                 //如果你使用的 EF 进行数据操作，你需要添加如下配置：
@@ -564,11 +492,11 @@ namespace Adnc.WebApi.Shared
                 //CAP支持 RabbitMQ、Kafka、AzureServiceBus 等作为MQ，根据使用选择配置：
                 x.UseRabbitMQ(option =>
                 {
-                    option.HostName = _rabbitMqConfig.HostName;
-                    option.VirtualHost = _rabbitMqConfig.VirtualHost;
-                    option.Port = _rabbitMqConfig.Port;
-                    option.UserName = _rabbitMqConfig.UserName;
-                    option.Password = _rabbitMqConfig.Password;
+                    option.HostName = rabbitMqConfig.HostName;
+                    option.VirtualHost = rabbitMqConfig.VirtualHost;
+                    option.Port = rabbitMqConfig.Port;
+                    option.UserName = rabbitMqConfig.UserName;
+                    option.Password = rabbitMqConfig.Password;
                 });
                 x.Version = _serviceInfo.Version;
                 //默认值：cap.queue.{程序集名称},在 RabbitMQ 中映射到 Queue Names。
@@ -600,7 +528,7 @@ namespace Adnc.WebApi.Shared
                     };
                 });
                 //必须是生产环境才注册cap服务到consul
-                if ((_env.IsProduction() || _env.IsStaging()))
+                if ((_environment.IsProduction() || _environment.IsStaging()))
                 {
                     x.UseDiscovery();
                 }
@@ -613,7 +541,7 @@ namespace Adnc.WebApi.Shared
         /// <typeparam name="TRpcService">Rpc服务接口</typeparam>
         /// <param name="serviceName">在注册中心注册的服务名称，或者服务的Url</param>
         /// <param name="policies">Polly策略</param>
-        protected virtual void AddRpcService<TRpcService>(string serviceName
+        public virtual void AddRpcService<TRpcService>(string serviceName
         , List<IAsyncPolicy<HttpResponseMessage>> policies
         ) where TRpcService : class, IRpcService
         {
@@ -640,7 +568,7 @@ namespace Adnc.WebApi.Shared
         /// 生成默认的Polly策略
         /// </summary>
         /// <returns></returns>
-        protected virtual List<IAsyncPolicy<HttpResponseMessage>> GenerateDefaultRefitPolicies()
+        public virtual List<IAsyncPolicy<HttpResponseMessage>> GenerateDefaultRefitPolicies()
         {
             //隔离策略
             //var bulkheadPolicy = Policy.BulkheadAsync<HttpResponseMessage>(10, 100);
@@ -668,7 +596,7 @@ namespace Adnc.WebApi.Shared
                                         TimeSpan.FromSeconds(4)
                                     });
             //超时策略
-            var timeoutPolicy = Policy.TimeoutAsync<HttpResponseMessage>(_env.IsDevelopment() ? 10 : 3);
+            var timeoutPolicy = Policy.TimeoutAsync<HttpResponseMessage>(_environment.IsDevelopment() ? 10 : 3);
 
             //熔断策略
             //如下，如果我们的业务代码连续失败50次，就触发熔断(onBreak),就不会再调用我们的业务代码，而是直接抛出BrokenCircuitException异常。
@@ -716,7 +644,7 @@ namespace Adnc.WebApi.Shared
         /// 默认获取Token的方法
         /// </summary>
         /// <returns></returns>
-        protected virtual async Task<string> GetTokenDefaultFunc()
+        public virtual async Task<string> GetTokenDefaultFunc()
         {
             return await HttpContextUtility.GetCurrentHttpContext().GetTokenAsync("access_token");
         }

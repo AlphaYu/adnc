@@ -11,9 +11,7 @@ namespace Adnc.WebApi.Shared
         public string Description { get; private set; }
         public string AssemblyName { get; private set; }
 
-        private ServiceInfo()
-        {
-        }
+        private ServiceInfo() { }
 
         public static ServiceInfo Create(Assembly assembly)
         {
