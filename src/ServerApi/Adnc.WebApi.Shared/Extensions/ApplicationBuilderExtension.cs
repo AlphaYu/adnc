@@ -4,12 +4,14 @@ using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.OpenApi.Models;
 using Microsoft.IdentityModel.Logging;
 using Adnc.WebApi.Shared;
 using Adnc.WebApi.Shared.Middleware;
-
+using Adnc.Infr.Consul;
+using DotNetCore.CAP.Dashboard.NodeDiscovery;
 
 namespace Microsoft.AspNetCore.Builder
 {
@@ -23,12 +25,12 @@ namespace Microsoft.AspNetCore.Builder
         /// <param name="serviceInfo"></param>
         /// <param name="completedExecute"></param>
         /// <returns></returns>
-        public static IApplicationBuilder UseAdncMiddlewares(this IApplicationBuilder app
-            , IConfiguration configuration
-            , IWebHostEnvironment environment
-            , ServiceInfo serviceInfo
-            , Action<IApplicationBuilder> completedExecute = null)
+        public static IApplicationBuilder UseAdncMiddlewares(this IApplicationBuilder app, Action<IApplicationBuilder> completedExecute = null)
         {
+            var configuration = app.ApplicationServices.GetService<IConfiguration>();
+            var environment = app.ApplicationServices.GetService<IWebHostEnvironment>();
+            var serviceInfo = app.ApplicationServices.GetService<ServiceInfo>();
+
             if (environment.IsDevelopment()) IdentityModelEventSource.ShowPII = true;
 
             DefaultFilesOptions defaultFilesOptions = new DefaultFilesOptions();
@@ -85,6 +87,33 @@ namespace Microsoft.AspNetCore.Builder
             });
 
             completedExecute?.Invoke(app);
+
+            return app;
+        }
+
+        /// <summary>
+        /// 注册Cap节点到consul
+        /// </summary>
+        /// <param name="app"></param>
+        /// <param name="consulConfig"></param>
+        /// <param name="serviceInfo"></param>
+        /// <returns></returns>
+        public static IApplicationBuilder RegisterCapToConsul(this IApplicationBuilder app)
+        {
+            var configuration = app.ApplicationServices.GetService<IConfiguration>();
+            var consulConfig = configuration.GetConsulConfig();
+            var serviceInfo = app.ApplicationServices.GetService<ServiceInfo>();
+
+            var consulAdderss = new Uri(consulConfig.ConsulUrl);
+            var discoverOptions = app.ApplicationServices.GetService<DiscoveryOptions>();
+            var currenServerAddress = app.GetServiceAddress(consulConfig);
+            discoverOptions.DiscoveryServerHostName = consulAdderss.Host;
+            discoverOptions.DiscoveryServerPort = consulAdderss.Port;
+            discoverOptions.CurrentNodeHostName = currenServerAddress.Host;
+            discoverOptions.CurrentNodePort = currenServerAddress.Port;
+            discoverOptions.NodeId = currenServerAddress.Host.Replace(".", string.Empty) + currenServerAddress.Port;
+            discoverOptions.NodeName = serviceInfo.FullName.Replace("webapi", "cap");
+            discoverOptions.MatchPath = $"/{serviceInfo.ShortName}/cap";
 
             return app;
         }

@@ -29,6 +29,7 @@ namespace Microsoft.Extensions.DependencyInjection
             where TPermissionHandler : PermissionHandler
         {
 
+            services.AddSingleton(serviceInfo);
             services.AddScoped<UserContext>();
             services.AddHttpContextAccessor();
             services.AddMemoryCache();

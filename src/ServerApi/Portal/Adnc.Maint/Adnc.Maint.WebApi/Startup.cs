@@ -38,10 +38,12 @@ namespace Adnc.Maint.WebApi
 
         public void Configure(IApplicationBuilder app)
         {
-            app.UseAdncMiddlewares(_configuration, _environment, _serviceInfo);
+            app.UseAdncMiddlewares();
 
             if (_environment.IsProduction() || _environment.IsStaging())
+            {
                 app.RegisterToConsul();
+            }           
         }
     }
 }
