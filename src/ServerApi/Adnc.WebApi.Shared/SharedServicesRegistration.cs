@@ -81,13 +81,6 @@ namespace Adnc.WebApi.Shared
         /// </summary>
         public virtual void Configure()
         {
-            // 获取客户端真实Ip
-            //https://docs.microsoft.com/zh-cn/aspnet/core/host-and-deploy/proxy-load-balancer?view=aspnetcore-3.0#configuration-for-an-ipv4-address-represented-as-an-ipv6-address
-            //_services.Configure<ForwardedHeadersOptions>(options =>
-            //{
-            //    options.ForwardedHeaders =
-            //        ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
-            //});
             _services.Configure<JWTConfig>(_configuration.GetJWTSection());
             _services.Configure<MongoConfig>(_configuration.GetMongoDbSection());
             _services.Configure<MysqlConfig>(_configuration.GetMysqlSection());
@@ -292,19 +285,10 @@ namespace Adnc.WebApi.Shared
         public virtual void AddAuthorization<THandler>()
             where THandler : PermissionHandler
         {
-            //自定义授权配置
-            //services.AddSingleton<IAuthorizationHandler, PermissionHandler>();
             _services.AddAuthorization(options =>
             {
-                options.AddPolicy(Permission.Policy, policy =>
-                    policy.Requirements.Add(new PermissionRequirement()));
+                options.AddPolicy(Permission.Policy, policy => policy.Requirements.Add(new PermissionRequirement()));
             });
-            // 注册成全局 dbcontext 会报如下错误
-            // A second operation started on this context before a previous operation completed.
-            // This is usually caused by different threads using the same instance of DbContext. 
-            // For more information on how to avoid threading issues with DbContext
-            // see https://go.microsoft.com/fwlink/?linkid=2097913.
-            //services.AddSingleton<IAuthorizationHandler, PermissionHandler>();
             _services.AddScoped<IAuthorizationHandler, THandler>();
         }
 
@@ -395,9 +379,9 @@ namespace Adnc.WebApi.Shared
                 options.AddPolicy(_serviceInfo.CorsPolicy, policy =>
                 {
                     policy.WithOrigins(_corsHosts)
-                    .AllowAnyHeader()
-                    .AllowAnyMethod()
-                    .AllowCredentials();
+                          .AllowAnyHeader()
+                          .AllowAnyMethod()
+                          .AllowCredentials();
                 });
             });
         }
@@ -636,7 +620,7 @@ namespace Adnc.WebApi.Shared
             {
                 retryPolicy
                ,timeoutPolicy
-              ,circuitBreakerPolicy.AsAsyncPolicy<HttpResponseMessage>()
+               ,circuitBreakerPolicy.AsAsyncPolicy<HttpResponseMessage>()
             };
         }
 
