@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Adnc.Usr.Application.Dtos;
+using Adnc.Usr.Core.Entities.Consts;
 
 namespace Adnc.Usr.Application.DtoValidators
 {
@@ -7,8 +8,8 @@ namespace Adnc.Usr.Application.DtoValidators
     {
         public UserLoginDtoValidator()
         {
-            RuleFor(x => x.Account).NotEmpty().Length(5,16);
-            RuleFor(x => x.Password).NotEmpty().Length(5,16);
+            RuleFor(x => x.Account).NotEmpty().Length(5, UserConsts.Account_MaxLength);
+            RuleFor(x => x.Password).NotEmpty().Length(5, UserConsts.Password_Maxlength);
         }
     }
 }

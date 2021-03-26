@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Adnc.Usr.Application.Dtos;
+using Adnc.Usr.Core.Entities.Consts;
 
 namespace Adnc.Usr.Application.DtoValidators
 {
@@ -7,12 +8,13 @@ namespace Adnc.Usr.Application.DtoValidators
     {
         public UserChangePwdDtoValidator()
         {
-            RuleFor(x => x.Password).NotEmpty().Length(5, 16);
-            RuleFor(x => x.RePassword).NotEmpty().Length(5, 16)
+            RuleFor(x => x.Password).NotEmpty().Length(5, UserConsts.Password_Maxlength);
+            RuleFor(x => x.RePassword).NotEmpty().Length(5, UserConsts.Password_Maxlength)
                                       .Must((dto, rePassword) =>
                                       {
                                           return dto.Password == rePassword;
-                                      }).WithMessage("重复密码必须跟新密码一样");
+                                      })
+                                      .WithMessage("重复密码必须跟新密码一样");
         }
     }
 }
