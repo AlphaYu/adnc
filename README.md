@@ -28,9 +28,6 @@
 ## GitHub
 - <a href="https://github.com/alphayu/adnc" target="_blank">https://github.com/alphayu/adnc</a>
 - 开源不易，如果您喜欢这个项目, 请给个星星⭐️。
-- 贡献者<a href="https://github.com/alphayu/adnc/graphs/contributors">
-  <img src="https://contributors-img.web.app/image?repo=alphayu/adnc" />
-</a>
 
 ## Roadmap
   - 开发微服务项目生成工具
