@@ -9,7 +9,7 @@
 	<SatelliteResourceLanguages>en</SatelliteResourceLanguages>
 	<RootNamespace>Adnc.Whse.WebApi</RootNamespace>
 	<AssemblyName>Adnc.Whse.WebApi</AssemblyName>
-	<Version>0.7.0</Version>
+	<Version>0.8.0</Version>
 	<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
 	<DockerfileContext>..\..\..</DockerfileContext>
 	<Authors>Alpha.Yu</Authors>

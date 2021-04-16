@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
 	<PropertyGroup>
 		<TargetFramework>netcoreapp3.1</TargetFramework>
@@ -7,7 +7,7 @@
 		<SatelliteResourceLanguages>zh-Hans</SatelliteResourceLanguages>
 		<SatelliteResourceLanguages>zh-Hant</SatelliteResourceLanguages>
 		<SatelliteResourceLanguages>en</SatelliteResourceLanguages>
-		<Version>0.7.0</Version>
+		<Version>0.8.0</Version>
 		<Authors>Alpha.Yu</Authors>
 		<Product>Adnc</Product>
 		<RepositoryUrl>https://github.com/AlphaYu</RepositoryUrl>

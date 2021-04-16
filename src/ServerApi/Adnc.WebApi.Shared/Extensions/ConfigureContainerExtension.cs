@@ -21,7 +21,6 @@ namespace Autofac
             , Action<ContainerBuilder> completedExecute = null)
             where TAppModule : IModule, new()
         {
-            //通过配置文件(autofac)注册 var module = new ConfigurationModule(Configuration);builder.RegisterModule(module);
             builder.RegisterModule<AdncInfrMongoModule>();
             builder.RegisterModule<AdncInfrEfCoreModule>();
             var consulUrl = configuration.GetConsulConfig().ConsulUrl;
