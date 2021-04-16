@@ -19,9 +19,11 @@ namespace Adnc.WebApi.Shared
             var assemblyName = assembly.GetName();
             var version = assemblyName.Version;
             var fullName = assemblyName.Name.ToLower();
-            var startIndex = fullName.IndexOf('.') + 1;
-            var endIndex = fullName.IndexOf('.', startIndex);
-            var shortName = fullName.Substring(startIndex, endIndex - startIndex);
+            //var startIndex = fullName.IndexOf('.') + 1;
+            //var endIndex = fullName.IndexOf('.', startIndex);
+            //var shortName = fullName.Substring(startIndex, endIndex - startIndex);
+            var splitFullName = fullName.Split(".");
+            var shortName = splitFullName[^2];
 
             return new ServiceInfo
             {
