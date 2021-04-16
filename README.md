@@ -36,7 +36,7 @@
 
 ## 文档
 #### 如何快速跑起来
-- 详细介绍如何使用docker安装reids、mysql、rabbitmq、mongodb，以及如何在本地配置ClientApp、ServerApi。<br/>
+- 详细介绍如何使用docker安装redis、mysql、rabbitmq、mongodb，以及如何在本地配置ClientApp、ServerApi。<br/>
 [请点击链接，查看详细介绍](https://github.com/AlphaYu/Adnc/wiki/%E5%A6%82%E4%BD%95%E5%BF%AB%E9%80%9F%E8%B7%91%E8%B5%B7%E6%9D%A5)
 
 #### 如何手动部署到服务器
