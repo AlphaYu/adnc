@@ -14,14 +14,10 @@ namespace Adnc.Infr.Mq.RabbitMq
     {
         private readonly IConnection _connection;
         private readonly IModel _channel;
-        private readonly IHostApplicationLifetime _appLifetime;
         private readonly ILogger<dynamic> _logger;
 
-        public BaseRabbitMqConsumer(IOptionsSnapshot<RabbitMqConfig> options
-            , IHostApplicationLifetime appLifetime
-            , ILogger<dynamic> logger)
+        public BaseRabbitMqConsumer(IOptionsSnapshot<RabbitMqConfig> options, ILogger<dynamic> logger)
         {
-            _appLifetime = appLifetime;
             _connection = RabbitMqConnection.GetInstance(options, logger).Connection;
             _channel = _connection.CreateModel();
             _logger = logger;
@@ -29,9 +25,6 @@ namespace Adnc.Infr.Mq.RabbitMq
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            //_appLifetime.ApplicationStarted.Register(OnStarted);
-            //_appLifetime.ApplicationStopping.Register(OnStoping);
-            //_appLifetime.ApplicationStopped.Register(OnStopped);
             Register();
             return Task.CompletedTask;
         }

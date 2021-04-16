@@ -20,17 +20,17 @@ namespace Adnc.Usr.Application.Services
         private readonly IMapper _mapper;
         private readonly IEfRepository<SysMenu> _menuRepository;
         private readonly IEfRepository<SysRelation> _relationRepository;
-        private readonly IHybridCachingProvider _cache;
+        private readonly IEasyCachingProvider _cache;
 
         public MenuAppService(IMapper mapper,
             IEfRepository<SysMenu> menuRepository,
             IEfRepository<SysRelation> relationRepository,
-            IHybridProviderFactory hybridProviderFactory)
+            IEasyCachingProviderFactory cacheFactory)
         {
             _mapper = mapper;
             _menuRepository = menuRepository;
             _relationRepository = relationRepository;
-            _cache = hybridProviderFactory.GetHybridCachingProvider(EasyCachingConsts.HybridCaching);
+            _cache = cacheFactory.GetCachingProvider(EasyCachingConsts.RemoteCaching);
         }
 
         public async Task<AppSrvResult<long>> CreateAsync(MenuCreationDto input)

@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Adnc.Infr.EasyCaching.Interceptor.Castle
-{
+{ 
     public static class TypeExtensions
     {
         private static readonly ConcurrentDictionary<TypeInfo, bool> isTaskOfTCache = new ConcurrentDictionary<TypeInfo, bool>();

@@ -308,9 +308,6 @@ namespace Adnc.WebApi.Shared
             //RedisHelper.Initialization(new CSRedis.CSRedisClient(Configuration.GetSection("Redis").Get<RedisConfig>().ConnectionString));
             //注册Redis用于系统Cache,但IDistributedCache接口提供的方法有限，只能存储Hash,如果需要其他操作直接使用RedisHelper
             //services.AddSingleton<IDistributedCache>(new Microsoft.Extensions.Caching.Redis.CSRedisCache(RedisHelper.Instance));
-
-            //配置EasyCaching
-            var redisConfig = _configuration.GetRedisSection().Get<RedisConfig>();
             _services.AddEasyCaching(options =>
             {
                 // use memory cache with your own configuration
@@ -321,7 +318,7 @@ namespace Adnc.WebApi.Shared
                         // scan time, default value is 60s
                         ExpirationScanFrequency = 60,
                         // total count of cache items, default value is 10000
-                        SizeLimit = 500,
+                        SizeLimit = 10000,
 
                         // below two settings are added in v0.8.0
                         // enable deep clone when reading object from cache or not, default value is true.
@@ -334,37 +331,20 @@ namespace Adnc.WebApi.Shared
                     // whether enable logging, default is false
                     config.EnableLogging = false;
                     // mutex key's alive time(ms), default is 5000
-                    config.LockMs = 5000;
+                    config.LockMs = 2000;
                     // when mutex key alive, it will sleep some time, default is 300
                     config.SleepMs = 300;
                 }, localCacheName);
 
-                //Important step for Redis Caching
-                options.UseCSRedis(_configuration, remoteCacheName, "Redis");
-
-                // combine local and distributed
-                options.UseHybrid(config =>
+                var redisConfig = _configuration.GetRedisSection().Get<RedisConfig>();
+                _services.AddEasyCaching(options =>
                 {
-                    config.TopicName = topicName;
-                    config.EnableLogging = true;
-
-                    // specify the local cache provider name after v0.5.4
-                    config.LocalCacheProviderName = localCacheName;
-                    // specify the distributed cache provider name after v0.5.4
-                    config.DistributedCacheProviderName = remoteCacheName;
-                }, hyBridCacheName)
-                // use csredis bus
-                .WithCSRedisBus(busConf =>
-                {
-                    busConf.ConnectionStrings = redisConfig.dbconfig.ConnectionStrings.ToList<string>();
+                    options.UseCSRedis(_configuration, remoteCacheName, "Redis");
                 });
-
-                //options.WithJson();
-            });
-
-            _services.ConfigureCastleInterceptor(options =>
-            {
-                options.CacheProviderName = hyBridCacheName;
+                _services.ConfigureCastleInterceptor(options =>
+                {
+                    options.CacheProviderName = remoteCacheName;
+                });
             });
         }
 

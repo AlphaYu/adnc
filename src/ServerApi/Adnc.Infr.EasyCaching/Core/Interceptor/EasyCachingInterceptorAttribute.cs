@@ -1,8 +1,7 @@
-﻿using System;
-using EasyCaching.Core.Configurations;
-
-namespace Adnc.Infr.EasyCaching.Interceptor.Castle
+﻿namespace Adnc.Infr.EasyCaching.Interceptor.Castle
 {
+    using System;
+
     /// <summary>
     /// Easycaching interceptor attribute.
     /// </summary>
@@ -13,7 +12,7 @@ namespace Adnc.Infr.EasyCaching.Interceptor.Castle
         /// Gets or sets a value indicating whether is hybrid provider.
         /// </summary>
         /// <value><c>true</c> if is hybrid provider; otherwise, <c>false</c>.</value>
-        public bool IsHybridProvider { get; set; } = true;
+        public bool IsHybridProvider { get; set; } = false;
 
         /// <summary>
         /// Gets or sets the cache key prefix. 
@@ -22,7 +21,7 @@ namespace Adnc.Infr.EasyCaching.Interceptor.Castle
         public string CacheKeyPrefix { get; set; } = string.Empty;
 
         /// <summary>
-        /// Gets or sets the cache provider name. The default value is <seealso cref="EasyCachingInterceptorOptions.CacheProviderName"/> 
+        /// Gets or sets the cache provider name. The default value is EasyCachingInterceptorOptions.CacheProviderName"/> 
         /// </summary>
         /// <value>The cache key prefix.</value>
         public string CacheProviderName { get; set; }
@@ -32,5 +31,10 @@ namespace Adnc.Infr.EasyCaching.Interceptor.Castle
         /// </summary>
         /// <value>The cache key prefix.</value>
         public bool IsHighAvailability { get; set; } = true;
+
+        /// <summary>
+        /// The cache keys
+        /// </summary>
+        public string CacheKey { get; set; } = string.Empty;
     }
 }
