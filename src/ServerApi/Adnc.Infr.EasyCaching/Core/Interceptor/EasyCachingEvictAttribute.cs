@@ -1,7 +1,7 @@
-﻿using System;
-
-namespace Adnc.Infr.EasyCaching.Interceptor.Castle
+﻿namespace Adnc.Infr.EasyCaching.Interceptor.Castle
 {
+    using System;
+
     /// <summary>
     /// Easycaching evict attribute.
     /// </summary>
@@ -26,11 +26,6 @@ namespace Adnc.Infr.EasyCaching.Interceptor.Castle
         /// <summary>
         /// The cache keys
         /// </summary>
-        public string CacheKey { get; set; }
-
-        /// <summary>
-        /// The cache keys
-        /// </summary>
-        public string[] CacheKeys { get; set; }
+        public string[] CacheKeys { get; set; } = new string[] { };
     }
 }

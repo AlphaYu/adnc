@@ -24,21 +24,21 @@ namespace Adnc.Usr.Application.Services
         private readonly IEfRepository<SysUser> _userRepository;
         private readonly IEfRepository<SysRelation> _relationRepository;
         private readonly UsrManager _usrManager;
-        private readonly IHybridCachingProvider _cache;
+        private readonly IEasyCachingProvider _cache;
 
         public RoleAppService(IMapper mapper,
             IEfRepository<SysRole> roleRepository,
             IEfRepository<SysUser> userRepository,
             IEfRepository<SysRelation> relationRepository,
             UsrManager usrManager,
-            IHybridProviderFactory hybridProviderFactory)
+            IEasyCachingProviderFactory cacheFactory)
         {
             _mapper = mapper;
             _roleRepository = roleRepository;
             _userRepository = userRepository;
             _relationRepository = relationRepository;
             _usrManager = usrManager;
-            _cache = hybridProviderFactory.GetHybridCachingProvider(EasyCachingConsts.HybridCaching);
+            _cache = cacheFactory.GetCachingProvider(EasyCachingConsts.RemoteCaching);
         }
 
         public async Task<AppSrvResult<PageModelDto<RoleDto>>> GetPagedAsync(RolePagedSearchDto search)

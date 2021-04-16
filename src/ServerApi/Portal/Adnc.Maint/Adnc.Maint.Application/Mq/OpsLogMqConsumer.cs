@@ -2,7 +2,6 @@
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,10 +22,9 @@ namespace Adnc.Maint.Application.Mq
         private readonly ILogger<OpsLogMqConsumer> _logger;
 
         public OpsLogMqConsumer(IOptionsSnapshot<RabbitMqConfig> options
-           , IHostApplicationLifetime appLifetime
            , ILogger<OpsLogMqConsumer> logger
            , IServiceProvider services) 
-            : base(options, appLifetime, logger)
+            : base(options, logger)
         {
             _services = services;
             _logger = logger;

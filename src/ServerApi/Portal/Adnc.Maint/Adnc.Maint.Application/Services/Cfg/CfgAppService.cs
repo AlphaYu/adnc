@@ -20,16 +20,15 @@ namespace Adnc.Maint.Application.Services
     {
         private readonly IMapper _mapper;
         private readonly IEfRepository<SysCfg> _cfgRepository;
-        private readonly IRedisCachingProvider _redis;
-        private readonly IHybridCachingProvider _cache;
+        private readonly IEasyCachingProvider _cache;
 
         public CfgAppService(IMapper mapper
             , IEfRepository<SysCfg> cfgRepository
-            , IHybridProviderFactory hybridProviderFactory)
+            , IEasyCachingProviderFactory cacheFactory)
         {
             _mapper = mapper;
             _cfgRepository = cfgRepository;
-            _cache = hybridProviderFactory.GetHybridCachingProvider(EasyCachingConsts.HybridCaching);
+            _cache = cacheFactory.GetCachingProvider(EasyCachingConsts.RemoteCaching);
         }
 
         public async Task<AppSrvResult> DeleteAsync(long id)

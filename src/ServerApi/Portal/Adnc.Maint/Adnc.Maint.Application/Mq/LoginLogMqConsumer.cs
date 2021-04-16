@@ -24,10 +24,9 @@ namespace Adnc.Maint.Application.Mq
         private readonly ILogger<LoginLogMqConsumer> _logger;
 
         public LoginLogMqConsumer(IOptionsSnapshot<RabbitMqConfig> options
-           , IHostApplicationLifetime appLifetime
            , ILogger<LoginLogMqConsumer> logger
            , IServiceProvider services)
-            : base(options, appLifetime, logger)
+            : base(options, logger)
         {
             _services = services;
             _logger = logger;

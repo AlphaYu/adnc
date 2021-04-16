@@ -19,22 +19,17 @@ namespace Adnc.Usr.Application.Services
     public class DeptAppService : AppService, IDeptAppService
     {
         private readonly IMapper _mapper;
-        private readonly IHybridCachingProvider _cache;
-        private readonly IEasyCachingProvider _locaCahce;
-        private readonly IEasyCachingProvider _redisCache;
+        private readonly IEasyCachingProvider _cache;
         private readonly IEfRepository<SysDept> _deptRepository;
         private readonly UsrManager _usrManager;
 
         public DeptAppService(IMapper mapper
-            , IHybridProviderFactory hybridProviderFactory
-            , IEasyCachingProviderFactory simpleProviderFactory
+            , IEasyCachingProviderFactory cacheFactory
             , IEfRepository<SysDept> deptRepository
             , UsrManager usrManager)
         {
             _mapper = mapper;
-            _cache = hybridProviderFactory.GetHybridCachingProvider(EasyCachingConsts.HybridCaching);
-            _locaCahce = simpleProviderFactory.GetCachingProvider(EasyCachingConsts.LocalCaching);
-            _redisCache = simpleProviderFactory.GetCachingProvider(EasyCachingConsts.RemoteCaching);
+            _cache = cacheFactory.GetCachingProvider(EasyCachingConsts.RemoteCaching);
             _deptRepository = deptRepository;
             _usrManager = usrManager;
         }

@@ -81,13 +81,6 @@ namespace Adnc.WebApi.Shared
         /// </summary>
         public virtual void Configure()
         {
-            // 获取客户端真实Ip
-            //https://docs.microsoft.com/zh-cn/aspnet/core/host-and-deploy/proxy-load-balancer?view=aspnetcore-3.0#configuration-for-an-ipv4-address-represented-as-an-ipv6-address
-            //_services.Configure<ForwardedHeadersOptions>(options =>
-            //{
-            //    options.ForwardedHeaders =
-            //        ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
-            //});
             _services.Configure<JWTConfig>(_configuration.GetJWTSection());
             _services.Configure<MongoConfig>(_configuration.GetMongoDbSection());
             _services.Configure<MysqlConfig>(_configuration.GetMysqlSection());
@@ -292,19 +285,10 @@ namespace Adnc.WebApi.Shared
         public virtual void AddAuthorization<THandler>()
             where THandler : PermissionHandler
         {
-            //自定义授权配置
-            //services.AddSingleton<IAuthorizationHandler, PermissionHandler>();
             _services.AddAuthorization(options =>
             {
-                options.AddPolicy(Permission.Policy, policy =>
-                    policy.Requirements.Add(new PermissionRequirement()));
+                options.AddPolicy(Permission.Policy, policy => policy.Requirements.Add(new PermissionRequirement()));
             });
-            // 注册成全局 dbcontext 会报如下错误
-            // A second operation started on this context before a previous operation completed.
-            // This is usually caused by different threads using the same instance of DbContext. 
-            // For more information on how to avoid threading issues with DbContext
-            // see https://go.microsoft.com/fwlink/?linkid=2097913.
-            //services.AddSingleton<IAuthorizationHandler, PermissionHandler>();
             _services.AddScoped<IAuthorizationHandler, THandler>();
         }
 
@@ -324,9 +308,6 @@ namespace Adnc.WebApi.Shared
             //RedisHelper.Initialization(new CSRedis.CSRedisClient(Configuration.GetSection("Redis").Get<RedisConfig>().ConnectionString));
             //注册Redis用于系统Cache,但IDistributedCache接口提供的方法有限，只能存储Hash,如果需要其他操作直接使用RedisHelper
             //services.AddSingleton<IDistributedCache>(new Microsoft.Extensions.Caching.Redis.CSRedisCache(RedisHelper.Instance));
-
-            //配置EasyCaching
-            var redisConfig = _configuration.GetRedisSection().Get<RedisConfig>();
             _services.AddEasyCaching(options =>
             {
                 // use memory cache with your own configuration
@@ -337,7 +318,7 @@ namespace Adnc.WebApi.Shared
                         // scan time, default value is 60s
                         ExpirationScanFrequency = 60,
                         // total count of cache items, default value is 10000
-                        SizeLimit = 500,
+                        SizeLimit = 10000,
 
                         // below two settings are added in v0.8.0
                         // enable deep clone when reading object from cache or not, default value is true.
@@ -350,37 +331,20 @@ namespace Adnc.WebApi.Shared
                     // whether enable logging, default is false
                     config.EnableLogging = false;
                     // mutex key's alive time(ms), default is 5000
-                    config.LockMs = 5000;
+                    config.LockMs = 2000;
                     // when mutex key alive, it will sleep some time, default is 300
                     config.SleepMs = 300;
                 }, localCacheName);
 
-                //Important step for Redis Caching
-                options.UseCSRedis(_configuration, remoteCacheName, "Redis");
-
-                // combine local and distributed
-                options.UseHybrid(config =>
+                var redisConfig = _configuration.GetRedisSection().Get<RedisConfig>();
+                _services.AddEasyCaching(options =>
                 {
-                    config.TopicName = topicName;
-                    config.EnableLogging = true;
-
-                    // specify the local cache provider name after v0.5.4
-                    config.LocalCacheProviderName = localCacheName;
-                    // specify the distributed cache provider name after v0.5.4
-                    config.DistributedCacheProviderName = remoteCacheName;
-                }, hyBridCacheName)
-                // use csredis bus
-                .WithCSRedisBus(busConf =>
-                {
-                    busConf.ConnectionStrings = redisConfig.dbconfig.ConnectionStrings.ToList<string>();
+                    options.UseCSRedis(_configuration, remoteCacheName, "Redis");
                 });
-
-                //options.WithJson();
-            });
-
-            _services.ConfigureCastleInterceptor(options =>
-            {
-                options.CacheProviderName = hyBridCacheName;
+                _services.ConfigureCastleInterceptor(options =>
+                {
+                    options.CacheProviderName = remoteCacheName;
+                });
             });
         }
 
@@ -395,9 +359,9 @@ namespace Adnc.WebApi.Shared
                 options.AddPolicy(_serviceInfo.CorsPolicy, policy =>
                 {
                     policy.WithOrigins(_corsHosts)
-                    .AllowAnyHeader()
-                    .AllowAnyMethod()
-                    .AllowCredentials();
+                          .AllowAnyHeader()
+                          .AllowAnyMethod()
+                          .AllowCredentials();
                 });
             });
         }
@@ -636,7 +600,7 @@ namespace Adnc.WebApi.Shared
             {
                 retryPolicy
                ,timeoutPolicy
-              ,circuitBreakerPolicy.AsAsyncPolicy<HttpResponseMessage>()
+               ,circuitBreakerPolicy.AsAsyncPolicy<HttpResponseMessage>()
             };
         }
 

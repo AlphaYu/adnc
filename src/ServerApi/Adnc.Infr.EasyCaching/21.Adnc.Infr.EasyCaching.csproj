@@ -15,14 +15,9 @@
 	<ItemGroup>
 		<PackageReference Include="Autofac" Version="6.0.0" />
 		<PackageReference Include="Castle.Core" Version="4.4.1" />
-		<PackageReference Include="Autofac.Extras.DynamicProxy" Version="6.0.0" />
-		<PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.0.2" />
-		<PackageReference Include="EasyCaching.Core" Version="0.9.0" />
-		<PackageReference Include="EasyCaching.InMemory" Version="0.9.0" />
-		<PackageReference Include="EasyCaching.CSRedis" Version="0.9.0" />
-		<PackageReference Include="EasyCaching.HybridCache" Version="0.9.0" />
-		<PackageReference Include="EasyCaching.Bus.CSRedis" Version="0.9.0" />
-		<PackageReference Include="EasyCaching.Serialization.Json" Version="0.9.0" />
+		<PackageReference Include="EasyCaching.Core" Version="1.2.0" />
+		<PackageReference Include="EasyCaching.CSRedis" Version="1.2.0" />
+		<PackageReference Include="EasyCaching.InMemory" Version="1.2.0" />
 		<PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
 	</ItemGroup>
 </Project>

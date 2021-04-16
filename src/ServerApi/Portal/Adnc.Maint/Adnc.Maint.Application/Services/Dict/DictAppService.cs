@@ -21,17 +21,17 @@ namespace Adnc.Maint.Application.Services
         private readonly IMapper _mapper;
         private readonly IEfRepository<SysDict> _dictRepository;
         private readonly MaintManager _maintManager;
-        private readonly IHybridCachingProvider _cache;
+        private readonly IEasyCachingProvider _cache;
 
         public DictAppService(IMapper mapper
             , IEfRepository<SysDict> dictRepository
             , MaintManager maintManager
-            , IHybridProviderFactory hybridProviderFactory)
+            , IEasyCachingProviderFactory cacheFactory)
         {
             _mapper = mapper;
             _dictRepository = dictRepository;
             _maintManager = maintManager;
-            _cache = hybridProviderFactory.GetHybridCachingProvider(EasyCachingConsts.HybridCaching);
+            _cache = cacheFactory.GetCachingProvider(EasyCachingConsts.RemoteCaching);
         }
 
         public async Task<AppSrvResult> DeleteAsync(long id)
