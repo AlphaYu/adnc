@@ -16,9 +16,9 @@ namespace Adnc.Maint.Application
             CreateMap<SysOperationLog, OpsLogDto>();
             CreateMap<SysLoginLog, LoginLogDto>();
             CreateMap<SysNloglog, NlogLogDto>();
+            CreateMap<SysNloglogProperty, NlogLogPropertyDto>();
             CreateMap<CfgCreationDto, SysCfg>();
             CreateMap<SysCfg, CfgDto>();
-
 
             CreateMap<DictCreationDto, SysDict>();
             CreateMap<SysDict, DictDto>();

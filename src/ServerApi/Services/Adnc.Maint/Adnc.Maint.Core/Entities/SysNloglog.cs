@@ -30,11 +30,11 @@ namespace Adnc.Core.Maint.Entities
 
         public string ProcessName { get; set; }
 
-        public Property Properties { get; set; }
+        public SysNloglogProperty Properties { get; set; }
     }
 
     [BsonIgnoreExtraElements]
-    public class Property
+    public class SysNloglogProperty
     {
         public string TraceIdentifier { get; set; }
 

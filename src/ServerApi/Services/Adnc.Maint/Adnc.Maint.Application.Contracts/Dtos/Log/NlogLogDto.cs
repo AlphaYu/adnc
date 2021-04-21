@@ -26,10 +26,10 @@ namespace Adnc.Maint.Application.Contracts.Dtos
 
         public string ProcessName { get; set; }
 
-        public Property Properties { get; set; }
+        public NlogLogPropertyDto Properties { get; set; }
     }
 
-    public class Property
+    public class NlogLogPropertyDto
     {
         public string TraceIdentifier { get; set; }
 
