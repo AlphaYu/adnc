@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using Pomelo.EntityFrameworkCore.MySql.Storage;
-using Adnc.Infr.EfCore;
-using Adnc.Infr.Common;
+using Adnc.Infra.EfCore;
+using Adnc.Infra.Common;
 using Adnc.Cus.Core;
 using DotNetCore.CAP;
-using Adnc.Infr.EventBus;
+using Adnc.Infra.EventBus;
 using Adnc.Core.Shared;
 
 namespace Adnc.UnitTest.Fixtures
@@ -46,7 +46,7 @@ namespace Adnc.UnitTest.Fixtures
                    .As<ICapPublisher>()
                    .SingleInstance();
 
-            //注册Adnc.Infr.EfCore
+            //注册Adnc.Infra.EfCore
             AdncInfrEfCoreModule.Register(containerBuilder);
 
             //注册 Adnc.Cus.Core

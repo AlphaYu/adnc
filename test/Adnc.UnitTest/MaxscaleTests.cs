@@ -9,7 +9,7 @@ using Adnc.UnitTest.Fixtures;
 using Adnc.Core.Shared;
 using Adnc.Cus.Core.Entities;
 using Adnc.Core.Shared.IRepositories;
-using Adnc.Infr.Common.Helper;
+using Adnc.Infra.Common.Helper;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 

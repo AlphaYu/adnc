@@ -10,9 +10,9 @@ using Adnc.UnitTest.Fixtures;
 using Adnc.Core.Shared;
 using Adnc.Cus.Core.Entities;
 using Adnc.Core.Shared.IRepositories;
-using Adnc.Infr.Common;
-using Adnc.Infr.Common.Helper;
-using Adnc.Infr.EfCore;
+using Adnc.Infra.Common;
+using Adnc.Infra.Common.Helper;
+using Adnc.Infra.EfCore;
 
 namespace Adnc.UnitTest
 {
