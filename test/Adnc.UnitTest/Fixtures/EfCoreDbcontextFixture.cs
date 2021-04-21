@@ -11,6 +11,7 @@ using Adnc.Core.Shared.Entities;
 using Adnc.Infr.EfCore.Interceptors;
 using Microsoft.EntityFrameworkCore.Query;
 using Pomelo.EntityFrameworkCore.MySql.Query.ExpressionVisitors.Internal;
+using Adnc.Core.Shared;
 
 namespace Adnc.UnitTest.Fixtures
 {
@@ -41,8 +42,9 @@ namespace Adnc.UnitTest.Fixtures
             var dbstring = "Server=193.112.75.77;Port=13308;database=adnc_cus_dev;uid=root;pwd=alpha.netcore;";
 
             //注册操作用户
-            containerBuilder.RegisterType<UserContext>()
-                            .InstancePerLifetimeScope();
+            containerBuilder.RegisterType<Operater>()
+                        .As<IOperater>()
+                        .InstancePerLifetimeScope();
 
             //注册DbContext Options
             containerBuilder.Register<DbContextOptions>(c =>

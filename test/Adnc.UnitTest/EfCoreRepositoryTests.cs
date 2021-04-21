@@ -20,7 +20,7 @@ namespace Adnc.UnitTest
     {
         private readonly ITestOutputHelper _output;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly UserContext _userContext;
+        private readonly IOperater _userContext;
         private readonly IEfRepository<Customer> _customerRsp;
         private readonly IEfRepository<CustomerFinance> _cusFinanceRsp;
         private readonly IEfRepository<CustomerTransactionLog> _custLogsRsp;
@@ -33,7 +33,7 @@ namespace Adnc.UnitTest
             _fixture = fixture;
             _output = output;
             _unitOfWork = _fixture.Container.Resolve<IUnitOfWork>();
-            _userContext = _fixture.Container.Resolve<UserContext>();
+            _userContext = _fixture.Container.Resolve<IOperater>();
             _customerRsp = _fixture.Container.Resolve<IEfRepository<Customer>>();
             _cusFinanceRsp = _fixture.Container.Resolve<IEfRepository<CustomerFinance>>();
             _custLogsRsp = _fixture.Container.Resolve<IEfRepository<CustomerTransactionLog>>();

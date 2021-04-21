@@ -9,7 +9,6 @@ using Adnc.UnitTest.Fixtures;
 using Adnc.Core.Shared;
 using Adnc.Cus.Core.Entities;
 using Adnc.Core.Shared.IRepositories;
-using Adnc.Infr.Common;
 using Adnc.Infr.Common.Helper;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -20,7 +19,7 @@ namespace Adnc.UnitTests
     {
         private readonly ITestOutputHelper _output;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly UserContext _userContext;
+        private readonly IOperater _userContext;
         private readonly IEfRepository<Customer> _cusRsp;
         private readonly IEfRepository<CustomerFinance> _cusFinanceRsp;
         private readonly IEfRepository<CustomerTransactionLog> _cusLogsRsp;
@@ -31,7 +30,7 @@ namespace Adnc.UnitTests
             _fixture = fixture;
             _output = output;
             _unitOfWork = _fixture.Container.Resolve<IUnitOfWork>();
-            _userContext = _fixture.Container.Resolve<UserContext>();
+            _userContext = _fixture.Container.Resolve<IOperater>();
             _cusRsp = _fixture.Container.Resolve<IEfRepository<Customer>>();
             _cusFinanceRsp = _fixture.Container.Resolve<IEfRepository<CustomerFinance>>();
             _cusLogsRsp = _fixture.Container.Resolve<IEfRepository<CustomerTransactionLog>>();

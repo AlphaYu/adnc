@@ -9,6 +9,7 @@ using Adnc.Infr.Common;
 using Adnc.Cus.Core;
 using DotNetCore.CAP;
 using Adnc.Infr.EventBus;
+using Adnc.Core.Shared;
 
 namespace Adnc.UnitTest.Fixtures
 {
@@ -23,8 +24,9 @@ namespace Adnc.UnitTest.Fixtures
             var dbstring = "Server=193.112.75.77;Port=13308;database=adnc_cus_dev;uid=root;pwd=alpha.netcore;";
 
             //注册操作用户
-            containerBuilder.RegisterType<UserContext>()
-                            .InstancePerLifetimeScope();
+            containerBuilder.RegisterType<Operater>()
+                        .As<IOperater>()
+                        .InstancePerLifetimeScope();
 
             //注册DbContext Options
             containerBuilder.Register<DbContextOptions>(c =>

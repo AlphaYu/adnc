@@ -18,7 +18,7 @@ namespace Adnc.UnitTest
     public class CoreServiceTests : IClassFixture<CoreServiceFixture>
     {
         private readonly ITestOutputHelper _output;
-        private readonly UserContext _userContext;
+        private readonly IOperater _userContext;
         private readonly CustomerManagerService _cusManger;
         private readonly IEfRepository<Customer> _cusRsp;
         private CoreServiceFixture _fixture;
@@ -30,7 +30,7 @@ namespace Adnc.UnitTest
             _output = output;
             _cusRsp = _fixture.Container.Resolve<IEfRepository<Customer>>();
             _cusManger = _fixture.Container.Resolve<CustomerManagerService>();
-            _userContext = _fixture.Container.Resolve<UserContext>();
+            _userContext = _fixture.Container.Resolve<IOperater>();
             Initialize();
         }
 
