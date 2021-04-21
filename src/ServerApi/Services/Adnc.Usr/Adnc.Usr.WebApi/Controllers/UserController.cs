@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Adnc.Application.Shared;
+using Adnc.Application.Shared.Dtos;
 using Adnc.WebApi.Shared;
 using Adnc.Usr.Application.Contracts.Dtos;
 using Adnc.Usr.Application.Contracts.Services;
-using Adnc.Application.Shared;
 
 namespace Adnc.Usr.WebApi.Controllers
 {

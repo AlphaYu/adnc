@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Adnc.Application.Shared.Dtos;
 using Adnc.Core.Shared;
 using Adnc.Usr.Core.Entities;
 using Adnc.Usr.Application.Contracts.Dtos;

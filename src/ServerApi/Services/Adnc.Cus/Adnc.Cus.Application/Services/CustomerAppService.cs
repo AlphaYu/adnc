@@ -3,7 +3,6 @@ using System.Net;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using AutoMapper;
 using Adnc.Cus.Core.Services;
 using Adnc.Cus.Core.Entities;
 using Adnc.Infra.Common.Helper;
@@ -23,7 +22,6 @@ namespace Adnc.Cus.Application.Services
     {
         private readonly CustomerManagerService _cusManagerService;
         private readonly IEfRepository<Customer> _customerRepo;
-        private readonly IMapper _mapper;
 
         /// <summary>
         /// 构造函数
@@ -33,12 +31,10 @@ namespace Adnc.Cus.Application.Services
         /// <param name="mapper"></param>
         public CustomerAppService(
              IEfRepository<Customer> customerRepo
-            , CustomerManagerService cusManagerService
-            , IMapper mapper)
+            , CustomerManagerService cusManagerService)
         {
             _customerRepo = customerRepo;
             _cusManagerService = cusManagerService;
-            _mapper = mapper;
         }
 
         /// <summary>
@@ -52,7 +48,7 @@ namespace Adnc.Cus.Application.Services
             if (exists)
                 return Problem(HttpStatusCode.Forbidden, "该账号已经存在");
 
-            var customer = _mapper.Map<Customer>(input);
+            var customer = Mapper.Map<Customer>(input);
 
             customer.Id = IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId);
             customer.FinanceInfo = new CustomerFinance()
@@ -66,7 +62,7 @@ namespace Adnc.Cus.Application.Services
 
             await _customerRepo.InsertAsync(customer);
 
-            var dto = _mapper.Map<CustomerDto>(customer);
+            var dto = Mapper.Map<CustomerDto>(customer);
             return dto;
         }
 

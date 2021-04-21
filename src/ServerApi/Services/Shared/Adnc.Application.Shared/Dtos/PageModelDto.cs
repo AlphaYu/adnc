@@ -17,12 +17,13 @@ namespace Adnc.Application.Shared.Dtos
             this.PageSize = search.PageSize;
         }
 
-        public PageModelDto(SearchPagedDto search, IReadOnlyList<T> data, int count)
+        public PageModelDto(SearchPagedDto search, IReadOnlyList<T> data, int count, dynamic XData = null)
         {
             this.PageIndex = search.PageIndex;
             this.PageSize = search.PageSize;
             this.TotalCount = count;
             this.Data = data as IReadOnlyList<T>;
+            this.XData = XData;
         }
 
         [NotNull]
@@ -48,5 +49,7 @@ namespace Adnc.Application.Shared.Dtos
         public long TotalCount { get; set; }
 
         public int PageCount { get { return ((this.RowsCount + this.PageSize - 1) / this.PageSize); } }
+
+        public dynamic XData { get; set; }
     }
 }

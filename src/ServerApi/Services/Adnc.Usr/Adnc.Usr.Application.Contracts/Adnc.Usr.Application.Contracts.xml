@@ -462,11 +462,6 @@
             节点数据
             </summary>
         </member>
-        <member name="P:Adnc.Usr.Application.Contracts.Dtos.PageModelDto`1.XData">
-            <summary>
-            扩展数据
-            </summary>
-        </member>
         <member name="T:Adnc.Usr.Application.Contracts.Dtos.RelationDto">
             <summary>
             菜单-角色关联

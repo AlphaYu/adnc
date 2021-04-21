@@ -5,7 +5,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using EasyCaching.Core;
-using AutoMapper;
 using Adnc.Infra.Common.Extensions;
 using Adnc.Infra.Common.Helper;
 using Adnc.Maint.Core.Entities;
@@ -20,15 +19,12 @@ namespace Adnc.Maint.Application.Services
 {
     public class CfgAppService : AbstractAppService, ICfgAppService
     {
-        private readonly IMapper _mapper;
         private readonly IEfRepository<SysCfg> _cfgRepository;
         private readonly IEasyCachingProvider _cache;
 
-        public CfgAppService(IMapper mapper
-            , IEfRepository<SysCfg> cfgRepository
+        public CfgAppService(IEfRepository<SysCfg> cfgRepository
             , IEasyCachingProviderFactory cacheFactory)
         {
-            _mapper = mapper;
             _cfgRepository = cfgRepository;
             _cache = cacheFactory.GetCachingProvider(EasyCachingConsts.RemoteCaching);
         }
@@ -79,7 +75,7 @@ namespace Adnc.Maint.Application.Services
             if (exist)
                 return Problem(HttpStatusCode.BadRequest, "参数名称已经存在");
 
-            var cfg = _mapper.Map<SysCfg>(input);
+            var cfg = Mapper.Map<SysCfg>(input);
             cfg.Id = IdGenerater.GetNextId();
 
             await _cfgRepository.InsertAsync(cfg);
@@ -93,7 +89,7 @@ namespace Adnc.Maint.Application.Services
             if (exist)
                 return Problem(HttpStatusCode.BadRequest, "参数名称已经存在");
 
-            var entity = _mapper.Map<SysCfg>(input);
+            var entity = Mapper.Map<SysCfg>(input);
 
             entity.Id = id;
 
@@ -114,7 +110,7 @@ namespace Adnc.Maint.Application.Services
             var cahceValue = await _cache.GetAsync(EasyCachingConsts.CfgListCacheKey, async () =>
             {
                 var allCfgs = await _cfgRepository.GetAll(writeDb: true).ToListAsync();
-                return _mapper.Map<List<CfgDto>>(allCfgs);
+                return Mapper.Map<List<CfgDto>>(allCfgs);
             }, TimeSpan.FromSeconds(EasyCachingConsts.OneYear));
 
             return cahceValue.Value;

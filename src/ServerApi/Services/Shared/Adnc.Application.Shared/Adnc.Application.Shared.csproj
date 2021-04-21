@@ -21,14 +21,13 @@
 		<PackageReference Include="Castle.Core" Version="4.4.1" />
 		<PackageReference Include="Autofac.Extras.DynamicProxy" Version="6.0.0" />
 		<PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.0.2" />
-		<PackageReference Include="AutoMapper" Version="10.1.1" />
-		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.0" />
 		<PackageReference Include="FluentValidation" Version="9.3.0" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Common\Adnc.Infra.Common.csproj" />
 	  <ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.EasyCaching\Adnc.Infra.EasyCaching.csproj" />
+	  <ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Mapper\Adnc.Infra.Mapper.csproj" />
 	  <ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Mq\Adnc.Infra.Mq.csproj" />
 	  <ProjectReference Include="..\Adnc.Core.Shared\Adnc.Core.Shared.csproj" />
 	</ItemGroup>

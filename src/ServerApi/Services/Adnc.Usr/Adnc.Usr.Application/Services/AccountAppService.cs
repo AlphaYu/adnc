@@ -3,7 +3,6 @@ using System.Net;
 using System.Linq;
 using System.Dynamic;
 using System.Threading.Tasks;
-using AutoMapper;
 using Adnc.Usr.Application.Contracts.Dtos;
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Usr.Core.Entities;
@@ -19,19 +18,16 @@ namespace Adnc.Usr.Application.Services
 {
     public class AccountAppService : AbstractAppService, IAccountAppService
     {
-        private readonly IMapper _mapper;
         private readonly IEfRepository<SysUser> _userRepository;
         private readonly IEfRepository<SysRole> _roleRepository;
         private readonly IEfRepository<SysMenu> _menuRepository;
         private readonly RabbitMqProducer _mqProducer;
 
-        public AccountAppService(IMapper mapper,
-            IEfRepository<SysUser> userRepository,
+        public AccountAppService(IEfRepository<SysUser> userRepository,
             IEfRepository<SysRole> roleRepository,
             IEfRepository<SysMenu> menuRepository,
             RabbitMqProducer mqProducer)
         {
-            _mapper = mapper;
             _userRepository = userRepository;
             _roleRepository = roleRepository;
             _menuRepository = menuRepository;

@@ -1,14 +1,14 @@
-﻿using System.Net;
-using JetBrains.Annotations;
-using AutoMapper;
+﻿using System;
+using System.Net;
 using System.Linq.Expressions;
-using System;
+using JetBrains.Annotations;
+using Adnc.Infra.Mapper;
 
 namespace Adnc.Application.Shared.Services
 {
     public abstract class AbstractAppService : IAppService
     {
-        protected IMapper Mapper { get; set; }
+        public IObjectMapper Mapper { get; set; }
 
         protected AppSrvResult AppSrvResult()
         {

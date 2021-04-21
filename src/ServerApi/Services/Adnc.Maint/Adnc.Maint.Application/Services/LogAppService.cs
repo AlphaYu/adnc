@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using System.Collections.Generic;
 using MongoDB.Driver;
-using AutoMapper;
 using Adnc.Core.Maint.Entities;
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Maint.Core.Entities;
@@ -15,17 +14,14 @@ namespace Adnc.Maint.Application.Services
 {
     public class LogAppService : AbstractAppService, ILogAppService
     {
-        private readonly IMapper _mapper;
         private readonly IMongoRepository<SysOperationLog> _opsLogRepository;
         private readonly IMongoRepository<SysNloglog> _nlogLogRepository;
         private readonly IMongoRepository<SysLoginLog> _loginLogRepository;
 
-        public LogAppService(IMapper mapper,
-            IMongoRepository<SysOperationLog> opsLogRepository
+        public LogAppService(IMongoRepository<SysOperationLog> opsLogRepository
             , IMongoRepository<SysLoginLog> loginLogRepository
             , IMongoRepository<SysNloglog> nlogLogRepository)
         {
-            _mapper = mapper;
             _opsLogRepository = opsLogRepository;
             _loginLogRepository = loginLogRepository;
             _nlogLogRepository = nlogLogRepository;
@@ -60,7 +56,7 @@ namespace Adnc.Maint.Application.Services
 
             var pagedModel = await _loginLogRepository.PagedAsync(searchDto.PageIndex, searchDto.PageSize, filter, x => x.CreateTime, false);
 
-            var result = _mapper.Map<PageModelDto<LoginLogDto>>(pagedModel);
+            var result = Mapper.Map<PageModelDto<LoginLogDto>>(pagedModel);
 
             return result;
         }
@@ -95,7 +91,7 @@ namespace Adnc.Maint.Application.Services
 
             var pagedModel = await _opsLogRepository.PagedAsync(searchDto.PageIndex, searchDto.PageSize, filter, x => x.CreateTime, false);
 
-            var result = _mapper.Map<PageModelDto<OpsLogDto>>(pagedModel);
+            var result = Mapper.Map<PageModelDto<OpsLogDto>>(pagedModel);
 
             return result;
         }
@@ -129,7 +125,7 @@ namespace Adnc.Maint.Application.Services
 
             var pagedModel = await _nlogLogRepository.PagedAsync(searchDto.PageIndex, searchDto.PageSize, filter, x => x.Date, false);
 
-            var result = _mapper.Map<PageModelDto<NlogLogDto>>(pagedModel);
+            var result = Mapper.Map<PageModelDto<NlogLogDto>>(pagedModel);
 
             return result;
         }

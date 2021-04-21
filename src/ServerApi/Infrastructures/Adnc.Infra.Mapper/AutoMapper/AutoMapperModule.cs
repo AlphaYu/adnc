@@ -4,8 +4,9 @@ using System.Linq;
 using System.Reflection;
 using Autofac;
 using AutoMapper;
+using ObjectMapper = AutoMapper.Mapper;
 
-namespace Adnc.Application.Shared.Mapper
+namespace Adnc.Infra.Mapper.AutoMapper
 {
     /// <summary>
     /// 注册automapper
@@ -48,7 +49,9 @@ namespace Adnc.Application.Shared.Mapper
 
             builder.Register<IConfigurationProvider>(ctx => new MapperConfiguration(cfg => cfg.AddMaps(assembliesToScan))).SingleInstance();
 
-            builder.Register<IMapper>(ctx => new AutoMapper.Mapper(ctx.Resolve<IConfigurationProvider>(), ctx.Resolve)).InstancePerDependency();
+            builder.Register<IMapper>(ctx => new ObjectMapper(ctx.Resolve<IConfigurationProvider>(), ctx.Resolve)).InstancePerDependency();
+
+            builder.RegisterType<AutoMapperMapperImpl>().As<IObjectMapper>().InstancePerDependency();
         }
 
         private static bool ImplementsGenericInterface(Type type, Type interfaceType)

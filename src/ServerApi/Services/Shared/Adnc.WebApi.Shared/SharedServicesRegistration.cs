@@ -202,7 +202,7 @@ namespace Adnc.WebApi.Shared
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-            .AddJwtBearer(options =>
+            .AddJwtBearer((Action<JwtBearerOptions>)(options =>
             {
 
                 //验证的一些设置，比如是否验证发布者，订阅者，密钥，以及生命时间等等
@@ -227,7 +227,7 @@ namespace Adnc.WebApi.Shared
                     ,
                     OnTokenValidated = context =>
                     {
-                        var userContext = context.HttpContext.RequestServices.GetService<IUserContext>();
+                        var userContext = context.HttpContext.RequestServices.GetService<Application.Shared.IUserContext>();
                         var claims = context.Principal.Claims;
                         userContext.Id = long.Parse(claims.First(x => x.Type == JwtRegisteredClaimNames.Sub).Value);
                         userContext.Account = claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
@@ -269,7 +269,7 @@ namespace Adnc.WebApi.Shared
                         //return context.Response.WriteAsync(payload.ToString());
                     }
                 };
-            });
+            }));
 
             //因为获取声明的方式默认是走微软定义的一套映射方式，如果我们想要走JWT映射声明，那么我们需要将默认映射方式给移除掉
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();

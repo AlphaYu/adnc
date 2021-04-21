@@ -3,7 +3,6 @@ using System.Net;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
 using System.Dynamic;
 using EasyCaching.Core;
 using Adnc.Usr.Application.Contracts.Dtos;
@@ -19,17 +18,14 @@ namespace Adnc.Usr.Application.Services
 {
     public class DeptAppService : AbstractAppService, IDeptAppService
     {
-        private readonly IMapper _mapper;
         private readonly IEasyCachingProvider _cache;
         private readonly IEfRepository<SysDept> _deptRepository;
         private readonly UsrManager _usrManager;
 
-        public DeptAppService(IMapper mapper
-            , IEasyCachingProviderFactory cacheFactory
+        public DeptAppService( IEasyCachingProviderFactory cacheFactory
             , IEfRepository<SysDept> deptRepository
             , UsrManager usrManager)
         {
-            _mapper = mapper;
             _cache = cacheFactory.GetCachingProvider(EasyCachingConsts.RemoteCaching);
             _deptRepository = deptRepository;
             _usrManager = usrManager;
@@ -55,7 +51,7 @@ namespace Adnc.Usr.Application.Services
             if (!depts.Any())
                 return result;
 
-            var allDeptNodes = _mapper.Map<List<DeptTreeeDto>>(depts);
+            var allDeptNodes = Mapper.Map<List<DeptTreeeDto>>(depts);
 
             var roots = allDeptNodes.Where(d => d.Pid == 0).OrderBy(d => d.Ordinal);
             foreach (var node in roots)
@@ -87,7 +83,7 @@ namespace Adnc.Usr.Application.Services
             if (isExists)
                 return Problem(HttpStatusCode.BadRequest, "该部门全称已经存在");
 
-            var dept = _mapper.Map<SysDept>(input);
+            var dept = Mapper.Map<SysDept>(input);
             dept.Id = IdGenerater.GetNextId();
             await this.SetDeptPids(dept);
             await _deptRepository.InsertAsync(dept);
@@ -107,7 +103,7 @@ namespace Adnc.Usr.Application.Services
 
             var oldPids = oldDeptDto.Pids;
 
-            var deptEnity = _mapper.Map<SysDept>(input);
+            var deptEnity = Mapper.Map<SysDept>(input);
 
             deptEnity.Id = id;
 
@@ -146,7 +142,7 @@ namespace Adnc.Usr.Application.Services
             var cahceValue = await _cache.GetAsync(EasyCachingConsts.DetpListCacheKey, async() =>
             {
                 var allDepts = await _deptRepository.GetAll(writeDb:true).OrderBy(x=>x.Ordinal).ToListAsync();
-                return _mapper.Map<List<DeptDto>>(allDepts);
+                return Mapper.Map<List<DeptDto>>(allDepts);
             }, TimeSpan.FromSeconds(EasyCachingConsts.OneYear));
 
             return cahceValue.Value;

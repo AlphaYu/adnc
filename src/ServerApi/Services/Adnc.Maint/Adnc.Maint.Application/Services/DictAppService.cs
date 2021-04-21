@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using AutoMapper;
 using EasyCaching.Core;
 using Adnc.Infra.Common.Extensions;
 using Adnc.Infra.Common.Helper;
@@ -20,17 +19,14 @@ namespace Adnc.Maint.Application.Services
 {
     public class DictAppService : AbstractAppService, IDictAppService
     {
-        private readonly IMapper _mapper;
         private readonly IEfRepository<SysDict> _dictRepository;
         private readonly MaintManager _maintManager;
         private readonly IEasyCachingProvider _cache;
 
-        public DictAppService(IMapper mapper
-            , IEfRepository<SysDict> dictRepository
+        public DictAppService(IEfRepository<SysDict> dictRepository
             , MaintManager maintManager
             , IEasyCachingProviderFactory cacheFactory)
         {
-            _mapper = mapper;
             _dictRepository = dictRepository;
             _maintManager = maintManager;
             _cache = cacheFactory.GetCachingProvider(EasyCachingConsts.RemoteCaching);
@@ -147,7 +143,7 @@ namespace Adnc.Maint.Application.Services
             var cahceValue = await _cache.GetAsync(EasyCachingConsts.DictListCacheKey, async () =>
             {
                 var allDicts = await _dictRepository.GetAll(writeDb: true).OrderBy(x => x.Ordinal).ToListAsync();
-                return _mapper.Map<List<DictDto>>(allDicts);
+                return Mapper.Map<List<DictDto>>(allDicts);
             }, TimeSpan.FromSeconds(EasyCachingConsts.OneYear));
 
             return cahceValue.Value;

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using AutoMapper;
 using Adnc.Usr.Application.Contracts.Dtos;
 using Adnc.Infra.Common.Extensions;
 using Adnc.Usr.Core.Entities;
@@ -13,6 +12,7 @@ using Adnc.Core.Shared.IRepositories;
 using Adnc.Infra.Common.Helper;
 using EasyCaching.Core;
 using Adnc.Application.Shared.Services;
+using Adnc.Application.Shared.Dtos;
 using Adnc.Usr.Application.Contracts.Services;
 using Adnc.Usr.Application.Contracts.Consts;
 
@@ -20,21 +20,18 @@ namespace Adnc.Usr.Application.Services
 {
     public class RoleAppService :AbstractAppService,IRoleAppService
     {
-        private readonly IMapper _mapper;
         private readonly IEfRepository<SysRole> _roleRepository;
         private readonly IEfRepository<SysUser> _userRepository;
         private readonly IEfRepository<SysRelation> _relationRepository;
         private readonly UsrManager _usrManager;
         private readonly IEasyCachingProvider _cache;
 
-        public RoleAppService(IMapper mapper,
-            IEfRepository<SysRole> roleRepository,
+        public RoleAppService(IEfRepository<SysRole> roleRepository,
             IEfRepository<SysUser> userRepository,
             IEfRepository<SysRelation> relationRepository,
             UsrManager usrManager,
             IEasyCachingProviderFactory cacheFactory)
         {
-            _mapper = mapper;
             _roleRepository = roleRepository;
             _userRepository = userRepository;
             _relationRepository = relationRepository;
@@ -52,7 +49,7 @@ namespace Adnc.Usr.Application.Services
 
             var pagedModel = await _roleRepository.PagedAsync(search.PageIndex, search.PageSize, whereCondition, x => x.Ordinal, true);
 
-            return _mapper.Map<PageModelDto<RoleDto>>(pagedModel);
+            return Mapper.Map<PageModelDto<RoleDto>>(pagedModel);
         }
 
         public async Task<AppSrvResult<dynamic>> GetRoleTreeListByUserIdAsync(long userId)
@@ -122,7 +119,7 @@ namespace Adnc.Usr.Application.Services
             if (isExists)
                 return Problem(HttpStatusCode.BadRequest, "该角色名称已经存在");
 
-            var role = _mapper.Map<SysRole>(input);
+            var role = Mapper.Map<SysRole>(input);
             role.Id = IdGenerater.GetNextId();
             await _roleRepository.InsertAsync(role);
 
@@ -135,7 +132,7 @@ namespace Adnc.Usr.Application.Services
             if (isExists)
                 return Problem(HttpStatusCode.BadRequest, "该角色名称已经存在");
 
-            var role = _mapper.Map<SysRole>(input);
+            var role = Mapper.Map<SysRole>(input);
 
             role.Id = id;
             
@@ -180,7 +177,7 @@ namespace Adnc.Usr.Application.Services
             var cahceValue = await _cache.GetAsync(EasyCachingConsts.RoleAllCacheKey, async () =>
             {
                 var allRoles = await _roleRepository.GetAll(writeDb:true).OrderBy(x=>x.Ordinal).ToListAsync();
-                return _mapper.Map<List<RoleDto>>(allRoles);
+                return Mapper.Map<List<RoleDto>>(allRoles);
             }, TimeSpan.FromSeconds(EasyCachingConsts.OneYear));
 
             return cahceValue.Value;

@@ -2,9 +2,10 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Adnc.WebApi.Shared;
+using Adnc.Application.Shared.Dtos;
 using Adnc.Usr.Application.Contracts.Dtos;
 using Adnc.Usr.Application.Contracts.Services;
-using Adnc.WebApi.Shared;
 
 namespace Adnc.Usr.WebApi.Controllers
 {

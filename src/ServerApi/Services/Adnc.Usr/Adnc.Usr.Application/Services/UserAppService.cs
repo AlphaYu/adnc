@@ -4,11 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Linq.Expressions;
 using System.Collections.Generic;
-using AutoMapper;
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Infra.Common.Helper;
 using Adnc.Infra.Common.Extensions;
 using Adnc.Usr.Core.Entities;
+using Adnc.Application.Shared.Dtos;
 using Adnc.Application.Shared.Services;
 using Adnc.Usr.Application.Contracts.Dtos;
 using Adnc.Usr.Application.Contracts.Services;
@@ -17,17 +17,14 @@ namespace Adnc.Usr.Application.Services
 {
     public class UserAppService : AbstractAppService, IUserAppService
     {
-        private readonly IMapper _mapper;
         private readonly IEfRepository<SysUser> _userRepository;
         private readonly IDeptAppService _deptAppService;
         private readonly IRoleAppService _roleAppService;
 
-        public UserAppService(IMapper mapper,
-            IEfRepository<SysUser> userRepository,
+        public UserAppService(IEfRepository<SysUser> userRepository,
             IDeptAppService deptAppService,
             IRoleAppService roleAppService)
         {
-            _mapper = mapper;
             _userRepository = userRepository;
             _deptAppService = deptAppService;
             _roleAppService = roleAppService;
@@ -57,7 +54,7 @@ namespace Adnc.Usr.Application.Services
             if (await _userRepository.AnyAsync(x => x.Account == input.Account))
                 return Problem(HttpStatusCode.BadRequest, "账号已经存在");
 
-            var user = _mapper.Map<SysUser>(input);
+            var user = Mapper.Map<SysUser>(input);
             user.Id = IdGenerater.GetNextId();
             user.Salt = SecurityHelper.GenerateRandomCode(5);
             user.Password = HashHelper.GetHashedString(HashType.MD5, user.Password, user.Salt);
@@ -68,7 +65,7 @@ namespace Adnc.Usr.Application.Services
 
         public async Task<AppSrvResult> UpdateAsync(long id,UserUpdationDto input)
         {
-            var user = _mapper.Map<SysUser>(input);
+            var user = Mapper.Map<SysUser>(input);
 
             user.Id = id;
 
@@ -99,7 +96,7 @@ namespace Adnc.Usr.Application.Services
             }
 
             var pagedModel = await _userRepository.PagedAsync(search.PageIndex, search.PageSize, whereCondition, x => x.Id, false);
-            var pageModelDto = _mapper.Map<PageModelDto<UserDto>>(pagedModel);
+            var pageModelDto = Mapper.Map<PageModelDto<UserDto>>(pagedModel);
 
             pageModelDto.XData = await _deptAppService.GetSimpleListAsync();
 

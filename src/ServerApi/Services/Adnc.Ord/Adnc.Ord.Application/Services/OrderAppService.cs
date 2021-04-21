@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using AutoMapper;
 using Adnc.Infra.Common.Exceptions;
 using Adnc.Infra.Common.Helper;
 using Adnc.Infra.Common.Extensions;
@@ -28,7 +27,6 @@ namespace Adnc.Ord.Application.Services
         private readonly IEfBasicRepository<Order> _orderRepo;
         private readonly IWhseRpcService _warehouseRpc;
         private readonly IMaintRpcService _maintRpc;
-        private readonly IMapper _mapper;
 
         /// <summary>
         /// 构造函数
@@ -42,14 +40,12 @@ namespace Adnc.Ord.Application.Services
              IEfBasicRepository<Order> orderRepo
             , OrderManager orderMgr
             , IWhseRpcService warehouseRpc
-            , IMaintRpcService maintRpc
-            , IMapper mapper)
+            , IMaintRpcService maintRpc)
         {
             _orderRepo = orderRepo;
             _orderMgr = orderMgr;
             _warehouseRpc = warehouseRpc;
             _maintRpc = maintRpc;
-            _mapper = mapper;
         }
 
         /// <summary>
@@ -87,7 +83,7 @@ namespace Adnc.Ord.Application.Services
 
             await _orderRepo.InsertAsync(order);
 
-            return _mapper.Map<OrderDto>(order);
+            return Mapper.Map<OrderDto>(order);
         }
 
         /// <summary>
@@ -127,7 +123,7 @@ namespace Adnc.Ord.Application.Services
 
             await _orderRepo.UpdateAsync(order);
 
-            return _mapper.Map<OrderDto>(order);
+            return Mapper.Map<OrderDto>(order);
         }
 
         /// <summary>
@@ -160,7 +156,7 @@ namespace Adnc.Ord.Application.Services
 
             await _orderRepo.UpdateAsync(order);
 
-            return _mapper.Map<OrderDto>(order);
+            return Mapper.Map<OrderDto>(order);
         }
 
         /// <summary>
@@ -177,7 +173,7 @@ namespace Adnc.Ord.Application.Services
 
             await _orderRepo.UpdateAsync(order);
 
-            return _mapper.Map<OrderDto>(order);
+            return Mapper.Map<OrderDto>(order);
         }
 
         /// <summary>
@@ -188,7 +184,7 @@ namespace Adnc.Ord.Application.Services
         public async Task<OrderDto> GetAsync(long id)
         {
             var order = await _orderRepo.GetAsync(id, x => x.Items);
-            return _mapper.Map<OrderDto>(order);
+            return Mapper.Map<OrderDto>(order);
         }
 
         /// <summary>
@@ -205,7 +201,7 @@ namespace Adnc.Ord.Application.Services
             }
             var pagedEntity = await _orderRepo.PagedAsync(search.PageIndex, search.PageSize, whereCondition, x => x.Id);
 
-            var pagedDto = _mapper.Map<PageModelDto<OrderDto>>(pagedEntity);
+            var pagedDto = Mapper.Map<PageModelDto<OrderDto>>(pagedEntity);
 
             if (pagedDto.Data.Count > 0)
             {

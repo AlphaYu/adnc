@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Collections.Generic;
-using AutoMapper;
 using Adnc.Whse.Core.Services;
 using Adnc.Whse.Core.Entities;
 using Adnc.Core.Shared.IRepositories;
@@ -26,7 +25,6 @@ namespace Adnc.Whse.Application.Services
         private readonly IEfBasicRepository<Product> _productRepo;
         private readonly IEfBasicRepository<Warehouse> _warehouseInfoRepo;
         private readonly IMaintRpcService _maintRpcSrv;
-        private readonly IMapper _mapper;
 
         /// <summary>
         /// 商品管理构造函数
@@ -40,14 +38,12 @@ namespace Adnc.Whse.Application.Services
              IEfBasicRepository<Product> productRepo
             , IEfBasicRepository<Warehouse> warehouseInfoRepo
             , IMaintRpcService maintRpcSrv
-            , ProductManager productMgr
-            , IMapper mapper)
+            , ProductManager productMgr)
         {
             _productMgr = productMgr;
             _productRepo = productRepo;
             _warehouseInfoRepo = warehouseInfoRepo;
             _maintRpcSrv = maintRpcSrv;
-            _mapper = mapper;
         }
 
         /// <summary>
@@ -61,7 +57,7 @@ namespace Adnc.Whse.Application.Services
 
             await _productRepo.InsertAsync(product);
 
-            return _mapper.Map<ProductDto>(product);
+            return Mapper.Map<ProductDto>(product);
         }
 
         /// <summary>
@@ -86,7 +82,7 @@ namespace Adnc.Whse.Application.Services
 
             await _productRepo.UpdateAsync(product);
 
-            return _mapper.Map<ProductDto>(product);
+            return Mapper.Map<ProductDto>(product);
         }
 
         /// <summary>
@@ -105,7 +101,7 @@ namespace Adnc.Whse.Application.Services
 
             await _productRepo.UpdateAsync(product);
 
-            return _mapper.Map<ProductDto>(product);
+            return Mapper.Map<ProductDto>(product);
         }
 
         /// <summary>
@@ -124,7 +120,7 @@ namespace Adnc.Whse.Application.Services
 
             await _productRepo.UpdateAsync(product);
 
-            return _mapper.Map<ProductDto>(product);
+            return Mapper.Map<ProductDto>(product);
         }
 
         /// <summary>
@@ -140,7 +136,7 @@ namespace Adnc.Whse.Application.Services
 
             await _productRepo.UpdateAsync(product);
 
-            return _mapper.Map<ProductDto>(product);
+            return Mapper.Map<ProductDto>(product);
         }
 
         /// <summary>
@@ -157,7 +153,7 @@ namespace Adnc.Whse.Application.Services
             }
             var pagedEntity = await _productRepo.PagedAsync(search.PageIndex, search.PageSize, whereCondition, x => x.Id);
 
-            var pagedDto = _mapper.Map<PageModelDto<ProductDto>>(pagedEntity);
+            var pagedDto = Mapper.Map<PageModelDto<ProductDto>>(pagedEntity);
 
             if (pagedDto.Data.Count > 0)
             {
@@ -197,7 +193,7 @@ namespace Adnc.Whse.Application.Services
 
             var products = await _productRepo.Where(whereCondition).ToListAsync();
 
-            var productsDto = _mapper.Map<List<ProductDto>>(products);
+            var productsDto = Mapper.Map<List<ProductDto>>(products);
 
             return productsDto;
         }

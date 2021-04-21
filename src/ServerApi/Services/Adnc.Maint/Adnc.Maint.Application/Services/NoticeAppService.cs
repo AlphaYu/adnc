@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq.Expressions;
-using AutoMapper;
 using Adnc.Infra.Common.Extensions;
 using Adnc.Maint.Core.Entities;
 using Adnc.Core.Shared.IRepositories;
@@ -14,12 +13,10 @@ namespace  Adnc.Maint.Application.Services
 {
     public class NoticeAppService : AbstractAppService, INoticeAppService
     {
-        private readonly IMapper _mapper;
         private readonly IEfRepository<SysNotice> _noticeRepository;
 
-        public NoticeAppService(IMapper mapper, IEfRepository<SysNotice> noticeRepository)
+        public NoticeAppService(IEfRepository<SysNotice> noticeRepository)
         {
-            _mapper = mapper;
             _noticeRepository = noticeRepository;
         }
 
@@ -33,7 +30,7 @@ namespace  Adnc.Maint.Application.Services
 
             var notices = await _noticeRepository.Where(whereCondition).ToListAsync();
 
-            return _mapper.Map<List<NoticeDto>>(notices);
+            return Mapper.Map<List<NoticeDto>>(notices);
         }
     }
 }

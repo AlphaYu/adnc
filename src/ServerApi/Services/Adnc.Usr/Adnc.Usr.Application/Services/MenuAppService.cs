@@ -4,7 +4,6 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using EasyCaching.Core;
-using AutoMapper;
 using Adnc.Usr.Application.Contracts.Dtos;
 using Adnc.Usr.Core.Entities;
 using Adnc.Core.Shared.IRepositories;
@@ -18,17 +17,14 @@ namespace Adnc.Usr.Application.Services
 {
     public class MenuAppService :AbstractAppService,IMenuAppService
     {
-        private readonly IMapper _mapper;
         private readonly IEfRepository<SysMenu> _menuRepository;
         private readonly IEfRepository<SysRelation> _relationRepository;
         private readonly IEasyCachingProvider _cache;
 
-        public MenuAppService(IMapper mapper,
-            IEfRepository<SysMenu> menuRepository,
+        public MenuAppService(IEfRepository<SysMenu> menuRepository,
             IEfRepository<SysRelation> relationRepository,
             IEasyCachingProviderFactory cacheFactory)
         {
-            _mapper = mapper;
             _menuRepository = menuRepository;
             _relationRepository = relationRepository;
             _cache = cacheFactory.GetCachingProvider(EasyCachingConsts.RemoteCaching);
@@ -46,7 +42,7 @@ namespace Adnc.Usr.Application.Services
 
             var parentMenu = (await this.GetAllMenusFromCacheAsync()).Where(x => x.Code == input.PCode).FirstOrDefault();
             var addDto = ProducePCodes(input, parentMenu);
-            var menu = _mapper.Map<SysMenu>(addDto);
+            var menu = Mapper.Map<SysMenu>(addDto);
             menu.Id = IdGenerater.GetNextId();
             await _menuRepository.InsertAsync(menu);
 
@@ -65,7 +61,7 @@ namespace Adnc.Usr.Application.Services
 
             var parentMenu = (await this.GetAllMenusFromCacheAsync()).Where(x => x.Code == input.PCode).FirstOrDefault();
             var updateDto = ProducePCodes(input, parentMenu);
-            var menu = _mapper.Map<SysMenu>(updateDto);
+            var menu = Mapper.Map<SysMenu>(updateDto);
 
             menu.Id = id;
 
@@ -105,7 +101,7 @@ namespace Adnc.Usr.Application.Services
 
             var menus = (await this.GetAllMenusFromCacheAsync()).OrderBy(o => o.Levels).ThenBy(x => x.Ordinal);
 
-            var menuNodes = _mapper.Map<List<MenuNodeDto>>(menus);
+            var menuNodes = Mapper.Map<List<MenuNodeDto>>(menus);
             foreach (var node in menuNodes)
             {
                 var parentNode = menuNodes.FirstOrDefault(x => x.Code == node.PCode);
@@ -151,7 +147,7 @@ namespace Adnc.Usr.Application.Services
                 var componentMenus = menus.Where(x => !string.IsNullOrWhiteSpace(x.Component));
                 foreach (var menu in componentMenus)
                 {
-                    var routerMenu = _mapper.Map<MenuRouterDto>(menu);
+                    var routerMenu = Mapper.Map<MenuRouterDto>(menu);
                     routerMenu.Path = menu.Url;
                     routerMenu.Meta = new MenuMetaDto
                     {
@@ -209,7 +205,7 @@ namespace Adnc.Usr.Application.Services
                 roleTreeList.Add(node);
             }
 
-            List<Node<long>> nodes = _mapper.Map<List<Node<long>>>(roleTreeList);
+            List<Node<long>> nodes = Mapper.Map<List<Node<long>>>(roleTreeList);
             foreach (var node in nodes)
             {
                 foreach (var child in nodes)
@@ -239,7 +235,7 @@ namespace Adnc.Usr.Application.Services
             var cahceValue = await _cache.GetAsync(EasyCachingConsts.MenuRelationCacheKey, async () =>
             {
                 var allRelations = await _relationRepository.GetAll(writeDb:true).ToListAsync();
-                return _mapper.Map<List<RelationDto>>(allRelations);
+                return Mapper.Map<List<RelationDto>>(allRelations);
             }, TimeSpan.FromSeconds(EasyCachingConsts.OneYear));
 
             return cahceValue.Value;
@@ -250,7 +246,7 @@ namespace Adnc.Usr.Application.Services
             var cahceValue = await _cache.GetAsync(EasyCachingConsts.MenuListCacheKey, async () =>
             {
                 var allMenus = await _menuRepository.GetAll(writeDb: true).OrderBy(x=>x.Ordinal).ToListAsync();
-                return _mapper.Map<List<MenuDto>>(allMenus);
+                return Mapper.Map<List<MenuDto>>(allMenus);
             }, TimeSpan.FromSeconds(EasyCachingConsts.OneYear));
 
             return cahceValue.Value;

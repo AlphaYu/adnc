@@ -7,9 +7,9 @@ using Autofac.Extras.DynamicProxy;
 using FluentValidation;
 using Adnc.Infra.Mq;
 using Adnc.Infra.EasyCaching.Interceptor.Castle;
+using Adnc.Infra.Mapper.AutoMapper;
 using Adnc.Application.Shared.Interceptors;
 using Adnc.Application.Shared.Services;
-using Adnc.Application.Shared.Mapper;
 using Adnc.Core.Shared.Interceptors;
 using Adnc.Core.Shared.Entities;
 using Adnc.Core.Shared;
@@ -69,6 +69,7 @@ namespace Adnc.Application.Shared
             builder.RegisterAssemblyTypes(_appAssemblieToScan)
                    .Where(t => t.IsAssignableTo<IAppService>())
                    .AsImplementedInterfaces()
+                   .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies)
                    .InstancePerLifetimeScope()
                    .EnableInterfaceInterceptors()
                    .InterceptedBy(interceptors.ToArray());
