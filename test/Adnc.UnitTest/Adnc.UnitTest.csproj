@@ -40,9 +40,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\src\ServerApi\Adnc.Core.Shared\03.Adnc.Core.Shared.csproj" />
-		<ProjectReference Include="..\..\src\ServerApi\Adnc.Infr.EfCore\22.Adnc.Infr.EfCore.csproj" />
-		<ProjectReference Include="..\..\src\ServerApi\Portal\Adnc.Cus\Adnc.Cus.Core\Adnc.Cus.Core.csproj" />
+	  <ProjectReference Include="..\..\src\ServerApi\Infrastructures\Adnc.Infra.EfCore\Adnc.Infra.EfCore.csproj" />
+	  <ProjectReference Include="..\..\src\ServerApi\Services\Adnc.Cus\Adnc.Cus.Core\Adnc.Cus.Core.csproj" />
 	</ItemGroup>
 
 </Project>
