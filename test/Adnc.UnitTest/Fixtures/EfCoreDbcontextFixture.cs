@@ -4,13 +4,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using Pomelo.EntityFrameworkCore.MySql.Storage;
-using Adnc.Infr.EfCore;
-using Adnc.Infr.Common;
+using Adnc.Infra.EfCore;
+using Adnc.Infra.Common;
 using Adnc.Cus.Core.Entities;
 using Adnc.Core.Shared.Entities;
-using Adnc.Infr.EfCore.Interceptors;
+using Adnc.Infra.EfCore.Interceptors;
 using Microsoft.EntityFrameworkCore.Query;
 using Pomelo.EntityFrameworkCore.MySql.Query.ExpressionVisitors.Internal;
+using Adnc.Core.Shared;
 
 namespace Adnc.UnitTest.Fixtures
 {
@@ -41,8 +42,9 @@ namespace Adnc.UnitTest.Fixtures
             var dbstring = "Server=193.112.75.77;Port=13308;database=adnc_cus_dev;uid=root;pwd=alpha.netcore;";
 
             //注册操作用户
-            containerBuilder.RegisterType<UserContext>()
-                            .InstancePerLifetimeScope();
+            containerBuilder.RegisterType<Operater>()
+                        .As<IOperater>()
+                        .InstancePerLifetimeScope();
 
             //注册DbContext Options
             containerBuilder.Register<DbContextOptions>(c =>
@@ -67,7 +69,7 @@ namespace Adnc.UnitTest.Fixtures
             containerBuilder.RegisterType<AdncDbContext>()
                             .InstancePerLifetimeScope();
 
-            //注册Adnc.Infr.EfCore
+            //注册Adnc.Infra.EfCore
             AdncInfrEfCoreModule.Register(containerBuilder);
 
             var services = Container = containerBuilder.Build();          

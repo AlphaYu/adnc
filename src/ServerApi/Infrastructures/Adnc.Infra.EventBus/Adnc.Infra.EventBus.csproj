@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>netstandard2.1</TargetFramework>
+		<RootNamespace>Adnc.Infra.EventBus</RootNamespace>
+		<AssemblyName>Adnc.Infra.EventBus</AssemblyName>
+		<Version>0.8.0</Version>
+		<Authors>Alpha.Yu</Authors>
+		<Product>Adnc</Product>
+		<RepositoryUrl>https://github.com/AlphaYu</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageProjectUrl>https://www.aspdotnetcore.net</PackageProjectUrl>
+		<Copyright>Alpha</Copyright>
+	</PropertyGroup>
+	<ItemGroup>
+	  <PackageReference Include="DotNetCore.CAP" Version="3.0.4" />
+	</ItemGroup>
+</Project>
