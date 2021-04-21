@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Adnc.Infr.Common;
 using Adnc.WebApi.Shared;
+using Adnc.Application.Shared;
 using Adnc.Application.Shared.Dtos;
 using Adnc.Maint.Application.Contracts.Dtos;
 using Adnc.Maint.Application.Contracts.Services;
@@ -16,10 +16,10 @@ namespace Adnc.Maint.WebApi.Controllers
     public class LogController : AdncControllerBase
     {
         private readonly ILogAppService _logService;
-        private readonly UserContext _userContext;
+        private readonly IUserContext _userContext;
 
         public LogController(ILogAppService logService
-            , UserContext userContext)
+            , IUserContext userContext)
         {
             _logService = logService;
             _userContext = userContext;

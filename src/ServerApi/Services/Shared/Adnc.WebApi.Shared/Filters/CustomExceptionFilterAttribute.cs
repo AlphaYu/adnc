@@ -4,9 +4,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
-using Adnc.Infr.Common;
 using Adnc.Infr.Common.Helper;
 using Adnc.Infr.Common.Exceptions;
+using Adnc.Application.Shared;
 
 namespace Microsoft.AspNetCore.Mvc.Filters
 {
@@ -30,7 +30,7 @@ namespace Microsoft.AspNetCore.Mvc.Filters
             var status = 500;
             var exception = context.Exception;
             var eventId = new EventId(exception.HResult);
-            var userContext = context.HttpContext.RequestServices.GetService<UserContext>();
+            var userContext = context.HttpContext.RequestServices.GetService<IUserContext>();
             var descriptor = context.ActionDescriptor as ControllerActionDescriptor;
             //string className = descriptor.ControllerName;
             //string method = descriptor.ActionName;

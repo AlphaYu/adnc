@@ -37,6 +37,11 @@ namespace Adnc.Application.Shared
             //注册依赖模块
             this.LoadDepends(builder);
 
+            //注册UserContext(IUserContext,IOperater)
+            builder.RegisterType<UserContext>()
+                        .As<IUserContext,IOperater>()
+                        .InstancePerLifetimeScope();
+
             //注册操作日志拦截器
             builder.RegisterType<OpsLogInterceptor>()
                    .InstancePerLifetimeScope();

@@ -26,7 +26,7 @@ namespace Adnc.Core.Shared
             builder.RegisterAssemblyTypes(_assemblieToScan)
                    .Where(t => t.IsAssignableTo<IEntityInfo>() && !t.IsAbstract)
                    .AsImplementedInterfaces()
-                   .SingleInstance();
+                   .InstancePerLifetimeScope();
 
             //注册事件发布者
             builder.RegisterType<CapPublisher>()

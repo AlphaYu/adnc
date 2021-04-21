@@ -3,7 +3,6 @@ using System.Dynamic;
 using System.Reflection;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Adnc.Infr.Common;
 using Adnc.Infr.Common.Helper;
 using Adnc.Infr.Mq.RabbitMq;
 using Castle.DynamicProxy;
@@ -16,11 +15,11 @@ namespace Adnc.Application.Shared.Interceptors
     /// </summary>
     public sealed class OpsLogAsyncInterceptor : IAsyncInterceptor
     {
-        private readonly UserContext _userContext;
+        private readonly IUserContext _userContext;
         private readonly RabbitMqProducer _mqProducer;
         private readonly ILogger<OpsLogAsyncInterceptor> _logger;
 
-        public OpsLogAsyncInterceptor(UserContext userContext
+        public OpsLogAsyncInterceptor(IUserContext userContext
             , RabbitMqProducer mqProducer
             , ILogger<OpsLogAsyncInterceptor> logger)
         {
@@ -156,7 +155,7 @@ namespace Adnc.Application.Shared.Interceptors
         }
 
 
-        private dynamic CreateOpsLog(string className, string methodName, string logName, object[] arguments, UserContext userContext)
+        private dynamic CreateOpsLog(string className, string methodName, string logName, object[] arguments, IUserContext userContext)
         {
             dynamic log = new ExpandoObject();
             log.ClassName = className;

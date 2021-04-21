@@ -6,8 +6,8 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Http;
 using Adnc.Usr.Application.Contracts.Dtos;
 using Adnc.Usr.Application.Contracts.Services;
-using Adnc.Infr.Common;
 using Adnc.WebApi.Shared;
+using Adnc.Application.Shared;
 
 namespace Adnc.Usr.WebApi.Controllers
 {
@@ -19,10 +19,10 @@ namespace Adnc.Usr.WebApi.Controllers
     public class MenuController : AdncControllerBase
     {
         private readonly IMenuAppService _menuService;
-        private readonly UserContext _userContext;
+        private readonly IUserContext _userContext;
 
         public MenuController(IMenuAppService menuService
-            , UserContext userContext)
+            , IUserContext userContext)
         {
             _menuService = menuService;
             _userContext = userContext;

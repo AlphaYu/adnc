@@ -6,8 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Adnc.Usr.WebApi.Helper;
 using Adnc.Usr.Application.Contracts.Dtos;
 using Adnc.Usr.Application.Contracts.Services;
-using Adnc.Infr.Common;
 using Adnc.WebApi.Shared;
+using Adnc.Application.Shared;
 
 namespace Adnc.Usr.WebApi.Controllers
 {
@@ -19,12 +19,12 @@ namespace Adnc.Usr.WebApi.Controllers
     public class AccountController : AdncControllerBase
     {
         private readonly JWTConfig _jwtConfig;
-        private readonly UserContext _userContext;
+        private readonly IUserContext _userContext;
         private readonly IAccountAppService _accountService;
 
         public AccountController(IOptionsSnapshot<JWTConfig> jwtConfig
             , IAccountAppService accountService
-            , UserContext userContext)
+            , IUserContext userContext)
         {
             _jwtConfig = jwtConfig.Value;
             _accountService = accountService;

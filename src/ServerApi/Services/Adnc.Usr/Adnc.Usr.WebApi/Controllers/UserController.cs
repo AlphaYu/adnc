@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Adnc.Infr.Common;
 using Adnc.WebApi.Shared;
 using Adnc.Usr.Application.Contracts.Dtos;
 using Adnc.Usr.Application.Contracts.Services;
+using Adnc.Application.Shared;
 
 namespace Adnc.Usr.WebApi.Controllers
 {
@@ -19,11 +19,11 @@ namespace Adnc.Usr.WebApi.Controllers
     {
         private readonly IUserAppService _userService;
         private readonly IRoleAppService _roleService;
-        private readonly UserContext _userContext;
+        private readonly IUserContext _userContext;
 
         public UserController(IUserAppService userService
             , IRoleAppService roleAppService
-            , UserContext userContext)
+            , IUserContext userContext)
         {
             _userService = userService;
             _roleService = roleAppService;

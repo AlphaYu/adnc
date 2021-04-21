@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Hosting;
 using Adnc.Application.Shared.RpcServices;
-using Adnc.Infr.Common;
 using Adnc.WebApi.Shared;
 
 namespace Microsoft.Extensions.DependencyInjection
@@ -28,9 +27,7 @@ namespace Microsoft.Extensions.DependencyInjection
             , Action<SharedServicesRegistration> completedExecute = null)
             where TPermissionHandler : PermissionHandler
         {
-
             services.AddSingleton(serviceInfo);
-            services.AddScoped<UserContext>();
             services.AddHttpContextAccessor();
             services.AddMemoryCache();
 

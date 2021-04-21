@@ -36,7 +36,6 @@ using Microsoft.AspNetCore.Authentication;
 using Polly.Timeout;
 using Microsoft.Extensions.Caching.Memory;
 using Adnc.Infr.EasyCaching.Interceptor.Castle;
-using Adnc.Infr.Common;
 using Adnc.Infr.Mq.RabbitMq;
 using Adnc.Infr.Consul;
 using Adnc.Infr.Consul.Consumer;
@@ -228,7 +227,7 @@ namespace Adnc.WebApi.Shared
                     ,
                     OnTokenValidated = context =>
                     {
-                        var userContext = context.HttpContext.RequestServices.GetService<UserContext>();
+                        var userContext = context.HttpContext.RequestServices.GetService<IUserContext>();
                         var claims = context.Principal.Claims;
                         userContext.Id = long.Parse(claims.First(x => x.Type == JwtRegisteredClaimNames.Sub).Value);
                         userContext.Account = claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;

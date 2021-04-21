@@ -4,21 +4,21 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using JetBrains.Annotations;
+using Adnc.Core.Shared;
 using Adnc.Core.Shared.Entities;
-using Adnc.Infr.Common;
 
 namespace Adnc.Infr.EfCore
 {
     public class AdncDbContext : DbContext
     {
-        private readonly UserContext _userContext;
+        private readonly IOperater _operater;
         private readonly IEntityInfo _entityInfo;
         private readonly UnitOfWorkStatus _unitOfWorkStatus;
 
-        public AdncDbContext([NotNull] DbContextOptions options, UserContext userContext, [NotNull] IEntityInfo entityInfo, UnitOfWorkStatus unitOfWorkStatus)
+        public AdncDbContext([NotNull] DbContextOptions options, IOperater operater, [NotNull] IEntityInfo entityInfo, UnitOfWorkStatus unitOfWorkStatus)
             : base(options)
         {
-            _userContext = userContext;
+            _operater = operater;
             _entityInfo = entityInfo;
             _unitOfWorkStatus = unitOfWorkStatus;
 
@@ -70,7 +70,7 @@ namespace Adnc.Infr.EfCore
             {
                 var entity = entry.Entity;
                 {
-                    entity.CreateBy = _userContext.Id;
+                    entity.CreateBy = _operater.Id;
                     entity.CreateTime = DateTime.Now;
                 }
             }
@@ -80,7 +80,7 @@ namespace Adnc.Infr.EfCore
             {
                 var entity = entry.Entity;
                 {
-                    entity.ModifyBy = _userContext.Id;
+                    entity.ModifyBy = _operater.Id;
                     entity.ModifyTime = DateTime.Now;
                 }
             }
