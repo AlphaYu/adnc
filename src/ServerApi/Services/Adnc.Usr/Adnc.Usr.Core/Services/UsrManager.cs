@@ -10,7 +10,7 @@ using Adnc.Core.Shared;
 
 namespace Adnc.Usr.Core.Services
 {
-    public class UsrManager : CoreService
+    public class UsrManager : AbstractCoreService
     {
         private readonly IEfRepository<SysRelation> _relationRepository;
         private readonly IEfRepository<SysDept> _deptRepository;

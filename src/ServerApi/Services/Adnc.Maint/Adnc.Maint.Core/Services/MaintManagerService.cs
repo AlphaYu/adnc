@@ -8,7 +8,7 @@ using Adnc.Core.Shared.Interceptors;
 
 namespace Adnc.Maint.Core.Services
 {
-    public class MaintManager : CoreService
+    public class MaintManager : AbstractCoreService
     {
         private readonly IEfRepository<SysDict> _dictRepository;
 

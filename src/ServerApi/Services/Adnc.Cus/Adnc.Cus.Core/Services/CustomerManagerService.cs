@@ -10,7 +10,7 @@ using Adnc.Infr.Common.Helper;
 
 namespace Adnc.Cus.Core.Services
 {
-    public class CustomerManagerService : CoreService
+    public class CustomerManagerService : AbstractCoreService
     {
         private readonly IEfRepository<Customer> _cusRepo;
         private readonly IEfRepository<CustomerFinance> _cusFinaceRepo;
