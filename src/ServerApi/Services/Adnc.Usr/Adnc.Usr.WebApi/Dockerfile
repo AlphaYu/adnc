@@ -8,7 +8,7 @@ FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
 COPY ["Portal/Adnc.Usr/Adnc.Usr.WebApi/Adnc.Usr.WebApi.csproj", "Portal/Adnc.Usr/Adnc.Usr.WebApi/"]
 COPY ["Portal/Adnc.Usr/Adnc.Usr.Application/Adnc.Usr.Application.csproj", "Portal/Adnc.Usr/Adnc.Usr.Application/"]
-COPY ["Adnc.Infra.EasyCaching/21.Adnc.Infra.EasyCaching.csproj", "Adnc.Infra.EasyCaching/"]
+COPY ["Adnc.Infra.Caching/21.Adnc.Infra.Caching.csproj", "Adnc.Infra.Caching/"]
 COPY ["Adnc.Application.Shared/02.Adnc.Application.Shared.csproj", "Adnc.Application.Shared/"]
 COPY ["Adnc.Core.Shared/03.Adnc.Core.Shared.csproj", "Adnc.Core.Shared/"]
 COPY ["Adnc.Infra.Common/04.Adnc.Infra.Common.csproj", "Adnc.Infra.Common/"]

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Adnc.Infra.EasyCaching.Interceptor.Castle;
+using Adnc.Infra.Caching.Interceptor.Castle;
 using Adnc.Usr.Application.Contracts.Dtos;
 using Adnc.Application.Shared.Interceptors;
 using Adnc.Application.Shared.Services;

@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using EasyCaching.Core.Configurations;
 using EasyCaching.Core.Interceptor;
 
-namespace Adnc.Infra.EasyCaching.Interceptor.Castle
+namespace Adnc.Infra.Caching.Interceptor.Castle
 {
     public static class CastleInterceptorServiceCollectionExtensions
     {

@@ -6,7 +6,7 @@ using Autofac;
 using Autofac.Extras.DynamicProxy;
 using FluentValidation;
 using Adnc.Infra.Mq;
-using Adnc.Infra.EasyCaching.Interceptor.Castle;
+using Adnc.Infra.Caching.Interceptor.Castle;
 using Adnc.Infra.Mapper.AutoMapper;
 using Adnc.Application.Shared.Interceptors;
 using Adnc.Application.Shared.Services;

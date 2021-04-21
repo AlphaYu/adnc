@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.EasyCaching.Interceptor.Castle
+﻿namespace Adnc.Infra.Caching.Interceptor.Castle
 {
     using System;
 
