@@ -1,9 +1,9 @@
 ﻿using System;
 using Autofac;
 using Consul;
-using Adnc.Infr.Consul.Consumer;
+using Adnc.Infra.Consul.Consumer;
 
-namespace Adnc.Infr.Consul
+namespace Adnc.Infra.Consul
 {
     /// <summary>
     /// Autofac注册

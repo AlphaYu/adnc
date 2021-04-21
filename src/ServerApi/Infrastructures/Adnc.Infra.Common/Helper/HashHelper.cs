@@ -1,8 +1,8 @@
-﻿using Adnc.Infr.Common.Extensions;
+﻿using Adnc.Infra.Common.Extensions;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Adnc.Infr.Common.Helper
+namespace Adnc.Infra.Common.Helper
 {
     /// <summary>
     /// HashHelper

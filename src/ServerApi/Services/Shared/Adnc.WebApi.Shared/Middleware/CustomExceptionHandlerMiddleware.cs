@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Adnc.Infr.Common.Helper;
+using Adnc.Infra.Common.Helper;
 
 namespace Adnc.WebApi.Shared.Middleware
 {

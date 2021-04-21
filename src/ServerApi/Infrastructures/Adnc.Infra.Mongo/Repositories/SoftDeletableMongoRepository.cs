@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using MongoDB.Driver;
-using Adnc.Infr.Mongo.Interfaces;
-using Adnc.Infr.Mongo.Models;
-using Adnc.Infr.Mongo.Extensions;
+using Adnc.Infra.Mongo.Interfaces;
+using Adnc.Infra.Mongo.Models;
+using Adnc.Infra.Mongo.Extensions;
 
-namespace Adnc.Infr.Mongo
+namespace Adnc.Infra.Mongo
 {
     /// <summary>
     /// A MongoDB based repository of <see cref="TEntity"/> that supports soft deletion.

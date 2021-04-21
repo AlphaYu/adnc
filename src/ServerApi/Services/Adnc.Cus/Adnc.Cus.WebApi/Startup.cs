@@ -6,9 +6,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Authorization;
 using Autofac;
-using Adnc.Infr.Consul;
+using Adnc.Infra.Consul;
 using Adnc.WebApi.Shared;
-using Adnc.Infr.EventBus;
+using Adnc.Infra.EventBus;
 using Adnc.Cus.Application.EventSubscribers;
 
 namespace Adnc.Cus.WebApi

@@ -2,8 +2,8 @@
 using System.Threading.Tasks;
 using Adnc.Core.Shared;
 using Adnc.Core.Shared.IRepositories;
-using Adnc.Infr.Common.Exceptions;
-using Adnc.Infr.Common.Helper;
+using Adnc.Infra.Common.Exceptions;
+using Adnc.Infra.Common.Helper;
 using Adnc.Whse.Core.Entities;
 
 namespace Adnc.Whse.Core.Services

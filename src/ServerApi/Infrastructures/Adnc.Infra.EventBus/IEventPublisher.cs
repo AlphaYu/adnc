@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Adnc.Infr.EventBus
+namespace Adnc.Infra.EventBus
 {
     public interface IEventPublisher
     {

@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 using System.Threading.Tasks;
 using System.Threading;
 
-namespace Adnc.Infr.EfCore
+namespace Adnc.Infra.EfCore
 {
     public sealed class UnitOfWork<TDbContext> : IUnitOfWork where TDbContext : DbContext
     {

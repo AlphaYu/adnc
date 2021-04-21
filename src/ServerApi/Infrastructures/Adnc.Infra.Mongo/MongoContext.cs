@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
-using Adnc.Infr.Mongo.Configuration;
-using Adnc.Infr.Mongo.Extensions;
-using Adnc.Infr.Mongo.Interfaces;
+using Adnc.Infra.Mongo.Configuration;
+using Adnc.Infra.Mongo.Extensions;
+using Adnc.Infra.Mongo.Interfaces;
 using Adnc.Core.Shared.Entities;
 
-namespace Adnc.Infr.Mongo
+namespace Adnc.Infra.Mongo
 {
     /// <summary>
     /// Context used to maintain a single MongoDB connection.

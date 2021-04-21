@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Adnc.Core.Shared.Entities;
 
-namespace Adnc.Infr.Mongo.Configuration
+namespace Adnc.Infra.Mongo.Configuration
 {
     /// <summary>
     /// Mongo entity builder.

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.Extensions.Caching.Memory;
 
-namespace Adnc.Infr.Consul.Consumer
+namespace Adnc.Infra.Consul.Consumer
 {
     public class SimpleDiscoveryDelegatingHandler : DelegatingHandler
     {

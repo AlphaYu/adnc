@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
-using Adnc.Infr.Mongo.Interfaces;
+using Adnc.Infra.Mongo.Interfaces;
 using Adnc.Core.Shared.IRepositories;
 
-namespace Adnc.Infr.Mongo.Configuration
+namespace Adnc.Infra.Mongo.Configuration
 {
     /// <summary>
     /// A configuration builder for this package.

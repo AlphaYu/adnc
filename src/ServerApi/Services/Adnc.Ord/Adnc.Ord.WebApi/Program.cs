@@ -13,9 +13,9 @@ using NLog.Config;
 using NLog.Extensions.Logging;
 using NLog.Fluent;
 using NLog.Web;
-using Adnc.Infr.Common;
-using Adnc.Infr.Consul.Configuration;
-using Adnc.Infr.Consul;
+using Adnc.Infra.Common;
+using Adnc.Infra.Consul.Configuration;
+using Adnc.Infra.Consul;
 
 namespace Adnc.Ord.WebApi
 {

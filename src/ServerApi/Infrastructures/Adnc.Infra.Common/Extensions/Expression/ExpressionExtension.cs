@@ -4,7 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace Adnc.Infr.Common.Extensions
+namespace Adnc.Infra.Common.Extensions
 {
     public static class ExpressionExtension
     {

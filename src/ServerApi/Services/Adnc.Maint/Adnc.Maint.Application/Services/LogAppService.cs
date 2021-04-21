@@ -5,7 +5,7 @@ using AutoMapper;
 using Adnc.Core.Maint.Entities;
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Maint.Core.Entities;
-using Adnc.Infr.Common.Extensions;
+using Adnc.Infra.Common.Extensions;
 using Adnc.Application.Shared.Services;
 using Adnc.Application.Shared.Dtos;
 using Adnc.Maint.Application.Contracts.Dtos;

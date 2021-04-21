@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Adnc.Infr.Consul
+namespace Adnc.Infra.Consul
 {
     public interface ITokenGenerator
     {

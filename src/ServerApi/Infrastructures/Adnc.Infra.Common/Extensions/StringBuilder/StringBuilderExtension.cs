@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using JetBrains.Annotations;
 
-namespace Adnc.Infr.Common.Extensions
+namespace Adnc.Infra.Common.Extensions
 {
     public static class StringBuilderExtension
     {

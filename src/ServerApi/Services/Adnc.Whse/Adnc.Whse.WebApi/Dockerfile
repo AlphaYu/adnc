@@ -7,16 +7,16 @@ EXPOSE 80
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
 COPY ["Portal/Adnc.Warehouse/Adnc.Whse.WebApi/Adnc.Whse.WebApi.csproj", "Portal/Adnc.Warehouse/Adnc.Whse.WebApi/"]
-COPY ["Adnc.Infr.Mongo/23.Adnc.Infr.Mongo.csproj", "Adnc.Infr.Mongo/"]
+COPY ["Adnc.Infra.Mongo/23.Adnc.Infra.Mongo.csproj", "Adnc.Infra.Mongo/"]
 COPY ["Adnc.Core.Shared/03.Adnc.Core.Shared.csproj", "Adnc.Core.Shared/"]
-COPY ["Adnc.Infr.Common/04.Adnc.Infr.Common.csproj", "Adnc.Infr.Common/"]
+COPY ["Adnc.Infra.Common/04.Adnc.Infra.Common.csproj", "Adnc.Infra.Common/"]
 COPY ["Portal/Adnc.Warehouse/Adnc.Whse.Application/Adnc.Whse.Application.csproj", "Portal/Adnc.Warehouse/Adnc.Whse.Application/"]
-COPY ["Adnc.Infr.EasyCaching/21.Adnc.Infr.EasyCaching.csproj", "Adnc.Infr.EasyCaching/"]
+COPY ["Adnc.Infra.EasyCaching/21.Adnc.Infra.EasyCaching.csproj", "Adnc.Infra.EasyCaching/"]
 COPY ["Portal/Adnc.Warehouse/Adnc.Whse.Core/Adnc.Whse.Core.csproj", "Portal/Adnc.Warehouse/Adnc.Whse.Core/"]
 COPY ["Adnc.Application.Shared/02.Adnc.Application.Shared.csproj", "Adnc.Application.Shared/"]
-COPY ["Adnc.Infr.Mq/24.Adnc.Infr.Mq.csproj", "Adnc.Infr.Mq/"]
-COPY ["Adnc.Infr.EfCore/22.Adnc.Infr.EfCore.csproj", "Adnc.Infr.EfCore/"]
-COPY ["Adnc.Infr.Consul/20.Adnc.Infr.Consul.csproj", "Adnc.Infr.Consul/"]
+COPY ["Adnc.Infra.Mq/24.Adnc.Infra.Mq.csproj", "Adnc.Infra.Mq/"]
+COPY ["Adnc.Infra.EfCore/22.Adnc.Infra.EfCore.csproj", "Adnc.Infra.EfCore/"]
+COPY ["Adnc.Infra.Consul/20.Adnc.Infra.Consul.csproj", "Adnc.Infra.Consul/"]
 COPY ["Adnc.WebApi.Shared/01.Adnc.WebApi.Shared.csproj", "Adnc.WebApi.Shared/"]
 RUN dotnet restore "Portal/Adnc.Warehouse/Adnc.Whse.WebApi/Adnc.Whse.WebApi.csproj"
 COPY . .

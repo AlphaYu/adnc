@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Adnc.Infr.EasyCaching.Interceptor.Castle
+namespace Adnc.Infra.EasyCaching.Interceptor.Castle
 {
     public static class ReflectionExtensions
     {

@@ -10,7 +10,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace Adnc.Infr.EasyCaching.Interceptor.Castle
+namespace Adnc.Infra.EasyCaching.Interceptor.Castle
 {
     /// <summary>
     /// Easycaching interceptor.

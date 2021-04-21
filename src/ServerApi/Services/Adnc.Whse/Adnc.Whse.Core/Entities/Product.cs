@@ -1,4 +1,4 @@
-﻿using Adnc.Infr.Common.Exceptions;
+﻿using Adnc.Infra.Common.Exceptions;
 using Adnc.Core.Shared.Entities;
 
 namespace Adnc.Whse.Core.Entities

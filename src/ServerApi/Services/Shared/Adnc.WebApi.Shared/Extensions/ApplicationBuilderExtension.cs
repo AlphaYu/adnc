@@ -10,7 +10,7 @@ using Microsoft.OpenApi.Models;
 using Microsoft.IdentityModel.Logging;
 using Adnc.WebApi.Shared;
 using Adnc.WebApi.Shared.Middleware;
-using Adnc.Infr.Consul;
+using Adnc.Infra.Consul;
 using DotNetCore.CAP.Dashboard.NodeDiscovery;
 
 namespace Microsoft.AspNetCore.Builder

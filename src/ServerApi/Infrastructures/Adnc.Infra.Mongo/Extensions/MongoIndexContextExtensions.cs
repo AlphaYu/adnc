@@ -1,10 +1,10 @@
 ﻿using System;
 using MongoDB.Driver;
-using Adnc.Infr.Mongo.Configuration;
-using Adnc.Infr.Mongo.Models;
+using Adnc.Infra.Mongo.Configuration;
+using Adnc.Infra.Mongo.Models;
 using Adnc.Core.Shared.Entities;
 
-namespace Adnc.Infr.Mongo.Extensions
+namespace Adnc.Infra.Mongo.Extensions
 {
     /// <summary>
     /// Extensions for <see cref="MongoIndexContext{TEntity}"/>.

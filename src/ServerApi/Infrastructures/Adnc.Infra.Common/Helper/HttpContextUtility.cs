@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Threading;
 using Microsoft.AspNetCore.Http;
 
-namespace Adnc.Infr.Common.Helper
+namespace Adnc.Infra.Common.Helper
 {
     /// <summary>
     /// “传统”方式获取当前HttpContext

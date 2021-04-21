@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using JetBrains.Annotations;
 
-namespace Adnc.Infr.Common.Extensions
+namespace Adnc.Infra.Common.Extensions
 {
     public static class ObjectExtension
     {

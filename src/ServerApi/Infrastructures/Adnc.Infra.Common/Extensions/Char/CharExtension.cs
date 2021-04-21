@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-namespace Adnc.Infr.Common.Extensions
+namespace Adnc.Infra.Common.Extensions
 {
     public static class CharExtension
     {

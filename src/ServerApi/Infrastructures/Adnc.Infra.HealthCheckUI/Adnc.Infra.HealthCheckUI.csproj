@@ -4,8 +4,8 @@
 		<TargetFramework>netcoreapp3.1</TargetFramework>
 		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
 		<DockerfileContext>..\..</DockerfileContext>
-		<RootNamespace>Adnc.Infr.HealthCheckUI</RootNamespace>
-		<AssemblyName>Adnc.Infr.HealthCheckUI</AssemblyName>
+		<RootNamespace>Adnc.Infra.HealthCheckUI</RootNamespace>
+		<AssemblyName>Adnc.Infra.HealthCheckUI</AssemblyName>
 		<Version>0.8.0</Version>
 		<Authors>Alpha.Yu</Authors>
 		<Product>Adnc</Product>

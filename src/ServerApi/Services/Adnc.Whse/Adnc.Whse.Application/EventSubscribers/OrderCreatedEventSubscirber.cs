@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using System.Collections.Generic;
 using DotNetCore.CAP;
-using Adnc.Infr.EventBus;
+using Adnc.Infra.EventBus;
 using Adnc.Whse.Application.Contracts.Services;
 using Adnc.Whse.Application.Contracts.Dtos;
 

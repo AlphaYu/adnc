@@ -7,7 +7,7 @@ using System.Text;
 using JetBrains.Annotations;
 
 // ReSharper disable once CheckNamespace
-namespace Adnc.Infr.Common.Extensions
+namespace Adnc.Infra.Common.Extensions
 {
     /// <summary>
     /// CollectionExtension

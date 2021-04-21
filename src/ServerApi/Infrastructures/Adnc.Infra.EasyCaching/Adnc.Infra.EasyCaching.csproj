@@ -2,8 +2,8 @@
 
 	<PropertyGroup>
 		<TargetFramework>netstandard2.1</TargetFramework>
-		<RootNamespace>Adnc.Infr.EasyCaching</RootNamespace>
-		<AssemblyName>Adnc.Infr.EasyCaching</AssemblyName>
+		<RootNamespace>Adnc.Infra.EasyCaching</RootNamespace>
+		<AssemblyName>Adnc.Infra.EasyCaching</AssemblyName>
 		<Version>0.8.0</Version>
 		<Authors>Alpha.Yu</Authors>
 		<Product>Adnc</Product>

@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infr.EventBus
+﻿namespace Adnc.Infra.EventBus
 {
     public class EbConsts
     {

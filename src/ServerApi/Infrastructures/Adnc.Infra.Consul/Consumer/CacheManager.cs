@@ -4,7 +4,7 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
 
-namespace Adnc.Infr.Consul.Consumer
+namespace Adnc.Infra.Consul.Consumer
 {
     public class CacheManager
     {

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
-namespace Adnc.Infr.EfCore.Extensions
+namespace Adnc.Infra.EfCore.Extensions
 {
     public static class EFExtensions
     {

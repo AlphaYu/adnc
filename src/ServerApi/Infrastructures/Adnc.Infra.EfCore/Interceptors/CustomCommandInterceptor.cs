@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace  Adnc.Infr.EfCore.Interceptors
+namespace  Adnc.Infra.EfCore.Interceptors
 {
     public class CustomCommandInterceptor : DbCommandInterceptor
     {

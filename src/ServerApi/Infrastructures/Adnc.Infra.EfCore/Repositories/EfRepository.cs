@@ -8,9 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using Z.EntityFramework.Plus;
 using Adnc.Core.Shared.Entities;
 using Adnc.Core.Shared.IRepositories;
-using Adnc.Infr.Common.Extensions;
+using Adnc.Infra.Common.Extensions;
 
-namespace Adnc.Infr.EfCore.Repositories
+namespace Adnc.Infra.EfCore.Repositories
 {
     /// <summary>
     /// Ef默认的、全功能的仓储实现

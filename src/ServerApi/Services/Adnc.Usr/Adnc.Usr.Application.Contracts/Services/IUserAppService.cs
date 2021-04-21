@@ -2,7 +2,7 @@
 using Adnc.Usr.Application.Contracts.Dtos;
 using Adnc.Application.Shared.Interceptors;
 using Adnc.Application.Shared.Services;
-using Adnc.Infr.EasyCaching.Interceptor.Castle;
+using Adnc.Infra.EasyCaching.Interceptor.Castle;
 using Adnc.Usr.Application.Contracts.Consts;
 
 namespace Adnc.Usr.Application.Contracts.Services

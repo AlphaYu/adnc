@@ -8,7 +8,7 @@ using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
-namespace Adnc.Infr.Mq.RabbitMq
+namespace Adnc.Infra.Mq.RabbitMq
 {
     public abstract class BaseRabbitMqConsumer : IHostedService
     {

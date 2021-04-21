@@ -1,4 +1,4 @@
-﻿using Adnc.Infr.Consul;
+﻿using Adnc.Infra.Consul;
 
 namespace Microsoft.Extensions.Configuration
 {

@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using System.Threading.Tasks;
 
-namespace Adnc.Infr.Common.Extensions
+namespace Adnc.Infra.Common.Extensions
 {
     public static class MethodInfoExtension
     {

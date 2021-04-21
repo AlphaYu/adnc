@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Adnc.Infr.EfCore
+namespace Adnc.Infra.EfCore
 {
     public class UnitOfWorkStatus
     {

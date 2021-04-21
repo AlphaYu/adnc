@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using AutoMapper;
 using Adnc.Core.Shared.IRepositories;
-using Adnc.Infr.Common.Extensions;
+using Adnc.Infra.Common.Extensions;
 using Adnc.Application.Shared.Dtos;
 using Adnc.Application.Shared.Services;
 using Adnc.Whse.Core.Entities;

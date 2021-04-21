@@ -4,7 +4,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using NLog.Web;
 using Autofac.Extensions.DependencyInjection;
-using Adnc.Infr.Consul;
+using Adnc.Infra.Consul;
 
 namespace Adnc.Usr.WebApi
 {

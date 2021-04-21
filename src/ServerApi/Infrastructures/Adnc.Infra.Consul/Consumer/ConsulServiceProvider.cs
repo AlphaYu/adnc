@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Consul;
 
-namespace Adnc.Infr.Consul.Consumer
+namespace Adnc.Infra.Consul.Consumer
 {
     public class ConsulServiceProvider : IServiceProvider
     {

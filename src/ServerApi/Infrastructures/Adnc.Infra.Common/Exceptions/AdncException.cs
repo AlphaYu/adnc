@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net;
 
-namespace Adnc.Infr.Common.Exceptions
+namespace Adnc.Infra.Common.Exceptions
 {
     public class BusinessException : Exception, IAdncException
     {

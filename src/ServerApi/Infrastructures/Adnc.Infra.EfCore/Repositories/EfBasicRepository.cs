@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Core.Shared.Entities;
 
-namespace Adnc.Infr.EfCore.Repositories
+namespace Adnc.Infra.EfCore.Repositories
 {
     /// <summary>
     /// Ef简单的、基础的，初级的仓储接口

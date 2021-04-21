@@ -3,7 +3,7 @@ using System.Linq;
 using System.Reflection;
 using Adnc.Core.Shared.Entities;
 using Adnc.Core.Shared.Interceptors;
-using Adnc.Infr.EventBus;
+using Adnc.Infra.EventBus;
 using Autofac;
 using Autofac.Extras.DynamicProxy;
 

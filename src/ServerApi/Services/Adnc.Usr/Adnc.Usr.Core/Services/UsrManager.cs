@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Adnc.Infr.Common.Helper;
+using Adnc.Infra.Common.Helper;
 using Adnc.Usr.Core.Entities;
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Core.Shared.Interceptors;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Adnc.Core.Shared;
 using JetBrains.Annotations;
 
-namespace Adnc.Infr.Mongo
+namespace Adnc.Infra.Mongo
 {
     /// <summary>
     /// 分页Model

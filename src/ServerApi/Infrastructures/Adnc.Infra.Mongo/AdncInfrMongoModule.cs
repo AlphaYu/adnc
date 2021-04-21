@@ -1,8 +1,8 @@
 ﻿using Autofac;
-using Adnc.Infr.Mongo.Interfaces;
+using Adnc.Infra.Mongo.Interfaces;
 using Adnc.Core.Shared.IRepositories;
 
-namespace Adnc.Infr.Mongo
+namespace Adnc.Infra.Mongo
 {
     /// <summary>
     /// Autofac注册

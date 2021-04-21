@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Text;
-using Adnc.Infr.Common.Extensions;
+using Adnc.Infra.Common.Extensions;
 
-namespace Adnc.Infr.Common.Helper
+namespace Adnc.Infra.Common.Helper
 {
     /// <summary>
     /// 安全助手

@@ -3,8 +3,8 @@
 	<PropertyGroup>
 		<TargetFramework>netstandard2.1</TargetFramework>
 		<UserSecretsId>2589a77c-6951-43c5-9e81-b45436e1344c</UserSecretsId>
-		<AssemblyName>Adnc.Infr.Common</AssemblyName>
-		<RootNamespace>Adnc.Infr.Common</RootNamespace>
+		<AssemblyName>Adnc.Infra.Common</AssemblyName>
+		<RootNamespace>Adnc.Infra.Common</RootNamespace>
 		<Version>0.8.0</Version>
 		<Authors>Alpha.Yu</Authors>
 		<Product>Adnc</Product>

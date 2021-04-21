@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Adnc.Infr.Consul.Configuration
+namespace Adnc.Infra.Consul.Configuration
 {
     public class ConsulConfigurationSource : IConfigurationSource
     {

@@ -1,5 +1,5 @@
 ﻿using Adnc.Core.Shared.Entities;
-using Adnc.Infr.Common.Exceptions;
+using Adnc.Infra.Common.Exceptions;
 
 namespace Adnc.Ord.Core.Entities
 {

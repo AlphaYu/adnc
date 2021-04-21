@@ -2,7 +2,7 @@
 using System.Collections.Concurrent;
 using System.Reflection;
 
-namespace Adnc.Infr.EfCore.Extensions
+namespace Adnc.Infra.EfCore.Extensions
 {
     public static class CacheUtil
     {

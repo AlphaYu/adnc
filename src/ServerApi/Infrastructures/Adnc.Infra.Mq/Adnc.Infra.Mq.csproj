@@ -2,8 +2,8 @@
 
 	<PropertyGroup>
 		<TargetFramework>netstandard2.1</TargetFramework>
-		<AssemblyName>Adnc.Infr.Mq</AssemblyName>
-		<RootNamespace>Adnc.Infr.Mq</RootNamespace>
+		<AssemblyName>Adnc.Infra.Mq</AssemblyName>
+		<RootNamespace>Adnc.Infra.Mq</RootNamespace>
 		<Version>0.8.0</Version>
 		<Authors>Alpha.Yu</Authors>
 		<Product>Adnc</Product>

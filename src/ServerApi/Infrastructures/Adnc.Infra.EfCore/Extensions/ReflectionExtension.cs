@@ -8,7 +8,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace Adnc.Infr.EfCore.Extensions
+namespace Adnc.Infra.EfCore.Extensions
 {
     public static class ReflectionExtension
     {

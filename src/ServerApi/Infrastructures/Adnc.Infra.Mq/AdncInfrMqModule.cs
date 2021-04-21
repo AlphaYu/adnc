@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Adnc.Infr.Mq.RabbitMq;
+using Adnc.Infra.Mq.RabbitMq;
 using Microsoft.Extensions.Hosting;
 
-namespace Adnc.Infr.Mq
+namespace Adnc.Infra.Mq
 {
     public class AdncInfrMqModule : Autofac.Module
     {

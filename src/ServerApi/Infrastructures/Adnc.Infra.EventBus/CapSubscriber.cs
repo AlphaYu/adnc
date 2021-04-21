@@ -2,7 +2,7 @@
 using System.Linq.Expressions;
 using DotNetCore.CAP;
 
-namespace Adnc.Infr.EventBus
+namespace Adnc.Infra.EventBus
 {
     public abstract class CapSubscriber : IEventSubscriber, ICapSubscribe
     {

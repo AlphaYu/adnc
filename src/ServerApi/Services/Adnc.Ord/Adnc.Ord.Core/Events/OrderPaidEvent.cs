@@ -1,4 +1,4 @@
-﻿using Adnc.Infr.EventBus;
+﻿using Adnc.Infra.EventBus;
 
 namespace Adnc.Ord.Core.Events
 {

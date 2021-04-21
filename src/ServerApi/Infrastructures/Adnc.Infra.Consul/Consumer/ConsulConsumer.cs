@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace Adnc.Infr.Consul.Consumer
+namespace Adnc.Infra.Consul.Consumer
 {
 
     public class ServiceConsumer

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace Adnc.Infr.Common.Helper
+namespace Adnc.Infra.Common.Helper
 {
     /// <summary>
     /// 雪花ID

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq.Expressions;
 using AutoMapper;
-using Adnc.Infr.Common.Extensions;
+using Adnc.Infra.Common.Extensions;
 using Adnc.Maint.Core.Entities;
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Application.Shared.Services;

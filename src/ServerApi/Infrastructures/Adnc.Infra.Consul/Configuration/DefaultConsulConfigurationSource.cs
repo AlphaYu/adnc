@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 
-namespace Adnc.Infr.Consul.Configuration
+namespace Adnc.Infra.Consul.Configuration
 {
     public class DefaultConsulConfigurationSource : IConfigurationSource
     {

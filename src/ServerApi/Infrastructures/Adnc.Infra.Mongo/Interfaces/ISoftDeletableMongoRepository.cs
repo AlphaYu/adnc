@@ -1,9 +1,9 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using Adnc.Infr.Mongo.Models;
+using Adnc.Infra.Mongo.Models;
 using Adnc.Core.Shared.IRepositories;
 
-namespace Adnc.Infr.Mongo.Interfaces
+namespace Adnc.Infra.Mongo.Interfaces
 {
     /// <summary>
     /// A MongoDB based repository of <see cref="TEntity" /> that supports soft deletion.

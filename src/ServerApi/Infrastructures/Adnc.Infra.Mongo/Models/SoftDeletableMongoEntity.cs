@@ -2,7 +2,7 @@
 using MongoDB.Bson.Serialization.Attributes;
 using Adnc.Core.Shared.Entities;
 
-namespace Adnc.Infr.Mongo.Models
+namespace Adnc.Infra.Mongo.Models
 {
     /// <summary>
     /// A mongo entity with soft delete support.

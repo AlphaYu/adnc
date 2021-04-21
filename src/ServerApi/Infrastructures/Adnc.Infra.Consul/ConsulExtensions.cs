@@ -5,11 +5,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Consul;
-using Adnc.Infr.Consul.Configuration;
-using Adnc.Infr.Consul.Consumer;
-using Adnc.Infr.Consul.Registration;
+using Adnc.Infra.Consul.Configuration;
+using Adnc.Infra.Consul.Consumer;
+using Adnc.Infra.Consul.Registration;
 
-namespace Adnc.Infr.Consul
+namespace Adnc.Infra.Consul
 {
 
     public static class ConsulExtensions

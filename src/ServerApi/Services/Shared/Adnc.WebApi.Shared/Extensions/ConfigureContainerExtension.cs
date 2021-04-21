@@ -3,9 +3,9 @@ using System.Linq;
 using System.Reflection;
 using Autofac.Core;
 using Microsoft.Extensions.Configuration;
-using Adnc.Infr.Consul;
-using Adnc.Infr.EfCore;
-using Adnc.Infr.Mongo;
+using Adnc.Infra.Consul;
+using Adnc.Infra.EfCore;
+using Adnc.Infra.Mongo;
 using Adnc.WebApi.Shared;
 using Adnc.Application.Shared; 
 

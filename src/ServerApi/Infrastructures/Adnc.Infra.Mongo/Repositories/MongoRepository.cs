@@ -4,13 +4,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Linq.Expressions;
 using MongoDB.Driver;
-using Adnc.Infr.Mongo.Interfaces;
-using Adnc.Infr.Mongo.Extensions;
+using Adnc.Infra.Mongo.Interfaces;
+using Adnc.Infra.Mongo.Extensions;
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Core.Shared.Entities;
 using Adnc.Core.Shared;
 
-namespace Adnc.Infr.Mongo
+namespace Adnc.Infra.Mongo
 {
     /// <summary>
     /// A MongoDB based repository of <see cref="TEntity"/>.

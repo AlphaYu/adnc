@@ -15,7 +15,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "Adnc.Infr.Gateway": {
+    "Adnc.Infra.Gateway": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {

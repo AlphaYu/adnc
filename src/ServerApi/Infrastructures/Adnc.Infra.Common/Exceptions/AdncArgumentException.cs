@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Adnc.Infr.Common.Exceptions
+namespace Adnc.Infra.Common.Exceptions
 {
     public class AdncArgumentException : ArgumentException, IAdncException
     {

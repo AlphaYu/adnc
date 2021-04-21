@@ -11,7 +11,7 @@ using Adnc.Core.Shared;
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Core.Shared.Entities;
 
-namespace Adnc.Infr.EfCore.Repositories
+namespace Adnc.Infra.EfCore.Repositories
 {
     /// <summary>
     /// Ef仓储的基类实现,抽象类

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Adnc.Infr.Mq.RabbitMq
+namespace Adnc.Infra.Mq.RabbitMq
 {
     public enum ExchangeType
     {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Consul;
 
-namespace Adnc.Infr.Consul.Configuration
+namespace Adnc.Infra.Consul.Configuration
 {
     public sealed class DefaultConsulConfigurationProvider : ConfigurationProvider
     {

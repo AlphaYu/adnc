@@ -1,7 +1,7 @@
-﻿using Adnc.Infr.Mongo.Configuration;
+﻿using Adnc.Infra.Mongo.Configuration;
 using Adnc.Core.Shared.Entities;
 
-namespace Adnc.Infr.Mongo.Interfaces
+namespace Adnc.Infra.Mongo.Interfaces
 {
     /// <summary>
     /// Mongo entity configuration.

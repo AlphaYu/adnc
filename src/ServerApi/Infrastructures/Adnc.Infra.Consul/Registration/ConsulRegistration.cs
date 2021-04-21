@@ -8,7 +8,7 @@ using Microsoft.Extensions.Hosting;
 using Consul;
 using Microsoft.Extensions.Options;
 
-namespace Adnc.Infr.Consul.Registration
+namespace Adnc.Infra.Consul.Registration
 {
     public static class ConsulRegistration
     {

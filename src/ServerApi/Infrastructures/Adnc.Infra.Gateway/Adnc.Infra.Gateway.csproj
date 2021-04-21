@@ -2,8 +2,8 @@
 
 	<PropertyGroup>
 		<TargetFramework>netcoreapp3.1</TargetFramework>
-		<RootNamespace>Adnc.Infr.Gateway</RootNamespace>
-		<AssemblyName>Adnc.Infr.Gateway</AssemblyName>
+		<RootNamespace>Adnc.Infra.Gateway</RootNamespace>
+		<AssemblyName>Adnc.Infra.Gateway</AssemblyName>
 		<SatelliteResourceLanguages>zh-Hans</SatelliteResourceLanguages>
 		<SatelliteResourceLanguages>zh-Hant</SatelliteResourceLanguages>
 		<SatelliteResourceLanguages>en</SatelliteResourceLanguages>

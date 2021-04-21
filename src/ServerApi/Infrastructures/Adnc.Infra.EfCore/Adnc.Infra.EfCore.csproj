@@ -2,8 +2,8 @@
 
 	<PropertyGroup>
 		<TargetFramework>netstandard2.1</TargetFramework>
-		<RootNamespace>Adnc.Infr.EfCore</RootNamespace>
-		<AssemblyName>Adnc.Infr.EfCore</AssemblyName>
+		<RootNamespace>Adnc.Infra.EfCore</RootNamespace>
+		<AssemblyName>Adnc.Infra.EfCore</AssemblyName>
 		<Version>0.8.0</Version>
 		<Authors>Alpha.Yu</Authors>
 		<Product>Adnc</Product>

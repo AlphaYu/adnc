@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infr.EfCore
+﻿namespace Adnc.Infra.EfCore
 {
     public class EfCoreConsts
     {

@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infr.Mongo.Configuration
+﻿namespace Adnc.Infra.Mongo.Configuration
 {
     public enum NamingConvention
     {

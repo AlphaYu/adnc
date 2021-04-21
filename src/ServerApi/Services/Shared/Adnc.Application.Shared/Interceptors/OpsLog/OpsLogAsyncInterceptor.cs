@@ -3,8 +3,8 @@ using System.Dynamic;
 using System.Reflection;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Adnc.Infr.Common.Helper;
-using Adnc.Infr.Mq.RabbitMq;
+using Adnc.Infra.Common.Helper;
+using Adnc.Infra.Mq.RabbitMq;
 using Castle.DynamicProxy;
 using Microsoft.Extensions.Logging;
 

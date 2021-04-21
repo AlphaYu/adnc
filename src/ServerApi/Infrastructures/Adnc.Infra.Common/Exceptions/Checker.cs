@@ -2,9 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Adnc.Infr.Common.Extensions;
+using Adnc.Infra.Common.Extensions;
 
-namespace Adnc.Infr.Common.Exceptions
+namespace Adnc.Infra.Common.Exceptions
 {
     public static class Checker
     {

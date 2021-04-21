@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 
-namespace Adnc.Infr.EventBus
+namespace Adnc.Infra.EventBus
 {
     public class BaseEvent<TData> : IEvent
     {

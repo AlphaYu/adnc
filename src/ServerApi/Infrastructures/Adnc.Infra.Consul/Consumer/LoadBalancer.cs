@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Adnc.Infr.Consul.Consumer
+namespace Adnc.Infra.Consul.Consumer
 {
     public interface ILoadBalancer
     {

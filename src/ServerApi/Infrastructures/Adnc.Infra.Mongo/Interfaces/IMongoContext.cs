@@ -1,10 +1,10 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using MongoDB.Driver;
-using Adnc.Infr.Mongo.Models;
+using Adnc.Infra.Mongo.Models;
 using Adnc.Core.Shared.Entities;
 
-namespace Adnc.Infr.Mongo.Interfaces
+namespace Adnc.Infra.Mongo.Interfaces
 {
     /// <summary>
     /// Context used to maintain a single MongoDB connection.

@@ -7,7 +7,7 @@ using JetBrains.Annotations;
 using Adnc.Core.Shared;
 using Adnc.Core.Shared.Entities;
 
-namespace Adnc.Infr.EfCore
+namespace Adnc.Infra.EfCore
 {
     public class AdncDbContext : DbContext
     {

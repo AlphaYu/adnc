@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace Adnc.Infr.Common.Helper
+namespace Adnc.Infra.Common.Helper
 {
     public class StatusCodeChecker
     {

@@ -8,7 +8,7 @@ using Microsoft.Extensions.Caching.Memory;
 using Consul;
 using System.Text;
 
-namespace Adnc.Infr.Consul.Consumer
+namespace Adnc.Infra.Consul.Consumer
 {
     public class ConsulDiscoverDelegatingHandler : DelegatingHandler
     {

@@ -1,9 +1,9 @@
 ﻿using Autofac;
 using Adnc.Core.Shared.IRepositories;
-using Adnc.Infr.EfCore.Repositories;
+using Adnc.Infra.EfCore.Repositories;
 using Adnc.Core.Shared;
 
-namespace  Adnc.Infr.EfCore
+namespace  Adnc.Infra.EfCore
 {
     public class AdncInfrEfCoreModule : Module
     {

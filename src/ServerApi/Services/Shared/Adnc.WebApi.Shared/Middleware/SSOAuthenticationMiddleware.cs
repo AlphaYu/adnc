@@ -15,9 +15,9 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using EasyCaching.Core;
 using Newtonsoft.Json.Linq;
-using Adnc.Infr.Common.Extensions;
+using Adnc.Infra.Common.Extensions;
 using Adnc.Application.Shared;
-using Adnc.Infr.Common.Helper;
+using Adnc.Infra.Common.Helper;
 
 namespace Adnc.WebApi.Shared.Middleware
 {

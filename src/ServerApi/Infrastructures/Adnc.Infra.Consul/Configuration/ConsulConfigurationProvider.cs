@@ -8,7 +8,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Adnc.Infr.Consul.Configuration
+namespace Adnc.Infra.Consul.Configuration
 {
     /// <summary>
     /// https://www.natmarchand.fr/consul-configuration-aspnet-core/

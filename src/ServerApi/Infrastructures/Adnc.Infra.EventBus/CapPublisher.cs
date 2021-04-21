@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using DotNetCore.CAP;
 
-namespace Adnc.Infr.EventBus
+namespace Adnc.Infra.EventBus
 {
     public class CapPublisher : IEventPublisher
     {

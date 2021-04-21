@@ -5,7 +5,7 @@ using System.Linq;
 using MongoDB.Driver;
 using Adnc.Core.Shared.Entities;
 
-namespace Adnc.Infr.Mongo.Configuration
+namespace Adnc.Infra.Mongo.Configuration
 {
     /// <summary>
     /// A collection of mongo indexes.

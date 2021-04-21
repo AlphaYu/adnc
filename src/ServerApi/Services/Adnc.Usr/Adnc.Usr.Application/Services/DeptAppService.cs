@@ -10,7 +10,7 @@ using Adnc.Usr.Application.Contracts.Dtos;
 using Adnc.Usr.Core.Services;
 using Adnc.Usr.Core.Entities;
 using Adnc.Core.Shared.IRepositories;
-using Adnc.Infr.Common.Helper;
+using Adnc.Infra.Common.Helper;
 using Adnc.Application.Shared.Services;
 using Adnc.Usr.Application.Contracts.Services;
 using Adnc.Usr.Application.Contracts.Consts;

@@ -4,10 +4,10 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using Adnc.Core.Shared;
 using Adnc.Core.Shared.IRepositories;
-using Adnc.Infr.Common.Helper;
-using Adnc.Infr.Common.Exceptions;
+using Adnc.Infra.Common.Helper;
+using Adnc.Infra.Common.Exceptions;
 using Adnc.Whse.Core.Entities;
-using Adnc.Infr.EventBus;
+using Adnc.Infra.EventBus;
 using Adnc.Whse.Core.Events;
 
 namespace Adnc.Whse.Core.Services

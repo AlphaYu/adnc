@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text.Json;
 using Microsoft.Extensions.Configuration;
 
-namespace Adnc.Infr.Consul.Configuration
+namespace Adnc.Infra.Consul.Configuration
 {
     internal class JsonConfigurationFileParser
     {

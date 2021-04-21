@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Adnc.Infr.EventBus
+namespace Adnc.Infra.EventBus
 {
     public interface IEvent
     {

@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<TargetFramework>netstandard2.1</TargetFramework>
-		<RootNamespace>Adnc.Infr.EventBus</RootNamespace>
-		<AssemblyName>Adnc.Infr.EventBus</AssemblyName>
+		<RootNamespace>Adnc.Infra.EventBus</RootNamespace>
+		<AssemblyName>Adnc.Infra.EventBus</AssemblyName>
 		<Version>0.8.0</Version>
 		<Authors>Alpha.Yu</Authors>
 		<Product>Adnc</Product>

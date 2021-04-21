@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Adnc.Infr.EventBus
+namespace Adnc.Infra.EventBus
 {
     /// <summary>
     /// 空的Cap发布者，给单元测试用

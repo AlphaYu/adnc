@@ -35,17 +35,17 @@ using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
 using Microsoft.AspNetCore.Authentication;
 using Polly.Timeout;
 using Microsoft.Extensions.Caching.Memory;
-using Adnc.Infr.EasyCaching.Interceptor.Castle;
-using Adnc.Infr.Mq.RabbitMq;
-using Adnc.Infr.Consul;
-using Adnc.Infr.Consul.Consumer;
-using Adnc.Infr.EfCore;
-using Adnc.Infr.Mongo;
-using Adnc.Infr.Mongo.Extensions;
-using Adnc.Infr.Mongo.Configuration;
+using Adnc.Infra.EasyCaching.Interceptor.Castle;
+using Adnc.Infra.Mq.RabbitMq;
+using Adnc.Infra.Consul;
+using Adnc.Infra.Consul.Consumer;
+using Adnc.Infra.EfCore;
+using Adnc.Infra.Mongo;
+using Adnc.Infra.Mongo.Extensions;
+using Adnc.Infra.Mongo.Configuration;
 using Adnc.Application.Shared;
 using Adnc.Application.Shared.RpcServices;
-using Adnc.Infr.Common.Helper;
+using Adnc.Infra.Common.Helper;
 using Adnc.WebApi.Shared.Extensions;
 
 namespace Adnc.WebApi.Shared

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Adnc.Infr.Common.Helper;
+using Adnc.Infra.Common.Helper;
 
 namespace Adnc.Application.Shared.Services
 {

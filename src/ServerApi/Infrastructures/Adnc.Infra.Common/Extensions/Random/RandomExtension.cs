@@ -2,7 +2,7 @@
 using System;
 using System.Diagnostics;
 
-namespace Adnc.Infr.Common.Extensions
+namespace Adnc.Infra.Common.Extensions
 {
     public static class RandomExtension
     {

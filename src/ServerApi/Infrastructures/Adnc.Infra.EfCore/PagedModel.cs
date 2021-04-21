@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Adnc.Core.Shared;
 using JetBrains.Annotations;
 
-namespace Adnc.Infr.EfCore
+namespace Adnc.Infra.EfCore
 {
     /// <summary>
     /// 分页Model

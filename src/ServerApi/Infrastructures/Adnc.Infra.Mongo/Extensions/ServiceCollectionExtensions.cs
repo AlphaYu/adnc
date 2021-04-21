@@ -1,10 +1,10 @@
 ﻿using System;
 using Microsoft.Extensions.DependencyInjection;
-using Adnc.Infr.Mongo.Configuration;
-using Adnc.Infr.Mongo.Interfaces;
+using Adnc.Infra.Mongo.Configuration;
+using Adnc.Infra.Mongo.Interfaces;
 using Adnc.Core.Shared.IRepositories;
 
-namespace Adnc.Infr.Mongo.Extensions
+namespace Adnc.Infra.Mongo.Extensions
 {
     /// <summary>
     /// Extensions for <see cref="IServiceCollection"/> to add easy MongoDB wiring.
