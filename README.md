@@ -106,7 +106,7 @@
 - `Services` 微服务相关工程
 - `Tests` 框架测试相关工程
 
-![.NET微服务开源框架-整体架构图](https://aspdotnetcore.net/wp-content/uploads/2021/03/adnc_solution.jpg)
+![.NET微服务开源框架-整体架构图](https://aspdotnetcore.net/adnc_solution/)
 #### Adnc.Infras 基础架构相关工程
 ##### 01.Adnc.WebApi.Shared
 该层实现了认证、鉴权、异常捕获等公共类和中间件。所有微服务WebApi层的共享层，并且都需要依赖该层。<br/>
@@ -141,7 +141,7 @@
 ##### 23.Adnc.Infra.RabbitMq
 该层集成了RabbitMq。封装了发布者与订阅者等公共类，方便更加便捷的调用rabbitmq。<br/>
 ![.NET微服务开源框架-基础机构-rabbitmq层](https://aspdotnetcore.net/wp-content/uploads/2020/11/adnc-serverapi-infr-rabbitmq.webp)
-#### Adnc.Portal 微服务相关工程
+#### Services 微服务相关工程
 该目录都是具体微服务业务的实现。<br/>
 - `Adnc.Usr` 用户中心微服务，系统支撑服务，实现了用户管理、角色管理、权限管理、菜单管理、组织架构管理。
 - `Adnc.Maint` 运维中心微服务，系统支撑服务，实现了登录日志、审计日志、异常日志、字典管理、配置参数管理。
@@ -150,7 +150,7 @@
 - `Adnc.Whse` 仓储中心微服务，DDD开发模式demo。
 
 每个微服务的Migrations层是Efcore用来做数据迁移的，迁移的日志文件存放在各自Migrations目录中。<br/>
-![.NET微服务开源框架-微服务层](https://aspdotnetcore.net/wp-content/uploads/2020/11/adnc-serverapi-potral.webp)
+
 ### 代码片段
 ```csharp
     [Route("usr/session")]
@@ -186,33 +186,6 @@
                 Token = JwtTokenHelper.CreateAccessToken(_jwtConfig, userValidateDto),
                 RefreshToken = JwtTokenHelper.CreateRefreshToken(_jwtConfig, userValidateDto)
             };
-        }
-    }
-```
-
-```csharp
-    public class AccountAppService : IAccountAppService
-    {
-        private readonly IMapper _mapper;
-        private readonly IEfRepository<SysUser> _userRepo;
-        private readonly RabbitMqProducer _mqProducer;
-        public AccountAppService(IMapper mapper,
-            IEfRepository<SysUser> userRepo,
-            RabbitMqProducer mqProducer)
-        {
-            _mapper = mapper;
-            _userRepo = userRepo;
-            _mqProducer = mqProducer;
-        }
-
-        public async Task<UserValidateDto> Login(UserValidateInputDto inputDto)
-        {
-            var user = await _userRepo.FetchAsync(x => new { x.Password, x.Salt, x.Name, x.Email, x.RoleId,x.Account,x.ID,x.Status }
-            , x => x.Account == inputDto.Account);
-            //todo......
-            //..........
-            _mqProducer.BasicPublish(MqConsts.Exchanges.Logs, MqConsts.RoutingKeys.Loginlog, log);
-            return _mapper.Map<UserValidateDto>(user);
         }
     }
 ```
