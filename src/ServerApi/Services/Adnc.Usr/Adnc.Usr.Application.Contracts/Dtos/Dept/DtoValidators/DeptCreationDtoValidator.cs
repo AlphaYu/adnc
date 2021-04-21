@@ -3,8 +3,14 @@ using Adnc.Usr.Application.Contracts.Dtos;
 
 namespace Adnc.Usr.Application.Contracts.DtoValidators
 {
+    /// <summary>
+    /// DeptCreationDto
+    /// </summary>
     public class DeptCreationDtoValidator : AbstractValidator<DeptCreationDto>
     {
+        /// <summary>
+        /// DeptCreationDtoValidator
+        /// </summary>
         public DeptCreationDtoValidator()
         {
             RuleFor(x => x.SimpleName).NotEmpty().Length(2, 16);
