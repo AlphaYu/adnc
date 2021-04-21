@@ -102,9 +102,9 @@
 
 ## 后端解决方案
 #### 整体架构图
-- `Adnc.Infras` 基础架构相关工程
-- `Adnc.Portal` 微服务相关工程
-- `Adnc.Tests` 框架测试相关工程
+- `Infrastructures` 基础架构相关工程
+- `Services` 微服务相关工程
+- `Tests` 框架测试相关工程
 
 ![.NET微服务开源框架-整体架构图](https://aspdotnetcore.net/wp-content/uploads/2021/03/adnc_solution.jpg)
 #### Adnc.Infras 基础架构相关工程
@@ -117,28 +117,28 @@
 ##### 03.Adnc.Core.Shared
 该层定义了Entity对象的基类、业务服务接口基类、UOW接口与拦截器、仓储接口、以及处理本地事务与分布式事务。所有微服务Core层的共享层，并且都需要依赖该层。<br/>
 ![.NET微服务开源框架-core-shared层](https://aspdotnetcore.net/wp-content/uploads/2020/11/adnc-serverapi-coreshared.webp)
-##### 04.Adnc.Infr.Common
+##### 04.Adnc.Infra.Common
 该层实现了一些通用帮助类。该层不依赖任何层。<br/>
 ![.NET微服务开源框架-基础机构-common层](https://aspdotnetcore.net/wp-content/uploads/2020/11/adnc-serverapi-infr-common.webp)
-##### 10.Adnc.Infr.Gateway 
+##### 10.Adnc.Infra.Gateway 
  该层是一个输出项目，基于Ocelot实现的Api网关，如果项目采用整体结构开发，该项目可以直接删除。ocelot网关包含路由、服务聚合、服务发现、认证、鉴权、限流、熔断、缓存、Header头传递等功能。市面上主流网关还有Kong，Traefik，Ambassador，Tyk等。<br/>
 ![.NET微服务开源框架-基础机构-gateway层](https://aspdotnetcore.net/wp-content/uploads/2020/11/adnc-serverapi-infr-gateway.webp)
-##### 11.Adnc.Infr.HealthCheckUI
+##### 11.Adnc.Infra.HealthCheckUI
 该层是一个输出项目， AspNetCore.HealthChecks组件的Dashboard，直接配置需要监测的服务地址就可以了，没有代码，关键的代码参考webapi层的AddHealthChecks()方法。<br/>
 ![.NET微服务开源框架-基础机构-healthchecksui层](https://aspdotnetcore.net/wp-content/uploads/2020/11/adnc-serverapi-infr-healthcheckui.webp)
-##### 20.Adnc.Infr.Consul
+##### 20.Adnc.Infra.Consul
 该层集成了Consul，提供服务的自动注册、发现以及系统配置读写。<br/>
 ![.NET微服务开源框架-基础机构-cosnul层](https://aspdotnetcore.net/wp-content/uploads/2020/11/adnc-serverapi-infr-consul.webp)
-##### 21.Adnc.Infr.EasyCaching
+##### 21.Adnc.Infra.EasyCaching
 该层集成了EasyCaching，负责一、二级缓存的管理，并重写了EasyCaching拦截器部分代码。<br/>
 ![.NET微服务开源框架-基础机构-easycaching层](https://aspdotnetcore.net/wp-content/uploads/2020/11/adnc-serverapi-infr-easycaching.webp)
-##### 22.Adnc.Infr.EfCore
+##### 22.Adnc.Infra.EfCore
 该层负责Adnc.Core.Shared仓储接口与Uow的EfCore的实现，负责mysql数据库的操作。同时也集成了Dapper部分接口，用来处理复杂查询。<br/>
 ![.NET微服务开源框架-基础机构-efcore层](https://aspdotnetcore.net/wp-content/uploads/2020/11/adnc-serverapi-infr-efcore.webp)
-##### 23.Adnc.Infr.Mongo
+##### 23.Adnc.Infra.Mongo
 该层负责Adnc.Core.Shared仓储接口的Mongodb实现，负责mongodb数据库的操作。<br/>
 ![.NET微服务开源框架-基础机构-mongodb层](https://aspdotnetcore.net/wp-content/uploads/2020/11/adnc-serverapi-infr-mongodb.webp)
-##### 23.Adnc.Infr.RabbitMq
+##### 23.Adnc.Infra.RabbitMq
 该层集成了RabbitMq。封装了发布者与订阅者等公共类，方便更加便捷的调用rabbitmq。<br/>
 ![.NET微服务开源框架-基础机构-rabbitmq层](https://aspdotnetcore.net/wp-content/uploads/2020/11/adnc-serverapi-infr-rabbitmq.webp)
 #### Adnc.Portal 微服务相关工程
