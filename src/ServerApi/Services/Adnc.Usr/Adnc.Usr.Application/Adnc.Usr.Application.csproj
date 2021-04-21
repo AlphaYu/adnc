@@ -14,7 +14,7 @@
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-		<DocumentationFile>.\Adnc.Usr.Application.xml</DocumentationFile>
+		<DocumentationFile></DocumentationFile>
 		<NoWarn>$(NoWarn);1591</NoWarn>
 		<OutputPath></OutputPath>
 	</PropertyGroup>
