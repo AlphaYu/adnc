@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.1</TargetFramework>
+		<Version>0.8.0</Version>
+		<Authors>Alpha.Yu</Authors>
+		<Product>Adnc</Product>
+		<RepositoryUrl>https://github.com/AlphaYu</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageProjectUrl>https://www.aspdotnetcore.net</PackageProjectUrl>
+		<Copyright>Alpha</Copyright>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+	  <DocumentationFile>.\Adnc.Maint.Application.xml</DocumentationFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <Compile Remove="RpcServices\**" />
+	  <Compile Remove="Services\Task\**" />
+	  <EmbeddedResource Remove="RpcServices\**" />
+	  <EmbeddedResource Remove="Services\Task\**" />
+	  <None Remove="RpcServices\**" />
+	  <None Remove="Services\Task\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Common\Adnc.Infra.Common.csproj" />
+		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.EasyCaching\Adnc.Infra.EasyCaching.csproj" />
+		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Mq\Adnc.Infra.Mq.csproj" />
+		<ProjectReference Include="..\Adnc.Maint.Application.Contracts\Adnc.Maint.Application.Contracts.csproj" />
+		<ProjectReference Include="..\Adnc.Maint.Core\Adnc.Maint.Core.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="Adnc.Maint.Application.xml">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
+
+</Project>

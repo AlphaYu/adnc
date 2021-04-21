@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	  <TargetFramework>netcoreapp3.1</TargetFramework>
+	  <Version>0.8.0</Version>
+	  <Authors>Alpha.Yu</Authors>
+	  <Product>Adnc</Product>
+	  <RepositoryUrl>https://github.com/AlphaYu</RepositoryUrl>
+	  <RepositoryType>git</RepositoryType>
+	  <PackageProjectUrl>https://www.aspdotnetcore.net</PackageProjectUrl>
+	  <Copyright>Alpha</Copyright>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>..\Adnc.Cus.WebApi\bin\$(Configuration)</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Migrations\20201123161344_20201123_01.cs" />
+    <Compile Remove="Migrations\20201123161344_20201123_01.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.EfCore\Adnc.Infra.EfCore.csproj" />
+  </ItemGroup>
+
+</Project>
