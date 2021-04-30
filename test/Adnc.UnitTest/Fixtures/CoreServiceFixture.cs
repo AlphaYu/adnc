@@ -5,7 +5,6 @@ using Microsoft.Extensions.Logging;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using Pomelo.EntityFrameworkCore.MySql.Storage;
 using Adnc.Infra.EfCore;
-using Adnc.Infra.Common;
 using Adnc.Cus.Core;
 using DotNetCore.CAP;
 using Adnc.Infra.EventBus;

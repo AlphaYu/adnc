@@ -4,16 +4,14 @@ using System.Linq;
 using Xunit;
 using Autofac;
 using Xunit.Abstractions;
-using Adnc.UnitTest.Base;
 using Adnc.UnitTest.Fixtures;
 using Adnc.Core.Shared;
 using Adnc.Cus.Core.Entities;
 using Adnc.Core.Shared.IRepositories;
-using Adnc.Infra.Common;
 using Adnc.Infra.Common.Helper;
 using Adnc.Cus.Core.Services;
 
-namespace Adnc.UnitTest
+namespace Adnc.UnitTest.CoreService
 {
     public class CoreServiceTests : IClassFixture<CoreServiceFixture>
     {
@@ -48,7 +46,7 @@ namespace Adnc.UnitTest
         [Fact]
         public async Task TestUowInterceptor()
         {
-            var id = IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId);
+            var id = IdGenerater.GetNextId();
             var customer = new Customer() { Id = id, Account = "alpha2008", Nickname = IdGenerater.GetNextId().ToString(), Realname = IdGenerater.GetNextId().ToString() };
             customer.FinanceInfo = new CustomerFinance { Account = "alpha2008", Id = id, Balance = 0 };
             /*

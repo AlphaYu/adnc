@@ -40,6 +40,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\..\src\ServerApi\Infrastructures\Adnc.Infra.Caching\Adnc.Infra.Caching.csproj" />
 	  <ProjectReference Include="..\..\src\ServerApi\Infrastructures\Adnc.Infra.EfCore\Adnc.Infra.EfCore.csproj" />
 	  <ProjectReference Include="..\..\src\ServerApi\Services\Adnc.Cus\Adnc.Cus.Core\Adnc.Cus.Core.csproj" />
 	</ItemGroup>
