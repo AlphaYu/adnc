@@ -112,7 +112,7 @@ namespace Adnc.Usr.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult> ChangePassword([FromBody] UserChangePwdDto input)
         {
-            return Result(await _accountService.UpdatePasswordAsync(_userContext.Id, input));
+            return Result(await _accountService.UpdatePasswordAsync(_userContext.Account, input));
         }
     }
 }

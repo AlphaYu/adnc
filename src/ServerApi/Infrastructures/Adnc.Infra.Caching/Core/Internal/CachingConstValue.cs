@@ -12,6 +12,10 @@
         /// <summary>
         /// The default name of the serializer.
         /// </summary>
-        public const string DefaultSerializerName = "binary"; 
+        public const string DefaultSerializerName = "binary";
+
+        public const string PreRemoveKey = "adnc:preremovekey";
+
+        public const string PreRemoveAllKeyPrefix = "adnc:preremovekey:prefix:all";
     }
 }

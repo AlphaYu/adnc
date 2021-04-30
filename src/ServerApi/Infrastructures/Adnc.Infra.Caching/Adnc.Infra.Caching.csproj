@@ -12,6 +12,10 @@
 		<PackageProjectUrl>https://www.aspdotnetcore.net</PackageProjectUrl>
 		<Copyright>Alpha</Copyright>
 	</PropertyGroup>
+
+	<ItemGroup>
+	  <None Remove="Core\Interceptor\IEasyCachingKeyGenerator.cs~RF400923bc.TMP" />
+	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="Autofac" Version="6.0.0" />
 		<PackageReference Include="Castle.Core" Version="4.4.1" />

@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using Adnc.Infra.Caching.Core;
+using Adnc.Infra.Caching.Interceptor;
 
 namespace Adnc.Infra.Core.Interceptor
 {
@@ -12,10 +15,20 @@ namespace Adnc.Infra.Core.Interceptor
     {
         private const char LinkChar = ':';
 
+        //public string GetCacheKey(MethodInfo methodInfo, object[] args, string prefix)
+        //{
+        //    var methodArguments = args?.Any() == true
+        //                              ? args.Select(ParameterCacheKeys.GenerateCacheKey)
+        //                              : new[] { "0" };
+        //    return GenerateCacheKey(methodInfo, prefix, methodArguments);
+        //}
+
         public string GetCacheKey(MethodInfo methodInfo, object[] args, string prefix)
         {
-            var methodArguments = args?.Any() == true
-                                      ? args.Select(ParameterCacheKeys.GenerateCacheKey)
+            var cachingArgs = methodInfo.GetParameters().Where(x => x.GetCustomAttribute<CachingParamAttribute>() != null)
+                                                                  .Select(x => $"{x.Name}-{args[x.Position]}").ToArray();
+            var methodArguments = cachingArgs?.Any() == true
+                                      ? cachingArgs.Select(ParameterCacheKeys.GenerateCacheKey)
                                       : new[] { "0" };
             return GenerateCacheKey(methodInfo, prefix, methodArguments);
         }

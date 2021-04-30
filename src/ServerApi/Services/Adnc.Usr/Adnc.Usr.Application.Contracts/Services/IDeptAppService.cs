@@ -18,11 +18,11 @@ namespace Adnc.Usr.Application.Contracts.Services
 
         [OpsLog(LogName = "修改部门")]
         [CachingEvict(CacheKey = EasyCachingConsts.DetpListCacheKey)]
-        Task<AppSrvResult> UpdateAsync(long id, DeptUpdationDto input);
+        Task<AppSrvResult> UpdateAsync([CachingParam]long id, DeptUpdationDto input);
 
         [OpsLog(LogName = "删除部门")]
         [CachingEvict(CacheKey = EasyCachingConsts.DetpListCacheKey)]
-        Task<AppSrvResult> DeleteAsync(long Id);
+        Task<AppSrvResult> DeleteAsync([CachingParam] long Id);
 
         Task<dynamic[]> GetSimpleListAsync();
     }

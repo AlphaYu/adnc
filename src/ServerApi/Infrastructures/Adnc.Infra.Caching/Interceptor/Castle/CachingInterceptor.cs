@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Castle.DynamicProxy;
 using Microsoft.Extensions.Logging;
 using Adnc.Infra.Core.Interceptor;
+using Adnc.Infra.Caching.Core;
 
 namespace Adnc.Infra.Caching.Interceptor.Castle
 {
@@ -40,6 +41,8 @@ namespace Adnc.Infra.Caching.Interceptor.Castle
         private static readonly ConcurrentDictionary<MethodInfo, object[]>
                     MethodAttributes = new ConcurrentDictionary<MethodInfo, object[]>();
 
+        private const string LinkChar = ":";
+
         /// <summary>
         /// Initializes a new instance of the <see cref="T:EasyCaching.Interceptor.Castle.EasyCachingInterceptor"/> class.
         /// </summary>
@@ -66,7 +69,7 @@ namespace Adnc.Infra.Caching.Interceptor.Castle
         public void Intercept(IInvocation invocation)
         {
             //Process any early evictions 
-            ProcessEvict(invocation, true);
+            var preRemoveKey = ProcessEvictBefore(invocation);
 
             //Process any cache interceptor 
             ProceedAble(invocation);
@@ -75,8 +78,9 @@ namespace Adnc.Infra.Caching.Interceptor.Castle
             ProcessPut(invocation);
 
             // Process any late evictions
-            ProcessEvict(invocation, false);
+            ProcessEvictAfter(invocation, preRemoveKey);
         }
+
         private object[] GetMethodAttributes(MethodInfo mi)
         {
             return MethodAttributes.GetOrAdd(mi, mi.GetCustomAttributes(true));
@@ -194,34 +198,67 @@ namespace Adnc.Infra.Caching.Interceptor.Castle
         /// <summary>
         /// Processes the evict.
         /// </summary>
-        /// <param name="invocation">Invocation.</param>
-        /// <param name="isBefore">If set to <c>true</c> is before.</param>
-        private void ProcessEvict(IInvocation invocation, bool isBefore)
+        /// <param name="invocation">IInvocation.</param>
+        /// <returns></returns>
+        private string ProcessEvictBefore(IInvocation invocation)
         {
+            string preRemoveKey = string.Empty;
             var serviceMethod = invocation.Method ?? invocation.MethodInvocationTarget;
 
-            if (GetMethodAttributes(serviceMethod).FirstOrDefault(x => typeof(CachingEvictAttribute).IsAssignableFrom(x.GetType())) is CachingEvictAttribute attribute && attribute.IsBefore == isBefore)
+            if (GetMethodAttributes(serviceMethod).FirstOrDefault(x => typeof(CachingEvictAttribute).IsAssignableFrom(x.GetType())) is CachingEvictAttribute attribute)
+            {
+                string[] needRemovedKeys;
+                if (!string.IsNullOrEmpty(attribute.CacheKey))
+                {
+                    preRemoveKey = $"{CachingConstValue.PreRemoveKey}{LinkChar}{attribute.CacheKey.GetHashCode()}";
+                    needRemovedKeys = new string[] { attribute.CacheKey, preRemoveKey };
+                }
+                else if (attribute.CacheKeys?.Length > 0)
+                {
+                    preRemoveKey = $"{CachingConstValue.PreRemoveKey}{LinkChar}{string.Join(",", attribute.CacheKeys).GetHashCode()}";
+                    needRemovedKeys = attribute.CacheKeys.Append(preRemoveKey).ToArray();
+                }
+                else if (attribute.IsAll)
+                {
+                    preRemoveKey = $"{CachingConstValue.PreRemoveAllKeyPrefix}{LinkChar}{ attribute.CacheKeyPrefix.GetHashCode()}";
+                    needRemovedKeys = new string[] { attribute.CacheKeyPrefix, preRemoveKey };
+                }
+                else
+                {
+                    var cacheKey = _keyGenerator.GetCacheKey(serviceMethod, invocation.Arguments, attribute.CacheKeyPrefix);
+                    preRemoveKey = $"{CachingConstValue.PreRemoveKey}{LinkChar}{cacheKey.GetHashCode()}";
+                    needRemovedKeys = new string[] { cacheKey, preRemoveKey };
+                }
+
+                _cacheProvider.Set(preRemoveKey, needRemovedKeys, TimeSpan.FromSeconds(60 * 60 * 24));
+            }
+            return preRemoveKey;
+        }
+
+        /// <summary>
+        /// Processes the evict.
+        /// </summary>
+        /// <param name="invocation">Invocation.</param>
+        /// <param name="preRemoveKey">preRemoveKey</param>
+        private void ProcessEvictAfter(IInvocation invocation, string preRemoveKey)
+        {
+            if (string.IsNullOrWhiteSpace(preRemoveKey))
+                return;
+
+            var serviceMethod = invocation.Method ?? invocation.MethodInvocationTarget;
+            if (GetMethodAttributes(serviceMethod).FirstOrDefault(x => typeof(CachingEvictAttribute).IsAssignableFrom(x.GetType())) is CachingEvictAttribute attribute)
             {
                 try
                 {
-                    var cacheKey = attribute.CacheKey;
-                    var cacheKeys = attribute.CacheKeys;
-                    var cacheKeyPrefix = _keyGenerator.GetCacheKeyPrefix(serviceMethod, attribute.CacheKeyPrefix);
-
-                    if (!string.IsNullOrEmpty(cacheKey))
-                        _cacheProvider.Remove(cacheKey);
-                    else if (cacheKeys?.Length > 0)
-                        _cacheProvider.RemoveAll(cacheKeys);
+                    var needRemoveCacheKeys = _cacheProvider.Get<string[]>(preRemoveKey).Value;
+                    if (preRemoveKey.StartsWith(CachingConstValue.PreRemoveAllKeyPrefix))
+                    {
+                        _cacheProvider.RemoveByPrefix(needRemoveCacheKeys[0]);
+                        _cacheProvider.Remove(needRemoveCacheKeys[1]);
+                    }
                     else
                     {
-                        //If is all , clear all cached items which cachekey start with the prefix.
-                        if (attribute.IsAll)
-                            _cacheProvider.RemoveByPrefix(cacheKeyPrefix);
-                        else
-                        {
-                            cacheKey = _keyGenerator.GetCacheKey(serviceMethod, invocation.Arguments, attribute.CacheKeyPrefix);
-                            _cacheProvider.Remove(cacheKey);
-                        }
+                        _cacheProvider.RemoveAll(needRemoveCacheKeys);
                     }
                 }
                 catch (Exception ex)

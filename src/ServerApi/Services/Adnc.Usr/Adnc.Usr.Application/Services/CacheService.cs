@@ -82,7 +82,7 @@ namespace Adnc.Usr.Application.Services
             return cahceValue.Value;
         }
 
-        internal async Task<List<RoleMenuCodesDto>> GetAllMenuCodesFromCache()
+        internal async Task<List<RoleMenuCodesDto>> GetAllMenuCodesFromCacheAsync()
         {
             var cahceValue = await _cache.GetAsync(EasyCachingConsts.MenuCodesCacheKey, async () =>
             {
@@ -96,7 +96,7 @@ namespace Adnc.Usr.Application.Services
             return cahceValue.Value;
         }
 
-        internal async Task<UserValidateDto> GetUserValidateInfoFromCache(string account)
+        internal async Task<UserValidateDto> GetUserValidateInfoFromCacheAsync(string account)
         {
             var cacheKey = string.Format(EasyCachingConsts.UserLoginInfoKey, account.ToLower());
 

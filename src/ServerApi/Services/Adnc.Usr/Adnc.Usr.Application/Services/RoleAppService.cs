@@ -149,7 +149,7 @@ namespace Adnc.Usr.Application.Services
 
         public async Task<AppSrvResult<List<string>>> GetPermissionsAsync(RolePermissionsCheckerDto input)
         {
-            var allMenuCodes =await  _cacheService.GetAllMenuCodesFromCache();
+            var allMenuCodes =await  _cacheService.GetAllMenuCodesFromCacheAsync();
             var codes = allMenuCodes?.Where(x => input.RoleIds.Contains(x.RoleId)).Select(x => x.Code.ToUpper());
             if (codes != null && codes.Any())
             {
