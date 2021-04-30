@@ -1,10 +1,9 @@
-﻿using Adnc.Application.Shared.Dtos;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
+using Adnc.Application.Shared.Dtos;
 
 namespace Adnc.Usr.Application.Contracts.Dtos
 {
+    [Serializable]
     public class UserValidateDto : OutputDto<long>
     {
         public string Account { get; set; }
@@ -14,5 +13,11 @@ namespace Adnc.Usr.Application.Contracts.Dtos
         public string Email { get; set; }
 
         public string RoleIds { get; set; }
+
+        public string Salt { get; set; }
+
+        public string Password { get; set; }
+
+        public int Status { get; set; }
     }
 }

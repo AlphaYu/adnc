@@ -13,11 +13,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
-using EasyCaching.Core;
 using Newtonsoft.Json.Linq;
 using Adnc.Infra.Common.Extensions;
 using Adnc.Application.Shared;
 using Adnc.Infra.Common.Helper;
+using Adnc.Infra.Caching;
 
 namespace Adnc.WebApi.Shared.Middleware
 {
@@ -27,14 +27,14 @@ namespace Adnc.WebApi.Shared.Middleware
         private readonly JWTConfig _jwtConfig;
         private readonly string tokenPrefx = "accesstoken";
         //private readonly string refreshTokenPrefx = "refreshtoken";
-        private readonly IHybridCachingProvider _cache;
+        private readonly IRedisDistributedCache _cache;
 
         public SSOAuthenticationMiddleware(RequestDelegate next
             , IOptions<JWTConfig> jwtConfig
-            , IHybridProviderFactory hybridProviderFactory)
+            , IRedisDistributedCache cache)
         {
             _next = next ?? throw new ArgumentNullException(nameof(next));
-            _cache = hybridProviderFactory.GetHybridCachingProvider(BaseEasyCachingConsts.HybridCaching) ?? throw new ArgumentNullException(nameof(_cache));
+            _cache = cache;
             _jwtConfig = jwtConfig.Value;
         }
 

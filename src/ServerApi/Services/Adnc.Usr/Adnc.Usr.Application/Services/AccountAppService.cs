@@ -18,20 +18,23 @@ namespace Adnc.Usr.Application.Services
 {
     public class AccountAppService : AbstractAppService, IAccountAppService
     {
+        private readonly CacheService _cacheService;
         private readonly IEfRepository<SysUser> _userRepository;
         private readonly IEfRepository<SysRole> _roleRepository;
         private readonly IEfRepository<SysMenu> _menuRepository;
         private readonly RabbitMqProducer _mqProducer;
 
-        public AccountAppService(IEfRepository<SysUser> userRepository,
-            IEfRepository<SysRole> roleRepository,
-            IEfRepository<SysMenu> menuRepository,
-            RabbitMqProducer mqProducer)
+        public AccountAppService(IEfRepository<SysUser> userRepository
+           , IEfRepository<SysRole> roleRepository
+           , IEfRepository<SysMenu> menuRepository
+           , RabbitMqProducer mqProducer
+           , CacheService cacheService)
         {
             _userRepository = userRepository;
             _roleRepository = roleRepository;
             _menuRepository = menuRepository;
             _mqProducer = mqProducer;
+            _cacheService = cacheService;
         }
 
         public async Task<AppSrvResult<UserInfoDto>> GetUserInfoAsync(long id)
@@ -92,7 +95,7 @@ namespace Adnc.Usr.Application.Services
 
         public async Task<AppSrvResult> UpdatePasswordAsync(long id, UserChangePwdDto input)
         {
-            var user = await _userRepository.FetchAsync(x => new { x.Password, x.Salt, x.Id, x.Status }, x => x.Id == id);
+            var user = await _userRepository.FetchAsync(x => new { x.Password, x.Salt, x.Id, x.Status,x.Account }, x => x.Id == id);
             if (user == null)
                 return Problem(HttpStatusCode.NotFound, "用户不存在,参数信息不完整");
 
@@ -102,35 +105,18 @@ namespace Adnc.Usr.Application.Services
 
             var newPwdString = HashHelper.GetHashedString(HashType.MD5, input.Password, user.Salt);
 
+            var cacheKey = string.Format(EasyCachingConsts.UserLoginInfoKey, user.Account.ToLower());
+
+            await _cacheService.PreRemove(cacheKey);
             await _userRepository.UpdateAsync(new SysUser { Id = id, Password = newPwdString }, UpdatingProps<SysUser>(x => x.Password));
+            await _cacheService.PostRemove(cacheKey);
 
             return AppSrvResult();
         }
 
         public async Task<AppSrvResult<UserValidateDto>> LoginAsync(UserLoginDto inputDto)
         {
-            var user = await _userRepository.FetchAsync(x => new
-            {
-                x.Password
-                ,
-                x.Salt
-                ,
-                x.Status
-                ,
-                UserValidateInfo = new UserValidateDto
-                {
-                    Account = x.Account
-                    ,
-                    Email = x.Email
-                    ,
-                    Id = x.Id
-                    ,
-                    Name = x.Name
-                    ,
-                    RoleIds = x.RoleIds
-                }
-            }
-            , x => x.Account == inputDto.Account);
+            var user = await _cacheService.GetUserValidateInfoFromCache(inputDto.Account);
 
             if (user == null)
                 return Problem(HttpStatusCode.NotFound, "用户名或密码错误");
@@ -142,8 +128,8 @@ namespace Adnc.Usr.Application.Services
             log.Device = httpContext.Request.Headers["device"].FirstOrDefault() ?? "web";
             log.RemoteIpAddress = httpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
             log.Succeed = false;
-            log.UserId = user.UserValidateInfo.Id;
-            log.UserName = user.UserValidateInfo.Name;
+            log.UserId = user.Id;
+            log.UserName = user.Name;
 
             if (user.Status != 1)
             {
@@ -164,7 +150,7 @@ namespace Adnc.Usr.Application.Services
                 var problem = Problem(HttpStatusCode.TooManyRequests, "连续登录失败次数超过5次，账号已锁定");
                 log.Message = problem.Detail;
                 log.StatusCode = problem.Status;
-                await _userRepository.UpdateAsync(new SysUser() { Id = user.UserValidateInfo.Id, Status = 2 }, UpdatingProps<SysUser>(x => x.Status));
+                await _userRepository.UpdateAsync(new SysUser() { Id = user.Id, Status = 2 }, UpdatingProps<SysUser>(x => x.Status));
                 _mqProducer.BasicPublish(MqExchanges.Logs, MqRoutingKeys.Loginlog, log);
                 return problem;
             }
@@ -178,7 +164,7 @@ namespace Adnc.Usr.Application.Services
                 return problem;
             }
 
-            if (user.UserValidateInfo.RoleIds.IsNullOrEmpty())
+            if (user.RoleIds.IsNullOrEmpty())
             {
                 var problem = Problem(HttpStatusCode.Forbidden, "未分配任务角色，请联系管理员");
                 log.Message = problem.Detail;
@@ -192,24 +178,12 @@ namespace Adnc.Usr.Application.Services
             log.Succeed = true;
             _mqProducer.BasicPublish(MqExchanges.Logs, MqRoutingKeys.Loginlog, log);
 
-            return user.UserValidateInfo;
+            return user;
         }
 
         public async Task<AppSrvResult<UserValidateDto>> GetUserValidateInfoAsync(string account)
         {
-            var userValidateInfo = await _userRepository.FetchAsync(x => new UserValidateDto
-            {
-                Name = x.Name
-                ,
-                Email = x.Email
-                ,
-                RoleIds = x.RoleIds
-                ,
-                Id = x.Id
-                ,
-                Account = x.Account
-            }
-            , x => x.Account == account);
+            var userValidateInfo = await _cacheService.GetUserValidateInfoFromCache(account);
 
             if (userValidateInfo == null)
                 return Problem(HttpStatusCode.NotFound, "用户不存在,参数信息不完整");

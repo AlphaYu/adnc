@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Adnc.Application.Shared;
+using Microsoft.Extensions.Configuration;
 
 namespace Adnc.Ord.Application
 {
@@ -11,7 +12,10 @@ namespace Adnc.Ord.Application
         /// <summary>
         /// 构造函数
         /// </summary>
-        public AdncOrdApplicationModule() : base(typeof(AdncOrdApplicationModule)) { }
+        public AdncOrdApplicationModule(IConfigurationSection redisSection, IConfigurationSection rabitMqSection)
+            : base(typeof(AdncOrdApplicationModule), redisSection, rabitMqSection)
+        {
+        }
 
         /// <summary>
         /// 注册方法

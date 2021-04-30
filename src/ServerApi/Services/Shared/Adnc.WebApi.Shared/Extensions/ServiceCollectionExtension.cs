@@ -40,7 +40,6 @@ namespace Microsoft.Extensions.DependencyInjection
             _srvRegistration.AddHealthChecks();
             _srvRegistration.AddEfCoreContext();
             _srvRegistration.AddMongoContext();
-            _srvRegistration.AddCaching();
             _srvRegistration.AddSwaggerGen();
 
             var policies = _srvRegistration.GenerateDefaultRefitPolicies();

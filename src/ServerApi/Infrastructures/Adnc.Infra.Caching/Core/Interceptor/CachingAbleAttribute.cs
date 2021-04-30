@@ -1,17 +1,17 @@
-﻿namespace Adnc.Infra.Caching.Interceptor.Castle
-{
-    using System;
+﻿using System;
 
+namespace Adnc.Infra.Caching.Interceptor
+{
     /// <summary>
-    /// Easycaching put attribute.
+    /// Easycaching able attribute.
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, Inherited = true)]
-    public class EasyCachingPutAttribute : EasyCachingInterceptorAttribute
+    public class CachingAbleAttribute : CachingInterceptorAttribute
     {
         /// <summary>
         /// Gets or sets the expiration. The default value is 30 second.
         /// </summary>
         /// <value>The expiration.</value>
         public int Expiration { get; set; } = 30;
-    }
+    }     
 }

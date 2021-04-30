@@ -2,7 +2,7 @@
 using Adnc.Usr.Application.Contracts.Dtos;
 using Adnc.Application.Shared.Interceptors;
 using Adnc.Application.Shared.Services;
-using Adnc.Infra.Caching.Interceptor.Castle;
+using Adnc.Infra.Caching.Interceptor;
 using Adnc.Usr.Application.Contracts.Consts;
 using Adnc.Application.Shared.Dtos;
 
@@ -25,7 +25,7 @@ namespace Adnc.Usr.Application.Contracts.Services
         Task<AppSrvResult> DeleteAsync(long id);
 
         [OpsLog(LogName = "设置用户角色")]
-        [EasyCachingEvict(CacheKeys = new[] { EasyCachingConsts.MenuRelationCacheKey, EasyCachingConsts.MenuCodesCacheKey })]
+        [CachingEvict(CacheKeys = new[] { EasyCachingConsts.MenuRelationCacheKey, EasyCachingConsts.MenuCodesCacheKey })]
         Task<AppSrvResult> SetRoleAsync(long id,UserSetRoleDto input);
 
         [OpsLog(LogName = "修改用户状态")]

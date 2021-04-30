@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using EasyCaching.Core;
 using Adnc.Infra.Common.Extensions;
 using Adnc.Infra.Common.Helper;
 using Adnc.Maint.Core.Services;
@@ -13,7 +12,6 @@ using Adnc.Core.Shared.IRepositories;
 using Adnc.Application.Shared.Services;
 using Adnc.Maint.Application.Contracts.Dtos;
 using Adnc.Maint.Application.Contracts.Services;
-using Adnc.Maint.Application.Contracts.Consts;
 
 namespace Adnc.Maint.Application.Services
 {
@@ -21,15 +19,15 @@ namespace Adnc.Maint.Application.Services
     {
         private readonly IEfRepository<SysDict> _dictRepository;
         private readonly MaintManager _maintManager;
-        private readonly IEasyCachingProvider _cache;
+        private readonly CacheService _cacheService;
 
         public DictAppService(IEfRepository<SysDict> dictRepository
             , MaintManager maintManager
-            , IEasyCachingProviderFactory cacheFactory)
+            , CacheService cacheService)
         {
             _dictRepository = dictRepository;
             _maintManager = maintManager;
-            _cache = cacheFactory.GetCachingProvider(EasyCachingConsts.RemoteCaching);
+            _cacheService = cacheService;
         }
 
         public async Task<AppSrvResult> DeleteAsync(long id)
@@ -48,7 +46,7 @@ namespace Adnc.Maint.Application.Services
                 whereCondition = whereCondition.And(x => x.Name.Contains(search.Name));
             }
 
-            var dicts = (await this.GetAllFromCacheAsync()).Where(whereCondition.Compile()).OrderBy(d => d.Ordinal).ToList();
+            var dicts = (await _cacheService.GetAllDictsFromCacheAsync()).Where(whereCondition.Compile()).OrderBy(d => d.Ordinal).ToList();
             if (dicts.Any())
             {
                 result = dicts.Where(d => d.Pid == 0).OrderBy(d => d.Ordinal).ToList();
@@ -64,7 +62,7 @@ namespace Adnc.Maint.Application.Services
 
         public async Task<AppSrvResult<long>> CreateAsync(DictCreationDto input)
         {
-            var exists = (await GetAllFromCacheAsync()).Exists(x => x.Name.EqualsIgnoreCase(input.Name));
+            var exists = (await _cacheService.GetAllDictsFromCacheAsync()).Exists(x => x.Name.EqualsIgnoreCase(input.Name));
             if (exists)
                 return Problem(HttpStatusCode.BadRequest, "字典名字已经存在");
 
@@ -97,7 +95,7 @@ namespace Adnc.Maint.Application.Services
 
         public async Task<AppSrvResult> UpdateAsync(long id, DictUpdationDto input)
         {
-            var exists = (await GetAllFromCacheAsync()).Exists(x => x.Name.EqualsIgnoreCase(input.Name) && x.Id != id);
+            var exists = (await _cacheService.GetAllDictsFromCacheAsync()).Exists(x => x.Name.EqualsIgnoreCase(input.Name) && x.Id != id);
             if (exists)
                 return Problem(HttpStatusCode.BadRequest, "字典名字已经存在");
 
@@ -128,25 +126,14 @@ namespace Adnc.Maint.Application.Services
 
         public async Task<AppSrvResult<DictDto>> GetAsync(long id)
         {
-            var dictDto = (await this.GetAllFromCacheAsync()).Where(x => x.Id == id).FirstOrDefault();
+            var dictDto = (await _cacheService.GetAllDictsFromCacheAsync()).Where(x => x.Id == id).FirstOrDefault();
 
             if (dictDto == null)
                 return Problem(HttpStatusCode.NotFound, "没有找到");
 
-            dictDto.Children = (await this.GetAllFromCacheAsync()).Where(x => x.Pid == id).ToList();
+            dictDto.Children = (await _cacheService.GetAllDictsFromCacheAsync()).Where(x => x.Pid == id).ToList();
 
             return dictDto;
-        }
-
-        private async Task<List<DictDto>> GetAllFromCacheAsync()
-        {
-            var cahceValue = await _cache.GetAsync(EasyCachingConsts.DictListCacheKey, async () =>
-            {
-                var allDicts = await _dictRepository.GetAll(writeDb: true).OrderBy(x => x.Ordinal).ToListAsync();
-                return Mapper.Map<List<DictDto>>(allDicts);
-            }, TimeSpan.FromSeconds(EasyCachingConsts.OneYear));
-
-            return cahceValue.Value;
         }
     }
 }

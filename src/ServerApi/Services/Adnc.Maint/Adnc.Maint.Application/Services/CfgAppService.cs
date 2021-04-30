@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using EasyCaching.Core;
 using Adnc.Infra.Common.Extensions;
 using Adnc.Infra.Common.Helper;
 using Adnc.Maint.Core.Entities;
@@ -13,20 +12,19 @@ using Adnc.Application.Shared.Services;
 using Adnc.Application.Shared.Dtos;
 using Adnc.Maint.Application.Contracts.Dtos;
 using Adnc.Maint.Application.Contracts.Services;
-using Adnc.Maint.Application.Contracts.Consts;
 
 namespace Adnc.Maint.Application.Services
 {
     public class CfgAppService : AbstractAppService, ICfgAppService
     {
         private readonly IEfRepository<SysCfg> _cfgRepository;
-        private readonly IEasyCachingProvider _cache;
+        private readonly CacheService _cacheService;
 
         public CfgAppService(IEfRepository<SysCfg> cfgRepository
-            , IEasyCachingProviderFactory cacheFactory)
+            , CacheService cacheService)
         {
             _cfgRepository = cfgRepository;
-            _cache = cacheFactory.GetCachingProvider(EasyCachingConsts.RemoteCaching);
+            _cacheService = cacheService;
         }
 
         public async Task<AppSrvResult> DeleteAsync(long id)
@@ -47,7 +45,7 @@ namespace Adnc.Maint.Application.Services
                 whereCondition = whereCondition.And(x => x.Value.Contains(search.Value));
             }
 
-            var allCfgs = await this.GetAllFromCacheAsync();
+            var allCfgs = await _cacheService.GetAllCfgsFromCacheAsync();
 
             var pagedCfgs = allCfgs.Where(whereCondition.Compile())
                                    .OrderByDescending(x => x.CreateTime)
@@ -71,7 +69,7 @@ namespace Adnc.Maint.Application.Services
 
         public async Task<AppSrvResult<long>> CreateAsync(CfgCreationDto input)
         {
-            var exist = (await this.GetAllFromCacheAsync()).Exists(c => c.Name.EqualsIgnoreCase(input.Name));
+            var exist = (await _cacheService.GetAllCfgsFromCacheAsync()).Exists(c => c.Name.EqualsIgnoreCase(input.Name));
             if (exist)
                 return Problem(HttpStatusCode.BadRequest, "参数名称已经存在");
 
@@ -85,7 +83,7 @@ namespace Adnc.Maint.Application.Services
 
         public async Task<AppSrvResult> UpdateAsync(long id, CfgUpdationDto input)
         {
-            var exist = (await this.GetAllFromCacheAsync()).Exists(c => c.Name.EqualsIgnoreCase(input.Name) && c.Id != id);
+            var exist = (await _cacheService.GetAllCfgsFromCacheAsync()).Exists(c => c.Name.EqualsIgnoreCase(input.Name) && c.Id != id);
             if (exist)
                 return Problem(HttpStatusCode.BadRequest, "参数名称已经存在");
 
@@ -102,18 +100,8 @@ namespace Adnc.Maint.Application.Services
 
         public async Task<AppSrvResult<CfgDto>> GetAsync(long id)
         {
-            return (await this.GetAllFromCacheAsync()).Where(x => x.Id == id).FirstOrDefault();
+            return (await _cacheService.GetAllCfgsFromCacheAsync()).Where(x => x.Id == id).FirstOrDefault();
         }
 
-        private async Task<List<CfgDto>> GetAllFromCacheAsync()
-        {
-            var cahceValue = await _cache.GetAsync(EasyCachingConsts.CfgListCacheKey, async () =>
-            {
-                var allCfgs = await _cfgRepository.GetAll(writeDb: true).ToListAsync();
-                return Mapper.Map<List<CfgDto>>(allCfgs);
-            }, TimeSpan.FromSeconds(EasyCachingConsts.OneYear));
-
-            return cahceValue.Value;
-        }
     }
 }

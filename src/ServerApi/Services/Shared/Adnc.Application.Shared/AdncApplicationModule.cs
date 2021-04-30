@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Reflection;
 using System.Collections.Generic;
+using Microsoft.Extensions.Configuration;
 using Autofac;
 using Autofac.Extras.DynamicProxy;
 using FluentValidation;
@@ -13,6 +14,7 @@ using Adnc.Application.Shared.Services;
 using Adnc.Core.Shared.Interceptors;
 using Adnc.Core.Shared.Entities;
 using Adnc.Core.Shared;
+using Adnc.Infra.Caching;
 
 namespace Adnc.Application.Shared
 {
@@ -24,12 +26,16 @@ namespace Adnc.Application.Shared
         private readonly Assembly _appAssemblieToScan;
         private readonly Assembly _appContractsAssemblieToScan;
         private readonly Assembly _coreAssemblieToScan;
+        private readonly IConfigurationSection _redisSection;
+        private readonly IConfigurationSection _rabitMqSection;
 
-        protected AdncApplicationModule(Type appModelType)
+        protected AdncApplicationModule(Type appModelType, IConfigurationSection redisSection, IConfigurationSection rabitMqSection)
         {
             _appAssemblieToScan = appModelType.Assembly;
             _coreAssemblieToScan = Assembly.Load(_appAssemblieToScan.FullName.Replace(".Application", ".Core"));
             _appContractsAssemblieToScan = Assembly.Load(_appAssemblieToScan.FullName.Replace(".Application", ".Application.Contracts"));
+            _redisSection = redisSection;
+            _rabitMqSection = rabitMqSection;
         }
 
         protected override void Load(ContainerBuilder builder)
@@ -48,15 +54,11 @@ namespace Adnc.Application.Shared
             builder.RegisterType<OpsLogAsyncInterceptor>()
                    .InstancePerLifetimeScope();
 
-            //注册cache拦截器
-            builder.RegisterType<EasyCachingInterceptor>()
-                   .InstancePerLifetimeScope();
-
             //注册应用服务与拦截器
             var interceptors = new List<Type>
             {
                 typeof(OpsLogInterceptor)
-                , typeof(EasyCachingInterceptor)
+                , typeof(CachingInterceptor)
             };
             if (_coreAssemblieToScan.GetTypes().Any(x => x.IsAssignableTo<AggregateRoot>() && !x.IsAbstract))
             {
@@ -66,8 +68,15 @@ namespace Adnc.Application.Shared
                        .InstancePerLifetimeScope();
                 interceptors.Add(typeof(UowInterceptor));
             }
+
             builder.RegisterAssemblyTypes(_appAssemblieToScan)
-                   .Where(t => t.IsAssignableTo<IAppService>())
+                   .Where(t => t.IsAssignableTo<ICacheService>() && !t.IsAbstract)
+                   .AsSelf()
+                   .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies)
+                   .InstancePerLifetimeScope();
+
+            builder.RegisterAssemblyTypes(_appAssemblieToScan)
+                   .Where(t => t.IsAssignableTo<IAppService>() && !t.IsAbstract)
                    .AsImplementedInterfaces()
                    .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies)
                    .InstancePerLifetimeScope()
@@ -85,6 +94,7 @@ namespace Adnc.Application.Shared
         {
             builder.RegisterModule(new AdncInfrMqModule(_appAssemblieToScan));
             builder.RegisterModule(new AutoMapperModule(_appAssemblieToScan));
+            builder.RegisterModule(new AdncInfraCachingModule(_redisSection));
             var modelType = _coreAssemblieToScan.GetTypes().Where(x => x.IsAssignableTo<AdncCoreModule>() && !x.IsAbstract).FirstOrDefault();
             builder.RegisterModule(System.Activator.CreateInstance(modelType) as Autofac.Module);
         }

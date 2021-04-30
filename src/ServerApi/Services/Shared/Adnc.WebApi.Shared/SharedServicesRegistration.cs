@@ -27,7 +27,6 @@ using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using Polly;
 using Refit;
 using FluentValidation.AspNetCore;
-using EasyCaching.InMemory;
 using DotNetCore.CAP.Dashboard;
 using DotNetCore.CAP.Dashboard.NodeDiscovery;
 using Swashbuckle.AspNetCore.Swagger;
@@ -35,7 +34,6 @@ using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
 using Microsoft.AspNetCore.Authentication;
 using Polly.Timeout;
 using Microsoft.Extensions.Caching.Memory;
-using Adnc.Infra.Caching.Interceptor.Castle;
 using Adnc.Infra.Mq.RabbitMq;
 using Adnc.Infra.Consul;
 using Adnc.Infra.Consul.Consumer;
@@ -292,62 +290,6 @@ namespace Adnc.WebApi.Shared
         }
 
         /// <summary>
-        /// 注册easycaching缓存组件
-        /// </summary>
-        /// <param name="localCacheName"></param>
-        /// <param name="remoteCacheName"></param>
-        /// <param name="hyBridCacheName"></param>
-        /// <param name="topicName"></param>
-        public virtual void AddCaching(string localCacheName = BaseEasyCachingConsts.LocalCaching
-            , string remoteCacheName = BaseEasyCachingConsts.RemoteCaching
-            , string hyBridCacheName = BaseEasyCachingConsts.HybridCaching
-            , string topicName = BaseEasyCachingConsts.TopicName)
-        {
-            //初始化CSRedis，在系统中直接使用RedisHelper操作Redis
-            //RedisHelper.Initialization(new CSRedis.CSRedisClient(Configuration.GetSection("Redis").Get<RedisConfig>().ConnectionString));
-            //注册Redis用于系统Cache,但IDistributedCache接口提供的方法有限，只能存储Hash,如果需要其他操作直接使用RedisHelper
-            //services.AddSingleton<IDistributedCache>(new Microsoft.Extensions.Caching.Redis.CSRedisCache(RedisHelper.Instance));
-            _services.AddEasyCaching(options =>
-            {
-                // use memory cache with your own configuration
-                options.UseInMemory(config =>
-                {
-                    config.DBConfig = new InMemoryCachingOptions
-                    {
-                        // scan time, default value is 60s
-                        ExpirationScanFrequency = 60,
-                        // total count of cache items, default value is 10000
-                        SizeLimit = 10000,
-
-                        // below two settings are added in v0.8.0
-                        // enable deep clone when reading object from cache or not, default value is true.
-                        EnableReadDeepClone = true,
-                        // enable deep clone when writing object to cache or not, default valuee is false.
-                        EnableWriteDeepClone = false,
-                    };
-                    // the max random second will be added to cache's expiration, default value is 120
-                    config.MaxRdSecond = 120;
-                    // whether enable logging, default is false
-                    config.EnableLogging = false;
-                    // mutex key's alive time(ms), default is 5000
-                    config.LockMs = 2000;
-                    // when mutex key alive, it will sleep some time, default is 300
-                    config.SleepMs = 300;
-                }, localCacheName);
-
-                var redisConfig = _configuration.GetRedisSection().Get<RedisConfig>();
-                _services.AddEasyCaching(options =>
-                {
-                    options.UseCSRedis(_configuration, remoteCacheName, "Redis");
-                });
-                _services.ConfigureCastleInterceptor(options =>
-                {
-                    options.CacheProviderName = remoteCacheName;
-                });
-            });
-        }
-
-        /// <summary>
         /// 注册跨域组件
         /// </summary>
         public virtual void AddCors()
@@ -416,9 +358,9 @@ namespace Adnc.WebApi.Shared
             var mysqlConfig = _configuration.GetMysqlSection().Get<MysqlConfig>();
             var mongoConfig = _configuration.GetMongoDbSection().Get<MongoConfig>();
             var redisConfig = _configuration.GetRedisSection().Get<RedisConfig>();
-            var redisString = redisConfig.dbconfig.ConnectionStrings[0].Replace(",prefix=", string.Empty).Replace(",poolsize=50", string.Empty);
+            //var redisString = redisConfig.dbconfig.ConnectionStrings[0].Replace(",prefix=", string.Empty).Replace(",poolsize=50", string.Empty);
             _services.AddHealthChecks()
-                     .AddProcessAllocatedMemoryHealthCheck(maximumMegabytesAllocated: 200, tags: new[] { "memory" })
+                     //.AddProcessAllocatedMemoryHealthCheck(maximumMegabytesAllocated: 200, tags: new[] { "memory" })
                      //.AddProcessHealthCheck("ProcessName", p => p.Length > 0) // check if process is running
                      .AddMySql(mysqlConfig.ConnectionString)
                      .AddMongoDb(mongoConfig.ConnectionString)
@@ -428,9 +370,9 @@ namespace Adnc.WebApi.Shared
                          RabbitMqConnection.GetInstance(x.GetService<IOptionsSnapshot<RabbitMqConfig>>()
                              , x.GetService<ILogger<dynamic>>()
                          ).Connection;
-                     })
+                     });
                      //.AddUrlGroup(new Uri("https://localhost:5001/weatherforecast"), "index endpoint")
-                     .AddRedis(redisString);
+                   //  .AddRedis(redisString);
         }
 
         /// <summary>

@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Adnc.Application.Shared;
+using Microsoft.Extensions.Configuration;
 
 namespace Adnc.Cus.Application
 {
@@ -11,7 +12,10 @@ namespace Adnc.Cus.Application
         /// <summary>
         /// 构造函数
         /// </summary>
-        public AdncCusApplicationModule() : base(typeof(AdncCusApplicationModule)) { }
+        public AdncCusApplicationModule(IConfigurationSection redisSection, IConfigurationSection rabitMqSection)
+                    : base(typeof(AdncCusApplicationModule), redisSection, rabitMqSection)
+        {
+        }
 
         /// <summary>
         /// 注册方法

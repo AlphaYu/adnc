@@ -10,11 +10,9 @@ using Adnc.Usr.Core.Entities;
 using Adnc.Usr.Core.Services;
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Infra.Common.Helper;
-using EasyCaching.Core;
 using Adnc.Application.Shared.Services;
 using Adnc.Application.Shared.Dtos;
 using Adnc.Usr.Application.Contracts.Services;
-using Adnc.Usr.Application.Contracts.Consts;
 
 namespace Adnc.Usr.Application.Services
 {
@@ -22,21 +20,19 @@ namespace Adnc.Usr.Application.Services
     {
         private readonly IEfRepository<SysRole> _roleRepository;
         private readonly IEfRepository<SysUser> _userRepository;
-        private readonly IEfRepository<SysRelation> _relationRepository;
         private readonly UsrManager _usrManager;
-        private readonly IEasyCachingProvider _cache;
+        private readonly CacheService _cacheService;
 
         public RoleAppService(IEfRepository<SysRole> roleRepository,
             IEfRepository<SysUser> userRepository,
             IEfRepository<SysRelation> relationRepository,
             UsrManager usrManager,
-            IEasyCachingProviderFactory cacheFactory)
+            CacheService cacheService)
         {
             _roleRepository = roleRepository;
             _userRepository = userRepository;
-            _relationRepository = relationRepository;
             _usrManager = usrManager;
-            _cache = cacheFactory.GetCachingProvider(EasyCachingConsts.RemoteCaching);
+            _cacheService = cacheService;
         }
 
         public async Task<AppSrvResult<PageModelDto<RoleDto>>> GetPagedAsync(RolePagedSearchDto search)
@@ -115,7 +111,7 @@ namespace Adnc.Usr.Application.Services
 
         public async Task<AppSrvResult<long>> CreateAsync(RoleCreationDto input)
         {
-            var isExists = (await this.GetAllFromCacheAsync()).Where(x => x.Name == input.Name).Any();
+            var isExists = (await _cacheService.GetAllRolesFromCacheAsync()).Where(x => x.Name == input.Name).Any();
             if (isExists)
                 return Problem(HttpStatusCode.BadRequest, "该角色名称已经存在");
 
@@ -128,7 +124,7 @@ namespace Adnc.Usr.Application.Services
 
         public async Task<AppSrvResult> UpdateAsync(long id,RoleUpdationDto input)
         {
-            var isExists = (await this.GetAllFromCacheAsync()).Where(x => x.Name == input.Name && x.Id != id).Any();
+            var isExists = (await _cacheService.GetAllRolesFromCacheAsync()).Where(x => x.Name == input.Name && x.Id != id).Any();
             if (isExists)
                 return Problem(HttpStatusCode.BadRequest, "该角色名称已经存在");
 
@@ -153,16 +149,8 @@ namespace Adnc.Usr.Application.Services
 
         public async Task<AppSrvResult<List<string>>> GetPermissionsAsync(RolePermissionsCheckerDto input)
         {
-            var cahceValue = await _cache.GetAsync(EasyCachingConsts.MenuCodesCacheKey, async () =>
-            {
-                var allMenus = await _relationRepository.GetAll(writeDb:true)
-               .Where(x => x.Menu.Status == true)
-               .Select(x => new RoleMenuCodesDto { RoleId = x.RoleId, Code = x.Menu.Code })
-               .ToListAsync();
-                return allMenus.Distinct().ToArray();
-            }, TimeSpan.FromSeconds(EasyCachingConsts.OneYear));
-
-            var codes = cahceValue.Value?.Where(x => input.RoleIds.Contains(x.RoleId)).Select(x => x.Code.ToUpper());
+            var allMenuCodes =await  _cacheService.GetAllMenuCodesFromCache();
+            var codes = allMenuCodes?.Where(x => input.RoleIds.Contains(x.RoleId)).Select(x => x.Code.ToUpper());
             if (codes != null && codes.Any())
             {
                 var result = codes.Intersect(input.Permissions.Select(x => x.ToUpper()));
@@ -172,15 +160,6 @@ namespace Adnc.Usr.Application.Services
             return null;
         }
 
-        public async Task<List<RoleDto>> GetAllFromCacheAsync()
-        {
-            var cahceValue = await _cache.GetAsync(EasyCachingConsts.RoleAllCacheKey, async () =>
-            {
-                var allRoles = await _roleRepository.GetAll(writeDb:true).OrderBy(x=>x.Ordinal).ToListAsync();
-                return Mapper.Map<List<RoleDto>>(allRoles);
-            }, TimeSpan.FromSeconds(EasyCachingConsts.OneYear));
 
-            return cahceValue.Value;
-        }
     }
 }

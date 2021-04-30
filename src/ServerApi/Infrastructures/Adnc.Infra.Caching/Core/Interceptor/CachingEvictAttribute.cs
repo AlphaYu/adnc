@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.Caching.Interceptor.Castle
+﻿namespace Adnc.Infra.Caching.Interceptor
 {
     using System;
 
@@ -6,7 +6,7 @@
     /// Easycaching evict attribute.
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, Inherited = true)]
-    public class EasyCachingEvictAttribute : EasyCachingInterceptorAttribute
+    public class CachingEvictAttribute : CachingInterceptorAttribute
     {        
         /// <summary>
         /// Gets or sets a value indicating whether evict all cached values by cachekey prefix

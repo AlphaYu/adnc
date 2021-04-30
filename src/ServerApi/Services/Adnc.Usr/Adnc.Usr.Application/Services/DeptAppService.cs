@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Dynamic;
-using EasyCaching.Core;
 using Adnc.Usr.Application.Contracts.Dtos;
 using Adnc.Usr.Core.Services;
 using Adnc.Usr.Core.Entities;
@@ -12,30 +11,26 @@ using Adnc.Core.Shared.IRepositories;
 using Adnc.Infra.Common.Helper;
 using Adnc.Application.Shared.Services;
 using Adnc.Usr.Application.Contracts.Services;
-using Adnc.Usr.Application.Contracts.Consts;
 
 namespace Adnc.Usr.Application.Services
 {
     public class DeptAppService : AbstractAppService, IDeptAppService
     {
-        private readonly IEasyCachingProvider _cache;
         private readonly IEfRepository<SysDept> _deptRepository;
         private readonly UsrManager _usrManager;
+        private readonly CacheService _cacheService;
 
-        public DeptAppService( IEasyCachingProviderFactory cacheFactory
-            , IEfRepository<SysDept> deptRepository
-            , UsrManager usrManager)
+        public DeptAppService(IEfRepository<SysDept> deptRepository
+            , UsrManager usrManager
+            , CacheService cacheService)
         {
-            _cache = cacheFactory.GetCachingProvider(EasyCachingConsts.RemoteCaching);
             _deptRepository = deptRepository;
             _usrManager = usrManager;
+            _cacheService = cacheService;
         }
 
         public async Task<AppSrvResult> DeleteAsync(long Id)
         {
-            //var depts1 = (await _locaCahce.GetAsync<List<DeptNodeDto>>(EasyCachingConsts.DetpListCacheKey)).Value;
-            //var depts2 = (await _redisCache.GetAsync<List<DeptNodeDto>>(EasyCachingConsts.DetpListCacheKey)).Value;
-            //var depts3 = (await _cache.GetAsync<List<DeptNodeDto>>(EasyCachingConsts.DetpListCacheKey)).Value;
             var dept = await _deptRepository.FindAsync(Id);
             var deletingPids = $"{dept.Pids}[{Id}],";
             await _deptRepository.DeleteRangeAsync(d => d.Pids.StartsWith(deletingPids) || d.Id == dept.Id);
@@ -47,7 +42,7 @@ namespace Adnc.Usr.Application.Services
         {
             var result = new List<DeptTreeeDto>();
 
-            var depts = await this.GetAllFromCacheAsync();
+            var depts = await _cacheService.GetAllDeptsFromCacheAsync();
             if (!depts.Any())
                 return result;
 
@@ -79,7 +74,7 @@ namespace Adnc.Usr.Application.Services
 
         public async Task<AppSrvResult<long>> CreateAsync(DeptCreationDto input)
         {
-            var isExists = (await GetAllFromCacheAsync()).Exists(x => x.FullName == input.FullName);
+            var isExists = (await _cacheService.GetAllDeptsFromCacheAsync()).Exists(x => x.FullName == input.FullName);
             if (isExists)
                 return Problem(HttpStatusCode.BadRequest, "该部门全称已经存在");
 
@@ -93,11 +88,13 @@ namespace Adnc.Usr.Application.Services
 
         public async Task<AppSrvResult> UpdateAsync(long id, DeptUpdationDto input)
         {
-            var oldDeptDto = (await GetAllFromCacheAsync()).FirstOrDefault(x => x.Id == id);
+            var allDepts = await _cacheService.GetAllDeptsFromCacheAsync();
+
+            var oldDeptDto = allDepts.FirstOrDefault(x => x.Id == id);
             if (oldDeptDto.Pid == 0 && input.Pid > 0)
                 return Problem(HttpStatusCode.BadRequest, "一级单位不能修改等级");
 
-            var isExists = (await GetAllFromCacheAsync()).Exists(x => x.FullName == input.FullName && x.Id != id);
+            var isExists = allDepts.Exists(x => x.FullName == input.FullName && x.Id != id);
             if (isExists)
                 return Problem(HttpStatusCode.BadRequest, "该部门全称已经存在");
 
@@ -125,7 +122,7 @@ namespace Adnc.Usr.Application.Services
 
             if (sysDept.Pid.HasValue && sysDept.Pid.Value > 0)
             {
-                var dept = (await GetAllFromCacheAsync()).FirstOrDefault(x => x.Id == sysDept.Pid.Value);
+                var dept = (await _cacheService.GetAllDeptsFromCacheAsync()).FirstOrDefault(x => x.Id == sysDept.Pid.Value);
                 string pids = dept?.Pids ?? "";
                 sysDept.Pids = $"{pids}[{sysDept.Pid}],";
             }
@@ -135,17 +132,6 @@ namespace Adnc.Usr.Application.Services
                 sysDept.Pids = "[0],";
             }
             return sysDept;
-        }
-
-        public async Task<List<DeptDto>> GetAllFromCacheAsync()
-        {
-            var cahceValue = await _cache.GetAsync(EasyCachingConsts.DetpListCacheKey, async() =>
-            {
-                var allDepts = await _deptRepository.GetAll(writeDb:true).OrderBy(x=>x.Ordinal).ToListAsync();
-                return Mapper.Map<List<DeptDto>>(allDepts);
-            }, TimeSpan.FromSeconds(EasyCachingConsts.OneYear));
-
-            return cahceValue.Value;
         }
 
         public async Task<dynamic[]> GetSimpleListAsync()

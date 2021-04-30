@@ -1,21 +1,18 @@
-﻿using Castle.DynamicProxy;
-using EasyCaching.Core;
-using EasyCaching.Core.Configurations;
-using EasyCaching.Core.Interceptor;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Castle.DynamicProxy;
+using Microsoft.Extensions.Logging;
+using Adnc.Infra.Core.Interceptor;
 
 namespace Adnc.Infra.Caching.Interceptor.Castle
 {
     /// <summary>
     /// Easycaching interceptor.
     /// </summary>
-    public class EasyCachingInterceptor : IInterceptor
+    public class CachingInterceptor : IInterceptor
     {
         /// <summary>
         /// The key generator.
@@ -23,24 +20,14 @@ namespace Adnc.Infra.Caching.Interceptor.Castle
         private readonly IEasyCachingKeyGenerator _keyGenerator;
 
         /// <summary>
-        /// The cache provider factory.
+        /// The redis cache provider.
         /// </summary>
-        private readonly IEasyCachingProviderFactory _cacheProviderFactory;
-
-        /// <summary>
-        /// The hybrid caching provider.
-        /// </summary>
-        public IHybridCachingProvider _hybridCachingProvider;
-
-        /// <summary>
-        /// Get or set the options
-        /// </summary>
-        public IOptions<EasyCachingInterceptorOptions> _options { get; set; }
+        private readonly IRedisDistributedCache _cacheProvider;
 
         /// <summary>
         /// logger
         /// </summary>
-        public ILogger<EasyCachingInterceptor> _logger;
+        public ILogger<CachingInterceptor> _logger;
         /// <summary>
         /// The typeof task result method.
         /// </summary>
@@ -56,23 +43,19 @@ namespace Adnc.Infra.Caching.Interceptor.Castle
         /// <summary>
         /// Initializes a new instance of the <see cref="T:EasyCaching.Interceptor.Castle.EasyCachingInterceptor"/> class.
         /// </summary>
-        /// <param name="cacheProviderFactory">Cache provider factory.</param>
+        /// <param name="cacheProvider">Cache provider .</param>
         /// <param name="keyGenerator">Key generator.</param>
         /// <param name="options">Options.</param>
         /// <param name="logger">Logger.</param>
         /// <param name="hybridCachingProvider">Hybrid caching provider.</param>
-        public EasyCachingInterceptor(
-            IEasyCachingProviderFactory cacheProviderFactory
+        public CachingInterceptor(
+            IRedisDistributedCache cacheProvider
             , IEasyCachingKeyGenerator keyGenerator
-            , IOptions<EasyCachingInterceptorOptions> options
-            , ILogger<EasyCachingInterceptor> logger = null
-            , IHybridCachingProvider hybridCachingProvider = null)
+            , ILogger<CachingInterceptor> logger = null)
         {
-            _options = options;
-            _cacheProviderFactory = cacheProviderFactory;
+            _cacheProvider = cacheProvider;
             _keyGenerator = keyGenerator;
             _logger = logger;
-            _hybridCachingProvider = hybridCachingProvider;
         }
 
         /// <summary>
@@ -107,7 +90,7 @@ namespace Adnc.Infra.Caching.Interceptor.Castle
         {
             var serviceMethod = invocation.Method ?? invocation.MethodInvocationTarget;
 
-            if (GetMethodAttributes(serviceMethod).FirstOrDefault(x => typeof(EasyCachingAbleAttribute).IsAssignableFrom(x.GetType())) is EasyCachingAbleAttribute attribute)
+            if (GetMethodAttributes(serviceMethod).FirstOrDefault(x => typeof(CachingAbleAttribute).IsAssignableFrom(x.GetType())) is CachingAbleAttribute attribute)
             {
                 var returnType = serviceMethod.IsReturnTask()
                         ? serviceMethod.ReturnType.GetGenericArguments().First()
@@ -122,10 +105,6 @@ namespace Adnc.Infra.Caching.Interceptor.Castle
                 var isAvailable = true;
                 try
                 {
-                    dynamic _cacheProvider = _hybridCachingProvider;
-                    if (!attribute.IsHybridProvider)
-                        _cacheProvider = _cacheProviderFactory.GetCachingProvider(attribute.CacheProviderName ?? _options.Value.CacheProviderName);
-
                     cacheValue = _cacheProvider.GetAsync(cacheKey, returnType).GetAwaiter().GetResult();
                 }
                 catch (Exception ex)
@@ -170,10 +149,6 @@ namespace Adnc.Infra.Caching.Interceptor.Castle
                         // 2. do nothing
                         if (returnValue != null)
                         {
-                            dynamic _cacheProvider = _hybridCachingProvider;
-                            if (!attribute.IsHybridProvider)
-                                _cacheProvider = _cacheProviderFactory.GetCachingProvider(attribute.CacheProviderName ?? _options.Value.CacheProviderName);
-
                             _cacheProvider.Set(cacheKey, returnValue, TimeSpan.FromSeconds(attribute.Expiration));
                         }
                     }
@@ -194,7 +169,7 @@ namespace Adnc.Infra.Caching.Interceptor.Castle
         {
             var serviceMethod = invocation.Method ?? invocation.MethodInvocationTarget;
 
-            if (GetMethodAttributes(serviceMethod).FirstOrDefault(x => typeof(EasyCachingPutAttribute).IsAssignableFrom(x.GetType())) is EasyCachingPutAttribute attribute && invocation.ReturnValue != null)
+            if (GetMethodAttributes(serviceMethod).FirstOrDefault(x => typeof(CachingPutAttribute).IsAssignableFrom(x.GetType())) is CachingPutAttribute attribute && invocation.ReturnValue != null)
             {
                 var cacheKey = string.IsNullOrEmpty(attribute.CacheKey)
                                      ? _keyGenerator.GetCacheKey(serviceMethod, invocation.Arguments, attribute.CacheKeyPrefix)
@@ -205,10 +180,6 @@ namespace Adnc.Infra.Caching.Interceptor.Castle
                     var returnValue = serviceMethod.IsReturnTask()
                            ? invocation.UnwrapAsyncReturnValue().Result
                            : invocation.ReturnValue;
-
-                    dynamic _cacheProvider = _hybridCachingProvider;
-                    if (!attribute.IsHybridProvider)
-                        _cacheProvider = _cacheProviderFactory.GetCachingProvider(attribute.CacheProviderName ?? _options.Value.CacheProviderName);
 
                     _cacheProvider.Set(cacheKey, returnValue, TimeSpan.FromSeconds(attribute.Expiration));
                 }
@@ -229,17 +200,13 @@ namespace Adnc.Infra.Caching.Interceptor.Castle
         {
             var serviceMethod = invocation.Method ?? invocation.MethodInvocationTarget;
 
-            if (GetMethodAttributes(serviceMethod).FirstOrDefault(x => typeof(EasyCachingEvictAttribute).IsAssignableFrom(x.GetType())) is EasyCachingEvictAttribute attribute && attribute.IsBefore == isBefore)
+            if (GetMethodAttributes(serviceMethod).FirstOrDefault(x => typeof(CachingEvictAttribute).IsAssignableFrom(x.GetType())) is CachingEvictAttribute attribute && attribute.IsBefore == isBefore)
             {
                 try
                 {
                     var cacheKey = attribute.CacheKey;
                     var cacheKeys = attribute.CacheKeys;
                     var cacheKeyPrefix = _keyGenerator.GetCacheKeyPrefix(serviceMethod, attribute.CacheKeyPrefix);
-
-                    dynamic _cacheProvider = _hybridCachingProvider;
-                    if (!attribute.IsHybridProvider)
-                        _cacheProvider = _cacheProviderFactory.GetCachingProvider(attribute.CacheProviderName ?? _options.Value.CacheProviderName);
 
                     if (!string.IsNullOrEmpty(cacheKey))
                         _cacheProvider.Remove(cacheKey);

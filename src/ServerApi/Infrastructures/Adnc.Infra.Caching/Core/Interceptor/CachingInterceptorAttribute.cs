@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.Caching.Interceptor.Castle
+﻿namespace Adnc.Infra.Caching.Interceptor
 {
     using System;
 
@@ -6,7 +6,7 @@
     /// Easycaching interceptor attribute.
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, Inherited = true)]
-    public class EasyCachingInterceptorAttribute : Attribute
+    public class CachingInterceptorAttribute : Attribute
     {
         /// <summary>
         /// Gets or sets a value indicating whether is hybrid provider.

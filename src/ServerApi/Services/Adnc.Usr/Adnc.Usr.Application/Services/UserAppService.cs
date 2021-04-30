@@ -20,14 +20,17 @@ namespace Adnc.Usr.Application.Services
         private readonly IEfRepository<SysUser> _userRepository;
         private readonly IDeptAppService _deptAppService;
         private readonly IRoleAppService _roleAppService;
+        private readonly CacheService _cacheService;
 
         public UserAppService(IEfRepository<SysUser> userRepository,
             IDeptAppService deptAppService,
-            IRoleAppService roleAppService)
+            IRoleAppService roleAppService,
+            CacheService cacheService)
         {
             _userRepository = userRepository;
             _deptAppService = deptAppService;
             _roleAppService = roleAppService;
+            _cacheService = cacheService;
         }
 
         public async Task<AppSrvResult> ChangeStatusAsync(long id, int status)
@@ -103,10 +106,10 @@ namespace Adnc.Usr.Application.Services
             if (pageModelDto.RowsCount > 0)
             {
                 var deptIds = pageModelDto.Data.Where(d => d.DeptId != null).Select(d => d.DeptId).Distinct().ToList();
-                var depts = (await _deptAppService.GetAllFromCacheAsync())
+                var depts = (await _cacheService.GetAllDeptsFromCacheAsync())
                             .Where(x => deptIds.Contains(x.Id))
                             .Select(d => new { d.Id, d.FullName });
-                var roles = (await _roleAppService.GetAllFromCacheAsync())
+                var roles = (await _cacheService.GetAllRolesFromCacheAsync())
                             .Select(r => new { r.Id, r.Name });
 
                 foreach (var user in pageModelDto.Data)

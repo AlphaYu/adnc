@@ -11,5 +11,6 @@ namespace Adnc.Usr.Application.Contracts.Consts
         public const string SearchUsersKeyPrefix = "adnc:usr:users";
         public const string SearchOperationLogsKeyPrefix = "adnc:usr:logs";
         public const string RoleAllCacheKey = "adnc:usr:roles";
+        public const string UserLoginInfoKey = "adnc:usr:users:{0}";
     }
 }

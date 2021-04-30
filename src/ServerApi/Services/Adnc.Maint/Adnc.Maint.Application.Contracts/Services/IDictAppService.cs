@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 using Adnc.Maint.Application.Contracts.Dtos;
 using Adnc.Application.Shared.Interceptors;
 using Adnc.Application.Shared.Services;
-using Adnc.Infra.Caching.Interceptor.Castle;
 using Adnc.Maint.Application.Contracts.Consts;
+using Adnc.Infra.Caching.Interceptor;
 
 namespace Adnc.Maint.Application.Contracts.Services
 {
@@ -15,15 +15,15 @@ namespace Adnc.Maint.Application.Contracts.Services
         Task<AppSrvResult<DictDto>> GetAsync(long id);
 
         [OpsLog(LogName = "新增字典")]
-        [EasyCachingEvict(CacheKey = EasyCachingConsts.DictListCacheKey)]
+        [CachingEvict(CacheKey = EasyCachingConsts.DictListCacheKey)]
         Task<AppSrvResult<long>> CreateAsync(DictCreationDto input);
 
         [OpsLog(LogName = "修改字典")]
-        [EasyCachingEvict(CacheKey = EasyCachingConsts.DictListCacheKey)]
+        [CachingEvict(CacheKey = EasyCachingConsts.DictListCacheKey)]
         Task<AppSrvResult> UpdateAsync(long id, DictUpdationDto input);
 
         [OpsLog(LogName = "删除字典")]
-        [EasyCachingEvict(CacheKey = EasyCachingConsts.DictListCacheKey)]
+        [CachingEvict(CacheKey = EasyCachingConsts.DictListCacheKey)]
         Task<AppSrvResult> DeleteAsync(long id);
     }
 }

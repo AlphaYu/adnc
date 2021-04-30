@@ -36,33 +36,33 @@ namespace Microsoft.Extensions.Configuration
             return configuration.GetValue("CorsHosts", string.Empty);
         }
 
-        public static IConfiguration GetConsulSection(this IConfiguration configuration)
+        public static IConfigurationSection GetConsulSection(this IConfiguration configuration)
         {
             return configuration.GetSection("Consul");
         }
 
-        public static IConfiguration GetRabbitMqSection(this IConfiguration configuration)
+        public static IConfigurationSection GetRabbitMqSection(this IConfiguration configuration)
         {
             return configuration.GetSection("RabbitMq");
         }
 
-        public static IConfiguration GetRedisSection(this IConfiguration configuration)
+        public static IConfigurationSection GetRedisSection(this IConfiguration configuration)
         {
             return configuration.GetSection("Redis");
         }
 
 
-        public static IConfiguration GetMysqlSection(this IConfiguration configuration)
+        public static IConfigurationSection GetMysqlSection(this IConfiguration configuration)
         {
             return configuration.GetSection("Mysql");
         }
 
-        public static IConfiguration GetMongoDbSection(this IConfiguration configuration)
+        public static IConfigurationSection GetMongoDbSection(this IConfiguration configuration)
         {
             return configuration.GetSection("MongoDb");
         }
 
-        public static IConfiguration GetJWTSection(this IConfiguration configuration)
+        public static IConfigurationSection GetJWTSection(this IConfiguration configuration)
         {
             return configuration.GetSection("JWT");
         }
