@@ -11,6 +11,8 @@ namespace Adnc.Usr.Application.Contracts.Dtos
     /// </summary>
     public class UserRefreshTokenDto : IInputDto
     {
+        public long Id { get; set; }
+
         /// <summary>
         /// 账号
         /// </summary>

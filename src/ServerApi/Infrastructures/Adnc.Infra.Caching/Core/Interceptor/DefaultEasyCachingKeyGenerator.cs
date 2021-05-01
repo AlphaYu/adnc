@@ -26,7 +26,7 @@ namespace Adnc.Infra.Core.Interceptor
         public string GetCacheKey(MethodInfo methodInfo, object[] args, string prefix)
         {
             var cachingArgs = methodInfo.GetParameters().Where(x => x.GetCustomAttribute<CachingParamAttribute>() != null)
-                                                                  .Select(x => $"{x.Name}-{args[x.Position]}").ToArray();
+                                                                  .Select(x => $"{args[x.Position]}").ToArray();
             var methodArguments = cachingArgs?.Any() == true
                                       ? cachingArgs.Select(ParameterCacheKeys.GenerateCacheKey)
                                       : new[] { "0" };

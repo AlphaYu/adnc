@@ -21,6 +21,13 @@ namespace Adnc.Usr.Application.Contracts.Services
         Task<AppSrvResult<List<DeptTreeDto>>> GetTreeListAsync();
 
         /// <summary>
+        /// 精简的部门树结构
+        /// </summary>
+        /// <returns></returns>
+        [CachingAble(CacheKey = EasyCachingConsts.DetpSimpleTreeListCacheKey, Expiration = EasyCachingConsts.OneYear)]
+        Task<List<DeptSimpleTreeDto>> GetSimpleTreeListAsync();
+
+        /// <summary>
         /// 新增部门
         /// </summary>
         /// <param name="input"></param>
@@ -47,12 +54,5 @@ namespace Adnc.Usr.Application.Contracts.Services
         [OpsLog(LogName = "删除部门")]
         [CachingEvict(CacheKeyPrefix = EasyCachingConsts.DeptCacheKeyPrefix, IsAll = true)]
         Task<AppSrvResult> DeleteAsync([CachingParam] long Id);
-
-        /// <summary>
-        /// 精简的部门树结构
-        /// </summary>
-        /// <returns></returns>
-        [CachingAble(CacheKey = EasyCachingConsts.DetpSimpleTreeListCacheKey, Expiration = EasyCachingConsts.OneYear)]
-        Task<List<DeptSimpleTreeDto>> GetSimpleTreeListAsync();
     }
 }

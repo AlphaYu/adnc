@@ -184,7 +184,7 @@ namespace Adnc.Usr.Application.Services
             return result;
         }
 
-        public async Task<AppSrvResult<dynamic>> GetMenuTreeListByRoleIdAsync(long roleId)
+        public async Task<AppSrvResult<MenuTreeDto>> GetMenuTreeListByRoleIdAsync(long roleId)
         {
             var menuIds = (await _cacheService.GetAllRelationsFromCacheAsync()).Where(x => x.RoleId.Value == roleId).Select(r => r.MenuId.Value) ?? new List<long>();
             List<ZTreeNodeDto<long, dynamic>> roleTreeList = new List<ZTreeNodeDto<long, dynamic>>();
@@ -223,10 +223,10 @@ namespace Adnc.Usr.Application.Services
                 roleTreeList.RemoveAll(x => x.Id == group.Key);
             }
 
-            return new
+            return new MenuTreeDto
             {
-                treeData = nodes.Where(x => x.PID == 0),
-                checkedIds = roleTreeList.Where(x => x.Checked && x.PID != 0).Select(x => x.Id)
+                TreeData = nodes.Where(x => x.PID == 0),
+                CheckedIds = roleTreeList.Where(x => x.Checked && x.PID != 0).Select(x => x.Id)
             };
         }
 

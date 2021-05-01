@@ -9,6 +9,9 @@ using Adnc.Usr.Application.Contracts.Consts;
 
 namespace Adnc.Usr.Application.Contracts.Services
 {
+    /// <summary>
+    /// 角色服务
+    /// </summary>
     public interface IRoleAppService : IAppService
     {
         Task<AppSrvResult<PageModelDto<RoleDto>>> GetPagedAsync(RolePagedSearchDto input);
@@ -31,7 +34,7 @@ namespace Adnc.Usr.Application.Contracts.Services
         [CachingEvict(CacheKeys = new[] { EasyCachingConsts.MenuRelationCacheKey, EasyCachingConsts.MenuCodesCacheKey })]
         Task<AppSrvResult> SetPermissonsAsync(RoleSetPermissonsDto input);
 
-        ValueTask<AppSrvResult<bool>> ExistPermissionsAsync(RolePermissionsCheckerDto input);
+        Task<AppSrvResult<bool>> ExistPermissionsAsync(RolePermissionsCheckerDto input);
 
         Task<AppSrvResult<List<string>>> GetPermissionsAsync(RolePermissionsCheckerDto input);
     }

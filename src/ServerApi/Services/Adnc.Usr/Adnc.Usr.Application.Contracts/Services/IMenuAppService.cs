@@ -8,13 +8,16 @@ using Adnc.Usr.Application.Contracts.Consts;
 
 namespace Adnc.Usr.Application.Contracts.Services
 {
+    /// <summary>
+    /// 菜单/权限服务
+    /// </summary>
     public interface IMenuAppService : IAppService
     {
         Task<AppSrvResult<List<MenuNodeDto>>> GetlistAsync();
 
         Task<AppSrvResult<List<MenuRouterDto>>> GetMenusForRouterAsync(long[] roleIds);
 
-        Task<AppSrvResult<dynamic>> GetMenuTreeListByRoleIdAsync(long roleId);
+        Task<AppSrvResult<MenuTreeDto>> GetMenuTreeListByRoleIdAsync(long roleId);
 
         [OpsLog(LogName = "新增菜单")]
         [CachingEvict(CacheKeys = new[] { EasyCachingConsts.MenuListCacheKey, EasyCachingConsts.MenuRelationCacheKey, EasyCachingConsts.MenuCodesCacheKey })]

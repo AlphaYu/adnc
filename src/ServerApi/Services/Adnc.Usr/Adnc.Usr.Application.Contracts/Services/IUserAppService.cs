@@ -19,17 +19,21 @@ namespace Adnc.Usr.Application.Contracts.Services
         Task<AppSrvResult<long>> CreateAsync(UserCreationDto input);
 
         [OpsLog(LogName = "修改用户")]
-        Task<AppSrvResult> UpdateAsync(long id, UserUpdationDto input);
+        [CachingEvict(CacheKeyPrefix = EasyCachingConsts.UserLoginInfoKeyPrefix)]
+        Task<AppSrvResult> UpdateAsync([CachingParam]long id, UserUpdationDto input);
 
         [OpsLog(LogName = "删除用户")]
-        Task<AppSrvResult> DeleteAsync(long id);
+        [CachingEvict(CacheKeyPrefix = EasyCachingConsts.UserLoginInfoKeyPrefix)]
+        Task<AppSrvResult> DeleteAsync([CachingParam] long id);
 
         [OpsLog(LogName = "设置用户角色")]
-        [CachingEvict(CacheKeys = new[] { EasyCachingConsts.MenuRelationCacheKey, EasyCachingConsts.MenuCodesCacheKey })]
-        Task<AppSrvResult> SetRoleAsync(long id,UserSetRoleDto input);
+        //[CachingEvict(CacheKeys = new[] { EasyCachingConsts.MenuRelationCacheKey, EasyCachingConsts.MenuCodesCacheKey })]
+        //[CachingEvict(CacheKeyPrefix = EasyCachingConsts.UserLoginInfoKeyPrefix)]
+        Task<AppSrvResult> SetRoleAsync([CachingParam] long id,UserSetRoleDto input);
 
         [OpsLog(LogName = "修改用户状态")]
-        Task<AppSrvResult> ChangeStatusAsync(long id, int status);
+        [CachingEvict(CacheKeyPrefix = EasyCachingConsts.UserLoginInfoKeyPrefix)]
+        Task<AppSrvResult> ChangeStatusAsync([CachingParam] long id, int status);
 
         [OpsLog(LogName = "批量修改用户状态")]
         Task<AppSrvResult> ChangeStatusAsync(UserChangeStatusDto input);

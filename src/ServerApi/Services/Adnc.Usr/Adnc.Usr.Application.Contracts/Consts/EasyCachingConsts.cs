@@ -16,8 +16,7 @@ namespace Adnc.Usr.Application.Contracts.Consts
         public const string DetpTreeListCacheKey = "adnc:usr:depts:tree";
         public const string DetpSimpleTreeListCacheKey = "adnc:usr:depts:tree:simple";
 
-        public const string UserLoginInfoKey = "adnc:usr:users:logininfo:{0}";
-        public const string UserLoginInfoKeyPrefix = "adnc:usr:users:logininfo";
+        public const string UserLoginInfoKeyPrefix = "adnc:usr:users:logininfo:{0}";
 
         public const string SearchUsersKeyPrefix = "adnc:usr:users";
         public const string SearchOperationLogsKeyPrefix = "adnc:usr:logs";

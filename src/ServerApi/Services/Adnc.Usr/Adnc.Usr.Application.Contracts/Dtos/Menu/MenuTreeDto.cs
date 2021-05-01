@@ -1,9 +1,6 @@
-﻿using Adnc.Usr.Application.Contracts.Dtos;
-using Adnc.Usr.Application.Contracts.Services;
-using Adnc.Application.Shared.Dtos;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using Adnc.Application.Shared.Dtos;
 
 namespace Adnc.Usr.Application.Contracts.Dtos
 {

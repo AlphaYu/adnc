@@ -25,7 +25,6 @@ namespace Adnc.Usr.Application.Services
 
         public RoleAppService(IEfRepository<SysRole> roleRepository,
             IEfRepository<SysUser> userRepository,
-            IEfRepository<SysRelation> relationRepository,
             UsrManager usrManager,
             CacheService cacheService)
         {
@@ -137,7 +136,7 @@ namespace Adnc.Usr.Application.Services
             return AppSrvResult();
         }
 
-        public async ValueTask<AppSrvResult<bool>> ExistPermissionsAsync(RolePermissionsCheckerDto input)
+        public async Task<AppSrvResult<bool>> ExistPermissionsAsync(RolePermissionsCheckerDto input)
         {
             var codes = await this.GetPermissionsAsync(input);
 
@@ -159,7 +158,5 @@ namespace Adnc.Usr.Application.Services
 
             return null;
         }
-
-
     }
 }

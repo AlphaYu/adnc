@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Adnc.Application.Shared.Services;
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Infra.Caching;
+using Adnc.Infra.Caching.Core;
 using Adnc.Usr.Application.Contracts.Consts;
 using Adnc.Usr.Application.Contracts.Dtos;
 using Adnc.Usr.Core.Entities;
@@ -96,9 +97,9 @@ namespace Adnc.Usr.Application.Services
             return cahceValue.Value;
         }
 
-        internal async Task<UserValidateDto> GetUserValidateInfoFromCacheAsync(string account)
+        internal async Task<UserValidateDto> GetUserValidateInfoFromCacheAsync(long Id)
         {
-            var cacheKey = string.Format(EasyCachingConsts.UserLoginInfoKey, account.ToLower());
+            var cacheKey = string.Format(EasyCachingConsts.UserLoginInfoKeyPrefix, Id);
 
             var cacheValue = await _cache.GetAsync(cacheKey, async () =>
             {
@@ -119,10 +120,27 @@ namespace Adnc.Usr.Application.Services
                     Name = x.Name
                    ,
                     RoleIds = x.RoleIds
-                }, x => x.Account == account);
-            }, TimeSpan.FromSeconds(EasyCachingConsts.OneWeek));
+                }, x => x.Id == Id);
+            }, TimeSpan.FromSeconds(EasyCachingConsts.OneDay));
 
             return cacheValue.Value;
+        }
+
+        internal async Task SetValidateInfoToCacheAsync(UserValidateDto value)
+        {
+            var cacheKey = string.Format(EasyCachingConsts.UserLoginInfoKeyPrefix, value.Id);
+            await _cache.SetAsync(cacheKey, value, TimeSpan.FromSeconds(EasyCachingConsts.OneDay));
+        }
+
+        internal async Task RemoveCachesAsync(IEnumerable<string> cacheKeys, Func<Task> dataOperater)
+        {
+            var preRemoveKey = GetPreRemoveKey(cacheKeys);
+            await _cache.SetAsync(preRemoveKey, cacheKeys, TimeSpan.FromSeconds(EasyCachingConsts.OneDay));
+
+            await dataOperater();
+
+            var needRemovedKeys = cacheKeys.Append(preRemoveKey);
+            await _cache.RemoveAllAsync(needRemovedKeys);
         }
     }
 }

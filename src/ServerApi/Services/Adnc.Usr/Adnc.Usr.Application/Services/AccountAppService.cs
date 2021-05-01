@@ -18,11 +18,11 @@ namespace Adnc.Usr.Application.Services
 {
     public class AccountAppService : AbstractAppService, IAccountAppService
     {
-        private readonly CacheService _cacheService;
         private readonly IEfRepository<SysUser> _userRepository;
         private readonly IEfRepository<SysRole> _roleRepository;
         private readonly IEfRepository<SysMenu> _menuRepository;
         private readonly RabbitMqProducer _mqProducer;
+        private readonly CacheService _cacheService;
 
         public AccountAppService(IEfRepository<SysUser> userRepository
            , IEfRepository<SysRole> roleRepository
@@ -95,19 +95,30 @@ namespace Adnc.Usr.Application.Services
 
         public async Task<AppSrvResult> UpdatePasswordAsync(long id, UserChangePwdDto input)
         {
-            var user = await _userRepository.FetchAsync(x => new UserValidateDto { Id = id, Account = x.Account, Password = x.Password, Salt = x.Salt }, x => x.Id == id);
-            return await this.UpdatePasswordAsync(user, input);
-        }
-
-        public async Task<AppSrvResult> UpdatePasswordAsync(string account, UserChangePwdDto input)
-        {
-            var user = await _cacheService.GetUserValidateInfoFromCacheAsync(account);
+            var user = await _cacheService.GetUserValidateInfoFromCacheAsync(id);
             return await this.UpdatePasswordAsync(user, input);
         }
 
         public async Task<AppSrvResult<UserValidateDto>> LoginAsync(UserLoginDto inputDto)
         {
-            var user = (await _cacheService.GetUserValidateInfoFromCacheAsync(inputDto.Account));
+            var user = await _userRepository.FetchAsync(x => new UserValidateDto()
+            {
+                Id = x.Id
+                ,
+                Account = x.Account
+                ,
+                Password = x.Password
+                 ,
+                Salt = x.Salt
+                 ,
+                Status = x.Status
+                 ,
+                Email = x.Email
+                 ,
+                Name = x.Name
+                    ,
+                RoleIds = x.RoleIds
+            }, x => x.Account == inputDto.Account);
 
             if (user == null)
                 return Problem(HttpStatusCode.NotFound, "用户名或密码错误");
@@ -164,6 +175,8 @@ namespace Adnc.Usr.Application.Services
                 return problem;
             }
 
+            await _cacheService.SetValidateInfoToCacheAsync(user);
+
             log.Message = "登录成功";
             log.StatusCode = (int)HttpStatusCode.Created;
             log.Succeed = true;
@@ -172,9 +185,9 @@ namespace Adnc.Usr.Application.Services
             return user;
         }
 
-        public async Task<AppSrvResult<UserValidateDto>> GetUserValidateInfoAsync(string account)
+        public async Task<AppSrvResult<UserValidateDto>> GetUserValidateInfoAsync(long id)
         {
-            var userValidateInfo = await _cacheService.GetUserValidateInfoFromCacheAsync(account);
+            var userValidateInfo = await _cacheService.GetUserValidateInfoFromCacheAsync(id);
 
             if (userValidateInfo == null)
                 return Problem(HttpStatusCode.NotFound, "用户不存在,参数信息不完整");
@@ -193,11 +206,7 @@ namespace Adnc.Usr.Application.Services
 
             var newPwdString = HashHelper.GetHashedString(HashType.MD5, input.Password, user.Salt);
 
-            var cacheKey = string.Format(EasyCachingConsts.UserLoginInfoKey, user.Account.ToLower());
-
-            await _cacheService.PreRemove(cacheKey);
             await _userRepository.UpdateAsync(new SysUser { Id = user.Id, Password = newPwdString }, UpdatingProps<SysUser>(x => x.Password));
-            await _cacheService.PostRemove(cacheKey);
 
             return AppSrvResult();
         }

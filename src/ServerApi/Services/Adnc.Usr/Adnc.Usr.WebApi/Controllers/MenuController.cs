@@ -58,7 +58,7 @@ namespace Adnc.Usr.WebApi.Controllers
         /// <returns></returns>
         [HttpGet("{roleId}/menutree")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<dynamic>> GetMenuTreeListByRoleIdAsync([FromRoute] long roleId)
+        public async Task<ActionResult<MenuTreeDto>> GetMenuTreeListByRoleIdAsync([FromRoute] long roleId)
         {
             return Result(await _menuService.GetMenuTreeListByRoleIdAsync(roleId));
         }

@@ -29,28 +29,19 @@ namespace Adnc.Usr.Application.Contracts.Services
         /// <summary>
         /// 修改密码
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="input"></param>
-        /// <returns></returns>
-        [OpsLog(LogName = "修改密码")]
-        Task<AppSrvResult> UpdatePasswordAsync(long id, UserChangePwdDto input);
-
-        /// <summary>
-        /// 修改密码
-        /// </summary>
         /// <param name="account"></param>
         /// <param name="input"></param>
         /// <returns></returns>
         [OpsLog(LogName = "修改密码")]
         [CachingEvict(CacheKeyPrefix =EasyCachingConsts.UserLoginInfoKeyPrefix)]
-        Task<AppSrvResult> UpdatePasswordAsync([CachingParam]string account, UserChangePwdDto input);
+        Task<AppSrvResult> UpdatePasswordAsync([CachingParam] long id, UserChangePwdDto input);
 
         /// <summary>
         /// 获取登录信息
         /// </summary>
-        /// <param name="account"></param>
+        /// <param name="id"></param>
         /// <returns></returns>
         [CachingAble(CacheKeyPrefix = EasyCachingConsts.UserLoginInfoKeyPrefix)]
-        Task<AppSrvResult<UserValidateDto>> GetUserValidateInfoAsync([CachingParam] string account);
+        Task<AppSrvResult<UserValidateDto>> GetUserValidateInfoAsync([CachingParam] long id);
     }
 }

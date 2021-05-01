@@ -91,7 +91,7 @@ namespace Adnc.Usr.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<UserTokenInfoDto>> RefreshAccessTokenAsync([FromBody] UserRefreshTokenDto input)
         {
-            var result = await _accountService.GetUserValidateInfoAsync(input.Account);
+            var result = await _accountService.GetUserValidateInfoAsync(input.Id);
 
             if (result.IsSuccess)
                 return Ok(new UserTokenInfoDto
@@ -112,7 +112,7 @@ namespace Adnc.Usr.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult> ChangePassword([FromBody] UserChangePwdDto input)
         {
-            return Result(await _accountService.UpdatePasswordAsync(_userContext.Account, input));
+            return Result(await _accountService.UpdatePasswordAsync(_userContext.Id, input));
         }
     }
 }

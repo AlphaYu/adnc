@@ -6,6 +6,8 @@ namespace Adnc.Application.Shared
 {
     public class BaseEasyCachingConsts
     {
+        public const string LinkChar = ":";
+
         public const int OneYear = 365 * 24 * 60 * 60;
         public const int OneMonth = 30 * 24 * 60 * 60;
         public const int OneWeek = 7 * 24 * 60 * 60;

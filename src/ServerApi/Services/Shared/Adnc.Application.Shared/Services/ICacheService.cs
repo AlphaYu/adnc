@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Adnc.Infra.Caching;
+using Adnc.Infra.Caching.Core;
 using Adnc.Infra.Mapper;
 
 namespace Adnc.Application.Shared.Services
@@ -26,26 +27,9 @@ namespace Adnc.Application.Shared.Services
 
         public IObjectMapper Mapper { get; set; }
 
-        public async Task PreRemove(params string[] removingKeys)
+        public string GetPreRemoveKey(IEnumerable<string> cacheKeys)
         {
-            var keys = string.Join(",", removingKeys);
-            var preCacheKey = string.Format(BaseEasyCachingConsts.PreRemoveKey, keys.GetHashCode());
-            await _cache.SetAsync(preCacheKey, keys, TimeSpan.FromSeconds(BaseEasyCachingConsts.OneDay));
-            return;
-        }
-
-        public async Task PostRemove(params string[] removingKeys)
-        {
-            var keys = string.Join(",", removingKeys);
-            var preCacheKey = string.Format(BaseEasyCachingConsts.PreRemoveKey, keys.GetHashCode());
-
-            var keysList = new List<string>(removingKeys)
-            {
-                preCacheKey
-            };
-
-            await _cache.RemoveAllAsync(keysList);
-            return;
+            return $"{CachingConstValue.PreRemoveKey}{BaseEasyCachingConsts.LinkChar}{string.Join(",", cacheKeys).GetHashCode()}";
         }
     }
 }
