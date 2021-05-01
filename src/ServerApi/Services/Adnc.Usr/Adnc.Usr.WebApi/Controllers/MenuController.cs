@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Linq;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -19,48 +20,16 @@ namespace Adnc.Usr.WebApi.Controllers
     public class MenuController : AdncControllerBase
     {
         private readonly IMenuAppService _menuService;
+        private readonly IAccountAppService _accountService;
         private readonly IUserContext _userContext;
 
         public MenuController(IMenuAppService menuService
+            , IAccountAppService accountService
             , IUserContext userContext)
         {
             _menuService = menuService;
+            _accountService = accountService;
             _userContext = userContext;
-        }
-
-        /// <summary>
-        /// 获取菜单树
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet()]
-        [Permission("menuList")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<List<MenuNodeDto>>> GetlistAsync()
-        {
-            return Result(await _menuService.GetlistAsync());
-        }
-
-        /// <summary>
-        /// 获取侧边栏路由菜单
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet("routers")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<List<MenuRouterDto>>> GetMenusForRouterAsync()
-        {
-            return Result(await _menuService.GetMenusForRouterAsync(_userContext.RoleIds));
-        }
-
-        /// <summary>
-        /// 根据角色获取菜单树
-        /// </summary>
-        /// <param name="roleId">角色ID</param>
-        /// <returns></returns>
-        [HttpGet("{roleId}/menutree")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<MenuTreeDto>> GetMenuTreeListByRoleIdAsync([FromRoute] long roleId)
-        {
-            return Result(await _menuService.GetMenuTreeListByRoleIdAsync(roleId));
         }
 
         /// <summary>
@@ -101,6 +70,43 @@ namespace Adnc.Usr.WebApi.Controllers
         public async Task<ActionResult> DeleteAsync([FromRoute] long id)
         {
             return Result(await _menuService.DeleteAsync(id));
+        }
+
+        /// <summary>
+        /// 获取菜单树
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet()]
+        [Permission("menuList")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<List<MenuNodeDto>>> GetlistAsync()
+        {
+            return await _menuService.GetlistAsync();
+        }
+
+        /// <summary>
+        /// 获取侧边栏路由菜单
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("routers")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<List<MenuRouterDto>>> GetMenusForRouterAsync()
+        {
+            var userValidateInfo = await _accountService.GetUserValidateInfoAsync(_userContext.Id);
+            var roleIds = userValidateInfo.RoleIds.Split(",", System.StringSplitOptions.RemoveEmptyEntries).ToList();
+            return await _menuService.GetMenusForRouterAsync(roleIds.Select(x=>long.Parse(x)));
+        }
+
+        /// <summary>
+        /// 根据角色获取菜单树
+        /// </summary>
+        /// <param name="roleId">角色ID</param>
+        /// <returns></returns>
+        [HttpGet("{roleId}/menutree")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<MenuTreeDto>> GetMenuTreeListByRoleIdAsync([FromRoute] long roleId)
+        {
+            return await _menuService.GetMenuTreeListByRoleIdAsync(roleId);
         }
     }
 }

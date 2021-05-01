@@ -18,9 +18,7 @@ namespace Adnc.Usr.Application.Services
         private readonly IEfRepository<SysMenu> _menuRepository;
         private readonly CacheService _cacheService;
 
-        public MenuAppService(IEfRepository<SysMenu> menuRepository,
-            IEfRepository<SysRelation> relationRepository,
-            CacheService cacheService)
+        public MenuAppService(IEfRepository<SysMenu> menuRepository, CacheService cacheService)
         {
             _menuRepository = menuRepository;
             _cacheService = cacheService;
@@ -95,7 +93,7 @@ namespace Adnc.Usr.Application.Services
             return AppSrvResult();
         }
 
-        public async Task<AppSrvResult<List<MenuNodeDto>>> GetlistAsync()
+        public async Task<List<MenuNodeDto>> GetlistAsync()
         {
             var result = new List<MenuNodeDto>();
 
@@ -128,7 +126,7 @@ namespace Adnc.Usr.Application.Services
             return result;
         }
 
-        public async Task<AppSrvResult<List<MenuRouterDto>>> GetMenusForRouterAsync(long[] roleIds)
+        public async Task<List<MenuRouterDto>> GetMenusForRouterAsync(IEnumerable<long> roleIds)
         {
             var result = new List<MenuRouterDto>();
             //所有菜单
@@ -184,7 +182,7 @@ namespace Adnc.Usr.Application.Services
             return result;
         }
 
-        public async Task<AppSrvResult<MenuTreeDto>> GetMenuTreeListByRoleIdAsync(long roleId)
+        public async Task<MenuTreeDto> GetMenuTreeListByRoleIdAsync(long roleId)
         {
             var menuIds = (await _cacheService.GetAllRelationsFromCacheAsync()).Where(x => x.RoleId.Value == roleId).Select(r => r.MenuId.Value) ?? new List<long>();
             List<ZTreeNodeDto<long, dynamic>> roleTreeList = new List<ZTreeNodeDto<long, dynamic>>();

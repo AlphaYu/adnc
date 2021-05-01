@@ -38,18 +38,6 @@ namespace Adnc.Usr.WebApi.Controllers
         }
 
         /// <summary>
-        /// 获取部门列表
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet()]
-        [Permission("deptList")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<List<DeptTreeDto>>> GetListAsync()
-        {
-            return Result(await _deptService.GetTreeListAsync());
-        }
-
-        /// <summary>
         /// 新增部门
         /// </summary>
         /// <param name="input">部门</param>
@@ -74,6 +62,18 @@ namespace Adnc.Usr.WebApi.Controllers
         public async Task<ActionResult<long>> UpdateAsync([FromRoute] long id, [FromBody] DeptUpdationDto input)
         {
             return Result(await _deptService.UpdateAsync(id, input));
+        }
+
+        /// <summary>
+        /// 获取部门列表
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet()]
+        [Permission("deptList")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<List<DeptTreeDto>>> GetListAsync()
+        {
+            return await _deptService.GetTreeListAsync();
         }
     }
 }

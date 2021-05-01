@@ -14,27 +14,63 @@ namespace Adnc.Usr.Application.Contracts.Services
     /// </summary>
     public interface IRoleAppService : IAppService
     {
+        /// <summary>
+        /// 新增角色
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         [OpsLog(LogName = "新增角色")]
         [CachingEvict(CacheKey = EasyCachingConsts.RoleAllCacheKey)]
         Task<AppSrvResult<long>> CreateAsync(RoleCreationDto input);
 
+        /// <summary>
+        /// 修改角色
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="input"></param>
+        /// <returns></returns>
         [OpsLog(LogName = "修改角色")]
         [CachingEvict(CacheKey = EasyCachingConsts.RoleAllCacheKey)]
         Task<AppSrvResult> UpdateAsync(long id, RoleUpdationDto input);
 
+        /// <summary>
+        /// 删除角色
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
         [OpsLog(LogName = "删除角色")]
         [CachingEvict(CacheKeys = new[] { EasyCachingConsts.MenuRelationCacheKey, EasyCachingConsts.MenuCodesCacheKey, EasyCachingConsts.RoleAllCacheKey })]
         Task<AppSrvResult> DeleteAsync(long Id);
 
+        /// <summary>
+        /// 设置角色权限
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         [OpsLog(LogName = "设置角色权限")]
         [CachingEvict(CacheKeys = new[] { EasyCachingConsts.MenuRelationCacheKey, EasyCachingConsts.MenuCodesCacheKey })]
         Task<AppSrvResult> SetPermissonsAsync(RoleSetPermissonsDto input);
 
+        /// <summary>
+        /// 获取当前用户是否拥有指定权限
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="permissions"></param>
+        /// <returns></returns>
         Task<List<string>> GetPermissionsAsync(long userId, IEnumerable<string> permissions);
 
+        /// <summary>
+        /// 获取用户拥有的角色
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         Task<RoleTreeDto> GetRoleTreeListByUserIdAsync(long userId);
 
+        /// <summary>
+        /// 获取角色列表
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         Task<PageModelDto<RoleDto>> GetPagedAsync(RolePagedSearchDto input);
-
     }
 }

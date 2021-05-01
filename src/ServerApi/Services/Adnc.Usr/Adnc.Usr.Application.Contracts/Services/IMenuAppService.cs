@@ -13,22 +13,52 @@ namespace Adnc.Usr.Application.Contracts.Services
     /// </summary>
     public interface IMenuAppService : IAppService
     {
-        Task<AppSrvResult<List<MenuNodeDto>>> GetlistAsync();
-
-        Task<AppSrvResult<List<MenuRouterDto>>> GetMenusForRouterAsync(long[] roleIds);
-
-        Task<AppSrvResult<MenuTreeDto>> GetMenuTreeListByRoleIdAsync(long roleId);
-
+        /// <summary>
+        /// 新增菜单
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         [OpsLog(LogName = "新增菜单")]
         [CachingEvict(CacheKeys = new[] { EasyCachingConsts.MenuListCacheKey, EasyCachingConsts.MenuRelationCacheKey, EasyCachingConsts.MenuCodesCacheKey })]
         Task<AppSrvResult<long>> CreateAsync(MenuCreationDto input);
 
+        /// <summary>
+        /// 修改菜单
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="input"></param>
+        /// <returns></returns>
         [OpsLog(LogName = "修改菜单")]
         [CachingEvict(CacheKeys = new[] { EasyCachingConsts.MenuListCacheKey, EasyCachingConsts.MenuRelationCacheKey, EasyCachingConsts.MenuCodesCacheKey })]
         Task<AppSrvResult> UpdateAsync(long id,MenuUpdationDto input);
 
+        /// <summary>
+        /// 删除菜单
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [OpsLog(LogName = "删除菜单")]
         [CachingEvict(CacheKeys = new[] { EasyCachingConsts.MenuListCacheKey, EasyCachingConsts.MenuRelationCacheKey, EasyCachingConsts.MenuCodesCacheKey })]
         Task<AppSrvResult> DeleteAsync(long id);
+
+        /// <summary>
+        /// 获取菜单列表
+        /// </summary>
+        /// <returns></returns>
+        Task<List<MenuNodeDto>> GetlistAsync();
+
+        /// <summary>
+        /// 获取左侧路由菜单
+        /// </summary>
+        /// <param name="roleIds"></param>
+        /// <returns></returns>
+        Task<List<MenuRouterDto>> GetMenusForRouterAsync(IEnumerable<long> roleIds);
+
+        /// <summary>
+        /// 获取指定角色的菜单
+        /// </summary>
+        /// <param name="roleId"></param>
+        /// <returns></returns>
+        Task<MenuTreeDto> GetMenuTreeListByRoleIdAsync(long roleId);
     }
 }

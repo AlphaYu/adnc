@@ -13,21 +13,7 @@ namespace Adnc.Usr.Application.Contracts.Services
     /// </summary>
     public interface IDeptAppService : IAppService
     {
-        /// <summary>
-        /// 部门树结构
-        /// </summary>
-        /// <returns></returns>
-        [CachingAble(CacheKey = EasyCachingConsts.DetpTreeListCacheKey, Expiration = EasyCachingConsts.OneYear)]
-        Task<AppSrvResult<List<DeptTreeDto>>> GetTreeListAsync();
-
-        /// <summary>
-        /// 精简的部门树结构
-        /// </summary>
-        /// <returns></returns>
-        [CachingAble(CacheKey = EasyCachingConsts.DetpSimpleTreeListCacheKey, Expiration = EasyCachingConsts.OneYear)]
-        Task<List<DeptSimpleTreeDto>> GetSimpleTreeListAsync();
-
-        /// <summary>
+         /// <summary>
         /// 新增部门
         /// </summary>
         /// <param name="input"></param>
@@ -44,7 +30,7 @@ namespace Adnc.Usr.Application.Contracts.Services
         /// <returns></returns>
         [OpsLog(LogName = "修改部门")]
         [CachingEvict(CacheKeyPrefix = EasyCachingConsts.DeptCacheKeyPrefix, IsAll = true)]
-        Task<AppSrvResult> UpdateAsync([CachingParam] long id, DeptUpdationDto input);
+        Task<AppSrvResult> UpdateAsync(long id, DeptUpdationDto input);
 
         /// <summary>
         /// 删除部门
@@ -53,6 +39,20 @@ namespace Adnc.Usr.Application.Contracts.Services
         /// <returns></returns>
         [OpsLog(LogName = "删除部门")]
         [CachingEvict(CacheKeyPrefix = EasyCachingConsts.DeptCacheKeyPrefix, IsAll = true)]
-        Task<AppSrvResult> DeleteAsync([CachingParam] long Id);
+        Task<AppSrvResult> DeleteAsync(long Id);
+
+        /// <summary>
+        /// 部门树结构
+        /// </summary>
+        /// <returns></returns>
+        [CachingAble(CacheKey = EasyCachingConsts.DetpTreeListCacheKey, Expiration = EasyCachingConsts.OneYear)]
+        Task<List<DeptTreeDto>> GetTreeListAsync();
+
+        /// <summary>
+        /// 精简的部门树结构
+        /// </summary>
+        /// <returns></returns>
+        [CachingAble(CacheKey = EasyCachingConsts.DetpSimpleTreeListCacheKey, Expiration = EasyCachingConsts.OneYear)]
+        Task<List<DeptSimpleTreeDto>> GetSimpleTreeListAsync();
     }
 }

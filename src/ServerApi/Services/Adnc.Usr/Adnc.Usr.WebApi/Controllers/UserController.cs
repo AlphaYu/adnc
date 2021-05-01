@@ -36,19 +36,6 @@ namespace Adnc.Usr.WebApi.Controllers
         }
 
         /// <summary>
-        /// 获取用户列表
-        /// </summary>
-        /// <param name="search">查询条件</param>
-        /// <returns></returns>
-        [HttpGet()]
-        [Permission("userList")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<PageModelDto<UserDto>>> GetPagedAsync([FromQuery] UserSearchPagedDto search)
-        {
-            return Result(await _userService.GetPagedAsync(search));
-        }
-
-        /// <summary>
         /// 新增用户
         /// </summary>
         /// <param name="input">用户信息</param>
@@ -131,7 +118,7 @@ namespace Adnc.Usr.WebApi.Controllers
         }
 
         /// <summary>
-        /// 获取当前用户权限
+        /// 获取当前用户是否拥有指定权限
         /// </summary>
         /// <param name="id">用户id</param>
         /// <param name="permissions"></param>
@@ -142,6 +129,19 @@ namespace Adnc.Usr.WebApi.Controllers
         {
             //throw new System.Exception("测试");
             return await _roleService.GetPermissionsAsync(_userContext.Id, permissions);
+        }
+
+        /// <summary>
+        /// 获取用户列表
+        /// </summary>
+        /// <param name="search">查询条件</param>
+        /// <returns></returns>
+        [HttpGet()]
+        [Permission("userList")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<PageModelDto<UserDto>>> GetPagedAsync([FromQuery] UserSearchPagedDto search)
+        {
+            return await _userService.GetPagedAsync(search);
         }
     }
 }

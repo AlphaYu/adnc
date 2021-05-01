@@ -24,7 +24,6 @@ namespace Adnc.Usr.Application.Services
 
         public UserAppService(IEfRepository<SysUser> userRepository,
             IDeptAppService deptAppService,
-            IRoleAppService roleAppService,
             CacheService cacheService)
         {
             _userRepository = userRepository;
@@ -90,7 +89,20 @@ namespace Adnc.Usr.Application.Services
             return AppSrvResult();
         }
 
-        public async Task<AppSrvResult<PageModelDto<UserDto>>> GetPagedAsync(UserSearchPagedDto search)
+        public async Task<AppSrvResult> SetRoleAsync(long id, UserSetRoleDto input)
+        {
+            var roleIdStr = input.RoleIds == null ? null : string.Join(",", input.RoleIds);
+            var cacheKeys = new string[] { EasyCachingConsts.MenuRelationCacheKey, EasyCachingConsts.MenuCodesCacheKey, string.Format(EasyCachingConsts.UserLoginInfoKeyPrefix, id) };
+
+            await _cacheService.RemoveCachesAsync(cacheKeys, async () =>
+            {
+                await _userRepository.UpdateAsync(new SysUser() { Id = id, RoleIds = roleIdStr }, UpdatingProps<SysUser>(x => x.RoleIds));
+            });
+
+            return AppSrvResult();
+        }
+
+        public async Task<PageModelDto<UserDto>> GetPagedAsync(UserSearchPagedDto search)
         {
             Expression<Func<SysUser, bool>> whereCondition = x => true;
             if (search.Account.IsNotNullOrWhiteSpace())
@@ -131,17 +143,5 @@ namespace Adnc.Usr.Application.Services
             return pageModelDto;
         }
 
-        public async Task<AppSrvResult> SetRoleAsync(long id, UserSetRoleDto input)
-        {
-            var roleIdStr = input.RoleIds == null ? null : string.Join(",", input.RoleIds);
-            var cacheKeys = new string[] { EasyCachingConsts.MenuRelationCacheKey, EasyCachingConsts.MenuCodesCacheKey, string.Format(EasyCachingConsts.UserLoginInfoKeyPrefix, id) };
-
-            await _cacheService.RemoveCachesAsync(cacheKeys, async () =>
-            {
-                await _userRepository.UpdateAsync(new SysUser() { Id = id, RoleIds = roleIdStr }, UpdatingProps<SysUser>(x => x.RoleIds));
-            });
-
-            return AppSrvResult();
-        }
     }
 }

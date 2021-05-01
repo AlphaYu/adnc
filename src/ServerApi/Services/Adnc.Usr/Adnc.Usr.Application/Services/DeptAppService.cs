@@ -36,41 +36,6 @@ namespace Adnc.Usr.Application.Services
             return AppSrvResult();
         }
 
-        public async Task<AppSrvResult<List<DeptTreeDto>>> GetTreeListAsync()
-        {
-            var result = new List<DeptTreeDto>();
-
-            var depts = await _cacheService.GetAllDeptsFromCacheAsync();
-
-            if (!depts.Any())
-                return result;
-
-            var allDeptNodes = Mapper.Map<List<DeptTreeDto>>(depts);
-
-            var roots = allDeptNodes.Where(d => d.Pid == 0).OrderBy(d => d.Ordinal);
-            foreach (var node in roots)
-            {
-                GetChildren(node, allDeptNodes);
-                result.Add(node);
-            }
-
-            void GetChildren(DeptTreeDto currentNode, List<DeptTreeDto> allDeptNodes)
-            {
-                var childrenNodes = allDeptNodes.Where(d => d.Pid == currentNode.Id).OrderBy(d => d.Ordinal);
-                if (childrenNodes.Count() == 0)
-                    return;
-                else
-                {
-                    currentNode.Children.AddRange(childrenNodes);
-                    foreach (var node in childrenNodes)
-                    {
-                        GetChildren(node, allDeptNodes);
-                    }
-                }
-            }
-            return result;
-        }
-
         public async Task<AppSrvResult<long>> CreateAsync(DeptCreationDto input)
         {
             var isExists = (await _cacheService.GetAllDeptsFromCacheAsync()).Exists(x => x.FullName == input.FullName);
@@ -116,9 +81,44 @@ namespace Adnc.Usr.Application.Services
             return AppSrvResult();
         }
 
+        public async Task<List<DeptTreeDto>> GetTreeListAsync()
+        {
+            var result = new List<DeptTreeDto>();
+
+            var depts = await _cacheService.GetAllDeptsFromCacheAsync();
+
+            if (!depts.Any())
+                return result;
+
+            var allDeptNodes = Mapper.Map<List<DeptTreeDto>>(depts);
+
+            var roots = allDeptNodes.Where(d => d.Pid == 0).OrderBy(d => d.Ordinal);
+            foreach (var node in roots)
+            {
+                GetChildren(node, allDeptNodes);
+                result.Add(node);
+            }
+
+            void GetChildren(DeptTreeDto currentNode, List<DeptTreeDto> allDeptNodes)
+            {
+                var childrenNodes = allDeptNodes.Where(d => d.Pid == currentNode.Id).OrderBy(d => d.Ordinal);
+                if (childrenNodes.Count() == 0)
+                    return;
+                else
+                {
+                    currentNode.Children.AddRange(childrenNodes);
+                    foreach (var node in childrenNodes)
+                    {
+                        GetChildren(node, allDeptNodes);
+                    }
+                }
+            }
+            return result;
+        }
+
         public async Task<List<DeptSimpleTreeDto>> GetSimpleTreeListAsync()
         {
-            var depts = (await this.GetTreeListAsync()).Content;
+            var depts = await this.GetTreeListAsync();
             if (!depts.Any())
                 return new List<DeptSimpleTreeDto>();
 
