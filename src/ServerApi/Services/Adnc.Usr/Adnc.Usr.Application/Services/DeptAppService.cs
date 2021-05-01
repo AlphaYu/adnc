@@ -1,9 +1,7 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Dynamic;
 using Adnc.Usr.Application.Contracts.Dtos;
 using Adnc.Usr.Core.Services;
 using Adnc.Usr.Core.Entities;
@@ -31,22 +29,23 @@ namespace Adnc.Usr.Application.Services
 
         public async Task<AppSrvResult> DeleteAsync(long Id)
         {
-            var dept = await _deptRepository.FindAsync(Id);
+            var dept = (await _cacheService.GetAllDeptsFromCacheAsync()).FirstOrDefault(x => x.Id == Id);
             var deletingPids = $"{dept.Pids}[{Id}],";
             await _deptRepository.DeleteRangeAsync(d => d.Pids.StartsWith(deletingPids) || d.Id == dept.Id);
 
             return AppSrvResult();
         }
 
-        public async Task<AppSrvResult<List<DeptTreeeDto>>> GetListAsync()
+        public async Task<AppSrvResult<List<DeptTreeDto>>> GetTreeListAsync()
         {
-            var result = new List<DeptTreeeDto>();
+            var result = new List<DeptTreeDto>();
 
             var depts = await _cacheService.GetAllDeptsFromCacheAsync();
+
             if (!depts.Any())
                 return result;
 
-            var allDeptNodes = Mapper.Map<List<DeptTreeeDto>>(depts);
+            var allDeptNodes = Mapper.Map<List<DeptTreeDto>>(depts);
 
             var roots = allDeptNodes.Where(d => d.Pid == 0).OrderBy(d => d.Ordinal);
             foreach (var node in roots)
@@ -55,7 +54,7 @@ namespace Adnc.Usr.Application.Services
                 result.Add(node);
             }
 
-            void GetChildren(DeptTreeeDto currentNode, List<DeptTreeeDto> allDeptNodes)
+            void GetChildren(DeptTreeDto currentNode, List<DeptTreeDto> allDeptNodes)
             {
                 var childrenNodes = allDeptNodes.Where(d => d.Pid == currentNode.Id).OrderBy(d => d.Ordinal);
                 if (childrenNodes.Count() == 0)
@@ -63,7 +62,7 @@ namespace Adnc.Usr.Application.Services
                 else
                 {
                     currentNode.Children.AddRange(childrenNodes);
-                    foreach(var node in childrenNodes)
+                    foreach (var node in childrenNodes)
                     {
                         GetChildren(node, allDeptNodes);
                     }
@@ -117,6 +116,31 @@ namespace Adnc.Usr.Application.Services
             return AppSrvResult();
         }
 
+        public async Task<List<DeptSimpleTreeDto>> GetSimpleTreeListAsync()
+        {
+            var depts = (await this.GetTreeListAsync()).Content;
+            if (!depts.Any())
+                return new List<DeptSimpleTreeDto>();
+
+            return GetSimpleNodes(depts);
+
+            static List<DeptSimpleTreeDto> GetSimpleNodes(List<DeptTreeDto> deptNodes)
+            {
+                var result = new List<DeptSimpleTreeDto>();
+
+                foreach (var node in deptNodes)
+                {
+                    var simpleNode = new DeptSimpleTreeDto();
+                    simpleNode.Id = node.Id;
+                    simpleNode.Label = node.SimpleName;
+                    if (node.Children.Any())
+                        simpleNode.children = GetSimpleNodes(node.Children);
+                    result.Add(simpleNode);
+                }
+                return result;
+            }
+        }
+
         private async Task<SysDept> SetDeptPids(SysDept sysDept)
         {
 
@@ -132,31 +156,6 @@ namespace Adnc.Usr.Application.Services
                 sysDept.Pids = "[0],";
             }
             return sysDept;
-        }
-
-        public async Task<dynamic[]> GetSimpleListAsync()
-        {
-            var depts = (await this.GetListAsync()).Content;
-            if (!depts.Any())
-                return default(dynamic[]);
-
-            return GetSimpleNodes(depts);
-
-            dynamic[] GetSimpleNodes(List<DeptTreeeDto> deptNodes)
-            {
-                var result = new dynamic[deptNodes.Count];
-
-                for (var index = 0; index < deptNodes.Count; index++)
-                {
-                    dynamic simpleNode = new ExpandoObject();
-                    simpleNode.Id = deptNodes[index].Id;
-                    simpleNode.Label = deptNodes[index].SimpleName;
-                    if (deptNodes[index].Children.Any())
-                        simpleNode.children = GetSimpleNodes(deptNodes[index].Children);
-                    result[index] = simpleNode;
-                }
-                return result;
-            }
         }
     }
 }

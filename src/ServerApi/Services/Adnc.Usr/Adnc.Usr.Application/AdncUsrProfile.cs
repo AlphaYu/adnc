@@ -29,8 +29,8 @@ namespace Adnc.Usr.Application
             CreateMap<DeptCreationDto, SysDept>();
             CreateMap<DeptUpdationDto, SysDept>();
             CreateMap<SysDept, DeptDto>();
-            CreateMap<SysDept, DeptTreeeDto>();
-            CreateMap<DeptDto, DeptTreeeDto>();
+            CreateMap<SysDept, DeptTreeDto>();
+            CreateMap<DeptDto, DeptTreeDto>();
         }
     }
 }

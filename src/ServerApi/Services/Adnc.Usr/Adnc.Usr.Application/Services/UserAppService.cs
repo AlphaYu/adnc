@@ -101,8 +101,6 @@ namespace Adnc.Usr.Application.Services
             var pagedModel = await _userRepository.PagedAsync(search.PageIndex, search.PageSize, whereCondition, x => x.Id, false);
             var pageModelDto = Mapper.Map<PageModelDto<UserDto>>(pagedModel);
 
-            pageModelDto.XData = await _deptAppService.GetSimpleListAsync();
-
             if (pageModelDto.RowsCount > 0)
             {
                 var deptIds = pageModelDto.Data.Where(d => d.DeptId != null).Select(d => d.DeptId).Distinct().ToList();
@@ -122,6 +120,8 @@ namespace Adnc.Usr.Application.Services
                     user.RoleNames = string.Join(',', roles.Where(x => roleIds.Contains(x.Id)).Select(x => x.Name));
                 }
             }
+
+            pageModelDto.XData = await _deptAppService.GetSimpleTreeListAsync();
 
             return pageModelDto;
         }

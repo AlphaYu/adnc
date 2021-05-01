@@ -12,19 +12,25 @@ namespace Adnc.Application.Shared.Dtos
         public PageModelDto() { }
 
         public PageModelDto(SearchPagedDto search)
+            : this(search, default, default)
         {
-            this.PageIndex = search.PageIndex;
-            this.PageSize = search.PageSize;
         }
 
-        public PageModelDto(SearchPagedDto search, IReadOnlyList<T> data, int count, dynamic XData = null)
+        public PageModelDto(SearchPagedDto search, IReadOnlyList<T> data, int count, dynamic xData = null)
+            : this(search.PageIndex, search.PageSize, data, count)
         {
-            this.PageIndex = search.PageIndex;
-            this.PageSize = search.PageSize;
-            this.TotalCount = count;
-            this.Data = data as IReadOnlyList<T>;
-            this.XData = XData;
+            this.XData = xData;
         }
+
+        public PageModelDto(int pageIndex, int pageSize, IReadOnlyList<T> data, int count, dynamic xData = null)
+        {
+            this.PageIndex = pageIndex;
+            this.PageSize = pageSize;
+            this.TotalCount = count;
+            this.Data = data;
+            this.XData = xData;
+        }
+
 
         [NotNull]
         public IReadOnlyList<T> Data
@@ -46,10 +52,32 @@ namespace Adnc.Application.Shared.Dtos
 
         public int PageSize { get; set; }
 
-        public long TotalCount { get; set; }
+        public int TotalCount { get; set; }
 
         public int PageCount { get { return ((this.RowsCount + this.PageSize - 1) / this.PageSize); } }
 
         public dynamic XData { get; set; }
     }
+
+    //[Serializable]
+    //public class PageModelDto<T, TXData> : PageModelDto<T>
+    //{
+    //    public PageModelDto(SearchPagedDto search, IReadOnlyList<T> data, int count, dynamic xData = null)
+    //        : this(search.PageIndex, search.PageSize, data, count)
+    //    {
+    //    }
+
+    //    public PageModelDto(int pageIndex, int pageSize, IReadOnlyList<T> data, int count, dynamic xData = null)
+    //        : base(pageIndex, pageSize, data, count)
+    //    {
+    //        this.XData = xData;
+    //    }
+
+    //    public TXData XData { get; set; }
+
+    //    public static PageModelDto<T, TXData> Convert(PageModelDto<T> source, TXData xData)
+    //    {
+    //        return new PageModelDto<T, TXData>(source.PageIndex, source.PageSize, source.Data, source.TotalCount, xData);
+    //    }
+    //}
 }

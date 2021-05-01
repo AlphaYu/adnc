@@ -24,7 +24,7 @@
         /// Gets or sets the cache provider name. The default value is EasyCachingInterceptorOptions.CacheProviderName"/> 
         /// </summary>
         /// <value>The cache key prefix.</value>
-        public string CacheProviderName { get; set; }
+        //public string CacheProviderName { get; set; }
 
         /// <summary>
         ///  Prevent cache provider errors from affecting business

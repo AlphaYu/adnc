@@ -107,7 +107,7 @@ namespace Adnc.Usr.Application.Services
 
         public async Task<AppSrvResult<UserValidateDto>> LoginAsync(UserLoginDto inputDto)
         {
-            var user = await _cacheService.GetUserValidateInfoFromCacheAsync(inputDto.Account);
+            var user = (await _cacheService.GetUserValidateInfoFromCacheAsync(inputDto.Account));
 
             if (user == null)
                 return Problem(HttpStatusCode.NotFound, "用户名或密码错误");

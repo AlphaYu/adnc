@@ -8,11 +8,11 @@ namespace Adnc.Usr.Application.Contracts.Dtos
     /// 部门节点
     /// </summary>
     [Serializable]
-    public class DeptTreeeDto : DeptDto
+    public class DeptTreeDto : DeptDto
     {
         /// <summary>
         /// 子部门
         /// </summary>
-        public List<DeptTreeeDto> Children { get; private set; } = new List<DeptTreeeDto>();
+        public List<DeptTreeDto> Children { get; private set; } = new List<DeptTreeDto>();
     }
 }

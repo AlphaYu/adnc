@@ -44,9 +44,9 @@ namespace Adnc.Usr.WebApi.Controllers
         [HttpGet()]
         [Permission("deptList")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<List<DeptTreeeDto>>> GetListAsync()
+        public async Task<ActionResult<List<DeptTreeDto>>> GetListAsync()
         {
-            return Result(await _deptService.GetListAsync());
+            return Result(await _deptService.GetTreeListAsync());
         }
 
         /// <summary>

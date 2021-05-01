@@ -104,17 +104,17 @@ namespace Adnc.Usr.Application.Services
             {
                 return await _userRepository.Value.FetchAsync(x => new UserValidateDto()
                 {
+                    Id = x.Id
+                   ,
+                    Account = x.Account
+                    ,
                     Password = x.Password
                    ,
                     Salt = x.Salt
                    ,
                     Status = x.Status
                    ,
-                    Account = x.Account
-                   ,
                     Email = x.Email
-                   ,
-                    Id = x.Id
                    ,
                     Name = x.Name
                    ,

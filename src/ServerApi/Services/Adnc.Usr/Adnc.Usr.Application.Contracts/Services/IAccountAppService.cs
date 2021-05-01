@@ -50,6 +50,7 @@ namespace Adnc.Usr.Application.Contracts.Services
         /// </summary>
         /// <param name="account"></param>
         /// <returns></returns>
-        Task<AppSrvResult<UserValidateDto>> GetUserValidateInfoAsync(string account);
+        [CachingAble(CacheKeyPrefix = EasyCachingConsts.UserLoginInfoKeyPrefix)]
+        Task<AppSrvResult<UserValidateDto>> GetUserValidateInfoAsync([CachingParam] string account);
     }
 }
