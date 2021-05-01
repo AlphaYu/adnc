@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
@@ -20,14 +21,17 @@ namespace Adnc.Usr.WebApi.Controllers
     {
         private readonly IUserAppService _userService;
         private readonly IRoleAppService _roleService;
+        private readonly IAccountAppService _accountService;
         private readonly IUserContext _userContext;
 
         public UserController(IUserAppService userService
-            , IRoleAppService roleAppService
+            , IRoleAppService roleService
+            , IAccountAppService accountService
             , IUserContext userContext)
         {
             _userService = userService;
-            _roleService = roleAppService;
+            _roleService = roleService;
+            _accountService = accountService;
             _userContext = userContext;
         }
 
@@ -138,13 +142,14 @@ namespace Adnc.Usr.WebApi.Controllers
         {
             //throw new System.Exception("测试");
 
-            var inputDto = new RolePermissionsCheckerDto()
-            {
-                RoleIds = _userContext.RoleIds
-                ,
-                Permissions = permissions
-            };
-            return Result(await _roleService.GetPermissionsAsync(inputDto));
+            var userValidateDto = await _accountService.GetUserValidateInfoAsync(_userContext.Id);
+
+            if (userValidateDto == null || string.IsNullOrWhiteSpace(userValidateDto.RoleIds))
+                return new List<string>();
+
+            var roleIds = userValidateDto.RoleIds.Trim().Split(",", System.StringSplitOptions.RemoveEmptyEntries).ToList();
+
+            return await _roleService.GetPermissionsAsync(roleIds.Select(x => long.Parse(x)), permissions);
         }
     }
 }

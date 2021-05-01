@@ -16,7 +16,7 @@ using Adnc.Usr.Application.Contracts.Services;
 
 namespace Adnc.Usr.Application.Services
 {
-    public class RoleAppService :AbstractAppService,IRoleAppService
+    public class RoleAppService : AbstractAppService, IRoleAppService
     {
         private readonly IEfRepository<SysRole> _roleRepository;
         private readonly IEfRepository<SysUser> _userRepository;
@@ -47,7 +47,7 @@ namespace Adnc.Usr.Application.Services
             return Mapper.Map<PageModelDto<RoleDto>>(pagedModel);
         }
 
-        public async Task<AppSrvResult<dynamic>> GetRoleTreeListByUserIdAsync(long userId)
+        public async Task<AppSrvResult<RoleTreeDto>> GetRoleTreeListByUserIdAsync(long userId)
         {
             dynamic result = null;
             IEnumerable<ZTreeNodeDto<long, dynamic>> treeNodes = null;
@@ -69,16 +69,16 @@ namespace Adnc.Usr.Application.Services
                     Checked = roleIds.Contains(x.Id)
                 });
 
-                result = new
+                result = new RoleTreeDto
                 {
-                    treeData = treeNodes.Select(x => new Node<long>
+                    TreeData = treeNodes.Select(x => new Node<long>
                     {
                         Id = x.Id,
                         PID = x.PID,
                         Name = x.Name,
                         Checked = x.Checked
                     }),
-                    checkedIds = treeNodes.Where(x => x.Checked).Select(x => x.Id)
+                    CheckedIds = treeNodes.Where(x => x.Checked).Select(x => x.Id)
                 };
             }
 
@@ -121,7 +121,7 @@ namespace Adnc.Usr.Application.Services
             return role.Id;
         }
 
-        public async Task<AppSrvResult> UpdateAsync(long id,RoleUpdationDto input)
+        public async Task<AppSrvResult> UpdateAsync(long id, RoleUpdationDto input)
         {
             var isExists = (await _cacheService.GetAllRolesFromCacheAsync()).Where(x => x.Name == input.Name && x.Id != id).Any();
             if (isExists)
@@ -130,31 +130,38 @@ namespace Adnc.Usr.Application.Services
             var role = Mapper.Map<SysRole>(input);
 
             role.Id = id;
-            
+
             await _roleRepository.UpdateAsync(role, UpdatingProps<SysRole>(x => x.Name, x => x.Tips, x => x.Ordinal));
 
             return AppSrvResult();
         }
 
-        public async Task<AppSrvResult<bool>> ExistPermissionsAsync(RolePermissionsCheckerDto input)
+        public async Task<bool> ExistPermissionsAsync(long userId, IEnumerable<string> permissions)
         {
-            var codes = await this.GetPermissionsAsync(input);
+            var userrValidateInfo = await _cacheService.GetUserValidateInfoFromCacheAsync(userId);
 
-            if (codes.IsSuccess && codes.Content.Any())
+            if (string.IsNullOrWhiteSpace(userrValidateInfo.RoleIds))
+                return false;
+
+            var roles = userrValidateInfo.RoleIds.Trim().Split(",", StringSplitOptions.RemoveEmptyEntries).Select(x => long.Parse(x));
+
+            var codes = await this.GetPermissionsAsync(roles, permissions);
+
+            if (codes?.Any() == true)
                 return true;
 
             return false;
         }
 
-        public async Task<AppSrvResult<List<string>>> GetPermissionsAsync(RolePermissionsCheckerDto input)
+        public async Task<List<string>> GetPermissionsAsync(IEnumerable<long> roleIds, IEnumerable<string> permissions)
         {
-            var allMenuCodes =await  _cacheService.GetAllMenuCodesFromCacheAsync();
-            var codes = allMenuCodes?.Where(x => input.RoleIds.Contains(x.RoleId)).Select(x => x.Code.ToUpper());
+            var allMenuCodes = await _cacheService.GetAllMenuCodesFromCacheAsync();
+            var codes = allMenuCodes?.Where(x => roleIds.Contains(x.RoleId)).Select(x => x.Code.ToUpper());
             if (codes != null && codes.Any())
             {
-                var result = codes.Intersect(input.Permissions.Select(x => x.ToUpper()));
+                var result = codes.Intersect(permissions.Select(x => x.ToUpper()));
                 return result.ToList();
-            } 
+            }
 
             return null;
         }

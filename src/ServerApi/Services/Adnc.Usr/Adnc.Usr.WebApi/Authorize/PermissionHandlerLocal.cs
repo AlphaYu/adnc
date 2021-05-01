@@ -1,5 +1,5 @@
-﻿using System.Threading.Tasks;
-using Adnc.Usr.Application.Contracts.Dtos;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Adnc.Usr.Application.Contracts.Services;
 
 namespace Microsoft.AspNetCore.Authorization
@@ -15,13 +15,9 @@ namespace Microsoft.AspNetCore.Authorization
             _roleAppService = roleAppService;
         }
 
-        protected override async Task<bool> CheckUserPermissions(long userId, long[] roleIds, string[] codes)
+        protected override async Task<bool> CheckUserPermissions(long userId, IEnumerable<string> codes)
         {
-            var result = await _roleAppService.ExistPermissionsAsync(new RolePermissionsCheckerDto() { RoleIds = roleIds, Permissions = codes });
-            if (result.IsSuccess)
-                return result.Content;
-
-            return false;
+            return await _roleAppService.ExistPermissionsAsync(userId, codes);
         }
     }
 }

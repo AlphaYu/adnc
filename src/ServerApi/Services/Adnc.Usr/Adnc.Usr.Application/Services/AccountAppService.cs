@@ -37,68 +37,6 @@ namespace Adnc.Usr.Application.Services
             _cacheService = cacheService;
         }
 
-        public async Task<AppSrvResult<UserInfoDto>> GetUserInfoAsync(long id)
-        {
-            var userProfile = await _userRepository.FetchAsync(u => new UserProfileDto
-            {
-                Account = u.Account
-                ,
-                Avatar = u.Avatar
-                ,
-                Birthday = u.Birthday
-                ,
-                DeptId = u.DeptId
-                ,
-                DeptFullName = u.Dept.FullName
-                ,
-                Email = u.Email
-                ,
-                Name = u.Name
-                ,
-                Phone = u.Phone
-                ,
-                RoleIds = u.RoleIds
-                ,
-                Sex = u.Sex
-                ,
-                Status = u.Status
-            }
-            , x => x.Id == id);
-
-            if (userProfile == null)
-                return Problem(HttpStatusCode.NotFound, "用户不存在");
-
-            var userInfoDto = new UserInfoDto { Id = id, Profile = userProfile };
-
-            if (userProfile.RoleIds.IsNotNullOrEmpty())
-            {
-                var roleIds = userProfile.RoleIds.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(x => long.Parse(x));
-                var roles = await _roleRepository
-                                  .Where(x => roleIds.Contains(x.Id))
-                                  .Select(r => new { r.Id, r.Tips, r.Name })
-                                  .ToListAsync();
-                foreach (var role in roles)
-                {
-                    userInfoDto.Roles.Add(role.Tips);
-                    userInfoDto.Profile.Roles.Add(role.Name);
-                }
-
-                var roleMenus = await _menuRepository.GetMenusByRoleIdsAsync(roleIds.ToArray(), true);
-                if (roleMenus?.Count > 0)
-                {
-                    userInfoDto.Permissions.AddRange(roleMenus.Select(x => x.Url).Distinct());
-                }
-            }
-
-            return userInfoDto;
-        }
-
-        public async Task<AppSrvResult> UpdatePasswordAsync(long id, UserChangePwdDto input)
-        {
-            var user = await _cacheService.GetUserValidateInfoFromCacheAsync(id);
-            return await this.UpdatePasswordAsync(user, input);
-        }
-
         public async Task<AppSrvResult<UserValidateDto>> LoginAsync(UserLoginDto inputDto)
         {
             var user = await _userRepository.FetchAsync(x => new UserValidateDto()
@@ -185,18 +123,10 @@ namespace Adnc.Usr.Application.Services
             return user;
         }
 
-        public async Task<AppSrvResult<UserValidateDto>> GetUserValidateInfoAsync(long id)
+        public async Task<AppSrvResult> UpdatePasswordAsync(long id, UserChangePwdDto input)
         {
-            var userValidateInfo = await _cacheService.GetUserValidateInfoFromCacheAsync(id);
+            var user = await _cacheService.GetUserValidateInfoFromCacheAsync(id);
 
-            if (userValidateInfo == null)
-                return Problem(HttpStatusCode.NotFound, "用户不存在,参数信息不完整");
-
-            return userValidateInfo;
-        }
-
-        private async Task<AppSrvResult> UpdatePasswordAsync(UserValidateDto user, UserChangePwdDto input)
-        {
             if (user == null)
                 return Problem(HttpStatusCode.NotFound, "用户不存在,参数信息不完整");
 
@@ -209,6 +139,67 @@ namespace Adnc.Usr.Application.Services
             await _userRepository.UpdateAsync(new SysUser { Id = user.Id, Password = newPwdString }, UpdatingProps<SysUser>(x => x.Password));
 
             return AppSrvResult();
+        }
+
+        public async Task<UserValidateDto> GetUserValidateInfoAsync(long id)
+        {
+            return await _cacheService.GetUserValidateInfoFromCacheAsync(id);
+        }
+
+        public async Task<UserInfoDto> GetUserInfoAsync(long id)
+        {
+            var userProfile = await _userRepository.FetchAsync(u => new UserProfileDto
+            {
+                Account = u.Account
+                ,
+                Avatar = u.Avatar
+                ,
+                Birthday = u.Birthday
+                ,
+                DeptId = u.DeptId
+                ,
+                DeptFullName = u.Dept.FullName
+                ,
+                Email = u.Email
+                ,
+                Name = u.Name
+                ,
+                Phone = u.Phone
+                ,
+                RoleIds = u.RoleIds
+                ,
+                Sex = u.Sex
+                ,
+                Status = u.Status
+            }
+            , x => x.Id == id);
+
+            if (userProfile == null)
+                return null;
+
+            var userInfoDto = new UserInfoDto { Id = id, Profile = userProfile };
+
+            if (userProfile.RoleIds.IsNotNullOrEmpty())
+            {
+                var roleIds = userProfile.RoleIds.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(x => long.Parse(x));
+                var roles = await _roleRepository
+                                  .Where(x => roleIds.Contains(x.Id))
+                                  .Select(r => new { r.Id, r.Tips, r.Name })
+                                  .ToListAsync();
+                foreach (var role in roles)
+                {
+                    userInfoDto.Roles.Add(role.Tips);
+                    userInfoDto.Profile.Roles.Add(role.Name);
+                }
+
+                var roleMenus = await _menuRepository.GetMenusByRoleIdsAsync(roleIds.ToArray(), true);
+                if (roleMenus?.Count > 0)
+                {
+                    userInfoDto.Permissions.AddRange(roleMenus.Select(x => x.Url).Distinct());
+                }
+            }
+
+            return userInfoDto;
         }
     }
 }

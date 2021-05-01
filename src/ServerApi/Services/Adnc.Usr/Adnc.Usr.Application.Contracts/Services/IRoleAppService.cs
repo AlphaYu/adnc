@@ -28,14 +28,14 @@ namespace Adnc.Usr.Application.Contracts.Services
         [CachingEvict(CacheKeys = new[] { EasyCachingConsts.MenuRelationCacheKey, EasyCachingConsts.MenuCodesCacheKey, EasyCachingConsts.RoleAllCacheKey })]
         Task<AppSrvResult> DeleteAsync(long Id);
 
-        Task<AppSrvResult<dynamic>> GetRoleTreeListByUserIdAsync(long userId);
+        Task<AppSrvResult<RoleTreeDto>> GetRoleTreeListByUserIdAsync(long userId);
 
         [OpsLog(LogName = "设置角色权限")]
         [CachingEvict(CacheKeys = new[] { EasyCachingConsts.MenuRelationCacheKey, EasyCachingConsts.MenuCodesCacheKey })]
         Task<AppSrvResult> SetPermissonsAsync(RoleSetPermissonsDto input);
 
-        Task<AppSrvResult<bool>> ExistPermissionsAsync(RolePermissionsCheckerDto input);
+        Task<bool> ExistPermissionsAsync(long userId, IEnumerable<string> permissions);
 
-        Task<AppSrvResult<List<string>>> GetPermissionsAsync(RolePermissionsCheckerDto input);
+        Task<List<string>> GetPermissionsAsync(IEnumerable<long> roleIds, IEnumerable<string> permissions);
     }
 }

@@ -41,7 +41,6 @@ using Adnc.Infra.EfCore;
 using Adnc.Infra.Mongo;
 using Adnc.Infra.Mongo.Extensions;
 using Adnc.Infra.Mongo.Configuration;
-using Adnc.Application.Shared;
 using Adnc.Application.Shared.RpcServices;
 using Adnc.Infra.Common.Helper;
 using Adnc.WebApi.Shared.Extensions;
@@ -202,7 +201,6 @@ namespace Adnc.WebApi.Shared
             })
             .AddJwtBearer((Action<JwtBearerOptions>)(options =>
             {
-
                 //验证的一些设置，比如是否验证发布者，订阅者，密钥，以及生命时间等等
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
@@ -229,10 +227,9 @@ namespace Adnc.WebApi.Shared
                         var claims = context.Principal.Claims;
                         userContext.Id = long.Parse(claims.First(x => x.Type == JwtRegisteredClaimNames.Sub).Value);
                         userContext.Account = claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
-                        userContext.Name = claims.First(x => x.Type == ClaimTypes.Name).Value;
-                        userContext.Email = claims.First(x => x.Type == JwtRegisteredClaimNames.Email).Value;
-                        string[] roleIds = claims.First(x => x.Type == ClaimTypes.Role).Value.Split(",", StringSplitOptions.RemoveEmptyEntries);
-                        userContext.RoleIds = roleIds.Select(x => long.Parse(x)).ToArray();
+                        //userContext.Name = claims.First(x => x.Type == ClaimTypes.Name).Value;
+                        //userContext.Email = claims.First(x => x.Type == JwtRegisteredClaimNames.Email).Value;
+                        //string[] roleIds = claims.First(x => x.Type == ClaimTypes.Role).Value.Split(",", StringSplitOptions.RemoveEmptyEntries);
                         userContext.RemoteIpAddress = context.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
 
                         return Task.CompletedTask;

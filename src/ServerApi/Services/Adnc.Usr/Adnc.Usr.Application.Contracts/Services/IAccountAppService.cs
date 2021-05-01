@@ -20,13 +20,6 @@ namespace Adnc.Usr.Application.Contracts.Services
         Task<AppSrvResult<UserValidateDto>> LoginAsync(UserLoginDto input);
 
         /// <summary>
-        /// 获取用户信息
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <returns></returns>
-        Task<AppSrvResult<UserInfoDto>> GetUserInfoAsync(long userId);
-
-        /// <summary>
         /// 修改密码
         /// </summary>
         /// <param name="account"></param>
@@ -42,6 +35,13 @@ namespace Adnc.Usr.Application.Contracts.Services
         /// <param name="id"></param>
         /// <returns></returns>
         [CachingAble(CacheKeyPrefix = EasyCachingConsts.UserLoginInfoKeyPrefix)]
-        Task<AppSrvResult<UserValidateDto>> GetUserValidateInfoAsync([CachingParam] long id);
+        Task<UserValidateDto> GetUserValidateInfoAsync([CachingParam] long id);
+
+        /// <summary>
+        /// 获取用户信息
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        Task<UserInfoDto> GetUserInfoAsync(long userId);
     }
 }

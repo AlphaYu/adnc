@@ -889,13 +889,6 @@
             <param name="input"></param>
             <returns></returns>
         </member>
-        <member name="M:Adnc.Usr.Application.Contracts.Services.IAccountAppService.GetUserInfoAsync(System.Int64)">
-            <summary>
-            获取用户信息
-            </summary>
-            <param name="userId"></param>
-            <returns></returns>
-        </member>
         <member name="M:Adnc.Usr.Application.Contracts.Services.IAccountAppService.UpdatePasswordAsync(System.Int64,Adnc.Usr.Application.Contracts.Dtos.UserChangePwdDto)">
             <summary>
             修改密码
@@ -909,6 +902,13 @@
             获取登录信息
             </summary>
             <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Adnc.Usr.Application.Contracts.Services.IAccountAppService.GetUserInfoAsync(System.Int64)">
+            <summary>
+            获取用户信息
+            </summary>
+            <param name="userId"></param>
             <returns></returns>
         </member>
         <member name="T:Adnc.Usr.Application.Contracts.Services.IDeptAppService">

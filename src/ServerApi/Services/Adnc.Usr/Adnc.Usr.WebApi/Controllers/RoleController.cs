@@ -43,7 +43,7 @@ namespace Adnc.Usr.WebApi.Controllers
         /// <returns></returns>
         [HttpGet("{userId}/rolestree")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<dynamic>> GetRoleTreeListByUserIdAsync([FromRoute] long userId)
+        public async Task<ActionResult<RoleTreeDto>> GetRoleTreeListByUserIdAsync([FromRoute] long userId)
         {
             return Result(await _roleService.GetRoleTreeListByUserIdAsync(userId));
         }
