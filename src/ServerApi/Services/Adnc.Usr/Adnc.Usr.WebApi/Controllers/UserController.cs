@@ -138,18 +138,10 @@ namespace Adnc.Usr.WebApi.Controllers
         /// <returns></returns>
         [HttpGet("{id}/permissions")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<List<string>>> GetCurrenUserPermissions([FromRoute] long id, [FromQuery] string[] permissions)
+        public async Task<ActionResult<List<string>>> GetCurrenUserPermissions([FromRoute] long id, [FromQuery] IEnumerable<string> permissions)
         {
             //throw new System.Exception("测试");
-
-            var userValidateDto = await _accountService.GetUserValidateInfoAsync(_userContext.Id);
-
-            if (userValidateDto == null || string.IsNullOrWhiteSpace(userValidateDto.RoleIds))
-                return new List<string>();
-
-            var roleIds = userValidateDto.RoleIds.Trim().Split(",", System.StringSplitOptions.RemoveEmptyEntries).ToList();
-
-            return await _roleService.GetPermissionsAsync(roleIds.Select(x => long.Parse(x)), permissions);
+            return await _roleService.GetPermissionsAsync(_userContext.Id, permissions);
         }
     }
 }

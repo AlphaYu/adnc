@@ -14,8 +14,6 @@ namespace Adnc.Usr.Application.Contracts.Services
     /// </summary>
     public interface IRoleAppService : IAppService
     {
-        Task<AppSrvResult<PageModelDto<RoleDto>>> GetPagedAsync(RolePagedSearchDto input);
-
         [OpsLog(LogName = "新增角色")]
         [CachingEvict(CacheKey = EasyCachingConsts.RoleAllCacheKey)]
         Task<AppSrvResult<long>> CreateAsync(RoleCreationDto input);
@@ -28,14 +26,15 @@ namespace Adnc.Usr.Application.Contracts.Services
         [CachingEvict(CacheKeys = new[] { EasyCachingConsts.MenuRelationCacheKey, EasyCachingConsts.MenuCodesCacheKey, EasyCachingConsts.RoleAllCacheKey })]
         Task<AppSrvResult> DeleteAsync(long Id);
 
-        Task<AppSrvResult<RoleTreeDto>> GetRoleTreeListByUserIdAsync(long userId);
-
         [OpsLog(LogName = "设置角色权限")]
         [CachingEvict(CacheKeys = new[] { EasyCachingConsts.MenuRelationCacheKey, EasyCachingConsts.MenuCodesCacheKey })]
         Task<AppSrvResult> SetPermissonsAsync(RoleSetPermissonsDto input);
 
-        Task<bool> ExistPermissionsAsync(long userId, IEnumerable<string> permissions);
+        Task<List<string>> GetPermissionsAsync(long userId, IEnumerable<string> permissions);
 
-        Task<List<string>> GetPermissionsAsync(IEnumerable<long> roleIds, IEnumerable<string> permissions);
+        Task<RoleTreeDto> GetRoleTreeListByUserIdAsync(long userId);
+
+        Task<PageModelDto<RoleDto>> GetPagedAsync(RolePagedSearchDto input);
+
     }
 }

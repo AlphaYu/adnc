@@ -34,57 +34,6 @@ namespace Adnc.Usr.Application.Services
             _cacheService = cacheService;
         }
 
-        public async Task<AppSrvResult<PageModelDto<RoleDto>>> GetPagedAsync(RolePagedSearchDto search)
-        {
-            Expression<Func<SysRole, bool>> whereCondition = x => true;
-            if (search.RoleName.IsNotNullOrWhiteSpace())
-            {
-                whereCondition = whereCondition.And(x => x.Name.Contains(search.RoleName));
-            }
-
-            var pagedModel = await _roleRepository.PagedAsync(search.PageIndex, search.PageSize, whereCondition, x => x.Ordinal, true);
-
-            return Mapper.Map<PageModelDto<RoleDto>>(pagedModel);
-        }
-
-        public async Task<AppSrvResult<RoleTreeDto>> GetRoleTreeListByUserIdAsync(long userId)
-        {
-            dynamic result = null;
-            IEnumerable<ZTreeNodeDto<long, dynamic>> treeNodes = null;
-            var user = await _userRepository.FetchAsync(u => new { u.Id, u.RoleIds }, x => x.Id == userId);
-
-            if (user == null)
-                return null;
-
-            var roles = await _roleRepository.Where(x => true).ToListAsync();
-            var roleIds = user.RoleIds?.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(x => long.Parse(x)) ?? new List<long>();
-            if (roles.Any())
-            {
-                treeNodes = roles.Select(x => new ZTreeNodeDto<long, dynamic>
-                {
-                    Id = x.Id,
-                    PID = x.Pid.HasValue ? x.Pid.Value : 0,
-                    Name = x.Name,
-                    Open = x.Pid.HasValue && x.Pid.Value > 0 ? false : true,
-                    Checked = roleIds.Contains(x.Id)
-                });
-
-                result = new RoleTreeDto
-                {
-                    TreeData = treeNodes.Select(x => new Node<long>
-                    {
-                        Id = x.Id,
-                        PID = x.PID,
-                        Name = x.Name,
-                        Checked = x.Checked
-                    }),
-                    CheckedIds = treeNodes.Where(x => x.Checked).Select(x => x.Id)
-                };
-            }
-
-            return result;
-        }
-
         public async Task<AppSrvResult> DeleteAsync(long id)
         {
             if (id == 1600000000010)
@@ -136,26 +85,20 @@ namespace Adnc.Usr.Application.Services
             return AppSrvResult();
         }
 
-        public async Task<bool> ExistPermissionsAsync(long userId, IEnumerable<string> permissions)
+        public async Task<List<string>> GetPermissionsAsync(long userId, IEnumerable<string> permissions)
         {
-            var userrValidateInfo = await _cacheService.GetUserValidateInfoFromCacheAsync(userId);
+            var userValidateInfo = await _cacheService.GetUserValidateInfoFromCacheAsync(userId);
 
-            if (string.IsNullOrWhiteSpace(userrValidateInfo.RoleIds))
-                return false;
+            if (string.IsNullOrWhiteSpace(userValidateInfo.RoleIds))
+                return default;
 
-            var roles = userrValidateInfo.RoleIds.Trim().Split(",", StringSplitOptions.RemoveEmptyEntries).Select(x => long.Parse(x));
+            if (userValidateInfo.Status != 1)
+                return default;
 
-            var codes = await this.GetPermissionsAsync(roles, permissions);
+            var roleIds = userValidateInfo.RoleIds.Trim().Split(",", StringSplitOptions.RemoveEmptyEntries).Select(x => long.Parse(x));
 
-            if (codes?.Any() == true)
-                return true;
-
-            return false;
-        }
-
-        public async Task<List<string>> GetPermissionsAsync(IEnumerable<long> roleIds, IEnumerable<string> permissions)
-        {
             var allMenuCodes = await _cacheService.GetAllMenuCodesFromCacheAsync();
+
             var codes = allMenuCodes?.Where(x => roleIds.Contains(x.RoleId)).Select(x => x.Code.ToUpper());
             if (codes != null && codes.Any())
             {
@@ -163,7 +106,59 @@ namespace Adnc.Usr.Application.Services
                 return result.ToList();
             }
 
-            return null;
+            return default;
+        }
+
+        public async Task<RoleTreeDto> GetRoleTreeListByUserIdAsync(long userId)
+        {
+            RoleTreeDto result = null;
+            IEnumerable<ZTreeNodeDto<long, dynamic>> treeNodes = null;
+
+            var user = await _cacheService.GetUserValidateInfoFromCacheAsync(userId) ;
+
+            if (user == null)
+                return null;
+
+            var roles =await _cacheService.GetAllRolesFromCacheAsync();
+            var roleIds = user.RoleIds?.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(x => long.Parse(x)) ?? new List<long>();
+            if (roles.Any())
+            {
+                treeNodes = roles.Select(x => new ZTreeNodeDto<long, dynamic>
+                {
+                    Id = x.Id,
+                    PID = x.Pid.HasValue ? x.Pid.Value : 0,
+                    Name = x.Name,
+                    Open = x.Pid.HasValue && x.Pid.Value > 0 ? false : true,
+                    Checked = roleIds.Contains(x.Id)
+                });
+
+                result = new RoleTreeDto
+                {
+                    TreeData = treeNodes.Select(x => new Node<long>
+                    {
+                        Id = x.Id,
+                        PID = x.PID,
+                        Name = x.Name,
+                        Checked = x.Checked
+                    }),
+                    CheckedIds = treeNodes.Where(x => x.Checked).Select(x => x.Id)
+                };
+            }
+
+            return result;
+        }
+
+        public async Task<PageModelDto<RoleDto>> GetPagedAsync(RolePagedSearchDto search)
+        {
+            Expression<Func<SysRole, bool>> whereCondition = x => true;
+            if (search.RoleName.IsNotNullOrWhiteSpace())
+            {
+                whereCondition = whereCondition.And(x => x.Name.Contains(search.RoleName));
+            }
+
+            var pagedModel = await _roleRepository.PagedAsync(search.PageIndex, search.PageSize, whereCondition, x => x.Ordinal, true);
+
+            return Mapper.Map<PageModelDto<RoleDto>>(pagedModel);
         }
     }
 }
