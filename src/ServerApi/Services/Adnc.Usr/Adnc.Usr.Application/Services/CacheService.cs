@@ -131,16 +131,5 @@ namespace Adnc.Usr.Application.Services
             var cacheKey = ConcatCacheKey(EasyCachingConsts.UserLoginInfoKeyPrefix, value.Id.ToString());
             await _cache.SetAsync(cacheKey, value, TimeSpan.FromSeconds(EasyCachingConsts.OneDay));
         }
-
-        internal async Task RemoveCachesAsync(Func<Task> dataOperater, params string[] cacheKeys)
-        {
-            var preRemoveKey = GetPreRemoveKey(cacheKeys);
-            await _cache.SetAsync(preRemoveKey, cacheKeys, TimeSpan.FromSeconds(EasyCachingConsts.OneDay));
-
-            await dataOperater();
-
-            var needRemovedKeys = cacheKeys.Append(preRemoveKey);
-            await _cache.RemoveAllAsync(needRemovedKeys);
-        }
     }
 }

@@ -34,29 +34,6 @@ namespace Adnc.Usr.Application.Services
             _cacheService = cacheService;
         }
 
-        public async Task<AppSrvResult> DeleteAsync(long id)
-        {
-            if (id == 1600000000010)
-                return Problem(HttpStatusCode.Forbidden, "禁止删除初始角色");
-
-            if (await _userRepository.AnyAsync(x => x.RoleIds == id.ToString()))
-                return Problem(HttpStatusCode.Forbidden, "有用户使用该角色，禁止删除");
-
-            await _roleRepository.DeleteAsync(id);
-
-            return AppSrvResult();
-        }
-
-        public async Task<AppSrvResult> SetPermissonsAsync(RoleSetPermissonsDto input)
-        {
-            if (input.RoleId == 1600000000010)
-                return Problem(HttpStatusCode.Forbidden, "禁止设置初始角色");
-
-            await _usrManager.SetRolePermissonAsync(input.RoleId, input.Permissions);
-
-            return AppSrvResult();
-        }
-
         public async Task<AppSrvResult<long>> CreateAsync(RoleCreationDto input)
         {
             var isExists = (await _cacheService.GetAllRolesFromCacheAsync()).Where(x => x.Name == input.Name).Any();
@@ -81,6 +58,29 @@ namespace Adnc.Usr.Application.Services
             role.Id = id;
 
             await _roleRepository.UpdateAsync(role, UpdatingProps<SysRole>(x => x.Name, x => x.Tips, x => x.Ordinal));
+
+            return AppSrvResult();
+        }
+
+        public async Task<AppSrvResult> DeleteAsync(long id)
+        {
+            if (id == 1600000000010)
+                return Problem(HttpStatusCode.Forbidden, "禁止删除初始角色");
+
+            if (await _userRepository.AnyAsync(x => x.RoleIds == id.ToString()))
+                return Problem(HttpStatusCode.Forbidden, "有用户使用该角色，禁止删除");
+
+            await _roleRepository.DeleteAsync(id);
+
+            return AppSrvResult();
+        }
+
+        public async Task<AppSrvResult> SetPermissonsAsync(RoleSetPermissonsDto input)
+        {
+            if (input.RoleId == 1600000000010)
+                return Problem(HttpStatusCode.Forbidden, "禁止设置初始角色");
+
+            await _usrManager.SetRolePermissonAsync(input.RoleId, input.Permissions);
 
             return AppSrvResult();
         }

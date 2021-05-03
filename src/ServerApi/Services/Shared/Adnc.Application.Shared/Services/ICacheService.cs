@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Adnc.Infra.Caching;
@@ -49,6 +50,17 @@ namespace Adnc.Application.Shared.Services
                     sbuilder.Append(BaseEasyCachingConsts.LinkChar);
             }
             return sbuilder.ToString();
+        }
+
+        public async Task RemoveCachesAsync(Func<Task> dataOperater, params string[] cacheKeys)
+        {
+            var preRemoveKey = GetPreRemoveKey(cacheKeys);
+            await _cache.SetAsync(preRemoveKey, cacheKeys, TimeSpan.FromSeconds(BaseEasyCachingConsts.OneDay));
+
+            await dataOperater();
+
+            var needRemovedKeys = cacheKeys.Append(preRemoveKey);
+            await _cache.RemoveAllAsync(needRemovedKeys);
         }
     }
 }

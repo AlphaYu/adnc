@@ -185,14 +185,14 @@ namespace Adnc.Usr.Application.Services
         public async Task<MenuTreeDto> GetMenuTreeListByRoleIdAsync(long roleId)
         {
             var menuIds = (await _cacheService.GetAllRelationsFromCacheAsync()).Where(x => x.RoleId.Value == roleId).Select(r => r.MenuId.Value) ?? new List<long>();
-            List<ZTreeNodeDto<long, dynamic>> roleTreeList = new List<ZTreeNodeDto<long, dynamic>>();
+            var roleTreeList = new List<ZTreeNodeDto<long, dynamic>>();
 
-            var menus = await _menuRepository.Where(w => true).OrderBy(x=>x.Ordinal).ToListAsync();
+            var menus = (await _cacheService.GetAllMenusFromCacheAsync()).Where(w => true).OrderBy(x=>x.Ordinal);
 
             foreach (var menu in menus)
             {
                 var parentMenu = menus.FirstOrDefault(x => x.Code == menu.PCode);
-                ZTreeNodeDto<long, dynamic> node = new ZTreeNodeDto<long, dynamic>
+                var node = new ZTreeNodeDto<long, dynamic>
                 {
                     Id = menu.Id,
                     PID = parentMenu != null ? parentMenu.Id : 0,
@@ -203,7 +203,7 @@ namespace Adnc.Usr.Application.Services
                 roleTreeList.Add(node);
             }
 
-            List<Node<long>> nodes = Mapper.Map<List<Node<long>>>(roleTreeList);
+            var nodes = Mapper.Map<List<Node<long>>>(roleTreeList);
             foreach (var node in nodes)
             {
                 foreach (var child in nodes)

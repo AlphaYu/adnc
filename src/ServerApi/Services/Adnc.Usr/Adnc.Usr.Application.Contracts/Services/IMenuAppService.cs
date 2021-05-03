@@ -45,6 +45,7 @@ namespace Adnc.Usr.Application.Contracts.Services
         /// 获取菜单列表
         /// </summary>
         /// <returns></returns>
+        [CachingAble(CacheKey = EasyCachingConsts.MenuListCacheKey)]
         Task<List<MenuNodeDto>> GetlistAsync();
 
         /// <summary>
