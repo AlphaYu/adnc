@@ -27,7 +27,7 @@ namespace Adnc.Maint.Application.Services
             _nlogLogRepository = nlogLogRepository;
         }
 
-        public async Task<AppSrvResult<PageModelDto<LoginLogDto>>> GetLoginLogsPagedAsync(LogSearchPagedDto searchDto)
+        public async Task<PageModelDto<LoginLogDto>> GetLoginLogsPagedAsync(LogSearchPagedDto searchDto)
         {
             var builder = Builders<SysLoginLog>.Filter;
             var filters = new List<FilterDefinition<SysLoginLog>>();
@@ -62,7 +62,7 @@ namespace Adnc.Maint.Application.Services
         }
 
 
-        public async Task<AppSrvResult<PageModelDto<OpsLogDto>>> GetOpsLogsPagedAsync(LogSearchPagedDto searchDto)
+        public async Task<PageModelDto<OpsLogDto>> GetOpsLogsPagedAsync(LogSearchPagedDto searchDto)
         {
             var builder = Builders<SysOperationLog>.Filter;
             var filters = new List<FilterDefinition<SysOperationLog>>();
@@ -96,7 +96,7 @@ namespace Adnc.Maint.Application.Services
             return result;
         }
 
-        public async Task<AppSrvResult<PageModelDto<NlogLogDto>>> GetNlogLogsPagedAsync(LogSearchPagedDto searchDto)
+        public async Task<PageModelDto<NlogLogDto>> GetNlogLogsPagedAsync(LogSearchPagedDto searchDto)
         {
             var builder = Builders<SysNloglog>.Filter;
             var filters = new List<FilterDefinition<SysNloglog>>();

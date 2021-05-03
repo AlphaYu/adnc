@@ -74,6 +74,14 @@ namespace Adnc.Usr.Application.Contracts.Services
         Task<AppSrvResult> ChangeStatusAsync([CachingParam] IEnumerable<long> ids, int status);
 
         /// <summary>
+        /// 获取当前用户是否拥有指定权限
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="permissions"></param>
+        /// <returns></returns>
+        Task<List<string>> GetPermissionsAsync(long userId, IEnumerable<string> permissions);
+
+        /// <summary>
         /// 获取用户列表
         /// </summary>
         /// <param name="search"></param>

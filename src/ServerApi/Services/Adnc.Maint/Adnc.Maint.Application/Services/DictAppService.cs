@@ -30,36 +30,6 @@ namespace Adnc.Maint.Application.Services
             _cacheService = cacheService;
         }
 
-        public async Task<AppSrvResult> DeleteAsync(long id)
-        {
-            await _dictRepository.DeleteRangeAsync(d => (d.Id == id) || (d.Pid == id));
-            return AppSrvResult();
-        }
-
-        public async Task<AppSrvResult<List<DictDto>>> GetListAsync(DictSearchDto search)
-        {
-            var result = new List<DictDto>();
-
-            Expression<Func<DictDto, bool>> whereCondition = x => true;
-            if (search.Name.IsNotNullOrWhiteSpace())
-            {
-                whereCondition = whereCondition.And(x => x.Name.Contains(search.Name));
-            }
-
-            var dicts = (await _cacheService.GetAllDictsFromCacheAsync()).Where(whereCondition.Compile()).OrderBy(d => d.Ordinal).ToList();
-            if (dicts.Any())
-            {
-                result = dicts.Where(d => d.Pid == 0).OrderBy(d => d.Ordinal).ToList();
-                foreach (var item in result)
-                {
-                    var subDicts = dicts.Where(x => x.Pid == item.Id).OrderBy(x => x.Ordinal).ToList();
-                    item.Children = subDicts;
-                }
-
-            }
-            return result;
-        }
-
         public async Task<AppSrvResult<long>> CreateAsync(DictCreationDto input)
         {
             var exists = (await _cacheService.GetAllDictsFromCacheAsync()).Exists(x => x.Name.EqualsIgnoreCase(input.Name));
@@ -124,16 +94,46 @@ namespace Adnc.Maint.Application.Services
             return AppSrvResult();
         }
 
-        public async Task<AppSrvResult<DictDto>> GetAsync(long id)
+        public async Task<AppSrvResult> DeleteAsync(long id)
+        {
+            await _dictRepository.DeleteRangeAsync(d => (d.Id == id) || (d.Pid == id));
+            return AppSrvResult();
+        }
+
+        public async Task<DictDto> GetAsync(long id)
         {
             var dictDto = (await _cacheService.GetAllDictsFromCacheAsync()).Where(x => x.Id == id).FirstOrDefault();
 
             if (dictDto == null)
-                return Problem(HttpStatusCode.NotFound, "没有找到");
+                return default;
 
             dictDto.Children = (await _cacheService.GetAllDictsFromCacheAsync()).Where(x => x.Pid == id).ToList();
 
             return dictDto;
+        }
+
+        public async Task<List<DictDto>> GetListAsync(DictSearchDto search)
+        {
+            var result = new List<DictDto>();
+
+            Expression<Func<DictDto, bool>> whereCondition = x => true;
+            if (search.Name.IsNotNullOrWhiteSpace())
+            {
+                whereCondition = whereCondition.And(x => x.Name.Contains(search.Name));
+            }
+
+            var dicts = (await _cacheService.GetAllDictsFromCacheAsync()).Where(whereCondition.Compile()).OrderBy(d => d.Ordinal).ToList();
+            if (dicts.Any())
+            {
+                result = dicts.Where(d => d.Pid == 0).OrderBy(d => d.Ordinal).ToList();
+                foreach (var item in result)
+                {
+                    var subDicts = dicts.Where(x => x.Pid == item.Id).OrderBy(x => x.Ordinal).ToList();
+                    item.Children = subDicts;
+                }
+
+            }
+            return result;
         }
     }
 }

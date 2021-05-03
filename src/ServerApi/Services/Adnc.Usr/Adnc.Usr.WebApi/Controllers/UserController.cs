@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
@@ -20,18 +19,11 @@ namespace Adnc.Usr.WebApi.Controllers
     public class UserController : AdncControllerBase
     {
         private readonly IUserAppService _userService;
-        private readonly IRoleAppService _roleService;
-        private readonly IAccountAppService _accountService;
         private readonly IUserContext _userContext;
 
-        public UserController(IUserAppService userService
-            , IRoleAppService roleService
-            , IAccountAppService accountService
-            , IUserContext userContext)
+        public UserController(IUserAppService userService, IUserContext userContext)
         {
             _userService = userService;
-            _roleService = roleService;
-            _accountService = accountService;
             _userContext = userContext;
         }
 
@@ -128,7 +120,7 @@ namespace Adnc.Usr.WebApi.Controllers
         public async Task<ActionResult<List<string>>> GetCurrenUserPermissions([FromRoute] long id, [FromQuery] IEnumerable<string> permissions)
         {
             //throw new System.Exception("测试");
-            return await _roleService.GetPermissionsAsync(_userContext.Id, permissions);
+            return await _userService.GetPermissionsAsync(_userContext.Id, permissions);
         }
 
         /// <summary>

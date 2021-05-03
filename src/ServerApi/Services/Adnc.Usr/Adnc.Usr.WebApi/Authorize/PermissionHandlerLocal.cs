@@ -7,16 +7,16 @@ namespace Microsoft.AspNetCore.Authorization
 {
     public class PermissionHandlerLocal : PermissionHandler
     {
-        private readonly IRoleAppService _roleAppService;
+        private readonly IUserAppService _userAppService;
 
-        public PermissionHandlerLocal(IRoleAppService roleAppService)
+        public PermissionHandlerLocal(IUserAppService userAppService)
         {
-            _roleAppService = roleAppService;
+            _userAppService = userAppService;
         }
 
         protected override async Task<bool> CheckUserPermissions(long userId, IEnumerable<string> codes)
         {
-            var permissions = await _roleAppService.GetPermissionsAsync(userId, codes);
+            var permissions = await _userAppService.GetPermissionsAsync(userId, codes);
             bool result = permissions != null && permissions.Any();
             return result;
         }

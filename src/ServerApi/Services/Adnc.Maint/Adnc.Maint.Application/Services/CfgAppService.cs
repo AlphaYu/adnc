@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Net;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -25,46 +24,6 @@ namespace Adnc.Maint.Application.Services
         {
             _cfgRepository = cfgRepository;
             _cacheService = cacheService;
-        }
-
-        public async Task<AppSrvResult> DeleteAsync(long id)
-        {
-            await _cfgRepository.DeleteAsync(id);
-            return AppSrvResult();
-        }
-
-        public async Task<AppSrvResult<PageModelDto<CfgDto>>> GetPagedAsync(CfgSearchPagedDto search)
-        {
-            Expression<Func<CfgDto, bool>> whereCondition = x => true;
-            if (search.Name.IsNotNullOrWhiteSpace())
-            {
-                whereCondition = whereCondition.And(x => x.Name.Contains(search.Name));
-            }
-            if (search.Value.IsNotNullOrWhiteSpace())
-            {
-                whereCondition = whereCondition.And(x => x.Value.Contains(search.Value));
-            }
-
-            var allCfgs = await _cacheService.GetAllCfgsFromCacheAsync();
-
-            var pagedCfgs = allCfgs.Where(whereCondition.Compile())
-                                   .OrderByDescending(x => x.CreateTime)
-                                   .Skip((search.PageIndex - 1) * search.PageSize)
-                                   .Take(search.PageSize)
-                                   .ToArray();
-
-            var result = new PageModelDto<CfgDto>()
-            {
-                Data = pagedCfgs
-                ,
-                TotalCount = allCfgs.Count
-                ,
-                PageIndex = search.PageIndex
-                ,
-                PageSize = search.PageSize
-            };
-
-            return result;
         }
 
         public async Task<AppSrvResult<long>> CreateAsync(CfgCreationDto input)
@@ -98,10 +57,49 @@ namespace Adnc.Maint.Application.Services
             return AppSrvResult();
         }
 
-        public async Task<AppSrvResult<CfgDto>> GetAsync(long id)
+        public async Task<AppSrvResult> DeleteAsync(long id)
+        {
+            await _cfgRepository.DeleteAsync(id);
+            return AppSrvResult();
+        }
+
+        public async Task<CfgDto> GetAsync(long id)
         {
             return (await _cacheService.GetAllCfgsFromCacheAsync()).Where(x => x.Id == id).FirstOrDefault();
         }
 
+        public async Task<PageModelDto<CfgDto>> GetPagedAsync(CfgSearchPagedDto search)
+        {
+            Expression<Func<CfgDto, bool>> whereCondition = x => true;
+            if (search.Name.IsNotNullOrWhiteSpace())
+            {
+                whereCondition = whereCondition.And(x => x.Name.Contains(search.Name));
+            }
+            if (search.Value.IsNotNullOrWhiteSpace())
+            {
+                whereCondition = whereCondition.And(x => x.Value.Contains(search.Value));
+            }
+
+            var allCfgs = await _cacheService.GetAllCfgsFromCacheAsync();
+
+            var pagedCfgs = allCfgs.Where(whereCondition.Compile())
+                                   .OrderByDescending(x => x.CreateTime)
+                                   .Skip((search.PageIndex - 1) * search.PageSize)
+                                   .Take(search.PageSize)
+                                   .ToArray();
+
+            var result = new PageModelDto<CfgDto>()
+            {
+                Data = pagedCfgs
+                ,
+                TotalCount = allCfgs.Count
+                ,
+                PageIndex = search.PageIndex
+                ,
+                PageSize = search.PageSize
+            };
+
+            return result;
+        }
     }
 }

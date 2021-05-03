@@ -8,22 +8,51 @@ using Adnc.Infra.Caching.Interceptor;
 
 namespace Adnc.Maint.Application.Contracts.Services
 {
+    /// <summary>
+    /// 字典管理
+    /// </summary>
     public interface IDictAppService : IAppService
     {
-        Task<AppSrvResult<List<DictDto>>> GetListAsync(DictSearchDto serach);
-
-        Task<AppSrvResult<DictDto>> GetAsync(long id);
-
+        /// <summary>
+        /// 新增字典
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         [OpsLog(LogName = "新增字典")]
         [CachingEvict(CacheKey = EasyCachingConsts.DictListCacheKey)]
         Task<AppSrvResult<long>> CreateAsync(DictCreationDto input);
 
+        /// <summary>
+        /// 修改字典
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="input"></param>
+        /// <returns></returns>
         [OpsLog(LogName = "修改字典")]
         [CachingEvict(CacheKey = EasyCachingConsts.DictListCacheKey)]
         Task<AppSrvResult> UpdateAsync(long id, DictUpdationDto input);
 
+        /// <summary>
+        /// 删除字典
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [OpsLog(LogName = "删除字典")]
         [CachingEvict(CacheKey = EasyCachingConsts.DictListCacheKey)]
         Task<AppSrvResult> DeleteAsync(long id);
+
+        /// <summary>
+        /// 字典列表
+        /// </summary>
+        /// <param name="serach"></param>
+        /// <returns></returns>
+        Task<List<DictDto>> GetListAsync(DictSearchDto serach);
+
+        /// <summary>
+        /// 获取字典
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task<DictDto> GetAsync(long id);
     }
 }

@@ -87,6 +87,30 @@ namespace Adnc.Usr.Application.Services
             return AppSrvResult();
         }
 
+        public async Task<List<string>> GetPermissionsAsync(long userId, IEnumerable<string> permissions)
+        {
+            var userValidateInfo = await _cacheService.GetUserValidateInfoFromCacheAsync(userId);
+
+            if (string.IsNullOrWhiteSpace(userValidateInfo.RoleIds))
+                return default;
+
+            if (userValidateInfo.Status != 1)
+                return default;
+
+            var roleIds = userValidateInfo.RoleIds.Trim().Split(",", StringSplitOptions.RemoveEmptyEntries).Select(x => long.Parse(x));
+
+            var allMenuCodes = await _cacheService.GetAllMenuCodesFromCacheAsync();
+
+            var codes = allMenuCodes?.Where(x => roleIds.Contains(x.RoleId)).Select(x => x.Code.ToUpper());
+            if (codes != null && codes.Any())
+            {
+                var result = codes.Intersect(permissions.Select(x => x.ToUpper()));
+                return result.ToList();
+            }
+
+            return default;
+        }
+
         public async Task<PageModelDto<UserDto>> GetPagedAsync(UserSearchPagedDto search)
         {
             Expression<Func<SysUser, bool>> whereCondition = x => true;

@@ -1025,14 +1025,6 @@
             <param name="input"></param>
             <returns></returns>
         </member>
-        <member name="M:Adnc.Usr.Application.Contracts.Services.IRoleAppService.GetPermissionsAsync(System.Int64,System.Collections.Generic.IEnumerable{System.String})">
-            <summary>
-            获取当前用户是否拥有指定权限
-            </summary>
-            <param name="userId"></param>
-            <param name="permissions"></param>
-            <returns></returns>
-        </member>
         <member name="M:Adnc.Usr.Application.Contracts.Services.IRoleAppService.GetRoleTreeListByUserIdAsync(System.Int64)">
             <summary>
             获取用户拥有的角色
@@ -1096,6 +1088,14 @@
             </summary>
             <param name="ids"></param>
             <param name="status"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Adnc.Usr.Application.Contracts.Services.IUserAppService.GetPermissionsAsync(System.Int64,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            获取当前用户是否拥有指定权限
+            </summary>
+            <param name="userId"></param>
+            <param name="permissions"></param>
             <returns></returns>
         </member>
         <member name="M:Adnc.Usr.Application.Contracts.Services.IUserAppService.GetPagedAsync(Adnc.Usr.Application.Contracts.Dtos.UserSearchPagedDto)">
