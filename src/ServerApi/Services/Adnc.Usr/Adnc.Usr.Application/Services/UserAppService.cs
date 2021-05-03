@@ -18,15 +18,12 @@ namespace Adnc.Usr.Application.Services
     public class UserAppService : AbstractAppService, IUserAppService
     {
         private readonly IEfRepository<SysUser> _userRepository;
-        private readonly IDeptAppService _deptAppService;
         private readonly CacheService _cacheService;
 
         public UserAppService(IEfRepository<SysUser> userRepository,
-            IDeptAppService deptAppService,
             CacheService cacheService)
         {
             _userRepository = userRepository;
-            _deptAppService = deptAppService;
             _cacheService = cacheService;
         }
 
@@ -126,7 +123,7 @@ namespace Adnc.Usr.Application.Services
                 }
             }
 
-            pageModelDto.XData = await _deptAppService.GetSimpleTreeListAsync();
+            pageModelDto.XData = await _cacheService.GetDeptSimpleTreeListAsync();
 
             return pageModelDto;
         }

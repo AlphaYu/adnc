@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Adnc.Application.Shared.Services;
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Infra.Caching;
-using Adnc.Infra.Caching.Core;
 using Adnc.Usr.Application.Contracts.Consts;
 using Adnc.Usr.Application.Contracts.Dtos;
 using Adnc.Usr.Core.Entities;
@@ -14,7 +13,7 @@ namespace Adnc.Usr.Application.Services
 {
     public class CacheService : AbstractCacheService
     {
-        private readonly IRedisDistributedCache _cache;
+        private readonly Lazy<IRedisDistributedCache> _cache;
         private readonly Lazy<IRedisProvider> _redisProvider;
         private readonly Lazy<IEfRepository<SysDept>> _deptRepository;
         private readonly Lazy<IEfRepository<SysMenu>> _menuRepository;
@@ -22,7 +21,7 @@ namespace Adnc.Usr.Application.Services
         private readonly Lazy<IEfRepository<SysRole>> _roleRepository;
         private readonly Lazy<IEfRepository<SysUser>> _userRepository;
 
-        public CacheService(IRedisDistributedCache cache
+        public CacheService(Lazy<IRedisDistributedCache> cache
             , Lazy<IRedisProvider> redisProvider
             , Lazy<IEfRepository<SysDept>> deptRepository
             , Lazy<IEfRepository<SysMenu>> menuRepository
@@ -38,10 +37,15 @@ namespace Adnc.Usr.Application.Services
             _roleRepository = roleRepository;
             _userRepository = userRepository;
         }
+        internal async Task SetValidateInfoToCacheAsync(UserValidateDto value)
+        {
+            var cacheKey = ConcatCacheKey(EasyCachingConsts.UserLoginInfoKeyPrefix, value.Id.ToString());
+            await _cache.Value.SetAsync(cacheKey, value, TimeSpan.FromSeconds(EasyCachingConsts.OneDay));
+        }
 
         internal async Task<List<DeptDto>> GetAllDeptsFromCacheAsync()
         {
-            var cahceValue = await _cache.GetAsync(EasyCachingConsts.DetpListCacheKey, async () =>
+            var cahceValue = await _cache.Value.GetAsync(EasyCachingConsts.DetpListCacheKey, async () =>
             {
                 var allDepts = await _deptRepository.Value.GetAll(writeDb: true).OrderBy(x => x.Ordinal).ToListAsync();
                 return Mapper.Map<List<DeptDto>>(allDepts);
@@ -52,7 +56,7 @@ namespace Adnc.Usr.Application.Services
 
         internal async Task<List<RelationDto>> GetAllRelationsFromCacheAsync()
         {
-            var cahceValue = await _cache.GetAsync(EasyCachingConsts.MenuRelationCacheKey, async () =>
+            var cahceValue = await _cache.Value.GetAsync(EasyCachingConsts.MenuRelationCacheKey, async () =>
             {
                 var allRelations = await _relationRepository.Value.GetAll(writeDb: true).ToListAsync();
                 return Mapper.Map<List<RelationDto>>(allRelations);
@@ -63,7 +67,7 @@ namespace Adnc.Usr.Application.Services
 
         internal async Task<List<MenuDto>> GetAllMenusFromCacheAsync()
         {
-            var cahceValue = await _cache.GetAsync(EasyCachingConsts.MenuListCacheKey, async () =>
+            var cahceValue = await _cache.Value.GetAsync(EasyCachingConsts.MenuListCacheKey, async () =>
             {
                 var allMenus = await _menuRepository.Value.GetAll(writeDb: true).OrderBy(x => x.Ordinal).ToListAsync();
                 return Mapper.Map<List<MenuDto>>(allMenus);
@@ -74,7 +78,7 @@ namespace Adnc.Usr.Application.Services
 
         internal async Task<List<RoleDto>> GetAllRolesFromCacheAsync()
         {
-            var cahceValue = await _cache.GetAsync(EasyCachingConsts.RoleAllCacheKey, async () =>
+            var cahceValue = await _cache.Value.GetAsync(EasyCachingConsts.RoleAllCacheKey, async () =>
             {
                 var allRoles = await _roleRepository.Value.GetAll(writeDb: true).OrderBy(x => x.Ordinal).ToListAsync();
                 return Mapper.Map<List<RoleDto>>(allRoles);
@@ -85,7 +89,7 @@ namespace Adnc.Usr.Application.Services
 
         internal async Task<List<RoleMenuCodesDto>> GetAllMenuCodesFromCacheAsync()
         {
-            var cahceValue = await _cache.GetAsync(EasyCachingConsts.MenuCodesCacheKey, async () =>
+            var cahceValue = await _cache.Value.GetAsync(EasyCachingConsts.MenuCodesCacheKey, async () =>
             {
                 var allMenus = await _relationRepository.Value.GetAll(writeDb: true)
                .Where(x => x.Menu.Status == true)
@@ -101,7 +105,7 @@ namespace Adnc.Usr.Application.Services
         {
             var cacheKey = ConcatCacheKey(EasyCachingConsts.UserLoginInfoKeyPrefix, Id.ToString());
 
-            var cacheValue = await _cache.GetAsync(cacheKey, async () =>
+            var cacheValue = await _cache.Value.GetAsync(cacheKey, async () =>
             {
                 return await _userRepository.Value.FetchAsync(x => new UserValidateDto()
                 {
@@ -126,10 +130,44 @@ namespace Adnc.Usr.Application.Services
             return cacheValue.Value;
         }
 
-        internal async Task SetValidateInfoToCacheAsync(UserValidateDto value)
+        internal async Task<List<DeptSimpleTreeDto>> GetDeptSimpleTreeListAsync()
         {
-            var cacheKey = ConcatCacheKey(EasyCachingConsts.UserLoginInfoKeyPrefix, value.Id.ToString());
-            await _cache.SetAsync(cacheKey, value, TimeSpan.FromSeconds(EasyCachingConsts.OneDay));
+            var result = new List<DeptSimpleTreeDto>();
+
+            var depts = await GetAllDeptsFromCacheAsync();
+
+            if (!depts.Any())
+                return result;
+
+            var roots = depts.Where(d => d.Pid == 0)
+                                                      .OrderBy(d => d.Ordinal)
+                                                      .Select(x => new DeptSimpleTreeDto() { Id = x.Id, Label = x.SimpleName, children = new List<DeptSimpleTreeDto>() });
+            foreach (var node in roots)
+            {
+                GetChildren(node, depts);
+                result.Add(node);
+            }
+
+            void GetChildren(DeptSimpleTreeDto currentNode, List<DeptDto> depts)
+            {
+                var childrenNodes = depts.Where(d => d.Pid == currentNode.Id)
+                                                                         .OrderBy(d => d.Ordinal)
+                                                                         .Select(x => new DeptSimpleTreeDto() { Id = x.Id, Label = x.SimpleName, children = new List<DeptSimpleTreeDto>() });
+                if (childrenNodes.Count() == 0)
+                    return;
+                else
+                {
+                    currentNode.children.AddRange(childrenNodes);
+                    foreach (var node in childrenNodes)
+                    {
+                        GetChildren(node, depts);
+                    }
+                }
+            }
+
+            await _cache.Value.SetAsync(EasyCachingConsts.DetpSimpleTreeListCacheKey, result, TimeSpan.FromSeconds(EasyCachingConsts.OneYear));
+
+            return result;
         }
     }
 }

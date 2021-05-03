@@ -16,10 +16,10 @@ namespace Adnc.Application.Shared.Services
 
     public abstract class AbstractCacheService : ICacheService
     {
-        private readonly IRedisDistributedCache _cache;
+        private readonly Lazy<IRedisDistributedCache> _cache;
         private readonly Lazy<IRedisProvider> _redisProvider;
 
-        public AbstractCacheService(IRedisDistributedCache cache, Lazy<IRedisProvider> redisProvider)
+        public AbstractCacheService(Lazy<IRedisDistributedCache> cache, Lazy<IRedisProvider> redisProvider)
         {
             _cache = cache;
             _redisProvider = redisProvider;
@@ -55,12 +55,12 @@ namespace Adnc.Application.Shared.Services
         public async Task RemoveCachesAsync(Func<Task> dataOperater, params string[] cacheKeys)
         {
             var preRemoveKey = GetPreRemoveKey(cacheKeys);
-            await _cache.SetAsync(preRemoveKey, cacheKeys, TimeSpan.FromSeconds(BaseEasyCachingConsts.OneDay));
+            await _cache.Value.SetAsync(preRemoveKey, cacheKeys, TimeSpan.FromSeconds(BaseEasyCachingConsts.OneDay));
 
             await dataOperater();
 
             var needRemovedKeys = cacheKeys.Append(preRemoveKey);
-            await _cache.RemoveAllAsync(needRemovedKeys);
+            await _cache.Value.RemoveAllAsync(needRemovedKeys);
         }
     }
 }

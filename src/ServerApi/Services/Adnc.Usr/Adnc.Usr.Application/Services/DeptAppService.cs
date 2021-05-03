@@ -116,31 +116,6 @@ namespace Adnc.Usr.Application.Services
             return result;
         }
 
-        public async Task<List<DeptSimpleTreeDto>> GetSimpleTreeListAsync()
-        {
-            var depts = await this.GetTreeListAsync();
-            if (!depts.Any())
-                return new List<DeptSimpleTreeDto>();
-
-            return GetSimpleNodes(depts);
-
-            static List<DeptSimpleTreeDto> GetSimpleNodes(List<DeptTreeDto> deptNodes)
-            {
-                var result = new List<DeptSimpleTreeDto>();
-
-                foreach (var node in deptNodes)
-                {
-                    var simpleNode = new DeptSimpleTreeDto();
-                    simpleNode.Id = node.Id;
-                    simpleNode.Label = node.SimpleName;
-                    if (node.Children.Any())
-                        simpleNode.children = GetSimpleNodes(node.Children);
-                    result.Add(simpleNode);
-                }
-                return result;
-            }
-        }
-
         private async Task<SysDept> SetDeptPids(SysDept sysDept)
         {
 

@@ -47,12 +47,5 @@ namespace Adnc.Usr.Application.Contracts.Services
         /// <returns></returns>
         [CachingAble(CacheKey = EasyCachingConsts.DetpTreeListCacheKey, Expiration = EasyCachingConsts.OneYear)]
         Task<List<DeptTreeDto>> GetTreeListAsync();
-
-        /// <summary>
-        /// 精简的部门树结构
-        /// </summary>
-        /// <returns></returns>
-        [CachingAble(CacheKey = EasyCachingConsts.DetpSimpleTreeListCacheKey, Expiration = EasyCachingConsts.OneYear)]
-        Task<List<DeptSimpleTreeDto>> GetSimpleTreeListAsync();
     }
 }
