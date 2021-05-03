@@ -37,16 +37,16 @@ namespace Adnc.Usr.Application.Services
             return AppSrvResult();
         }
 
-        public async Task<AppSrvResult> ChangeStatusAsync(UserChangeStatusDto input)
+        public async Task<AppSrvResult> ChangeStatusAsync(IEnumerable<long> ids, int status)
         {
-            string userids = string.Join<long>(",", input.UserIds);
-            
+            string userids = string.Join<long>(",", ids);
 
-            var cacheKeys = input.UserIds.Select(x => string.Format(EasyCachingConsts.UserLoginInfoKeyPrefix, x));
-            await _cacheService.RemoveCachesAsync(cacheKeys, async () =>
-            {
-                await _userRepository.UpdateRangeAsync(u => userids.Contains(u.Id.ToString()), u => new SysUser { Status = input.Status });
-            });
+
+            var cacheKeys = ids.Select(x => _cacheService.ConcatCacheKey(EasyCachingConsts.UserLoginInfoKeyPrefix, x.ToString()));
+            //await _cacheService.RemoveCachesAsync(cacheKeys, async () =>
+            //{
+                await _userRepository.UpdateRangeAsync(u => userids.Contains(u.Id.ToString()), u => new SysUser { Status = status });
+            //});
             return AppSrvResult();
         }
 
@@ -92,12 +92,14 @@ namespace Adnc.Usr.Application.Services
         public async Task<AppSrvResult> SetRoleAsync(long id, UserSetRoleDto input)
         {
             var roleIdStr = input.RoleIds == null ? null : string.Join(",", input.RoleIds);
-            var cacheKeys = new string[] { EasyCachingConsts.MenuRelationCacheKey, EasyCachingConsts.MenuCodesCacheKey, string.Format(EasyCachingConsts.UserLoginInfoKeyPrefix, id) };
+            //var cacheKeys = new string[] { EasyCachingConsts.MenuRelationCacheKey
+            //                                                 , EasyCachingConsts.MenuCodesCacheKey
+            //                                                 , string.Format(EasyCachingConsts.UserLoginInfoKeyPrefix, id) };
 
-            await _cacheService.RemoveCachesAsync(cacheKeys, async () =>
-            {
+            //await _cacheService.RemoveCachesAsync(cacheKeys, async () =>
+            //{
                 await _userRepository.UpdateAsync(new SysUser() { Id = id, RoleIds = roleIdStr }, UpdatingProps<SysUser>(x => x.RoleIds));
-            });
+            //});
 
             return AppSrvResult();
         }

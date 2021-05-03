@@ -7,6 +7,7 @@ using Castle.DynamicProxy;
 using Microsoft.Extensions.Logging;
 using Adnc.Infra.Core.Interceptor;
 using Adnc.Infra.Caching.Core;
+using System.Collections.Generic;
 
 namespace Adnc.Infra.Caching.Interceptor.Castle
 {
@@ -207,30 +208,37 @@ namespace Adnc.Infra.Caching.Interceptor.Castle
 
             if (GetMethodAttributes(serviceMethod).FirstOrDefault(x => typeof(CachingEvictAttribute).IsAssignableFrom(x.GetType())) is CachingEvictAttribute attribute)
             {
-                string[] needRemovedKeys;
+                var needRemovedKeys = new HashSet<string>();
                 if (!string.IsNullOrEmpty(attribute.CacheKey))
                 {
-                    preRemoveKey = $"{CachingConstValue.PreRemoveKey}{LinkChar}{attribute.CacheKey.GetHashCode()}";
-                    needRemovedKeys = new string[] { attribute.CacheKey, preRemoveKey };
+                    needRemovedKeys.Add(attribute.CacheKey);
                 }
-                else if (attribute.CacheKeys?.Length > 0)
+                
+                if (attribute.CacheKeys?.Length > 0)
                 {
-                    preRemoveKey = $"{CachingConstValue.PreRemoveKey}{LinkChar}{string.Join(",", attribute.CacheKeys).GetHashCode()}";
-                    needRemovedKeys = attribute.CacheKeys.Append(preRemoveKey).ToArray();
-                }
-                else if (attribute.IsAll)
-                {
-                    preRemoveKey = $"{CachingConstValue.PreRemoveAllKeyPrefix}{LinkChar}{ attribute.CacheKeyPrefix.GetHashCode()}";
-                    needRemovedKeys = new string[] { attribute.CacheKeyPrefix, preRemoveKey };
-                }
-                else
-                {
-                    var cacheKey = _keyGenerator.GetCacheKey(serviceMethod, invocation.Arguments, attribute.CacheKeyPrefix);
-                    preRemoveKey = $"{CachingConstValue.PreRemoveKey}{LinkChar}{cacheKey.GetHashCode()}";
-                    needRemovedKeys = new string[] { cacheKey, preRemoveKey };
+                    needRemovedKeys.UnionWith(attribute.CacheKeys);
                 }
 
-                _cacheProvider.Set(preRemoveKey, needRemovedKeys, TimeSpan.FromSeconds(60 * 60 * 24));
+                if(!string.IsNullOrWhiteSpace(attribute.CacheKeyPrefix))
+                {
+                    var cacheKeys = _keyGenerator.GetCacheKeys(serviceMethod, invocation.Arguments, attribute.CacheKeyPrefix);
+                    needRemovedKeys.UnionWith(cacheKeys);
+                }
+                //if (attribute.IsAll)
+                //{
+                //    preRemoveKey = $"{CachingConstValue.PreRemoveAllKeyPrefix}{LinkChar}{ attribute.CacheKeyPrefix.GetHashCode()}";
+                //    needRemovedKeys = new string[] { attribute.CacheKeyPrefix, preRemoveKey };
+                //}
+                //else
+                //{
+                //    var cacheKey = _keyGenerator.GetCacheKey(serviceMethod, invocation.Arguments, attribute.CacheKeyPrefix);
+                //    preRemoveKey = $"{CachingConstValue.PreRemoveKey}{LinkChar}{cacheKey.GetHashCode()}";
+                //    needRemovedKeys = new string[] { cacheKey, preRemoveKey };
+                //}
+
+                preRemoveKey = $"{CachingConstValue.PreRemoveKey}{LinkChar}{string.Join(",", needRemovedKeys).GetHashCode()}";
+                needRemovedKeys.Add(preRemoveKey);
+                _cacheProvider.Set(preRemoveKey, needRemovedKeys.ToArray(), TimeSpan.FromSeconds(60 * 60 * 24));
             }
             return preRemoveKey;
         }
@@ -251,15 +259,16 @@ namespace Adnc.Infra.Caching.Interceptor.Castle
                 try
                 {
                     var needRemoveCacheKeys = _cacheProvider.Get<string[]>(preRemoveKey).Value;
-                    if (preRemoveKey.StartsWith(CachingConstValue.PreRemoveAllKeyPrefix))
-                    {
-                        _cacheProvider.RemoveByPrefix(needRemoveCacheKeys[0]);
-                        _cacheProvider.Remove(needRemoveCacheKeys[1]);
-                    }
-                    else
-                    {
-                        _cacheProvider.RemoveAll(needRemoveCacheKeys);
-                    }
+                    _cacheProvider.RemoveAll(needRemoveCacheKeys);
+                    //if (preRemoveKey.StartsWith(CachingConstValue.PreRemoveAllKeyPrefix))
+                    //{
+                    //    _cacheProvider.RemoveByPrefix(needRemoveCacheKeys[0]);
+                    //    _cacheProvider.Remove(needRemoveCacheKeys[1]);
+                    //}
+                    //else
+                    //{
+                    //    _cacheProvider.RemoveAll(needRemoveCacheKeys);
+                    //}
                 }
                 catch (Exception ex)
                 {

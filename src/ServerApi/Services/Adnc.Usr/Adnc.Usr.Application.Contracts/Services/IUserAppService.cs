@@ -1,4 +1,6 @@
 ﻿using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Linq;
 using Adnc.Usr.Application.Contracts.Dtos;
 using Adnc.Application.Shared.Interceptors;
 using Adnc.Application.Shared.Services;
@@ -47,8 +49,8 @@ namespace Adnc.Usr.Application.Contracts.Services
         /// <param name="input"></param>
         /// <returns></returns>
         [OpsLog(LogName = "设置用户角色")]
-        //[CachingEvict(CacheKeys = new[] { EasyCachingConsts.MenuRelationCacheKey, EasyCachingConsts.MenuCodesCacheKey })]
-        //[CachingEvict(CacheKeyPrefix = EasyCachingConsts.UserLoginInfoKeyPrefix)]
+        [CachingEvict(CacheKeys = new[] { EasyCachingConsts.MenuRelationCacheKey, EasyCachingConsts.MenuCodesCacheKey }
+                             , CacheKeyPrefix = EasyCachingConsts.UserLoginInfoKeyPrefix)]
         Task<AppSrvResult> SetRoleAsync([CachingParam] long id,UserSetRoleDto input);
 
         /// <summary>
@@ -64,10 +66,12 @@ namespace Adnc.Usr.Application.Contracts.Services
         /// <summary>
         /// 批量修改用户状态
         /// </summary>
-        /// <param name="input"></param>
+        /// <param name="ids"></param>
+        /// <param name="status"></param>
         /// <returns></returns>
         [OpsLog(LogName = "批量修改用户状态")]
-        Task<AppSrvResult> ChangeStatusAsync(UserChangeStatusDto input);
+        [CachingEvict(CacheKeyPrefix = EasyCachingConsts.UserLoginInfoKeyPrefix)]
+        Task<AppSrvResult> ChangeStatusAsync([CachingParam] IEnumerable<long> ids, int status);
 
         /// <summary>
         /// 获取用户列表

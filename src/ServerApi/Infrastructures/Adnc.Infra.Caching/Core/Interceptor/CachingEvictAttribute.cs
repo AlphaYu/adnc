@@ -15,7 +15,7 @@
         /// This need to use with CacheKeyPrefix.
         /// </remarks>
         /// <value><c>true</c> if is all; otherwise, <c>false</c>.</value>
-        public bool IsAll { get; set; } = false;
+        //public bool IsAll { get; set; } = false;
 
         /// <summary>
         /// Gets or sets a value indicating whether is before.

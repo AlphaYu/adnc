@@ -9,9 +9,7 @@ namespace Microsoft.AspNetCore.Authorization
     {
         private readonly IRoleAppService _roleAppService;
 
-
         public PermissionHandlerLocal(IRoleAppService roleAppService)
-            : base()
         {
             _roleAppService = roleAppService;
         }

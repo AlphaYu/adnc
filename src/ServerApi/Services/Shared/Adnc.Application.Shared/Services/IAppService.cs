@@ -15,7 +15,7 @@ namespace Adnc.Application.Shared.Services
     {
         public IObjectMapper Mapper { get; set; }
 
-        protected AppSrvResult AppSrvResult()
+           protected AppSrvResult AppSrvResult()
         {
             return new AppSrvResult();
         }

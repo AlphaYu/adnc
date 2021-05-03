@@ -99,7 +99,7 @@ namespace Adnc.Usr.Application.Services
 
         internal async Task<UserValidateDto> GetUserValidateInfoFromCacheAsync(long Id)
         {
-            var cacheKey = string.Format(EasyCachingConsts.UserLoginInfoKeyPrefix, Id);
+            var cacheKey = ConcatCacheKey(EasyCachingConsts.UserLoginInfoKeyPrefix, Id.ToString());
 
             var cacheValue = await _cache.GetAsync(cacheKey, async () =>
             {
@@ -128,11 +128,11 @@ namespace Adnc.Usr.Application.Services
 
         internal async Task SetValidateInfoToCacheAsync(UserValidateDto value)
         {
-            var cacheKey = string.Format(EasyCachingConsts.UserLoginInfoKeyPrefix, value.Id);
+            var cacheKey = ConcatCacheKey(EasyCachingConsts.UserLoginInfoKeyPrefix, value.Id.ToString());
             await _cache.SetAsync(cacheKey, value, TimeSpan.FromSeconds(EasyCachingConsts.OneDay));
         }
 
-        internal async Task RemoveCachesAsync(IEnumerable<string> cacheKeys, Func<Task> dataOperater)
+        internal async Task RemoveCachesAsync(Func<Task> dataOperater, params string[] cacheKeys)
         {
             var preRemoveKey = GetPreRemoveKey(cacheKeys);
             await _cache.SetAsync(preRemoveKey, cacheKeys, TimeSpan.FromSeconds(EasyCachingConsts.OneDay));

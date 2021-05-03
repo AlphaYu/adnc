@@ -13,13 +13,13 @@ namespace Adnc.Usr.Application.Contracts.Services
     /// </summary>
     public interface IDeptAppService : IAppService
     {
-         /// <summary>
+        /// <summary>
         /// 新增部门
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
         [OpsLog(LogName = "新增部门")]
-        [CachingEvict(CacheKeyPrefix = EasyCachingConsts.DeptCacheKeyPrefix, IsAll = true)]
+        [CachingEvict(CacheKeys = new string[] { EasyCachingConsts.DetpListCacheKey, EasyCachingConsts.DetpTreeListCacheKey, EasyCachingConsts.DetpSimpleTreeListCacheKey })]
         Task<AppSrvResult<long>> CreateAsync(DeptCreationDto input);
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace Adnc.Usr.Application.Contracts.Services
         /// <param name="input"></param>
         /// <returns></returns>
         [OpsLog(LogName = "修改部门")]
-        [CachingEvict(CacheKeyPrefix = EasyCachingConsts.DeptCacheKeyPrefix, IsAll = true)]
+        [CachingEvict(CacheKeys = new string[] { EasyCachingConsts.DetpListCacheKey, EasyCachingConsts.DetpTreeListCacheKey, EasyCachingConsts.DetpSimpleTreeListCacheKey })]
         Task<AppSrvResult> UpdateAsync(long id, DeptUpdationDto input);
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace Adnc.Usr.Application.Contracts.Services
         /// <param name="Id"></param>
         /// <returns></returns>
         [OpsLog(LogName = "删除部门")]
-        [CachingEvict(CacheKeyPrefix = EasyCachingConsts.DeptCacheKeyPrefix, IsAll = true)]
+        [CachingEvict(CacheKeys = new string[] { EasyCachingConsts.DetpListCacheKey, EasyCachingConsts.DetpTreeListCacheKey, EasyCachingConsts.DetpSimpleTreeListCacheKey })]
         Task<AppSrvResult> DeleteAsync(long Id);
 
         /// <summary>

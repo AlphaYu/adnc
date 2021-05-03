@@ -22,7 +22,7 @@ namespace Adnc.Usr.Application.Contracts.Services
         /// <summary>
         /// 修改密码
         /// </summary>
-        /// <param name="account"></param>
+        /// <param name="id"></param>
         /// <param name="input"></param>
         /// <returns></returns>
         [OpsLog(LogName = "修改密码")]

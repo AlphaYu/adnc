@@ -25,12 +25,39 @@ namespace Adnc.Infra.Core.Interceptor
 
         public string GetCacheKey(MethodInfo methodInfo, object[] args, string prefix)
         {
-            var cachingArgs = methodInfo.GetParameters().Where(x => x.GetCustomAttribute<CachingParamAttribute>() != null)
-                                                                  .Select(x => $"{args[x.Position]}").ToArray();
-            var methodArguments = cachingArgs?.Any() == true
-                                      ? cachingArgs.Select(ParameterCacheKeys.GenerateCacheKey)
-                                      : new[] { "0" };
+            IEnumerable<string> methodArguments = new[] { "0" };
+            if (args?.Any() == true)
+            {
+                var cacheParams = methodInfo.GetParameters().Where(x => x.GetCustomAttribute<CachingParamAttribute>() != null)
+                                                                                .Select(x => x.Position);
+
+                if (cacheParams?.Any() == true)
+                    methodArguments = args.Where(x => cacheParams.Contains(Array.IndexOf(args, x)))
+                                                              .Select(ParameterCacheKeys.GenerateCacheKey);
+                else
+                    methodArguments = args.Select(ParameterCacheKeys.GenerateCacheKey);
+            }
             return GenerateCacheKey(methodInfo, prefix, methodArguments);
+        }
+
+        public string[] GetCacheKeys(MethodInfo methodInfo, object[] args, string prefix)
+        {
+            var cacheKeys = new List<string>();
+            if (args?.Any() == true && args[0].GetType().IsArray)
+            {
+                foreach (var arg0 in (Array)args[0])
+                {
+                    var cloneArgs = (object[])args.Clone();
+                    cloneArgs[0] = arg0;
+                    cacheKeys.Add(GetCacheKey(methodInfo, cloneArgs, prefix));
+                }
+            }
+            else
+            {
+                cacheKeys.Add(GetCacheKey(methodInfo, args, prefix));
+            }
+
+            return cacheKeys.ToArray();
         }
 
         public string GetCacheKeyPrefix(MethodInfo methodInfo, string prefix)

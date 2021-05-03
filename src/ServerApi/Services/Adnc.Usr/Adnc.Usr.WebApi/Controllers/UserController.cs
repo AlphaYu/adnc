@@ -114,7 +114,7 @@ namespace Adnc.Usr.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult> ChangeStatus([FromBody] UserChangeStatusDto input)
         {
-            return Result(await _userService.ChangeStatusAsync(input));
+            return Result(await _userService.ChangeStatusAsync(input.UserIds, input.Status));
         }
 
         /// <summary>

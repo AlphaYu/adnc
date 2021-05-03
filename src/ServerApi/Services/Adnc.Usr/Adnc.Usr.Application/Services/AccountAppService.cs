@@ -90,7 +90,12 @@ namespace Adnc.Usr.Application.Services
                 var problem = Problem(HttpStatusCode.TooManyRequests, "连续登录失败次数超过5次，账号已锁定");
                 log.Message = problem.Detail;
                 log.StatusCode = problem.Status;
-                await _userRepository.UpdateAsync(new SysUser() { Id = user.Id, Status = 2 }, UpdatingProps<SysUser>(x => x.Status));
+
+                await _cacheService.RemoveCachesAsync(async () =>
+                {
+                    await _userRepository.UpdateAsync(new SysUser() { Id = user.Id, Status = 2 }, UpdatingProps<SysUser>(x => x.Status));
+                }, _cacheService.ConcatCacheKey(EasyCachingConsts.UserLoginInfoKeyPrefix, user.Id.ToString()));
+
                 _mqProducer.BasicPublish(MqExchanges.Logs, MqRoutingKeys.Loginlog, log);
                 return problem;
             }

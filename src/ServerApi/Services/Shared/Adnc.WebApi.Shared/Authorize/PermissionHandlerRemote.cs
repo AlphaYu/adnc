@@ -1,10 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Authentication;
 using Adnc.Application.Shared.RpcServices;
-using Adnc.Application.Shared;
 
 namespace Microsoft.AspNetCore.Authorization
 {
@@ -13,8 +10,7 @@ namespace Microsoft.AspNetCore.Authorization
         private readonly IAuthRpcService _authRpcService;
         //private readonly IHttpContextAccessor _contextAccessor;
 
-        public PermissionHandlerRemote(IAuthRpcService authRpcService) 
-            : base()
+        public PermissionHandlerRemote(IAuthRpcService authRpcService)
         {
             _authRpcService = authRpcService;
             //_contextAccessor = contextAccessor;
