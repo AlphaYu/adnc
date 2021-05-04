@@ -50,6 +50,11 @@ namespace Adnc.Infra.Caching.StackExchange
         private readonly CacheStats _cacheStats;
 
         /// <summary>
+        /// The serializer.
+        /// </summary>
+        public override ICachingSerializer Serializer { get { return _serializer; } }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="T:EasyCaching.Redis.DefaultRedisCachingProvider"/> class.
         /// </summary>
         /// <param name="dbProviders">Db providers.</param>

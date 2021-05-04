@@ -926,7 +926,7 @@ namespace Adnc.Infra.Caching
         /// <param name="values"></param>
         /// <param name="flags"></param>
         /// <returns></returns>
-        RedisResult ScriptEvaluate(string script, RedisKey[] keys = null, RedisValue[] values = null, CommandFlags flags = CommandFlags.None);
+        dynamic ScriptEvaluate(string script, RedisKey[] keys = null, RedisValue[] values = null, CommandFlags flags = CommandFlags.None);
 
         /// <summary>
         /// https://redis.io/commands/eval
@@ -935,7 +935,7 @@ namespace Adnc.Infra.Caching
         /// <param name="parameters"></param>
         /// <param name="flags"></param>
         /// <returns></returns>
-        RedisResult ScriptEvaluate(string script, object parameters = null, CommandFlags flags = CommandFlags.None);
+        dynamic ScriptEvaluate(string script, object parameters = null, CommandFlags flags = CommandFlags.None);
         #endregion
     }
 }

@@ -18,6 +18,7 @@ namespace Adnc.Application.Shared
         public const string RemoteCaching = "r1";
         public const string HybridCaching = "h1";
 
-        public const string PreRemoveKey = "adnc:preremovekey:{0}";
+        public const string WorkerIdIncrCacheKey = "adnc:{0}:workid:incr";
+        public const string WorkerIdSortedSetCacheKey = "adnc:{0}:workid:sortedset";
     }
 }

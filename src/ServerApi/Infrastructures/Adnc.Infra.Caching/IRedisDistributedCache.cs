@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Adnc.Infra.Caching.Core;
+using Adnc.Infra.Caching.Core.Serialization;
 
 namespace Adnc.Infra.Caching
 {
@@ -12,6 +13,11 @@ namespace Adnc.Infra.Caching
         /// </summary>
         /// <value>The name.</value>
         string Name { get; }
+
+        /// <summary>
+        /// The serializer.
+        /// </summary>
+        ICachingSerializer Serializer { get; }
 
         /// <summary>
         /// Set the specified cacheKey, cacheValue and expiration.

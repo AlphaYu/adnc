@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Adnc.Infra.Caching.Core.Diagnostics;
+using Adnc.Infra.Caching.Core.Serialization;
 
 namespace Adnc.Infra.Caching.Core
 {
@@ -23,6 +24,8 @@ namespace Adnc.Infra.Caching.Core
         //public CacheStats CacheStats => this.ProviderStats;
 
         public string CachingProviderType => "redis";
+
+        public abstract ICachingSerializer Serializer { get; }
 
         protected abstract bool BaseExists(string cacheKey);
         protected abstract Task<bool> BaseExistsAsync(string cacheKey);
