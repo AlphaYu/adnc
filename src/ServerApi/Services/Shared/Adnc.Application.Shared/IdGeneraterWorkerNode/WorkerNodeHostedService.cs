@@ -24,8 +24,8 @@ namespace Adnc.Application.Shared.IdGeneraterWorkerNode
 
         public async override Task StartAsync(CancellationToken cancellationToken)
         {
-            await _workerNode.InitWorkerNodes(_serviceName);
-            var workerId = _workerNode.GetWorkerId(_serviceName);
+            await _workerNode.InitWorkerNodesAsync(_serviceName);
+            var workerId = await _workerNode.GetWorkerIdAsync(_serviceName);
 
             YitterSnowFlake.CurrentWorkerId = (short)workerId;
 
@@ -39,7 +39,7 @@ namespace Adnc.Application.Shared.IdGeneraterWorkerNode
                 try
                 {
                     await Task.Delay(1000 * 60);
-                    await _workerNode.RefreshWorkerIdScore(_serviceName, YitterSnowFlake.CurrentWorkerId);
+                    await _workerNode.RefreshWorkerIdScoreAsync(_serviceName, YitterSnowFlake.CurrentWorkerId);
                 }
                 catch (Exception ex)
                 {

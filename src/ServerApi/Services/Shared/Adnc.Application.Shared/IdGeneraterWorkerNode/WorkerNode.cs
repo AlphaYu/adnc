@@ -21,7 +21,7 @@ namespace Adnc.Application.Shared.IdGeneraterWorkerNode
             _logger = logger;
         }
 
-        public async Task InitWorkerNodes(string serviceName)
+        internal async Task InitWorkerNodesAsync(string serviceName)
         {
             var workerIdSortedSetCacheKey = string.Format(SharedCachingConsts.WorkerIdSortedSetCacheKey, serviceName);
 
@@ -36,7 +36,7 @@ namespace Adnc.Application.Shared.IdGeneraterWorkerNode
                 if (!flag)
                 {
                     await Task.Delay(300);
-                    await InitWorkerNodes(serviceName);
+                    await InitWorkerNodesAsync(serviceName);
                 }
 
                 var set = new Dictionary<long, double>();
@@ -54,7 +54,7 @@ namespace Adnc.Application.Shared.IdGeneraterWorkerNode
                 _logger.LogInformation("Exists WorkerNodes:{0}", workerIdSortedSetCacheKey);
         }
 
-        public long GetWorkerId(string serviceName)
+        internal async Task<long> GetWorkerIdAsync(string serviceName)
         {
             var workerIdSortedSetCacheKey = string.Format(SharedCachingConsts.WorkerIdSortedSetCacheKey, serviceName);
 
@@ -62,7 +62,7 @@ namespace Adnc.Application.Shared.IdGeneraterWorkerNode
                                     redis.call('ZADD',@key,@score,workerids[1])
                                     return workerids[1]";
             var parameters = new { key = workerIdSortedSetCacheKey, start = 0, stop = 0, score = DateTime.Now.GetTotalMicroseconds() };
-            var luaResult = (byte[])_redisProvider.ScriptEvaluate(scirpt, parameters);
+            var luaResult = (byte[]) await _redisProvider.ScriptEvaluateAsync(scirpt, parameters);
             var workerId = _redisProvider.Serializer.Deserialize<long>(luaResult);
 
             _logger.LogInformation("Get WorkerNodes:{0}", workerId);
@@ -70,7 +70,7 @@ namespace Adnc.Application.Shared.IdGeneraterWorkerNode
             return workerId;
         }
 
-        public async Task RefreshWorkerIdScore(string serviceName, long workerId)
+        internal async Task RefreshWorkerIdScoreAsync(string serviceName, long workerId)
         {
             if (workerId < 0 || workerId > YitterSnowFlake.MaxWorkerId)
                 throw new Exception(string.Format("worker Id can't be greater than {0} or less than 0", YitterSnowFlake.MaxWorkerId));
