@@ -1,21 +1,18 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
 using Autofac;
-using StackExchange.Redis;
 using Xunit;
 using Xunit.Abstractions;
 using Adnc.Infra.Caching;
 using Adnc.UnitTest.Fixtures;
 using Adnc.Infra.Common.Extensions;
-using System.Text;
 
 namespace Adnc.UnitTest.Cache
 {
     public class RedisCahceTests : IClassFixture<RedisCacheFixture>
     {
         private readonly ITestOutputHelper _output;
-        private readonly IRedisDistributedCache _cache;
+        private readonly ICacheProvider _cache;
         private readonly IRedisProvider _redisProvider;
         private RedisCacheFixture _fixture;
 
@@ -23,7 +20,7 @@ namespace Adnc.UnitTest.Cache
         {
             _fixture = fixture;
             _output = output;
-            _cache = _fixture.Container.Resolve<IRedisDistributedCache>();
+            _cache = _fixture.Container.Resolve<ICacheProvider>();
             _redisProvider = _fixture.Container.Resolve<IRedisProvider>();
         }
 
@@ -39,7 +36,7 @@ namespace Adnc.UnitTest.Cache
         }
 
         [Fact]
-        public void TestScriptEvaluate()
+        public async void TestScriptEvaluate()
         {
             var cacheKey = "test_worker";
 
@@ -56,10 +53,10 @@ namespace Adnc.UnitTest.Cache
                                     return workerids[1]";
             var parameters = new { key = cacheKey, start = 0, stop = 0, score = DateTime.Now.GetTotalMicroseconds() };
 
-            var luaResult = (byte[])_redisProvider.ScriptEvaluate(scirpt, parameters);
+            var luaResult = (byte[]) await _redisProvider.ScriptEvaluateAsync(scirpt, parameters);
             var workerId = _cache.Serializer.Deserialize<long>(luaResult);
             _output.WriteLine(workerId.ToString());
-            Assert.True(workerId > 0);
+            Assert.True(workerId >= 0);
         }
 
         [Fact]
