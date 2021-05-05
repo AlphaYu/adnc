@@ -20,7 +20,7 @@ namespace Adnc.Usr.Application.Contracts.Services
         /// <param name="input"></param>
         /// <returns></returns>
         [OpsLog(LogName = "新增角色")]
-        [CachingEvict(CacheKey = EasyCachingConsts.RoleAllCacheKey)]
+        [CachingEvict(CacheKey = CachingConsts.RoleAllCacheKey)]
         Task<AppSrvResult<long>> CreateAsync(RoleCreationDto input);
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace Adnc.Usr.Application.Contracts.Services
         /// <param name="input"></param>
         /// <returns></returns>
         [OpsLog(LogName = "修改角色")]
-        [CachingEvict(CacheKey = EasyCachingConsts.RoleAllCacheKey)]
+        [CachingEvict(CacheKey = CachingConsts.RoleAllCacheKey)]
         Task<AppSrvResult> UpdateAsync(long id, RoleUpdationDto input);
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace Adnc.Usr.Application.Contracts.Services
         /// <param name="Id"></param>
         /// <returns></returns>
         [OpsLog(LogName = "删除角色")]
-        [CachingEvict(CacheKeys = new[] { EasyCachingConsts.MenuRelationCacheKey, EasyCachingConsts.MenuCodesCacheKey, EasyCachingConsts.RoleAllCacheKey })]
+        [CachingEvict(CacheKeys = new[] { CachingConsts.MenuRelationCacheKey, CachingConsts.MenuCodesCacheKey, CachingConsts.RoleAllCacheKey })]
         Task<AppSrvResult> DeleteAsync(long Id);
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace Adnc.Usr.Application.Contracts.Services
         /// <param name="input"></param>
         /// <returns></returns>
         [OpsLog(LogName = "设置角色权限")]
-        [CachingEvict(CacheKeys = new[] { EasyCachingConsts.MenuRelationCacheKey, EasyCachingConsts.MenuCodesCacheKey })]
+        [CachingEvict(CacheKeys = new[] { CachingConsts.MenuRelationCacheKey, CachingConsts.MenuCodesCacheKey })]
         Task<AppSrvResult> SetPermissonsAsync(RoleSetPermissonsDto input);
 
         /// <summary>

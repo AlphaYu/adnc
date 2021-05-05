@@ -39,71 +39,71 @@ namespace Adnc.Usr.Application.Services
         }
         internal async Task SetValidateInfoToCacheAsync(UserValidateDto value)
         {
-            var cacheKey = ConcatCacheKey(EasyCachingConsts.UserLoginInfoKeyPrefix, value.Id.ToString());
-            await _cache.Value.SetAsync(cacheKey, value, TimeSpan.FromSeconds(EasyCachingConsts.OneDay));
+            var cacheKey = ConcatCacheKey(CachingConsts.UserLoginInfoKeyPrefix, value.Id.ToString());
+            await _cache.Value.SetAsync(cacheKey, value, TimeSpan.FromSeconds(CachingConsts.OneDay));
         }
 
         internal async Task<List<DeptDto>> GetAllDeptsFromCacheAsync()
         {
-            var cahceValue = await _cache.Value.GetAsync(EasyCachingConsts.DetpListCacheKey, async () =>
+            var cahceValue = await _cache.Value.GetAsync(CachingConsts.DetpListCacheKey, async () =>
             {
                 var allDepts = await _deptRepository.Value.GetAll(writeDb: true).OrderBy(x => x.Ordinal).ToListAsync();
                 return Mapper.Map<List<DeptDto>>(allDepts);
-            }, TimeSpan.FromSeconds(EasyCachingConsts.OneYear));
+            }, TimeSpan.FromSeconds(CachingConsts.OneYear));
 
             return cahceValue.Value;
         }
 
         internal async Task<List<RelationDto>> GetAllRelationsFromCacheAsync()
         {
-            var cahceValue = await _cache.Value.GetAsync(EasyCachingConsts.MenuRelationCacheKey, async () =>
+            var cahceValue = await _cache.Value.GetAsync(CachingConsts.MenuRelationCacheKey, async () =>
             {
                 var allRelations = await _relationRepository.Value.GetAll(writeDb: true).ToListAsync();
                 return Mapper.Map<List<RelationDto>>(allRelations);
-            }, TimeSpan.FromSeconds(EasyCachingConsts.OneYear));
+            }, TimeSpan.FromSeconds(CachingConsts.OneYear));
 
             return cahceValue.Value;
         }
 
         internal async Task<List<MenuDto>> GetAllMenusFromCacheAsync()
         {
-            var cahceValue = await _cache.Value.GetAsync(EasyCachingConsts.MenuListCacheKey, async () =>
+            var cahceValue = await _cache.Value.GetAsync(CachingConsts.MenuListCacheKey, async () =>
             {
                 var allMenus = await _menuRepository.Value.GetAll(writeDb: true).OrderBy(x => x.Ordinal).ToListAsync();
                 return Mapper.Map<List<MenuDto>>(allMenus);
-            }, TimeSpan.FromSeconds(EasyCachingConsts.OneYear));
+            }, TimeSpan.FromSeconds(CachingConsts.OneYear));
 
             return cahceValue.Value;
         }
 
         internal async Task<List<RoleDto>> GetAllRolesFromCacheAsync()
         {
-            var cahceValue = await _cache.Value.GetAsync(EasyCachingConsts.RoleAllCacheKey, async () =>
+            var cahceValue = await _cache.Value.GetAsync(CachingConsts.RoleAllCacheKey, async () =>
             {
                 var allRoles = await _roleRepository.Value.GetAll(writeDb: true).OrderBy(x => x.Ordinal).ToListAsync();
                 return Mapper.Map<List<RoleDto>>(allRoles);
-            }, TimeSpan.FromSeconds(EasyCachingConsts.OneYear));
+            }, TimeSpan.FromSeconds(CachingConsts.OneYear));
 
             return cahceValue.Value;
         }
 
         internal async Task<List<RoleMenuCodesDto>> GetAllMenuCodesFromCacheAsync()
         {
-            var cahceValue = await _cache.Value.GetAsync(EasyCachingConsts.MenuCodesCacheKey, async () =>
+            var cahceValue = await _cache.Value.GetAsync(CachingConsts.MenuCodesCacheKey, async () =>
             {
                 var allMenus = await _relationRepository.Value.GetAll(writeDb: true)
                .Where(x => x.Menu.Status == true)
                .Select(x => new RoleMenuCodesDto { RoleId = x.RoleId, Code = x.Menu.Code })
                .ToListAsync();
                 return allMenus.Distinct().ToList();
-            }, TimeSpan.FromSeconds(EasyCachingConsts.OneYear));
+            }, TimeSpan.FromSeconds(CachingConsts.OneYear));
 
             return cahceValue.Value;
         }
 
         internal async Task<UserValidateDto> GetUserValidateInfoFromCacheAsync(long Id)
         {
-            var cacheKey = ConcatCacheKey(EasyCachingConsts.UserLoginInfoKeyPrefix, Id.ToString());
+            var cacheKey = ConcatCacheKey(CachingConsts.UserLoginInfoKeyPrefix, Id.ToString());
 
             var cacheValue = await _cache.Value.GetAsync(cacheKey, async () =>
             {
@@ -125,7 +125,7 @@ namespace Adnc.Usr.Application.Services
                    ,
                     RoleIds = x.RoleIds
                 }, x => x.Id == Id);
-            }, TimeSpan.FromSeconds(EasyCachingConsts.OneDay));
+            }, TimeSpan.FromSeconds(CachingConsts.OneDay));
 
             return cacheValue.Value;
         }
@@ -165,7 +165,7 @@ namespace Adnc.Usr.Application.Services
                 }
             }
 
-            await _cache.Value.SetAsync(EasyCachingConsts.DetpSimpleTreeListCacheKey, result, TimeSpan.FromSeconds(EasyCachingConsts.OneYear));
+            await _cache.Value.SetAsync(CachingConsts.DetpSimpleTreeListCacheKey, result, TimeSpan.FromSeconds(CachingConsts.OneYear));
 
             return result;
         }

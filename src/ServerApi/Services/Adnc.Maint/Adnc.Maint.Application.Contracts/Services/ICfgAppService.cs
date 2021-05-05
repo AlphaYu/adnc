@@ -19,7 +19,7 @@ namespace Adnc.Maint.Application.Contracts.Services
         /// <param name="input"></param>
         /// <returns></returns>
         [OpsLog(LogName = "新增参数")]
-        [CachingEvict(CacheKey = EasyCachingConsts.CfgListCacheKey)]
+        [CachingEvict(CacheKey = CachingConsts.CfgListCacheKey)]
         Task<AppSrvResult<long>> CreateAsync(CfgCreationDto input);
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace Adnc.Maint.Application.Contracts.Services
         /// <param name="input"></param>
         /// <returns></returns>
         [OpsLog(LogName = "修改参数")]
-        [CachingEvict(CacheKey = EasyCachingConsts.CfgListCacheKey)]
+        [CachingEvict(CacheKey = CachingConsts.CfgListCacheKey)]
         Task<AppSrvResult> UpdateAsync(long id, CfgUpdationDto input);
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace Adnc.Maint.Application.Contracts.Services
         /// <param name="id"></param>
         /// <returns></returns>
         [OpsLog(LogName = "删除参数")]
-        [CachingEvict(CacheKey = EasyCachingConsts.CfgListCacheKey)]
+        [CachingEvict(CacheKey = CachingConsts.CfgListCacheKey)]
         Task<AppSrvResult> DeleteAsync(long id);
 
         /// <summary>

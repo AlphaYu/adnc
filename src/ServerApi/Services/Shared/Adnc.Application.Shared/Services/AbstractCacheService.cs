@@ -7,6 +7,7 @@ using Adnc.Infra.Caching;
 using Adnc.Infra.Caching.Core;
 using Adnc.Infra.Mapper;
 using Adnc.Infra.Common.Extensions;
+using Adnc.Application.Shared.Consts;
 
 namespace Adnc.Application.Shared.Services
 {
@@ -33,7 +34,7 @@ namespace Adnc.Application.Shared.Services
 
         public string GetPreRemoveKey(IEnumerable<string> cacheKeys)
         {
-            return $"{CachingConstValue.PreRemoveKey}{BaseEasyCachingConsts.LinkChar}{string.Join(",", cacheKeys).GetHashCode()}";
+            return $"{CachingConstValue.PreRemoveKey}{SharedCachingConsts.LinkChar}{string.Join(",", cacheKeys).GetHashCode()}";
         }
 
         public string ConcatCacheKey(params string[] items)
@@ -49,7 +50,7 @@ namespace Adnc.Application.Shared.Services
                 index++;
                 sbuilder.Append(item);
                 if (index != total)
-                    sbuilder.Append(BaseEasyCachingConsts.LinkChar);
+                    sbuilder.Append(SharedCachingConsts.LinkChar);
             }
             return sbuilder.ToString();
         }
@@ -57,7 +58,7 @@ namespace Adnc.Application.Shared.Services
         public async Task RemoveCachesAsync(Func<Task> dataOperater, params string[] cacheKeys)
         {
             var preRemoveKey = GetPreRemoveKey(cacheKeys);
-            await _cache.Value.SetAsync(preRemoveKey, cacheKeys, TimeSpan.FromSeconds(BaseEasyCachingConsts.OneDay));
+            await _cache.Value.SetAsync(preRemoveKey, cacheKeys, TimeSpan.FromSeconds(SharedCachingConsts.OneDay));
 
             await dataOperater();
 
@@ -69,7 +70,7 @@ namespace Adnc.Application.Shared.Services
         {
             if (_workerId > 0) return _workerId;
 
-            var workerIdSortedSetCacheKey = string.Format(BaseEasyCachingConsts.WorkerIdSortedSetCacheKey, serverName);
+            var workerIdSortedSetCacheKey = string.Format(SharedCachingConsts.WorkerIdSortedSetCacheKey, serverName);
 
             if (!_redisProvider.Value.KeyExists(workerIdSortedSetCacheKey))
             {

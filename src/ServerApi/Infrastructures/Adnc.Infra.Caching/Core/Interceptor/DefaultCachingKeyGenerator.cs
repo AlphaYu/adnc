@@ -11,7 +11,7 @@ namespace Adnc.Infra.Core.Interceptor
     /// <summary>
     /// Default easycaching key generator.
     /// </summary>
-    public class DefaultEasyCachingKeyGenerator : IEasyCachingKeyGenerator
+    public class DefaultCachingKeyGenerator : ICachingKeyGenerator
     {
         private const char LinkChar = ':';
 

@@ -19,7 +19,7 @@ namespace Adnc.Maint.Application.Contracts.Services
         /// <param name="input"></param>
         /// <returns></returns>
         [OpsLog(LogName = "新增字典")]
-        [CachingEvict(CacheKey = EasyCachingConsts.DictListCacheKey)]
+        [CachingEvict(CacheKey = CachingConsts.DictListCacheKey)]
         Task<AppSrvResult<long>> CreateAsync(DictCreationDto input);
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace Adnc.Maint.Application.Contracts.Services
         /// <param name="input"></param>
         /// <returns></returns>
         [OpsLog(LogName = "修改字典")]
-        [CachingEvict(CacheKey = EasyCachingConsts.DictListCacheKey)]
+        [CachingEvict(CacheKey = CachingConsts.DictListCacheKey)]
         Task<AppSrvResult> UpdateAsync(long id, DictUpdationDto input);
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace Adnc.Maint.Application.Contracts.Services
         /// <param name="id"></param>
         /// <returns></returns>
         [OpsLog(LogName = "删除字典")]
-        [CachingEvict(CacheKey = EasyCachingConsts.DictListCacheKey)]
+        [CachingEvict(CacheKey = CachingConsts.DictListCacheKey)]
         Task<AppSrvResult> DeleteAsync(long id);
 
         /// <summary>

@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using Adnc.Infra.Caching;
 using Adnc.Infra.Common.Extensions;
 using Adnc.Infra.Common.Helper.IdGeneraterInternal;
+using Adnc.Application.Shared.Consts;
 
 namespace Adnc.Application.Shared.IdGeneraterWorkerNode
 {
@@ -22,7 +23,7 @@ namespace Adnc.Application.Shared.IdGeneraterWorkerNode
 
         public async Task InitWorkerNodes(string serviceName)
         {
-            var workerIdSortedSetCacheKey = string.Format(BaseEasyCachingConsts.WorkerIdSortedSetCacheKey, serviceName);
+            var workerIdSortedSetCacheKey = string.Format(SharedCachingConsts.WorkerIdSortedSetCacheKey, serviceName);
 
             if (!_redisProvider.KeyExists(workerIdSortedSetCacheKey))
             {
@@ -55,7 +56,7 @@ namespace Adnc.Application.Shared.IdGeneraterWorkerNode
 
         public long GetWorkerId(string serviceName)
         {
-            var workerIdSortedSetCacheKey = string.Format(BaseEasyCachingConsts.WorkerIdSortedSetCacheKey, serviceName);
+            var workerIdSortedSetCacheKey = string.Format(SharedCachingConsts.WorkerIdSortedSetCacheKey, serviceName);
 
             var scirpt = @"local workerids = redis.call('ZRANGE', @key, @start,@stop)
                                     redis.call('ZADD',@key,@score,workerids[1])
@@ -74,7 +75,7 @@ namespace Adnc.Application.Shared.IdGeneraterWorkerNode
             if (workerId < 0 || workerId > YitterSnowFlake.MaxWorkerId)
                 throw new Exception(string.Format("worker Id can't be greater than {0} or less than 0", YitterSnowFlake.MaxWorkerId));
 
-            var workerIdSortedSetCacheKey = string.Format(BaseEasyCachingConsts.WorkerIdSortedSetCacheKey, serviceName);
+            var workerIdSortedSetCacheKey = string.Format(SharedCachingConsts.WorkerIdSortedSetCacheKey, serviceName);
 
             var score = DateTime.Now.GetTotalMicroseconds();
             await _redisProvider.ZAddAsync(workerIdSortedSetCacheKey, new Dictionary<long, double> { { workerId, score } });

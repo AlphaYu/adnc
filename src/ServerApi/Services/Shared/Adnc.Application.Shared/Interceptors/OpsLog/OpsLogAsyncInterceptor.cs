@@ -3,10 +3,11 @@ using System.Dynamic;
 using System.Reflection;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using Castle.DynamicProxy;
+using Adnc.Application.Shared.Consts;
 using Adnc.Infra.Common.Helper;
 using Adnc.Infra.Mq.RabbitMq;
-using Castle.DynamicProxy;
-using Microsoft.Extensions.Logging;
 
 namespace Adnc.Application.Shared.Interceptors
 {
@@ -179,7 +180,7 @@ namespace Adnc.Application.Shared.Interceptors
                 var properties = _mqProducer.CreateBasicProperties();
                 //设置消息持久化
                 properties.Persistent = true;
-                _mqProducer.BasicPublish(BaseMqExchanges.Logs, BaseMqRoutingKeys.OpsLog, logInfo, properties);
+                _mqProducer.BasicPublish(SharedMqExchanges.Logs, SharedMqRoutingKeys.OpsLog, logInfo, properties);
             }
             catch (Exception ex)
             {

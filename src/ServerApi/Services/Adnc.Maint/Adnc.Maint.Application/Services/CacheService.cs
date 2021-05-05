@@ -31,22 +31,22 @@ namespace Adnc.Maint.Application.Services
 
         public async Task<List<CfgDto>> GetAllCfgsFromCacheAsync()
         {
-            var cahceValue = await _cache.Value.GetAsync(EasyCachingConsts.CfgListCacheKey, async () =>
+            var cahceValue = await _cache.Value.GetAsync(CachingConsts.CfgListCacheKey, async () =>
             {
                 var allCfgs = await _cfgRepository.Value.GetAll(writeDb: true).ToListAsync();
                 return Mapper.Map<List<CfgDto>>(allCfgs);
-            }, TimeSpan.FromSeconds(EasyCachingConsts.OneYear));
+            }, TimeSpan.FromSeconds(CachingConsts.OneYear));
 
             return cahceValue.Value;
         }
 
         public async Task<List<DictDto>> GetAllDictsFromCacheAsync()
         {
-            var cahceValue = await _cache.Value.GetAsync(EasyCachingConsts.DictListCacheKey, async () =>
+            var cahceValue = await _cache.Value.GetAsync(CachingConsts.DictListCacheKey, async () =>
             {
                 var allDicts = await _dictRepository.Value.GetAll(writeDb: true).OrderBy(x => x.Ordinal).ToListAsync();
                 return Mapper.Map<List<DictDto>>(allDicts);
-            }, TimeSpan.FromSeconds(EasyCachingConsts.OneYear));
+            }, TimeSpan.FromSeconds(CachingConsts.OneYear));
 
             return cahceValue.Value;
         }

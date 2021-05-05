@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Adnc.Application.Shared
 {
-    public class BaseEasyCachingConsts
+    public class BaseCachingConsts
     {
         public const string LinkChar = ":";
 

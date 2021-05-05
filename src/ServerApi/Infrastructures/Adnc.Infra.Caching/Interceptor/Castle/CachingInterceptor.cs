@@ -19,7 +19,7 @@ namespace Adnc.Infra.Caching.Interceptor.Castle
         /// <summary>
         /// The key generator.
         /// </summary>
-        private readonly IEasyCachingKeyGenerator _keyGenerator;
+        private readonly ICachingKeyGenerator _keyGenerator;
 
         /// <summary>
         /// The redis cache provider.
@@ -54,7 +54,7 @@ namespace Adnc.Infra.Caching.Interceptor.Castle
         /// <param name="hybridCachingProvider">Hybrid caching provider.</param>
         public CachingInterceptor(
             IRedisDistributedCache cacheProvider
-            , IEasyCachingKeyGenerator keyGenerator
+            , ICachingKeyGenerator keyGenerator
             , ILogger<CachingInterceptor> logger = null)
         {
             _cacheProvider = cacheProvider;

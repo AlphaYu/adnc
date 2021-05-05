@@ -1,11 +1,11 @@
-﻿using Adnc.Application.Shared;
+﻿using Adnc.Application.Shared.Consts;
 
 namespace Adnc.Usr.Application.Contracts.Consts
 {
     /// <summary>
     /// cache key 常量
     /// </summary>
-    public class EasyCachingConsts : BaseEasyCachingConsts
+    public class CachingConsts : SharedCachingConsts
     {
         public const string MenuListCacheKey = "adnc:usr:menus:list";
         public const string MenuRelationCacheKey = "adnc:usr:menus:relation";

@@ -5,7 +5,7 @@ namespace Adnc.Infra.Core.Interceptor
     /// <summary>
     /// Easycaching key generator.
     /// </summary>
-    public interface IEasyCachingKeyGenerator
+    public interface ICachingKeyGenerator
     {
         /// <summary>
         /// Gets the cache key.

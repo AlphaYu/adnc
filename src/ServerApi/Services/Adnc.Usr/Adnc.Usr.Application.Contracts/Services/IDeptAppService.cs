@@ -19,7 +19,7 @@ namespace Adnc.Usr.Application.Contracts.Services
         /// <param name="input"></param>
         /// <returns></returns>
         [OpsLog(LogName = "新增部门")]
-        [CachingEvict(CacheKeys = new string[] { EasyCachingConsts.DetpListCacheKey, EasyCachingConsts.DetpTreeListCacheKey, EasyCachingConsts.DetpSimpleTreeListCacheKey })]
+        [CachingEvict(CacheKeys = new string[] { CachingConsts.DetpListCacheKey, CachingConsts.DetpTreeListCacheKey, CachingConsts.DetpSimpleTreeListCacheKey })]
         Task<AppSrvResult<long>> CreateAsync(DeptCreationDto input);
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace Adnc.Usr.Application.Contracts.Services
         /// <param name="input"></param>
         /// <returns></returns>
         [OpsLog(LogName = "修改部门")]
-        [CachingEvict(CacheKeys = new string[] { EasyCachingConsts.DetpListCacheKey, EasyCachingConsts.DetpTreeListCacheKey, EasyCachingConsts.DetpSimpleTreeListCacheKey })]
+        [CachingEvict(CacheKeys = new string[] { CachingConsts.DetpListCacheKey, CachingConsts.DetpTreeListCacheKey, CachingConsts.DetpSimpleTreeListCacheKey })]
         Task<AppSrvResult> UpdateAsync(long id, DeptUpdationDto input);
 
         /// <summary>
@@ -38,14 +38,14 @@ namespace Adnc.Usr.Application.Contracts.Services
         /// <param name="Id"></param>
         /// <returns></returns>
         [OpsLog(LogName = "删除部门")]
-        [CachingEvict(CacheKeys = new string[] { EasyCachingConsts.DetpListCacheKey, EasyCachingConsts.DetpTreeListCacheKey, EasyCachingConsts.DetpSimpleTreeListCacheKey })]
+        [CachingEvict(CacheKeys = new string[] { CachingConsts.DetpListCacheKey, CachingConsts.DetpTreeListCacheKey, CachingConsts.DetpSimpleTreeListCacheKey })]
         Task<AppSrvResult> DeleteAsync(long Id);
 
         /// <summary>
         /// 部门树结构
         /// </summary>
         /// <returns></returns>
-        [CachingAble(CacheKey = EasyCachingConsts.DetpTreeListCacheKey, Expiration = EasyCachingConsts.OneYear)]
+        [CachingAble(CacheKey = CachingConsts.DetpTreeListCacheKey, Expiration = CachingConsts.OneYear)]
         Task<List<DeptTreeDto>> GetTreeListAsync();
     }
 }

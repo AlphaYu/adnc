@@ -29,7 +29,7 @@ namespace Adnc.Infra.Caching
         {
             builder.RegisterInstance(_cacheOptions);
             builder.RegisterType<RedisDatabaseProvider>().As<IRedisDatabaseProvider>().SingleInstance();
-            builder.RegisterType<DefaultEasyCachingKeyGenerator>().As<IEasyCachingKeyGenerator>().SingleInstance();
+            builder.RegisterType<DefaultCachingKeyGenerator>().As<ICachingKeyGenerator>().SingleInstance();
             builder.RegisterType<DefaultRedisProvider>().As<IRedisProvider, IRedisDistributedCache>().SingleInstance();
             builder.RegisterAssemblyTypes(this.ThisAssembly)
                        .Where(t => t.IsAssignableTo<ICachingSerializer>())
