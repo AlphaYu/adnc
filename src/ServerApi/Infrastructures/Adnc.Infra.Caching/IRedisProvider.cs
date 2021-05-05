@@ -1,4 +1,5 @@
-﻿using StackExchange.Redis;
+﻿using Adnc.Infra.Caching.Core.Serialization;
+using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -13,6 +14,8 @@ namespace Adnc.Infra.Caching
     /// </remarks>
     public interface IRedisProvider
     {
+        ICachingSerializer Serializer { get; }
+
         #region Keys
         /// <summary>
         /// https://redis.io/commands/del

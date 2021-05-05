@@ -55,7 +55,7 @@ namespace Adnc.Ord.Core.Services
 
             //发送OrderCreatedEvent事件，通知仓储中心冻结库存
             var products = order.Items.Select(x => (x.Id, x.Count)).ToArray();
-            var eventId = IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId);
+            var eventId = IdGenerater.GetNextId();
             var eventData = new OrderCreatedEvent.EventData() { OrderId = order.Id, Products = products };
             var eventSource = System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.FullName;
             await _eventPubliser.PublishAsync(new OrderCreatedEvent(eventId, eventData, eventSource));
@@ -74,7 +74,7 @@ namespace Adnc.Ord.Core.Services
             order.ChangeStatus(OrderStatusEnum.Canceling,string.Empty);
 
             //发布领域事件，通知仓储中心解冻被冻结的库存
-            var eventId = IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId);
+            var eventId = IdGenerater.GetNextId();
             var eventData = new OrderCanceledEvent.EventData() { OrderId = order.Id };
             var eventSource = System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.FullName;
             await _eventPubliser.PublishAsync(new OrderCanceledEvent(eventId, eventData, eventSource));
@@ -91,7 +91,7 @@ namespace Adnc.Ord.Core.Services
             order.ChangeStatus(OrderStatusEnum.Paying,string.Empty);
 
             //发布领域事件，通知客户中心扣款(Demo是从余额中扣款)
-            var eventId = IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId);
+            var eventId = IdGenerater.GetNextId();
             var eventData = new OrderPaidEvent.EventData() { OrderId = order.Id, CustomerId = order.CustomerId, Amount = order.Amount };
             var eventSource = System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.FullName;
             await _eventPubliser.PublishAsync(new OrderPaidEvent(eventId, eventData, eventSource));

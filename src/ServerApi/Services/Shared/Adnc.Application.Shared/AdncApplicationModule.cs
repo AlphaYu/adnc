@@ -15,6 +15,7 @@ using Adnc.Core.Shared.Interceptors;
 using Adnc.Core.Shared.Entities;
 using Adnc.Core.Shared;
 using Adnc.Infra.Caching;
+using Adnc.Application.Shared.IdGeneraterWorkerNode;
 
 namespace Adnc.Application.Shared
 {
@@ -27,15 +28,17 @@ namespace Adnc.Application.Shared
         private readonly Assembly _appContractsAssemblieToScan;
         private readonly Assembly _coreAssemblieToScan;
         private readonly IConfigurationSection _redisSection;
-        private readonly IConfigurationSection _rabitMqSection;
+        private readonly IConfigurationSection _rabbitMqSection;
+        private readonly string _appModuleName;
 
-        protected AdncApplicationModule(Type appModelType, IConfigurationSection redisSection, IConfigurationSection rabitMqSection)
+        protected AdncApplicationModule(Type appModelType, IConfigurationSection redisSection, IConfigurationSection rabbitMqSection)
         {
+            _appModuleName = appModelType.Name;
             _appAssemblieToScan = appModelType.Assembly;
             _coreAssemblieToScan = Assembly.Load(_appAssemblieToScan.FullName.Replace(".Application", ".Core"));
             _appContractsAssemblieToScan = Assembly.Load(_appAssemblieToScan.FullName.Replace(".Application", ".Application.Contracts"));
             _redisSection = redisSection;
-            _rabitMqSection = rabitMqSection;
+            _rabbitMqSection = rabbitMqSection;
         }
 
         protected override void Load(ContainerBuilder builder)
@@ -50,9 +53,9 @@ namespace Adnc.Application.Shared
 
             //注册操作日志拦截器
             builder.RegisterType<OpsLogInterceptor>()
-                   .InstancePerLifetimeScope();
+                        .InstancePerLifetimeScope();
             builder.RegisterType<OpsLogAsyncInterceptor>()
-                   .InstancePerLifetimeScope();
+                        .InstancePerLifetimeScope();
 
             //注册应用服务与拦截器
             var interceptors = new List<Type>
@@ -88,6 +91,15 @@ namespace Adnc.Application.Shared
                    .Where(t => t.IsClosedTypeOf(typeof(IValidator<>)))
                    .AsImplementedInterfaces()
                    .InstancePerLifetimeScope();
+
+            //注册Id生成器工作节点服务类
+            builder.RegisterType<WorkerNode>()
+                        .AsSelf()
+                        .SingleInstance();
+            builder.RegisterType<WorkerNodeHostedService>()
+                        .WithParameter("serviceName", _appModuleName.ToLower())
+                        .AsImplementedInterfaces()
+                        .SingleInstance();
         }
 
         private void LoadDepends(ContainerBuilder builder)

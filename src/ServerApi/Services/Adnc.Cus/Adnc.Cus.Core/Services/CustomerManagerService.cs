@@ -55,7 +55,7 @@ namespace Adnc.Cus.Core.Services
             await _cusTransactionLogRepo.InsertAsync(cusTransactionLog);
 
             //发布充值事件
-            var eventId = IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId);
+            var eventId = IdGenerater.GetNextId();
             var eventData = new CustomerRechargedEvent.EventData() { CustomerId = cusTransactionLog.CustomerId, TransactionLogId = cusTransactionLog.Id, Amount = cusTransactionLog.Amount };
             var eventSource = System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.FullName;
             await _eventPublisher.PublishAsync(new CustomerRechargedEvent(eventId, eventData, eventSource));

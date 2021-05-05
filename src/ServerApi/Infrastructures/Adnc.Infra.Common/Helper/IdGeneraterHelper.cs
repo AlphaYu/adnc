@@ -17,23 +17,5 @@ namespace Adnc.Infra.Common.Helper
         {
             return YitterSnowFlake.Instance.NextId();
         }
-
-        /// <summary>
-        /// 获取唯一Id
-        /// </summary>
-        /// <param name="datacenterId">数据中心Id</param>
-        /// <param name="workerId">机器Id</param>
-        /// <returns></returns>
-        [Obsolete("已经废弃")]
-        public static long GetNextId(long datacenterId, long workerId)
-        {
-            return Snowflake.GetInstance(datacenterId, workerId).NextId();
-        }
-
-        [Obsolete("已经废弃")]
-        public static long DatacenterId => 1;
-
-        [Obsolete("已经废弃")]
-        public static long WorkerId => 1;
     }
 }

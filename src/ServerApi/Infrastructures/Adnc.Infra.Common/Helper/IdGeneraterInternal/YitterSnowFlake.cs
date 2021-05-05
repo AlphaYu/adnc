@@ -5,24 +5,34 @@ namespace Adnc.Infra.Common.Helper.IdGeneraterInternal
 {
     public class YitterSnowFlake
     {
-        private static readonly YitterSnowFlake _instance = new YitterSnowFlake();
-        private const byte YitterWorkerIdBitLength = 6;
-        private const byte YitterSeqBitLength = 6;
+        private static readonly Lazy<YitterSnowFlake> lazy = new Lazy<YitterSnowFlake>(() => new YitterSnowFlake());
+        public static byte YitterWorkerIdBitLength { get { return 6; } }
+        public static byte YitterSeqBitLength { get { return 6; } }
+        public static ushort MaxWorkerId { get { return (ushort)(Math.Pow(2.0, YitterWorkerIdBitLength) - 1); } }
+
+        private static short _currentWorkerId = -1;
+        public static short CurrentWorkerId 
+        {
+            get { return _currentWorkerId; }
+            set
+            {
+                if (value < 0 || value > MaxWorkerId)
+                    throw new Exception(string.Format("worker Id can't be greater than {0} or less than 0", MaxWorkerId));
+                if (_currentWorkerId > -1)
+                    throw new Exception(string.Format("worker Id can't be changed.{0}", _currentWorkerId));
+                else
+                    _currentWorkerId = value;
+            }
+        }
 
         static YitterSnowFlake() { }
 
         private YitterSnowFlake()
         {
-            //这种方式，每秒并发超10W,如果一个服务部署10个实例，Id存在1/10000 概率重复。
-            var workIdStr = Environment.GetEnvironmentVariable("WorkerId");
-            ushort.TryParse(workIdStr, out ushort workerId);
+            if (_currentWorkerId > MaxWorkerId || _currentWorkerId < 0)
+                throw new Exception(string.Format("worker Id can't be greater than {0} or less than 0", MaxWorkerId));
 
-            var maxWorkerId = (ushort)Math.Pow(2.0, YitterWorkerIdBitLength);
-            workerId = 1;
-            if (workerId > maxWorkerId || workerId < 1)
-                throw new Exception(string.Format("worker Id can't be greater than {0} or less than 0", maxWorkerId));
-
-            YitIdHelper.SetIdGenerator(new IdGeneratorOptions(workerId)
+            YitIdHelper.SetIdGenerator(new IdGeneratorOptions((ushort)_currentWorkerId)
             {
                 WorkerIdBitLength = YitterWorkerIdBitLength
                 ,
@@ -34,7 +44,7 @@ namespace Adnc.Infra.Common.Helper.IdGeneraterInternal
         {
             get
             {
-                return _instance;
+                return lazy.Value;
             }
         }
 

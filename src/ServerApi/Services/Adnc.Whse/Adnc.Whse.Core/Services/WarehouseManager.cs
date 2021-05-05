@@ -41,7 +41,7 @@ namespace Adnc.Whse.Core.Services
                 throw new AdncArgumentException("warehouseInfo");
 
             return new Warehouse(
-                IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId)
+                IdGenerater.GetNextId()
                 , new WarehousePosition(positionCode, positionDescription)
             );
         }
@@ -121,7 +121,7 @@ namespace Adnc.Whse.Core.Services
             isSuccess = string.IsNullOrEmpty(remark);
 
             //发布冻结库存事件(不管是否冻结成功)
-            var eventId = IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId);
+            var eventId = IdGenerater.GetNextId();
             var eventData = new WarehouseQtyBlockedEvent.EventData() { OrderId = orderId, IsSuccess = isSuccess, Remark = remark };
             var eventSource = System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.FullName;
             await _eventPublisher.PublishAsync(new WarehouseQtyBlockedEvent(eventId, eventData, eventSource));

@@ -36,7 +36,7 @@ namespace Adnc.Whse.Core.Services
             }
 
             return new Product(
-                IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId)
+                IdGenerater.GetNextId()
                 , sku
                 , price
                 , name

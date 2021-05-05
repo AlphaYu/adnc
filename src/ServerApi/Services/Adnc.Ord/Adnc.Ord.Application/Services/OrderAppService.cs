@@ -65,7 +65,7 @@ namespace Adnc.Ord.Application.Services
                 throw new BusinessException(rpcResult.StatusCode, apiError.Detail);
             }
 
-            var orderId = IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId);
+            var orderId = IdGenerater.GetNextId();
 
             var items = from o in input.Items
                         join p in rpcResult.Content on o.ProductId equals p.Id
