@@ -1,9 +1,11 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System;
 using Xunit;
 using Xunit.Abstractions;
 using Adnc.Infra.Common.Helper;
+using Adnc.Infra.Common.Helper.IdGeneraterInternal;
 
 namespace Adnc.UnitTest.Helper
 {
@@ -13,6 +15,7 @@ namespace Adnc.UnitTest.Helper
         public IdGeneraterTests(ITestOutputHelper output)
         {
             _output = output;
+            YitterSnowFlake.CurrentWorkerId = 63;
         }
 
         /// <summary>

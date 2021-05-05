@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Linq;
+using System.Collections.Generic;
 using Autofac;
-using Adnc.UnitTest.Fixtures;
+using StackExchange.Redis;
 using Xunit;
 using Xunit.Abstractions;
 using Adnc.Infra.Caching;
-using System.Collections.Generic;
+using Adnc.UnitTest.Fixtures;
+using Adnc.Infra.Common.Extensions;
+using System.Text;
 
 namespace Adnc.UnitTest.Cache
 {
@@ -37,13 +41,25 @@ namespace Adnc.UnitTest.Cache
         [Fact]
         public void TestScriptEvaluate()
         {
-            var key = "TestScriptEvaluate";
-            var value = DateTime.Now.Ticks;
-            var scirpt = @"redis.call('set', @key, @value,'ex',@ex)";
-            var parameters = new { key = key, value = value, ex = 10 };
-           _redisProvider.ScriptEvaluate(scirpt, parameters);
-            var actual = _redisProvider.StringGet(key);
-            Assert.Equal(value.ToString(), actual);
+            var cacheKey = "test_worker";
+
+            var set = new Dictionary<long, double>();
+            for (long index = 0; index < 64; index++)
+            {
+                set.Add(index, DateTime.Now.GetTotalMicroseconds());
+            }
+
+            _redisProvider.ZAdd(cacheKey, set);
+
+            var scirpt = @"local workerids = redis.call('ZRANGE', @key, @start,@stop)
+                                    redis.call('ZADD',@key,@score,workerids[1])
+                                    return workerids[1]";
+            var parameters = new { key = cacheKey, start = 0, stop = 0, score = DateTime.Now.GetTotalMicroseconds() };
+
+            var luaResult = (byte[])_redisProvider.ScriptEvaluate(scirpt, parameters);
+            var workerId = _cache.Serializer.Deserialize<long>(luaResult);
+            _output.WriteLine(workerId.ToString());
+            Assert.True(workerId > 0);
         }
 
         [Fact]
@@ -63,6 +79,30 @@ namespace Adnc.UnitTest.Cache
             _cache.RemoveAll(keys);
             var cacheValue = _cache.Get<long>(key01);
             Assert.False(cacheValue.HasValue);
+        }
+
+        [Fact]
+        public void TestIncr()
+        {
+            var cacheKey = "test_incr";
+            var cacheValue = _redisProvider.IncrBy(cacheKey, 1);
+            _output.WriteLine(cacheValue.ToString());
+            Assert.True(cacheValue > 0);
+        }
+
+        [Fact]
+        public void TestSortSet()
+        {
+            var cacheKey = "TestSortSet";
+            _redisProvider.ZAdd(cacheKey, new Dictionary<long, double> { { 1, DateTime.Now.GetTotalMilliseconds() } });
+            dynamic returnReulst = _redisProvider.ZRange<long>(cacheKey, 0, 0);
+            _output.WriteLine(returnReulst[0].ToString());
+            Assert.NotNull(returnReulst);
+
+            // 返回有序集合中指定成员的索引
+            returnReulst = _redisProvider.ZRank<long>(cacheKey, 1);
+            _output.WriteLine(returnReulst.ToString());
+            Assert.True(returnReulst >= 0);
         }
     }
 }
