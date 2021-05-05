@@ -30,7 +30,7 @@ namespace Adnc.Cus.Application.EventSubscribers
         {
             var data = warehouseQtyBlockedEvent.Data;
             //await _orderAppSrv.MarkCreatedStatusAsync(data.OrderId, new OrderMarkCreatedStatusDto { IsSuccess = data.IsSuccess, Remark = data.Remark });
-            return;
+            await Task.CompletedTask;
         }
 
         /// <summary>

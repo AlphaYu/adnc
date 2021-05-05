@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Adnc.Infra.Common.Helper.IdGeneraterInternal;
+using Adnc.Infra.Common.Extensions;
 
 namespace Adnc.Application.Shared.IdGeneraterWorkerNode
 {
@@ -30,6 +31,15 @@ namespace Adnc.Application.Shared.IdGeneraterWorkerNode
             YitterSnowFlake.CurrentWorkerId = (short)workerId;
 
             await base.StartAsync(cancellationToken);
+        }
+
+        public async override Task StopAsync(CancellationToken cancellationToken)
+        {
+            await base.StopAsync(cancellationToken);
+            _logger.LogInformation("stopping....{0}", _serviceName);
+            var score = DateTime.Now.AddMilliseconds(-(1000 * 90)).GetTotalMilliseconds();
+            await _workerNode.RefreshWorkerIdScoreAsync(_serviceName, YitterSnowFlake.CurrentWorkerId, score);
+            _logger.LogInformation("stopped....{0}:{1}", _serviceName, score);
         }
 
         protected async override Task ExecuteAsync(CancellationToken stoppingToken)

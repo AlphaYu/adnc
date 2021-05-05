@@ -14,7 +14,6 @@ namespace Adnc.Maint.Application.Services
     public class CacheService : AbstractCacheService
     {
         private readonly Lazy<ICacheProvider> _cache;
-        private readonly Lazy<IRedisProvider> _redisProvider;
         private readonly Lazy<IEfRepository<SysCfg>> _cfgRepository;
         private readonly Lazy<IEfRepository<SysDict>> _dictRepository;
 

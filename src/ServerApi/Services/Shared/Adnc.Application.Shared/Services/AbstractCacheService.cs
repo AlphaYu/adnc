@@ -65,42 +65,5 @@ namespace Adnc.Application.Shared.Services
             var needRemovedKeys = cacheKeys.Append(preRemoveKey);
             await _cache.Value.RemoveAllAsync(needRemovedKeys);
         }
-
-        public async Task<int> GetWorkerIdAsync(string serverName)
-        {
-            if (_workerId > 0) return _workerId;
-
-            var workerIdSortedSetCacheKey = string.Format(SharedCachingConsts.WorkerIdSortedSetCacheKey, serverName);
-
-            if (!_redisProvider.Value.KeyExists(workerIdSortedSetCacheKey))
-            {
-                var lockKey = $"{workerIdSortedSetCacheKey}_lock";
-                var lockValue = DateTime.Now.GetTotalMilliseconds().ToString();
-                var flag = await _redisProvider.Value.StringSetAsync(lockKey, lockValue, TimeSpan.FromMilliseconds(5000), "nx");
-
-                if (!flag)
-                {
-                    await Task.Delay(300);
-                    return await GetWorkerIdAsync(serverName);
-                }
-
-                var set = new Dictionary<long, double>();
-                for (long index = 0; index < 64; index++)
-                {
-                    set.Add(index, DateTime.Now.GetTotalMicroseconds());
-                }
-                await _redisProvider.Value.ZAddAsync(workerIdSortedSetCacheKey, set);
-
-                await _redisProvider.Value.KeyDelAsync(lockKey);
-            }
-
-            var scirpt = @"local workerids = redis.call('ZRANGE', @key, @start,@stop)
-                                    redis.call('ZADD',@key,@score,workerids[1])
-                                    return workerids[1]";
-            var parameters = new { key = workerIdSortedSetCacheKey, start = 0, stop = 0, score = DateTime.Now.GetTotalMicroseconds() };
-            var luaResult = (byte[])_redisProvider.Value.ScriptEvaluate(scirpt, parameters);
-            var workerId = _cache.Value.Serializer.Deserialize<long>(luaResult);
-            return (int)workerId;
-        }
     }
 }

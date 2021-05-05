@@ -21,7 +21,7 @@ namespace Adnc.Application.Shared.IdGeneraterWorkerNode
             _logger = logger;
         }
 
-        internal async Task InitWorkerNodesAsync(string serviceName)
+        internal async Task InitWorkerNodesAsync(string serviceName,long? score=null)
         {
             var workerIdSortedSetCacheKey = string.Format(SharedCachingConsts.WorkerIdSortedSetCacheKey, serviceName);
 
@@ -42,7 +42,7 @@ namespace Adnc.Application.Shared.IdGeneraterWorkerNode
                 var set = new Dictionary<long, double>();
                 for (long index = 0; index <= YitterSnowFlake.MaxWorkerId; index++)
                 {
-                    set.Add(index, DateTime.Now.GetTotalMicroseconds());
+                    set.Add(index, DateTime.Now.GetTotalMilliseconds());
                 }
                 var count = await _redisProvider.ZAddAsync(workerIdSortedSetCacheKey, set);
 
@@ -61,7 +61,8 @@ namespace Adnc.Application.Shared.IdGeneraterWorkerNode
             var scirpt = @"local workerids = redis.call('ZRANGE', @key, @start,@stop)
                                     redis.call('ZADD',@key,@score,workerids[1])
                                     return workerids[1]";
-            var parameters = new { key = workerIdSortedSetCacheKey, start = 0, stop = 0, score = DateTime.Now.GetTotalMicroseconds() };
+
+            var parameters = new { key = workerIdSortedSetCacheKey, start = 0, stop = 0, score = DateTime.Now.GetTotalMilliseconds() };
             var luaResult = (byte[]) await _redisProvider.ScriptEvaluateAsync(scirpt, parameters);
             var workerId = _redisProvider.Serializer.Deserialize<long>(luaResult);
 
@@ -70,14 +71,14 @@ namespace Adnc.Application.Shared.IdGeneraterWorkerNode
             return workerId;
         }
 
-        internal async Task RefreshWorkerIdScoreAsync(string serviceName, long workerId)
+        internal async Task RefreshWorkerIdScoreAsync(string serviceName, long workerId, double? workerIdScore = null)
         {
             if (workerId < 0 || workerId > YitterSnowFlake.MaxWorkerId)
                 throw new Exception(string.Format("worker Id can't be greater than {0} or less than 0", YitterSnowFlake.MaxWorkerId));
 
             var workerIdSortedSetCacheKey = string.Format(SharedCachingConsts.WorkerIdSortedSetCacheKey, serviceName);
 
-            var score = DateTime.Now.GetTotalMicroseconds();
+            var score = workerIdScore == null ? DateTime.Now.GetTotalMilliseconds() : workerIdScore.Value;
             await _redisProvider.ZAddAsync(workerIdSortedSetCacheKey, new Dictionary<long, double> { { workerId, score } });
             _logger.LogInformation("Refresh WorkerNodes:{0}:{1}", workerId, score);
         }
