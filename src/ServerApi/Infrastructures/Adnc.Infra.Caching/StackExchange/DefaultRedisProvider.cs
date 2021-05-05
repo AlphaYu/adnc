@@ -12,7 +12,7 @@ namespace Adnc.Infra.Caching.StackExchange
     /// <summary>
     /// Default redis caching provider.
     /// </summary>
-    public partial class DefaultRedisProvider : AbstractRedisDistributedCache, IRedisDistributedCache
+    public partial class DefaultRedisProvider : AbstracCacheProvider, ICacheProvider
     {
         /// <summary>
         /// The cache.
@@ -49,6 +49,10 @@ namespace Adnc.Infra.Caching.StackExchange
         /// </summary>
         private readonly CacheStats _cacheStats;
 
+        public override string Name { get { return CachingConstValue.StackExchange; } }
+
+        public override string CachingProviderType { get { return nameof(DefaultRedisProvider); } }
+
         /// <summary>
         /// The serializer.
         /// </summary>
@@ -69,7 +73,7 @@ namespace Adnc.Infra.Caching.StackExchange
         {
             ArgumentCheck.NotNull(dbProviders, nameof(dbProviders));
 
-            this.ProviderName = nameof(DefaultRedisProvider);
+            //this.ProviderName = nameof(DefaultRedisProvider);
             this._dbProvider = dbProviders;
             this._serializer = !string.IsNullOrWhiteSpace(cacheOptions.SerializerName)
                                        ? serializers.Single(x => x.Name.Equals(cacheOptions.SerializerName))

@@ -8,22 +8,22 @@ using Adnc.Infra.Caching.Core.Serialization;
 
 namespace Adnc.Infra.Caching.Core
 {
-    public abstract class AbstractRedisDistributedCache : IRedisDistributedCache
+    public abstract class AbstracCacheProvider : ICacheProvider
     {
         protected static readonly DiagnosticListener s_diagnosticListener =
                     new DiagnosticListener(EasyCachingDiagnosticListenerExtensions.DiagnosticListenerName);
 
-        protected string ProviderName { get; set; }
+        //protected string ProviderName { get; set; }
         //protected bool IsDistributedProvider { get; set; }
         //protected int ProviderMaxRdSecond { get; set; }
         //protected CacheStats ProviderStats { get; set; }
 
-        public string Name => this.ProviderName;
+        public abstract string Name {get;}
         //public bool IsDistributedCache => this.IsDistributedProvider;
         //public int MaxRdSecond => this.ProviderMaxRdSecond;
         //public CacheStats CacheStats => this.ProviderStats;
 
-        public string CachingProviderType => "redis";
+        public abstract string CachingProviderType { get; }
 
         public abstract ICachingSerializer Serializer { get; }
 

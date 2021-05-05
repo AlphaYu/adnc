@@ -64,7 +64,7 @@ namespace Adnc.Infra.Caching.Configurations
         /// Gets or sets the string configuration.
         /// </summary>
         /// <value>The configuration.</value>
-        public string Configuration { get; set; } = "";
+        public string ConnectionString { get; set; } = "";
 
         /// <summary>
         /// Gets or sets a value indicating whether this <see cref="T:EasyCaching.Core.Internal.BaseRedisOptions"/>

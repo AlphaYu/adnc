@@ -57,7 +57,7 @@ namespace Adnc.Infra.Caching.Configurations
         /// <returns>The connection multiplexer.</returns>
         private ConnectionMultiplexer CreateConnectionMultiplexer()
         {
-            if (string.IsNullOrWhiteSpace(_options.Configuration))
+            if (string.IsNullOrWhiteSpace(_options.ConnectionString))
             {
                 var configurationOptions = new ConfigurationOptions
                 {
@@ -80,7 +80,8 @@ namespace Adnc.Infra.Caching.Configurations
             }
             else
             {
-                return ConnectionMultiplexer.Connect(_options.Configuration);
+                var options = ConfigurationOptions.Parse(_options.ConnectionString);
+                return ConnectionMultiplexer.Connect(_options.ConnectionString);
             }
         }
 
@@ -98,11 +99,11 @@ namespace Adnc.Infra.Caching.Configurations
                     //Cluster
                     if (server.ServerType == ServerType.Cluster)
                     {
-                        masters.AddRange(server.ClusterConfiguration.Nodes.Where(n => !n.IsSlave).Select(n => n.EndPoint));
+                        masters.AddRange(server.ClusterConfiguration.Nodes.Where(n => !n.IsReplica).Select(n => n.EndPoint));
                         break;
                     }
                     // Single , Master-Slave
-                    if (server.ServerType == ServerType.Standalone && !server.IsSlave)
+                    if (server.ServerType == ServerType.Standalone && !server.IsReplica)
                     {
                         masters.Add(ep);
                         break;

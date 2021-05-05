@@ -6,7 +6,7 @@ using Adnc.Infra.Caching.Core.Serialization;
 
 namespace Adnc.Infra.Caching
 {
-    public interface IRedisDistributedCache
+    public interface ICacheProvider
     {
         /// <summary>
         /// Gets the name.

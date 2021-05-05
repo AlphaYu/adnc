@@ -27,11 +27,11 @@ namespace Adnc.WebApi.Shared.Middleware
         private readonly JWTConfig _jwtConfig;
         private readonly string tokenPrefx = "accesstoken";
         //private readonly string refreshTokenPrefx = "refreshtoken";
-        private readonly IRedisDistributedCache _cache;
+        private readonly ICacheProvider _cache;
 
         public SSOAuthenticationMiddleware(RequestDelegate next
             , IOptions<JWTConfig> jwtConfig
-            , IRedisDistributedCache cache)
+            , ICacheProvider cache)
         {
             _next = next ?? throw new ArgumentNullException(nameof(next));
             _cache = cache;

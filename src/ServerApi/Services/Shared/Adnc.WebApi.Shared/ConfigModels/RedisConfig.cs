@@ -18,7 +18,7 @@ namespace Adnc.WebApi.Shared
 
     public class Dbconfig
     {
-        public string[] ConnectionStrings { get; set; }
+        public string ConnectionString { get; set; }
         public bool ReadOnly { get; set; }
     }
 

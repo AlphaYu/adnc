@@ -12,7 +12,7 @@ namespace Adnc.Infra.Caching.StackExchange
     /// <summary>
     /// Default redis caching provider.
     /// </summary>
-    public partial class DefaultRedisProvider : AbstractRedisDistributedCache, IRedisDistributedCache
+    public partial class DefaultRedisProvider : AbstracCacheProvider, ICacheProvider
     {
         /// <summary>
         /// Gets the specified cacheKey async.

@@ -355,7 +355,6 @@ namespace Adnc.WebApi.Shared
             var mysqlConfig = _configuration.GetMysqlSection().Get<MysqlConfig>();
             var mongoConfig = _configuration.GetMongoDbSection().Get<MongoConfig>();
             var redisConfig = _configuration.GetRedisSection().Get<RedisConfig>();
-            //var redisString = redisConfig.dbconfig.ConnectionStrings[0].Replace(",prefix=", string.Empty).Replace(",poolsize=50", string.Empty);
             _services.AddHealthChecks()
                      //.AddProcessAllocatedMemoryHealthCheck(maximumMegabytesAllocated: 200, tags: new[] { "memory" })
                      //.AddProcessHealthCheck("ProcessName", p => p.Length > 0) // check if process is running
@@ -367,9 +366,9 @@ namespace Adnc.WebApi.Shared
                          RabbitMqConnection.GetInstance(x.GetService<IOptionsSnapshot<RabbitMqConfig>>()
                              , x.GetService<ILogger<dynamic>>()
                          ).Connection;
-                     });
+                     })
                      //.AddUrlGroup(new Uri("https://localhost:5001/weatherforecast"), "index endpoint")
-                   //  .AddRedis(redisString);
+                    .AddRedis(redisConfig.dbconfig.ConnectionString);
         }
 
         /// <summary>

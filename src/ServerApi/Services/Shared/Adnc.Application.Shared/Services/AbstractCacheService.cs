@@ -18,11 +18,11 @@ namespace Adnc.Application.Shared.Services
 
     public abstract class AbstractCacheService : ICacheService
     {
-        private readonly Lazy<IRedisDistributedCache> _cache;
+        private readonly Lazy<ICacheProvider> _cache;
         private readonly Lazy<IRedisProvider> _redisProvider;
         private static int _workerId = 0;
 
-        public AbstractCacheService(Lazy<IRedisDistributedCache> cache, Lazy<IRedisProvider> redisProvider)
+        public AbstractCacheService(Lazy<ICacheProvider> cache, Lazy<IRedisProvider> redisProvider)
         {
             _cache = cache;
             _redisProvider = redisProvider;

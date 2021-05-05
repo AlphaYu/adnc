@@ -24,7 +24,7 @@ namespace Adnc.Infra.Caching.Interceptor.Castle
         /// <summary>
         /// The redis cache provider.
         /// </summary>
-        private readonly IRedisDistributedCache _cacheProvider;
+        private readonly ICacheProvider _cacheProvider;
 
         /// <summary>
         /// logger
@@ -53,7 +53,7 @@ namespace Adnc.Infra.Caching.Interceptor.Castle
         /// <param name="logger">Logger.</param>
         /// <param name="hybridCachingProvider">Hybrid caching provider.</param>
         public CachingInterceptor(
-            IRedisDistributedCache cacheProvider
+            ICacheProvider cacheProvider
             , ICachingKeyGenerator keyGenerator
             , ILogger<CachingInterceptor> logger = null)
         {
