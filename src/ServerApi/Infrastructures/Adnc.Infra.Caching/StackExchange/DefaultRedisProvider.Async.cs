@@ -76,7 +76,9 @@ namespace Adnc.Infra.Caching.StackExchange
             if (_cacheOptions.EnableLogging)
                 _logger?.LogInformation($"Cache Missed : cachekey = {cacheKey}");
 
-            var flag = await _redisDb.StringSetAsync($"{cacheKey}_Lock", 1, TimeSpan.FromMilliseconds(_cacheOptions.LockMs), When.NotExists);
+            var lockKey = $"{cacheKey}_Lock";
+            var lockValue = DateTime.Now.Ticks.ToString();
+            var flag = await _redisDb.LockAsync(lockKey, lockValue, TimeSpan.FromMilliseconds(_cacheOptions.LockMs));
 
             if (!flag)
             {
@@ -90,13 +92,13 @@ namespace Adnc.Infra.Caching.StackExchange
                 await SetAsync(cacheKey, item, expiration);
 
                 //remove mutex key
-                await _redisDb.KeyDeleteAsync($"{cacheKey}_Lock");
+                await _redisDb.SafedUnLockAsync(lockKey, lockValue);
                 return new CacheValue<T>(item, true);
             }
             else
             {
                 //remove mutex key
-                await _redisDb.KeyDeleteAsync($"{cacheKey}_Lock");
+                await _redisDb.SafedUnLockAsync(lockKey, lockValue);
                 return CacheValue<T>.NoValue;
             }
         }

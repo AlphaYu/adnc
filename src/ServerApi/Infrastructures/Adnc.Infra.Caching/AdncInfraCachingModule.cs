@@ -28,7 +28,7 @@ namespace Adnc.Infra.Caching
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterInstance(_cacheOptions);
-            builder.RegisterType<RedisDatabaseProvider>().As<IRedisDatabaseProvider>().SingleInstance();
+            builder.RegisterType<DefaultDatabaseProvider>().As<IRedisDatabaseProvider>().SingleInstance();
             builder.RegisterType<DefaultCachingKeyGenerator>().As<ICachingKeyGenerator>().SingleInstance();
             builder.RegisterType<DefaultRedisProvider>().As<IRedisProvider, ICacheProvider, IDistributedLocker>().SingleInstance();
             builder.RegisterAssemblyTypes(this.ThisAssembly)

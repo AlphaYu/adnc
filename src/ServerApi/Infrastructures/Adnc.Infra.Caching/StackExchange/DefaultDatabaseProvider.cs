@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using StackExchange.Redis;
+using Adnc.Infra.Caching.Configurations;
 
-namespace Adnc.Infra.Caching.Configurations
+namespace Adnc.Infra.Caching.StackExchange
 {
     /// <summary>
     /// Redis database provider.
     /// </summary>
-    public class RedisDatabaseProvider : IRedisDatabaseProvider
+    public class DefaultDatabaseProvider : IRedisDatabaseProvider
     {
         /// <summary>
         /// The options.
@@ -21,7 +22,7 @@ namespace Adnc.Infra.Caching.Configurations
         /// </summary>
         private readonly Lazy<ConnectionMultiplexer> _connectionMultiplexer;
 
-        public RedisDatabaseProvider(CacheOptions options)
+        public DefaultDatabaseProvider(CacheOptions options)
         {
             _options = options.DBConfig;
             _connectionMultiplexer = new Lazy<ConnectionMultiplexer>(CreateConnectionMultiplexer);
