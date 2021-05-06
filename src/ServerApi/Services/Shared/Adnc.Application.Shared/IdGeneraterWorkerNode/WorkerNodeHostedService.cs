@@ -13,6 +13,7 @@ namespace Adnc.Application.Shared.IdGeneraterWorkerNode
         private readonly ILogger<WorkerNodeHostedService> _logger;
         private readonly string  _serviceName;
         private readonly WorkerNode _workerNode;
+        private readonly int _millisecondsDelay = 1000 * 60;
 
         public WorkerNodeHostedService(ILogger<WorkerNodeHostedService> logger
            , WorkerNode workerNode
@@ -39,7 +40,8 @@ namespace Adnc.Application.Shared.IdGeneraterWorkerNode
 
             _logger.LogInformation("stopping service {0}", _serviceName);
 
-            var score = DateTime.Now.AddMilliseconds(-(1000 * 90)).GetTotalMilliseconds();
+            var subtractionMilliseconds = 0 - (_millisecondsDelay * 1.5);
+            var score = DateTime.Now.AddMilliseconds(subtractionMilliseconds).GetTotalMilliseconds();
             await _workerNode.RefreshWorkerIdScoreAsync(_serviceName, YitterSnowFlake.CurrentWorkerId, score);
 
             _logger.LogInformation("stopped service {0}:{1}", _serviceName, score);
@@ -51,7 +53,7 @@ namespace Adnc.Application.Shared.IdGeneraterWorkerNode
             {
                 try
                 {
-                    await Task.Delay(1000 * 60, stoppingToken);
+                    await Task.Delay(_millisecondsDelay, stoppingToken);
 
                     if (stoppingToken.IsCancellationRequested) break;
                     
