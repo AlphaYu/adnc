@@ -36,25 +36,31 @@ namespace Adnc.Application.Shared.IdGeneraterWorkerNode
         public async override Task StopAsync(CancellationToken cancellationToken)
         {
             await base.StopAsync(cancellationToken);
-            _logger.LogInformation("stopping....{0}", _serviceName);
+
+            _logger.LogInformation("stopping service {0}", _serviceName);
+
             var score = DateTime.Now.AddMilliseconds(-(1000 * 90)).GetTotalMilliseconds();
             await _workerNode.RefreshWorkerIdScoreAsync(_serviceName, YitterSnowFlake.CurrentWorkerId, score);
-            _logger.LogInformation("stopped....{0}:{1}", _serviceName, score);
+
+            _logger.LogInformation("stopped service {0}:{1}", _serviceName, score);
         }
 
         protected async override Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            while (true)
+            while (!stoppingToken.IsCancellationRequested)
             {
                 try
                 {
-                    await Task.Delay(1000 * 60);
+                    await Task.Delay(1000 * 60, stoppingToken);
+
+                    if (stoppingToken.IsCancellationRequested) break;
+                    
                     await _workerNode.RefreshWorkerIdScoreAsync(_serviceName, YitterSnowFlake.CurrentWorkerId);
                 }
                 catch (Exception ex)
                 {
                     _logger.LogError(ex.Message, ex);
-                    await Task.Delay(1000 * 10);
+                    await Task.Delay(1000 * 10, stoppingToken);
                 }
             }
         }

@@ -13,11 +13,14 @@ namespace Adnc.Application.Shared.IdGeneraterWorkerNode
     {
         private readonly ILogger<WorkerNode> _logger;
         private readonly IRedisProvider _redisProvider;
+        private readonly IDistributedLocker _distributedLocker;
 
         public WorkerNode(ILogger<WorkerNode> logger
-           , IRedisProvider redisProvider)
+           , IRedisProvider redisProvider
+           , IDistributedLocker distributedLocker)
         {
             _redisProvider = redisProvider;
+            _distributedLocker = distributedLocker;
             _logger = logger;
         }
 
@@ -31,7 +34,7 @@ namespace Adnc.Application.Shared.IdGeneraterWorkerNode
 
                 var lockKey = $"{workerIdSortedSetCacheKey}_lock";
                 var lockValue = DateTime.Now.GetTotalMilliseconds().ToString();
-                var flag = await _redisProvider.StringSetAsync(lockKey, lockValue, TimeSpan.FromMilliseconds(5000), "nx");
+                var flag = await _distributedLocker.LockAsync(lockKey, lockValue);
 
                 if (!flag)
                 {
@@ -39,14 +42,24 @@ namespace Adnc.Application.Shared.IdGeneraterWorkerNode
                     await InitWorkerNodesAsync(serviceName);
                 }
 
-                var set = new Dictionary<long, double>();
-                for (long index = 0; index <= YitterSnowFlake.MaxWorkerId; index++)
+                long count = 0;
+                try
                 {
-                    set.Add(index, DateTime.Now.GetTotalMilliseconds());
+                    var set = new Dictionary<long, double>();
+                    for (long index = 0; index <= YitterSnowFlake.MaxWorkerId; index++)
+                    {
+                        set.Add(index, DateTime.Now.GetTotalMilliseconds());
+                    }
+                    count = await _redisProvider.ZAddAsync(workerIdSortedSetCacheKey, set);
                 }
-                var count = await _redisProvider.ZAddAsync(workerIdSortedSetCacheKey, set);
-
-                await _redisProvider.KeyDelAsync(lockKey);
+                catch(Exception ex)
+                {
+                    throw new Exception(ex.Message, ex);
+                }
+                finally
+                {
+                    await _distributedLocker.SafedUnLockAsync(lockKey, lockValue);
+                }
 
                 _logger.LogInformation("Finlished InitWorkerNodes:{0}:{1}", workerIdSortedSetCacheKey, count);
             }
