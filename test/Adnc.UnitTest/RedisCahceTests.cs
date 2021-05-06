@@ -14,6 +14,7 @@ namespace Adnc.UnitTest.Cache
         private readonly ITestOutputHelper _output;
         private readonly ICacheProvider _cache;
         private readonly IRedisProvider _redisProvider;
+        private readonly IDistributedLocker _distributedLocker;
         private RedisCacheFixture _fixture;
 
         public RedisCahceTests(RedisCacheFixture fixture, ITestOutputHelper output)
@@ -22,12 +23,13 @@ namespace Adnc.UnitTest.Cache
             _output = output;
             _cache = _fixture.Container.Resolve<ICacheProvider>();
             _redisProvider = _fixture.Container.Resolve<IRedisProvider>();
+            _distributedLocker = _fixture.Container.Resolve<IDistributedLocker>();
         }
 
         [Fact]
         public void TestString()
         {
-            var key = "TestString";
+            var key = nameof(TestString).ToLower();
             var value = DateTime.Now.Ticks;
             var result = _redisProvider.StringSet(key, value.ToString(), TimeSpan.FromSeconds(10));
             Assert.True(result);
@@ -36,9 +38,9 @@ namespace Adnc.UnitTest.Cache
         }
 
         [Fact]
-        public async void TestScriptEvaluate()
+        public async void TestScriptEvaluateStoreSet()
         {
-            var cacheKey = "test_worker";
+            var cacheKey = nameof(TestScriptEvaluateStoreSet).ToLower();
 
             var set = new Dictionary<long, double>();
             for (long index = 0; index < 64; index++)
@@ -60,10 +62,32 @@ namespace Adnc.UnitTest.Cache
         }
 
         [Fact]
+        public async void TestDistributedLocker()
+        {
+            var cacheValue = new Random().Next(1000, 9999).ToString();
+            var cacheKey = nameof(TestDistributedLocker).ToLower()+":"+ cacheValue;
+
+            var flagtrue = await _distributedLocker.LockAsync(cacheKey, cacheValue, TimeSpan.FromSeconds(20));
+            Assert.True(flagtrue);
+
+            var flagfalse = await _distributedLocker.LockAsync(cacheKey, cacheValue,TimeSpan.FromSeconds(20));
+            Assert.False(flagfalse);
+
+            var unLockResult = await _distributedLocker.SafedUnLockAsync(cacheKey, "111");
+            Assert.False(unLockResult);
+
+            flagfalse = await _distributedLocker.LockAsync(cacheKey, cacheValue, TimeSpan.FromSeconds(20));
+            Assert.False(flagfalse);
+
+            unLockResult = await _distributedLocker.SafedUnLockAsync(cacheKey, cacheValue);
+            Assert.True(unLockResult);
+        }
+
+        [Fact]
         public void TestRemoveAll()
         {
-            var key01 = "TestRemoveAll01";
-            var key02 = "TestRemoveAll02";
+            var key01 = "TestRemoveAll01".ToLower();
+            var key02 = "TestRemoveAll02".ToLower();
             var value = DateTime.Now.Ticks;
 
             _cache.Set(key01, value, TimeSpan.FromSeconds(100));
@@ -81,7 +105,7 @@ namespace Adnc.UnitTest.Cache
         [Fact]
         public void TestIncr()
         {
-            var cacheKey = "test_incr";
+            var cacheKey = nameof(TestIncr).ToLower();
             var cacheValue = _redisProvider.IncrBy(cacheKey, 1);
             _output.WriteLine(cacheValue.ToString());
             Assert.True(cacheValue > 0);
@@ -90,7 +114,7 @@ namespace Adnc.UnitTest.Cache
         [Fact]
         public void TestSortSet()
         {
-            var cacheKey = "TestSortSet";
+            var cacheKey = nameof(TestSortSet).ToLower();
             _redisProvider.ZAdd(cacheKey, new Dictionary<long, double> { { 1, DateTime.Now.GetTotalMilliseconds() } });
             dynamic returnReulst = _redisProvider.ZRange<long>(cacheKey, 0, 0);
             _output.WriteLine(returnReulst[0].ToString());
