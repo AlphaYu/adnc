@@ -32,11 +32,9 @@ namespace Adnc.Application.Shared.IdGeneraterWorkerNode
             {
                 _logger.LogInformation("Starting InitWorkerNodes:{0}", workerIdSortedSetCacheKey);
 
-                var lockKey = $"{workerIdSortedSetCacheKey}_lock";
-                var lockValue = DateTime.Now.GetTotalMilliseconds().ToString();
-                var flag = await _distributedLocker.LockAsync(lockKey, lockValue);
+                var flag = await _distributedLocker.LockAsync(workerIdSortedSetCacheKey);
 
-                if (!flag)
+                if (!flag.Success)
                 {
                     await Task.Delay(300);
                     await InitWorkerNodesAsync(serviceName);
@@ -58,7 +56,7 @@ namespace Adnc.Application.Shared.IdGeneraterWorkerNode
                 }
                 finally
                 {
-                    await _distributedLocker.SafedUnLockAsync(lockKey, lockValue);
+                    await _distributedLocker.SafedUnLockAsync(workerIdSortedSetCacheKey,flag.LockValue);
                 }
 
                 _logger.LogInformation("Finlished InitWorkerNodes:{0}:{1}", workerIdSortedSetCacheKey, count);

@@ -7,30 +7,26 @@ namespace Adnc.Infra.Caching.StackExchange
     /// <summary>
     /// Default redis caching provider.
     /// </summary>
-    public partial class DefaultRedisProvider: Adnc.Infra.Caching.IDistributedLocker
+    public partial class DefaultRedisProvider : Adnc.Infra.Caching.IDistributedLocker
     {
-        public bool Lock(string cacheKey, string cacheValue, TimeSpan? expiration = null)
+        public (bool Success, string LockValue) Lock(string cacheKey, int timeoutSeconds = 5, bool autoDelay = true)
         {
-            if (expiration == null) expiration = TimeSpan.FromMilliseconds(_cacheOptions.LockMs);
-            bool flag = _redisDb.Lock(cacheKey, cacheValue, expiration);
-            return flag;
+            return _redisDb.Lock(cacheKey, timeoutSeconds, autoDelay);
         }
 
-        public async Task<bool> LockAsync(string cacheKey, string cacheValue, TimeSpan? expiration = null)
+        public async Task<(bool Success, string LockValue)> LockAsync(string cacheKey, int timeoutSeconds = 5, bool autoDelay = true)
         {
-            if (expiration == null) expiration = TimeSpan.FromMilliseconds(_cacheOptions.LockMs);
-            bool flag = await _redisDb.LockAsync(cacheKey, cacheValue, expiration);
-            return flag;
+            return await _redisDb.LockAsync(cacheKey, timeoutSeconds, autoDelay);
         }
 
-        public bool SafedUnLock(string cacheKey, string cacheValue)
+        public bool SafedUnLock(string cacheKey, string lockValue)
         {
-            return _redisDb.SafedUnLock(cacheKey, cacheValue);
+            return _redisDb.SafedUnLock(cacheKey, lockValue);
         }
 
-        public async Task<bool> SafedUnLockAsync(string cacheKey, string cacheValue)
+        public async Task<bool> SafedUnLockAsync(string cacheKey, string lockValue)
         {
-            return  await _redisDb.SafedUnLockAsync(cacheKey, cacheValue);
+            return await _redisDb.SafedUnLockAsync(cacheKey, lockValue);
         }
     }
 }

@@ -5,10 +5,12 @@ namespace Adnc.Infra.Caching
 {
     public interface IDistributedLocker
     {
-        Task<bool> LockAsync(string cacheKey, string cacheValue, TimeSpan? expiration = null);
+        Task<(bool Success, string LockValue)> LockAsync(string cacheKey, int timeoutSeconds = 5, bool autoDelay = true);
+
         Task<bool> SafedUnLockAsync(string cacheKey, string cacheValue);
 
-        bool Lock(string cacheKey, string cacheValue, TimeSpan? expiration = null);
+        (bool Success, string LockValue) Lock(string cacheKey, int timeoutSeconds = 5, bool autoDelay = true);
+
         bool SafedUnLock(string cacheKey, string cacheValue);
     }
 }

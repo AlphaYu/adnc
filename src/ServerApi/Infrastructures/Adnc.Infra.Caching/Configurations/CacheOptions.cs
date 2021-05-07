@@ -45,6 +45,11 @@ namespace Adnc.Infra.Caching.Configurations
         public int LockMs { get; set; } = 5000;
 
         /// <summary>
+        /// allow cache penetrated
+        /// </summary>
+        public bool AllowPenetration { get; set; } = false;
+
+        /// <summary>
         /// Gets or sets the serializer name that should be use in this provider.
         /// Mainly for distributed cache
         /// </summary>

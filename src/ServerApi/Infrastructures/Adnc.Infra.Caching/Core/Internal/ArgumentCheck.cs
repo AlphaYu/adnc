@@ -38,6 +38,19 @@
         }
 
         /// <summary>
+        /// Validates that <paramref name="argument"/> is not less or than zero , otherwise throws an exception.
+        /// </summary>
+        /// <param name="argument">Argument.</param>
+        /// <param name="argumentName">Argument name.</param>
+        public static void NotLessThanOrEqualZero(int argument, string argumentName)
+        {
+            if (argument<=0)
+            {
+                throw new ArgumentOutOfRangeException(argumentName);
+            }
+        }
+
+        /// <summary>
         /// Validates that <paramref name="argument"/> is not negative or zero , otherwise throws an exception.
         /// </summary>
         /// <param name="argument">Argument.</param>
