@@ -6,7 +6,7 @@ using Microsoft.Extensions.Options;
 using Polly;
 using RabbitMQ.Client;
 
-namespace Adnc.Infra.Mq.RabbitMq
+namespace Adnc.Infra.EventBus.RabbitMq
 {
     public class RabbitMqProducer : IDisposable
     {

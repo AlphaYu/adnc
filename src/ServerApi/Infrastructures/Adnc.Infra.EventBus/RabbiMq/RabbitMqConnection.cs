@@ -6,7 +6,7 @@ using RabbitMQ.Client.Exceptions;
 using Polly;
 using Microsoft.Extensions.Logging;
 
-namespace Adnc.Infra.Mq.RabbitMq
+namespace Adnc.Infra.EventBus.RabbitMq
 {
     public sealed class RabbitMqConnection
     {

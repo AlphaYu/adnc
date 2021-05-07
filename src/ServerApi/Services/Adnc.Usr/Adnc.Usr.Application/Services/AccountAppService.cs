@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Adnc.Usr.Application.Contracts.Dtos;
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Usr.Core.Entities;
-using Adnc.Infra.Mq.RabbitMq;
+using Adnc.Infra.EventBus.RabbitMq;
 using Adnc.Usr.Core.RepositoryExtensions;
 using Adnc.Infra.Common.Helper;
 using Adnc.Infra.Common.Extensions;

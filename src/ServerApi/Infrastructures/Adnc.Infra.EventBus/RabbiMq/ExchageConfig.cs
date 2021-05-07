@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Adnc.Infra.Mq.RabbitMq
+namespace Adnc.Infra.EventBus.RabbitMq
 {
     public class ExchageConfig
     {

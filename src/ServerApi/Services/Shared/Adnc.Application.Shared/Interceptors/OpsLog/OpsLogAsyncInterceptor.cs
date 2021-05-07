@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 using Castle.DynamicProxy;
 using Adnc.Application.Shared.Consts;
 using Adnc.Infra.Common.Helper;
-using Adnc.Infra.Mq.RabbitMq;
+using Adnc.Infra.EventBus.RabbitMq;
 
 namespace Adnc.Application.Shared.Interceptors
 {

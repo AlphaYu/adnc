@@ -34,7 +34,7 @@ using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
 using Microsoft.AspNetCore.Authentication;
 using Polly.Timeout;
 using Microsoft.Extensions.Caching.Memory;
-using Adnc.Infra.Mq.RabbitMq;
+using Adnc.Infra.EventBus.RabbitMq;
 using Adnc.Infra.Consul;
 using Adnc.Infra.Consul.Consumer;
 using Adnc.Infra.EfCore;

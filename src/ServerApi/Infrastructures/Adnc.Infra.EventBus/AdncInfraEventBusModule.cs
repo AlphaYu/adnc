@@ -2,20 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Adnc.Infra.Mq.RabbitMq;
 using Microsoft.Extensions.Hosting;
+using Adnc.Infra.EventBus.RabbitMq;
 
 namespace Adnc.Infra.Mq
 {
-    public class AdncInfrMqModule : Autofac.Module
+    public class AdncInfraEventBusModule : Autofac.Module
     {
         private readonly IEnumerable<Assembly> _assembliesToScan;
-        public AdncInfrMqModule(IEnumerable<Assembly> assembliesToScan)
+        public AdncInfraEventBusModule(IEnumerable<Assembly> assembliesToScan)
         {
             _assembliesToScan = assembliesToScan;
         }
 
-        public AdncInfrMqModule(params Assembly[] assembliesToScan) : this((IEnumerable<Assembly>)assembliesToScan) { }
+        public AdncInfraEventBusModule(params Assembly[] assembliesToScan) : this((IEnumerable<Assembly>)assembliesToScan) { }
 
         /// <summary>
         /// Autofac注册
@@ -23,11 +23,11 @@ namespace Adnc.Infra.Mq
         /// <param name="builder"></param>
         protected override void Load(ContainerBuilder builder)
         {
-            //注册生产者
+            //注册Rabbitmq生产者
             builder.RegisterType<RabbitMqProducer>()
                    .InstancePerLifetimeScope();
 
-            //注册消费者
+            //注册Rabbitmq消费者
             builder.RegisterAssemblyTypes(_assembliesToScan.ToArray())
                    .Where(t => t.IsAssignableTo<IHostedService>() && t.IsAssignableTo<BaseRabbitMqConsumer>() && !t.IsAbstract)
                    .AsImplementedInterfaces()

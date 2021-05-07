@@ -104,7 +104,7 @@ namespace Adnc.Application.Shared
 
         private void LoadDepends(ContainerBuilder builder)
         {
-            builder.RegisterModule(new AdncInfrMqModule(_appAssemblieToScan));
+            builder.RegisterModule(new AdncInfraEventBusModule(_appAssemblieToScan));
             builder.RegisterModule(new AutoMapperModule(_appAssemblieToScan));
             builder.RegisterModule(new AdncInfraCachingModule(_redisSection));
             var modelType = _coreAssemblieToScan.GetTypes().Where(x => x.IsAssignableTo<AdncCoreModule>() && !x.IsAbstract).FirstOrDefault();

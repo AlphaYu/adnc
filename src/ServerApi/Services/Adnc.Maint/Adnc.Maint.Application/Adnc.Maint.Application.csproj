@@ -27,7 +27,6 @@
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Common\Adnc.Infra.Common.csproj" />
 		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Caching\Adnc.Infra.Caching.csproj" />
-		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Mq\Adnc.Infra.Mq.csproj" />
 		<ProjectReference Include="..\Adnc.Maint.Application.Contracts\Adnc.Maint.Application.Contracts.csproj" />
 		<ProjectReference Include="..\Adnc.Maint.Core\Adnc.Maint.Core.csproj" />
 	</ItemGroup>
