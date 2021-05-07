@@ -9,6 +9,7 @@ using Adnc.Cus.Core;
 using DotNetCore.CAP;
 using Adnc.Infra.EventBus;
 using Adnc.Core.Shared;
+using Adnc.Infra.EventBus.Cap;
 
 namespace Adnc.UnitTest.Fixtures
 {
