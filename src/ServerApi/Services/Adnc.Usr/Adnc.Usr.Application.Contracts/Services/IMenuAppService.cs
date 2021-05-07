@@ -19,7 +19,7 @@ namespace Adnc.Usr.Application.Contracts.Services
         /// <param name="input"></param>
         /// <returns></returns>
         [OpsLog(LogName = "新增菜单")]
-        [CachingEvict(CacheKeys = new[] { CachingConsts.MenuListCacheKey, CachingConsts.MenuRelationCacheKey, CachingConsts.MenuCodesCacheKey })]
+        [CachingEvict(CacheKeys = new[] { CachingConsts.MenuListCacheKey, CachingConsts.MenuTreeListCacheKey, CachingConsts.MenuRelationCacheKey, CachingConsts.MenuCodesCacheKey })]
         Task<AppSrvResult<long>> CreateAsync(MenuCreationDto input);
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace Adnc.Usr.Application.Contracts.Services
         /// <param name="input"></param>
         /// <returns></returns>
         [OpsLog(LogName = "修改菜单")]
-        [CachingEvict(CacheKeys = new[] { CachingConsts.MenuListCacheKey, CachingConsts.MenuRelationCacheKey, CachingConsts.MenuCodesCacheKey })]
+        [CachingEvict(CacheKeys = new[] { CachingConsts.MenuListCacheKey, CachingConsts.MenuTreeListCacheKey,CachingConsts.MenuRelationCacheKey, CachingConsts.MenuCodesCacheKey })]
         Task<AppSrvResult> UpdateAsync(long id,MenuUpdationDto input);
 
         /// <summary>
@@ -38,14 +38,14 @@ namespace Adnc.Usr.Application.Contracts.Services
         /// <param name="id"></param>
         /// <returns></returns>
         [OpsLog(LogName = "删除菜单")]
-        [CachingEvict(CacheKeys = new[] { CachingConsts.MenuListCacheKey, CachingConsts.MenuRelationCacheKey, CachingConsts.MenuCodesCacheKey })]
+        [CachingEvict(CacheKeys = new[] { CachingConsts.MenuListCacheKey, CachingConsts.MenuTreeListCacheKey, CachingConsts.MenuRelationCacheKey, CachingConsts.MenuCodesCacheKey })]
         Task<AppSrvResult> DeleteAsync(long id);
 
         /// <summary>
         /// 获取菜单列表
         /// </summary>
         /// <returns></returns>
-        [CachingAble(CacheKey = CachingConsts.MenuListCacheKey)]
+        [CachingAble(CacheKey = CachingConsts.MenuTreeListCacheKey)]
         Task<List<MenuNodeDto>> GetlistAsync();
 
         /// <summary>

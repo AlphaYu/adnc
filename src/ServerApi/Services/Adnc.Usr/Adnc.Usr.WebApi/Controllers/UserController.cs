@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
@@ -120,7 +121,8 @@ namespace Adnc.Usr.WebApi.Controllers
         public async Task<ActionResult<List<string>>> GetCurrenUserPermissions([FromRoute] long id, [FromQuery] IEnumerable<string> permissions)
         {
             //throw new System.Exception("测试");
-            return await _userService.GetPermissionsAsync(_userContext.Id, permissions);
+           var result = await _userService.GetPermissionsAsync(_userContext.Id, permissions);
+            return result?.Any() == true ? result : new List<string>();
         }
 
         /// <summary>

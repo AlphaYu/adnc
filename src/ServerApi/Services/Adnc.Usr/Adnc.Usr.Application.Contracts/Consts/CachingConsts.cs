@@ -8,6 +8,7 @@ namespace Adnc.Usr.Application.Contracts.Consts
     public class CachingConsts : SharedCachingConsts
     {
         public const string MenuListCacheKey = "adnc:usr:menus:list";
+        public const string MenuTreeListCacheKey = "adnc:usr:menus:tree";
         public const string MenuRelationCacheKey = "adnc:usr:menus:relation";
         public const string MenuCodesCacheKey = "adnc:usr:menus:codes";
 
