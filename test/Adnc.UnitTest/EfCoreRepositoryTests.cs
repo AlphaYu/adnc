@@ -10,11 +10,10 @@ using Adnc.UnitTest.Fixtures;
 using Adnc.Core.Shared;
 using Adnc.Cus.Core.Entities;
 using Adnc.Core.Shared.IRepositories;
-using Adnc.Infra.Common;
 using Adnc.Infra.Common.Helper;
 using Adnc.Infra.EfCore;
 
-namespace Adnc.UnitTest
+namespace Adnc.UnitTest.EFCore
 {
     public class EfCoreRepositoryTests : IClassFixture<EfCoreDbcontextFixture>
     {
@@ -73,7 +72,7 @@ namespace Adnc.UnitTest
 
                 await _customerRsp.DeleteRangeAsync(x => x.Id <= 10000);
 
-                var id = IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId);
+                var id = IdGenerater.GetNextId();
                 var customer = new Customer() { Id = id, Account = account, Nickname = "招财猫", Realname = "张发财", FinanceInfo = new CustomerFinance { Id = id, Account = account, Balance = 0 } };
 
                 _dbContext.Add<Customer>(customer);
@@ -81,7 +80,7 @@ namespace Adnc.UnitTest
                 await _dbContext.SaveChangesAsync();
 
 
-                var id2 = IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId);
+                var id2 = IdGenerater.GetNextId();
                 var customer2 = new Customer() { Id = id2, Account = account, Nickname = "招财猫02", Realname = "张发财02", FinanceInfo = new CustomerFinance { Id = id2, Account = account, Balance = 0 } };
 
                 _dbContext.Add<Customer>(customer2);
@@ -101,7 +100,7 @@ namespace Adnc.UnitTest
             if (defaultAutoTransaction == false)
                 _dbContext.Database.AutoTransactionsEnabled = true;
 
-            var id = IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId);
+            var id = IdGenerater.GetNextId();
             var radmon = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
             var cusotmer = new Customer
             {
@@ -130,7 +129,7 @@ namespace Adnc.UnitTest
         [Fact]
         public async Task TestInsert()
         {
-            var id = IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId);
+            var id = IdGenerater.GetNextId();
             var radmon = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
             var cusotmer = new Customer
             {
@@ -155,9 +154,9 @@ namespace Adnc.UnitTest
 
             var logs = new List<CustomerTransactionLog>
             {
-                new CustomerTransactionLog{ Id=IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId),Account=customer.Account,ChangedAmount=0,Amount=0,ChangingAmount=0,CustomerId=customer.Id,ExchangeType=ExchangeTypeEnum.Recharge,ExchageStatus=ExchageStatusEnum.Finished,Remark="test"}
+                new CustomerTransactionLog{ Id=IdGenerater.GetNextId(),Account=customer.Account,ChangedAmount=0,Amount=0,ChangingAmount=0,CustomerId=customer.Id,ExchangeType=ExchangeTypeEnum.Recharge,ExchageStatus=ExchageStatusEnum.Finished,Remark="test"}
                 ,
-                new CustomerTransactionLog{ Id=IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId),Account=customer.Account,ChangedAmount=0,Amount=0,ChangingAmount=0,CustomerId=customer.Id,ExchangeType=ExchangeTypeEnum.Recharge,ExchageStatus=ExchageStatusEnum.Finished,Remark="test"}
+                new CustomerTransactionLog{ Id=IdGenerater.GetNextId(),Account=customer.Account,ChangedAmount=0,Amount=0,ChangingAmount=0,CustomerId=customer.Id,ExchangeType=ExchangeTypeEnum.Recharge,ExchageStatus=ExchageStatusEnum.Finished,Remark="test"}
             };
 
             await _custLogsRsp.InsertRangeAsync(logs);
@@ -354,8 +353,8 @@ namespace Adnc.UnitTest
         [Fact]
         public async Task TestTestUOWCommit()
         {
-            var id = IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId);
-            var id2 = IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId);
+            var id = IdGenerater.GetNextId();
+            var id2 = IdGenerater.GetNextId();
             var account = "alpha008";
             var customer = new Customer() { Id = id, Account = account, Nickname = "招财猫", Realname = "张发财" };
             var customer2 = new Customer() { Id = id2, Account = account, Nickname = "招财猫02", Realname = "张发财02" };
@@ -418,8 +417,8 @@ namespace Adnc.UnitTest
         [Fact]
         public async Task TestUOWRollback()
         {
-            var id = IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId);
-            var id2 = IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId);
+            var id = IdGenerater.GetNextId();
+            var id2 = IdGenerater.GetNextId();
             var account = "alpha008";
             var customer = new Customer() { Id = id, Account = account, Nickname = "招财猫", Realname = "张发财" };
             var customer2 = new Customer() { Id = id2, Account = account, Nickname = "招财猫02", Realname = "张发财02" };
@@ -472,13 +471,32 @@ namespace Adnc.UnitTest
             Assert.Null(financeFromDb);
         }
 
+        [Fact]
+        public async Task TestReutrnResult()
+        {
+            var result = await _customerRsp.FetchAsync(x => x.Id == 999);
+            Assert.Null(result);
+
+            result = await _customerRsp.FindAsync(999);
+            Assert.Null(result);
+
+            result = await _customerRsp.Where(x => x.Id == 999).FirstOrDefaultAsync();
+            Assert.Null(result);
+
+           var  dapperResult = await _customerRsp.QueryAsync<Customer>("select * from Customer where id=999");
+            Assert.Null(dapperResult);
+
+            dynamic dapperResult2 = await _customerRsp.QueryAsync("select * from Customer where id=999");
+            Assert.Null(dapperResult2);
+        }
+
         /// <summary>
         /// 生成测试数据
         /// </summary>
         /// <returns></returns>
         private async Task<Customer> InsertCustomer()
         {
-            var id = IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId);
+            var id = IdGenerater.GetNextId();
             var customer = new Customer() { Id = id, Account = "alpha2008", Nickname = IdGenerater.GetNextId().ToString(), Realname = IdGenerater.GetNextId().ToString() };
             customer.FinanceInfo = new CustomerFinance { Id = customer.Id, Account = customer.Account, Balance = 0 };
             await _customerRsp.InsertAsync(customer);

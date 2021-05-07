@@ -4,6 +4,11 @@
         <name>Adnc.Usr.Application.Contracts</name>
     </assembly>
     <members>
+        <member name="T:Adnc.Usr.Application.Contracts.Consts.CachingConsts">
+            <summary>
+            cache key 常量
+            </summary>
+        </member>
         <member name="T:Adnc.Usr.Application.Contracts.Dtos.DeptCreationDto">
             <summary>
             部门
@@ -69,12 +74,27 @@
             版本号
             </summary>
         </member>
-        <member name="T:Adnc.Usr.Application.Contracts.Dtos.DeptTreeeDto">
+        <member name="T:Adnc.Usr.Application.Contracts.Dtos.DeptSimpleTreeDto">
+            <summary>
+            精简部门树结构
+            </summary>
+        </member>
+        <member name="P:Adnc.Usr.Application.Contracts.Dtos.DeptSimpleTreeDto.Label">
+            <summary>
+            部门简称
+            </summary>
+        </member>
+        <member name="P:Adnc.Usr.Application.Contracts.Dtos.DeptSimpleTreeDto.children">
+            <summary>
+            子部门
+            </summary>
+        </member>
+        <member name="T:Adnc.Usr.Application.Contracts.Dtos.DeptTreeDto">
             <summary>
             部门节点
             </summary>
         </member>
-        <member name="P:Adnc.Usr.Application.Contracts.Dtos.DeptTreeeDto.Children">
+        <member name="P:Adnc.Usr.Application.Contracts.Dtos.DeptTreeDto.Children">
             <summary>
             子部门
             </summary>
@@ -857,10 +877,233 @@
             DeptUpdationDtoValidator
             </summary>
         </member>
+        <member name="T:Adnc.Usr.Application.Contracts.Services.IAccountAppService">
+            <summary>
+            账户服务
+            </summary>
+        </member>
+        <member name="M:Adnc.Usr.Application.Contracts.Services.IAccountAppService.LoginAsync(Adnc.Usr.Application.Contracts.Dtos.UserLoginDto)">
+            <summary>
+            登录
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Adnc.Usr.Application.Contracts.Services.IAccountAppService.UpdatePasswordAsync(System.Int64,Adnc.Usr.Application.Contracts.Dtos.UserChangePwdDto)">
+            <summary>
+            修改密码
+            </summary>
+            <param name="id"></param>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Adnc.Usr.Application.Contracts.Services.IAccountAppService.GetUserValidateInfoAsync(System.Int64)">
+            <summary>
+            获取登录信息
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Adnc.Usr.Application.Contracts.Services.IAccountAppService.GetUserInfoAsync(System.Int64)">
+            <summary>
+            获取用户信息
+            </summary>
+            <param name="userId"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Adnc.Usr.Application.Contracts.Services.IDeptAppService">
+            <summary>
+            部门服务
+            </summary>
+        </member>
+        <member name="M:Adnc.Usr.Application.Contracts.Services.IDeptAppService.CreateAsync(Adnc.Usr.Application.Contracts.Dtos.DeptCreationDto)">
+            <summary>
+            新增部门
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Adnc.Usr.Application.Contracts.Services.IDeptAppService.UpdateAsync(System.Int64,Adnc.Usr.Application.Contracts.Dtos.DeptUpdationDto)">
+            <summary>
+            修改部门
+            </summary>
+            <param name="id"></param>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Adnc.Usr.Application.Contracts.Services.IDeptAppService.DeleteAsync(System.Int64)">
+            <summary>
+            删除部门
+            </summary>
+            <param name="Id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Adnc.Usr.Application.Contracts.Services.IDeptAppService.GetTreeListAsync">
+            <summary>
+            部门树结构
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Adnc.Usr.Application.Contracts.Services.IMenuAppService">
+            <summary>
+            菜单/权限服务
+            </summary>
+        </member>
+        <member name="M:Adnc.Usr.Application.Contracts.Services.IMenuAppService.CreateAsync(Adnc.Usr.Application.Contracts.Dtos.MenuCreationDto)">
+            <summary>
+            新增菜单
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Adnc.Usr.Application.Contracts.Services.IMenuAppService.UpdateAsync(System.Int64,Adnc.Usr.Application.Contracts.Dtos.MenuUpdationDto)">
+            <summary>
+            修改菜单
+            </summary>
+            <param name="id"></param>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Adnc.Usr.Application.Contracts.Services.IMenuAppService.DeleteAsync(System.Int64)">
+            <summary>
+            删除菜单
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Adnc.Usr.Application.Contracts.Services.IMenuAppService.GetlistAsync">
+            <summary>
+            获取菜单列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Adnc.Usr.Application.Contracts.Services.IMenuAppService.GetMenusForRouterAsync(System.Collections.Generic.IEnumerable{System.Int64})">
+            <summary>
+            获取左侧路由菜单
+            </summary>
+            <param name="roleIds"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Adnc.Usr.Application.Contracts.Services.IMenuAppService.GetMenuTreeListByRoleIdAsync(System.Int64)">
+            <summary>
+            获取指定角色的菜单
+            </summary>
+            <param name="roleId"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Adnc.Usr.Application.Contracts.Services.IRoleAppService">
+            <summary>
+            角色服务
+            </summary>
+        </member>
+        <member name="M:Adnc.Usr.Application.Contracts.Services.IRoleAppService.CreateAsync(Adnc.Usr.Application.Contracts.Dtos.RoleCreationDto)">
+            <summary>
+            新增角色
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Adnc.Usr.Application.Contracts.Services.IRoleAppService.UpdateAsync(System.Int64,Adnc.Usr.Application.Contracts.Dtos.RoleUpdationDto)">
+            <summary>
+            修改角色
+            </summary>
+            <param name="id"></param>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Adnc.Usr.Application.Contracts.Services.IRoleAppService.DeleteAsync(System.Int64)">
+            <summary>
+            删除角色
+            </summary>
+            <param name="Id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Adnc.Usr.Application.Contracts.Services.IRoleAppService.SetPermissonsAsync(Adnc.Usr.Application.Contracts.Dtos.RoleSetPermissonsDto)">
+            <summary>
+            设置角色权限
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Adnc.Usr.Application.Contracts.Services.IRoleAppService.GetRoleTreeListByUserIdAsync(System.Int64)">
+            <summary>
+            获取用户拥有的角色
+            </summary>
+            <param name="userId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Adnc.Usr.Application.Contracts.Services.IRoleAppService.GetPagedAsync(Adnc.Usr.Application.Contracts.Dtos.RolePagedSearchDto)">
+            <summary>
+            获取角色列表
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
         <member name="T:Adnc.Usr.Application.Contracts.Services.IUserAppService">
             <summary>
             用户管理
             </summary>
+        </member>
+        <member name="M:Adnc.Usr.Application.Contracts.Services.IUserAppService.CreateAsync(Adnc.Usr.Application.Contracts.Dtos.UserCreationDto)">
+            <summary>
+            新增用户
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Adnc.Usr.Application.Contracts.Services.IUserAppService.UpdateAsync(System.Int64,Adnc.Usr.Application.Contracts.Dtos.UserUpdationDto)">
+            <summary>
+            修改用户
+            </summary>
+            <param name="id"></param>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Adnc.Usr.Application.Contracts.Services.IUserAppService.DeleteAsync(System.Int64)">
+            <summary>
+            删除用户
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Adnc.Usr.Application.Contracts.Services.IUserAppService.SetRoleAsync(System.Int64,Adnc.Usr.Application.Contracts.Dtos.UserSetRoleDto)">
+            <summary>
+            设置用户角色
+            </summary>
+            <param name="id"></param>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Adnc.Usr.Application.Contracts.Services.IUserAppService.ChangeStatusAsync(System.Int64,System.Int32)">
+            <summary>
+            修改用户状态
+            </summary>
+            <param name="id"></param>
+            <param name="status"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Adnc.Usr.Application.Contracts.Services.IUserAppService.ChangeStatusAsync(System.Collections.Generic.IEnumerable{System.Int64},System.Int32)">
+            <summary>
+            批量修改用户状态
+            </summary>
+            <param name="ids"></param>
+            <param name="status"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Adnc.Usr.Application.Contracts.Services.IUserAppService.GetPermissionsAsync(System.Int64,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            获取当前用户是否拥有指定权限
+            </summary>
+            <param name="userId"></param>
+            <param name="permissions"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Adnc.Usr.Application.Contracts.Services.IUserAppService.GetPagedAsync(Adnc.Usr.Application.Contracts.Dtos.UserSearchPagedDto)">
+            <summary>
+            获取用户列表
+            </summary>
+            <param name="search"></param>
+            <returns></returns>
         </member>
     </members>
 </doc>

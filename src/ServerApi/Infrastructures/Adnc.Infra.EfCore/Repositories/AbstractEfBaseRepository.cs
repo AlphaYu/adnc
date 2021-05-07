@@ -50,14 +50,18 @@ namespace Adnc.Infra.EfCore.Repositories
         {
             if (writeDb)
                 sql = string.Concat("/* ", EfCoreConsts.MAXSCALE_ROUTE_TO_MASTER, " */", sql);
-            return await DbContext.Database.GetDbConnection().QueryAsync(sql, param, null, commandTimeout, commandType);
+            var result = await DbContext.Database.GetDbConnection().QueryAsync(sql, param, null, commandTimeout, commandType);
+
+            return result.Any() ? result : null;
         }
 
         public virtual async Task<IEnumerable<TResult>> QueryAsync<TResult>(string sql, object param = null, int? commandTimeout = null, CommandType? commandType = null, bool writeDb = false)
         {
             if (writeDb)
                 sql = string.Concat("/* ", EfCoreConsts.MAXSCALE_ROUTE_TO_MASTER, " */", sql);
-            return await DbContext.Database.GetDbConnection().QueryAsync<TResult>(sql, param, null, commandTimeout, commandType);
+            var result =  await DbContext.Database.GetDbConnection().QueryAsync<TResult>(sql, param, null, commandTimeout, commandType);
+
+            return result.Any() ? result : null;
         }
 
         public virtual async Task<int> InsertAsync(TEntity entity, CancellationToken cancellationToken = default)

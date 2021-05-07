@@ -50,7 +50,7 @@ namespace Adnc.Cus.Application.Services
 
             var customer = Mapper.Map<Customer>(input);
 
-            customer.Id = IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId);
+            customer.Id = IdGenerater.GetNextId();
             customer.FinanceInfo = new CustomerFinance()
             {
                 Account = customer.Account
@@ -80,7 +80,7 @@ namespace Adnc.Cus.Application.Services
 
             var cusTransactionLog = new CustomerTransactionLog()
             {
-                Id = IdGenerater.GetNextId(IdGenerater.DatacenterId, IdGenerater.WorkerId)
+                Id = IdGenerater.GetNextId()
                 ,
                 CustomerId = customer.Id
                 ,

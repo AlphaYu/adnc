@@ -25,43 +25,6 @@ namespace Adnc.Maint.WebApi.Controllers
         }
 
         /// <summary>
-        /// 删除字典
-        /// </summary>
-        /// <param name="id">字典ID</param>
-        /// <returns></returns>
-        [HttpDelete("{id}")]
-        [Permission("dictDelete")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<ActionResult> DeleteAsync([FromRoute] long id)
-        {
-            return Result(await _dictAppService.DeleteAsync(id));
-        }
-
-        /// <summary>
-        /// 获取字典列表
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet()]
-        [Permission("dictList")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<List<DictDto>>> GetListAsync([FromQuery] DictSearchDto search)
-        {
-            return Result(await _dictAppService.GetListAsync(search));
-        }
-
-        /// <summary>
-        /// 获取单个字典数据
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet("{id}")]
-        [Permission("dict")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<DictDto>> GetAsync([FromRoute] long id)
-        {
-            return Result(await _dictAppService.GetAsync(id));
-        }
-
-        /// <summary>
         /// 新增字典
         /// </summary>
         /// <param name="input"><see cref="DictCreationDto"/></param>
@@ -86,6 +49,47 @@ namespace Adnc.Maint.WebApi.Controllers
         public async Task<ActionResult<long>> UpdateAsync([FromRoute] long id, [FromBody] DictUpdationDto input)
         {
             return Result(await _dictAppService.UpdateAsync(id, input));
+        }
+
+        /// <summary>
+        /// 删除字典
+        /// </summary>
+        /// <param name="id">字典ID</param>
+        /// <returns></returns>
+        [HttpDelete("{id}")]
+        [Permission("dictDelete")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<ActionResult> DeleteAsync([FromRoute] long id)
+        {
+            return Result(await _dictAppService.DeleteAsync(id));
+        }
+
+        /// <summary>
+        /// 获取字典列表
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet()]
+        [Permission("dictList")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<List<DictDto>>> GetListAsync([FromQuery] DictSearchDto search)
+        {
+            return await _dictAppService.GetListAsync(search);
+        }
+
+        /// <summary>
+        /// 获取单个字典数据
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("{id}")]
+        [Permission("dict")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<DictDto>> GetAsync([FromRoute] long id)
+        {
+            var cfg = await _dictAppService.GetAsync(id);
+            if (cfg != null)
+                return cfg;
+
+            return NoContent();
         }
     }
 }

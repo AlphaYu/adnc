@@ -63,9 +63,12 @@ namespace Adnc.Usr.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<UserInfoDto>> GetCurrentUserInfoAsync()
         {
-            var userId = _userContext.Id;
             var result = await _accountService.GetUserInfoAsync(_userContext.Id);
-            return Result(result);
+
+            if (result != null)
+                return result;
+
+            return NotFound();
         }
 
         /// <summary>
@@ -91,16 +94,16 @@ namespace Adnc.Usr.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<UserTokenInfoDto>> RefreshAccessTokenAsync([FromBody] UserRefreshTokenDto input)
         {
-            var result = await _accountService.GetUserValidateInfoAsync(input.Account);
+            var result = await _accountService.GetUserValidateInfoAsync(input.Id);
 
-            if (result.IsSuccess)
+            if (result==null)
                 return Ok(new UserTokenInfoDto
                 {
-                    Token = JwtTokenHelper.CreateAccessToken(_jwtConfig, result.Content, input.RefreshToken),
+                    Token = JwtTokenHelper.CreateAccessToken(_jwtConfig, result, input.RefreshToken),
                     RefreshToken = input.RefreshToken
                 });
 
-            return Problem(result.ProblemDetails);
+            return NotFound();
         }
 
         /// <summary>

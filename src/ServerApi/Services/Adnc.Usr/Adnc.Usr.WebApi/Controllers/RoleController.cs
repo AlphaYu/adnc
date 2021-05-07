@@ -33,7 +33,7 @@ namespace Adnc.Usr.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<PageModelDto<RoleDto>>> GetPagedAsync([FromQuery] RolePagedSearchDto input)
         {
-            return Result(await _roleService.GetPagedAsync(input));
+            return await _roleService.GetPagedAsync(input);
         }
 
         /// <summary>
@@ -43,9 +43,9 @@ namespace Adnc.Usr.WebApi.Controllers
         /// <returns></returns>
         [HttpGet("{userId}/rolestree")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<dynamic>> GetRoleTreeListByUserIdAsync([FromRoute] long userId)
+        public async Task<ActionResult<RoleTreeDto>> GetRoleTreeListByUserIdAsync([FromRoute] long userId)
         {
-            return Result(await _roleService.GetRoleTreeListByUserIdAsync(userId));
+            return await _roleService.GetRoleTreeListByUserIdAsync(userId);
         }
 
         /// <summary>

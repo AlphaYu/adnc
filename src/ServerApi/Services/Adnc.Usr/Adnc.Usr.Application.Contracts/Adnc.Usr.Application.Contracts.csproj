@@ -4,7 +4,7 @@
 	  <TargetFramework>netstandard2.1</TargetFramework>
 	  <AssemblyName>Adnc.Usr.Application.Contracts</AssemblyName>
 	  <RootNamespace>Adnc.Usr.Application.Contracts</RootNamespace>
-	  <Version>0.8.0</Version>
+	  <Version>0.8.1</Version>
 	  <Authors>Alpha.Yu</Authors>
 	  <Product>Adnc</Product>
 	  <RepositoryUrl>https://github.com/AlphaYu</RepositoryUrl>

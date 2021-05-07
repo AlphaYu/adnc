@@ -18,35 +18,13 @@ namespace Adnc.Usr.Application.Services
     public class UserAppService : AbstractAppService, IUserAppService
     {
         private readonly IEfRepository<SysUser> _userRepository;
-        private readonly IDeptAppService _deptAppService;
-        private readonly IRoleAppService _roleAppService;
+        private readonly CacheService _cacheService;
 
         public UserAppService(IEfRepository<SysUser> userRepository,
-            IDeptAppService deptAppService,
-            IRoleAppService roleAppService)
+            CacheService cacheService)
         {
             _userRepository = userRepository;
-            _deptAppService = deptAppService;
-            _roleAppService = roleAppService;
-        }
-
-        public async Task<AppSrvResult> ChangeStatusAsync(long id, int status)
-        {
-            await _userRepository.UpdateAsync(new SysUser { Id = id, Status = status }, UpdatingProps<SysUser>(x => x.Status));
-            return AppSrvResult();
-        }
-
-        public async Task<AppSrvResult> ChangeStatusAsync(UserChangeStatusDto input)
-        {
-            string userids = string.Join<long>(",", input.UserIds);
-            await _userRepository.UpdateRangeAsync(u => userids.Contains(u.Id.ToString()), u => new SysUser { Status = input.Status });
-            return AppSrvResult();
-        }
-
-        public async Task<AppSrvResult> DeleteAsync(long id)
-        {
-            await _userRepository.DeleteAsync(id);
-            return AppSrvResult();
+            _cacheService = cacheService;
         }
 
         public async Task<AppSrvResult<long>> CreateAsync(UserCreationDto input)
@@ -82,7 +60,58 @@ namespace Adnc.Usr.Application.Services
             return AppSrvResult();
         }
 
-        public async Task<AppSrvResult<PageModelDto<UserDto>>> GetPagedAsync(UserSearchPagedDto search)
+        public async Task<AppSrvResult> SetRoleAsync(long id, UserSetRoleDto input)
+        {
+            var roleIdStr = input.RoleIds == null ? null : string.Join(",", input.RoleIds);
+            await _userRepository.UpdateAsync(new SysUser() { Id = id, RoleIds = roleIdStr }, UpdatingProps<SysUser>(x => x.RoleIds));
+
+            return AppSrvResult();
+        }
+
+        public async Task<AppSrvResult> DeleteAsync(long id)
+        {
+            await _userRepository.DeleteAsync(id);
+            return AppSrvResult();
+        }
+
+        public async Task<AppSrvResult> ChangeStatusAsync(long id, int status)
+        {
+            await _userRepository.UpdateAsync(new SysUser { Id = id, Status = status }, UpdatingProps<SysUser>(x => x.Status));
+            return AppSrvResult();
+        }
+
+        public async Task<AppSrvResult> ChangeStatusAsync(IEnumerable<long> ids, int status)
+        {
+            string userids = string.Join(",", ids);
+            await _userRepository.UpdateRangeAsync(u => userids.Contains(u.Id.ToString()), u => new SysUser { Status = status });
+            return AppSrvResult();
+        }
+
+        public async Task<List<string>> GetPermissionsAsync(long userId, IEnumerable<string> permissions)
+        {
+            var userValidateInfo = await _cacheService.GetUserValidateInfoFromCacheAsync(userId);
+
+            if (string.IsNullOrWhiteSpace(userValidateInfo.RoleIds))
+                return default;
+
+            if (userValidateInfo.Status != 1)
+                return default;
+
+            var roleIds = userValidateInfo.RoleIds.Trim().Split(",", StringSplitOptions.RemoveEmptyEntries).Select(x => long.Parse(x));
+
+            var allMenuCodes = await _cacheService.GetAllMenuCodesFromCacheAsync();
+
+            var codes = allMenuCodes?.Where(x => roleIds.Contains(x.RoleId)).Select(x => x.Code.ToUpper());
+            if (codes != null && codes.Any())
+            {
+                var result = codes.Intersect(permissions.Select(x => x.ToUpper()));
+                return result.ToList();
+            }
+
+            return default;
+        }
+
+        public async Task<PageModelDto<UserDto>> GetPagedAsync(UserSearchPagedDto search)
         {
             Expression<Func<SysUser, bool>> whereCondition = x => true;
             if (search.Account.IsNotNullOrWhiteSpace())
@@ -98,15 +127,13 @@ namespace Adnc.Usr.Application.Services
             var pagedModel = await _userRepository.PagedAsync(search.PageIndex, search.PageSize, whereCondition, x => x.Id, false);
             var pageModelDto = Mapper.Map<PageModelDto<UserDto>>(pagedModel);
 
-            pageModelDto.XData = await _deptAppService.GetSimpleListAsync();
-
             if (pageModelDto.RowsCount > 0)
             {
                 var deptIds = pageModelDto.Data.Where(d => d.DeptId != null).Select(d => d.DeptId).Distinct().ToList();
-                var depts = (await _deptAppService.GetAllFromCacheAsync())
+                var depts = (await _cacheService.GetAllDeptsFromCacheAsync())
                             .Where(x => deptIds.Contains(x.Id))
                             .Select(d => new { d.Id, d.FullName });
-                var roles = (await _roleAppService.GetAllFromCacheAsync())
+                var roles = (await _cacheService.GetAllRolesFromCacheAsync())
                             .Select(r => new { r.Id, r.Name });
 
                 foreach (var user in pageModelDto.Data)
@@ -120,15 +147,10 @@ namespace Adnc.Usr.Application.Services
                 }
             }
 
+            pageModelDto.XData = await _cacheService.GetDeptSimpleTreeListAsync();
+
             return pageModelDto;
         }
 
-        public async Task<AppSrvResult> SetRoleAsync(long id, UserSetRoleDto input)
-        {
-            var roleIdStr = input.RoleIds == null ? null : string.Join(",", input.RoleIds);
-            await _userRepository.UpdateAsync(new SysUser() { Id = id, RoleIds = roleIdStr }, UpdatingProps<SysUser>(x => x.RoleIds));
-
-            return AppSrvResult();
-        }
     }
 }

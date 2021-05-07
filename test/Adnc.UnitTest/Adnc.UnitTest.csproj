@@ -5,7 +5,7 @@
 		<IsPackable>false</IsPackable>
 		<RootNamespace>Adnc.UnitTest</RootNamespace>
 		<AssemblyName>Adnc.UnitTest</AssemblyName>
-		<Version>0.8.0</Version>
+		<Version>0.8.1</Version>
 		<Authors>Alpha.Yu</Authors>
 		<Product>Adnc</Product>
 		<RepositoryUrl>https://github.com/AlphaYu</RepositoryUrl>
@@ -40,6 +40,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\..\src\ServerApi\Infrastructures\Adnc.Infra.Caching\Adnc.Infra.Caching.csproj" />
 	  <ProjectReference Include="..\..\src\ServerApi\Infrastructures\Adnc.Infra.EfCore\Adnc.Infra.EfCore.csproj" />
 	  <ProjectReference Include="..\..\src\ServerApi\Services\Adnc.Cus\Adnc.Cus.Core\Adnc.Cus.Core.csproj" />
 	</ItemGroup>

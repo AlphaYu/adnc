@@ -6,7 +6,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Autofac;
 using Adnc.Infra.Consul;
-using Adnc.Infra.EventBus;
 using Adnc.Whse.Application.EventSubscribers;
 using Adnc.WebApi.Shared;
 using Microsoft.AspNetCore.Authorization;
@@ -31,7 +30,7 @@ namespace Adnc.Whse.WebApi
         {
             services.AddAdncServices<PermissionHandlerRemote>(_configuration, _environment, _serviceInfo, (registion) =>
             {
-                registion.AddEventBusSubscribers(EbConsts.CapTableNamePrefix, EbConsts.CapDefaultGroup, (srv) =>
+                registion.AddEventBusSubscribers("Cap", "adnc-cap", (srv) =>
                 {
                     srv.AddScoped<OrderCreatedEventSubscirber>();
                 });

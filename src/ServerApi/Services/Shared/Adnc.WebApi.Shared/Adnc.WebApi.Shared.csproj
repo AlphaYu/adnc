@@ -4,7 +4,7 @@
 		<TargetFramework>netcoreapp3.1</TargetFramework>
 		<RootNamespace>Adnc.WebApi.Shared</RootNamespace>
 		<AssemblyName>Adnc.WebApi.Shared</AssemblyName>
-		<Version>0.8.0</Version>
+		<Version>0.8.1</Version>
 		<Authors>Alpha.Yu</Authors>
 		<Product>Adnc</Product>
 		<RepositoryUrl>https://github.com/AlphaYu</RepositoryUrl>

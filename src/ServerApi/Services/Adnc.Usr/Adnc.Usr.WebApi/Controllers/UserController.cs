@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
@@ -19,29 +20,12 @@ namespace Adnc.Usr.WebApi.Controllers
     public class UserController : AdncControllerBase
     {
         private readonly IUserAppService _userService;
-        private readonly IRoleAppService _roleService;
         private readonly IUserContext _userContext;
 
-        public UserController(IUserAppService userService
-            , IRoleAppService roleAppService
-            , IUserContext userContext)
+        public UserController(IUserAppService userService, IUserContext userContext)
         {
             _userService = userService;
-            _roleService = roleAppService;
             _userContext = userContext;
-        }
-
-        /// <summary>
-        /// 获取用户列表
-        /// </summary>
-        /// <param name="search">查询条件</param>
-        /// <returns></returns>
-        [HttpGet()]
-        [Permission("userList")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<PageModelDto<UserDto>>> GetPagedAsync([FromQuery] UserSearchPagedDto search)
-        {
-            return Result(await _userService.GetPagedAsync(search));
         }
 
         /// <summary>
@@ -123,28 +107,35 @@ namespace Adnc.Usr.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult> ChangeStatus([FromBody] UserChangeStatusDto input)
         {
-            return Result(await _userService.ChangeStatusAsync(input));
+            return Result(await _userService.ChangeStatusAsync(input.UserIds, input.Status));
         }
 
         /// <summary>
-        /// 获取当前用户权限
+        /// 获取当前用户是否拥有指定权限
         /// </summary>
         /// <param name="id">用户id</param>
         /// <param name="permissions"></param>
         /// <returns></returns>
         [HttpGet("{id}/permissions")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<List<string>>> GetCurrenUserPermissions([FromRoute] long id, [FromQuery] string[] permissions)
+        public async Task<ActionResult<List<string>>> GetCurrenUserPermissions([FromRoute] long id, [FromQuery] IEnumerable<string> permissions)
         {
             //throw new System.Exception("测试");
+           var result = await _userService.GetPermissionsAsync(_userContext.Id, permissions);
+            return result?.Any() == true ? result : new List<string>();
+        }
 
-            var inputDto = new RolePermissionsCheckerDto()
-            {
-                RoleIds = _userContext.RoleIds
-                ,
-                Permissions = permissions
-            };
-            return Result(await _roleService.GetPermissionsAsync(inputDto));
+        /// <summary>
+        /// 获取用户列表
+        /// </summary>
+        /// <param name="search">查询条件</param>
+        /// <returns></returns>
+        [HttpGet()]
+        [Permission("userList")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<PageModelDto<UserDto>>> GetPagedAsync([FromQuery] UserSearchPagedDto search)
+        {
+            return await _userService.GetPagedAsync(search);
         }
     }
 }

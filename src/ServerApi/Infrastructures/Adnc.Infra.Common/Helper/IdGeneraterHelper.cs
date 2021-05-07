@@ -1,41 +1,21 @@
 ﻿using System;
-using Adnc.Infra.Common.Extensions;
+using Adnc.Infra.Common.Helper.IdGeneraterInternal;
 
 namespace Adnc.Infra.Common.Helper
 {
-    public class IdGenerater
+    public static class IdGenerater
     {
-        private static int _incr = 0;
-        private static readonly object _syncObject = new object();
-        public static long DatacenterId { get; private set; } = Environment.GetEnvironmentVariable("DatacenterId").ToLong() ?? 1;
-        public static long WorkerId { get; private set; } = Environment.GetEnvironmentVariable("WorkerId").ToLong() ?? 1;
-
         /// <summary>
-        /// 获取唯一Id(不支持多数据中心，每秒并发最大1000)
+        /// 获取唯一Id，默认支持64个节点，每毫秒下的序列数6位。
+        /// 在默认配置下，ID可用 71000 年不重复
+        /// 在默认配置下，70年才到 js Number Max 值
+        /// 默认情况下，500毫秒可以生成10W个号码。
+        /// 如果需要提高速度，可以修改SeqBitLength长度。当SeqBitLength =10 ,100W个id约800毫秒。
         /// </summary>
         /// <returns></returns>
         public static long GetNextId()
         {
-            var idStr = string.Empty;
-            lock (_syncObject)
-            {
-                _incr = _incr + 1;
-                if (_incr > 999)
-                    _incr = 0;
-                idStr = string.Concat(DateTime.Now.GetTotalSeconds().ToLong(), _incr.ToString().PadLeft(3, '0'));
-            }
-            return idStr.ToLong().Value;
-        }
-
-        /// <summary>
-        /// 获取唯一Id(支持高并发，多数据中心)
-        /// </summary>
-        /// <param name="datacenterId">数据中心Id</param>
-        /// <param name="workerId">机器Id</param>
-        /// <returns></returns>
-        public static long GetNextId(long datacenterId, long workerId)
-        {
-            return Snowflake.GetInstance(datacenterId, workerId).NextId();
+            return YitterSnowFlake.Instance.NextId();
         }
     }
 }
