@@ -10,7 +10,7 @@
 	<AssemblyName>Adnc.Usr.WebApi</AssemblyName>
 	<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
 	<DockerfileContext>..\..\..</DockerfileContext>
-	<Version>0.8.0</Version>
+	<Version>0.8.1</Version>
     <Authors>Alpha.Yu</Authors>
 	<Product>Adnc</Product>
 	<Description>用户中心服务</Description>

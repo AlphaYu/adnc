@@ -20,7 +20,6 @@ namespace Adnc.Application.Shared.Services
     {
         private readonly Lazy<ICacheProvider> _cache;
         private readonly Lazy<IRedisProvider> _redisProvider;
-        private static int _workerId = 0;
 
         public AbstractCacheService(Lazy<ICacheProvider> cache, Lazy<IRedisProvider> redisProvider)
         {

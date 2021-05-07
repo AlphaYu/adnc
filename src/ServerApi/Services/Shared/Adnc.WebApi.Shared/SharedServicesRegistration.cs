@@ -157,6 +157,7 @@ namespace Adnc.WebApi.Shared
                 {
                     mySqlOptions.ServerVersion(new ServerVersion(new Version(10, 5, 4), ServerType.MariaDb));
                     mySqlOptions.MinBatchSize(2);
+                    mySqlOptions.CommandTimeout(10);
                     mySqlOptions.MigrationsAssembly(_serviceInfo.AssemblyName.Replace("WebApi", "Migrations"));
                     mySqlOptions.CharSet(CharSet.Utf8Mb4);
                 });
