@@ -471,6 +471,25 @@ namespace Adnc.UnitTest.EFCore
             Assert.Null(financeFromDb);
         }
 
+        [Fact]
+        public async Task TestReutrnResult()
+        {
+            var result = await _customerRsp.FetchAsync(x => x.Id == 999);
+            Assert.Null(result);
+
+            result = await _customerRsp.FindAsync(999);
+            Assert.Null(result);
+
+            result = await _customerRsp.Where(x => x.Id == 999).FirstOrDefaultAsync();
+            Assert.Null(result);
+
+           var  dapperResult = await _customerRsp.QueryAsync<Customer>("select * from Customer where id=999");
+            Assert.Null(dapperResult);
+
+            dynamic dapperResult2 = await _customerRsp.QueryAsync("select * from Customer where id=999");
+            Assert.Null(dapperResult2);
+        }
+
         /// <summary>
         /// 生成测试数据
         /// </summary>

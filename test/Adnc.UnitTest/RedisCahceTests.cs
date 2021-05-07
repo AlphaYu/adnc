@@ -6,6 +6,7 @@ using Xunit.Abstractions;
 using Adnc.Infra.Caching;
 using Adnc.UnitTest.Fixtures;
 using Adnc.Infra.Common.Extensions;
+using System.Threading.Tasks;
 
 namespace Adnc.UnitTest.Cache
 {
@@ -37,6 +38,9 @@ namespace Adnc.UnitTest.Cache
             Assert.Equal(value.ToString(), actual);
         }
 
+        /// <summary>
+        /// 测试lua脚本
+        /// </summary>
         [Fact]
         public async void TestScriptEvaluateStoreSet()
         {
@@ -61,25 +65,70 @@ namespace Adnc.UnitTest.Cache
             Assert.True(workerId >= 0);
         }
 
+        /// <summary>
+        /// 测试lua脚本
+        /// </summary>
+        [Fact]
+        public void TestScriptEvaluateString()
+        {
+            var milliseconds = 1000*60*1000;
+            var cacheKey = nameof(TestScriptEvaluateString).ToLower();
+            var value = "abc";
+
+            _redisProvider.StringSet(cacheKey, value, TimeSpan.FromSeconds(1000));
+
+            var script = @"local val = redis.call('GET', @key)
+                                    if val==@value then
+                                        redis.call('PEXPIRE', @key, @milliseconds)
+                                        return 1
+                                    end
+                                    return 0";
+            var parameters = new { key = cacheKey, value, milliseconds };
+            var luaResult = _redisProvider.ScriptEvaluateAsync(script, parameters).GetAwaiter().GetResult();
+            var result = (int)luaResult;
+
+            _output.WriteLine(result.ToString());
+            Assert.True(result == 1);
+        }
+
+        /// <summary>
+        /// 测试分布式锁
+        /// </summary>
         [Fact]
         public async void TestDistributedLocker()
         {
-            var cacheValue = new Random().Next(1000, 9999).ToString();
-            var cacheKey = nameof(TestDistributedLocker).ToLower()+":"+ cacheValue;
+            //autodelay = false
+            var cacheKey = nameof(TestDistributedLocker).ToLower()+"-"+ new Random().Next(10000, 20000).ToString();
 
-            var flagtrue = await _distributedLocker.LockAsync(cacheKey, cacheValue, TimeSpan.FromSeconds(20));
-            Assert.True(flagtrue);
+            var flagtrue = await _distributedLocker.LockAsync(cacheKey, 20, false);
+            Assert.True(flagtrue.Success);
 
-            var flagfalse = await _distributedLocker.LockAsync(cacheKey, cacheValue,TimeSpan.FromSeconds(20));
-            Assert.False(flagfalse);
+            var flagfalse = await _distributedLocker.LockAsync(cacheKey,20, false);
+            Assert.False(flagfalse.Success);
 
             var unLockResult = await _distributedLocker.SafedUnLockAsync(cacheKey, "111");
             Assert.False(unLockResult);
 
-            flagfalse = await _distributedLocker.LockAsync(cacheKey, cacheValue, TimeSpan.FromSeconds(20));
-            Assert.False(flagfalse);
+            flagfalse = await _distributedLocker.LockAsync(cacheKey,20, false);
+            Assert.False(flagfalse.Success);
 
-            unLockResult = await _distributedLocker.SafedUnLockAsync(cacheKey, cacheValue);
+            unLockResult = await _distributedLocker.SafedUnLockAsync(cacheKey, flagtrue.LockValue);
+            Assert.True(unLockResult);
+
+            //autodelay = true
+            cacheKey = nameof(TestDistributedLocker).ToLower() + "-" + new Random().Next(20001, 30000).ToString();
+            flagtrue = await _distributedLocker.LockAsync(cacheKey, 3);
+            Assert.True(flagtrue.Success);
+
+            await Task.Delay(1000 * 10); 
+
+            flagfalse = await _distributedLocker.LockAsync(cacheKey, 20);
+            Assert.False(flagfalse.Success);
+
+            unLockResult = await _distributedLocker.SafedUnLockAsync(cacheKey, "111");
+            Assert.False(unLockResult);
+
+            unLockResult = await _distributedLocker.SafedUnLockAsync(cacheKey, flagtrue.LockValue);
             Assert.True(unLockResult);
         }
 
@@ -124,6 +173,28 @@ namespace Adnc.UnitTest.Cache
             returnReulst = _redisProvider.ZRank<long>(cacheKey, 1);
             _output.WriteLine(returnReulst.ToString());
             Assert.True(returnReulst >= 0);
+        }
+
+        /// <summary>
+        /// 测试穿透
+        /// </summary>
+        [Fact]
+        public void TestPenetrate()
+        {
+            var cacheKey = nameof(TestPenetrate).ToLower();
+            var cacheValue = _cache.Get<object>(cacheKey, () =>
+             {
+                 Assert.True(false);
+                 return null;
+             }, TimeSpan.FromSeconds(5));
+
+            cacheValue = _cache.Get<object>(cacheKey, () =>
+            {
+                Assert.True(false);
+                return null;
+            }, TimeSpan.FromSeconds(5));
+
+
         }
     }
 }
