@@ -15,7 +15,8 @@ namespace Adnc.UnitTest.Helper
         public IdGeneraterTests(ITestOutputHelper output)
         {
             _output = output;
-            YitterSnowFlake.CurrentWorkerId = 63;
+            if (YitterSnowFlake.CurrentWorkerId < 0)
+                YitterSnowFlake.CurrentWorkerId = 63;
         }
 
         /// <summary>

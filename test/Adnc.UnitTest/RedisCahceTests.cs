@@ -178,23 +178,23 @@ namespace Adnc.UnitTest.Cache
         /// <summary>
         /// 测试穿透
         /// </summary>
-        [Fact]
-        public void TestPenetrate()
-        {
-            var cacheKey = nameof(TestPenetrate).ToLower();
-            var cacheValue = _cache.Get<object>(cacheKey, () =>
-             {
-                 Assert.True(false);
-                 return null;
-             }, TimeSpan.FromSeconds(5));
+        //[Fact]
+        //public void TestPenetrate()
+        //{
+        //    var cacheKey = nameof(TestPenetrate).ToLower();
+        //    var cacheValue = _cache.Get<object>(cacheKey, () =>
+        //     {
+        //         Assert.True(false);
+        //         return null;
+        //     }, TimeSpan.FromSeconds(5));
 
-            cacheValue = _cache.Get<object>(cacheKey, () =>
-            {
-                Assert.True(false);
-                return null;
-            }, TimeSpan.FromSeconds(5));
+        //    cacheValue = _cache.Get<object>(cacheKey, () =>
+        //    {
+        //        Assert.True(false);
+        //        return null;
+        //    }, TimeSpan.FromSeconds(5));
 
 
-        }
+        //}
     }
 }
