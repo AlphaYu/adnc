@@ -45,10 +45,10 @@ namespace Adnc.Usr.WebApi.Helper
             var claims = new Claim[]
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Account),
-                //new Claim(ClaimTypes.Name, user.Name),
-                //new Claim(JwtRegisteredClaimNames.Email, user.Email),
                 new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+                new Claim(ClaimTypes.Name, user.Name),
                 //new Claim(ClaimTypes.Role, user.RoleIds??"0")
+                //new Claim(JwtRegisteredClaimNames.Email, user.Email),
             };
             return CreateToken(jwtConfig, claims, TokenType.AccessToken);
         }
