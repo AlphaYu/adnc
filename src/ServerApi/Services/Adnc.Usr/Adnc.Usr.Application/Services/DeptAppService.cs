@@ -8,6 +8,7 @@ using Adnc.Usr.Core.Entities;
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Infra.Common.Helper;
 using Adnc.Application.Shared.Services;
+using Adnc.Usr.Application.Caching;
 using Adnc.Usr.Application.Contracts.Services;
 
 namespace Adnc.Usr.Application.Services

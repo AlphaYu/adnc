@@ -12,6 +12,7 @@ using Adnc.Core.Shared.IRepositories;
 using Adnc.Application.Shared.Services;
 using Adnc.Maint.Application.Contracts.Dtos;
 using Adnc.Maint.Application.Contracts.Services;
+using Adnc.Maint.Application.Services.Caching;
 
 namespace Adnc.Maint.Application.Services
 {

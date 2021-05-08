@@ -12,6 +12,7 @@ using Adnc.Application.Shared.Dtos;
 using Adnc.Application.Shared.Services;
 using Adnc.Usr.Application.Contracts.Dtos;
 using Adnc.Usr.Application.Contracts.Services;
+using Adnc.Usr.Application.Caching;
 
 namespace Adnc.Usr.Application.Services
 {

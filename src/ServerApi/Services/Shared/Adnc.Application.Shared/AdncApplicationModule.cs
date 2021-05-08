@@ -15,6 +15,7 @@ using Adnc.Core.Shared.Interceptors;
 using Adnc.Core.Shared.Entities;
 using Adnc.Core.Shared;
 using Adnc.Infra.Caching;
+using Adnc.Application.Shared.Caching;
 using Adnc.Application.Shared.IdGeneraterWorkerNode;
 
 namespace Adnc.Application.Shared

@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Adnc.Application.Shared.Services;
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Infra.Caching;
 using Adnc.Maint.Core.Entities;
 using Adnc.Maint.Application.Contracts.Dtos;
 using Adnc.Maint.Application.Contracts.Consts;
+using Adnc.Application.Shared.Caching;
 
-namespace Adnc.Maint.Application.Services
+namespace Adnc.Maint.Application.Services.Caching
 {
     public class CacheService : AbstractCacheService
     {

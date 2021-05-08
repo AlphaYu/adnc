@@ -6,22 +6,19 @@ using System.Threading.Tasks;
 using Adnc.Infra.Caching;
 using Adnc.Infra.Caching.Core;
 using Adnc.Infra.Mapper;
-using Adnc.Infra.Common.Extensions;
 using Adnc.Application.Shared.Consts;
 
-namespace Adnc.Application.Shared.Services
+namespace Adnc.Application.Shared.Caching
 {
-    public interface ICacheService
-    {
-        IObjectMapper Mapper { get; set; }
-    }
+    public interface ICacheService { }
 
     public abstract class AbstractCacheService : ICacheService
     {
         private readonly Lazy<ICacheProvider> _cache;
         private readonly Lazy<IRedisProvider> _redisProvider;
 
-        public AbstractCacheService(Lazy<ICacheProvider> cache, Lazy<IRedisProvider> redisProvider)
+        public AbstractCacheService(Lazy<ICacheProvider> cache
+            , Lazy<IRedisProvider> redisProvider)
         {
             _cache = cache;
             _redisProvider = redisProvider;
@@ -36,7 +33,7 @@ namespace Adnc.Application.Shared.Services
             return $"{CachingConstValue.PreRemoveKey}{SharedCachingConsts.LinkChar}{string.Join(",", cacheKeys).GetHashCode()}";
         }
 
-        public string ConcatCacheKey(params string[] items)
+        public string ConcatCacheKey(params object[] items)
         {
             if (items == null || items.Length == 0)
                 return string.Empty;
