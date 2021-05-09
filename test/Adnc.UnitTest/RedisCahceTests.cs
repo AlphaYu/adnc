@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Collections.Generic;
 using Autofac;
 using Xunit;
@@ -6,7 +7,6 @@ using Xunit.Abstractions;
 using Adnc.Infra.Caching;
 using Adnc.UnitTest.Fixtures;
 using Adnc.Infra.Common.Extensions;
-using System.Threading.Tasks;
 
 namespace Adnc.UnitTest.Cache
 {
@@ -59,7 +59,7 @@ namespace Adnc.UnitTest.Cache
                                     return workerids[1]";
             var parameters = new { key = cacheKey, start = 0, stop = 0, score = DateTime.Now.GetTotalMicroseconds() };
 
-            var luaResult = (byte[]) await _redisProvider.ScriptEvaluateAsync(scirpt, parameters);
+            var luaResult = (byte[])await _redisProvider.ScriptEvaluateAsync(scirpt, parameters);
             var workerId = _cache.Serializer.Deserialize<long>(luaResult);
             _output.WriteLine(workerId.ToString());
             Assert.True(workerId >= 0);
@@ -71,7 +71,7 @@ namespace Adnc.UnitTest.Cache
         [Fact]
         public void TestScriptEvaluateString()
         {
-            var milliseconds = 1000*60*1000;
+            var milliseconds = 1000 * 60 * 1000;
             var cacheKey = nameof(TestScriptEvaluateString).ToLower();
             var value = "abc";
 
@@ -98,18 +98,18 @@ namespace Adnc.UnitTest.Cache
         public async void TestDistributedLocker()
         {
             //autodelay = false
-            var cacheKey = nameof(TestDistributedLocker).ToLower()+"-"+ new Random().Next(10000, 20000).ToString();
+            var cacheKey = nameof(TestDistributedLocker).ToLower() + "-" + new Random().Next(10000, 20000).ToString();
 
             var flagtrue = await _distributedLocker.LockAsync(cacheKey, 20, false);
             Assert.True(flagtrue.Success);
 
-            var flagfalse = await _distributedLocker.LockAsync(cacheKey,20, false);
+            var flagfalse = await _distributedLocker.LockAsync(cacheKey, 20, false);
             Assert.False(flagfalse.Success);
 
             var unLockResult = await _distributedLocker.SafedUnLockAsync(cacheKey, "111");
             Assert.False(unLockResult);
 
-            flagfalse = await _distributedLocker.LockAsync(cacheKey,20, false);
+            flagfalse = await _distributedLocker.LockAsync(cacheKey, 20, false);
             Assert.False(flagfalse.Success);
 
             unLockResult = await _distributedLocker.SafedUnLockAsync(cacheKey, flagtrue.LockValue);
@@ -120,7 +120,7 @@ namespace Adnc.UnitTest.Cache
             flagtrue = await _distributedLocker.LockAsync(cacheKey, 3);
             Assert.True(flagtrue.Success);
 
-            await Task.Delay(1000 * 10); 
+            await Task.Delay(1000 * 10);
 
             flagfalse = await _distributedLocker.LockAsync(cacheKey, 20);
             Assert.False(flagfalse.Success);
@@ -173,6 +173,37 @@ namespace Adnc.UnitTest.Cache
             returnReulst = _redisProvider.ZRank<long>(cacheKey, 1);
             _output.WriteLine(returnReulst.ToString());
             Assert.True(returnReulst >= 0);
+        }
+
+        [Fact]
+        public  async Task TestKeyExpire()
+        {
+            var cacheKey1 = nameof(TestKeyExpire).ToLower() + ":" + DateTime.Now.Ticks;
+            var cacheKey2 = nameof(TestKeyExpire).ToLower() + ":" + DateTime.Now.Ticks;
+            var cacheKey3 = nameof(TestKeyExpire).ToLower() + ":" + DateTime.Now.Ticks;
+            var cacheKey4 = "cacheKey4";
+
+            await _cache.SetAsync(cacheKey1, nameof(cacheKey1), TimeSpan.FromSeconds(1000));
+            await _cache.SetAsync(cacheKey2, nameof(cacheKey2), TimeSpan.FromSeconds(1000));
+            await _cache.SetAsync(cacheKey3, nameof(cacheKey3), TimeSpan.FromSeconds(1000));
+
+            var seconds =  await _redisProvider.TTLAsync(cacheKey1);
+            Assert.True(seconds > 990);
+
+            await _cache.KeyExpireAsync(new string[] { cacheKey1, cacheKey2, cacheKey3, cacheKey4 }, 100);
+            var seconds1 = await _redisProvider.TTLAsync(cacheKey1);
+            var seconds2 = await _redisProvider.TTLAsync(cacheKey2);
+            var seconds3 = await _redisProvider.TTLAsync(cacheKey3);
+
+            Assert.True(seconds1 <=100 && seconds1>90);
+            Assert.True(seconds2 <= 100 && seconds1 > 90);
+            Assert.True(seconds3 <= 100 && seconds1 > 90);
+
+            var exists = await _cache.ExistsAsync(cacheKey4);
+            Assert.False(exists);
+
+            var value =await  _cache.GetAsync<string>(cacheKey3);
+            Assert.Equal("cacheKey3", value.Value);
         }
 
         /// <summary>
