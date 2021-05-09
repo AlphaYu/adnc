@@ -13,10 +13,10 @@ namespace Adnc.Application.Shared.Consts
         public const int OneWeek = 7 * 24 * 60 * 60;
         public const int OneDay = 24 * 60 * 60;
 
-        public const string TopicName = "adnc_synchronize_topic";
-        public const string LocalCaching = "l1";
-        public const string RemoteCaching = "r1";
-        public const string HybridCaching = "h1";
+        //public const string TopicName = "adnc_synchronize_topic";
+        //public const string LocalCaching = "l1";
+        //public const string RemoteCaching = "r1";
+        //public const string HybridCaching = "h1";
 
         public const string WorkerIdIncrCacheKey = "adnc:{0}:workid:incr";
         public const string WorkerIdSortedSetCacheKey = "adnc:{0}:workid:sortedset";

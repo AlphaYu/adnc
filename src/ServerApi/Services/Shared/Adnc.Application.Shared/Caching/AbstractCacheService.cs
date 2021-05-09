@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Polly;
 using Adnc.Infra.Caching;
 using Adnc.Infra.Caching.Core;
 using Adnc.Infra.Mapper;
@@ -30,7 +31,8 @@ namespace Adnc.Application.Shared.Caching
 
         public string GetPreRemoveKey(IEnumerable<string> cacheKeys)
         {
-            return $"{CachingConstValue.PreRemoveKey}{SharedCachingConsts.LinkChar}{string.Join(",", cacheKeys).GetHashCode()}";
+            var hashCode = string.Join(",", cacheKeys).GetHashCode();
+            return $"{CachingConstValue.PreRemoveKey}{SharedCachingConsts.LinkChar}{hashCode}";
         }
 
         public string ConcatCacheKey(params object[] items)
@@ -53,13 +55,19 @@ namespace Adnc.Application.Shared.Caching
 
         public async Task RemoveCachesAsync(Func<Task> dataOperater, params string[] cacheKeys)
         {
+            
             var preRemoveKey = GetPreRemoveKey(cacheKeys);
-            await _cache.Value.SetAsync(preRemoveKey, cacheKeys, TimeSpan.FromSeconds(SharedCachingConsts.OneDay));
+            var needRemovedKeys = cacheKeys.Append(preRemoveKey).ToArray();
 
-            await dataOperater();
+            await _cache.Value.SetAsync(preRemoveKey, needRemovedKeys, TimeSpan.FromSeconds(SharedCachingConsts.OneDay));
 
-            var needRemovedKeys = cacheKeys.Append(preRemoveKey);
-            await _cache.Value.RemoveAllAsync(needRemovedKeys);
+
+            var timeoutPolicy = Policy.TimeoutAsync(30);
+            await timeoutPolicy.ExecuteAsync(async () =>
+            {
+                await dataOperater();
+                await _cache.Value.RemoveAllAsync(needRemovedKeys);
+            });
         }
     }
 }

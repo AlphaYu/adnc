@@ -170,5 +170,13 @@ namespace Adnc.Infra.Caching
         /// <param name="cacheKey">Cache key.</param>
         /// <param name="type">Object Type.</param>
         Task<object> GetAsync(string cacheKey, Type type);
+
+        /// <summary>
+        /// Set the keys  TTL
+        /// </summary>
+        /// <param name="cacheKeys">Cache keys.</param>
+        /// <param name="seconds">Expiration .</param>
+        /// <returns></returns>
+        Task KeyExpireAsync(IEnumerable<string> cacheKeys, int seconds);
     }
 }

@@ -369,5 +369,17 @@ namespace Adnc.Infra.Caching.StackExchange
             var timeSpan = await _redisDb.KeyTimeToLiveAsync(cacheKey);
             return timeSpan.HasValue ? timeSpan.Value : TimeSpan.Zero;
         }
+
+        /// <summary>
+        /// Get the expiration of cache key
+        /// </summary>
+        /// <param name="cacheKey">cache key</param>
+        /// <returns>expiration</returns>
+        protected override async Task BaseKeyExpireAsync(IEnumerable<string> cacheKeys, int seconds)
+        {
+            ArgumentCheck.NotNullAndCountGTZero(cacheKeys, nameof(cacheKeys));
+
+            await _redisDb.KeyExpireAsync(cacheKeys, seconds);
+        }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Adnc.Infra.Caching.Core;
@@ -98,6 +100,18 @@ namespace StackExchange.Redis
             var prepared = LuaScript.Prepare(script);
             var result = (int)await redisDb.ScriptEvaluateAsync(prepared, parameters);
             return result == 1;
+        }
+
+        public static async Task KeyExpireAsync(this IDatabase redisDb, IEnumerable<string> cacheKeys, int seconds)
+        {
+            ArgumentCheck.NotNullAndCountGTZero(cacheKeys, nameof(cacheKeys));
+
+            var script = @"for i, inkey in ipairs(KEYS) do
+                                       redis.call('EXPIRE',inkey,ARGV[1]) 
+                                    end ";
+            var keys = Array.ConvertAll(cacheKeys.ToArray(), item => (RedisKey)item);
+            var values = new RedisValue[] { seconds };
+            var result = await redisDb.ScriptEvaluateAsync(script, keys, values);
         }
 
         internal static void Delay(IDatabase redisDb, string key, string value, int milliseconds)

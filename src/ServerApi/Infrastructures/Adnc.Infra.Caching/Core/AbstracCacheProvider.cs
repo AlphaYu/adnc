@@ -55,6 +55,7 @@ namespace Adnc.Infra.Caching.Core
         protected abstract bool BaseTrySet<T>(string cacheKey, T cacheValue, TimeSpan expiration);
         protected abstract Task<bool> BaseTrySetAsync<T>(string cacheKey, T cacheValue, TimeSpan expiration);
         protected abstract TimeSpan BaseGetExpiration(string cacheKey);
+        protected abstract Task  BaseKeyExpireAsync(IEnumerable<string> cacheKeys, int seconds);
         protected abstract Task<TimeSpan> BaseGetExpirationAsync(string cacheKey);
 
         public bool Exists(string cacheKey)
@@ -726,6 +727,32 @@ namespace Adnc.Infra.Caching.Core
         public async Task<TimeSpan> GetExpirationAsync(string cacheKey)
         {
             return await BaseGetExpirationAsync(cacheKey);
+        }
+
+        public async Task KeyExpireAsync(IEnumerable<string> cacheKeys, int seconds)
+        {
+            var operationId = s_diagnosticListener.WriteSetCacheBefore(new BeforeSetRequestEventData(CachingProviderType.ToString(), Name, nameof(TrySetAsync), new Dictionary<string, object> { { "cacheKeys", cacheKeys } }, TimeSpan.FromSeconds(seconds)));
+            Exception e = null;
+            try
+            {
+                await BaseKeyExpireAsync(cacheKeys, seconds);
+            }
+            catch (Exception ex)
+            {
+                e = ex;
+                throw;
+            }
+            finally
+            {
+                if (e != null)
+                {
+                    s_diagnosticListener.WriteSetCacheError(operationId, e);
+                }
+                else
+                {
+                    s_diagnosticListener.WriteSetCacheAfter(operationId);
+                }
+            }
         }
     }
 }
