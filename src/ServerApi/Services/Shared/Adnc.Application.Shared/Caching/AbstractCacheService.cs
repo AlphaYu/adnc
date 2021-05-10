@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections.Generic;
@@ -55,18 +54,12 @@ namespace Adnc.Application.Shared.Caching
 
         public async Task RemoveCachesAsync(Func<Task> dataOperater, params string[] cacheKeys)
         {
-            
-            var preRemoveKey = GetPreRemoveKey(cacheKeys);
-            var needRemovedKeys = cacheKeys.Append(preRemoveKey).ToArray();
-
-            await _cache.Value.SetAsync(preRemoveKey, needRemovedKeys, TimeSpan.FromSeconds(SharedCachingConsts.OneDay));
-
-
-            var timeoutPolicy = Policy.TimeoutAsync(30);
+            await _cache.Value.KeyExpireAsync(cacheKeys, CachingConstValue.PollyTimeout + 1);
+            var timeoutPolicy = Policy.TimeoutAsync(CachingConstValue.PollyTimeout);
             await timeoutPolicy.ExecuteAsync(async () =>
             {
                 await dataOperater();
-                await _cache.Value.RemoveAllAsync(needRemovedKeys);
+                await _cache.Value.RemoveAllAsync(cacheKeys);
             });
         }
     }
