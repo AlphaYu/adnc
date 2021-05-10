@@ -54,13 +54,24 @@ namespace Adnc.Application.Shared.Caching
 
         public async Task RemoveCachesAsync(Func<Task> dataOperater, params string[] cacheKeys)
         {
-            await _cache.Value.KeyExpireAsync(cacheKeys, CachingConstValue.PollyTimeout + 1);
-            var timeoutPolicy = Policy.TimeoutAsync(CachingConstValue.PollyTimeout);
-            await timeoutPolicy.ExecuteAsync(async () =>
+            await _cache.Value.KeyExpireAsync(cacheKeys, CachingConstValue.PollyTimeout);
+            var expireDt = DateTime.Now.AddSeconds(CachingConstValue.PollyTimeout);
+
+            var timePolly = Policy.TimeoutAsync(CachingConstValue.PollyTimeout - 1);
+            await timePolly.ExecuteAsync(async () =>
             {
                 await dataOperater();
-                await _cache.Value.RemoveAllAsync(cacheKeys);
             });
+
+            try
+            {
+                await _cache.Value.RemoveAllAsync(cacheKeys);
+            }
+            catch (Exception ex)
+            {
+                LocalVariables.Instance.Queue.Enqueue(new LocalVariables.Model(cacheKeys, expireDt));
+                throw new Exception(ex.Message, ex);
+            }
         }
     }
 }

@@ -101,6 +101,10 @@ namespace Adnc.Application.Shared
                         .WithParameter("serviceName", _appModuleName.ToLower())
                         .AsImplementedInterfaces()
                         .SingleInstance();
+            //注册caching补偿服务
+            builder.RegisterType<CachingHostedService>()
+                        .AsImplementedInterfaces()
+                        .SingleInstance();
         }
 
         private void LoadDepends(ContainerBuilder builder)
