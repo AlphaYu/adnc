@@ -1,4 +1,5 @@
 ﻿using Adnc.Core.Shared.Entities.Config;
+using Adnc.Core.Shared.EntityConsts.Usr;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -10,14 +11,14 @@ namespace Adnc.Usr.Core.Entities.Config
         {
             base.Configure(builder);
 
-            builder.Property(x => x.Code).IsRequired().HasMaxLength(16);
-            builder.Property(x => x.PCode).HasMaxLength(16);
-            builder.Property(x => x.PCodes).HasMaxLength(128);
-            builder.Property(x => x.Component).HasMaxLength(64);
-            builder.Property(x => x.Icon).HasMaxLength(16);
-            builder.Property(x => x.Name).IsRequired().HasMaxLength(16);
-            builder.Property(x => x.Tips).HasMaxLength(32);
-            builder.Property(x => x.Url).HasMaxLength(64);
+            builder.Property(x => x.Code).IsRequired().HasMaxLength(MenuConsts.Code_MaxLength);
+            builder.Property(x => x.PCode).HasMaxLength(MenuConsts.PCode_MaxLength);
+            builder.Property(x => x.PCodes).HasMaxLength(MenuConsts.PCodes_MaxLength);
+            builder.Property(x => x.Component).HasMaxLength(MenuConsts.Component_MaxLength);
+            builder.Property(x => x.Icon).HasMaxLength(MenuConsts.Icon_MaxLength);
+            builder.Property(x => x.Name).IsRequired().HasMaxLength(MenuConsts.Name_MaxLength);
+            builder.Property(x => x.Tips).HasMaxLength(MenuConsts.Tips_MaxLength);
+            builder.Property(x => x.Url).HasMaxLength(MenuConsts.Url_MaxLength);
 
             builder.HasMany(d => d.Relations)
                    .WithOne(m => m.Menu)

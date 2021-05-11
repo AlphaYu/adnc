@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Adnc.Core.Shared.Entities.Config;
+using Adnc.Core.Shared.EntityConsts.Whse;
 
 namespace Adnc.Whse.Core.Entities.Config
 {
@@ -12,10 +13,10 @@ namespace Adnc.Whse.Core.Entities.Config
 
             builder.Property(x => x.Name)
                    .IsRequired()
-                   .HasMaxLength(64);
+                   .HasMaxLength(ProductConts.Name_MaxLength);
 
             builder.Property(x => x.Describe)
-                   .HasMaxLength(128);
+                   .HasMaxLength(ProductConts.Describe_MaxLength);
 
             builder.Property(x => x.Price)
                    .IsRequired()
@@ -23,18 +24,18 @@ namespace Adnc.Whse.Core.Entities.Config
 
             builder.Property(x => x.Sku)
                    .IsRequired()
-                   .HasMaxLength(32);
+                   .HasMaxLength(ProductConts.Sku_MaxLength);
 
             builder.OwnsOne(x => x.Status, y =>
             {
                 y.Property(x => x.Code).IsRequired().HasColumnName("StatusCode");
-                y.Property(x => x.ChangesReason).HasColumnName("StatusChangesReason").HasMaxLength(32);
+                y.Property(x => x.ChangesReason).HasColumnName("StatusChangesReason").HasMaxLength(ProductConts.ChangesReason_MaxLength);
             });
 
 
             builder.Property(x => x.Unit)
                    .IsRequired()
-                   .HasMaxLength(4);
+                   .HasMaxLength(ProductConts.Unit_MaxLength);
         }
     }
 }

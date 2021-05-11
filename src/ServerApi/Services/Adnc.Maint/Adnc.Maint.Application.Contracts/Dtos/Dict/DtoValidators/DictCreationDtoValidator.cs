@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Adnc.Maint.Application.Contracts.Dtos;
+using Adnc.Core.Shared.EntityConsts.Maint;
 
 namespace Adnc.Maint.Application.Contracts.DtoValidators
 {
@@ -7,8 +8,8 @@ namespace Adnc.Maint.Application.Contracts.DtoValidators
     {
         public DictCreationDtoValidator()
         {
-            RuleFor(x => x.Name).NotEmpty().MaximumLength(16);
-            RuleFor(x => x.Value).MaximumLength(64);
+            RuleFor(x => x.Name).NotEmpty().MaximumLength(DictConsts.Name_MaxLength);
+            RuleFor(x => x.Value).MaximumLength(DictConsts.Value_MaxLength);
         }
     }
 }

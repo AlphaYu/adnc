@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Adnc.Core.Shared.Entities.Config;
+using Adnc.Core.Shared.EntityConsts.Ord;
 
 namespace Adnc.Ord.Core.Entities.Config
 {
@@ -15,7 +16,7 @@ namespace Adnc.Ord.Core.Entities.Config
             builder.OwnsOne(x => x.Product, y =>
              {
                  y.Property(y => y.Id).IsRequired().HasColumnName("ProductId");
-                 y.Property(y => y.Name).IsRequired().HasMaxLength(64).HasColumnName("ProductName");
+                 y.Property(y => y.Name).IsRequired().HasMaxLength(OrderItemConsts.Name_MaxLength).HasColumnName("ProductName");
                  y.Property(y => y.Price).IsRequired().HasColumnName("ProductPrice").HasColumnType("decimal(18,4)");
              });
 
