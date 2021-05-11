@@ -44,6 +44,7 @@ using Adnc.Infra.Mongo.Configuration;
 using Adnc.Application.Shared.RpcServices;
 using Adnc.Infra.Common.Helper;
 using Adnc.WebApi.Shared.Extensions;
+using Adnc.Infra.EfCore.Interceptors;
 
 namespace Adnc.WebApi.Shared
 {
@@ -164,6 +165,7 @@ namespace Adnc.WebApi.Shared
 
                 if (_environment.IsDevelopment())
                 {
+                    options.AddInterceptors(new CustomCommandInterceptor());
                     options.EnableSensitiveDataLogging();
                     options.EnableDetailedErrors();
                 }

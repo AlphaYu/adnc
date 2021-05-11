@@ -57,8 +57,8 @@ namespace Adnc.Application.Shared.Caching
             await _cache.Value.KeyExpireAsync(cacheKeys, CachingConstValue.PollyTimeout);
             var expireDt = DateTime.Now.AddSeconds(CachingConstValue.PollyTimeout);
 
-            var timePolly = Policy.TimeoutAsync(CachingConstValue.PollyTimeout - 1);
-            await timePolly.ExecuteAsync(async () =>
+            var timeoutPolicy = Policy.TimeoutAsync(CachingConstValue.PollyTimeout - 1);
+            await timeoutPolicy.ExecuteAsync(async () =>
             {
                 await dataOperater();
             });
