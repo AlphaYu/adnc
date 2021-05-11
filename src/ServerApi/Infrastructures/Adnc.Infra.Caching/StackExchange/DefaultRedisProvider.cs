@@ -44,6 +44,8 @@ namespace Adnc.Infra.Caching.StackExchange
         /// </summary>
         private readonly CacheOptions _cacheOptions;
 
+        public override CacheOptions CacheOptions => _cacheOptions;
+
         /// <summary>
         /// The cache stats.
         /// </summary>

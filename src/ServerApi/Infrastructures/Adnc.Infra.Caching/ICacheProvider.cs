@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Adnc.Infra.Caching.Configurations;
 using Adnc.Infra.Caching.Core;
 using Adnc.Infra.Caching.Core.Serialization;
 
@@ -13,6 +14,8 @@ namespace Adnc.Infra.Caching
         /// </summary>
         /// <value>The name.</value>
         string Name { get; }
+
+        CacheOptions CacheOptions { get; }
 
         /// <summary>
         /// The serializer.

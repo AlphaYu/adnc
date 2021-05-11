@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Polly;
@@ -52,16 +53,23 @@ namespace Adnc.Application.Shared.Caching
             return sbuilder.ToString();
         }
 
-        public async Task RemoveCachesAsync(Func<Task> dataOperater, params string[] cacheKeys)
+        public async Task RemoveCachesAsync(Func<CancellationToken, Task> dataOperater, params string[] cacheKeys)
         {
-            await _cache.Value.KeyExpireAsync(cacheKeys, CachingConstValue.PollyTimeout);
-            var expireDt = DateTime.Now.AddSeconds(CachingConstValue.PollyTimeout);
+            var pollyTimeoutSeconds = _cache.Value.CacheOptions.PollyTimeoutSeconds;
+            var keyExpireSeconds = pollyTimeoutSeconds + 1;
 
-            var timeoutPolicy = Policy.TimeoutAsync(CachingConstValue.PollyTimeout - 1);
-            await timeoutPolicy.ExecuteAsync(async () =>
-            {
-                await dataOperater();
-            });
+            await _cache.Value.KeyExpireAsync(cacheKeys, keyExpireSeconds);
+
+            var expireDt = DateTime.Now.AddSeconds(keyExpireSeconds);
+
+            var cancelTokenSource = new CancellationTokenSource();
+            var timeoutPolicy = Policy.TimeoutAsync(pollyTimeoutSeconds, Polly.Timeout.TimeoutStrategy.Optimistic);
+            await timeoutPolicy.ExecuteAsync(async (cancellToken) =>
+            {    
+                await dataOperater(cancellToken);
+                cancellToken.ThrowIfCancellationRequested();
+
+            }, cancelTokenSource.Token);
 
             try
             {

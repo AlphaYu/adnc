@@ -54,5 +54,10 @@ namespace Adnc.Infra.Caching.Configurations
         /// Mainly for distributed cache
         /// </summary>
         public string SerializerName { get; set; }
+
+        /// <summary>
+        /// polly timeout seconds
+        /// </summary>
+        public int PollyTimeoutSeconds { get; set; } = 11;
     }
 }
