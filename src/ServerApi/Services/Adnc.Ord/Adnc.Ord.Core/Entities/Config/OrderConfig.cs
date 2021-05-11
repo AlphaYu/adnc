@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Adnc.Core.Shared.Entities.Config;
+using Adnc.Core.Shared.EntityConsts.Ord;
 
 namespace Adnc.Ord.Core.Entities.Config
 {
@@ -14,20 +15,20 @@ namespace Adnc.Ord.Core.Entities.Config
 
             builder.Property(x => x.Amount).IsRequired().HasColumnType("decimal(18,4)");
 
-            builder.Property(x => x.Remark).HasMaxLength(64);
+            builder.Property(x => x.Remark).HasMaxLength(OrdConsts.Remark_MaxLength);
 
             builder.OwnsOne(x => x.Status, y =>
             {
                 y.Property(y => y.Code).IsRequired().HasColumnName("StatusCode");
-                y.Property(y => y.ChangesReason).HasColumnName("StatusChangesReason").HasMaxLength(32);
+                y.Property(y => y.ChangesReason).HasColumnName("StatusChangesReason").HasMaxLength(OrdConsts.ChangesReason_MaxLength);
             });
 
 
             builder.OwnsOne(x => x.Receiver, y =>
             {
-                y.Property(y => y.Name).IsRequired().HasColumnName("ReceiverName").HasMaxLength(16);
-                y.Property(y => y.Phone).IsRequired().HasColumnName("ReceiverPhone").HasMaxLength(11);
-                y.Property(y => y.Address).IsRequired().HasColumnName("ReceiverAddress").HasMaxLength(64);
+                y.Property(y => y.Name).IsRequired().HasColumnName("ReceiverName").HasMaxLength(OrdConsts.Name_MaxLength);
+                y.Property(y => y.Phone).IsRequired().HasColumnName("ReceiverPhone").HasMaxLength(OrdConsts.Phone_MaxLength);
+                y.Property(y => y.Address).IsRequired().HasColumnName("ReceiverAddress").HasMaxLength(OrdConsts.Address_MaxLength);
             });
 
             builder.HasMany(x => x.Items).WithOne().HasForeignKey(y => y.OrderId);
