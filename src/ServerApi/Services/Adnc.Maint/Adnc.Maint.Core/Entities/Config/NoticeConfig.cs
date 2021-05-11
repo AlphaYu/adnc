@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Adnc.Core.Shared.Entities.Config;
+using Adnc.Core.Shared.EntityConsts.Maint;
 
 namespace Adnc.Maint.Core.Entities.Config
 {
@@ -9,8 +10,8 @@ namespace Adnc.Maint.Core.Entities.Config
         {
             base.Configure(builder);
 
-            builder.Property(x => x.Content).IsRequired().HasMaxLength(255);
-            builder.Property(x => x.Title).HasMaxLength(64);
+            builder.Property(x => x.Content).IsRequired().HasMaxLength(NoticeConsts.Content_MaxLength);
+            builder.Property(x => x.Title).HasMaxLength(NoticeConsts.Title_MaxLength);
         }
     }
 }
