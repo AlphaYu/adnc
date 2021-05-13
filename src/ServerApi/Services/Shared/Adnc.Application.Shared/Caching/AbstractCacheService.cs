@@ -59,7 +59,6 @@ namespace Adnc.Application.Shared.Caching
             var keyExpireSeconds = pollyTimeoutSeconds + 1;
 
             await _cache.Value.KeyExpireAsync(cacheKeys, keyExpireSeconds);
-
             var expireDt = DateTime.Now.AddSeconds(keyExpireSeconds);
 
             var cancelTokenSource = new CancellationTokenSource();

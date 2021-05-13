@@ -14,6 +14,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Core\Interceptor\CachingPutAttribute.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <None Remove="Core\Interceptor\IEasyCachingKeyGenerator.cs~RF400923bc.TMP" />
 	</ItemGroup>
 	<ItemGroup>
@@ -25,6 +29,7 @@
 		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="3.1.9" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.9" />
 		<PackageReference Include="Microsoft.Extensions.Options" Version="3.1.9" />
+		<PackageReference Include="Polly" Version="7.2.1" />
 		<PackageReference Include="StackExchange.Redis" Version="2.1.58" />
 	</ItemGroup>
 </Project>

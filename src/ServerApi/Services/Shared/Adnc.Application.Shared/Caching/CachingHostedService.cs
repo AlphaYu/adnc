@@ -37,8 +37,9 @@ namespace Adnc.Application.Shared.IdGeneraterWorkerNode
 
             while (!stoppingToken.IsCancellationRequested)
             {
-                if ( !LocalVariables.Instance.Queue.TryDequeue(out LocalVariables.Model model)
-                    || model.CacheKeys?.Any() == false)
+                if (!LocalVariables.Instance.Queue.TryDequeue(out LocalVariables.Model model)
+                    || model.CacheKeys?.Any() == false
+                    || DateTime.Now > model.ExpireDt)
                 {
                     await Task.Delay(millisecondsDelay, stoppingToken);
                     continue;

@@ -8,6 +8,8 @@ using Microsoft.Extensions.Logging;
 using Adnc.Infra.Core.Interceptor;
 using Adnc.Infra.Caching.Core;
 using System.Collections.Generic;
+using System.Threading;
+using Polly;
 
 namespace Adnc.Infra.Caching.Interceptor.Castle
 {
@@ -69,17 +71,30 @@ namespace Adnc.Infra.Caching.Interceptor.Castle
         /// <param name="invocation">Invocation.</param>
         public void Intercept(IInvocation invocation)
         {
-            //Process any early evictions 
-            var preRemoveKey = ProcessEvictBefore(invocation);
+            var serviceMethod = invocation.Method ?? invocation.MethodInvocationTarget;
+            var attribute = GetMethodAttributes(serviceMethod).FirstOrDefault(x => typeof(CachingInterceptorAttribute).IsAssignableFrom(x.GetType()));
+
+            if (attribute == null)
+            {
+                invocation.Proceed();
+                return;
+            }
+
+            //// Process any evictions
+            if (attribute is CachingEvictAttribute evictAttribute)
+            {
+                var removedKeys = ProcessEvictBefore(invocation, evictAttribute);
+                if (removedKeys?.Any() == true)
+                    ProcessEvictAfter(invocation, evictAttribute, removedKeys);
+                return;
+            }
 
             //Process any cache interceptor 
-            ProceedAble(invocation);
-
-            // Process any put requests
-            ProcessPut(invocation);
-
-            // Process any late evictions
-            ProcessEvictAfter(invocation, preRemoveKey);
+            if (attribute is CachingAbleAttribute ableAttribute)
+            {
+                ProceedAble(invocation, ableAttribute);
+                return;
+            }
         }
 
         private object[] GetMethodAttributes(MethodInfo mi)
@@ -91,78 +106,70 @@ namespace Adnc.Infra.Caching.Interceptor.Castle
         /// Proceeds the able.
         /// </summary>
         /// <param name="invocation">Invocation.</param>
-        private void ProceedAble(IInvocation invocation)
+        private void ProceedAble(IInvocation invocation, CachingAbleAttribute attribute)
         {
             var serviceMethod = invocation.Method ?? invocation.MethodInvocationTarget;
 
-            if (GetMethodAttributes(serviceMethod).FirstOrDefault(x => typeof(CachingAbleAttribute).IsAssignableFrom(x.GetType())) is CachingAbleAttribute attribute)
+            var returnType = serviceMethod.IsReturnTask()
+                    ? serviceMethod.ReturnType.GetGenericArguments().First()
+                    : serviceMethod.ReturnType;
+
+            var cacheKey = string.IsNullOrEmpty(attribute.CacheKey)
+                                 ? _keyGenerator.GetCacheKey(serviceMethod, invocation.Arguments, attribute.CacheKeyPrefix)
+                                 : attribute.CacheKey
+                                 ;
+
+            object cacheValue = null;
+            var isAvailable = true;
+            try
             {
-                var returnType = serviceMethod.IsReturnTask()
-                        ? serviceMethod.ReturnType.GetGenericArguments().First()
-                        : serviceMethod.ReturnType;
-
-                var cacheKey = string.IsNullOrEmpty(attribute.CacheKey)
-                                     ? _keyGenerator.GetCacheKey(serviceMethod, invocation.Arguments, attribute.CacheKeyPrefix)
-                                     : attribute.CacheKey
-                                     ;
-
-                object cacheValue = null;
-                var isAvailable = true;
-                try
+                cacheValue = _cacheProvider.GetAsync(cacheKey, returnType).GetAwaiter().GetResult();
+            }
+            catch (Exception ex)
+            {
+                if (!attribute.IsHighAvailability)
                 {
-                    cacheValue = _cacheProvider.GetAsync(cacheKey, returnType).GetAwaiter().GetResult();
-                }
-                catch (Exception ex)
-                {
-                    if (!attribute.IsHighAvailability)
-                    {
-                        throw;
-                    }
-                    else
-                    {
-                        isAvailable = false;
-                        _logger?.LogError(new EventId(), ex, $"Cache provider get error.");
-                    }
-                }
-
-                if (cacheValue != null)
-                {
-                    if (serviceMethod.IsReturnTask())
-                    {
-                        invocation.ReturnValue =
-                            TypeofTaskResultMethod.GetOrAdd(returnType, t => typeof(Task).GetMethods().First(p => p.Name == "FromResult" && p.ContainsGenericParameters).MakeGenericMethod(returnType)).Invoke(null, new object[] { cacheValue });
-                    }
-                    else
-                    {
-                        invocation.ReturnValue = cacheValue;
-                    }
+                    throw;
                 }
                 else
                 {
-                    // Invoke the method if we don't have a cache hit                    
-                    invocation.Proceed();
+                    isAvailable = false;
+                    _logger?.LogError(new EventId(), ex, $"Cache provider get error.");
+                }
+            }
 
-                    if (!string.IsNullOrWhiteSpace(cacheKey) && invocation.ReturnValue != null && isAvailable)
-                    {
-                        // get the result
-                        var returnValue = serviceMethod.IsReturnTask()
-                           ? invocation.UnwrapAsyncReturnValue().Result
-                           : invocation.ReturnValue;
-
-                        // should we do something when method return null?
-                        // 1. cached a null value for a short time
-                        // 2. do nothing
-                        if (returnValue != null)
-                        {
-                            _cacheProvider.Set(cacheKey, returnValue, TimeSpan.FromSeconds(attribute.Expiration));
-                        }
-                    }
+            if (cacheValue != null)
+            {
+                if (serviceMethod.IsReturnTask())
+                {
+                    invocation.ReturnValue =
+                        TypeofTaskResultMethod.GetOrAdd(returnType, t => typeof(Task).GetMethods().First(p => p.Name == "FromResult" && p.ContainsGenericParameters).MakeGenericMethod(returnType)).Invoke(null, new object[] { cacheValue });
+                }
+                else
+                {
+                    invocation.ReturnValue = cacheValue;
                 }
             }
             else
             {
-                // Invoke the method if we don't have EasyCachingAbleAttribute
+                // Invoke the method if we don't have a cache hit                    
                 invocation.Proceed();
+
+                if (!string.IsNullOrWhiteSpace(cacheKey) && invocation.ReturnValue != null && isAvailable)
+                {
+                    // get the result
+                    var returnValue = serviceMethod.IsReturnTask()
+                       ? invocation.UnwrapAsyncReturnValue().Result
+                       : invocation.ReturnValue;
+
+                    // should we do something when method return null?
+                    // 1. cached a null value for a short time
+                    // 2. do nothing
+                    if (returnValue != null)
+                    {
+                        _cacheProvider.Set(cacheKey, returnValue, TimeSpan.FromSeconds(attribute.Expiration));
+                    }
+                }
             }
         }
 
@@ -170,77 +177,55 @@ namespace Adnc.Infra.Caching.Interceptor.Castle
         /// Processes the put.
         /// </summary>
         /// <param name="invocation">Invocation.</param>
-        private void ProcessPut(IInvocation invocation)
-        {
-            var serviceMethod = invocation.Method ?? invocation.MethodInvocationTarget;
+        //private void ProcessPut(IInvocation invocation, CachingPutAttribute attribute)
+        //{
+        //    var serviceMethod = invocation.Method ?? invocation.MethodInvocationTarget;
 
-            if (GetMethodAttributes(serviceMethod).FirstOrDefault(x => typeof(CachingPutAttribute).IsAssignableFrom(x.GetType())) is CachingPutAttribute attribute && invocation.ReturnValue != null)
-            {
-                var cacheKey = string.IsNullOrEmpty(attribute.CacheKey)
-                                     ? _keyGenerator.GetCacheKey(serviceMethod, invocation.Arguments, attribute.CacheKeyPrefix)
-                                     : attribute.CacheKey
-                                     ;
-                try
-                {
-                    var returnValue = serviceMethod.IsReturnTask()
-                           ? invocation.UnwrapAsyncReturnValue().Result
-                           : invocation.ReturnValue;
+        //    var cacheKey = string.IsNullOrEmpty(attribute.CacheKey)
+        //                         ? _keyGenerator.GetCacheKey(serviceMethod, invocation.Arguments, attribute.CacheKeyPrefix)
+        //                         : attribute.CacheKey
+        //                         ;
+        //    try
+        //    {
+        //        var returnValue = serviceMethod.IsReturnTask()
+        //               ? invocation.UnwrapAsyncReturnValue().Result
+        //               : invocation.ReturnValue;
 
-                    _cacheProvider.Set(cacheKey, returnValue, TimeSpan.FromSeconds(attribute.Expiration));
-                }
-                catch (Exception ex)
-                {
-                    if (!attribute.IsHighAvailability) throw;
-                    else _logger?.LogError(new EventId(), ex, $"Cache provider set error.");
-                }
-            }
-        }
+        //        _cacheProvider.Set(cacheKey, returnValue, TimeSpan.FromSeconds(attribute.Expiration));
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        if (!attribute.IsHighAvailability) throw;
+        //        else _logger?.LogError(new EventId(), ex, $"Cache provider set error.");
+        //    }
+        //}
 
         /// <summary>
         /// Processes the evict.
         /// </summary>
         /// <param name="invocation">IInvocation.</param>
         /// <returns></returns>
-        private string ProcessEvictBefore(IInvocation invocation)
+        private List<string> ProcessEvictBefore(IInvocation invocation, CachingEvictAttribute attribute)
         {
-            string preRemoveKey = string.Empty;
             var serviceMethod = invocation.Method ?? invocation.MethodInvocationTarget;
+            var needRemovedKeys = new HashSet<string>();
 
-            if (GetMethodAttributes(serviceMethod).FirstOrDefault(x => typeof(CachingEvictAttribute).IsAssignableFrom(x.GetType())) is CachingEvictAttribute attribute)
+            if (!string.IsNullOrEmpty(attribute.CacheKey))
             {
-                var needRemovedKeys = new HashSet<string>();
-                if (!string.IsNullOrEmpty(attribute.CacheKey))
-                {
-                    needRemovedKeys.Add(attribute.CacheKey);
-                }
-                
-                if (attribute.CacheKeys?.Length > 0)
-                {
-                    needRemovedKeys.UnionWith(attribute.CacheKeys);
-                }
-
-                if(!string.IsNullOrWhiteSpace(attribute.CacheKeyPrefix))
-                {
-                    var cacheKeys = _keyGenerator.GetCacheKeys(serviceMethod, invocation.Arguments, attribute.CacheKeyPrefix);
-                    needRemovedKeys.UnionWith(cacheKeys);
-                }
-                //if (attribute.IsAll)
-                //{
-                //    preRemoveKey = $"{CachingConstValue.PreRemoveAllKeyPrefix}{LinkChar}{ attribute.CacheKeyPrefix.GetHashCode()}";
-                //    needRemovedKeys = new string[] { attribute.CacheKeyPrefix, preRemoveKey };
-                //}
-                //else
-                //{
-                //    var cacheKey = _keyGenerator.GetCacheKey(serviceMethod, invocation.Arguments, attribute.CacheKeyPrefix);
-                //    preRemoveKey = $"{CachingConstValue.PreRemoveKey}{LinkChar}{cacheKey.GetHashCode()}";
-                //    needRemovedKeys = new string[] { cacheKey, preRemoveKey };
-                //}
-
-                preRemoveKey = $"{CachingConstValue.PreRemoveKey}{LinkChar}{string.Join(",", needRemovedKeys).GetHashCode()}";
-                needRemovedKeys.Add(preRemoveKey);
-                _cacheProvider.Set(preRemoveKey, needRemovedKeys.ToArray(), TimeSpan.FromSeconds(60 * 60 * 24));
+                needRemovedKeys.Add(attribute.CacheKey);
             }
-            return preRemoveKey;
+
+            if (attribute.CacheKeys?.Length > 0)
+            {
+                needRemovedKeys.UnionWith(attribute.CacheKeys);
+            }
+
+            if (!string.IsNullOrWhiteSpace(attribute.CacheKeyPrefix))
+            {
+                var cacheKeys = _keyGenerator.GetCacheKeys(serviceMethod, invocation.Arguments, attribute.CacheKeyPrefix);
+                needRemovedKeys.UnionWith(cacheKeys);
+            }
+            return needRemovedKeys.ToList();
         }
 
         /// <summary>
@@ -248,33 +233,33 @@ namespace Adnc.Infra.Caching.Interceptor.Castle
         /// </summary>
         /// <param name="invocation">Invocation.</param>
         /// <param name="preRemoveKey">preRemoveKey</param>
-        private void ProcessEvictAfter(IInvocation invocation, string preRemoveKey)
+        private void ProcessEvictAfter(IInvocation invocation, CachingEvictAttribute attribute, IEnumerable<string> cacheKeys)
         {
-            if (string.IsNullOrWhiteSpace(preRemoveKey))
-                return;
+            var pollyTimeoutSeconds = _cacheProvider.CacheOptions.PollyTimeoutSeconds;
+            var keyExpireSeconds = pollyTimeoutSeconds + 1;
 
-            var serviceMethod = invocation.Method ?? invocation.MethodInvocationTarget;
-            if (GetMethodAttributes(serviceMethod).FirstOrDefault(x => typeof(CachingEvictAttribute).IsAssignableFrom(x.GetType())) is CachingEvictAttribute attribute)
+            _cacheProvider.KeyExpireAsync(cacheKeys, keyExpireSeconds).GetAwaiter().GetResult();
+            
+            var expireDt = DateTime.Now.AddSeconds(keyExpireSeconds);
+            var cancelTokenSource = new CancellationTokenSource();
+            var timeoutPolicy = Policy.Timeout(pollyTimeoutSeconds, Polly.Timeout.TimeoutStrategy.Optimistic);
+            timeoutPolicy.Execute((cancellToken) =>
             {
-                try
-                {
-                    var needRemoveCacheKeys = _cacheProvider.Get<string[]>(preRemoveKey).Value;
-                    _cacheProvider.RemoveAll(needRemoveCacheKeys);
-                    //if (preRemoveKey.StartsWith(CachingConstValue.PreRemoveAllKeyPrefix))
-                    //{
-                    //    _cacheProvider.RemoveByPrefix(needRemoveCacheKeys[0]);
-                    //    _cacheProvider.Remove(needRemoveCacheKeys[1]);
-                    //}
-                    //else
-                    //{
-                    //    _cacheProvider.RemoveAll(needRemoveCacheKeys);
-                    //}
-                }
-                catch (Exception ex)
-                {
-                    if (!attribute.IsHighAvailability) throw;
-                    else _logger?.LogError(new EventId(), ex, $"Cache provider remove error.");
-                }
+                invocation.Proceed();
+                cancellToken.ThrowIfCancellationRequested();
+
+            }, cancelTokenSource.Token);
+
+            try
+            {
+                _cacheProvider.RemoveAll(cacheKeys);
+            }
+            catch (Exception ex)
+            {
+                LocalVariables.Instance.Queue.Enqueue(new LocalVariables.Model(cacheKeys, expireDt));
+
+                if (!attribute.IsHighAvailability) throw;
+                else _logger?.LogError(new EventId(), ex, $"Cache provider remove error.");
             }
         }
     }
