@@ -24,6 +24,17 @@ namespace Adnc.Infra.Caching.StackExchange
         {
             ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
+            if (!_cacheOptions.PenetrationSetting.BloomFilter.Disable)
+            {
+                var exists = await _redisDb.BloomExistsAsync(_cacheOptions.PenetrationSetting.BloomFilter.Name, cacheKey);
+                if (!exists)
+                {
+                    if (_cacheOptions.EnableLogging)
+                        _logger?.LogInformation($"Cache Penetrated : cachekey = {cacheKey}");
+                    return null;
+                }
+            }
+
             var result = await _redisDb.StringGetAsync(cacheKey);
             if (!result.IsNull)
             {
@@ -59,6 +70,17 @@ namespace Adnc.Infra.Caching.StackExchange
             ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
             ArgumentCheck.NotNegativeOrZero(expiration, nameof(expiration));
 
+            if (!_cacheOptions.PenetrationSetting.BloomFilter.Disable)
+            {
+                var exists = await _redisDb.BloomExistsAsync(_cacheOptions.PenetrationSetting.BloomFilter.Name, cacheKey);
+                if (!exists)
+                {
+                    if (_cacheOptions.EnableLogging)
+                        _logger?.LogInformation($"Cache Penetrated : cachekey = {cacheKey}");
+                    return CacheValue<T>.NoValue;
+                }
+            }
+
             var result = await _redisDb.StringGetAsync(cacheKey);
             if (!result.IsNull)
             {
@@ -84,20 +106,31 @@ namespace Adnc.Infra.Caching.StackExchange
                 return await GetAsync(cacheKey, dataRetriever, expiration);
             }
 
-            var item = await dataRetriever();
-            if (item != null)
+            try
             {
-                await SetAsync(cacheKey, item, expiration);
+                var item = await dataRetriever();
+                if (item != null)
+                {
+                    await SetAsync(cacheKey, item, expiration);
 
-                //remove mutex key
-                await _redisDb.SafedUnLockAsync(cacheKey, flag.LockValue);
-                return new CacheValue<T>(item, true);
+                    //remove mutex key
+                    await _redisDb.SafedUnLockAsync(cacheKey, flag.LockValue);
+                    return new CacheValue<T>(item, true);
+                }
+                else
+                {
+                    //remove mutex key
+                    await _redisDb.SafedUnLockAsync(cacheKey, flag.LockValue);
+                    return CacheValue<T>.NoValue;
+                }
             }
-            else
+            catch(Exception ex)
             {
-                //remove mutex key
+                throw new Exception(ex.Message, ex);
+            }
+            finally
+            {
                 await _redisDb.SafedUnLockAsync(cacheKey, flag.LockValue);
-                return CacheValue<T>.NoValue;
             }
         }
 
@@ -110,6 +143,17 @@ namespace Adnc.Infra.Caching.StackExchange
         protected override async Task<CacheValue<T>> BaseGetAsync<T>(string cacheKey)
         {
             ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+
+            if (!_cacheOptions.PenetrationSetting.BloomFilter.Disable)
+            {
+                var exists = await _redisDb.BloomExistsAsync(_cacheOptions.PenetrationSetting.BloomFilter.Name, cacheKey);
+                if (!exists)
+                {
+                    if (_cacheOptions.EnableLogging)
+                        _logger?.LogInformation($"Cache Penetrated : cachekey = {cacheKey}");
+                    return CacheValue<T>.NoValue;
+                }
+            }
 
             var result = await _redisDb.StringGetAsync(cacheKey);
             if (!result.IsNull)

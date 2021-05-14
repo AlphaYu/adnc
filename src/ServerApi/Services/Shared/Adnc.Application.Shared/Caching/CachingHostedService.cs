@@ -13,17 +13,26 @@ namespace Adnc.Application.Shared.IdGeneraterWorkerNode
     {
         private readonly ILogger<CachingHostedService> _logger;
         private readonly ICacheProvider _cache;
+        private readonly IBloomFilter _bloomFilter;
 
         public CachingHostedService(ILogger<CachingHostedService> logger
-           , ICacheProvider cache)
+           , ICacheProvider cache
+           , IBloomFilter bloomFilter)
         {
             _logger = logger;
             _cache = cache;
+            _bloomFilter = bloomFilter;
         }
 
         public async override Task StartAsync(CancellationToken cancellationToken)
         {
             await base.StartAsync(cancellationToken);
+
+            var filter = _cache.CacheOptions.PenetrationSetting.BloomFilter;
+            if (!await _cache.ExistsAsync(filter.Name))
+            {
+                await _bloomFilter.BloomReserveAsync(filter.Name, filter.ErrorRate, filter.Capacity);
+            }
         }
 
         public async override Task StopAsync(CancellationToken cancellationToken)

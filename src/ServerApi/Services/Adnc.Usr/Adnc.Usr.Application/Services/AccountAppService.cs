@@ -95,7 +95,7 @@ namespace Adnc.Usr.Application.Services
                 await _cacheService.RemoveCachesAsync(async (cancellToken) =>
                 {
                     await _userRepository.UpdateAsync(new SysUser() { Id = user.Id, Status = 1 }, UpdatingProps<SysUser>(x => x.Status), cancellToken);
-                }, _cacheService.ConcatCacheKey(CachingConsts.UserLoginInfoKeyPrefix, user.Id.ToString()));
+                }, _cacheService.ConcatCacheKey(CachingConsts.UserValidateInfoKeyPrefix, user.Id.ToString()));
 
                 _mqProducer.BasicPublish(MqExchanges.Logs, MqRoutingKeys.Loginlog, log);
 

@@ -100,6 +100,17 @@ namespace Adnc.Infra.Caching.StackExchange
             ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
             ArgumentCheck.NotNegativeOrZero(expiration, nameof(expiration));
 
+            if (!_cacheOptions.PenetrationSetting.BloomFilter.Disable)
+            {
+                var exists = _redisDb.BloomExistsAsync(_cacheOptions.PenetrationSetting.BloomFilter.Name, cacheKey).GetAwaiter().GetResult();
+                if (!exists)
+                {
+                    if (_cacheOptions.EnableLogging)
+                        _logger?.LogInformation($"Cache Penetrated : cachekey = {cacheKey}");
+                    return CacheValue<T>.NoValue;
+                }
+            }
+
             var result = _redisDb.StringGet(cacheKey);
             if (!result.IsNull)
             {
@@ -124,19 +135,30 @@ namespace Adnc.Infra.Caching.StackExchange
                 return Get(cacheKey, dataRetriever, expiration);
             }
 
-            var item = dataRetriever();
-            if (item != null)
+            try
             {
-                Set(cacheKey, item, expiration);
-                //remove mutex key
-                _redisDb.SafedUnLock(cacheKey, flag.LockValue);
-                return new CacheValue<T>(item, true);
+                var item = dataRetriever();
+                if (item != null)
+                {
+                    Set(cacheKey, item, expiration);
+                    //remove mutex key
+                    _redisDb.SafedUnLock(cacheKey, flag.LockValue);
+                    return new CacheValue<T>(item, true);
+                }
+                else
+                {
+                    //remove mutex key
+                    _redisDb.SafedUnLock(cacheKey, flag.LockValue);
+                    return CacheValue<T>.NoValue;
+                }
             }
-            else
+            catch(Exception ex)
             {
-                //remove mutex key
+                throw new Exception(ex.Message, ex);
+            }
+            finally
+            {
                 _redisDb.SafedUnLock(cacheKey, flag.LockValue);
-                return CacheValue<T>.NoValue;
             }
         }
 
@@ -149,6 +171,17 @@ namespace Adnc.Infra.Caching.StackExchange
         protected override CacheValue<T> BaseGet<T>(string cacheKey)
         {
             ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+
+            if (!_cacheOptions.PenetrationSetting.BloomFilter.Disable)
+            {
+                var exists = _redisDb.BloomExistsAsync(_cacheOptions.PenetrationSetting.BloomFilter.Name, cacheKey).GetAwaiter().GetResult();
+                if (!exists)
+                {
+                    if (_cacheOptions.EnableLogging)
+                        _logger?.LogInformation($"Cache Penetrated : cachekey = {cacheKey}");
+                    return CacheValue<T>.NoValue;
+                }
+            }
 
             var result = _redisDb.StringGet(cacheKey);
             if (!result.IsNull)

@@ -39,7 +39,7 @@ namespace Adnc.Usr.Application.Caching
         }
         internal async Task SetValidateInfoToCacheAsync(UserValidateDto value)
         {
-            var cacheKey = ConcatCacheKey(CachingConsts.UserLoginInfoKeyPrefix, value.Id.ToString());
+            var cacheKey = ConcatCacheKey(CachingConsts.UserValidateInfoKeyPrefix, value.Id.ToString());
             await _cache.Value.SetAsync(cacheKey, value, TimeSpan.FromSeconds(CachingConsts.OneDay));
         }
 
@@ -103,7 +103,7 @@ namespace Adnc.Usr.Application.Caching
 
         internal async Task<UserValidateDto> GetUserValidateInfoFromCacheAsync(long Id)
         {
-            var cacheKey = ConcatCacheKey(CachingConsts.UserLoginInfoKeyPrefix, Id.ToString());
+            var cacheKey = ConcatCacheKey(CachingConsts.UserValidateInfoKeyPrefix, Id.ToString());
 
             var cacheValue = await _cache.Value.GetAsync(cacheKey, async () =>
             {
