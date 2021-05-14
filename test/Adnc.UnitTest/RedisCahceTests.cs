@@ -138,6 +138,8 @@ namespace Adnc.UnitTest.Cache
         [Fact]
         public void TestRemoveAll()
         {
+            _cache.CacheOptions.PenetrationSetting.BloomFilter.Disable = true;
+
             var key01 = "TestRemoveAll01".ToLower();
             var key02 = "TestRemoveAll02".ToLower();
             var value = DateTime.Now.Ticks;
@@ -181,6 +183,8 @@ namespace Adnc.UnitTest.Cache
         [Fact]
         public  async Task TestKeyExpire()
         {
+            _cache.CacheOptions.PenetrationSetting.BloomFilter.Disable = true;
+
             var cacheKey1 = nameof(TestKeyExpire).ToLower() + ":" + DateTime.Now.Ticks;
             var cacheKey2 = nameof(TestKeyExpire).ToLower() + ":" + DateTime.Now.Ticks;
             var cacheKey3 = nameof(TestKeyExpire).ToLower() + ":" + DateTime.Now.Ticks;

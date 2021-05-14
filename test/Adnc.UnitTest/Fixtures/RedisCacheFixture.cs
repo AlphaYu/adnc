@@ -20,6 +20,20 @@ namespace Adnc.UnitTest.Fixtures
                 EnableLogging = true
                ,
                 DBConfig = redisOptions
+                ,
+                PenetrationSetting = new CacheOptions.PenetrationOptions
+                {
+                    BloomFilter = new CacheOptions.PenetrationOptions.Filter
+                    {
+                        Capacity = 10000000
+                        ,
+                        Disable = true
+                        ,
+                        Name ="adnc:bloomfilter"
+                        ,
+                        ErrorRate = 0.001
+                    }
+                }
             };
 
             containerBuilder.RegisterModule(new AdncInfraCachingModule(cacheOptions));
