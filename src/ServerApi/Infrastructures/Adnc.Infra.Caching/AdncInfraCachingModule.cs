@@ -30,10 +30,11 @@ namespace Adnc.Infra.Caching
             builder.RegisterInstance(_cacheOptions);
             builder.RegisterType<DefaultDatabaseProvider>().As<IRedisDatabaseProvider>().SingleInstance();
             builder.RegisterType<DefaultCachingKeyGenerator>().As<ICachingKeyGenerator>().SingleInstance();
-            builder.RegisterType<DefaultRedisProvider>().As<IRedisProvider, ICacheProvider, IDistributedLocker>().SingleInstance();
+            //IRedisProvider, ICacheProvider, IDistributedLocker, IBloomFilter
+            builder.RegisterType<DefaultRedisProvider>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterAssemblyTypes(this.ThisAssembly)
                        .Where(t => t.IsAssignableTo<ICachingSerializer>())
-                       .AsImplementedInterfaces()
+                       .As<ICachingSerializer>()
                        .SingleInstance();
             builder.RegisterType<CachingInterceptor>().InstancePerLifetimeScope();
         }

@@ -940,5 +940,75 @@ namespace Adnc.Infra.Caching
         /// <returns></returns>
         Task<dynamic> ScriptEvaluateAsync(string script, object parameters = null, CommandFlags flags = CommandFlags.None);
         #endregion
+
+        #region bitmap
+        /// <summary>
+        /// https://redis.io/commands/getbit
+        /// </summary>
+        /// <param name="cacheKey"></param>
+        /// <param name="offset"></param>
+        /// <returns></returns>
+        bool StringGetBit(string cacheKey, long offset);
+
+        /// <summary>
+        /// https://redis.io/commands/getbit
+        /// </summary>
+        /// <param name="cacheKey"></param>
+        /// <param name="offsets"></param>
+        /// <returns></returns>
+        List<bool> StringGetBit(string cacheKey, IEnumerable<long> offsets);
+
+        /// <summary>
+        /// https://redis.io/commands/setbit
+        /// </summary>
+        /// <param name="cacheKey"></param>
+        /// <param name="position"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        bool StringSetBit(string cacheKey, long position, bool value);
+
+        /// <summary>
+        /// https://redis.io/commands/setbit
+        /// </summary>
+        /// <param name="cacheKey"></param>
+        /// <param name="offsets"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        List<bool> StringSetBit(string cacheKey, IEnumerable<long> offsets, bool value);
+
+        /// <summary>
+        /// https://redis.io/commands/getbit
+        /// </summary>
+        /// <param name="cacheKey"></param>
+        /// <param name="offset"></param>
+        /// <returns></returns>
+        Task<bool> StringGetBitAsync(string cacheKey, long offset);
+
+        /// <summary>
+        /// https://redis.io/commands/getbit
+        /// </summary>
+        /// <param name="cacheKey"></param>
+        /// <param name="offsets"></param>
+        /// <returns></returns>
+        Task<List<bool>> StringGetBitAsync(string cacheKey, IEnumerable<long> offsets);
+
+        /// <summary>
+        /// https://redis.io/commands/setbit
+        /// </summary>
+        /// <param name="cacheKey"></param>
+        /// <param name="offset"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        Task<bool> StringSetBitAsync(string cacheKey, long offset, bool value);
+
+        /// <summary>
+        /// https://redis.io/commands/setbit
+        /// </summary>
+        /// <param name="cacheKey"></param>
+        /// <param name="offsets"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        Task<List<bool>> StringSetBitAsync(string cacheKey, IEnumerable<long> offsets, bool value);
+        #endregion
     }
 }
