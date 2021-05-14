@@ -12,7 +12,7 @@ namespace Adnc.UnitTest.Fixtures
         public RedisCacheFixture()
         {
             var containerBuilder = new ContainerBuilder();
-            var redisOptions = new RedisDBOptions() { Password = "football" };
+            var redisOptions = new RedisDBOptions() { Password = "football",ConnectionTimeout=1000*20 };
             redisOptions.Endpoints.Add(new ServerEndPoint() { Host = "193.112.75.77", Port = 13379 });
 
             var cacheOptions = new CacheOptions()

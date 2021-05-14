@@ -1,6 +1,7 @@
 ﻿using System;
-using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Autofac;
 using Xunit;
 using Xunit.Abstractions;
@@ -16,6 +17,7 @@ namespace Adnc.UnitTest.Cache
         private readonly ICacheProvider _cache;
         private readonly IRedisProvider _redisProvider;
         private readonly IDistributedLocker _distributedLocker;
+        private readonly IBloomFilter _bloomFilter;
         private RedisCacheFixture _fixture;
 
         public RedisCahceTests(RedisCacheFixture fixture, ITestOutputHelper output)
@@ -25,6 +27,7 @@ namespace Adnc.UnitTest.Cache
             _cache = _fixture.Container.Resolve<ICacheProvider>();
             _redisProvider = _fixture.Container.Resolve<IRedisProvider>();
             _distributedLocker = _fixture.Container.Resolve<IDistributedLocker>();
+            _bloomFilter = _fixture.Container.Resolve<IBloomFilter>();
         }
 
         [Fact]
@@ -207,25 +210,36 @@ namespace Adnc.UnitTest.Cache
         }
 
         /// <summary>
-        /// 测试穿透
+        /// 测试布隆过滤器
         /// </summary>
-        //[Fact]
-        //public void TestPenetrate()
-        //{
-        //    var cacheKey = nameof(TestPenetrate).ToLower();
-        //    var cacheValue = _cache.Get<object>(cacheKey, () =>
-        //     {
-        //         Assert.True(false);
-        //         return null;
-        //     }, TimeSpan.FromSeconds(5));
+        [Fact]
+        public async void TestBloomFilter()
+        {
+            var cacheKey = nameof(TestBloomFilter).ToLower();
 
-        //    cacheValue = _cache.Get<object>(cacheKey, () =>
-        //    {
-        //        Assert.True(false);
-        //        return null;
-        //    }, TimeSpan.FromSeconds(5));
+            await _redisProvider.KeyDelAsync(cacheKey);
 
+            await _bloomFilter.BloomReserveAsync(cacheKey, 0.001, 10000000);
 
-        //}
+            var initValues = new List<string>();
+            for (int index = 0; index < 100000; index++) initValues.Add($"adnc{index}");
+            await _bloomFilter.BloomAddAsync(cacheKey, initValues);
+
+            var trueResult = await _bloomFilter.BloomExistsAsync(cacheKey, "adnc100");
+            Assert.True(trueResult);
+
+            var falseResult = await _bloomFilter.BloomExistsAsync(cacheKey, "adnc");
+            Assert.False(falseResult);
+
+            var values = new List<string>() { "adnc88888", "adnc78888", "adnc68888", "adnc58888" };
+            var results = await _bloomFilter.BloomExistsAsync(cacheKey, values);
+            var trueLength = results.Where(x => x == true).Count();
+            Assert.Equal(values.Count, trueLength);
+
+            values = new List<string>() { "danc888889", "danc888888", "danc8888888", "danc8888889" };
+            results = await _bloomFilter.BloomExistsAsync(cacheKey, values);
+            var falseLength = results.Where(x => x == false).Count();
+            Assert.Equal(values.Count, falseLength);
+        }
     }
 }
