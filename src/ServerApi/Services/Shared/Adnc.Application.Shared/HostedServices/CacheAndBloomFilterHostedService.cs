@@ -2,55 +2,47 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Adnc.Infra.Caching;
 using Adnc.Infra.Caching.Core;
+using Adnc.Application.Shared.Caching;
 
-namespace Adnc.Application.Shared.IdGeneraterWorkerNode
+namespace Adnc.Application.Shared.HostedServices
 {
-    public class CachingHostedService : BackgroundService
+    public class CacheAndBloomFilterHostedService : BackgroundService
     {
-        private readonly ILogger<CachingHostedService> _logger;
+        private readonly ILogger<CacheAndBloomFilterHostedService> _logger;
         private readonly ICacheProvider _cache;
-        private readonly IBloomFilter _bloomFilter;
+        private readonly IEnumerable<IBloomFilter> _bloomFilters;
 
-        public CachingHostedService(ILogger<CachingHostedService> logger
+        public CacheAndBloomFilterHostedService(ILogger<CacheAndBloomFilterHostedService> logger
            , ICacheProvider cache
-           , IBloomFilter bloomFilter)
+           , IEnumerable<IBloomFilter> bloomFilters)
         {
             _logger = logger;
             _cache = cache;
-            _bloomFilter = bloomFilter;
+            _bloomFilters = bloomFilters;
         }
-
-        public async override Task StartAsync(CancellationToken cancellationToken)
-        {
-            await base.StartAsync(cancellationToken);
-
-            var filter = _cache.CacheOptions.PenetrationSetting.BloomFilter;
-            if (!await _cache.ExistsAsync(filter.Name))
-            {
-                await _bloomFilter.BloomReserveAsync(filter.Name, filter.ErrorRate, filter.Capacity);
-            }
-        }
-
-        public async override Task StopAsync(CancellationToken cancellationToken)
-        {
-            await base.StopAsync(cancellationToken);
-        }
-
         protected async override Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            var millisecondsDelay = 300;
+            #region BloomFilter Init
+            if (_bloomFilters?.Any() == true)
+            {
+                foreach (var filter in _bloomFilters)
+                    await filter.InitAsync();
+            }
+            #endregion
 
+            #region Confirm Caching Removed
             while (!stoppingToken.IsCancellationRequested)
             {
                 if (!LocalVariables.Instance.Queue.TryDequeue(out LocalVariables.Model model)
                     || model.CacheKeys?.Any() == false
                     || DateTime.Now > model.ExpireDt)
                 {
-                    await Task.Delay(millisecondsDelay, stoppingToken);
+                    await Task.Delay(_cache.CacheOptions.LockMs, stoppingToken);
                     continue;
                 }
 
@@ -67,10 +59,11 @@ namespace Adnc.Application.Shared.IdGeneraterWorkerNode
                     catch (Exception ex)
                     {
                         _logger.LogError(ex.Message, ex);
-                        await Task.Delay(millisecondsDelay, stoppingToken);
+                        await Task.Delay(_cache.CacheOptions.LockMs, stoppingToken);
                     }
                 }
             }
+            #endregion
         }
     }
 }

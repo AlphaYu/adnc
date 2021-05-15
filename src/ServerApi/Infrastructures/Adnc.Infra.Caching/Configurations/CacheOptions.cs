@@ -62,18 +62,18 @@ namespace Adnc.Infra.Caching.Configurations
 
         public sealed class PenetrationOptions
         {
-            public Filter BloomFilter { get; set; }
+            public bool Disable { get; set; }
 
-            public sealed class Filter
-            {
-                public bool Disable { get; set; }
+            public BloomFilterSetting BloomFilterSetting { get; set; }
+        }
 
-                public string Name { get; set; }
+        public sealed class BloomFilterSetting
+        {
+            public string Name { get; set; }
 
-                public int Capacity { get; set; }
+            public int Capacity { get; set; }
 
-                public double ErrorRate { get; set; }
-            }
+            public double ErrorRate { get; set; }
         }
     }
 }

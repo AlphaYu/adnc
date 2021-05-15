@@ -9,7 +9,7 @@ namespace Adnc.Infra.Caching.StackExchange
     /// <summary>
     /// Default redis caching provider.
     /// </summary>
-    public partial class DefaultRedisProvider : Adnc.Infra.Caching.IBloomFilter
+    public partial class DefaultRedisProvider : Adnc.Infra.Caching.IRedisProvider
     {
         public async Task<bool> BloomAddAsync(string key, string value)
         {

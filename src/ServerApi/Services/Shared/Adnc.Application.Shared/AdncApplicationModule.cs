@@ -17,6 +17,7 @@ using Adnc.Core.Shared;
 using Adnc.Infra.Caching;
 using Adnc.Application.Shared.Caching;
 using Adnc.Application.Shared.IdGeneraterWorkerNode;
+using Adnc.Application.Shared.HostedServices;
 
 namespace Adnc.Application.Shared
 {
@@ -80,12 +81,12 @@ namespace Adnc.Application.Shared
                    .InstancePerLifetimeScope();
 
             builder.RegisterAssemblyTypes(_appAssemblieToScan)
-                   .Where(t => t.IsAssignableTo<IAppService>() && !t.IsAbstract)
-                   .AsImplementedInterfaces()
-                   .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies)
-                   .InstancePerLifetimeScope()
-                   .EnableInterfaceInterceptors()
-                   .InterceptedBy(interceptors.ToArray());
+                       .Where(t => t.IsAssignableTo<IAppService>() && !t.IsAbstract)
+                       .AsImplementedInterfaces()
+                       .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies)
+                       .InstancePerLifetimeScope()
+                       .EnableInterfaceInterceptors()
+                       .InterceptedBy(interceptors.ToArray());
 
             //注册DtoValidators
             builder.RegisterAssemblyTypes(_appContractsAssemblieToScan)
@@ -101,8 +102,13 @@ namespace Adnc.Application.Shared
                         .WithParameter("serviceName", _appModuleName.ToLower())
                         .AsImplementedInterfaces()
                         .SingleInstance();
-            //注册caching补偿服务
-            builder.RegisterType<CachingHostedService>()
+            //注册布隆过滤器、caching补偿服务/布隆过滤器初始化服务
+            builder.RegisterType<DefaultBloomFilterFactory>().As<IBloomFilterFactory>().SingleInstance();
+            builder.RegisterAssemblyTypes(_appAssemblieToScan)
+                       .Where(t => t.IsAssignableTo<IBloomFilter>() && !t.IsAbstract)
+                       .AsImplementedInterfaces()
+                       .SingleInstance();
+            builder.RegisterType<CacheAndBloomFilterHostedService>()
                         .AsImplementedInterfaces()
                         .SingleInstance();
         }

@@ -2,7 +2,6 @@
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Collections.Generic;
 using Polly;
 using Adnc.Infra.Caching;
 using Adnc.Infra.Caching.Core;
@@ -11,31 +10,28 @@ using Adnc.Application.Shared.Consts;
 
 namespace Adnc.Application.Shared.Caching
 {
-    public interface ICacheService { }
+    public interface ICacheService
+    {
+    }
 
     public abstract class AbstractCacheService : ICacheService
     {
         private readonly Lazy<ICacheProvider> _cache;
         private readonly Lazy<IRedisProvider> _redisProvider;
+        private readonly Lazy<IDistributedLocker> _distributedLocker;
 
         public AbstractCacheService(Lazy<ICacheProvider> cache
-            , Lazy<IRedisProvider> redisProvider)
+            , Lazy<IRedisProvider> redisProvider
+            , Lazy<IDistributedLocker> distributedLocker)
         {
             _cache = cache;
             _redisProvider = redisProvider;
+            _distributedLocker = distributedLocker;
         }
-
-        internal IRedisProvider RedisProvider => _redisProvider.Value;
 
         public IObjectMapper Mapper { get; set; }
 
-        public string GetPreRemoveKey(IEnumerable<string> cacheKeys)
-        {
-            var hashCode = string.Join(",", cacheKeys).GetHashCode();
-            return $"{CachingConstValue.PreRemoveKey}{SharedCachingConsts.LinkChar}{hashCode}";
-        }
-
-        public string ConcatCacheKey(params object[] items)
+        public virtual string ConcatCacheKey(params object[] items)
         {
             if (items == null || items.Length == 0)
                 return string.Empty;
@@ -53,7 +49,7 @@ namespace Adnc.Application.Shared.Caching
             return sbuilder.ToString();
         }
 
-        public async Task RemoveCachesAsync(Func<CancellationToken, Task> dataOperater, params string[] cacheKeys)
+        public virtual async Task RemoveCachesAsync(Func<CancellationToken, Task> dataOperater, params string[] cacheKeys)
         {
             var pollyTimeoutSeconds = _cache.Value.CacheOptions.PollyTimeoutSeconds;
             var keyExpireSeconds = pollyTimeoutSeconds + 1;
@@ -64,7 +60,7 @@ namespace Adnc.Application.Shared.Caching
             var cancelTokenSource = new CancellationTokenSource();
             var timeoutPolicy = Policy.TimeoutAsync(pollyTimeoutSeconds, Polly.Timeout.TimeoutStrategy.Optimistic);
             await timeoutPolicy.ExecuteAsync(async (cancellToken) =>
-            {    
+            {
                 await dataOperater(cancellToken);
                 cancellToken.ThrowIfCancellationRequested();
             }, cancelTokenSource.Token);

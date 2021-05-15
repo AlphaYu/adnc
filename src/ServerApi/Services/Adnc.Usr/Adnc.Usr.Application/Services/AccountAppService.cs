@@ -40,6 +40,10 @@ namespace Adnc.Usr.Application.Services
 
         public async Task<AppSrvResult<UserValidateDto>> LoginAsync(UserLoginDto inputDto)
         {
+            var exists = await _cacheService.BloomFilters.Accounts.ExistsAsync(inputDto.Account.ToLower());
+            if(!exists)
+                return Problem(HttpStatusCode.NotFound, "用户名或密码错误");
+
             var user = await _userRepository.FetchAsync(x => new UserValidateDto()
             {
                 Id = x.Id
@@ -58,7 +62,6 @@ namespace Adnc.Usr.Application.Services
                     ,
                 RoleIds = x.RoleIds
             }, x => x.Account == inputDto.Account);
-
             if (user == null)
                 return Problem(HttpStatusCode.NotFound, "用户名或密码错误");
 

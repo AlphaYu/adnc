@@ -3,10 +3,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Adnc.Infra.Common.Helper.IdGeneraterInternal;
 using Adnc.Infra.Common.Extensions;
+using Adnc.Infra.Common.Helper.IdGeneraterInternal;
+using Adnc.Application.Shared.IdGeneraterWorkerNode;
 
-namespace Adnc.Application.Shared.IdGeneraterWorkerNode
+namespace Adnc.Application.Shared.HostedServices
 {
     public class WorkerNodeHostedService : BackgroundService
     {

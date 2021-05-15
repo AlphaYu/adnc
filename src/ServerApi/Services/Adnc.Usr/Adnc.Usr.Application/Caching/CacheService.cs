@@ -5,41 +5,59 @@ using System.Threading.Tasks;
 using Adnc.Application.Shared.Caching;
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Infra.Caching;
+using Adnc.Usr.Core.Entities;
 using Adnc.Usr.Application.Contracts.Consts;
 using Adnc.Usr.Application.Contracts.Dtos;
-using Adnc.Usr.Core.Entities;
 
 namespace Adnc.Usr.Application.Caching
 {
     public class CacheService : AbstractCacheService
     {
         private readonly Lazy<ICacheProvider> _cache;
-        //private readonly Lazy<IRedisProvider> _redisProvider;
+        private readonly Lazy<IDistributedLocker> _distributedLocker;
+        private readonly Lazy<IRedisProvider> _redisProvider;
         private readonly Lazy<IEfRepository<SysDept>> _deptRepository;
         private readonly Lazy<IEfRepository<SysMenu>> _menuRepository;
         private readonly Lazy<IEfRepository<SysRelation>> _relationRepository;
         private readonly Lazy<IEfRepository<SysRole>> _roleRepository;
         private readonly Lazy<IEfRepository<SysUser>> _userRepository;
+        private readonly Lazy<IBloomFilterFactory> _bloomFilterFactory;
 
         public CacheService(Lazy<ICacheProvider> cache
             , Lazy<IRedisProvider> redisProvider
+            , Lazy<IDistributedLocker> distributedLocker
             , Lazy<IEfRepository<SysDept>> deptRepository
             , Lazy<IEfRepository<SysMenu>> menuRepository
             , Lazy<IEfRepository<SysRelation>> relationRepository
             , Lazy<IEfRepository<SysRole>> roleRepository
-            , Lazy<IEfRepository<SysUser>> userRepository)
-            : base(cache, redisProvider)
+            , Lazy<IEfRepository<SysUser>> userRepository
+            , Lazy<IBloomFilterFactory> bloomFilterFactory)
+            : base(cache, redisProvider, distributedLocker)
         {
             _cache = cache;
+            _redisProvider = redisProvider;
+            _distributedLocker = distributedLocker;
             _deptRepository = deptRepository;
             _menuRepository = menuRepository;
             _relationRepository = relationRepository;
             _roleRepository = roleRepository;
             _userRepository = userRepository;
+            _bloomFilterFactory = bloomFilterFactory;
         }
+
+        internal (IBloomFilter CacheKeys, IBloomFilter Accounts) BloomFilters
+        {
+            get
+            {
+                var cacheFilter = _bloomFilterFactory.Value.GetBloomFilter(_cache.Value.CacheOptions.PenetrationSetting.BloomFilterSetting.Name);
+                var accountFilter = _bloomFilterFactory.Value.GetBloomFilter($"adnc:{nameof(BloomFilterAccount).ToLower()}");
+                return (cacheFilter, accountFilter);
+            }
+        }
+
         internal async Task SetValidateInfoToCacheAsync(UserValidateDto value)
         {
-            var cacheKey = ConcatCacheKey(CachingConsts.UserValidateInfoKeyPrefix, value.Id.ToString());
+            var cacheKey = ConcatCacheKey(CachingConsts.UserValidateInfoKeyPrefix, value.Id);
             await _cache.Value.SetAsync(cacheKey, value, TimeSpan.FromSeconds(CachingConsts.OneDay));
         }
 
