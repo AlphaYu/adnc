@@ -17,7 +17,6 @@ namespace Adnc.UnitTest.Cache
         private readonly ICacheProvider _cache;
         private readonly IRedisProvider _redisProvider;
         private readonly IDistributedLocker _distributedLocker;
-        private readonly IBloomFilter _bloomFilter;
         private RedisCacheFixture _fixture;
 
         public RedisCahceTests(RedisCacheFixture fixture, ITestOutputHelper output)
@@ -27,7 +26,6 @@ namespace Adnc.UnitTest.Cache
             _cache = _fixture.Container.Resolve<ICacheProvider>();
             _redisProvider = _fixture.Container.Resolve<IRedisProvider>();
             _distributedLocker = _fixture.Container.Resolve<IDistributedLocker>();
-            _bloomFilter = _fixture.Container.Resolve<IBloomFilter>();
         }
 
         [Fact]
@@ -138,7 +136,7 @@ namespace Adnc.UnitTest.Cache
         [Fact]
         public void TestRemoveAll()
         {
-            _cache.CacheOptions.PenetrationSetting.BloomFilter.Disable = true;
+            _cache.CacheOptions.PenetrationSetting.Disable = true;
 
             var key01 = "TestRemoveAll01".ToLower();
             var key02 = "TestRemoveAll02".ToLower();
@@ -183,7 +181,7 @@ namespace Adnc.UnitTest.Cache
         [Fact]
         public  async Task TestKeyExpire()
         {
-            _cache.CacheOptions.PenetrationSetting.BloomFilter.Disable = true;
+            _cache.CacheOptions.PenetrationSetting.Disable = true;
 
             var cacheKey1 = nameof(TestKeyExpire).ToLower() + ":" + DateTime.Now.Ticks;
             var cacheKey2 = nameof(TestKeyExpire).ToLower() + ":" + DateTime.Now.Ticks;
@@ -223,25 +221,25 @@ namespace Adnc.UnitTest.Cache
 
             await _redisProvider.KeyDelAsync(cacheKey);
 
-            await _bloomFilter.BloomReserveAsync(cacheKey, 0.001, 10000000);
+            await _redisProvider.BloomReserveAsync(cacheKey, 0.001, 10000000);
 
             var initValues = new List<string>();
             for (int index = 0; index < 100000; index++) initValues.Add($"adnc{index}");
-            await _bloomFilter.BloomAddAsync(cacheKey, initValues);
+            await _redisProvider.BloomAddAsync(cacheKey, initValues);
 
-            var trueResult = await _bloomFilter.BloomExistsAsync(cacheKey, "adnc100");
+            var trueResult = await _redisProvider.BloomExistsAsync(cacheKey, "adnc100");
             Assert.True(trueResult);
 
-            var falseResult = await _bloomFilter.BloomExistsAsync(cacheKey, "adnc");
+            var falseResult = await _redisProvider.BloomExistsAsync(cacheKey, "adnc");
             Assert.False(falseResult);
 
             var values = new List<string>() { "adnc88888", "adnc78888", "adnc68888", "adnc58888" };
-            var results = await _bloomFilter.BloomExistsAsync(cacheKey, values);
+            var results = await _redisProvider.BloomExistsAsync(cacheKey, values);
             var trueLength = results.Where(x => x == true).Count();
             Assert.Equal(values.Count, trueLength);
 
             values = new List<string>() { "danc888889", "danc888888", "danc8888888", "danc8888889" };
-            results = await _bloomFilter.BloomExistsAsync(cacheKey, values);
+            results = await _redisProvider.BloomExistsAsync(cacheKey, values);
             var falseLength = results.Where(x => x == false).Count();
             Assert.Equal(values.Count, falseLength);
         }

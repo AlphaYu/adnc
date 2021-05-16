@@ -23,11 +23,11 @@ namespace Adnc.UnitTest.Fixtures
                 ,
                 PenetrationSetting = new CacheOptions.PenetrationOptions
                 {
-                    BloomFilter = new CacheOptions.PenetrationOptions.Filter
+                    Disable = true
+                    ,
+                    BloomFilterSetting = new CacheOptions.BloomFilterSetting
                     {
                         Capacity = 10000000
-                        ,
-                        Disable = true
                         ,
                         Name ="adnc:bloomfilter"
                         ,
