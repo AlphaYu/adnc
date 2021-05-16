@@ -15,7 +15,7 @@ namespace Adnc.Usr.Application.Caching
     {
         private readonly Lazy<ICacheProvider> _cache;
         private readonly Lazy<IDistributedLocker> _distributedLocker;
-        private readonly Lazy<IRedisProvider> _redisProvider;
+        //private readonly Lazy<IRedisProvider> _redisProvider;
         private readonly Lazy<IServiceProvider> _services;
 
         public BloomFilterCacheKey(Lazy<ICacheProvider> cache
@@ -53,7 +53,7 @@ namespace Adnc.Usr.Application.Caching
                     ,CachingConsts.DetpListCacheKey
                     ,CachingConsts.DetpTreeListCacheKey
                     ,CachingConsts.DetpSimpleTreeListCacheKey
-                    ,CachingConsts.RoleAllCacheKey
+                    ,CachingConsts.RoleListCacheKey
                 };
 
                 var ids = new List<long>();

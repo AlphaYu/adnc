@@ -19,7 +19,7 @@ namespace Adnc.Usr.Application.Contracts.Consts
         public const string DetpTreeListCacheKey = "adnc:usr:depts:tree";
         public const string DetpSimpleTreeListCacheKey = "adnc:usr:depts:tree:simple";
 
-        public const string RoleAllCacheKey = "adnc:usr:roles";
+        public const string RoleListCacheKey = "adnc:usr:roles:list";
 
         //cache prefix
         public const string UserValidateInfoKeyPrefix = "adnc:usr:users:validateinfo";

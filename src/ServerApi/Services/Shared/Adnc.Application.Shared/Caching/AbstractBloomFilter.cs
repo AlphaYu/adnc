@@ -11,6 +11,11 @@ namespace Adnc.Application.Shared.Caching
         string Name { get; }
         double ErrorRate { get; }
         int Capacity { get; }
+
+        /// <summary>
+        /// 初始化布隆过滤器
+        /// </summary>
+        /// <returns></returns>
         Task InitAsync();
         Task<bool> AddAsync(string value);
         Task<bool[]> AddAsync(IEnumerable<string> values);

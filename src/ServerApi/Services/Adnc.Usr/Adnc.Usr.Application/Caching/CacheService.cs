@@ -106,7 +106,7 @@ namespace Adnc.Usr.Application.Caching
 
         internal async Task<List<RoleDto>> GetAllRolesFromCacheAsync()
         {
-            var cahceValue = await _cache.Value.GetAsync(CachingConsts.RoleAllCacheKey, async () =>
+            var cahceValue = await _cache.Value.GetAsync(CachingConsts.RoleListCacheKey, async () =>
             {
                 var allRoles = await _roleRepository.Value.GetAll(writeDb: true).OrderBy(x => x.Ordinal).ToListAsync();
                 return Mapper.Map<List<RoleDto>>(allRoles);
