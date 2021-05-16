@@ -5,13 +5,14 @@ using System.Threading.Tasks;
 using Polly;
 using Adnc.Infra.Caching;
 using Adnc.Infra.Caching.Core;
-using Adnc.Infra.Mapper;
 using Adnc.Application.Shared.Consts;
+using Adnc.Infra.Mapper;
 
 namespace Adnc.Application.Shared.Caching
 {
     public interface ICacheService
     {
+        Task PreheatAsync();
     }
 
     public abstract class AbstractCacheService : ICacheService
@@ -30,6 +31,8 @@ namespace Adnc.Application.Shared.Caching
         }
 
         public IObjectMapper Mapper { get; set; }
+
+        public abstract Task  PreheatAsync();
 
         public virtual string ConcatCacheKey(params object[] items)
         {

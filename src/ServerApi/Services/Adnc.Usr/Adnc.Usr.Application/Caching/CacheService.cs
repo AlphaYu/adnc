@@ -45,6 +45,16 @@ namespace Adnc.Usr.Application.Caching
             _bloomFilterFactory = bloomFilterFactory;
         }
 
+        public override async Task PreheatAsync()
+        {
+            await GetAllDeptsFromCacheAsync();
+            await GetAllRelationsFromCacheAsync();
+            await GetAllMenusFromCacheAsync();
+            await GetAllRolesFromCacheAsync();
+            await GetAllMenuCodesFromCacheAsync();
+            await GetDeptSimpleTreeListAsync();
+        }
+
         internal (IBloomFilter CacheKeys, IBloomFilter Accounts) BloomFilters
         {
             get

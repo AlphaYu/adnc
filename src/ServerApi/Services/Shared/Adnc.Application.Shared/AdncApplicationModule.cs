@@ -48,17 +48,22 @@ namespace Adnc.Application.Shared
             //注册依赖模块
             this.LoadDepends(builder);
 
+            #region register usercontext,operater
             //注册UserContext(IUserContext,IOperater)
             builder.RegisterType<UserContext>()
-                        .As<IUserContext,IOperater>()
+                        .As<IUserContext, IOperater>()
                         .InstancePerLifetimeScope();
+            #endregion
 
+            #region register opslog interceptor
             //注册操作日志拦截器
             builder.RegisterType<OpsLogInterceptor>()
                         .InstancePerLifetimeScope();
             builder.RegisterType<OpsLogAsyncInterceptor>()
                         .InstancePerLifetimeScope();
+            #endregion
 
+            #region register appservices,interceptors
             //注册应用服务与拦截器
             var interceptors = new List<Type>
             {
@@ -75,25 +80,23 @@ namespace Adnc.Application.Shared
             }
 
             builder.RegisterAssemblyTypes(_appAssemblieToScan)
-                   .Where(t => t.IsAssignableTo<ICacheService>() && !t.IsAbstract)
-                   .AsSelf()
-                   .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies)
-                   .InstancePerLifetimeScope();
-
-            builder.RegisterAssemblyTypes(_appAssemblieToScan)
                        .Where(t => t.IsAssignableTo<IAppService>() && !t.IsAbstract)
                        .AsImplementedInterfaces()
                        .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies)
                        .InstancePerLifetimeScope()
                        .EnableInterfaceInterceptors()
                        .InterceptedBy(interceptors.ToArray());
+            #endregion
 
+            #region register dto validators
             //注册DtoValidators
             builder.RegisterAssemblyTypes(_appContractsAssemblieToScan)
                    .Where(t => t.IsClosedTypeOf(typeof(IValidator<>)))
                    .AsImplementedInterfaces()
                    .InstancePerLifetimeScope();
+            #endregion
 
+            #region register idgenerater services
             //注册Id生成器工作节点服务类
             builder.RegisterType<WorkerNode>()
                         .AsSelf()
@@ -102,15 +105,27 @@ namespace Adnc.Application.Shared
                         .WithParameter("serviceName", _appModuleName.ToLower())
                         .AsImplementedInterfaces()
                         .SingleInstance();
-            //注册布隆过滤器、caching补偿服务/布隆过滤器初始化服务
-            builder.RegisterType<DefaultBloomFilterFactory>().As<IBloomFilterFactory>().SingleInstance();
+            #endregion
+
+            #region register cacheservice/bloomfilter
+            //注册布隆过滤器、cacheservice、cache补偿服务/布隆过滤器初始化服务
+            //cacheservcie
+            builder.RegisterAssemblyTypes(_appAssemblieToScan)
+                       .Where(t => t.IsAssignableTo<ICacheService>() && !t.IsAbstract)
+                       .AsSelf().PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies).InstancePerLifetimeScope()
+                       .As<ICacheService>().SingleInstance();
+            //bloomfilter
             builder.RegisterAssemblyTypes(_appAssemblieToScan)
                        .Where(t => t.IsAssignableTo<IBloomFilter>() && !t.IsAbstract)
                        .AsImplementedInterfaces()
                        .SingleInstance();
+            //bloomfilter factory
+            builder.RegisterType<DefaultBloomFilterFactory>().As<IBloomFilterFactory>().SingleInstance();
+            //cahce and bloomfiter hostedservice
             builder.RegisterType<CacheAndBloomFilterHostedService>()
                         .AsImplementedInterfaces()
                         .SingleInstance();
+            #endregion
         }
 
         private void LoadDepends(ContainerBuilder builder)

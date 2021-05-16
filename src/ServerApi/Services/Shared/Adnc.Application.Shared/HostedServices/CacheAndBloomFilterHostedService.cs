@@ -16,23 +16,31 @@ namespace Adnc.Application.Shared.HostedServices
         private readonly ILogger<CacheAndBloomFilterHostedService> _logger;
         private readonly ICacheProvider _cache;
         private readonly IEnumerable<IBloomFilter> _bloomFilters;
+        private readonly ICacheService _cacheService;
 
         public CacheAndBloomFilterHostedService(ILogger<CacheAndBloomFilterHostedService> logger
            , ICacheProvider cache
-           , IEnumerable<IBloomFilter> bloomFilters)
+           , IEnumerable<IBloomFilter> bloomFilters
+           , ICacheService cacheService)
         {
             _logger = logger;
             _cache = cache;
             _bloomFilters = bloomFilters;
+            _cacheService = cacheService;
         }
+
         protected async override Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            #region BloomFilter Init
+            #region Init BloomFilter 
             if (_bloomFilters?.Any() == true)
             {
                 foreach (var filter in _bloomFilters)
                     await filter.InitAsync();
             }
+            #endregion
+
+            #region Init Caches
+            await _cacheService.PreheatAsync();
             #endregion
 
             #region Confirm Caching Removed
