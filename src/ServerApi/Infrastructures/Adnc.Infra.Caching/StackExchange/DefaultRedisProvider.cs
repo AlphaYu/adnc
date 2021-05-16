@@ -141,14 +141,10 @@ namespace Adnc.Infra.Caching.StackExchange
                 if (item != null)
                 {
                     Set(cacheKey, item, expiration);
-                    //remove mutex key
-                    _redisDb.SafedUnLock(cacheKey, flag.LockValue);
                     return new CacheValue<T>(item, true);
                 }
                 else
                 {
-                    //remove mutex key
-                    _redisDb.SafedUnLock(cacheKey, flag.LockValue);
                     return CacheValue<T>.NoValue;
                 }
             }
@@ -158,6 +154,7 @@ namespace Adnc.Infra.Caching.StackExchange
             }
             finally
             {
+                //remove mutex key
                 _redisDb.SafedUnLock(cacheKey, flag.LockValue);
             }
         }

@@ -112,15 +112,10 @@ namespace Adnc.Infra.Caching.StackExchange
                 if (item != null)
                 {
                     await SetAsync(cacheKey, item, expiration);
-
-                    //remove mutex key
-                    await _redisDb.SafedUnLockAsync(cacheKey, flag.LockValue);
                     return new CacheValue<T>(item, true);
                 }
                 else
                 {
-                    //remove mutex key
-                    await _redisDb.SafedUnLockAsync(cacheKey, flag.LockValue);
                     return CacheValue<T>.NoValue;
                 }
             }
@@ -130,6 +125,7 @@ namespace Adnc.Infra.Caching.StackExchange
             }
             finally
             {
+                //remove mutex key
                 await _redisDb.SafedUnLockAsync(cacheKey, flag.LockValue);
             }
         }
