@@ -42,7 +42,7 @@ namespace Adnc.Usr.Application.Services
         {
             var exists = await _cacheService.BloomFilters.Accounts.ExistsAsync(inputDto.Account.ToLower());
             if(!exists)
-                return Problem(HttpStatusCode.NotFound, "用户名或密码错误");
+                return Problem(HttpStatusCode.BadRequest, "用户名或密码错误");
 
             var user = await _userRepository.FetchAsync(x => new UserValidateDto()
             {
@@ -63,7 +63,7 @@ namespace Adnc.Usr.Application.Services
                 RoleIds = x.RoleIds
             }, x => x.Account == inputDto.Account);
             if (user == null)
-                return Problem(HttpStatusCode.NotFound, "用户名或密码错误");
+                return Problem(HttpStatusCode.BadRequest, "用户名或密码错误");
 
             dynamic log = new ExpandoObject();
             log.Account = inputDto.Account;
