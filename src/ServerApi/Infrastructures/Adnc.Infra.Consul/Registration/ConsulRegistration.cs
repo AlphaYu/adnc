@@ -158,13 +158,13 @@ namespace Adnc.Infra.Consul.Registration
             if (finalMatches.Count() == 1)
             {
                 serviceAddress = new Uri($"{finalMatches[0].Protocol}://{ finalMatches[0].ServiceIP}:{finalMatches[0].Port}");
-                logger.LogInformation("serviceAddress", serviceAddress);
+                logger.LogInformation("serviceAddress:{0}", serviceAddress);
                 return serviceAddress;
             }
 
             //匹配多个，直接返回第一个
             serviceAddress = new Uri($"{finalMatches[0].Protocol}://{ finalMatches[0].ServiceIP}:{finalMatches[0].Port}");
-            logger.LogInformation("serviceAddress-first", serviceAddress);
+            logger.LogInformation("serviceAddress-first:{0}", serviceAddress);
             return serviceAddress;
         }
     }
