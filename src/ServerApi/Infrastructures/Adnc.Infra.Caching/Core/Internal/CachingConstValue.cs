@@ -19,5 +19,7 @@
         public const string PreRemoveAllKeyPrefix = "adnc:preremovekey:prefix:all";
 
         public const string StackExchange = "redis.stackexchange";
+
+        public const int PollyTimeout = 5;
     }
 }

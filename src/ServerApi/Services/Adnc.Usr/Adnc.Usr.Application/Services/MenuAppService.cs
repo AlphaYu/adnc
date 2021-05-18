@@ -10,6 +10,7 @@ using Adnc.Infra.Common.Helper;
 using Adnc.Application.Shared.Services;
 using Adnc.Infra.Common.Extensions;
 using Adnc.Usr.Application.Contracts.Services;
+using Adnc.Usr.Application.Caching;
 
 namespace Adnc.Usr.Application.Services
 {

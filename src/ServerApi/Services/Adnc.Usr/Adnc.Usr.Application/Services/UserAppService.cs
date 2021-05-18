@@ -12,6 +12,8 @@ using Adnc.Application.Shared.Dtos;
 using Adnc.Application.Shared.Services;
 using Adnc.Usr.Application.Contracts.Dtos;
 using Adnc.Usr.Application.Contracts.Services;
+using Adnc.Usr.Application.Caching;
+using Adnc.Usr.Application.Contracts.Consts;
 
 namespace Adnc.Usr.Application.Services
 {
@@ -34,8 +36,14 @@ namespace Adnc.Usr.Application.Services
 
             var user = Mapper.Map<SysUser>(input);
             user.Id = IdGenerater.GetNextId();
+            user.Account = user.Account.ToLower();
             user.Salt = SecurityHelper.GenerateRandomCode(5);
             user.Password = HashHelper.GetHashedString(HashType.MD5, user.Password, user.Salt);
+
+            var cacheKey = _cacheService.ConcatCacheKey(CachingConsts.UserValidateInfoKeyPrefix, user.Id);
+            await _cacheService.BloomFilters.CacheKeys.AddAsync(cacheKey);
+            await _cacheService.BloomFilters.Accounts.AddAsync(user.Account);
+
             await _userRepository.InsertAsync(user);
 
             return user.Id;

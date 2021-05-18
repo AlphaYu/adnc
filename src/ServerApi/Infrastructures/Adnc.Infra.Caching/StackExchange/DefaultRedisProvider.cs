@@ -44,6 +44,8 @@ namespace Adnc.Infra.Caching.StackExchange
         /// </summary>
         private readonly CacheOptions _cacheOptions;
 
+        public override CacheOptions CacheOptions => _cacheOptions;
+
         /// <summary>
         /// The cache stats.
         /// </summary>
@@ -98,6 +100,17 @@ namespace Adnc.Infra.Caching.StackExchange
             ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
             ArgumentCheck.NotNegativeOrZero(expiration, nameof(expiration));
 
+            if (!_cacheOptions.PenetrationSetting.Disable)
+            {
+                var exists = _redisDb.BloomExistsAsync(_cacheOptions.PenetrationSetting.BloomFilterSetting.Name, cacheKey).GetAwaiter().GetResult();
+                if (!exists)
+                {
+                    if (_cacheOptions.EnableLogging)
+                        _logger?.LogInformation($"Cache Penetrated : cachekey = {cacheKey}");
+                    return CacheValue<T>.NoValue;
+                }
+            }
+
             var result = _redisDb.StringGet(cacheKey);
             if (!result.IsNull)
             {
@@ -122,19 +135,27 @@ namespace Adnc.Infra.Caching.StackExchange
                 return Get(cacheKey, dataRetriever, expiration);
             }
 
-            var item = dataRetriever();
-            if (item != null)
+            try
             {
-                Set(cacheKey, item, expiration);
-                //remove mutex key
-                _redisDb.SafedUnLock(cacheKey, flag.LockValue);
-                return new CacheValue<T>(item, true);
+                var item = dataRetriever();
+                if (item != null)
+                {
+                    Set(cacheKey, item, expiration);
+                    return new CacheValue<T>(item, true);
+                }
+                else
+                {
+                    return CacheValue<T>.NoValue;
+                }
             }
-            else
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+            }
+            finally
             {
                 //remove mutex key
                 _redisDb.SafedUnLock(cacheKey, flag.LockValue);
-                return CacheValue<T>.NoValue;
             }
         }
 
@@ -147,6 +168,17 @@ namespace Adnc.Infra.Caching.StackExchange
         protected override CacheValue<T> BaseGet<T>(string cacheKey)
         {
             ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+
+            if (!_cacheOptions.PenetrationSetting.Disable)
+            {
+                var exists = _redisDb.BloomExistsAsync(_cacheOptions.PenetrationSetting.BloomFilterSetting.Name, cacheKey).GetAwaiter().GetResult();
+                if (!exists)
+                {
+                    if (_cacheOptions.EnableLogging)
+                        _logger?.LogInformation($"Cache Penetrated : cachekey = {cacheKey}");
+                    return CacheValue<T>.NoValue;
+                }
+            }
 
             var result = _redisDb.StringGet(cacheKey);
             if (!result.IsNull)

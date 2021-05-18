@@ -44,6 +44,7 @@ using Adnc.Infra.Mongo.Configuration;
 using Adnc.Application.Shared.RpcServices;
 using Adnc.Infra.Common.Helper;
 using Adnc.WebApi.Shared.Extensions;
+using Adnc.Infra.EfCore.Interceptors;
 
 namespace Adnc.WebApi.Shared
 {
@@ -164,6 +165,7 @@ namespace Adnc.WebApi.Shared
 
                 if (_environment.IsDevelopment())
                 {
+                    options.AddInterceptors(new CustomCommandInterceptor());
                     options.EnableSensitiveDataLogging();
                     options.EnableDetailedErrors();
                 }
@@ -228,7 +230,7 @@ namespace Adnc.WebApi.Shared
                         var claims = context.Principal.Claims;
                         userContext.Id = long.Parse(claims.First(x => x.Type == JwtRegisteredClaimNames.Sub).Value);
                         userContext.Account = claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
-                        //userContext.Name = claims.First(x => x.Type == ClaimTypes.Name).Value;
+                        userContext.Name = claims.First(x => x.Type == ClaimTypes.Name).Value;
                         //userContext.Email = claims.First(x => x.Type == JwtRegisteredClaimNames.Email).Value;
                         //string[] roleIds = claims.First(x => x.Type == ClaimTypes.Role).Value.Split(",", StringSplitOptions.RemoveEmptyEntries);
                         userContext.RemoteIpAddress = context.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();

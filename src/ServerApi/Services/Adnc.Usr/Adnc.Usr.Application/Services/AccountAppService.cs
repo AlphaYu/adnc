@@ -13,6 +13,7 @@ using Adnc.Infra.Common.Extensions;
 using Adnc.Application.Shared.Services;
 using Adnc.Usr.Application.Contracts.Services;
 using Adnc.Usr.Application.Contracts.Consts;
+using Adnc.Usr.Application.Caching;
 
 namespace Adnc.Usr.Application.Services
 {
@@ -39,6 +40,10 @@ namespace Adnc.Usr.Application.Services
 
         public async Task<AppSrvResult<UserValidateDto>> LoginAsync(UserLoginDto inputDto)
         {
+            var exists = await _cacheService.BloomFilters.Accounts.ExistsAsync(inputDto.Account.ToLower());
+            if(!exists)
+                return Problem(HttpStatusCode.BadRequest, "用户名或密码错误");
+
             var user = await _userRepository.FetchAsync(x => new UserValidateDto()
             {
                 Id = x.Id
@@ -57,9 +62,8 @@ namespace Adnc.Usr.Application.Services
                     ,
                 RoleIds = x.RoleIds
             }, x => x.Account == inputDto.Account);
-
             if (user == null)
-                return Problem(HttpStatusCode.NotFound, "用户名或密码错误");
+                return Problem(HttpStatusCode.BadRequest, "用户名或密码错误");
 
             dynamic log = new ExpandoObject();
             log.Account = inputDto.Account;
@@ -91,12 +95,13 @@ namespace Adnc.Usr.Application.Services
                 log.Message = problem.Detail;
                 log.StatusCode = problem.Status;
 
-                await _cacheService.RemoveCachesAsync(async () =>
+                await _cacheService.RemoveCachesAsync(async (cancellToken) =>
                 {
-                    await _userRepository.UpdateAsync(new SysUser() { Id = user.Id, Status = 2 }, UpdatingProps<SysUser>(x => x.Status));
-                }, _cacheService.ConcatCacheKey(CachingConsts.UserLoginInfoKeyPrefix, user.Id.ToString()));
+                    await _userRepository.UpdateAsync(new SysUser() { Id = user.Id, Status = 1 }, UpdatingProps<SysUser>(x => x.Status), cancellToken);
+                }, _cacheService.ConcatCacheKey(CachingConsts.UserValidateInfoKeyPrefix, user.Id.ToString()));
 
                 _mqProducer.BasicPublish(MqExchanges.Logs, MqRoutingKeys.Loginlog, log);
+
                 return problem;
             }
 

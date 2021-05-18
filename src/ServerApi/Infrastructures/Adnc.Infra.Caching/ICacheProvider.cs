@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Adnc.Infra.Caching.Configurations;
 using Adnc.Infra.Caching.Core;
 using Adnc.Infra.Caching.Core.Serialization;
 
@@ -13,6 +14,8 @@ namespace Adnc.Infra.Caching
         /// </summary>
         /// <value>The name.</value>
         string Name { get; }
+
+        CacheOptions CacheOptions { get; }
 
         /// <summary>
         /// The serializer.
@@ -170,5 +173,13 @@ namespace Adnc.Infra.Caching
         /// <param name="cacheKey">Cache key.</param>
         /// <param name="type">Object Type.</param>
         Task<object> GetAsync(string cacheKey, Type type);
+
+        /// <summary>
+        /// Set the keys  TTL
+        /// </summary>
+        /// <param name="cacheKeys">Cache keys.</param>
+        /// <param name="seconds">Expiration .</param>
+        /// <returns></returns>
+        Task KeyExpireAsync(IEnumerable<string> cacheKeys, int seconds);
     }
 }

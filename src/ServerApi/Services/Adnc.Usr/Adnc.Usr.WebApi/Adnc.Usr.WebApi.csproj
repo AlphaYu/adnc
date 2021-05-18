@@ -40,6 +40,7 @@
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
+		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.13" />
 	</ItemGroup>
 	
 	<ItemGroup>
@@ -53,12 +54,6 @@
     <ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Mongo\Adnc.Infra.Mongo.csproj" />
     <ProjectReference Include="..\..\Shared\Adnc.WebApi.Shared\Adnc.WebApi.Shared.csproj" />
     <ProjectReference Include="..\Adnc.Usr.Application\Adnc.Usr.Application.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Dockerfile">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties properties_4launchsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>

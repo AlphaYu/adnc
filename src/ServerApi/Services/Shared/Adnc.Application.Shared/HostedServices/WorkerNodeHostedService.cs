@@ -3,15 +3,16 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Adnc.Infra.Common.Helper.IdGeneraterInternal;
 using Adnc.Infra.Common.Extensions;
+using Adnc.Infra.Common.Helper.IdGeneraterInternal;
+using Adnc.Application.Shared.IdGeneraterWorkerNode;
 
-namespace Adnc.Application.Shared.IdGeneraterWorkerNode
+namespace Adnc.Application.Shared.HostedServices
 {
     public class WorkerNodeHostedService : BackgroundService
     {
         private readonly ILogger<WorkerNodeHostedService> _logger;
-        private readonly string  _serviceName;
+        private readonly string _serviceName;
         private readonly WorkerNode _workerNode;
         private readonly int _millisecondsDelay = 1000 * 60;
 
@@ -56,13 +57,13 @@ namespace Adnc.Application.Shared.IdGeneraterWorkerNode
                     await Task.Delay(_millisecondsDelay, stoppingToken);
 
                     if (stoppingToken.IsCancellationRequested) break;
-                    
+
                     await _workerNode.RefreshWorkerIdScoreAsync(_serviceName, YitterSnowFlake.CurrentWorkerId);
                 }
                 catch (Exception ex)
                 {
                     _logger.LogError(ex.Message, ex);
-                    await Task.Delay(1000 * 10, stoppingToken);
+                    await Task.Delay(_millisecondsDelay / 3, stoppingToken);
                 }
             }
         }

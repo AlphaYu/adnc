@@ -12,6 +12,7 @@ using Adnc.WebApi.Shared;
 using Adnc.WebApi.Shared.Middleware;
 using Adnc.Infra.Consul;
 using DotNetCore.CAP.Dashboard.NodeDiscovery;
+using Microsoft.Extensions.Logging;
 
 namespace Microsoft.AspNetCore.Builder
 {
@@ -107,6 +108,8 @@ namespace Microsoft.AspNetCore.Builder
             var consulAdderss = new Uri(consulConfig.ConsulUrl);
             var discoverOptions = app.ApplicationServices.GetService<DiscoveryOptions>();
             var currenServerAddress = app.GetServiceAddress(consulConfig);
+            var logger = app.ApplicationServices.GetRequiredService<ILogger<SharedServicesRegistration>>();
+            logger.LogInformation("CapServiceAddress:{0}:", $"{ currenServerAddress.Host}:{ currenServerAddress.Port }");
             discoverOptions.DiscoveryServerHostName = consulAdderss.Host;
             discoverOptions.DiscoveryServerPort = consulAdderss.Port;
             discoverOptions.CurrentNodeHostName = currenServerAddress.Host;

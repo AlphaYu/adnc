@@ -940,5 +940,123 @@ namespace Adnc.Infra.Caching
         /// <returns></returns>
         Task<dynamic> ScriptEvaluateAsync(string script, object parameters = null, CommandFlags flags = CommandFlags.None);
         #endregion
+
+        #region bitmap
+        /// <summary>
+        /// https://redis.io/commands/getbit
+        /// </summary>
+        /// <param name="cacheKey"></param>
+        /// <param name="offset"></param>
+        /// <returns></returns>
+        bool StringGetBit(string cacheKey, long offset);
+
+        /// <summary>
+        /// https://redis.io/commands/getbit
+        /// </summary>
+        /// <param name="cacheKey"></param>
+        /// <param name="offsets"></param>
+        /// <returns></returns>
+        List<bool> StringGetBit(string cacheKey, IEnumerable<long> offsets);
+
+        /// <summary>
+        /// https://redis.io/commands/setbit
+        /// </summary>
+        /// <param name="cacheKey"></param>
+        /// <param name="position"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        bool StringSetBit(string cacheKey, long position, bool value);
+
+        /// <summary>
+        /// https://redis.io/commands/setbit
+        /// </summary>
+        /// <param name="cacheKey"></param>
+        /// <param name="offsets"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        List<bool> StringSetBit(string cacheKey, IEnumerable<long> offsets, bool value);
+
+        /// <summary>
+        /// https://redis.io/commands/getbit
+        /// </summary>
+        /// <param name="cacheKey"></param>
+        /// <param name="offset"></param>
+        /// <returns></returns>
+        Task<bool> StringGetBitAsync(string cacheKey, long offset);
+
+        /// <summary>
+        /// https://redis.io/commands/getbit
+        /// </summary>
+        /// <param name="cacheKey"></param>
+        /// <param name="offsets"></param>
+        /// <returns></returns>
+        Task<List<bool>> StringGetBitAsync(string cacheKey, IEnumerable<long> offsets);
+
+        /// <summary>
+        /// https://redis.io/commands/setbit
+        /// </summary>
+        /// <param name="cacheKey"></param>
+        /// <param name="offset"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        Task<bool> StringSetBitAsync(string cacheKey, long offset, bool value);
+
+        /// <summary>
+        /// https://redis.io/commands/setbit
+        /// </summary>
+        /// <param name="cacheKey"></param>
+        /// <param name="offsets"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        Task<List<bool>> StringSetBitAsync(string cacheKey, IEnumerable<long> offsets, bool value);
+        #endregion
+
+        #region Bloom Filter
+        /// <summary>
+        /// Creates an empty Bloom Filter with a single sub-filter for the initial capacity requested and with an upper bound error_rate . 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="errorRate"></param>
+        /// <param name="initialCapacity"></param>
+        /// <returns></returns>
+        Task BloomReserveAsync(string key, double errorRate, int initialCapacity);
+
+        /// <summary>
+        /// Adds an item to the Bloom Filter, creating the filter if it does not yet exist.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        Task<bool> BloomAddAsync(string key, string value);
+
+        /// <summary>
+        /// Adds one or more items to the Bloom Filter and creates the filter if it does not exist yet. 
+        /// This command operates identically to BF.ADD except that it allows multiple inputs and returns multiple values.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="key"></param>
+        /// <param name="values"></param>
+        /// <returns></returns>
+        Task<bool[]> BloomAddAsync(string key, IEnumerable<string> values);
+
+        /// <summary>
+        /// Determines whether an item may exist in the Bloom Filter or not.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        Task<bool> BloomExistsAsync(string key, string value);
+
+        /// <summary>
+        /// Determines if one or more items may exist in the filter or not.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="key"></param>
+        /// <param name="values"></param>
+        /// <returns></returns>
+        Task<bool[]> BloomExistsAsync(string key, IEnumerable<string> values);
+        #endregion
     }
 }

@@ -6,7 +6,7 @@ namespace Adnc.Infra.Caching.Configurations
     /// <summary>
     /// redis options.
     /// </summary>
-    public class CacheOptions
+    public sealed class CacheOptions
     {
         public CacheOptions()
         {
@@ -45,14 +45,35 @@ namespace Adnc.Infra.Caching.Configurations
         public int LockMs { get; set; } = 5000;
 
         /// <summary>
-        /// allow cache penetrated
+        ///Penetration setting
         /// </summary>
-        public bool AllowPenetration { get; set; } = false;
+        public PenetrationOptions PenetrationSetting { get; set; }
 
         /// <summary>
         /// Gets or sets the serializer name that should be use in this provider.
         /// Mainly for distributed cache
         /// </summary>
         public string SerializerName { get; set; }
+
+        /// <summary>
+        /// polly timeout seconds
+        /// </summary>
+        public int PollyTimeoutSeconds { get; set; } = 11;
+
+        public sealed class PenetrationOptions
+        {
+            public bool Disable { get; set; }
+
+            public BloomFilterSetting BloomFilterSetting { get; set; }
+        }
+
+        public sealed class BloomFilterSetting
+        {
+            public string Name { get; set; }
+
+            public int Capacity { get; set; }
+
+            public double ErrorRate { get; set; }
+        }
     }
 }

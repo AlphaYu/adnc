@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Adnc.Core.Shared.Entities.Config;
+using Adnc.Core.Shared.EntityConsts.Usr;
 
 namespace Adnc.Usr.Core.Entities.Config
 {
@@ -10,8 +11,8 @@ namespace Adnc.Usr.Core.Entities.Config
         {
             base.Configure(builder);
 
-            builder.Property(x => x.Name).IsRequired().HasMaxLength(32);
-            builder.Property(x => x.Tips).HasMaxLength(64);
+            builder.Property(x => x.Name).IsRequired().HasMaxLength(RoleConsts.Name_MaxLength);
+            builder.Property(x => x.Tips).HasMaxLength(RoleConsts.Tips_MaxLength);
 
             //一对多,SysDept没有UserId字段
             builder.HasMany(d => d.Relations)

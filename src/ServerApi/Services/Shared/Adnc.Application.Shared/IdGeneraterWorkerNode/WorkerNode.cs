@@ -24,7 +24,7 @@ namespace Adnc.Application.Shared.IdGeneraterWorkerNode
             _logger = logger;
         }
 
-        internal async Task InitWorkerNodesAsync(string serviceName,long? score=null)
+        internal async Task InitWorkerNodesAsync(string serviceName)
         {
             var workerIdSortedSetCacheKey = string.Format(SharedCachingConsts.WorkerIdSortedSetCacheKey, serviceName);
 

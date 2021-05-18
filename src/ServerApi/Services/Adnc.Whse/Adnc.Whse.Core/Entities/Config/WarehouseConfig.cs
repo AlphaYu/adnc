@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Adnc.Core.Shared.Entities.Config;
+using Adnc.Core.Shared.EntityConsts.Whse;
 
 namespace Adnc.Whse.Core.Entities.Config
 {
@@ -15,8 +16,8 @@ namespace Adnc.Whse.Core.Entities.Config
 
             builder.OwnsOne(x => x.Position, y =>
             {
-                y.Property(x => x.Code).IsRequired().HasColumnName("PositionCode").HasMaxLength(32);
-                y.Property(x => x.Description).HasColumnName("PositionDescription").HasMaxLength(64);
+                y.Property(x => x.Code).IsRequired().HasColumnName("PositionCode").HasMaxLength(WhseConsts.Code_MaxLength);
+                y.Property(x => x.Description).HasColumnName("PositionDescription").HasMaxLength(WhseConsts.Description_MaxLength);
             });
         }
     }

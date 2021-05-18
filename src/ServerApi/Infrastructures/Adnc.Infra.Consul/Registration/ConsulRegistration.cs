@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Consul;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Logging;
 
 namespace Adnc.Infra.Consul.Registration
 {
@@ -18,7 +19,10 @@ namespace Adnc.Infra.Consul.Registration
             var consulClient = new ConsulClient(cfg => cfg.Address = new Uri(consulOption.ConsulUrl));
 
             var serviceAddress = GetServiceAddressInternal(app, consulOption);
-            var serverId = $"{consulOption.ServiceName}.{(DateTime.UtcNow.Ticks - 621355968000000000) / 10000000}";
+            var serverId = $"{consulOption.ServiceName}.{DateTime.Now.Ticks}";
+
+            var logger = app.ApplicationServices.GetRequiredService<ILogger<ConsulConfig>>();
+            logger.LogInformation("serviceAddress:{0}:", serviceAddress);
 
             var lifetime = app.ApplicationServices.GetRequiredService<IHostApplicationLifetime>();
             lifetime.ApplicationStarted.Register(() =>
@@ -103,10 +107,15 @@ namespace Adnc.Infra.Consul.Registration
                 listenUrls.Add(new Uri(address));
             });
 
+            var logger = app.ApplicationServices.GetRequiredService<ILogger<ConsulConfig>>();
+
+
             //第一种注册方式，在配置文件中指定服务地址
             //如果配置了服务地址, 只需要检测是否在listenUrls里面即可
             if (!string.IsNullOrEmpty(consulOption.ServiceUrl))
             {
+                logger.LogInformation("consulOption.ServiceUrl:{0}", consulOption.ServiceUrl);
+
                 serviceAddress = new Uri(consulOption.ServiceUrl);
                 bool isExists = listenUrls.Where(p => p.Host == serviceAddress.Host || p.Host == "0.0.0.0").Any();
                 if (isExists)
@@ -120,6 +129,7 @@ namespace Adnc.Infra.Consul.Registration
             var dockerListenServiceUrl = Environment.GetEnvironmentVariable("DOCKER_LISTEN_HOSTANDPORT");
             if (!string.IsNullOrEmpty(dockerListenServiceUrl))
             {
+                logger.LogInformation("dockerListenServiceUrl:{0}", dockerListenServiceUrl);
                 serviceAddress = new Uri(dockerListenServiceUrl);
                 return serviceAddress;
             }
@@ -148,11 +158,13 @@ namespace Adnc.Infra.Consul.Registration
             if (finalMatches.Count() == 1)
             {
                 serviceAddress = new Uri($"{finalMatches[0].Protocol}://{ finalMatches[0].ServiceIP}:{finalMatches[0].Port}");
+                logger.LogInformation("serviceAddress:{0}", serviceAddress);
                 return serviceAddress;
             }
 
             //匹配多个，直接返回第一个
             serviceAddress = new Uri($"{finalMatches[0].Protocol}://{ finalMatches[0].ServiceIP}:{finalMatches[0].Port}");
+            logger.LogInformation("serviceAddress-first:{0}", serviceAddress);
             return serviceAddress;
         }
     }

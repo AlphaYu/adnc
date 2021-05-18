@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Adnc.Core.Shared.Entities.Config;
+using Adnc.Core.Shared.EntityConsts.Cust;
 
 namespace Adnc.Cus.Core.Entities.Config
 {
@@ -14,11 +15,11 @@ namespace Adnc.Cus.Core.Entities.Config
 
             builder.HasMany(d => d.TransactionLogs).WithOne().HasForeignKey(p => p.CustomerId).OnDelete(DeleteBehavior.Cascade);
 
-            builder.Property(x => x.Account).IsRequired().HasMaxLength(16);
+            builder.Property(x => x.Account).IsRequired().HasMaxLength(CustConsts.Account_MaxLength);
 
-            builder.Property(x => x.Nickname).IsRequired().HasMaxLength(16);
+            builder.Property(x => x.Nickname).IsRequired().HasMaxLength(CustConsts.Nickname_MaxLength);
 
-            builder.Property(x => x.Realname).IsRequired().HasMaxLength(16);
+            builder.Property(x => x.Realname).IsRequired().HasMaxLength(CustConsts.Realname_Maxlength);
         }
     }
 }
