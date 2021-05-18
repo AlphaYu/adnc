@@ -31,4 +31,9 @@ RUN dotnet publish "Adnc.Usr.WebApi.csproj" -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+#配置本服务在skywalking名称
+ENV SKYWALKING__SERVICENAME=adnc-usr-webapi
+ENV ASPNETCORE_HOSTINGSTARTUPASSEMBLIES=SkyAPM.Agent.AspNetCore
+#设置时区为东八区
+ENV TZ Asia/Shanghai
 ENTRYPOINT ["dotnet", "Adnc.Usr.WebApi.dll"]
