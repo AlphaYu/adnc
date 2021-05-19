@@ -19,6 +19,23 @@
 - 订单中心：DDD开发模式demo
 - 仓储中心：DDD开发模式demo
 
+## 文档
+#### 如何快速跑起来
+- 详细介绍如何使用docker安装redis、mysql、rabbitmq、mongodb，以及如何在本地配置ClientApp、ServerApi。<br/>
+[请点击链接，查看详细介绍](https://github.com/AlphaYu/Adnc/wiki/%E5%A6%82%E4%BD%95%E5%BF%AB%E9%80%9F%E8%B7%91%E8%B5%B7%E6%9D%A5)
+
+#### 如何手动部署到服务器
+- 详细介绍如何使用docker安装consul集群、使用consul注册中心、安装配置Skywalking，以及相关项目dockerfile文件编写和配置等。<br/>
+[请点击链接，查看详细介绍](https://github.com/AlphaYu/Adnc/wiki/Adnc%E5%A6%82%E4%BD%95%E6%89%8B%E5%8A%A8%E9%83%A8%E7%BD%B2(docker,consul,skywalking,nginx))
+
+#### 如何使用Cache Redis 分布式锁 布隆过滤器
+- 详细介绍如何使用Cache、Redis、分布式锁以及布隆过滤器。如配置Cache防止雪崩、击穿、穿透以及缓存同步。<br/>
+[请点击链接，查看详细介绍](https://github.com/AlphaYu/Adnc/wiki/%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8Cache-Redis-%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81-%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8)
+
+#### 如何使用EFCore仓储
+- 详细介绍EFCore仓储基础功能、工作单元、CodeFirst，提供了丰富的演示代码以及演示代码对应的Sql语句。<br/>
+[请点击链接，查看详细介绍](https://github.com/AlphaYu/Adnc/wiki/%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E4%BB%93%E5%82%A8(%E4%B8%80)-%E5%9F%BA%E7%A1%80%E5%8A%9F%E8%83%BD)
+
 ## 演示
 - <a href="http://adnc.aspdotnetcore.net" target="_blank">http://adnc.aspdotnetcore.net</a>
 
@@ -33,23 +50,6 @@
   - 开发微服务项目生成工具
   - 集成<a href="https://github.com/dapr/dapr" target="_blank">Dapr</a>
   - 集成<a href="https://github.com/quartznet/quartznet" target="_blank">Quartz.Net</a>实现框架计划调度功能。
-
-## 文档
-#### 如何快速跑起来
-- 详细介绍如何使用docker安装redis、mysql、rabbitmq、mongodb，以及如何在本地配置ClientApp、ServerApi。<br/>
-[请点击链接，查看详细介绍](https://github.com/AlphaYu/Adnc/wiki/%E5%A6%82%E4%BD%95%E5%BF%AB%E9%80%9F%E8%B7%91%E8%B5%B7%E6%9D%A5)
-
-#### 如何手动部署到服务器
-- 详细介绍如何使用docker安装consul集群、使用consul注册中心、安装配置Skywalking，以及相关项目dockerfile文件编写和配置等。<br/>
-[请点击链接，查看详细介绍](https://github.com/AlphaYu/Adnc/wiki/Adnc%E5%A6%82%E4%BD%95%E6%89%8B%E5%8A%A8%E9%83%A8%E7%BD%B2(docker,consul,skywalking,nginx))
-
-#### 如何实现读写分离
-- 详细介绍为什么要通过中间件实现读写分离以及EFCore基于中间件如何写代码。<br/>
-[请点击链接，查看详细介绍](https://github.com/AlphaYu/Adnc/wiki/%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E8%AF%BB%E5%86%99%E5%88%86%E7%A6%BB)
-
-#### 如何使用EFCore仓储
-- 详细介绍EFCore仓储基础功能、工作单元、CodeFirst，提供了丰富的演示代码以及演示代码对应的Sql语句。<br/>
-[请点击链接，查看详细介绍](https://github.com/AlphaYu/Adnc/wiki/%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E4%BB%93%E5%82%A8(%E4%B8%80)-%E5%9F%BA%E7%A1%80%E5%8A%9F%E8%83%BD)
 
 ## 目录结构
   - src
