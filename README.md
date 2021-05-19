@@ -28,6 +28,10 @@
 - 详细介绍如何使用docker安装consul集群、使用consul注册中心、安装配置Skywalking，以及相关项目dockerfile文件编写和配置等。<br/>
 [请点击链接，查看详细介绍](https://github.com/AlphaYu/Adnc/wiki/Adnc%E5%A6%82%E4%BD%95%E6%89%8B%E5%8A%A8%E9%83%A8%E7%BD%B2(docker,consul,skywalking,nginx))
 
+#### 如何实现读写分离
+详细介绍为什么要通过中间件实现读写分离以及EFCore基于中间件如何写代码。
+[请点击链接，查看详细介绍](https://github.com/AlphaYu/Adnc/wiki/%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E8%AF%BB%E5%86%99%E5%88%86%E7%A6%BB)
+
 #### 如何使用Cache Redis 分布式锁 布隆过滤器
 - 详细介绍如何使用Cache、Redis、分布式锁以及布隆过滤器。如配置Cache防止雪崩、击穿、穿透以及缓存同步。<br/>
 [请点击链接，查看详细介绍](https://github.com/AlphaYu/Adnc/wiki/%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8Cache-Redis-%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81-%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8)
