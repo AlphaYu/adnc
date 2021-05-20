@@ -33,8 +33,12 @@
 [请点击链接，查看详细介绍](https://github.com/AlphaYu/Adnc/wiki/%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E8%AF%BB%E5%86%99%E5%88%86%E7%A6%BB)
 
 #### 如何使用Cache Redis 分布式锁 布隆过滤器
-- 详细介绍如何使用Cache、Redis、分布式锁以及布隆过滤器。如配置Cache防止雪崩、击穿、穿透以及缓存同步。<br/>
+- 详细介绍如何使用Cache、Redis、分布式锁以及布隆过滤器。如何配置Cache防止雪崩、击穿、穿透以及缓存同步。<br/>
 [请点击链接，查看详细介绍](https://github.com/AlphaYu/Adnc/wiki/%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8Cache-Redis-%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81-%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8)
+
+#### 如何动态分配雪花算法的WorkerId
+- 详细介绍Yitter雪花算法的特点、配置以及如何动态获取WorkerId。<br/>
+[请点击链接，查看详细介绍](https://github.com/AlphaYu/Adnc/wiki/%E5%A6%82%E4%BD%95%E5%8A%A8%E6%80%81%E5%88%86%E9%85%8D%E9%9B%AA%E8%8A%B1%E7%AE%97%E6%B3%95%E7%9A%84WorkerId)
 
 #### 如何使用EFCore仓储
 - 详细介绍EFCore仓储基础功能、工作单元、CodeFirst，提供了丰富的演示代码以及演示代码对应的Sql语句。<br/>
