@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Adnc.WebApi.Shared
+﻿namespace Adnc.WebApi.Shared
 {
     /// <summary>
     /// RedisConfig配置
@@ -21,5 +17,4 @@ namespace Adnc.WebApi.Shared
         public string ConnectionString { get; set; }
         public bool ReadOnly { get; set; }
     }
-
 }

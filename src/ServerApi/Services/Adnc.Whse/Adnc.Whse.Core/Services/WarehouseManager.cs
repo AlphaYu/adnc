@@ -1,14 +1,14 @@
-﻿using System;
+﻿using Adnc.Core.Shared;
+using Adnc.Core.Shared.IRepositories;
+using Adnc.Infra.Common.Exceptions;
+using Adnc.Infra.Common.Helper;
+using Adnc.Infra.EventBus;
+using Adnc.Whse.Core.Entities;
+using Adnc.Whse.Core.Events;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Collections.Generic;
-using Adnc.Core.Shared;
-using Adnc.Core.Shared.IRepositories;
-using Adnc.Infra.Common.Helper;
-using Adnc.Infra.Common.Exceptions;
-using Adnc.Whse.Core.Entities;
-using Adnc.Infra.EventBus;
-using Adnc.Whse.Core.Events;
 
 namespace Adnc.Whse.Core.Services
 {
@@ -17,6 +17,7 @@ namespace Adnc.Whse.Core.Services
         private readonly IEfBasicRepository<Product> _productRepo;
         private readonly IEfBasicRepository<Warehouse> _warehouseRepo;
         private readonly IEventPublisher _eventPublisher;
+
         public WarehouseManager(IEfBasicRepository<Product> productRepo
             , IEfBasicRepository<Warehouse> warehouseRepo
             , IEventPublisher eventPublisher)
@@ -64,7 +65,6 @@ namespace Adnc.Whse.Core.Services
                 throw new AdncArgumentException("AssignedWarehouseId", nameof(warehouse));
 
             warehouse.SetProductId(product.Id);
-
         }
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace Adnc.Whse.Core.Services
             string remark = string.Empty;
 
             if (orderId <= 0)
-                remark +=$"{orderId}订单号错误";
+                remark += $"{orderId}订单号错误";
             else if (blockQtyProductsInfo?.Count == 0)
                 remark += $"商品数量为空";
             else if (warehouses?.Count == 0)

@@ -9,7 +9,9 @@ namespace Adnc.Whse.Core.Entities
 
         public string Description { get; }
 
-        private WarehousePosition() { }
+        private WarehousePosition()
+        {
+        }
 
         internal WarehousePosition(string code, string description)
         {

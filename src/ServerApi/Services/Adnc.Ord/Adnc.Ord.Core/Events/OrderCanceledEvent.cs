@@ -7,7 +7,7 @@ namespace Adnc.Ord.Core.Events
     /// </summary>
     public sealed class OrderCanceledEvent : BaseEvent<OrderCanceledEvent.EventData>
     {
-        public OrderCanceledEvent(long id, EventData eventData,string eventSource)
+        public OrderCanceledEvent(long id, EventData eventData, string eventSource)
             : base(id, eventData, eventSource)
         {
         }

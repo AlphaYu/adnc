@@ -1,11 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Adnc.Infra.Caching.Interceptor;
-using Adnc.Usr.Application.Contracts.Dtos;
+﻿using Adnc.Application.Shared.Dtos;
 using Adnc.Application.Shared.Interceptors;
 using Adnc.Application.Shared.Services;
-using Adnc.Application.Shared.Dtos;
+using Adnc.Infra.Caching.Interceptor;
 using Adnc.Usr.Application.Contracts.Consts;
+using Adnc.Usr.Application.Contracts.Dtos;
+using System.Threading.Tasks;
 
 namespace Adnc.Usr.Application.Contracts.Services
 {

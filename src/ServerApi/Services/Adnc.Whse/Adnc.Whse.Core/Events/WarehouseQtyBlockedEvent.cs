@@ -16,7 +16,7 @@ namespace Adnc.Whse.Core.Events
         {
             public long OrderId { get; set; }
 
-            public bool IsSuccess{ get; set; }
+            public bool IsSuccess { get; set; }
 
             public string Remark { get; set; }
         }

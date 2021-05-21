@@ -1,13 +1,13 @@
-﻿using System;
+﻿using Adnc.Infra.Caching.Core;
+using System;
 using System.Threading.Tasks;
-using Adnc.Infra.Caching.Core;
 
 namespace Adnc.Infra.Caching.StackExchange
 {
     /// <summary>
     /// Default redis caching provider.
     /// </summary>
-    public partial class DefaultRedisProvider: IRedisProvider
+    public partial class DefaultRedisProvider : IRedisProvider
     {
         public bool KeyDel(string cacheKey)
         {

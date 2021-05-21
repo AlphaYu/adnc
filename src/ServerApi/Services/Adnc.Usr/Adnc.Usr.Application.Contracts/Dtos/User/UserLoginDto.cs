@@ -1,8 +1,4 @@
 ﻿using Adnc.Application.Shared.Dtos;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace Adnc.Usr.Application.Contracts.Dtos
 {
@@ -20,6 +16,5 @@ namespace Adnc.Usr.Application.Contracts.Dtos
         /// 密码
         /// </summary>
         public string Password { get; set; }
-
     }
 }

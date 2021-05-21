@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
+﻿using Adnc.Infra.Caching.Core;
+using Adnc.Infra.Core.Interceptor;
 using Castle.DynamicProxy;
 using Microsoft.Extensions.Logging;
-using Adnc.Infra.Core.Interceptor;
-using Adnc.Infra.Caching.Core;
-using System.Collections.Generic;
-using System.Threading;
 using Polly;
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Adnc.Infra.Caching.Interceptor.Castle
 {
@@ -32,6 +32,7 @@ namespace Adnc.Infra.Caching.Interceptor.Castle
         /// logger
         /// </summary>
         public ILogger<CachingInterceptor> _logger;
+
         /// <summary>
         /// The typeof task result method.
         /// </summary>
@@ -89,7 +90,7 @@ namespace Adnc.Infra.Caching.Interceptor.Castle
                 return;
             }
 
-            //Process any cache interceptor 
+            //Process any cache interceptor
             if (attribute is CachingAbleAttribute ableAttribute)
             {
                 ProceedAble(invocation, ableAttribute);
@@ -152,7 +153,7 @@ namespace Adnc.Infra.Caching.Interceptor.Castle
             }
             else
             {
-                // Invoke the method if we don't have a cache hit                    
+                // Invoke the method if we don't have a cache hit
                 invocation.Proceed();
 
                 if (!string.IsNullOrWhiteSpace(cacheKey) && invocation.ReturnValue != null && isAvailable)
@@ -239,7 +240,7 @@ namespace Adnc.Infra.Caching.Interceptor.Castle
             var keyExpireSeconds = pollyTimeoutSeconds + 1;
 
             _cacheProvider.KeyExpireAsync(cacheKeys, keyExpireSeconds).GetAwaiter().GetResult();
-            
+
             var expireDt = DateTime.Now.AddSeconds(keyExpireSeconds);
             var cancelTokenSource = new CancellationTokenSource();
             var timeoutPolicy = Policy.Timeout(pollyTimeoutSeconds, Polly.Timeout.TimeoutStrategy.Optimistic);
@@ -247,7 +248,6 @@ namespace Adnc.Infra.Caching.Interceptor.Castle
             {
                 invocation.Proceed();
                 cancellToken.ThrowIfCancellationRequested();
-
             }, cancelTokenSource.Token);
 
             try

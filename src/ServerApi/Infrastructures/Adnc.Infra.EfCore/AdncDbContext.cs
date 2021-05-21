@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Adnc.Core.Shared;
+using Adnc.Core.Shared.Entities;
+using JetBrains.Annotations;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using JetBrains.Annotations;
-using Adnc.Core.Shared;
-using Adnc.Core.Shared.Entities;
 
 namespace Adnc.Infra.EfCore
 {
@@ -78,7 +78,6 @@ namespace Adnc.Infra.EfCore
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
             var (Assembly, Types) = _entityInfo.GetEntitiesInfo();
 
             foreach (var entityType in Types)

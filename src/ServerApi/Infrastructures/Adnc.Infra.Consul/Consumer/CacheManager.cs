@@ -1,8 +1,8 @@
-﻿using System;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Caching.Memory;
+﻿using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
+using System;
+using System.Threading.Tasks;
 
 namespace Adnc.Infra.Consul.Consumer
 {
@@ -10,6 +10,7 @@ namespace Adnc.Infra.Consul.Consumer
     {
         //volatile
         private static readonly IMemoryCache _memoryCache;
+
         private static readonly object _lockObject = new object();
 
         private CacheManager()
@@ -29,7 +30,6 @@ namespace Adnc.Infra.Consul.Consumer
                 }
             }
         }
-
 
         public static object Get(object key)
         {
@@ -63,7 +63,6 @@ namespace Adnc.Infra.Consul.Consumer
 
         public static TItem Set<TItem>(object key, TItem value, IChangeToken expirationToken)
         {
-
             return _memoryCache.Set(key, value, expirationToken);
         }
 

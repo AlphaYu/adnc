@@ -1,18 +1,18 @@
-﻿using System;
-using System.Net;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
+﻿using Adnc.Application.Shared.Services;
+using Adnc.Core.Shared.IRepositories;
 using Adnc.Infra.Common.Extensions;
 using Adnc.Infra.Common.Helper;
-using Adnc.Maint.Core.Services;
-using Adnc.Maint.Core.Entities;
-using Adnc.Core.Shared.IRepositories;
-using Adnc.Application.Shared.Services;
 using Adnc.Maint.Application.Contracts.Dtos;
 using Adnc.Maint.Application.Contracts.Services;
 using Adnc.Maint.Application.Services.Caching;
+using Adnc.Maint.Core.Entities;
+using Adnc.Maint.Core.Services;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Net;
+using System.Threading.Tasks;
 
 namespace Adnc.Maint.Application.Services
 {
@@ -132,7 +132,6 @@ namespace Adnc.Maint.Application.Services
                     var subDicts = dicts.Where(x => x.Pid == item.Id).OrderBy(x => x.Ordinal).ToList();
                     item.Children = subDicts;
                 }
-
             }
             return result;
         }

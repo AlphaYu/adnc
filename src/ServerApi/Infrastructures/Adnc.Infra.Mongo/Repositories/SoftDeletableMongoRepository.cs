@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Adnc.Infra.Mongo.Extensions;
+using Adnc.Infra.Mongo.Interfaces;
+using Adnc.Infra.Mongo.Models;
+using MongoDB.Driver;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using MongoDB.Driver;
-using Adnc.Infra.Mongo.Interfaces;
-using Adnc.Infra.Mongo.Models;
-using Adnc.Infra.Mongo.Extensions;
 
 namespace Adnc.Infra.Mongo
 {

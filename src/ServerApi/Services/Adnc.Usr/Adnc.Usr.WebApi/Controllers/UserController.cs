@@ -1,14 +1,14 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Filters;
-using Adnc.Application.Shared;
+﻿using Adnc.Application.Shared;
 using Adnc.Application.Shared.Dtos;
-using Adnc.WebApi.Shared;
 using Adnc.Usr.Application.Contracts.Dtos;
 using Adnc.Usr.Application.Contracts.Services;
+using Adnc.WebApi.Shared;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Adnc.Usr.WebApi.Controllers
 {
@@ -54,7 +54,6 @@ namespace Adnc.Usr.WebApi.Controllers
         {
             return Result(await _userService.UpdateAsync(id, input));
         }
-
 
         /// <summary>
         /// 删除用户
@@ -121,7 +120,7 @@ namespace Adnc.Usr.WebApi.Controllers
         public async Task<ActionResult<List<string>>> GetCurrenUserPermissions([FromRoute] long id, [FromQuery] IEnumerable<string> permissions)
         {
             //throw new System.Exception("测试");
-           var result = await _userService.GetPermissionsAsync(_userContext.Id, permissions);
+            var result = await _userService.GetPermissionsAsync(_userContext.Id, permissions);
             return result?.Any() == true ? result : new List<string>();
         }
 

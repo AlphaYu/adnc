@@ -2,11 +2,11 @@
 
 namespace Adnc.Maint.Application.Contracts.Consts
 {
-    public sealed class MqExchanges: SharedMqExchanges
+    public sealed class MqExchanges : SharedMqExchanges
     {
     }
 
-    public sealed class MqRoutingKeys: SharedMqRoutingKeys
+    public sealed class MqRoutingKeys : SharedMqRoutingKeys
     {
         public const string Loginlog = "loginlog";
     }

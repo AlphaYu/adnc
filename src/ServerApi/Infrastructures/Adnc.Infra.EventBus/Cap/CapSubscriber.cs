@@ -1,6 +1,6 @@
-﻿using System;
+﻿using DotNetCore.CAP;
+using System;
 using System.Linq.Expressions;
-using DotNetCore.CAP;
 
 namespace Adnc.Infra.EventBus.Cap
 {

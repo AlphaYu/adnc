@@ -1,8 +1,7 @@
-﻿using System;
-using Microsoft.Extensions.DependencyInjection;
-using Adnc.Infra.Mongo.Configuration;
+﻿using Adnc.Infra.Mongo.Configuration;
 using Adnc.Infra.Mongo.Interfaces;
-using Adnc.Core.Shared.IRepositories;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace Adnc.Infra.Mongo.Extensions
 {
@@ -21,7 +20,7 @@ namespace Adnc.Infra.Mongo.Extensions
         /// This currently requires wiring up memory caching and logging.
         /// </remarks>
         public static MongoConfigurationBuilder AddMongo<TContext>(this IServiceCollection services, Action<MongoRepositoryOptions> configurator)
-            where TContext: IMongoContext
+            where TContext : IMongoContext
         {
             services.Configure(configurator);
             services.AddSingleton(typeof(IMongoContext), typeof(TContext));

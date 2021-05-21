@@ -1,13 +1,13 @@
-﻿using System;
+﻿using Adnc.Application.Shared.Consts;
+using Adnc.Infra.Common.Helper;
+using Adnc.Infra.EventBus.RabbitMq;
+using Castle.DynamicProxy;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Dynamic;
 using System.Reflection;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
-using Castle.DynamicProxy;
-using Adnc.Application.Shared.Consts;
-using Adnc.Infra.Common.Helper;
-using Adnc.Infra.EventBus.RabbitMq;
 
 namespace Adnc.Application.Shared.Interceptors
 {
@@ -71,7 +71,7 @@ namespace Adnc.Application.Shared.Interceptors
                                      ;
         }
 
-        private void InternalInterceptSynchronous(IInvocation invocation,OpsLogAttribute attribute)
+        private void InternalInterceptSynchronous(IInvocation invocation, OpsLogAttribute attribute)
         {
             var methodInfo = invocation.Method ?? invocation.MethodInvocationTarget;
             var log = CreateOpsLog(methodInfo.DeclaringType.FullName, methodInfo.Name, attribute.LogName, invocation.Arguments, _userContext);
@@ -90,7 +90,7 @@ namespace Adnc.Application.Shared.Interceptors
             }
         }
 
-        private async Task InternalInterceptAsynchronous(IInvocation invocation,OpsLogAttribute attribute)
+        private async Task InternalInterceptAsynchronous(IInvocation invocation, OpsLogAttribute attribute)
         {
             var methodInfo = invocation.Method ?? invocation.MethodInvocationTarget;
             var log = CreateOpsLog(methodInfo.DeclaringType.FullName, methodInfo.Name, attribute.LogName, invocation.Arguments, _userContext);
@@ -117,10 +117,9 @@ namespace Adnc.Application.Shared.Interceptors
             invocation.Proceed();
             var task = (Task)invocation.ReturnValue;
             await task;
-
         }
 
-        private async Task<TResult> InternalInterceptAsynchronous<TResult>(IInvocation invocation,OpsLogAttribute attribute)
+        private async Task<TResult> InternalInterceptAsynchronous<TResult>(IInvocation invocation, OpsLogAttribute attribute)
         {
             TResult result;
 
@@ -154,7 +153,6 @@ namespace Adnc.Application.Shared.Interceptors
 
             return result;
         }
-
 
         private dynamic CreateOpsLog(string className, string methodName, string logName, object[] arguments, IUserContext userContext)
         {

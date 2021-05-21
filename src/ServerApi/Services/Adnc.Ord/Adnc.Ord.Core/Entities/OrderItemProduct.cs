@@ -5,13 +5,15 @@ namespace Adnc.Ord.Core.Entities
 {
     public class OrderItemProduct : ValueObject
     {
-        public long Id { get;}
+        public long Id { get; }
 
         public string Name { get; }
 
         public decimal Price { get; }
 
-        private OrderItemProduct() { }
+        private OrderItemProduct()
+        {
+        }
 
         public OrderItemProduct(long id, string name, decimal price)
         {

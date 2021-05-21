@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Adnc.Core.Shared.IRepositories;
+using Adnc.Usr.Core.Entities;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Collections.Generic;
-using Adnc.Usr.Core.Entities;
-using Adnc.Core.Shared.IRepositories;
 
 namespace Adnc.Usr.Core.RepositoryExtensions
 {
@@ -15,7 +15,6 @@ namespace Adnc.Usr.Core.RepositoryExtensions
                             .Select(u => new { u.Menu });
             if (enabledOnly)
                 query = query.Where(r => r.Menu.Status == true);
-
 
             var relations = await query.ToListAsync();
 

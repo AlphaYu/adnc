@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading;
-using Microsoft.AspNetCore.Http;
 
 namespace Adnc.Infra.Common.Helper
 {
@@ -15,6 +15,7 @@ namespace Adnc.Infra.Common.Helper
         private static Func<object> _asyncLocalAccessor;
         private static Func<object, object> _holderAccessor;
         private static Func<object, HttpContext> _httpContextAccessor;
+
         public static HttpContext GetCurrentHttpContext()
         {
             var asyncLocal = (_asyncLocalAccessor ??= CreateAsyncLocalAccessor())();
@@ -57,6 +58,5 @@ namespace Adnc.Infra.Common.Helper
                 return Expression.Lambda<Func<object, HttpContext>>(convertAsResult, target).Compile();
             }
         }
-
     }
 }

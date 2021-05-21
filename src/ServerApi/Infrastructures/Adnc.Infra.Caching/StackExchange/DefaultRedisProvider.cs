@@ -1,11 +1,11 @@
-﻿using System;
-using System.Linq;
-using System.Collections.Generic;
+﻿using Adnc.Infra.Caching.Configurations;
+using Adnc.Infra.Caching.Core;
+using Adnc.Infra.Caching.Core.Serialization;
 using Microsoft.Extensions.Logging;
 using StackExchange.Redis;
-using Adnc.Infra.Caching.Core;
-using Adnc.Infra.Caching.Configurations;
-using Adnc.Infra.Caching.Core.Serialization;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Adnc.Infra.Caching.StackExchange
 {
@@ -148,7 +148,7 @@ namespace Adnc.Infra.Caching.StackExchange
                     return CacheValue<T>.NoValue;
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message, ex);
             }
@@ -275,9 +275,9 @@ namespace Adnc.Infra.Caching.StackExchange
         /// </summary>
         /// <returns>The redis keys.</returns>
         /// <remarks>
-        /// If your Redis Servers support command SCAN , 
+        /// If your Redis Servers support command SCAN ,
         /// IServer.Keys will use command SCAN to find out the keys.
-        /// Following 
+        /// Following
         /// https://github.com/StackExchange/StackExchange.Redis/blob/master/StackExchange.Redis/StackExchange/Redis/RedisServer.cs#L289
         /// </remarks>
         /// <param name="pattern">Pattern.</param>

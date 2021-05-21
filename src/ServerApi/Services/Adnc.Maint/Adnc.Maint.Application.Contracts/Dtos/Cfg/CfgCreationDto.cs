@@ -1,11 +1,11 @@
 ﻿using Adnc.Application.Shared.Dtos;
 
-namespace  Adnc.Maint.Application.Contracts.Dtos
+namespace Adnc.Maint.Application.Contracts.Dtos
 {
-	/// <summary>
-	/// 系统配置
-	/// </summary>
-	public class CfgCreationDto:IInputDto
+    /// <summary>
+    /// 系统配置
+    /// </summary>
+    public class CfgCreationDto : IInputDto
     {
         /// <summary>
         /// 备注

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using Adnc.Application.Shared.RpcServices;
-using Refit;
+﻿using Adnc.Application.Shared.RpcServices;
 
 namespace Adnc.Whse.Application.Contracts.RpcServices
 {

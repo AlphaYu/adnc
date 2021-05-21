@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Consul;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Consul;
-using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Adnc.Infra.Consul.Registration
 {
@@ -54,7 +54,6 @@ namespace Adnc.Infra.Consul.Registration
                 };
 
                 consulClient.Agent.ServiceRegister(registration).Wait();
-
             });
 
             lifetime.ApplicationStopping.Register(() =>
@@ -108,7 +107,6 @@ namespace Adnc.Infra.Consul.Registration
             });
 
             var logger = app.ApplicationServices.GetRequiredService<ILogger<ConsulConfig>>();
-
 
             //第一种注册方式，在配置文件中指定服务地址
             //如果配置了服务地址, 只需要检测是否在listenUrls里面即可

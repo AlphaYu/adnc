@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Adnc.Application.Shared.Dtos
 {
@@ -11,7 +9,9 @@ namespace Adnc.Application.Shared.Dtos
     [Serializable]
     public class SimpleDto<T> : IDto
     {
-        public SimpleDto() { }
+        public SimpleDto()
+        {
+        }
 
         public SimpleDto(T value)
         {

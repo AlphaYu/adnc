@@ -1,9 +1,7 @@
 ﻿using Adnc.Application.Shared.Dtos;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace  Adnc.Maint.Application.Contracts.Dtos
+namespace Adnc.Maint.Application.Contracts.Dtos
 {
     /// <summary>
     /// 日志检索条件

@@ -1,13 +1,13 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using Microsoft.AspNetCore.Http;
-using Adnc.Usr.WebApi.Helper;
+﻿using Adnc.Application.Shared;
 using Adnc.Usr.Application.Contracts.Dtos;
 using Adnc.Usr.Application.Contracts.Services;
+using Adnc.Usr.WebApi.Helper;
 using Adnc.WebApi.Shared;
-using Adnc.Application.Shared;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using System.Threading.Tasks;
 
 namespace Adnc.Usr.WebApi.Controllers
 {
@@ -96,7 +96,7 @@ namespace Adnc.Usr.WebApi.Controllers
         {
             var result = await _accountService.GetUserValidateInfoAsync(input.Id);
 
-            if (result==null)
+            if (result == null)
                 return Ok(new UserTokenInfoDto
                 {
                     Token = JwtTokenHelper.CreateAccessToken(_jwtConfig, result, input.RefreshToken),

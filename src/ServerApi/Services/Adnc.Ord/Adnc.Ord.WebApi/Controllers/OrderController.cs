@@ -1,9 +1,9 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Adnc.WebApi.Shared;
-using Adnc.Application.Shared.Dtos;
+﻿using Adnc.Application.Shared.Dtos;
 using Adnc.Ord.Application.Contracts.Dtos;
 using Adnc.Ord.Application.Contracts.Services;
+using Adnc.WebApi.Shared;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace Adnc.Ord.WebApi.Controllers
 {

@@ -1,5 +1,5 @@
 ﻿namespace Adnc.Infra.Caching.Core
-{   
+{
     /// <summary>
     /// Stats type.
     /// </summary>
@@ -14,5 +14,5 @@
         /// The missed.
         /// </summary>
         Missed = 1,
-    }     
+    }
 }

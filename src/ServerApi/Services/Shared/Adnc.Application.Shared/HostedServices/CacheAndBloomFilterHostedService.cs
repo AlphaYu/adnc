@@ -1,13 +1,13 @@
-﻿using System;
+﻿using Adnc.Application.Shared.Caching;
+using Adnc.Infra.Caching;
+using Adnc.Infra.Caching.Core;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Collections.Generic;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Adnc.Infra.Caching;
-using Adnc.Infra.Caching.Core;
-using Adnc.Application.Shared.Caching;
 
 namespace Adnc.Application.Shared.HostedServices
 {
@@ -31,19 +31,24 @@ namespace Adnc.Application.Shared.HostedServices
 
         protected async override Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            #region Init BloomFilter 
+            #region Init BloomFilter
+
             if (_bloomFilters?.Any() == true)
             {
                 foreach (var filter in _bloomFilters)
                     await filter.InitAsync();
             }
-            #endregion
+
+            #endregion Init BloomFilter
 
             #region Init Caches
+
             await _cacheService.PreheatAsync();
-            #endregion
+
+            #endregion Init Caches
 
             #region Confirm Caching Removed
+
             while (!stoppingToken.IsCancellationRequested)
             {
                 if (!LocalVariables.Instance.Queue.TryDequeue(out LocalVariables.Model model)
@@ -71,7 +76,8 @@ namespace Adnc.Application.Shared.HostedServices
                     }
                 }
             }
-            #endregion
+
+            #endregion Confirm Caching Removed
         }
     }
 }

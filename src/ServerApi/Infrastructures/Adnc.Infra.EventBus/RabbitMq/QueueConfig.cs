@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Adnc.Infra.EventBus.RabbitMq
 {
@@ -32,7 +30,7 @@ namespace Adnc.Infra.EventBus.RabbitMq
         /// 1、当连接关闭时connection.close()该队列是否会自动删除；
         /// 2、该队列是否是私有的private，如果不是排外的，可以使用两个消费者都访问同一个队列，没有任何问题；
         ///   如果是排外的，会对当前队列加锁，其他通道channel是不能访问的，如果强制访问会报异常
-        ///  一般等于true的话用于一个队列只能有一个消费者来消费的场景        
+        ///  一般等于true的话用于一个队列只能有一个消费者来消费的场景
         /// </summary>
         public bool Exclusive { get; set; }
 

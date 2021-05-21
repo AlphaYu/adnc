@@ -1,11 +1,11 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+﻿using Adnc.Application.Shared.IdGeneraterWorkerNode;
 using Adnc.Infra.Common.Extensions;
 using Adnc.Infra.Common.Helper.IdGeneraterInternal;
-using Adnc.Application.Shared.IdGeneraterWorkerNode;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Adnc.Application.Shared.HostedServices
 {

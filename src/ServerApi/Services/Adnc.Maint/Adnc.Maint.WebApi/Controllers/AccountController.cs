@@ -1,9 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using Adnc.Application.Shared.RpcServices;
+using Adnc.Application.Shared.RpcServices.Rtos;
+using Adnc.WebApi.Shared;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Adnc.Application.Shared.RpcServices;
-using Adnc.WebApi.Shared;
-using Adnc.Application.Shared.RpcServices.Rtos;
+using System.Threading.Tasks;
 
 namespace Adnc.Maint.WebApi.Controllers
 {
@@ -28,7 +28,7 @@ namespace Adnc.Maint.WebApi.Controllers
                 return Ok(result.Content);
 
             var apiError = ((Refit.ValidationApiException)result.Error).Content;
-            return Problem(apiError.Detail, result.Error.Uri.ToString(), apiError.Status,apiError.Title,apiError.Type);
+            return Problem(apiError.Detail, result.Error.Uri.ToString(), apiError.Status, apiError.Title, apiError.Type);
         }
     }
 }

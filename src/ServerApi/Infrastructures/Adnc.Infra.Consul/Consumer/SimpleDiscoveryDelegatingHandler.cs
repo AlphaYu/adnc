@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Microsoft.Extensions.Caching.Memory;
+using System;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Linq;
-using Microsoft.Extensions.Caching.Memory;
 
 namespace Adnc.Infra.Consul.Consumer
 {
@@ -41,6 +41,7 @@ namespace Adnc.Infra.Consul.Consumer
             }
 
             #region 缓存处理
+
             if (request.Method == HttpMethod.Get)
             {
                 var cache = headers.FirstOrDefault(x => x.Key == "Cache");
@@ -74,7 +75,8 @@ namespace Adnc.Infra.Consul.Consumer
                     }
                 }
             }
-            #endregion
+
+            #endregion 缓存处理
 
             return await base.SendAsync(request, cancellationToken).ConfigureAwait(false);
         }

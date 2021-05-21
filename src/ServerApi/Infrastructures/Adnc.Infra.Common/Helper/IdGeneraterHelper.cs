@@ -1,5 +1,4 @@
-﻿using System;
-using Adnc.Infra.Common.Helper.IdGeneraterInternal;
+﻿using Adnc.Infra.Common.Helper.IdGeneraterInternal;
 
 namespace Adnc.Infra.Common.Helper
 {

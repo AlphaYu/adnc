@@ -1,5 +1,5 @@
-﻿using Autofac;
-using Adnc.Application.Shared;
+﻿using Adnc.Application.Shared;
+using Autofac;
 using Microsoft.Extensions.Configuration;
 
 namespace Adnc.Usr.Application
@@ -9,9 +9,9 @@ namespace Adnc.Usr.Application
     /// </summary>
     public sealed class AdncUsrApplicationModule : AdncApplicationModule
     {
-        public AdncUsrApplicationModule(IConfigurationSection redisSection, IConfigurationSection rabitMqSection) 
-            : base(typeof(AdncUsrApplicationModule), redisSection, rabitMqSection) 
-        { 
+        public AdncUsrApplicationModule(IConfigurationSection redisSection, IConfigurationSection rabitMqSection)
+            : base(typeof(AdncUsrApplicationModule), redisSection, rabitMqSection)
+        {
         }
 
         protected override void Load(ContainerBuilder builder)

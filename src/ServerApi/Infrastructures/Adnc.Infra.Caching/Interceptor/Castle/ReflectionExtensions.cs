@@ -1,9 +1,6 @@
 ﻿using Castle.DynamicProxy;
 using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Adnc.Infra.Caching.Interceptor.Castle
@@ -51,7 +48,7 @@ namespace Adnc.Infra.Caching.Interceptor.Castle
             if (valueTypeInfo.IsTaskWithResult())
             {
                 // Is there better solution to unwrap ?
-                result = (object) (await (dynamic) value);
+                result = (object)(await (dynamic)value);
             }
             else if (value is Task)
             {
@@ -87,7 +84,6 @@ namespace Adnc.Infra.Caching.Interceptor.Castle
             {
                 return true;
             }
-            
 
             return false;
         }

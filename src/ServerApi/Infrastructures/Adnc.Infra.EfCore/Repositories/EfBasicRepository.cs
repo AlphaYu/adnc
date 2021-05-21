@@ -1,12 +1,12 @@
-﻿using System;
+﻿using Adnc.Core.Shared.Entities;
+using Adnc.Core.Shared.IRepositories;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using Adnc.Core.Shared.IRepositories;
-using Adnc.Core.Shared.Entities;
 
 namespace Adnc.Infra.EfCore.Repositories
 {

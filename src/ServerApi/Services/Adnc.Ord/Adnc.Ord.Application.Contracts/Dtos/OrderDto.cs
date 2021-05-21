@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using Adnc.Application.Shared.Dtos;
+﻿using Adnc.Application.Shared.Dtos;
+using System.Collections.Generic;
 
 namespace Adnc.Ord.Application.Contracts.Dtos
 {
@@ -72,7 +72,6 @@ namespace Adnc.Ord.Application.Contracts.Dtos
             /// 数量
             /// </summary>
             public int Count { get; set; }
-
 
             /// <summary>
             /// 商品信息-商品Id

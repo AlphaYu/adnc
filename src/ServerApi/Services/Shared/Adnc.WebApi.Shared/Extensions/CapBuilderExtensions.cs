@@ -1,12 +1,8 @@
-﻿using System;
-using System.Text;
+﻿using Autofac;
+using DotNetCore.CAP;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Collections.Generic;
-using Autofac;
-using Autofac.Core.Registration;
-using Autofac.Builder;
-using DotNetCore.CAP;
 
 namespace Adnc.WebApi.Shared.Extensions
 {

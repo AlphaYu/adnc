@@ -1,7 +1,6 @@
 ﻿using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Adnc.Application.Shared.RpcServices.Rtos
 {
@@ -18,6 +17,7 @@ namespace Adnc.Application.Shared.RpcServices.Rtos
         public string Value { get; set; }
 
         private IReadOnlyList<DictRto> _data = Array.Empty<DictRto>();
+
         [NotNull]
         public IReadOnlyList<DictRto> Children
         {

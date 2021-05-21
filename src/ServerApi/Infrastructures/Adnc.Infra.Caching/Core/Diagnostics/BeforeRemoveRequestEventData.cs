@@ -1,7 +1,5 @@
 ﻿namespace Adnc.Infra.Caching.Core.Diagnostics
 {
-    using System;
-
     public class BeforeRemoveRequestEventData : EventData
     {
         public BeforeRemoveRequestEventData(string cacheType, string name, string operation, string[] cacheKeys)

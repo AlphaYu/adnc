@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -22,10 +18,9 @@ namespace Adnc.Maintaining
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
-            services.AddHealthChecksUI(setup=> { setup.MaximumHistoryEntriesPerEndpoint(100); })
+            services.AddHealthChecksUI(setup => { setup.MaximumHistoryEntriesPerEndpoint(100); })
                     .AddInMemoryStorage();
-                    //.AddSqliteStorage($"Data Source=sqlitehealthchecks.db");
+            //.AddSqliteStorage($"Data Source=sqlitehealthchecks.db");
 
             services.AddControllersWithViews();
         }
@@ -49,7 +44,7 @@ namespace Adnc.Maintaining
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapHealthChecksUI(setup => { setup.AddCustomStylesheet("dotnet.css"); }) ;
+                endpoints.MapHealthChecksUI(setup => { setup.AddCustomStylesheet("dotnet.css"); });
 
                 endpoints.MapControllerRoute(
                     name: "default",

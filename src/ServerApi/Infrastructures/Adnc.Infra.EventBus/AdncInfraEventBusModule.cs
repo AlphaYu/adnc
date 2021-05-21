@@ -1,21 +1,24 @@
-﻿using Autofac;
+﻿using Adnc.Infra.EventBus.RabbitMq;
+using Autofac;
+using Microsoft.Extensions.Hosting;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Microsoft.Extensions.Hosting;
-using Adnc.Infra.EventBus.RabbitMq;
 
 namespace Adnc.Infra.Mq
 {
     public class AdncInfraEventBusModule : Autofac.Module
     {
         private readonly IEnumerable<Assembly> _assembliesToScan;
+
         public AdncInfraEventBusModule(IEnumerable<Assembly> assembliesToScan)
         {
             _assembliesToScan = assembliesToScan;
         }
 
-        public AdncInfraEventBusModule(params Assembly[] assembliesToScan) : this((IEnumerable<Assembly>)assembliesToScan) { }
+        public AdncInfraEventBusModule(params Assembly[] assembliesToScan) : this((IEnumerable<Assembly>)assembliesToScan)
+        {
+        }
 
         /// <summary>
         /// Autofac注册

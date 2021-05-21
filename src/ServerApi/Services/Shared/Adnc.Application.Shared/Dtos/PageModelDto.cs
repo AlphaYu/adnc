@@ -1,6 +1,6 @@
-﻿using System;
+﻿using JetBrains.Annotations;
+using System;
 using System.Collections.Generic;
-using JetBrains.Annotations;
 
 namespace Adnc.Application.Shared.Dtos
 {
@@ -9,7 +9,9 @@ namespace Adnc.Application.Shared.Dtos
     {
         private IReadOnlyList<T> _data = Array.Empty<T>();
 
-        public PageModelDto() { }
+        public PageModelDto()
+        {
+        }
 
         public PageModelDto(SearchPagedDto search)
             : this(search, default, default)
@@ -30,7 +32,6 @@ namespace Adnc.Application.Shared.Dtos
             this.Data = data;
             this.XData = xData;
         }
-
 
         [NotNull]
         public IReadOnlyList<T> Data

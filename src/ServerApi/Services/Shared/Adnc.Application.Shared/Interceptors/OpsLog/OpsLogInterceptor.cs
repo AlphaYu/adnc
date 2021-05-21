@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using Castle.DynamicProxy;
+﻿using Castle.DynamicProxy;
 
 namespace Adnc.Application.Shared.Interceptors
 {

@@ -1,7 +1,6 @@
 ﻿using Adnc.Application.Shared.Dtos;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Adnc.Usr.Application.Contracts.Dtos
 {
@@ -65,6 +64,7 @@ namespace Adnc.Usr.Application.Contracts.Dtos
         /// 菜单图标
         /// </summary>
         private string _icon;
+
         public string Icon
         {
             set

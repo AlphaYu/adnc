@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Adnc.Application.Shared.RpcServices.Rtos;
 using Refit;
-using Adnc.Application.Shared.RpcServices.Rtos;
+using System.Threading.Tasks;
 
 namespace Adnc.Application.Shared.RpcServices
 {

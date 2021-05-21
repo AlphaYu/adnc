@@ -1,7 +1,6 @@
 ﻿using Adnc.Application.Shared.Dtos;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Adnc.Usr.Application.Contracts.Dtos
 {
@@ -64,7 +63,7 @@ namespace Adnc.Usr.Application.Contracts.Dtos
         /// 性别
         /// </summary>
         public int? Sex { get; set; }
-        
+
         /// <summary>
         /// 状态
         /// </summary>

@@ -1,12 +1,12 @@
-﻿using System.Threading.Tasks;
+﻿using Adnc.Application.Shared;
+using Adnc.Infra.Common.Exceptions;
+using Adnc.Infra.Common.Helper;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
-using Adnc.Infra.Common.Helper;
-using Adnc.Infra.Common.Exceptions;
-using Adnc.Application.Shared;
+using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
 
 namespace Microsoft.AspNetCore.Mvc.Filters
 {
@@ -37,7 +37,7 @@ namespace Microsoft.AspNetCore.Mvc.Filters
             var hostAndPort = context.HttpContext.Request.Host.HasValue ? context.HttpContext.Request.Host.Value : string.Empty;
             var requestUrl = string.Concat(hostAndPort, context.HttpContext.Request.Path);
             var type = string.Concat("https://httpstatuses.com/", status);
-            
+
             string title;
             string detial;
             if (exception is IAdncException)
@@ -74,7 +74,5 @@ namespace Microsoft.AspNetCore.Mvc.Filters
             OnException(context);
             return Task.CompletedTask;
         }
-
-
     }
 }

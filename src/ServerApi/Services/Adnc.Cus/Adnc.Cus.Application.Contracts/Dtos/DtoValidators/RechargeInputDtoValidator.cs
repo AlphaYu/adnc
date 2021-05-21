@@ -1,5 +1,5 @@
-﻿using FluentValidation;
-using Adnc.Cus.Application.Contracts.Dtos;
+﻿using Adnc.Cus.Application.Contracts.Dtos;
+using FluentValidation;
 
 namespace Adnc.Cus.Application.Contracts.DtoValidators
 {

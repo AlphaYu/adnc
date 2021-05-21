@@ -1,10 +1,9 @@
-﻿using System;
+﻿using Adnc.Infra.Caching.Interceptor;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using Adnc.Infra.Caching.Core;
-using Adnc.Infra.Caching.Interceptor;
 
 namespace Adnc.Infra.Core.Interceptor
 {

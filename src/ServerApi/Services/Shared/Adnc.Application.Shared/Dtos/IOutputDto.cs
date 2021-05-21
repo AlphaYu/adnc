@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
-
-namespace Adnc.Application.Shared.Dtos
+﻿namespace Adnc.Application.Shared.Dtos
 {
     /// <summary>
     /// OutputDto基类

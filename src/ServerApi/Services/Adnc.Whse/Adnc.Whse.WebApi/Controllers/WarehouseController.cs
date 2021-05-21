@@ -1,9 +1,9 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Adnc.Application.Shared.Dtos;
 using Adnc.WebApi.Shared;
-using Adnc.Application.Shared.Dtos;
 using Adnc.Whse.Application.Contracts.Dtos;
 using Adnc.Whse.Application.Contracts.Services;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace Adnc.Whse.WebApi.Controllers
 {
@@ -48,7 +48,7 @@ namespace Adnc.Whse.WebApi.Controllers
         /// <param name="search"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<PageModelDto<WarehouseDto>> GetPagedAsync([FromQuery]WarehouseSearchDto search)
+        public async Task<PageModelDto<WarehouseDto>> GetPagedAsync([FromQuery] WarehouseSearchDto search)
         {
             return await _warehouseSrv.GetPagedAsync(search);
         }

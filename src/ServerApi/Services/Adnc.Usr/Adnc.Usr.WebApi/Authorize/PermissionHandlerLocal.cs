@@ -1,7 +1,7 @@
-﻿using System.Linq;
+﻿using Adnc.Usr.Application.Contracts.Services;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using Adnc.Usr.Application.Contracts.Services;
 
 namespace Microsoft.AspNetCore.Authorization
 {

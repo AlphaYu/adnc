@@ -1,14 +1,14 @@
-﻿using System;
+﻿using Consul;
+using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
-using Consul;
 
 namespace Adnc.Infra.Consul.Consumer
 {
     public class ConsulServiceProvider : IServiceProvider
     {
         private readonly ConsulClient _consulClient;
+
         public ConsulServiceProvider(Uri uri)
         {
             _consulClient = new ConsulClient(consulConfig =>
@@ -16,6 +16,7 @@ namespace Adnc.Infra.Consul.Consumer
                 consulConfig.Address = uri;
             });
         }
+
         public async Task<IList<string>> GetServicesAsync(string serviceName)
         {
             var queryResult = await _consulClient.Health.Service(serviceName, string.Empty, true);

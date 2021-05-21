@@ -1,11 +1,13 @@
-﻿using Autofac;
-using Adnc.Core.Shared;
+﻿using Adnc.Core.Shared;
+using Autofac;
 
 namespace Adnc.Ord.Core
 {
     public class AdncOrdCoreModule : AdncCoreModule
     {
-        public AdncOrdCoreModule() : base(typeof(AdncOrdCoreModule)) { }
+        public AdncOrdCoreModule() : base(typeof(AdncOrdCoreModule))
+        {
+        }
 
         /// <summary>
         /// Autofac注册

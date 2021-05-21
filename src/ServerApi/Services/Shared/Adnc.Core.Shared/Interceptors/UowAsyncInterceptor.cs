@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Castle.DynamicProxy;
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Threading.Tasks;
-using Castle.DynamicProxy;
 
 namespace Adnc.Core.Shared.Interceptors
 {
@@ -57,7 +57,7 @@ namespace Adnc.Core.Shared.Interceptors
 
             invocation.ReturnValue = attribute == null
                                     ? InternalInterceptAsynchronousWithoutUow<TResult>(invocation)
-                                    : InternalInterceptAsynchronous<TResult>(invocation,attribute)
+                                    : InternalInterceptAsynchronous<TResult>(invocation, attribute)
                                     ;
         }
 

@@ -1,8 +1,4 @@
 ﻿using Adnc.Application.Shared.Dtos;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace Adnc.Usr.Application.Contracts.Dtos
 {
@@ -22,6 +18,5 @@ namespace Adnc.Usr.Application.Contracts.Dtos
         /// RefreshToken
         /// </summary>
         public string RefreshToken { get; set; }
-
     }
 }

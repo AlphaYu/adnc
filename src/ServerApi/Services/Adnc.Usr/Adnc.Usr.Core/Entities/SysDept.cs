@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using Adnc.Core.Shared.Entities;
+﻿using Adnc.Core.Shared.Entities;
+using System.Collections.Generic;
 
 namespace Adnc.Usr.Core.Entities
 {
@@ -10,7 +10,7 @@ namespace Adnc.Usr.Core.Entities
     {
         //private ICollection<SysUser> _users;
         //private Action<object, string> LazyLoader { get; set; }
-        //private SysDept(Action<object, string> lazyLoader)        
+        //private SysDept(Action<object, string> lazyLoader)
         //{
         //	LazyLoader = lazyLoader;
         //}

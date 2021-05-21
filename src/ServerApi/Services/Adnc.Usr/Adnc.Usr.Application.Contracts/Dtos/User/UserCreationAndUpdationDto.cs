@@ -1,11 +1,9 @@
 ﻿using Adnc.Application.Shared.Dtos;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Adnc.Usr.Application.Contracts.Dtos
 {
-    public abstract class UserCreationAndUpdationDto: IInputDto
+    public abstract class UserCreationAndUpdationDto : IInputDto
     {
         /// <summary>
         /// 账户
@@ -61,6 +59,5 @@ namespace Adnc.Usr.Application.Contracts.Dtos
         ///// 账户版本号
         ///// </summary>
         //public int? Version { get; set; }
-
     }
 }

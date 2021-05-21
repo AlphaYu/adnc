@@ -5,5 +5,4 @@
         //Add any custom requirement properties if you have them
         public PermissionRequirement() { }
     }
-
 }

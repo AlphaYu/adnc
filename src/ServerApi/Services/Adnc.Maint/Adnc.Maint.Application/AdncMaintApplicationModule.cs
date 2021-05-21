@@ -1,10 +1,9 @@
-﻿using Autofac;
-using Adnc.Application.Shared;
+﻿using Adnc.Application.Shared;
+using Autofac;
 using Microsoft.Extensions.Configuration;
 
 namespace Adnc.Maint.Application
 {
-
     /// <summary>
     /// Autofac注册
     /// </summary>

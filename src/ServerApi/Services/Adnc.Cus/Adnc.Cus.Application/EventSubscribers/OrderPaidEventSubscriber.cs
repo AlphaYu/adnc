@@ -1,7 +1,7 @@
-﻿using System.Threading.Tasks;
-using DotNetCore.CAP;
+﻿using Adnc.Cus.Application.Contracts.Services;
 using Adnc.Infra.EventBus;
-using Adnc.Cus.Application.Contracts.Services;
+using DotNetCore.CAP;
+using System.Threading.Tasks;
 
 namespace Adnc.Cus.Application.EventSubscribers
 {

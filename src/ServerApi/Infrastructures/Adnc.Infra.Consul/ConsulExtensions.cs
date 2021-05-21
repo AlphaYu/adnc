@@ -1,17 +1,13 @@
-﻿using System;
-using System.Linq;
-using System.Collections.Generic;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Builder;
-using Consul;
-using Adnc.Infra.Consul.Configuration;
-using Adnc.Infra.Consul.Consumer;
+﻿using Adnc.Infra.Consul.Configuration;
 using Adnc.Infra.Consul.Registration;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Adnc.Infra.Consul
 {
-
     public static class ConsulExtensions
     {
         public static void RegisterToConsul(this IApplicationBuilder app)
@@ -23,7 +19,6 @@ namespace Adnc.Infra.Consul
         {
             return ConsulRegistration.GetServiceAddress(app, config);
         }
-
 
         public static IConfigurationBuilder AddConsulConfiguration(this IConfigurationBuilder configurationBuilder, ConsulConfig config, bool reloadOnChanges = false)
         {

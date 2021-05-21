@@ -3,6 +3,6 @@
 namespace Adnc.Cus.Application.Contracts.Consts
 {
     public class CachingConsts : SharedCachingConsts
-    { 
+    {
     }
 }

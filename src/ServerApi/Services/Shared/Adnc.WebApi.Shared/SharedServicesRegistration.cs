@@ -1,50 +1,50 @@
-﻿using System;
-using System.IO;
-using System.Threading.Tasks;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Text.Json;
-using System.Net;
-using System.Security.Claims;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Configuration;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.OpenApi.Models;
-using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
-using Microsoft.Extensions.Logging;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Mvc;
-using Pomelo.EntityFrameworkCore.MySql.Storage;
-using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
-using Polly;
-using Refit;
-using FluentValidation.AspNetCore;
-using DotNetCore.CAP.Dashboard;
-using DotNetCore.CAP.Dashboard.NodeDiscovery;
-using Swashbuckle.AspNetCore.Swagger;
-using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
-using Microsoft.AspNetCore.Authentication;
-using Polly.Timeout;
-using Microsoft.Extensions.Caching.Memory;
-using Adnc.Infra.EventBus.RabbitMq;
+﻿using Adnc.Application.Shared.RpcServices;
+using Adnc.Infra.Common.Helper;
 using Adnc.Infra.Consul;
 using Adnc.Infra.Consul.Consumer;
 using Adnc.Infra.EfCore;
-using Adnc.Infra.Mongo;
-using Adnc.Infra.Mongo.Extensions;
-using Adnc.Infra.Mongo.Configuration;
-using Adnc.Application.Shared.RpcServices;
-using Adnc.Infra.Common.Helper;
-using Adnc.WebApi.Shared.Extensions;
 using Adnc.Infra.EfCore.Interceptors;
+using Adnc.Infra.EventBus.RabbitMq;
+using Adnc.Infra.Mongo;
+using Adnc.Infra.Mongo.Configuration;
+using Adnc.Infra.Mongo.Extensions;
+using Adnc.WebApi.Shared.Extensions;
+using DotNetCore.CAP.Dashboard;
+using DotNetCore.CAP.Dashboard.NodeDiscovery;
+using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using Polly;
+using Polly.Timeout;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
+using Pomelo.EntityFrameworkCore.MySql.Storage;
+using Refit;
+using Swashbuckle.AspNetCore.Swagger;
+using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Security.Claims;
+using System.Text;
+using System.Text.Json;
+using System.Threading.Tasks;
+using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
 
 namespace Adnc.WebApi.Shared
 {
@@ -107,7 +107,6 @@ namespace Adnc.WebApi.Shared
                          options.JsonSerializerOptions.DictionaryKeyPolicy = JsonNamingPolicy.CamelCase;
                          //匿名类型
                          options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
-
                      })
                      .AddFluentValidation(cfg =>
                      {
@@ -370,7 +369,7 @@ namespace Adnc.WebApi.Shared
                              , x.GetService<ILogger<dynamic>>()
                          ).Connection;
                      })
-                     //.AddUrlGroup(new Uri("https://localhost:5001/weatherforecast"), "index endpoint")
+                    //.AddUrlGroup(new Uri("https://localhost:5001/weatherforecast"), "index endpoint")
                     .AddRedis(redisConfig.dbconfig.ConnectionString);
         }
 
@@ -417,7 +416,7 @@ namespace Adnc.WebApi.Shared
                 {
                     //todo
                 };
-                //默认值：24*3600 秒（1天后),成功消息的过期时间（秒）。 
+                //默认值：24*3600 秒（1天后),成功消息的过期时间（秒）。
                 //当消息发送或者消费成功时候，在时间达到 SucceedMessageExpiredAfter 秒时候将会从 Persistent 中删除，你可以通过指定此值来设置过期的时间。
                 x.SucceedMessageExpiredAfter = 24 * 3600;
                 //默认值：1,消费者线程并行处理消息的线程数，当这个值大于1时，将不能保证消息执行的顺序。

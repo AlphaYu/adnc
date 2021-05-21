@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Adnc.Infra.Mongo.Configuration;
 using Humanizer;
-using Adnc.Infra.Mongo.Configuration;
+using System;
 
 namespace Adnc.Infra.Mongo.Extensions
 {

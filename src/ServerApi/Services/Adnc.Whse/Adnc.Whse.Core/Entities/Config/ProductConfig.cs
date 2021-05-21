@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Adnc.Core.Shared.Entities.Config;
+﻿using Adnc.Core.Shared.Entities.Config;
 using Adnc.Core.Shared.EntityConsts.Whse;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Adnc.Whse.Core.Entities.Config
 {
@@ -31,7 +31,6 @@ namespace Adnc.Whse.Core.Entities.Config
                 y.Property(x => x.Code).IsRequired().HasColumnName("StatusCode");
                 y.Property(x => x.ChangesReason).HasColumnName("StatusChangesReason").HasMaxLength(ProductConts.ChangesReason_MaxLength);
             });
-
 
             builder.Property(x => x.Unit)
                    .IsRequired()

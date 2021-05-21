@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
-using MongoDB.Driver;
+﻿using Adnc.Core.Shared.Entities;
 using Adnc.Infra.Mongo.Configuration;
 using Adnc.Infra.Mongo.Extensions;
 using Adnc.Infra.Mongo.Interfaces;
-using Adnc.Core.Shared.Entities;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+using MongoDB.Driver;
+using System;
+using System.Collections.Concurrent;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Adnc.Infra.Mongo
 {
@@ -97,7 +96,7 @@ namespace Adnc.Infra.Mongo
                 var indexTasks = builder.Indexes.Select(index =>
                     collection.Indexes.CreateOneAsync(index, null, cancellationToken));
                 await Task.WhenAll(indexTasks);
-                    
+
                 // Seeds.
                 var seedTasks = builder.Seed.Select(async seed =>
                 {
@@ -123,7 +122,7 @@ namespace Adnc.Infra.Mongo
                 _semaphore.Release();
             }
         }
-        
+
         /// <summary>
         /// Drops the collection for the specified entity type.
         /// </summary>

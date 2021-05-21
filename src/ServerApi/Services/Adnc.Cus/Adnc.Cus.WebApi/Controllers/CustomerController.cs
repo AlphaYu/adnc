@@ -1,11 +1,11 @@
-﻿using System.Threading.Tasks;
-using System.Diagnostics.CodeAnalysis;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
-using Adnc.Application.Shared.Dtos;
-using Adnc.WebApi.Shared;
-using Adnc.Cus.Application.Contracts.Services;
+﻿using Adnc.Application.Shared.Dtos;
 using Adnc.Cus.Application.Contracts.Dtos;
+using Adnc.Cus.Application.Contracts.Services;
+using Adnc.WebApi.Shared;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics.CodeAnalysis;
+using System.Threading.Tasks;
 
 namespace Adnc.Cus.WebApi.Controllers
 {
@@ -55,7 +55,7 @@ namespace Adnc.Cus.WebApi.Controllers
         /// <returns></returns>
         [HttpGet("page")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<PageModelDto<CustomerDto>>> GetPagedAsync([FromQuery]CustomerSearchPagedDto search)
+        public async Task<ActionResult<PageModelDto<CustomerDto>>> GetPagedAsync([FromQuery] CustomerSearchPagedDto search)
         {
             return Result(await _cusService.GetPagedAsync(search));
         }

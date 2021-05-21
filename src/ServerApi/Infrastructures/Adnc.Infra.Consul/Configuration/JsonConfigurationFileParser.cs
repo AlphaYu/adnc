@@ -1,15 +1,17 @@
-﻿using System;
+﻿using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
-using Microsoft.Extensions.Configuration;
 
 namespace Adnc.Infra.Consul.Configuration
 {
     internal class JsonConfigurationFileParser
     {
-        private JsonConfigurationFileParser() { }
+        private JsonConfigurationFileParser()
+        {
+        }
 
         private readonly IDictionary<string, string> _data = new SortedDictionary<string, string>(StringComparer.OrdinalIgnoreCase);
         private readonly Stack<string> _context = new Stack<string>();

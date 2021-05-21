@@ -1,12 +1,11 @@
-﻿using System.Threading.Tasks;
-using System.Collections.Generic;
-using System.Linq;
-using Adnc.Usr.Application.Contracts.Dtos;
+﻿using Adnc.Application.Shared.Dtos;
 using Adnc.Application.Shared.Interceptors;
 using Adnc.Application.Shared.Services;
 using Adnc.Infra.Caching.Interceptor;
 using Adnc.Usr.Application.Contracts.Consts;
-using Adnc.Application.Shared.Dtos;
+using Adnc.Usr.Application.Contracts.Dtos;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Adnc.Usr.Application.Contracts.Services
 {
@@ -31,7 +30,7 @@ namespace Adnc.Usr.Application.Contracts.Services
         /// <returns></returns>
         [OpsLog(LogName = "修改用户")]
         [CachingEvict(CacheKeyPrefix = CachingConsts.UserValidateInfoKeyPrefix)]
-        Task<AppSrvResult> UpdateAsync([CachingParam]long id, UserUpdationDto input);
+        Task<AppSrvResult> UpdateAsync([CachingParam] long id, UserUpdationDto input);
 
         /// <summary>
         /// 删除用户
@@ -51,7 +50,7 @@ namespace Adnc.Usr.Application.Contracts.Services
         [OpsLog(LogName = "设置用户角色")]
         [CachingEvict(CacheKeys = new[] { CachingConsts.MenuRelationCacheKey, CachingConsts.MenuCodesCacheKey }
                              , CacheKeyPrefix = CachingConsts.UserValidateInfoKeyPrefix)]
-        Task<AppSrvResult> SetRoleAsync([CachingParam] long id,UserSetRoleDto input);
+        Task<AppSrvResult> SetRoleAsync([CachingParam] long id, UserSetRoleDto input);
 
         /// <summary>
         /// 修改用户状态

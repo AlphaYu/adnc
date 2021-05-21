@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using Adnc.Core.Shared.Entities;
+﻿using Adnc.Core.Shared.Entities;
 
 namespace Adnc.Maint.Core.Entities
 {

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Adnc.Infra.Mapper
+﻿namespace Adnc.Infra.Mapper
 {
     public interface IObjectMapper
     {

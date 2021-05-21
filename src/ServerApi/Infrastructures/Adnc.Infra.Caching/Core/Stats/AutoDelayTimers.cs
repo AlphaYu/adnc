@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Threading;
 using System.Collections.Concurrent;
+using System.Threading;
 
 namespace Adnc.Infra.Caching.Core
 {
@@ -9,7 +9,9 @@ namespace Adnc.Infra.Caching.Core
         private static readonly Lazy<AutoDelayTimers> lazy = new Lazy<AutoDelayTimers>(() => new AutoDelayTimers());
         private static ConcurrentDictionary<string, Timer> _timers;
 
-        static AutoDelayTimers() { }
+        static AutoDelayTimers()
+        {
+        }
 
         private AutoDelayTimers()
         {

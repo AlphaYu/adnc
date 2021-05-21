@@ -1,13 +1,13 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using Adnc.Core.Shared;
-using Adnc.Infra.EventBus;
+﻿using Adnc.Core.Shared;
 using Adnc.Core.Shared.IRepositories;
+using Adnc.Infra.Common.Exceptions;
 using Adnc.Infra.Common.Helper;
+using Adnc.Infra.EventBus;
 using Adnc.Ord.Core.Entities;
 using Adnc.Ord.Core.Events;
-using Adnc.Infra.Common.Exceptions;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Adnc.Ord.Core.Services
 {
@@ -62,7 +62,6 @@ namespace Adnc.Ord.Core.Services
             return order;
         }
 
-
         /// <summary>
         /// 订单取消，没有付款的订单可以取消
         /// </summary>
@@ -71,7 +70,7 @@ namespace Adnc.Ord.Core.Services
         {
             Checker.NotNull(order, nameof(order));
 
-            order.ChangeStatus(OrderStatusEnum.Canceling,string.Empty);
+            order.ChangeStatus(OrderStatusEnum.Canceling, string.Empty);
 
             //发布领域事件，通知仓储中心解冻被冻结的库存
             var eventId = IdGenerater.GetNextId();
@@ -88,7 +87,7 @@ namespace Adnc.Ord.Core.Services
         {
             Checker.NotNull(order, nameof(order));
 
-            order.ChangeStatus(OrderStatusEnum.Paying,string.Empty);
+            order.ChangeStatus(OrderStatusEnum.Paying, string.Empty);
 
             //发布领域事件，通知客户中心扣款(Demo是从余额中扣款)
             var eventId = IdGenerater.GetNextId();

@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using Adnc.Application.Shared.Dtos;
+﻿using Adnc.Application.Shared.Dtos;
+using System.Collections.Generic;
 
 namespace Adnc.Whse.Application.Contracts.Dtos
 {

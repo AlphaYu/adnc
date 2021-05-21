@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Adnc.Application.Shared.RpcServices.Rtos
+﻿namespace Adnc.Application.Shared.RpcServices.Rtos
 {
     public class LoginReplyRto
     {

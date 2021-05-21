@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Adnc.Infra.EventBus.RabbitMq
+﻿namespace Adnc.Infra.EventBus.RabbitMq
 {
     public class ExchageConfig
     {

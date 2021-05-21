@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Adnc.Application.Shared.Consts;
+﻿using Adnc.Application.Shared.Consts;
 
 namespace Adnc.Usr.Application.Contracts.Consts
 {
@@ -11,6 +9,7 @@ namespace Adnc.Usr.Application.Contracts.Consts
     {
         //cache key
         public const string MenuListCacheKey = "adnc:usr:menus:list";
+
         public const string MenuTreeListCacheKey = "adnc:usr:menus:tree";
         public const string MenuRelationCacheKey = "adnc:usr:menus:relation";
         public const string MenuCodesCacheKey = "adnc:usr:menus:codes";

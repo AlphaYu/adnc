@@ -1,9 +1,9 @@
-﻿using System.Threading.Tasks;
-using System.Collections.Generic;
-using DotNetCore.CAP;
-using Adnc.Infra.EventBus;
-using Adnc.Whse.Application.Contracts.Services;
+﻿using Adnc.Infra.EventBus;
 using Adnc.Whse.Application.Contracts.Dtos;
+using Adnc.Whse.Application.Contracts.Services;
+using DotNetCore.CAP;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Adnc.Whse.Application.EventSubscribers
 {
@@ -31,7 +31,7 @@ namespace Adnc.Whse.Application.EventSubscribers
         [CapSubscribe("OrderCreatedEvent")]
         public async Task Process(BaseEvent<EventData> orderCreatedEvent)
         {
-            await _warehouseSrv.BlockQtyAsync(new WarehouseBlockQtyDto { OrderId=orderCreatedEvent.Data.OrderId,Products = orderCreatedEvent.Data.Products });
+            await _warehouseSrv.BlockQtyAsync(new WarehouseBlockQtyDto { OrderId = orderCreatedEvent.Data.OrderId, Products = orderCreatedEvent.Data.Products });
         }
 
         /// <summary>

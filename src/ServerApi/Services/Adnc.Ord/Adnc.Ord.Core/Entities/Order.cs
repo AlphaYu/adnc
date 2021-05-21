@@ -1,8 +1,8 @@
-﻿using System;
-using System.Linq;
-using System.Collections.Generic;
+﻿using Adnc.Core.Shared.Entities;
 using Adnc.Infra.Common.Exceptions;
-using Adnc.Core.Shared.Entities;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Adnc.Ord.Core.Entities
 {
@@ -38,8 +38,9 @@ namespace Adnc.Ord.Core.Entities
         /// </summary>
         public virtual ICollection<OrderItem> Items { get; private set; }
 
-        private Order() { }
-
+        private Order()
+        {
+        }
 
         internal Order(long id, long customerId, OrderReceiver orderReceiver, string remark = null)
         {
@@ -110,7 +111,7 @@ namespace Adnc.Ord.Core.Entities
         /// 调整订单状态
         /// </summary>
         /// <param name="id"></param>
-        internal void ChangeStatus(OrderStatusEnum newStatus,string changesReason)
+        internal void ChangeStatus(OrderStatusEnum newStatus, string changesReason)
         {
             if (newStatus == OrderStatusEnum.Canceling)
             {
@@ -167,7 +168,6 @@ namespace Adnc.Ord.Core.Entities
                 else
                     throw new Exception();
             }
-
 
             if (newStatus == OrderStatusEnum.Finished)
             {

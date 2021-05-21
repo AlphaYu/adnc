@@ -1,10 +1,10 @@
-﻿using System;
+﻿using JetBrains.Annotations;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Net;
 using System.Text;
-using JetBrains.Annotations;
 
 // ReSharper disable once CheckNamespace
 namespace Adnc.Infra.Common.Extensions

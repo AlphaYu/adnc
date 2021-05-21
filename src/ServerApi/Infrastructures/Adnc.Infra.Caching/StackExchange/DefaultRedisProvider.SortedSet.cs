@@ -1,14 +1,14 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using Adnc.Infra.Caching.Core;
 using StackExchange.Redis;
-using Adnc.Infra.Caching.Core;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Adnc.Infra.Caching.StackExchange
 {
     /// <summary>
     /// Default redis caching provider.
     /// </summary>
-    public partial class DefaultRedisProvider: IRedisProvider
+    public partial class DefaultRedisProvider : IRedisProvider
     {
         public long ZAdd<T>(string cacheKey, Dictionary<T, double> cacheValues)
         {
@@ -86,7 +86,6 @@ namespace Adnc.Infra.Caching.StackExchange
             return index;
         }
 
-
         public long ZRem<T>(string cacheKey, IList<T> cacheValues)
         {
             ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
@@ -129,7 +128,6 @@ namespace Adnc.Infra.Caching.StackExchange
 
             return len;
         }
-
 
         public async Task<long> ZCardAsync(string cacheKey)
         {

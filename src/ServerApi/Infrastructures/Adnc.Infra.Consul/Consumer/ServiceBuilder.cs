@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Adnc.Infra.Consul.Consumer
@@ -11,6 +9,7 @@ namespace Adnc.Infra.Consul.Consumer
         public string ServiceName { get; set; }
         public string UriScheme { get; set; }
         public ILoadBalancer LoadBalancer { get; set; }
+
         public ServiceBuilder(IServiceProvider serviceProvider)
         {
             ServiceProvider = serviceProvider;

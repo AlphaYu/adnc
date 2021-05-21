@@ -1,15 +1,13 @@
-﻿using System;
-using Adnc.Core.Shared.Entities;
+﻿using Adnc.Core.Shared.Entities;
+using System;
 
 namespace Adnc.Usr.Core.Entities
 {
-
     /// <summary>
     /// 管理员
     /// </summary>
     public class SysUser : EfFullAuditEntity, ISoftDelete
     {
-
         //private SysDept _dept;
         //private Action<object, string> LazyLoader { get; set; }
         //private SysUser(Action<object, string> lazyLoader)

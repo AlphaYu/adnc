@@ -1,15 +1,15 @@
-﻿using System;
+﻿using Adnc.Infra.Caching.Core;
+using StackExchange.Redis;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using StackExchange.Redis;
-using Adnc.Infra.Caching.Core;
 
 namespace Adnc.Infra.Caching.StackExchange
 {
     /// <summary>
     /// Default redis caching provider.
     /// </summary>
-    public partial class DefaultRedisProvider: IRedisProvider
+    public partial class DefaultRedisProvider : IRedisProvider
     {
         public T LIndex<T>(string cacheKey, long index)
         {
@@ -122,7 +122,7 @@ namespace Adnc.Infra.Caching.StackExchange
             ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
             var bytes = _serializer.Serialize(cacheValue);
-            return _redisDb.ListRightPush(cacheKey, bytes);            
+            return _redisDb.ListRightPush(cacheKey, bytes);
         }
 
         public long RPush<T>(string cacheKey, IList<T> cacheValues)

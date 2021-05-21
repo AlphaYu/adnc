@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Adnc.Core.Shared.Entities;
+using MongoDB.Driver;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using MongoDB.Driver;
-using Adnc.Core.Shared.Entities;
 
 namespace Adnc.Infra.Mongo.Configuration
 {

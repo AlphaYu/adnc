@@ -1,11 +1,11 @@
-﻿using System;
-using System.Data;
+﻿using Adnc.Core.Shared;
 using DotNetCore.CAP;
-using Adnc.Core.Shared;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
-using System.Threading.Tasks;
+using System;
+using System.Data;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Adnc.Infra.EfCore
 {
@@ -69,7 +69,6 @@ namespace Adnc.Infra.EfCore
             await _dbTransaction.CommitAsync(cancellationToken);
             _unitOfWorkStatus.IsStartingUow = false;
         }
-
 
         public void Rollback()
         {

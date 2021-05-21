@@ -1,14 +1,14 @@
-﻿using System;
+﻿using Adnc.Core.Shared;
+using Adnc.Core.Shared.Entities;
+using Adnc.Core.Shared.IRepositories;
+using Adnc.Infra.Mongo.Extensions;
+using Adnc.Infra.Mongo.Interfaces;
+using MongoDB.Driver;
+using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Linq.Expressions;
-using MongoDB.Driver;
-using Adnc.Infra.Mongo.Interfaces;
-using Adnc.Infra.Mongo.Extensions;
-using Adnc.Core.Shared.IRepositories;
-using Adnc.Core.Shared.Entities;
-using Adnc.Core.Shared;
 
 namespace Adnc.Infra.Mongo
 {
@@ -103,7 +103,6 @@ namespace Adnc.Infra.Mongo
                 cancellationToken);
         }
 
-
         public virtual async Task<IPagedModel<TEntity>> PagedAsync(int pageIndex, int pageSize, FilterDefinition<TEntity> filter, Expression<Func<TEntity, object>> orderByExpression, bool ascending = false, CancellationToken cancellationToken = default)
         {
             var collection = await GetCollectionAsync(cancellationToken);
@@ -192,7 +191,6 @@ namespace Adnc.Infra.Mongo
         /// <returns></returns>
         protected async Task<IMongoCollection<TEntity>> GetCollectionAsync(CancellationToken cancellationToken = default) =>
             await _context.GetCollectionAsync<TEntity>(cancellationToken);
-
 
         protected static FilterDefinitionBuilder<TEntity> Filter => Builders<TEntity>.Filter;
 

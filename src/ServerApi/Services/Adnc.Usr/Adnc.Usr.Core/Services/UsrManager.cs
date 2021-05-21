@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using Adnc.Core.Shared;
+using Adnc.Core.Shared.Interceptors;
+using Adnc.Core.Shared.IRepositories;
+using Adnc.Infra.Common.Helper;
+using Adnc.Usr.Core.Entities;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Adnc.Infra.Common.Helper;
-using Adnc.Usr.Core.Entities;
-using Adnc.Core.Shared.IRepositories;
-using Adnc.Core.Shared.Interceptors;
-using Adnc.Core.Shared;
 
 namespace Adnc.Usr.Core.Services
 {
@@ -22,6 +22,7 @@ namespace Adnc.Usr.Core.Services
             _relationRepository = relationRepository;
             _deptRepository = deptRepository;
         }
+
         [UnitOfWork]
         public virtual async Task SetRolePermissonAsync(long roleId, long[] permissionIds, CancellationToken cancellationToken = default)
         {

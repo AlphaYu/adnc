@@ -1,8 +1,7 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
+﻿using Adnc.Core.Shared.Entities;
 using MongoDB.Driver;
-using Adnc.Infra.Mongo.Models;
-using Adnc.Core.Shared.Entities;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Adnc.Infra.Mongo.Interfaces
 {

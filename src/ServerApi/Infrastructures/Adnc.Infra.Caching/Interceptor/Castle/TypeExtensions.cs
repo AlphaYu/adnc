@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Adnc.Infra.Caching.Interceptor.Castle
-{ 
+{
     public static class TypeExtensions
     {
         private static readonly ConcurrentDictionary<TypeInfo, bool> isTaskOfTCache = new ConcurrentDictionary<TypeInfo, bool>();
@@ -26,6 +26,5 @@ namespace Adnc.Infra.Caching.Interceptor.Castle
             }
             return typeInfo.AsType() == typeof(Task);
         }
-        
     }
 }

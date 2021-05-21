@@ -1,10 +1,10 @@
-﻿using System;
-using System.Linq;
-using System.Linq.Expressions;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using System;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace Adnc.Infra.EfCore.Extensions
 {
@@ -104,5 +104,4 @@ namespace Adnc.Infra.EfCore.Extensions
             return keyValues;
         }
     }
-
 }

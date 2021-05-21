@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Adnc.Core.Shared.EntityConsts.Whse
+﻿namespace Adnc.Core.Shared.EntityConsts.Whse
 {
     public static class WhseConsts
     {
-         public const int Code_MaxLength = 32; 
-         public const int Description_MaxLength = 64; 
+        public const int Code_MaxLength = 32;
+        public const int Description_MaxLength = 64;
     }
 
     public static class ProductConts

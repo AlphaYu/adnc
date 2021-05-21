@@ -16,7 +16,7 @@ namespace Adnc.Infra.Caching.StackExchange
         public async Task<dynamic> ScriptEvaluateAsync(string script, object parameters = null, CommandFlags flags = CommandFlags.None)
         {
             var prepared = LuaScript.Prepare(script);
-            var result =await _redisDb.ScriptEvaluateAsync(prepared, parameters, flags);
+            var result = await _redisDb.ScriptEvaluateAsync(prepared, parameters, flags);
             return result;
         }
     }

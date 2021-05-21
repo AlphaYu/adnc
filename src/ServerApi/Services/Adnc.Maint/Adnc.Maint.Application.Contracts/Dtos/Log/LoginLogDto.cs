@@ -1,5 +1,5 @@
-﻿using System;
-using Adnc.Application.Shared.Dtos;
+﻿using Adnc.Application.Shared.Dtos;
+using System;
 
 namespace Adnc.Maint.Application.Contracts.Dtos
 {

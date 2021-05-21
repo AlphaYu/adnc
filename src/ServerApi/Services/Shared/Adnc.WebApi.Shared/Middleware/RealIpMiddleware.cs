@@ -1,16 +1,15 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
 
 namespace Adnc.WebApi.Shared.Middleware
 {
     public class RealIpMiddleware
     {
-
         private readonly RequestDelegate _next;
         private readonly ILogger<RealIpMiddleware> _logger;
         private readonly FilterOption _option;
@@ -43,7 +42,7 @@ namespace Adnc.WebApi.Shared.Middleware
                 }
                 await _next(context);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message, ex);
             }

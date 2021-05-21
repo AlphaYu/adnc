@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Adnc.Infra.Caching.Core;
 using StackExchange.Redis;
-using Adnc.Infra.Caching.Core;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Adnc.Infra.Caching.StackExchange
 {
     /// <summary>
     /// Default redis caching provider.
     /// </summary>
-    public partial class DefaultRedisProvider: IRedisProvider
+    public partial class DefaultRedisProvider : IRedisProvider
     {
         public bool PfAdd<T>(string cacheKey, List<T> values)
         {

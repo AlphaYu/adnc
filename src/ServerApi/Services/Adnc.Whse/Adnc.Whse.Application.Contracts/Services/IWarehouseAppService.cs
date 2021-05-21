@@ -1,16 +1,16 @@
-﻿using System.Threading.Tasks;
-using Adnc.Application.Shared.Dtos;
+﻿using Adnc.Application.Shared.Dtos;
 using Adnc.Application.Shared.Interceptors;
 using Adnc.Application.Shared.Services;
-using Adnc.Whse.Application.Contracts.Dtos;
 using Adnc.Core.Shared.Interceptors;
+using Adnc.Whse.Application.Contracts.Dtos;
+using System.Threading.Tasks;
 
 namespace Adnc.Whse.Application.Contracts.Services
 {
     /// <summary>
     /// 仓储管理
     /// </summary>
-    public interface IWarehouseAppService: IAppService
+    public interface IWarehouseAppService : IAppService
     {
         /// <summary>
         /// 创建仓储

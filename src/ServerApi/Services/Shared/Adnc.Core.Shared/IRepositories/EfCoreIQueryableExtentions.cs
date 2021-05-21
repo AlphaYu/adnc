@@ -1,4 +1,10 @@
-﻿using System;
+﻿using JetBrains.Annotations;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.EntityFrameworkCore.Query;
+using Microsoft.EntityFrameworkCore.Query.Internal;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -7,12 +13,6 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using JetBrains.Annotations;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Microsoft.EntityFrameworkCore.Diagnostics;
-using Microsoft.EntityFrameworkCore.Query;
-using Microsoft.EntityFrameworkCore.Query.Internal;
 
 namespace Adnc.Core.Shared.IRepositories
 {
@@ -118,7 +118,7 @@ namespace Adnc.Core.Shared.IRepositories
             return ExecuteAsync<TSource, Task<bool>>(QueryableMethods.All, source, predicate, cancellationToken);
         }
 
-        #endregion
+        #endregion Any/All
 
         #region Count/LongCount
 
@@ -247,7 +247,7 @@ namespace Adnc.Core.Shared.IRepositories
             return ExecuteAsync<TSource, Task<long>>(QueryableMethods.LongCountWithPredicate, source, predicate, cancellationToken);
         }
 
-        #endregion
+        #endregion Count/LongCount
 
         #region First/FirstOrDefault
 
@@ -378,7 +378,7 @@ namespace Adnc.Core.Shared.IRepositories
             return ExecuteAsync<TSource, Task<TSource>>(QueryableMethods.FirstOrDefaultWithPredicate, source, predicate, cancellationToken);
         }
 
-        #endregion
+        #endregion First/FirstOrDefault
 
         #region Last/LastOrDefault
 
@@ -509,7 +509,7 @@ namespace Adnc.Core.Shared.IRepositories
             return ExecuteAsync<TSource, Task<TSource>>(QueryableMethods.LastOrDefaultWithPredicate, source, predicate, cancellationToken);
         }
 
-        #endregion
+        #endregion Last/LastOrDefault
 
         #region Single/SingleOrDefault
 
@@ -645,7 +645,7 @@ namespace Adnc.Core.Shared.IRepositories
                 QueryableMethods.SingleOrDefaultWithPredicate, source, predicate, cancellationToken);
         }
 
-        #endregion
+        #endregion Single/SingleOrDefault
 
         #region Min
 
@@ -713,7 +713,7 @@ namespace Adnc.Core.Shared.IRepositories
             return ExecuteAsync<TSource, Task<TResult>>(QueryableMethods.MinWithSelector, source, selector, cancellationToken);
         }
 
-        #endregion
+        #endregion Min
 
         #region Max
 
@@ -781,7 +781,7 @@ namespace Adnc.Core.Shared.IRepositories
             return ExecuteAsync<TSource, Task<TResult>>(QueryableMethods.MaxWithSelector, source, selector, cancellationToken);
         }
 
-        #endregion
+        #endregion Max
 
         #region Sum
 
@@ -1355,7 +1355,7 @@ namespace Adnc.Core.Shared.IRepositories
                 QueryableMethods.GetSumWithSelector(typeof(float?)), source, selector, cancellationToken);
         }
 
-        #endregion
+        #endregion Sum
 
         #region Average
 
@@ -1944,7 +1944,7 @@ namespace Adnc.Core.Shared.IRepositories
                 QueryableMethods.GetAverageWithSelector(typeof(float?)), source, selector, cancellationToken);
         }
 
-        #endregion
+        #endregion Average
 
         #region Contains
 
@@ -1983,7 +1983,7 @@ namespace Adnc.Core.Shared.IRepositories
                 cancellationToken);
         }
 
-        #endregion
+        #endregion Contains
 
         #region ToList/Array
 
@@ -2046,7 +2046,7 @@ namespace Adnc.Core.Shared.IRepositories
             CancellationToken cancellationToken = default)
             => (await source.ToListAsync(cancellationToken)).ToArray();
 
-        #endregion
+        #endregion ToList/Array
 
         #region Include
 
@@ -2359,7 +2359,7 @@ namespace Adnc.Core.Shared.IRepositories
                     : source;
         }
 
-        #endregion
+        #endregion Include
 
         #region Query Filters
 
@@ -2392,7 +2392,7 @@ namespace Adnc.Core.Shared.IRepositories
                     : source;
         }
 
-        #endregion
+        #endregion Query Filters
 
         #region Tracking
 
@@ -2507,7 +2507,7 @@ namespace Adnc.Core.Shared.IRepositories
                 ? source.AsTracking()
                 : source.AsNoTracking();
 
-        #endregion
+        #endregion Tracking
 
         #region Tagging
 
@@ -2542,7 +2542,7 @@ namespace Adnc.Core.Shared.IRepositories
                     : source;
         }
 
-        #endregion
+        #endregion Tagging
 
         #region Load
 
@@ -2587,7 +2587,7 @@ namespace Adnc.Core.Shared.IRepositories
             }
         }
 
-        #endregion
+        #endregion Load
 
         #region ToDictionary
 
@@ -2751,7 +2751,7 @@ namespace Adnc.Core.Shared.IRepositories
             return d;
         }
 
-        #endregion
+        #endregion ToDictionary
 
         #region ForEach
 
@@ -2786,7 +2786,7 @@ namespace Adnc.Core.Shared.IRepositories
             }
         }
 
-        #endregion
+        #endregion ForEach
 
         #region AsAsyncEnumerable
 
@@ -2817,7 +2817,7 @@ namespace Adnc.Core.Shared.IRepositories
             throw new InvalidOperationException(CoreStrings.IQueryableNotAsync(typeof(TSource)));
         }
 
-        #endregion
+        #endregion AsAsyncEnumerable
 
         #region Impl.
 
@@ -2867,7 +2867,7 @@ namespace Adnc.Core.Shared.IRepositories
             => ExecuteAsync<TSource, TResult>(
                 operatorMethodInfo, source, (Expression)null, cancellationToken);
 
-        #endregion
+        #endregion Impl.
     }
 
     [DebuggerStepThrough]

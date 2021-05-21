@@ -2,7 +2,7 @@
 
 namespace Adnc.Application.Shared.Dtos
 {
-    public interface IFullAuditInfo: IBasicAuditInfo
+    public interface IFullAuditInfo : IBasicAuditInfo
     {
         /// <summary>
         /// 最后更新人

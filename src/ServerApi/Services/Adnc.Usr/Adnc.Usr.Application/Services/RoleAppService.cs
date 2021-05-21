@@ -1,19 +1,19 @@
-﻿using System;
-using System.Net;
+﻿using Adnc.Application.Shared.Dtos;
+using Adnc.Application.Shared.Services;
+using Adnc.Core.Shared.IRepositories;
+using Adnc.Infra.Common.Extensions;
+using Adnc.Infra.Common.Helper;
+using Adnc.Usr.Application.Caching;
+using Adnc.Usr.Application.Contracts.Dtos;
+using Adnc.Usr.Application.Contracts.Services;
+using Adnc.Usr.Core.Entities;
+using Adnc.Usr.Core.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Net;
 using System.Threading.Tasks;
-using Adnc.Usr.Application.Contracts.Dtos;
-using Adnc.Infra.Common.Extensions;
-using Adnc.Usr.Core.Entities;
-using Adnc.Usr.Core.Services;
-using Adnc.Core.Shared.IRepositories;
-using Adnc.Infra.Common.Helper;
-using Adnc.Application.Shared.Services;
-using Adnc.Application.Shared.Dtos;
-using Adnc.Usr.Application.Contracts.Services;
-using Adnc.Usr.Application.Caching;
 
 namespace Adnc.Usr.Application.Services
 {
@@ -91,12 +91,12 @@ namespace Adnc.Usr.Application.Services
             RoleTreeDto result = null;
             IEnumerable<ZTreeNodeDto<long, dynamic>> treeNodes = null;
 
-            var user = await _cacheService.GetUserValidateInfoFromCacheAsync(userId) ;
+            var user = await _cacheService.GetUserValidateInfoFromCacheAsync(userId);
 
             if (user == null)
                 return null;
 
-            var roles =await _cacheService.GetAllRolesFromCacheAsync();
+            var roles = await _cacheService.GetAllRolesFromCacheAsync();
             var roleIds = user.RoleIds?.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(x => long.Parse(x)) ?? new List<long>();
             if (roles.Any())
             {

@@ -126,7 +126,7 @@ namespace Adnc.Infra.Common.Extensions
             SetLocalTime(ref st);
         }
 
-        #endregion
+        #endregion P/Invoke 设置本地时间
 
         /// <summary>
         /// 返回相对于当前时间的相对天数
@@ -361,46 +361,57 @@ namespace Adnc.Infra.Common.Extensions
                     firstDay = DateTime.Now.ToString($"{year}-0{month}-01");
                     lastDay = DateTime.Now.ToString($"{year}-0{month}-31");
                     break;
+
                 case 2:
                     firstDay = DateTime.Now.ToString(year + "-0" + month + "-01");
                     lastDay = DateTime.IsLeapYear(DateTime.Now.Year) ? DateTime.Now.ToString(year + "-0" + month + "-29") : DateTime.Now.ToString(year + "-0" + month + "-28");
                     break;
+
                 case 3:
                     firstDay = DateTime.Now.ToString(year + "-0" + month + "-01");
                     lastDay = DateTime.Now.ToString("yyyy-0" + month + "-31");
                     break;
+
                 case 4:
                     firstDay = DateTime.Now.ToString(year + "-0" + month + "-01");
                     lastDay = DateTime.Now.ToString(year + "-0" + month + "-30");
                     break;
+
                 case 5:
                     firstDay = DateTime.Now.ToString(year + "-0" + month + "-01");
                     lastDay = DateTime.Now.ToString(year + "-0" + month + "-31");
                     break;
+
                 case 6:
                     firstDay = DateTime.Now.ToString(year + "-0" + month + "-01");
                     lastDay = DateTime.Now.ToString(year + "-0" + month + "-30");
                     break;
+
                 case 7:
                     firstDay = DateTime.Now.ToString(year + "-0" + month + "-01");
                     lastDay = DateTime.Now.ToString(year + "-0" + month + "-31");
                     break;
+
                 case 8:
                     firstDay = DateTime.Now.ToString(year + "-0" + month + "-01");
                     lastDay = DateTime.Now.ToString(year + "-0" + month + "-31");
                     break;
+
                 case 9:
                     firstDay = DateTime.Now.ToString(year + "-0" + month + "-01");
                     lastDay = DateTime.Now.ToString(year + "-0" + month + "-30");
                     break;
+
                 case 10:
                     firstDay = DateTime.Now.ToString(year + "-" + month + "-01");
                     lastDay = DateTime.Now.ToString(year + "-" + month + "-31");
                     break;
+
                 case 11:
                     firstDay = DateTime.Now.ToString(year + "-" + month + "-01");
                     lastDay = DateTime.Now.ToString(year + "-" + month + "-30");
                     break;
+
                 default:
                     firstDay = DateTime.Now.ToString(year + "-" + month + "-01");
                     lastDay = DateTime.Now.ToString(year + "-" + month + "-31");

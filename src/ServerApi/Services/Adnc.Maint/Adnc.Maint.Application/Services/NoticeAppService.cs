@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Linq.Expressions;
-using Adnc.Infra.Common.Extensions;
-using Adnc.Maint.Core.Entities;
+﻿using Adnc.Application.Shared.Services;
 using Adnc.Core.Shared.IRepositories;
-using Adnc.Application.Shared.Services;
+using Adnc.Infra.Common.Extensions;
 using Adnc.Maint.Application.Contracts.Dtos;
 using Adnc.Maint.Application.Contracts.Services;
+using Adnc.Maint.Core.Entities;
+using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
 
-namespace  Adnc.Maint.Application.Services
+namespace Adnc.Maint.Application.Services
 {
     public class NoticeAppService : AbstractAppService, INoticeAppService
     {
@@ -25,7 +25,7 @@ namespace  Adnc.Maint.Application.Services
             Expression<Func<SysNotice, bool>> whereCondition = x => true;
             if (search.Title.IsNotNullOrWhiteSpace())
             {
-                whereCondition = whereCondition.And(x => x.Title==search.Title.Trim());
+                whereCondition = whereCondition.And(x => x.Title == search.Title.Trim());
             }
 
             var notices = await _noticeRepository.Where(whereCondition).ToListAsync();

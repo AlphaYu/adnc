@@ -1,7 +1,5 @@
 ﻿using Adnc.Application.Shared.Dtos;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Adnc.Usr.Application.Contracts.Dtos
 {
@@ -9,7 +7,7 @@ namespace Adnc.Usr.Application.Contracts.Dtos
     /// 菜单元数据
     /// </summary>
     [Serializable]
-    public class MenuMetaDto:IDto
+    public class MenuMetaDto : IDto
     {
         /// <summary>
         /// 菜单标题

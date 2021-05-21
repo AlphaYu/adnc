@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Adnc.Core.Shared.IRepositories;
+﻿using Adnc.Application.Shared.Caching;
 using Adnc.Infra.Caching;
-using Adnc.Cus.Core.Entities;
-using Adnc.Cus.Application.Contracts.Dtos;
-using Adnc.Cus.Application.Contracts.Consts;
-using Adnc.Application.Shared.Caching;
+using System;
+using System.Threading.Tasks;
 
 namespace Adnc.Maint.Application.Services.Caching
 {
     public class CacheService : AbstractCacheService
     {
         private readonly Lazy<ICacheProvider> _cache;
+
         //private readonly Lazy<IDistributedLocker> _distributedLocker;
         private readonly Lazy<IBloomFilterFactory> _bloomFilterFactory;
 

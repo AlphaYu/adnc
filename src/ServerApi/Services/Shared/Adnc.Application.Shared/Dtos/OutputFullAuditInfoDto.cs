@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Adnc.Application.Shared.Dtos
 {
@@ -11,7 +9,6 @@ namespace Adnc.Application.Shared.Dtos
    	[Serializable]
     public abstract class OutputFullAuditInfoDto<TKey> : OutputBaseAuditDto<TKey>, IFullAuditInfo, IOutputDto<TKey>
     {
-
         /// <summary>
         /// 最后更新人
         /// </summary>

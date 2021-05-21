@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Adnc.Infra.Consul.Consumer
 {
@@ -12,6 +11,7 @@ namespace Adnc.Infra.Consul.Consumer
     public class RandomLoadBalancer : ILoadBalancer
     {
         private readonly Random _random = new Random();
+
         public string Resolve(IList<string> services)
         {
             var index = _random.Next(services.Count);
@@ -23,6 +23,7 @@ namespace Adnc.Infra.Consul.Consumer
     {
         private readonly object _lock = new object();
         private int _index = 0;
+
         public string Resolve(IList<string> services)
         {
             lock (_lock)

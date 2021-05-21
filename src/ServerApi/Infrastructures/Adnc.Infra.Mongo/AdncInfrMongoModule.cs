@@ -1,6 +1,6 @@
-﻿using Autofac;
+﻿using Adnc.Core.Shared.IRepositories;
 using Adnc.Infra.Mongo.Interfaces;
-using Adnc.Core.Shared.IRepositories;
+using Autofac;
 
 namespace Adnc.Infra.Mongo
 {
@@ -27,14 +27,13 @@ namespace Adnc.Infra.Mongo
                    .InstancePerLifetimeScope();
 
             builder.RegisterAssemblyTypes(this.ThisAssembly)
-                   .Where(t=>t.IsClosedTypeOf(typeof(IMongoEntityConfiguration<>)))
+                   .Where(t => t.IsClosedTypeOf(typeof(IMongoEntityConfiguration<>)))
                    .AsImplementedInterfaces()
                    .InstancePerLifetimeScope();
         }
-        
+
         private void LoadDepends(ContainerBuilder builder)
         {
-
         }
     }
 }

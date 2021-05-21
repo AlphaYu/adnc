@@ -11,7 +11,7 @@
         /// The counters.
         /// </summary>
         private long[] _counters = new long[2];
-    
+
         /// <summary>
         /// Increment the specified statsType.
         /// </summary>
@@ -19,7 +19,7 @@
         public void Increment(StatsType statsType)
         {
             Interlocked.Increment(ref _counters[(int)statsType]);
-        }            
+        }
 
         /// <summary>
         /// Get the specified statsType.
@@ -30,5 +30,5 @@
         {
             return Interlocked.Read(ref _counters[(int)statsType]);
         }
-    }      
+    }
 }

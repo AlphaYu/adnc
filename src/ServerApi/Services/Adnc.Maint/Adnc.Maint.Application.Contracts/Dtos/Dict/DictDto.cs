@@ -17,6 +17,7 @@ namespace Adnc.Maint.Application.Contracts.Dtos
         public string Value { get; set; }
 
         private IList<DictDto> _data = Array.Empty<DictDto>();
+
         [NotNull]
         public IList<DictDto> Children
         {

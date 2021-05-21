@@ -1,5 +1,5 @@
-﻿using System;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
+using System;
 
 namespace Microsoft.AspNetCore.Mvc.Filters
 {
@@ -7,6 +7,7 @@ namespace Microsoft.AspNetCore.Mvc.Filters
     public class PermissionAttribute : AuthorizeAttribute
     {
         public string[] Codes { get; private set; }
+
         public PermissionAttribute(params string[] codes) : base(Permission.Policy)
         {
             Codes = codes;

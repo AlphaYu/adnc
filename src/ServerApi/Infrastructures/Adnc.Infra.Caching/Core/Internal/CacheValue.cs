@@ -47,7 +47,7 @@
         public static CacheValue<T> NoValue { get; } = new CacheValue<T>(default(T), false);
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public override string ToString()

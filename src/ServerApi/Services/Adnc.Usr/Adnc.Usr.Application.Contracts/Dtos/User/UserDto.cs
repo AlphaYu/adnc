@@ -1,16 +1,14 @@
 ﻿using Adnc.Application.Shared.Dtos;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Adnc.Usr.Application.Contracts.Dtos
 {
-	/// <summary>
-	/// 用户
-	/// </summary>
+    /// <summary>
+    /// 用户
+    /// </summary>
     [Serializable]
-	public class UserDto : OutputBaseAuditDto<long>
-	{
+    public class UserDto : OutputBaseAuditDto<long>
+    {
         /// <summary>
         /// 账户
         /// </summary>

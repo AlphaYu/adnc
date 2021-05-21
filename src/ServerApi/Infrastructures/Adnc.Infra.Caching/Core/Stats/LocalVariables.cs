@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Adnc.Infra.Caching.Core
 {
@@ -10,7 +10,9 @@ namespace Adnc.Infra.Caching.Core
         private static readonly Lazy<LocalVariables> lazy = new Lazy<LocalVariables>(() => new LocalVariables());
         private static ConcurrentQueue<Model> _queue;
 
-        static LocalVariables() { }
+        static LocalVariables()
+        {
+        }
 
         private LocalVariables()
         {

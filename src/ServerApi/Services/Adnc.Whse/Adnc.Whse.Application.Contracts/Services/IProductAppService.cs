@@ -1,9 +1,9 @@
-﻿using System.Threading.Tasks;
-using Adnc.Application.Shared.Services;
+﻿using Adnc.Application.Shared.Dtos;
 using Adnc.Application.Shared.Interceptors;
+using Adnc.Application.Shared.Services;
 using Adnc.Whse.Application.Contracts.Dtos;
-using Adnc.Application.Shared.Dtos;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Adnc.Whse.Application.Contracts.Services
 {
@@ -27,6 +27,5 @@ namespace Adnc.Whse.Application.Contracts.Services
         Task<PageModelDto<ProductDto>> GetPagedAsync(ProductSearchPagedDto search);
 
         Task<List<ProductDto>> GetListAsync(ProductSearchListDto search);
-
     }
 }

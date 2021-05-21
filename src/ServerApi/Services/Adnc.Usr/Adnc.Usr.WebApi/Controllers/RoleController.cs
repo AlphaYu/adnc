@@ -1,11 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using Adnc.Application.Shared.Dtos;
+using Adnc.Usr.Application.Contracts.Dtos;
+using Adnc.Usr.Application.Contracts.Services;
+using Adnc.WebApi.Shared;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Adnc.WebApi.Shared;
-using Adnc.Application.Shared.Dtos;
-using Adnc.Usr.Application.Contracts.Dtos;
-using Adnc.Usr.Application.Contracts.Services;
+using System.Threading.Tasks;
 
 namespace Adnc.Usr.WebApi.Controllers
 {
@@ -97,7 +97,7 @@ namespace Adnc.Usr.WebApi.Controllers
         [HttpPut("{id}")]
         [Permission("roleEdit")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<ActionResult> UpdateAsync([FromRoute]long id, [FromBody] RoleUpdationDto input)
+        public async Task<ActionResult> UpdateAsync([FromRoute] long id, [FromBody] RoleUpdationDto input)
         {
             return Result(await _roleService.UpdateAsync(id, input));
         }

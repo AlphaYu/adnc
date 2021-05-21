@@ -1,5 +1,5 @@
-﻿using Autofac;
-using Adnc.Application.Shared;
+﻿using Adnc.Application.Shared;
+using Autofac;
 using Microsoft.Extensions.Configuration;
 
 namespace Adnc.Cus.Application

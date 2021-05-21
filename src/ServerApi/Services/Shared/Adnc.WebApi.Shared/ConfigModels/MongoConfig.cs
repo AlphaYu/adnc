@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Adnc.WebApi.Shared
+﻿namespace Adnc.WebApi.Shared
 {
     /// <summary>
     /// JWT配置
@@ -42,12 +38,12 @@ namespace Adnc.WebApi.Shared
         /// <summary>
         /// Convert names to "UpperCamelCase".
         /// </summary>
-        Pascal =2,
+        Pascal = 2,
 
         /// <summary>
         /// Convert names to "camelCase".
         /// </summary>
-        Camel =3,
+        Camel = 3,
 
         /// <summary>
         /// Convert names to "snake_case".

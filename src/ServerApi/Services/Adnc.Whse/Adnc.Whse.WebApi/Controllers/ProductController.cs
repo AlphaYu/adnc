@@ -1,10 +1,10 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Adnc.Application.Shared.Dtos;
 using Adnc.WebApi.Shared;
-using System.Collections.Generic;
-using Adnc.Application.Shared.Dtos;
 using Adnc.Whse.Application.Contracts.Dtos;
 using Adnc.Whse.Application.Contracts.Services;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Adnc.Whse.WebApi.Controllers
 {
@@ -76,7 +76,7 @@ namespace Adnc.Whse.WebApi.Controllers
         [HttpPatch("{id}/status/1002")]
         public async Task<ActionResult<ProductDto>> PutOffSaleAsync([FromRoute] long id, ProductPutOffSaleDto input)
         {
-             return await _productSrv.PutOffSaleAsync(id, input);
+            return await _productSrv.PutOffSaleAsync(id, input);
         }
 
         /// <summary>
@@ -89,7 +89,6 @@ namespace Adnc.Whse.WebApi.Controllers
         {
             return await _productSrv.GetListAsync(search);
         }
-
 
         /// <summary>
         /// 商品分页列表

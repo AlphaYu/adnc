@@ -1,5 +1,5 @@
-﻿using Adnc.Infra.Common.Exceptions;
-using Adnc.Core.Shared.Entities;
+﻿using Adnc.Core.Shared.Entities;
+using Adnc.Infra.Common.Exceptions;
 
 namespace Adnc.Whse.Core.Entities
 {
@@ -17,7 +17,9 @@ namespace Adnc.Whse.Core.Entities
 
         public string Unit { get; private set; }
 
-        private Product() { }
+        private Product()
+        {
+        }
 
         /// <summary>
         /// 创建商品需要依赖仓储判断是否存在同名，所以必须要在领域服务类处理部分业务逻辑
@@ -56,7 +58,6 @@ namespace Adnc.Whse.Core.Entities
         {
             this.Name = Checker.NotNullOrEmpty(name.Trim(), nameof(name));
         }
-
 
         /// <summary>
         /// 设置商品状态

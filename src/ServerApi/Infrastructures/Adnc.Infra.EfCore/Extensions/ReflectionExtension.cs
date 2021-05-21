@@ -684,5 +684,4 @@ namespace Adnc.Infra.EfCore.Extensions
             return Attribute.IsDefined(element, attributeType, inherit);
         }
     }
-
 }

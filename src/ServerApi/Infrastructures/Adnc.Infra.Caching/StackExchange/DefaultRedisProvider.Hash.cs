@@ -1,16 +1,16 @@
-﻿using System;
+﻿using Adnc.Infra.Caching.Core;
+using StackExchange.Redis;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using StackExchange.Redis;
-using Adnc.Infra.Caching.Core;
 
 namespace Adnc.Infra.Caching.StackExchange
 {
     /// <summary>
     /// Default redis caching provider.
     /// </summary>
-    public partial class DefaultRedisProvider: IRedisProvider
+    public partial class DefaultRedisProvider : IRedisProvider
     {
         public bool HMSet(string cacheKey, Dictionary<string, string> vals, TimeSpan? expiration = null)
         {
@@ -22,7 +22,7 @@ namespace Adnc.Infra.Caching.StackExchange
 
                 foreach (var item in vals)
                 {
-                    list.Add(new HashEntry(item.Key,item.Value));
+                    list.Add(new HashEntry(item.Key, item.Value));
                 }
 
                 _redisDb.HashSet(cacheKey, list.ToArray());
@@ -68,7 +68,7 @@ namespace Adnc.Infra.Caching.StackExchange
 
             if (fields != null && fields.Any())
             {
-                return _redisDb.HashDelete(cacheKey, fields.Select(x=>(RedisValue)x).ToArray());
+                return _redisDb.HashDelete(cacheKey, fields.Select(x => (RedisValue)x).ToArray());
             }
             else
             {
@@ -96,7 +96,7 @@ namespace Adnc.Infra.Caching.StackExchange
 
             foreach (var item in vals)
             {
-                if(!dict.ContainsKey(item.Name)) dict.Add(item.Name, item.Value);
+                if (!dict.ContainsKey(item.Name)) dict.Add(item.Name, item.Value);
             }
 
             return dict;
@@ -115,7 +115,7 @@ namespace Adnc.Infra.Caching.StackExchange
             ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
             var keys = _redisDb.HashKeys(cacheKey);
-            return keys.Select(x=>x.ToString()).ToList();
+            return keys.Select(x => x.ToString()).ToList();
         }
 
         public long HLen(string cacheKey)
@@ -129,7 +129,7 @@ namespace Adnc.Infra.Caching.StackExchange
         {
             ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
-            return _redisDb.HashValues(cacheKey).Select(x=>x.ToString()).ToList();
+            return _redisDb.HashValues(cacheKey).Select(x => x.ToString()).ToList();
         }
 
         public Dictionary<string, string> HMGet(string cacheKey, IList<string> fields)
@@ -139,8 +139,8 @@ namespace Adnc.Infra.Caching.StackExchange
 
             var dict = new Dictionary<string, string>();
 
-            var list = _redisDb.HashGet(cacheKey, fields.Select(x=>(RedisValue)x).ToArray());
-           
+            var list = _redisDb.HashGet(cacheKey, fields.Select(x => (RedisValue)x).ToArray());
+
             for (int i = 0; i < fields.Count(); i++)
             {
                 if (!dict.ContainsKey(fields[i]))
@@ -160,7 +160,7 @@ namespace Adnc.Infra.Caching.StackExchange
 
                 foreach (var item in vals)
                 {
-                    list.Add(new HashEntry(item.Key,item.Value));                    
+                    list.Add(new HashEntry(item.Key, item.Value));
                 }
 
                 await _redisDb.HashSetAsync(cacheKey, list.ToArray());
@@ -205,7 +205,7 @@ namespace Adnc.Infra.Caching.StackExchange
 
             if (fields != null && fields.Any())
             {
-                return await _redisDb.HashDeleteAsync(cacheKey, fields.Select(x=>(RedisValue)x).ToArray());
+                return await _redisDb.HashDeleteAsync(cacheKey, fields.Select(x => (RedisValue)x).ToArray());
             }
             else
             {
@@ -236,7 +236,7 @@ namespace Adnc.Infra.Caching.StackExchange
                 if (!dict.ContainsKey(item.Name)) dict.Add(item.Name, item.Value);
             }
 
-            return dict;          
+            return dict;
         }
 
         public async Task<long> HIncrByAsync(string cacheKey, string field, long val = 1)
@@ -252,7 +252,7 @@ namespace Adnc.Infra.Caching.StackExchange
             ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
             var keys = await _redisDb.HashKeysAsync(cacheKey);
-            return keys.Select(x=>x.ToString()).ToList();
+            return keys.Select(x => x.ToString()).ToList();
         }
 
         public async Task<long> HLenAsync(string cacheKey)
@@ -266,7 +266,7 @@ namespace Adnc.Infra.Caching.StackExchange
         {
             ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
-            return (await _redisDb.HashValuesAsync(cacheKey)).Select(x=>x.ToString()).ToList();
+            return (await _redisDb.HashValuesAsync(cacheKey)).Select(x => x.ToString()).ToList();
         }
 
         public async Task<Dictionary<string, string>> HMGetAsync(string cacheKey, IList<string> fields)
@@ -276,7 +276,7 @@ namespace Adnc.Infra.Caching.StackExchange
 
             var dict = new Dictionary<string, string>();
 
-            var res = await _redisDb.HashGetAsync(cacheKey, fields.Select(x=>(RedisValue)x).ToArray());
+            var res = await _redisDb.HashGetAsync(cacheKey, fields.Select(x => (RedisValue)x).ToArray());
 
             for (int i = 0; i < fields.Count(); i++)
             {

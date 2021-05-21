@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Adnc.Infra.Common.Extensions;
+using System;
 using System.Text;
-using Adnc.Infra.Common.Extensions;
 
 namespace Adnc.Infra.Common.Helper
 {

@@ -44,7 +44,7 @@
         /// <param name="argumentName">Argument name.</param>
         public static void NotLessThanOrEqualZero(int argument, string argumentName)
         {
-            if (argument<=0)
+            if (argument <= 0)
             {
                 throw new ArgumentOutOfRangeException(argumentName);
             }
@@ -75,7 +75,6 @@
                 throw new ArgumentNullException(argumentName);
             }
         }
-
 
         /// <summary>
         /// Nots the null and count gt Zero.

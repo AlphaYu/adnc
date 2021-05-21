@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Adnc.Infra.Consul.Consumer;
 using Autofac;
 using Consul;
-using Adnc.Infra.Consul.Consumer;
+using System;
 
 namespace Adnc.Infra.Consul
 {

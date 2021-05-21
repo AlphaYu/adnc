@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using Adnc.Core.Shared;
+﻿using Adnc.Core.Shared;
 using JetBrains.Annotations;
+using System;
+using System.Collections.Generic;
 
 namespace Adnc.Infra.EfCore
 {

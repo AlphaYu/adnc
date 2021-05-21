@@ -1,7 +1,6 @@
 ﻿using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Unicode;
-using Adnc.Infra.Common.Extensions;
 
 namespace Adnc.Infra.Common.Helper
 {
@@ -10,7 +9,7 @@ namespace Adnc.Infra.Common.Helper
         public static JsonSerializerOptions GetAdncDefaultOptions()
         {
             return new JsonSerializerOptions()
-            {   
+            {
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase
                 ,
                 Encoder = SystemTextJsonHelper.GetAdncDefaultEncoder()
