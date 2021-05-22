@@ -15,13 +15,13 @@
         //public bool IsHybridProvider { get; set; } = false;
 
         /// <summary>
-        /// Gets or sets the cache key prefix. 
+        /// Gets or sets the cache key prefix.
         /// </summary>
         /// <value>The cache key prefix.</value>
         public string CacheKeyPrefix { get; set; } = string.Empty;
 
         /// <summary>
-        /// Gets or sets the cache provider name. The default value is EasyCachingInterceptorOptions.CacheProviderName"/> 
+        /// Gets or sets the cache provider name. The default value is EasyCachingInterceptorOptions.CacheProviderName"/>
         /// </summary>
         /// <value>The cache key prefix.</value>
         //public string CacheProviderName { get; set; }

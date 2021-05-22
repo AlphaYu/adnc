@@ -1,12 +1,12 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Adnc.Application.Shared.Caching;
+using Adnc.Core.Shared.IRepositories;
 using Adnc.Infra.Caching;
 using Adnc.Usr.Core.Entities;
-using Adnc.Core.Shared.IRepositories;
-using Adnc.Application.Shared.Caching;
-using System.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Adnc.Usr.Application.Caching
 {
@@ -14,6 +14,7 @@ namespace Adnc.Usr.Application.Caching
     {
         private readonly Lazy<ICacheProvider> _cache;
         private readonly Lazy<IDistributedLocker> _distributedLocker;
+
         //private readonly Lazy<IRedisProvider> _redisProvider;
         private readonly Lazy<IServiceProvider> _services;
 

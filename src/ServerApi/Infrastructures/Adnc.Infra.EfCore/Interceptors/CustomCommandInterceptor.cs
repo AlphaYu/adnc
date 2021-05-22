@@ -1,12 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore.Diagnostics;
-using System;
-using System.Collections.Generic;
 using System.Data.Common;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace  Adnc.Infra.EfCore.Interceptors
+namespace Adnc.Infra.EfCore.Interceptors
 {
     public class CustomCommandInterceptor : DbCommandInterceptor
     {

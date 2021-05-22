@@ -1,11 +1,10 @@
-﻿using System;
+﻿using Adnc.Infra.Caching.Core;
+using Microsoft.Extensions.Logging;
+using StackExchange.Redis;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
-using StackExchange.Redis;
-using Adnc.Infra.Caching.Core;
-
 
 namespace Adnc.Infra.Caching.StackExchange
 {
@@ -119,7 +118,7 @@ namespace Adnc.Infra.Caching.StackExchange
                     return CacheValue<T>.NoValue;
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message, ex);
             }

@@ -1,7 +1,7 @@
-﻿using System;
+﻿using JetBrains.Annotations;
+using System;
 using System.IO;
 using System.Text;
-using JetBrains.Annotations;
 
 namespace Adnc.Infra.Common.Extensions
 {

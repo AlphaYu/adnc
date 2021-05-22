@@ -11,7 +11,8 @@ namespace Adnc.Infra.Common.Helper.IdGeneraterInternal
         public static ushort MaxWorkerId { get { return (ushort)(Math.Pow(2.0, YitterWorkerIdBitLength) - 1); } }
 
         private static short _currentWorkerId = -1;
-        public static short CurrentWorkerId 
+
+        public static short CurrentWorkerId
         {
             get { return _currentWorkerId; }
             set
@@ -25,7 +26,9 @@ namespace Adnc.Infra.Common.Helper.IdGeneraterInternal
             }
         }
 
-        static YitterSnowFlake() { }
+        static YitterSnowFlake()
+        {
+        }
 
         private YitterSnowFlake()
         {

@@ -1,19 +1,19 @@
-﻿using System;
-using System.Net;
-using System.Linq;
-using System.Dynamic;
-using System.Threading.Tasks;
-using Adnc.Usr.Application.Contracts.Dtos;
+﻿using Adnc.Application.Shared.Services;
 using Adnc.Core.Shared.IRepositories;
-using Adnc.Usr.Core.Entities;
-using Adnc.Infra.EventBus.RabbitMq;
-using Adnc.Usr.Core.RepositoryExtensions;
-using Adnc.Infra.Common.Helper;
 using Adnc.Infra.Common.Extensions;
-using Adnc.Application.Shared.Services;
-using Adnc.Usr.Application.Contracts.Services;
-using Adnc.Usr.Application.Contracts.Consts;
+using Adnc.Infra.Common.Helper;
+using Adnc.Infra.EventBus.RabbitMq;
 using Adnc.Usr.Application.Caching;
+using Adnc.Usr.Application.Contracts.Consts;
+using Adnc.Usr.Application.Contracts.Dtos;
+using Adnc.Usr.Application.Contracts.Services;
+using Adnc.Usr.Core.Entities;
+using Adnc.Usr.Core.RepositoryExtensions;
+using System;
+using System.Dynamic;
+using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
 
 namespace Adnc.Usr.Application.Services
 {
@@ -41,7 +41,7 @@ namespace Adnc.Usr.Application.Services
         public async Task<AppSrvResult<UserValidateDto>> LoginAsync(UserLoginDto inputDto)
         {
             var exists = await _cacheService.BloomFilters.Accounts.ExistsAsync(inputDto.Account.ToLower());
-            if(!exists)
+            if (!exists)
                 return Problem(HttpStatusCode.BadRequest, "用户名或密码错误");
 
             var user = await _userRepository.FetchAsync(x => new UserValidateDto()

@@ -2,7 +2,7 @@
 
 namespace Adnc.Maint.Application.Contracts.Consts
 {
-    public class CachingConsts: SharedCachingConsts
+    public class CachingConsts : SharedCachingConsts
     {
         public const string DictListCacheKey = "adnc:maint:dicts:list";
 

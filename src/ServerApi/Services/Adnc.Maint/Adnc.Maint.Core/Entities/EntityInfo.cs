@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Adnc.Core.Shared.Entities;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Adnc.Core.Shared.Entities;
 
 namespace Adnc.Maint.Core.Entities
 {

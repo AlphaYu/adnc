@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Adnc.Application.Shared.Services;
+﻿using Adnc.Application.Shared.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Adnc.WebApi.Shared
 {
@@ -36,7 +36,7 @@ namespace Adnc.WebApi.Shared
         }
 
         /// <summary>
-        /// AppSrvResult => ActionResult 
+        /// AppSrvResult => ActionResult
         /// </summary>
         /// <param name="appSrvResult"><see cref="AppSrvResult"/></param>
         /// <returns><see cref="ActionResult"/> if normal return statuscode 204</returns>

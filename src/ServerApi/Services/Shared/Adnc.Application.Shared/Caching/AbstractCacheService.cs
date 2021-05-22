@@ -1,12 +1,12 @@
-﻿using System;
+﻿using Adnc.Application.Shared.Consts;
+using Adnc.Infra.Caching;
+using Adnc.Infra.Caching.Core;
+using Adnc.Infra.Mapper;
+using Polly;
+using System;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Polly;
-using Adnc.Infra.Caching;
-using Adnc.Infra.Caching.Core;
-using Adnc.Application.Shared.Consts;
-using Adnc.Infra.Mapper;
 
 namespace Adnc.Application.Shared.Caching
 {
@@ -36,7 +36,7 @@ namespace Adnc.Application.Shared.Caching
 
         public IObjectMapper Mapper { get; set; }
 
-        public abstract Task  PreheatAsync();
+        public abstract Task PreheatAsync();
 
         public virtual string ConcatCacheKey(params object[] items)
         {

@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Adnc.Infra.Common.Helper;
+using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Collections.Generic;
-using Adnc.Infra.Common.Helper;
 
 namespace Adnc.Application.Shared.Services
 {
@@ -13,7 +13,9 @@ namespace Adnc.Application.Shared.Services
     [Serializable]
     public sealed class ProblemDetails
     {
-        public ProblemDetails() { }
+        public ProblemDetails()
+        {
+        }
 
         public ProblemDetails(HttpStatusCode? statusCode = null, string detail = null, string title = null, string instance = null, string type = null)
         {

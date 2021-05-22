@@ -1,5 +1,3 @@
-using System;
-
 namespace Adnc.Maintaining.Models
 {
     public class ErrorViewModel

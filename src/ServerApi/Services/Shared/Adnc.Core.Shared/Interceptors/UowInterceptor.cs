@@ -1,7 +1,4 @@
-﻿using System;
-using System.Reflection;
-using System.Threading.Tasks;
-using Castle.DynamicProxy;
+﻿using Castle.DynamicProxy;
 
 namespace Adnc.Core.Shared.Interceptors
 {
@@ -23,6 +20,7 @@ namespace Adnc.Core.Shared.Interceptors
         }
 
         #region old code
+
         /*
         private void InterceptAsync(IInvocation invocation)
         {
@@ -58,6 +56,7 @@ namespace Adnc.Core.Shared.Interceptors
             );
         }
         */
-        #endregion old  code
+
+        #endregion old code
     }
 }

@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Adnc.Core.Shared.Entities;
 using Adnc.Infra.Common.Exceptions;
-using Adnc.Core.Shared.Entities;
+using System;
 
 namespace Adnc.Whse.Core.Entities
 {
@@ -83,7 +83,6 @@ namespace Adnc.Whse.Core.Entities
                 throw new AdncArgumentException("ProductId", nameof(ProductId));
             this.Qty += qty;
         }
-
 
         /// <summary>
         /// 分配货架给商品

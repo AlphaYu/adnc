@@ -1,6 +1,6 @@
-﻿using System;
-using Adnc.Core.Shared.Entities;
+﻿using Adnc.Core.Shared.Entities;
 using MongoDB.Bson.Serialization.Attributes;
+using System;
 
 namespace Adnc.Core.Maint.Entities
 {

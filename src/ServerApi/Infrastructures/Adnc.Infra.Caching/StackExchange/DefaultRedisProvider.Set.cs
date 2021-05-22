@@ -1,16 +1,16 @@
-﻿using System;
+﻿using Adnc.Infra.Caching.Core;
+using StackExchange.Redis;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using StackExchange.Redis;
-using Adnc.Infra.Caching.Core;
 
 namespace Adnc.Infra.Caching.StackExchange
 {
     /// <summary>
     /// Default redis caching provider.
     /// </summary>
-    public partial class DefaultRedisProvider: IRedisProvider
+    public partial class DefaultRedisProvider : IRedisProvider
     {
         public long SAdd<T>(string cacheKey, IList<T> cacheValues, TimeSpan? expiration = null)
         {

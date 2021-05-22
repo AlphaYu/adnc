@@ -7,7 +7,7 @@ namespace Adnc.Infra.Consul.Configuration
         private readonly ConsulConfig _config;
         private readonly bool _reloadOnChanges;
 
-        public DefaultConsulConfigurationSource(ConsulConfig config,bool reloadOnChanges)
+        public DefaultConsulConfigurationSource(ConsulConfig config, bool reloadOnChanges)
         {
             _config = config;
             _reloadOnChanges = reloadOnChanges;

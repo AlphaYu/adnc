@@ -1,14 +1,14 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using Adnc.Infra.Caching.Core;
 using StackExchange.Redis;
-using Adnc.Infra.Caching.Core;
+using System;
+using System.Threading.Tasks;
 
 namespace Adnc.Infra.Caching.StackExchange
 {
     /// <summary>
     /// Default redis caching provider.
     /// </summary>
-    public partial class DefaultRedisProvider: Adnc.Infra.Caching.IRedisProvider
+    public partial class DefaultRedisProvider : Adnc.Infra.Caching.IRedisProvider
     {
         public long IncrBy(string cacheKey, long value = 1)
         {

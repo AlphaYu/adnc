@@ -1,13 +1,13 @@
-﻿using System;
-using System.Text.Json;
-using System.Threading.Tasks;
+﻿using Adnc.Infra.Common.Helper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Adnc.Infra.Common.Helper;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace Adnc.WebApi.Shared.Middleware
 {
@@ -38,6 +38,7 @@ namespace Adnc.WebApi.Shared.Middleware
             }
 
             #region old code
+
             //var statusCode = context.Response.StatusCode;
             //string msg = string.Empty;
             //if (statusCode == 401)
@@ -57,7 +58,8 @@ namespace Adnc.WebApi.Shared.Middleware
             //{
             //    await HandleExceptionAsync(context, statusCode, msg);
             //}
-            #endregion
+
+            #endregion old code
         }
 
         private async Task HandleExceptionAsync(HttpContext context, Exception exception)

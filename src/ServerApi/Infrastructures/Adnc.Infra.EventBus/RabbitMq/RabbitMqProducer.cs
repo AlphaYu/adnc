@@ -1,10 +1,10 @@
-﻿using System.Text;
-using System;
-using System.Text.Json;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Polly;
 using RabbitMQ.Client;
+using System;
+using System.Text;
+using System.Text.Json;
 
 namespace Adnc.Infra.EventBus.RabbitMq
 {
@@ -66,7 +66,7 @@ namespace Adnc.Infra.EventBus.RabbitMq
                       //当mandatory标志位设置为true时，如果exchange根据自身类型和消息routingKey无法找到一个合适的queue存储消息
                       //那么broker会调用basic.return方法将消息返还给生产者;
                       //当mandatory设置为false时，出现上述情况broker会直接将消息丢弃
-                      
+
                       _channel.BasicPublish(exchange, routingKey, mandatory, basicProperties: properties, body);
 
                       //开启确认模式

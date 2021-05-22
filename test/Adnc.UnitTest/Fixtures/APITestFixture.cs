@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Text;
 
 namespace Adnc.UnitTest.Fixtures
 {
-    /// <summary>	
-    /// Shared Context https://xunit.github.io/docs/shared-context.html	
-    /// </summary>	
+    /// <summary>
+    /// Shared Context https://xunit.github.io/docs/shared-context.html
+    /// </summary>
     public class APITestFixture : IDisposable
     {
         //private readonly IWebHost _server;
@@ -26,14 +23,14 @@ namespace Adnc.UnitTest.Fixtures
         //    {
         //        BaseAddress = new Uri($"{baseUrl}")
         //    };
-        //    // Add Api-Version Header	
-        //    // Client.DefaultRequestHeaders.TryAddWithoutValidation("Api-Version", "1.2");	
+        //    // Add Api-Version Header
+        //    // Client.DefaultRequestHeaders.TryAddWithoutValidation("Api-Version", "1.2");
         //    Initialize();
         //    Console.WriteLine("test begin");
         //}
-        ///// <summary>	
-        ///// TestDataInitialize	
-        ///// </summary>	
+        ///// <summary>
+        ///// TestDataInitialize
+        ///// </summary>
         //private void Initialize()
         //{
         //}

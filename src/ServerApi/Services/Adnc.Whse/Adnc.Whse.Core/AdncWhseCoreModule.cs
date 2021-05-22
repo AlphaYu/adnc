@@ -1,12 +1,13 @@
-﻿using Autofac;
-using Adnc.Core.Shared;
+﻿using Adnc.Core.Shared;
+using Autofac;
 
 namespace Adnc.Whse.Core
 {
     public class AdncWhseCoreModule : AdncCoreModule
     {
-
-        public AdncWhseCoreModule() : base(typeof(AdncWhseCoreModule)) { }
+        public AdncWhseCoreModule() : base(typeof(AdncWhseCoreModule))
+        {
+        }
 
         /// <summary>
         /// 注册

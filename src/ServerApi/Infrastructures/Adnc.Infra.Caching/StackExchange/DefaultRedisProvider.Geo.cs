@@ -1,15 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using Adnc.Infra.Caching.Core;
+using StackExchange.Redis;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using StackExchange.Redis;
-using Adnc.Infra.Caching.Core;
 
 namespace Adnc.Infra.Caching.StackExchange
 {
     /// <summary>
     /// Default redis caching provider.
     /// </summary>
-    public partial class DefaultRedisProvider: IRedisProvider
+    public partial class DefaultRedisProvider : IRedisProvider
     {
         public long GeoAdd(string cacheKey, List<(double longitude, double latitude, string member)> values)
         {
@@ -20,7 +20,7 @@ namespace Adnc.Infra.Caching.StackExchange
 
             foreach (var item in values)
             {
-                list.Add( new GeoEntry(item.longitude, item.latitude, item.member));
+                list.Add(new GeoEntry(item.longitude, item.latitude, item.member));
             }
 
             var res = _redisDb.GeoAdd(cacheKey, list.ToArray());
@@ -120,7 +120,6 @@ namespace Adnc.Infra.Caching.StackExchange
                 {
                     tuple.Add(null);
                 }
-
             }
 
             return tuple;
@@ -151,7 +150,6 @@ namespace Adnc.Infra.Caching.StackExchange
                 {
                     tuple.Add(null);
                 }
-
             }
 
             return tuple;
@@ -165,12 +163,15 @@ namespace Adnc.Infra.Caching.StackExchange
                 case "km":
                     geoUnit = GeoUnit.Kilometers;
                     break;
+
                 case "ft":
                     geoUnit = GeoUnit.Feet;
                     break;
+
                 case "mi":
                     geoUnit = GeoUnit.Miles;
                     break;
+
                 default:
                     geoUnit = GeoUnit.Meters;
                     break;

@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Adnc.Infra.Caching.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Adnc.Infra.Caching.Core;
 
 namespace Adnc.Application.Shared.Caching
 {

@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Adnc.Usr.Application.Contracts.Dtos;
-using Adnc.Application.Shared.Interceptors;
+﻿using Adnc.Application.Shared.Interceptors;
 using Adnc.Application.Shared.Services;
 using Adnc.Infra.Caching.Interceptor;
 using Adnc.Usr.Application.Contracts.Consts;
+using Adnc.Usr.Application.Contracts.Dtos;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Adnc.Usr.Application.Contracts.Services
 {
@@ -29,8 +29,8 @@ namespace Adnc.Usr.Application.Contracts.Services
         /// <param name="input"></param>
         /// <returns></returns>
         [OpsLog(LogName = "修改菜单")]
-        [CachingEvict(CacheKeys = new[] { CachingConsts.MenuListCacheKey, CachingConsts.MenuTreeListCacheKey,CachingConsts.MenuRelationCacheKey, CachingConsts.MenuCodesCacheKey })]
-        Task<AppSrvResult> UpdateAsync(long id,MenuUpdationDto input);
+        [CachingEvict(CacheKeys = new[] { CachingConsts.MenuListCacheKey, CachingConsts.MenuTreeListCacheKey, CachingConsts.MenuRelationCacheKey, CachingConsts.MenuCodesCacheKey })]
+        Task<AppSrvResult> UpdateAsync(long id, MenuUpdationDto input);
 
         /// <summary>
         /// 删除菜单

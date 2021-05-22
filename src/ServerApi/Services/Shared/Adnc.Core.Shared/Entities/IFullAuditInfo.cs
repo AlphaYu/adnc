@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Adnc.Core.Shared.Entities
 {
-    public interface IFullAuditInfo: IBasicAuditInfo
+    public interface IFullAuditInfo : IBasicAuditInfo
     {
         /// <summary>
         /// 最后更新人

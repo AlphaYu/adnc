@@ -1,17 +1,13 @@
 ﻿using Consul;
-using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
-
 
 namespace Adnc.Infra.Consul.Consumer
 {
-
     public class ServiceConsumer
     {
-        public static async Task<List<string>> GetServicesAsync(string consulAddress,string serviceName)
+        public static async Task<List<string>> GetServicesAsync(string consulAddress, string serviceName)
         {
             var consulClient = new ConsulClient(configuration =>
             {

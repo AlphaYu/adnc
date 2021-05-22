@@ -1,13 +1,13 @@
-using System.Reflection;
+using Adnc.Infra.Consul;
+using Adnc.WebApi.Shared;
+using Autofac;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.AspNetCore.Authorization;
-using Autofac;
-using Adnc.Infra.Consul;
-using Adnc.WebApi.Shared;
+using System.Reflection;
 
 namespace Adnc.Maint.WebApi
 {
@@ -42,7 +42,7 @@ namespace Adnc.Maint.WebApi
             if (_environment.IsProduction() || _environment.IsStaging())
             {
                 app.RegisterToConsul();
-            }           
+            }
         }
     }
 }

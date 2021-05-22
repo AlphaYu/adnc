@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using DotNetCore.CAP;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using DotNetCore.CAP;
 
 namespace Adnc.Infra.EventBus.Cap
 {

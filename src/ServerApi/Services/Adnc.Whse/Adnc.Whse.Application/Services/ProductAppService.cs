@@ -1,18 +1,18 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using Adnc.Application.Shared.Dtos;
+using Adnc.Application.Shared.RpcServices;
+using Adnc.Application.Shared.Services;
+using Adnc.Core.Shared.IRepositories;
+using Adnc.Infra.Common.Exceptions;
+using Adnc.Infra.Common.Extensions;
+using Adnc.Whse.Application.Contracts.Dtos;
+using Adnc.Whse.Application.Contracts.Services;
+using Adnc.Whse.Core.Entities;
+using Adnc.Whse.Core.Services;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Collections.Generic;
-using Adnc.Whse.Core.Services;
-using Adnc.Whse.Core.Entities;
-using Adnc.Core.Shared.IRepositories;
-using Adnc.Application.Shared.Dtos;
-using Adnc.Infra.Common.Extensions;
-using Adnc.Application.Shared.RpcServices;
-using Adnc.Infra.Common.Exceptions;
-using Adnc.Application.Shared.Services;
-using Adnc.Whse.Application.Contracts.Services;
-using Adnc.Whse.Application.Contracts.Dtos;
+using System.Threading.Tasks;
 
 namespace Adnc.Whse.Application.Services
 {
@@ -75,7 +75,6 @@ namespace Adnc.Whse.Application.Services
             product.Describe = input.Describe;
             product.SetUnit(input.Unit);
             product.SetPrice(input.Price);
-
 
             await _productMgr.ChangeSkuAsync(product, input.Sku);
             await _productMgr.ChangeNameAsync(product, input.Name);
@@ -171,7 +170,6 @@ namespace Adnc.Whse.Application.Services
             return pagedDto;
         }
 
-
         /// <summary>
         /// 商品列表
         /// </summary>
@@ -186,7 +184,7 @@ namespace Adnc.Whse.Application.Services
 
                 whereCondition = whereCondition.And(x => ids.Contains(x.Id));
             }
-            if (search.StatusCode>0)
+            if (search.StatusCode > 0)
             {
                 whereCondition = whereCondition.And(x => (int)x.Status.Code == search.StatusCode);
             }

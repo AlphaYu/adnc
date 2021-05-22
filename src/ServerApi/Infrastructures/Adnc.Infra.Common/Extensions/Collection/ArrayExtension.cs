@@ -1,6 +1,6 @@
-﻿using System;
+﻿using JetBrains.Annotations;
+using System;
 using System.Collections;
-using JetBrains.Annotations;
 
 namespace Adnc.Infra.Common.Extensions
 {

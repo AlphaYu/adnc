@@ -1,10 +1,10 @@
-﻿using System;
-using System.Net.Sockets;
+﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Polly;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Exceptions;
-using Polly;
-using Microsoft.Extensions.Logging;
+using System;
+using System.Net.Sockets;
 
 namespace Adnc.Infra.EventBus.RabbitMq
 {

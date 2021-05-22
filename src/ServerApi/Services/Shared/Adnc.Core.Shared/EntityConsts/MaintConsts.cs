@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Adnc.Core.Shared.EntityConsts.Maint
+﻿namespace Adnc.Core.Shared.EntityConsts.Maint
 {
     public static class MaintConsts
     {
-
     }
+
     /// <summary>
     /// 系统参数
     /// </summary>
@@ -17,6 +13,7 @@ namespace Adnc.Core.Shared.EntityConsts.Maint
         public const int Value_MaxLength = 128;
         public const int Description_MaxLength = 256;
     }
+
     /// <summary>
     /// 系统字典
     /// </summary>
@@ -25,6 +22,7 @@ namespace Adnc.Core.Shared.EntityConsts.Maint
         public const int Name_MaxLength = 64;
         public const int Value_MaxLength = 16;
     }
+
     /// <summary>
     /// 系统通知
     /// </summary>
@@ -33,6 +31,5 @@ namespace Adnc.Core.Shared.EntityConsts.Maint
     {
         public const int Content_MaxLength = 255;
         public const int Title_MaxLength = 64;
-
     }
 }

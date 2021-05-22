@@ -4,9 +4,9 @@ namespace Adnc.Ord.Core.Entities
 {
     public class OrderStatus : ValueObject
     {
-        public OrderStatusEnum Code { get;}
+        public OrderStatusEnum Code { get; }
 
-        public string ChangesReason { get;}
+        public string ChangesReason { get; }
 
         private OrderStatus()
         {
@@ -40,6 +40,5 @@ namespace Adnc.Ord.Core.Entities
         Cancelled = 1024
         ,
         Deleted = 1032
-
     }
 }

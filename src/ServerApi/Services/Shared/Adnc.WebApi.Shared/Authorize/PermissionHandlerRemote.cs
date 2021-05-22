@@ -1,7 +1,7 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using Adnc.Application.Shared.RpcServices;
 using System.Collections.Generic;
-using Adnc.Application.Shared.RpcServices;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Microsoft.AspNetCore.Authorization
 {

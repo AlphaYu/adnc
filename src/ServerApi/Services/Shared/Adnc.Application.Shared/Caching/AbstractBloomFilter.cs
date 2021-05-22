@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Adnc.Infra.Caching;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Adnc.Infra.Caching;
 
 namespace Adnc.Application.Shared.Caching
 {
@@ -17,9 +17,13 @@ namespace Adnc.Application.Shared.Caching
         /// </summary>
         /// <returns></returns>
         Task InitAsync();
+
         Task<bool> AddAsync(string value);
+
         Task<bool[]> AddAsync(IEnumerable<string> values);
+
         Task<bool> ExistsAsync(string value);
+
         Task<bool[]> ExistsAsync(IEnumerable<string> values);
     }
 

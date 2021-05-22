@@ -1,12 +1,12 @@
-﻿using System;
-using System.Linq.Expressions;
+﻿using Adnc.Infra.EfCore;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore.Query;
-using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
-using Pomelo.EntityFrameworkCore.MySql.Query.Internal;
+using Microsoft.EntityFrameworkCore.Storage;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure.Internal;
-using Adnc.Infra.EfCore;
+using Pomelo.EntityFrameworkCore.MySql.Query.Internal;
+using System;
+using System.Linq.Expressions;
 
 namespace Pomelo.EntityFrameworkCore.MySql.Query.ExpressionVisitors.Internal
 {
@@ -14,6 +14,7 @@ namespace Pomelo.EntityFrameworkCore.MySql.Query.ExpressionVisitors.Internal
     /// adnc sql生成工厂类
     /// </summary>
 #pragma warning disable EF1001 // Internal EF Core API usage.
+
     public class AdncMySqlQuerySqlGeneratorFactory : MySqlQuerySqlGeneratorFactory
 #pragma warning restore EF1001 // Internal EF Core API usage.
     {
@@ -46,6 +47,7 @@ namespace Pomelo.EntityFrameworkCore.MySql.Query.ExpressionVisitors.Internal
     /// adnc sql 生成类
     /// </summary>
 #pragma warning disable EF1001 // Internal EF Core API usage.
+
     public class AdncQuerySqlGenerator : MySqlQuerySqlGenerator
 #pragma warning restore EF1001 // Internal EF Core API usage.
     {

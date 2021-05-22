@@ -1,14 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Text.Json;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
-using Ocelot.Middleware;
+using Microsoft.Extensions.DependencyInjection;
 using Ocelot.DependencyInjection;
+using Ocelot.Middleware;
 using Ocelot.Provider.Consul;
 
 namespace Adnc.Gateway
@@ -40,7 +36,6 @@ namespace Adnc.Gateway
             //使用consul,对应ocelot.test.json
             services.AddOcelot()
                     .AddConsul();
-
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

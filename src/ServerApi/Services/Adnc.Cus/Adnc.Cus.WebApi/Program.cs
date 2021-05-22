@@ -1,21 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+using Adnc.Infra.Consul;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Configuration;
-using NLog.Config;
-using NLog.Extensions.Logging;
-using NLog.Fluent;
 using NLog.Web;
-using Adnc.Infra.Common;
-using Adnc.Infra.Consul.Configuration;
-using Adnc.Infra.Consul;
 
 namespace Adnc.Cus.WebApi
 {

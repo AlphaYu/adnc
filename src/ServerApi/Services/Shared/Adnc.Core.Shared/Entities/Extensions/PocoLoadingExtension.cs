@@ -19,6 +19,5 @@ namespace Adnc.Core.Shared.Entities.Extensions
 
             return navigationField;
         }
-
     }
 }

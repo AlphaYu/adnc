@@ -1,11 +1,10 @@
-﻿using System;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
+using System;
 
 namespace Adnc.Infra.Common.Extensions
 {
     public static class EventHandlerExtension
     {
-
         /// <summary>
         ///     An EventHandler extension method that raises the event event.
         /// </summary>

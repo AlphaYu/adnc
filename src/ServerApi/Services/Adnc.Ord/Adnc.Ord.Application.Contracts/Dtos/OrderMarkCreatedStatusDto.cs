@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Adnc.Ord.Application.Contracts.Dtos
+﻿namespace Adnc.Ord.Application.Contracts.Dtos
 {
     public class OrderMarkCreatedStatusDto
     {

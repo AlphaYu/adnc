@@ -1,14 +1,14 @@
-﻿using System.Threading.Tasks;
-using System.Collections.Generic;
-using MongoDB.Driver;
+﻿using Adnc.Application.Shared.Dtos;
+using Adnc.Application.Shared.Services;
 using Adnc.Core.Maint.Entities;
 using Adnc.Core.Shared.IRepositories;
-using Adnc.Maint.Core.Entities;
 using Adnc.Infra.Common.Extensions;
-using Adnc.Application.Shared.Services;
-using Adnc.Application.Shared.Dtos;
 using Adnc.Maint.Application.Contracts.Dtos;
 using Adnc.Maint.Application.Contracts.Services;
+using Adnc.Maint.Core.Entities;
+using MongoDB.Driver;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Adnc.Maint.Application.Services
 {
@@ -60,7 +60,6 @@ namespace Adnc.Maint.Application.Services
 
             return result;
         }
-
 
         public async Task<PageModelDto<OpsLogDto>> GetOpsLogsPagedAsync(LogSearchPagedDto searchDto)
         {

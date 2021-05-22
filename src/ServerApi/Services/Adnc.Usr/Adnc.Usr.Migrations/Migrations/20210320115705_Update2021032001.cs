@@ -1,6 +1,6 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
+using System;
 
 namespace Adnc.Usr.Migrations.Migrations
 {
@@ -8,7 +8,6 @@ namespace Adnc.Usr.Migrations.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-
             migrationBuilder.AlterColumn<string>(
                 name: "Password",
                 table: "SysUser",

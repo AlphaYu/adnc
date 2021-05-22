@@ -4,7 +4,6 @@ namespace Adnc.Infra.Common.Extensions
 {
     public static class LongExtension
     {
-
         /// <summary>
         ///     Returns a  that represents a specified time, where the specification is in units of ticks.
         /// </summary>

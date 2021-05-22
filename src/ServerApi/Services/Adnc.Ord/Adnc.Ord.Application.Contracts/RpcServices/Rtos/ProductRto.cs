@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Adnc.Ord.Application.Contracts.RpcServices.Rtos
+﻿namespace Adnc.Ord.Application.Contracts.RpcServices.Rtos
 {
     public class ProductRto
     {

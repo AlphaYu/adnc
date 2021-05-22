@@ -1,13 +1,13 @@
-﻿using System;
+﻿using Adnc.Application.Shared.Caching;
+using Adnc.Core.Shared.IRepositories;
+using Adnc.Infra.Caching;
+using Adnc.Usr.Application.Contracts.Consts;
+using Adnc.Usr.Application.Contracts.Dtos;
+using Adnc.Usr.Core.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Adnc.Application.Shared.Caching;
-using Adnc.Core.Shared.IRepositories;
-using Adnc.Infra.Caching;
-using Adnc.Usr.Core.Entities;
-using Adnc.Usr.Application.Contracts.Consts;
-using Adnc.Usr.Application.Contracts.Dtos;
 
 namespace Adnc.Usr.Application.Caching
 {

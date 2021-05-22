@@ -1,16 +1,17 @@
-﻿using System;
-using System.Threading.Tasks;
-using Adnc.Core.Shared;
+﻿using Adnc.Core.Shared;
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Infra.Common.Exceptions;
 using Adnc.Infra.Common.Helper;
 using Adnc.Whse.Core.Entities;
+using System;
+using System.Threading.Tasks;
 
 namespace Adnc.Whse.Core.Services
 {
     public class ProductManager : ICoreService
     {
         private readonly IEfBasicRepository<Product> _productRepo;
+
         public ProductManager(IEfBasicRepository<Product> productRepo)
         {
             _productRepo = productRepo;

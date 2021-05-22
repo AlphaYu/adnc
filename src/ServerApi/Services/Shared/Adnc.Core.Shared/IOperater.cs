@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Adnc.Core.Shared
+﻿namespace Adnc.Core.Shared
 {
     public interface IOperater
     {

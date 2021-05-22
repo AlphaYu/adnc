@@ -1,14 +1,14 @@
-using System.Reflection;
+using Adnc.Cus.Application.EventSubscribers;
+using Adnc.Infra.Consul;
+using Adnc.WebApi.Shared;
+using Autofac;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.AspNetCore.Authorization;
-using Autofac;
-using Adnc.Infra.Consul;
-using Adnc.WebApi.Shared;
-using Adnc.Cus.Application.EventSubscribers;
+using System.Reflection;
 
 namespace Adnc.Cus.WebApi
 {
@@ -39,7 +39,7 @@ namespace Adnc.Cus.WebApi
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterAdncModules(_configuration,_serviceInfo);
+            builder.RegisterAdncModules(_configuration, _serviceInfo);
         }
 
         public void Configure(IApplicationBuilder app)
@@ -50,7 +50,7 @@ namespace Adnc.Cus.WebApi
             {
                 app.RegisterToConsul();
                 app.RegisterCapToConsul();
-            }          
+            }
         }
     }
 }

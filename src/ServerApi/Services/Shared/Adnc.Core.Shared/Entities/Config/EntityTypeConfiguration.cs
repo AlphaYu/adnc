@@ -11,7 +11,7 @@ namespace Adnc.Core.Shared.Entities.Config
             var entityType = typeof(TEntity);
 
             builder.HasKey(x => x.Id);
-            builder.Property(x => x.Id).ValueGeneratedNever();  
+            builder.Property(x => x.Id).ValueGeneratedNever();
 
             if (typeof(IConcurrency).IsAssignableFrom(entityType))
             {

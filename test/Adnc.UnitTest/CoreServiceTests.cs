@@ -1,15 +1,13 @@
-﻿using System;
-using System.Threading.Tasks;
-using System.Linq;
-using Xunit;
-using Autofac;
-using Xunit.Abstractions;
-using Adnc.UnitTest.Fixtures;
-using Adnc.Core.Shared;
-using Adnc.Cus.Core.Entities;
+﻿using Adnc.Core.Shared;
 using Adnc.Core.Shared.IRepositories;
-using Adnc.Infra.Common.Helper;
+using Adnc.Cus.Core.Entities;
 using Adnc.Cus.Core.Services;
+using Adnc.Infra.Common.Helper;
+using Adnc.UnitTest.Fixtures;
+using Autofac;
+using System.Threading.Tasks;
+using Xunit;
+using Xunit.Abstractions;
 
 namespace Adnc.UnitTest.CoreService
 {
@@ -20,7 +18,6 @@ namespace Adnc.UnitTest.CoreService
         private readonly CustomerManagerService _cusManger;
         private readonly IEfRepository<Customer> _cusRsp;
         private CoreServiceFixture _fixture;
-
 
         public CoreServiceTests(CoreServiceFixture fixture, ITestOutputHelper output)
         {
@@ -57,7 +54,7 @@ namespace Adnc.UnitTest.CoreService
                 INSERT INTO `CusFinance` (`ID`, `Account`, `Balance`, `CreateBy`, `CreateTime`, `ModifyBy`, `ModifyTime`)
                 VALUES (122339207606833152, 'alpha2008', 0, 1600000000000, timestamp('2020-12-03 14:12:20.756977'), NULL, NULL)
                 commit
-             */ 
+             */
             await _cusManger.RegisterAsync(customer);
 
             bool exists = await _cusRsp.AnyAsync(c => c.Id == id);

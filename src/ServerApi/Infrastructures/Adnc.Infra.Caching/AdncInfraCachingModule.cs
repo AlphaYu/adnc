@@ -1,10 +1,10 @@
-﻿using Microsoft.Extensions.Configuration;
-using Autofac;
-using Adnc.Infra.Caching.Configurations;
-using Adnc.Infra.Caching.StackExchange;
+﻿using Adnc.Infra.Caching.Configurations;
 using Adnc.Infra.Caching.Core.Serialization;
-using Adnc.Infra.Core.Interceptor;
 using Adnc.Infra.Caching.Interceptor.Castle;
+using Adnc.Infra.Caching.StackExchange;
+using Adnc.Infra.Core.Interceptor;
+using Autofac;
+using Microsoft.Extensions.Configuration;
 
 namespace Adnc.Infra.Caching
 {

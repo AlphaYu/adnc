@@ -1,13 +1,10 @@
-﻿using System;
-
-namespace Adnc.Application.Shared.Dtos
+﻿namespace Adnc.Application.Shared.Dtos
 {
     /// <summary>
     /// 查询条件基类
     /// </summary>
     public abstract class SearchPagedDto : ISearchPagedDto
     {
-
         private int _pageIndex;
         private int _pageSize;
 

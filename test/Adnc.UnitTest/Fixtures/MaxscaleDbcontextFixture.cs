@@ -1,17 +1,14 @@
-﻿using Autofac;
-using System;
+﻿using Adnc.Core.Shared;
+using Adnc.Core.Shared.Entities;
+using Adnc.Cus.Core.Entities;
+using Adnc.Infra.EfCore;
+using Adnc.Infra.EfCore.Interceptors;
+using Autofac;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using Pomelo.EntityFrameworkCore.MySql.Storage;
-using Adnc.Infra.EfCore;
-using Adnc.Infra.Common;
-using Adnc.Cus.Core.Entities;
-using Adnc.Core.Shared.Entities;
-using Adnc.Infra.EfCore.Interceptors;
-using Microsoft.EntityFrameworkCore.Query;
-using Pomelo.EntityFrameworkCore.MySql.Query.ExpressionVisitors.Internal;
-using Adnc.Core.Shared;
+using System;
 
 namespace Adnc.UnitTest.Fixtures
 {
@@ -36,7 +33,8 @@ namespace Adnc.UnitTest.Fixtures
             {
                 var options = new DbContextOptionsBuilder<AdncDbContext>()
                 .UseLoggerFactory(LoggerFactory.Create(builder => builder.AddDebug()))
-                .UseMySql(dbstring, mySqlOptions => {
+                .UseMySql(dbstring, mySqlOptions =>
+                {
                     mySqlOptions.ServerVersion(new ServerVersion(new Version(10, 5, 8), ServerType.MariaDb));
                     mySqlOptions.CharSet(CharSet.Utf8Mb4);
                 })
@@ -44,7 +42,6 @@ namespace Adnc.UnitTest.Fixtures
                 .Options;
                 return options;
             }).InstancePerLifetimeScope();
-
 
             //注册EntityInfo
             containerBuilder.RegisterType<EntityInfo>()
@@ -58,7 +55,7 @@ namespace Adnc.UnitTest.Fixtures
             //注册Adnc.Infra.EfCore
             AdncInfrEfCoreModule.Register(containerBuilder);
 
-            var services = Container = containerBuilder.Build();          
+            var services = Container = containerBuilder.Build();
         }
 
         public void Dispose()

@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Autofac;
+using AutoMapper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Autofac;
-using AutoMapper;
 using ObjectMapper = AutoMapper.Mapper;
 
 namespace Adnc.Infra.Mapper.AutoMapper
@@ -15,12 +15,15 @@ namespace Adnc.Infra.Mapper.AutoMapper
     public class AutoMapperModule : Autofac.Module
     {
         private readonly IEnumerable<Assembly> assembliesToScan;
+
         public AutoMapperModule(IEnumerable<Assembly> assembliesToScan)
         {
             this.assembliesToScan = assembliesToScan;
         }
 
-        public AutoMapperModule(params Assembly[] assembliesToScan) : this((IEnumerable<Assembly>)assembliesToScan) { }
+        public AutoMapperModule(params Assembly[] assembliesToScan) : this((IEnumerable<Assembly>)assembliesToScan)
+        {
+        }
 
         protected override void Load(ContainerBuilder builder)
         {

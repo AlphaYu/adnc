@@ -1,10 +1,10 @@
-﻿using MongoDB.Driver;
+﻿using Adnc.Core.Shared.Entities;
+using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
-using Adnc.Core.Shared.Entities;
 
 namespace Adnc.Core.Shared.IRepositories
 {

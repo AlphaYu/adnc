@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Adnc.Infra.EfCore
+﻿namespace Adnc.Infra.EfCore
 {
     public class UnitOfWorkStatus
     {

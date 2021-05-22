@@ -1,20 +1,20 @@
-﻿using System;
-using System.Threading.Tasks;
-using System.Linq;
-using Xunit;
-using Autofac;
-using Xunit.Abstractions;
-using Adnc.UnitTest.Fixtures;
-using Adnc.Core.Shared;
-using Adnc.Cus.Core.Entities;
+﻿using Adnc.Core.Shared;
 using Adnc.Core.Shared.IRepositories;
+using Adnc.Cus.Core.Entities;
 using Adnc.Infra.Common.Helper;
+using Adnc.UnitTest.Fixtures;
+using Autofac;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
+using Xunit;
+using Xunit.Abstractions;
 
 namespace Adnc.UnitTests.EFCore
 {
-    public class MaxscaleTests: IClassFixture<MaxscaleDbcontextFixture>
+    public class MaxscaleTests : IClassFixture<MaxscaleDbcontextFixture>
     {
         private readonly ITestOutputHelper _output;
         private readonly IUnitOfWork _unitOfWork;
@@ -38,7 +38,7 @@ namespace Adnc.UnitTests.EFCore
         }
 
         private void Initialize()
-        {           
+        {
             _userContext.Id = 1600000000000;
             _userContext.Account = "alpha2008";
             _userContext.Name = "余小猫";
@@ -48,7 +48,6 @@ namespace Adnc.UnitTests.EFCore
         {
             return expressions;
         }
-
 
         [Fact]
         public async void TestReadFromWirteDb()
@@ -120,7 +119,6 @@ namespace Adnc.UnitTests.EFCore
                 _unitOfWork.Dispose();
             }
 
-
             var newCus = await _cusRsp.FindAsync(id, writeDb: true);
             Assert.Equal(newRealName, newCus.Realname);
             Assert.Equal(newNickname, newCus.Nickname);
@@ -155,7 +153,6 @@ namespace Adnc.UnitTests.EFCore
                 _unitOfWork.Dispose();
             }
 
-
             var newCus = await _cusRsp.FindAsync(id, writeDb: true);
             Assert.Equal(newRealName, newCus.Realname);
             Assert.Equal(newNickname, newCus.Nickname);
@@ -172,12 +169,12 @@ namespace Adnc.UnitTests.EFCore
             await _cusRsp.UpdateRangeAsync(c => ids.Contains(c.Id), c => new Customer { Realname = newRealName, Nickname = newNickname });
 
             var newCus = await _cusRsp.FindAsync(list[0].Id, writeDb: true);
-            
+
             Assert.Equal(newRealName, newCus.Realname);
             Assert.Equal(newNickname, newCus.Nickname);
 
             await _cusFinanceRsp.DeleteRangeAsync(c => ids.Contains(c.Id));
-            await _cusRsp.DeleteRangeAsync(c=>ids.Contains(c.Id));
+            await _cusRsp.DeleteRangeAsync(c => ids.Contains(c.Id));
         }
 
         /// <summary>
@@ -195,7 +192,7 @@ namespace Adnc.UnitTests.EFCore
                 list.Add(customer);
             }
             await _cusRsp.InsertRangeAsync(list);
-            
+
             return list;
         }
 

@@ -2,7 +2,7 @@
 
 namespace Adnc.Whse.Application.Contracts.Consts
 {
-    public class CachingConsts: SharedCachingConsts
+    public class CachingConsts : SharedCachingConsts
     {
     }
 }

@@ -1,11 +1,11 @@
-﻿using System;
-using System.Text;
+﻿using Adnc.Usr.Application.Contracts.Dtos;
+using Adnc.WebApi.Shared;
+using Microsoft.IdentityModel.Tokens;
+using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
-using System.IdentityModel.Tokens.Jwt;
-using Microsoft.IdentityModel.Tokens;
-using Adnc.Usr.Application.Contracts.Dtos;
-using Adnc.WebApi.Shared;
+using System.Text;
 
 namespace Adnc.Usr.WebApi.Helper
 {
@@ -73,7 +73,6 @@ namespace Adnc.Usr.WebApi.Helper
                 {
                     return CreateAccessToken(jwtConfig, user);
                 }
-
             }
             return string.Empty;
         }

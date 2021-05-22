@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Adnc.Core.Shared.Entities;
+using System;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Linq.Expressions;
-using Adnc.Core.Shared.Entities;
 
 namespace Adnc.Core.Shared.IRepositories
 {

@@ -1,10 +1,10 @@
-﻿using System;
-using System.Linq;
-using System.Text;
+﻿using JetBrains.Annotations;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
-using JetBrains.Annotations;
 
 namespace Adnc.Infra.Common.Extensions
 {

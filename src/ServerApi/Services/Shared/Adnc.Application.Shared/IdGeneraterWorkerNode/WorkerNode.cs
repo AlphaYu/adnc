@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
+﻿using Adnc.Application.Shared.Consts;
 using Adnc.Infra.Caching;
 using Adnc.Infra.Common.Extensions;
 using Adnc.Infra.Common.Helper.IdGeneraterInternal;
-using Adnc.Application.Shared.Consts;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Adnc.Application.Shared.IdGeneraterWorkerNode
 {
@@ -50,13 +50,13 @@ namespace Adnc.Application.Shared.IdGeneraterWorkerNode
                     }
                     count = await _redisProvider.ZAddAsync(workerIdSortedSetCacheKey, set);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     throw new Exception(ex.Message, ex);
                 }
                 finally
                 {
-                    await _distributedLocker.SafedUnLockAsync(workerIdSortedSetCacheKey,flag.LockValue);
+                    await _distributedLocker.SafedUnLockAsync(workerIdSortedSetCacheKey, flag.LockValue);
                 }
 
                 _logger.LogInformation("Finlished InitWorkerNodes:{0}:{1}", workerIdSortedSetCacheKey, count);
@@ -74,7 +74,7 @@ namespace Adnc.Application.Shared.IdGeneraterWorkerNode
                                     return workerids[1]";
 
             var parameters = new { key = workerIdSortedSetCacheKey, start = 0, stop = 0, score = DateTime.Now.GetTotalMilliseconds() };
-            var luaResult = (byte[]) await _redisProvider.ScriptEvaluateAsync(scirpt, parameters);
+            var luaResult = (byte[])await _redisProvider.ScriptEvaluateAsync(scirpt, parameters);
             var workerId = _redisProvider.Serializer.Deserialize<long>(luaResult);
 
             _logger.LogInformation("Get WorkerNodes:{0}", workerId);

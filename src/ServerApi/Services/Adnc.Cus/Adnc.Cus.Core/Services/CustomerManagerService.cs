@@ -1,12 +1,12 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using Adnc.Cus.Core.Entities;
-using Adnc.Core.Shared.IRepositories;
-using Adnc.Core.Shared;
+﻿using Adnc.Core.Shared;
 using Adnc.Core.Shared.Interceptors;
-using Adnc.Infra.EventBus;
+using Adnc.Core.Shared.IRepositories;
+using Adnc.Cus.Core.Entities;
 using Adnc.Cus.Core.Events;
 using Adnc.Infra.Common.Helper;
+using Adnc.Infra.EventBus;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Adnc.Cus.Core.Services
 {
@@ -118,7 +118,6 @@ namespace Adnc.Cus.Core.Services
                     ExchangeType = ExchangeTypeEnum.Order
                     ,
                     ExchageStatus = ExchageStatusEnum.Finished
-
                 };
 
                 await _cusTransactionLogRepo.InsertAsync(transLog);

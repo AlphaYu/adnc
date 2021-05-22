@@ -1,12 +1,11 @@
-﻿using System;
+﻿using Consul;
+using Microsoft.Extensions.Caching.Memory;
+using System;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Caching.Memory;
-using Consul;
-using System.Text;
 
 namespace Adnc.Infra.Consul.Consumer
 {
@@ -56,6 +55,7 @@ namespace Adnc.Infra.Consul.Consumer
                     request.Version = new Version(2, 0);
 
                 #region 缓存处理
+
                 /* 这里高并发会有问题，需要优化，先注释
                 if (request.Method == HttpMethod.Get)
                 {
@@ -91,7 +91,8 @@ namespace Adnc.Infra.Consul.Consumer
                     }
                 }
                 */
-                #endregion
+
+                #endregion 缓存处理
 
                 var responseMessage = await base.SendAsync(request, cancellationToken).ConfigureAwait(false);
                 return responseMessage;

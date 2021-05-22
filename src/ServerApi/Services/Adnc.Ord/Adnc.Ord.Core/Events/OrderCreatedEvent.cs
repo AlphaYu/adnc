@@ -8,8 +8,8 @@ namespace Adnc.Ord.Core.Events
     /// </summary>
     public sealed class OrderCreatedEvent : BaseEvent<OrderCreatedEvent.EventData>
     {
-        public OrderCreatedEvent(long id, EventData eventData,string eventSource)
-            : base(id, eventData,eventSource)
+        public OrderCreatedEvent(long id, EventData eventData, string eventSource)
+            : base(id, eventData, eventSource)
         {
         }
 

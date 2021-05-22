@@ -20,7 +20,6 @@ namespace Adnc.Infra.Common.Helper.IdGeneraterInternal
     /// </summary>
     internal class Snowflake
     {
-
         // 开始时间截 (new DateTime(2020, 1, 1).ToUniversalTime() - Jan1st1970).TotalMilliseconds
         private const long twepoch = 1577808000000L;
 
@@ -30,38 +29,37 @@ namespace Adnc.Infra.Common.Helper.IdGeneraterInternal
         // 数据标识id所占的位数
         private const int datacenterIdBits = 5;
 
-        // 支持的最大机器id，结果是31 (这个移位算法可以很快的计算出几位二进制数所能表示的最大十进制数) 
+        // 支持的最大机器id，结果是31 (这个移位算法可以很快的计算出几位二进制数所能表示的最大十进制数)
         private const long maxWorkerId = -1L ^ (-1L << workerIdBits);
 
-        // 支持的最大数据标识id，结果是31 
+        // 支持的最大数据标识id，结果是31
         private const long maxDatacenterId = -1L ^ (-1L << datacenterIdBits);
 
-        // 序列在id中占的位数 
+        // 序列在id中占的位数
         private const int sequenceBits = 12;
 
-        // 数据标识id向左移17位(12+5) 
+        // 数据标识id向左移17位(12+5)
         private const int datacenterIdShift = sequenceBits + workerIdBits;
 
-        // 机器ID向左移12位 
+        // 机器ID向左移12位
         private const int workerIdShift = sequenceBits;
 
-
-        // 时间截向左移22位(5+5+12) 
+        // 时间截向左移22位(5+5+12)
         private const int timestampLeftShift = sequenceBits + workerIdBits + datacenterIdBits;
 
-        // 生成序列的掩码，这里为4095 (0b111111111111=0xfff=4095) 
+        // 生成序列的掩码，这里为4095 (0b111111111111=0xfff=4095)
         private const long sequenceMask = -1L ^ (-1L << sequenceBits);
 
-        // 数据中心ID(0~31) 
+        // 数据中心ID(0~31)
         public long datacenterId { get; private set; }
 
-        // 工作机器ID(0~31) 
+        // 工作机器ID(0~31)
         public long workerId { get; private set; }
 
-        // 毫秒内序列(0~4095) 
+        // 毫秒内序列(0~4095)
         public long sequence { get; private set; }
 
-        // 上次生成ID的时间截 
+        // 上次生成ID的时间截
         public long lastTimestamp { get; private set; }
 
         private static readonly DateTime Jan1st1970 = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
@@ -142,7 +140,7 @@ namespace Adnc.Infra.Common.Helper.IdGeneraterInternal
                     }
                     else   //毫秒内序列溢出
                     {
-                        timestamp = lastTimestamp + 1;   //直接进位到下一个毫秒                          
+                        timestamp = lastTimestamp + 1;   //直接进位到下一个毫秒
                     }
                     //throw new Exception(string.Format("Clock moved backwards.  Refusing to generate id for {0} milliseconds", lastTimestamp - timestamp));
                 }
@@ -157,7 +155,6 @@ namespace Adnc.Infra.Common.Helper.IdGeneraterInternal
                 return id;
             }
         }
-
 
         /// <summary>
         /// 阻塞到下一个毫秒，直到获得新的时间戳

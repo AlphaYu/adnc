@@ -8,7 +8,9 @@ namespace Adnc.Whse.Core.Entities
 
         public string ChangesReason { get; }
 
-        private ProductStatus() { }
+        private ProductStatus()
+        {
+        }
 
         internal ProductStatus(ProductStatusEnum statusCode, string reason)
         {

@@ -1,9 +1,9 @@
-﻿using System.Threading.Tasks;
-using Adnc.Application.Shared.Dtos;
+﻿using Adnc.Application.Shared.Dtos;
 using Adnc.Application.Shared.Interceptors;
 using Adnc.Application.Shared.Services;
 using Adnc.Core.Shared.Interceptors;
 using Adnc.Ord.Application.Contracts.Dtos;
+using System.Threading.Tasks;
 
 namespace Adnc.Ord.Application.Contracts.Services
 {

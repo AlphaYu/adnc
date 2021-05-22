@@ -1,10 +1,8 @@
-﻿using System;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Adnc.Application.Shared.Caching;
 using Adnc.Infra.Caching;
-using Adnc.Whse.Application.Contracts.Consts;
-using Adnc.Application.Shared.Caching;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Adnc.Whse.Application.Caching
 {

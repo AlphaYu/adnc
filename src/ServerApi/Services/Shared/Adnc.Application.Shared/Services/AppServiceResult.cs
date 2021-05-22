@@ -1,5 +1,5 @@
-﻿using System;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
+using System;
 
 namespace Adnc.Application.Shared.Services
 {
@@ -8,7 +8,9 @@ namespace Adnc.Application.Shared.Services
     /// </summary>
     public sealed class AppSrvResult
     {
-        public AppSrvResult() { }
+        public AppSrvResult()
+        {
+        }
 
         public AppSrvResult([NotNull] ProblemDetails problemDetails)
         {
@@ -40,7 +42,9 @@ namespace Adnc.Application.Shared.Services
     [Serializable]
     public sealed class AppSrvResult<TValue>
     {
-        public AppSrvResult() { }
+        public AppSrvResult()
+        {
+        }
 
         public AppSrvResult([NotNull] TValue value)
         {

@@ -1,12 +1,12 @@
-﻿using System;
-using System.Linq;
-using System.Reflection;
-using Adnc.Core.Shared.Entities;
+﻿using Adnc.Core.Shared.Entities;
 using Adnc.Core.Shared.Interceptors;
 using Adnc.Infra.EventBus;
 using Adnc.Infra.EventBus.Cap;
 using Autofac;
 using Autofac.Extras.DynamicProxy;
+using System;
+using System.Linq;
+using System.Reflection;
 
 namespace Adnc.Core.Shared
 {
@@ -16,6 +16,7 @@ namespace Adnc.Core.Shared
     public abstract class AdncCoreModule : Autofac.Module
     {
         private readonly Assembly _assemblieToScan;
+
         public AdncCoreModule(Type modelType)
         {
             _assemblieToScan = modelType.Assembly;

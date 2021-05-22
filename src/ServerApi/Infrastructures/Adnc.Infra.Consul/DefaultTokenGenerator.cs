@@ -1,11 +1,12 @@
-﻿using System.Linq;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
+using System.Linq;
 
 namespace Adnc.Infra.Consul
 {
     public class DefaultTokenGenerator : ITokenGenerator
     {
         private IHttpContextAccessor _httpContextAccessor;
+
         public DefaultTokenGenerator(IHttpContextAccessor httpContextAccessor)
         {
             _httpContextAccessor = httpContextAccessor;

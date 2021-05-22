@@ -1,5 +1,5 @@
-﻿using Adnc.Infra.Mongo.Configuration;
-using Adnc.Core.Shared.Entities;
+﻿using Adnc.Core.Shared.Entities;
+using Adnc.Infra.Mongo.Configuration;
 
 namespace Adnc.Infra.Mongo.Interfaces
 {

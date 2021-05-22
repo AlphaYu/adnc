@@ -1,6 +1,6 @@
-﻿using System.Linq;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.Linq;
 using System.Text;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Adnc.WebApi.Shared.Extensions
 {

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Adnc.Infra.Consul
+﻿namespace Adnc.Infra.Consul
 {
     public class ConsulConfig
     {

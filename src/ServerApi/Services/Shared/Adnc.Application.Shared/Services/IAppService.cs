@@ -1,8 +1,8 @@
-﻿using JetBrains.Annotations;
-using Adnc.Infra.Mapper;
-using System.Net;
-using System.Linq.Expressions;
+﻿using Adnc.Infra.Mapper;
+using JetBrains.Annotations;
 using System;
+using System.Linq.Expressions;
+using System.Net;
 
 namespace Adnc.Application.Shared.Services
 {
@@ -15,7 +15,7 @@ namespace Adnc.Application.Shared.Services
     {
         public IObjectMapper Mapper { get; set; }
 
-           protected AppSrvResult AppSrvResult()
+        protected AppSrvResult AppSrvResult()
         {
             return new AppSrvResult();
         }

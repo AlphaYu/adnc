@@ -1,10 +1,10 @@
+using Adnc.Infra.Consul;
+using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using NLog.Web;
-using Autofac.Extensions.DependencyInjection;
-using Adnc.Infra.Consul;
 
 namespace Adnc.Usr.WebApi
 {
@@ -51,7 +51,6 @@ namespace Adnc.Usr.WebApi
             hostBuilder.UseNLog();
 
             return hostBuilder;
-
 
             //return Host.CreateDefaultBuilder(args)
             //    .ConfigureHostConfiguration(configuration =>

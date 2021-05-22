@@ -1,14 +1,14 @@
-using System.Reflection;
+using Adnc.Infra.Consul;
+using Adnc.WebApi.Shared;
+using Adnc.Whse.Application.EventSubscribers;
+using Autofac;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Autofac;
-using Adnc.Infra.Consul;
-using Adnc.Whse.Application.EventSubscribers;
-using Adnc.WebApi.Shared;
-using Microsoft.AspNetCore.Authorization;
+using System.Reflection;
 
 namespace Adnc.Whse.WebApi
 {
@@ -39,7 +39,7 @@ namespace Adnc.Whse.WebApi
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterAdncModules(_configuration,_serviceInfo);
+            builder.RegisterAdncModules(_configuration, _serviceInfo);
         }
 
         public void Configure(IApplicationBuilder app)

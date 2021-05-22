@@ -1,8 +1,8 @@
-﻿using AutoMapper;
-using Adnc.Application.Shared.Dtos;
-using Adnc.Ord.Core.Entities;
+﻿using Adnc.Application.Shared.Dtos;
 using Adnc.Core.Shared;
 using Adnc.Ord.Application.Contracts.Dtos;
+using Adnc.Ord.Core.Entities;
+using AutoMapper;
 
 namespace Adnc.Ord.Application
 {
@@ -14,7 +14,6 @@ namespace Adnc.Ord.Application
 
             CreateMap<Order, OrderDto>();
             CreateMap<OrderItem, OrderDto.OrderItemDto>();
-
         }
     }
 }

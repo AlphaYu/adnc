@@ -1,20 +1,20 @@
-﻿using System;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
-using Adnc.Infra.Common.Exceptions;
-using Adnc.Infra.Common.Helper;
-using Adnc.Infra.Common.Extensions;
-using Adnc.Application.Shared.Dtos;
-using Adnc.Application.Shared.Services;
+﻿using Adnc.Application.Shared.Dtos;
 using Adnc.Application.Shared.RpcServices;
+using Adnc.Application.Shared.Services;
 using Adnc.Core.Shared.IRepositories;
-using Adnc.Ord.Core.Services;
-using Adnc.Ord.Core.Entities;
-using Adnc.Ord.Application.Contracts.Services;
+using Adnc.Infra.Common.Exceptions;
+using Adnc.Infra.Common.Extensions;
+using Adnc.Infra.Common.Helper;
 using Adnc.Ord.Application.Contracts.Dtos;
 using Adnc.Ord.Application.Contracts.RpcServices;
 using Adnc.Ord.Application.Contracts.RpcServices.Rtos;
+using Adnc.Ord.Application.Contracts.Services;
+using Adnc.Ord.Core.Entities;
+using Adnc.Ord.Core.Services;
+using System;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace Adnc.Ord.Application.Services
 {
@@ -58,7 +58,7 @@ namespace Adnc.Ord.Application.Services
             var productIds = input.Items.Select(x => x.ProductId).ToArray();
 
             //获取产品的价格,名字
-            var rpcResult = await _warehouseRpc.GetProductsAsync(new ProductSearchListRto { Ids = productIds});
+            var rpcResult = await _warehouseRpc.GetProductsAsync(new ProductSearchListRto { Ids = productIds });
             if (!rpcResult.IsSuccessStatusCode)
             {
                 var apiError = ((Refit.ValidationApiException)rpcResult.Error).Content;

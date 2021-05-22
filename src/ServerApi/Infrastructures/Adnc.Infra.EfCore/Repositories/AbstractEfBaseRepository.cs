@@ -1,15 +1,15 @@
-﻿using System;
-using System.Data;
+﻿using Adnc.Core.Shared;
+using Adnc.Core.Shared.Entities;
+using Adnc.Core.Shared.IRepositories;
+using Dapper;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using Dapper;
-using Adnc.Core.Shared;
-using Adnc.Core.Shared.IRepositories;
-using Adnc.Core.Shared.Entities;
 
 namespace Adnc.Infra.EfCore.Repositories
 {
@@ -59,7 +59,7 @@ namespace Adnc.Infra.EfCore.Repositories
         {
             if (writeDb)
                 sql = string.Concat("/* ", EfCoreConsts.MAXSCALE_ROUTE_TO_MASTER, " */", sql);
-            var result =  await DbContext.Database.GetDbConnection().QueryAsync<TResult>(sql, param, null, commandTimeout, commandType);
+            var result = await DbContext.Database.GetDbConnection().QueryAsync<TResult>(sql, param, null, commandTimeout, commandType);
 
             return result.Any() ? result : null;
         }

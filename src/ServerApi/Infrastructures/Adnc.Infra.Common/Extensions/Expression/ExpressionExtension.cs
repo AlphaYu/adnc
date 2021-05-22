@@ -1,6 +1,5 @@
 ﻿using JetBrains.Annotations;
 using System;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -9,14 +8,14 @@ namespace Adnc.Infra.Common.Extensions
     public static class ExpressionExtension
     {
         public static Expression<Func<T, bool>> True<T>()
-            {
-                return f => true;
-            }
+        {
+            return f => true;
+        }
 
         public static Expression<Func<T, bool>> False<T>()
-            {
-                return f => false;
-            }
+        {
+            return f => false;
+        }
 
         //public static Expression<Func<T, bool>> Or<T>(this Expression<Func<T, bool>> expression1, Expression<Func<T, bool>> expression2)
         //    {
@@ -29,7 +28,6 @@ namespace Adnc.Infra.Common.Extensions
         //        var invokedExpression = Expression.Invoke(expression2, expression1.Parameters.Cast<Expression>());
         //        return Expression.Lambda<Func<T, bool>>(Expression.And(expression1.Body, invokedExpression), expression1.Parameters);
         //    }
-
 
         // https://stackoverflow.com/questions/457316/combining-two-expressions-expressionfunct-bool/457328#457328
         public static Expression<Func<T, bool>> Or<T>([NotNull] this Expression<Func<T, bool>> expr1, Expression<Func<T, bool>> expr2)
@@ -191,5 +189,4 @@ namespace Adnc.Infra.Common.Extensions
             return null;
         }
     }
-
 }

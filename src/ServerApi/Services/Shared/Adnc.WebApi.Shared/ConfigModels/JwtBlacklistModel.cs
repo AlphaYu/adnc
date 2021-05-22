@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Adnc.WebApi.Shared
 {
     public class JwtAccountlistModel
     {
-        public string AccessToken{get;set;}
+        public string AccessToken { get; set; }
         public string RefreshToken { get; set; }
         public DateTime Expire { get; set; }
+
         /// <summary>
         /// 1 白名单 2 黑名单
         /// </summary>

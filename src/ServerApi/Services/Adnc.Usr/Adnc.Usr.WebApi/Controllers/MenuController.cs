@@ -1,14 +1,14 @@
-﻿using System.Linq;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.AspNetCore.Http;
+﻿using Adnc.Application.Shared;
 using Adnc.Usr.Application.Contracts.Dtos;
 using Adnc.Usr.Application.Contracts.Services;
 using Adnc.WebApi.Shared;
-using Adnc.Application.Shared;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Adnc.Usr.WebApi.Controllers
 {
@@ -94,7 +94,7 @@ namespace Adnc.Usr.WebApi.Controllers
         {
             var userValidateInfo = await _accountService.GetUserValidateInfoAsync(_userContext.Id);
             var roleIds = userValidateInfo.RoleIds.Split(",", System.StringSplitOptions.RemoveEmptyEntries).ToList();
-            return await _menuService.GetMenusForRouterAsync(roleIds.Select(x=>long.Parse(x)));
+            return await _menuService.GetMenusForRouterAsync(roleIds.Select(x => long.Parse(x)));
         }
 
         /// <summary>

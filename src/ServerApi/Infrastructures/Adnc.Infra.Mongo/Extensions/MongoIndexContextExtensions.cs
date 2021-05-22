@@ -1,8 +1,8 @@
-﻿using System;
-using MongoDB.Driver;
+﻿using Adnc.Core.Shared.Entities;
 using Adnc.Infra.Mongo.Configuration;
 using Adnc.Infra.Mongo.Models;
-using Adnc.Core.Shared.Entities;
+using MongoDB.Driver;
+using System;
 
 namespace Adnc.Infra.Mongo.Extensions
 {
@@ -53,7 +53,7 @@ namespace Adnc.Infra.Mongo.Extensions
             where TEntity : ExpiringMongoEntity
         {
             context.Add("date_created",
-                Builders<TEntity>.IndexKeys.Ascending(x => x.DateCreated), 
+                Builders<TEntity>.IndexKeys.Ascending(x => x.DateCreated),
                 o => o.ExpireAfter(expireAfter));
         }
     }

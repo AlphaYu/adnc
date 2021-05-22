@@ -1,23 +1,22 @@
-﻿using System;
-using System.Linq;
-using System.Net;
-using System.IO;
-using System.Text.Json;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using System.IdentityModel.Tokens.Jwt;
-using Microsoft.Extensions.Options;
-using Microsoft.AspNetCore.Routing;
+﻿using Adnc.Infra.Caching;
+using Adnc.Infra.Common.Extensions;
+using Adnc.Infra.Common.Helper;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
-using Adnc.Infra.Common.Extensions;
-using Adnc.Application.Shared;
-using Adnc.Infra.Common.Helper;
-using Adnc.Infra.Caching;
+using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Security.Claims;
+using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace Adnc.WebApi.Shared.Middleware
 {
@@ -26,6 +25,7 @@ namespace Adnc.WebApi.Shared.Middleware
         private readonly RequestDelegate _next;
         private readonly JWTConfig _jwtConfig;
         private readonly string tokenPrefx = "accesstoken";
+
         //private readonly string refreshTokenPrefx = "refreshtoken";
         private readonly ICacheProvider _cache;
 
@@ -94,7 +94,7 @@ namespace Adnc.WebApi.Shared.Middleware
                         await RemoveToken(context);
                     return;
                 }
-                
+
                 //是注销，需要判断是否主动注销
                 if (controller == "account" && action == "logout")
                 {
@@ -272,7 +272,7 @@ namespace Adnc.WebApi.Shared.Middleware
     {
         public static IApplicationBuilder UseSSOAuthentication(this IApplicationBuilder builder, bool isOpenSSOAuthentication = true)
         {
-            if(isOpenSSOAuthentication)
+            if (isOpenSSOAuthentication)
                 return builder.UseMiddleware<SSOAuthenticationMiddleware>();
 
             return builder;

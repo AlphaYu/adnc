@@ -1,8 +1,6 @@
-﻿using JetBrains.Annotations;
-using System;
+﻿using Adnc.Infra.Common.Extensions;
+using JetBrains.Annotations;
 using System.Collections.Generic;
-using System.Diagnostics;
-using Adnc.Infra.Common.Extensions;
 
 namespace Adnc.Infra.Common.Exceptions
 {
@@ -34,8 +32,8 @@ namespace Adnc.Infra.Common.Exceptions
 
         [ContractAnnotation("value:null => halt")]
         public static T NotNull<T>(
-            T value, 
-            [InvokerParameterName] [NotNull] string parameterName)
+            T value,
+            [InvokerParameterName][NotNull] string parameterName)
         {
             if (value == null)
             {
@@ -47,8 +45,8 @@ namespace Adnc.Infra.Common.Exceptions
 
         [ContractAnnotation("value:null => halt")]
         public static T NotNull<T>(
-            T value, 
-            [InvokerParameterName] [NotNull] string parameterName, 
+            T value,
+            [InvokerParameterName][NotNull] string parameterName,
             string message)
         {
             if (value == null)
@@ -62,7 +60,7 @@ namespace Adnc.Infra.Common.Exceptions
         [ContractAnnotation("value:null => halt")]
         public static string NotNull(
             string value,
-            [InvokerParameterName] [NotNull] string parameterName,
+            [InvokerParameterName][NotNull] string parameterName,
             int maxLength = int.MaxValue,
             int minLength = 0)
         {
@@ -87,7 +85,7 @@ namespace Adnc.Infra.Common.Exceptions
         [ContractAnnotation("value:null => halt")]
         public static string NotNullOrWhiteSpace(
             string value,
-            [InvokerParameterName] [NotNull] string parameterName,
+            [InvokerParameterName][NotNull] string parameterName,
             int maxLength = int.MaxValue,
             int minLength = 0)
         {
@@ -112,7 +110,7 @@ namespace Adnc.Infra.Common.Exceptions
         [ContractAnnotation("value:null => halt")]
         public static string NotNullOrEmpty(
             string value,
-            [InvokerParameterName] [NotNull] string parameterName,
+            [InvokerParameterName][NotNull] string parameterName,
             int maxLength = int.MaxValue,
             int minLength = 0)
         {
@@ -135,7 +133,7 @@ namespace Adnc.Infra.Common.Exceptions
         }
 
         [ContractAnnotation("value:null => halt")]
-        public static ICollection<T> NotNullOrEmpty<T>(ICollection<T> value, [InvokerParameterName] [NotNull] string parameterName)
+        public static ICollection<T> NotNullOrEmpty<T>(ICollection<T> value, [InvokerParameterName][NotNull] string parameterName)
         {
             if (value.IsNullOrEmpty())
             {
@@ -147,8 +145,8 @@ namespace Adnc.Infra.Common.Exceptions
 
         public static string Length(
             [CanBeNull] string value,
-            [InvokerParameterName] [NotNull] string parameterName, 
-            int maxLength, 
+            [InvokerParameterName][NotNull] string parameterName,
+            int maxLength,
             int minLength = 0)
         {
             if (minLength > 0)

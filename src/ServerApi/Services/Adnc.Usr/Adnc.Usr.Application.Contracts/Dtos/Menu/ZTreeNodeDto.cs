@@ -47,7 +47,7 @@ namespace Adnc.Usr.Application.Contracts.Dtos
                 Id = default(TKey),
                 Name = "顶级",
                 Open = true,
-                PID =default(TKey)
+                PID = default(TKey)
             };
 
             return node;

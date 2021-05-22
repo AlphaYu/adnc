@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Adnc.Infra.Caching.Configurations;
+using Adnc.Infra.Caching.Core.Diagnostics;
+using Adnc.Infra.Caching.Core.Serialization;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using Adnc.Infra.Caching.Configurations;
-using Adnc.Infra.Caching.Core.Diagnostics;
-using Adnc.Infra.Caching.Core.Serialization;
 
 namespace Adnc.Infra.Caching.Core
 {
@@ -19,7 +19,7 @@ namespace Adnc.Infra.Caching.Core
         //protected int ProviderMaxRdSecond { get; set; }
         //protected CacheStats ProviderStats { get; set; }
 
-        public abstract string Name {get;}
+        public abstract string Name { get; }
         public abstract CacheOptions CacheOptions { get; }
         //public bool IsDistributedCache => this.IsDistributedProvider;
         //public int MaxRdSecond => this.ProviderMaxRdSecond;
@@ -30,34 +30,63 @@ namespace Adnc.Infra.Caching.Core
         public abstract ICachingSerializer Serializer { get; }
 
         protected abstract bool BaseExists(string cacheKey);
+
         protected abstract Task<bool> BaseExistsAsync(string cacheKey);
+
         protected abstract void BaseFlush();
+
         protected abstract Task BaseFlushAsync();
+
         protected abstract CacheValue<T> BaseGet<T>(string cacheKey, Func<T> dataRetriever, TimeSpan expiration);
+
         protected abstract CacheValue<T> BaseGet<T>(string cacheKey);
+
         protected abstract IDictionary<string, CacheValue<T>> BaseGetAll<T>(IEnumerable<string> cacheKeys);
+
         protected abstract Task<IDictionary<string, CacheValue<T>>> BaseGetAllAsync<T>(IEnumerable<string> cacheKeys);
+
         protected abstract Task<CacheValue<T>> BaseGetAsync<T>(string cacheKey, Func<Task<T>> dataRetriever, TimeSpan expiration);
+
         protected abstract Task<object> BaseGetAsync(string cacheKey, Type type);
+
         protected abstract Task<CacheValue<T>> BaseGetAsync<T>(string cacheKey);
+
         protected abstract IDictionary<string, CacheValue<T>> BaseGetByPrefix<T>(string prefix);
+
         protected abstract Task<IDictionary<string, CacheValue<T>>> BaseGetByPrefixAsync<T>(string prefix);
+
         protected abstract int BaseGetCount(string prefix = "");
+
         protected abstract Task<int> BaseGetCountAsync(string prefix = "");
+
         protected abstract void BaseRemove(string cacheKey);
+
         protected abstract void BaseRemoveAll(IEnumerable<string> cacheKeys);
+
         protected abstract Task BaseRemoveAllAsync(IEnumerable<string> cacheKeys);
+
         protected abstract Task BaseRemoveAsync(string cacheKey);
+
         protected abstract void BaseRemoveByPrefix(string prefix);
+
         protected abstract Task BaseRemoveByPrefixAsync(string prefix);
+
         protected abstract void BaseSet<T>(string cacheKey, T cacheValue, TimeSpan expiration);
+
         protected abstract void BaseSetAll<T>(IDictionary<string, T> values, TimeSpan expiration);
+
         protected abstract Task BaseSetAllAsync<T>(IDictionary<string, T> values, TimeSpan expiration);
+
         protected abstract Task BaseSetAsync<T>(string cacheKey, T cacheValue, TimeSpan expiration);
+
         protected abstract bool BaseTrySet<T>(string cacheKey, T cacheValue, TimeSpan expiration);
+
         protected abstract Task<bool> BaseTrySetAsync<T>(string cacheKey, T cacheValue, TimeSpan expiration);
+
         protected abstract TimeSpan BaseGetExpiration(string cacheKey);
-        protected abstract Task  BaseKeyExpireAsync(IEnumerable<string> cacheKeys, int seconds);
+
+        protected abstract Task BaseKeyExpireAsync(IEnumerable<string> cacheKeys, int seconds);
+
         protected abstract Task<TimeSpan> BaseGetExpirationAsync(string cacheKey);
 
         public bool Exists(string cacheKey)

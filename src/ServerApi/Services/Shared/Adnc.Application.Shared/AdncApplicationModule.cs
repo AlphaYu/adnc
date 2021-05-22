@@ -1,23 +1,23 @@
-﻿using System;
-using System.Linq;
-using System.Reflection;
-using System.Collections.Generic;
-using Microsoft.Extensions.Configuration;
+﻿using Adnc.Application.Shared.Caching;
+using Adnc.Application.Shared.HostedServices;
+using Adnc.Application.Shared.IdGeneraterWorkerNode;
+using Adnc.Application.Shared.Interceptors;
+using Adnc.Application.Shared.Services;
+using Adnc.Core.Shared;
+using Adnc.Core.Shared.Entities;
+using Adnc.Core.Shared.Interceptors;
+using Adnc.Infra.Caching;
+using Adnc.Infra.Caching.Interceptor.Castle;
+using Adnc.Infra.Mapper.AutoMapper;
+using Adnc.Infra.Mq;
 using Autofac;
 using Autofac.Extras.DynamicProxy;
 using FluentValidation;
-using Adnc.Infra.Mq;
-using Adnc.Infra.Caching.Interceptor.Castle;
-using Adnc.Infra.Mapper.AutoMapper;
-using Adnc.Application.Shared.Interceptors;
-using Adnc.Application.Shared.Services;
-using Adnc.Core.Shared.Interceptors;
-using Adnc.Core.Shared.Entities;
-using Adnc.Core.Shared;
-using Adnc.Infra.Caching;
-using Adnc.Application.Shared.Caching;
-using Adnc.Application.Shared.IdGeneraterWorkerNode;
-using Adnc.Application.Shared.HostedServices;
+using Microsoft.Extensions.Configuration;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 
 namespace Adnc.Application.Shared
 {
@@ -49,21 +49,26 @@ namespace Adnc.Application.Shared
             this.LoadDepends(builder);
 
             #region register usercontext,operater
+
             //注册UserContext(IUserContext,IOperater)
             builder.RegisterType<UserContext>()
                         .As<IUserContext, IOperater>()
                         .InstancePerLifetimeScope();
-            #endregion
+
+            #endregion register usercontext,operater
 
             #region register opslog interceptor
+
             //注册操作日志拦截器
             builder.RegisterType<OpsLogInterceptor>()
                         .InstancePerLifetimeScope();
             builder.RegisterType<OpsLogAsyncInterceptor>()
                         .InstancePerLifetimeScope();
-            #endregion
+
+            #endregion register opslog interceptor
 
             #region register appservices,interceptors
+
             //注册应用服务与拦截器
             var interceptors = new List<Type>
             {
@@ -86,17 +91,21 @@ namespace Adnc.Application.Shared
                        .InstancePerLifetimeScope()
                        .EnableInterfaceInterceptors()
                        .InterceptedBy(interceptors.ToArray());
-            #endregion
+
+            #endregion register appservices,interceptors
 
             #region register dto validators
+
             //注册DtoValidators
             builder.RegisterAssemblyTypes(_appContractsAssemblieToScan)
                    .Where(t => t.IsClosedTypeOf(typeof(IValidator<>)))
                    .AsImplementedInterfaces()
                    .InstancePerLifetimeScope();
-            #endregion
+
+            #endregion register dto validators
 
             #region register idgenerater services
+
             //注册Id生成器工作节点服务类
             builder.RegisterType<WorkerNode>()
                         .AsSelf()
@@ -105,9 +114,11 @@ namespace Adnc.Application.Shared
                         .WithParameter("serviceName", _appModuleName.ToLower())
                         .AsImplementedInterfaces()
                         .SingleInstance();
-            #endregion
+
+            #endregion register idgenerater services
 
             #region register cacheservice/bloomfilter
+
             //注册布隆过滤器、cacheservice、cache补偿服务/布隆过滤器初始化服务
             //cacheservcie
             builder.RegisterAssemblyTypes(_appAssemblieToScan)
@@ -125,7 +136,8 @@ namespace Adnc.Application.Shared
             builder.RegisterType<CacheAndBloomFilterHostedService>()
                         .AsImplementedInterfaces()
                         .SingleInstance();
-            #endregion
+
+            #endregion register cacheservice/bloomfilter
         }
 
         private void LoadDepends(ContainerBuilder builder)

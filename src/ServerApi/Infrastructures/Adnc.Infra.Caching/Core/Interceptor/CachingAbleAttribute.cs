@@ -13,5 +13,5 @@ namespace Adnc.Infra.Caching.Interceptor
         /// </summary>
         /// <value>The expiration.</value>
         public int Expiration { get; set; } = 30;
-    }     
+    }
 }

@@ -1,20 +1,20 @@
-﻿using System;
-using System.Linq;
+﻿using Adnc.Infra.Caching.Core;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Adnc.Infra.Caching.Core;
 
 namespace StackExchange.Redis
 {
     public static class IDatabaseExtension
     {
         #region Distributed Locker
+
         public static (bool Success, string LockValue) Lock(this IDatabase redisDb, string cacheKey, int timeoutSeconds = 5, bool autoDelay = true)
         {
             ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
             ArgumentCheck.NotLessThanOrEqualZero(timeoutSeconds, nameof(timeoutSeconds));
-
 
             var lockKey = GetLockKey(cacheKey);
             var lockValue = Guid.NewGuid().ToString();
@@ -69,9 +69,9 @@ namespace StackExchange.Redis
             var lockKey = GetLockKey(cacheKey);
             AutoDelayTimers.Instance.CloseTimer(lockKey);
 
-            var script = @"local invalue = @value 
-                                    local currvalue = redis.call('get',@key) 
-                                    if(invalue==currvalue) then redis.call('del',@key) 
+            var script = @"local invalue = @value
+                                    local currvalue = redis.call('get',@key)
+                                    if(invalue==currvalue) then redis.call('del',@key)
                                         return 1
                                     else
                                         return 0
@@ -90,9 +90,9 @@ namespace StackExchange.Redis
             var lockKey = GetLockKey(cacheKey);
             AutoDelayTimers.Instance.CloseTimer(lockKey);
 
-            var script = @"local invalue = @value 
-                                    local currvalue = redis.call('get',@key) 
-                                    if(invalue==currvalue) then redis.call('del',@key) 
+            var script = @"local invalue = @value
+                                    local currvalue = redis.call('get',@key)
+                                    if(invalue==currvalue) then redis.call('del',@key)
                                         return 1
                                     else
                                         return 0
@@ -129,23 +129,27 @@ namespace StackExchange.Redis
         {
             return $"adnc:locker:{cacheKey.Replace(":", "-")}";
         }
-        #endregion
 
-        #region Expire keys 
+        #endregion Distributed Locker
+
+        #region Expire keys
+
         public static async Task KeyExpireAsync(this IDatabase redisDb, IEnumerable<string> cacheKeys, int seconds)
         {
             ArgumentCheck.NotNullAndCountGTZero(cacheKeys, nameof(cacheKeys));
 
             var script = @"for i, inkey in ipairs(KEYS) do
-                                       redis.call('EXPIRE',inkey,ARGV[1]) 
+                                       redis.call('EXPIRE',inkey,ARGV[1])
                                     end ";
             var keys = Array.ConvertAll(cacheKeys.ToArray(), item => (RedisKey)item);
             var values = new RedisValue[] { seconds };
             var result = await redisDb.ScriptEvaluateAsync(script, keys, values);
         }
-        #endregion
+
+        #endregion Expire keys
 
         #region Bloom Filter
+
         public static async Task BloomReserveAsync(this IDatabase redisDb, RedisKey key, double errorRate, int initialCapacity)
             => await redisDb.ExecuteAsync("BF.RESERVE", key, errorRate, initialCapacity);
 
@@ -161,9 +165,10 @@ namespace StackExchange.Redis
         public static async Task<bool[]> BloomExistsAsync(this IDatabase redisDb, RedisKey key, IEnumerable<RedisValue> values)
             => (bool[])await redisDb.ExecuteAsync("BF.MEXISTS", values.Cast<object>().Prepend(key).ToArray());
 
-        #endregion
+        #endregion Bloom Filter
 
         #region TopK
+
         public static async Task TopKReserveAsync(this IDatabase db, RedisKey key, int topK, int width = 8, int depth = 7, double decay = 0.9)
             => await db.ExecuteAsync("TOPK.RESERVE", key, topK, width, depth, decay);
 
@@ -193,6 +198,7 @@ namespace StackExchange.Redis
 
         public static async Task<int[]> TopKCountAsync(this IDatabase db, RedisKey key, RedisValue[] values)
             => (int[])await db.ExecuteAsync("TOPK.COUNT", values.Cast<object>().Prepend(key).ToArray());
-        #endregion
+
+        #endregion TopK
     }
 }

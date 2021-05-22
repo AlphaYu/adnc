@@ -1,7 +1,6 @@
-﻿using System;
+﻿using Adnc.Application.Shared.Dtos;
+using System;
 using System.Collections.Generic;
-using System.Text;
-using Adnc.Application.Shared.Dtos;
 
 namespace Adnc.Usr.Application.Contracts.Dtos
 {
@@ -19,6 +18,6 @@ namespace Adnc.Usr.Application.Contracts.Dtos
         /// <summary>
         /// 子部门
         /// </summary>
-        public List<DeptSimpleTreeDto> children { get;  set; } = new List<DeptSimpleTreeDto>();
+        public List<DeptSimpleTreeDto> children { get; set; } = new List<DeptSimpleTreeDto>();
     }
 }

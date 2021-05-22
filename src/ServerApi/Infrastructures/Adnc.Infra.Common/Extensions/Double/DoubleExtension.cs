@@ -4,7 +4,6 @@ namespace Adnc.Infra.Common.Extensions
 {
     public static class DoubleExtension
     {
-
         public static long ToLong(this double @this)
         {
             return Convert.ToInt64(@this);

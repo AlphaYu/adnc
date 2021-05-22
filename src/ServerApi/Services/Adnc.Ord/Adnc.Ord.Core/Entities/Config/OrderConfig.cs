@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Adnc.Core.Shared.Entities.Config;
+﻿using Adnc.Core.Shared.Entities.Config;
 using Adnc.Core.Shared.EntityConsts.Ord;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Adnc.Ord.Core.Entities.Config
 {
@@ -22,7 +22,6 @@ namespace Adnc.Ord.Core.Entities.Config
                 y.Property(y => y.Code).IsRequired().HasColumnName("StatusCode");
                 y.Property(y => y.ChangesReason).HasColumnName("StatusChangesReason").HasMaxLength(OrdConsts.ChangesReason_MaxLength);
             });
-
 
             builder.OwnsOne(x => x.Receiver, y =>
             {

@@ -1,14 +1,14 @@
-﻿using System;
+﻿using Adnc.Core.Shared.Entities;
+using Adnc.Core.Shared.IRepositories;
+using Adnc.Infra.Common.Extensions;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using Z.EntityFramework.Plus;
-using Adnc.Core.Shared.Entities;
-using Adnc.Core.Shared.IRepositories;
-using Adnc.Infra.Common.Extensions;
 
 namespace Adnc.Infra.EfCore.Repositories
 {
@@ -51,7 +51,6 @@ namespace Adnc.Infra.EfCore.Repositories
 
         public async Task<TEntity> FetchAsync(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, dynamic>> navigationPropertyPath = null, Expression<Func<TEntity, object>> orderByExpression = null, bool ascending = false, bool writeDb = false, bool noTracking = true, CancellationToken cancellationToken = default)
         {
-
             TEntity result;
 
             var query = this.GetDbSet(writeDb, noTracking).Where(whereExpression);
@@ -151,7 +150,6 @@ namespace Adnc.Infra.EfCore.Repositories
             //没有指定需要更新的列
             if (updatingExpressions?.Length == 0)
                 await UpdateAsync(entity, cancellationToken);
-
 
             //获取实体状态
             var entry = DbContext.Entry(entity);

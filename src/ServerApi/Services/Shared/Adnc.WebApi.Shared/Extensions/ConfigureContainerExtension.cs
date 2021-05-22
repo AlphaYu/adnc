@@ -1,20 +1,18 @@
-﻿using System;
-using System.Linq;
-using System.Reflection;
-using Autofac.Core;
-using Microsoft.Extensions.Configuration;
+﻿using Adnc.Application.Shared;
 using Adnc.Infra.Consul;
 using Adnc.Infra.EfCore;
 using Adnc.Infra.Mongo;
 using Adnc.WebApi.Shared;
-using Adnc.Application.Shared;
-using Adnc.Infra.Caching;
+using Autofac.Core;
+using Microsoft.Extensions.Configuration;
+using System;
+using System.Linq;
+using System.Reflection;
 
 namespace Autofac
 {
     public static class ConfigureContainerExtension
     {
-
         /// <summary>
         /// 统一注册Adnc.WebApi通用模块
         /// </summary>
@@ -37,7 +35,7 @@ namespace Autofac
                                                        m.FullName != null
                                                        && typeof(AdncApplicationModule).IsAssignableFrom(m)
                                                        && !m.IsAbstract).FirstOrDefault();
-            builder.RegisterModule(Activator.CreateInstance(appModelType, configuration.GetRedisSection(),configuration.GetRabbitMqSection()) as  IModule);
+            builder.RegisterModule(Activator.CreateInstance(appModelType, configuration.GetRedisSection(), configuration.GetRabbitMqSection()) as IModule);
 
             completedExecute?.Invoke(builder);
 

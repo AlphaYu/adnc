@@ -1,5 +1,5 @@
-﻿using Autofac;
-using Adnc.Core.Shared;
+﻿using Adnc.Core.Shared;
+using Autofac;
 
 namespace Adnc.Usr.Core
 {
@@ -8,7 +8,9 @@ namespace Adnc.Usr.Core
     /// </summary>
     public sealed class AdncUsrCoreModule : AdncCoreModule
     {
-        public AdncUsrCoreModule() : base(typeof(AdncUsrCoreModule)) { }
+        public AdncUsrCoreModule() : base(typeof(AdncUsrCoreModule))
+        {
+        }
 
         protected override void Load(ContainerBuilder builder)
         {

@@ -1,6 +1,6 @@
-﻿using FluentValidation;
+﻿using Adnc.Core.Shared.EntityConsts.Usr;
 using Adnc.Usr.Application.Contracts.Dtos;
-using Adnc.Core.Shared.EntityConsts.Usr;
+using FluentValidation;
 
 namespace Adnc.Usr.Application.Contracts.DtoValidators
 {

@@ -16,7 +16,9 @@ namespace Adnc.Ord.Core.Entities
 
         //public decimal Amount { get; private set; }
 
-        private OrderItem() { }
+        private OrderItem()
+        {
+        }
 
         internal OrderItem(long orderId, OrderItemProduct product, int count)
         {

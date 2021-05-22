@@ -1,7 +1,5 @@
 ﻿using Microsoft.Extensions.Diagnostics.HealthChecks;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -19,6 +17,5 @@ namespace Adnc.Maintaining.Services
 
             return Task.FromResult(HealthCheckResult.Unhealthy(description: "failed", exception: new InvalidCastException("Invalid cast from to to to")));
         }
-
     }
 }

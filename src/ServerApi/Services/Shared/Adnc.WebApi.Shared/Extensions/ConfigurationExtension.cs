@@ -51,7 +51,6 @@ namespace Microsoft.Extensions.Configuration
             return configuration.GetSection("Redis");
         }
 
-
         public static IConfigurationSection GetMysqlSection(this IConfiguration configuration)
         {
             return configuration.GetSection("Mysql");

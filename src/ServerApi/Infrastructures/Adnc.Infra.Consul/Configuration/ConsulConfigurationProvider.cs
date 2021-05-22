@@ -133,6 +133,7 @@ namespace Adnc.Infra.Consul.Configuration
                         foreach (var item in Flatten(KeyValuePair.Create(propertyKey, property.Value)))
                             yield return item;
                         break;
+
                     case JTokenType.Array:
                         {
                             int index = 0;

@@ -1,5 +1,5 @@
-﻿using Autofac;
-using Adnc.Core.Shared;
+﻿using Adnc.Core.Shared;
+using Autofac;
 
 namespace Adnc.Cus.Core
 {
@@ -8,7 +8,9 @@ namespace Adnc.Cus.Core
     /// </summary>
     public sealed class AdncCusCoreModule : AdncCoreModule
     {
-        public AdncCusCoreModule() : base(typeof(AdncCusCoreModule)) { }
+        public AdncCusCoreModule() : base(typeof(AdncCusCoreModule))
+        {
+        }
 
         /// <summary>
         /// 注册

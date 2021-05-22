@@ -1,6 +1,5 @@
-﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
-using Adnc.Core.Shared.Entities;
+﻿using Adnc.Core.Shared.Entities;
+using System.Collections.ObjectModel;
 
 namespace Adnc.Usr.Core.Entities
 {

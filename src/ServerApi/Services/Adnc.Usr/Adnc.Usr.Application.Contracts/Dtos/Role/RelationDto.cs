@@ -1,7 +1,5 @@
 ﻿using Adnc.Application.Shared.Dtos;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Adnc.Usr.Application.Contracts.Dtos
 {
@@ -11,14 +9,14 @@ namespace Adnc.Usr.Application.Contracts.Dtos
 	[Serializable]
     public class RelationDto : IDto
     {
-		/// <summary>
-		/// 菜单Id
-		/// </summary>
-		public long? MenuId { get; set; }
+        /// <summary>
+        /// 菜单Id
+        /// </summary>
+        public long? MenuId { get; set; }
 
-		/// <summary>
-		/// 角色Id
-		/// </summary>
-		public long? RoleId { get; set; }
-	}
+        /// <summary>
+        /// 角色Id
+        /// </summary>
+        public long? RoleId { get; set; }
+    }
 }

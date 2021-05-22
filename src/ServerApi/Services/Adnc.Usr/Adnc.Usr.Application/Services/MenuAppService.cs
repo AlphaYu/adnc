@@ -1,20 +1,20 @@
-﻿using System;
+﻿using Adnc.Application.Shared.Services;
+using Adnc.Core.Shared.IRepositories;
+using Adnc.Infra.Common.Extensions;
+using Adnc.Infra.Common.Helper;
+using Adnc.Usr.Application.Caching;
+using Adnc.Usr.Application.Contracts.Dtos;
+using Adnc.Usr.Application.Contracts.Services;
+using Adnc.Usr.Core.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using Adnc.Usr.Application.Contracts.Dtos;
-using Adnc.Usr.Core.Entities;
-using Adnc.Core.Shared.IRepositories;
-using Adnc.Infra.Common.Helper;
-using Adnc.Application.Shared.Services;
-using Adnc.Infra.Common.Extensions;
-using Adnc.Usr.Application.Contracts.Services;
-using Adnc.Usr.Application.Caching;
 
 namespace Adnc.Usr.Application.Services
 {
-    public class MenuAppService :AbstractAppService,IMenuAppService
+    public class MenuAppService : AbstractAppService, IMenuAppService
     {
         private readonly IEfRepository<SysMenu> _menuRepository;
         private readonly CacheService _cacheService;
@@ -188,7 +188,7 @@ namespace Adnc.Usr.Application.Services
             var menuIds = (await _cacheService.GetAllRelationsFromCacheAsync()).Where(x => x.RoleId.Value == roleId).Select(r => r.MenuId.Value) ?? new List<long>();
             var roleTreeList = new List<ZTreeNodeDto<long, dynamic>>();
 
-            var menus = (await _cacheService.GetAllMenusFromCacheAsync()).Where(w => true).OrderBy(x=>x.Ordinal);
+            var menus = (await _cacheService.GetAllMenusFromCacheAsync()).Where(w => true).OrderBy(x => x.Ordinal);
 
             foreach (var menu in menus)
             {
@@ -217,7 +217,7 @@ namespace Adnc.Usr.Application.Services
             }
 
             var groups = roleTreeList.GroupBy(x => x.PID).Where(x => x.Key > 1);
-            foreach(var group in groups)
+            foreach (var group in groups)
             {
                 roleTreeList.RemoveAll(x => x.Id == group.Key);
             }

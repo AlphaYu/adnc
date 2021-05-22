@@ -13,5 +13,3 @@ namespace Adnc.Core.Shared
         }
     }
 }
-
-

@@ -1,15 +1,15 @@
-﻿using System.Net;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Adnc.Usr.Application.Contracts.Dtos;
-using Adnc.Usr.Core.Services;
-using Adnc.Usr.Core.Entities;
+﻿using Adnc.Application.Shared.Services;
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Infra.Common.Helper;
-using Adnc.Application.Shared.Services;
 using Adnc.Usr.Application.Caching;
+using Adnc.Usr.Application.Contracts.Dtos;
 using Adnc.Usr.Application.Contracts.Services;
+using Adnc.Usr.Core.Entities;
+using Adnc.Usr.Core.Services;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
 
 namespace Adnc.Usr.Application.Services
 {
@@ -119,7 +119,6 @@ namespace Adnc.Usr.Application.Services
 
         private async Task<SysDept> SetDeptPids(SysDept sysDept)
         {
-
             if (sysDept.Pid.HasValue && sysDept.Pid.Value > 0)
             {
                 var dept = (await _cacheService.GetAllDeptsFromCacheAsync()).FirstOrDefault(x => x.Id == sysDept.Pid.Value);

@@ -4,11 +4,9 @@ namespace Adnc.Whse.Core.Entities
 {
     public class InventoryChangesLog : Entity
     {
-
     }
 
     public enum InventoryChangesEnum
     {
-
     }
 }

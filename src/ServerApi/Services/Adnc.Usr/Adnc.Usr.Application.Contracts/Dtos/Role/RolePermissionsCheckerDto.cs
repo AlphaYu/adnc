@@ -7,6 +7,5 @@ namespace Adnc.Usr.Application.Contracts.Dtos
     {
         public IEnumerable<long> RoleIds { get; set; }
         public IEnumerable<string> Permissions { get; set; }
-
     }
 }
