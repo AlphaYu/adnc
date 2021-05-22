@@ -1,13 +1,13 @@
-﻿using System;
+﻿using Adnc.Infra.Caching;
+using Adnc.Infra.Common.Extensions;
+using Adnc.UnitTest.Fixtures;
+using Autofac;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Autofac;
 using Xunit;
 using Xunit.Abstractions;
-using Adnc.Infra.Caching;
-using Adnc.UnitTest.Fixtures;
-using Adnc.Infra.Common.Extensions;
 
 namespace Adnc.UnitTest.Cache
 {
@@ -179,7 +179,7 @@ namespace Adnc.UnitTest.Cache
         }
 
         [Fact]
-        public  async Task TestKeyExpire()
+        public async Task TestKeyExpire()
         {
             _cache.CacheOptions.PenetrationSetting.Disable = true;
 
@@ -192,7 +192,7 @@ namespace Adnc.UnitTest.Cache
             await _cache.SetAsync(cacheKey2, nameof(cacheKey2), TimeSpan.FromSeconds(1000));
             await _cache.SetAsync(cacheKey3, nameof(cacheKey3), TimeSpan.FromSeconds(1000));
 
-            var seconds =  await _redisProvider.TTLAsync(cacheKey1);
+            var seconds = await _redisProvider.TTLAsync(cacheKey1);
             Assert.True(seconds > 990);
 
             await _cache.KeyExpireAsync(new string[] { cacheKey1, cacheKey2, cacheKey3, cacheKey4 }, 100);
@@ -200,14 +200,14 @@ namespace Adnc.UnitTest.Cache
             var seconds2 = await _redisProvider.TTLAsync(cacheKey2);
             var seconds3 = await _redisProvider.TTLAsync(cacheKey3);
 
-            Assert.True(seconds1 <=100 && seconds1>90);
+            Assert.True(seconds1 <= 100 && seconds1 > 90);
             Assert.True(seconds2 <= 100 && seconds1 > 90);
             Assert.True(seconds3 <= 100 && seconds1 > 90);
 
             var exists = await _cache.ExistsAsync(cacheKey4);
             Assert.False(exists);
 
-            var value =await  _cache.GetAsync<string>(cacheKey3);
+            var value = await _cache.GetAsync<string>(cacheKey3);
             Assert.Equal("cacheKey3", value.Value);
         }
 

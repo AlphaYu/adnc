@@ -1,7 +1,7 @@
-﻿using System;
-using Autofac;
-using Adnc.Infra.Caching;
+﻿using Adnc.Infra.Caching;
 using Adnc.Infra.Caching.Configurations;
+using Autofac;
+using System;
 
 namespace Adnc.UnitTest.Fixtures
 {
@@ -12,7 +12,7 @@ namespace Adnc.UnitTest.Fixtures
         public RedisCacheFixture()
         {
             var containerBuilder = new ContainerBuilder();
-            var redisOptions = new RedisDBOptions() { Password = "football",ConnectionTimeout=1000*20 };
+            var redisOptions = new RedisDBOptions() { Password = "football", ConnectionTimeout = 1000 * 20 };
             redisOptions.Endpoints.Add(new ServerEndPoint() { Host = "193.112.75.77", Port = 13379 });
 
             var cacheOptions = new CacheOptions()
@@ -29,7 +29,7 @@ namespace Adnc.UnitTest.Fixtures
                     {
                         Capacity = 10000000
                         ,
-                        Name ="adnc:bloomfilter"
+                        Name = "adnc:bloomfilter"
                         ,
                         ErrorRate = 0.001
                     }

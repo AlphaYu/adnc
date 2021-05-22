@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Adnc.PerformTest
+﻿namespace Adnc.PerformTest
 {
-    class EfRespositoryTest
+    internal class EfRespositoryTest
     {
     }
 }

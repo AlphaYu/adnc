@@ -1,17 +1,17 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Linq.Expressions;
-using System.Collections.Generic;
-using Xunit;
-using Autofac;
-using Xunit.Abstractions;
-using Adnc.UnitTest.Fixtures;
-using Adnc.Core.Shared;
-using Adnc.Cus.Core.Entities;
+﻿using Adnc.Core.Shared;
 using Adnc.Core.Shared.IRepositories;
+using Adnc.Cus.Core.Entities;
 using Adnc.Infra.Common.Helper;
 using Adnc.Infra.EfCore;
+using Adnc.UnitTest.Fixtures;
+using Autofac;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
+using Xunit;
+using Xunit.Abstractions;
 
 namespace Adnc.UnitTest.EFCore
 {
@@ -62,13 +62,11 @@ namespace Adnc.UnitTest.EFCore
         [Fact]
         public async Task TestDbContext()
         {
-
             var account = "alpha008";
 
             using (var db = await _dbContext.Database.BeginTransactionAsync())
             {
                 //_unitOfWork.BeginTransaction();
-
 
                 await _customerRsp.DeleteRangeAsync(x => x.Id <= 10000);
 
@@ -78,7 +76,6 @@ namespace Adnc.UnitTest.EFCore
                 _dbContext.Add<Customer>(customer);
 
                 await _dbContext.SaveChangesAsync();
-
 
                 var id2 = IdGenerater.GetNextId();
                 var customer2 = new Customer() { Id = id2, Account = account, Nickname = "招财猫02", Realname = "张发财02", FinanceInfo = new CustomerFinance { Id = id2, Account = account, Balance = 0 } };
@@ -90,7 +87,6 @@ namespace Adnc.UnitTest.EFCore
 
                 await db.CommitAsync();
             }
-
         }
 
         [Fact]
@@ -186,7 +182,7 @@ namespace Adnc.UnitTest.EFCore
         public async Task TestFetch()
         {
             //指定列查询
-            var customer = await _customerRsp.FetchAsync(x => new { x.Id, x.Account}, x => x.Id > 1);
+            var customer = await _customerRsp.FetchAsync(x => new { x.Id, x.Account }, x => x.Id > 1);
             Assert.NotNull(customer);
 
             //指定列查询，指定列包含导航属性
@@ -201,7 +197,6 @@ namespace Adnc.UnitTest.EFCore
             var customer4 = await _customerRsp.FetchAsync(x => x.Id > 1, x => x.FinanceInfo);
             Assert.NotNull(customer4);
         }
-
 
         [Fact]
         public async Task TestFind()
@@ -269,7 +264,7 @@ namespace Adnc.UnitTest.EFCore
         [Fact]
         public async Task TestDelete()
         {
-            //single hard delete 
+            //single hard delete
             var customer = await this.InsertCustomer();
             var customerFromDb = await _customerRsp.FindAsync(customer.Id);
             Assert.Equal(customer.Id, customerFromDb.Id);
@@ -313,14 +308,12 @@ namespace Adnc.UnitTest.EFCore
             Assert.Equal("更新指定列", newCus.Nickname);
             Assert.NotEqual("不指定该列", newCus.Realname);
 
-
             //实体没有被跟踪，dbcontext中有同名实体
             var id = customer.Id;
             await _customerRsp.UpdateAsync(new Customer { Id = id, Realname = "没被跟踪01", Nickname = "新昵称" }, UpdatingProps<Customer>(c => c.Realname, c => c.Nickname));
             newCus = (await _customerRsp.QueryAsync<Customer>("SELECT * FROM Customer WHERE ID=@ID", customer)).FirstOrDefault();
             Assert.Equal("没被跟踪01", newCus.Realname);
             Assert.Equal("新昵称", newCus.Nickname);
-
 
             //实体没有被跟踪，dbcontext中有没有同名实体
             id = 154959990543749120;
@@ -372,25 +365,23 @@ namespace Adnc.UnitTest.EFCore
                 customer2.FinanceInfo = cusFinance;
                 await _customerRsp.InsertAsync(customer2);
 
-                //update single 
+                //update single
                 customer.Nickname = newNickName;
                 await _customerRsp.UpdateAsync(customer, UpdatingProps<Customer>(c => c.Nickname));
                 var customerFromDb = await _customerRsp.FindAsync(customer.Id);
                 Assert.Equal(newNickName, customerFromDb.Nickname);
                 Assert.NotEqual(newRealName, customerFromDb.Realname);
 
-
                 cusFinance.Balance = newBalance;
                 await _cusFinanceRsp.UpdateAsync(cusFinance, UpdatingProps<CustomerFinance>(c => c.Balance));
                 var financeFromDb = await _customerRsp.FetchAsync(c => c, x => x.Id == cusFinance.Id);
                 Assert.Equal(newBalance, cusFinance.Balance);
 
-                //update batchs         
+                //update batchs
                 await _customerRsp.UpdateRangeAsync(x => x.Id == id, c => new Customer { Realname = newRealName, Nickname = newNickName });
 
                 //delete raw sql
                 await _customerRsp.DeleteAsync(id2);
-
 
                 await _custLogsRsp.DeleteAsync(1000);
 
@@ -436,13 +427,13 @@ namespace Adnc.UnitTest.EFCore
                 await _customerRsp.InsertAsync(customer2);
                 await _cusFinanceRsp.InsertAsync(cusFinance);
 
-                //update single 
+                //update single
                 customer.Nickname = newNickName;
                 await _customerRsp.UpdateAsync(customer, UpdatingProps<Customer>(c => c.Nickname));
                 cusFinance.Balance = newBalance;
                 await _cusFinanceRsp.UpdateAsync(cusFinance, UpdatingProps<CustomerFinance>(c => c.Balance));
 
-                //update batchs         
+                //update batchs
                 await _customerRsp.UpdateRangeAsync(x => x.Id == id, c => new Customer { Realname = newRealName });
 
                 //delete raw sql
@@ -483,7 +474,7 @@ namespace Adnc.UnitTest.EFCore
             result = await _customerRsp.Where(x => x.Id == 999).FirstOrDefaultAsync();
             Assert.Null(result);
 
-           var  dapperResult = await _customerRsp.QueryAsync<Customer>("select * from Customer where id=999");
+            var dapperResult = await _customerRsp.QueryAsync<Customer>("select * from Customer where id=999");
             Assert.Null(dapperResult);
 
             dynamic dapperResult2 = await _customerRsp.QueryAsync("select * from Customer where id=999");
@@ -504,6 +495,7 @@ namespace Adnc.UnitTest.EFCore
         }
 
         #region old testing codes
+
         //[Fact]
         //public async Task TestConcurrencyCheck()
         //{
@@ -514,24 +506,18 @@ namespace Adnc.UnitTest.EFCore
         //    //WHERE `ID` = @p3 AND `RowVersion` = @p4;
         //    //var result2 = await _userRepository.UpdateAsync(user1, u => u.Email, u => u.Sex);
 
-        //    var finance = new SysUserFinance
-        //    {
-        //        ID = 4,
-        //        Amount = 450,
-        //        RowVersion = DateTime.Parse("2020-07-01 21:51:12.310")
-        //    };
+        // var finance = new SysUserFinance { ID = 4, Amount = 450, RowVersion =
+        // DateTime.Parse("2020-07-01 21:51:12.310") };
 
-        //    //单实体更新(指定列)，有效。
-        //    //var reuslt = await _userFinanceRepository.UpdateAsync(finance, f => f.Amount);
-        //    //Assert.Equal(1, reuslt);
+        // //单实体更新(指定列)，有效。 //var reuslt = await _userFinanceRepository.UpdateAsync(finance, f =>
+        // f.Amount); //Assert.Equal(1, reuslt);
 
-        //    //单实体更新(不指定列)，有效。
-        //    //var reuslt1 = await _userFinanceRepository.UpdateAsync(finance);
-        //    //Assert.Equal(1, reuslt1);
+        // //单实体更新(不指定列)，有效。 //var reuslt1 = await _userFinanceRepository.UpdateAsync(finance);
+        // //Assert.Equal(1, reuslt1);
 
-        //    //批量更新不能使用到并发字段,我加了逻辑判断，如果存在rowversion列的实体，不能使用该方法。
-        //    var reuslt2 = await _userFinanceRepository.UpdateRangeAsync(u => u.ID == 4, u => new SysUserFinance { Amount = 410 });
-        //    Assert.Equal(1, reuslt2);
+        // //批量更新不能使用到并发字段,我加了逻辑判断，如果存在rowversion列的实体，不能使用该方法。 var reuslt2 = await
+        // _userFinanceRepository.UpdateRangeAsync(u => u.ID == 4, u => new SysUserFinance { Amount
+        // = 410 }); Assert.Equal(1, reuslt2);
 
         //}
 
@@ -542,52 +528,41 @@ namespace Adnc.UnitTest.EFCore
         //    var user1 = await _userRepository.FetchAsync(u=>new { u.ID,u.Dept},x => x.ID == 1);
         //    Assert.Null(user1.Dept);
 
-        //    ////select s.* from sysuer id=1
-        //    var user2 = await _userRepository.GetAll().Select(u => u).Where(x => x.ID == 1).FirstOrDefaultAsync();
-        //    Assert.Null(user2.Dept);
+        // ////select s.* from sysuer id=1 var user2 = await _userRepository.GetAll().Select(u =>
+        // u).Where(x => x.ID == 1).FirstOrDefaultAsync(); Assert.Null(user2.Dept);
 
-        //    //left join Include Include for Iqueryable
-        //    //预加载，开启了延时加载，延时加载不成功，预加载也会报错
-        //    var user3 = await _userRepository.GetAll().Include(u => u.Dept).Where(u => u.ID == 1).FirstOrDefaultAsync();
-        //    Assert.NotNull(user3.Dept);
+        // //left join Include Include for Iqueryable //预加载，开启了延时加载，延时加载不成功，预加载也会报错 var user3 =
+        // await _userRepository.GetAll().Include(u => u.Dept).Where(u => u.ID ==
+        // 1).FirstOrDefaultAsync(); Assert.NotNull(user3.Dept);
 
-        //    //预加载
-        //    /*
-        //     SELECT `t`.`ID`, `t`.`CreateBy`, `t`.`CreateTime`, `t`.`FullName`, `t`.`ModifyBy`
-        //    , `t`.`ModifyTime`, `t`.`Num`, `t`.`Pid`, `t`.`Pids`, `t`.`SimpleName`
-        //    , `t`.`Tips`, `t`.`Version`, `s0`.`ID`, `s0`.`Account`, `s0`.`Avatar`
-        //    , `s0`.`Birthday`, `s0`.`CreateBy`, `s0`.`CreateTime`, `s0`.`DeptId`, `s0`.`Email`
-        //    , `s0`.`ModifyBy`, `s0`.`ModifyTime`, `s0`.`Name`, `s0`.`Password`, `s0`.`Phone`
-        //    , `s0`.`RoleId`, `s0`.`Salt`, `s0`.`Sex`, `s0`.`Status`, `s0`.`Version`
-        //    FROM (
-        //    SELECT `s`.`ID`, `s`.`CreateBy`, `s`.`CreateTime`, `s`.`FullName`, `s`.`ModifyBy`
-        //    , `s`.`ModifyTime`, `s`.`Num`, `s`.`Pid`, `s`.`Pids`, `s`.`SimpleName`
-        //    , `s`.`Tips`, `s`.`Version`
-        //    FROM `SysDept` `s`
-        //    WHERE `s`.`ID` = 25
-        //    LIMIT 2
-        //    ) `t`
-        //    LEFT JOIN `SysUser` `s0` ON `t`.`ID` = `s0`.`DeptId`
-        //    ORDER BY `t`.`ID`, `s0`.`ID`
-        //    */
-        //    var dept3 = await _deptRepository.GetAll().Include(u => u).Where(u => u.ID >= 25).ToListAsync();
-        //    Assert.NotEmpty(dept3);
+        // //预加载 /* SELECT `t`.`ID`, `t`.`CreateBy`, `t`.`CreateTime`, `t`.`FullName`,
+        // `t`.`ModifyBy` , `t`.`ModifyTime`, `t`.`Num`, `t`.`Pid`, `t`.`Pids`, `t`.`SimpleName` ,
+        // `t`.`Tips`, `t`.`Version`, `s0`.`ID`, `s0`.`Account`, `s0`.`Avatar` , `s0`.`Birthday`,
+        // `s0`.`CreateBy`, `s0`.`CreateTime`, `s0`.`DeptId`, `s0`.`Email` , `s0`.`ModifyBy`,
+        // `s0`.`ModifyTime`, `s0`.`Name`, `s0`.`Password`, `s0`.`Phone` , `s0`.`RoleId`,
+        // `s0`.`Salt`, `s0`.`Sex`, `s0`.`Status`, `s0`.`Version` FROM ( SELECT `s`.`ID`,
+        // `s`.`CreateBy`, `s`.`CreateTime`, `s`.`FullName`, `s`.`ModifyBy` , `s`.`ModifyTime`,
+        // `s`.`Num`, `s`.`Pid`, `s`.`Pids`, `s`.`SimpleName` , `s`.`Tips`, `s`.`Version` FROM
+        // `SysDept` `s` WHERE `s`.`ID` = 25 LIMIT 2 ) `t` LEFT JOIN `SysUser` `s0` ON `t`.`ID` =
+        // `s0`.`DeptId` ORDER BY `t`.`ID`, `s0`.`ID`
+        // */ var dept3 = await _deptRepository.GetAll().Include(u => u).Where(u => u.ID >=
+        // 25).ToListAsync(); Assert.NotEmpty(dept3);
 
-        //    ////指定加载 left join
-        //    var user4 = await _userRepository.GetAll().Where(u => u.ID == 1).Select(u => new SysUser { ID = u.ID, Dept = u.Dept }).FirstOrDefaultAsync();
-        //    Assert.NotNull(user4.Dept);
+        // ////指定加载 left join var user4 = await _userRepository.GetAll().Where(u => u.ID ==
+        // 1).Select(u => new SysUser { ID = u.ID, Dept = u.Dept }).FirstOrDefaultAsync(); Assert.NotNull(user4.Dept);
 
-        //    //Reference 
-        //    //var user5 = await _userRepository.Table.Select(u => u).Where(x => x.ID == 1).FirstOrDefaultAsync();
-        //    //显示加载报错，因为我关闭了跟踪 
-        //    //Navigation property 'Dept' on entity of type 'SysUser' cannot be loaded because the entity is not being tracked. Navigation properties can only be loaded for tracked entities.
-        //    //await _userRepository.Entry<SysUser>(user5).Reference(p => p.Dept).LoadAsync();
-        //    //Assert.NotNull(user5.Dept);
+        // //Reference //var user5 = await _userRepository.Table.Select(u => u).Where(x => x.ID ==
+        // 1).FirstOrDefaultAsync(); //显示加载报错，因为我关闭了跟踪 //Navigation property 'Dept' on entity of
+        // type 'SysUser' cannot be loaded because the entity is not being tracked. Navigation
+        // properties can only be loaded for tracked entities. //await
+        // _userRepository.Entry<SysUser>(user5).Reference(p => p.Dept).LoadAsync(); //Assert.NotNull(user5.Dept);
 
-        //    //延时加载报错，因为我关闭了跟踪。如果打开跟踪，可以正常加载。
-        //    //An attempt was made to lazy-load navigation property 'Users' on detached entity of type 'SysDept'. Lazy-loading is not supported for detached entities or entities that are loaded with 'AsNoTracking()'. This exception can be suppressed or logged by passing event ID 'CoreEventId.DetachedLazyLoadingWarning' to the 'ConfigureWarnings' method in 'DbContext.OnConfiguring' or 'AddDbContext'.
-        //    //var dept1 = await _deptRepository.Table.Where(u => u.ID == 25).SingleAsync();
-        //    //Assert.NotEmpty(dept1.Users);
+        // //延时加载报错，因为我关闭了跟踪。如果打开跟踪，可以正常加载。 //An attempt was made to lazy-load navigation property
+        // 'Users' on detached entity of type 'SysDept'. Lazy-loading is not supported for detached
+        // entities or entities that are loaded with 'AsNoTracking()'. This exception can be
+        // suppressed or logged by passing event ID 'CoreEventId.DetachedLazyLoadingWarning' to the
+        // 'ConfigureWarnings' method in 'DbContext.OnConfiguring' or 'AddDbContext'. //var dept1 =
+        // await _deptRepository.Table.Where(u => u.ID == 25).SingleAsync(); //Assert.NotEmpty(dept1.Users);
 
         //}
 
@@ -610,43 +585,27 @@ namespace Adnc.UnitTest.EFCore
         //{
         //    _unitOfWork.BeginTransaction();
 
-        //    string email = "ads@foxmail.com";
+        // string email = "ads@foxmail.com";
 
-        //    try
-        //    {
-        //        var user2 = new SysUser
-        //        {
-        //            ID = 2,
-        //            Email = email
-        //        };
+        // try { var user2 = new SysUser { ID = 2, Email = email };
 
-        //        var user3 = new SysUser
-        //        {
-        //            ID = 3,
-        //            Email = email
-        //        };
+        // var user3 = new SysUser { ID = 3, Email = email };
 
-        //        //Ef savechange()
-        //        var result2 = await _userRepository.UpdateAsync(user2, u => u.Email);
-        //        var result3 = await _userRepository.UpdateAsync(user3, u => u.Email);
+        // //Ef savechange() var result2 = await _userRepository.UpdateAsync(user2, u => u.Email);
+        // var result3 = await _userRepository.UpdateAsync(user3, u => u.Email);
 
-        //        //Z.EntityFramework.Plus
-        //        var result4 = await _userRepository.UpdateRangeAsync(x => x.ID >= 4, x => new SysUser { Email = email });
+        // //Z.EntityFramework.Plus var result4 = await _userRepository.UpdateRangeAsync(x => x.ID
+        // >= 4, x => new SysUser { Email = email });
 
-        //        //Z.EntityFramework.Plus
-        //        var result5 = await _userRepository.DeleteRangeAsync(x => x.ID >= 7);
+        // //Z.EntityFramework.Plus var result5 = await _userRepository.DeleteRangeAsync(x => x.ID
+        // >= 7);
 
-        //        //execute raw sql
-        //        var result6 = await _userRepository.DeleteAsync(new[] { 5, 6 });
+        // //execute raw sql var result6 = await _userRepository.DeleteAsync(new[] { 5, 6 });
 
-        //        throw new Exception("TestUOW");
+        // throw new Exception("TestUOW");
 
-        //        //_unitOfWork.CommitTransaction();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _unitOfWork.RollbackTransaction();
-        //    }
+        // //_unitOfWork.CommitTransaction(); } catch (Exception ex) {
+        // _unitOfWork.RollbackTransaction(); }
 
         //    Assert.True(true);
         //}
@@ -656,53 +615,40 @@ namespace Adnc.UnitTest.EFCore
         //{
         //    //var user1 = await _userRepository.FetchAsync(e => new { e.ID, Dept = new { e.Dept.ID, e.Dept.FullName } }, x => x.ID == 2);
 
-        //    //dynamic userDynamic = new ExpandoObject();
-        //    var a = new
-        //    {
-        //        ID = 2,
-        //        Dept = new
-        //        {
-        //            ID = 2,
-        //            FullName = "test"
-        //        }
-        //    };
+        // //dynamic userDynamic = new ExpandoObject(); var a = new { ID = 2, Dept = new { ID = 2,
+        // FullName = "test" } };
 
-        //    dynamic userDynamic = a;
+        // dynamic userDynamic = a;
 
+        // var user1 = _mapper.Map<SysUser>(userDynamic);
 
-        //    var user1 = _mapper.Map<SysUser>(userDynamic);
-
-        //    Assert.NotNull(user1);
-        // }
+        // Assert.NotNull(user1); }
 
         //[Fact]
         //public async Task TestSelect()
         //{
         //    //_output.WriteLine("This is output from {0}", "EfCoreRepositoryTests");
 
-        //    //var menus1 = await _menuRepository.SelectAsync(100, q => true, q => q.Levels, true, q => q.Num, true);
-        //    //var menus2 = await _menuRepository.Table.OrderBy(q => q.Levels).ThenBy(q => q.Num).Take(100).ToListAsync();
-        //    //var menus3 = await _menuRepository.GetAsync(q => q.WithPredict(x => true).WithOrderBy(o => o.OrderBy(x => x.Levels).ThenBy(x => x.Num)));
-        //    //var menus4 = await _menuRepository.Table.Take(100).OrderBy(q => q.Levels).ThenBy(q => q.Num).ToListAsync();
-        //    //menus1与menus2,menus1与menus3 sql语句一样，menus3是先取100条再排
-        //    //Assert.NotEmpty(menus1);
+        // //var menus1 = await _menuRepository.SelectAsync(100, q => true, q => q.Levels, true, q
+        // => q.Num, true); //var menus2 = await _menuRepository.Table.OrderBy(q =>
+        // q.Levels).ThenBy(q => q.Num).Take(100).ToListAsync(); //var menus3 = await
+        // _menuRepository.GetAsync(q => q.WithPredict(x => true).WithOrderBy(o => o.OrderBy(x =>
+        // x.Levels).ThenBy(x => x.Num))); //var menus4 = await
+        // _menuRepository.Table.Take(100).OrderBy(q => q.Levels).ThenBy(q => q.Num).ToListAsync();
+        // //menus1与menus2,menus1与menus3 sql语句一样，menus3是先取100条再排 //Assert.NotEmpty(menus1);
 
+        // //var user2 = await _userRepository.Table.Select().ToListAsync(); //SELECT 所以列 FROM
+        // `SysUser` AS `s` // Assert.NotNull(user2);
 
-        //    //var user2 = await _userRepository.Table.Select().ToListAsync();
-        //    //SELECT 所以列 FROM `SysUser` AS `s`
-        //    // Assert.NotNull(user2);
+        // //var user2 = await _userRepository.Table.Select(e => new SysUser() { Email = e.Email, ID
+        // = e.ID }).ToListAsync(); //SELECT `s`.`Email`, `s`.`ID` FROM `SysUser` AS `s` // Assert.NotNull(user2);
 
-        //    //var user2 = await _userRepository.Table.Select(e => new SysUser() { Email = e.Email, ID = e.ID }).ToListAsync();
-        //    //SELECT `s`.`Email`, `s`.`ID` FROM `SysUser` AS `s`
-        //    // Assert.NotNull(user2);
-
-        //    var user3 = await _userRepository.GetAll().Select(e => new{ e.Name, e.Dept}).ToListAsync();
-        //    var user4 = await _userRepository.GetAll().Select(e => new SysUser()).FirstOrDefaultAsync();
-        //    //SELECT `s`.`ID`,`s`.`*` FROM `SysUser` AS `s`LEFT JOIN `SysDept` AS `s0` ON `s`.`DeptId` = `s0`.`ID` 左连接了dept表
-        //    //Assert.NotNull(user3);
-        //    //
-        //    //var user4 = await _deptRepository.Table.SelectMany(d => d.SysUser).Where(u=>u.Email==null)ToListAsync();
-        //    //Assert.NotNull(user4);
+        // var user3 = await _userRepository.GetAll().Select(e => new{ e.Name,
+        // e.Dept}).ToListAsync(); var user4 = await _userRepository.GetAll().Select(e => new
+        // SysUser()).FirstOrDefaultAsync(); //SELECT `s`.`ID`,`s`.`*` FROM `SysUser` AS `s`LEFT
+        // JOIN `SysDept` AS `s0` ON `s`.`DeptId` = `s0`.`ID` 左连接了dept表 //Assert.NotNull(user3); //
+        // //var user4 = await _deptRepository.Table.SelectMany(d =>
+        // d.SysUser).Where(u=>u.Email==null)ToListAsync(); //Assert.NotNull(user4);
 
         //    //var user5 = await _deptRepository.Table.SelectMany(
         //    //    d => d.SysUser
@@ -730,26 +676,16 @@ namespace Adnc.UnitTest.EFCore
         //    user1.Email = "1alphacn@foxmail.com";
         //    user1.Sex = 4;
 
-        //    //sql更新所有字段
-        //    var result1 = await _userRepository.UpdateAsync(user1);
-        //    Assert.Equal(1, result1);
+        // //sql更新所有字段 var result1 = await _userRepository.UpdateAsync(user1); Assert.Equal(1, result1);
 
-        //    //sql只更新指定字段
-        //    var result2 = await _userRepository.UpdateAsync(user1, u => u.Email, u => u.Sex);
-        //    Assert.Equal(1, result2);
+        // //sql只更新指定字段 var result2 = await _userRepository.UpdateAsync(user1, u => u.Email, u =>
+        // u.Sex); Assert.Equal(1, result2);
 
-        //    //Update sysuser set email = 'alphacn@foxmail.com' where id = 3;
-        //    //Assert.Equal(1, result);
+        // //Update sysuser set email = 'alphacn@foxmail.com' where id = 3; //Assert.Equal(1, result);
 
-        //    //var user2 = new SysUser
-        //    //{
-        //    //    ID = 2,
-        //    //    Email = "beta@foxmail.com"
-        //    //};
-        //    //var result2 = await _userRepository.UpdateAsync(user2, u => u.Email);
-        //    ////UPDATE `SysUser` SET `Email` = @p0, `ModifyBy` = @p1, `ModifyTime` = @p2 WHERE `ID` = @p3;
-        //    //Assert.Equal(1, result2);
-
+        // //var user2 = new SysUser //{ // ID = 2, // Email = "beta@foxmail.com" //}; //var result2
+        // = await _userRepository.UpdateAsync(user2, u => u.Email); ////UPDATE `SysUser` SET
+        // `Email` = @p0, `ModifyBy` = @p1, `ModifyTime` = @p2 WHERE `ID` = @p3; //Assert.Equal(1, result2);
 
         //    //var result3 = await _userRepository.UpdateAsync(q => q.ID > 2, q => q.Sex, 2, CancellationToken.None);
         //    //Assert.Equal(1, result3);
@@ -758,11 +694,11 @@ namespace Adnc.UnitTest.EFCore
         //[Fact]
         //public async Task TestDelete()
         //{
-
         //    var result1 = await _userRepository.DeleteAsync<long>(new long[] { 5 });
         //    Assert.Equal(1, result1);
 
         //}
+
         #endregion old testing codes
     }
 }
