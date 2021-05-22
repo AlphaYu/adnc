@@ -9,3 +9,4 @@ node_modules
 /src/ClientApp/dist
 *.log
 logs
+/src/ServerApi/.sonarqube
