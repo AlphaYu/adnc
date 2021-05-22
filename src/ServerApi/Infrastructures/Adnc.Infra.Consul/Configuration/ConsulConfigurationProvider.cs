@@ -36,7 +36,7 @@ namespace Adnc.Infra.Consul.Configuration
             }
 
             _httpClient = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip }, true);
-            _configurationListeningTask = new Task(ListenToConfigurationChanges);
+            _configurationListeningTask = new Task<Task>(ListenToConfigurationChanges);
         }
 
         public override void Load() => LoadAsync().ConfigureAwait(false).GetAwaiter().GetResult();
@@ -49,7 +49,7 @@ namespace Adnc.Infra.Consul.Configuration
                 _configurationListeningTask.Start();
         }
 
-        private async void ListenToConfigurationChanges()
+        private async Task ListenToConfigurationChanges()
         {
             while (true)
             {

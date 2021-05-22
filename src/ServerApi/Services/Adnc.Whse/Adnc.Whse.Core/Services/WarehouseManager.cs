@@ -80,6 +80,10 @@ namespace Adnc.Whse.Core.Services
             bool isSuccess = false;
             string remark = string.Empty;
 
+            Checker.NotEmptyCollection(blockQtyProductsInfo, nameof(blockQtyProductsInfo));
+            Checker.NotEmptyCollection(warehouses, nameof(warehouses));
+            Checker.NotEmptyCollection(products, nameof(products));
+
             if (orderId <= 0)
                 remark += $"{orderId}订单号错误";
             else if (blockQtyProductsInfo?.Count == 0)
