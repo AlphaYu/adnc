@@ -33,7 +33,7 @@ namespace Adnc.Infra.Common.Extensions
         /// <param name="objs"></param>
         /// <param name="action">回调方法</param>
         /// <typeparam name="T"></typeparam>
-        public static async void ForEachAsync<T>(this IEnumerable<T> objs, Action<T> action)
+        public static async Task ForEachAsync<T>(this IEnumerable<T> objs, Action<T> action)
         {
             await Task.Run(() => Parallel.ForEach(objs, action));
         }

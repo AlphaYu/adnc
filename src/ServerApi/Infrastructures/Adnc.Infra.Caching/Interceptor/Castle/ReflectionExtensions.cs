@@ -34,7 +34,7 @@ namespace Adnc.Infra.Caching.Interceptor.Castle
             var returnValue = invocation.ReturnValue;
             if (returnValue == null)
             {
-                return null;
+                return Task.FromResult<object>(null);
             }
 
             var returnTypeInfo = returnValue.GetType().GetTypeInfo();

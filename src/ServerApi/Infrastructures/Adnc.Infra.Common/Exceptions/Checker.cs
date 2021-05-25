@@ -1,5 +1,6 @@
 ﻿using Adnc.Infra.Common.Extensions;
 using JetBrains.Annotations;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Adnc.Infra.Common.Exceptions
@@ -27,6 +28,23 @@ namespace Adnc.Infra.Common.Exceptions
         {
             if (value <= 0)
                 throw new AdncArgumentException("不能小于0", parameterName);
+            return value;
+        }
+
+        public static T NotEmptyCollection<T>(
+    T value,
+    [InvokerParameterName][NotNull] string parameterName)
+        {
+            if (value == null)
+            {
+                throw new AdncArgumentNullException(parameterName);
+            }
+
+            if (value is ICollection collection && collection.Count < 1)
+            {
+                throw new AdncArgumentNullException(parameterName);
+            }
+
             return value;
         }
 
