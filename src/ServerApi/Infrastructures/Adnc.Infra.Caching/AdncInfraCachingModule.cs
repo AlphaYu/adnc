@@ -36,6 +36,7 @@ namespace Adnc.Infra.Caching
                        .As<ICachingSerializer>()
                        .SingleInstance();
             builder.RegisterType<CachingInterceptor>().InstancePerLifetimeScope();
+            builder.RegisterType<CachingAsyncInterceptor>().InstancePerLifetimeScope();
         }
     }
 }
