@@ -1,11 +1,10 @@
-﻿using Adnc.Application.Shared.RpcServices;
-using Adnc.Ord.Application.Contracts.RpcServices.Rtos;
+﻿using Adnc.Application.RpcService.Rtos;
 using Refit;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Adnc.Ord.Application.Contracts.RpcServices
+namespace Adnc.Application.RpcService.Services
 {
     public interface IWhseRpcService : IRpcService
     {

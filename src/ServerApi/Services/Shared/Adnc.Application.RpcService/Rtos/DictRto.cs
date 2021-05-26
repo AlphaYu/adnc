@@ -1,12 +1,12 @@
-﻿using JetBrains.Annotations;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
-namespace Adnc.Application.Shared.RpcServices.Rtos
+namespace Adnc.Application.RpcService.Rtos
 {
     public class DictRto
     {
-        public long Id { get; set; }
+        public long ID { get; set; }
 
         public string Name { get; set; }
 

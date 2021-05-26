@@ -6,7 +6,7 @@ namespace Adnc.WebApi.Shared
     public abstract class AdncControllerBase : ControllerBase
     {
         /// <summary>
-        /// ProblemDetails => Problem
+        /// Adnc.Application.Shared.Services.ProblemDetails.ProblemDetails => Problem
         /// </summary>
         /// <param name="problemDetails"><see cref="Adnc.Application.Shared.Services.ProblemDetails"/></param>
         /// <returns><see cref="ObjectResult"/></returns>
@@ -19,6 +19,23 @@ namespace Adnc.WebApi.Shared
                 , problemDetails.Status
                 , problemDetails.Title
                 , problemDetails.Type);
+        }
+
+        /// <summary>
+        ///Refit.ProblemDetails => Problem
+        /// </summary>
+        /// <param name="problemDetails"></param>
+        /// <returns></returns>
+        [NonAction]
+        protected virtual ObjectResult Problem(Refit.ApiException exception)
+        {
+            var problemDetails = ((Refit.ValidationApiException)exception).Content;
+
+            return Problem(problemDetails.Detail
+                    , problemDetails.Instance
+                    , problemDetails.Status
+                    , problemDetails.Title
+                    , problemDetails.Type);
         }
 
         /// <summary>

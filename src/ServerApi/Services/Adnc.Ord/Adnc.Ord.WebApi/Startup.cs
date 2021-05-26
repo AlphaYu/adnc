@@ -1,5 +1,5 @@
+using Adnc.Application.RpcService.Services;
 using Adnc.Infra.Consul;
-using Adnc.Ord.Application.Contracts.RpcServices;
 using Adnc.Ord.Application.EventSubscribers;
 using Adnc.WebApi.Shared;
 using Autofac;
@@ -31,14 +31,20 @@ namespace Adnc.Ord.WebApi
         {
             services.AddAdncServices<PermissionHandlerRemote>(_configuration, _environment, _serviceInfo, (registion) =>
             {
+                var policies = registion.GenerateDefaultRefitPolicies();
+                var authServerAddress = _environment.IsDevelopment() ? "http://localhost:5010" : "adnc.usr.webapi";
+                registion.AddRpcService<IAuthRpcService>(authServerAddress, policies);
+
+                var maintServiceAddress = _environment.IsDevelopment() ? "http://localhost:5020" : "adnc.maint.webapi";
+                registion.AddRpcService<IMaintRpcService>(maintServiceAddress, policies);
+
+                var whseServiceAddress = _environment.IsDevelopment() ? "http://localhost:8065" : "adnc.whse.webapi";
+                registion.AddRpcService<IWhseRpcService>(whseServiceAddress, policies);
+
                 registion.AddEventBusSubscribers("Cap", "adnc-cap", (srv) =>
                 {
                     srv.AddScoped<WarehouseQtyBlockedEventSubscriber>();
                 });
-
-                var whseServiceAddress = (_environment.IsProduction() || _environment.IsStaging()) ? "adnc.whse.webapi" : "http://localhost:8065";
-                var policies = registion.GenerateDefaultRefitPolicies();
-                registion.AddRpcService<IWhseRpcService>(whseServiceAddress, policies);
             });
         }
 

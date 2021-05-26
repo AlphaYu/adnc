@@ -1,4 +1,4 @@
-﻿using Adnc.Application.Shared.RpcServices;
+﻿using Adnc.Application.RpcService;
 using Adnc.Infra.Common.Helper;
 using Adnc.Infra.Consul;
 using Adnc.Infra.Consul.Consumer;

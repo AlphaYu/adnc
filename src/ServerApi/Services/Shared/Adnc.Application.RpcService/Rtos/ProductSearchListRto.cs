@@ -1,6 +1,6 @@
 ﻿using Refit;
 
-namespace Adnc.Ord.Application.Contracts.RpcServices.Rtos
+namespace Adnc.Application.RpcService.Rtos
 {
     public class ProductSearchListRto
     {

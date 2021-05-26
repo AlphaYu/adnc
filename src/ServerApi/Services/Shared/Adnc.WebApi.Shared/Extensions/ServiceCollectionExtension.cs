@@ -1,5 +1,4 @@
-﻿using Adnc.Application.Shared.RpcServices;
-using Adnc.WebApi.Shared;
+﻿using Adnc.WebApi.Shared;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -41,13 +40,6 @@ namespace Microsoft.Extensions.DependencyInjection
             _srvRegistration.AddEfCoreContext();
             _srvRegistration.AddMongoContext();
             _srvRegistration.AddSwaggerGen();
-
-            var policies = _srvRegistration.GenerateDefaultRefitPolicies();
-            var authServerAddress = (environment.IsProduction() || environment.IsStaging()) ? "adnc.usr.webapi" : "http://localhost:5010";
-            _srvRegistration.AddRpcService<IAuthRpcService>(authServerAddress, policies);
-
-            var maintServiceAddress = (environment.IsProduction() || environment.IsStaging()) ? "adnc.maint.webapi" : "http://localhost:5020";
-            _srvRegistration.AddRpcService<IMaintRpcService>(maintServiceAddress, policies);
 
             completedExecute?.Invoke(_srvRegistration);
 

@@ -14,6 +14,12 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="RpcServices\**" />
+	  <EmbeddedResource Remove="RpcServices\**" />
+	  <None Remove="RpcServices\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="Castle.Core.AsyncInterceptor" Version="1.7.0" />
 		<PackageReference Include="Refit.HttpClientFactory" Version="5.2.1" />
 		<PackageReference Include="JetBrains.Annotations" Version="2020.1.0" />
@@ -25,10 +31,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Common\Adnc.Infra.Common.csproj" />
-	  <ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Caching\Adnc.Infra.Caching.csproj" />
-	  <ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Mapper\Adnc.Infra.Mapper.csproj" />
-	  <ProjectReference Include="..\Adnc.Core.Shared\Adnc.Core.Shared.csproj" />
+		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Common\Adnc.Infra.Common.csproj" />
+		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Caching\Adnc.Infra.Caching.csproj" />
+		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Mapper\Adnc.Infra.Mapper.csproj" />
+		<ProjectReference Include="..\Adnc.Application.RpcService\Adnc.Application.RpcService.csproj" />
+		<ProjectReference Include="..\Adnc.Core.Shared\Adnc.Core.Shared.csproj" />
 	</ItemGroup>
-
 </Project>

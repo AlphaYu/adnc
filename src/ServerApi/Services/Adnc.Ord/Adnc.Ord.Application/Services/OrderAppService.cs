@@ -1,13 +1,13 @@
-﻿using Adnc.Application.Shared.Dtos;
-using Adnc.Application.Shared.RpcServices;
+﻿using Adnc.Application.RpcService;
+using Adnc.Application.RpcService.Rtos;
+using Adnc.Application.RpcService.Services;
+using Adnc.Application.Shared.Dtos;
 using Adnc.Application.Shared.Services;
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Infra.Common.Exceptions;
 using Adnc.Infra.Common.Extensions;
 using Adnc.Infra.Common.Helper;
 using Adnc.Ord.Application.Contracts.Dtos;
-using Adnc.Ord.Application.Contracts.RpcServices;
-using Adnc.Ord.Application.Contracts.RpcServices.Rtos;
 using Adnc.Ord.Application.Contracts.Services;
 using Adnc.Ord.Core.Entities;
 using Adnc.Ord.Core.Services;
@@ -206,7 +206,7 @@ namespace Adnc.Ord.Application.Services
             if (pagedDto.Data.Count > 0)
             {
                 //调用maint微服务获取字典,组合订单状态信息
-                var rpcReuslt = await _maintRpc.GetDictAsync(DictConsts.OrderStatusId);
+                var rpcReuslt = await _maintRpc.GetDictAsync(Consts.OrderStatusId);
                 if (rpcReuslt.IsSuccessStatusCode && rpcReuslt.Content.Children.Count > 0)
                 {
                     var dicts = rpcReuslt.Content.Children;

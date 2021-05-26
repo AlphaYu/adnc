@@ -1,4 +1,4 @@
-﻿using Adnc.Application.Shared.RpcServices;
+﻿using Adnc.Application.RpcService.Services;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;

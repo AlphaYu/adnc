@@ -1,4 +1,4 @@
-﻿namespace Adnc.Whse.Application.Contracts.RpcServices.Rtos
+﻿namespace Adnc.Application.RpcService.Rtos
 {
     public class OrderRto
     {
