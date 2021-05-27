@@ -3,11 +3,11 @@
     /// <summary>
     /// OutputDto基类
     /// </summary>
-    public interface IOutputDto<TKey> : IDto
+    public interface IOutputDto : IDto
     {
         /// <summary>
         /// 主键ID
         /// </summary>
-        public TKey Id { get; set; }
+        public long Id { get; set; }
     }
 }

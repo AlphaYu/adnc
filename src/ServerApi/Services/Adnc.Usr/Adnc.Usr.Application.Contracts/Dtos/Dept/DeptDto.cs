@@ -7,7 +7,7 @@ namespace Adnc.Usr.Application.Contracts.Dtos
     /// 部门
     /// </summary>
     [Serializable]
-    public class DeptDto : OutputDto<long>
+    public class DeptDto : OutputDto
     {
         /// <summary>
         /// 部门全称

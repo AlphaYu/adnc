@@ -5,7 +5,7 @@ namespace Adnc.Maint.Application.Contracts.Dtos
     /// <summary>
     /// 系统通知
     /// </summary>
-    public class NoticeDto : OutputBaseAuditDto<long>
+    public class NoticeDto : OutputBaseAuditDto
     {
         /// <summary>
         /// 内容

@@ -12,25 +12,19 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Compile Remove="Events\**" />
-	  <Compile Remove="IRepositories\**" />
-	  <EmbeddedResource Remove="Events\**" />
-	  <EmbeddedResource Remove="IRepositories\**" />
-	  <None Remove="Events\**" />
-	  <None Remove="IRepositories\**" />
+		<Compile Remove="Events\**" />
+		<Compile Remove="IRepositories\**" />
+		<EmbeddedResource Remove="Events\**" />
+		<EmbeddedResource Remove="IRepositories\**" />
+		<None Remove="Events\**" />
+		<None Remove="IRepositories\**" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Remove="Entities\SysTask.cs" />
-	  <Compile Remove="Entities\SysTaskLog.cs" />
+		<Compile Remove="Entities\SysTask.cs" />
+		<Compile Remove="Entities\SysTaskLog.cs" />
 	</ItemGroup>
-
 	<ItemGroup>
-		<PackageReference Include="Autofac" Version="6.0.0" />
+		<ProjectReference Include="..\..\Shared\Adnc.Core.Shared\Adnc.Core.Shared.csproj" />
 	</ItemGroup>
-
-	<ItemGroup>
-	  <ProjectReference Include="..\..\Shared\Adnc.Core.Shared\Adnc.Core.Shared.csproj" />
-	</ItemGroup>
-
 </Project>

@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Adnc.Application.RpcService.Rtos
+﻿namespace Adnc.Application.RpcService.Rtos
 {
     public class LoginRto
     {

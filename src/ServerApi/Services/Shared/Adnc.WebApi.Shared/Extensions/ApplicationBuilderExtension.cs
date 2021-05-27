@@ -75,6 +75,8 @@ namespace Microsoft.AspNetCore.Builder
 
             app.UseRouting();
 
+            completedExecute?.Invoke(app);
+
             app.UseAuthentication();
 
             var iSSOAuthentication = configuration.IsSSOAuthentication();
@@ -86,8 +88,6 @@ namespace Microsoft.AspNetCore.Builder
             {
                 endpoints.MapControllers().RequireAuthorization();
             });
-
-            completedExecute?.Invoke(app);
 
             return app;
         }

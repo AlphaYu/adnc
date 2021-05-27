@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
@@ -29,8 +30,6 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Polly;
 using Polly.Timeout;
-using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
-using Pomelo.EntityFrameworkCore.MySql.Storage;
 using Refit;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
@@ -151,15 +150,15 @@ namespace Adnc.WebApi.Shared
         public virtual void AddEfCoreContext()
         {
             var mysqlConfig = _configuration.GetMysqlSection().Get<MysqlConfig>();
+            var serverVersion = new MariaDbServerVersion(new Version(10, 5, 4));
             _services.AddDbContext<AdncDbContext>(options =>
             {
-                options.UseMySql(mysqlConfig.ConnectionString, mySqlOptions =>
+                options.UseMySql(mysqlConfig.ConnectionString, serverVersion, optionsBuilder =>
                 {
-                    mySqlOptions.ServerVersion(new ServerVersion(new Version(10, 5, 4), ServerType.MariaDb));
-                    mySqlOptions.MinBatchSize(2);
-                    mySqlOptions.CommandTimeout(10);
-                    mySqlOptions.MigrationsAssembly(_serviceInfo.AssemblyName.Replace("WebApi", "Migrations"));
-                    mySqlOptions.CharSet(CharSet.Utf8Mb4);
+                    optionsBuilder.MinBatchSize(2);
+                    optionsBuilder.CommandTimeout(10);
+                    optionsBuilder.MigrationsAssembly(_serviceInfo.AssemblyName.Replace("WebApi", "Migrations"));
+                    optionsBuilder.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
                 });
 
                 if (_environment.IsDevelopment())
@@ -403,7 +402,7 @@ namespace Adnc.WebApi.Shared
                 });
                 x.Version = _serviceInfo.Version;
                 //默认值：cap.queue.{程序集名称},在 RabbitMQ 中映射到 Queue Names。
-                x.DefaultGroup = groupName;
+                x.DefaultGroupName = groupName;
                 //默认值：60 秒,重试 & 间隔
                 //在默认情况下，重试将在发送和消费消息失败的 4分钟后 开始，这是为了避免设置消息状态延迟导致可能出现的问题。
                 //发送和消费消息的过程中失败会立即重试 3 次，在 3 次以后将进入重试轮询，此时 FailedRetryInterval 配置才会生效。

@@ -7,7 +7,7 @@ namespace Adnc.Maint.Application.Contracts.Dtos
     /// 系统配置
     /// </summary>
     [Serializable]
-    public class CfgDto : OutputFullAuditInfoDto<long>
+    public class CfgDto : OutputFullAuditInfoDto
     {
         /// <summary>
         /// 备注

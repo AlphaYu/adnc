@@ -122,7 +122,7 @@ namespace Adnc.Cus.Application.Services
                                 .Where(whereCondition)
                                 .Select(x => new CustomerDto
                                 {
-                                    Id = x.Id.ToString()
+                                    Id = x.Id
                                 ,
                                     Account = x.Account
                                 ,
