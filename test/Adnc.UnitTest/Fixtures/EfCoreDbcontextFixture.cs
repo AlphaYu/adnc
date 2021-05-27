@@ -43,14 +43,13 @@ namespace Adnc.UnitTest.Fixtures
                         .InstancePerLifetimeScope();
 
             //注册DbContext Options
+            var serverVersion = new MariaDbServerVersion(new Version(10, 5, 4));
             containerBuilder.Register<DbContextOptions>(c =>
             {
                 return new DbContextOptionsBuilder<AdncDbContext>()
                 .UseLoggerFactory(LoggerFactory.Create(builder => builder.AddDebug()))
-                .UseMySql(dbstring, mySqlOptions =>
+                .UseMySql(dbstring, serverVersion, mySqlOptions =>
                 {
-                    mySqlOptions.ServerVersion(new ServerVersion(new Version(10, 5, 4), ServerType.MariaDb));
-                    mySqlOptions.CharSet(CharSet.Utf8Mb4);
                     mySqlOptions.MinBatchSize(4);
                 })
                 .Options;
@@ -68,7 +67,7 @@ namespace Adnc.UnitTest.Fixtures
             //注册Adnc.Infra.EfCore
             AdncInfrEfCoreModule.Register(containerBuilder);
 
-            var services = Container = containerBuilder.Build();
+            Container = containerBuilder.Build();
         }
 
         public void Dispose()

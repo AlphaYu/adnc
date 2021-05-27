@@ -2,6 +2,7 @@
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Cus.Core.Entities;
 using Adnc.Infra.Common.Helper;
+using Adnc.Infra.Common.Helper.IdGeneraterInternal;
 using Adnc.Infra.EfCore;
 using Adnc.UnitTest.Fixtures;
 using Autofac;
@@ -37,6 +38,9 @@ namespace Adnc.UnitTest.EFCore
             _cusFinanceRsp = _fixture.Container.Resolve<IEfRepository<CustomerFinance>>();
             _custLogsRsp = _fixture.Container.Resolve<IEfRepository<CustomerTransactionLog>>();
             _dbContext = _fixture.Container.Resolve<AdncDbContext>();
+
+            if (YitterSnowFlake.CurrentWorkerId < 0)
+                YitterSnowFlake.CurrentWorkerId = 63;
 
             Initialize().Wait();
         }
@@ -271,7 +275,7 @@ namespace Adnc.UnitTest.EFCore
 
             await _customerRsp.DeleteAsync(customer.Id);
             var result = await _customerRsp.QueryAsync<Customer>("SELECT * FROM Customer WHERE ID=@Id", new { Id = customer.Id });
-            Assert.Empty(result);
+            Assert.Null(result);
 
             //await _customerRsp.DeleteAsync(156040229583720448);
             //result = await _customerRsp.QueryAsync<Customer>("SELECT * FROM Customer WHERE ID=@Id", new { Id = 156040229583720448 });
@@ -289,7 +293,7 @@ namespace Adnc.UnitTest.EFCore
 
             await _customerRsp.DeleteRangeAsync(c => c.Id == cus1.Id || c.Id == cus2.Id);
             var result2 = await _customerRsp.QueryAsync<Customer>("SELECT * FROM Customer WHERE ID in @ids", new { ids = new[] { cus1.Id, cus2.Id } });
-            Assert.Empty(result2);
+            Assert.Null(result2);
         }
 
         /// <summary>
@@ -441,9 +445,13 @@ namespace Adnc.UnitTest.EFCore
 
                 throw new Exception();
 
+#pragma warning disable CS0162 // 检测到无法访问的代码
                 _unitOfWork.Commit();
+#pragma warning restore CS0162 // 检测到无法访问的代码
             }
+#pragma warning disable CS0168 // 声明了变量“ex”，但从未使用过
             catch (Exception ex)
+#pragma warning restore CS0168 // 声明了变量“ex”，但从未使用过
             {
                 _unitOfWork.Rollback();
             }
