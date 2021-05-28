@@ -378,8 +378,11 @@ namespace Adnc.WebApi.Shared
         /// <param name="tableNamePrefix">cap表面前缀</param>
         /// <param name="groupName">群组名子</param>
         /// <param name="func">回调函数</param>
-        public virtual void AddEventBusSubscribers(string tableNamePrefix, string groupName, Action<IServiceCollection> func = null)
+        public virtual void AddEventBusSubscribers(Action<IServiceCollection> func = null)
         {
+            var tableNamePrefix = "Cap";
+            var groupName = $"adnc-cap-{_environment.EnvironmentName.ToLower()}";
+
             func?.Invoke(_services);
 
             var rabbitMqConfig = _configuration.GetRabbitMqSection().Get<RabbitMqConfig>();

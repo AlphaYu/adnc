@@ -41,7 +41,7 @@ namespace Adnc.Ord.WebApi
                 var whseServiceAddress = _environment.IsDevelopment() ? "http://localhost:8065" : "adnc.whse.webapi";
                 registion.AddRpcService<IWhseRpcService>(whseServiceAddress, policies);
 
-                registion.AddEventBusSubscribers("Cap", "adnc-cap", (srv) =>
+                registion.AddEventBusSubscribers(srv =>
                 {
                     srv.AddScoped<WarehouseQtyBlockedEventSubscriber>();
                 });

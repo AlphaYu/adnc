@@ -2,7 +2,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
+using SkyApm.Diagnostics.CAP;
+using SkyApm.Utilities.DependencyInjection;
 using System;
 
 namespace Microsoft.Extensions.DependencyInjection
@@ -29,6 +30,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddSingleton(serviceInfo);
             services.AddHttpContextAccessor();
             services.AddMemoryCache();
+            services.AddSkyApmExtensions().AddCap();
 
             var _srvRegistration = new SharedServicesRegistration(configuration, services, environment, serviceInfo);
             _srvRegistration.Configure();

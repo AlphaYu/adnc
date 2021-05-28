@@ -108,8 +108,8 @@ namespace Adnc.Cus.Application.Services
         public async Task<AppSrvResult<PageModelDto<CustomerDto>>> GetPagedAsync(CustomerSearchPagedDto search)
         {
             Expression<Func<Customer, bool>> whereCondition = x => true;
-            if (search.Id.ToLong() > 0)
-                whereCondition = whereCondition.And(x => x.Id == search.Id.ToLong());
+            if (search.Id > 0)
+                whereCondition = whereCondition.And(x => x.Id == search.Id);
             if (search.Account.IsNotNullOrEmpty())
                 whereCondition = whereCondition.And(x => x.Account == search.Account);
 
