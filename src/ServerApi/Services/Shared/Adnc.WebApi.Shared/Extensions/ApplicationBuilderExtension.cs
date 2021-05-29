@@ -91,34 +91,5 @@ namespace Microsoft.AspNetCore.Builder
 
             return app;
         }
-
-        /// <summary>
-        /// 注册Cap节点到consul
-        /// </summary>
-        /// <param name="app"></param>
-        /// <param name="consulConfig"></param>
-        /// <param name="serviceInfo"></param>
-        /// <returns></returns>
-        public static IApplicationBuilder RegisterCapToConsul(this IApplicationBuilder app)
-        {
-            var configuration = app.ApplicationServices.GetService<IConfiguration>();
-            var consulConfig = configuration.GetConsulConfig();
-            var serviceInfo = app.ApplicationServices.GetService<ServiceInfo>();
-
-            var consulAdderss = new Uri(consulConfig.ConsulUrl);
-            var discoverOptions = app.ApplicationServices.GetService<DiscoveryOptions>();
-            var currenServerAddress = app.GetServiceAddress(consulConfig);
-            var logger = app.ApplicationServices.GetRequiredService<ILogger<SharedServicesRegistration>>();
-            logger.LogInformation("CapServiceAddress:{0}:", $"{ currenServerAddress.Host}:{ currenServerAddress.Port }");
-            discoverOptions.DiscoveryServerHostName = consulAdderss.Host;
-            discoverOptions.DiscoveryServerPort = consulAdderss.Port;
-            discoverOptions.CurrentNodeHostName = currenServerAddress.Host;
-            discoverOptions.CurrentNodePort = currenServerAddress.Port;
-            discoverOptions.NodeId = currenServerAddress.Host.Replace(".", string.Empty) + currenServerAddress.Port;
-            discoverOptions.NodeName = serviceInfo.FullName.Replace("webapi", "cap");
-            discoverOptions.MatchPath = $"/{serviceInfo.ShortName}/cap";
-
-            return app;
-        }
     }
 }

@@ -57,7 +57,6 @@ namespace Adnc.Cus.WebApi
             if (_environment.IsProduction() || _environment.IsStaging())
             {
                 app.RegisterToConsul();
-                app.RegisterCapToConsul();
             }
         }
     }

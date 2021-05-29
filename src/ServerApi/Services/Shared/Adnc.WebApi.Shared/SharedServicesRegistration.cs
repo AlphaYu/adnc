@@ -39,6 +39,8 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.NetworkInformation;
+using System.Net.Sockets;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
@@ -435,7 +437,30 @@ namespace Adnc.WebApi.Shared
                 //必须是生产环境才注册cap服务到consul
                 if ((_environment.IsProduction() || _environment.IsStaging()))
                 {
-                    x.UseDiscovery();
+                    x.UseDiscovery(discoverOptions =>
+                    {
+                        var consulConfig = _configuration.GetConsulConfig();
+                        var consulAdderss = new Uri(consulConfig.ConsulUrl);
+
+                        var hostIps = NetworkInterface
+                                            .GetAllNetworkInterfaces()
+                                            .Where(network => network.OperationalStatus == OperationalStatus.Up)
+                                            .Select(network => network.GetIPProperties())
+                                            .OrderByDescending(properties => properties.GatewayAddresses.Count)
+                                            .SelectMany(properties => properties.UnicastAddresses)
+                                            .Where(address => !IPAddress.IsLoopback(address.Address) && address.Address.AddressFamily == AddressFamily.InterNetwork)
+                                            .ToArray();
+
+                        var currenServerAddress = hostIps.First().Address.MapToIPv4().ToString();
+
+                        discoverOptions.DiscoveryServerHostName = consulAdderss.Host;
+                        discoverOptions.DiscoveryServerPort = consulAdderss.Port;
+                        discoverOptions.CurrentNodeHostName = currenServerAddress;
+                        discoverOptions.CurrentNodePort = 80;
+                        discoverOptions.NodeId = DateTime.Now.Ticks.ToString();
+                        discoverOptions.NodeName = _serviceInfo.FullName.Replace("webapi", "cap");
+                        discoverOptions.MatchPath = $"/{_serviceInfo.ShortName}/cap";
+                    });
                 }
             });
         }
