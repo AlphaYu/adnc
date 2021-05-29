@@ -1,26 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
-
+	<Import Project="..\..\build\common.props" />
 	<PropertyGroup>
 		<TargetFramework>net5.0</TargetFramework>
 		<RootNamespace>Adnc.Infra.Gateway</RootNamespace>
 		<AssemblyName>Adnc.Infra.Gateway</AssemblyName>
-		<SatelliteResourceLanguages>zh-Hans</SatelliteResourceLanguages>
-		<SatelliteResourceLanguages>zh-Hant</SatelliteResourceLanguages>
-		<SatelliteResourceLanguages>en</SatelliteResourceLanguages>
-		<Version>0.8.1</Version>
-		<Authors>Alpha.Yu</Authors>
-		<Product>Adnc</Product>
-		<RepositoryUrl>https://github.com/AlphaYu</RepositoryUrl>
-		<RepositoryType>git</RepositoryType>
-		<PackageProjectUrl>https://www.aspdotnetcore.net</PackageProjectUrl>
-		<Copyright>Alpha</Copyright>
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Compile Remove="logs\**" />
-	  <Content Remove="logs\**" />
-	  <EmbeddedResource Remove="logs\**" />
-	  <None Remove="logs\**" />
+		<Compile Remove="logs\**" />
+		<Content Remove="logs\**" />
+		<EmbeddedResource Remove="logs\**" />
+		<None Remove="logs\**" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -53,8 +43,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\Adnc.Infra.Common\Adnc.Infra.Common.csproj" />
-	  <ProjectReference Include="..\Adnc.Infra.Consul\Adnc.Infra.Consul.csproj" />
+		<ProjectReference Include="..\Adnc.Infra.Common\Adnc.Infra.Common.csproj" />
+		<ProjectReference Include="..\Adnc.Infra.Consul\Adnc.Infra.Consul.csproj" />
 	</ItemGroup>
 
 	<ProjectExtensions>
@@ -62,5 +52,4 @@
 			<UserProperties properties_4launchsettings_1json__JsonSchema="" />
 		</VisualStudio>
 	</ProjectExtensions>
-
 </Project>

@@ -1,4 +1,5 @@
-﻿using Adnc.WebApi.Shared;
+﻿using Adnc.Application.Shared.Caching;
+using Adnc.WebApi.Shared;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -30,7 +31,9 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddSingleton(serviceInfo);
             services.AddHttpContextAccessor();
             services.AddMemoryCache();
+            //skyapm
             services.AddSkyApmExtensions().AddCap();
+            services.AddSkyApmExtensions().AddCaching();
 
             var _srvRegistration = new SharedServicesRegistration(configuration, services, environment, serviceInfo);
             _srvRegistration.Configure();

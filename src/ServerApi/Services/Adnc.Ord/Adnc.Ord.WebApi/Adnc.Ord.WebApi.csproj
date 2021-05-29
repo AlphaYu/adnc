@@ -1,25 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
-
+	<Import Project="..\..\..\build\common.props" />
 	<PropertyGroup>
 		<TargetFramework>net5.0</TargetFramework>
-		<EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<NoWarn>$(NoWarn);1591</NoWarn>
-		<SatelliteResourceLanguages>zh-Hans</SatelliteResourceLanguages>
-		<SatelliteResourceLanguages>zh-Hant</SatelliteResourceLanguages>
-		<SatelliteResourceLanguages>en</SatelliteResourceLanguages>
 		<RootNamespace>Adnc.Ord.WebApi</RootNamespace>
 		<AssemblyName>Adnc.Ord.WebApi</AssemblyName>
-		<Version>0.8.1</Version>
 		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
 		<DockerfileContext>..\..\..</DockerfileContext>
-		<Authors>Alpha.Yu</Authors>
-		<Company>Alpha</Company>
-		<Product>Adnc</Product>
 		<Description>订单中心服务</Description>
-		<PackageProjectUrl>https://www.aspdotnetcore.net</PackageProjectUrl>
-		<Copyright>Alpha</Copyright>
-		<RepositoryUrl>https://github.com/AlphaYu/Adnc</RepositoryUrl>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -27,22 +16,12 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Compile Remove="logs\**" />
-	  <Content Remove="logs\**" />
-	  <EmbeddedResource Remove="logs\**" />
-	  <None Remove="logs\**" />
+		<Compile Remove="logs\**" />
+		<Content Remove="logs\**" />
+		<EmbeddedResource Remove="logs\**" />
+		<None Remove="logs\**" />
 	</ItemGroup>
-	<ItemGroup>
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.5">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.5">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
-		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.8" />
-	</ItemGroup>
+
 	<ItemGroup>
 		<Content Update="nlog.config">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>

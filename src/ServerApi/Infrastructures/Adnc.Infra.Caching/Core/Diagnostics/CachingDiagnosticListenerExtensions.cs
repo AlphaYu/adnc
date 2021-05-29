@@ -6,45 +6,45 @@ namespace Adnc.Infra.Caching.Core.Diagnostics
     /// <summary>
     /// Extension methods on the DiagnosticListener class to log EasyCaching
     /// </summary>
-    internal static class EasyCachingDiagnosticListenerExtensions
+    public static class CachingDiagnosticListenerExtensions
     {
-        public const string DiagnosticListenerName = "EasyCachingDiagnosticListener";
+        public const string DiagnosticListenerName = "CachingDiagnosticListener";
 
-        private const string EasyCachingPrefix = "EasyCaching.";
+        private const string CachingPrefix = "Adnc.";
 
-        public const string EasyCachingBeforeSetCache = EasyCachingPrefix + nameof(WriteSetCacheBefore);
-        public const string EasyCachingAfterSetCache = EasyCachingPrefix + nameof(WriteSetCacheAfter);
-        public const string EasyCachingErrorSetCache = EasyCachingPrefix + nameof(WriteSetCacheError);
+        public const string CachingBeforeSetCache = CachingPrefix + nameof(WriteSetCacheBefore);
+        public const string CachingAfterSetCache = CachingPrefix + nameof(WriteSetCacheAfter);
+        public const string CachingErrorSetCache = CachingPrefix + nameof(WriteSetCacheError);
 
-        public const string EasyCachingBeforeRemoveCache = EasyCachingPrefix + nameof(WriteRemoveCacheBefore);
-        public const string EasyCachingAfterRemoveCache = EasyCachingPrefix + nameof(WriteRemoveCacheAfter);
-        public const string EasyCachingErrorRemoveCache = EasyCachingPrefix + nameof(WriteRemoveCacheError);
+        public const string CachingBeforeRemoveCache = CachingPrefix + nameof(WriteRemoveCacheBefore);
+        public const string CachingAfterRemoveCache = CachingPrefix + nameof(WriteRemoveCacheAfter);
+        public const string CachingErrorRemoveCache = CachingPrefix + nameof(WriteRemoveCacheError);
 
-        public const string EasyCachingBeforeGetCache = EasyCachingPrefix + nameof(WriteGetCacheBefore);
-        public const string EasyCachingAfterGetCache = EasyCachingPrefix + nameof(WriteGetCacheAfter);
-        public const string EasyCachingErrorGetCache = EasyCachingPrefix + nameof(WriteGetCacheError);
+        public const string CachingBeforeGetCache = CachingPrefix + nameof(WriteGetCacheBefore);
+        public const string CachingAfterGetCache = CachingPrefix + nameof(WriteGetCacheAfter);
+        public const string CachingErrorGetCache = CachingPrefix + nameof(WriteGetCacheError);
 
-        public const string EasyCachingBeforeExistsCache = EasyCachingPrefix + nameof(WriteExistsCacheBefore);
-        public const string EasyCachingAfterExistsCache = EasyCachingPrefix + nameof(WriteExistsCacheAfter);
-        public const string EasyCachingErrorExistsCache = EasyCachingPrefix + nameof(WriteExistsCacheError);
+        public const string CachingBeforeExistsCache = CachingPrefix + nameof(WriteExistsCacheBefore);
+        public const string CachingAfterExistsCache = CachingPrefix + nameof(WriteExistsCacheAfter);
+        public const string CachingErrorExistsCache = CachingPrefix + nameof(WriteExistsCacheError);
 
-        public const string EasyCachingBeforeFlushCache = EasyCachingPrefix + nameof(WriteFlushCacheBefore);
-        public const string EasyCachingAfterFlushCache = EasyCachingPrefix + nameof(WriteFlushCacheAfter);
-        public const string EasyCachingErrorFlushCache = EasyCachingPrefix + nameof(WriteFlushCacheError);
+        public const string CachingBeforeFlushCache = CachingPrefix + nameof(WriteFlushCacheBefore);
+        public const string CachingAfterFlushCache = CachingPrefix + nameof(WriteFlushCacheAfter);
+        public const string CachingErrorFlushCache = CachingPrefix + nameof(WriteFlushCacheError);
 
-        public const string EasyCachingBeforePublishMessage = EasyCachingPrefix + nameof(WritePublishMessageBefore);
-        public const string EasyCachingAfterPublishMessage = EasyCachingPrefix + nameof(WritePublishMessageAfter);
-        public const string EasyCachingErrorPublishMessage = EasyCachingPrefix + nameof(WritePublishMessageError);
+        public const string CachingBeforePublishMessage = CachingPrefix + nameof(WritePublishMessageBefore);
+        public const string CachingAfterPublishMessage = CachingPrefix + nameof(WritePublishMessageAfter);
+        public const string CachingErrorPublishMessage = CachingPrefix + nameof(WritePublishMessageError);
 
-        public const string EasyCachingBeforeSubscribeMessage = EasyCachingPrefix + nameof(WriteSubscribeMessageBefore);
-        public const string EasyCachingAfterSubscribeMessage = EasyCachingPrefix + nameof(WriteSubscribeMessageAfter);
-        public const string EasyCachingErrorSubscribeMessage = EasyCachingPrefix + nameof(WriteSubscribeMessageError);
+        public const string CachingBeforeSubscribeMessage = CachingPrefix + nameof(WriteSubscribeMessageBefore);
+        public const string CachingAfterSubscribeMessage = CachingPrefix + nameof(WriteSubscribeMessageAfter);
+        public const string CachingErrorSubscribeMessage = CachingPrefix + nameof(WriteSubscribeMessageError);
 
         public static void WriteSetCacheError(this DiagnosticListener @this, Guid operationId, Exception ex)
         {
-            if (@this.IsEnabled(EasyCachingErrorSetCache))
+            if (@this.IsEnabled(CachingErrorSetCache))
             {
-                @this.Write(EasyCachingErrorSetCache, new
+                @this.Write(CachingErrorSetCache, new
                 {
                     OperationId = operationId,
                     Exception = ex,
@@ -55,9 +55,9 @@ namespace Adnc.Infra.Caching.Core.Diagnostics
 
         public static void WriteRemoveCacheError(this DiagnosticListener @this, Guid operationId, Exception ex)
         {
-            if (@this.IsEnabled(EasyCachingErrorRemoveCache))
+            if (@this.IsEnabled(CachingErrorRemoveCache))
             {
-                @this.Write(EasyCachingErrorRemoveCache, new
+                @this.Write(CachingErrorRemoveCache, new
                 {
                     OperationId = operationId,
                     Exception = ex,
@@ -68,9 +68,9 @@ namespace Adnc.Infra.Caching.Core.Diagnostics
 
         public static void WriteGetCacheError(this DiagnosticListener @this, Guid operationId, Exception ex)
         {
-            if (@this.IsEnabled(EasyCachingErrorGetCache))
+            if (@this.IsEnabled(CachingErrorGetCache))
             {
-                @this.Write(EasyCachingErrorGetCache, new
+                @this.Write(CachingErrorGetCache, new DiagnosticExceptionWrapper
                 {
                     OperationId = operationId,
                     Exception = ex,
@@ -81,9 +81,9 @@ namespace Adnc.Infra.Caching.Core.Diagnostics
 
         public static void WriteExistsCacheError(this DiagnosticListener @this, Guid operationId, Exception ex)
         {
-            if (@this.IsEnabled(EasyCachingErrorExistsCache))
+            if (@this.IsEnabled(CachingErrorExistsCache))
             {
-                @this.Write(EasyCachingErrorExistsCache, new
+                @this.Write(CachingErrorExistsCache, new
                 {
                     OperationId = operationId,
                     Exception = ex,
@@ -94,9 +94,9 @@ namespace Adnc.Infra.Caching.Core.Diagnostics
 
         public static void WriteFlushCacheError(this DiagnosticListener @this, Guid operationId, Exception ex)
         {
-            if (@this.IsEnabled(EasyCachingErrorFlushCache))
+            if (@this.IsEnabled(CachingErrorFlushCache))
             {
-                @this.Write(EasyCachingErrorFlushCache, new
+                @this.Write(CachingErrorFlushCache, new
                 {
                     OperationId = operationId,
                     Exception = ex,
@@ -107,9 +107,9 @@ namespace Adnc.Infra.Caching.Core.Diagnostics
 
         public static void WritePublishMessageError(this DiagnosticListener @this, Guid operationId, Exception ex)
         {
-            if (@this.IsEnabled(EasyCachingErrorPublishMessage))
+            if (@this.IsEnabled(CachingErrorPublishMessage))
             {
-                @this.Write(EasyCachingErrorPublishMessage, new
+                @this.Write(CachingErrorPublishMessage, new
                 {
                     OperationId = operationId,
                     Exception = ex,
@@ -120,9 +120,9 @@ namespace Adnc.Infra.Caching.Core.Diagnostics
 
         public static void WriteSubscribeMessageError(this DiagnosticListener @this, Guid operationId, Exception ex)
         {
-            if (@this.IsEnabled(EasyCachingErrorSubscribeMessage))
+            if (@this.IsEnabled(CachingErrorSubscribeMessage))
             {
-                @this.Write(EasyCachingErrorSubscribeMessage, new
+                @this.Write(CachingErrorSubscribeMessage, new
                 {
                     OperationId = operationId,
                     Exception = ex,
@@ -133,9 +133,9 @@ namespace Adnc.Infra.Caching.Core.Diagnostics
 
         public static void WriteSetCacheAfter(this DiagnosticListener @this, Guid operationId)
         {
-            if (@this.IsEnabled(EasyCachingAfterSetCache))
+            if (@this.IsEnabled(CachingAfterSetCache))
             {
-                @this.Write(EasyCachingAfterSetCache, new
+                @this.Write(CachingAfterSetCache, new
                 {
                     OperationId = operationId,
                     Timestamp = Stopwatch.GetTimestamp()
@@ -145,9 +145,9 @@ namespace Adnc.Infra.Caching.Core.Diagnostics
 
         public static void WriteRemoveCacheAfter(this DiagnosticListener @this, Guid operationId)
         {
-            if (@this.IsEnabled(EasyCachingAfterRemoveCache))
+            if (@this.IsEnabled(CachingAfterRemoveCache))
             {
-                @this.Write(EasyCachingAfterRemoveCache, new
+                @this.Write(CachingAfterRemoveCache, new
                 {
                     OperationId = operationId,
                     Timestamp = Stopwatch.GetTimestamp()
@@ -157,9 +157,9 @@ namespace Adnc.Infra.Caching.Core.Diagnostics
 
         public static void WriteGetCacheAfter(this DiagnosticListener @this, Guid operationId)
         {
-            if (@this.IsEnabled(EasyCachingAfterGetCache))
+            if (@this.IsEnabled(CachingAfterGetCache))
             {
-                @this.Write(EasyCachingAfterGetCache, new
+                @this.Write(CachingAfterGetCache, new DiagnosticDataWrapper
                 {
                     OperationId = operationId,
                     Timestamp = Stopwatch.GetTimestamp()
@@ -169,9 +169,9 @@ namespace Adnc.Infra.Caching.Core.Diagnostics
 
         public static void WriteExistsCacheAfter(this DiagnosticListener @this, Guid operationId)
         {
-            if (@this.IsEnabled(EasyCachingAfterExistsCache))
+            if (@this.IsEnabled(CachingAfterExistsCache))
             {
-                @this.Write(EasyCachingAfterExistsCache, new
+                @this.Write(CachingAfterExistsCache, new
                 {
                     OperationId = operationId,
                     Timestamp = Stopwatch.GetTimestamp()
@@ -181,9 +181,9 @@ namespace Adnc.Infra.Caching.Core.Diagnostics
 
         public static void WriteFlushCacheAfter(this DiagnosticListener @this, Guid operationId)
         {
-            if (@this.IsEnabled(EasyCachingAfterFlushCache))
+            if (@this.IsEnabled(CachingAfterFlushCache))
             {
-                @this.Write(EasyCachingAfterFlushCache, new
+                @this.Write(CachingAfterFlushCache, new
                 {
                     OperationId = operationId,
                     Timestamp = Stopwatch.GetTimestamp()
@@ -193,9 +193,9 @@ namespace Adnc.Infra.Caching.Core.Diagnostics
 
         public static void WritePublishMessageAfter(this DiagnosticListener @this, Guid operationId)
         {
-            if (@this.IsEnabled(EasyCachingAfterPublishMessage))
+            if (@this.IsEnabled(CachingAfterPublishMessage))
             {
-                @this.Write(EasyCachingAfterPublishMessage, new
+                @this.Write(CachingAfterPublishMessage, new
                 {
                     OperationId = operationId,
                     Timestamp = Stopwatch.GetTimestamp()
@@ -205,9 +205,9 @@ namespace Adnc.Infra.Caching.Core.Diagnostics
 
         public static void WriteSubscribeMessageAfter(this DiagnosticListener @this, Guid operationId)
         {
-            if (@this.IsEnabled(EasyCachingAfterSubscribeMessage))
+            if (@this.IsEnabled(CachingAfterSubscribeMessage))
             {
-                @this.Write(EasyCachingAfterSubscribeMessage, new
+                @this.Write(CachingAfterSubscribeMessage, new
                 {
                     OperationId = operationId,
                     Timestamp = Stopwatch.GetTimestamp()
@@ -217,11 +217,11 @@ namespace Adnc.Infra.Caching.Core.Diagnostics
 
         public static Guid WriteSetCacheBefore(this DiagnosticListener @this, BeforeSetRequestEventData eventData)
         {
-            if (@this.IsEnabled(EasyCachingBeforeSetCache))
+            if (@this.IsEnabled(CachingBeforeSetCache))
             {
                 Guid operationId = Guid.NewGuid();
 
-                @this.Write(EasyCachingBeforeSetCache, new
+                @this.Write(CachingBeforeSetCache, new
                 {
                     OperationId = operationId,
                     EventData = eventData,
@@ -236,10 +236,10 @@ namespace Adnc.Infra.Caching.Core.Diagnostics
 
         public static Guid WriteRemoveCacheBefore(this DiagnosticListener @this, BeforeRemoveRequestEventData eventData)
         {
-            if (@this.IsEnabled(EasyCachingBeforeRemoveCache))
+            if (@this.IsEnabled(CachingBeforeRemoveCache))
             {
                 Guid operationId = Guid.NewGuid();
-                @this.Write(EasyCachingBeforeRemoveCache, new
+                @this.Write(CachingBeforeRemoveCache, new
                 {
                     OperationId = operationId,
                     EventData = eventData,
@@ -253,11 +253,11 @@ namespace Adnc.Infra.Caching.Core.Diagnostics
 
         public static Guid WriteGetCacheBefore(this DiagnosticListener @this, BeforeGetRequestEventData eventData)
         {
-            if (@this.IsEnabled(EasyCachingBeforeGetCache))
+            if (@this.IsEnabled(CachingBeforeGetCache))
             {
                 Guid operationId = Guid.NewGuid();
 
-                @this.Write(EasyCachingBeforeGetCache, new
+                @this.Write(CachingBeforeGetCache, new DiagnosticDataWrapper<BeforeGetRequestEventData>
                 {
                     OperationId = operationId,
                     EventData = eventData,
@@ -272,11 +272,11 @@ namespace Adnc.Infra.Caching.Core.Diagnostics
 
         public static Guid WriteExistsCacheBefore(this DiagnosticListener @this, BeforeExistsRequestEventData eventData)
         {
-            if (@this.IsEnabled(EasyCachingBeforeExistsCache))
+            if (@this.IsEnabled(CachingBeforeExistsCache))
             {
                 Guid operationId = Guid.NewGuid();
 
-                @this.Write(EasyCachingBeforeExistsCache, new
+                @this.Write(CachingBeforeExistsCache, new
                 {
                     OperationId = operationId,
                     EventData = eventData,
@@ -291,11 +291,11 @@ namespace Adnc.Infra.Caching.Core.Diagnostics
 
         public static Guid WriteFlushCacheBefore(this DiagnosticListener @this, EventData eventData)
         {
-            if (@this.IsEnabled(EasyCachingBeforeFlushCache))
+            if (@this.IsEnabled(CachingBeforeFlushCache))
             {
                 Guid operationId = Guid.NewGuid();
 
-                @this.Write(EasyCachingBeforeFlushCache, new
+                @this.Write(CachingBeforeFlushCache, new
                 {
                     OperationId = operationId,
                     EventData = eventData,
@@ -310,11 +310,11 @@ namespace Adnc.Infra.Caching.Core.Diagnostics
 
         public static Guid WriteSubscribeMessageBefore(this DiagnosticListener @this, BeforeSubscribeMessageRequestEventData eventData)
         {
-            if (@this.IsEnabled(EasyCachingBeforeSubscribeMessage))
+            if (@this.IsEnabled(CachingBeforeSubscribeMessage))
             {
                 Guid operationId = Guid.NewGuid();
 
-                @this.Write(EasyCachingBeforeSubscribeMessage, new
+                @this.Write(CachingBeforeSubscribeMessage, new
                 {
                     OperationId = operationId,
                     EventData = eventData,
@@ -329,11 +329,11 @@ namespace Adnc.Infra.Caching.Core.Diagnostics
 
         public static Guid WritePublishMessageBefore(this DiagnosticListener @this, BeforePublishMessageRequestEventData eventData)
         {
-            if (@this.IsEnabled(EasyCachingBeforePublishMessage))
+            if (@this.IsEnabled(CachingBeforePublishMessage))
             {
                 Guid operationId = Guid.NewGuid();
 
-                @this.Write(EasyCachingBeforePublishMessage, new
+                @this.Write(CachingBeforePublishMessage, new
                 {
                     OperationId = operationId,
                     EventData = eventData,
