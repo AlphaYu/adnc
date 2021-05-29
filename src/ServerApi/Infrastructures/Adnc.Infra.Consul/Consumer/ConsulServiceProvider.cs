@@ -9,6 +9,14 @@ namespace Adnc.Infra.Consul.Consumer
     {
         private readonly ConsulClient _consulClient;
 
+        public ConsulServiceProvider(string uri)
+        {
+            _consulClient = new ConsulClient(consulConfig =>
+            {
+                consulConfig.Address = new Uri(uri);
+            });
+        }
+
         public ConsulServiceProvider(Uri uri)
         {
             _consulClient = new ConsulClient(consulConfig =>
@@ -17,7 +25,13 @@ namespace Adnc.Infra.Consul.Consumer
             });
         }
 
-        public async Task<IList<string>> GetServicesAsync(string serviceName)
+        public async Task<IList<ServiceEntry>> GetAllServicesAsync(string serviceName)
+        {
+            var queryResult = await _consulClient.Health.Service(serviceName, string.Empty, false);
+            return queryResult.Response;
+        }
+
+        public async Task<IList<string>> GetHealthServicesAsync(string serviceName)
         {
             var queryResult = await _consulClient.Health.Service(serviceName, string.Empty, true);
             var result = new List<string>();

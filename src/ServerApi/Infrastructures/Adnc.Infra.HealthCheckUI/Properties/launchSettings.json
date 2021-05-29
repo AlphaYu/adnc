@@ -3,7 +3,8 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:64662",
+      "applicationUrl": "http://localhost:9091",
+      "launchUrl": "healthchecks-ui",
       "sslPort": 0
     }
   },
@@ -15,13 +16,14 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "Adnc.Maintaining": {
+    "Adnc.HealthCheckUI": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "http://localhost:5008"
+      "applicationUrl": "http://localhost:9091",
+      "launchUrl": "healthchecks-ui"
     },
     "Docker": {
       "commandName": "Docker",

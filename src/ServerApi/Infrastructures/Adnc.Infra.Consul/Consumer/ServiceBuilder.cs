@@ -17,7 +17,7 @@ namespace Adnc.Infra.Consul.Consumer
 
         public async Task<Uri> BuildAsync(string path)
         {
-            var serviceList = await ServiceProvider.GetServicesAsync(ServiceName);
+            var serviceList = await ServiceProvider.GetHealthServicesAsync(ServiceName);
             var service = LoadBalancer.Resolve(serviceList);
             var baseUri = new Uri($"{UriScheme}://{service}");
             var uri = new Uri(baseUri, path);

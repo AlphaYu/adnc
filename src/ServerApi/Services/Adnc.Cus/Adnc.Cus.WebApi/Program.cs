@@ -12,11 +12,8 @@ namespace Adnc.Cus.WebApi
     {
         public static void Main(string[] args)
         {
-            //var logger = NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
             var hostBuilder = CreateHostBuilder(args);
-
             var host = hostBuilder.Build();
-
             host.Run();
         }
 
@@ -33,11 +30,9 @@ namespace Adnc.Cus.WebApi
                     if (env.IsProduction() || env.IsStaging())
                     {
                         var configuration = cb.Build();
-                        //从consul配置中心读取配置
                         var consulOption = configuration.GetSection("Consul").Get<ConsulConfig>();
                         cb.AddConsulConfiguration(consulOption, true);
                     }
-                    //cb.AddJsonFile("autofac.json", optional: true);
                 })
                 .UseServiceProviderFactory(new AutofacServiceProviderFactory())
                 .ConfigureWebHostDefaults(webBuilder =>

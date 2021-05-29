@@ -30,6 +30,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\Adnc.Infra.Consul\Adnc.Infra.Consul.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<None Update="logo.jpg">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
