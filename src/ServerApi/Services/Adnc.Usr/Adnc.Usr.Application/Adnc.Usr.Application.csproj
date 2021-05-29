@@ -13,18 +13,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Compile Remove="Interceptors\**" />
-		<Compile Remove="Mq\**" />
-		<Compile Remove="RpcServices\**" />
-		<EmbeddedResource Remove="Interceptors\**" />
-		<EmbeddedResource Remove="Mq\**" />
-		<EmbeddedResource Remove="RpcServices\**" />
-		<None Remove="Interceptors\**" />
-		<None Remove="Mq\**" />
-		<None Remove="RpcServices\**" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<Compile Remove="CustomEasyCachingServiceCollectionExtensions.cs" />
 	</ItemGroup>
 

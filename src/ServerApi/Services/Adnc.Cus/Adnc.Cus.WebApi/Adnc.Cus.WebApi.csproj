@@ -2,6 +2,8 @@
 	<Import Project="..\..\..\build\common.props" />
 	<PropertyGroup>
 		<TargetFramework>net5.0</TargetFramework>
+		<RootNamespace>Adnc.Cus.WebApi</RootNamespace>
+		<AssemblyName>Adnc.Cus.WebApi</AssemblyName>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
 		<DockerfileContext>..\..\..</DockerfileContext>
@@ -18,17 +20,7 @@
 		<EmbeddedResource Remove="logs\**" />
 		<None Remove="logs\**" />
 	</ItemGroup>
-	<ItemGroup>
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.5">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.5">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
-		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.8" />
-	</ItemGroup>
+
 	<ItemGroup>
 		<Content Update="nlog.config">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
