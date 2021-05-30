@@ -43,6 +43,7 @@ namespace Adnc.Whse.WebApi
                     srv.AddScoped<OrderCreatedEventSubscirber>();
                 });
             });
+            services.AddAdncSkyApms();
         }
 
         public void ConfigureContainer(ContainerBuilder builder)

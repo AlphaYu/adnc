@@ -1,3 +1,4 @@
+using Adnc.Application.Shared.Caching;
 using Adnc.Infra.Consul;
 using Adnc.WebApi.Shared;
 using Autofac;
@@ -28,6 +29,7 @@ namespace Adnc.Usr.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAdncServices<PermissionHandlerLocal>(_configuration, _environment, _serviceInfo);
+            services.AddAdncSkyApms();
         }
 
         public void ConfigureContainer(ContainerBuilder builder)

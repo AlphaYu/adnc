@@ -43,6 +43,7 @@ namespace Adnc.Cus.WebApi
                     srv.AddScoped<CustomerRechargedEventSubscriber>();
                 });
             });
+            services.AddAdncSkyApms();
         }
 
         public void ConfigureContainer(ContainerBuilder builder)

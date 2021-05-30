@@ -37,6 +37,7 @@ namespace Adnc.Maint.WebApi
                 var maintServiceAddress = _environment.IsDevelopment() ? "http://localhost:5020" : "adnc.maint.webapi";
                 registion.AddRpcService<IMaintRpcService>(maintServiceAddress, policies);
             });
+            services.AddAdncSkyApms();
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
