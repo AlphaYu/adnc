@@ -1,11 +1,7 @@
-﻿using Adnc.Application.Shared.Caching;
-using Adnc.WebApi.Shared;
+﻿using Adnc.WebApi.Shared;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
-using SkyApm.Diagnostics.CAP;
-using SkyApm.Diagnostics.MongoDB;
-using SkyApm.Utilities.DependencyInjection;
 using System;
 
 namespace Microsoft.Extensions.DependencyInjection
@@ -46,23 +42,6 @@ namespace Microsoft.Extensions.DependencyInjection
 
             completedExecute?.Invoke(_srvRegistration);
 
-            return services;
-        }
-
-        /// <summary>
-        /// 统一注册Adnc.Webpi通用链路跟踪
-        /// </summary>
-        /// <param name="services"></param>
-        /// <param name="completedExecute"></param>
-        /// <returns></returns>
-        public static IServiceCollection AddAdncSkyApms(this IServiceCollection services
-            , Action<SkyApmExtensions> completedExecute = null)
-        {
-            var amps = services.AddSkyApmExtensions();
-            amps.AddCaching();
-            amps.AddCap();
-            amps.AddMongoDB();
-            completedExecute?.Invoke(amps);
             return services;
         }
     }

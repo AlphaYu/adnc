@@ -46,7 +46,6 @@ namespace Adnc.Ord.WebApi
                     srv.AddScoped<WarehouseQtyBlockedEventSubscriber>();
                 });
             });
-            services.AddAdncSkyApms();
         }
 
         public void ConfigureContainer(ContainerBuilder builder)

@@ -8,9 +8,13 @@ using Adnc.Infra.EventBus.RabbitMq;
 using Adnc.Infra.Mongo;
 using Adnc.Infra.Mongo.Configuration;
 using Adnc.Infra.Mongo.Extensions;
+using Adnc.Application.Shared.Caching;
 using Adnc.WebApi.Shared.Extensions;
 using DotNetCore.CAP.Dashboard;
 using DotNetCore.CAP.Dashboard.NodeDiscovery;
+using SkyApm.Diagnostics.CAP;
+using SkyApm.Diagnostics.MongoDB;
+using SkyApm.Utilities.DependencyInjection;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -144,6 +148,9 @@ namespace Adnc.WebApi.Shared
                     };
                 };
             });
+
+            //add skyamp
+            _services.AddSkyApmExtensions().AddCaching();
         }
 
         /// <summary>
@@ -187,6 +194,8 @@ namespace Adnc.WebApi.Shared
                 options.PluralizeCollectionNames = mongoConfig.PluralizeCollectionNames;
                 options.CollectionNamingConvention = (NamingConvention)mongoConfig.CollectionNamingConvention;
             });
+            //add skyamp
+            _services.AddSkyApmExtensions().AddMongoDB();
         }
 
         /// <summary>
@@ -384,6 +393,9 @@ namespace Adnc.WebApi.Shared
         {
             var tableNamePrefix = "Cap";
             var groupName = $"adnc-cap-{_environment.EnvironmentName.ToLower()}";
+
+            //add skyamp
+            _services.AddSkyApmExtensions().AddCap();
 
             func?.Invoke(_services);
 

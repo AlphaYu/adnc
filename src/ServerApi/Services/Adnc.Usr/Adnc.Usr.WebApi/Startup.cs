@@ -29,7 +29,6 @@ namespace Adnc.Usr.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAdncServices<PermissionHandlerLocal>(_configuration, _environment, _serviceInfo);
-            services.AddAdncSkyApms();
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
