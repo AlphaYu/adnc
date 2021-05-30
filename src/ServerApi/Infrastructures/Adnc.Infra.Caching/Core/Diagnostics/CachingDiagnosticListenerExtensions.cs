@@ -44,7 +44,7 @@ namespace Adnc.Infra.Caching.Core.Diagnostics
         {
             if (@this.IsEnabled(CachingErrorSetCache))
             {
-                @this.Write(CachingErrorSetCache, new
+                @this.Write(CachingErrorSetCache, new DiagnosticExceptionWrapper
                 {
                     OperationId = operationId,
                     Exception = ex,
@@ -57,7 +57,7 @@ namespace Adnc.Infra.Caching.Core.Diagnostics
         {
             if (@this.IsEnabled(CachingErrorRemoveCache))
             {
-                @this.Write(CachingErrorRemoveCache, new
+                @this.Write(CachingErrorRemoveCache, new DiagnosticExceptionWrapper
                 {
                     OperationId = operationId,
                     Exception = ex,
@@ -83,7 +83,7 @@ namespace Adnc.Infra.Caching.Core.Diagnostics
         {
             if (@this.IsEnabled(CachingErrorExistsCache))
             {
-                @this.Write(CachingErrorExistsCache, new
+                @this.Write(CachingErrorExistsCache, new DiagnosticExceptionWrapper
                 {
                     OperationId = operationId,
                     Exception = ex,
@@ -96,7 +96,7 @@ namespace Adnc.Infra.Caching.Core.Diagnostics
         {
             if (@this.IsEnabled(CachingErrorFlushCache))
             {
-                @this.Write(CachingErrorFlushCache, new
+                @this.Write(CachingErrorFlushCache, new DiagnosticExceptionWrapper
                 {
                     OperationId = operationId,
                     Exception = ex,
@@ -109,7 +109,7 @@ namespace Adnc.Infra.Caching.Core.Diagnostics
         {
             if (@this.IsEnabled(CachingErrorPublishMessage))
             {
-                @this.Write(CachingErrorPublishMessage, new
+                @this.Write(CachingErrorPublishMessage, new DiagnosticExceptionWrapper
                 {
                     OperationId = operationId,
                     Exception = ex,
@@ -122,7 +122,7 @@ namespace Adnc.Infra.Caching.Core.Diagnostics
         {
             if (@this.IsEnabled(CachingErrorSubscribeMessage))
             {
-                @this.Write(CachingErrorSubscribeMessage, new
+                @this.Write(CachingErrorSubscribeMessage, new DiagnosticExceptionWrapper
                 {
                     OperationId = operationId,
                     Exception = ex,
@@ -135,7 +135,7 @@ namespace Adnc.Infra.Caching.Core.Diagnostics
         {
             if (@this.IsEnabled(CachingAfterSetCache))
             {
-                @this.Write(CachingAfterSetCache, new
+                @this.Write(CachingAfterSetCache, new DiagnosticDataWrapper
                 {
                     OperationId = operationId,
                     Timestamp = Stopwatch.GetTimestamp()
@@ -147,7 +147,7 @@ namespace Adnc.Infra.Caching.Core.Diagnostics
         {
             if (@this.IsEnabled(CachingAfterRemoveCache))
             {
-                @this.Write(CachingAfterRemoveCache, new
+                @this.Write(CachingAfterRemoveCache, new DiagnosticDataWrapper
                 {
                     OperationId = operationId,
                     Timestamp = Stopwatch.GetTimestamp()
@@ -171,7 +171,7 @@ namespace Adnc.Infra.Caching.Core.Diagnostics
         {
             if (@this.IsEnabled(CachingAfterExistsCache))
             {
-                @this.Write(CachingAfterExistsCache, new
+                @this.Write(CachingAfterExistsCache, new DiagnosticDataWrapper
                 {
                     OperationId = operationId,
                     Timestamp = Stopwatch.GetTimestamp()
@@ -183,7 +183,7 @@ namespace Adnc.Infra.Caching.Core.Diagnostics
         {
             if (@this.IsEnabled(CachingAfterFlushCache))
             {
-                @this.Write(CachingAfterFlushCache, new
+                @this.Write(CachingAfterFlushCache, new DiagnosticDataWrapper
                 {
                     OperationId = operationId,
                     Timestamp = Stopwatch.GetTimestamp()
@@ -195,7 +195,7 @@ namespace Adnc.Infra.Caching.Core.Diagnostics
         {
             if (@this.IsEnabled(CachingAfterPublishMessage))
             {
-                @this.Write(CachingAfterPublishMessage, new
+                @this.Write(CachingAfterPublishMessage, new DiagnosticDataWrapper
                 {
                     OperationId = operationId,
                     Timestamp = Stopwatch.GetTimestamp()
@@ -207,7 +207,7 @@ namespace Adnc.Infra.Caching.Core.Diagnostics
         {
             if (@this.IsEnabled(CachingAfterSubscribeMessage))
             {
-                @this.Write(CachingAfterSubscribeMessage, new
+                @this.Write(CachingAfterSubscribeMessage, new DiagnosticDataWrapper
                 {
                     OperationId = operationId,
                     Timestamp = Stopwatch.GetTimestamp()
@@ -221,7 +221,7 @@ namespace Adnc.Infra.Caching.Core.Diagnostics
             {
                 Guid operationId = Guid.NewGuid();
 
-                @this.Write(CachingBeforeSetCache, new
+                @this.Write(CachingBeforeSetCache, new DiagnosticDataWrapper<BeforeSetRequestEventData>
                 {
                     OperationId = operationId,
                     EventData = eventData,
@@ -239,7 +239,7 @@ namespace Adnc.Infra.Caching.Core.Diagnostics
             if (@this.IsEnabled(CachingBeforeRemoveCache))
             {
                 Guid operationId = Guid.NewGuid();
-                @this.Write(CachingBeforeRemoveCache, new
+                @this.Write(CachingBeforeRemoveCache, new DiagnosticDataWrapper<BeforeRemoveRequestEventData>
                 {
                     OperationId = operationId,
                     EventData = eventData,
@@ -276,7 +276,7 @@ namespace Adnc.Infra.Caching.Core.Diagnostics
             {
                 Guid operationId = Guid.NewGuid();
 
-                @this.Write(CachingBeforeExistsCache, new
+                @this.Write(CachingBeforeExistsCache, new DiagnosticDataWrapper<BeforeExistsRequestEventData>
                 {
                     OperationId = operationId,
                     EventData = eventData,
@@ -295,7 +295,7 @@ namespace Adnc.Infra.Caching.Core.Diagnostics
             {
                 Guid operationId = Guid.NewGuid();
 
-                @this.Write(CachingBeforeFlushCache, new
+                @this.Write(CachingBeforeFlushCache, new DiagnosticDataWrapper<EventData>
                 {
                     OperationId = operationId,
                     EventData = eventData,
@@ -314,7 +314,7 @@ namespace Adnc.Infra.Caching.Core.Diagnostics
             {
                 Guid operationId = Guid.NewGuid();
 
-                @this.Write(CachingBeforeSubscribeMessage, new
+                @this.Write(CachingBeforeSubscribeMessage, new DiagnosticDataWrapper<BeforeSubscribeMessageRequestEventData>
                 {
                     OperationId = operationId,
                     EventData = eventData,
