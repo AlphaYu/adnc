@@ -4,17 +4,9 @@
 		<OutputType>Exe</OutputType>
 		<TargetFramework>net5.0</TargetFramework>
 		<RootNamespace>Adnc.PerformTest</RootNamespace>
-		<Version>0.8.1</Version>
-		<Authors>Alpha.Yu</Authors>
-		<Product>Adnc</Product>
-		<RepositoryUrl>https://github.com/AlphaYu</RepositoryUrl>
-		<RepositoryType>git</RepositoryType>
-		<PackageProjectUrl>https://www.aspdotnetcore.net</PackageProjectUrl>
-		<Copyright>Alpha</Copyright>
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="BenchmarkDotNet" Version="0.13.0" />
+		<PackageReference Include="BenchmarkDotNet" Version="0.13.0" />
 	</ItemGroup>
-
 </Project>
