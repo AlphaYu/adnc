@@ -206,12 +206,12 @@ namespace Adnc.UnitTest.EFCore
         public async Task TestFind()
         {
             //不加载导航属性
-            var customer3 = await _customerRsp.FindAsync(154959990543749120);
+            var customer3 = await _customerRsp.FindAsync(163895960158469);
             Assert.NotNull(customer3);
             Assert.Null(customer3.FinanceInfo);
 
             //加载导航属性
-            var customer4 = await _customerRsp.FindAsync(154959990543749120, x => x.TransactionLogs);
+            var customer4 = await _customerRsp.FindAsync(163895960158469, x => x.TransactionLogs);
             Assert.NotNull(customer4);
             Assert.NotEmpty(customer4.TransactionLogs);
         }
@@ -302,7 +302,7 @@ namespace Adnc.UnitTest.EFCore
         [Fact]
         public async void TestUpdateAssigns()
         {
-            var customer = await _customerRsp.FindAsync(154951941552738304, noTracking: false);
+            var customer = await _customerRsp.FindAsync(164991772262341, noTracking: false);
             //实体已经被跟踪并且指定更新列
             customer.Nickname = "更新指定列";
             customer.Realname = "不指定该列";
@@ -320,7 +320,7 @@ namespace Adnc.UnitTest.EFCore
             Assert.Equal("新昵称", newCus.Nickname);
 
             //实体没有被跟踪，dbcontext中有没有同名实体
-            id = 154959990543749120;
+            id = 164991772262341;
             await _customerRsp.UpdateAsync(new Customer { Id = id, Realname = "没被跟踪02", Nickname = "新昵称" }, UpdatingProps<Customer>(c => c.Realname, c => c.Nickname));
             newCus = await _customerRsp.FindAsync(id);
             Assert.Equal("没被跟踪02", newCus.Realname);
@@ -445,13 +445,9 @@ namespace Adnc.UnitTest.EFCore
 
                 throw new Exception();
 
-#pragma warning disable CS0162 // 检测到无法访问的代码
                 _unitOfWork.Commit();
-#pragma warning restore CS0162 // 检测到无法访问的代码
             }
-#pragma warning disable CS0168 // 声明了变量“ex”，但从未使用过
             catch (Exception ex)
-#pragma warning restore CS0168 // 声明了变量“ex”，但从未使用过
             {
                 _unitOfWork.Rollback();
             }
