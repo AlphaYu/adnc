@@ -1,7 +1,14 @@
-//consul
 {
+  //consul
   "GlobalConfiguration": {
     "BaseUrl": "http://172.16.0.4:8888",
+    "UpstreamHeaderTransform": {
+      "From": "gateway",
+      "X-Forwarded-For": "{RemoteIpAddress}"
+    },
+    "DownstreamHeaderTransform": {
+      "X-Forwarded-For": "{RemoteIpAddress}"
+    },
     "ServiceDiscoveryProvider": {
       "Scheme": "http",
       "Host": "172.16.0.4",
@@ -18,18 +25,11 @@
         "Post",
         "Delete"
       ],
-      "UpstreamHeaderTransform": {
-        "From": "gateway",
-        "X-Forwarded-For": "{RemoteIpAddress}"
-      },
       "DownstreamScheme": "http",
       "DownstreamPathTemplate": "/usr{everything}",
       "ServiceName": "adnc.usr.webapi",
       "LoadBalancerOptions": {
         "Type": "RoundRobin"
-      },
-      "DownstreamHeaderTransform": {
-        "X-Forwarded-For": "{RemoteIpAddress}"
       }
     },
     {
@@ -45,9 +45,6 @@
       "ServiceName": "adnc.maint.webapi",
       "LoadBalancerOptions": {
         "Type": "RoundRobin"
-      },
-      "DownstreamHeaderTransform": {
-        "X-Forwarded-For": "{RemoteIpAddress}"
       }
     },
     {
@@ -63,9 +60,6 @@
       "ServiceName": "adnc.cus.webapi",
       "LoadBalancerOptions": {
         "Type": "RoundRobin"
-      },
-      "DownstreamHeaderTransform": {
-        "X-Forwarded-For": "{RemoteIpAddress}"
       }
     }
   ]

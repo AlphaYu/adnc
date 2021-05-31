@@ -31,7 +31,7 @@ namespace Adnc.Gateway
                             .ConfigureAppConfiguration((hostingContext, config) =>
                             {
                                 var env = hostingContext.HostingEnvironment;
-                                config.AddJsonFile($"{AppContext.BaseDirectory}/Config/ocelot.{env.EnvironmentName}.json", false, true);
+                                config.AddJsonFile($"{AppContext.BaseDirectory}/Config/ocelot.{env.EnvironmentName}.json", true, true);
                             })
                             .ConfigureWebHostDefaults(webBuilder =>
                             {
