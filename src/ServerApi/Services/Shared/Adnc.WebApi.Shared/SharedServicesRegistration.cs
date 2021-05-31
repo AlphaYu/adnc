@@ -50,6 +50,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
+using DotNetCore.CAP;
 
 namespace Adnc.WebApi.Shared
 {
@@ -387,7 +388,8 @@ namespace Adnc.WebApi.Shared
         /// <param name="tableNamePrefix">cap表面前缀</param>
         /// <param name="groupName">群组名子</param>
         /// <param name="func">回调函数</param>
-        public virtual void AddEventBusSubscribers(Action<IServiceCollection> func = null)
+        public virtual void AddEventBusSubscribers<TSubscriber>()
+            where TSubscriber : class, ICapSubscribe
         {
             var tableNamePrefix = "Cap";
             var groupName = $"adnc-cap-{_environment.EnvironmentName.ToLower()}";
@@ -395,7 +397,7 @@ namespace Adnc.WebApi.Shared
             //add skyamp
             _services.AddSkyApmExtensions().AddCap();
 
-            func?.Invoke(_services);
+            _services.AddSingleton<TSubscriber>();
 
             var rabbitMqConfig = _configuration.GetRabbitMqSection().Get<RabbitMqConfig>();
             _services.AddCap(x =>

@@ -1,14 +1,14 @@
 ﻿using Adnc.Infra.EventBus;
-using Adnc.Whse.Application.Contracts.Dtos;
-using Adnc.Whse.Application.Contracts.Services;
-using Adnc.Whse.Application.EventSubscribers.Etos;
+using Adnc.Ord.Application.Contracts.Dtos;
+using Adnc.Ord.Application.Contracts.Services;
+using Adnc.Ord.Application.EventSubscribers.Etos;
 using DotNetCore.CAP;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 
-namespace Adnc.Whse.Application.EventSubscribers
+namespace Adnc.Ord.Application.EventSubscribers
 {
     public sealed class CapEventSubscriber : ICapSubscribe
     {
@@ -26,18 +26,18 @@ namespace Adnc.Whse.Application.EventSubscribers
         #region across service event
 
         /// <summary>
-        /// 订阅订单创建事件
+        /// 订阅库存锁定事件
         /// </summary>
         /// <param name="warehouseQtyBlockedEvent"></param>
         /// <returns></returns>
-        [CapSubscribe("OrderCreatedEvent")]
-        public async Task ProcessWarehouseQtyBlockedEvent(BaseEvent<OrderCreatedEventData> eventObj)
+        [CapSubscribe("WarehouseQtyBlockedEvent")]
+        public async Task ProcessWarehouseQtyBlockedEvent(BaseEvent<WarehouseQtyBlockedEventData> eventObj)
 
         {
             var data = eventObj.Data;
             using var scope = _services.CreateScope();
-            var appSrv = scope.ServiceProvider.GetRequiredService<IWarehouseAppService>();
-            await appSrv.BlockQtyAsync(new WarehouseBlockQtyDto { OrderId = data.OrderId, Products = data.Products });
+            var appSrv = scope.ServiceProvider.GetRequiredService<IOrderAppService>();
+            await appSrv.MarkCreatedStatusAsync(data.OrderId, new OrderMarkCreatedStatusDto { IsSuccess = data.IsSuccess, Remark = data.Remark });
         }
 
         #endregion across service event

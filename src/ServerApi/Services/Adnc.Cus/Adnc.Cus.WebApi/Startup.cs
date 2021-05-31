@@ -38,10 +38,7 @@ namespace Adnc.Cus.WebApi
                 var maintServiceAddress = _environment.IsDevelopment() ? "http://localhost:5020" : "adnc.maint.webapi";
                 registion.AddRpcService<IMaintRpcService>(maintServiceAddress, policies);
 
-                registion.AddEventBusSubscribers(srv =>
-                {
-                    srv.AddScoped<CustomerRechargedEventSubscriber>();
-                });
+                registion.AddEventBusSubscribers<CapEventSubscriber>();
             });
         }
 
