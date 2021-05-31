@@ -1,9 +1,11 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 
 namespace Adnc.WebApi.Shared
 {
     public sealed class ServiceInfo
     {
+        public string Id { get; } = Guid.NewGuid().ToString().ToLower();
         public string CorsPolicy { get; set; } = "default";
         public string ShortName { get; private set; }
         public string FullName { get; private set; }
