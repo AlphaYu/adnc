@@ -24,7 +24,7 @@ namespace Adnc.Infra.EfCore.Repositories
     {
         protected virtual TDbContext DbContext { get; }
 
-        public AbstractEfBaseRepository(TDbContext dbContext)
+        protected AbstractEfBaseRepository(TDbContext dbContext)
         {
             DbContext = dbContext;
         }
@@ -81,7 +81,7 @@ namespace Adnc.Infra.EfCore.Repositories
             var dbSet = DbContext.Set<TEntity>().AsNoTracking();
             if (writeDb)
                 dbSet = dbSet.TagWith(EfCoreConsts.MAXSCALE_ROUTE_TO_MASTER);
-            return await dbSet.AnyAsync(whereExpression, cancellationToken);
+            return await EntityFrameworkQueryableExtensions.AnyAsync(dbSet, whereExpression, cancellationToken);
         }
 
         public virtual async Task<int> CountAsync(Expression<Func<TEntity, bool>> whereExpression, bool writeDb = false, CancellationToken cancellationToken = default)
@@ -89,7 +89,7 @@ namespace Adnc.Infra.EfCore.Repositories
             var dbSet = DbContext.Set<TEntity>().AsNoTracking();
             if (writeDb)
                 dbSet = dbSet.TagWith(EfCoreConsts.MAXSCALE_ROUTE_TO_MASTER);
-            return await dbSet.CountAsync(whereExpression);
+            return await EntityFrameworkQueryableExtensions.CountAsync(dbSet, whereExpression);
         }
 
         public virtual async Task<int> UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
@@ -128,7 +128,7 @@ namespace Adnc.Infra.EfCore.Repositories
         {
             var dbSet = this.GetDbSet(writeDb, false);
 
-            var total = await dbSet.CountAsync(whereExpression, cancellationToken);
+            var total = await EntityFrameworkQueryableExtensions.CountAsync(dbSet, whereExpression, cancellationToken);
             if (total == 0)
             {
                 return new PagedModel<TEntity>() { PageSize = pageSize };

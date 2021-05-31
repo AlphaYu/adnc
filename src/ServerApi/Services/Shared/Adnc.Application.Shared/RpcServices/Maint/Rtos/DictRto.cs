@@ -6,7 +6,7 @@ namespace Adnc.Application.Shared.RpcServices.Rtos
 {
     public class DictRto
     {
-        public long ID { get; set; }
+        public long Id { get; set; }
 
         public string Name { get; set; }
 

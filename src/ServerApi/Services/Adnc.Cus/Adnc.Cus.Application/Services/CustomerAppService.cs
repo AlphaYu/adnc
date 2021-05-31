@@ -4,9 +4,10 @@ using Adnc.Core.Shared.IRepositories;
 using Adnc.Cus.Application.Contracts.Dtos;
 using Adnc.Cus.Application.Contracts.Services;
 using Adnc.Cus.Core.Entities;
-using Adnc.Cus.Core.Services;
+using Adnc.Cus.Core.Events;
 using Adnc.Infra.Common.Extensions;
 using Adnc.Infra.Common.Helper;
+using Adnc.Infra.EventBus;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
@@ -20,8 +21,10 @@ namespace Adnc.Cus.Application.Services
     /// </summary>
     public class CustomerAppService : AbstractAppService, ICustomerAppService
     {
-        private readonly CustomerManagerService _cusManagerService;
         private readonly IEfRepository<Customer> _customerRepo;
+        private readonly IEfRepository<CustomerFinance> _cusFinaceRepo;
+        private readonly IEfRepository<CustomerTransactionLog> _cusTransactionLogRepo;
+        private readonly IEventPublisher _eventPublisher;
 
         /// <summary>
         /// 构造函数
@@ -31,10 +34,14 @@ namespace Adnc.Cus.Application.Services
         /// <param name="mapper"></param>
         public CustomerAppService(
              IEfRepository<Customer> customerRepo
-            , CustomerManagerService cusManagerService)
+            , IEfRepository<CustomerFinance> cusFinaceRepo
+            , IEfRepository<CustomerTransactionLog> cusTransactionLogRepo
+            , IEventPublisher eventPublisher)
         {
             _customerRepo = customerRepo;
-            _cusManagerService = cusManagerService;
+            _cusFinaceRepo = cusFinaceRepo;
+            _cusTransactionLogRepo = cusTransactionLogRepo;
+            _eventPublisher = eventPublisher;
         }
 
         /// <summary>
@@ -95,9 +102,90 @@ namespace Adnc.Cus.Application.Services
                 ExchageStatus = ExchageStatusEnum.Processing
             };
 
-            await _cusManagerService.RechargeAsync(cusTransactionLog);
+            await _cusTransactionLogRepo.InsertAsync(cusTransactionLog);
 
+            //发布充值事件
+            var eventId = IdGenerater.GetNextId();
+            var eventData = new CustomerRechargedEvent.EventData() { CustomerId = cusTransactionLog.CustomerId, TransactionLogId = cusTransactionLog.Id, Amount = cusTransactionLog.Amount };
+            var eventSource = System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.FullName;
+            await _eventPublisher.PublishAsync(new CustomerRechargedEvent(eventId, eventData, eventSource));
             return new SimpleDto<string>(cusTransactionLog.Id.ToString());
+        }
+
+        /// <summary>
+        /// 处理充值
+        /// </summary>
+        /// <param name="transactionLogId"></param>
+        /// <param name="customerId"></param>
+        /// <param name="amount"></param>
+        /// <returns></returns>
+        public async Task<AppSrvResult> ProcessRechargingAsync(long transactionLogId, long customerId, decimal amount)
+        {
+            var transLog = await _cusTransactionLogRepo.FindAsync(transactionLogId, noTracking: false);
+            if (transLog == null || transLog.ExchageStatus != ExchageStatusEnum.Processing)
+                return AppSrvResult();
+
+            var finance = await _cusFinaceRepo.FindAsync(customerId, noTracking: false);
+            var originalBalance = finance.Balance;
+            var newBalance = originalBalance + amount;
+
+            finance.Balance = newBalance;
+            await _cusFinaceRepo.UpdateAsync(finance);
+
+            transLog.ExchageStatus = ExchageStatusEnum.Finished;
+            transLog.ChangingAmount = originalBalance;
+            transLog.ChangedAmount = newBalance;
+            await _cusTransactionLogRepo.UpdateAsync(transLog);
+
+            return AppSrvResult();
+        }
+
+        /// <summary>
+        /// 处理付款
+        /// </summary>
+        /// <param name="transactionLogId"></param>
+        /// <param name="customerId"></param>
+        /// <param name="amount"></param>
+        /// <returns></returns>
+        public async Task<AppSrvResult> ProcessPayingAsync(long transactionLogId, long customerId, decimal amount)
+        {
+            var transLog = await _cusTransactionLogRepo.FindAsync(transactionLogId);
+            if (transLog != null)
+                return AppSrvResult();
+
+            var account = await _customerRepo.FetchAsync(x => x.Account, x => x.Id == customerId);
+            var finance = await _cusFinaceRepo.FindAsync(customerId, noTracking: false);
+            var originalBalance = finance.Balance;
+            var newBalance = originalBalance - amount;
+
+            if (newBalance >= 0)
+            {
+                finance.Balance = newBalance;
+                await _cusFinaceRepo.UpdateAsync(finance);
+
+                transLog = new CustomerTransactionLog
+                {
+                    Id = transactionLogId
+                    ,
+                    CustomerId = customerId
+                    ,
+                    Account = account
+                    ,
+                    ChangingAmount = originalBalance
+                    ,
+                    Amount = 0 - amount
+                    ,
+                    ChangedAmount = newBalance
+                    ,
+                    ExchangeType = ExchangeTypeEnum.Order
+                    ,
+                    ExchageStatus = ExchageStatusEnum.Finished
+                };
+
+                await _cusTransactionLogRepo.InsertAsync(transLog);
+            }
+
+            return AppSrvResult();
         }
 
         /// <summary>
@@ -108,8 +196,8 @@ namespace Adnc.Cus.Application.Services
         public async Task<AppSrvResult<PageModelDto<CustomerDto>>> GetPagedAsync(CustomerSearchPagedDto search)
         {
             Expression<Func<Customer, bool>> whereCondition = x => true;
-            if (search.Id.ToLong() > 0)
-                whereCondition = whereCondition.And(x => x.Id == search.Id.ToLong());
+            if (search.Id > 0)
+                whereCondition = whereCondition.And(x => x.Id == search.Id);
             if (search.Account.IsNotNullOrEmpty())
                 whereCondition = whereCondition.And(x => x.Account == search.Account);
 
@@ -122,7 +210,7 @@ namespace Adnc.Cus.Application.Services
                                 .Where(whereCondition)
                                 .Select(x => new CustomerDto
                                 {
-                                    Id = x.Id.ToString()
+                                    Id = x.Id
                                 ,
                                     Account = x.Account
                                 ,

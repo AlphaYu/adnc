@@ -2,7 +2,7 @@
 
 namespace Adnc.Cus.Application.Contracts.Dtos
 {
-    public class CustomerDto : OutputBaseAuditDto<string>
+    public class CustomerDto : OutputBaseAuditDto
     {
         public string Account { get; set; }
 

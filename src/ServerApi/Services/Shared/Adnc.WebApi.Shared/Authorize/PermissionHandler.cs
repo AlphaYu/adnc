@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.AspNetCore.Routing;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Filters;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
@@ -33,16 +33,17 @@ namespace Microsoft.AspNetCore.Authorization
             //}
             //else
             //{
-            var attribute = (context.Resource as RouteEndpoint).Metadata.GetMetadata<PermissionAttribute>();
-            var result = await CheckUserPermissions(userId, attribute.Codes);
-            if (result)
+            if (context.Resource is HttpContext httpContext)
             {
-                context.Succeed(requirement);
-                return;
+                var codes = httpContext.GetEndpoint().Metadata.GetMetadata<PermissionAttribute>().Codes;
+                var result = await CheckUserPermissions(userId, codes);
+                if (result)
+                {
+                    context.Succeed(requirement);
+                    return;
+                }
             }
-            //}
             context.Fail();
-            return;
         }
 
         protected abstract Task<bool> CheckUserPermissions(long userId, IEnumerable<string> codes);

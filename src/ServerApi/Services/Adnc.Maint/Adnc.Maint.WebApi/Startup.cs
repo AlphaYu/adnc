@@ -1,3 +1,4 @@
+using Adnc.Application.RpcService.Services;
 using Adnc.Infra.Consul;
 using Adnc.WebApi.Shared;
 using Autofac;
@@ -27,7 +28,15 @@ namespace Adnc.Maint.WebApi
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAdncServices<PermissionHandlerRemote>(_configuration, _environment, _serviceInfo);
+            services.AddAdncServices<PermissionHandlerRemote>(_configuration, _environment, _serviceInfo, registion =>
+            {
+                var policies = registion.GenerateDefaultRefitPolicies();
+                var authServiceAddress = _environment.IsDevelopment() ? "http://localhost:5010" : "adnc.usr.webapi";
+                registion.AddRpcService<IAuthRpcService>(authServiceAddress, policies);
+
+                var maintServiceAddress = _environment.IsDevelopment() ? "http://localhost:5020" : "adnc.maint.webapi";
+                registion.AddRpcService<IMaintRpcService>(maintServiceAddress, policies);
+            });
         }
 
         public void ConfigureContainer(ContainerBuilder builder)

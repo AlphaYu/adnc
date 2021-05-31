@@ -29,14 +29,13 @@ namespace Adnc.UnitTest.Fixtures
                         .InstancePerLifetimeScope();
 
             //注册DbContext Options
+            var serverVersion = new MariaDbServerVersion(new Version(10, 5, 4));
             containerBuilder.Register<DbContextOptions>(c =>
             {
                 var options = new DbContextOptionsBuilder<AdncDbContext>()
                 .UseLoggerFactory(LoggerFactory.Create(builder => builder.AddDebug()))
-                .UseMySql(dbstring, mySqlOptions =>
+                .UseMySql(dbstring, serverVersion, mySqlOptions =>
                 {
-                    mySqlOptions.ServerVersion(new ServerVersion(new Version(10, 5, 8), ServerType.MariaDb));
-                    mySqlOptions.CharSet(CharSet.Utf8Mb4);
                 })
                 .AddInterceptors(new CustomCommandInterceptor())
                 .Options;

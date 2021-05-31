@@ -1,5 +1,6 @@
-﻿using Adnc.Application.Shared.Dtos;
-using Adnc.Application.Shared.RpcServices;
+﻿using Adnc.Application.RpcService;
+using Adnc.Application.RpcService.Services;
+using Adnc.Application.Shared.Dtos;
 using Adnc.Application.Shared.Services;
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Infra.Common.Exceptions;
@@ -157,7 +158,7 @@ namespace Adnc.Whse.Application.Services
             if (pagedDto.Data.Count > 0)
             {
                 //调用maint微服务获取字典,组合商品状态信息
-                var rpcReuslt = await _maintRpcSrv.GetDictAsync(DictConsts.ProdunctStatusId);
+                var rpcReuslt = await _maintRpcSrv.GetDictAsync(Consts.ProdunctStatusId);
                 if (rpcReuslt.IsSuccessStatusCode && rpcReuslt.Content.Children.Count > 0)
                 {
                     var dicts = rpcReuslt.Content.Children;

@@ -14,8 +14,9 @@ namespace Adnc.Usr.Migrations.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.9")
-                .HasAnnotation("Relational:MaxIdentifierLength", 64);
+                .HasCharSet("utf8mb4 ")
+                .HasAnnotation("Relational:MaxIdentifierLength", 64)
+                .HasAnnotation("ProductVersion", "5.0.5");
 
             modelBuilder.Entity("Adnc.Usr.Core.Entities.SysDept", b =>
                 {
@@ -30,8 +31,8 @@ namespace Adnc.Usr.Migrations.Migrations
 
                     b.Property<string>("FullName")
                         .IsRequired()
-                        .HasColumnType("varchar(32) CHARACTER SET utf8mb4")
-                        .HasMaxLength(32);
+                        .HasMaxLength(32)
+                        .HasColumnType("varchar(32)");
 
                     b.Property<long?>("ModifyBy")
                         .HasColumnType("bigint");
@@ -46,17 +47,17 @@ namespace Adnc.Usr.Migrations.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<string>("Pids")
-                        .HasColumnType("varchar(80) CHARACTER SET utf8mb4")
-                        .HasMaxLength(80);
+                        .HasMaxLength(80)
+                        .HasColumnType("varchar(80)");
 
                     b.Property<string>("SimpleName")
                         .IsRequired()
-                        .HasColumnType("varchar(16) CHARACTER SET utf8mb4")
-                        .HasMaxLength(16);
+                        .HasMaxLength(16)
+                        .HasColumnType("varchar(16)");
 
                     b.Property<string>("Tips")
-                        .HasColumnType("varchar(64) CHARACTER SET utf8mb4")
-                        .HasMaxLength(64);
+                        .HasMaxLength(64)
+                        .HasColumnType("varchar(64)");
 
                     b.Property<int?>("Version")
                         .HasColumnType("int");
@@ -73,12 +74,12 @@ namespace Adnc.Usr.Migrations.Migrations
 
                     b.Property<string>("Code")
                         .IsRequired()
-                        .HasColumnType("varchar(16) CHARACTER SET utf8mb4")
-                        .HasMaxLength(16);
+                        .HasMaxLength(16)
+                        .HasColumnType("varchar(16)");
 
                     b.Property<string>("Component")
-                        .HasColumnType("varchar(64) CHARACTER SET utf8mb4")
-                        .HasMaxLength(64);
+                        .HasMaxLength(64)
+                        .HasColumnType("varchar(64)");
 
                     b.Property<long>("CreateBy")
                         .HasColumnType("bigint");
@@ -90,8 +91,8 @@ namespace Adnc.Usr.Migrations.Migrations
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Icon")
-                        .HasColumnType("varchar(16) CHARACTER SET utf8mb4")
-                        .HasMaxLength(16);
+                        .HasMaxLength(16)
+                        .HasColumnType("varchar(16)");
 
                     b.Property<bool>("IsMenu")
                         .HasColumnType("tinyint(1)");
@@ -110,30 +111,30 @@ namespace Adnc.Usr.Migrations.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("varchar(16) CHARACTER SET utf8mb4")
-                        .HasMaxLength(16);
+                        .HasMaxLength(16)
+                        .HasColumnType("varchar(16)");
 
                     b.Property<int>("Ordinal")
                         .HasColumnType("int");
 
                     b.Property<string>("PCode")
-                        .HasColumnType("varchar(16) CHARACTER SET utf8mb4")
-                        .HasMaxLength(16);
+                        .HasMaxLength(16)
+                        .HasColumnType("varchar(16)");
 
                     b.Property<string>("PCodes")
-                        .HasColumnType("varchar(128) CHARACTER SET utf8mb4")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("varchar(128)");
 
                     b.Property<bool>("Status")
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Tips")
-                        .HasColumnType("varchar(32) CHARACTER SET utf8mb4")
-                        .HasMaxLength(32);
+                        .HasMaxLength(32)
+                        .HasColumnType("varchar(32)");
 
                     b.Property<string>("Url")
-                        .HasColumnType("varchar(64) CHARACTER SET utf8mb4")
-                        .HasMaxLength(64);
+                        .HasMaxLength(64)
+                        .HasColumnType("varchar(64)");
 
                     b.HasKey("Id");
 
@@ -182,8 +183,8 @@ namespace Adnc.Usr.Migrations.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("varchar(32) CHARACTER SET utf8mb4")
-                        .HasMaxLength(32);
+                        .HasMaxLength(32)
+                        .HasColumnType("varchar(32)");
 
                     b.Property<int>("Ordinal")
                         .HasColumnType("int");
@@ -192,8 +193,8 @@ namespace Adnc.Usr.Migrations.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<string>("Tips")
-                        .HasColumnType("varchar(64) CHARACTER SET utf8mb4")
-                        .HasMaxLength(64);
+                        .HasMaxLength(64)
+                        .HasColumnType("varchar(64)");
 
                     b.Property<int?>("Version")
                         .HasColumnType("int");
@@ -210,12 +211,12 @@ namespace Adnc.Usr.Migrations.Migrations
 
                     b.Property<string>("Account")
                         .IsRequired()
-                        .HasColumnType("varchar(16) CHARACTER SET utf8mb4")
-                        .HasMaxLength(16);
+                        .HasMaxLength(16)
+                        .HasColumnType("varchar(16)");
 
                     b.Property<string>("Avatar")
-                        .HasColumnType("varchar(64) CHARACTER SET utf8mb4")
-                        .HasMaxLength(64);
+                        .HasMaxLength(64)
+                        .HasColumnType("varchar(64)");
 
                     b.Property<DateTime?>("Birthday")
                         .HasColumnType("datetime(6)");
@@ -230,8 +231,8 @@ namespace Adnc.Usr.Migrations.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<string>("Email")
-                        .HasColumnType("varchar(32) CHARACTER SET utf8mb4")
-                        .HasMaxLength(32);
+                        .HasMaxLength(32)
+                        .HasColumnType("varchar(32)");
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
@@ -246,26 +247,26 @@ namespace Adnc.Usr.Migrations.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("varchar(16) CHARACTER SET utf8mb4")
-                        .HasMaxLength(16);
+                        .HasMaxLength(16)
+                        .HasColumnType("varchar(16)");
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("varchar(32) CHARACTER SET utf8mb4")
-                        .HasMaxLength(32);
+                        .HasMaxLength(32)
+                        .HasColumnType("varchar(32)");
 
                     b.Property<string>("Phone")
-                        .HasColumnType("varchar(11) CHARACTER SET utf8mb4")
-                        .HasMaxLength(11);
+                        .HasMaxLength(11)
+                        .HasColumnType("varchar(11)");
 
                     b.Property<string>("RoleIds")
-                        .HasColumnType("varchar(72) CHARACTER SET utf8mb4")
-                        .HasMaxLength(72);
+                        .HasMaxLength(72)
+                        .HasColumnType("varchar(72)");
 
                     b.Property<string>("Salt")
                         .IsRequired()
-                        .HasColumnType("varchar(6) CHARACTER SET utf8mb4")
-                        .HasMaxLength(6);
+                        .HasMaxLength(6)
+                        .HasColumnType("varchar(6)");
 
                     b.Property<int>("Sex")
                         .HasColumnType("int");
@@ -296,6 +297,10 @@ namespace Adnc.Usr.Migrations.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Menu");
+
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("Adnc.Usr.Core.Entities.SysUser", b =>
@@ -304,6 +309,23 @@ namespace Adnc.Usr.Migrations.Migrations
                         .WithMany("Users")
                         .HasForeignKey("DeptId")
                         .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Dept");
+                });
+
+            modelBuilder.Entity("Adnc.Usr.Core.Entities.SysDept", b =>
+                {
+                    b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("Adnc.Usr.Core.Entities.SysMenu", b =>
+                {
+                    b.Navigation("Relations");
+                });
+
+            modelBuilder.Entity("Adnc.Usr.Core.Entities.SysRole", b =>
+                {
+                    b.Navigation("Relations");
                 });
 #pragma warning restore 612, 618
         }

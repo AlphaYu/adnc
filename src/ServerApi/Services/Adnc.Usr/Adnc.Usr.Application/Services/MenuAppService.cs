@@ -29,15 +29,15 @@ namespace Adnc.Usr.Application.Services
         {
             var allMenus = await _cacheService.GetAllMenusFromCacheAsync();
 
-            var isExistsCode = allMenus.Where(x => x.Code == input.Code).Any();
+            var isExistsCode = allMenus.Any(x => x.Code == input.Code);
             if (isExistsCode)
                 return Problem(HttpStatusCode.Forbidden, "该菜单编码已经存在");
 
-            var isExistsName = allMenus.Where(x => x.Name == input.Name).Any();
+            var isExistsName = allMenus.Any(x => x.Name == input.Name);
             if (isExistsName)
                 return Problem(HttpStatusCode.Forbidden, "该菜单名称已经存在");
 
-            var parentMenu = allMenus.Where(x => x.Code == input.PCode).FirstOrDefault();
+            var parentMenu = allMenus.FirstOrDefault(x => x.Code == input.PCode);
             var addDto = ProducePCodes(input, parentMenu);
             var menu = Mapper.Map<SysMenu>(addDto);
             menu.Id = IdGenerater.GetNextId();
@@ -50,15 +50,15 @@ namespace Adnc.Usr.Application.Services
         {
             var allMenus = await _cacheService.GetAllMenusFromCacheAsync();
 
-            var isExistsCode = allMenus.Where(x => x.Code == input.Code && x.Id != id).Any();
+            var isExistsCode = allMenus.Any(x => x.Code == input.Code && x.Id != id);
             if (isExistsCode)
                 return Problem(HttpStatusCode.BadRequest, "该菜单编码已经存在");
 
-            var isExistsName = allMenus.Where(x => x.Name == input.Name && x.Id != id).Any();
+            var isExistsName = allMenus.Any(x => x.Name == input.Name && x.Id != id);
             if (isExistsName)
                 return Problem(HttpStatusCode.BadRequest, "该菜单名称已经存在");
 
-            var parentMenu = allMenus.Where(x => x.Code == input.PCode).FirstOrDefault();
+            var parentMenu = allMenus.FirstOrDefault(x => x.Code == input.PCode);
             var updateDto = ProducePCodes(input, parentMenu);
             var menu = Mapper.Map<SysMenu>(updateDto);
 
@@ -86,10 +86,10 @@ namespace Adnc.Usr.Application.Services
             return AppSrvResult();
         }
 
-        public async Task<AppSrvResult> DeleteAsync(long Id)
+        public async Task<AppSrvResult> DeleteAsync(long id)
         {
-            var menu = (await _cacheService.GetAllMenusFromCacheAsync()).Where(x => x.Id == Id).FirstOrDefault();
-            await _menuRepository.DeleteRangeAsync(x => x.PCodes.Contains($"[{menu.Code}]") || x.Id == Id);
+            var menu = (await _cacheService.GetAllMenusFromCacheAsync()).FirstOrDefault(x => x.Id == id);
+            await _menuRepository.DeleteRangeAsync(x => x.PCodes.Contains($"[{menu.Code}]") || x.Id == id);
 
             return AppSrvResult();
         }

@@ -1,47 +1,45 @@
 ﻿using Adnc.Infra.EventBus;
 using Adnc.Whse.Application.Contracts.Dtos;
 using Adnc.Whse.Application.Contracts.Services;
+using Adnc.Whse.Application.EventSubscribers.Etos;
 using DotNetCore.CAP;
-using System.Collections.Generic;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Threading.Tasks;
 
 namespace Adnc.Whse.Application.EventSubscribers
 {
-    /// <summary>
-    /// 订单创建事件订阅者
-    /// </summary>
-    public class OrderCreatedEventSubscirber : ICapSubscribe
+    public sealed class CapEventSubscriber : ICapSubscribe
     {
-        private readonly IWarehouseAppService _warehouseSrv;
+        private readonly IServiceProvider _services;
+        private readonly ILogger<CapEventSubscriber> _logger;
 
-        /// <summary>
-        /// 构造函数
-        /// </summary>
-        /// <param name="warehouseSrv"><see cref="IWarehouseAppService"/></param>
-        public OrderCreatedEventSubscirber(IWarehouseAppService warehouseSrv)
+        public CapEventSubscriber(
+            IServiceProvider services
+            , ILogger<CapEventSubscriber> logger)
         {
-            _warehouseSrv = warehouseSrv;
+            _services = services;
+            _logger = logger;
         }
 
+        #region across service event
+
         /// <summary>
-        /// 事件处理程序
+        /// 订阅订单创建事件
         /// </summary>
-        /// <param name="orderCreatedEvent"></param>
+        /// <param name="warehouseQtyBlockedEvent"></param>
         /// <returns></returns>
         [CapSubscribe("OrderCreatedEvent")]
-        public async Task Process(BaseEvent<EventData> orderCreatedEvent)
+        public async Task ProcessWarehouseQtyBlockedEvent(BaseEvent<OrderCreatedEventData> eventObj)
+
         {
-            await _warehouseSrv.BlockQtyAsync(new WarehouseBlockQtyDto { OrderId = orderCreatedEvent.Data.OrderId, Products = orderCreatedEvent.Data.Products });
+            var data = eventObj.Data;
+            using var scope = _services.CreateScope();
+            var appSrv = scope.ServiceProvider.GetRequiredService<IWarehouseAppService>();
+            await appSrv.BlockQtyAsync(new WarehouseBlockQtyDto { OrderId = data.OrderId, Products = data.Products });
         }
 
-        /// <summary>
-        /// 订单创建事件数据
-        /// </summary>
-        public class EventData
-        {
-            public long OrderId { get; set; }
-
-            public ICollection<(long ProductId, int Qty)> Products { get; set; }
-        }
+        #endregion across service event
     }
 }

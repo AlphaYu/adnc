@@ -13,6 +13,7 @@
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
+        "SKYWALKING__SERVICENAME": "adnc.usr.webapi.dev",
         "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "SkyAPM.Agent.AspNetCore"
       }
     },
@@ -20,8 +21,8 @@
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
-        "SKYWALKING__SERVICENAME": "adnc.usr.webapi.dev",
         "ASPNETCORE_ENVIRONMENT": "Development",
+        "SKYWALKING__SERVICENAME": "adnc.usr.webapi.dev",
         "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "SkyAPM.Agent.AspNetCore"
       },
       "applicationUrl": "http://localhost:5010"

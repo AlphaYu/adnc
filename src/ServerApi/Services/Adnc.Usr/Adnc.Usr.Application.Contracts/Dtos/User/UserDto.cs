@@ -7,7 +7,7 @@ namespace Adnc.Usr.Application.Contracts.Dtos
     /// 用户
     /// </summary>
     [Serializable]
-    public class UserDto : OutputBaseAuditDto<long>
+    public class UserDto : OutputBaseAuditDto
     {
         /// <summary>
         /// 账户

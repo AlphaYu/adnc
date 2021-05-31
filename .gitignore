@@ -10,3 +10,4 @@ node_modules
 *.log
 logs
 /src/ServerApi/.sonarqube
+/src/ServerApi/.sonarlint

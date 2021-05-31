@@ -1,30 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
+	<Import Project="..\..\..\build\common.props" />
 	<PropertyGroup>
 		<TargetFramework>netstandard2.1</TargetFramework>
-		<AssemblyName>Adnc.Maint.Application.Contracts</AssemblyName>
-		<RootNamespace>Adnc.Maint.Application.Contracts</RootNamespace>
-		<Version>0.8.1</Version>
-		<Authors>Alpha.Yu</Authors>
-		<Product>Adnc</Product>
-		<RepositoryUrl>https://github.com/AlphaYu</RepositoryUrl>
-		<RepositoryType>git</RepositoryType>
-		<PackageProjectUrl>https://www.aspdotnetcore.net</PackageProjectUrl>
-		<Copyright>Alpha</Copyright>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-	  <DocumentationFile>.\Adnc.Maint.Application.Contracts.xml</DocumentationFile>
+		<DocumentationFile>.\Adnc.Maint.Application.Contracts.xml</DocumentationFile>
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\Shared\Adnc.Application.Shared\Adnc.Application.Shared.csproj" />
+		<ProjectReference Include="..\..\Shared\Adnc.Application.Shared\Adnc.Application.Shared.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Update="Adnc.Maint.Application.Contracts.xml">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
+		<None Update="Adnc.Maint.Application.Contracts.xml">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
 	</ItemGroup>
-
 </Project>

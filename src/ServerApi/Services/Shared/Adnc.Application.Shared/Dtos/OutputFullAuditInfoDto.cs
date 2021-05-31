@@ -7,16 +7,16 @@ namespace Adnc.Application.Shared.Dtos
     /// </summary>
     /// <typeparam name="TKey"></typeparam>
    	[Serializable]
-    public abstract class OutputFullAuditInfoDto<TKey> : OutputBaseAuditDto<TKey>, IFullAuditInfo, IOutputDto<TKey>
+    public abstract class OutputFullAuditInfoDto : OutputBaseAuditDto, IFullAuditInfo
     {
         /// <summary>
         /// 最后更新人
         /// </summary>
-        public long? ModifyBy { get; set; }
+        public virtual long? ModifyBy { get; set; }
 
         /// <summary>
         /// 最后更新时间
         /// </summary>
-        public DateTime? ModifyTime { get; set; }
+        public virtual DateTime? ModifyTime { get; set; }
     }
 }

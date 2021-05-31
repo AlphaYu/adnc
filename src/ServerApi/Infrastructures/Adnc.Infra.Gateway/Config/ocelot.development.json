@@ -1,4 +1,5 @@
 {
+  //direct
   "GlobalConfiguration": {
     "BaseUrl": "http://localhost:5002"
   },

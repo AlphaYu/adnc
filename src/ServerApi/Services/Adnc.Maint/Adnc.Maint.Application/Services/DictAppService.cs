@@ -6,7 +6,6 @@ using Adnc.Maint.Application.Contracts.Dtos;
 using Adnc.Maint.Application.Contracts.Services;
 using Adnc.Maint.Application.Services.Caching;
 using Adnc.Maint.Core.Entities;
-using Adnc.Maint.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,15 +18,12 @@ namespace Adnc.Maint.Application.Services
     public class DictAppService : AbstractAppService, IDictAppService
     {
         private readonly IEfRepository<SysDict> _dictRepository;
-        private readonly MaintManager _maintManager;
         private readonly CacheService _cacheService;
 
         public DictAppService(IEfRepository<SysDict> dictRepository
-            , MaintManager maintManager
             , CacheService cacheService)
         {
             _dictRepository = dictRepository;
-            _maintManager = maintManager;
             _cacheService = cacheService;
         }
 
@@ -90,7 +86,12 @@ namespace Adnc.Maint.Application.Services
             });
 
             // 这里需要事务处理
-            await _maintManager.UpdateDictsAsync(dict, subDicts);
+            await _dictRepository.UpdateAsync(dict, UpdatingProps<SysDict>(d => d.Name, d => d.Value, d => d.Ordinal));
+            await _dictRepository.DeleteRangeAsync(d => d.Pid == dict.Id);
+            if (subDicts?.Count > 0)
+            {
+                await _dictRepository.InsertRangeAsync(subDicts);
+            }
 
             return AppSrvResult();
         }

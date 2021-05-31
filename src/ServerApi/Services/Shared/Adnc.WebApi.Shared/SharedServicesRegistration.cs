@@ -1,4 +1,4 @@
-﻿using Adnc.Application.Shared.RpcServices;
+﻿using Adnc.Application.RpcService;
 using Adnc.Infra.Common.Helper;
 using Adnc.Infra.Consul;
 using Adnc.Infra.Consul.Consumer;
@@ -8,14 +8,19 @@ using Adnc.Infra.EventBus.RabbitMq;
 using Adnc.Infra.Mongo;
 using Adnc.Infra.Mongo.Configuration;
 using Adnc.Infra.Mongo.Extensions;
+using Adnc.Application.Shared.Caching;
 using Adnc.WebApi.Shared.Extensions;
 using DotNetCore.CAP.Dashboard;
 using DotNetCore.CAP.Dashboard.NodeDiscovery;
+using SkyApm.Diagnostics.CAP;
+using SkyApm.Diagnostics.MongoDB;
+using SkyApm.Utilities.DependencyInjection;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
@@ -29,8 +34,6 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Polly;
 using Polly.Timeout;
-using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
-using Pomelo.EntityFrameworkCore.MySql.Storage;
 using Refit;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
@@ -40,11 +43,14 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.NetworkInformation;
+using System.Net.Sockets;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
+using DotNetCore.CAP;
 
 namespace Adnc.WebApi.Shared
 {
@@ -143,6 +149,9 @@ namespace Adnc.WebApi.Shared
                     };
                 };
             });
+
+            //add skyamp
+            _services.AddSkyApmExtensions().AddCaching();
         }
 
         /// <summary>
@@ -151,15 +160,15 @@ namespace Adnc.WebApi.Shared
         public virtual void AddEfCoreContext()
         {
             var mysqlConfig = _configuration.GetMysqlSection().Get<MysqlConfig>();
+            var serverVersion = new MariaDbServerVersion(new Version(10, 5, 4));
             _services.AddDbContext<AdncDbContext>(options =>
             {
-                options.UseMySql(mysqlConfig.ConnectionString, mySqlOptions =>
+                options.UseMySql(mysqlConfig.ConnectionString, serverVersion, optionsBuilder =>
                 {
-                    mySqlOptions.ServerVersion(new ServerVersion(new Version(10, 5, 4), ServerType.MariaDb));
-                    mySqlOptions.MinBatchSize(2);
-                    mySqlOptions.CommandTimeout(10);
-                    mySqlOptions.MigrationsAssembly(_serviceInfo.AssemblyName.Replace("WebApi", "Migrations"));
-                    mySqlOptions.CharSet(CharSet.Utf8Mb4);
+                    optionsBuilder.MinBatchSize(2);
+                    optionsBuilder.CommandTimeout(10);
+                    optionsBuilder.MigrationsAssembly(_serviceInfo.AssemblyName.Replace("WebApi", "Migrations"));
+                    optionsBuilder.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
                 });
 
                 if (_environment.IsDevelopment())
@@ -379,9 +388,16 @@ namespace Adnc.WebApi.Shared
         /// <param name="tableNamePrefix">cap表面前缀</param>
         /// <param name="groupName">群组名子</param>
         /// <param name="func">回调函数</param>
-        public virtual void AddEventBusSubscribers(string tableNamePrefix, string groupName, Action<IServiceCollection> func = null)
+        public virtual void AddEventBusSubscribers<TSubscriber>()
+            where TSubscriber : class, ICapSubscribe
         {
-            func?.Invoke(_services);
+            var tableNamePrefix = "Cap";
+            var groupName = $"adnc-cap-{_environment.EnvironmentName.ToLower()}";
+
+            //add skyamp
+            _services.AddSkyApmExtensions().AddCap();
+
+            _services.AddSingleton<TSubscriber>();
 
             var rabbitMqConfig = _configuration.GetRabbitMqSection().Get<RabbitMqConfig>();
             _services.AddCap(x =>
@@ -403,7 +419,7 @@ namespace Adnc.WebApi.Shared
                 });
                 x.Version = _serviceInfo.Version;
                 //默认值：cap.queue.{程序集名称},在 RabbitMQ 中映射到 Queue Names。
-                x.DefaultGroup = groupName;
+                x.DefaultGroupName = groupName;
                 //默认值：60 秒,重试 & 间隔
                 //在默认情况下，重试将在发送和消费消息失败的 4分钟后 开始，这是为了避免设置消息状态延迟导致可能出现的问题。
                 //发送和消费消息的过程中失败会立即重试 3 次，在 3 次以后将进入重试轮询，此时 FailedRetryInterval 配置才会生效。
@@ -433,7 +449,30 @@ namespace Adnc.WebApi.Shared
                 //必须是生产环境才注册cap服务到consul
                 if ((_environment.IsProduction() || _environment.IsStaging()))
                 {
-                    x.UseDiscovery();
+                    x.UseDiscovery(discoverOptions =>
+                    {
+                        var consulConfig = _configuration.GetConsulConfig();
+                        var consulAdderss = new Uri(consulConfig.ConsulUrl);
+
+                        var hostIps = NetworkInterface
+                                            .GetAllNetworkInterfaces()
+                                            .Where(network => network.OperationalStatus == OperationalStatus.Up)
+                                            .Select(network => network.GetIPProperties())
+                                            .OrderByDescending(properties => properties.GatewayAddresses.Count)
+                                            .SelectMany(properties => properties.UnicastAddresses)
+                                            .Where(address => !IPAddress.IsLoopback(address.Address) && address.Address.AddressFamily == AddressFamily.InterNetwork)
+                                            .ToArray();
+
+                        var currenServerAddress = hostIps.First().Address.MapToIPv4().ToString();
+
+                        discoverOptions.DiscoveryServerHostName = consulAdderss.Host;
+                        discoverOptions.DiscoveryServerPort = consulAdderss.Port;
+                        discoverOptions.CurrentNodeHostName = currenServerAddress;
+                        discoverOptions.CurrentNodePort = 80;
+                        discoverOptions.NodeId = DateTime.Now.Ticks.ToString();
+                        discoverOptions.NodeName = _serviceInfo.FullName.Replace("webapi", "cap");
+                        discoverOptions.MatchPath = $"/{_serviceInfo.ShortName}/cap";
+                    });
                 }
             });
         }

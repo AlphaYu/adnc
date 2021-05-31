@@ -1,24 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
+	<Import Project="..\..\..\build\common.props" />
 	<PropertyGroup>
 		<TargetFramework>netstandard2.1</TargetFramework>
-		<Version>0.8.1</Version>
-		<Authors>Alpha.Yu</Authors>
-		<Product>Adnc</Product>
-		<RepositoryUrl>https://github.com/AlphaYu</RepositoryUrl>
-		<RepositoryType>git</RepositoryType>
-		<PackageProjectUrl>https://www.aspdotnetcore.net</PackageProjectUrl>
-		<Copyright>Alpha</Copyright>
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Compile Remove="IRepositories\**" />
-	  <EmbeddedResource Remove="IRepositories\**" />
-	  <None Remove="IRepositories\**" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.EventBus\Adnc.Infra.EventBus.csproj" />
-	  <ProjectReference Include="..\..\Shared\Adnc.Core.Shared\Adnc.Core.Shared.csproj" />
+		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.EventBus\Adnc.Infra.EventBus.csproj" />
+		<ProjectReference Include="..\..\Shared\Adnc.Core.Shared\Adnc.Core.Shared.csproj" />
 	</ItemGroup>
 </Project>

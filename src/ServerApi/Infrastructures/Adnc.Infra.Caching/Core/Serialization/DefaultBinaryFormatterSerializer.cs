@@ -25,7 +25,7 @@ namespace Adnc.Infra.Caching.Core.Serialization
         {
             using (var ms = new MemoryStream(bytes))
             {
-                return (T)(new BinaryFormatter().Deserialize(ms));
+                return (T)new BinaryFormatter().Deserialize(ms);
             }
         }
 
@@ -39,7 +39,7 @@ namespace Adnc.Infra.Caching.Core.Serialization
         {
             using (var ms = new MemoryStream(bytes))
             {
-                return (new BinaryFormatter().Deserialize(ms));
+                return new BinaryFormatter().Deserialize(ms);
             }
         }
 

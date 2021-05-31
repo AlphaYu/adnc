@@ -2,8 +2,13 @@
 
 namespace Adnc.Infra.EventBus
 {
+    [Serializable]
     public class BaseEvent<TData> : IEvent
     {
+        public BaseEvent()
+        {
+        }
+
         public BaseEvent(long id, TData data, string source)
         {
             this.Id = id;

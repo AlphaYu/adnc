@@ -1,3 +1,4 @@
+using Adnc.Application.RpcService.Services;
 using Adnc.Infra.Consul;
 using Adnc.WebApi.Shared;
 using Adnc.Whse.Application.EventSubscribers;
@@ -30,10 +31,14 @@ namespace Adnc.Whse.WebApi
         {
             services.AddAdncServices<PermissionHandlerRemote>(_configuration, _environment, _serviceInfo, (registion) =>
             {
-                registion.AddEventBusSubscribers("Cap", "adnc-cap", (srv) =>
-                {
-                    srv.AddScoped<OrderCreatedEventSubscirber>();
-                });
+                var policies = registion.GenerateDefaultRefitPolicies();
+                var authServeiceAddress = _environment.IsDevelopment() ? "http://localhost:5010" : "adnc.usr.webapi";
+                registion.AddRpcService<IAuthRpcService>(authServeiceAddress, policies);
+
+                var maintServiceAddress = _environment.IsDevelopment() ? "http://localhost:5020" : "adnc.maint.webapi";
+                registion.AddRpcService<IMaintRpcService>(maintServiceAddress, policies);
+
+                registion.AddEventBusSubscribers<CapEventSubscriber>();
             });
         }
 
