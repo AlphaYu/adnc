@@ -16,11 +16,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20201123161344_20201123_01.cs" />
-    <Compile Remove="Migrations\20201123161344_20201123_01.Designer.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.EfCore\Adnc.Infra.EfCore.csproj" />
   </ItemGroup>
 

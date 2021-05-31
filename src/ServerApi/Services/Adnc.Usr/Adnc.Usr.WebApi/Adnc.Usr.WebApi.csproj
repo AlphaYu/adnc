@@ -3,21 +3,21 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>$(NoWarn);1591</NoWarn>
-	<SatelliteResourceLanguages>zh-Hans</SatelliteResourceLanguages>
-	<SatelliteResourceLanguages>zh-Hant</SatelliteResourceLanguages>
-	<SatelliteResourceLanguages>en</SatelliteResourceLanguages>
-	<RootNamespace>Adnc.Usr.WebApi</RootNamespace>
-	<AssemblyName>Adnc.Usr.WebApi</AssemblyName>
-	<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-	<DockerfileContext>..\..\..</DockerfileContext>
-	<Version>0.8.1</Version>
+    <SatelliteResourceLanguages>zh-Hans</SatelliteResourceLanguages>
+    <SatelliteResourceLanguages>zh-Hant</SatelliteResourceLanguages>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    <RootNamespace>Adnc.Usr.WebApi</RootNamespace>
+    <AssemblyName>Adnc.Usr.WebApi</AssemblyName>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\..\..</DockerfileContext>
+    <Version>0.8.1</Version>
     <Authors>Alpha.Yu</Authors>
-	<Product>Adnc</Product>
-	<Description>用户中心服务</Description>
-	<RepositoryUrl>https://github.com/AlphaYu</RepositoryUrl>
-	<RepositoryType>git</RepositoryType>
-	<PackageProjectUrl>https://www.aspdotnetcore.net</PackageProjectUrl>
-	<Copyright>Alpha</Copyright>  
+    <Product>Adnc</Product>
+    <Description>用户中心服务</Description>
+    <RepositoryUrl>https://github.com/AlphaYu</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageProjectUrl>https://www.aspdotnetcore.net</PackageProjectUrl>
+    <Copyright>Alpha</Copyright>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -31,19 +31,19 @@
     <None Remove="logs\**" />
   </ItemGroup>
 
-	<ItemGroup>
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.9">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.9">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
-		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.13" />
-	</ItemGroup>
-	
-	<ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.9">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.9">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.13" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Update="nlog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -56,5 +56,9 @@
     <ProjectReference Include="..\Adnc.Usr.Application\Adnc.Usr.Application.csproj" />
   </ItemGroup>
 
-  <ProjectExtensions><VisualStudio><UserProperties properties_4launchsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties properties_4launchsettings_1json__JsonSchema="" />
+    </VisualStudio>
+  </ProjectExtensions>
 </Project>
