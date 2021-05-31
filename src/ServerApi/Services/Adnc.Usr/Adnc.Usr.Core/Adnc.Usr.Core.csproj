@@ -11,12 +11,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Compile Remove="EventBus\**" />
-		<EmbeddedResource Remove="EventBus\**" />
-		<None Remove="EventBus\**" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<ProjectReference Include="..\..\Shared\Adnc.Core.Shared\Adnc.Core.Shared.csproj" />
 	</ItemGroup>
 </Project>

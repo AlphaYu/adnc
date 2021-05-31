@@ -1,4 +1,5 @@
 ﻿using Adnc.Cus.Application.Contracts.Services;
+using Adnc.Cus.Application.Services;
 using Adnc.Infra.EventBus;
 using DotNetCore.CAP;
 using System.Threading.Tasks;

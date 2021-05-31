@@ -14,7 +14,7 @@ namespace Adnc.Usr.Core.RepositoryExtensions
             var query = repo.GetAll<SysRelation>().Where(r => roleIds.Contains(r.RoleId))
                             .Select(u => new { u.Menu });
             if (enabledOnly)
-                query = query.Where(r => r.Menu.Status == true);
+                query = query.Where(r => r.Menu.Status);
 
             var relations = await query.ToListAsync();
 

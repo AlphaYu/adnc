@@ -194,8 +194,6 @@ namespace Adnc.WebApi.Shared
                 options.PluralizeCollectionNames = mongoConfig.PluralizeCollectionNames;
                 options.CollectionNamingConvention = (NamingConvention)mongoConfig.CollectionNamingConvention;
             });
-            //add skyamp
-            _services.AddSkyApmExtensions().AddMongoDB();
         }
 
         /// <summary>

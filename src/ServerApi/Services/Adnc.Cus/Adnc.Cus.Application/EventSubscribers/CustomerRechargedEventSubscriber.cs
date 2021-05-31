@@ -1,4 +1,4 @@
-﻿using Adnc.Cus.Core.Services;
+﻿using Adnc.Cus.Application.Contracts.Services;
 using Adnc.Infra.EventBus.Cap;
 using DotNetCore.CAP;
 using System.Threading.Tasks;
@@ -10,16 +10,15 @@ namespace Adnc.Cus.Application.EventSubscribers
     /// </summary>
     public class CustomerRechargedEventSubscriber : CapSubscriber
     {
-        private CustomerManagerService _customerMgr;
+        private readonly ICustomerAppService _customerAppSrv;
 
         /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="customerMgr"></param>
-        public CustomerRechargedEventSubscriber(
-            CustomerManagerService customerMgr)
+        public CustomerRechargedEventSubscriber(ICustomerAppService customerAppSrv)
         {
-            _customerMgr = customerMgr;
+            _customerAppSrv = customerAppSrv;
         }
 
         /// <summary>
@@ -30,7 +29,7 @@ namespace Adnc.Cus.Application.EventSubscribers
         [CapSubscribe(nameof(Core.Events.CustomerRechargedEvent))]
         public async Task Process(Core.Events.CustomerRechargedEvent eto)
         {
-            await _customerMgr.ProcessRechargingAsync(eto.Data.TransactionLogId, eto.Data.CustomerId, eto.Data.Amount);
+            await _customerAppSrv.ProcessRechargingAsync(eto.Data.TransactionLogId, eto.Data.CustomerId, eto.Data.Amount);
         }
     }
 }

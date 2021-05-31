@@ -13,10 +13,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Compile Remove="CustomEasyCachingServiceCollectionExtensions.cs" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<ProjectReference Include="..\Adnc.Usr.Application.Contracts\Adnc.Usr.Application.Contracts.csproj" />
 		<ProjectReference Include="..\Adnc.Usr.Core\Adnc.Usr.Core.csproj" />
 	</ItemGroup>

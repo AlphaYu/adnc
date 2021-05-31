@@ -5,12 +5,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Compile Remove="IRepositories\**" />
-		<EmbeddedResource Remove="IRepositories\**" />
-		<None Remove="IRepositories\**" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.EventBus\Adnc.Infra.EventBus.csproj" />
 		<ProjectReference Include="..\..\Shared\Adnc.Core.Shared\Adnc.Core.Shared.csproj" />
 	</ItemGroup>
