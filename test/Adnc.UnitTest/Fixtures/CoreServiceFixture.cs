@@ -44,7 +44,7 @@ namespace Adnc.UnitTest.Fixtures
                        .As<ICapPublisher>().SingleInstance();
 
             //注册Adnc.Infra.EfCore
-            AdncInfrEfCoreModule.Register(containerBuilder);
+            AdncInfraEfCoreModule.Register(containerBuilder);
 
             //注册 Adnc.Cus.Core
             AdncCusCoreModule.Register(containerBuilder);

@@ -7,7 +7,7 @@ namespace Adnc.Infra.Mongo
     /// <summary>
     /// Autofac注册
     /// </summary>
-    public class AdncInfrMongoModule : Module
+    public class AdncInfraMongoModule : Module
     {
         protected override void Load(ContainerBuilder builder)
         {
