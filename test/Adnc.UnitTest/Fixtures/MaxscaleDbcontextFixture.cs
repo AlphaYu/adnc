@@ -52,7 +52,7 @@ namespace Adnc.UnitTest.Fixtures
                             .InstancePerLifetimeScope();
 
             //注册Adnc.Infra.EfCore
-            AdncInfrEfCoreModule.Register(containerBuilder);
+            AdncInfraEfCoreModule.Register(containerBuilder);
 
             var services = Container = containerBuilder.Build();
         }

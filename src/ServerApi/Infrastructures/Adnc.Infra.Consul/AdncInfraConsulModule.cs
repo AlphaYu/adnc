@@ -8,11 +8,11 @@ namespace Adnc.Infra.Consul
     /// <summary>
     /// Autofac注册
     /// </summary>
-    public class AdncInfrConsulModule : Module
+    public class AdncInfraConsulModule : Module
     {
         private readonly string _consulAddress;
 
-        public AdncInfrConsulModule(string consulAddress)
+        public AdncInfraConsulModule(string consulAddress)
         {
             _consulAddress = consulAddress;
         }

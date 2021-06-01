@@ -26,9 +26,9 @@ namespace Autofac
             , ServiceInfo serverInfo
             , Action<ContainerBuilder> completedExecute = null)
         {
-            builder.RegisterModule<AdncInfrMongoModule>();
-            builder.RegisterModule<AdncInfrEfCoreModule>();
-            builder.RegisterModule(new AdncInfrConsulModule(configuration.GetConsulConfig().ConsulUrl));
+            builder.RegisterModule<AdncInfraMongoModule>();
+            builder.RegisterModule<AdncInfraEfCoreModule>();
+            builder.RegisterModule(new AdncInfraConsulModule(configuration.GetConsulConfig().ConsulUrl));
 
             var appAssembly = Assembly.Load(serverInfo.AssemblyFullName.Replace("WebApi", "Application"));
             var appModelType = appAssembly.GetTypes().FirstOrDefault(m =>

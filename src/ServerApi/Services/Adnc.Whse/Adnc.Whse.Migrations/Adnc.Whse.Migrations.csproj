@@ -1,45 +1,45 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	<Import Project="..\..\..\build\common.props" />
-	<PropertyGroup>
-		<TargetFramework>net5.0</TargetFramework>
-	</PropertyGroup>
+  <Import Project="..\..\..\build\common.props" />
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
 
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-		<OutputPath>..\Adnc.Whse.WebApi\bin\$(Configuration)</OutputPath>
-	</PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>..\Adnc.Whse.WebApi\bin\$(Configuration)</OutputPath>
+  </PropertyGroup>
 
-	<ItemGroup>
-		<Compile Remove="Migrations\20210302010133_Update20210302-03.cs" />
-		<Compile Remove="Migrations\20210302010133_Update20210302-03.Designer.cs" />
-		<Compile Remove="Migrations\20210302011551_Update20210302-05.cs" />
-		<Compile Remove="Migrations\20210302011551_Update20210302-05.Designer.cs" />
-		<Compile Remove="Migrations\20210302012109_Update20210302-05.cs" />
-		<Compile Remove="Migrations\20210302012109_Update20210302-05.Designer.cs" />
-		<Compile Remove="Migrations\20210302012258_Update20210302-05.cs" />
-		<Compile Remove="Migrations\20210302012258_Update20210302-05.Designer.cs" />
-		<Compile Remove="Migrations\20210302012818_Update20210302-05.cs" />
-		<Compile Remove="Migrations\20210302012818_Update20210302-05.Designer.cs" />
-		<Compile Remove="Migrations\20210302013012_Update20210302-05.cs" />
-		<Compile Remove="Migrations\20210302013012_Update20210302-05.Designer.cs" />
-		<Compile Remove="Migrations\20210302014541_Update20210302-05.cs" />
-		<Compile Remove="Migrations\20210302014541_Update20210302-05.Designer.cs" />
-		<Compile Remove="Migrations\20210302014849_Update20210302-05.cs" />
-		<Compile Remove="Migrations\20210302014849_Update20210302-05.Designer.cs" />
-		<Compile Remove="Migrations\20210302015136_Update20210302-05.cs" />
-		<Compile Remove="Migrations\20210302015136_Update20210302-05.Designer.cs" />
-		<Compile Remove="Migrations\20210302015855_Update20210302-05.cs" />
-		<Compile Remove="Migrations\20210302015855_Update20210302-05.Designer.cs" />
-		<Compile Remove="Migrations\20210302020227_Update20210302-05.cs" />
-		<Compile Remove="Migrations\20210302020227_Update20210302-05.Designer.cs" />
-		<Compile Remove="Migrations\20210302020403_Update20210302-05.cs" />
-		<Compile Remove="Migrations\20210302020403_Update20210302-05.Designer.cs" />
-		<Compile Remove="Migrations\20210302033532_Update-2021-03-02.cs" />
-		<Compile Remove="Migrations\20210302033532_Update-2021-03-02.Designer.cs" />
-		<Compile Remove="Migrations\20210302043014_Update-2021030202.cs" />
-		<Compile Remove="Migrations\20210302043014_Update-2021030202.Designer.cs" />
-	</ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Migrations\20210302010133_Update20210302-03.cs" />
+    <Compile Remove="Migrations\20210302010133_Update20210302-03.Designer.cs" />
+    <Compile Remove="Migrations\20210302011551_Update20210302-05.cs" />
+    <Compile Remove="Migrations\20210302011551_Update20210302-05.Designer.cs" />
+    <Compile Remove="Migrations\20210302012109_Update20210302-05.cs" />
+    <Compile Remove="Migrations\20210302012109_Update20210302-05.Designer.cs" />
+    <Compile Remove="Migrations\20210302012258_Update20210302-05.cs" />
+    <Compile Remove="Migrations\20210302012258_Update20210302-05.Designer.cs" />
+    <Compile Remove="Migrations\20210302012818_Update20210302-05.cs" />
+    <Compile Remove="Migrations\20210302012818_Update20210302-05.Designer.cs" />
+    <Compile Remove="Migrations\20210302013012_Update20210302-05.cs" />
+    <Compile Remove="Migrations\20210302013012_Update20210302-05.Designer.cs" />
+    <Compile Remove="Migrations\20210302014541_Update20210302-05.cs" />
+    <Compile Remove="Migrations\20210302014541_Update20210302-05.Designer.cs" />
+    <Compile Remove="Migrations\20210302014849_Update20210302-05.cs" />
+    <Compile Remove="Migrations\20210302014849_Update20210302-05.Designer.cs" />
+    <Compile Remove="Migrations\20210302015136_Update20210302-05.cs" />
+    <Compile Remove="Migrations\20210302015136_Update20210302-05.Designer.cs" />
+    <Compile Remove="Migrations\20210302015855_Update20210302-05.cs" />
+    <Compile Remove="Migrations\20210302015855_Update20210302-05.Designer.cs" />
+    <Compile Remove="Migrations\20210302020227_Update20210302-05.cs" />
+    <Compile Remove="Migrations\20210302020227_Update20210302-05.Designer.cs" />
+    <Compile Remove="Migrations\20210302020403_Update20210302-05.cs" />
+    <Compile Remove="Migrations\20210302020403_Update20210302-05.Designer.cs" />
+    <Compile Remove="Migrations\20210302033532_Update-2021-03-02.cs" />
+    <Compile Remove="Migrations\20210302033532_Update-2021-03-02.Designer.cs" />
+    <Compile Remove="Migrations\20210302043014_Update-2021030202.cs" />
+    <Compile Remove="Migrations\20210302043014_Update-2021030202.Designer.cs" />
+  </ItemGroup>
 
-	<ItemGroup>
-		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.EfCore\Adnc.Infra.EfCore.csproj" />
-	</ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.EfCore\Adnc.Infra.EfCore.csproj" />
+  </ItemGroup>
 </Project>

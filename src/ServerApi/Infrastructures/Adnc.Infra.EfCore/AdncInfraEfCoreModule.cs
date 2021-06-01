@@ -6,7 +6,7 @@ using Autofac;
 
 namespace Adnc.Infra.EfCore
 {
-    public class AdncInfrEfCoreModule : Module
+    public class AdncInfraEfCoreModule : Module
     {
         /// <summary>
         /// Autofac注册
@@ -55,7 +55,7 @@ namespace Adnc.Infra.EfCore
         /// <param name="builder"></param>
         public static void Register(ContainerBuilder builder)
         {
-            new AdncInfrEfCoreModule().Load(builder);
+            new AdncInfraEfCoreModule().Load(builder);
         }
     }
 }
