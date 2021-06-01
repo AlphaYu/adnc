@@ -28,11 +28,6 @@ namespace Adnc.Core.Shared
                    .AsImplementedInterfaces()
                    .InstancePerLifetimeScope();
 
-            //注册事件发布者
-            builder.RegisterType<CapPublisher>()
-                   .As<IEventPublisher>()
-                   .SingleInstance();
-
             //注册服务
             builder.RegisterAssemblyTypes(_assemblieToScan)
                    .Where(t => t.IsAssignableTo<ICoreService>())
