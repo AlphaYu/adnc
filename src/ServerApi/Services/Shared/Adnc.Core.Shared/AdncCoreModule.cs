@@ -36,19 +36,10 @@ namespace Adnc.Core.Shared
                    .SingleInstance();
 
             //注册服务
-            var registionBuilder = builder.RegisterAssemblyTypes(_assemblieToScan)
+            builder.RegisterAssemblyTypes(_assemblieToScan)
                    .Where(t => t.IsAssignableTo<ICoreService>())
                    .AsSelf()
                    .InstancePerLifetimeScope();
-            if (!_assemblieToScan.GetTypes().Any(x => x.IsAssignableTo<AggregateRoot>() && !x.IsAbstract))
-            {
-                builder.RegisterType<UowInterceptor>()
-                       .InstancePerLifetimeScope();
-                builder.RegisterType<UowAsyncInterceptor>()
-                       .InstancePerLifetimeScope();
-                registionBuilder.EnableClassInterceptors()
-                                .InterceptedBy(typeof(UowInterceptor));
-            }
         }
     }
 }

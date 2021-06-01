@@ -1,0 +1,9 @@
+<Project>
+	<PropertyGroup>
+		<VersionMajor>0</VersionMajor>
+		<VersionMinor>8</VersionMinor>
+		<VersionPatch>1</VersionPatch>
+		<VersionQuality>0</VersionQuality>
+		<VersionPrefix>$(VersionMajor).$(VersionMinor).$(VersionPatch)</VersionPrefix>
+	</PropertyGroup>
+</Project>

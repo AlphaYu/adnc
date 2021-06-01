@@ -1,5 +1,6 @@
 ﻿using Adnc.Core.Shared.Entities;
 using Adnc.Infra.Mongo.Configuration;
+using Adnc.Infra.Mongo.Diagnostics;
 using Adnc.Infra.Mongo.Extensions;
 using Adnc.Infra.Mongo.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
@@ -49,8 +50,11 @@ namespace Adnc.Infra.Mongo
                 throw new ArgumentNullException(nameof(connectionString), "Must provide a database name with the mongo connection string");
             }
 
+            var clientSettings = MongoClientSettings.FromUrl(url);
+            clientSettings.ClusterConfigurator = cb => cb.Subscribe(new DiagnosticsActivityEventSubscriber());
+
             _semaphore = new SemaphoreSlim(1, 1);
-            _database = new MongoClient(MongoClientSettings.FromUrl(url)).GetDatabase(url.DatabaseName);
+            _database = new MongoClient(clientSettings).GetDatabase(url.DatabaseName);
         }
 
         /// <summary>

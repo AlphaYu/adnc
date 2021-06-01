@@ -79,12 +79,17 @@
             精简部门树结构
             </summary>
         </member>
+        <member name="P:Adnc.Usr.Application.Contracts.Dtos.DeptSimpleTreeDto.Id">
+            <summary>
+            唯一Id
+            </summary>
+        </member>
         <member name="P:Adnc.Usr.Application.Contracts.Dtos.DeptSimpleTreeDto.Label">
             <summary>
             部门简称
             </summary>
         </member>
-        <member name="P:Adnc.Usr.Application.Contracts.Dtos.DeptSimpleTreeDto.children">
+        <member name="P:Adnc.Usr.Application.Contracts.Dtos.DeptSimpleTreeDto.Children">
             <summary>
             子部门
             </summary>

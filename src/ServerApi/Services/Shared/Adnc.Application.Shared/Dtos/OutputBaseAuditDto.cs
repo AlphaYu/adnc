@@ -3,21 +3,16 @@
 namespace Adnc.Application.Shared.Dtos
 {
     [Serializable]
-    public abstract class OutputBaseAuditDto<TKey> : OutputDto<TKey>, IBasicAuditInfo
+    public abstract class OutputBaseAuditDto : OutputDto, IBasicAuditInfo
     {
         /// <summary>
         /// 创建人
         /// </summary>
-        public long? CreateBy { get; set; }
+        public virtual long? CreateBy { get; set; }
 
         /// <summary>
         /// 创建时间/注册时间
         /// </summary>
-        public DateTime? CreateTime { get; set; }
-    }
-
-    [Serializable]
-    public abstract class OutputBaseAuditDto : OutputBaseAuditDto<long>
-    {
+        public virtual DateTime? CreateTime { get; set; }
     }
 }

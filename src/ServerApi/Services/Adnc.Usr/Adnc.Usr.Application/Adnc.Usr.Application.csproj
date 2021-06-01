@@ -1,16 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
+	<Import Project="..\..\..\build\common.props" />
 	<PropertyGroup>
 		<TargetFramework>netstandard2.1</TargetFramework>
 		<AssemblyName>Adnc.Usr.Application</AssemblyName>
 		<RootNamespace>Adnc.Usr.Application</RootNamespace>
-		<Version>0.8.1</Version>
-		<Authors>Alpha.Yu</Authors>
-		<Product>Adnc</Product>
-		<RepositoryUrl>https://github.com/AlphaYu</RepositoryUrl>
-		<RepositoryType>git</RepositoryType>
-		<PackageProjectUrl>https://www.aspdotnetcore.net</PackageProjectUrl>
-		<Copyright>Alpha</Copyright>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -20,24 +13,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Compile Remove="Interceptors\**" />
-	  <Compile Remove="Mq\**" />
-	  <Compile Remove="RpcServices\**" />
-	  <EmbeddedResource Remove="Interceptors\**" />
-	  <EmbeddedResource Remove="Mq\**" />
-	  <EmbeddedResource Remove="RpcServices\**" />
-	  <None Remove="Interceptors\**" />
-	  <None Remove="Mq\**" />
-	  <None Remove="RpcServices\**" />
+		<ProjectReference Include="..\Adnc.Usr.Application.Contracts\Adnc.Usr.Application.Contracts.csproj" />
+		<ProjectReference Include="..\Adnc.Usr.Core\Adnc.Usr.Core.csproj" />
 	</ItemGroup>
-
-	<ItemGroup>
-	  <Compile Remove="CustomEasyCachingServiceCollectionExtensions.cs" />
-	</ItemGroup>
-	
-	<ItemGroup>
-	  <ProjectReference Include="..\Adnc.Usr.Application.Contracts\Adnc.Usr.Application.Contracts.csproj" />
-	  <ProjectReference Include="..\Adnc.Usr.Core\Adnc.Usr.Core.csproj" />
-	</ItemGroup>
-	
 </Project>

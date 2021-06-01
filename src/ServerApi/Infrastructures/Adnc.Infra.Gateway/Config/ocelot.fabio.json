@@ -1,0 +1,71 @@
+{
+  //fabio
+  "GlobalConfiguration": {
+    "BaseUrl": "http://172.16.0.4:8888"
+  },
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/usr{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "172.16.0.4",
+          "Port": 9999
+        }
+      ],
+      "UpstreamPathTemplate": "/usr{everything}",
+      "UpstreamHttpMethod": [
+        "Get",
+        "Put",
+        "Post",
+        "Delete",
+        "Options"
+      ],
+      "LoadBalancerOptions": {
+        "Type": "RoundRobin"
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/maint{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "172.16.0.4",
+          "Port": 9999
+        }
+      ],
+      "UpstreamPathTemplate": "/maint{everything}",
+      "UpstreamHttpMethod": [
+        "Get",
+        "Put",
+        "Post",
+        "Delete",
+        "Options"
+      ],
+      "LoadBalancerOptions": {
+        "Type": "RoundRobin"
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/cus{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "172.16.0.4",
+          "Port": 9999
+        }
+      ],
+      "UpstreamPathTemplate": "/cus{everything}",
+      "UpstreamHttpMethod": [
+        "Get",
+        "Put",
+        "Post",
+        "Delete",
+        "Options"
+      ],
+      "LoadBalancerOptions": {
+        "Type": "RoundRobin"
+      }
+    }
+  ]
+}

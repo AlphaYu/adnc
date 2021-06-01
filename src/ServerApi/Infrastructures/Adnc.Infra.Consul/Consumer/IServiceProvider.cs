@@ -5,6 +5,6 @@ namespace Adnc.Infra.Consul.Consumer
 {
     public interface IServiceProvider
     {
-        Task<IList<string>> GetServicesAsync(string serviceName);
+        Task<IList<string>> GetHealthServicesAsync(string serviceName);
     }
 }

@@ -1,4 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<<<<<<< HEAD
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -19,18 +20,24 @@
     <PackageProjectUrl>https://www.aspdotnetcore.net</PackageProjectUrl>
     <Copyright>Alpha</Copyright>
   </PropertyGroup>
+=======
+	<Import Project="..\..\..\build\common.props" />
+	<PropertyGroup>
+		<TargetFramework>net5.0</TargetFramework>
+		<RootNamespace>Adnc.Usr.WebApi</RootNamespace>
+		<AssemblyName>Adnc.Usr.WebApi</AssemblyName>
+		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+		<DockerfileContext>..\..\..</DockerfileContext>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<Description>用户中心服务</Description>
+	</PropertyGroup>
+>>>>>>> upstream/master
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <PlatformTarget>x64</PlatformTarget>
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<PlatformTarget>x64</PlatformTarget>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="logs\**" />
-    <Content Remove="logs\**" />
-    <EmbeddedResource Remove="logs\**" />
-    <None Remove="logs\**" />
-  </ItemGroup>
-
+<<<<<<< HEAD
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.9">
       <PrivateAssets>all</PrivateAssets>
@@ -48,17 +55,39 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+=======
+	<ItemGroup>
+		<Compile Remove="logs\**" />
+		<Content Remove="logs\**" />
+		<EmbeddedResource Remove="logs\**" />
+		<None Remove="logs\**" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.EfCore\Adnc.Infra.EfCore.csproj" />
-    <ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Mongo\Adnc.Infra.Mongo.csproj" />
-    <ProjectReference Include="..\..\Shared\Adnc.WebApi.Shared\Adnc.WebApi.Shared.csproj" />
-    <ProjectReference Include="..\Adnc.Usr.Application\Adnc.Usr.Application.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<Content Update="nlog.config">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+>>>>>>> upstream/master
 
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.EfCore\Adnc.Infra.EfCore.csproj" />
+		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Mongo\Adnc.Infra.Mongo.csproj" />
+		<ProjectReference Include="..\..\Shared\Adnc.WebApi.Shared\Adnc.WebApi.Shared.csproj" />
+		<ProjectReference Include="..\Adnc.Usr.Application\Adnc.Usr.Application.csproj" />
+	</ItemGroup>
+
+<<<<<<< HEAD
   <ProjectExtensions>
     <VisualStudio>
       <UserProperties properties_4launchsettings_1json__JsonSchema="" />
     </VisualStudio>
   </ProjectExtensions>
+=======
+	<ProjectExtensions>
+		<VisualStudio>
+			<UserProperties properties_4launchsettings_1json__JsonSchema="" />
+		</VisualStudio>
+	</ProjectExtensions>
+>>>>>>> upstream/master
 </Project>

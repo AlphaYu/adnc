@@ -5,7 +5,6 @@ using Adnc.Usr.Application.Caching;
 using Adnc.Usr.Application.Contracts.Dtos;
 using Adnc.Usr.Application.Contracts.Services;
 using Adnc.Usr.Core.Entities;
-using Adnc.Usr.Core.Services;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -16,15 +15,12 @@ namespace Adnc.Usr.Application.Services
     public class DeptAppService : AbstractAppService, IDeptAppService
     {
         private readonly IEfRepository<SysDept> _deptRepository;
-        private readonly UsrManager _usrManager;
         private readonly CacheService _cacheService;
 
         public DeptAppService(IEfRepository<SysDept> deptRepository
-            , UsrManager usrManager
             , CacheService cacheService)
         {
             _deptRepository = deptRepository;
-            _usrManager = usrManager;
             _cacheService = cacheService;
         }
 
@@ -63,8 +59,6 @@ namespace Adnc.Usr.Application.Services
             if (isExists)
                 return Problem(HttpStatusCode.BadRequest, "该部门全称已经存在");
 
-            var oldPids = oldDeptDto.Pids;
-
             var deptEnity = Mapper.Map<SysDept>(input);
 
             deptEnity.Id = id;
@@ -76,7 +70,20 @@ namespace Adnc.Usr.Application.Services
             else
             {
                 await this.SetDeptPids(deptEnity);
-                await _usrManager.UpdateDeptAsync(oldPids, deptEnity);
+                await _deptRepository.UpdateAsync(deptEnity, UpdatingProps<SysDept>(x => x.FullName, x => x.SimpleName, x => x.Tips, x => x.Ordinal, x => x.Pid, x => x.Pids));
+
+                //zz.efcore 不支持
+                //await _deptRepository.UpdateRangeAsync(d => d.Pids.Contains($"[{dept.ID}]"), c => new SysDept { Pids = c.Pids.Replace(oldDeptPids, dept.Pids) });
+                var originalDeptPids = $"{oldDeptDto.Pids}[{deptEnity.Id}],";
+                var nowDeptPids = $"{deptEnity.Pids}[{deptEnity.Id}],";
+                var subDepts = await _deptRepository
+                                     .Where(d => d.Pids.StartsWith(originalDeptPids))
+                                     .Select(d => new { d.Id, d.Pids })
+                                     .ToListAsync();
+                foreach (var c in subDepts)
+                {
+                    await _deptRepository.UpdateAsync(new SysDept { Id = c.Id, Pids = c.Pids.Replace(originalDeptPids, nowDeptPids) }, UpdatingProps<SysDept>(c => c.Pids));
+                }
             }
 
             return AppSrvResult();

@@ -1,4 +1,5 @@
 ﻿using Adnc.Core.Shared;
+using Adnc.Core.Shared.Interceptors;
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Infra.EfCore.Repositories;
 using Autofac;
@@ -22,6 +23,12 @@ namespace Adnc.Infra.EfCore
             builder.RegisterType<UnitOfWork<AdncDbContext>>()
                    .As<IUnitOfWork>()
                    .InstancePerLifetimeScope();
+
+            //注册UOW拦截器
+            builder.RegisterType<UowInterceptor>()
+                        .InstancePerLifetimeScope();
+            builder.RegisterType<UowAsyncInterceptor>()
+                        .InstancePerLifetimeScope();
 
             //注册ef公共EfRepository
             builder.RegisterGeneric(typeof(EfRepository<>))

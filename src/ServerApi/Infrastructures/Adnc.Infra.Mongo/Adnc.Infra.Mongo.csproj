@@ -1,30 +1,22 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
+	<Import Project="..\..\build\common.props" />
 	<PropertyGroup>
 		<TargetFramework>netstandard2.1</TargetFramework>
 		<RootNamespace>Adnc.Infra.Mongo</RootNamespace>
 		<AssemblyName>Adnc.Infra.Mongo</AssemblyName>
-		<Version>0.8.1</Version>
-		<Authors>Alpha.Yu</Authors>
-		<Product>Adnc</Product>
-		<RepositoryUrl>https://github.com/AlphaYu</RepositoryUrl>
-		<RepositoryType>git</RepositoryType>
-		<PackageProjectUrl>https://www.aspdotnetcore.net</PackageProjectUrl>
-		<Copyright>Alpha</Copyright>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<!--<PackageReference Include="Kogel.Dapper.Extension.MySql" Version="3.1.9.8" />-->
-		<PackageReference Include="Autofac" Version="6.0.0" />
-		<PackageReference Include="Humanizer.Core" Version="2.8.26" />
-		<PackageReference Include="JetBrains.Annotations" Version="2020.1.0" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.9" />
-		<PackageReference Include="Microsoft.Extensions.Options" Version="3.1.9" />
-		<PackageReference Include="MongoDB.Driver" Version="2.11.3" />
+		<PackageReference Include="Autofac" Version="6.2.0" />
+		<PackageReference Include="Humanizer.Core" Version="2.10.1" />
+		<PackageReference Include="JetBrains.Annotations" Version="2021.1.0" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Options" Version="5.0.0" />
+		<PackageReference Include="MongoDB.Driver" Version="2.12.3" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\Services\Shared\Adnc.Core.Shared\Adnc.Core.Shared.csproj" />
+		<ProjectReference Include="..\..\Services\Shared\Adnc.Core.Shared\Adnc.Core.Shared.csproj" />
 	</ItemGroup>
-
 </Project>

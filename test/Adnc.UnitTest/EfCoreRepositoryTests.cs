@@ -2,6 +2,7 @@
 using Adnc.Core.Shared.IRepositories;
 using Adnc.Cus.Core.Entities;
 using Adnc.Infra.Common.Helper;
+using Adnc.Infra.Common.Helper.IdGeneraterInternal;
 using Adnc.Infra.EfCore;
 using Adnc.UnitTest.Fixtures;
 using Autofac;
@@ -37,6 +38,9 @@ namespace Adnc.UnitTest.EFCore
             _cusFinanceRsp = _fixture.Container.Resolve<IEfRepository<CustomerFinance>>();
             _custLogsRsp = _fixture.Container.Resolve<IEfRepository<CustomerTransactionLog>>();
             _dbContext = _fixture.Container.Resolve<AdncDbContext>();
+
+            if (YitterSnowFlake.CurrentWorkerId < 0)
+                YitterSnowFlake.CurrentWorkerId = 63;
 
             Initialize().Wait();
         }
@@ -202,12 +206,12 @@ namespace Adnc.UnitTest.EFCore
         public async Task TestFind()
         {
             //不加载导航属性
-            var customer3 = await _customerRsp.FindAsync(154959990543749120);
+            var customer3 = await _customerRsp.FindAsync(163895960158469);
             Assert.NotNull(customer3);
             Assert.Null(customer3.FinanceInfo);
 
             //加载导航属性
-            var customer4 = await _customerRsp.FindAsync(154959990543749120, x => x.TransactionLogs);
+            var customer4 = await _customerRsp.FindAsync(163895960158469, x => x.TransactionLogs);
             Assert.NotNull(customer4);
             Assert.NotEmpty(customer4.TransactionLogs);
         }
@@ -271,7 +275,7 @@ namespace Adnc.UnitTest.EFCore
 
             await _customerRsp.DeleteAsync(customer.Id);
             var result = await _customerRsp.QueryAsync<Customer>("SELECT * FROM Customer WHERE ID=@Id", new { Id = customer.Id });
-            Assert.Empty(result);
+            Assert.Null(result);
 
             //await _customerRsp.DeleteAsync(156040229583720448);
             //result = await _customerRsp.QueryAsync<Customer>("SELECT * FROM Customer WHERE ID=@Id", new { Id = 156040229583720448 });
@@ -289,7 +293,7 @@ namespace Adnc.UnitTest.EFCore
 
             await _customerRsp.DeleteRangeAsync(c => c.Id == cus1.Id || c.Id == cus2.Id);
             var result2 = await _customerRsp.QueryAsync<Customer>("SELECT * FROM Customer WHERE ID in @ids", new { ids = new[] { cus1.Id, cus2.Id } });
-            Assert.Empty(result2);
+            Assert.Null(result2);
         }
 
         /// <summary>
@@ -298,7 +302,7 @@ namespace Adnc.UnitTest.EFCore
         [Fact]
         public async void TestUpdateAssigns()
         {
-            var customer = await _customerRsp.FindAsync(154951941552738304, noTracking: false);
+            var customer = await _customerRsp.FindAsync(164991772262341, noTracking: false);
             //实体已经被跟踪并且指定更新列
             customer.Nickname = "更新指定列";
             customer.Realname = "不指定该列";
@@ -316,7 +320,7 @@ namespace Adnc.UnitTest.EFCore
             Assert.Equal("新昵称", newCus.Nickname);
 
             //实体没有被跟踪，dbcontext中有没有同名实体
-            id = 154959990543749120;
+            id = 164991772262341;
             await _customerRsp.UpdateAsync(new Customer { Id = id, Realname = "没被跟踪02", Nickname = "新昵称" }, UpdatingProps<Customer>(c => c.Realname, c => c.Nickname));
             newCus = await _customerRsp.FindAsync(id);
             Assert.Equal("没被跟踪02", newCus.Realname);

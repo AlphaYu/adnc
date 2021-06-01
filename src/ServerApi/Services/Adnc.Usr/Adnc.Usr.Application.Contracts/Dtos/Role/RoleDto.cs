@@ -7,7 +7,7 @@ namespace Adnc.Usr.Application.Contracts.Dtos
     /// 角色
     /// </summary>
     [Serializable]
-    public class RoleDto : OutputDto<long>
+    public class RoleDto : OutputDto
     {
         ///// <summary>
         ///// 部门Id

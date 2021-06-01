@@ -8,7 +8,7 @@ namespace Adnc.Usr.Application.Contracts.Dtos
     /// 菜单节点
     /// </summary>
     [Serializable]
-    public class MenuNodeDto : OutputDto<long>
+    public class MenuNodeDto : OutputDto
     {
         /// <summary>
         /// 父菜单Id

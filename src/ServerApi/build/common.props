@@ -1,0 +1,17 @@
+﻿<Project>
+  <Import Project="version.props" />
+  <PropertyGroup>
+    <EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>
+    <Authors>Alpha.Yu</Authors>
+    <Product>Adnc</Product>
+    <PackagePrefix>Adnc</PackagePrefix>
+    <PackageIcon>https://avatars.githubusercontent.com/u/23010680</PackageIcon>
+    <RepositoryUrl>https://github.com/alphayu/adnc</RepositoryUrl>
+    <PackageProjectUrl>https://aspdotnetcore.net</PackageProjectUrl>
+    <RepositoryType>git</RepositoryType>
+    <SatelliteResourceLanguages>zh-Hans</SatelliteResourceLanguages>
+    <SatelliteResourceLanguages>zh-Hant</SatelliteResourceLanguages>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    <NoWarn>$(NoWarn);1591</NoWarn>
+  </PropertyGroup>
+</Project>

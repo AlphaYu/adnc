@@ -1,36 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
+	<Import Project="..\..\..\build\common.props" />
 	<PropertyGroup>
 		<TargetFramework>netstandard2.1</TargetFramework>
-		<Version>0.8.1</Version>
-		<Authors>Alpha.Yu</Authors>
-		<Product>Adnc</Product>
-		<RepositoryUrl>https://github.com/AlphaYu</RepositoryUrl>
-		<RepositoryType>git</RepositoryType>
-		<PackageProjectUrl>https://www.aspdotnetcore.net</PackageProjectUrl>
-		<Copyright>Alpha</Copyright>
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Compile Remove="Events\**" />
-	  <Compile Remove="IRepositories\**" />
-	  <EmbeddedResource Remove="Events\**" />
-	  <EmbeddedResource Remove="IRepositories\**" />
-	  <None Remove="Events\**" />
-	  <None Remove="IRepositories\**" />
+		<Compile Remove="Entities\SysTask.cs" />
+		<Compile Remove="Entities\SysTaskLog.cs" />
 	</ItemGroup>
-
 	<ItemGroup>
-	  <Compile Remove="Entities\SysTask.cs" />
-	  <Compile Remove="Entities\SysTaskLog.cs" />
+		<ProjectReference Include="..\..\Shared\Adnc.Core.Shared\Adnc.Core.Shared.csproj" />
 	</ItemGroup>
-
-	<ItemGroup>
-		<PackageReference Include="Autofac" Version="6.0.0" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <ProjectReference Include="..\..\Shared\Adnc.Core.Shared\Adnc.Core.Shared.csproj" />
-	</ItemGroup>
-
 </Project>

@@ -1,16 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
+	<Import Project="..\..\build\common.props" />
 	<PropertyGroup>
 		<TargetFramework>netstandard2.1</TargetFramework>
 		<RootNamespace>Adnc.Infra.EfCore</RootNamespace>
 		<AssemblyName>Adnc.Infra.EfCore</AssemblyName>
-		<Version>0.8.1</Version>
-		<Authors>Alpha.Yu</Authors>
-		<Product>Adnc</Product>
-		<RepositoryUrl>https://github.com/AlphaYu</RepositoryUrl>
-		<RepositoryType>git</RepositoryType>
-		<PackageProjectUrl>https://www.aspdotnetcore.net</PackageProjectUrl>
-		<Copyright>Alpha</Copyright>
 	</PropertyGroup>
 	<ItemGroup>
 		<Compile Remove="DbContextFactory.cs" />
@@ -19,28 +12,27 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Autofac" Version="6.0.0" />
-		<PackageReference Include="Dapper" Version="2.0.35" />
-		<PackageReference Include="Humanizer" Version="2.8.26" />
-		<PackageReference Include="JetBrains.Annotations" Version="2020.1.0" />
-		<PackageReference Include="Microsoft.Data.SqlClient" Version="2.0.1" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.9" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="3.1.9" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.9" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.9">
+		<PackageReference Include="Autofac" Version="6.2.0" />
+		<PackageReference Include="Dapper" Version="2.0.90" />
+		<PackageReference Include="Humanizer" Version="2.10.1" />
+		<PackageReference Include="JetBrains.Annotations" Version="2021.1.0" />
+		<PackageReference Include="Microsoft.Data.SqlClient" Version="2.1.3" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.5" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="5.0.5" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="5.0.5" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.5">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.2.3" />
+		<PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="5.0.0" />
 		<PackageReference Include="System.Threading.Tasks" Version="4.3.0" />
-		<PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="3.0.67" />
-		<PackageReference Include="DotNetCore.CAP" Version="3.0.4" />
-		<PackageReference Include="DotNetCore.CAP.MySql" Version="3.0.4" />
+		<PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="5.1.37" />
+		<PackageReference Include="DotNetCore.CAP" Version="5.0.3" />
+		<PackageReference Include="DotNetCore.CAP.MySql" Version="5.0.3" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\Services\Shared\Adnc.Core.Shared\Adnc.Core.Shared.csproj" />
-	  <ProjectReference Include="..\Adnc.Infra.Common\Adnc.Infra.Common.csproj" />
+		<ProjectReference Include="..\..\Services\Shared\Adnc.Core.Shared\Adnc.Core.Shared.csproj" />
+		<ProjectReference Include="..\Adnc.Infra.Common\Adnc.Infra.Common.csproj" />
 	</ItemGroup>
-
 </Project>

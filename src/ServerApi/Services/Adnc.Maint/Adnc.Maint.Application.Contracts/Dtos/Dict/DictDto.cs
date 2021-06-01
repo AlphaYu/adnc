@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace Adnc.Maint.Application.Contracts.Dtos
 {
     [Serializable]
-    public class DictDto : OutputDto<long>
+    public class DictDto : OutputDto
     {
         public string Name { get; set; }
 

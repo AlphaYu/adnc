@@ -1,8 +1,10 @@
+using Adnc.Infra.Consul.Consumer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Linq;
 
 namespace Adnc.Maintaining
 {
@@ -18,8 +20,21 @@ namespace Adnc.Maintaining
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddHealthChecksUI(setup => { setup.MaximumHistoryEntriesPerEndpoint(100); })
-                    .AddInMemoryStorage();
+            var consul = new ConsulServiceProvider("http://193.112.75.77:8550");
+
+            services.AddHealthChecksUI(setup =>
+            {
+                var services = consul.GetAllServicesAsync("adnc.usr.webapi").Result;
+                if (services.Any())
+                {
+                    foreach (var item in services)
+                    {
+                        //setup.AddHealthCheckEndpoint(item.Service.ID, item.ServiceAddress);
+                    }
+                }
+                setup.MaximumHistoryEntriesPerEndpoint(100);
+            })
+           .AddInMemoryStorage();
             //.AddSqliteStorage($"Data Source=sqlitehealthchecks.db");
 
             services.AddControllersWithViews();
@@ -28,14 +43,6 @@ namespace Adnc.Maintaining
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
-            }
             app.UseStaticFiles();
 
             app.UseRouting();

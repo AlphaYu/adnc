@@ -6,12 +6,12 @@ namespace Adnc.Ord.Application.Contracts.Dtos
     /// <summary>
     /// 订单输出Dto
     /// </summary>
-    public class OrderDto : OutputBaseAuditDto<string>
+    public class OrderDto : OutputBaseAuditDto
     {
         /// <summary>
         /// 客户Id
         /// </summary>
-        public string CustomerId { get; set; }
+        public long CustomerId { get; set; }
 
         /// <summary>
         /// 订单金额
@@ -61,7 +61,7 @@ namespace Adnc.Ord.Application.Contracts.Dtos
         /// <summary>
         /// 订单子项Dto
         /// </summary>
-        public class OrderItemDto : OutputDto<string>
+        public class OrderItemDto : OutputDto
         {
             /// <summary>
             /// 订单编号

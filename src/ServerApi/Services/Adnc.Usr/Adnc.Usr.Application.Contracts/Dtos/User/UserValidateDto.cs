@@ -4,8 +4,10 @@ using System;
 namespace Adnc.Usr.Application.Contracts.Dtos
 {
     [Serializable]
-    public class UserValidateDto : OutputDto<long>
+    public class UserValidateDto : OutputDto
     {
+        public override long Id { get; set; }
+
         public string Account { get; set; }
 
         public string Name { get; set; }

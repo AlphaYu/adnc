@@ -7,22 +7,12 @@ namespace Adnc.Infra.EfCore.Interceptors
 {
     public class CustomCommandInterceptor : DbCommandInterceptor
     {
-        public override InterceptionResult<DbDataReader> ReaderExecuting(DbCommand command, CommandEventData eventData, InterceptionResult<DbDataReader> result)
-        {
-            return base.ReaderExecuting(command, eventData, result);
-        }
-
-        public override Task<InterceptionResult<DbDataReader>> ReaderExecutingAsync(DbCommand command, CommandEventData eventData, InterceptionResult<DbDataReader> result, CancellationToken cancellationToken = default)
+        public override ValueTask<InterceptionResult<DbDataReader>> ReaderExecutingAsync(DbCommand command, CommandEventData eventData, InterceptionResult<DbDataReader> result, CancellationToken cancellationToken = default(CancellationToken))
         {
             return base.ReaderExecutingAsync(command, eventData, result, cancellationToken);
         }
 
-        public override InterceptionResult<int> NonQueryExecuting(DbCommand command, CommandEventData eventData, InterceptionResult<int> result)
-        {
-            return base.NonQueryExecuting(command, eventData, result);
-        }
-
-        public override Task<InterceptionResult<int>> NonQueryExecutingAsync(DbCommand command, CommandEventData eventData, InterceptionResult<int> result, CancellationToken cancellationToken = default)
+        public override ValueTask<InterceptionResult<int>> NonQueryExecutingAsync(DbCommand command, CommandEventData eventData, InterceptionResult<int> result, CancellationToken cancellationToken = default(CancellationToken))
         {
             return base.NonQueryExecutingAsync(command, eventData, result, cancellationToken);
         }

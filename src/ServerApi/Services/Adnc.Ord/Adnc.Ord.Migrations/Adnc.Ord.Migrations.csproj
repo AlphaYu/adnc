@@ -1,20 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="..\..\..\build\common.props" />
+	<PropertyGroup>
+		<TargetFramework>net5.0</TargetFramework>
+	</PropertyGroup>
 
-  <PropertyGroup>
-	  <TargetFramework>netcoreapp3.1</TargetFramework>
-	  <Version>0.8.1</Version>
-	  <Authors>Alpha.Yu</Authors>
-	  <Product>Adnc</Product>
-	  <RepositoryUrl>https://github.com/AlphaYu</RepositoryUrl>
-	  <RepositoryType>git</RepositoryType>
-	  <PackageProjectUrl>https://www.aspdotnetcore.net</PackageProjectUrl>
-	  <Copyright>Alpha</Copyright>
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<OutputPath>..\Adnc.Ord.WebApi\bin\$(Configuration)</OutputPath>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>..\Adnc.Ord.WebApi\bin\$(Configuration)</OutputPath>
-  </PropertyGroup>
+	<ItemGroup>
+		<Compile Remove="Migrations\20210302003516_Update20210302-02.cs" />
+		<Compile Remove="Migrations\20210302003516_Update20210302-02.Designer.cs" />
+	</ItemGroup>
 
+<<<<<<< HEAD
   <ItemGroup>
     <Compile Remove="Migrations\**" />
     <EmbeddedResource Remove="Migrations\**" />
@@ -24,5 +23,13 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.EfCore\Adnc.Infra.EfCore.csproj" />
   </ItemGroup>
+=======
+	<ItemGroup>
+		<Folder Include="Migrations\" />
+	</ItemGroup>
+>>>>>>> upstream/master
 
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.EfCore\Adnc.Infra.EfCore.csproj" />
+	</ItemGroup>
 </Project>

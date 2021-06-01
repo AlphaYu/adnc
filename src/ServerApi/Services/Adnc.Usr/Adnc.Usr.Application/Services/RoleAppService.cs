@@ -7,7 +7,6 @@ using Adnc.Usr.Application.Caching;
 using Adnc.Usr.Application.Contracts.Dtos;
 using Adnc.Usr.Application.Contracts.Services;
 using Adnc.Usr.Core.Entities;
-using Adnc.Usr.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,17 +20,17 @@ namespace Adnc.Usr.Application.Services
     {
         private readonly IEfRepository<SysRole> _roleRepository;
         private readonly IEfRepository<SysUser> _userRepository;
-        private readonly UsrManager _usrManager;
+        private readonly IEfRepository<SysRelation> _relationRepository;
         private readonly CacheService _cacheService;
 
         public RoleAppService(IEfRepository<SysRole> roleRepository,
             IEfRepository<SysUser> userRepository,
-            UsrManager usrManager,
+            IEfRepository<SysRelation> relationRepository,
             CacheService cacheService)
         {
             _roleRepository = roleRepository;
             _userRepository = userRepository;
-            _usrManager = usrManager;
+            _relationRepository = relationRepository;
             _cacheService = cacheService;
         }
 
@@ -81,7 +80,21 @@ namespace Adnc.Usr.Application.Services
             if (input.RoleId == 1600000000010)
                 return Problem(HttpStatusCode.Forbidden, "禁止设置初始角色");
 
-            await _usrManager.SetRolePermissonAsync(input.RoleId, input.Permissions);
+            await _relationRepository.DeleteRangeAsync(x => x.RoleId == input.RoleId);
+
+            var relations = new List<SysRelation>();
+            foreach (var permissionId in input.Permissions)
+            {
+                relations.Add(
+                    new SysRelation
+                    {
+                        Id = IdGenerater.GetNextId(),
+                        RoleId = input.RoleId,
+                        MenuId = permissionId
+                    }
+                );
+            }
+            await _relationRepository.InsertRangeAsync(relations);
 
             return AppSrvResult();
         }

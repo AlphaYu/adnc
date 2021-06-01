@@ -31,10 +31,10 @@ namespace Autofac
             builder.RegisterModule(new AdncInfrConsulModule(configuration.GetConsulConfig().ConsulUrl));
 
             var appAssembly = Assembly.Load(serverInfo.AssemblyFullName.Replace("WebApi", "Application"));
-            var appModelType = appAssembly.GetTypes().Where(m =>
+            var appModelType = appAssembly.GetTypes().FirstOrDefault(m =>
                                                        m.FullName != null
                                                        && typeof(AdncApplicationModule).IsAssignableFrom(m)
-                                                       && !m.IsAbstract).FirstOrDefault();
+                                                       && !m.IsAbstract);
             builder.RegisterModule(Activator.CreateInstance(appModelType, configuration.GetRedisSection(), configuration.GetRabbitMqSection()) as IModule);
 
             completedExecute?.Invoke(builder);

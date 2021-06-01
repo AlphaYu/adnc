@@ -162,6 +162,10 @@ namespace Adnc.Usr.Application.Caching
         {
             var result = new List<DeptSimpleTreeDto>();
 
+            var cacheValue = await _cache.Value.GetAsync<List<DeptSimpleTreeDto>>(CachingConsts.DetpSimpleTreeListCacheKey);
+            if (cacheValue.HasValue)
+                return cacheValue.Value;
+
             var depts = await GetAllDeptsFromCacheAsync();
 
             if (!depts.Any())
@@ -169,7 +173,7 @@ namespace Adnc.Usr.Application.Caching
 
             var roots = depts.Where(d => d.Pid == 0)
                                                       .OrderBy(d => d.Ordinal)
-                                                      .Select(x => new DeptSimpleTreeDto() { Id = x.Id, Label = x.SimpleName, children = new List<DeptSimpleTreeDto>() });
+                                                      .Select(x => new DeptSimpleTreeDto() { Id = x.Id, Label = x.SimpleName, Children = new List<DeptSimpleTreeDto>() });
             foreach (var node in roots)
             {
                 GetChildren(node, depts);
@@ -180,12 +184,11 @@ namespace Adnc.Usr.Application.Caching
             {
                 var childrenNodes = depts.Where(d => d.Pid == currentNode.Id)
                                                                          .OrderBy(d => d.Ordinal)
-                                                                         .Select(x => new DeptSimpleTreeDto() { Id = x.Id, Label = x.SimpleName, children = new List<DeptSimpleTreeDto>() });
-                if (childrenNodes.Count() == 0)
-                    return;
-                else
+                                                                         .Select(x => new DeptSimpleTreeDto() { Id = x.Id, Label = x.SimpleName, Children = new List<DeptSimpleTreeDto>() });
+                var childrenCount = childrenNodes?.Count();
+                if (childrenCount > 0)
                 {
-                    currentNode.children.AddRange(childrenNodes);
+                    currentNode.Children.AddRange(childrenNodes);
                     foreach (var node in childrenNodes)
                     {
                         GetChildren(node, depts);

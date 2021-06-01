@@ -24,15 +24,5 @@ namespace Adnc.Infra.Consul
         {
             return configurationBuilder.Add(new DefaultConsulConfigurationSource(config, reloadOnChanges));
         }
-
-        public static IConfigurationBuilder AddConsulConfiguration(this IConfigurationBuilder configurationBuilder, IEnumerable<Uri> consulUrls, string consulPath)
-        {
-            return configurationBuilder.Add(new ConsulConfigurationSource(consulUrls, consulPath));
-        }
-
-        public static IConfigurationBuilder AddConsulConfiguration(this IConfigurationBuilder configurationBuilder, IEnumerable<string> consulUrls, string consulPath)
-        {
-            return configurationBuilder.AddConsulConfiguration(consulUrls.Select(u => new Uri(u)), consulPath);
-        }
     }
 }

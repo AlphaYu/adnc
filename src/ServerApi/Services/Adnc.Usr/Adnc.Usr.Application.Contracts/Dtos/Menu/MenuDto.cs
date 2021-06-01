@@ -7,7 +7,7 @@ namespace Adnc.Usr.Application.Contracts.Dtos
     /// 菜单
     /// </summary>
     [Serializable]
-    public class MenuDto : OutputDto<long>
+    public class MenuDto : OutputDto
     {
         /// <summary>
         /// 编号

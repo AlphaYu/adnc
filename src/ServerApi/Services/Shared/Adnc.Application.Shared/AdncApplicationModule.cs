@@ -4,7 +4,6 @@ using Adnc.Application.Shared.IdGeneraterWorkerNode;
 using Adnc.Application.Shared.Interceptors;
 using Adnc.Application.Shared.Services;
 using Adnc.Core.Shared;
-using Adnc.Core.Shared.Entities;
 using Adnc.Core.Shared.Interceptors;
 using Adnc.Infra.Caching;
 using Adnc.Infra.Caching.Interceptor.Castle;
@@ -74,15 +73,8 @@ namespace Adnc.Application.Shared
             {
                 typeof(OpsLogInterceptor)
                 , typeof(CachingInterceptor)
+                ,typeof(UowInterceptor)
             };
-            if (_coreAssemblieToScan.GetTypes().Any(x => x.IsAssignableTo<AggregateRoot>() && !x.IsAbstract))
-            {
-                builder.RegisterType<UowInterceptor>()
-                       .InstancePerLifetimeScope();
-                builder.RegisterType<UowAsyncInterceptor>()
-                       .InstancePerLifetimeScope();
-                interceptors.Add(typeof(UowInterceptor));
-            }
 
             builder.RegisterAssemblyTypes(_appAssemblieToScan)
                        .Where(t => t.IsAssignableTo<IAppService>() && !t.IsAbstract)
@@ -145,7 +137,7 @@ namespace Adnc.Application.Shared
             builder.RegisterModule(new AdncInfraEventBusModule(_appAssemblieToScan));
             builder.RegisterModule(new AutoMapperModule(_appAssemblieToScan));
             builder.RegisterModule(new AdncInfraCachingModule(_redisSection));
-            var modelType = _coreAssemblieToScan.GetTypes().Where(x => x.IsAssignableTo<AdncCoreModule>() && !x.IsAbstract).FirstOrDefault();
+            var modelType = _coreAssemblieToScan.GetTypes().FirstOrDefault(x => x.IsAssignableTo<AdncCoreModule>() && !x.IsAbstract);
             builder.RegisterModule(System.Activator.CreateInstance(modelType) as Autofac.Module);
         }
     }

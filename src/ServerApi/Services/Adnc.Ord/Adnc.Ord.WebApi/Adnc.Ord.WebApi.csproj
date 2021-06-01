@@ -1,53 +1,43 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+	<Import Project="..\..\..\build\common.props" />
+	<PropertyGroup>
+		<TargetFramework>net5.0</TargetFramework>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<RootNamespace>Adnc.Ord.WebApi</RootNamespace>
+		<AssemblyName>Adnc.Ord.WebApi</AssemblyName>
+		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+		<DockerfileContext>..\..\..</DockerfileContext>
+		<Description>订单中心服务</Description>
+	</PropertyGroup>
 
-  <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <NoWarn>$(NoWarn);1591</NoWarn>
-	<SatelliteResourceLanguages>zh-Hans</SatelliteResourceLanguages>
-	<SatelliteResourceLanguages>zh-Hant</SatelliteResourceLanguages>
-	<SatelliteResourceLanguages>en</SatelliteResourceLanguages>
-	<RootNamespace>Adnc.Ord.WebApi</RootNamespace>
-	<AssemblyName>Adnc.Ord.WebApi</AssemblyName>
-	<Version>0.8.1</Version>
-	<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-	<DockerfileContext>..\..\..</DockerfileContext>
-	<Authors>Alpha.Yu</Authors>
-	<Company>Alpha</Company>
-	<Product>Adnc</Product>
-	<Description>订单中心服务</Description>
-	<PackageProjectUrl>https://www.aspdotnetcore.net</PackageProjectUrl>
-	<Copyright>Alpha</Copyright>
-	<RepositoryUrl>https://github.com/AlphaYu/Adnc</RepositoryUrl>  
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<PlatformTarget>x64</PlatformTarget>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <PlatformTarget>x64</PlatformTarget>
-  </PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.9">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.9">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
-		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.13" />
+		<Compile Remove="logs\**" />
+		<Content Remove="logs\**" />
+		<EmbeddedResource Remove="logs\**" />
+		<None Remove="logs\**" />
 	</ItemGroup>
-  <ItemGroup>
-    <Content Update="nlog.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Consul\Adnc.Infra.Consul.csproj" />
-    <ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.EfCore\Adnc.Infra.EfCore.csproj" />
-    <ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Mongo\Adnc.Infra.Mongo.csproj" />
-    <ProjectReference Include="..\..\Shared\Adnc.WebApi.Shared\Adnc.WebApi.Shared.csproj" />
-    <ProjectReference Include="..\Adnc.Ord.Application\Adnc.Ord.Application.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<Content Update="nlog.config">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
 
-  <ProjectExtensions><VisualStudio><UserProperties properties_4launchsettings_1json__JsonSchema="http://json.schemastore.org/launchsettings.json" /></VisualStudio></ProjectExtensions>
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Consul\Adnc.Infra.Consul.csproj" />
+		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.EfCore\Adnc.Infra.EfCore.csproj" />
+		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Mongo\Adnc.Infra.Mongo.csproj" />
+		<ProjectReference Include="..\..\Shared\Adnc.WebApi.Shared\Adnc.WebApi.Shared.csproj" />
+		<ProjectReference Include="..\Adnc.Ord.Application\Adnc.Ord.Application.csproj" />
+	</ItemGroup>
+
+	<ProjectExtensions>
+		<VisualStudio>
+			<UserProperties properties_4launchsettings_1json__JsonSchema="http://json.schemastore.org/launchsettings.json" />
+		</VisualStudio>
+	</ProjectExtensions>
 </Project>

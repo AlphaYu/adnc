@@ -78,6 +78,8 @@ namespace Adnc.Infra.EfCore
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.HasCharSet("utf8mb4 ");
+
             var (Assembly, Types) = _entityInfo.GetEntitiesInfo();
 
             foreach (var entityType in Types)
@@ -90,10 +92,6 @@ namespace Adnc.Infra.EfCore
             base.OnModelCreating(modelBuilder);
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            //用于设置是否启用缓存,关闭缓存，每次都会调用OnModelCreating。optionsBuilder.EnableServiceProviderCaching(false);
-            base.OnConfiguring(optionsBuilder);
-        }
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.LogTo(Console.WriteLine);
     }
 }

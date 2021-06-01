@@ -1,17 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>netcoreapp3.1</TargetFramework>
+		<TargetFramework>net5.0</TargetFramework>
 		<IsPackable>false</IsPackable>
 		<RootNamespace>Adnc.UnitTest</RootNamespace>
 		<AssemblyName>Adnc.UnitTest</AssemblyName>
-		<Version>0.8.1</Version>
-		<Authors>Alpha.Yu</Authors>
-		<Product>Adnc</Product>
-		<RepositoryUrl>https://github.com/AlphaYu</RepositoryUrl>
-		<RepositoryType>git</RepositoryType>
-		<PackageProjectUrl>https://www.aspdotnetcore.net</PackageProjectUrl>
-		<Copyright>Alpha</Copyright>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -21,28 +14,27 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.6" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.1.6" />
-		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.6.1" />
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="5.0.0" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.10.0" />
 		<PackageReference Include="NLog.Mongo" Version="4.6.0.118" />
-		<PackageReference Include="RestSharp" Version="106.11.4" />
-		<PackageReference Include="RestSharp.Serializers.SystemTextJson" Version="106.11.4" />
-		<PackageReference Include="System.Data.SqlClient" Version="4.8.1" />
+		<PackageReference Include="RestSharp" Version="106.11.7" />
+		<PackageReference Include="RestSharp.Serializers.SystemTextJson" Version="106.11.7" />
+		<PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
 		<PackageReference Include="xunit" Version="2.4.1" />
-		<PackageReference Include="xunit.runner.visualstudio" Version="2.4.2">
+		<PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="coverlet.collector" Version="1.3.0">
+		<PackageReference Include="coverlet.collector" Version="3.0.3">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\src\ServerApi\Infrastructures\Adnc.Infra.Caching\Adnc.Infra.Caching.csproj" />
-	  <ProjectReference Include="..\..\src\ServerApi\Infrastructures\Adnc.Infra.EfCore\Adnc.Infra.EfCore.csproj" />
-	  <ProjectReference Include="..\..\src\ServerApi\Services\Adnc.Cus\Adnc.Cus.Core\Adnc.Cus.Core.csproj" />
+		<ProjectReference Include="..\..\src\ServerApi\Infrastructures\Adnc.Infra.Caching\Adnc.Infra.Caching.csproj" />
+		<ProjectReference Include="..\..\src\ServerApi\Infrastructures\Adnc.Infra.EfCore\Adnc.Infra.EfCore.csproj" />
+		<ProjectReference Include="..\..\src\ServerApi\Services\Adnc.Cus\Adnc.Cus.Core\Adnc.Cus.Core.csproj" />
 	</ItemGroup>
-
 </Project>

@@ -1,27 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
+	<Import Project="..\..\..\build\common.props" />
 	<PropertyGroup>
 		<TargetFramework>netstandard2.1</TargetFramework>
-		<Version>0.8.1</Version>
-		<Authors>Alpha.Yu</Authors>
-		<Product>Adnc</Product>
-		<RepositoryUrl>https://github.com/AlphaYu</RepositoryUrl>
-		<RepositoryType>git</RepositoryType>
-		<PackageProjectUrl>https://www.aspdotnetcore.net</PackageProjectUrl>
-		<Copyright>Alpha</Copyright>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-	  <DocumentationFile></DocumentationFile>
+		<DocumentationFile></DocumentationFile>
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Compile Remove="RpcServices\**" />
-	  <Compile Remove="Services\Task\**" />
-	  <EmbeddedResource Remove="RpcServices\**" />
-	  <EmbeddedResource Remove="Services\Task\**" />
-	  <None Remove="RpcServices\**" />
-	  <None Remove="Services\Task\**" />
+		<Compile Remove="Services\Task\**" />
+		<EmbeddedResource Remove="Services\Task\**" />
+		<None Remove="Services\Task\**" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -30,5 +20,4 @@
 		<ProjectReference Include="..\Adnc.Maint.Application.Contracts\Adnc.Maint.Application.Contracts.csproj" />
 		<ProjectReference Include="..\Adnc.Maint.Core\Adnc.Maint.Core.csproj" />
 	</ItemGroup>
-
 </Project>
