@@ -1,8 +1,6 @@
 ﻿using DotNetCore.CAP.Messages;
 using DotNetCore.CAP.Serialization;
 using System;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading.Tasks;
 
 namespace Adnc.Infra.EventBus.Cap.Serialization

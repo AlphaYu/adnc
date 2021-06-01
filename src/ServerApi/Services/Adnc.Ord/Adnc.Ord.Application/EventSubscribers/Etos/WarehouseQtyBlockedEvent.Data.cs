@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Adnc.Ord.Application.EventSubscribers.Etos
+﻿namespace Adnc.Ord.Application.EventSubscribers.Etos
 {
     public class WarehouseQtyBlockedEventData
     {

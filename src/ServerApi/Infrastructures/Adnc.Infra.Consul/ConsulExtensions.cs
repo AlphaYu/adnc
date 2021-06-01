@@ -3,8 +3,6 @@ using Adnc.Infra.Consul.Registration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Adnc.Infra.Consul
 {

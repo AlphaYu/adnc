@@ -1,4 +1,3 @@
-using Adnc.Application.Shared.Caching;
 using Adnc.Infra.Consul;
 using Adnc.WebApi.Shared;
 using Autofac;

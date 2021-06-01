@@ -5,7 +5,7 @@ namespace Adnc.Infra.Consul
 {
     public class DefaultTokenGenerator : ITokenGenerator
     {
-        private IHttpContextAccessor _httpContextAccessor;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
         public DefaultTokenGenerator(IHttpContextAccessor httpContextAccessor)
         {

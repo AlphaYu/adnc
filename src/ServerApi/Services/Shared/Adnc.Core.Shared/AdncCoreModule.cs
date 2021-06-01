@@ -1,9 +1,7 @@
 ﻿using Adnc.Core.Shared.Entities;
-using Adnc.Core.Shared.Interceptors;
 using Adnc.Infra.EventBus;
 using Adnc.Infra.EventBus.Cap;
 using Autofac;
-using Autofac.Extras.DynamicProxy;
 using System;
 using System.Linq;
 using System.Reflection;

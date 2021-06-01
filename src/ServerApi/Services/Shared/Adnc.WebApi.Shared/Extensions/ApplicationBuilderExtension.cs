@@ -1,14 +1,11 @@
-﻿using Adnc.Infra.Consul;
-using Adnc.WebApi.Shared;
+﻿using Adnc.WebApi.Shared;
 using Adnc.WebApi.Shared.Middleware;
-using DotNetCore.CAP.Dashboard.NodeDiscovery;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.OpenApi.Models;
 using System;

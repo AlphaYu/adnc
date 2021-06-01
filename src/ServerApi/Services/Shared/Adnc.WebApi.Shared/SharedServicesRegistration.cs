@@ -1,4 +1,5 @@
 ﻿using Adnc.Application.RpcService;
+using Adnc.Application.Shared.Caching;
 using Adnc.Infra.Common.Helper;
 using Adnc.Infra.Consul;
 using Adnc.Infra.Consul.Consumer;
@@ -8,19 +9,15 @@ using Adnc.Infra.EventBus.RabbitMq;
 using Adnc.Infra.Mongo;
 using Adnc.Infra.Mongo.Configuration;
 using Adnc.Infra.Mongo.Extensions;
-using Adnc.Application.Shared.Caching;
 using Adnc.WebApi.Shared.Extensions;
+using DotNetCore.CAP;
 using DotNetCore.CAP.Dashboard;
 using DotNetCore.CAP.Dashboard.NodeDiscovery;
-using SkyApm.Diagnostics.CAP;
-using SkyApm.Diagnostics.MongoDB;
-using SkyApm.Utilities.DependencyInjection;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
@@ -35,6 +32,8 @@ using Microsoft.OpenApi.Models;
 using Polly;
 using Polly.Timeout;
 using Refit;
+using SkyApm.Diagnostics.CAP;
+using SkyApm.Utilities.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
 using System.Collections.Generic;
@@ -50,7 +49,6 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
-using DotNetCore.CAP;
 
 namespace Adnc.WebApi.Shared
 {
