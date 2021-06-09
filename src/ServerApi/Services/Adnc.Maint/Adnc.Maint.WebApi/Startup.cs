@@ -14,34 +14,23 @@ namespace Adnc.Maint.WebApi
 {
     public class Startup
     {
-        private readonly IConfiguration _configuration;
-        private readonly IWebHostEnvironment _environment;
-        private readonly ServiceInfo _serviceInfo;
+        private readonly IHostEnvironment _environment;
+        private IServiceCollection _services;
 
-        public Startup(IConfiguration configuration
-            , IWebHostEnvironment environment)
+        public Startup(IHostEnvironment environment)
         {
-            _configuration = configuration;
             _environment = environment;
-            _serviceInfo = ServiceInfo.Create(Assembly.GetExecutingAssembly());
         }
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAdncServices<PermissionHandlerRemote>(_configuration, _environment, _serviceInfo, registion =>
-            {
-                var policies = registion.GenerateDefaultRefitPolicies();
-                var authServiceAddress = _environment.IsDevelopment() ? "http://localhost:5010" : "adnc.usr.webapi";
-                registion.AddRpcService<IAuthRpcService>(authServiceAddress, policies);
-
-                var maintServiceAddress = _environment.IsDevelopment() ? "http://localhost:5020" : "adnc.maint.webapi";
-                registion.AddRpcService<IMaintRpcService>(maintServiceAddress, policies);
-            });
+            _services = services;
+            services.AddAdncServices<PermissionHandlerRemote>();
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterAdncModules(_configuration, _serviceInfo);
+            builder.RegisterAdncModules(_services);
         }
 
         public void Configure(IApplicationBuilder app)

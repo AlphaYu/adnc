@@ -1,20 +1,10 @@
-﻿using Adnc.Infra.Consul;
+﻿using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Hosting;
 
 namespace Microsoft.Extensions.Configuration
 {
-    public static class ConfigurationExtension
+    public static partial class ConfigurationExtensions
     {
-        /// <summary>
-        /// 获取consul配置
-        /// </summary>
-        /// <param name="serviceInfo"></param>
-        /// <param name="configuration"></param>
-        /// <returns></returns>
-        public static ConsulConfig GetConsulConfig(this IConfiguration configuration)
-        {
-            return configuration.GetConsulSection().Get<ConsulConfig>();
-        }
-
         /// <summary>
         /// 获取SSOAuthentication是否开启
         /// </summary>

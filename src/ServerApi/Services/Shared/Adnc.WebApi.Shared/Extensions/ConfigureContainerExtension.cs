@@ -2,9 +2,9 @@
 using Adnc.Infra.Consul;
 using Adnc.Infra.EfCore;
 using Adnc.Infra.Mongo;
-using Adnc.WebApi.Shared;
 using Autofac.Core;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
 using System.Reflection;
@@ -21,21 +21,22 @@ namespace Autofac
         /// <param name="serverInfo"></param>
         /// <param name="completedExecute"></param>
         /// <returns></returns>
-        public static ContainerBuilder RegisterAdncModules(this ContainerBuilder builder
-            , IConfiguration configuration
-            , ServiceInfo serverInfo
-            , Action<ContainerBuilder> completedExecute = null)
+        public static ContainerBuilder RegisterAdncModules(this ContainerBuilder builder, IServiceCollection services, Action<ContainerBuilder> completedExecute = null)
         {
-            builder.RegisterModule<AdncInfraMongoModule>();
-            builder.RegisterModule<AdncInfraEfCoreModule>();
-            builder.RegisterModule(new AdncInfraConsulModule(configuration.GetConsulConfig().ConsulUrl));
+            var configuration = services.GetConfiguration();
+            var serviceInfo = services.GetServiceInfo();
 
-            var appAssembly = Assembly.Load(serverInfo.AssemblyFullName.Replace("WebApi", "Application"));
+            builder.RegisterModuleIfNotRegistered<AdncInfraMongoModule>();
+            builder.RegisterModuleIfNotRegistered<AdncInfraEfCoreModule>();
+            var consulUrl = configuration.GetConsulSection().Get<ConsulConfig>().ConsulUrl;
+            builder.RegisterModuleIfNotRegistered(new AdncInfraConsulModule(consulUrl));
+
+            var appAssembly = Assembly.Load(serviceInfo.AssemblyFullName.Replace("WebApi", "Application"));
             var appModelType = appAssembly.GetTypes().FirstOrDefault(m =>
                                                        m.FullName != null
                                                        && typeof(AdncApplicationModule).IsAssignableFrom(m)
                                                        && !m.IsAbstract);
-            builder.RegisterModule(Activator.CreateInstance(appModelType, configuration.GetRedisSection(), configuration.GetRabbitMqSection()) as IModule);
+            builder.RegisterModuleIfNotRegistered(Activator.CreateInstance(appModelType, configuration, serviceInfo) as IModule);
 
             completedExecute?.Invoke(builder);
 

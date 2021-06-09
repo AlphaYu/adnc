@@ -1,4 +1,5 @@
-﻿using Adnc.WebApi.Shared;
+﻿using Adnc.Infra.Consul;
+using Adnc.Infra.Core;
 using Adnc.WebApi.Shared.Middleware;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -26,8 +27,8 @@ namespace Microsoft.AspNetCore.Builder
         public static IApplicationBuilder UseAdncMiddlewares(this IApplicationBuilder app, Action<IApplicationBuilder> completedExecute = null)
         {
             var configuration = app.ApplicationServices.GetService<IConfiguration>();
-            var environment = app.ApplicationServices.GetService<IWebHostEnvironment>();
-            var serviceInfo = app.ApplicationServices.GetService<ServiceInfo>();
+            var environment = app.ApplicationServices.GetService<IHostEnvironment>();
+            var serviceInfo = app.ApplicationServices.GetService<IServiceInfo>();
 
             if (environment.IsDevelopment()) IdentityModelEventSource.ShowPII = true;
 
@@ -62,7 +63,7 @@ namespace Microsoft.AspNetCore.Builder
                 c.RoutePrefix = $"{serviceInfo.ShortName}";
             });
 
-            var healthUrl = configuration.GetConsulConfig().HealthCheckUrl;
+            var healthUrl = configuration.GetConsulSection().Get<ConsulConfig>().HealthCheckUrl;
             app.UseHealthChecks($"/{healthUrl}", new HealthCheckOptions()
             {
                 Predicate = _ => true,

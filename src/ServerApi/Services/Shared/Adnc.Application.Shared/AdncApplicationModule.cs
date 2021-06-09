@@ -7,12 +7,14 @@ using Adnc.Core.Shared;
 using Adnc.Core.Shared.Interceptors;
 using Adnc.Infra.Caching;
 using Adnc.Infra.Caching.Interceptor.Castle;
+using Adnc.Infra.Core;
 using Adnc.Infra.Mapper.AutoMapper;
 using Adnc.Infra.Mq;
 using Autofac;
 using Autofac.Extras.DynamicProxy;
 using FluentValidation;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,17 +31,16 @@ namespace Adnc.Application.Shared
         private readonly Assembly _appContractsAssemblieToScan;
         private readonly Assembly _coreAssemblieToScan;
         private readonly IConfigurationSection _redisSection;
-        private readonly IConfigurationSection _rabbitMqSection;
         private readonly string _appModuleName;
 
-        protected AdncApplicationModule(Type appModelType, IConfigurationSection redisSection, IConfigurationSection rabbitMqSection)
+        protected AdncApplicationModule(Type modelType, IConfiguration configuration, IServiceInfo serviceInfo)
         {
-            _appModuleName = appModelType.Name;
-            _appAssemblieToScan = appModelType.Assembly;
+            _appAssemblieToScan = modelType?.Assembly ?? throw new ArgumentNullException(nameof(modelType));
             _coreAssemblieToScan = Assembly.Load(_appAssemblieToScan.FullName.Replace(".Application", ".Core"));
             _appContractsAssemblieToScan = Assembly.Load(_appAssemblieToScan.FullName.Replace(".Application", ".Application.Contracts"));
-            _redisSection = redisSection;
-            _rabbitMqSection = rabbitMqSection;
+
+            _appModuleName = serviceInfo.ShortName;
+            _redisSection = configuration.GetRedisSection();
         }
 
         protected override void Load(ContainerBuilder builder)
@@ -103,7 +104,7 @@ namespace Adnc.Application.Shared
                         .AsSelf()
                         .SingleInstance();
             builder.RegisterType<WorkerNodeHostedService>()
-                        .WithParameter("serviceName", _appModuleName.ToLower())
+                        .WithParameter("serviceName", _appModuleName)
                         .AsImplementedInterfaces()
                         .SingleInstance();
 
@@ -134,11 +135,11 @@ namespace Adnc.Application.Shared
 
         private void LoadDepends(ContainerBuilder builder)
         {
-            builder.RegisterModule(new AdncInfraEventBusModule(_appAssemblieToScan));
-            builder.RegisterModule(new AutoMapperModule(_appAssemblieToScan));
-            builder.RegisterModule(new AdncInfraCachingModule(_redisSection));
+            builder.RegisterModuleIfNotRegistered(new AdncInfraEventBusModule(_appAssemblieToScan));
+            builder.RegisterModuleIfNotRegistered(new AutoMapperModule(_appAssemblieToScan));
+            builder.RegisterModuleIfNotRegistered(new AdncInfraCachingModule(_redisSection));
             var modelType = _coreAssemblieToScan.GetTypes().FirstOrDefault(x => x.IsAssignableTo<AdncCoreModule>() && !x.IsAbstract);
-            builder.RegisterModule(System.Activator.CreateInstance(modelType) as Autofac.Module);
+            builder.RegisterModuleIfNotRegistered(System.Activator.CreateInstance(modelType) as Autofac.Module);
         }
     }
 }

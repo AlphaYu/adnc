@@ -60,7 +60,7 @@ namespace Adnc.Usr.Application.Caching
             get
             {
                 var cacheFilter = _bloomFilterFactory.Value.GetBloomFilter(_cache.Value.CacheOptions.PenetrationSetting.BloomFilterSetting.Name);
-                var accountFilter = _bloomFilterFactory.Value.GetBloomFilter($"adnc:{nameof(BloomFilterAccount).ToLower()}");
+                var accountFilter = _bloomFilterFactory.Value.GetBloomFilter("adnc:usr:bloomfilter:accouts");
                 return (cacheFilter, accountFilter);
             }
         }

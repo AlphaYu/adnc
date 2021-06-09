@@ -1,4 +1,5 @@
 ﻿using Adnc.Application.Shared;
+using Adnc.Infra.Core;
 using Autofac;
 using Microsoft.Extensions.Configuration;
 
@@ -12,8 +13,8 @@ namespace Adnc.Cus.Application
         /// <summary>
         /// 构造函数
         /// </summary>
-        public AdncCusApplicationModule(IConfigurationSection redisSection, IConfigurationSection rabitMqSection)
-                    : base(typeof(AdncCusApplicationModule), redisSection, rabitMqSection)
+        public AdncCusApplicationModule(IConfiguration configuration, IServiceInfo serviceInfo)
+                    : base(typeof(AdncCusApplicationModule), configuration, serviceInfo)
         {
         }
 
@@ -23,7 +24,6 @@ namespace Adnc.Cus.Application
         /// <param name="builder"></param>
         protected override void Load(ContainerBuilder builder)
         {
-            //todo register other types;
             base.Load(builder);
         }
     }

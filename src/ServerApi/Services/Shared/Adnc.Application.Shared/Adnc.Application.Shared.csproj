@@ -22,6 +22,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Common\Adnc.Infra.Common.csproj" />
 		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Caching\Adnc.Infra.Caching.csproj" />
+		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Core\Adnc.Infra.Core.csproj" />
 		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Mapper\Adnc.Infra.Mapper.csproj" />
 		<ProjectReference Include="..\Adnc.Application.RpcService\Adnc.Application.RpcService.csproj" />
 		<ProjectReference Include="..\Adnc.Core.Shared\Adnc.Core.Shared.csproj" />

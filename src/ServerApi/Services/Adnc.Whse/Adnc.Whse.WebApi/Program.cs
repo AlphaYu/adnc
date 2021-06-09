@@ -1,10 +1,14 @@
 using Adnc.Infra.Consul;
+using Adnc.Infra.Core;
+using Adnc.WebApi.Shared;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using NLog.Web;
+using System.Reflection;
 
 namespace Adnc.Whse.WebApi
 {
@@ -35,6 +39,10 @@ namespace Adnc.Whse.WebApi
                     }
                 })
                 .UseServiceProviderFactory(new AutofacServiceProviderFactory())
+                .ConfigureServices(services =>
+                {
+                    services.Add(ServiceDescriptor.Singleton(typeof(IServiceInfo), ServiceInfo.Create(Assembly.GetExecutingAssembly())));
+                })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();

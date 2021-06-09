@@ -10,6 +10,7 @@ using Adnc.Usr.Application.Contracts.Services;
 using Adnc.Usr.Core.Entities;
 using Adnc.Usr.Core.RepositoryExtensions;
 using System;
+using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 using System.Net;
@@ -28,13 +29,13 @@ namespace Adnc.Usr.Application.Services
         public AccountAppService(IEfRepository<SysUser> userRepository
            , IEfRepository<SysRole> roleRepository
            , IEfRepository<SysMenu> menuRepository
-           , RabbitMqProducer mqProducer
+           , IEnumerable<RabbitMqProducer> mqProducers
            , CacheService cacheService)
         {
             _userRepository = userRepository;
             _roleRepository = roleRepository;
             _menuRepository = menuRepository;
-            _mqProducer = mqProducer;
+            _mqProducer = mqProducers.FirstOrDefault();
             _cacheService = cacheService;
         }
 

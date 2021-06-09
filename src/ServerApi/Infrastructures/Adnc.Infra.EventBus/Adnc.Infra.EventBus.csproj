@@ -14,4 +14,7 @@
 		<PackageReference Include="System.Text.Json" Version="5.0.2" />
 		<PackageReference Include="DotNetCore.CAP" Version="5.0.3" />
 	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Adnc.Infra.Core\Adnc.Infra.Core.csproj" />
+	</ItemGroup>
 </Project>

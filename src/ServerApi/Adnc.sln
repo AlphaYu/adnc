@@ -101,6 +101,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Application.RpcService
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "00.Shared", "00.Shared", "{1D4DB6DE-CDE0-4B60-A71D-DFD792C6D864}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adnc.Infra.Core", "Infrastructures\Adnc.Infra.Core\Adnc.Infra.Core.csproj", "{D54CDC48-F5C6-48DC-AB63-EFEC67E44E8C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -429,6 +431,14 @@ Global
 		{8AC99124-C222-46FE-805C-BC2A1A1A0F59}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8AC99124-C222-46FE-805C-BC2A1A1A0F59}.Release|x64.ActiveCfg = Release|Any CPU
 		{8AC99124-C222-46FE-805C-BC2A1A1A0F59}.Release|x64.Build.0 = Release|Any CPU
+		{D54CDC48-F5C6-48DC-AB63-EFEC67E44E8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D54CDC48-F5C6-48DC-AB63-EFEC67E44E8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D54CDC48-F5C6-48DC-AB63-EFEC67E44E8C}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D54CDC48-F5C6-48DC-AB63-EFEC67E44E8C}.Debug|x64.Build.0 = Debug|Any CPU
+		{D54CDC48-F5C6-48DC-AB63-EFEC67E44E8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D54CDC48-F5C6-48DC-AB63-EFEC67E44E8C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D54CDC48-F5C6-48DC-AB63-EFEC67E44E8C}.Release|x64.ActiveCfg = Release|Any CPU
+		{D54CDC48-F5C6-48DC-AB63-EFEC67E44E8C}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -480,6 +490,7 @@ Global
 		{D2D3485A-27E8-46AE-9E8D-A57E38AC5C5B} = {3B899133-BEAC-4438-977F-B28FDFF3AE27}
 		{8AC99124-C222-46FE-805C-BC2A1A1A0F59} = {1D4DB6DE-CDE0-4B60-A71D-DFD792C6D864}
 		{1D4DB6DE-CDE0-4B60-A71D-DFD792C6D864} = {0CDC8FFF-393C-4C44-A2D8-996C24C51024}
+		{D54CDC48-F5C6-48DC-AB63-EFEC67E44E8C} = {3B899133-BEAC-4438-977F-B28FDFF3AE27}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3DED72E8-74C9-4A51-A9CE-62ECFEEA1921}

@@ -3,6 +3,7 @@ using Adnc.Application.Shared.Caching;
 using Adnc.Infra.Common.Helper;
 using Adnc.Infra.Consul;
 using Adnc.Infra.Consul.Consumer;
+using Adnc.Infra.Core;
 using Adnc.Infra.EfCore;
 using Adnc.Infra.EfCore.Interceptors;
 using Adnc.Infra.EventBus.RabbitMq;
@@ -56,20 +57,20 @@ namespace Adnc.WebApi.Shared
     {
         protected readonly IConfiguration _configuration;
         protected readonly IServiceCollection _services;
-        protected readonly IWebHostEnvironment _environment;
-        protected readonly ServiceInfo _serviceInfo;
+        protected readonly IHostEnvironment _environment;
+        protected readonly IServiceInfo _serviceInfo;
 
         /// <summary>
         /// 服务注册与系统配置
         /// </summary>
         /// <param name="configuration"><see cref="IConfiguration"/></param>
-        /// <param name="services"><see cref="IServiceCollection"/></param>
-        /// <param name="environment"><see cref="IWebHostEnvironment"/></param>
+        /// <param name="services"><see cref="IServiceInfo"/></param>
+        /// <param name="environment"><see cref="IHostEnvironment"/></param>
         /// <param name="serviceInfo"><see cref="ServiceInfo"/></param>
         public SharedServicesRegistration(IConfiguration configuration
             , IServiceCollection services
-            , IWebHostEnvironment environment
-            , ServiceInfo serviceInfo)
+            , IHostEnvironment environment
+            , IServiceInfo serviceInfo)
         {
             _configuration = configuration;
             _environment = environment;
@@ -449,7 +450,7 @@ namespace Adnc.WebApi.Shared
                 {
                     x.UseDiscovery(discoverOptions =>
                     {
-                        var consulConfig = _configuration.GetConsulConfig();
+                        var consulConfig = _configuration.GetConsulSection().Get<ConsulConfig>();
                         var consulAdderss = new Uri(consulConfig.ConsulUrl);
 
                         var hostIps = NetworkInterface

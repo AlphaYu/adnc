@@ -1,7 +1,5 @@
 ﻿using Adnc.WebApi.Shared;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using System;
 
 namespace Microsoft.Extensions.DependencyInjection
@@ -19,13 +17,13 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="completedExecute"></param>
         /// <returns></returns>
         public static IServiceCollection AddAdncServices<TPermissionHandler>(this IServiceCollection services
-            , IConfiguration configuration
-            , IWebHostEnvironment environment
-            , ServiceInfo serviceInfo
             , Action<SharedServicesRegistration> completedExecute = null)
             where TPermissionHandler : PermissionHandler
         {
-            services.AddSingleton(serviceInfo);
+            var configuration = services.GetConfiguration();
+            var serviceInfo = services.GetServiceInfo();
+            var environment = services.GetHostEnvironment();
+
             services.AddHttpContextAccessor();
             services.AddMemoryCache();
 

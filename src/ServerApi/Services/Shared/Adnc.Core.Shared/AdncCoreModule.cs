@@ -15,7 +15,7 @@ namespace Adnc.Core.Shared
     {
         private readonly Assembly _assemblieToScan;
 
-        public AdncCoreModule(Type modelType)
+        protected AdncCoreModule(Type modelType)
         {
             _assemblieToScan = modelType.Assembly;
         }
