@@ -8,6 +8,9 @@
 
 	<ItemGroup>
 		<PackageReference Include="AutoMapper" Version="10.1.1" />
-		<PackageReference Include="Autofac" Version="6.2.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Adnc.Infra.Core\Adnc.Infra.Core.csproj" />
 	</ItemGroup>
 </Project>

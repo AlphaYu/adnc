@@ -17,7 +17,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="JetBrains.Annotations" Version="2021.1.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
 		<PackageReference Include="Microsoft.Extensions.Configuration" Version="5.0.0" />
 		<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
@@ -26,6 +25,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\Adnc.Infra.Core\Adnc.Infra.Core.csproj" />
+		<ProjectReference Include="..\Adnc.Infra.Core\Adnc.Infra.Core.csproj" />
 	</ItemGroup>
 </Project>

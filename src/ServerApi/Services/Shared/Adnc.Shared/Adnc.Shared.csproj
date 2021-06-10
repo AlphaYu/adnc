@@ -4,10 +4,9 @@
 		<TargetFramework>netstandard2.1</TargetFramework>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="Autofac" Version="6.2.0" />
 		<PackageReference Include="Refit.HttpClientFactory" Version="6.0.38" />
 	</ItemGroup>
 	<ItemGroup>
-	  <ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.EventBus\Adnc.Infra.EventBus.csproj" />
+		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.EventBus\Adnc.Infra.EventBus.csproj" />
 	</ItemGroup>
 </Project>
