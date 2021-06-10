@@ -13,7 +13,7 @@ COPY ["Services/Shared/Adnc.Core.Shared/Adnc.Core.Shared.csproj", "Services/Shar
 COPY ["Infrastructures/Adnc.Infra.Common/Adnc.Infra.Common.csproj", "Infrastructures/Adnc.Infra.Common/"]
 COPY ["Infrastructures/Adnc.Infra.EventBus/Adnc.Infra.EventBus.csproj", "Infrastructures/Adnc.Infra.EventBus/"]
 COPY ["Services/Adnc.Usr/Adnc.Usr.Application.Contracts/Adnc.Usr.Application.Contracts.csproj", "Services/Adnc.Usr/Adnc.Usr.Application.Contracts/"]
-COPY ["Services/Shared/Adnc.Application.Shared/Adnc.Application.Shared.csproj", "Services/Shared/Adnc.Application.Shared/"]
+COPY ["Services/Shared/Adnc.Infra.Application/Adnc.Infra.Application.csproj", "Services/Shared/Adnc.Infra.Application/"]
 COPY ["Services/Shared/Adnc.Application.RpcService/Adnc.Application.RpcService.csproj", "Services/Shared/Adnc.Application.RpcService/"]
 COPY ["Infrastructures/Adnc.Infra.Mapper/Adnc.Infra.Mapper.csproj", "Infrastructures/Adnc.Infra.Mapper/"]
 COPY ["Infrastructures/Adnc.Infra.Caching/Adnc.Infra.Caching.csproj", "Infrastructures/Adnc.Infra.Caching/"]

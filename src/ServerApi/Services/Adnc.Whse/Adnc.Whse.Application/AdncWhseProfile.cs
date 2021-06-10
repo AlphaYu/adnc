@@ -1,8 +1,8 @@
-﻿using Adnc.Application.Shared.Dtos;
-using Adnc.Core.Shared;
+﻿using Adnc.Infra.Application.Dtos;
 using Adnc.Whse.Application.Contracts.Dtos;
-using Adnc.Whse.Core.Entities;
 using AutoMapper;
+using Adnc.Infra.IRepositories;
+using Adnc.Whse.Domain.Entities;
 
 namespace Adnc.Whse.Application
 {

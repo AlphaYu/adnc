@@ -1,4 +1,4 @@
-﻿using Adnc.Application.Shared.Dtos;
+﻿using Adnc.Infra.Application.Dtos;
 using System;
 using System.Collections.Generic;
 

@@ -1,12 +1,11 @@
-﻿using Adnc.Application.Shared.Dtos;
-using Adnc.Application.Shared.Services;
-using Adnc.Core.Maint.Entities;
-using Adnc.Core.Shared.IRepositories;
-using Adnc.Infra.Common.Extensions;
+﻿using Adnc.Infra.Application.Dtos;
+using Adnc.Infra.Application.Services;
+using Adnc.Infra.IRepositories;
 using Adnc.Maint.Application.Contracts.Dtos;
 using Adnc.Maint.Application.Contracts.Services;
-using Adnc.Maint.Core.Entities;
+using Adnc.Maint.Entities;
 using MongoDB.Driver;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

@@ -1,4 +1,7 @@
-﻿using Adnc.Core.Shared.IRepositories;
+﻿using Adnc.Infra.IRepositories;
+
+using Adnc.Infra.IRepositories;
+
 using Adnc.Infra.Mongo.Interfaces;
 using Autofac;
 

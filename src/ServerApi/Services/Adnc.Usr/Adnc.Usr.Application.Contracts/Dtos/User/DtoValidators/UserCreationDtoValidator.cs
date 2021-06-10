@@ -1,4 +1,4 @@
-﻿using Adnc.Core.Shared.EntityConsts.Usr;
+﻿using Adnc.Shared.EntityConsts.Usr;
 using Adnc.Usr.Application.Contracts.Dtos;
 using FluentValidation;
 

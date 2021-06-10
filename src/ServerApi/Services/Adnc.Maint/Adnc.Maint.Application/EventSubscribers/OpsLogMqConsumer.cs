@@ -1,5 +1,4 @@
-﻿using Adnc.Core.Maint.Entities;
-using Adnc.Core.Shared.IRepositories;
+﻿using Adnc.Infra.IRepositories;
 using Adnc.Infra.EventBus.RabbitMq;
 using Adnc.Maint.Application.Contracts.Consts;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Adnc.Maint.Entities;
 
 namespace Adnc.Maint.Application.EventSubscribers
 {

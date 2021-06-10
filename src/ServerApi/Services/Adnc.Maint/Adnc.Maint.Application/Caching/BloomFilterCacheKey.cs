@@ -1,4 +1,4 @@
-﻿using Adnc.Application.Shared.Caching;
+﻿using Adnc.Infra.Application.Caching;
 using Adnc.Infra.Caching;
 using Adnc.Maint.Application.Contracts.Consts;
 using System;

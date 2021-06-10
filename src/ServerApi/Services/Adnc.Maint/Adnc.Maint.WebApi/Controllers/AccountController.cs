@@ -1,5 +1,5 @@
-﻿using Adnc.Application.RpcService.Rtos;
-using Adnc.Application.RpcService.Services;
+﻿using Adnc.Shared.RpcService.Rtos;
+using Adnc.Shared.RpcService.Services;
 using Adnc.WebApi.Shared;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

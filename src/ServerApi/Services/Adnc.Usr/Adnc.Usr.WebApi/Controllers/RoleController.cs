@@ -1,4 +1,4 @@
-﻿using Adnc.Application.Shared.Dtos;
+﻿using Adnc.Infra.Application.Dtos;
 using Adnc.Usr.Application.Contracts.Dtos;
 using Adnc.Usr.Application.Contracts.Services;
 using Adnc.WebApi.Shared;

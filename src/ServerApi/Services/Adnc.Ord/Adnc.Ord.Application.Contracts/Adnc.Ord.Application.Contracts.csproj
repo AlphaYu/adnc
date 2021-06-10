@@ -15,7 +15,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\Shared\Adnc.Application.Shared\Adnc.Application.Shared.csproj" />
+	  <ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Application\Adnc.Infra.Application.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

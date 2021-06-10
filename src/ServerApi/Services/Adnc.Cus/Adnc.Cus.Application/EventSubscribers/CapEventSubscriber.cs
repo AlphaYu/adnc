@@ -1,6 +1,7 @@
 ﻿using Adnc.Cus.Application.Contracts.Services;
 using Adnc.Cus.Application.EventSubscribers.Etos;
 using Adnc.Infra.EventBus;
+using Adnc.Shared.Events;
 using DotNetCore.CAP;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -29,8 +30,8 @@ namespace Adnc.Cus.Application.EventSubscribers
         /// </summary>
         /// <param name="eto"></param>
         /// <returns></returns>
-        [CapSubscribe(nameof(Core.Events.CustomerRechargedEvent))]
-        public async Task ProcessCustomerRechargedEvent(Core.Events.CustomerRechargedEvent eto)
+        [CapSubscribe(nameof(CustomerRechargedEvent))]
+        public async Task ProcessCustomerRechargedEvent(CustomerRechargedEvent eto)
         {
             using var scope = _services.CreateScope();
             var appSrv = scope.ServiceProvider.GetRequiredService<ICustomerAppService>();

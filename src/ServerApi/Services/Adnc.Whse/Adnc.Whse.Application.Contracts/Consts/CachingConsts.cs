@@ -1,4 +1,6 @@
-﻿using Adnc.Application.Shared.Consts;
+﻿using Adnc.Infra.Application.Consts;
+
+using Adnc.Infra.Application.Consts;
 
 namespace Adnc.Whse.Application.Contracts.Consts
 {

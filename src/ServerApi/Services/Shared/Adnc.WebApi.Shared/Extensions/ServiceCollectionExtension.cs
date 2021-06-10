@@ -1,5 +1,9 @@
-﻿using Adnc.WebApi.Shared;
+﻿using Adnc.Infra.Application.HostedServices;
+using Adnc.Infra.Application.IdGeneraterWorkerNode;
+using Adnc.WebApi.Shared;
+using Adnc.WebApi.Shared.HostedServices;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Logging;
 using System;
 
 namespace Microsoft.Extensions.DependencyInjection
@@ -26,6 +30,15 @@ namespace Microsoft.Extensions.DependencyInjection
 
             services.AddHttpContextAccessor();
             services.AddMemoryCache();
+
+            services.AddHostedService<CacheAndBloomFilterHostedService>();
+            services.AddHostedService(provider =>
+            {
+                var wokerNode = provider.GetService<WorkerNode>();
+                var logger = provider.GetService<ILogger<WorkerNodeHostedService>>();
+                var serviceName = serviceInfo.ShortName;
+                return new WorkerNodeHostedService(logger, wokerNode, serviceName);
+            });
 
             var _srvRegistration = new SharedServicesRegistration(configuration, services, environment, serviceInfo);
             _srvRegistration.Configure();

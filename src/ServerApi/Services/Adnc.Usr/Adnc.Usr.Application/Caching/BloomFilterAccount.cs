@@ -1,8 +1,8 @@
-﻿using Adnc.Application.Shared.Caching;
+﻿using Adnc.Infra.Application.Caching;
 using Microsoft.Extensions.DependencyInjection;
-using Adnc.Core.Shared.IRepositories;
+using Adnc.Infra.IRepositories;
 using Adnc.Infra.Caching;
-using Adnc.Usr.Core.Entities;
+using Adnc.Usr.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

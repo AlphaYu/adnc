@@ -1,4 +1,4 @@
-﻿using Adnc.Application.Shared.Consts;
+﻿using Adnc.Infra.Application.Consts;
 
 namespace Adnc.Cus.Application.Contracts.Consts
 {

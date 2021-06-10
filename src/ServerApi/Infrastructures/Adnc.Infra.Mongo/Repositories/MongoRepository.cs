@@ -1,6 +1,5 @@
-﻿using Adnc.Core.Shared;
-using Adnc.Core.Shared.Entities;
-using Adnc.Core.Shared.IRepositories;
+﻿using Adnc.Infra.Entities;
+using Adnc.Infra.IRepositories;
 using Adnc.Infra.Mongo.Extensions;
 using Adnc.Infra.Mongo.Interfaces;
 using MongoDB.Driver;

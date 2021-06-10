@@ -1,10 +1,10 @@
-﻿using Adnc.Application.RpcService;
-using Adnc.Application.Shared.Caching;
-using Adnc.Infra.Common.Helper;
+﻿using Adnc.Shared.RpcService;
+using Adnc.Infra.Application;
+using Adnc.Infra.Application.Caching;
+using Adnc.Infra.Helper;
 using Adnc.Infra.Consul;
 using Adnc.Infra.Consul.Consumer;
 using Adnc.Infra.Core;
-using Adnc.Infra.EfCore;
 using Adnc.Infra.EfCore.Interceptors;
 using Adnc.Infra.EventBus.RabbitMq;
 using Adnc.Infra.Mongo;
@@ -50,6 +50,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
+using Adnc.Infra.EfCore.MySQL;
 
 namespace Adnc.WebApi.Shared
 {
@@ -172,7 +173,7 @@ namespace Adnc.WebApi.Shared
 
                 if (_environment.IsDevelopment())
                 {
-                    options.AddInterceptors(new CustomCommandInterceptor());
+                    options.AddInterceptors(new DefaultDbCommandInterceptor());
                     options.EnableSensitiveDataLogging();
                     options.EnableDetailedErrors();
                 }
@@ -233,7 +234,7 @@ namespace Adnc.WebApi.Shared
                     ,
                     OnTokenValidated = context =>
                     {
-                        var userContext = context.HttpContext.RequestServices.GetService<Application.Shared.IUserContext>();
+                        var userContext = context.HttpContext.RequestServices.GetService<IUserContext>();
                         var claims = context.Principal.Claims;
                         userContext.Id = long.Parse(claims.First(x => x.Type == JwtRegisteredClaimNames.Sub).Value);
                         userContext.Account = claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;

@@ -1,8 +1,7 @@
-﻿using Adnc.Application.Shared.Dtos;
-using Adnc.Core.Maint.Entities;
-using Adnc.Core.Shared;
+﻿using Adnc.Infra.Application.Dtos;
+using Adnc.Infra.IRepositories;
 using Adnc.Maint.Application.Contracts.Dtos;
-using Adnc.Maint.Core.Entities;
+using Adnc.Maint.Entities;
 using AutoMapper;
 
 namespace Adnc.Maint.Application

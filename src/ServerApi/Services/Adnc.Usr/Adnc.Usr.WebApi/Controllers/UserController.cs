@@ -1,5 +1,5 @@
-﻿using Adnc.Application.Shared;
-using Adnc.Application.Shared.Dtos;
+﻿using Adnc.Infra.Application;
+using Adnc.Infra.Application.Dtos;
 using Adnc.Usr.Application.Contracts.Dtos;
 using Adnc.Usr.Application.Contracts.Services;
 using Adnc.WebApi.Shared;
@@ -91,7 +91,7 @@ namespace Adnc.Usr.WebApi.Controllers
         [HttpPut("{id}/status")]
         [Permission("userFreeze")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<ActionResult> ChangeStatus([FromRoute] long id, [FromBody] Adnc.Application.Shared.Dtos.SimpleDto<int> status)
+        public async Task<ActionResult> ChangeStatus([FromRoute] long id, [FromBody] Adnc.Infra.Application.Dtos.SimpleDto<int> status)
         {
             return Result(await _userService.ChangeStatusAsync(id, status.Value));
         }

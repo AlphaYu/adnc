@@ -1,5 +1,5 @@
-using Adnc.Application.RpcService.Services;
 using Adnc.Infra.Consul;
+using Adnc.Shared.RpcService.Services;
 using Adnc.WebApi.Shared;
 using Adnc.Whse.Application.EventSubscribers;
 using Autofac;
