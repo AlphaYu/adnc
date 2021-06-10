@@ -1,4 +1,4 @@
-﻿using Adnc.Shared.RpcService;
+﻿using Adnc.Shared.RpcServices;
 using Adnc.Infra.Application;
 using Adnc.Infra.Application.Caching;
 using Adnc.Infra.Helper;

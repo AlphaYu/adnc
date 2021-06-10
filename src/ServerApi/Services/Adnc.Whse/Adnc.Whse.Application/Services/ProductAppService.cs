@@ -9,9 +9,9 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Adnc.Whse.Domain.Services;
 using Adnc.Infra.IRepositories;
-using Adnc.Shared.RpcService.Services;
+using Adnc.Shared.RpcServices.Services;
 using Adnc.Whse.Domain.Entities;
-using Adnc.Shared.RpcService;
+using Adnc.Shared.RpcServices;
 using Adnc.Infra.Core;
 
 namespace Adnc.Whse.Application.Services

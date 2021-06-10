@@ -1,5 +1,5 @@
-﻿using Adnc.Shared.RpcService.Rtos;
-using Adnc.Shared.RpcService.Services;
+﻿using Adnc.Shared.RpcServices.Rtos;
+using Adnc.Shared.RpcServices.Services;
 using Adnc.Infra.Application.Dtos;
 using Adnc.Infra.Application.Services;
 using Adnc.Infra.Helper;
@@ -12,7 +12,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Adnc.Infra.IRepositories;
 using Adnc.Ord.Domain.Entities;
-using Adnc.Shared.RpcService;
+using Adnc.Shared.RpcServices;
 using Adnc.Infra.Core;
 using System.Collections.Generic;
 

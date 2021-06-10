@@ -1,4 +1,4 @@
-using Adnc.Shared.RpcService.Services;
+using Adnc.Shared.RpcServices.Services;
 using Adnc.Infra.Consul;
 using Adnc.WebApi.Shared;
 using Autofac;

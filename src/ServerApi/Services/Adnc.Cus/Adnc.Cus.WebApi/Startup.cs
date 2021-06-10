@@ -1,6 +1,6 @@
 using Adnc.Cus.Application.EventSubscribers;
 using Adnc.Infra.Consul;
-using Adnc.Shared.RpcService.Services;
+using Adnc.Shared.RpcServices.Services;
 using Autofac;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
