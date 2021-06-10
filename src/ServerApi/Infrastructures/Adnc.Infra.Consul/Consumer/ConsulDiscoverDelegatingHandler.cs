@@ -1,4 +1,5 @@
-﻿using Consul;
+﻿using Adnc.Infra.Consul.TokenGenerator;
+using Consul;
 using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Linq;

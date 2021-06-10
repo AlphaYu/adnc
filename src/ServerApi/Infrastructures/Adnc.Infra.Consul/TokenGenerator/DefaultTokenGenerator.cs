@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.Linq;
 
-namespace Adnc.Infra.Consul
+namespace Adnc.Infra.Consul.TokenGenerator
 {
     public class DefaultTokenGenerator : ITokenGenerator
     {

@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Caching.Memory;
+﻿using Adnc.Infra.Consul.TokenGenerator;
+using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Linq;
 using System.Net.Http;

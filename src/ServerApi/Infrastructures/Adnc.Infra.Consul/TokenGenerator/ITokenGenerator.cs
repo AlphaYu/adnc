@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.Consul
+﻿namespace Adnc.Infra.Consul.TokenGenerator
 {
     public interface ITokenGenerator
     {

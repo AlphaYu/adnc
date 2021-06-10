@@ -1,4 +1,5 @@
 ﻿using Adnc.Infra.Consul.Consumer;
+using Adnc.Infra.Consul.TokenGenerator;
 using Autofac;
 using Consul;
 using System;
