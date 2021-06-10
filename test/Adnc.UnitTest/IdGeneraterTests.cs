@@ -1,5 +1,5 @@
-﻿using Adnc.Infra.Common.Helper;
-using Adnc.Infra.Common.Helper.IdGeneraterInternal;
+﻿using Adnc.Infra.Helper;
+using Adnc.Infra.Helper.IdGeneraterInternal;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;

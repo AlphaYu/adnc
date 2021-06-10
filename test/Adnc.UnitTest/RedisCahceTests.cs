@@ -1,5 +1,4 @@
 ﻿using Adnc.Infra.Caching;
-using Adnc.Infra.Common.Extensions;
 using Adnc.UnitTest.Fixtures;
 using Autofac;
 using System;

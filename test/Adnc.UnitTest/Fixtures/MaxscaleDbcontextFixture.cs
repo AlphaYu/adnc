@@ -1,13 +1,12 @@
-﻿using Adnc.Core.Shared;
-using Adnc.Core.Shared.Entities;
-using Adnc.Cus.Core.Entities;
-using Adnc.Infra.EfCore;
+﻿using Adnc.Cus.Entities;
+using Adnc.Cus.Repository;
 using Adnc.Infra.EfCore.Interceptors;
+using Adnc.Infra.EfCore.MySQL;
+using Adnc.Infra.Entities;
+using Adnc.Infra.IRepositories;
 using Autofac;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
-using Pomelo.EntityFrameworkCore.MySql.Storage;
 using System;
 
 namespace Adnc.UnitTest.Fixtures
@@ -37,7 +36,7 @@ namespace Adnc.UnitTest.Fixtures
                 .UseMySql(dbstring, serverVersion, mySqlOptions =>
                 {
                 })
-                .AddInterceptors(new CustomCommandInterceptor())
+                .AddInterceptors(new DefaultDbCommandInterceptor())
                 .Options;
                 return options;
             }).InstancePerLifetimeScope();
@@ -52,9 +51,9 @@ namespace Adnc.UnitTest.Fixtures
                             .InstancePerLifetimeScope();
 
             //注册Adnc.Infra.EfCore
-            AdncInfraEfCoreModule.Register(containerBuilder);
+            AdncCusRepositoryModule.Register(containerBuilder);
 
-            var services = Container = containerBuilder.Build();
+            Container = containerBuilder.Build();
         }
 
         public void Dispose()

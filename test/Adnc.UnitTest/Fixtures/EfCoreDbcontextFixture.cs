@@ -1,12 +1,11 @@
-﻿using Adnc.Core.Shared;
-using Adnc.Core.Shared.Entities;
-using Adnc.Cus.Core.Entities;
+﻿using Adnc.Cus.Entities;
 using Adnc.Infra.EfCore;
+using Adnc.Infra.EfCore.MySQL;
+using Adnc.Infra.Entities;
+using Adnc.Infra.IRepositories;
 using Autofac;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
-using Pomelo.EntityFrameworkCore.MySql.Storage;
 using System;
 
 namespace Adnc.UnitTest.Fixtures
