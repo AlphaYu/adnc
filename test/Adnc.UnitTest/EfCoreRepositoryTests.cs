@@ -1,7 +1,7 @@
 ﻿using Adnc.Cus.Entities;
+using Adnc.Infra.EfCore.MySQL;
 using Adnc.Infra.Helper;
 using Adnc.Infra.Helper.IdGeneraterInternal;
-using Adnc.Infra.EfCore.MySQL;
 using Adnc.Infra.IRepositories;
 using Adnc.UnitTest.Fixtures;
 using Autofac;
