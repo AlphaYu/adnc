@@ -1,9 +1,5 @@
-﻿using Adnc.Infra.Consul.Configuration;
-using Adnc.Infra.Consul;
-using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Adnc.Infra.Consul;
+using Adnc.Infra.Consul.Configuration;
 
 namespace Microsoft.Extensions.Configuration
 {

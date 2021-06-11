@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace System
+﻿namespace System
 {
     public class AdncArgumentException : ArgumentException, IAdncException
     {

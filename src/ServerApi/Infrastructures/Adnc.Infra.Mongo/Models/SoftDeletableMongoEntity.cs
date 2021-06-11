@@ -1,7 +1,5 @@
 ﻿using Adnc.Infra.Entities;
 
-using Adnc.Infra.Entities;
-
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 

@@ -1,6 +1,6 @@
 ﻿using Adnc.Infra.Application.Consts;
-using Adnc.Infra.Helper;
 using Adnc.Infra.EventBus.RabbitMq;
+using Adnc.Infra.Helper;
 using Castle.DynamicProxy;
 using Microsoft.Extensions.Logging;
 using System;

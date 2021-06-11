@@ -1,7 +1,5 @@
 ﻿using Adnc.Infra.Application;
 
-using Adnc.Infra.Application;
-
 using Adnc.Usr.Application.Contracts.Dtos;
 using Adnc.Usr.Application.Contracts.Services;
 using Adnc.Usr.WebApi.Helper;

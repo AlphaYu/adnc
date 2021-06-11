@@ -1,5 +1,4 @@
-﻿using Adnc.Infra.Entities;
-using Adnc.Infra.IRepositories;
+﻿using Adnc.Infra.IRepositories;
 using DotNetCore.CAP;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;

@@ -1,4 +1,5 @@
-﻿using Adnc.Infra.Entities;
+﻿using Adnc.Infra.EfCore.MySQL;
+using Adnc.Infra.Entities;
 using Adnc.Infra.IRepositories;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -8,7 +9,6 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Z.EntityFramework.Plus;
-using Adnc.Infra.EfCore.MySQL;
 
 namespace Adnc.Infra.EfCore.Repositories
 {

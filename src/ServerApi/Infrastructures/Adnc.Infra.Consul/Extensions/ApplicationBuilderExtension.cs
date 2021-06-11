@@ -1,7 +1,5 @@
 ﻿using Adnc.Infra.Consul;
-using Adnc.Infra.Consul.Configuration;
 using Adnc.Infra.Consul.Registration;
-using Microsoft.Extensions.Configuration;
 using System;
 
 namespace Microsoft.AspNetCore.Builder

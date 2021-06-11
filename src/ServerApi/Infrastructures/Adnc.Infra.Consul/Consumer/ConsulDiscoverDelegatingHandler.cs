@@ -2,6 +2,7 @@
 using Consul;
 using Microsoft.Extensions.Caching.Memory;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -42,18 +43,16 @@ namespace Adnc.Infra.Consul.Consumer
                     if (!string.IsNullOrEmpty(tokenTxt))
                         request.Headers.Authorization = new AuthenticationHeaderValue(auth.Scheme, tokenTxt);
                 }
-
-                var serverUrl = _memoryCache.GetOrCreate(serviceAddressCacheKey, entry =>
-                {
-                    entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(5);
-                    return GetServiceAddress(currentUri.Host);
-                });
-
-                request.RequestUri = new Uri($"{currentUri.Scheme}://{serverUrl}{currentUri.PathAndQuery}");
+                var serviceUrls = await GetAllHealthServiceAddressAsync(currentUri.Host, serviceAddressCacheKey);
+                var serviceUrl = GetServiceAddress(serviceUrls);
+                if (serviceUrl.IsNullOrWhiteSpace())
+                    throw new ArgumentNullException($"{currentUri.Host} does not contain helath service address!");
+                else
+                    request.RequestUri = new Uri($"{currentUri.Scheme}://{serviceUrl}{currentUri.PathAndQuery}");
 
                 //如果调用地址是https,使用http2
-                if (request.RequestUri.Scheme.Equals("https", StringComparison.OrdinalIgnoreCase))
-                    request.Version = new Version(2, 0);
+                //if (request.RequestUri.Scheme.Equals("https", StringComparison.OrdinalIgnoreCase))
+                request.Version = new Version(2, 0);
 
                 #region 缓存处理
 
@@ -98,10 +97,10 @@ namespace Adnc.Infra.Consul.Consumer
                 var responseMessage = await base.SendAsync(request, cancellationToken).ConfigureAwait(false);
                 return responseMessage;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 _memoryCache.Remove(serviceAddressCacheKey);
-                throw new Exception(ex.Message, ex);
+                throw;
             }
             finally
             {
@@ -109,16 +108,32 @@ namespace Adnc.Infra.Consul.Consumer
             }
         }
 
-        private string GetServiceAddress(string serviceName)
+        private string GetServiceAddress(IEnumerable<string> healthAddresses)
         {
-            var servicesEntry = _consulClient.Health.Service(serviceName, string.Empty, true).Result.Response;
-            if (servicesEntry != null && servicesEntry.Any())
+            if (healthAddresses != null && healthAddresses.Any())
             {
-                int index = new Random().Next(servicesEntry.Count());
-                var entry = servicesEntry.ElementAt(index);
-                return $"{entry.Service.Address}:{entry.Service.Port}";
+                int index = new Random().Next(healthAddresses.Count());
+                var address = healthAddresses.ElementAt(index);
+                return address;
             }
-            return null;
+            return default;
+        }
+
+        private async Task<List<string>> GetAllHealthServiceAddressAsync(string serviceName, string serviceAddressCacheKey)
+        {
+            var healthAddresses = await _memoryCache.GetOrCreateAsync(serviceAddressCacheKey, async entry =>
+            {
+                var query = await _consulClient.Health.Service(serviceName, string.Empty, true);
+                var servicesEntries = query.Response;
+                if (servicesEntries != null && servicesEntries.Any())
+                {
+                    entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(5);
+                    return servicesEntries.Select(entry => $"{entry.Service.Address}:{entry.Service.Port}").ToList();
+                }
+                entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(0);
+                return default;
+            });
+            return healthAddresses;
         }
     }
 }

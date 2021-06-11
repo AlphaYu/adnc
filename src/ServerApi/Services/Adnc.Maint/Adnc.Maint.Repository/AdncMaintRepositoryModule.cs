@@ -1,5 +1,5 @@
-﻿using Autofac;
-using Adnc.Infra.Repository;
+﻿using Adnc.Infra.Repository;
+using Autofac;
 
 namespace Adnc.Maint.Repository
 {

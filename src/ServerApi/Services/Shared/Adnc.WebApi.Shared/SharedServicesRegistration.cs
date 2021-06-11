@@ -1,15 +1,16 @@
-﻿using Adnc.Shared.RpcServices;
-using Adnc.Infra.Application;
+﻿using Adnc.Infra.Application;
 using Adnc.Infra.Application.Caching;
-using Adnc.Infra.Helper;
 using Adnc.Infra.Consul;
 using Adnc.Infra.Consul.Consumer;
 using Adnc.Infra.Core;
 using Adnc.Infra.EfCore.Interceptors;
+using Adnc.Infra.EfCore.MySQL;
 using Adnc.Infra.EventBus.RabbitMq;
+using Adnc.Infra.Helper;
 using Adnc.Infra.Mongo;
 using Adnc.Infra.Mongo.Configuration;
 using Adnc.Infra.Mongo.Extensions;
+using Adnc.Shared.RpcServices;
 using Adnc.WebApi.Shared.Extensions;
 using DotNetCore.CAP;
 using DotNetCore.CAP.Dashboard;
@@ -50,7 +51,6 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
-using Adnc.Infra.EfCore.MySQL;
 
 namespace Adnc.WebApi.Shared
 {

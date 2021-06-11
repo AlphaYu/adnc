@@ -1,15 +1,11 @@
-using Adnc.Infra.Consul;
 using Adnc.Shared.RpcServices.Services;
-using Adnc.WebApi.Shared;
 using Adnc.Whse.Application.EventSubscribers;
 using Autofac;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Reflection;
 
 namespace Adnc.Whse.WebApi
 {

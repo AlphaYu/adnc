@@ -1,5 +1,5 @@
-﻿using Adnc.Shared.EntityConsts.Ord;
-using Adnc.Infra.Entities.Config;
+﻿using Adnc.Infra.Entities.Config;
+using Adnc.Shared.EntityConsts.Ord;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

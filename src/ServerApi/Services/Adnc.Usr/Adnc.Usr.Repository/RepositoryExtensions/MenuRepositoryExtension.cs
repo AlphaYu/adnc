@@ -1,10 +1,9 @@
 ﻿using Adnc.Infra.IRepositories;
-using Adnc.Infra.Entities;
+using Adnc.Usr.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Adnc.Usr.Entities;
 
 namespace Adnc.Usr.Core.RepositoryExtensions
 {

@@ -1,7 +1,7 @@
-﻿using Adnc.Infra.IRepositories;
+﻿using Adnc.Infra.EfCore.MySQL;
 using Adnc.Infra.EfCore.Repositories;
+using Adnc.Infra.IRepositories;
 using Autofac;
-using Adnc.Infra.EfCore.MySQL;
 
 namespace Adnc.Infra.EfCore
 {

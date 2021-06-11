@@ -1,8 +1,8 @@
 ﻿using Adnc.Infra.Application.Dtos;
-using Adnc.Ord.Application.Contracts.Dtos;
-using AutoMapper;
 using Adnc.Infra.IRepositories;
+using Adnc.Ord.Application.Contracts.Dtos;
 using Adnc.Ord.Domain.Entities;
+using AutoMapper;
 
 namespace Adnc.Ord.Application
 {

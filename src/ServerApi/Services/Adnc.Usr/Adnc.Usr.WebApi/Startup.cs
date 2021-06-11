@@ -1,4 +1,3 @@
-using Adnc.Infra.Consul;
 using Autofac;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;

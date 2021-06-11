@@ -1,6 +1,7 @@
-﻿using Adnc.Infra.Helper;
+﻿using Adnc.Infra.Core;
 using Adnc.Infra.Domain;
 using Adnc.Infra.EventBus;
+using Adnc.Infra.Helper;
 using Adnc.Infra.IRepositories;
 using Adnc.Shared.Events;
 using Adnc.Whse.Domain.Entities;
@@ -8,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Adnc.Infra.Core;
 
 namespace Adnc.Whse.Domain.Services
 {

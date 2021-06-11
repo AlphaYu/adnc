@@ -1,8 +1,8 @@
 ﻿using Adnc.Infra.Application.Dtos;
+using Adnc.Infra.IRepositories;
 using Adnc.Usr.Application.Contracts.Dtos;
 using Adnc.Usr.Entities;
 using AutoMapper;
-using Adnc.Infra.IRepositories;
 
 namespace Adnc.Usr.Application
 {

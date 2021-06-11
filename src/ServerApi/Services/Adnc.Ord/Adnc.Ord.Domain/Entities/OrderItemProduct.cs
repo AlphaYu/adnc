@@ -1,6 +1,5 @@
 ﻿using Adnc.Infra.Core;
 using Adnc.Infra.Entities;
-using System;
 
 namespace Adnc.Ord.Domain.Entities
 {

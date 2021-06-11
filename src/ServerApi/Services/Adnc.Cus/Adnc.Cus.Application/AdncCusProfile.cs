@@ -1,8 +1,8 @@
-﻿using Adnc.Infra.Application.Dtos;
-using Adnc.Cus.Application.Contracts.Dtos;
+﻿using Adnc.Cus.Application.Contracts.Dtos;
+using Adnc.Cus.Entities;
+using Adnc.Infra.Application.Dtos;
 using Adnc.Infra.IRepositories;
 using AutoMapper;
-using Adnc.Cus.Entities;
 
 namespace Adnc.Cus.Application
 {

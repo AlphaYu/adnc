@@ -1,13 +1,13 @@
-﻿using Adnc.Infra.EventBus;
+﻿using Adnc.Infra.Core;
+using Adnc.Infra.Domain;
+using Adnc.Infra.EventBus;
+using Adnc.Infra.Helper;
+using Adnc.Infra.IRepositories;
 using Adnc.Ord.Domain.Entities;
+using Adnc.Shared.Events;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Adnc.Infra.Domain;
-using Adnc.Infra.IRepositories;
-using Adnc.Shared.Events;
-using Adnc.Infra.Helper;
-using Adnc.Infra.Core;
 
 namespace Adnc.Ord.Core.Services
 {

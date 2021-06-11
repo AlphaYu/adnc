@@ -1,5 +1,5 @@
-﻿using Adnc.Infra.IRepositories;
-using Adnc.Infra.EventBus.RabbitMq;
+﻿using Adnc.Infra.EventBus.RabbitMq;
+using Adnc.Infra.IRepositories;
 using Adnc.Maint.Application.Contracts.Consts;
 using Adnc.Maint.Entities;
 using Microsoft.Extensions.DependencyInjection;
