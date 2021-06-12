@@ -17,16 +17,6 @@ namespace Adnc.Infra.Entities
             return efEntities;
         }
 
-        protected virtual IEnumerable<Type> GetDDDObjectTypes(Assembly assembly)
-        {
-            var efEntities = assembly.GetTypes().Where(m =>
-                                                       m.FullName != null
-                                                       && (typeof(AggregateRoot).IsAssignableFrom(m) || typeof(Entity).IsAssignableFrom(m))
-                                                       && !m.IsAbstract).ToArray();
-
-            return efEntities;
-        }
-
         public abstract (Assembly Assembly, IEnumerable<Type> Types) GetEntitiesInfo();
     }
 }

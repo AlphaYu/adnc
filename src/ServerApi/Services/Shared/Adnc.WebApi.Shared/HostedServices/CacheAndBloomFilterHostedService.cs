@@ -1,4 +1,4 @@
-﻿using Adnc.Infra.Application.Caching;
+﻿using Adnc.Application.Shared.Caching;
 using Adnc.Infra.Caching;
 using Adnc.Infra.Caching.Core;
 using Microsoft.Extensions.Hosting;
@@ -9,7 +9,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Adnc.Infra.Application.HostedServices
+namespace Adnc.Application.Shared.HostedServices
 {
     public class CacheAndBloomFilterHostedService : BackgroundService
     {

@@ -1,4 +1,4 @@
-﻿using Adnc.Infra.Application.Dtos;
+﻿using Adnc.Application.Shared.Dtos;
 
 namespace Adnc.Maint.Application.Contracts.Dtos
 {

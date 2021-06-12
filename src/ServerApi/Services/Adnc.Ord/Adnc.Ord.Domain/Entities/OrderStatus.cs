@@ -1,4 +1,4 @@
-﻿using Adnc.Infra.Entities;
+﻿using Adnc.Domain.Shared.Entities;
 
 namespace Adnc.Ord.Domain.Entities
 {

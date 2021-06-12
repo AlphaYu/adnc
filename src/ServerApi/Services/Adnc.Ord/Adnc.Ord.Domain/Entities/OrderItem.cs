@@ -1,12 +1,12 @@
 ﻿using Adnc.Infra.Core;
-using Adnc.Infra.Entities;
+using Adnc.Domain.Shared.Entities;
 
 namespace Adnc.Ord.Domain.Entities
 {
     /// <summary>
     /// 订单条目
     /// </summary>
-    public class OrderItem : Entity
+    public class OrderItem : DomainEntity
     {
         public long OrderId { get; private set; }
 

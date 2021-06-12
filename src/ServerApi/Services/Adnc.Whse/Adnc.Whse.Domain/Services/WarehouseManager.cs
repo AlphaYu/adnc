@@ -1,5 +1,5 @@
 ﻿using Adnc.Infra.Core;
-using Adnc.Infra.Domain;
+using Adnc.Domain.Shared;
 using Adnc.Infra.EventBus;
 using Adnc.Infra.Helper;
 using Adnc.Infra.IRepositories;

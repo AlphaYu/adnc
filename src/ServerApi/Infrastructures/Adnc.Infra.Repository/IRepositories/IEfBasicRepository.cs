@@ -13,7 +13,7 @@ namespace Adnc.Infra.IRepositories
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
     public interface IEfBasicRepository<TEntity> : IEfBaseRepository<TEntity>
-               where TEntity : AggregateRoot
+               where TEntity : Entity, IEfEntity<long>
     {
         Task<int> UpdateRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default);
 

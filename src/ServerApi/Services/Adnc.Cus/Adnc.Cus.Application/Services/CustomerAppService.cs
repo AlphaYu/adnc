@@ -1,8 +1,8 @@
 ﻿using Adnc.Cus.Application.Contracts.Dtos;
 using Adnc.Cus.Application.Contracts.Services;
 using Adnc.Cus.Entities;
-using Adnc.Infra.Application.Dtos;
-using Adnc.Infra.Application.Services;
+using Adnc.Application.Shared.Dtos;
+using Adnc.Application.Shared.Services;
 using Adnc.Infra.EventBus;
 using Adnc.Infra.Helper;
 using Adnc.Infra.IRepositories;

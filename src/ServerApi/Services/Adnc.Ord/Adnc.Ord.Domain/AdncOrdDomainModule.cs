@@ -1,4 +1,4 @@
-﻿using Adnc.Infra.Domain;
+﻿using Adnc.Domain.Shared;
 using Autofac;
 
 namespace Adnc.Ord.Domain

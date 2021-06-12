@@ -1,5 +1,5 @@
-﻿using Adnc.Infra.Application;
-using Adnc.Infra.Application.Caching;
+﻿using Adnc.Application.Shared;
+using Adnc.Application.Shared.Caching;
 using Adnc.Infra.Consul;
 using Adnc.Infra.Consul.Consumer;
 using Adnc.Infra.Core;
@@ -374,7 +374,7 @@ namespace Adnc.WebApi.Shared
                      .AddRabbitMQ(x =>
                      {
                          return
-                         RabbitMqConnection.GetInstance(x.GetService<IOptionsSnapshot<RabbitMqConfig>>()
+                         RabbitMqConnection.GetInstance(x.GetService<IOptionsMonitor<RabbitMqConfig>>()
                              , x.GetService<ILogger<dynamic>>()
                          ).Connection;
                      })

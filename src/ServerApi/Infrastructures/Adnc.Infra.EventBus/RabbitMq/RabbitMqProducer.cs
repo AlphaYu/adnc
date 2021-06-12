@@ -13,7 +13,7 @@ namespace Adnc.Infra.EventBus.RabbitMq
         private readonly IModel _channel;
         private readonly ILogger<RabbitMqProducer> _logger;
 
-        public RabbitMqProducer(IOptionsSnapshot<RabbitMqConfig> options, ILogger<RabbitMqProducer> logger)
+        public RabbitMqProducer(IOptionsMonitor<RabbitMqConfig> options, ILogger<RabbitMqProducer> logger)
         {
             _logger = logger;
             _channel = RabbitMqConnection.GetInstance(options, logger).Connection.CreateModel();

@@ -1,6 +1,6 @@
-﻿using Adnc.Infra.Application.Dtos;
-using Adnc.Infra.Application.Interceptors;
-using Adnc.Infra.Application.Services;
+﻿using Adnc.Application.Shared.Dtos;
+using Adnc.Application.Shared.Interceptors;
+using Adnc.Application.Shared.Services;
 using Adnc.Ord.Application.Contracts.Dtos;
 using System.Threading.Tasks;
 

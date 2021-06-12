@@ -1,4 +1,4 @@
-﻿using Adnc.Infra.Application;
+﻿using Adnc.Application.Shared;
 using Adnc.Infra.Consul;
 using Adnc.Infra.EfCore;
 using Adnc.Infra.Mongo;

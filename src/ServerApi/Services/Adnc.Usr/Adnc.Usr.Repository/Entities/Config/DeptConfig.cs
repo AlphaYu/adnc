@@ -1,5 +1,5 @@
 ﻿using Adnc.Infra.Entities.Config;
-using Adnc.Shared.EntityConsts.Usr;
+using Adnc.Shared.Consts.Entity.Usr;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Adnc.Usr.Entities.Config

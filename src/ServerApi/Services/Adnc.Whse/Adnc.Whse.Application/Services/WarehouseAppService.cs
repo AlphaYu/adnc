@@ -1,5 +1,5 @@
-﻿using Adnc.Infra.Application.Dtos;
-using Adnc.Infra.Application.Services;
+﻿using Adnc.Application.Shared.Dtos;
+using Adnc.Application.Shared.Services;
 using Adnc.Infra.IRepositories;
 using Adnc.Whse.Application.Contracts.Dtos;
 using Adnc.Whse.Application.Contracts.Services;

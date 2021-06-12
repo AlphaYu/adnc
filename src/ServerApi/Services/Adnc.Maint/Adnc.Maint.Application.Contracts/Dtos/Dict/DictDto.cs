@@ -1,4 +1,4 @@
-﻿using Adnc.Infra.Application.Dtos;
+﻿using Adnc.Application.Shared.Dtos;
 using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;

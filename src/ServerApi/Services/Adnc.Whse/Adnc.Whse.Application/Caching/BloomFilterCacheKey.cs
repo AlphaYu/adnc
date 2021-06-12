@@ -1,4 +1,4 @@
-﻿using Adnc.Infra.Application.Caching;
+﻿using Adnc.Application.Shared.Caching;
 using Adnc.Infra.Caching;
 using System;
 using System.Collections.Generic;

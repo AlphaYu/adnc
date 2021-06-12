@@ -1,5 +1,5 @@
-﻿using Adnc.Infra.Application.HostedServices;
-using Adnc.Infra.Application.IdGeneraterWorkerNode;
+﻿using Adnc.Application.Shared.HostedServices;
+using Adnc.Application.Shared.IdGeneraterWorkerNode;
 using Adnc.WebApi.Shared;
 using Adnc.WebApi.Shared.HostedServices;
 using Microsoft.AspNetCore.Authorization;

@@ -17,7 +17,7 @@ namespace Adnc.Infra.EfCore.Repositories
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
     public sealed class EfBasicRepository<TEntity> : AbstractEfBaseRepository<AdncDbContext, TEntity>, IEfBasicRepository<TEntity>
-            where TEntity : AggregateRoot
+            where TEntity : Entity, IEfEntity<long>
     {
         public EfBasicRepository(AdncDbContext dbContext)
             : base(dbContext)

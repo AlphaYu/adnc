@@ -1,4 +1,4 @@
-﻿using Adnc.Infra.Application.IdGeneraterWorkerNode;
+﻿using Adnc.Application.Shared.IdGeneraterWorkerNode;
 using Adnc.Infra.Helper.IdGeneraterInternal;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;

@@ -1,9 +1,9 @@
-﻿using Adnc.Infra.Application.Services;
+﻿using Adnc.Application.Shared.Services;
 using Adnc.Infra.EventBus.RabbitMq;
 using Adnc.Infra.Helper;
 using Adnc.Infra.IRepositories;
 using Adnc.Usr.Application.Caching;
-using Adnc.Usr.Application.Contracts.Consts;
+using Adnc.Shared.Consts.Caching.Usr;
 using Adnc.Usr.Application.Contracts.Dtos;
 using Adnc.Usr.Application.Contracts.Services;
 using Adnc.Usr.Core.RepositoryExtensions;
@@ -14,6 +14,7 @@ using System.Dynamic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Adnc.Shared.Consts.Mq;
 
 namespace Adnc.Usr.Application.Services
 {

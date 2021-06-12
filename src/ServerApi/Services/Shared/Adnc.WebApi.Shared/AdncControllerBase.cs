@@ -1,4 +1,4 @@
-﻿using Adnc.Infra.Application.Services;
+﻿using Adnc.Application.Shared.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Adnc.WebApi.Shared
@@ -6,12 +6,12 @@ namespace Adnc.WebApi.Shared
     public abstract class AdncControllerBase : ControllerBase
     {
         /// <summary>
-        /// Adnc.Infra.Application.Services.ProblemDetails.ProblemDetails => Problem
+        /// Adnc.Application.Shared.Services.ProblemDetails.ProblemDetails => Problem
         /// </summary>
-        /// <param name="problemDetails"><see cref="Adnc.Infra.Application.Services.ProblemDetails"/></param>
+        /// <param name="problemDetails"><see cref="Adnc.Application.Shared.Services.ProblemDetails"/></param>
         /// <returns><see cref="ObjectResult"/></returns>
         [NonAction]
-        protected virtual ObjectResult Problem(Adnc.Infra.Application.Services.ProblemDetails problemDetails)
+        protected virtual ObjectResult Problem(Adnc.Application.Shared.Services.ProblemDetails problemDetails)
         {
             problemDetails.Instance = problemDetails.Instance ?? this.Request.Path.ToString();
             return Problem(problemDetails.Detail

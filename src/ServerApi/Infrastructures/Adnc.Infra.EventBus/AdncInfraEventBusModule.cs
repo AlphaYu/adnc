@@ -29,7 +29,7 @@ namespace Adnc.Infra.Mq
         protected override void Load(ContainerBuilder builder)
         {
             //注册Rabbitmq生产者
-            builder.RegisterType<RabbitMqProducer>().InstancePerLifetimeScope();
+            builder.RegisterType<RabbitMqProducer>().SingleInstance();
 
             //注册Rabbitmq消费者
             builder.RegisterAssemblyTypes(_assembliesToScan.ToArray())

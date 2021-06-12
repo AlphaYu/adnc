@@ -1,4 +1,4 @@
-﻿using Adnc.Infra.Application.Dtos;
+﻿using Adnc.Application.Shared.Dtos;
 using Adnc.Infra.IRepositories;
 using Adnc.Whse.Application.Contracts.Dtos;
 using Adnc.Whse.Domain.Entities;

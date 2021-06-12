@@ -1,6 +1,5 @@
 ﻿using Adnc.Infra.EventBus.RabbitMq;
 using Adnc.Infra.IRepositories;
-using Adnc.Maint.Application.Contracts.Consts;
 using Adnc.Maint.Entities;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -9,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Adnc.Shared.Consts.Mq;
 
 namespace Adnc.Maint.Application.EventSubscribers
 {
@@ -23,7 +23,7 @@ namespace Adnc.Maint.Application.EventSubscribers
 
         private readonly ILogger<LoginLogMqConsumer> _logger;
 
-        public LoginLogMqConsumer(IOptionsSnapshot<RabbitMqConfig> options
+        public LoginLogMqConsumer(IOptionsMonitor<RabbitMqConfig> options
            , ILogger<LoginLogMqConsumer> logger
            , IServiceProvider services)
             : base(options, logger)

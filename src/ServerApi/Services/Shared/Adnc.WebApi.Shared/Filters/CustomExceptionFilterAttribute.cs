@@ -1,4 +1,4 @@
-﻿using Adnc.Infra.Application;
+﻿using Adnc.Application.Shared;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.Extensions.DependencyInjection;

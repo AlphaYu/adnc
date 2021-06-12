@@ -1,5 +1,5 @@
 ﻿using Adnc.Infra.Core;
-using Adnc.Infra.Entities;
+using Adnc.Domain.Shared.Entities;
 
 namespace Adnc.Whse.Domain.Entities
 {

@@ -1,8 +1,8 @@
-﻿using Adnc.Infra.Entities;
+﻿using Adnc.Domain.Shared.Entities;
 
 namespace Adnc.Whse.Domain.Entities
 {
-    public class InventoryChangesLog : Entity
+    public class InventoryChangesLog : DomainEntity
     {
     }
 
