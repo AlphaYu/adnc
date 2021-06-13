@@ -1,9 +1,9 @@
 ﻿using Adnc.Application.Shared.Dtos;
 using Adnc.Application.Shared.Services;
+using Adnc.Infra.Entities;
 using Adnc.Infra.IRepositories;
 using Adnc.Maint.Application.Contracts.Dtos;
 using Adnc.Maint.Application.Contracts.Services;
-using Adnc.Maint.Entities;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;

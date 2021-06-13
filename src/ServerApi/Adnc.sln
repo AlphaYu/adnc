@@ -101,9 +101,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Repository", "In
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Helper", "Infrastructures\Adnc.Infra.Helper\Adnc.Infra.Helper.csproj", "{538DC339-CEBD-46D4-9241-39EC28D8B8EB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adnc.Domain.Shared", "Services\Shared\Adnc.Domain.Shared\Adnc.Domain.Shared.csproj", "{F75F21E6-2C4A-45D0-9DF6-19A097254FE1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Domain.Shared", "Services\Shared\Adnc.Domain.Shared\Adnc.Domain.Shared.csproj", "{F75F21E6-2C4A-45D0-9DF6-19A097254FE1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Application.Shared", "Services\Shared\Adnc.Application.Shared\Adnc.Application.Shared.csproj", "{382E6BFE-F809-4E29-BEAB-57BA9C7FA69B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Bulid", "Bulid", "{5F46F98A-6505-4767-82A7-95B0E12060AC}"
+	ProjectSection(SolutionItems) = preProject
+		build\common.props = build\common.props
+		build\version.props = build\version.props
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
