@@ -1,5 +1,5 @@
 ﻿using Adnc.Application.Shared.HostedServices;
-using Adnc.Application.Shared.IdGeneraterWorkerNode;
+using Adnc.Application.Shared.IdGenerater;
 using Adnc.WebApi.Shared;
 using Adnc.WebApi.Shared.HostedServices;
 using Microsoft.AspNetCore.Authorization;
@@ -31,6 +31,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddHttpContextAccessor();
             services.AddMemoryCache();
 
+            services.AddHostedService<ChannelConsumersHostedService>();
             services.AddHostedService<CacheAndBloomFilterHostedService>();
             services.AddHostedService(provider =>
             {

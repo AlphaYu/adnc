@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Adnc.Application.Shared.IdGeneraterWorkerNode
+namespace Adnc.Application.Shared.IdGenerater
 {
     public class WorkerNode
     {

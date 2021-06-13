@@ -18,7 +18,7 @@ namespace Adnc.Usr.Application.Contracts.Services
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        [OpsLog(LogName = "新增菜单")]
+        [OperateLog(LogName = "新增菜单")]
         [CachingEvict(CacheKeys = new[] { CachingConsts.MenuListCacheKey, CachingConsts.MenuTreeListCacheKey, CachingConsts.MenuRelationCacheKey, CachingConsts.MenuCodesCacheKey })]
         Task<AppSrvResult<long>> CreateAsync(MenuCreationDto input);
 
@@ -28,7 +28,7 @@ namespace Adnc.Usr.Application.Contracts.Services
         /// <param name="id"></param>
         /// <param name="input"></param>
         /// <returns></returns>
-        [OpsLog(LogName = "修改菜单")]
+        [OperateLog(LogName = "修改菜单")]
         [CachingEvict(CacheKeys = new[] { CachingConsts.MenuListCacheKey, CachingConsts.MenuTreeListCacheKey, CachingConsts.MenuRelationCacheKey, CachingConsts.MenuCodesCacheKey })]
         Task<AppSrvResult> UpdateAsync(long id, MenuUpdationDto input);
 
@@ -37,7 +37,7 @@ namespace Adnc.Usr.Application.Contracts.Services
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [OpsLog(LogName = "删除菜单")]
+        [OperateLog(LogName = "删除菜单")]
         [CachingEvict(CacheKeys = new[] { CachingConsts.MenuListCacheKey, CachingConsts.MenuTreeListCacheKey, CachingConsts.MenuRelationCacheKey, CachingConsts.MenuCodesCacheKey })]
         Task<AppSrvResult> DeleteAsync(long id);
 

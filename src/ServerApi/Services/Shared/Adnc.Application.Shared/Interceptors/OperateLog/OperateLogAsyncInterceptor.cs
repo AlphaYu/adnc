@@ -1,10 +1,8 @@
-﻿using Adnc.Infra.EventBus.RabbitMq;
+﻿using Adnc.Infra.Entities;
 using Adnc.Infra.Helper;
-using Adnc.Shared.Consts.Mq;
 using Castle.DynamicProxy;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Dynamic;
 using System.Reflection;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -14,18 +12,15 @@ namespace Adnc.Application.Shared.Interceptors
     /// <summary>
     /// 操作日志拦截器
     /// </summary>
-    public sealed class OpsLogAsyncInterceptor : IAsyncInterceptor
+    public sealed class OperateLogAsyncInterceptor : IAsyncInterceptor
     {
         private readonly IUserContext _userContext;
-        private readonly RabbitMqProducer _mqProducer;
-        private readonly ILogger<OpsLogAsyncInterceptor> _logger;
+        private readonly ILogger<OperateLogAsyncInterceptor> _logger;
 
-        public OpsLogAsyncInterceptor(IUserContext userContext
-            , RabbitMqProducer mqProducer
-            , ILogger<OpsLogAsyncInterceptor> logger)
+        public OperateLogAsyncInterceptor(IUserContext userContext
+            , ILogger<OperateLogAsyncInterceptor> logger)
         {
             _userContext = userContext;
-            _mqProducer = mqProducer;
             _logger = logger;
         }
 
@@ -71,7 +66,7 @@ namespace Adnc.Application.Shared.Interceptors
                                      ;
         }
 
-        private void InternalInterceptSynchronous(IInvocation invocation, OpsLogAttribute attribute)
+        private void InternalInterceptSynchronous(IInvocation invocation, OperateLogAttribute attribute)
         {
             var methodInfo = invocation.Method ?? invocation.MethodInvocationTarget;
             var log = CreateOpsLog(methodInfo.DeclaringType.FullName, methodInfo.Name, attribute.LogName, invocation.Arguments, _userContext);
@@ -90,7 +85,7 @@ namespace Adnc.Application.Shared.Interceptors
             }
         }
 
-        private async Task InternalInterceptAsynchronous(IInvocation invocation, OpsLogAttribute attribute)
+        private async Task InternalInterceptAsynchronous(IInvocation invocation, OperateLogAttribute attribute)
         {
             var methodInfo = invocation.Method ?? invocation.MethodInvocationTarget;
             var log = CreateOpsLog(methodInfo.DeclaringType.FullName, methodInfo.Name, attribute.LogName, invocation.Arguments, _userContext);
@@ -119,7 +114,7 @@ namespace Adnc.Application.Shared.Interceptors
             await task;
         }
 
-        private async Task<TResult> InternalInterceptAsynchronous<TResult>(IInvocation invocation, OpsLogAttribute attribute)
+        private async Task<TResult> InternalInterceptAsynchronous<TResult>(IInvocation invocation, OperateLogAttribute attribute)
         {
             TResult result;
 
@@ -154,31 +149,35 @@ namespace Adnc.Application.Shared.Interceptors
             return result;
         }
 
-        private dynamic CreateOpsLog(string className, string methodName, string logName, object[] arguments, IUserContext userContext)
+        private SysOperationLog CreateOpsLog(string className, string methodName, string logName, object[] arguments, IUserContext userContext)
         {
-            dynamic log = new ExpandoObject();
-            log.ClassName = className;
-            log.CreateTime = DateTime.Now;
-            log.LogName = logName;
-            log.LogType = "操作日志";
-            log.Message = JsonSerializer.Serialize(arguments, SystemTextJsonHelper.GetAdncDefaultOptions());
-            log.Method = methodName;
-            log.Succeed = "false";
-            log.UserId = userContext.Id;
-            log.UserName = userContext.Name;
-            log.Account = userContext.Account;
-            log.RemoteIpAddress = userContext.RemoteIpAddress;
+            var log = new SysOperationLog
+            {
+                ClassName = className,
+                CreateTime = DateTime.Now,
+                LogName = logName,
+                LogType = "操作日志",
+                Message = JsonSerializer.Serialize(arguments, SystemTextJsonHelper.GetAdncDefaultOptions()),
+                Method = methodName,
+                Succeed = "false",
+                UserId = userContext.Id,
+                UserName = userContext.Name,
+                Account = userContext.Account,
+                RemoteIpAddress = userContext.RemoteIpAddress
+            };
             return log;
         }
 
-        private void WriteOpsLog(dynamic logInfo)
+        private void WriteOpsLog(SysOperationLog logInfo)
         {
             try
             {
-                var properties = _mqProducer.CreateBasicProperties();
-                //设置消息持久化
-                properties.Persistent = true;
-                _mqProducer.BasicPublish(MqExchanges.Logs, MqRoutingKeys.OpsLog, logInfo, properties);
+                //var properties = _mqProducer.CreateBasicProperties();
+                ////设置消息持久化
+                //properties.Persistent = true;
+                //_mqProducer.BasicPublish(MqExchanges.Logs, MqRoutingKeys.OpsLog, logInfo, properties);
+                var operationLogWriter = ChannelHelper<SysOperationLog>.Instance.Writer;
+                operationLogWriter.WriteAsync(logInfo).GetAwaiter().GetResult();
             }
             catch (Exception ex)
             {
@@ -191,10 +190,10 @@ namespace Adnc.Application.Shared.Interceptors
         /// </summary>
         /// <param name="invocation"></param>
         /// <returns></returns>
-        private OpsLogAttribute GetAttribute(IInvocation invocation)
+        private OperateLogAttribute GetAttribute(IInvocation invocation)
         {
             var methodInfo = invocation.Method ?? invocation.MethodInvocationTarget;
-            var attribute = methodInfo.GetCustomAttribute<OpsLogAttribute>();
+            var attribute = methodInfo.GetCustomAttribute<OperateLogAttribute>();
             return attribute;
         }
     }

@@ -1,8 +1,7 @@
-﻿using Adnc.Infra.Entities;
-using MongoDB.Bson.Serialization.Attributes;
+﻿using MongoDB.Bson.Serialization.Attributes;
 using System;
 
-namespace Adnc.Maint.Entities
+namespace Adnc.Infra.Entities
 {
     /// <summary>
     /// 异常日志

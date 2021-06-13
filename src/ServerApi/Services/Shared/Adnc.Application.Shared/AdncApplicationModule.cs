@@ -1,5 +1,5 @@
 ﻿using Adnc.Application.Shared.Caching;
-using Adnc.Application.Shared.IdGeneraterWorkerNode;
+using Adnc.Application.Shared.IdGenerater;
 using Adnc.Application.Shared.Interceptors;
 using Adnc.Application.Shared.Services;
 using Adnc.Infra.Caching;
@@ -58,9 +58,9 @@ namespace Adnc.Application.Shared
             #region register opslog interceptor
 
             //注册操作日志拦截器
-            builder.RegisterType<OpsLogInterceptor>()
+            builder.RegisterType<OperateLogInterceptor>()
                         .InstancePerLifetimeScope();
-            builder.RegisterType<OpsLogAsyncInterceptor>()
+            builder.RegisterType<OperateLogAsyncInterceptor>()
                         .InstancePerLifetimeScope();
 
             #endregion register opslog interceptor
@@ -80,7 +80,7 @@ namespace Adnc.Application.Shared
             //注册应用服务与拦截器
             var interceptors = new List<Type>
             {
-                typeof(OpsLogInterceptor)
+                typeof(OperateLogInterceptor)
                 , typeof(CachingInterceptor)
                 ,typeof(UowInterceptor)
             };
