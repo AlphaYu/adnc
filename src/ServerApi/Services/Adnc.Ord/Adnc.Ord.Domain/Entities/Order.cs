@@ -1,5 +1,5 @@
-﻿using Adnc.Infra.Core;
-using Adnc.Domain.Shared.Entities;
+﻿using Adnc.Domain.Shared.Entities;
+using Adnc.Infra.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;

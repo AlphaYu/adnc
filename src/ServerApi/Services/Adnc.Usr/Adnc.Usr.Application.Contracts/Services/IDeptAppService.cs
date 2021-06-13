@@ -2,7 +2,6 @@
 using Adnc.Application.Shared.Services;
 using Adnc.Infra.Caching.Interceptor;
 using Adnc.Shared.Consts.Caching.Usr;
-using Adnc.Shared.Consts.Caching.Usr;
 using Adnc.Usr.Application.Contracts.Dtos;
 using System.Collections.Generic;
 using System.Threading.Tasks;

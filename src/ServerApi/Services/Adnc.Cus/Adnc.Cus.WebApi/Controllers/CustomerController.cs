@@ -1,6 +1,6 @@
-﻿using Adnc.Cus.Application.Contracts.Dtos;
+﻿using Adnc.Application.Shared.Dtos;
+using Adnc.Cus.Application.Contracts.Dtos;
 using Adnc.Cus.Application.Contracts.Services;
-using Adnc.Application.Shared.Dtos;
 using Adnc.WebApi.Shared;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

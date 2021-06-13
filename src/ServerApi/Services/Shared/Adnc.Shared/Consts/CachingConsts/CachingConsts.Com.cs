@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Adnc.Shared.Consts.Caching.Com
+﻿namespace Adnc.Shared.Consts.Caching.Com
 {
     public class CachingConsts
     {

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Adnc.Shared.Consts.Mq
+﻿namespace Adnc.Shared.Consts.Mq
 {
     public static class MqRoutingKeys
     {

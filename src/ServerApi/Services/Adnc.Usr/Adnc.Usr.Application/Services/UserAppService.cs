@@ -2,8 +2,8 @@
 using Adnc.Application.Shared.Services;
 using Adnc.Infra.Helper;
 using Adnc.Infra.IRepositories;
-using Adnc.Usr.Application.Caching;
 using Adnc.Shared.Consts.Caching.Usr;
+using Adnc.Usr.Application.Caching;
 using Adnc.Usr.Application.Contracts.Dtos;
 using Adnc.Usr.Application.Contracts.Services;
 using Adnc.Usr.Entities;

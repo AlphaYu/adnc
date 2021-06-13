@@ -1,6 +1,7 @@
 ﻿using Adnc.Infra.EventBus.RabbitMq;
 using Adnc.Infra.IRepositories;
 using Adnc.Maint.Entities;
+using Adnc.Shared.Consts.Mq;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -8,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Adnc.Shared.Consts.Mq;
 
 namespace Adnc.Maint.Application.EventSubscribers
 {

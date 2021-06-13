@@ -2,8 +2,8 @@
 using Adnc.Application.Shared.Interceptors;
 using Adnc.Application.Shared.Services;
 using Adnc.Infra.Caching.Interceptor;
-using Adnc.Shared.Consts.Caching.Maint;
 using Adnc.Maint.Application.Contracts.Dtos;
+using Adnc.Shared.Consts.Caching.Maint;
 using System.Threading.Tasks;
 
 namespace Adnc.Maint.Application.Contracts.Services

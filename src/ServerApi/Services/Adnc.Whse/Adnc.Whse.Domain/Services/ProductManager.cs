@@ -1,5 +1,5 @@
-﻿using Adnc.Infra.Core;
-using Adnc.Domain.Shared;
+﻿using Adnc.Domain.Shared;
+using Adnc.Infra.Core;
 using Adnc.Infra.Helper;
 using Adnc.Infra.IRepositories;
 using Adnc.Whse.Domain.Entities;
