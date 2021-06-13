@@ -1,4 +1,6 @@
-﻿namespace System
+﻿using System;
+
+namespace Adnc.Infra.Core
 {
     public class AdncArgumentException : ArgumentException, IAdncException
     {

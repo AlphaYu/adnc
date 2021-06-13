@@ -1,4 +1,4 @@
-﻿namespace System
+﻿namespace Adnc.Infra.Core
 {
     public interface IAdncException
     {

@@ -1,6 +1,7 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 
-namespace System
+namespace Adnc.Infra.Core
 {
     public class BusinessException : Exception, IAdncException
     {
