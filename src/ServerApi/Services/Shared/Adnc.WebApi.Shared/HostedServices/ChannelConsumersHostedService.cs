@@ -26,13 +26,13 @@ namespace Adnc.WebApi.Shared.HostedServices
         {
             //save loginlogs
             _= Task.Run(async() => {
-                var channelLoginReader = ChannelHelper<SysLoginLog>.Instance.Reader;
+                var channelLoginReader = ChannelHelper<LoginLog>.Instance.Reader;
                 while (await channelLoginReader.WaitToReadAsync(stoppingToken))
                 {
                     if (channelLoginReader.TryRead(out var entity))
                     {
                         using var scope = _services.CreateScope();
-                        var repository = scope.ServiceProvider.GetRequiredService<IMongoRepository<SysLoginLog>>();
+                        var repository = scope.ServiceProvider.GetRequiredService<IMongoRepository<LoginLog>>();
                         await repository.AddAsync(entity, stoppingToken);
                     }
                     if (stoppingToken.IsCancellationRequested) break;
@@ -41,13 +41,13 @@ namespace Adnc.WebApi.Shared.HostedServices
 
             //save operationlogs
             _ = Task.Run(async () => {
-                var channelOperationLogReader = ChannelHelper<SysOperationLog>.Instance.Reader;
+                var channelOperationLogReader = ChannelHelper<OperationLog>.Instance.Reader;
                 while (await channelOperationLogReader.WaitToReadAsync(stoppingToken))
                 {
                     if (channelOperationLogReader.TryRead(out var entity))
                     {
                         using var scope = _services.CreateScope();
-                        var repository = scope.ServiceProvider.GetRequiredService<IMongoRepository<SysOperationLog>>();
+                        var repository = scope.ServiceProvider.GetRequiredService<IMongoRepository<OperationLog>>();
                         await repository.AddAsync(entity, stoppingToken);
                     }
                     if (stoppingToken.IsCancellationRequested) break;

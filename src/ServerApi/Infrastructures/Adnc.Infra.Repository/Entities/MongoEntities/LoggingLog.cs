@@ -8,7 +8,7 @@ namespace Adnc.Infra.Entities
     /// </summary>
     //the driver would ignore any extra fields instead of throwing an exception
     [BsonIgnoreExtraElements]
-    public class SysNloglog : MongoEntity
+    public class LoggingLog : MongoEntity
     {
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         public DateTime Date { get; set; }

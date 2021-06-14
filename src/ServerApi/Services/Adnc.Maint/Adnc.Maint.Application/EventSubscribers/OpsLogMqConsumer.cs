@@ -93,8 +93,8 @@ namespace Adnc.Maint.Application.EventSubscribers
             {
                 using (var scope = _services.CreateScope())
                 {
-                    var repository = scope.ServiceProvider.GetRequiredService<IMongoRepository<SysOperationLog>>();
-                    var entity = JsonSerializer.Deserialize<SysOperationLog>(message);
+                    var repository = scope.ServiceProvider.GetRequiredService<IMongoRepository<OperationLog>>();
+                    var entity = JsonSerializer.Deserialize<OperationLog>(message);
                     await repository.AddAsync(entity);
                     result = true;
                 }

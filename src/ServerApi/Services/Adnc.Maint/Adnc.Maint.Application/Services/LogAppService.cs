@@ -13,13 +13,13 @@ namespace Adnc.Maint.Application.Services
 {
     public class LogAppService : AbstractAppService, ILogAppService
     {
-        private readonly IMongoRepository<SysOperationLog> _opsLogRepository;
-        private readonly IMongoRepository<SysNloglog> _nlogLogRepository;
-        private readonly IMongoRepository<SysLoginLog> _loginLogRepository;
+        private readonly IMongoRepository<OperationLog> _opsLogRepository;
+        private readonly IMongoRepository<LoggingLog> _nlogLogRepository;
+        private readonly IMongoRepository<LoginLog> _loginLogRepository;
 
-        public LogAppService(IMongoRepository<SysOperationLog> opsLogRepository
-            , IMongoRepository<SysLoginLog> loginLogRepository
-            , IMongoRepository<SysNloglog> nlogLogRepository)
+        public LogAppService(IMongoRepository<OperationLog> opsLogRepository
+            , IMongoRepository<LoginLog> loginLogRepository
+            , IMongoRepository<LoggingLog> nlogLogRepository)
         {
             _opsLogRepository = opsLogRepository;
             _loginLogRepository = loginLogRepository;
@@ -28,8 +28,8 @@ namespace Adnc.Maint.Application.Services
 
         public async Task<PageModelDto<LoginLogDto>> GetLoginLogsPagedAsync(LogSearchPagedDto searchDto)
         {
-            var builder = Builders<SysLoginLog>.Filter;
-            var filters = new List<FilterDefinition<SysLoginLog>>();
+            var builder = Builders<LoginLog>.Filter;
+            var filters = new List<FilterDefinition<LoginLog>>();
 
             if (searchDto.BeginTime.HasValue)
             {
@@ -62,8 +62,8 @@ namespace Adnc.Maint.Application.Services
 
         public async Task<PageModelDto<OpsLogDto>> GetOpsLogsPagedAsync(LogSearchPagedDto searchDto)
         {
-            var builder = Builders<SysOperationLog>.Filter;
-            var filters = new List<FilterDefinition<SysOperationLog>>();
+            var builder = Builders<OperationLog>.Filter;
+            var filters = new List<FilterDefinition<OperationLog>>();
 
             if (searchDto.BeginTime.HasValue)
             {
@@ -96,8 +96,8 @@ namespace Adnc.Maint.Application.Services
 
         public async Task<PageModelDto<NlogLogDto>> GetNlogLogsPagedAsync(LogSearchPagedDto searchDto)
         {
-            var builder = Builders<SysNloglog>.Filter;
-            var filters = new List<FilterDefinition<SysNloglog>>();
+            var builder = Builders<LoggingLog>.Filter;
+            var filters = new List<FilterDefinition<LoggingLog>>();
 
             if (searchDto.BeginTime.HasValue)
             {
@@ -117,6 +117,11 @@ namespace Adnc.Maint.Application.Services
             if (searchDto.Method.IsNotNullOrWhiteSpace())
             {
                 filters.Add(builder.Eq(l => l.Properties.Method, searchDto.Method));
+            }
+
+            if (searchDto.Level.IsNotNullOrWhiteSpace())
+            {
+                filters.Add(builder.Eq(l => l.Level, searchDto.Level));
             }
 
             var filter = filters.Count > 0 ? builder.And(filters) : builder.Where(x => true);

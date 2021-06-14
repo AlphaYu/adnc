@@ -63,8 +63,8 @@ namespace Adnc.Usr.Application.Services
 
             var httpContext = HttpContextUtility.GetCurrentHttpContext();
 
-            var channelWriter = ChannelHelper<SysLoginLog>.Instance.Writer;
-            var log = new SysLoginLog
+            var channelWriter = ChannelHelper<LoginLog>.Instance.Writer;
+            var log = new LoginLog
             {
                 Account = input.Account
                 ,

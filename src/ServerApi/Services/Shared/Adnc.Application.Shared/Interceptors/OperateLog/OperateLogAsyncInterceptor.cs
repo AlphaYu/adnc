@@ -149,9 +149,9 @@ namespace Adnc.Application.Shared.Interceptors
             return result;
         }
 
-        private SysOperationLog CreateOpsLog(string className, string methodName, string logName, object[] arguments, IUserContext userContext)
+        private OperationLog CreateOpsLog(string className, string methodName, string logName, object[] arguments, IUserContext userContext)
         {
-            var log = new SysOperationLog
+            var log = new OperationLog
             {
                 ClassName = className,
                 CreateTime = DateTime.Now,
@@ -168,7 +168,7 @@ namespace Adnc.Application.Shared.Interceptors
             return log;
         }
 
-        private void WriteOpsLog(SysOperationLog logInfo)
+        private void WriteOpsLog(OperationLog logInfo)
         {
             try
             {
@@ -176,7 +176,7 @@ namespace Adnc.Application.Shared.Interceptors
                 ////设置消息持久化
                 //properties.Persistent = true;
                 //_mqProducer.BasicPublish(MqExchanges.Logs, MqRoutingKeys.OpsLog, logInfo, properties);
-                var operationLogWriter = ChannelHelper<SysOperationLog>.Instance.Writer;
+                var operationLogWriter = ChannelHelper<OperationLog>.Instance.Writer;
                 operationLogWriter.WriteAsync(logInfo).GetAwaiter().GetResult();
             }
             catch (Exception ex)

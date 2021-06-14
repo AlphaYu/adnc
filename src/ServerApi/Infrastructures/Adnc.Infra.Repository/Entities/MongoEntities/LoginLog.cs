@@ -6,7 +6,7 @@ namespace Adnc.Infra.Entities
     /// <summary>
     /// 登录日志
     /// </summary>
-    public class SysLoginLog : MongoEntity
+    public class LoginLog : MongoEntity
     {
         public string Device { get; set; }
 

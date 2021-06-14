@@ -6,7 +6,7 @@ namespace Adnc.Infra.Entities
     /// <summary>
     /// 操作日志
     /// </summary>
-    public class SysOperationLog : MongoEntity
+    public class OperationLog : MongoEntity
     {
         public string ClassName { get; set; }
 
