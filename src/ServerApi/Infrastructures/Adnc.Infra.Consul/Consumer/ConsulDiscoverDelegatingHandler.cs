@@ -55,8 +55,8 @@ namespace Adnc.Infra.Consul.Consumer
                     request.RequestUri = new Uri($"{currentUri.Scheme}://{serviceUrl}{currentUri.PathAndQuery}");
 
                 //如果调用地址是https,使用http2
-                //if (request.RequestUri.Scheme.Equals("https", StringComparison.OrdinalIgnoreCase))
-                request.Version = new Version(2, 0);
+                if (request.RequestUri.Scheme.Equals("https", StringComparison.OrdinalIgnoreCase))
+                    request.Version = new Version(2, 0);
 
                 #region 缓存处理
 
