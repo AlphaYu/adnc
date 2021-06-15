@@ -90,7 +90,7 @@ namespace Adnc.Application.Shared.IdGenerater
 
             var score = workerIdScore == null ? DateTime.Now.GetTotalMilliseconds() : workerIdScore.Value;
             await _redisProvider.ZAddAsync(workerIdSortedSetCacheKey, new Dictionary<long, double> { { workerId, score } });
-            _logger.LogInformation("Refresh WorkerNodes:{0}:{1}", workerId, score);
+            _logger.LogDebug("Refresh WorkerNodes:{0}:{1}", workerId, score);
         }
     }
 }
