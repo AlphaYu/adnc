@@ -488,7 +488,7 @@ namespace Adnc.WebApi.Shared
         ) where TRpcService : class, IRpcService
         {
             var prefix = serviceName.Substring(0, 7);
-            bool isConsulAdderss = (prefix == "http://" || prefix == "https:/") ? false : true;
+            bool isConsulAdderss = prefix != "http://" && prefix != "https:/";
 
             var refitSettings = new RefitSettings(new SystemTextJsonContentSerializer(SystemTextJsonHelper.GetAdncDefaultOptions()));
             //注册RefitClient,设置httpclient生命周期时间，默认也是2分钟。

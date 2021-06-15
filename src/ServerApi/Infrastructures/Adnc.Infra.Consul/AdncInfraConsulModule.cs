@@ -22,22 +22,23 @@ namespace Adnc.Infra.Consul
         {
             builder.RegisterType<DefaultTokenGenerator>()
                    .As<ITokenGenerator>()
-                   .InstancePerLifetimeScope();
+                   .SingleInstance();
 
             builder.RegisterType<SimpleDiscoveryDelegatingHandler>()
                    .AsSelf()
-                   .InstancePerLifetimeScope();
+                   .SingleInstance();
 
             builder.RegisterType<ConsulDiscoverDelegatingHandler>()
                    .AsSelf()
-                   .InstancePerLifetimeScope();
+                   .WithParameter("consulAddress", _consulAddress)
+                   .SingleInstance();
 
             builder.Register(x => new ConsulClient(cfg =>
             {
                 cfg.Address = new Uri(_consulAddress);
             }))
             .AsSelf()
-            .InstancePerLifetimeScope();
+            .SingleInstance();
         }
     }
 }

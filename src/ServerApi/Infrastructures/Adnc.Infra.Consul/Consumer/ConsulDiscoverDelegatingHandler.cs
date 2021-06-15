@@ -19,12 +19,15 @@ namespace Adnc.Infra.Consul.Consumer
         private readonly IMemoryCache _memoryCache;
         private readonly ILogger<ConsulDiscoverDelegatingHandler> _logger;
 
-        public ConsulDiscoverDelegatingHandler(ConsulClient consulClient
+        public ConsulDiscoverDelegatingHandler(string consulAddress
             , ITokenGenerator tokenGenerator
             , IMemoryCache memoryCache
             , ILogger<ConsulDiscoverDelegatingHandler> logger)
         {
-            _consulClient = consulClient;
+            _consulClient = new ConsulClient(cfg =>
+            {
+                cfg.Address = new Uri(consulAddress);
+            });
             _tokenGenerator = tokenGenerator;
             _memoryCache = memoryCache;
             _logger = logger;
@@ -127,7 +130,7 @@ namespace Adnc.Infra.Consul.Consumer
         {
             var healthAddresses = await _memoryCache.GetOrCreateAsync(serviceAddressCacheKey, async entry =>
             {
-                _logger.LogInformation($"{DateTime.Now.ToString()}:refresh {serviceAddressCacheKey}");
+                _logger.LogInformation($"{DateTime.Now}:refresh {serviceAddressCacheKey}");
                 var query = await _consulClient.Health.Service(serviceName, string.Empty, true);
                 var servicesEntries = query.Response;
                 if (servicesEntries != null && servicesEntries.Any())
