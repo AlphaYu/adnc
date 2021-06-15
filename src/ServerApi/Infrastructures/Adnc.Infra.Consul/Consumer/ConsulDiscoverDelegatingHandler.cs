@@ -19,15 +19,12 @@ namespace Adnc.Infra.Consul.Consumer
         private readonly IMemoryCache _memoryCache;
         private readonly ILogger<ConsulDiscoverDelegatingHandler> _logger;
 
-        public ConsulDiscoverDelegatingHandler(string consulAddress
+        public ConsulDiscoverDelegatingHandler(ConsulClient consulClient
             , ITokenGenerator tokenGenerator
             , IMemoryCache memoryCache
             , ILogger<ConsulDiscoverDelegatingHandler> logger)
         {
-            _consulClient = new ConsulClient(cfg =>
-            {
-                cfg.Address = new Uri(consulAddress);
-            });
+            _consulClient = consulClient;
             _tokenGenerator = tokenGenerator;
             _memoryCache = memoryCache;
             _logger = logger;
