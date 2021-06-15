@@ -6,6 +6,7 @@
 		<DockerfileContext>..\..</DockerfileContext>
 		<RootNamespace>Adnc.Infra.HealthCheckUI</RootNamespace>
 		<AssemblyName>Adnc.Infra.HealthCheckUI</AssemblyName>
+		<UserSecretsId>68e288bd-34c2-4a43-9e24-c1f712de6d3d</UserSecretsId>
 	</PropertyGroup>
 
 	<ItemGroup>
