@@ -19,7 +19,7 @@ namespace Adnc.Maintaining
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var consul = new ConsulServiceProvider("http://193.112.75.77:8550");
+            var consul = new ConsulServiceProvider("http://106.14.139.201:8550");
 
             services.AddHealthChecksUI(setup =>
             {

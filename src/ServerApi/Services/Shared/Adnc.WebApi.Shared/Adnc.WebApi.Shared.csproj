@@ -22,6 +22,7 @@
 		<PackageReference Include="MicroElements.Swashbuckle.FluentValidation" Version="4.3.0" />
 		<PackageReference Include="Polly.Caching.Memory" Version="3.0.2" />
 		<PackageReference Include="SkyAPM.Diagnostics.CAP" Version="1.3.0" />
+		<PackageReference Include="SkyAPM.Diagnostics.EntityFrameworkCore.Sqlite" Version="1.3.0" />
 		<!--<PackageReference Include="SkyApm.Diagnostics.MongoDB" Version="1.0.0" />-->
 		<PackageReference Include="SkyAPM.Utilities.DependencyInjection" Version="1.3.0" />
 		<PackageReference Include="System.ValueTuple" Version="4.5.0" />

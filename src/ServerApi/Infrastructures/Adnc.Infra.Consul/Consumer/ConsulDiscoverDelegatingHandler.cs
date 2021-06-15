@@ -130,7 +130,10 @@ namespace Adnc.Infra.Consul.Consumer
                     entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(5);
                     return servicesEntries.Select(entry => $"{entry.Service.Address}:{entry.Service.Port}").ToList();
                 }
-                entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(0);
+                else
+                {
+                    entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(0);
+                }        
                 return default;
             });
             return healthAddresses;
