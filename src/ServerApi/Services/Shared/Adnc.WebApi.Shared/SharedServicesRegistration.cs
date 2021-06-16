@@ -440,6 +440,11 @@ namespace Adnc.WebApi.Shared
                 x.UseDashboard(x =>
                 {
                     x.PathMatch = $"/{_serviceInfo.ShortName}/cap";
+                    x.Authorization = new IDashboardAuthorizationFilter[] {
+                        new LocalRequestsOnlyAuthorizationFilter()
+                        ,
+                        new CapDashboardAuthorizationFilter()
+                    };
                 });
                 //必须是生产环境才注册cap服务到consul
                 if ((_environment.IsProduction() || _environment.IsStaging()))

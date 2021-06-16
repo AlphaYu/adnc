@@ -26,8 +26,8 @@
 		<PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="5.0.0" />
 		<PackageReference Include="System.Threading.Tasks" Version="4.3.0" />
 		<PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="5.1.37" />
-		<PackageReference Include="DotNetCore.CAP" Version="5.1.0" />
-		<PackageReference Include="DotNetCore.CAP.MySql" Version="5.1.0" />
+		<PackageReference Include="DotNetCore.CAP" Version="5.0.3" />
+		<PackageReference Include="DotNetCore.CAP.MySql" Version="5.0.3" />
 	</ItemGroup>
 
 	<ItemGroup>
