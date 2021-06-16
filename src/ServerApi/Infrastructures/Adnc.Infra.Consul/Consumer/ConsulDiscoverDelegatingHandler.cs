@@ -136,15 +136,14 @@ namespace Adnc.Infra.Consul.Consumer
 
             try
             {
-                if (!_lockSlim.TryEnterWriteLock(500))
-                {
-                    await Task.Delay(200);
-                    _logger.LogInformation($"TryEnterWriteLock=false,{serviceAddressCacheKey}");
-                    return await GetAllHealthServiceAddressAsync(serviceName, serviceAddressCacheKey);
-                }
-
-                _logger.LogInformation($"TryEnterWriteLock=true,{serviceAddressCacheKey}");
+                _lockSlim.EnterWriteLock();
                 getLokcer = true;
+                _logger.LogInformation($"ExitWriteLock=true,{serviceAddressCacheKey}");
+                healthAddresses = _memoryCache.Get<List<string>>(serviceAddressCacheKey);
+                if (healthAddresses != null && healthAddresses.Any())
+                {
+                    return healthAddresses;
+                }
                 var query = await _consulClient.Health.Service(serviceName, string.Empty, true);
                 var servicesEntries = query.Response;
                 if (servicesEntries != null && servicesEntries.Any())
