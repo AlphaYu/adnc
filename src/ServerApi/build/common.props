@@ -15,7 +15,7 @@
 		<NoWarn>$(NoWarn);1591</NoWarn>
 	</PropertyGroup>
 	<ItemGroup>
-		<RuntimeHostConfigurationOption Include="System.Threading.ThreadPool.MinThreads" Value="2000" />
+		<RuntimeHostConfigurationOption Include="System.Threading.ThreadPool.MinThreads" Value="1000" />
 		<RuntimeHostConfigurationOption Include="System.Threading.ThreadPool.MaxThreads" Value="32768" />
 	</ItemGroup>
 </Project>
