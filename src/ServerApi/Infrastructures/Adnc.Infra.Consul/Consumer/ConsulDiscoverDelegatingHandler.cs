@@ -14,7 +14,7 @@ namespace Adnc.Infra.Consul.Consumer
 {
     public class ConsulDiscoverDelegatingHandler : DelegatingHandler
     {
-        private readonly static  ReaderWriterLockSlim _lockSlim = new ReaderWriterLockSlim();
+        private readonly static SemaphoreSlim _slimlock = new SemaphoreSlim(1, 1);
         private readonly ConsulClient _consulClient;
         private readonly ITokenGenerator _tokenGenerator;
         private readonly IMemoryCache _memoryCache;
@@ -132,13 +132,11 @@ namespace Adnc.Infra.Consul.Consumer
                 return healthAddresses;
             }
 
-            var getLokcer = false;
+            await _slimlock.WaitAsync();
 
             try
             {
-                _lockSlim.EnterWriteLock();
-                getLokcer = true;
-                _logger.LogInformation($"ExitWriteLock=true,{serviceAddressCacheKey}");
+                _logger.LogInformation($"SemaphoreSlim=true,{serviceAddressCacheKey}");
                 healthAddresses = _memoryCache.Get<List<string>>(serviceAddressCacheKey);
                 if (healthAddresses != null && healthAddresses.Any())
                 {
@@ -159,8 +157,7 @@ namespace Adnc.Infra.Consul.Consumer
             }
             finally
             {
-                if (getLokcer)
-                    _lockSlim.ExitWriteLock();
+                _slimlock.Release();
             }
         }
     }
