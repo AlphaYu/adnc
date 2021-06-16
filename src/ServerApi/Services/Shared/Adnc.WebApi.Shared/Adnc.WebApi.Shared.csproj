@@ -39,6 +39,7 @@
 		<PackageReference Include="AspNetCore.HealthChecks.System" Version="5.0.1" />
 		<PackageReference Include="AspNetCore.HealthChecks.Uris" Version="5.0.1" />
 		<PackageReference Include="DotNetCore.CAP" Version="5.0.3" />
+		<PackageReference Include="DotNetCore.CAP.MySql" Version="5.0.3" />
 		<PackageReference Include="DotNetCore.CAP.RabbitMQ" Version="5.0.3" />
 		<PackageReference Include="DotNetCore.CAP.Dashboard" Version="5.0.3" />
 		<PackageReference Include="System.Threading.ThreadPool" Version="4.3.0" />
