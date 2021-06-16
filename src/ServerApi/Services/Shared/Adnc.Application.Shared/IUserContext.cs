@@ -1,4 +1,4 @@
-﻿using Adnc.Core.Shared;
+﻿using Adnc.Infra.IRepositories;
 
 namespace Adnc.Application.Shared
 {

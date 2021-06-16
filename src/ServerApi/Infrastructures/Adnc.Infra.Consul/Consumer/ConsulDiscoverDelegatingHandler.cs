@@ -1,6 +1,9 @@
-﻿using Consul;
+﻿using Adnc.Infra.Consul.TokenGenerator;
+using Consul;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -11,17 +14,21 @@ namespace Adnc.Infra.Consul.Consumer
 {
     public class ConsulDiscoverDelegatingHandler : DelegatingHandler
     {
+        private readonly static SemaphoreSlim _slimlock = new SemaphoreSlim(1, 1);
         private readonly ConsulClient _consulClient;
         private readonly ITokenGenerator _tokenGenerator;
         private readonly IMemoryCache _memoryCache;
+        private readonly ILogger<ConsulDiscoverDelegatingHandler> _logger;
 
         public ConsulDiscoverDelegatingHandler(ConsulClient consulClient
             , ITokenGenerator tokenGenerator
-            , IMemoryCache memoryCache)
+            , IMemoryCache memoryCache
+            , ILogger<ConsulDiscoverDelegatingHandler> logger)
         {
             _consulClient = consulClient;
             _tokenGenerator = tokenGenerator;
             _memoryCache = memoryCache;
+            _logger = logger;
         }
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request
@@ -41,14 +48,12 @@ namespace Adnc.Infra.Consul.Consumer
                     if (!string.IsNullOrEmpty(tokenTxt))
                         request.Headers.Authorization = new AuthenticationHeaderValue(auth.Scheme, tokenTxt);
                 }
-
-                var serverUrl = _memoryCache.GetOrCreate(serviceAddressCacheKey, entry =>
-                {
-                    entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(5);
-                    return GetServiceAddress(currentUri.Host);
-                });
-
-                request.RequestUri = new Uri($"{currentUri.Scheme}://{serverUrl}{currentUri.PathAndQuery}");
+                var serviceUrls = await GetAllHealthServiceAddressAsync(currentUri.Host, serviceAddressCacheKey);
+                var serviceUrl = GetServiceAddress(serviceUrls);
+                if (serviceUrl.IsNullOrWhiteSpace())
+                    throw new ArgumentNullException($"{currentUri.Host} does not contain helath service address!");
+                else
+                    request.RequestUri = new Uri($"{currentUri.Scheme}://{serviceUrl}{currentUri.PathAndQuery}");
 
                 //如果调用地址是https,使用http2
                 if (request.RequestUri.Scheme.Equals("https", StringComparison.OrdinalIgnoreCase))
@@ -94,13 +99,13 @@ namespace Adnc.Infra.Consul.Consumer
 
                 #endregion 缓存处理
 
-                var responseMessage = await base.SendAsync(request, cancellationToken).ConfigureAwait(false);
+                var responseMessage = await base.SendAsync(request, cancellationToken);
                 return responseMessage;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 _memoryCache.Remove(serviceAddressCacheKey);
-                throw new Exception(ex.Message, ex);
+                throw;
             }
             finally
             {
@@ -108,16 +113,52 @@ namespace Adnc.Infra.Consul.Consumer
             }
         }
 
-        private string GetServiceAddress(string serviceName)
+        private string GetServiceAddress(IEnumerable<string> healthAddresses)
         {
-            var servicesEntry = _consulClient.Health.Service(serviceName, string.Empty, true).Result.Response;
-            if (servicesEntry != null && servicesEntry.Any())
+            if (healthAddresses != null && healthAddresses.Any())
             {
-                int index = new Random().Next(servicesEntry.Count());
-                var entry = servicesEntry.ElementAt(index);
-                return $"{entry.Service.Address}:{entry.Service.Port}";
+                int index = new Random().Next(healthAddresses.Count());
+                var address = healthAddresses.ElementAt(index);
+                return address;
             }
-            return null;
+            return default;
+        }
+
+        private async Task<List<string>> GetAllHealthServiceAddressAsync(string serviceName, string serviceAddressCacheKey)
+        {
+            var healthAddresses = _memoryCache.Get<List<string>>(serviceAddressCacheKey);
+            if (healthAddresses != null && healthAddresses.Any())
+            {
+                return healthAddresses;
+            }
+
+            await _slimlock.WaitAsync();
+
+            try
+            {
+                _logger.LogInformation($"SemaphoreSlim=true,{serviceAddressCacheKey}");
+                healthAddresses = _memoryCache.Get<List<string>>(serviceAddressCacheKey);
+                if (healthAddresses != null && healthAddresses.Any())
+                {
+                    return healthAddresses;
+                }
+                var query = await _consulClient.Health.Service(serviceName, string.Empty, true);
+                var servicesEntries = query.Response;
+                if (servicesEntries != null && servicesEntries.Any())
+                {
+                    var entryOptions = new MemoryCacheEntryOptions
+                    {
+                        AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(5)
+                    };
+                    healthAddresses = servicesEntries.Select(entry => $"{entry.Service.Address}:{entry.Service.Port}").ToList();
+                    _memoryCache.Set(serviceAddressCacheKey, healthAddresses, entryOptions);
+                }
+                return healthAddresses;
+            }
+            finally
+            {
+                _slimlock.Release();
+            }
         }
     }
 }

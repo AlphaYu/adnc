@@ -1,13 +1,12 @@
 ﻿using Adnc.Application.Shared.Dtos;
 using Adnc.Application.Shared.Services;
-using Adnc.Core.Shared.IRepositories;
 using Adnc.Cus.Application.Contracts.Dtos;
 using Adnc.Cus.Application.Contracts.Services;
-using Adnc.Cus.Core.Entities;
-using Adnc.Cus.Core.Events;
-using Adnc.Infra.Common.Extensions;
-using Adnc.Infra.Common.Helper;
+using Adnc.Cus.Entities;
 using Adnc.Infra.EventBus;
+using Adnc.Infra.Helper;
+using Adnc.Infra.IRepositories;
+using Adnc.Shared.Events;
 using System;
 using System.Linq;
 using System.Linq.Expressions;

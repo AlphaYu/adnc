@@ -8,15 +8,13 @@
 
 	<ItemGroup>
 		<!--<PackageReference Include="Kogel.Dapper.Extension.MySql" Version="3.1.9.8" />-->
-		<PackageReference Include="Autofac" Version="6.2.0" />
 		<PackageReference Include="Humanizer.Core" Version="2.10.1" />
-		<PackageReference Include="JetBrains.Annotations" Version="2021.1.0" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Options" Version="5.0.0" />
 		<PackageReference Include="MongoDB.Driver" Version="2.12.3" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\Services\Shared\Adnc.Core.Shared\Adnc.Core.Shared.csproj" />
+		<ProjectReference Include="..\Adnc.Infra.Repository\Adnc.Infra.Repository.csproj" />
 	</ItemGroup>
 </Project>

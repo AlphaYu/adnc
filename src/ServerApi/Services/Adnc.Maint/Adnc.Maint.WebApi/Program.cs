@@ -1,10 +1,14 @@
 using Adnc.Infra.Consul;
+using Adnc.Infra.Core;
+using Adnc.WebApi.Shared;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using NLog.Web;
+using System.Reflection;
 
 namespace Adnc.Maint.WebApi
 {
@@ -12,11 +16,8 @@ namespace Adnc.Maint.WebApi
     {
         public static void Main(string[] args)
         {
-            //var logger = NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
             var hostBuilder = CreateHostBuilder(args);
-
             var host = hostBuilder.Build();
-
             host.Run();
         }
 
@@ -37,9 +38,12 @@ namespace Adnc.Maint.WebApi
                         var consulOption = configuration.GetSection("Consul").Get<ConsulConfig>();
                         cb.AddConsulConfiguration(consulOption, true);
                     }
-                    //cb.AddJsonFile("autofac.json", optional: true);
                 })
                 .UseServiceProviderFactory(new AutofacServiceProviderFactory())
+                .ConfigureServices(services =>
+                {
+                    services.Add(ServiceDescriptor.Singleton(typeof(IServiceInfo), ServiceInfo.Create(Assembly.GetExecutingAssembly())));
+                })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();

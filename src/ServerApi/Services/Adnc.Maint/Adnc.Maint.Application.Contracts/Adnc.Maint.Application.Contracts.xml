@@ -114,6 +114,11 @@
             设备
             </summary>
         </member>
+        <member name="P:Adnc.Maint.Application.Contracts.Dtos.LogSearchPagedDto.Level">
+            <summary>
+            日志级别
+            </summary>
+        </member>
         <member name="T:Adnc.Maint.Application.Contracts.Dtos.NlogLogDto">
             <summary>
             Nlog日志

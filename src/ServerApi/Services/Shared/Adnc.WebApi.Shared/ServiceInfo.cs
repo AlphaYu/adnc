@@ -1,18 +1,19 @@
-﻿using System;
+﻿using Adnc.Infra.Core;
+using System;
 using System.Reflection;
 
 namespace Adnc.WebApi.Shared
 {
-    public sealed class ServiceInfo
+    public sealed class ServiceInfo : IServiceInfo
     {
-        public string Id { get; } = Guid.NewGuid().ToString().ToLower();
+        public string Id { get; set; } = Guid.NewGuid().ToString().ToLower();
         public string CorsPolicy { get; set; } = "default";
-        public string ShortName { get; private set; }
-        public string FullName { get; private set; }
-        public string Version { get; private set; }
-        public string Description { get; private set; }
-        public string AssemblyName { get; private set; }
-        public string AssemblyFullName { get; private set; }
+        public string ShortName { get; set; }
+        public string FullName { get; set; }
+        public string Version { get; set; }
+        public string Description { get; set; }
+        public string AssemblyName { get; set; }
+        public string AssemblyFullName { get; set; }
 
         private ServiceInfo()
         {

@@ -1,14 +1,16 @@
-﻿using Adnc.Application.RpcService;
+﻿using Adnc.Application.Shared;
 using Adnc.Application.Shared.Caching;
-using Adnc.Infra.Common.Helper;
 using Adnc.Infra.Consul;
 using Adnc.Infra.Consul.Consumer;
-using Adnc.Infra.EfCore;
+using Adnc.Infra.Core;
 using Adnc.Infra.EfCore.Interceptors;
+using Adnc.Infra.EfCore.MySQL;
 using Adnc.Infra.EventBus.RabbitMq;
+using Adnc.Infra.Helper;
 using Adnc.Infra.Mongo;
 using Adnc.Infra.Mongo.Configuration;
 using Adnc.Infra.Mongo.Extensions;
+using Adnc.Shared.RpcServices;
 using Adnc.WebApi.Shared.Extensions;
 using DotNetCore.CAP;
 using DotNetCore.CAP.Dashboard;
@@ -56,20 +58,20 @@ namespace Adnc.WebApi.Shared
     {
         protected readonly IConfiguration _configuration;
         protected readonly IServiceCollection _services;
-        protected readonly IWebHostEnvironment _environment;
-        protected readonly ServiceInfo _serviceInfo;
+        protected readonly IHostEnvironment _environment;
+        protected readonly IServiceInfo _serviceInfo;
 
         /// <summary>
         /// 服务注册与系统配置
         /// </summary>
         /// <param name="configuration"><see cref="IConfiguration"/></param>
-        /// <param name="services"><see cref="IServiceCollection"/></param>
-        /// <param name="environment"><see cref="IWebHostEnvironment"/></param>
+        /// <param name="services"><see cref="IServiceInfo"/></param>
+        /// <param name="environment"><see cref="IHostEnvironment"/></param>
         /// <param name="serviceInfo"><see cref="ServiceInfo"/></param>
         public SharedServicesRegistration(IConfiguration configuration
             , IServiceCollection services
-            , IWebHostEnvironment environment
-            , ServiceInfo serviceInfo)
+            , IHostEnvironment environment
+            , IServiceInfo serviceInfo)
         {
             _configuration = configuration;
             _environment = environment;
@@ -171,7 +173,7 @@ namespace Adnc.WebApi.Shared
 
                 if (_environment.IsDevelopment())
                 {
-                    options.AddInterceptors(new CustomCommandInterceptor());
+                    options.AddInterceptors(new DefaultDbCommandInterceptor());
                     options.EnableSensitiveDataLogging();
                     options.EnableDetailedErrors();
                 }
@@ -232,7 +234,7 @@ namespace Adnc.WebApi.Shared
                     ,
                     OnTokenValidated = context =>
                     {
-                        var userContext = context.HttpContext.RequestServices.GetService<Application.Shared.IUserContext>();
+                        var userContext = context.HttpContext.RequestServices.GetService<IUserContext>();
                         var claims = context.Principal.Claims;
                         userContext.Id = long.Parse(claims.First(x => x.Type == JwtRegisteredClaimNames.Sub).Value);
                         userContext.Account = claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
@@ -372,7 +374,7 @@ namespace Adnc.WebApi.Shared
                      .AddRabbitMQ(x =>
                      {
                          return
-                         RabbitMqConnection.GetInstance(x.GetService<IOptionsSnapshot<RabbitMqConfig>>()
+                         RabbitMqConnection.GetInstance(x.GetService<IOptionsMonitor<RabbitMqConfig>>()
                              , x.GetService<ILogger<dynamic>>()
                          ).Connection;
                      })
@@ -449,7 +451,7 @@ namespace Adnc.WebApi.Shared
                 {
                     x.UseDiscovery(discoverOptions =>
                     {
-                        var consulConfig = _configuration.GetConsulConfig();
+                        var consulConfig = _configuration.GetConsulSection().Get<ConsulConfig>();
                         var consulAdderss = new Uri(consulConfig.ConsulUrl);
 
                         var hostIps = NetworkInterface
@@ -486,7 +488,7 @@ namespace Adnc.WebApi.Shared
         ) where TRpcService : class, IRpcService
         {
             var prefix = serviceName.Substring(0, 7);
-            bool isConsulAdderss = (prefix == "http://" || prefix == "https:/") ? false : true;
+            bool isConsulAdderss = prefix != "http://" && prefix != "https:/";
 
             var refitSettings = new RefitSettings(new SystemTextJsonContentSerializer(SystemTextJsonHelper.GetAdncDefaultOptions()));
             //注册RefitClient,设置httpclient生命周期时间，默认也是2分钟。

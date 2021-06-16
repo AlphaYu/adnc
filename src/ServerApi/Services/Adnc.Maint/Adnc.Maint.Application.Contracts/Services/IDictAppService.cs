@@ -1,9 +1,8 @@
 ﻿using Adnc.Application.Shared.Interceptors;
 using Adnc.Application.Shared.Services;
-using Adnc.Core.Shared.Interceptors;
 using Adnc.Infra.Caching.Interceptor;
-using Adnc.Maint.Application.Contracts.Consts;
 using Adnc.Maint.Application.Contracts.Dtos;
+using Adnc.Shared.Consts.Caching.Maint;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -19,7 +18,7 @@ namespace Adnc.Maint.Application.Contracts.Services
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        [OpsLog(LogName = "新增字典")]
+        [OperateLog(LogName = "新增字典")]
         [CachingEvict(CacheKey = CachingConsts.DictListCacheKey)]
         Task<AppSrvResult<long>> CreateAsync(DictCreationDto input);
 
@@ -29,7 +28,7 @@ namespace Adnc.Maint.Application.Contracts.Services
         /// <param name="id"></param>
         /// <param name="input"></param>
         /// <returns></returns>
-        [OpsLog(LogName = "修改字典")]
+        [OperateLog(LogName = "修改字典")]
         [CachingEvict(CacheKey = CachingConsts.DictListCacheKey)]
         [UnitOfWork]
         Task<AppSrvResult> UpdateAsync(long id, DictUpdationDto input);
@@ -39,7 +38,7 @@ namespace Adnc.Maint.Application.Contracts.Services
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [OpsLog(LogName = "删除字典")]
+        [OperateLog(LogName = "删除字典")]
         [CachingEvict(CacheKey = CachingConsts.DictListCacheKey)]
         Task<AppSrvResult> DeleteAsync(long id);
 

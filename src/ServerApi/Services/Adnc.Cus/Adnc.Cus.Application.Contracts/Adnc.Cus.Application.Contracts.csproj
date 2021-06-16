@@ -11,7 +11,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\Shared\Adnc.Application.Shared\Adnc.Application.Shared.csproj" />
+	  <ProjectReference Include="..\..\Shared\Adnc.Application.Shared\Adnc.Application.Shared.csproj" />
+	  <ProjectReference Include="..\..\Shared\Adnc.Shared\Adnc.Shared.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

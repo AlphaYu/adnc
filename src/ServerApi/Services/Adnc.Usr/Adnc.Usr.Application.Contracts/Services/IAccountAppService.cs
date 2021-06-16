@@ -1,7 +1,7 @@
 ﻿using Adnc.Application.Shared.Interceptors;
 using Adnc.Application.Shared.Services;
 using Adnc.Infra.Caching.Interceptor;
-using Adnc.Usr.Application.Contracts.Consts;
+using Adnc.Shared.Consts.Caching.Usr;
 using Adnc.Usr.Application.Contracts.Dtos;
 using System.Threading.Tasks;
 
@@ -25,7 +25,7 @@ namespace Adnc.Usr.Application.Contracts.Services
         /// <param name="id"></param>
         /// <param name="input"></param>
         /// <returns></returns>
-        [OpsLog(LogName = "修改密码")]
+        [OperateLog(LogName = "修改密码")]
         [CachingEvict(CacheKeyPrefix = CachingConsts.UserValidateInfoKeyPrefix)]
         Task<AppSrvResult> UpdatePasswordAsync([CachingParam] long id, UserChangePwdDto input);
 
@@ -42,6 +42,6 @@ namespace Adnc.Usr.Application.Contracts.Services
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        Task<UserInfoDto> GetUserInfoAsync(long userId);
+        Task<UserInfoDto> GetUserInfoAsync(long id);
     }
 }

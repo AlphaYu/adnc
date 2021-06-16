@@ -15,7 +15,7 @@ namespace Adnc.Infra.EventBus.RabbitMq
         private ILogger<dynamic> _logger;
         public IConnection Connection { get; private set; }
 
-        public static RabbitMqConnection GetInstance(IOptionsSnapshot<RabbitMqConfig> options, ILogger<dynamic> logger)
+        public static RabbitMqConnection GetInstance(IOptionsMonitor<RabbitMqConfig> options, ILogger<dynamic> logger)
         {
             if (_uniqueInstance == null || _uniqueInstance.Connection == null || _uniqueInstance.Connection.IsOpen == false)
             {
@@ -23,7 +23,7 @@ namespace Adnc.Infra.EventBus.RabbitMq
                 {
                     if (_uniqueInstance == null || _uniqueInstance.Connection == null || _uniqueInstance.Connection.IsOpen == false)
                     {
-                        _uniqueInstance = new RabbitMqConnection(options.Value, logger);
+                        _uniqueInstance = new RabbitMqConnection(options.CurrentValue, logger);
                     }
                 }
             }

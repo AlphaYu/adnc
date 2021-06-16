@@ -1,4 +1,5 @@
 ﻿using Adnc.Infra.Consul.Consumer;
+using Adnc.Infra.Consul.TokenGenerator;
 using Autofac;
 using Consul;
 using System;
@@ -29,6 +30,7 @@ namespace Adnc.Infra.Consul
 
             builder.RegisterType<ConsulDiscoverDelegatingHandler>()
                    .AsSelf()
+                   //.WithParameter("consulAddress", _consulAddress)
                    .InstancePerLifetimeScope();
 
             builder.Register(x => new ConsulClient(cfg =>
@@ -36,7 +38,7 @@ namespace Adnc.Infra.Consul
                 cfg.Address = new Uri(_consulAddress);
             }))
             .AsSelf()
-            .InstancePerLifetimeScope();
+            .SingleInstance();
         }
     }
 }

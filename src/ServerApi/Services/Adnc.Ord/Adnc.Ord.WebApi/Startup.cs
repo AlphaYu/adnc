@@ -1,35 +1,28 @@
-using Adnc.Application.RpcService.Services;
-using Adnc.Infra.Consul;
 using Adnc.Ord.Application.EventSubscribers;
-using Adnc.WebApi.Shared;
+using Adnc.Shared.RpcServices.Services;
 using Autofac;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Reflection;
 
 namespace Adnc.Ord.WebApi
 {
     public class Startup
     {
-        private readonly IConfiguration _configuration;
-        private readonly IWebHostEnvironment _environment;
-        private readonly ServiceInfo _serviceInfo;
+        private readonly IHostEnvironment _environment;
+        private IServiceCollection _services;
 
-        public Startup(IConfiguration configuration
-            , IWebHostEnvironment environment)
+        public Startup(IHostEnvironment environment)
         {
-            _configuration = configuration;
             _environment = environment;
-            _serviceInfo = ServiceInfo.Create(Assembly.GetExecutingAssembly());
         }
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAdncServices<PermissionHandlerRemote>(_configuration, _environment, _serviceInfo, (registion) =>
+            _services = services;
+            services.AddAdncServices<PermissionHandlerRemote>(registion =>
             {
                 var policies = registion.GenerateDefaultRefitPolicies();
                 var authServeiceAddress = _environment.IsDevelopment() ? "http://localhost:5010" : "adnc.usr.webapi";
@@ -47,7 +40,7 @@ namespace Adnc.Ord.WebApi
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterAdncModules(_configuration, _serviceInfo);
+            builder.RegisterAdncModules(_services);
         }
 
         public void Configure(IApplicationBuilder app)

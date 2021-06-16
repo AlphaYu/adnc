@@ -2,7 +2,7 @@
 using Adnc.Application.Shared.Interceptors;
 using Adnc.Application.Shared.Services;
 using Adnc.Infra.Caching.Interceptor;
-using Adnc.Usr.Application.Contracts.Consts;
+using Adnc.Shared.Consts.Caching.Usr;
 using Adnc.Usr.Application.Contracts.Dtos;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -19,7 +19,7 @@ namespace Adnc.Usr.Application.Contracts.Services
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        [OpsLog(LogName = "新增用户")]
+        [OperateLog(LogName = "新增用户")]
         Task<AppSrvResult<long>> CreateAsync(UserCreationDto input);
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace Adnc.Usr.Application.Contracts.Services
         /// <param name="id"></param>
         /// <param name="input"></param>
         /// <returns></returns>
-        [OpsLog(LogName = "修改用户")]
+        [OperateLog(LogName = "修改用户")]
         [CachingEvict(CacheKeyPrefix = CachingConsts.UserValidateInfoKeyPrefix)]
         Task<AppSrvResult> UpdateAsync([CachingParam] long id, UserUpdationDto input);
 
@@ -37,7 +37,7 @@ namespace Adnc.Usr.Application.Contracts.Services
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [OpsLog(LogName = "删除用户")]
+        [OperateLog(LogName = "删除用户")]
         [CachingEvict(CacheKeyPrefix = CachingConsts.UserValidateInfoKeyPrefix)]
         Task<AppSrvResult> DeleteAsync([CachingParam] long id);
 
@@ -47,7 +47,7 @@ namespace Adnc.Usr.Application.Contracts.Services
         /// <param name="id"></param>
         /// <param name="input"></param>
         /// <returns></returns>
-        [OpsLog(LogName = "设置用户角色")]
+        [OperateLog(LogName = "设置用户角色")]
         [CachingEvict(CacheKeys = new[] { CachingConsts.MenuRelationCacheKey, CachingConsts.MenuCodesCacheKey }
                              , CacheKeyPrefix = CachingConsts.UserValidateInfoKeyPrefix)]
         Task<AppSrvResult> SetRoleAsync([CachingParam] long id, UserSetRoleDto input);
@@ -58,7 +58,7 @@ namespace Adnc.Usr.Application.Contracts.Services
         /// <param name="id"></param>
         /// <param name="status"></param>
         /// <returns></returns>
-        [OpsLog(LogName = "修改用户状态")]
+        [OperateLog(LogName = "修改用户状态")]
         [CachingEvict(CacheKeyPrefix = CachingConsts.UserValidateInfoKeyPrefix)]
         Task<AppSrvResult> ChangeStatusAsync([CachingParam] long id, int status);
 
@@ -68,7 +68,7 @@ namespace Adnc.Usr.Application.Contracts.Services
         /// <param name="ids"></param>
         /// <param name="status"></param>
         /// <returns></returns>
-        [OpsLog(LogName = "批量修改用户状态")]
+        [OperateLog(LogName = "批量修改用户状态")]
         [CachingEvict(CacheKeyPrefix = CachingConsts.UserValidateInfoKeyPrefix)]
         Task<AppSrvResult> ChangeStatusAsync([CachingParam] IEnumerable<long> ids, int status);
 

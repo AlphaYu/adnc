@@ -1,7 +1,6 @@
-﻿using Adnc.Core.Shared;
-using Adnc.Core.Shared.IRepositories;
-using Adnc.Cus.Core.Entities;
-using Adnc.Infra.Common.Helper;
+﻿using Adnc.Cus.Entities;
+using Adnc.Infra.Helper;
+using Adnc.Infra.IRepositories;
 using Adnc.UnitTest.Fixtures;
 using Autofac;
 using System;

@@ -1,9 +1,9 @@
 ﻿using Adnc.Application.Shared.Caching;
-using Adnc.Core.Shared.IRepositories;
 using Adnc.Infra.Caching;
-using Adnc.Maint.Application.Contracts.Consts;
+using Adnc.Infra.IRepositories;
 using Adnc.Maint.Application.Contracts.Dtos;
-using Adnc.Maint.Core.Entities;
+using Adnc.Maint.Entities;
+using Adnc.Shared.Consts.Caching.Maint;
 using System;
 using System.Collections.Generic;
 using System.Linq;

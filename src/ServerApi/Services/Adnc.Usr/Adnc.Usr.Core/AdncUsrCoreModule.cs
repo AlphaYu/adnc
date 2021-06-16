@@ -12,6 +12,10 @@ namespace Adnc.Usr.Core
         {
         }
 
+        /// <summary>
+        /// 注册
+        /// </summary>
+        /// <param name="builder"></param>
         protected override void Load(ContainerBuilder builder)
         {
             base.Load(builder);

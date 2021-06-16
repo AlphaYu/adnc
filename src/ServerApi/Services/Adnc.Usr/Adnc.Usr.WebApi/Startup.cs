@@ -1,38 +1,31 @@
-using Adnc.Infra.Consul;
-using Adnc.WebApi.Shared;
 using Autofac;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Reflection;
 
 namespace Adnc.Usr.WebApi
 {
     public class Startup
     {
-        private readonly IConfiguration _configuration;
-        private readonly IWebHostEnvironment _environment;
-        private readonly ServiceInfo _serviceInfo;
+        private readonly IHostEnvironment _environment;
+        private IServiceCollection _services;
 
-        public Startup(IConfiguration configuration
-            , IWebHostEnvironment environment)
+        public Startup(IHostEnvironment environment)
         {
-            _configuration = configuration;
             _environment = environment;
-            _serviceInfo = ServiceInfo.Create(Assembly.GetExecutingAssembly());
         }
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAdncServices<PermissionHandlerLocal>(_configuration, _environment, _serviceInfo);
+            _services = services;
+            services.AddAdncServices<PermissionHandlerLocal>();
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterAdncModules(_configuration, _serviceInfo);
+            builder.RegisterAdncModules(_services);
         }
 
         public void Configure(IApplicationBuilder app)

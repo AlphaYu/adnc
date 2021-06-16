@@ -1,12 +1,12 @@
 ﻿using Adnc.Application.Shared.Dtos;
 using Adnc.Application.Shared.Services;
-using Adnc.Core.Shared.IRepositories;
-using Adnc.Infra.Common.Extensions;
+using Adnc.Infra.IRepositories;
 using Adnc.Whse.Application.Contracts.Dtos;
 using Adnc.Whse.Application.Contracts.Services;
-using Adnc.Whse.Core.Entities;
-using Adnc.Whse.Core.Services;
+using Adnc.Whse.Domain.Entities;
+using Adnc.Whse.Domain.Services;
 using AutoMapper;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 

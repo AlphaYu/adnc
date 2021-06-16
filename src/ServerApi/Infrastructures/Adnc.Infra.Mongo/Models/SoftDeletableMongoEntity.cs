@@ -1,4 +1,5 @@
-﻿using Adnc.Core.Shared.Entities;
+﻿using Adnc.Infra.Entities;
+
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 

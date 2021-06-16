@@ -1,10 +1,14 @@
 using Adnc.Infra.Consul;
+using Adnc.Infra.Core;
+using Adnc.WebApi.Shared;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using NLog.Web;
+using System.Reflection;
 
 namespace Adnc.Usr.WebApi
 {
@@ -38,6 +42,10 @@ namespace Adnc.Usr.WebApi
                 }
             });
             hostBuilder.UseServiceProviderFactory(new AutofacServiceProviderFactory());
+            hostBuilder.ConfigureServices(services =>
+            {
+                services.Add(ServiceDescriptor.Singleton(typeof(IServiceInfo), ServiceInfo.Create(Assembly.GetExecutingAssembly())));
+            });
             hostBuilder.ConfigureWebHostDefaults(webBuilder =>
             {
                 webBuilder.UseStartup<Startup>();
@@ -51,36 +59,6 @@ namespace Adnc.Usr.WebApi
             hostBuilder.UseNLog();
 
             return hostBuilder;
-
-            //return Host.CreateDefaultBuilder(args)
-            //    .ConfigureHostConfiguration(configuration =>
-            //    {
-            //        configuration.AddCommandLine(args);
-            //    })
-            //    .ConfigureAppConfiguration((context, cb) =>
-            //    {
-            //        var env = context.HostingEnvironment;
-            //        if (env.IsProduction() || env.IsStaging())
-            //        {
-            //            var configuration = cb.Build();
-            //            //从consul配置中心读取配置
-            //            var consulOption = configuration.GetSection("Consul").Get<ConsulConfig>();
-            //            cb.AddConsulConfiguration(consulOption, true);
-            //        }
-            //        //cb.AddJsonFile("autofac.json", optional: true);
-            //    })
-            //    .UseServiceProviderFactory(new AutofacServiceProviderFactory())
-            //    .ConfigureWebHostDefaults(webBuilder =>
-            //    {
-            //        webBuilder.UseStartup<Startup>();
-            //    })
-            //    .ConfigureLogging((context, logging) =>
-            //    {
-            //        logging.ClearProviders();
-            //        logging.AddConsole();
-            //        logging.AddDebug();
-            //    })
-            //    .UseNLog();
         }
     }
 }

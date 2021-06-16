@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="..\..\..\build\common.props" />
+	<PropertyGroup>
+		<TargetFramework>netstandard2.1</TargetFramework>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Remove="Entities\SysTask.cs" />
+		<Compile Remove="Entities\SysTaskLog.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="RepositoryExtensions\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Repository\Adnc.Infra.Repository.csproj" />
+	  <ProjectReference Include="..\..\Shared\Adnc.Shared\Adnc.Shared.csproj" />
+	</ItemGroup>
+</Project>

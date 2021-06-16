@@ -1,4 +1,4 @@
-﻿using Adnc.Core.Shared.IRepositories;
+﻿using Adnc.Infra.IRepositories;
 using Adnc.Infra.Mongo.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using System;
