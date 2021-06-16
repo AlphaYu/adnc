@@ -1,6 +1,4 @@
 ﻿using Adnc.Cus.Application.Contracts.Services;
-using Adnc.Cus.Application.EventSubscribers.Etos;
-using Adnc.Infra.EventBus;
 using Adnc.Shared.Events;
 using DotNetCore.CAP;
 using Microsoft.Extensions.DependencyInjection;
@@ -47,8 +45,8 @@ namespace Adnc.Cus.Application.EventSubscribers
         /// </summary>
         /// <param name="warehouseQtyBlockedEvent"></param>
         /// <returns></returns>
-        [CapSubscribe("OrderPaidEvent")]
-        public async Task ProcessOrderPaidEvent(BaseEvent<OrderPaidEventData> orderPaidEvent)
+        [CapSubscribe(nameof(OrderPaidEvent))]
+        public async Task ProcessOrderPaidEvent(OrderPaidEvent orderPaidEvent)
         {
             _logger.LogInformation("start.....");
             _logger.LogInformation("end.....");
