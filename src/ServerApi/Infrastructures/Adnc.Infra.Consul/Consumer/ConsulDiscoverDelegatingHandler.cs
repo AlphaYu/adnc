@@ -99,7 +99,7 @@ namespace Adnc.Infra.Consul.Consumer
 
                 #endregion 缓存处理
 
-                var responseMessage = await base.SendAsync(request, cancellationToken).ConfigureAwait(false);
+                var responseMessage = await base.SendAsync(request, cancellationToken);
                 return responseMessage;
             }
             catch (Exception)
