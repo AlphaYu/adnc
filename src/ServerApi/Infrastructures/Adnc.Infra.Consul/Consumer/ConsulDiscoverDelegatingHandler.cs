@@ -14,6 +14,7 @@ namespace Adnc.Infra.Consul.Consumer
 {
     public class ConsulDiscoverDelegatingHandler : DelegatingHandler
     {
+        private readonly static  ReaderWriterLockSlim _lockSlim = new ReaderWriterLockSlim();
         private readonly ConsulClient _consulClient;
         private readonly ITokenGenerator _tokenGenerator;
         private readonly IMemoryCache _memoryCache;
@@ -125,23 +126,43 @@ namespace Adnc.Infra.Consul.Consumer
 
         private async Task<List<string>> GetAllHealthServiceAddressAsync(string serviceName, string serviceAddressCacheKey)
         {
-            var healthAddresses = await _memoryCache.GetOrCreateAsync(serviceAddressCacheKey, async entry =>
+            var healthAddresses = _memoryCache.Get<List<string>>(serviceAddressCacheKey);
+            if (healthAddresses != null && healthAddresses.Any())
             {
-                _logger.LogInformation($"{DateTime.Now}:refresh {serviceAddressCacheKey}");
+                return healthAddresses;
+            }
+
+            var getLokcer = false;
+
+            try
+            {
+                if (!_lockSlim.TryEnterWriteLock(500))
+                {
+                    await Task.Delay(200);
+                    _logger.LogInformation($"TryEnterWriteLock=false,{serviceAddressCacheKey}");
+                    return await GetAllHealthServiceAddressAsync(serviceName, serviceAddressCacheKey);
+                }
+
+                _logger.LogInformation($"TryEnterWriteLock=true,{serviceAddressCacheKey}");
+                getLokcer = true;
                 var query = await _consulClient.Health.Service(serviceName, string.Empty, true);
                 var servicesEntries = query.Response;
                 if (servicesEntries != null && servicesEntries.Any())
                 {
-                    entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(5);
-                    return servicesEntries.Select(entry => $"{entry.Service.Address}:{entry.Service.Port}").ToList();
+                    var entryOptions = new MemoryCacheEntryOptions
+                    {
+                        AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(5)
+                    };
+                    healthAddresses = servicesEntries.Select(entry => $"{entry.Service.Address}:{entry.Service.Port}").ToList();
+                    _memoryCache.Set(serviceAddressCacheKey, healthAddresses, entryOptions);
                 }
-                else
-                {
-                    entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(0);
-                }        
-                return default;
-            });
-            return healthAddresses;
+                return healthAddresses;
+            }
+            finally
+            {
+                if (getLokcer)
+                    _lockSlim.ExitWriteLock();
+            }
         }
     }
 }
