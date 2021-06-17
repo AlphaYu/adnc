@@ -1,4 +1,5 @@
 ﻿using Adnc.Application.Shared;
+using Adnc.Infra.Core;
 using Autofac;
 using Microsoft.Extensions.Configuration;
 
@@ -12,8 +13,8 @@ namespace Adnc.Whse.Application
         /// <summary>
         /// 构造函数
         /// </summary>
-        public AdncWhseApplicationModule(IConfigurationSection redisSection, IConfigurationSection rabitMqSection)
-                    : base(typeof(AdncWhseApplicationModule), redisSection, rabitMqSection)
+        public AdncWhseApplicationModule(IConfiguration configuration, IServiceInfo serviceInfo)
+                    : base(typeof(AdncWhseApplicationModule), configuration, serviceInfo)
         {
         }
 

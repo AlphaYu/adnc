@@ -1,4 +1,4 @@
-﻿using Adnc.Core.Shared.Entities;
+﻿using Adnc.Infra.Entities;
 using Adnc.Infra.Mongo.Configuration;
 using Adnc.Infra.Mongo.Models;
 using MongoDB.Driver;

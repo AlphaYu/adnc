@@ -1,8 +1,8 @@
 ﻿using Adnc.Application.Shared.Dtos;
-using Adnc.Core.Maint.Entities;
-using Adnc.Core.Shared;
+using Adnc.Infra.Entities;
+using Adnc.Infra.IRepositories;
 using Adnc.Maint.Application.Contracts.Dtos;
-using Adnc.Maint.Core.Entities;
+using Adnc.Maint.Entities;
 using AutoMapper;
 
 namespace Adnc.Maint.Application
@@ -12,10 +12,10 @@ namespace Adnc.Maint.Application
         public AdncMaintProfile()
         {
             CreateMap(typeof(IPagedModel<>), typeof(PageModelDto<>)).ForMember("XData", opt => opt.Ignore());
-            CreateMap<OpsLogCreationDto, SysOperationLog>();
-            CreateMap<SysOperationLog, OpsLogDto>();
-            CreateMap<SysLoginLog, LoginLogDto>();
-            CreateMap<SysNloglog, NlogLogDto>();
+            CreateMap<OpsLogCreationDto, OperationLog>();
+            CreateMap<OperationLog, OpsLogDto>();
+            CreateMap<LoginLog, LoginLogDto>();
+            CreateMap<LoggingLog, NlogLogDto>();
             CreateMap<SysNloglogProperty, NlogLogPropertyDto>();
             CreateMap<CfgCreationDto, SysCfg>();
             CreateMap<SysCfg, CfgDto>();

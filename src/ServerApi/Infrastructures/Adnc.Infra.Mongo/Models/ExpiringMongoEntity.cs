@@ -1,4 +1,4 @@
-﻿using Adnc.Core.Shared.Entities;
+﻿using Adnc.Infra.Entities;
 using System;
 
 namespace Adnc.Infra.Mongo.Models

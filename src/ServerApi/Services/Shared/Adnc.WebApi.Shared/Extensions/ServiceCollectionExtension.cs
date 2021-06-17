@@ -1,7 +1,9 @@
-﻿using Adnc.WebApi.Shared;
+﻿using Adnc.Application.Shared.HostedServices;
+using Adnc.Application.Shared.IdGenerater;
+using Adnc.WebApi.Shared;
+using Adnc.WebApi.Shared.HostedServices;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using System;
 
 namespace Microsoft.Extensions.DependencyInjection
@@ -19,15 +21,25 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="completedExecute"></param>
         /// <returns></returns>
         public static IServiceCollection AddAdncServices<TPermissionHandler>(this IServiceCollection services
-            , IConfiguration configuration
-            , IWebHostEnvironment environment
-            , ServiceInfo serviceInfo
             , Action<SharedServicesRegistration> completedExecute = null)
             where TPermissionHandler : PermissionHandler
         {
-            services.AddSingleton(serviceInfo);
+            var configuration = services.GetConfiguration();
+            var serviceInfo = services.GetServiceInfo();
+            var environment = services.GetHostEnvironment();
+
             services.AddHttpContextAccessor();
             services.AddMemoryCache();
+
+            services.AddHostedService<ChannelConsumersHostedService>();
+            services.AddHostedService<CacheAndBloomFilterHostedService>();
+            services.AddHostedService(provider =>
+            {
+                var wokerNode = provider.GetService<WorkerNode>();
+                var logger = provider.GetService<ILogger<WorkerNodeHostedService>>();
+                var serviceName = serviceInfo.ShortName;
+                return new WorkerNodeHostedService(logger, wokerNode, serviceName);
+            });
 
             var _srvRegistration = new SharedServicesRegistration(configuration, services, environment, serviceInfo);
             _srvRegistration.Configure();

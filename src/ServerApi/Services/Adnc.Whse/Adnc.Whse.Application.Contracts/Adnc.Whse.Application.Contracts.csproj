@@ -11,11 +11,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\Shared\Adnc.Application.Shared\Adnc.Application.Shared.csproj" />
+		<Folder Include="Dtos\DtoValidators\" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="Dtos\DtoValidators\" />
+	  <ProjectReference Include="..\..\Shared\Adnc.Application.Shared\Adnc.Application.Shared.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

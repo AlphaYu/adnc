@@ -1,0 +1,78 @@
+#deployment yaml
+#kubectl rollout undo deployment/adnc-usr-webapi 回退
+apiVersion: apps/v1  #指定api版本，此值必须在kubectl apiversion中
+kind: Deployment       #指定创建资源的角色/类型
+metadata: 
+  name: adnc-usr-webapi
+spec: 
+  selector:           #此deployment选择哪个标签进行滚动的发布
+    matchLabels:      #滚动发布pod的标签，要跟下面template中的labels一致
+      app: adnc-usr-webapi
+  minReadySeconds: 10 #最小10s等待就绪时间，可以方便看到滚动发布流程
+  replicas: 3       #副本集数量
+  template:         #pod模板
+    metadata:       #资源的元数据/属性  
+      labels:       #标签定义
+        app: adnc-usr-webapi  #标签值
+    spec:           #指定该资源的内容
+      containers:    #容器定义
+        - name: adncusrwebapi   #容器的名字  
+          image: adnc/usrwebapi:0.8.1    #容器镜像
+
+#rs yaml
+#apiVersion: extensions/v1beta1  #指定api版本
+#kind: ReplicaSet       #指定创建资源的角色/类型
+#metadata: 
+#  name: adnc-usr-webapi
+#spec: 
+#  replicas: 3       #副本集数量
+#  template:         #pod模板
+#    metadata:       #资源的元数据/属性  
+#      labels:       #标签定义
+#        app: adnc-usr-webapi  #标签值
+#    spec:           # 指定该资源的内容
+#      containers:    #容器定义
+#        - name: adncusrwebapi   #容器的名字  
+#          image: adnc/usrwebapi    #容器镜像
+
+#pod yaml
+#kubectl apply -f adnc-usr-webapi.yaml
+#apiVersion: v1  #指定api版本，此值必须在kubectl apiversion中
+#kind: Pod       #指定创建资源的角色/类型
+#metadata:       #资源的元数据/属性  
+#  name: adnc-usr-webapi #资源的名字，在同一个namespace中必须唯一 
+#  labels:       #标签定义
+#    app: adnc-usr-webapi  #标签值
+#spec:           #specification of the resource content 指定该资源的内容
+#  containers:    #容器定义
+#    - name: adnc-usr-webapi   #容器的名字  
+#      image: adnc/usrwebapi    #容器镜像
+
+#ClusterIP service
+apiVersion: v1
+kind: Service
+metadata: 
+  name: anc-usr-webapi
+spec: 
+  ports:
+    - name: http     #通讯协议
+      port: 7010     #这里的端口和clusterIP对应，即ip:7010,供内部访问。
+      targetPort: 80   #端口一定要和container暴露出来的端口对应
+  selector:
+    app: adnc-usr-webapi  #这里选择器一定要选择容器的标签
+  type: ClusterIP         #这里代表是ClusterIP类型的      
+
+#NodePort service
+apiVersion: v1
+kind: Service
+metadata: 
+  name: anc-usr-webapi
+spec: 
+  ports:
+    - name: http      #通讯协议
+      port: 7010      #这里的端口和clusterIP对应，即ip:7010,供内部访问。
+      targetPort: 80  #端口一定要和container暴露出来的端口对应
+      nodePort: 30080 #节点都会开放此端口，此端口供外部调用
+  selector:
+    app: adnc-usr-webapi  #这里选择器一定要选择容器的标签
+  type: NodePort         #这里代表是ClusterIP类型的      

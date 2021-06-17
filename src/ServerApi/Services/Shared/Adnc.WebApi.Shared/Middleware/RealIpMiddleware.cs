@@ -24,28 +24,21 @@ namespace Adnc.WebApi.Shared.Middleware
         public async Task Invoke(HttpContext context)
         {
             var headers = context.Request.Headers;
-            try
+            if (_option.HeaderKeys != null && _option.HeaderKeys.Length > 0)
             {
-                if (_option.HeaderKeys != null && _option.HeaderKeys.Length > 0)
+                foreach (var headerKey in _option.HeaderKeys)
                 {
-                    foreach (var headerKey in _option.HeaderKeys)
+                    var ips = headers[headerKey].FirstOrDefault();
+                    if (!string.IsNullOrWhiteSpace(ips))
                     {
-                        var ips = headers[headerKey].FirstOrDefault();
-                        if (!string.IsNullOrWhiteSpace(ips))
-                        {
-                            var realIp = ips.Split(",", StringSplitOptions.RemoveEmptyEntries)[0];
-                            context.Connection.RemoteIpAddress = IPAddress.Parse(realIp);
-                            _logger.LogDebug($"Resolve real ip success: {context.Connection.RemoteIpAddress}");
-                            break;
-                        }
+                        var realIp = ips.Split(",", StringSplitOptions.RemoveEmptyEntries)[0];
+                        context.Connection.RemoteIpAddress = IPAddress.Parse(realIp);
+                        _logger.LogDebug($"Resolve real ip success: {context.Connection.RemoteIpAddress}");
+                        break;
                     }
                 }
-                await _next(context);
             }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message, ex);
-            }
+            await _next(context);
         }
     }
 

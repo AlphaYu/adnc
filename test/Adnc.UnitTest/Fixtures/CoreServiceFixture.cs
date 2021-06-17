@@ -1,7 +1,8 @@
-﻿using Adnc.Core.Shared;
-using Adnc.Cus.Core;
+﻿using Adnc.Cus.Repository;
 using Adnc.Infra.EfCore;
+using Adnc.Infra.EfCore.MySQL;
 using Adnc.Infra.EventBus.Cap;
+using Adnc.Infra.IRepositories;
 using Autofac;
 using DotNetCore.CAP;
 using Microsoft.EntityFrameworkCore;
@@ -44,10 +45,10 @@ namespace Adnc.UnitTest.Fixtures
                        .As<ICapPublisher>().SingleInstance();
 
             //注册Adnc.Infra.EfCore
-            AdncInfrEfCoreModule.Register(containerBuilder);
+            AdncInfraEfCoreModule.Register(containerBuilder);
 
             //注册 Adnc.Cus.Core
-            AdncCusCoreModule.Register(containerBuilder);
+            AdncCusRepositoryModule.Register(containerBuilder);
 
             Container = containerBuilder.Build();
         }

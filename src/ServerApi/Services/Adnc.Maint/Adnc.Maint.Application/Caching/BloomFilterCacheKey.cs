@@ -1,6 +1,6 @@
 ﻿using Adnc.Application.Shared.Caching;
 using Adnc.Infra.Caching;
-using Adnc.Maint.Application.Contracts.Consts;
+using Adnc.Shared.Consts.Caching.Maint;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

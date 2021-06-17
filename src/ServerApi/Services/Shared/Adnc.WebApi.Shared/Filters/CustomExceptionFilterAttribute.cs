@@ -1,11 +1,11 @@
 ﻿using Adnc.Application.Shared;
-using Adnc.Infra.Common.Exceptions;
-using Adnc.Infra.Common.Helper;
+using Adnc.Infra.Core;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Threading.Tasks;
 
 namespace Microsoft.AspNetCore.Mvc.Filters
@@ -48,7 +48,7 @@ namespace Microsoft.AspNetCore.Mvc.Filters
             else
             {
                 title = _env.IsDevelopment() ? exception.Message : $"系统异常";
-                detial = _env.IsDevelopment() ? ExceptionHelper.GetExceptionDetail(exception) : $"系统异常,请联系管理员({eventId})";
+                detial = _env.IsDevelopment() ? exception.GetExceptionDetail() : $"系统异常,请联系管理员({eventId})";
                 _logger.LogError(eventId, exception, exception.Message, requestUrl, userContext.Id);
             }
 

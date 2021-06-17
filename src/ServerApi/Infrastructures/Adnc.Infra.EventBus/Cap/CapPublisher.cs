@@ -14,13 +14,13 @@ namespace Adnc.Infra.EventBus.Cap
             _eventBus = capPublisher;
         }
 
-        public virtual async Task PublishAsync<T>(T eventObj, string callbackName = null, CancellationToken cancellationToken = default(CancellationToken))
+        public virtual async Task PublishAsync<T>(T eventObj, string callbackName = null, CancellationToken cancellationToken = default)
             where T : IEvent
         {
             await _eventBus.PublishAsync(typeof(T).Name, eventObj, callbackName, cancellationToken);
         }
 
-        public virtual async Task PublishAsync<T>(T eventObj, IDictionary<string, string> headers, CancellationToken cancellationToken = default(CancellationToken))
+        public virtual async Task PublishAsync<T>(T eventObj, IDictionary<string, string> headers, CancellationToken cancellationToken = default)
             where T : IEvent
         {
             await _eventBus.PublishAsync<T>(typeof(T).Name, eventObj, headers, cancellationToken);

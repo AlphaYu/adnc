@@ -1,4 +1,5 @@
 ﻿using Adnc.Application.Shared;
+using Adnc.Infra.Core;
 using Autofac;
 using Microsoft.Extensions.Configuration;
 
@@ -12,8 +13,8 @@ namespace Adnc.Ord.Application
         /// <summary>
         /// 构造函数
         /// </summary>
-        public AdncOrdApplicationModule(IConfigurationSection redisSection, IConfigurationSection rabitMqSection)
-            : base(typeof(AdncOrdApplicationModule), redisSection, rabitMqSection)
+        public AdncOrdApplicationModule(IConfiguration configuration, IServiceInfo serviceInfo)
+            : base(typeof(AdncOrdApplicationModule), configuration, serviceInfo)
         {
         }
 

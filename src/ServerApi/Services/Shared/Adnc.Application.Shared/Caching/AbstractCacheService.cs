@@ -1,7 +1,7 @@
-﻿using Adnc.Application.Shared.Consts;
-using Adnc.Infra.Caching;
+﻿using Adnc.Infra.Caching;
 using Adnc.Infra.Caching.Core;
 using Adnc.Infra.Mapper;
+using Adnc.Shared.Consts.Caching.Com;
 using Polly;
 using System;
 using System.Text;
@@ -51,7 +51,7 @@ namespace Adnc.Application.Shared.Caching
                 index++;
                 sbuilder.Append(item);
                 if (index != total)
-                    sbuilder.Append(SharedCachingConsts.LinkChar);
+                    sbuilder.Append(CachingConsts.LinkChar);
             }
             return sbuilder.ToString();
         }

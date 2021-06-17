@@ -1,16 +1,15 @@
 ﻿using Adnc.Application.Shared.Services;
-using Adnc.Core.Shared.IRepositories;
-using Adnc.Infra.Common.Extensions;
-using Adnc.Infra.Common.Helper;
-using Adnc.Infra.EventBus.RabbitMq;
+using Adnc.Infra.Entities;
+using Adnc.Infra.Helper;
+using Adnc.Infra.IRepositories;
+using Adnc.Shared.Consts.Caching.Usr;
 using Adnc.Usr.Application.Caching;
-using Adnc.Usr.Application.Contracts.Consts;
 using Adnc.Usr.Application.Contracts.Dtos;
 using Adnc.Usr.Application.Contracts.Services;
-using Adnc.Usr.Core.Entities;
 using Adnc.Usr.Core.RepositoryExtensions;
+using Adnc.Usr.Entities;
 using System;
-using System.Dynamic;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -22,25 +21,22 @@ namespace Adnc.Usr.Application.Services
         private readonly IEfRepository<SysUser> _userRepository;
         private readonly IEfRepository<SysRole> _roleRepository;
         private readonly IEfRepository<SysMenu> _menuRepository;
-        private readonly RabbitMqProducer _mqProducer;
         private readonly CacheService _cacheService;
 
         public AccountAppService(IEfRepository<SysUser> userRepository
            , IEfRepository<SysRole> roleRepository
            , IEfRepository<SysMenu> menuRepository
-           , RabbitMqProducer mqProducer
            , CacheService cacheService)
         {
             _userRepository = userRepository;
             _roleRepository = roleRepository;
             _menuRepository = menuRepository;
-            _mqProducer = mqProducer;
             _cacheService = cacheService;
         }
 
-        public async Task<AppSrvResult<UserValidateDto>> LoginAsync(UserLoginDto inputDto)
+        public async Task<AppSrvResult<UserValidateDto>> LoginAsync(UserLoginDto input)
         {
-            var exists = await _cacheService.BloomFilters.Accounts.ExistsAsync(inputDto.Account.ToLower());
+            var exists = await _cacheService.BloomFilters.Accounts.ExistsAsync(input.Account.ToLower());
             if (!exists)
                 return Problem(HttpStatusCode.BadRequest, "用户名或密码错误");
 
@@ -61,26 +57,36 @@ namespace Adnc.Usr.Application.Services
                 Name = x.Name
                     ,
                 RoleIds = x.RoleIds
-            }, x => x.Account == inputDto.Account);
+            }, x => x.Account == input.Account);
             if (user == null)
                 return Problem(HttpStatusCode.BadRequest, "用户名或密码错误");
 
-            dynamic log = new ExpandoObject();
-            log.Account = inputDto.Account;
-            log.CreateTime = DateTime.Now;
             var httpContext = HttpContextUtility.GetCurrentHttpContext();
-            log.Device = httpContext.Request.Headers["device"].FirstOrDefault() ?? "web";
-            log.RemoteIpAddress = httpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
-            log.Succeed = false;
-            log.UserId = user.Id;
-            log.UserName = user.Name;
+
+            var channelWriter = ChannelHelper<LoginLog>.Instance.Writer;
+            var log = new LoginLog
+            {
+                Account = input.Account
+                ,
+                Succeed = false
+                ,
+                UserId = user.Id
+                ,
+                UserName = user.Name
+                ,
+                CreateTime = DateTime.Now
+                ,
+                Device = httpContext.Request.Headers["device"].FirstOrDefault() ?? "web"
+                ,
+                RemoteIpAddress = httpContext.Connection.RemoteIpAddress.MapToIPv4().ToString()
+            };
 
             if (user.Status != 1)
             {
                 var problem = Problem(HttpStatusCode.TooManyRequests, "账号已锁定");
                 log.Message = problem.Detail;
-                log.StatusCode = problem.Status;
-                _mqProducer.BasicPublish(MqExchanges.Logs, MqRoutingKeys.Loginlog, log);
+                log.StatusCode = problem.Status.Value;
+                await channelWriter.WriteAsync(log);
                 return problem;
             }
 
@@ -93,24 +99,23 @@ namespace Adnc.Usr.Application.Services
             {
                 var problem = Problem(HttpStatusCode.TooManyRequests, "连续登录失败次数超过5次，账号已锁定");
                 log.Message = problem.Detail;
-                log.StatusCode = problem.Status;
+                log.StatusCode = problem.Status.Value;
+                await channelWriter.WriteAsync(log);
 
                 await _cacheService.RemoveCachesAsync(async (cancellToken) =>
                 {
                     await _userRepository.UpdateAsync(new SysUser() { Id = user.Id, Status = 1 }, UpdatingProps<SysUser>(x => x.Status), cancellToken);
                 }, _cacheService.ConcatCacheKey(CachingConsts.UserValidateInfoKeyPrefix, user.Id.ToString()));
 
-                _mqProducer.BasicPublish(MqExchanges.Logs, MqRoutingKeys.Loginlog, log);
-
                 return problem;
             }
 
-            if (HashHelper.GetHashedString(HashType.MD5, inputDto.Password, user.Salt) != user.Password)
+            if (HashHelper.GetHashedString(HashType.MD5, input.Password, user.Salt) != user.Password)
             {
                 var problem = Problem(HttpStatusCode.BadRequest, "用户名或密码错误");
                 log.Message = problem.Detail;
-                log.StatusCode = problem.Status;
-                _mqProducer.BasicPublish(MqExchanges.Logs, MqRoutingKeys.Loginlog, log);
+                log.StatusCode = problem.Status.Value;
+                await channelWriter.WriteAsync(log);
                 return problem;
             }
 
@@ -118,8 +123,8 @@ namespace Adnc.Usr.Application.Services
             {
                 var problem = Problem(HttpStatusCode.Forbidden, "未分配任务角色，请联系管理员");
                 log.Message = problem.Detail;
-                log.StatusCode = problem.Status;
-                _mqProducer.BasicPublish(MqExchanges.Logs, MqRoutingKeys.Loginlog, log);
+                log.StatusCode = problem.Status.Value;
+                await channelWriter.WriteAsync(log);
                 return problem;
             }
 
@@ -128,8 +133,7 @@ namespace Adnc.Usr.Application.Services
             log.Message = "登录成功";
             log.StatusCode = (int)HttpStatusCode.Created;
             log.Succeed = true;
-            _mqProducer.BasicPublish(MqExchanges.Logs, MqRoutingKeys.Loginlog, log);
-
+            await channelWriter.WriteAsync(log);
             return user;
         }
 

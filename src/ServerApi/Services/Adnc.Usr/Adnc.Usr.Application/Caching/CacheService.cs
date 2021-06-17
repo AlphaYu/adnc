@@ -1,9 +1,9 @@
 ﻿using Adnc.Application.Shared.Caching;
-using Adnc.Core.Shared.IRepositories;
 using Adnc.Infra.Caching;
-using Adnc.Usr.Application.Contracts.Consts;
+using Adnc.Infra.IRepositories;
+using Adnc.Shared.Consts.Caching.Usr;
 using Adnc.Usr.Application.Contracts.Dtos;
-using Adnc.Usr.Core.Entities;
+using Adnc.Usr.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -60,7 +60,7 @@ namespace Adnc.Usr.Application.Caching
             get
             {
                 var cacheFilter = _bloomFilterFactory.Value.GetBloomFilter(_cache.Value.CacheOptions.PenetrationSetting.BloomFilterSetting.Name);
-                var accountFilter = _bloomFilterFactory.Value.GetBloomFilter($"adnc:{nameof(BloomFilterAccount).ToLower()}");
+                var accountFilter = _bloomFilterFactory.Value.GetBloomFilter("adnc:usr:bloomfilter:accouts");
                 return (cacheFilter, accountFilter);
             }
         }

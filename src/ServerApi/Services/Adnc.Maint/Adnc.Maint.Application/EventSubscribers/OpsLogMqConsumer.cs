@@ -1,7 +1,7 @@
-﻿using Adnc.Core.Maint.Entities;
-using Adnc.Core.Shared.IRepositories;
+﻿using Adnc.Infra.Entities;
 using Adnc.Infra.EventBus.RabbitMq;
-using Adnc.Maint.Application.Contracts.Consts;
+using Adnc.Infra.IRepositories;
+using Adnc.Shared.Consts.Mq;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -23,7 +23,7 @@ namespace Adnc.Maint.Application.EventSubscribers
 
         private readonly ILogger<OpsLogMqConsumer> _logger;
 
-        public OpsLogMqConsumer(IOptionsSnapshot<RabbitMqConfig> options
+        public OpsLogMqConsumer(IOptionsMonitor<RabbitMqConfig> options
            , ILogger<OpsLogMqConsumer> logger
            , IServiceProvider services)
             : base(options, logger)
@@ -93,8 +93,8 @@ namespace Adnc.Maint.Application.EventSubscribers
             {
                 using (var scope = _services.CreateScope())
                 {
-                    var repository = scope.ServiceProvider.GetRequiredService<IMongoRepository<SysOperationLog>>();
-                    var entity = JsonSerializer.Deserialize<SysOperationLog>(message);
+                    var repository = scope.ServiceProvider.GetRequiredService<IMongoRepository<OperationLog>>();
+                    var entity = JsonSerializer.Deserialize<OperationLog>(message);
                     await repository.AddAsync(entity);
                     result = true;
                 }

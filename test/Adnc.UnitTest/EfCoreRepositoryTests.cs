@@ -1,9 +1,8 @@
-﻿using Adnc.Core.Shared;
-using Adnc.Core.Shared.IRepositories;
-using Adnc.Cus.Core.Entities;
-using Adnc.Infra.Common.Helper;
-using Adnc.Infra.Common.Helper.IdGeneraterInternal;
-using Adnc.Infra.EfCore;
+﻿using Adnc.Cus.Entities;
+using Adnc.Infra.EfCore.MySQL;
+using Adnc.Infra.Helper;
+using Adnc.Infra.Helper.IdGeneraterInternal;
+using Adnc.Infra.IRepositories;
 using Adnc.UnitTest.Fixtures;
 using Autofac;
 using System;

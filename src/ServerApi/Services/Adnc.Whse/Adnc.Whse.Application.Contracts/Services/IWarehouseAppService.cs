@@ -1,7 +1,6 @@
 ﻿using Adnc.Application.Shared.Dtos;
 using Adnc.Application.Shared.Interceptors;
 using Adnc.Application.Shared.Services;
-using Adnc.Core.Shared.Interceptors;
 using Adnc.Whse.Application.Contracts.Dtos;
 using System.Threading.Tasks;
 
@@ -17,7 +16,7 @@ namespace Adnc.Whse.Application.Contracts.Services
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        [OpsLog(LogName = "创建仓储")]
+        [OperateLog(LogName = "创建仓储")]
         Task<WarehouseDto> CreateAsync(WarehouseCreationDto input);
 
         /// <summary>
@@ -27,7 +26,7 @@ namespace Adnc.Whse.Application.Contracts.Services
         /// <param name="input"></param>
         /// <returns></returns>
         [UnitOfWork(SharedToCap = true)]
-        [OpsLog(LogName = "分配货架")]
+        [OperateLog(LogName = "分配货架")]
         Task<WarehouseDto> AllocateShelfToProductAsync(long shelfId, WarehouseAllocateToProductDto input);
 
         /// <summary>
@@ -36,7 +35,7 @@ namespace Adnc.Whse.Application.Contracts.Services
         /// <param name="input"></param>
         /// <returns></returns>
         [UnitOfWork]
-        [OpsLog(LogName = "锁定库存")]
+        [OperateLog(LogName = "锁定库存")]
         Task BlockQtyAsync(WarehouseBlockQtyDto input);
 
         /// <summary>

@@ -4,11 +4,6 @@
         <name>Adnc.Usr.Application.Contracts</name>
     </assembly>
     <members>
-        <member name="T:Adnc.Usr.Application.Contracts.Consts.CachingConsts">
-            <summary>
-            cache key 常量
-            </summary>
-        </member>
         <member name="T:Adnc.Usr.Application.Contracts.Dtos.DeptCreationDto">
             <summary>
             部门

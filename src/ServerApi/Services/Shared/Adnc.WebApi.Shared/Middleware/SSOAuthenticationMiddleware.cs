@@ -1,6 +1,5 @@
 ﻿using Adnc.Infra.Caching;
-using Adnc.Infra.Common.Extensions;
-using Adnc.Infra.Common.Helper;
+using Adnc.Infra.Helper;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;

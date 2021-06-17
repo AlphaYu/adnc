@@ -1,9 +1,8 @@
 ﻿using Adnc.Application.Shared.Services;
-using Adnc.Core.Shared.IRepositories;
-using Adnc.Infra.Common.Extensions;
+using Adnc.Infra.IRepositories;
 using Adnc.Maint.Application.Contracts.Dtos;
 using Adnc.Maint.Application.Contracts.Services;
-using Adnc.Maint.Core.Entities;
+using Adnc.Maint.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;

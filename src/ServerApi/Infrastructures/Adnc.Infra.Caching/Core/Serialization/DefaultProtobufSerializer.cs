@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Adnc.Infra.Caching.Core.Internal;
+using ProtoBuf;
+using System;
 using System.IO;
 using System.Text;
-using Adnc.Infra.Caching.Core.Internal;
-using ProtoBuf;
 
 namespace Adnc.Infra.Caching.Core.Serialization
 {

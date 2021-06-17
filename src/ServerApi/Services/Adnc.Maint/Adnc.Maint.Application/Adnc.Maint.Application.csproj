@@ -15,9 +15,17 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Common\Adnc.Infra.Common.csproj" />
+	  <Compile Remove="EventSubscribers\LoginLogMqConsumer.cs" />
+	  <Compile Remove="EventSubscribers\OpsLogMqConsumer.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Caching\Adnc.Infra.Caching.csproj" />
 		<ProjectReference Include="..\Adnc.Maint.Application.Contracts\Adnc.Maint.Application.Contracts.csproj" />
-		<ProjectReference Include="..\Adnc.Maint.Core\Adnc.Maint.Core.csproj" />
+		<ProjectReference Include="..\Adnc.Maint.Repository\Adnc.Maint.Repository.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="EventSubscribers\" />
 	</ItemGroup>
 </Project>

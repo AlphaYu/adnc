@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Caching.Memory;
+﻿using Adnc.Infra.Consul.TokenGenerator;
+using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Linq;
 using System.Net.Http;
@@ -13,12 +14,10 @@ namespace Adnc.Infra.Consul.Consumer
     {
         private readonly ITokenGenerator _tokenGenerator;
         private readonly IMemoryCache _memoryCache;
-        public Guid ContextId { get; private set; }
 
         public SimpleDiscoveryDelegatingHandler(ITokenGenerator tokenGenerator
             , IMemoryCache memoryCache)
         {
-            this.ContextId = Guid.NewGuid();
             _tokenGenerator = tokenGenerator;
             _memoryCache = memoryCache;
         }

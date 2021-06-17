@@ -10,6 +10,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\Adnc.Cus.Application.Contracts\Adnc.Cus.Application.Contracts.csproj" />
-		<ProjectReference Include="..\Adnc.Cus.Core\Adnc.Cus.Core.csproj" />
+		<ProjectReference Include="..\Adnc.Cus.Repository\Adnc.Cus.Repository.csproj" />
 	</ItemGroup>
 </Project>

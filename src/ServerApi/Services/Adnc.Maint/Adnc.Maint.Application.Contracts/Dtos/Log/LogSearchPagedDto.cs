@@ -32,5 +32,10 @@ namespace Adnc.Maint.Application.Contracts.Dtos
         /// 设备
         /// </summary>
         public string Device { get; set; }
+
+        /// <summary>
+        /// 日志级别
+        /// </summary>
+        public string Level { get; set; }
     }
 }

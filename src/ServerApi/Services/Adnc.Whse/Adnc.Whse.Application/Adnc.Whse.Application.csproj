@@ -10,6 +10,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\Adnc.Whse.Application.Contracts\Adnc.Whse.Application.Contracts.csproj" />
-		<ProjectReference Include="..\Adnc.Whse.Core\Adnc.Whse.Core.csproj" />
+		<ProjectReference Include="..\Adnc.Whse.Domain\Adnc.Whse.Domain.csproj" />
 	</ItemGroup>
 </Project>

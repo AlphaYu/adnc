@@ -3,7 +3,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
-using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,7 +15,7 @@ namespace Adnc.Infra.EventBus.RabbitMq
         private readonly IModel _channel;
         private readonly ILogger<dynamic> _logger;
 
-        public BaseRabbitMqConsumer(IOptionsSnapshot<RabbitMqConfig> options, ILogger<dynamic> logger)
+        public BaseRabbitMqConsumer(IOptionsMonitor<RabbitMqConfig> options, ILogger<dynamic> logger)
         {
             _connection = RabbitMqConnection.GetInstance(options, logger).Connection;
             _channel = _connection.CreateModel();

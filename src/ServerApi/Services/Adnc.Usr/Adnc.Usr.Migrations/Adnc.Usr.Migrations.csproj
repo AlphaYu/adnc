@@ -7,7 +7,9 @@
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
 		<OutputPath>..\Adnc.Usr.WebApi\bin\$(Configuration)</OutputPath>
 	</PropertyGroup>
-
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.EfCore.MySQL\Adnc.Infra.EfCore.MySQL.csproj" />
+	</ItemGroup>
 	<ItemGroup>
 		<Compile Remove="Migrations\20201124031130_20201124_1.cs" />
 		<Compile Remove="Migrations\20201124031130_20201124_1.Designer.cs" />
@@ -21,9 +23,5 @@
 		<Compile Remove="Migrations\20210320114331_Update2021032001.Designer.cs" />
 		<Compile Remove="Migrations\20210320124004_Update2021032003.cs" />
 		<Compile Remove="Migrations\20210320124004_Update2021032003.Designer.cs" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.EfCore\Adnc.Infra.EfCore.csproj" />
 	</ItemGroup>
 </Project>
