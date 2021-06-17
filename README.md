@@ -134,7 +134,7 @@
 - `Tests` 框架测试相关工程
 
 ![.NET微服务开源框架-整体架构图](https://aspdotnetcore.net/adnc_solution)
-#### Adnc.Infras 基础架构相关工程
+#### Infrastructures 基础架构相关工程
 ##### Adnc.Infra.Core
 该工程是Adnc所有工程的最顶层，任何工程都会者直接或间接依赖该层。该工程提供了大量的`C#`基础类型的扩展方法以及Configuration、DependencyInjection、ContainerBuilder的扩展方法，还定义了一些异常类。
 
@@ -172,7 +172,7 @@
 该目录都是具体微服务业务的实现。
 ##### Shared 
 微服务公用工程
-- `Adnc.Shared` 该层目前有三个目录`Consts`存放常量定义文件、`Events`存放事件定义文件、`RPCServices`存放RPC服务接口声明文件，任何层都可以依赖该层。
+- `Adnc.Shared` 该层目前有三个目录Consts存放常量定义文件、Events存放事件定义文件、RPCServices存放RPC服务接口声明文件，任何层都可以依赖该层。
 - `Adnc.Application.Shared` 该层定义了DTO对象的基类、应用服务类基类、缓存相关服务基类以及操作日志拦截器、UnitOfWork拦截器。所有微服务Application/Application.Contracts层的共享层，并且都需要依赖该层。
 - `Adnc.WebApi.Shared` 该层实现了认证、鉴权、异常捕获、服务组件注册等公共类和中间件。所有微服务WebApi层的共享层，并且都需要依赖该层。
 ##### Adnc.Usr 
