@@ -44,12 +44,20 @@
 - 详细介绍EFCore仓储基础功能、工作单元、CodeFirst，提供了丰富的演示代码以及演示代码对应的Sql语句。<br/>
 [请点击链接，查看详细介绍](https://github.com/AlphaYu/Adnc/wiki/%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E4%BB%93%E5%82%A8(%E4%B8%80)-%E5%9F%BA%E7%A1%80%E5%8A%9F%E8%83%BD)
 
+## 总体设计结构
+- 经典三层
+![.NET微服务开源框架-总体设计](https://aspdotnetcore.net/adnc-traditional/)
+- DDD三层
+![.NET微服务开源框架-总体设计](https://aspdotnetcore.net/adnc-ddd/)
+- 总体结构
+![.NET微服务开源框架-总体设计](https://aspdotnetcore.net/adnc-rpc-eventbus/)
+
 ## Jmeter测试
 - ECS服务器配置：2核4G，带宽1M。服务器上装了很多东西，剩余大约40%的CPU资源，40%的内存资源。
 - 由于带宽有限，吞吐率约200/s左右。
 - 模拟并发线程1200/s
 - 读写比率7:3
-- 6个测试用例覆盖了oceot(网关),consul(注册、发现，配置中心),refit(服务间同步调用),cap(分布式事务),efcore(数据库CURD,本地事务),stackexchange.reids(缓存)等中间件的相关功能。
+- 6个测试用例覆盖了oceot(网关),consul(注册、发现，配置中心),refit(服务间同步调用),cap(分布式事务),efcore(数据库CURD,本地事务),stackexchange.reids(缓存、布隆过滤器)、SkyApm链路、Nlog日志、操作日志记录。
 ![.NET微服务开源框架-Jmeter](https://aspdotnetcore.net/jmeter_result/)
 
 ## 演示
