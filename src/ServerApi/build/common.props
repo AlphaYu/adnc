@@ -14,8 +14,4 @@
 		<SatelliteResourceLanguages>en</SatelliteResourceLanguages>
 		<NoWarn>$(NoWarn);1591</NoWarn>
 	</PropertyGroup>
-	<ItemGroup>
-		<RuntimeHostConfigurationOption Include="System.Threading.ThreadPool.MinThreads" Value="1000" />
-		<RuntimeHostConfigurationOption Include="System.Threading.ThreadPool.MaxThreads" Value="3000" />
-	</ItemGroup>
 </Project>
