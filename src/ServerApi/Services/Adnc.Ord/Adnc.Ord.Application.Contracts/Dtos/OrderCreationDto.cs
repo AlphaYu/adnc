@@ -27,7 +27,7 @@ namespace Adnc.Ord.Application.Contracts.Dtos
 
         public class OrderCreationItemDto : IDto
         {
-            public string ProductId { get; set; }
+            public long ProductId { get; set; }
 
             public int Count { get; set; }
         }

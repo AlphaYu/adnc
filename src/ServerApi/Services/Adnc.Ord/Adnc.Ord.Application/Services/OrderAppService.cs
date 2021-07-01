@@ -66,10 +66,11 @@ namespace Adnc.Ord.Application.Services
             }
 
             var orderId = IdGenerater.GetNextId();
+            var products = rpcResult.Content;
 
             var items = from o in input.Items
-                        join p in rpcResult.Content on o.ProductId equals p.Id
-                        select (new OrderItemProduct(p.Id.ToLong().Value, p.Name, p.Price), o.Count);
+                        join p in products on o.ProductId equals p.Id
+                        select (new OrderItemProduct(p.Id, p.Name, p.Price), o.Count);
 
             //需要发布领域事件,订单中心订阅该事件
             var order = await _orderMgr.CreateAsync(orderId

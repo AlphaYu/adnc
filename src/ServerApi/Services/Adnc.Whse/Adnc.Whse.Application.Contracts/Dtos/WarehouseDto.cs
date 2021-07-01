@@ -4,9 +4,9 @@ namespace Adnc.Whse.Application.Contracts.Dtos
 {
     public class WarehouseDto : IDto
     {
-        public string Id { get; set; }
+        public long Id { get; set; }
 
-        public string ProductId { set; get; }
+        public long? ProductId { set; get; }
 
         public int Qty { set; get; }
 

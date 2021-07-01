@@ -95,7 +95,7 @@ namespace Adnc.Whse.WebApi.Controllers
         /// </summary>
         /// <param name="search"></param>
         /// <returns></returns>
-        [HttpGet("page")]
+        [HttpGet("paged")]
         public async Task<ActionResult<PageModelDto<ProductDto>>> GetPagedAsync([FromQuery] ProductSearchPagedDto search)
         {
             return await _productSrv.GetPagedAsync(search);

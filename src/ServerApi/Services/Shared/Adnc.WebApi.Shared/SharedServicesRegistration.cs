@@ -392,7 +392,7 @@ namespace Adnc.WebApi.Shared
             where TSubscriber : class, ICapSubscribe
         {
             var tableNamePrefix = "Cap";
-            var groupName = $"adnc-cap-{_environment.EnvironmentName.ToLower()}";
+            var groupName = $"cap.{_serviceInfo.ShortName}.{_environment.EnvironmentName.ToLower()}";
 
             //add skyamp
             _services.AddSkyApmExtensions().AddCap();

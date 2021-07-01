@@ -11,8 +11,4 @@
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.EfCore.MySQL\Adnc.Infra.EfCore.MySQL.csproj" />
 	</ItemGroup>
-
-	<ItemGroup>
-		<Folder Include="Migrations\" />
-	</ItemGroup>
 </Project>

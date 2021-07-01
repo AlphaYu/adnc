@@ -14,7 +14,7 @@ namespace Adnc.Whse.Application
         /// 构造函数
         /// </summary>
         public AdncWhseApplicationModule(IConfiguration configuration, IServiceInfo serviceInfo)
-                    : base(typeof(AdncWhseApplicationModule), configuration, serviceInfo)
+                    : base(typeof(AdncWhseApplicationModule), configuration, serviceInfo,true)
         {
         }
 

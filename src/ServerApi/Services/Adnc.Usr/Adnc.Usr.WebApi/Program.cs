@@ -37,7 +37,7 @@ namespace Adnc.Usr.WebApi
                 if (env.IsProduction() || env.IsStaging())
                 {
                     var configuration = cb.Build();
-                    var consulOption = configuration.GetSection("Consul").Get<ConsulConfig>();
+                    var consulOption = configuration.GetConsulSection().Get<ConsulConfig>();
                     cb.AddConsulConfiguration(consulOption, true);
                 }
             });
