@@ -49,6 +49,7 @@ using System.Net.Sockets;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
 
@@ -89,6 +90,7 @@ namespace Adnc.WebApi.Shared
             _services.Configure<MysqlConfig>(_configuration.GetMysqlSection());
             _services.Configure<RabbitMqConfig>(_configuration.GetRabbitMqSection());
             _services.Configure<ConsulConfig>(_configuration.GetConsulSection());
+            _services.Configure<ThreadPoolSettings>(_configuration.GetThreadPoolSettingsSection());
         }
 
         /// <summary>

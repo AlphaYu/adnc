@@ -12,12 +12,13 @@ using System.Reflection;
 
 namespace Adnc.Cus.WebApi
 {
-    public class Program
+    public static class Program
     {
         public static void Main(string[] args)
         {
             var hostBuilder = CreateHostBuilder(args);
             var host = hostBuilder.Build();
+            host.ChangeThreadPoolSettings();
             host.Run();
         }
 

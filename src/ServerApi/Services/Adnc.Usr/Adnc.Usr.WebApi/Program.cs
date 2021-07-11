@@ -18,9 +18,8 @@ namespace Adnc.Usr.WebApi
         {
             //var logger = NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
             var hostBuilder = CreateHostBuilder(args);
-
             var host = hostBuilder.Build();
-
+            host.ChangeThreadPoolSettings();
             host.Run();
         }
 
