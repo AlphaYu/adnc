@@ -3,6 +3,10 @@ using System;
 
 namespace Adnc.Shared.Events
 {
+
+    /// <summary>
+    /// 客户充值
+    /// </summary>
     [Serializable]
     public class CustomerRechargedEvent : BaseEvent<CustomerRechargedEvent.EventData>
     {

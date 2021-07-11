@@ -5,6 +5,7 @@ using DotNetCore.CAP;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Adnc.Whse.Application.EventSubscribers
@@ -30,13 +31,12 @@ namespace Adnc.Whse.Application.EventSubscribers
         /// <param name="warehouseQtyBlockedEvent"></param>
         /// <returns></returns>
         [CapSubscribe(nameof(OrderCreatedEvent))]
-        public async Task ProcessWarehouseQtyBlockedEvent(OrderCreatedEvent eventObj)
-
+        public async Task ProcessOrderCreatedEvent(OrderCreatedEvent eto)
         {
-            var data = eventObj.Data;
             using var scope = _services.CreateScope();
+            var data = eto.Data;
             var appSrv = scope.ServiceProvider.GetRequiredService<IWarehouseAppService>();
-            await appSrv.BlockQtyAsync(new WarehouseBlockQtyDto { OrderId = data.OrderId, Products = data.Products });
+            await appSrv.BlockQtyAsync(new WarehouseBlockQtyDto { OrderId = data.OrderId, Products = data.Products.Select(x => (x.ProductId, x.Qty)) });
         }
 
         #endregion across service event

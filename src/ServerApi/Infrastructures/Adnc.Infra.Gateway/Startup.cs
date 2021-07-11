@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 using Ocelot.Provider.Consul;
+using System.Threading;
 
 namespace Adnc.Gateway
 {
@@ -20,6 +21,7 @@ namespace Adnc.Gateway
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<ThreadPoolSettings>(Configuration.GetThreadPoolSettingsSection());
             services.AddCors(options =>
             {
                 options.AddPolicy("default", policy =>

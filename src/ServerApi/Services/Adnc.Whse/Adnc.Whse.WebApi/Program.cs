@@ -12,12 +12,13 @@ using System.Reflection;
 
 namespace Adnc.Whse.WebApi
 {
-    public class Program
+    public static class Program
     {
         public static void Main(string[] args)
         {
             var hostBuilder = CreateHostBuilder(args);
             var host = hostBuilder.Build();
+            host.ChangeThreadPoolSettings();
             host.Run();
         }
 
@@ -34,7 +35,7 @@ namespace Adnc.Whse.WebApi
                     if (env.IsProduction() || env.IsStaging())
                     {
                         var configuration = cb.Build();
-                        var consulOption = configuration.GetSection("Consul").Get<ConsulConfig>();
+                        var consulOption = configuration.GetConsulSection().Get<ConsulConfig>();
                         cb.AddConsulConfiguration(consulOption, true);
                     }
                 })

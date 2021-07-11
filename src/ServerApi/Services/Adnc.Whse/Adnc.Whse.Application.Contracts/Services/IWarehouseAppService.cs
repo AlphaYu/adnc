@@ -25,7 +25,7 @@ namespace Adnc.Whse.Application.Contracts.Services
         /// <param name="shelfId"></param>
         /// <param name="input"></param>
         /// <returns></returns>
-        [UnitOfWork(SharedToCap = true)]
+        [UnitOfWork()]
         [OperateLog(LogName = "分配货架")]
         Task<WarehouseDto> AllocateShelfToProductAsync(long shelfId, WarehouseAllocateToProductDto input);
 

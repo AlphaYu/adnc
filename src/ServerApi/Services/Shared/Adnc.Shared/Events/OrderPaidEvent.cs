@@ -1,12 +1,19 @@
 ﻿using Adnc.Infra.EventBus;
+using System;
 
 namespace Adnc.Shared.Events
 {
     /// <summary>
     /// 订单支付事件
     /// </summary>
+    [Serializable]
     public sealed class OrderPaidEvent : BaseEvent<OrderPaidEvent.EventData>
     {
+        public OrderPaidEvent()
+        {
+
+        }
+
         public OrderPaidEvent(long id, EventData eventData, string eventSource)
             : base(id, eventData, eventSource)
         {

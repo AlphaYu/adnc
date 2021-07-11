@@ -50,11 +50,11 @@ namespace Adnc.Ord.Core.Services
             //AddProduct会判断是否有重复的产品
             foreach (var (Product, Count) in items)
             {
-                order.AddProduct(new OrderItemProduct(Product.Id, Product.Name, Product.Price), Count);
+                order.AddProduct(IdGenerater.GetNextId(),new OrderItemProduct(Product.Id, Product.Name, Product.Price), Count);
             }
 
             //发送OrderCreatedEvent事件，通知仓储中心冻结库存
-            var products = order.Items.Select(x => (x.Id, x.Count)).ToArray();
+            var products = order.Items.Select(x => new OrderCreatedEvent.OrderItem { ProductId = x.Product.Id, Qty = x.Count });
             var eventId = IdGenerater.GetNextId();
             var eventData = new OrderCreatedEvent.EventData() { OrderId = order.Id, Products = products };
             var eventSource = System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.FullName;
