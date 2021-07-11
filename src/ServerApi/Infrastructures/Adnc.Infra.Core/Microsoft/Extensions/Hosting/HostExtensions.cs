@@ -6,13 +6,13 @@ namespace Microsoft.Extensions.Hosting
 {
     public static class HostExtensions
     {
-        public static void ChangeThreadPoolSettings(this IHost host)
+        public static IHost ChangeThreadPoolSettings(this IHost host)
         {
             var poolOptions = host.Services.GetService(typeof(IOptionsMonitor<ThreadPoolSettings>)) as IOptionsMonitor<ThreadPoolSettings>;
-            ChangeThreadPoolSettings(host, poolOptions);
+            return ChangeThreadPoolSettings(host, poolOptions);
         }
 
-        public static void ChangeThreadPoolSettings(this IHost host, IOptionsMonitor<ThreadPoolSettings> poolOptions)
+        public static IHost ChangeThreadPoolSettings(this IHost host, IOptionsMonitor<ThreadPoolSettings> poolOptions)
         {
             var logger = host.Services.GetService(typeof(ILogger<IHost>)) as ILogger<IHost>;
 
@@ -40,6 +40,7 @@ namespace Microsoft.Extensions.Hosting
             ThreadPool.GetMaxThreads(out int maxWorkerThreads, out int maxCompletionPortThreads);
             logger.LogInformation("Setting MinThreads={0},MinCompletionPortThreads={1}", workerThreads, completionPortThreads);
             logger.LogInformation("Setting MaxThreads={0},MaxCompletionPortThreads={1}", maxWorkerThreads, maxCompletionPortThreads);
+            return host;
         }
     }
 }
