@@ -20,9 +20,9 @@ namespace Adnc.Ord.Domain.Entities
         {
         }
 
-        internal OrderItem(long orderId, OrderItemProduct product, int count)
+        internal OrderItem(long id,long orderId, OrderItemProduct product, int count)
         {
-            this.Id = product.Id;
+            this.Id = id;
             this.OrderId = Checker.GTZero(orderId, nameof(orderId));
             this.Product = Checker.NotNull(product, nameof(product));
             this.Count = Checker.GTZero(count, nameof(count));

@@ -7,6 +7,6 @@ namespace Adnc.Whse.Application.Contracts.Dtos
     {
         public long OrderId { get; set; }
 
-        public ICollection<(long ProductId, int Qty)> Products { get; set; }
+        public IEnumerable<(long ProductId, int Qty)> Products { get; set; }
     }
 }

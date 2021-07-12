@@ -1,5 +1,4 @@
-﻿using Adnc.Infra.EventBus;
-using Adnc.Ord.Application.Contracts.Dtos;
+﻿using Adnc.Ord.Application.Contracts.Dtos;
 using Adnc.Ord.Application.Contracts.Services;
 using Adnc.Shared.Events;
 using DotNetCore.CAP;
@@ -31,10 +30,10 @@ namespace Adnc.Ord.Application.EventSubscribers
         /// <param name="warehouseQtyBlockedEvent"></param>
         /// <returns></returns>
         [CapSubscribe(nameof(WarehouseQtyBlockedEvent))]
-        public async Task ProcessWarehouseQtyBlockedEvent(WarehouseQtyBlockedEvent eventObj)
+        public async Task ProcessWarehouseQtyBlockedEvent(WarehouseQtyBlockedEvent eto)
 
         {
-            var data = eventObj.Data;
+            var data = eto.Data;
             using var scope = _services.CreateScope();
             var appSrv = scope.ServiceProvider.GetRequiredService<IOrderAppService>();
             await appSrv.MarkCreatedStatusAsync(data.OrderId, new OrderMarkCreatedStatusDto { IsSuccess = data.IsSuccess, Remark = data.Remark });

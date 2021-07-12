@@ -63,7 +63,7 @@ namespace Adnc.Whse.Application.Services
         public async Task<WarehouseDto> AllocateShelfToProductAsync(long warehouseId, WarehouseAllocateToProductDto input)
         {
             var warehouse = await _warehouseRepo.GetAsync(warehouseId);
-            var product = await _productRepo.GetAsync(input.ProductId.ToLong().Value);
+            var product = await _productRepo.GetAsync(input.ProductId);
 
             await _warehouseManager.AllocateShelfToProductAsync(warehouse, product);
 
@@ -102,7 +102,7 @@ namespace Adnc.Whse.Application.Services
                               from x in sp.DefaultIfEmpty()
                               select new WarehouseDto()
                               {
-                                  Id = s.Id.ToString()
+                                  Id = s.Id
                                   ,
                                   FreezedQty = s.BlockedQty
                                   ,
@@ -110,7 +110,7 @@ namespace Adnc.Whse.Application.Services
                                   ,
                                   PositionDescription = s.Position.Description
                                   ,
-                                  ProductId = s.ProductId.Value.ToString()
+                                  ProductId = s.ProductId
                                   ,
                                   ProductName = x.Name
                                   ,

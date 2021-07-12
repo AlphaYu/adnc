@@ -52,5 +52,10 @@
         {
             return configuration.GetSection("JWT");
         }
+
+        public static IConfigurationSection GetThreadPoolSettingsSection(this IConfiguration configuration)
+        {
+            return configuration.GetSection("ThreadPoolSettings");
+        }
     }
 }

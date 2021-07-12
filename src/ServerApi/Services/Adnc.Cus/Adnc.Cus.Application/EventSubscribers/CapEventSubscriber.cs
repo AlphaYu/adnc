@@ -46,7 +46,7 @@ namespace Adnc.Cus.Application.EventSubscribers
         /// <param name="warehouseQtyBlockedEvent"></param>
         /// <returns></returns>
         [CapSubscribe(nameof(OrderPaidEvent))]
-        public async Task ProcessOrderPaidEvent(OrderPaidEvent orderPaidEvent)
+        public async Task ProcessOrderPaidEvent(OrderPaidEvent eto)
         {
             _logger.LogInformation("start.....");
             _logger.LogInformation("end.....");

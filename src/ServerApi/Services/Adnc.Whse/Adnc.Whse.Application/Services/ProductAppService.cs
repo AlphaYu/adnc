@@ -146,9 +146,9 @@ namespace Adnc.Whse.Application.Services
         public async Task<PageModelDto<ProductDto>> GetPagedAsync(ProductSearchPagedDto search)
         {
             Expression<Func<Product, bool>> whereCondition = x => true;
-            if (!search.Id.IsNullOrEmpty())
+            if (search.Id > 0)
             {
-                whereCondition = whereCondition.And(x => x.Id == search.Id.ToLong());
+                whereCondition = whereCondition.And(x => x.Id == search.Id);
             }
             var pagedEntity = await _productRepo.PagedAsync(search.PageIndex, search.PageSize, whereCondition, x => x.Id);
 
@@ -163,7 +163,7 @@ namespace Adnc.Whse.Application.Services
                     var dicts = rpcReuslt.Content.Children;
                     pagedDto.Data.ForEach(x =>
                     {
-                        x.StatusDescription = dicts.FirstOrDefault(d => d.Name == x.StatusCode.ToString())?.Value;
+                        x.StatusDescription = dicts.FirstOrDefault(d => d.Value == x.StatusCode.ToString())?.Name;
                     });
                 }
             }
@@ -180,7 +180,7 @@ namespace Adnc.Whse.Application.Services
             var whereCondition = ExpressionExtension.True<Product>();
             if (!search.Ids.IsNullOrEmpty())
             {
-                var ids = search.Ids.Where(x => x.IsNotNullOrEmpty()).Select(x => x.ToLong().Value).Distinct();
+                var ids = search.Ids.Where(x => x > 0).Select(x => x).Distinct();
 
                 whereCondition = whereCondition.And(x => ids.Contains(x.Id));
             }

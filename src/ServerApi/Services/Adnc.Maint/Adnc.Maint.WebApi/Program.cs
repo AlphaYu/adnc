@@ -7,17 +7,20 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using NLog.Web;
 using System.Reflection;
+using System.Threading;
 
 namespace Adnc.Maint.WebApi
 {
-    public class Program
+    public static class Program
     {
         public static void Main(string[] args)
         {
             var hostBuilder = CreateHostBuilder(args);
             var host = hostBuilder.Build();
+            host.ChangeThreadPoolSettings();
             host.Run();
         }
 
@@ -35,7 +38,7 @@ namespace Adnc.Maint.WebApi
                     {
                         var configuration = cb.Build();
                         //从consul配置中心读取配置
-                        var consulOption = configuration.GetSection("Consul").Get<ConsulConfig>();
+                        var consulOption = configuration.GetConsulSection().Get<ConsulConfig>();
                         cb.AddConsulConfiguration(consulOption, true);
                     }
                 })

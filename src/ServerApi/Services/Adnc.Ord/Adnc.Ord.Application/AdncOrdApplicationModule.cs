@@ -14,7 +14,7 @@ namespace Adnc.Ord.Application
         /// 构造函数
         /// </summary>
         public AdncOrdApplicationModule(IConfiguration configuration, IServiceInfo serviceInfo)
-            : base(typeof(AdncOrdApplicationModule), configuration, serviceInfo)
+            : base(typeof(AdncOrdApplicationModule), configuration, serviceInfo,true)
         {
         }
 

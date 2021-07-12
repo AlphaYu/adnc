@@ -12,6 +12,7 @@ namespace Adnc.Gateway
         {
             CreateHostBuilder(args)
                 .Build()
+                .ChangeThreadPoolSettings()
                 .Run();
         }
 

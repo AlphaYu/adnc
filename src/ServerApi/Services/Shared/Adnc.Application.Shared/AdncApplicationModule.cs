@@ -2,6 +2,7 @@
 using Adnc.Application.Shared.IdGenerater;
 using Adnc.Application.Shared.Interceptors;
 using Adnc.Application.Shared.Services;
+using Adnc.Domain.Shared;
 using Adnc.Infra.Caching;
 using Adnc.Infra.Caching.Interceptor.Castle;
 using Adnc.Infra.Core;
@@ -28,14 +29,18 @@ namespace Adnc.Application.Shared
         private readonly Assembly _appAssemblieToScan;
         private readonly Assembly _appContractsAssemblieToScan;
         private readonly Assembly _repoAssemblieToScan;
+        private readonly Assembly _domainAssemblieToScan;
         private readonly IConfigurationSection _redisSection;
         private readonly string _appModuleName;
 
-        protected AdncApplicationModule(Type modelType, IConfiguration configuration, IServiceInfo serviceInfo)
+        protected AdncApplicationModule(Type modelType, IConfiguration configuration, IServiceInfo serviceInfo, bool isDddDevelopment = false)
         {
             _appAssemblieToScan = modelType?.Assembly ?? throw new ArgumentNullException(nameof(modelType));
-            _repoAssemblieToScan = Assembly.Load(_appAssemblieToScan.FullName.Replace(".Application", ".Repository"));
             _appContractsAssemblieToScan = Assembly.Load(_appAssemblieToScan.FullName.Replace(".Application", ".Application.Contracts"));
+            if (isDddDevelopment)
+                _domainAssemblieToScan = Assembly.Load(_appAssemblieToScan.FullName.Replace(".Application", ".Domain"));
+            else
+                _repoAssemblieToScan = Assembly.Load(_appAssemblieToScan.FullName.Replace(".Application", ".Repository"));
 
             _appModuleName = serviceInfo.ShortName;
             _redisSection = configuration.GetRedisSection();
@@ -138,8 +143,19 @@ namespace Adnc.Application.Shared
             builder.RegisterModuleIfNotRegistered(new AdncInfraEventBusModule(_appAssemblieToScan));
             builder.RegisterModuleIfNotRegistered(new AutoMapperModule(_appAssemblieToScan));
             builder.RegisterModuleIfNotRegistered(new AdncInfraCachingModule(_redisSection));
-            var modelType = _repoAssemblieToScan.GetTypes().FirstOrDefault(x => x.IsAssignableTo<AdncRepositoryModule>() && !x.IsAbstract);
-            builder.RegisterModuleIfNotRegistered(System.Activator.CreateInstance(modelType) as Autofac.Module);
+
+            if(_domainAssemblieToScan!=null)
+            {
+                var modelType = _domainAssemblieToScan.GetTypes().FirstOrDefault(x => x.IsAssignableTo<AdncDomainModule>() && !x.IsAbstract);
+                builder.RegisterModuleIfNotRegistered(System.Activator.CreateInstance(modelType) as Autofac.Module);
+            }
+
+            if(_repoAssemblieToScan!=null)
+            {
+                var modelType = _repoAssemblieToScan.GetTypes().FirstOrDefault(x => x.IsAssignableTo<AdncRepositoryModule>() && !x.IsAbstract);
+                builder.RegisterModuleIfNotRegistered(System.Activator.CreateInstance(modelType) as Autofac.Module);
+            }
+
         }
     }
 }

@@ -58,7 +58,7 @@ namespace Adnc.Ord.Domain.Entities
         /// </summary>
         /// <param name="product"></param>
         /// <param name="count"></param>
-        public void AddProduct(OrderItemProduct product, int count)
+        public void AddProduct(long itemId,OrderItemProduct product, int count)
         {
             Checker.NotNull(product, nameof(product));
             Checker.GTZero(count, nameof(count));
@@ -66,7 +66,7 @@ namespace Adnc.Ord.Domain.Entities
             var existProduct = this.Items.FirstOrDefault(x => x.Product.Id == product.Id);
             if (existProduct == null)
             {
-                this.Items.Add(new OrderItem(this.Id, product, count));
+                this.Items.Add(new OrderItem(itemId, this.Id, product, count));
             }
             else
             {
