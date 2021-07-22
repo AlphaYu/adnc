@@ -41,43 +41,43 @@ namespace Adnc.Infra.Consul.Consumer
 
             #region 缓存处理
 
-            if (request.Method == HttpMethod.Get)
-            {
-                var cache = headers.FirstOrDefault(x => x.Key == "Cache");
+            //if (request.Method == HttpMethod.Get)
+            //{
+            //    var cache = headers.FirstOrDefault(x => x.Key == "Cache");
 
-                if (!string.IsNullOrWhiteSpace(cache.Key))
-                {
-                    int.TryParse(cache.Value.FirstOrDefault(), out int milliseconds);
+            //    if (!string.IsNullOrWhiteSpace(cache.Key))
+            //    {
+            //        int.TryParse(cache.Value.FirstOrDefault(), out int milliseconds);
 
-                    if (milliseconds > 0)
-                    {
-                        var cacheKey = request.RequestUri.AbsoluteUri.GetHashCode();
+            //        if (milliseconds > 0)
+            //        {
+            //            var cacheKey = request.RequestUri.AbsoluteUri.GetHashCode();
 
-                        var existCache = _memoryCache.TryGetValue(cacheKey, out string content);
-                        if (existCache)
-                        {
-                            var resp = new HttpResponseMessage
-                            {
-                                Content = new StringContent(content, Encoding.UTF8)
-                            };
+            //            var existCache = _memoryCache.TryGetValue(cacheKey, out string content);
+            //            if (existCache)
+            //            {
+            //                var resp = new HttpResponseMessage
+            //                {
+            //                    Content = new StringContent(content, Encoding.UTF8)
+            //                };
 
-                            return resp.EnsureSuccessStatusCode();
-                        }
+            //                return resp.EnsureSuccessStatusCode();
+            //            }
 
-                        //SendAsync异常(请求、超时异常)，会throw
-                        //服务端异常，不会抛出
-                        var responseResult = await base.SendAsync(request, cancellationToken).ConfigureAwait(true);
-                        if (responseResult.IsSuccessStatusCode)
-                            _memoryCache.Set(cacheKey, await responseResult.Content.ReadAsStringAsync(), TimeSpan.FromMilliseconds(milliseconds));
+            //            //SendAsync异常(请求、超时异常)，会throw
+            //            //服务端异常，不会抛出
+            //            var responseResult = await base.SendAsync(request, cancellationToken).ConfigureAwait(true);
+            //            if (responseResult.IsSuccessStatusCode)
+            //                _memoryCache.Set(cacheKey, await responseResult.Content.ReadAsStringAsync(), TimeSpan.FromMilliseconds(milliseconds));
 
-                        return responseResult;
-                    }
-                }
-            }
+            //            return responseResult;
+            //        }
+            //    }
+            //}
 
             #endregion 缓存处理
 
-            return await base.SendAsync(request, cancellationToken).ConfigureAwait(false);
+            return await base.SendAsync(request, cancellationToken);
         }
     }
 }

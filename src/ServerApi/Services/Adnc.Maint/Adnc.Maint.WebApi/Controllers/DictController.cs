@@ -81,7 +81,7 @@ namespace Adnc.Maint.WebApi.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("{id}")]
-        [Permission("dict")]
+       // [Permission("dict")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<DictDto>> GetAsync([FromRoute] long id)
         {
