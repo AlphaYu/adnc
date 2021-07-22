@@ -77,7 +77,7 @@ namespace Adnc.Infra.Consul.Consumer
 
             #endregion 缓存处理
 
-            return await base.SendAsync(request, cancellationToken).ConfigureAwait(false);
+            return await base.SendAsync(request, cancellationToken);
         }
     }
 }
