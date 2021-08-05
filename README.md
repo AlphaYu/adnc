@@ -190,41 +190,40 @@
 
 ### 代码片段
 ```csharp
-    [Route("usr/session")]
-    [ApiController]
-    public class AccountController : ControllerBase
+namespace Adnc.Usr.WebApi
+{
+    public class Startup
     {
-        private readonly JWTConfig _jwtConfig;
-        private readonly IAccountAppService _accountService;
-        private readonly ILogger<AccountController> _logger;
+        private readonly IHostEnvironment _environment;
+        private IServiceCollection _services;
 
-        public AccountController(IOptionsSnapshot<JWTConfig> jwtConfig
-            , IAccountAppService accountService
-            , ILogger<AccountController> logger)
+        public Startup(IHostEnvironment environment)
         {
-            _jwtConfig = jwtConfig.Value;
-            _accountService = accountService;
-            _logger = logger;
+            _environment = environment;
         }
 
-        /// <summary>
-        /// 登录/验证
-        /// </summary>
-        /// <param name="userDto"><see cref="UserValidateInputDto"/></param>
-        /// <returns></returns>
-        [AllowAnonymous]
-        [HttpPost()]
-        public async Task<UserTokenInfoDto> Login([FromBody]UserValidateInputDto userDto)
+        public void ConfigureServices(IServiceCollection services)
         {
-            var userValidateDto = await _accountService.Login(userDto);
+            _services = services;
+            services.AddAdncServices<PermissionHandlerLocal>();
+        }
 
-            return new UserTokenInfoDto
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            builder.RegisterAdncModules(_services);
+        }
+
+        public void Configure(IApplicationBuilder app)
+        {
+            app.UseAdncMiddlewares();
+
+            if (_environment.IsProduction() || _environment.IsStaging())
             {
-                Token = JwtTokenHelper.CreateAccessToken(_jwtConfig, userValidateDto),
-                RefreshToken = JwtTokenHelper.CreateRefreshToken(_jwtConfig, userValidateDto)
-            };
+                app.RegisterToConsul();
+            }
         }
     }
+}
 ```
 
 ## 问题交流
