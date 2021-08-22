@@ -908,7 +908,7 @@
             <summary>
             获取用户信息
             </summary>
-            <param name="userId"></param>
+            <param name="id"></param>
             <returns></returns>
         </member>
         <member name="T:Adnc.Usr.Application.Contracts.Services.IDeptAppService">
