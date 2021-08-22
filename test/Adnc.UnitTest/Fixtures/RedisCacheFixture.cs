@@ -13,7 +13,7 @@ namespace Adnc.UnitTest.Fixtures
         {
             var containerBuilder = new ContainerBuilder();
             var redisOptions = new RedisDBOptions() { Password = "football", ConnectionTimeout = 1000 * 20 };
-            redisOptions.Endpoints.Add(new ServerEndPoint() { Host = "193.112.75.77", Port = 13379 });
+            redisOptions.Endpoints.Add(new ServerEndPoint() { Host = "106.14.139.201", Port = 13379 });
 
             var cacheOptions = new CacheOptions()
             {
