@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.EfCore.Extensions
+﻿namespace Adnc.Infra.EfCore.Internal
 {
     public class KeyEntry
     {

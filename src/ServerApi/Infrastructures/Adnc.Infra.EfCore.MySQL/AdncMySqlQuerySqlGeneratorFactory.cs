@@ -19,13 +19,19 @@ namespace Pomelo.EntityFrameworkCore.MySql.Query.ExpressionVisitors.Internal
 #pragma warning restore EF1001 // Internal EF Core API usage.
     {
         private readonly QuerySqlGeneratorDependencies _dependencies;
+#pragma warning disable EF1001 // Internal EF Core API usage.
         private readonly MySqlSqlExpressionFactory _sqlExpressionFactory;
+#pragma warning restore EF1001 // Internal EF Core API usage.
+#pragma warning disable EF1001 // Internal EF Core API usage.
         private readonly IMySqlOptions _options;
+#pragma warning restore EF1001 // Internal EF Core API usage.
 
         public AdncMySqlQuerySqlGeneratorFactory(
             [NotNull] QuerySqlGeneratorDependencies dependencies,
             ISqlExpressionFactory sqlExpressionFactory,
+#pragma warning disable EF1001 // Internal EF Core API usage.
             IMySqlOptions options) : base(dependencies, sqlExpressionFactory, options)
+#pragma warning restore EF1001 // Internal EF Core API usage.
         {
             _dependencies = dependencies;
             _sqlExpressionFactory = (MySqlSqlExpressionFactory)sqlExpressionFactory;
@@ -57,8 +63,7 @@ namespace Pomelo.EntityFrameworkCore.MySql.Query.ExpressionVisitors.Internal
         public AdncQuerySqlGenerator(
             [NotNull] QuerySqlGeneratorDependencies dependencies,
             [NotNull] MySqlSqlExpressionFactory sqlExpressionFactory,
-            [CanBeNull] IMySqlOptions options)
-            : base(dependencies, sqlExpressionFactory, options)
+            [CanBeNull] IMySqlOptions options) : base(dependencies, sqlExpressionFactory, options)
         {
             ContextId = Guid.NewGuid();
         }
