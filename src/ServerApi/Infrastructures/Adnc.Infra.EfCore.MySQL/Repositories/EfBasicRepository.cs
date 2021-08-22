@@ -45,10 +45,23 @@ namespace Adnc.Infra.EfCore.Repositories
         public async Task<TEntity> GetAsync(long keyValue, Expression<Func<TEntity, dynamic>> navigationPropertyPath = null, bool writeDb = false, CancellationToken cancellationToken = default)
         {
             var query = this.GetDbSet(writeDb, false).Where(t => t.Id == keyValue);
-            if (navigationPropertyPath != null)
-                return await EntityFrameworkQueryableExtensions.FirstOrDefaultAsync(EntityFrameworkQueryableExtensions.Include(query, navigationPropertyPath), cancellationToken);
-            else
+            if (navigationPropertyPath == null)
                 return await EntityFrameworkQueryableExtensions.FirstOrDefaultAsync(query, cancellationToken);
+            else
+                return await EntityFrameworkQueryableExtensions.FirstOrDefaultAsync(EntityFrameworkQueryableExtensions.Include(query, navigationPropertyPath), cancellationToken);
+        }
+
+        public async Task<TEntity> GetAsync(long keyValue, IEnumerable<Expression<Func<TEntity, dynamic>>> navigationPropertyPaths = null, bool writeDb = false, CancellationToken cancellationToken = default)
+        {
+            if (navigationPropertyPaths == null || navigationPropertyPaths.Count() <= 1)
+                return await this.GetAsync(keyValue, navigationPropertyPaths.FirstOrDefault(), writeDb, cancellationToken);
+
+            var query = this.GetDbSet(writeDb, false).Where(t => t.Id == keyValue);
+            foreach (var navigationPath in navigationPropertyPaths)
+            {
+                query = EntityFrameworkQueryableExtensions.Include(query, navigationPath);
+            }
+            return await EntityFrameworkQueryableExtensions.FirstOrDefaultAsync(query, cancellationToken);
         }
     }
 }
