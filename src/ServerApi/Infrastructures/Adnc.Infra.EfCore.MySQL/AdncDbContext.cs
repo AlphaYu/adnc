@@ -9,12 +9,14 @@ using System.Threading.Tasks;
 
 namespace Adnc.Infra.EfCore.MySQL
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S125:Sections of code should not be commented out", Justification = "<挂起>")]
     public class AdncDbContext : DbContext
     {
         private readonly IOperater _operater;
         private readonly IEntityInfo _entityInfo;
         private readonly UnitOfWorkStatus _unitOfWorkStatus;
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S125:Sections of code should not be commented out", Justification = "<挂起>")]
         public AdncDbContext([NotNull] DbContextOptions options, IOperater operater, [NotNull] IEntityInfo entityInfo, UnitOfWorkStatus unitOfWorkStatus)
             : base(options)
         {

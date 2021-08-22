@@ -10,7 +10,7 @@ namespace Adnc.Infra.EfCore.Extensions
 {
     public static class EntityEntryExtension
     {
-        public static KeyEntry[] GetKeyValues([NotNull] this EntityEntry entityEntry)
+        public static KeyEntryModel[] GetKeyValues([NotNull] this EntityEntry entityEntry)
         {
             if (!entityEntry.IsKeySet)
                 return default;
@@ -21,10 +21,10 @@ namespace Adnc.Infra.EfCore.Extensions
             if (keyProps.Length == 0)
                 return default;
 
-            var keyEntries = new KeyEntry[keyProps.Length];
+            var keyEntries = new KeyEntryModel[keyProps.Length];
             for (var i = 0; i < keyProps.Length; i++)
             {
-                keyEntries[i] = new KeyEntry()
+                keyEntries[i] = new KeyEntryModel()
                 {
                     PropertyName = keyProps[i].Metadata.Name,
                     ColumnName = (keyProps[i].Metadata as PropertyEntry).GetColumnName(),

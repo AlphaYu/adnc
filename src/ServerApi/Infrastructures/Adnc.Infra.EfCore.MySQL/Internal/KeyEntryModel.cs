@@ -1,6 +1,6 @@
 ﻿namespace Adnc.Infra.EfCore.Internal
 {
-    public class KeyEntry
+    public class KeyEntryModel
     {
         public string PropertyName { get; set; }
 

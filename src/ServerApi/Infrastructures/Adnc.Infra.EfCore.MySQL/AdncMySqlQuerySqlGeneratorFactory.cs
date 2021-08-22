@@ -13,25 +13,18 @@ namespace Pomelo.EntityFrameworkCore.MySql.Query.ExpressionVisitors.Internal
     /// <summary>
     /// adnc sql生成工厂类
     /// </summary>
-#pragma warning disable EF1001 // Internal EF Core API usage.
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "EF1001:Internal EF Core API usage.", Justification = "<挂起>")]
     public class AdncMySqlQuerySqlGeneratorFactory : MySqlQuerySqlGeneratorFactory
-#pragma warning restore EF1001 // Internal EF Core API usage.
     {
         private readonly QuerySqlGeneratorDependencies _dependencies;
-#pragma warning disable EF1001 // Internal EF Core API usage.
         private readonly MySqlSqlExpressionFactory _sqlExpressionFactory;
-#pragma warning restore EF1001 // Internal EF Core API usage.
-#pragma warning disable EF1001 // Internal EF Core API usage.
         private readonly IMySqlOptions _options;
-#pragma warning restore EF1001 // Internal EF Core API usage.
 
         public AdncMySqlQuerySqlGeneratorFactory(
             [NotNull] QuerySqlGeneratorDependencies dependencies,
             ISqlExpressionFactory sqlExpressionFactory,
-#pragma warning disable EF1001 // Internal EF Core API usage.
             IMySqlOptions options) : base(dependencies, sqlExpressionFactory, options)
-#pragma warning restore EF1001 // Internal EF Core API usage.
         {
             _dependencies = dependencies;
             _sqlExpressionFactory = (MySqlSqlExpressionFactory)sqlExpressionFactory;
@@ -49,17 +42,17 @@ namespace Pomelo.EntityFrameworkCore.MySql.Query.ExpressionVisitors.Internal
         }
     }
 
+
     /// <summary>
     /// adnc sql 生成类
     /// </summary>
-#pragma warning disable EF1001 // Internal EF Core API usage.
-
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "EF1001:Internal EF Core API usage.", Justification = "<挂起>")]
     public class AdncQuerySqlGenerator : MySqlQuerySqlGenerator
-#pragma warning restore EF1001 // Internal EF Core API usage.
     {
         protected readonly Guid ContextId;
         private bool _isQueryMaseter = false;
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "EF1001:Internal EF Core API usage.", Justification = "<挂起>")]
         public AdncQuerySqlGenerator(
             [NotNull] QuerySqlGeneratorDependencies dependencies,
             [NotNull] MySqlSqlExpressionFactory sqlExpressionFactory,
