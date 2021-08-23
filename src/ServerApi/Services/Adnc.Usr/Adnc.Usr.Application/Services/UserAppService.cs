@@ -53,15 +53,7 @@ namespace Adnc.Usr.Application.Services
             var user = Mapper.Map<SysUser>(input);
 
             user.Id = id;
-
-            var updatingProps = UpdatingProps<SysUser>(x => x.Name,
-                                                       x => x.DeptId,
-                                                       x => x.Sex,
-                                                       x => x.Phone,
-                                                       x => x.Email,
-                                                       x => x.Birthday,
-                                                       x => x.Status
-                                                      );
+            var updatingProps = UpdatingProps<SysUser>(x => x.Name, x => x.DeptId, x => x.Sex, x => x.Phone, x => x.Email, x => x.Birthday, x => x.Status);
             await _userRepository.UpdateAsync(user, updatingProps);
 
             return AppSrvResult();
@@ -120,37 +112,38 @@ namespace Adnc.Usr.Application.Services
 
         public async Task<PageModelDto<UserDto>> GetPagedAsync(UserSearchPagedDto search)
         {
-            Expression<Func<SysUser, bool>> whereCondition = x => true;
-            if (search.Account.IsNotNullOrWhiteSpace())
-            {
-                whereCondition = whereCondition.And(x => x.Account.Contains(search.Account));
-            }
-
-            if (search.Name.IsNotNullOrWhiteSpace())
-            {
-                whereCondition = whereCondition.And(x => x.Name.Contains(search.Name));
-            }
+            var whereCondition = ExpressionCreator
+                                                                            .New<SysUser>()
+                                                                            .AndIf(search.Account.IsNotNullOrWhiteSpace(), x => x.Account.Contains(search.Account))
+                                                                            .AndIf(search.Name.IsNotNullOrWhiteSpace(), x => x.Name.Contains(search.Name));
 
             var pagedModel = await _userRepository.PagedAsync(search.PageIndex, search.PageSize, whereCondition, x => x.Id, false);
             var pageModelDto = Mapper.Map<PageModelDto<UserDto>>(pagedModel);
 
             if (pageModelDto.RowsCount > 0)
             {
-                var deptIds = pageModelDto.Data.Where(d => d.DeptId != null).Select(d => d.DeptId).Distinct().ToList();
+                var deptIds = pageModelDto.Data.Where(d => d.DeptId != null)
+                                                                        .Select(d => d.DeptId)
+                                                                        .Distinct();
+
                 var depts = (await _cacheService.GetAllDeptsFromCacheAsync())
-                            .Where(x => deptIds.Contains(x.Id))
-                            .Select(d => new { d.Id, d.FullName });
+                                                                    .Where(x => deptIds.Contains(x.Id))
+                                                                    .Select(d => new { d.Id, d.FullName });
+
                 var roles = (await _cacheService.GetAllRolesFromCacheAsync())
-                            .Select(r => new { r.Id, r.Name });
+                                                                   .Select(r => new { r.Id, r.Name });
 
                 foreach (var user in pageModelDto.Data)
                 {
                     user.DeptName = depts.FirstOrDefault(x => x.Id == user.DeptId)?.FullName;
-                    var roleIds = string.IsNullOrWhiteSpace(user.RoleIds)
-                        ? new List<long>()
-                        : user.RoleIds.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(x => long.Parse(x))
-                        ;
-                    user.RoleNames = string.Join(',', roles.Where(x => roleIds.Contains(x.Id)).Select(x => x.Name));
+                    var roleIds = user.RoleIds.IsNullOrWhiteSpace()
+                                                ? new List<long>()
+                                                : user.RoleIds.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(x => long.Parse(x))
+                                                ;
+
+                    user.RoleNames = roles.Where(x => roleIds.Contains(x.Id))
+                                                          .Select(x => x.Name)
+                                                          .ToString(",");
                 }
             }
 

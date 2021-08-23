@@ -39,7 +39,7 @@ namespace Adnc.Usr.Application.Contracts.Services
         /// <returns></returns>
         [OperateLog(LogName = "删除角色")]
         [CachingEvict(CacheKeys = new[] { CachingConsts.MenuRelationCacheKey, CachingConsts.MenuCodesCacheKey, CachingConsts.RoleListCacheKey })]
-        Task<AppSrvResult> DeleteAsync(long Id);
+        Task<AppSrvResult> DeleteAsync(long id);
 
         /// <summary>
         /// 设置角色权限
