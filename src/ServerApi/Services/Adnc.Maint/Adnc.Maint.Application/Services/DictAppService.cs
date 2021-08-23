@@ -103,7 +103,7 @@ namespace Adnc.Maint.Application.Services
 
         public async Task<DictDto> GetAsync(long id)
         {
-            var dictDto = (await _cacheService.GetAllDictsFromCacheAsync()).Where(x => x.Id == id).FirstOrDefault();
+            var dictDto = (await _cacheService.GetAllDictsFromCacheAsync()).FirstOrDefault(x => x.Id == id);
 
             if (dictDto == null)
                 return default;
@@ -117,13 +117,14 @@ namespace Adnc.Maint.Application.Services
         {
             var result = new List<DictDto>();
 
-            Expression<Func<DictDto, bool>> whereCondition = x => true;
-            if (search.Name.IsNotNullOrWhiteSpace())
-            {
-                whereCondition = whereCondition.And(x => x.Name.Contains(search.Name));
-            }
+            var whereCondition = ExpressionCreator
+                                                                             .New<DictDto>()
+                                                                             .AndIf(search.Name.IsNotNullOrWhiteSpace(), x => x.Name.Contains(search.Name));
 
-            var dicts = (await _cacheService.GetAllDictsFromCacheAsync()).Where(whereCondition.Compile()).OrderBy(d => d.Ordinal).ToList();
+            var dicts = (await _cacheService.GetAllDictsFromCacheAsync())
+                                                               .Where(whereCondition.Compile())
+                                                               .OrderBy(d => d.Ordinal)
+                                                               .ToList();
             if (dicts.Any())
             {
                 result = dicts.Where(d => d.Pid == 0).OrderBy(d => d.Ordinal).ToList();

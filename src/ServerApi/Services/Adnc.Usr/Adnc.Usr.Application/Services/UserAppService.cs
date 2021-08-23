@@ -89,8 +89,7 @@ namespace Adnc.Usr.Application.Services
         public async Task<List<string>> GetPermissionsAsync(long userId, IEnumerable<string> permissions)
         {
             var userValidateInfo = await _cacheService.GetUserValidateInfoFromCacheAsync(userId);
-
-            if (string.IsNullOrWhiteSpace(userValidateInfo.RoleIds))
+            if(userValidateInfo.RoleIds.IsNullOrWhiteSpace())
                 return default;
 
             if (userValidateInfo.Status != 1)

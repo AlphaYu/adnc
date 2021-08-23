@@ -1015,7 +1015,7 @@
             <summary>
             删除角色
             </summary>
-            <param name="Id"></param>
+            <param name="id"></param>
             <returns></returns>
         </member>
         <member name="M:Adnc.Usr.Application.Contracts.Services.IRoleAppService.SetPermissonsAsync(Adnc.Usr.Application.Contracts.Dtos.RoleSetPermissonsDto)">

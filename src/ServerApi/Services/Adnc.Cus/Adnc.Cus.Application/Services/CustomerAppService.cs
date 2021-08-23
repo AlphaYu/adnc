@@ -194,11 +194,10 @@ namespace Adnc.Cus.Application.Services
         /// <returns></returns>
         public async Task<AppSrvResult<PageModelDto<CustomerDto>>> GetPagedAsync(CustomerSearchPagedDto search)
         {
-            Expression<Func<Customer, bool>> whereCondition = x => true;
-            if (search.Id > 0)
-                whereCondition = whereCondition.And(x => x.Id == search.Id);
-            if (search.Account.IsNotNullOrEmpty())
-                whereCondition = whereCondition.And(x => x.Account == search.Account);
+            var whereCondition = ExpressionCreator
+                                                                             .New<Customer>()
+                                                                             .AndIf(search.Id > 0, x => x.Id == search.Id)
+                                                                             .AndIf(search.Account.IsNotNullOrEmpty(), x => x.Account == search.Account);
 
             var count = await _customerRepo.CountAsync(whereCondition);
             if (count == 0)

@@ -65,28 +65,23 @@ namespace Adnc.Maint.Application.Services
 
         public async Task<CfgDto> GetAsync(long id)
         {
-            return (await _cacheService.GetAllCfgsFromCacheAsync()).Where(x => x.Id == id).FirstOrDefault();
+            return (await _cacheService.GetAllCfgsFromCacheAsync()).FirstOrDefault(x => x.Id == id);
         }
 
         public async Task<PageModelDto<CfgDto>> GetPagedAsync(CfgSearchPagedDto search)
         {
-            Expression<Func<CfgDto, bool>> whereCondition = x => true;
-            if (search.Name.IsNotNullOrWhiteSpace())
-            {
-                whereCondition = whereCondition.And(x => x.Name.Contains(search.Name));
-            }
-            if (search.Value.IsNotNullOrWhiteSpace())
-            {
-                whereCondition = whereCondition.And(x => x.Value.Contains(search.Value));
-            }
+            var whereCondition = ExpressionCreator
+                                                                             .New<CfgDto>()
+                                                                             .AndIf(search.Name.IsNotNullOrWhiteSpace(), x => x.Name.Contains(search.Name))
+                                                                             .AndIf(search.Value.IsNotNullOrWhiteSpace(), x => x.Value.Contains(search.Value));
 
             var allCfgs = await _cacheService.GetAllCfgsFromCacheAsync();
 
             var pagedCfgs = allCfgs.Where(whereCondition.Compile())
-                                   .OrderByDescending(x => x.CreateTime)
-                                   .Skip((search.PageIndex - 1) * search.PageSize)
-                                   .Take(search.PageSize)
-                                   .ToArray();
+                                                   .OrderByDescending(x => x.CreateTime)
+                                                   .Skip((search.PageIndex - 1) * search.PageSize)
+                                                   .Take(search.PageSize)
+                                                   .ToArray();
 
             var result = new PageModelDto<CfgDto>()
             {

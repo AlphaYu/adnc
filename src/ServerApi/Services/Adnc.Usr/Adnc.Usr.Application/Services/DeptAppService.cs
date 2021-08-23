@@ -110,7 +110,7 @@ namespace Adnc.Usr.Application.Services
             void GetChildren(DeptTreeDto currentNode, List<DeptTreeDto> allDeptNodes)
             {
                 var childrenNodes = allDeptNodes.Where(d => d.Pid == currentNode.Id).OrderBy(d => d.Ordinal);
-                if (childrenNodes.Count() == 0)
+                if (!childrenNodes.Any())
                     return;
                 else
                 {

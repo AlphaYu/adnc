@@ -139,11 +139,9 @@ namespace Adnc.Usr.Application.Services
 
         public async Task<PageModelDto<RoleDto>> GetPagedAsync(RolePagedSearchDto input)
         {
-            Expression<Func<SysRole, bool>> whereCondition = x => true;
-            if (input.RoleName.IsNotNullOrWhiteSpace())
-            {
-                whereCondition = whereCondition.And(x => x.Name.Contains(input.RoleName));
-            }
+            var whereCondition = ExpressionCreator
+                                                                            .New<SysRole>()
+                                                                            .AndIf(input.RoleName.IsNotNullOrWhiteSpace(), x => x.Name.Contains(input.RoleName));
 
             var pagedModel = await _roleRepository.PagedAsync(input.PageIndex, input.PageSize, whereCondition, x => x.Ordinal, true);
 

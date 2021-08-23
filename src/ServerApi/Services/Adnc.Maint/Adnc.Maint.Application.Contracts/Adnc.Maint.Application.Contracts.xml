@@ -336,7 +336,7 @@
             <summary>
             字典列表
             </summary>
-            <param name="serach"></param>
+            <param name="search"></param>
             <returns></returns>
         </member>
         <member name="M:Adnc.Maint.Application.Contracts.Services.IDictAppService.GetAsync(System.Int64)">
