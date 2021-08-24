@@ -30,13 +30,13 @@ namespace Adnc.Infra.EfCore.Repositories
             return await this.DbContext.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<int> DeleteAsync(TEntity entity, CancellationToken cancellationToken = default)
+        public async Task<int> RemoveAsync(TEntity entity, CancellationToken cancellationToken = default)
         {
             this.DbContext.Remove(entity);
             return await this.DbContext.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<int> DeleteRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
+        public async Task<int> RemoveRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
         {
             this.DbContext.RemoveRange(entities);
             return await this.DbContext.SaveChangesAsync(cancellationToken);

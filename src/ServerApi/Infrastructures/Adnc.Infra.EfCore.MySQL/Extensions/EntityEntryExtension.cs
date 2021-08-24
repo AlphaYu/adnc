@@ -6,16 +6,16 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using System;
 using System.Linq;
 
-namespace Adnc.Infra.EfCore.Extensions
+namespace Microsoft.EntityFrameworkCore.ChangeTracking
 {
     public static class EntityEntryExtension
     {
-        public static KeyEntryModel[] GetKeyValues([NotNull] this EntityEntry entityEntry)
+        public static KeyEntryModel[] GetKeyValues([NotNull] this EntityEntry @this)
         {
-            if (!entityEntry.IsKeySet)
+            if (!@this.IsKeySet)
                 return default;
 
-            var keyProps = entityEntry.Properties
+            var keyProps = @this.Properties
                 .Where(p => p.Metadata.IsPrimaryKey())
                 .ToArray();
             if (keyProps.Length == 0)

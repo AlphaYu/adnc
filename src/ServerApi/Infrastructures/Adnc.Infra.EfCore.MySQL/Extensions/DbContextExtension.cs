@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Linq;
 
-namespace Adnc.Infra.EfCore.Extensions
+namespace Microsoft.EntityFrameworkCore
 {
     public static class DbContextExtension
     {
