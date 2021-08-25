@@ -48,8 +48,25 @@ namespace Adnc.Infra.EfCore.Repositories
         }
 
         public async Task<TEntity> FetchAsync(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, dynamic>> navigationPropertyPath = null, Expression<Func<TEntity, object>> orderByExpression = null, bool ascending = false, bool writeDb = false, bool noTracking = true, CancellationToken cancellationToken = default)
-            => await this.FetchAsync(x => x, whereExpression, orderByExpression, ascending, writeDb, noTracking);
+        {
+            TEntity result;
 
+            var query = this.GetDbSet(writeDb, noTracking).Where(whereExpression);
+
+            if (navigationPropertyPath != null)
+                query = EntityFrameworkQueryableExtensions.Include(query, navigationPropertyPath);
+
+            if (orderByExpression == null)
+                result = await EntityFrameworkQueryableExtensions.FirstOrDefaultAsync(query.OrderByDescending(x => x.Id), cancellationToken);
+            else
+                result = ascending
+                          ? await EntityFrameworkQueryableExtensions.FirstOrDefaultAsync(query.OrderBy(orderByExpression), cancellationToken)
+                          : await EntityFrameworkQueryableExtensions.FirstOrDefaultAsync(query.OrderByDescending(orderByExpression), cancellationToken)
+                          ;
+
+            return result;
+        }
+        
         public async Task<TResult> FetchAsync<TResult>(Expression<Func<TEntity, TResult>> selector, Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, object>> orderByExpression = null, bool ascending = false, bool writeDb = false, bool noTracking = true, CancellationToken cancellationToken = default)
         {
             TResult result;
@@ -192,8 +209,6 @@ namespace Adnc.Infra.EfCore.Repositories
         }
 
         private async Task<int> UpdateRangeInternalAsync(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, TEntity>> updatingExpression, CancellationToken cancellationToken = default)
-        {
-            return await DbContext.Set<TEntity>().Where(whereExpression).UpdateAsync(updatingExpression, cancellationToken);
-        }
+            => await DbContext.Set<TEntity>().Where(whereExpression).UpdateAsync(updatingExpression, cancellationToken);
     }
 }
