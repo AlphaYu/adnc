@@ -156,9 +156,7 @@ namespace Adnc.Usr.Application.Services
         }
 
         public async Task<UserValidateDto> GetUserValidateInfoAsync(long id)
-        {
-            return await _cacheService.GetUserValidateInfoFromCacheAsync(id);
-        }
+            => await _cacheService.GetUserValidateInfoFromCacheAsync(id);
 
         public async Task<UserInfoDto> GetUserInfoAsync(long id)
         {
@@ -207,10 +205,8 @@ namespace Adnc.Usr.Application.Services
                 }
 
                 var roleMenus = await _menuRepository.GetMenusByRoleIdsAsync(roleIds.ToArray(), true);
-                if (roleMenus?.Count > 0)
-                {
+                if (roleMenus.IsNotNullOrEmpty())
                     userInfoDto.Permissions.AddRange(roleMenus.Select(x => x.Url).Distinct());
-                }
             }
 
             return userInfoDto;
