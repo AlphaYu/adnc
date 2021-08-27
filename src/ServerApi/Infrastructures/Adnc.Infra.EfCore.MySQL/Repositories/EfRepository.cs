@@ -47,7 +47,7 @@ namespace Adnc.Infra.EfCore.Repositories
                 return await EntityFrameworkQueryableExtensions.FirstOrDefaultAsync(query, cancellationToken);
         }
 
-        public async Task<TEntity> FetchAsync(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, dynamic>> navigationPropertyPath = null, Expression<Func<TEntity, object>> orderByExpression = null, bool ascending = false, bool writeDb = false, bool noTracking = true, CancellationToken cancellationToken = default)
+        public async Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, dynamic>> navigationPropertyPath = null, Expression<Func<TEntity, object>> orderByExpression = null, bool ascending = false, bool writeDb = false, bool noTracking = true, CancellationToken cancellationToken = default)
         {
             TEntity result;
 
@@ -142,23 +142,17 @@ namespace Adnc.Infra.EfCore.Repositories
 
         public async Task<int> UpdateAsync(TEntity entity, Expression<Func<TEntity, object>>[] updatingExpressions, CancellationToken cancellationToken = default)
         {
-            //没有指定需要更新的列
             if (updatingExpressions.IsNullOrEmpty())
                 await UpdateAsync(entity, cancellationToken);
 
-            //获取实体状态
             var entry = DbContext.Entry(entity);
 
-            //实体被为没有更改
-            if (entry.State == EntityState.Unchanged)
-                return await Task.FromResult(0);
-
-            //实体被标记为Added或者Deleted，抛出异常，ADNC应该不会出现这种状态。
             if (entry.State == EntityState.Added || entry.State == EntityState.Deleted)
                 throw new ArgumentException($"{nameof(entity)},实体状态为{nameof(entry.State)}");
 
-            //有指定需要更新的列
-            //实体被跟踪
+            if (entry.State == EntityState.Unchanged)
+                return await Task.FromResult(0);
+
             if (entry.State == EntityState.Modified)
             {
                 var propNames = updatingExpressions.Select(x => x.GetMemberName()).ToArray();
@@ -168,31 +162,41 @@ namespace Adnc.Infra.EfCore.Repositories
                         propEntry.IsModified = false;
                 });
             }
-            //实体没有被跟踪
-            else
+
+            if (entry.State == EntityState.Detached)
             {
-                var originalEntity = DbContext.Set<TEntity>().Local.FirstOrDefault(x => x.Id == entity.Id);
-                //当前上下文中，没有同Id实体
-                if (originalEntity == null)
+                entry.State = EntityState.Unchanged;
+                updatingExpressions.ForEach(expression =>
                 {
-                    entry.State = EntityState.Unchanged;
-                    updatingExpressions.ForEach(expression =>
-                    {
-                        entry.Property(expression).IsModified = true;
-                    });
-                }
-                else
-                {
-                    //当前上下文中，有同Id实体
-                    entry.CurrentValues.SetValues(entity);
-                    var propNames = updatingExpressions.Select(x => x.GetMemberName()).ToArray();
-                    entry.Properties.ForEach(propEntry =>
-                    {
-                        if (!propNames.Contains(propEntry.Metadata.Name))
-                            propEntry.IsModified = false;
-                    });
-                }
+                    entry.Property(expression).IsModified = true;
+                });
             }
+
+            #region removed code
+            #pragma warning disable S125 // Sections of code should not be commented out
+            /*
+                            var originalEntity = DbContext.Set<TEntity>().Local.FirstOrDefault(x => x.Id == entity.Id);
+                            if (originalEntity == null)
+                            {
+                                entry.State = EntityState.Unchanged;
+                                updatingExpressions.ForEach(expression =>
+                                {
+                                    entry.Property(expression).IsModified = true;
+                                });
+                            }
+                            else
+                            {
+                                entry.CurrentValues.SetValues(entity);
+                                var propNames = updatingExpressions.Select(x => x.GetMemberName()).ToArray();
+                                entry.Properties.ForEach(propEntry =>
+                                {
+                                    if (!propNames.Contains(propEntry.Metadata.Name))
+                                        propEntry.IsModified = false;
+                                });
+                            }
+                            */
+            #pragma warning restore S125 // Sections of code should not be commented out
+            #endregion
 
             return await DbContext.SaveChangesAsync();
         }
@@ -206,6 +210,31 @@ namespace Adnc.Infra.EfCore.Repositories
                 throw new ArgumentException("该实体有RowVersion列，不能使用批量更新");
 
             return UpdateRangeInternalAsync(whereExpression, updatingExpression,cancellationToken);
+        }
+
+        public async Task<int> UpdateRangeAsync(Dictionary<long, List<(string propertyName, dynamic propertyValue)>> propertyNameAndValues, CancellationToken cancellationToken = default)
+        {
+            var existsEntities = DbContext.Set<TEntity>().Local.Where(x => propertyNameAndValues.Keys.Contains(x.Id));
+
+            foreach (var item in propertyNameAndValues)
+            {
+                var enity = existsEntities?.FirstOrDefault(x => x.Id == item.Key) ?? new TEntity { Id = item.Key };
+                var entry = DbContext.Entry(enity);
+                if (entry.State == EntityState.Detached)
+                    entry.State = EntityState.Unchanged;
+
+                if (entry.State == EntityState.Unchanged)
+                {
+                    var info = propertyNameAndValues.FirstOrDefault(x => x.Key == item.Key).Value;
+                    info.ForEach(x =>
+                    {
+                        entry.Property(x.propertyName).CurrentValue = x.propertyValue;
+                        entry.Property(x.propertyName).IsModified = true;
+                    });
+                }
+            }
+
+            return await DbContext.SaveChangesAsync();
         }
 
         private async Task<int> UpdateRangeInternalAsync(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, TEntity>> updatingExpression, CancellationToken cancellationToken = default)

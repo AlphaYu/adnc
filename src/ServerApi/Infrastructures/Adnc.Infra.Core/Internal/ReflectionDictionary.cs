@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace Adnc.Infra.Core.Internal
 {
-    internal static class CacheUtil
+    internal static class ReflectionDictionary
     {
         internal static readonly ConcurrentDictionary<Type, PropertyInfo[]> TypePropertyCache = new ConcurrentDictionary<Type, PropertyInfo[]>();
 
@@ -26,7 +26,7 @@ namespace Adnc.Infra.Core.Internal
 
     }
 
-    internal static class StrongTypedCache<T>
+    internal static class StrongTypedDictionary<T>
     {
         public static readonly ConcurrentDictionary<PropertyInfo, Func<T, object>> PropertyValueGetters = new ConcurrentDictionary<PropertyInfo, Func<T, object>>();
 

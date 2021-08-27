@@ -39,7 +39,7 @@ namespace System
         /// <param name="this">type</param>
         /// <returns></returns>
         public static object GetDefaultValue([NotNull] this Type @this)
-            => @this.IsValueType && @this != typeof(void) ? CacheUtil.TypeObejctCache.GetOrAdd(@this, Activator.CreateInstance) : null;
+            => @this.IsValueType && @this != typeof(void) ? ReflectionDictionary.TypeObejctCache.GetOrAdd(@this, Activator.CreateInstance) : null;
 
         /// <summary>
         /// GetUnderlyingType if nullable else return self
@@ -169,7 +169,7 @@ namespace System
         ///     otherwise, null.
         /// </returns>
         public static FieldInfo GetField<T>([NotNull] this T @this, string name)
-            => CacheUtil.TypeFieldCache.GetOrAdd(@this.GetType(), t => t.GetFields()).FirstOrDefault(_ => _.Name == name);
+            => ReflectionDictionary.TypeFieldCache.GetOrAdd(@this.GetType(), t => t.GetFields()).FirstOrDefault(_ => _.Name == name);
 
         /// <summary>An object extension method that gets the fields.</summary>
         /// <param name="this">The @this to act on.</param>
@@ -182,7 +182,7 @@ namespace System
         /// <param name="this">The @this to act on.</param>
         /// <returns>An array of field information.</returns>
         public static FieldInfo[] GetFields([NotNull] this object @this)
-            => CacheUtil.TypeFieldCache.GetOrAdd(@this.GetType(), t => t.GetFields());
+            => ReflectionDictionary.TypeFieldCache.GetOrAdd(@this.GetType(), t => t.GetFields());
 
         /// <summary>
         ///     A T extension method that gets a field value (Public | NonPublic | Instance | Static)
@@ -221,7 +221,7 @@ namespace System
         ///     An object that represents the public method with the specified name, if found; otherwise, null.
         /// </returns>
         public static MethodInfo GetMethod<T>([NotNull] this T @this, string name)
-            => CacheUtil.TypeMethodCache.GetOrAdd(@this.GetType(), t => t.GetMethods()).FirstOrDefault(_ => _.Name == name);
+            => ReflectionDictionary.TypeMethodCache.GetOrAdd(@this.GetType(), t => t.GetMethods()).FirstOrDefault(_ => _.Name == name);
 
         /// <summary>
         ///     A T extension method that searches for the methods defined for the current Type, using the specified binding
@@ -248,7 +248,7 @@ namespace System
         ///     array of type MethodInfo, if no public methods are defined for the current Type.
         /// </returns>
         public static MethodInfo[] GetMethods<T>([NotNull] this T @this)
-            => CacheUtil.TypeMethodCache.GetOrAdd(@this.GetType(), t => t.GetMethods());
+            => ReflectionDictionary.TypeMethodCache.GetOrAdd(@this.GetType(), t => t.GetMethods());
 
         /// <summary>
         ///     A T extension method that gets a property.
@@ -269,7 +269,7 @@ namespace System
         /// <param name="name">The name.</param>
         /// <returns>The property.</returns>
         public static PropertyInfo GetProperty<T>([NotNull] this T @this, [NotNull] string name)
-            => CacheUtil.TypePropertyCache.GetOrAdd(@this.GetType(), type => type.GetProperties()).FirstOrDefault(_ => _.Name == name);
+            => ReflectionDictionary.TypePropertyCache.GetOrAdd(@this.GetType(), type => type.GetProperties()).FirstOrDefault(_ => _.Name == name);
 
         /// <summary>A T extension method that gets property or field.</summary>
         /// <typeparam name="T">Generic type parameter.</typeparam>
@@ -292,7 +292,7 @@ namespace System
         /// <param name="this">The @this to act on.</param>
         /// <returns>An array of property information.</returns>
         public static PropertyInfo[] GetProperties([NotNull] this object @this)
-            => CacheUtil.TypePropertyCache.GetOrAdd(@this.GetType(), type => type.GetProperties());
+            => ReflectionDictionary.TypePropertyCache.GetOrAdd(@this.GetType(), type => type.GetProperties());
 
         /// <summary>An object extension method that gets the properties.</summary>
         /// <param name="this">The @this to act on.</param>
@@ -398,7 +398,7 @@ namespace System
         [CanBeNull]
         public static Func<T, object> GetValueGetter<T>([NotNull] this PropertyInfo @this)
         {
-            return StrongTypedCache<T>.PropertyValueGetters.GetOrAdd(@this, prop =>
+            return StrongTypedDictionary<T>.PropertyValueGetters.GetOrAdd(@this, prop =>
             {
                 if (!prop.CanRead)
                     return null;
@@ -413,7 +413,7 @@ namespace System
         [CanBeNull]
         public static Func<object, object> GetValueGetter([NotNull] this PropertyInfo @this)
         {
-            return CacheUtil.PropertyValueGetters.GetOrAdd(@this, prop =>
+            return ReflectionDictionary.PropertyValueGetters.GetOrAdd(@this, prop =>
             {
                 if (!prop.CanRead)
                     return null;
@@ -432,7 +432,7 @@ namespace System
         [CanBeNull]
         public static Action<object, object> GetValueSetter([NotNull] this PropertyInfo @this)
         {
-            return CacheUtil.PropertyValueSetters.GetOrAdd(@this, prop =>
+            return ReflectionDictionary.PropertyValueSetters.GetOrAdd(@this, prop =>
             {
                 if (!prop.CanWrite)
                     return null;
@@ -459,7 +459,7 @@ namespace System
         [CanBeNull]
         public static Action<T, object> GetValueSetter<T>([NotNull] this PropertyInfo @this) where T : class
         {
-            return StrongTypedCache<T>.PropertyValueSetters.GetOrAdd(@this, prop =>
+            return StrongTypedDictionary<T>.PropertyValueSetters.GetOrAdd(@this, prop =>
             {
                 if (!prop.CanWrite)
                     return null;
