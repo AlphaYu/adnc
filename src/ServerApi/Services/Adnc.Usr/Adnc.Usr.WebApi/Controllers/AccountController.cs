@@ -78,11 +78,7 @@ namespace Adnc.Usr.WebApi.Controllers
         [HttpDelete()]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public IActionResult Logout()
-        {
-            return NoContent();
-            //这个方法可以解析Token信息
-            //var Token = new JwtSecurityTokenHandler().ReadJwtToken(accessToken);
-        }
+            => NoContent();
 
         /// <summary>
         /// 刷新Token
@@ -94,6 +90,8 @@ namespace Adnc.Usr.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<UserTokenInfoDto>> RefreshAccessTokenAsync([FromBody] UserRefreshTokenDto input)
         {
+            //这个方法可以解析Token信息
+            //var Token = new JwtSecurityTokenHandler().ReadJwtToken(accessToken);
             var result = await _accountService.GetUserValidateInfoAsync(input.Id);
 
             if (result == null)
@@ -114,8 +112,6 @@ namespace Adnc.Usr.WebApi.Controllers
         [HttpPut("password")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult> ChangePassword([FromBody] UserChangePwdDto input)
-        {
-            return Result(await _accountService.UpdatePasswordAsync(_userContext.Id, input));
-        }
+            => Result(await _accountService.UpdatePasswordAsync(_userContext.Id, input));
     }
 }

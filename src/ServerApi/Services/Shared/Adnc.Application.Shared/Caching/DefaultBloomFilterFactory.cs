@@ -25,7 +25,8 @@ namespace Adnc.Application.Shared.Caching
 
             var provider = _filters.FirstOrDefault(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
 
-            if (provider == null) throw new ArgumentException("can not find a match bloom filters!");
+            if (provider == null) 
+                throw new ArgumentException("can not find a match bloom filters!");
 
             return provider;
         }

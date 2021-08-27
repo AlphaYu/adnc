@@ -25,7 +25,7 @@ namespace Adnc.Application.Shared.Caching
         private readonly Lazy<IRedisProvider> _redisProvider;
         private readonly Lazy<IDistributedLocker> _distributedLocker;
 
-        public AbstractCacheService(Lazy<ICacheProvider> cache
+        protected AbstractCacheService(Lazy<ICacheProvider> cache
             , Lazy<IRedisProvider> redisProvider
             , Lazy<IDistributedLocker> distributedLocker)
         {

@@ -17,9 +17,7 @@ namespace Adnc.Whse.WebApi.Controllers
         private readonly IWarehouseAppService _warehouseSrv;
 
         public WarehouseController(IWarehouseAppService warehouseSrv)
-        {
-            _warehouseSrv = warehouseSrv;
-        }
+            => _warehouseSrv = warehouseSrv;
 
         /// <summary>
         /// 新建货架
@@ -28,9 +26,7 @@ namespace Adnc.Whse.WebApi.Controllers
         /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult<WarehouseDto>> CreateAsync([FromBody] WarehouseCreationDto input)
-        {
-            return await _warehouseSrv.CreateAsync(input);
-        }
+            => await _warehouseSrv.CreateAsync(input);
 
         /// <summary>
         /// 分配货架给商品
@@ -38,9 +34,7 @@ namespace Adnc.Whse.WebApi.Controllers
         /// <returns></returns>
         [HttpPatch("{id}/product")]
         public async Task<ActionResult<WarehouseDto>> AllocateShelfToProductAsync([FromRoute] long id, [FromBody] WarehouseAllocateToProductDto input)
-        {
-            return await _warehouseSrv.AllocateShelfToProductAsync(id, input);
-        }
+            => await _warehouseSrv.AllocateShelfToProductAsync(id, input);
 
         /// <summary>
         /// 分页列表
@@ -49,8 +43,6 @@ namespace Adnc.Whse.WebApi.Controllers
         /// <returns></returns>
         [HttpGet]
         public async Task<PageModelDto<WarehouseDto>> GetPagedAsync([FromQuery] WarehouseSearchDto search)
-        {
-            return await _warehouseSrv.GetPagedAsync(search);
-        }
+            => await _warehouseSrv.GetPagedAsync(search);
     }
 }

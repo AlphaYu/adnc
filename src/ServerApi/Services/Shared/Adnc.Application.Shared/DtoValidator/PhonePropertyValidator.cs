@@ -25,8 +25,6 @@ namespace Adnc.Application.Shared.DtoValidators
     public static class PhoneValidatorExtensions
     {
         public static IRuleBuilderOptions<T, string> Phone<T>(this IRuleBuilder<T, string> ruleBuilder)
-        {
-            return ruleBuilder.SetValidator(new PhonePropertyValidator());
-        }
+            => ruleBuilder.SetValidator(new PhonePropertyValidator());
     }
 }

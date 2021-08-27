@@ -33,7 +33,7 @@ namespace Adnc.Application.Shared.Caching
         private readonly Lazy<IRedisProvider> _redisProvider;
         private readonly Lazy<IDistributedLocker> _distributedLocker;
 
-        public AbstractBloomFilter(Lazy<ICacheProvider> cache
+        protected AbstractBloomFilter(Lazy<ICacheProvider> cache
             , Lazy<IRedisProvider> redisProvider
             , Lazy<IDistributedLocker> distributedLocker)
         {
