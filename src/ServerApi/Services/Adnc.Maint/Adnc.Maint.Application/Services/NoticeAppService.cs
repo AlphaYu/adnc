@@ -22,13 +22,13 @@ namespace Adnc.Maint.Application.Services
 
         public async Task<AppSrvResult<List<NoticeDto>>> GetListAsync(NoticeSearchDto search)
         {
-            Expression<Func<SysNotice, bool>> whereCondition = x => true;
-            if (search.Title.IsNotNullOrWhiteSpace())
-            {
-                whereCondition = whereCondition.And(x => x.Title == search.Title.Trim());
-            }
+            var whereCondition = ExpressionCreator
+                                                                             .New<SysNotice>()
+                                                                             .AndIf(search.Title.IsNotNullOrWhiteSpace(), x => x.Title == search.Title.Trim());
 
-            var notices = await _noticeRepository.Where(whereCondition).ToListAsync();
+            var notices = await _noticeRepository
+                                                                        .Where(whereCondition)
+                                                                        .ToListAsync();
 
             return Mapper.Map<List<NoticeDto>>(notices);
         }

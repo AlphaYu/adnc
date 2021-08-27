@@ -136,9 +136,9 @@ namespace Adnc.Usr.Application.Services
                 {
                     user.DeptName = depts.FirstOrDefault(x => x.Id == user.DeptId)?.FullName;
                     var roleIds = user.RoleIds.IsNullOrWhiteSpace()
-                                                ? new List<long>()
-                                                : user.RoleIds.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(x => long.Parse(x))
-                                                ;
+                                                                                                ? new List<long>()
+                                                                                                : user.RoleIds.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(x => long.Parse(x))
+                                                                                                ;
 
                     user.RoleNames = roles.Where(x => roleIds.Contains(x.Id))
                                                           .Select(x => x.Name)

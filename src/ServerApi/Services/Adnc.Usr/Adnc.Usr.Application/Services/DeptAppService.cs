@@ -60,7 +60,6 @@ namespace Adnc.Usr.Application.Services
                 return Problem(HttpStatusCode.BadRequest, "该部门全称已经存在");
 
             var deptEnity = Mapper.Map<SysDept>(input);
-
             deptEnity.Id = id;
 
             if (oldDeptDto.Pid == input.Pid)
@@ -77,9 +76,9 @@ namespace Adnc.Usr.Application.Services
                 var originalDeptPids = $"{oldDeptDto.Pids}[{deptEnity.Id}],";
                 var nowDeptPids = $"{deptEnity.Pids}[{deptEnity.Id}],";
                 var subDepts = await _deptRepository
-                                     .Where(d => d.Pids.StartsWith(originalDeptPids))
-                                     .Select(d => new { d.Id, d.Pids })
-                                     .ToListAsync();
+                                                                             .Where(d => d.Pids.StartsWith(originalDeptPids))
+                                                                             .Select(d => new { d.Id, d.Pids })
+                                                                             .ToListAsync();
                 foreach (var c in subDepts)
                 {
                     await _deptRepository.UpdateAsync(new SysDept { Id = c.Id, Pids = c.Pids.Replace(originalDeptPids, nowDeptPids) }, UpdatingProps<SysDept>(c => c.Pids));

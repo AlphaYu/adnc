@@ -62,22 +62,15 @@ namespace Adnc.Usr.Application.Services
                 return Problem(HttpStatusCode.BadRequest, "用户名或密码错误");
 
             var httpContext = HttpContextUtility.GetCurrentHttpContext();
-
             var channelWriter = ChannelHelper<LoginLog>.Instance.Writer;
             var log = new LoginLog
             {
-                Account = input.Account
-                ,
-                Succeed = false
-                ,
-                UserId = user.Id
-                ,
-                UserName = user.Name
-                ,
-                CreateTime = DateTime.Now
-                ,
-                Device = httpContext.Request.Headers["device"].FirstOrDefault() ?? "web"
-                ,
+                Account = input.Account,
+                Succeed = false,
+                UserId = user.Id,
+                UserName = user.Name,
+                CreateTime = DateTime.Now,
+                Device = httpContext.Request.Headers["device"].FirstOrDefault() ?? "web",
                 RemoteIpAddress = httpContext.Connection.RemoteIpAddress.MapToIPv4().ToString()
             };
 
@@ -92,9 +85,7 @@ namespace Adnc.Usr.Application.Services
 
             //var logins = await _loginLogRepository.SelectAsync(5, x => new { x.Id, x.Succeed,x.CreateTime }, x => x.UserId == user.Id, x => x.Id, false);
             //var failLoginCount = logins.Count(x => x.Succeed == false);
-
             var failLoginCount = 2;
-
             if (failLoginCount == 5)
             {
                 var problem = Problem(HttpStatusCode.TooManyRequests, "连续登录失败次数超过5次，账号已锁定");
@@ -162,29 +153,18 @@ namespace Adnc.Usr.Application.Services
         {
             var userProfile = await _userRepository.FetchAsync(u => new UserProfileDto
             {
-                Account = u.Account
-                ,
-                Avatar = u.Avatar
-                ,
-                Birthday = u.Birthday
-                ,
-                DeptId = u.DeptId
-                ,
-                DeptFullName = u.Dept.FullName
-                ,
-                Email = u.Email
-                ,
-                Name = u.Name
-                ,
-                Phone = u.Phone
-                ,
-                RoleIds = u.RoleIds
-                ,
-                Sex = u.Sex
-                ,
+                Account = u.Account,
+                Avatar = u.Avatar,
+                Birthday = u.Birthday,
+                DeptId = u.DeptId,
+                DeptFullName = u.Dept.FullName,
+                Email = u.Email,
+                Name = u.Name,
+                Phone = u.Phone,
+                RoleIds = u.RoleIds,
+                Sex = u.Sex,
                 Status = u.Status
-            }
-            , x => x.Id == id);
+            }, x => x.Id == id);
 
             if (userProfile == null)
                 return null;
@@ -195,9 +175,9 @@ namespace Adnc.Usr.Application.Services
             {
                 var roleIds = userProfile.RoleIds.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(x => long.Parse(x));
                 var roles = await _roleRepository
-                                  .Where(x => roleIds.Contains(x.Id))
-                                  .Select(r => new { r.Id, r.Tips, r.Name })
-                                  .ToListAsync();
+                                                                  .Where(x => roleIds.Contains(x.Id))
+                                                                  .Select(r => new { r.Id, r.Tips, r.Name })
+                                                                  .ToListAsync();
                 foreach (var role in roles)
                 {
                     userInfoDto.Roles.Add(role.Tips);

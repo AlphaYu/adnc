@@ -53,9 +53,7 @@ namespace Adnc.Usr.Application.Services
                 return Problem(HttpStatusCode.BadRequest, "该角色名称已经存在");
 
             var role = Mapper.Map<SysRole>(input);
-
             role.Id = id;
-
             await _roleRepository.UpdateAsync(role, UpdatingProps<SysRole>(x => x.Name, x => x.Tips, x => x.Ordinal));
 
             return AppSrvResult();

@@ -33,8 +33,8 @@ namespace Adnc.Maint.Application.Services
                 return Problem(HttpStatusCode.BadRequest, "参数名称已经存在");
 
             var cfg = Mapper.Map<SysCfg>(input);
-            cfg.Id = IdGenerater.GetNextId();
 
+            cfg.Id = IdGenerater.GetNextId();
             await _cfgRepository.InsertAsync(cfg);
 
             return cfg.Id;
@@ -49,9 +49,7 @@ namespace Adnc.Maint.Application.Services
             var entity = Mapper.Map<SysCfg>(input);
 
             entity.Id = id;
-
             var updatingProps = UpdatingProps<SysCfg>(x => x.Name, x => x.Value, x => x.Description);
-
             await _cfgRepository.UpdateAsync(entity, updatingProps);
 
             return AppSrvResult();
@@ -85,12 +83,9 @@ namespace Adnc.Maint.Application.Services
 
             var result = new PageModelDto<CfgDto>()
             {
-                Data = pagedCfgs
-                ,
-                TotalCount = allCfgs.Count
-                ,
-                PageIndex = search.PageIndex
-                ,
+                Data = pagedCfgs ,
+                TotalCount = allCfgs.Count,
+                PageIndex = search.PageIndex,
                 PageSize = search.PageSize
             };
 
