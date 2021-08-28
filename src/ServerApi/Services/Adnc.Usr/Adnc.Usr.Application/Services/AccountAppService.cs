@@ -1,8 +1,10 @@
-﻿using Adnc.Application.Shared.Services;
+﻿using Adnc.Application.Shared.BloomFilter;
+using Adnc.Application.Shared.Services;
 using Adnc.Infra.Entities;
 using Adnc.Infra.Helper;
 using Adnc.Infra.IRepositories;
 using Adnc.Shared.Consts.Caching.Usr;
+using Adnc.Usr.Application.BloomFilter;
 using Adnc.Usr.Application.Caching;
 using Adnc.Usr.Application.Contracts.Dtos;
 using Adnc.Usr.Application.Contracts.Services;
@@ -22,40 +24,37 @@ namespace Adnc.Usr.Application.Services
         private readonly IEfRepository<SysRole> _roleRepository;
         private readonly IEfRepository<SysMenu> _menuRepository;
         private readonly CacheService _cacheService;
+        private readonly IBloomFilterFactory _bloomFilterFactory;
 
         public AccountAppService(IEfRepository<SysUser> userRepository
            , IEfRepository<SysRole> roleRepository
            , IEfRepository<SysMenu> menuRepository
-           , CacheService cacheService)
+           , CacheService cacheService
+           ,IBloomFilterFactory bloomFilterFactory)
         {
             _userRepository = userRepository;
             _roleRepository = roleRepository;
             _menuRepository = menuRepository;
             _cacheService = cacheService;
+            _bloomFilterFactory = bloomFilterFactory;
         }
 
         public async Task<AppSrvResult<UserValidateDto>> LoginAsync(UserLoginDto input)
         {
-            var exists = await _cacheService.BloomFilters.Accounts.ExistsAsync(input.Account.ToLower());
+            var bloomFilterAccount = _bloomFilterFactory.GetBloomFilter(nameof(BloomFilterAccount));
+            var exists = await bloomFilterAccount.ExistsAsync(input.Account.ToLower());
             if (!exists)
                 return Problem(HttpStatusCode.BadRequest, "用户名或密码错误");
 
             var user = await _userRepository.FetchAsync(x => new UserValidateDto()
             {
-                Id = x.Id
-                ,
-                Account = x.Account
-                ,
-                Password = x.Password
-                 ,
-                Salt = x.Salt
-                 ,
-                Status = x.Status
-                 ,
-                Email = x.Email
-                 ,
-                Name = x.Name
-                    ,
+                Id = x.Id,
+                Account = x.Account,
+                Password = x.Password,
+                Salt = x.Salt,
+                Status = x.Status,
+                Email = x.Email,
+                Name = x.Name,
                 RoleIds = x.RoleIds
             }, x => x.Account == input.Account);
             if (user == null)

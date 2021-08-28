@@ -14,35 +14,26 @@ namespace Adnc.Usr.Application.Caching
     public class CacheService : AbstractCacheService
     {
         private readonly Lazy<ICacheProvider> _cache;
-        private readonly Lazy<IDistributedLocker> _distributedLocker;
-        private readonly Lazy<IRedisProvider> _redisProvider;
         private readonly Lazy<IEfRepository<SysDept>> _deptRepository;
         private readonly Lazy<IEfRepository<SysMenu>> _menuRepository;
         private readonly Lazy<IEfRepository<SysRelation>> _relationRepository;
         private readonly Lazy<IEfRepository<SysRole>> _roleRepository;
         private readonly Lazy<IEfRepository<SysUser>> _userRepository;
-        private readonly Lazy<IBloomFilterFactory> _bloomFilterFactory;
 
         public CacheService(Lazy<ICacheProvider> cache
-            , Lazy<IRedisProvider> redisProvider
-            , Lazy<IDistributedLocker> distributedLocker
             , Lazy<IEfRepository<SysDept>> deptRepository
             , Lazy<IEfRepository<SysMenu>> menuRepository
             , Lazy<IEfRepository<SysRelation>> relationRepository
             , Lazy<IEfRepository<SysRole>> roleRepository
-            , Lazy<IEfRepository<SysUser>> userRepository
-            , Lazy<IBloomFilterFactory> bloomFilterFactory)
-            : base(cache, redisProvider, distributedLocker)
+            , Lazy<IEfRepository<SysUser>> userRepository)
+            : base(cache)
         {
             _cache = cache;
-            _redisProvider = redisProvider;
-            _distributedLocker = distributedLocker;
             _deptRepository = deptRepository;
             _menuRepository = menuRepository;
             _relationRepository = relationRepository;
             _roleRepository = roleRepository;
             _userRepository = userRepository;
-            _bloomFilterFactory = bloomFilterFactory;
         }
 
         public override async Task PreheatAsync()
@@ -53,16 +44,6 @@ namespace Adnc.Usr.Application.Caching
             await GetAllRolesFromCacheAsync();
             await GetAllMenuCodesFromCacheAsync();
             await GetDeptSimpleTreeListAsync();
-        }
-
-        internal (IBloomFilter CacheKeys, IBloomFilter Accounts) BloomFilters
-        {
-            get
-            {
-                var cacheFilter = _bloomFilterFactory.Value.GetBloomFilter(_cache.Value.CacheOptions.PenetrationSetting.BloomFilterSetting.Name);
-                var accountFilter = _bloomFilterFactory.Value.GetBloomFilter("adnc:usr:bloomfilter:accouts");
-                return (cacheFilter, accountFilter);
-            }
         }
 
         internal async Task SetValidateInfoToCacheAsync(UserValidateDto value)
@@ -120,9 +101,9 @@ namespace Adnc.Usr.Application.Caching
             var cahceValue = await _cache.Value.GetAsync(CachingConsts.MenuCodesCacheKey, async () =>
             {
                 var allMenus = await _relationRepository.Value.GetAll(writeDb: true)
-               .Where(x => x.Menu.Status == true)
-               .Select(x => new RoleMenuCodesDto { RoleId = x.RoleId, Code = x.Menu.Code })
-               .ToListAsync();
+                                                                                            .Where(x => x.Menu.Status)
+                                                                                            .Select(x => new RoleMenuCodesDto { RoleId = x.RoleId, Code = x.Menu.Code })
+                                                                                            .ToListAsync();
                 return allMenus.Distinct().ToList();
             }, TimeSpan.FromSeconds(CachingConsts.OneYear));
 
@@ -137,20 +118,13 @@ namespace Adnc.Usr.Application.Caching
             {
                 return await _userRepository.Value.FetchAsync(x => new UserValidateDto()
                 {
-                    Id = x.Id
-                   ,
-                    Account = x.Account
-                    ,
-                    Password = x.Password
-                   ,
-                    Salt = x.Salt
-                   ,
-                    Status = x.Status
-                   ,
-                    Email = x.Email
-                   ,
-                    Name = x.Name
-                   ,
+                    Id = x.Id,
+                    Account = x.Account,
+                    Password = x.Password,
+                    Salt = x.Salt,
+                    Status = x.Status,
+                    Email = x.Email,
+                    Name = x.Name,
                     RoleIds = x.RoleIds
                 }, x => x.Id == Id);
             }, TimeSpan.FromSeconds(CachingConsts.OneDay));
@@ -172,8 +146,8 @@ namespace Adnc.Usr.Application.Caching
                 return result;
 
             var roots = depts.Where(d => d.Pid == 0)
-                                                      .OrderBy(d => d.Ordinal)
-                                                      .Select(x => new DeptSimpleTreeDto() { Id = x.Id, Label = x.SimpleName, Children = new List<DeptSimpleTreeDto>() });
+                                        .OrderBy(d => d.Ordinal)
+                                        .Select(x => new DeptSimpleTreeDto() { Id = x.Id, Label = x.SimpleName, Children = new List<DeptSimpleTreeDto>() });
             foreach (var node in roots)
             {
                 GetChildren(node, depts);
@@ -183,8 +157,8 @@ namespace Adnc.Usr.Application.Caching
             void GetChildren(DeptSimpleTreeDto currentNode, List<DeptDto> depts)
             {
                 var childrenNodes = depts.Where(d => d.Pid == currentNode.Id)
-                                                                         .OrderBy(d => d.Ordinal)
-                                                                         .Select(x => new DeptSimpleTreeDto() { Id = x.Id, Label = x.SimpleName, Children = new List<DeptSimpleTreeDto>() });
+                                                           .OrderBy(d => d.Ordinal)
+                                                           .Select(x => new DeptSimpleTreeDto() { Id = x.Id, Label = x.SimpleName, Children = new List<DeptSimpleTreeDto>() });
                 var childrenCount = childrenNodes?.Count();
                 if (childrenCount > 0)
                 {

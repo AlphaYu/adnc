@@ -1,4 +1,5 @@
-﻿using Adnc.Application.Shared.Caching;
+﻿using Adnc.Application.Shared.BloomFilter;
+using Adnc.Application.Shared.Caching;
 using Adnc.Infra.Caching;
 using Adnc.Infra.Caching.Core;
 using Microsoft.Extensions.Hosting;
@@ -33,10 +34,12 @@ namespace Adnc.Application.Shared.HostedServices
         {
             #region Init BloomFilter
 
-            if (_bloomFilters?.Any() == true)
+            if (_bloomFilters.IsNotNullOrEmpty())
             {
                 foreach (var filter in _bloomFilters)
+                {
                     await filter.InitAsync();
+                }
             }
 
             #endregion Init BloomFilter

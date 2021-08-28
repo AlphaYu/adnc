@@ -1,8 +1,10 @@
-﻿using Adnc.Application.Shared.Dtos;
+﻿using Adnc.Application.Shared.BloomFilter;
+using Adnc.Application.Shared.Dtos;
 using Adnc.Application.Shared.Services;
 using Adnc.Infra.Helper;
 using Adnc.Infra.IRepositories;
 using Adnc.Shared.Consts.Caching.Usr;
+using Adnc.Usr.Application.BloomFilter;
 using Adnc.Usr.Application.Caching;
 using Adnc.Usr.Application.Contracts.Dtos;
 using Adnc.Usr.Application.Contracts.Services;
@@ -20,12 +22,15 @@ namespace Adnc.Usr.Application.Services
     {
         private readonly IEfRepository<SysUser> _userRepository;
         private readonly CacheService _cacheService;
+        private readonly IBloomFilterFactory _bloomFilterFactory;
 
-        public UserAppService(IEfRepository<SysUser> userRepository,
-            CacheService cacheService)
+        public UserAppService(IEfRepository<SysUser> userRepository
+            , CacheService cacheService
+           , IBloomFilterFactory bloomFilterFactory)
         {
             _userRepository = userRepository;
             _cacheService = cacheService;
+            _bloomFilterFactory = bloomFilterFactory;
         }
 
         public async Task<AppSrvResult<long>> CreateAsync(UserCreationDto input)
@@ -40,8 +45,11 @@ namespace Adnc.Usr.Application.Services
             user.Password = HashHelper.GetHashedString(HashType.MD5, user.Password, user.Salt);
 
             var cacheKey = _cacheService.ConcatCacheKey(CachingConsts.UserValidateInfoKeyPrefix, user.Id);
-            await _cacheService.BloomFilters.CacheKeys.AddAsync(cacheKey);
-            await _cacheService.BloomFilters.Accounts.AddAsync(user.Account);
+            var bloomFilterCacheKey = _bloomFilterFactory.GetBloomFilter(nameof(BloomFilterCacheKey));
+            await bloomFilterCacheKey.AddAsync(cacheKey);
+
+            var bloomFilterAccount = _bloomFilterFactory.GetBloomFilter(nameof(BloomFilterAccount));
+            await bloomFilterAccount.AddAsync(user.Account);
 
             await _userRepository.InsertAsync(user);
 
