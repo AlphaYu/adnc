@@ -10,12 +10,14 @@ using Adnc.Infra.Helper;
 using Adnc.Infra.Mongo;
 using Adnc.Infra.Mongo.Configuration;
 using Adnc.Infra.Mongo.Extensions;
+using Adnc.Shared.ConfigModels;
 using Adnc.Shared.RpcServices;
 using Adnc.WebApi.Shared.Extensions;
 using DotNetCore.CAP;
 using DotNetCore.CAP.Dashboard;
 using DotNetCore.CAP.Dashboard.NodeDiscovery;
 using FluentValidation.AspNetCore;
+using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -36,7 +38,6 @@ using Polly.Timeout;
 using Refit;
 using SkyApm.Diagnostics.CAP;
 using SkyApm.Utilities.DependencyInjection;
-using Swashbuckle.AspNetCore.Swagger;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -85,7 +86,7 @@ namespace Adnc.WebApi.Shared
         /// </summary>
         public virtual void Configure()
         {
-            _services.Configure<JWTConfig>(_configuration.GetJWTSection());
+            _services.Configure<JwtConfig>(_configuration.GetJWTSection());
             _services.Configure<MongoConfig>(_configuration.GetMongoDbSection());
             _services.Configure<MysqlConfig>(_configuration.GetMysqlSection());
             _services.Configure<RabbitMqConfig>(_configuration.GetRabbitMqSection());
@@ -102,7 +103,7 @@ namespace Adnc.WebApi.Shared
         public virtual void AddControllers()
         {
             _services.AddControllers(options => options.Filters.Add(typeof(CustomExceptionFilterAttribute)))
-                     .AddJsonOptions(options =>
+                          .AddJsonOptions(options =>
                      {
                          options.JsonSerializerOptions.Converters.Add(new DateTimeConverter());
                          options.JsonSerializerOptions.Converters.Add(new DateTimeNullableConverter());
@@ -116,7 +117,7 @@ namespace Adnc.WebApi.Shared
                          //匿名类型
                          options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
                      })
-                     .AddFluentValidation(cfg =>
+                          .AddFluentValidation(cfg =>
                      {
                          //Continue 验证失败，继续验证其他项
                          cfg.ValidatorOptions.CascadeMode = FluentValidation.CascadeMode.Continue;
@@ -134,14 +135,10 @@ namespace Adnc.WebApi.Shared
                 {
                     var problemDetails = new ProblemDetails
                     {
-                        Detail = context.ModelState.GetValidationSummary("<br>")
-                        ,
-                        Title = "参数错误"
-                        ,
-                        Status = (int)HttpStatusCode.BadRequest
-                        ,
-                        Type = "https://httpstatuses.com/400"
-                        ,
+                        Detail = context.ModelState.GetValidationSummary("<br>"),
+                        Title = "参数错误",
+                        Status = (int)HttpStatusCode.BadRequest,
+                        Type = "https://httpstatuses.com/400",
                         Instance = context.HttpContext.Request.Path
                     };
 
@@ -167,7 +164,7 @@ namespace Adnc.WebApi.Shared
             {
                 options.UseMySql(mysqlConfig.ConnectionString, serverVersion, optionsBuilder =>
                 {
-                    optionsBuilder.MinBatchSize(2);
+                    optionsBuilder.MinBatchSize(4);
                     optionsBuilder.CommandTimeout(10);
                     optionsBuilder.MigrationsAssembly(_serviceInfo.AssemblyName.Replace("WebApi", "Migrations"));
                     optionsBuilder.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
@@ -204,7 +201,7 @@ namespace Adnc.WebApi.Shared
         /// </summary>
         public virtual void AddJWTAuthentication()
         {
-            var jwtConfig = _configuration.GetJWTSection().Get<JWTConfig>();
+            var jwtConfig = _configuration.GetJWTSection().Get<JwtConfig>();
 
             //认证配置
             _services.AddAuthentication(options =>
@@ -223,7 +220,11 @@ namespace Adnc.WebApi.Shared
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtConfig.SymmetricSecurityKey)),
                     ValidateAudience = false,
                     ValidateLifetime = true,
-                    ClockSkew = TimeSpan.FromMinutes(jwtConfig.ClockSkew)
+                    ClockSkew = TimeSpan.FromSeconds(jwtConfig.ClockSkew),
+                    //AudienceValidator = (m, n, z) =>
+                    //{
+                    //    return m != null && m.FirstOrDefault().Equals(Const.ValidAudience);
+                    //}
                 };
                 options.Events = new JwtBearerEvents
                 {
@@ -310,9 +311,9 @@ namespace Adnc.WebApi.Shared
                 options.AddPolicy(_serviceInfo.CorsPolicy, policy =>
                 {
                     policy.WithOrigins(_corsHosts)
-                          .AllowAnyHeader()
-                          .AllowAnyMethod()
-                          .AllowCredentials();
+                              .AllowAnyHeader()
+                              .AllowAnyMethod()
+                              .AllowCredentials();
                 });
             });
         }
@@ -350,14 +351,14 @@ namespace Adnc.WebApi.Shared
                                 Id = "Bearer"
                             }
                         },
-                        new string[] {}
+                        Array.Empty<string>()
                     }
                 });
                 c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{_serviceInfo.AssemblyName}.xml"));
                 c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{_serviceInfo.AssemblyName.Replace("WebApi", "Application.Contracts")}.xml"));
-                // Adds fluent validation rules to swagger
-                c.AddFluentValidationRules();
             });
+
+            _services.AddFluentValidationRulesToSwagger();
         }
 
         /// <summary>
@@ -369,19 +370,19 @@ namespace Adnc.WebApi.Shared
             var mongoConfig = _configuration.GetMongoDbSection().Get<MongoConfig>();
             var redisConfig = _configuration.GetRedisSection().Get<RedisConfig>();
             _services.AddHealthChecks()
-                     //.AddProcessAllocatedMemoryHealthCheck(maximumMegabytesAllocated: 200, tags: new[] { "memory" })
-                     //.AddProcessHealthCheck("ProcessName", p => p.Length > 0) // check if process is running
-                     .AddMySql(mysqlConfig.ConnectionString)
-                     .AddMongoDb(mongoConfig.ConnectionString)
-                     .AddRabbitMQ(x =>
-                     {
-                         return
-                         RabbitMqConnection.GetInstance(x.GetService<IOptionsMonitor<RabbitMqConfig>>()
-                             , x.GetService<ILogger<dynamic>>()
-                         ).Connection;
-                     })
-                    //.AddUrlGroup(new Uri("https://localhost:5001/weatherforecast"), "index endpoint")
-                    .AddRedis(redisConfig.dbconfig.ConnectionString);
+                         //.AddProcessAllocatedMemoryHealthCheck(maximumMegabytesAllocated: 200, tags: new[] { "memory" })
+                         //.AddProcessHealthCheck("ProcessName", p => p.Length > 0) // check if process is running
+                         .AddMySql(mysqlConfig.ConnectionString)
+                         .AddMongoDb(mongoConfig.ConnectionString)
+                         .AddRabbitMQ(x =>
+                         {
+                             return
+                             RabbitMqConnection.GetInstance(x.GetService<IOptionsMonitor<RabbitMqConfig>>()
+                                 , x.GetService<ILogger<dynamic>>()
+                             ).Connection;
+                         })
+                        //.AddUrlGroup(new Uri("https://localhost:5001/weatherforecast"), "index endpoint")
+                        .AddRedis(redisConfig.dbconfig.ConnectionString);
         }
 
         /// <summary>
@@ -457,13 +458,13 @@ namespace Adnc.WebApi.Shared
                         var consulAdderss = new Uri(consulConfig.ConsulUrl);
 
                         var hostIps = NetworkInterface
-                                            .GetAllNetworkInterfaces()
-                                            .Where(network => network.OperationalStatus == OperationalStatus.Up)
-                                            .Select(network => network.GetIPProperties())
-                                            .OrderByDescending(properties => properties.GatewayAddresses.Count)
-                                            .SelectMany(properties => properties.UnicastAddresses)
-                                            .Where(address => !IPAddress.IsLoopback(address.Address) && address.Address.AddressFamily == AddressFamily.InterNetwork)
-                                            .ToArray();
+                                                                        .GetAllNetworkInterfaces()
+                                                                        .Where(network => network.OperationalStatus == OperationalStatus.Up)
+                                                                        .Select(network => network.GetIPProperties())
+                                                                        .OrderByDescending(properties => properties.GatewayAddresses.Count)
+                                                                        .SelectMany(properties => properties.UnicastAddresses)
+                                                                        .Where(address => !IPAddress.IsLoopback(address.Address) && address.Address.AddressFamily == AddressFamily.InterNetwork)
+                                                                        .ToArray();
 
                         var currenServerAddress = hostIps.First().Address.MapToIPv4().ToString();
 
@@ -486,8 +487,8 @@ namespace Adnc.WebApi.Shared
         /// <param name="serviceName">在注册中心注册的服务名称，或者服务的Url</param>
         /// <param name="policies">Polly策略</param>
         public virtual void AddRpcService<TRpcService>(string serviceName
-        , List<IAsyncPolicy<HttpResponseMessage>> policies
-        ) where TRpcService : class, IRpcService
+        , List<IAsyncPolicy<HttpResponseMessage>> policies) 
+         where TRpcService : class, IRpcService
         {
             var prefix = serviceName.Substring(0, 7);
             bool isConsulAdderss = prefix != "http://" && prefix != "https:/";
@@ -495,14 +496,14 @@ namespace Adnc.WebApi.Shared
             var refitSettings = new RefitSettings(new SystemTextJsonContentSerializer(SystemTextJsonHelper.GetAdncDefaultOptions()));
             //注册RefitClient,设置httpclient生命周期时间，默认也是2分钟。
             var clientbuilder = _services.AddRefitClient<TRpcService>(refitSettings)
-                                         .SetHandlerLifetime(TimeSpan.FromMinutes(2));
+                                                         .SetHandlerLifetime(TimeSpan.FromMinutes(2));
             //如果参数是服务名字，那么需要从consul获取地址
             if (isConsulAdderss)
                 clientbuilder.ConfigureHttpClient(client => client.BaseAddress = new Uri($"http://{serviceName}"))
-                             .AddHttpMessageHandler<ConsulDiscoverDelegatingHandler>();
+                                    .AddHttpMessageHandler<ConsulDiscoverDelegatingHandler>();
             else
                 clientbuilder.ConfigureHttpClient(client => client.BaseAddress = new Uri(serviceName))
-                             .AddHttpMessageHandler<SimpleDiscoveryDelegatingHandler>();
+                                    .AddHttpMessageHandler<SimpleDiscoveryDelegatingHandler>();
 
             //添加polly相关策略
             policies?.ForEach(policy => clientbuilder.AddPolicyHandler(policy));

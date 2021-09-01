@@ -105,9 +105,9 @@ namespace Adnc.Application.Shared
 
             //注册DtoValidators
             builder.RegisterAssemblyTypes(_appContractsAssemblieToScan)
-                   .Where(t => t.IsClosedTypeOf(typeof(IValidator<>)))
-                   .AsImplementedInterfaces()
-                   .InstancePerLifetimeScope();
+                       .Where(t => t.IsClosedTypeOf(typeof(IValidator<>)))
+                       .AsImplementedInterfaces()
+                       .InstancePerLifetimeScope();
 
             #endregion register dto validators
 

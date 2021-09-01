@@ -1,9 +1,12 @@
 ﻿using Adnc.Application.Shared.Caching;
 using Adnc.Infra.Caching;
+using Adnc.Infra.Helper;
 using Adnc.Infra.IRepositories;
+using Adnc.Shared.ConfigModels;
 using Adnc.Shared.Consts.Caching.Usr;
 using Adnc.Usr.Application.Contracts.Dtos;
 using Adnc.Usr.Entities;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,13 +22,15 @@ namespace Adnc.Usr.Application.Caching
         private readonly Lazy<IEfRepository<SysRelation>> _relationRepository;
         private readonly Lazy<IEfRepository<SysRole>> _roleRepository;
         private readonly Lazy<IEfRepository<SysUser>> _userRepository;
+        private readonly Lazy<IOptionsSnapshot<JwtConfig>> _jwtConfig;
 
         public CacheService(Lazy<ICacheProvider> cache
             , Lazy<IEfRepository<SysDept>> deptRepository
             , Lazy<IEfRepository<SysMenu>> menuRepository
             , Lazy<IEfRepository<SysRelation>> relationRepository
             , Lazy<IEfRepository<SysRole>> roleRepository
-            , Lazy<IEfRepository<SysUser>> userRepository)
+            , Lazy<IEfRepository<SysUser>> userRepository
+            ,Lazy<IOptionsSnapshot<JwtConfig>> jwtConfig)
             : base(cache)
         {
             _cache = cache;
@@ -34,6 +39,7 @@ namespace Adnc.Usr.Application.Caching
             _relationRepository = relationRepository;
             _roleRepository = roleRepository;
             _userRepository = userRepository;
+            _jwtConfig = jwtConfig;
         }
 
         public override async Task PreheatAsync()
@@ -120,14 +126,12 @@ namespace Adnc.Usr.Application.Caching
                 {
                     Id = x.Id,
                     Account = x.Account,
-                    Password = x.Password,
-                    Salt = x.Salt,
                     Status = x.Status,
-                    Email = x.Email,
                     Name = x.Name,
-                    RoleIds = x.RoleIds
+                    RoleIds = x.RoleIds,
+                    ValidationVersion = HashHelper.GetHashedString(HashType.MD5, x.Account + x.Password)
                 }, x => x.Id == Id);
-            }, TimeSpan.FromSeconds(CachingConsts.OneDay));
+            }, TimeSpan.FromMinutes(_jwtConfig.Value.Value.Expire));
 
             return cacheValue.Value;
         }

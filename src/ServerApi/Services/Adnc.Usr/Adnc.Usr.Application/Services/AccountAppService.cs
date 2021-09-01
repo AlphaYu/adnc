@@ -46,17 +46,18 @@ namespace Adnc.Usr.Application.Services
             if (!exists)
                 return Problem(HttpStatusCode.BadRequest, "用户名或密码错误");
 
-            var user = await _userRepository.FetchAsync(x => new UserValidateDto()
+            var user = await _userRepository.FetchAsync(x => new
             {
-                Id = x.Id,
-                Account = x.Account,
-                Password = x.Password,
-                Salt = x.Salt,
-                Status = x.Status,
-                Email = x.Email,
-                Name = x.Name,
-                RoleIds = x.RoleIds
+                x.Id,
+                x.Account,
+                x.Password,
+                x.Salt,
+                x.Status,
+                x.Email,
+                x.Name,
+                x.RoleIds
             }, x => x.Account == input.Account);
+
             if (user == null)
                 return Problem(HttpStatusCode.BadRequest, "用户名或密码错误");
 
@@ -118,18 +119,32 @@ namespace Adnc.Usr.Application.Services
                 return problem;
             }
 
-            await _cacheService.SetValidateInfoToCacheAsync(user);
-
             log.Message = "登录成功";
             log.StatusCode = (int)HttpStatusCode.Created;
             log.Succeed = true;
             await channelWriter.WriteAsync(log);
-            return user;
+
+            var userValidteInfo = new UserValidateDto
+            {
+                Id = user.Id,
+                Account = user.Account,
+                RoleIds = user.RoleIds,
+                Status = user.Status,
+                Name = user.Name,
+                ValidationVersion = HashHelper.GetHashedString(HashType.MD5, user.Account + user.Password)
+            };
+
+            return userValidteInfo;
         }
 
         public async Task<AppSrvResult> UpdatePasswordAsync(long id, UserChangePwdDto input)
         {
-            var user = await _cacheService.GetUserValidateInfoFromCacheAsync(id);
+            var user = await _userRepository.FetchAsync(x => new
+            {
+                x.Id,
+                x.Salt,
+                x.Password,
+            }, x => x.Id == id);
 
             if (user == null)
                 return Problem(HttpStatusCode.NotFound, "用户不存在,参数信息不完整");

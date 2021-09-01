@@ -10,15 +10,12 @@ namespace Microsoft.AspNetCore.Authorization
         private readonly IUserAppService _userAppService;
 
         public PermissionHandlerLocal(IUserAppService userAppService)
-        {
-            _userAppService = userAppService;
-        }
+            => _userAppService = userAppService;
 
-        protected override async Task<bool> CheckUserPermissions(long userId, IEnumerable<string> codes)
+        protected override async Task<bool> CheckUserPermissions(long userId, IEnumerable<string> codes,string validationVersion)
         {
-            var permissions = await _userAppService.GetPermissionsAsync(userId, codes);
-            bool result = permissions != null && permissions.Any();
-            return result;
+            var permissions = await _userAppService.GetPermissionsAsync(userId, codes, validationVersion);
+            return permissions.IsNotNullOrEmpty();
         }
     }
 }

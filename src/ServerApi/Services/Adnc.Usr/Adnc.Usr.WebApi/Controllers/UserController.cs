@@ -101,12 +101,13 @@ namespace Adnc.Usr.WebApi.Controllers
         /// </summary>
         /// <param name="id">用户id</param>
         /// <param name="permissions"></param>
+        /// <param name="validationVersion"></param>
         /// <returns></returns>
         [HttpGet("{id}/permissions")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<List<string>>> GetCurrenUserPermissions([FromRoute] long id, [FromQuery] IEnumerable<string> permissions)
+        public async Task<ActionResult<List<string>>> GetCurrenUserPermissions([FromRoute] long id, [FromQuery] IEnumerable<string> permissions,string validationVersion)
         {
-            var result = await _userService.GetPermissionsAsync(_userContext.Id, permissions);
+            var result = await _userService.GetPermissionsAsync(_userContext.Id, permissions, validationVersion);
             return result.IsNotNullOrEmpty() ? result : new List<string>();
         }
 

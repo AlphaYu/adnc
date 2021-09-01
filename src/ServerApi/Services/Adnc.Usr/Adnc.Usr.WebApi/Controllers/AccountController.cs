@@ -1,7 +1,8 @@
 ﻿using Adnc.Application.Shared;
+using Adnc.Shared.ConfigModels;
 using Adnc.Usr.Application.Contracts.Dtos;
 using Adnc.Usr.Application.Contracts.Services;
-using Adnc.Usr.WebApi.Helper;
+using Adnc.Usr.WebApi.Authorize;
 using Adnc.WebApi.Shared;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -18,11 +19,11 @@ namespace Adnc.Usr.WebApi.Controllers
     [ApiController]
     public class AccountController : AdncControllerBase
     {
-        private readonly JWTConfig _jwtConfig;
+        private readonly JwtConfig _jwtConfig;
         private readonly IUserContext _userContext;
         private readonly IAccountAppService _accountService;
 
-        public AccountController(IOptionsSnapshot<JWTConfig> jwtConfig
+        public AccountController(IOptionsSnapshot<JwtConfig> jwtConfig
             , IAccountAppService accountService
             , IUserContext userContext)
         {

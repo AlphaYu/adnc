@@ -26,17 +26,18 @@ namespace Autofac
             var configuration = services.GetConfiguration();
             var serviceInfo = services.GetServiceInfo();
 
+            var consulUrl = configuration.GetConsulSection().Get<ConsulConfig>().ConsulUrl;
+            var applicationAssembly = Assembly.Load(serviceInfo.AssemblyFullName.Replace("WebApi", "Application"));
+            var applicationModelType = applicationAssembly.GetTypes()
+                                                                                            .FirstOrDefault(m =>
+                                                                                                                               m.FullName != null
+                                                                                                                               && typeof(AdncApplicationModule).IsAssignableFrom(m)
+                                                                                                                               && !m.IsAbstract);
+
             builder.RegisterModuleIfNotRegistered<AdncInfraMongoModule>();
             builder.RegisterModuleIfNotRegistered<AdncInfraEfCoreModule>();
-            var consulUrl = configuration.GetConsulSection().Get<ConsulConfig>().ConsulUrl;
             builder.RegisterModuleIfNotRegistered(new AdncInfraConsulModule(consulUrl));
-
-            var appAssembly = Assembly.Load(serviceInfo.AssemblyFullName.Replace("WebApi", "Application"));
-            var appModelType = appAssembly.GetTypes().FirstOrDefault(m =>
-                                                       m.FullName != null
-                                                       && typeof(AdncApplicationModule).IsAssignableFrom(m)
-                                                       && !m.IsAbstract);
-            builder.RegisterModuleIfNotRegistered(Activator.CreateInstance(appModelType, configuration, serviceInfo) as IModule);
+            builder.RegisterModuleIfNotRegistered(Activator.CreateInstance(applicationModelType, configuration, serviceInfo) as IModule);
 
             completedExecute?.Invoke(builder);
 

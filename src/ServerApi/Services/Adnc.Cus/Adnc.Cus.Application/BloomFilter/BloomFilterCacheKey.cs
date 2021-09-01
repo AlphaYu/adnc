@@ -32,8 +32,7 @@ namespace Adnc.Cus.Application.BloomFilter
             var exists = await ExistsBloomFilterAsync();
             if (!exists)
             {
-                // TODO
-                // init values
+                // // TODO: init values.
             }
             await Task.CompletedTask;
         }

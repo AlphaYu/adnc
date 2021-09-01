@@ -20,15 +20,12 @@ namespace Adnc.WebApi.Shared.Extensions
                 var state = item.Value;
                 var message = state.Errors.FirstOrDefault(p => !string.IsNullOrWhiteSpace(p.ErrorMessage))?.ErrorMessage;
                 if (string.IsNullOrWhiteSpace(message))
-                {
                     message = state.Errors.FirstOrDefault(o => o.Exception != null)?.Exception.Message;
-                }
+
                 if (string.IsNullOrWhiteSpace(message)) continue;
 
                 if (error.Length > 0)
-                {
                     error.Append(separator);
-                }
 
                 error.Append(message);
             }
