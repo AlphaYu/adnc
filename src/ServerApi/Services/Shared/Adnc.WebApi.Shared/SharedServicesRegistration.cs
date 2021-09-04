@@ -295,7 +295,7 @@ namespace Adnc.WebApi.Shared
         {
             _services.AddAuthorization(options =>
             {
-                options.AddPolicy(Permission.Policy, policy => policy.Requirements.Add(new PermissionRequirement()));
+                options.AddPolicy(AuthorizePolicy.Default, policy => policy.Requirements.Add(new PermissionRequirement()));
             });
             _services.AddScoped<IAuthorizationHandler, THandler>();
         }

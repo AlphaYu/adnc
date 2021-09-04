@@ -131,7 +131,7 @@ namespace Adnc.Usr.Application.Caching
                     RoleIds = x.RoleIds,
                     ValidationVersion = HashHelper.GetHashedString(HashType.MD5, x.Account + x.Password)
                 }, x => x.Id == Id);
-            }, TimeSpan.FromMinutes(_jwtConfig.Value.Value.Expire));
+            }, TimeSpan.FromSeconds(_jwtConfig.Value.Value.Expire * 60 + _jwtConfig.Value.Value.ClockSkew));
 
             return cacheValue.Value;
         }

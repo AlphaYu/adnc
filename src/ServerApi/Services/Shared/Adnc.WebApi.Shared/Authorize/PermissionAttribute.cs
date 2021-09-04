@@ -9,7 +9,7 @@ namespace Microsoft.AspNetCore.Mvc.Filters
         public string[] Codes { get; private set; }
 
         public PermissionAttribute(params string[] codes)
-            : base(Permission.Policy)
+            : base(AuthorizePolicy.Default)
             => Codes = codes;
     }
 }
