@@ -146,12 +146,13 @@ namespace Adnc.Usr.Application.Caching
 
             var depts = await GetAllDeptsFromCacheAsync();
 
-            if (!depts.Any())
+            if (depts.IsNullOrEmpty())
                 return result;
 
             var roots = depts.Where(d => d.Pid == 0)
                                         .OrderBy(d => d.Ordinal)
-                                        .Select(x => new DeptSimpleTreeDto() { Id = x.Id, Label = x.SimpleName, Children = new List<DeptSimpleTreeDto>() });
+                                        .Select(x => new DeptSimpleTreeDto { Id = x.Id, Label = x.SimpleName})
+                                        .ToList();
             foreach (var node in roots)
             {
                 GetChildren(node, depts);
@@ -162,9 +163,9 @@ namespace Adnc.Usr.Application.Caching
             {
                 var childrenNodes = depts.Where(d => d.Pid == currentNode.Id)
                                                            .OrderBy(d => d.Ordinal)
-                                                           .Select(x => new DeptSimpleTreeDto() { Id = x.Id, Label = x.SimpleName, Children = new List<DeptSimpleTreeDto>() });
-                var childrenCount = childrenNodes?.Count();
-                if (childrenCount > 0)
+                                                           .Select(x => new DeptSimpleTreeDto() { Id = x.Id, Label = x.SimpleName })
+                                                           .ToList();
+                if (childrenNodes.IsNotNullOrEmpty())
                 {
                     currentNode.Children.AddRange(childrenNodes);
                     foreach (var node in childrenNodes)
