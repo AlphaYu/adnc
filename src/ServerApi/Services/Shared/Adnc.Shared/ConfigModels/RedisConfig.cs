@@ -1,4 +1,4 @@
-﻿namespace Adnc.WebApi.Shared
+﻿namespace Adnc.Shared.ConfigModels
 {
     /// <summary>
     /// RedisConfig配置

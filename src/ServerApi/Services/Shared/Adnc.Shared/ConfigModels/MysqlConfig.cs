@@ -1,4 +1,4 @@
-﻿namespace Adnc.WebApi.Shared
+﻿namespace Adnc.Shared.ConfigModels
 {
     /// <summary>
     /// MysqlConfig配置

@@ -18,9 +18,7 @@ namespace Adnc.Whse.WebApi.Controllers
         private readonly IProductAppService _productSrv;
 
         public ProductController(IProductAppService productSrv)
-        {
-            _productSrv = productSrv;
-        }
+            => _productSrv = productSrv;
 
         /// <summary>
         /// 新建商品
@@ -29,9 +27,7 @@ namespace Adnc.Whse.WebApi.Controllers
         /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult<ProductDto>> CreateAsync([FromBody] ProductCreationDto input)
-        {
-            return await _productSrv.CreateAsync(input);
-        }
+            => await _productSrv.CreateAsync(input);
 
         /// <summary>
         /// 更新商品
@@ -39,9 +35,7 @@ namespace Adnc.Whse.WebApi.Controllers
         /// <returns></returns>
         [HttpPut("{id}")]
         public async Task<ActionResult<ProductDto>> UpdateAsync([FromRoute] long id, [FromBody] ProductUpdationDto input)
-        {
-            return await _productSrv.UpdateAsync(id, input);
-        }
+            => await _productSrv.UpdateAsync(id, input);
 
         /// <summary>
         /// 调整价格
@@ -51,9 +45,7 @@ namespace Adnc.Whse.WebApi.Controllers
         /// <returns></returns>
         [HttpPatch("{id}/price")]
         public async Task<ActionResult<ProductDto>> ChangePriceAsync([FromRoute] long id, ProducChangePriceDto input)
-        {
-            return await _productSrv.ChangePriceAsync(id, input);
-        }
+            => await _productSrv.ChangePriceAsync(id, input);
 
         /// <summary>
         /// 上架商品
@@ -63,9 +55,7 @@ namespace Adnc.Whse.WebApi.Controllers
         /// <returns></returns>
         [HttpPatch("{id}/status/1001")]
         public async Task<ActionResult<ProductDto>> PutOnSaleAsync([FromRoute] long id, ProductPutOnSaleDto input)
-        {
-            return await _productSrv.PutOnSaleAsync(id, input);
-        }
+            => await _productSrv.PutOnSaleAsync(id, input);
 
         /// <summary>
         /// 下架商品
@@ -75,9 +65,7 @@ namespace Adnc.Whse.WebApi.Controllers
         /// <returns></returns>
         [HttpPatch("{id}/status/1002")]
         public async Task<ActionResult<ProductDto>> PutOffSaleAsync([FromRoute] long id, ProductPutOffSaleDto input)
-        {
-            return await _productSrv.PutOffSaleAsync(id, input);
-        }
+            => await _productSrv.PutOffSaleAsync(id, input);
 
         /// <summary>
         /// 商品列表
@@ -86,9 +74,7 @@ namespace Adnc.Whse.WebApi.Controllers
         /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<List<ProductDto>>> GetListAsync([FromQuery] ProductSearchListDto search)
-        {
-            return await _productSrv.GetListAsync(search);
-        }
+            => await _productSrv.GetListAsync(search);
 
         /// <summary>
         /// 商品分页列表
@@ -97,8 +83,6 @@ namespace Adnc.Whse.WebApi.Controllers
         /// <returns></returns>
         [HttpGet("paged")]
         public async Task<ActionResult<PageModelDto<ProductDto>>> GetPagedAsync([FromQuery] ProductSearchPagedDto search)
-        {
-            return await _productSrv.GetPagedAsync(search);
-        }
+            => await _productSrv.GetPagedAsync(search);
     }
 }

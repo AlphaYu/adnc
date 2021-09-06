@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Adnc.Usr.WebApi.Controllers
@@ -37,9 +36,7 @@ namespace Adnc.Usr.WebApi.Controllers
         [Permission("userAdd")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<ActionResult<long>> CreateAsync([FromBody] UserCreationDto input)
-        {
-            return CreatedResult(await _userService.CreateAsync(input));
-        }
+            => CreatedResult(await _userService.CreateAsync(input));
 
         /// <summary>
         /// 修改用户
@@ -51,9 +48,7 @@ namespace Adnc.Usr.WebApi.Controllers
         [Permission("userEdit")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult> UpdateAsync([FromRoute] long id, [FromBody] UserUpdationDto input)
-        {
-            return Result(await _userService.UpdateAsync(id, input));
-        }
+            => Result(await _userService.UpdateAsync(id, input));
 
         /// <summary>
         /// 删除用户
@@ -64,9 +59,7 @@ namespace Adnc.Usr.WebApi.Controllers
         [Permission("userDelete")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult> DeleteAsync([FromRoute] long id)
-        {
-            return Result(await _userService.DeleteAsync(id));
-        }
+            => Result(await _userService.DeleteAsync(id));
 
         /// <summary>
         /// 设置用户角色
@@ -78,9 +71,7 @@ namespace Adnc.Usr.WebApi.Controllers
         [Permission("userSetRole")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult> SetRoleAsync([FromRoute] long id, [FromBody] long[] roleIds)
-        {
-            return Result(await _userService.SetRoleAsync(id, new UserSetRoleDto { RoleIds = roleIds }));
-        }
+            => Result(await _userService.SetRoleAsync(id, new UserSetRoleDto { RoleIds = roleIds }));
 
         /// <summary>
         /// 变更用户状态
@@ -92,9 +83,7 @@ namespace Adnc.Usr.WebApi.Controllers
         [Permission("userFreeze")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult> ChangeStatus([FromRoute] long id, [FromBody] Adnc.Application.Shared.Dtos.SimpleDto<int> status)
-        {
-            return Result(await _userService.ChangeStatusAsync(id, status.Value));
-        }
+            => Result(await _userService.ChangeStatusAsync(id, status.Value));
 
         /// <summary>
         /// 批量变更用户状态
@@ -105,23 +94,21 @@ namespace Adnc.Usr.WebApi.Controllers
         [Permission("userFreeze")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult> ChangeStatus([FromBody] UserChangeStatusDto input)
-        {
-            return Result(await _userService.ChangeStatusAsync(input.UserIds, input.Status));
-        }
+            => Result(await _userService.ChangeStatusAsync(input.UserIds, input.Status));
 
         /// <summary>
         /// 获取当前用户是否拥有指定权限
         /// </summary>
         /// <param name="id">用户id</param>
         /// <param name="permissions"></param>
+        /// <param name="validationVersion"></param>
         /// <returns></returns>
         [HttpGet("{id}/permissions")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<List<string>>> GetCurrenUserPermissions([FromRoute] long id, [FromQuery] IEnumerable<string> permissions)
+        public async Task<ActionResult<List<string>>> GetCurrenUserPermissions([FromRoute] long id, [FromQuery] IEnumerable<string> permissions,string validationVersion)
         {
-            //throw new System.Exception("测试");
-            var result = await _userService.GetPermissionsAsync(_userContext.Id, permissions);
-            return result?.Any() == true ? result : new List<string>();
+            var result = await _userService.GetPermissionsAsync(_userContext.Id, permissions, validationVersion);
+            return result.IsNotNullOrEmpty() ? result : new List<string>();
         }
 
         /// <summary>
@@ -133,8 +120,6 @@ namespace Adnc.Usr.WebApi.Controllers
         [Permission("userList")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<PageModelDto<UserDto>>> GetPagedAsync([FromQuery] UserSearchPagedDto search)
-        {
-            return await _userService.GetPagedAsync(search);
-        }
+            => await _userService.GetPagedAsync(search);
     }
 }

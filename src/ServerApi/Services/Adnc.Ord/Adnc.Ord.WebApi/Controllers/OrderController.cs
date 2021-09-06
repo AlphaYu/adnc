@@ -17,9 +17,7 @@ namespace Adnc.Ord.WebApi.Controllers
         private readonly IOrderAppService _orderSrv;
 
         public OrderController(IOrderAppService orderSrv)
-        {
-            _orderSrv = orderSrv;
-        }
+            => _orderSrv = orderSrv;
 
         /// <summary>
         /// 新建订单
@@ -28,9 +26,7 @@ namespace Adnc.Ord.WebApi.Controllers
         /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult<OrderDto>> CreateAsync([FromBody] OrderCreationDto input)
-        {
-            return await _orderSrv.CreateAsync(input);
-        }
+            => await _orderSrv.CreateAsync(input);
 
         /// <summary>
         /// 订单付款
@@ -75,9 +71,7 @@ namespace Adnc.Ord.WebApi.Controllers
         /// <returns></returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<OrderDto>> GetAsync([FromRoute] long id)
-        {
-            return await _orderSrv.GetAsync(id);
-        }
+            => await _orderSrv.GetAsync(id);
 
         /// <summary>
         /// 订单分页列表
@@ -86,8 +80,6 @@ namespace Adnc.Ord.WebApi.Controllers
         /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<PageModelDto<OrderDto>>> GetPagedAsync([FromQuery] OrderSearchPagedDto search)
-        {
-            return await _orderSrv.GetPagedAsync(search);
-        }
+            => await _orderSrv.GetPagedAsync(search);
     }
 }

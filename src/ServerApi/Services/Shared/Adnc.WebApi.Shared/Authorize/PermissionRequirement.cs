@@ -2,7 +2,13 @@
 {
     public class PermissionRequirement : IAuthorizationRequirement
     {
-        //Add any custom requirement properties if you have them
-        public PermissionRequirement() { }
+        public string _permissionName { get; }
+
+        public PermissionRequirement() 
+        { 
+        }
+
+        public PermissionRequirement(string permissionName)
+            =>_permissionName = permissionName;
     }
 }

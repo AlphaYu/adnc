@@ -32,9 +32,9 @@ namespace Adnc.Infra.EfCore.Repositories
         {
             if (noTracking && writeDb)
                 return DbContext.Set<TEntity>().AsNoTracking().TagWith(EfCoreConsts.MAXSCALE_ROUTE_TO_MASTER);
-            else if (noTracking && writeDb == false)
+            else if (noTracking)
                 return DbContext.Set<TEntity>().AsNoTracking();
-            else if (noTracking == false && writeDb)
+            else if (writeDb)
                 return DbContext.Set<TEntity>().TagWith(EfCoreConsts.MAXSCALE_ROUTE_TO_MASTER);
             else
                 return DbContext.Set<TEntity>();
@@ -91,7 +91,7 @@ namespace Adnc.Infra.EfCore.Repositories
             return await EntityFrameworkQueryableExtensions.CountAsync(dbSet, whereExpression);
         }
 
-        public virtual async Task<int> UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
+        public virtual Task<int> UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
         {
             //获取实体状态
             var entry = DbContext.Entry(entity);
@@ -100,6 +100,8 @@ namespace Adnc.Infra.EfCore.Repositories
             if (entry.State == EntityState.Detached)
                 throw new ArgumentException($"实体没有被跟踪，需要指定更新的列");
 
+            #region removed code
+            #pragma warning disable S125 // Sections of code should not be commented out
             //实体没有被更改
             //if (entry.State == EntityState.Unchanged)
             //{
@@ -114,14 +116,18 @@ namespace Adnc.Infra.EfCore.Repositories
             //    else
             //        return await Task.FromResult(0);
             //}
+            #pragma warning restore S125 // Sections of code should not be commented out
+            #endregion
 
-            //实体被标记为Added或者Deleted，抛出异常。
-            //ADNC应该不会出现这种状态
+            //实体被标记为Added或者Deleted，抛出异常，ADNC应该不会出现这种状态。
             if (entry.State == EntityState.Added || entry.State == EntityState.Deleted)
                 throw new ArgumentException($"{nameof(entity)},实体状态为{nameof(entry.State)}");
 
-            return await DbContext.SaveChangesAsync(cancellationToken);
+            return this.UpdateInternalAsync(entity, cancellationToken);
         }
+
+        protected virtual async Task<int> UpdateInternalAsync(TEntity entity, CancellationToken cancellationToken = default)
+            => await DbContext.SaveChangesAsync(cancellationToken);
 
         public virtual async Task<IPagedModel<TEntity>> PagedAsync(int pageIndex, int pageSize, Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, object>> orderByExpression, bool ascending = false, bool writeDb = false, CancellationToken cancellationToken = default)
         {
@@ -129,19 +135,13 @@ namespace Adnc.Infra.EfCore.Repositories
 
             var total = await EntityFrameworkQueryableExtensions.CountAsync(dbSet, whereExpression, cancellationToken);
             if (total == 0)
-            {
                 return new PagedModel<TEntity>() { PageSize = pageSize };
-            }
 
             if (pageIndex <= 0)
-            {
                 pageIndex = 1;
-            }
 
             if (pageSize <= 0)
-            {
                 pageSize = 10;
-            }
 
             var query = dbSet.Where(whereExpression);
             query = ascending ? query.OrderBy(orderByExpression) : query.OrderByDescending(orderByExpression);

@@ -17,9 +17,7 @@ namespace Adnc.Maint.WebApi.Controllers
         private readonly INoticeAppService _noticeService;
 
         public NoticeController(INoticeAppService noticeService)
-        {
-            _noticeService = noticeService;
-        }
+            => _noticeService = noticeService;
 
         /// <summary>
         /// 获取通知消息列表
@@ -28,8 +26,6 @@ namespace Adnc.Maint.WebApi.Controllers
         /// <returns></returns>
         [HttpGet()]
         public async Task<ActionResult<List<NoticeDto>>> GetList([FromQuery] NoticeSearchDto search)
-        {
-            return Result(await _noticeService.GetListAsync(search));
-        }
+            => Result(await _noticeService.GetListAsync(search));
     }
 }

@@ -1,9 +1,12 @@
 ﻿using Adnc.Application.Shared.Caching;
 using Adnc.Infra.Caching;
+using Adnc.Infra.Helper;
 using Adnc.Infra.IRepositories;
+using Adnc.Shared.ConfigModels;
 using Adnc.Shared.Consts.Caching.Usr;
 using Adnc.Usr.Application.Contracts.Dtos;
 using Adnc.Usr.Entities;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,35 +17,29 @@ namespace Adnc.Usr.Application.Caching
     public class CacheService : AbstractCacheService
     {
         private readonly Lazy<ICacheProvider> _cache;
-        private readonly Lazy<IDistributedLocker> _distributedLocker;
-        private readonly Lazy<IRedisProvider> _redisProvider;
         private readonly Lazy<IEfRepository<SysDept>> _deptRepository;
         private readonly Lazy<IEfRepository<SysMenu>> _menuRepository;
         private readonly Lazy<IEfRepository<SysRelation>> _relationRepository;
         private readonly Lazy<IEfRepository<SysRole>> _roleRepository;
         private readonly Lazy<IEfRepository<SysUser>> _userRepository;
-        private readonly Lazy<IBloomFilterFactory> _bloomFilterFactory;
+        private readonly Lazy<IOptionsSnapshot<JwtConfig>> _jwtConfig;
 
         public CacheService(Lazy<ICacheProvider> cache
-            , Lazy<IRedisProvider> redisProvider
-            , Lazy<IDistributedLocker> distributedLocker
             , Lazy<IEfRepository<SysDept>> deptRepository
             , Lazy<IEfRepository<SysMenu>> menuRepository
             , Lazy<IEfRepository<SysRelation>> relationRepository
             , Lazy<IEfRepository<SysRole>> roleRepository
             , Lazy<IEfRepository<SysUser>> userRepository
-            , Lazy<IBloomFilterFactory> bloomFilterFactory)
-            : base(cache, redisProvider, distributedLocker)
+            ,Lazy<IOptionsSnapshot<JwtConfig>> jwtConfig)
+            : base(cache)
         {
             _cache = cache;
-            _redisProvider = redisProvider;
-            _distributedLocker = distributedLocker;
             _deptRepository = deptRepository;
             _menuRepository = menuRepository;
             _relationRepository = relationRepository;
             _roleRepository = roleRepository;
             _userRepository = userRepository;
-            _bloomFilterFactory = bloomFilterFactory;
+            _jwtConfig = jwtConfig;
         }
 
         public override async Task PreheatAsync()
@@ -53,16 +50,6 @@ namespace Adnc.Usr.Application.Caching
             await GetAllRolesFromCacheAsync();
             await GetAllMenuCodesFromCacheAsync();
             await GetDeptSimpleTreeListAsync();
-        }
-
-        internal (IBloomFilter CacheKeys, IBloomFilter Accounts) BloomFilters
-        {
-            get
-            {
-                var cacheFilter = _bloomFilterFactory.Value.GetBloomFilter(_cache.Value.CacheOptions.PenetrationSetting.BloomFilterSetting.Name);
-                var accountFilter = _bloomFilterFactory.Value.GetBloomFilter("adnc:usr:bloomfilter:accouts");
-                return (cacheFilter, accountFilter);
-            }
         }
 
         internal async Task SetValidateInfoToCacheAsync(UserValidateDto value)
@@ -120,9 +107,9 @@ namespace Adnc.Usr.Application.Caching
             var cahceValue = await _cache.Value.GetAsync(CachingConsts.MenuCodesCacheKey, async () =>
             {
                 var allMenus = await _relationRepository.Value.GetAll(writeDb: true)
-               .Where(x => x.Menu.Status == true)
-               .Select(x => new RoleMenuCodesDto { RoleId = x.RoleId, Code = x.Menu.Code })
-               .ToListAsync();
+                                                                                            .Where(x => x.Menu.Status)
+                                                                                            .Select(x => new RoleMenuCodesDto { RoleId = x.RoleId, Code = x.Menu.Code })
+                                                                                            .ToListAsync();
                 return allMenus.Distinct().ToList();
             }, TimeSpan.FromSeconds(CachingConsts.OneYear));
 
@@ -137,23 +124,14 @@ namespace Adnc.Usr.Application.Caching
             {
                 return await _userRepository.Value.FetchAsync(x => new UserValidateDto()
                 {
-                    Id = x.Id
-                   ,
-                    Account = x.Account
-                    ,
-                    Password = x.Password
-                   ,
-                    Salt = x.Salt
-                   ,
-                    Status = x.Status
-                   ,
-                    Email = x.Email
-                   ,
-                    Name = x.Name
-                   ,
-                    RoleIds = x.RoleIds
+                    Id = x.Id,
+                    Account = x.Account,
+                    Status = x.Status,
+                    Name = x.Name,
+                    RoleIds = x.RoleIds,
+                    ValidationVersion = HashHelper.GetHashedString(HashType.MD5, x.Account + x.Password)
                 }, x => x.Id == Id);
-            }, TimeSpan.FromSeconds(CachingConsts.OneDay));
+            }, TimeSpan.FromSeconds(_jwtConfig.Value.Value.Expire * 60 + _jwtConfig.Value.Value.ClockSkew));
 
             return cacheValue.Value;
         }
@@ -168,12 +146,13 @@ namespace Adnc.Usr.Application.Caching
 
             var depts = await GetAllDeptsFromCacheAsync();
 
-            if (!depts.Any())
+            if (depts.IsNullOrEmpty())
                 return result;
 
             var roots = depts.Where(d => d.Pid == 0)
-                                                      .OrderBy(d => d.Ordinal)
-                                                      .Select(x => new DeptSimpleTreeDto() { Id = x.Id, Label = x.SimpleName, Children = new List<DeptSimpleTreeDto>() });
+                                        .OrderBy(d => d.Ordinal)
+                                        .Select(x => new DeptSimpleTreeDto { Id = x.Id, Label = x.SimpleName})
+                                        .ToList();
             foreach (var node in roots)
             {
                 GetChildren(node, depts);
@@ -183,10 +162,10 @@ namespace Adnc.Usr.Application.Caching
             void GetChildren(DeptSimpleTreeDto currentNode, List<DeptDto> depts)
             {
                 var childrenNodes = depts.Where(d => d.Pid == currentNode.Id)
-                                                                         .OrderBy(d => d.Ordinal)
-                                                                         .Select(x => new DeptSimpleTreeDto() { Id = x.Id, Label = x.SimpleName, Children = new List<DeptSimpleTreeDto>() });
-                var childrenCount = childrenNodes?.Count();
-                if (childrenCount > 0)
+                                                           .OrderBy(d => d.Ordinal)
+                                                           .Select(x => new DeptSimpleTreeDto() { Id = x.Id, Label = x.SimpleName })
+                                                           .ToList();
+                if (childrenNodes.IsNotNullOrEmpty())
                 {
                     currentNode.Children.AddRange(childrenNodes);
                     foreach (var node in childrenNodes)

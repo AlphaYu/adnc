@@ -42,14 +42,10 @@ namespace Adnc.Maint.Application.Services
             {
                 dists.Add(new SysDict
                 {
-                    Id = IdGenerater.GetNextId()
-                    ,
-                    Pid = id
-                    ,
-                    Name = x.Name
-                    ,
-                    Value = x.Value
-                    ,
+                    Id = IdGenerater.GetNextId(),
+                    Pid = id,
+                    Name = x.Name,
+                    Value = x.Value,
                     Ordinal = x.Ordinal
                 });
             });
@@ -72,25 +68,18 @@ namespace Adnc.Maint.Application.Services
             {
                 subDicts.Add(new SysDict
                 {
-                    Id = IdGenerater.GetNextId()
-                    ,
-                    Pid = id
-                    ,
-                    Name = x.Name
-                    ,
-                    Value = x.Value
-                    ,
+                    Id = IdGenerater.GetNextId(),
+                    Pid = id,
+                    Name = x.Name,
+                    Value = x.Value,
                     Ordinal = x.Ordinal
                 });
             });
 
-            // 这里需要事务处理
             await _dictRepository.UpdateAsync(dict, UpdatingProps<SysDict>(d => d.Name, d => d.Value, d => d.Ordinal));
             await _dictRepository.DeleteRangeAsync(d => d.Pid == dict.Id);
-            if (subDicts?.Count > 0)
-            {
+            if (subDicts.IsNotNullOrEmpty())
                 await _dictRepository.InsertRangeAsync(subDicts);
-            }
 
             return AppSrvResult();
         }
@@ -103,7 +92,7 @@ namespace Adnc.Maint.Application.Services
 
         public async Task<DictDto> GetAsync(long id)
         {
-            var dictDto = (await _cacheService.GetAllDictsFromCacheAsync()).Where(x => x.Id == id).FirstOrDefault();
+            var dictDto = (await _cacheService.GetAllDictsFromCacheAsync()).FirstOrDefault(x => x.Id == id);
 
             if (dictDto == null)
                 return default;
@@ -117,14 +106,15 @@ namespace Adnc.Maint.Application.Services
         {
             var result = new List<DictDto>();
 
-            Expression<Func<DictDto, bool>> whereCondition = x => true;
-            if (search.Name.IsNotNullOrWhiteSpace())
-            {
-                whereCondition = whereCondition.And(x => x.Name.Contains(search.Name));
-            }
+            var whereCondition = ExpressionCreator
+                                                                             .New<DictDto>()
+                                                                             .AndIf(search.Name.IsNotNullOrWhiteSpace(), x => x.Name.Contains(search.Name));
 
-            var dicts = (await _cacheService.GetAllDictsFromCacheAsync()).Where(whereCondition.Compile()).OrderBy(d => d.Ordinal).ToList();
-            if (dicts.Any())
+            var dicts = (await _cacheService.GetAllDictsFromCacheAsync())
+                                                                                                               .Where(whereCondition.Compile())
+                                                                                                               .OrderBy(d => d.Ordinal)
+                                                                                                               .ToList();
+            if (dicts.IsNotNullOrEmpty())
             {
                 result = dicts.Where(d => d.Pid == 0).OrderBy(d => d.Ordinal).ToList();
                 foreach (var item in result)

@@ -34,7 +34,7 @@ namespace Adnc.UnitTest.Fixtures
             //builder.RegisterInstance(mapper).As<IMapper>();
             //var userContext = new UserContext() { ID = 1600000000000, Account = "alpha2008", Name = "余小猫" };
 
-            var dbstring = "Server=193.112.75.77;Port=13308;database=adnc_cus_dev;uid=root;pwd=alpha.netcore;";
+            var dbstring = "Server=106.14.139.201;Port=13308;database=adnc_cus_dev;uid=root;pwd=alpha.netcore;";
 
             //注册操作用户
             containerBuilder.RegisterType<Operater>()

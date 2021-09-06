@@ -1,7 +1,8 @@
 ﻿using Adnc.Application.Shared;
+using Adnc.Shared.ConfigModels;
 using Adnc.Usr.Application.Contracts.Dtos;
 using Adnc.Usr.Application.Contracts.Services;
-using Adnc.Usr.WebApi.Helper;
+using Adnc.Usr.WebApi.Authorize;
 using Adnc.WebApi.Shared;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -18,11 +19,11 @@ namespace Adnc.Usr.WebApi.Controllers
     [ApiController]
     public class AccountController : AdncControllerBase
     {
-        private readonly JWTConfig _jwtConfig;
+        private readonly JwtConfig _jwtConfig;
         private readonly IUserContext _userContext;
         private readonly IAccountAppService _accountService;
 
-        public AccountController(IOptionsSnapshot<JWTConfig> jwtConfig
+        public AccountController(IOptionsSnapshot<JwtConfig> jwtConfig
             , IAccountAppService accountService
             , IUserContext userContext)
         {
@@ -78,11 +79,7 @@ namespace Adnc.Usr.WebApi.Controllers
         [HttpDelete()]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public IActionResult Logout()
-        {
-            return NoContent();
-            //这个方法可以解析Token信息
-            //var Token = new JwtSecurityTokenHandler().ReadJwtToken(accessToken);
-        }
+            => NoContent();
 
         /// <summary>
         /// 刷新Token
@@ -94,6 +91,8 @@ namespace Adnc.Usr.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<UserTokenInfoDto>> RefreshAccessTokenAsync([FromBody] UserRefreshTokenDto input)
         {
+            //这个方法可以解析Token信息
+            //var Token = new JwtSecurityTokenHandler().ReadJwtToken(accessToken);
             var result = await _accountService.GetUserValidateInfoAsync(input.Id);
 
             if (result == null)
@@ -114,8 +113,6 @@ namespace Adnc.Usr.WebApi.Controllers
         [HttpPut("password")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult> ChangePassword([FromBody] UserChangePwdDto input)
-        {
-            return Result(await _accountService.UpdatePasswordAsync(_userContext.Id, input));
-        }
+            => Result(await _accountService.UpdatePasswordAsync(_userContext.Id, input));
     }
 }

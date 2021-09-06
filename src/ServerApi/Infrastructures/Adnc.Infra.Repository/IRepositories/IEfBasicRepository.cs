@@ -17,9 +17,9 @@ namespace Adnc.Infra.IRepositories
     {
         Task<int> UpdateRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default);
 
-        Task<int> DeleteAsync(TEntity entity, CancellationToken cancellationToken = default);
+        Task<int> RemoveAsync(TEntity entity, CancellationToken cancellationToken = default);
 
-        Task<int> DeleteRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default);
+        Task<int> RemoveRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default);
 
         Task<TEntity> GetAsync(long keyValue, Expression<Func<TEntity, dynamic>> navigationPropertyPath = null, bool writeDb = false, CancellationToken cancellationToken = default);
     }
