@@ -30,7 +30,7 @@ namespace Adnc.Infra.EfCore
         private IDbContextTransaction GetDbContextTransaction(IsolationLevel isolationLevel, bool sharedToCap = false)
         {
             if (_unitOfWorkStatus.IsStartingUow)
-                throw new Exception("UnitOfWork Error");
+                throw new ArgumentException("UnitOfWork Error");
             else
                 _unitOfWorkStatus.IsStartingUow = true;
 
@@ -39,7 +39,7 @@ namespace Adnc.Infra.EfCore
             if (sharedToCap)
             {
                 if (_capPublisher == null)
-                    throw new Exception("CapPublisher is null");
+                    throw new ArgumentException("CapPublisher is null");
                 else
                     trans = _dbContext.Database.BeginTransaction(_capPublisher, false);
             }
@@ -62,7 +62,7 @@ namespace Adnc.Infra.EfCore
             _unitOfWorkStatus.IsStartingUow = false;
         }
 
-        public async Task CommitAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task CommitAsync(CancellationToken cancellationToken = default)
         {
             CheckNotNull(_dbTransaction);
 
@@ -78,7 +78,7 @@ namespace Adnc.Infra.EfCore
             _unitOfWorkStatus.IsStartingUow = false;
         }
 
-        public async Task RollbackAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task RollbackAsync(CancellationToken cancellationToken = default)
         {
             CheckNotNull(_dbTransaction);
 
@@ -100,7 +100,7 @@ namespace Adnc.Infra.EfCore
         private bool CheckNotNull(IDbContextTransaction dbContextTransaction, bool isThrowException = true)
         {
             if (dbContextTransaction == null && isThrowException)
-                throw new Exception("IDbContextTransaction is null");
+                throw new ArgumentNullException(nameof(dbContextTransaction), "IDbContextTransaction is null");
 
             return dbContextTransaction != null;
         }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Microsoft.AspNetCore.Authorization
@@ -18,6 +19,7 @@ namespace Microsoft.AspNetCore.Authorization
             }
 
             var userId = long.Parse(context.User.Claims.First(x => x.Type == JwtRegisteredClaimNames.Sub).Value);
+            var validationVersion = context.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Version).Value;
             //var roles = context.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role).Value;
             //if (string.IsNullOrWhiteSpace(roles))
             //{
@@ -36,7 +38,7 @@ namespace Microsoft.AspNetCore.Authorization
             if (context.Resource is HttpContext httpContext)
             {
                 var codes = httpContext.GetEndpoint().Metadata.GetMetadata<PermissionAttribute>().Codes;
-                var result = await CheckUserPermissions(userId, codes);
+                var result = await CheckUserPermissions(userId, codes, validationVersion);
                 if (result)
                 {
                     context.Succeed(requirement);
@@ -46,6 +48,6 @@ namespace Microsoft.AspNetCore.Authorization
             context.Fail();
         }
 
-        protected abstract Task<bool> CheckUserPermissions(long userId, IEnumerable<string> codes);
+        protected abstract Task<bool> CheckUserPermissions(long userId, IEnumerable<string> codes, string validationVersion);
     }
 }

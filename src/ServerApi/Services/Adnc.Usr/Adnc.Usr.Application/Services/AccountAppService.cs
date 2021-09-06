@@ -1,8 +1,10 @@
-﻿using Adnc.Application.Shared.Services;
+﻿using Adnc.Application.Shared.BloomFilter;
+using Adnc.Application.Shared.Services;
 using Adnc.Infra.Entities;
 using Adnc.Infra.Helper;
 using Adnc.Infra.IRepositories;
 using Adnc.Shared.Consts.Caching.Usr;
+using Adnc.Usr.Application.BloomFilter;
 using Adnc.Usr.Application.Caching;
 using Adnc.Usr.Application.Contracts.Dtos;
 using Adnc.Usr.Application.Contracts.Services;
@@ -22,62 +24,53 @@ namespace Adnc.Usr.Application.Services
         private readonly IEfRepository<SysRole> _roleRepository;
         private readonly IEfRepository<SysMenu> _menuRepository;
         private readonly CacheService _cacheService;
+        private readonly IBloomFilterFactory _bloomFilterFactory;
 
         public AccountAppService(IEfRepository<SysUser> userRepository
            , IEfRepository<SysRole> roleRepository
            , IEfRepository<SysMenu> menuRepository
-           , CacheService cacheService)
+           , CacheService cacheService
+           ,IBloomFilterFactory bloomFilterFactory)
         {
             _userRepository = userRepository;
             _roleRepository = roleRepository;
             _menuRepository = menuRepository;
             _cacheService = cacheService;
+            _bloomFilterFactory = bloomFilterFactory;
         }
 
         public async Task<AppSrvResult<UserValidateDto>> LoginAsync(UserLoginDto input)
         {
-            var exists = await _cacheService.BloomFilters.Accounts.ExistsAsync(input.Account.ToLower());
+            var bloomFilterAccount = _bloomFilterFactory.GetBloomFilter(nameof(BloomFilterAccount));
+            var exists = await bloomFilterAccount.ExistsAsync(input.Account.ToLower());
             if (!exists)
                 return Problem(HttpStatusCode.BadRequest, "用户名或密码错误");
 
-            var user = await _userRepository.FetchAsync(x => new UserValidateDto()
+            var user = await _userRepository.FetchAsync(x => new
             {
-                Id = x.Id
-                ,
-                Account = x.Account
-                ,
-                Password = x.Password
-                 ,
-                Salt = x.Salt
-                 ,
-                Status = x.Status
-                 ,
-                Email = x.Email
-                 ,
-                Name = x.Name
-                    ,
-                RoleIds = x.RoleIds
+                x.Id,
+                x.Account,
+                x.Password,
+                x.Salt,
+                x.Status,
+                x.Email,
+                x.Name,
+                x.RoleIds
             }, x => x.Account == input.Account);
+
             if (user == null)
                 return Problem(HttpStatusCode.BadRequest, "用户名或密码错误");
 
             var httpContext = HttpContextUtility.GetCurrentHttpContext();
-
             var channelWriter = ChannelHelper<LoginLog>.Instance.Writer;
             var log = new LoginLog
             {
-                Account = input.Account
-                ,
-                Succeed = false
-                ,
-                UserId = user.Id
-                ,
-                UserName = user.Name
-                ,
-                CreateTime = DateTime.Now
-                ,
-                Device = httpContext.Request.Headers["device"].FirstOrDefault() ?? "web"
-                ,
+                Account = input.Account,
+                Succeed = false,
+                UserId = user.Id,
+                UserName = user.Name,
+                CreateTime = DateTime.Now,
+                Device = httpContext.Request.Headers["device"].FirstOrDefault() ?? "web",
                 RemoteIpAddress = httpContext.Connection.RemoteIpAddress.MapToIPv4().ToString()
             };
 
@@ -92,9 +85,7 @@ namespace Adnc.Usr.Application.Services
 
             //var logins = await _loginLogRepository.SelectAsync(5, x => new { x.Id, x.Succeed,x.CreateTime }, x => x.UserId == user.Id, x => x.Id, false);
             //var failLoginCount = logins.Count(x => x.Succeed == false);
-
             var failLoginCount = 2;
-
             if (failLoginCount == 5)
             {
                 var problem = Problem(HttpStatusCode.TooManyRequests, "连续登录失败次数超过5次，账号已锁定");
@@ -128,18 +119,32 @@ namespace Adnc.Usr.Application.Services
                 return problem;
             }
 
-            await _cacheService.SetValidateInfoToCacheAsync(user);
-
             log.Message = "登录成功";
             log.StatusCode = (int)HttpStatusCode.Created;
             log.Succeed = true;
             await channelWriter.WriteAsync(log);
-            return user;
+
+            var userValidteInfo = new UserValidateDto
+            {
+                Id = user.Id,
+                Account = user.Account,
+                RoleIds = user.RoleIds,
+                Status = user.Status,
+                Name = user.Name,
+                ValidationVersion = HashHelper.GetHashedString(HashType.MD5, user.Account + user.Password)
+            };
+
+            return userValidteInfo;
         }
 
         public async Task<AppSrvResult> UpdatePasswordAsync(long id, UserChangePwdDto input)
         {
-            var user = await _cacheService.GetUserValidateInfoFromCacheAsync(id);
+            var user = await _userRepository.FetchAsync(x => new
+            {
+                x.Id,
+                x.Salt,
+                x.Password,
+            }, x => x.Id == id);
 
             if (user == null)
                 return Problem(HttpStatusCode.NotFound, "用户不存在,参数信息不完整");
@@ -156,37 +161,24 @@ namespace Adnc.Usr.Application.Services
         }
 
         public async Task<UserValidateDto> GetUserValidateInfoAsync(long id)
-        {
-            return await _cacheService.GetUserValidateInfoFromCacheAsync(id);
-        }
+            => await _cacheService.GetUserValidateInfoFromCacheAsync(id);
 
         public async Task<UserInfoDto> GetUserInfoAsync(long id)
         {
             var userProfile = await _userRepository.FetchAsync(u => new UserProfileDto
             {
-                Account = u.Account
-                ,
-                Avatar = u.Avatar
-                ,
-                Birthday = u.Birthday
-                ,
-                DeptId = u.DeptId
-                ,
-                DeptFullName = u.Dept.FullName
-                ,
-                Email = u.Email
-                ,
-                Name = u.Name
-                ,
-                Phone = u.Phone
-                ,
-                RoleIds = u.RoleIds
-                ,
-                Sex = u.Sex
-                ,
+                Account = u.Account,
+                Avatar = u.Avatar,
+                Birthday = u.Birthday,
+                DeptId = u.DeptId,
+                DeptFullName = u.Dept.FullName,
+                Email = u.Email,
+                Name = u.Name,
+                Phone = u.Phone,
+                RoleIds = u.RoleIds,
+                Sex = u.Sex,
                 Status = u.Status
-            }
-            , x => x.Id == id);
+            }, x => x.Id == id);
 
             if (userProfile == null)
                 return null;
@@ -197,9 +189,9 @@ namespace Adnc.Usr.Application.Services
             {
                 var roleIds = userProfile.RoleIds.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(x => long.Parse(x));
                 var roles = await _roleRepository
-                                  .Where(x => roleIds.Contains(x.Id))
-                                  .Select(r => new { r.Id, r.Tips, r.Name })
-                                  .ToListAsync();
+                                                                  .Where(x => roleIds.Contains(x.Id))
+                                                                  .Select(r => new { r.Id, r.Tips, r.Name })
+                                                                  .ToListAsync();
                 foreach (var role in roles)
                 {
                     userInfoDto.Roles.Add(role.Tips);
@@ -207,10 +199,8 @@ namespace Adnc.Usr.Application.Services
                 }
 
                 var roleMenus = await _menuRepository.GetMenusByRoleIdsAsync(roleIds.ToArray(), true);
-                if (roleMenus?.Count > 0)
-                {
+                if (roleMenus.IsNotNullOrEmpty())
                     userInfoDto.Permissions.AddRange(roleMenus.Select(x => x.Url).Distinct());
-                }
             }
 
             return userInfoDto;

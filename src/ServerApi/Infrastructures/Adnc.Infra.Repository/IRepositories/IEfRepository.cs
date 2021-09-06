@@ -1,5 +1,6 @@
 ﻿using Adnc.Infra.Entities;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
@@ -47,7 +48,7 @@ namespace Adnc.Infra.IRepositories
         /// <param name="noTracking">是否开启跟踪，默认不开启，可选参数</param>
         /// <param name="cancellationToken"><see cref="CancellationToken"/></param>
         /// <returns></returns>
-        Task<TEntity> FetchAsync(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, dynamic>> navigationPropertyPath = null, Expression<Func<TEntity, object>> orderByExpression = null, bool ascending = false, bool writeDb = false, bool noTracking = true, CancellationToken cancellationToken = default);
+        Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, dynamic>> navigationPropertyPath = null, Expression<Func<TEntity, object>> orderByExpression = null, bool ascending = false, bool writeDb = false, bool noTracking = true, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// 根据条件查询,返回单个实体或对象
@@ -80,6 +81,14 @@ namespace Adnc.Infra.IRepositories
         /// <param name="cancellationToken"><see cref="CancellationToken"/></param>
         /// <returns></returns>
         Task<int> UpdateRangeAsync(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, TEntity>> updatingExpression, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// 批量更新
+        /// </summary>
+        /// <param name="propertyNameAndValues">需要更新的字段与值</param>
+        /// <param name="cancellationToken"><see cref="CancellationToken"/></param>
+        /// <returns></returns>
+        Task<int> UpdateRangeAsync(Dictionary<long, List<(string propertyName, dynamic propertyValue)>> propertyNameAndValues, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// 删除实体

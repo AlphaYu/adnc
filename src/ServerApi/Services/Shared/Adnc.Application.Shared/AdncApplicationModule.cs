@@ -1,4 +1,5 @@
-﻿using Adnc.Application.Shared.Caching;
+﻿using Adnc.Application.Shared.BloomFilter;
+using Adnc.Application.Shared.Caching;
 using Adnc.Application.Shared.IdGenerater;
 using Adnc.Application.Shared.Interceptors;
 using Adnc.Application.Shared.Services;
@@ -104,9 +105,9 @@ namespace Adnc.Application.Shared
 
             //注册DtoValidators
             builder.RegisterAssemblyTypes(_appContractsAssemblieToScan)
-                   .Where(t => t.IsClosedTypeOf(typeof(IValidator<>)))
-                   .AsImplementedInterfaces()
-                   .InstancePerLifetimeScope();
+                       .Where(t => t.IsClosedTypeOf(typeof(IValidator<>)))
+                       .AsImplementedInterfaces()
+                       .InstancePerLifetimeScope();
 
             #endregion register dto validators
 

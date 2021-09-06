@@ -14,9 +14,7 @@ namespace Adnc.Cus.WebApi.Controllers
         private readonly IAuthRpcService _authRpcService;
 
         public AccountController(IAuthRpcService authRpcService)
-        {
-            _authRpcService = authRpcService;
-        }
+            => _authRpcService = authRpcService;
 
         [AllowAnonymous]
         [HttpPost()]

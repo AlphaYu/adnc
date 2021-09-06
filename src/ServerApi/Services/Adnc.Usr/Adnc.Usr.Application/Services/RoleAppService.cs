@@ -35,7 +35,7 @@ namespace Adnc.Usr.Application.Services
 
         public async Task<AppSrvResult<long>> CreateAsync(RoleCreationDto input)
         {
-            var isExists = (await _cacheService.GetAllRolesFromCacheAsync()).Where(x => x.Name == input.Name).Any();
+            var isExists = (await _cacheService.GetAllRolesFromCacheAsync()).Any(x => x.Name == input.Name);
             if (isExists)
                 return Problem(HttpStatusCode.BadRequest, "该角色名称已经存在");
 
@@ -48,14 +48,12 @@ namespace Adnc.Usr.Application.Services
 
         public async Task<AppSrvResult> UpdateAsync(long id, RoleUpdationDto input)
         {
-            var isExists = (await _cacheService.GetAllRolesFromCacheAsync()).Where(x => x.Name == input.Name && x.Id != id).Any();
+            var isExists = (await _cacheService.GetAllRolesFromCacheAsync()).Any(x => x.Name == input.Name && x.Id != id);
             if (isExists)
                 return Problem(HttpStatusCode.BadRequest, "该角色名称已经存在");
 
             var role = Mapper.Map<SysRole>(input);
-
             role.Id = id;
-
             await _roleRepository.UpdateAsync(role, UpdatingProps<SysRole>(x => x.Name, x => x.Tips, x => x.Ordinal));
 
             return AppSrvResult();
@@ -115,9 +113,9 @@ namespace Adnc.Usr.Application.Services
                 treeNodes = roles.Select(x => new ZTreeNodeDto<long, dynamic>
                 {
                     Id = x.Id,
-                    PID = x.Pid.HasValue ? x.Pid.Value : 0,
+                    PID = x.Pid ?? 0,
                     Name = x.Name,
-                    Open = x.Pid.HasValue && x.Pid.Value > 0 ? false : true,
+                    Open = !(x.Pid.HasValue && x.Pid.Value > 0),
                     Checked = roleIds.Contains(x.Id)
                 });
 
@@ -137,15 +135,13 @@ namespace Adnc.Usr.Application.Services
             return result;
         }
 
-        public async Task<PageModelDto<RoleDto>> GetPagedAsync(RolePagedSearchDto search)
+        public async Task<PageModelDto<RoleDto>> GetPagedAsync(RolePagedSearchDto input)
         {
-            Expression<Func<SysRole, bool>> whereCondition = x => true;
-            if (search.RoleName.IsNotNullOrWhiteSpace())
-            {
-                whereCondition = whereCondition.And(x => x.Name.Contains(search.RoleName));
-            }
+            var whereCondition = ExpressionCreator
+                                                                            .New<SysRole>()
+                                                                            .AndIf(input.RoleName.IsNotNullOrWhiteSpace(), x => x.Name.Contains(input.RoleName));
 
-            var pagedModel = await _roleRepository.PagedAsync(search.PageIndex, search.PageSize, whereCondition, x => x.Ordinal, true);
+            var pagedModel = await _roleRepository.PagedAsync(input.PageIndex, input.PageSize, whereCondition, x => x.Ordinal, true);
 
             return Mapper.Map<PageModelDto<RoleDto>>(pagedModel);
         }

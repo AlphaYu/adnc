@@ -2,8 +2,8 @@
 	<Import Project="..\..\build\common.props" />
 	<PropertyGroup>
 		<TargetFramework>netstandard2.1</TargetFramework>
-		<AssemblyName>Adnc.Infra.Common</AssemblyName>
-		<RootNamespace>Adnc.Infra.Common</RootNamespace>
+		<AssemblyName>Adnc.Infra.Helper</AssemblyName>
+		<RootNamespace>Adnc.Infra.Helper</RootNamespace>
 	</PropertyGroup>
 
 	<ItemGroup>

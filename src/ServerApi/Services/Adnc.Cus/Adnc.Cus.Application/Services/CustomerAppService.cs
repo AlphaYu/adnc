@@ -59,10 +59,8 @@ namespace Adnc.Cus.Application.Services
             customer.Id = IdGenerater.GetNextId();
             customer.FinanceInfo = new CustomerFinance()
             {
-                Account = customer.Account
-               ,
-                Balance = 0
-                ,
+                Account = customer.Account,
+                Balance = 0 ,
                 Id = customer.Id
             };
 
@@ -86,18 +84,12 @@ namespace Adnc.Cus.Application.Services
 
             var cusTransactionLog = new CustomerTransactionLog()
             {
-                Id = IdGenerater.GetNextId()
-                ,
-                CustomerId = customer.Id
-                ,
-                Account = customer.Account
-                ,
-                ExchangeType = ExchangeTypeEnum.Recharge
-                ,
-                Remark = ""
-                ,
-                Amount = input.Amount
-                ,
+                Id = IdGenerater.GetNextId() ,
+                CustomerId = customer.Id,
+                Account = customer.Account ,
+                ExchangeType = ExchangeTypeEnum.Recharge,
+                Remark = "",
+                Amount = input.Amount ,
                 ExchageStatus = ExchageStatusEnum.Processing
             };
 
@@ -164,20 +156,13 @@ namespace Adnc.Cus.Application.Services
 
                 transLog = new CustomerTransactionLog
                 {
-                    Id = transactionLogId
-                    ,
-                    CustomerId = customerId
-                    ,
-                    Account = account
-                    ,
-                    ChangingAmount = originalBalance
-                    ,
-                    Amount = 0 - amount
-                    ,
-                    ChangedAmount = newBalance
-                    ,
-                    ExchangeType = ExchangeTypeEnum.Order
-                    ,
+                    Id = transactionLogId,
+                    CustomerId = customerId,
+                    Account = account,
+                    ChangingAmount = originalBalance,
+                    Amount = 0 - amount,
+                    ChangedAmount = newBalance,
+                    ExchangeType = ExchangeTypeEnum.Order,
                     ExchageStatus = ExchageStatusEnum.Finished
                 };
 
@@ -194,39 +179,31 @@ namespace Adnc.Cus.Application.Services
         /// <returns></returns>
         public async Task<AppSrvResult<PageModelDto<CustomerDto>>> GetPagedAsync(CustomerSearchPagedDto search)
         {
-            Expression<Func<Customer, bool>> whereCondition = x => true;
-            if (search.Id > 0)
-                whereCondition = whereCondition.And(x => x.Id == search.Id);
-            if (search.Account.IsNotNullOrEmpty())
-                whereCondition = whereCondition.And(x => x.Account == search.Account);
+            var whereCondition = ExpressionCreator
+                                                                             .New<Customer>()
+                                                                             .AndIf(search.Id > 0, x => x.Id == search.Id)
+                                                                             .AndIf(search.Account.IsNotNullOrEmpty(), x => x.Account == search.Account);
 
             var count = await _customerRepo.CountAsync(whereCondition);
             if (count == 0)
                 return new PageModelDto<CustomerDto>(search);
 
-            //这里用直接用dapper更方便_customerRepo.QueryAsync(sql)
             var customers = await _customerRepo
-                                .Where(whereCondition)
-                                .Select(x => new CustomerDto
-                                {
-                                    Id = x.Id
-                                ,
-                                    Account = x.Account
-                                ,
-                                    Nickname = x.Nickname
-                                ,
-                                    Realname = x.Realname
-                                ,
-                                    CreateBy = x.CreateBy
-                                ,
-                                    CreateTime = x.CreateTime
-                                ,
-                                    FinanceInfoBalance = x.FinanceInfo.Balance
-                                })
-                                .Skip(search.SkipRows())
-                                .Take(search.PageSize)
-                                .OrderByDescending(x => x.Id)
-                                .ToListAsync();
+                                                                        .Where(whereCondition)
+                                                                        .Select(x => new CustomerDto
+                                                                        {
+                                                                            Id = x.Id,
+                                                                            Account = x.Account,
+                                                                            Nickname = x.Nickname,
+                                                                            Realname = x.Realname,
+                                                                            CreateBy = x.CreateBy,
+                                                                            CreateTime = x.CreateTime,
+                                                                            FinanceInfoBalance = x.FinanceInfo.Balance
+                                                                        })
+                                                                        .Skip(search.SkipRows())
+                                                                        .Take(search.PageSize)
+                                                                        .OrderByDescending(x => x.Id)
+                                                                        .ToListAsync();
 
             return new PageModelDto<CustomerDto>(search, customers, count);
         }
