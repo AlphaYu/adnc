@@ -13,10 +13,9 @@ namespace Pomelo.EntityFrameworkCore.MySql.Query.ExpressionVisitors.Internal
     /// <summary>
     /// adnc sql生成工厂类
     /// </summary>
-#pragma warning disable EF1001 // Internal EF Core API usage.
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "EF1001:Internal EF Core API usage.", Justification = "<挂起>")]
     public class AdncMySqlQuerySqlGeneratorFactory : MySqlQuerySqlGeneratorFactory
-#pragma warning restore EF1001 // Internal EF Core API usage.
     {
         private readonly QuerySqlGeneratorDependencies _dependencies;
         private readonly MySqlSqlExpressionFactory _sqlExpressionFactory;
@@ -43,22 +42,21 @@ namespace Pomelo.EntityFrameworkCore.MySql.Query.ExpressionVisitors.Internal
         }
     }
 
+
     /// <summary>
     /// adnc sql 生成类
     /// </summary>
-#pragma warning disable EF1001 // Internal EF Core API usage.
-
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "EF1001:Internal EF Core API usage.", Justification = "<挂起>")]
     public class AdncQuerySqlGenerator : MySqlQuerySqlGenerator
-#pragma warning restore EF1001 // Internal EF Core API usage.
     {
         protected readonly Guid ContextId;
         private bool _isQueryMaseter = false;
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "EF1001:Internal EF Core API usage.", Justification = "<挂起>")]
         public AdncQuerySqlGenerator(
             [NotNull] QuerySqlGeneratorDependencies dependencies,
             [NotNull] MySqlSqlExpressionFactory sqlExpressionFactory,
-            [CanBeNull] IMySqlOptions options)
-            : base(dependencies, sqlExpressionFactory, options)
+            [CanBeNull] IMySqlOptions options) : base(dependencies, sqlExpressionFactory, options)
         {
             ContextId = Guid.NewGuid();
         }

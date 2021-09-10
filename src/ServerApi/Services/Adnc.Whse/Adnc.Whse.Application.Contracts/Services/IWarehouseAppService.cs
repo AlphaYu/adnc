@@ -22,12 +22,12 @@ namespace Adnc.Whse.Application.Contracts.Services
         /// <summary>
         /// 分配仓储给商品
         /// </summary>
-        /// <param name="shelfId"></param>
+        /// <param name="warehouseId"></param>
         /// <param name="input"></param>
         /// <returns></returns>
         [UnitOfWork()]
         [OperateLog(LogName = "分配货架")]
-        Task<WarehouseDto> AllocateShelfToProductAsync(long shelfId, WarehouseAllocateToProductDto input);
+        Task<WarehouseDto> AllocateShelfToProductAsync(long warehouseId, WarehouseAllocateToProductDto input);
 
         /// <summary>
         /// 锁定商品库存

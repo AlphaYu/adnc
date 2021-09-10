@@ -10,9 +10,7 @@ namespace Adnc.Application.Shared.Caching
         public static SkyApmExtensions AddCaching(this SkyApmExtensions extensions)
         {
             if (extensions == null)
-            {
                 throw new ArgumentNullException(nameof(extensions));
-            }
 
             extensions.Services.AddSingleton<ITracingDiagnosticProcessor, CacheTracingDiagnosticProcessor>();
 

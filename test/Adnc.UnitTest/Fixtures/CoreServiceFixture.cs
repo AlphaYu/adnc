@@ -19,7 +19,7 @@ namespace Adnc.UnitTest.Fixtures
         {
             var containerBuilder = new ContainerBuilder();
 
-            var dbstring = "Server=193.112.75.77;Port=13308;database=adnc_cus_dev;uid=root;pwd=alpha.netcore;";
+            var dbstring = "Server=106.14.139.201;Port=13308;database=adnc_cus_dev;uid=root;pwd=alpha.netcore;";
 
             //注册操作用户
             containerBuilder.RegisterType<Operater>()

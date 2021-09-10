@@ -11,7 +11,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="MicroElements.Swashbuckle.FluentValidation" Version="4.3.0" />
+		<PackageReference Include="MicroElements.Swashbuckle.FluentValidation" Version="5.2.0" />
 		<PackageReference Include="Polly.Caching.Memory" Version="3.0.2" />
 		<PackageReference Include="SkyAPM.Diagnostics.CAP" Version="1.3.0" />
 		<PackageReference Include="SkyAPM.Diagnostics.EntityFrameworkCore.Sqlite" Version="1.3.0" />
@@ -35,7 +35,7 @@
 		<PackageReference Include="DotNetCore.CAP.RabbitMQ" Version="5.0.3" />
 		<PackageReference Include="DotNetCore.CAP.Dashboard" Version="5.0.3" />
 		<PackageReference Include="System.Threading.ThreadPool" Version="4.3.0" />
-		<PackageReference Include="FluentValidation.AspNetCore" Version=" 9.5.4" />
+		<PackageReference Include="FluentValidation.AspNetCore" Version="10.3.3" />
 		<PackageReference Include="NLog" Version="4.7.5" />
 		<PackageReference Include="NLog.Mongo" Version="4.6.0.118" />
 		<PackageReference Include="NLog.Web.AspNetCore" Version="4.9.3" />

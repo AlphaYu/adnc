@@ -173,5 +173,14 @@ namespace System.Collections.Generic
             set.UnionWith(source.Select(selector));
             return set;
         }
+
+        public static string ToString<T>(this IEnumerable<T> @this, string separator)
+            => (@this != null && @this.Any()) ? string.Join(separator, @this) : string.Empty;
+
+        public static bool IsNullOrEmpty<T>(this IEnumerable<T> @this)
+            => @this == null || !@this.Any();
+
+        public static bool IsNotNullOrEmpty<T>(this IEnumerable<T> @this)
+            => @this != null && @this.Any();
     }
 }

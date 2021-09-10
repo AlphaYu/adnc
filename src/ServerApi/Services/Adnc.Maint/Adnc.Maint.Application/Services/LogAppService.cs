@@ -29,32 +29,14 @@ namespace Adnc.Maint.Application.Services
         public async Task<PageModelDto<LoginLogDto>> GetLoginLogsPagedAsync(LogSearchPagedDto searchDto)
         {
             var builder = Builders<LoginLog>.Filter;
-            var filters = new List<FilterDefinition<LoginLog>>();
+            var filterList = new List<FilterDefinition<LoginLog>>();
+            filterList.AddIf(x => searchDto.BeginTime.HasValue, builder.Gte(l => l.CreateTime, searchDto.BeginTime));
+            filterList.AddIf(x => searchDto.EndTime.HasValue, builder.Lte(l => l.CreateTime, searchDto.EndTime));
+            filterList.AddIf(x => searchDto.Account.IsNotNullOrWhiteSpace(), builder.Eq(l => l.Account, searchDto.Account));
+            filterList.AddIf(x => searchDto.Method.IsNotNullOrWhiteSpace(), builder.Eq(l => l.Device, searchDto.Device));
+            var filterDefinition = filterList.IsNotNullOrEmpty() ? builder.And(filterList) : builder.Where(x => true);
 
-            if (searchDto.BeginTime.HasValue)
-            {
-                filters.Add(builder.Gte(l => l.CreateTime, searchDto.BeginTime));
-            }
-
-            if (searchDto.EndTime.HasValue)
-            {
-                filters.Add(builder.Lte(l => l.CreateTime, searchDto.EndTime));
-            }
-
-            if (searchDto.Account.IsNotNullOrWhiteSpace())
-            {
-                filters.Add(builder.Eq(l => l.Account, searchDto.Account));
-            }
-
-            if (searchDto.Method.IsNotNullOrWhiteSpace())
-            {
-                filters.Add(builder.Eq(l => l.Device, searchDto.Device));
-            }
-
-            var filter = filters.Count > 0 ? builder.And(filters) : builder.Where(x => true);
-
-            var pagedModel = await _loginLogRepository.PagedAsync(searchDto.PageIndex, searchDto.PageSize, filter, x => x.CreateTime, false);
-
+            var pagedModel = await _loginLogRepository.PagedAsync(searchDto.PageIndex, searchDto.PageSize, filterDefinition, x => x.CreateTime, false);
             var result = Mapper.Map<PageModelDto<LoginLogDto>>(pagedModel);
 
             return result;
@@ -63,32 +45,14 @@ namespace Adnc.Maint.Application.Services
         public async Task<PageModelDto<OpsLogDto>> GetOpsLogsPagedAsync(LogSearchPagedDto searchDto)
         {
             var builder = Builders<OperationLog>.Filter;
-            var filters = new List<FilterDefinition<OperationLog>>();
+            var filterList = new List<FilterDefinition<OperationLog>>();
+            filterList.AddIf(x => searchDto.BeginTime.HasValue, builder.Gte(l => l.CreateTime, searchDto.BeginTime));
+            filterList.AddIf(x => searchDto.EndTime.HasValue, builder.Lte(l => l.CreateTime, searchDto.EndTime));
+            filterList.AddIf(x => searchDto.Account.IsNotNullOrWhiteSpace(), builder.Eq(l => l.Account, searchDto.Account));
+            filterList.AddIf(x => searchDto.Method.IsNotNullOrWhiteSpace(), builder.Eq(l => l.Method, searchDto.Method));
+            var filterDefinition = filterList.IsNotNullOrEmpty() ? builder.And(filterList) : builder.Where(x => true);
 
-            if (searchDto.BeginTime.HasValue)
-            {
-                filters.Add(builder.Gte(l => l.CreateTime, searchDto.BeginTime));
-            }
-
-            if (searchDto.EndTime.HasValue)
-            {
-                filters.Add(builder.Lte(l => l.CreateTime, searchDto.EndTime));
-            }
-
-            if (searchDto.Account.IsNotNullOrWhiteSpace())
-            {
-                filters.Add(builder.Eq(l => l.Account, searchDto.Account));
-            }
-
-            if (searchDto.Method.IsNotNullOrWhiteSpace())
-            {
-                filters.Add(builder.Eq(l => l.Method, searchDto.Method));
-            }
-
-            var filter = filters.Count > 0 ? builder.And(filters) : builder.Where(x => true);
-
-            var pagedModel = await _opsLogRepository.PagedAsync(searchDto.PageIndex, searchDto.PageSize, filter, x => x.CreateTime, false);
-
+            var pagedModel = await _opsLogRepository.PagedAsync(searchDto.PageIndex, searchDto.PageSize, filterDefinition, x => x.CreateTime, false);
             var result = Mapper.Map<PageModelDto<OpsLogDto>>(pagedModel);
 
             return result;
@@ -97,37 +61,14 @@ namespace Adnc.Maint.Application.Services
         public async Task<PageModelDto<NlogLogDto>> GetNlogLogsPagedAsync(LogSearchPagedDto searchDto)
         {
             var builder = Builders<LoggingLog>.Filter;
-            var filters = new List<FilterDefinition<LoggingLog>>();
+            var filterList = new List<FilterDefinition<LoggingLog>>();
+            filterList.AddIf(x => searchDto.BeginTime.HasValue, builder.Gte(l => l.Date, searchDto.BeginTime));
+            filterList.AddIf(x => searchDto.EndTime.HasValue, builder.Lte(l => l.Date, searchDto.EndTime));
+            filterList.AddIf(x => searchDto.Method.IsNotNullOrWhiteSpace(), builder.Eq(l => l.Properties.Method, searchDto.Method));
+            filterList.AddIf(x => searchDto.Level.IsNotNullOrWhiteSpace(), builder.Eq(l => l.Level, searchDto.Level));
+            var filterDefinition = filterList.Count > 0 ? builder.And(filterList) : builder.Where(x => true);
 
-            if (searchDto.BeginTime.HasValue)
-            {
-                filters.Add(builder.Gte(l => l.Date, searchDto.BeginTime));
-            }
-
-            if (searchDto.EndTime.HasValue)
-            {
-                filters.Add(builder.Lte(l => l.Date, searchDto.EndTime));
-            }
-
-            //if (!string.IsNullOrWhiteSpace(searchDto.Account))
-            //{
-            //    filters.Add(builder.Eq(l => l.Properties., searchDto.Account));
-            //}
-
-            if (searchDto.Method.IsNotNullOrWhiteSpace())
-            {
-                filters.Add(builder.Eq(l => l.Properties.Method, searchDto.Method));
-            }
-
-            if (searchDto.Level.IsNotNullOrWhiteSpace())
-            {
-                filters.Add(builder.Eq(l => l.Level, searchDto.Level));
-            }
-
-            var filter = filters.Count > 0 ? builder.And(filters) : builder.Where(x => true);
-
-            var pagedModel = await _nlogLogRepository.PagedAsync(searchDto.PageIndex, searchDto.PageSize, filter, x => x.Date, false);
-
+            var pagedModel = await _nlogLogRepository.PagedAsync(searchDto.PageIndex, searchDto.PageSize, filterDefinition, x => x.Date, false);
             var result = Mapper.Map<PageModelDto<NlogLogDto>>(pagedModel);
 
             return result;

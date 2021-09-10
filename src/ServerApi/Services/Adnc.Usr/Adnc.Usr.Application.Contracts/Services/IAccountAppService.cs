@@ -40,7 +40,7 @@ namespace Adnc.Usr.Application.Contracts.Services
         /// <summary>
         /// 获取用户信息
         /// </summary>
-        /// <param name="userId"></param>
+        /// <param name="id"></param>
         /// <returns></returns>
         Task<UserInfoDto> GetUserInfoAsync(long id);
     }

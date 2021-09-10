@@ -5,6 +5,7 @@ using Adnc.Usr.Application.Caching;
 using Adnc.Usr.Application.Contracts.Dtos;
 using Adnc.Usr.Application.Contracts.Services;
 using Adnc.Usr.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -60,7 +61,6 @@ namespace Adnc.Usr.Application.Services
                 return Problem(HttpStatusCode.BadRequest, "该部门全称已经存在");
 
             var deptEnity = Mapper.Map<SysDept>(input);
-
             deptEnity.Id = id;
 
             if (oldDeptDto.Pid == input.Pid)
@@ -77,9 +77,9 @@ namespace Adnc.Usr.Application.Services
                 var originalDeptPids = $"{oldDeptDto.Pids}[{deptEnity.Id}],";
                 var nowDeptPids = $"{deptEnity.Pids}[{deptEnity.Id}],";
                 var subDepts = await _deptRepository
-                                     .Where(d => d.Pids.StartsWith(originalDeptPids))
-                                     .Select(d => new { d.Id, d.Pids })
-                                     .ToListAsync();
+                                                                             .Where(d => d.Pids.StartsWith(originalDeptPids))
+                                                                             .Select(d => new { d.Id, d.Pids })
+                                                                             .ToListAsync();
                 foreach (var c in subDepts)
                 {
                     await _deptRepository.UpdateAsync(new SysDept { Id = c.Id, Pids = c.Pids.Replace(originalDeptPids, nowDeptPids) }, UpdatingProps<SysDept>(c => c.Pids));
@@ -94,25 +94,38 @@ namespace Adnc.Usr.Application.Services
             var result = new List<DeptTreeDto>();
 
             var depts = await _cacheService.GetAllDeptsFromCacheAsync();
-
-            if (!depts.Any())
+            if (depts.IsNullOrEmpty())
                 return result;
 
-            var allDeptNodes = Mapper.Map<List<DeptTreeDto>>(depts);
-
-            var roots = allDeptNodes.Where(d => d.Pid == 0).OrderBy(d => d.Ordinal);
+            Func<DeptDto, DeptTreeDto> selector = x =>
+                                                                                      new DeptTreeDto
+                                                                                      {
+                                                                                          Id = x.Id ,
+                                                                                          SimpleName = x.SimpleName,
+                                                                                          FullName = x.FullName,
+                                                                                          Ordinal = x.Ordinal ,
+                                                                                          Pid = x.Pid,
+                                                                                          Pids = x.Pids,
+                                                                                          Tips = x.Tips,
+                                                                                          Version = x.Version
+                                                                                      };
+            var roots = depts.Where(d => d.Pid == 0)
+                                        .OrderBy(d => d.Ordinal)
+                                        .Select(selector)
+                                        .ToList();
             foreach (var node in roots)
             {
-                GetChildren(node, allDeptNodes);
+                GetChildren(node, depts);
                 result.Add(node);
             }
 
-            void GetChildren(DeptTreeDto currentNode, List<DeptTreeDto> allDeptNodes)
+            void GetChildren(DeptTreeDto currentNode, List<DeptDto> allDeptNodes)
             {
-                var childrenNodes = allDeptNodes.Where(d => d.Pid == currentNode.Id).OrderBy(d => d.Ordinal);
-                if (childrenNodes.Count() == 0)
-                    return;
-                else
+                var childrenNodes = depts.Where(d => d.Pid == currentNode.Id)
+                                                           .OrderBy(d => d.Ordinal)
+                                                           .Select(selector)
+                                                           .ToList();
+                if (childrenNodes.IsNotNullOrEmpty())
                 {
                     currentNode.Children.AddRange(childrenNodes);
                     foreach (var node in childrenNodes)

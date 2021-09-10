@@ -30,7 +30,6 @@ namespace Adnc.Usr.Application
             CreateMap<DeptUpdationDto, SysDept>();
             CreateMap<SysDept, DeptDto>();
             CreateMap<SysDept, DeptTreeDto>();
-            CreateMap<DeptDto, DeptTreeDto>();
         }
     }
 }

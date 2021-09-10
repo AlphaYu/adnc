@@ -195,11 +195,10 @@ namespace Adnc.Ord.Application.Services
         /// <returns></returns>
         public async Task<PageModelDto<OrderDto>> GetPagedAsync(OrderSearchPagedDto search)
         {
-            Expression<Func<Order, bool>> whereCondition = x => true;
-            if (search.Id > 0)
-            {
-                whereCondition = whereCondition.And(x => x.Id == search.Id);
-            }
+            var whereCondition = ExpressionCreator
+                                                                 .New<Order>()
+                                                                 .AndIf(search.Id > 0, x => x.Id == search.Id);
+
             var pagedEntity = await _orderRepo.PagedAsync(search.PageIndex, search.PageSize, whereCondition, x => x.Id);
 
             var pagedDto = Mapper.Map<PageModelDto<OrderDto>>(pagedEntity);

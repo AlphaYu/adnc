@@ -20,9 +20,7 @@ namespace Adnc.Maint.WebApi.Controllers
         private readonly IDictAppService _dictAppService;
 
         public DictController(IDictAppService dictAppService)
-        {
-            _dictAppService = dictAppService;
-        }
+            => _dictAppService = dictAppService;
 
         /// <summary>
         /// 新增字典
@@ -33,9 +31,7 @@ namespace Adnc.Maint.WebApi.Controllers
         [Permission("dictAdd")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<ActionResult<long>> CreateAsync([FromBody] DictCreationDto input)
-        {
-            return CreatedResult(await _dictAppService.CreateAsync(input));
-        }
+            => CreatedResult(await _dictAppService.CreateAsync(input));
 
         /// <summary>
         /// 修改字典
@@ -47,9 +43,7 @@ namespace Adnc.Maint.WebApi.Controllers
         [Permission("dictEdit")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult<long>> UpdateAsync([FromRoute] long id, [FromBody] DictUpdationDto input)
-        {
-            return Result(await _dictAppService.UpdateAsync(id, input));
-        }
+            => Result(await _dictAppService.UpdateAsync(id, input));
 
         /// <summary>
         /// 删除字典
@@ -60,9 +54,7 @@ namespace Adnc.Maint.WebApi.Controllers
         [Permission("dictDelete")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult> DeleteAsync([FromRoute] long id)
-        {
-            return Result(await _dictAppService.DeleteAsync(id));
-        }
+            => Result(await _dictAppService.DeleteAsync(id));
 
         /// <summary>
         /// 获取字典列表
@@ -72,16 +64,14 @@ namespace Adnc.Maint.WebApi.Controllers
         [Permission("dictList")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<List<DictDto>>> GetListAsync([FromQuery] DictSearchDto search)
-        {
-            return await _dictAppService.GetListAsync(search);
-        }
+            => await _dictAppService.GetListAsync(search);
 
         /// <summary>
         /// 获取单个字典数据
         /// </summary>
         /// <returns></returns>
         [HttpGet("{id}")]
-        [Permission("dict")]
+        // [Permission("dict")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<DictDto>> GetAsync([FromRoute] long id)
         {

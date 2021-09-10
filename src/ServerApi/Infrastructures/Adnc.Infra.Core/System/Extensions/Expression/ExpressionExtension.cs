@@ -5,75 +5,38 @@ namespace System.Linq.Expressions
 {
     public static class ExpressionExtension
     {
-        public static Expression<Func<T, bool>> True<T>()
-        {
-            return f => true;
-        }
-
-        public static Expression<Func<T, bool>> False<T>()
-        {
-            return f => false;
-        }
-
-        //public static Expression<Func<T, bool>> Or<T>(this Expression<Func<T, bool>> expression1, Expression<Func<T, bool>> expression2)
-        //    {
-        //        var invokedExpression = Expression.Invoke(expression2, expression1.Parameters.Cast<Expression>());
-        //        return Expression.Lambda<Func<T, bool>>(Expression.Or(expression1.Body, invokedExpression), expression1.Parameters);
-        //    }
-
-        //public static Expression<Func<T, bool>> And<T>(this Expression<Func<T, bool>> expression1, Expression<Func<T, bool>> expression2)
-        //    {
-        //        var invokedExpression = Expression.Invoke(expression2, expression1.Parameters.Cast<Expression>());
-        //        return Expression.Lambda<Func<T, bool>>(Expression.And(expression1.Body, invokedExpression), expression1.Parameters);
-        //    }
-
         // https://stackoverflow.com/questions/457316/combining-two-expressions-expressionfunct-bool/457328#457328
-        public static Expression<Func<T, bool>> Or<T>([NotNull] this Expression<Func<T, bool>> expr1, Expression<Func<T, bool>> expr2)
+        public static Expression<Func<T, bool>> Or<T>([NotNull] this Expression<Func<T, bool>> @this, Expression<Func<T, bool>> expr)
         {
             var parameter = Expression.Parameter(typeof(T));
 
-            var leftVisitor = new ReplaceExpressionVisitor(expr1.Parameters[0], parameter);
-            var left = leftVisitor.Visit(expr1.Body);
-            var rightVisitor = new ReplaceExpressionVisitor(expr2.Parameters[0], parameter);
-            var right = rightVisitor.Visit(expr2.Body);
+            var leftVisitor = new ReplaceExpressionVisitor(@this.Parameters[0], parameter);
+            var left = leftVisitor.Visit(@this.Body);
+            var rightVisitor = new ReplaceExpressionVisitor(expr.Parameters[0], parameter);
+            var right = rightVisitor.Visit(expr.Body);
 
             return Expression.Lambda<Func<T, bool>>(
                 Expression.OrElse(left, right), parameter);
         }
 
-        public static Expression<Func<T, bool>> And<T>([NotNull] this Expression<Func<T, bool>> expr1,
-            Expression<Func<T, bool>> expr2)
+        public static Expression<Func<T, bool>> OrIf<T>([NotNull] this Expression<Func<T, bool>> @this, bool condition,Expression<Func<T, bool>> expr)
+            => condition ? Or<T>(@this, expr) : @this;
+
+        public static Expression<Func<T, bool>> And<T>([NotNull] this Expression<Func<T, bool>> @this, Expression<Func<T, bool>> expr)
         {
             var parameter = Expression.Parameter(typeof(T));
 
-            var leftVisitor = new ReplaceExpressionVisitor(expr1.Parameters[0], parameter);
-            var left = leftVisitor.Visit(expr1.Body);
-            var rightVisitor = new ReplaceExpressionVisitor(expr2.Parameters[0], parameter);
-            var right = rightVisitor.Visit(expr2.Body);
+            var leftVisitor = new ReplaceExpressionVisitor(@this.Parameters[0], parameter);
+            var left = leftVisitor.Visit(@this.Body);
+            var rightVisitor = new ReplaceExpressionVisitor(expr.Parameters[0], parameter);
+            var right = rightVisitor.Visit(expr.Body);
 
             return Expression.Lambda<Func<T, bool>>(
                 Expression.AndAlso(left, right), parameter);
         }
 
-        private class ReplaceExpressionVisitor : ExpressionVisitor
-        {
-            private readonly Expression _oldValue;
-            private readonly Expression _newValue;
-
-            public ReplaceExpressionVisitor(Expression oldValue, Expression newValue)
-            {
-                _oldValue = oldValue;
-                _newValue = newValue;
-            }
-
-            public override Expression Visit(Expression node)
-            {
-                if (node == _oldValue)
-                    return _newValue;
-
-                return base.Visit(node);
-            }
-        }
+        public static Expression<Func<T, bool>> AndIf<T>([NotNull] this Expression<Func<T, bool>> @this, bool condition, Expression<Func<T, bool>> expr)
+            => condition ? And<T>(@this, expr) : @this;
 
         public static MethodInfo GetMethod<T>(this Expression<T> expression)
         {
@@ -122,8 +85,8 @@ namespace System.Linq.Expressions
         /// <typeparam name="TMember">TMember</typeparam>
         /// <param name="memberExpression">get member expression</param>
         /// <returns></returns>
-        public static string GetMemberName<TEntity, TMember>([NotNull] this Expression<Func<TEntity, TMember>> memberExpression) =>
-            GetMemberInfo(memberExpression)?.Name;
+        public static string GetMemberName<TEntity, TMember>([NotNull] this Expression<Func<TEntity, TMember>> memberExpression) 
+            => GetMemberInfo(memberExpression)?.Name;
 
         /// <summary>
         /// GetMemberInfo
@@ -135,19 +98,14 @@ namespace System.Linq.Expressions
         public static MemberInfo GetMemberInfo<TEntity, TMember>([NotNull] this Expression<Func<TEntity, TMember>> expression)
         {
             if (expression.NodeType != ExpressionType.Lambda)
-            {
                 throw new ArgumentException(nameof(expression));
-                //throw new ArgumentException(string.Format(Resource.propertyExpression_must_be_lambda_expression, nameof(expression)), nameof(expression));
-            }
 
             var lambda = (LambdaExpression)expression;
 
             var memberExpression = ExtractMemberExpression(lambda.Body);
             if (memberExpression == null)
-            {
                 throw new ArgumentException(nameof(expression));
-                //throw new ArgumentException(string.Format(Resource.propertyExpression_must_be_lambda_expression, nameof(memberExpression)), nameof(memberExpression));
-            }
+
             return memberExpression.Member;
         }
 
@@ -158,8 +116,7 @@ namespace System.Linq.Expressions
         /// <typeparam name="TProperty"></typeparam>
         /// <param name="expression"></param>
         /// <returns></returns>
-        public static PropertyInfo GetProperty<TEntity, TProperty>(
-            [NotNull] this Expression<Func<TEntity, TProperty>> expression)
+        public static PropertyInfo GetProperty<TEntity, TProperty>([NotNull] this Expression<Func<TEntity, TProperty>> expression)
         {
             var member = GetMemberInfo(expression);
             if (null == member)
@@ -169,6 +126,18 @@ namespace System.Linq.Expressions
                 return property;
 
             return typeof(TEntity).GetProperty(member.Name);
+        }
+
+        [Obsolete("Obsoleted")]
+        public static Expression<Func<T, bool>> True<T>()
+        {
+            return f => true;
+        }
+
+        [Obsolete("Obsoleted")]
+        public static Expression<Func<T, bool>> False<T>()
+        {
+            return f => false;
         }
 
         private static MemberExpression ExtractMemberExpression(Expression expression)
@@ -186,5 +155,32 @@ namespace System.Linq.Expressions
 
             return null;
         }
+
+        private class ReplaceExpressionVisitor : ExpressionVisitor
+        {
+            private readonly Expression _oldValue;
+            private readonly Expression _newValue;
+
+            public ReplaceExpressionVisitor(Expression oldValue, Expression newValue)
+            {
+                _oldValue = oldValue;
+                _newValue = newValue;
+            }
+
+            public override Expression Visit(Expression node)
+            {
+                if (node == _oldValue)
+                    return _newValue;
+
+                return base.Visit(node);
+            }
+        }
+
+    }
+
+    public static class ExpressionCreator
+    {
+        public static Expression<Func<T, bool>> New<T>(Expression<Func<T, bool>> expr = null)
+            => expr ?? (x => true);
     }
 }

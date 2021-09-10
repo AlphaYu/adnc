@@ -1,24 +1,23 @@
-﻿using JetBrains.Annotations;
+﻿using Adnc.Infra.Repository.IRepositories.Extentions.Internal;
+using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.EntityFrameworkCore.Query.Internal;
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Adnc.Infra.IRepositories
+namespace System.Linq
 {
     /// <summary>
     /// Entity Framework LINQ related extension methods.
     /// </summary>
-    public static class EfCoreIQueryableExtentions
+    public static class IQueryableExtentions
     {
         /// <summary>
         ///     <para>
@@ -3051,99 +3050,44 @@ namespace Adnc.Infra.IRepositories
                 operatorMethodInfo, source, (Expression)null, cancellationToken);
 
         #endregion Impl.
-    }
 
-    [DebuggerStepThrough]
-    internal static class Check
-    {
-        [ContractAnnotation("value:null => halt")]
-        public static T NotNull<T>([NoEnumeration] T value, [InvokerParameterName][NotNull] string parameterName)
-        {
-#pragma warning disable IDE0041 // Use 'is null' check
-            if (ReferenceEquals(value, null))
-#pragma warning restore IDE0041 // Use 'is null' check
-            {
-                NotEmpty(parameterName, nameof(parameterName));
+        #region WhereIf
+        public static IQueryable<T> WhereIf<T>(this IQueryable<T> @this, bool condition, [NotNull] Expression<Func<T, bool>> predicate)
+            => condition ? @this.Where(predicate) : @this;
+        #endregion
 
-                throw new ArgumentNullException(parameterName);
-            }
+        #region OrderByIf
+        public static IOrderedQueryable<TSource> OrderByIf<TSource, TKey>(this IQueryable<TSource> @this, bool condition, Expression<Func<TSource, TKey>> keySelector, IComparer<TKey> comparer)
+            => condition ? @this.OrderBy(keySelector, comparer) : @this.OrderBy(e => true);
+        #endregion
 
-            return value;
-        }
+        #region OrderByDescendingIf
+        public static IOrderedQueryable<TSource> OrderByDescendingIf<TSource, TKey>(this IQueryable<TSource> @this, bool condition, Expression<Func<TSource, TKey>> keySelector)
+            => condition ? @this.OrderByDescending(keySelector) : @this.OrderByDescending(e => true);
 
-        [ContractAnnotation("value:null => halt")]
-        public static IReadOnlyList<T> NotEmpty<T>(IReadOnlyList<T> value, [InvokerParameterName][NotNull] string parameterName)
-        {
-            NotNull(value, parameterName);
+        public static IOrderedQueryable<TSource> OrderByDescendingIf<TSource, TKey>(this IQueryable<TSource> @this, bool condition, Expression<Func<TSource, TKey>> keySelector, IComparer<TKey> comparer)
+            => condition ? @this.OrderByDescending(keySelector, comparer) : @this.OrderByDescending(e => true);
+        #endregion
 
-            if (value.Count == 0)
-            {
-                NotEmpty(parameterName, nameof(parameterName));
+        #region ThenByIf
+        public static IOrderedQueryable<TSource> ThenByIf<TSource, TKey>(this IOrderedQueryable<TSource> @this, bool condition, Expression<Func<TSource, TKey>> keySelector)
+            => condition ? @this.ThenBy(keySelector) : @this;
 
-                throw new ArgumentException(AbstractionsStrings.CollectionArgumentIsEmpty(parameterName));
-            }
+        public static IOrderedQueryable<TSource> ThenByIf<TSource, TKey>(this IOrderedQueryable<TSource> @this, bool condition, Expression<Func<TSource, TKey>> keySelector, IComparer<TKey> comparer)
+            => condition ? @this.ThenBy(keySelector, comparer) : @this;
+        #endregion
 
-            return value;
-        }
+        #region ThenByDescendingIf
+        public static IOrderedQueryable<TSource> ThenByDescendingIf<TSource, TKey>(this IOrderedQueryable<TSource> @this, bool condition, Expression<Func<TSource, TKey>> keySelector, IComparer<TKey> comparer)
+            => condition ? @this.ThenByDescending(keySelector, comparer) : @this;
 
-        [ContractAnnotation("value:null => halt")]
-        public static string NotEmpty(string value, [InvokerParameterName][NotNull] string parameterName)
-        {
-            Exception e = null;
-            if (value is null)
-            {
-                e = new ArgumentNullException(parameterName);
-            }
-            else if (value.Trim().Length == 0)
-            {
-                e = new ArgumentException(AbstractionsStrings.ArgumentIsEmpty(parameterName));
-            }
+        public static IOrderedQueryable<TSource> ThenByDescendingIf<TSource, TKey>(this IOrderedQueryable<TSource> @this, bool condition, Expression<Func<TSource, TKey>> keySelector)
+            => condition ? @this.ThenByDescending(keySelector) : @this;
+        #endregion
 
-            if (e != null)
-            {
-                NotEmpty(parameterName, nameof(parameterName));
-
-                throw e;
-            }
-
-            return value;
-        }
-
-        public static string NullButNotEmpty(string value, [InvokerParameterName][NotNull] string parameterName)
-        {
-            if (!(value is null)
-                && value.Length == 0)
-            {
-                NotEmpty(parameterName, nameof(parameterName));
-
-                throw new ArgumentException(AbstractionsStrings.ArgumentIsEmpty(parameterName));
-            }
-
-            return value;
-        }
-
-        public static IReadOnlyList<T> HasNoNulls<T>(IReadOnlyList<T> value, [InvokerParameterName][NotNull] string parameterName)
-            where T : class
-        {
-            NotNull(value, parameterName);
-
-            if (value.Any(e => e == null))
-            {
-                NotEmpty(parameterName, nameof(parameterName));
-
-                throw new ArgumentException(parameterName);
-            }
-
-            return value;
-        }
-
-        [Conditional("DEBUG")]
-        public static void DebugAssert(bool condition, string message)
-        {
-            if (!condition)
-            {
-                throw new Exception($"Check.DebugAssert failed: {message}");
-            }
-        }
+        #region IsNullOrEmpty
+        public static bool IsNullOrEmpty<T>(this IQueryable<T> @this)
+            => (@this != null && @this.Any());
+        #endregion
     }
 }

@@ -41,9 +41,7 @@ namespace Adnc.Usr.WebApi.Controllers
         [Permission("menuAdd")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<ActionResult<long>> CreateAsync([FromBody] MenuCreationDto menuDto)
-        {
-            return CreatedResult(await _menuService.CreateAsync(menuDto));
-        }
+            => CreatedResult(await _menuService.CreateAsync(menuDto));
 
         /// <summary>
         /// 修改菜单
@@ -55,9 +53,7 @@ namespace Adnc.Usr.WebApi.Controllers
         [Permission("menuEdit")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult> UpdateAsync([FromRoute] long id, [FromBody] MenuUpdationDto input)
-        {
-            return Result(await _menuService.UpdateAsync(id, input));
-        }
+            => Result(await _menuService.UpdateAsync(id, input));
 
         /// <summary>
         /// 删除菜单
@@ -68,9 +64,7 @@ namespace Adnc.Usr.WebApi.Controllers
         [Permission("menuDelete")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult> DeleteAsync([FromRoute] long id)
-        {
-            return Result(await _menuService.DeleteAsync(id));
-        }
+            => Result(await _menuService.DeleteAsync(id));
 
         /// <summary>
         /// 获取菜单树
@@ -80,9 +74,7 @@ namespace Adnc.Usr.WebApi.Controllers
         [Permission("menuList")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<List<MenuNodeDto>>> GetlistAsync()
-        {
-            return await _menuService.GetlistAsync();
-        }
+            => await _menuService.GetlistAsync();
 
         /// <summary>
         /// 获取侧边栏路由菜单
@@ -105,8 +97,6 @@ namespace Adnc.Usr.WebApi.Controllers
         [HttpGet("{roleId}/menutree")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<MenuTreeDto>> GetMenuTreeListByRoleIdAsync([FromRoute] long roleId)
-        {
-            return await _menuService.GetMenuTreeListByRoleIdAsync(roleId);
-        }
+            => await _menuService.GetMenuTreeListByRoleIdAsync(roleId);
     }
 }

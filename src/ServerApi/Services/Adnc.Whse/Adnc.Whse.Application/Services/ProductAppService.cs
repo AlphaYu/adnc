@@ -145,11 +145,10 @@ namespace Adnc.Whse.Application.Services
         /// <returns></returns>
         public async Task<PageModelDto<ProductDto>> GetPagedAsync(ProductSearchPagedDto search)
         {
-            Expression<Func<Product, bool>> whereCondition = x => true;
-            if (search.Id > 0)
-            {
-                whereCondition = whereCondition.And(x => x.Id == search.Id);
-            }
+            var whereCondition = ExpressionCreator
+                                                                 .New<Product>()
+                                                                 .AndIf(search.Id > 0, x => x.Id == search.Id);
+
             var pagedEntity = await _productRepo.PagedAsync(search.PageIndex, search.PageSize, whereCondition, x => x.Id);
 
             var pagedDto = Mapper.Map<PageModelDto<ProductDto>>(pagedEntity);
@@ -177,17 +176,10 @@ namespace Adnc.Whse.Application.Services
         /// <returns></returns>
         public async Task<List<ProductDto>> GetListAsync(ProductSearchListDto search)
         {
-            var whereCondition = ExpressionExtension.True<Product>();
-            if (!search.Ids.IsNullOrEmpty())
-            {
-                var ids = search.Ids.Where(x => x > 0).Select(x => x).Distinct();
-
-                whereCondition = whereCondition.And(x => ids.Contains(x.Id));
-            }
-            if (search.StatusCode > 0)
-            {
-                whereCondition = whereCondition.And(x => (int)x.Status.Code == search.StatusCode);
-            }
+            var whereCondition = ExpressionCreator
+                                                                             .New<Product>()
+                                                                             .AndIf(search.Ids.IsNotNullOrEmpty(), x=>(search.Ids.Select(x=>x).Distinct()).Contains(x.Id))
+                                                                             .AndIf(search.StatusCode > 0, x => (int)x.Status.Code == search.StatusCode);
 
             var products = await _productRepo.Where(whereCondition).ToListAsync();
 

@@ -154,7 +154,7 @@ namespace System.Collections.Generic
         /// <returns>true if null or empty&lt; t&gt;, false if not.</returns>
         public static bool IsNullOrEmpty<T>(this ICollection<T> @this)
         {
-            return @this == null || @this.Count == 0;
+            return @this == null || !@this.Any();
         }
 
         /// <summary>
@@ -165,7 +165,7 @@ namespace System.Collections.Generic
         /// <returns>true if the collection is not (null or empty), false if not.</returns>
         public static bool IsNotNullOrEmpty<T>(this ICollection<T> @this)
         {
-            return @this != null && @this.Count != 0;
+            return @this != null && @this.Any();
         }
 
         /// <summary>
