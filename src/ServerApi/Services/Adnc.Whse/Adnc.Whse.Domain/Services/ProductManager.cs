@@ -4,6 +4,7 @@ using Adnc.Infra.Helper;
 using Adnc.Infra.IRepositories;
 using Adnc.Whse.Domain.Entities;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Adnc.Whse.Domain.Services

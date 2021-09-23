@@ -64,21 +64,21 @@ namespace Adnc.Usr.Application.Services
             menu.Id = id;
 
             var updatingProps = UpdatingProps<SysMenu>(
-                                                        x => x.Code
-                                                        , x => x.Component
-                                                        , x => x.Hidden
-                                                        , x => x.Icon
-                                                        , x => x.IsMenu
-                                                        , x => x.IsOpen
-                                                        , x => x.Levels
-                                                        , x => x.Name
-                                                        , x => x.Ordinal
-                                                        , x => x.PCode
-                                                        , x => x.PCodes
-                                                        , x => x.Status
-                                                        , x => x.Tips
-                                                        , x => x.Url
-                                                    );
+                                                                                            x => x.Code
+                                                                                            , x => x.Component
+                                                                                            , x => x.Hidden
+                                                                                            , x => x.Icon
+                                                                                            , x => x.IsMenu
+                                                                                            , x => x.IsOpen
+                                                                                            , x => x.Levels
+                                                                                            , x => x.Name
+                                                                                            , x => x.Ordinal
+                                                                                            , x => x.PCode
+                                                                                            , x => x.PCodes
+                                                                                            , x => x.Status
+                                                                                            , x => x.Tips
+                                                                                            , x => x.Url
+                                                                                        );
 
             await _menuRepository.UpdateAsync(menu, updatingProps);
 
@@ -104,9 +104,7 @@ namespace Adnc.Usr.Application.Services
             {
                 var parentNode = menuNodes.FirstOrDefault(x => x.Code == node.PCode);
                 if (parentNode != null)
-                {
                     node.ParentId = parentNode.Id;
-                }
             }
 
             var dictNodes = menuNodes.ToDictionary(x => x.Id);
@@ -114,13 +112,9 @@ namespace Adnc.Usr.Application.Services
             {
                 var currentNode = pair.Value;
                 if (currentNode.ParentId.HasValue && dictNodes.ContainsKey(currentNode.ParentId.Value))
-                {
                     dictNodes[currentNode.ParentId.Value].Children.Add(currentNode);
-                }
                 else
-                {
                     result.Add(currentNode);
-                }
             }
 
             return result;
@@ -159,9 +153,7 @@ namespace Adnc.Usr.Application.Services
                 {
                     var parentNode = routerMenus.FirstOrDefault(x => x.Code == node.PCode);
                     if (parentNode != null)
-                    {
                         node.ParentId = parentNode.Id;
-                    }
                 }
 
                 var dictNodes = routerMenus.ToDictionary(x => x.Id);
@@ -169,13 +161,9 @@ namespace Adnc.Usr.Application.Services
                 {
                     var currentNode = pair.Value;
                     if (currentNode.ParentId.HasValue && dictNodes.ContainsKey(currentNode.ParentId.Value))
-                    {
                         dictNodes[currentNode.ParentId.Value].Children.Add(currentNode);
-                    }
                     else
-                    {
                         result.Add(currentNode);
-                    }
                 }
             }
 
@@ -209,9 +197,7 @@ namespace Adnc.Usr.Application.Services
                 foreach (var child in nodes)
                 {
                     if (child.PID == node.Id)
-                    {
                         node.Children.Add(child);
-                    }
                 }
             }
 

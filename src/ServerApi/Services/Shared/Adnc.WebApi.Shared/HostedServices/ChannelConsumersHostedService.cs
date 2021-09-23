@@ -53,6 +53,8 @@ namespace Adnc.WebApi.Shared.HostedServices
                     if (stoppingToken.IsCancellationRequested) break;
                 }
             }, stoppingToken);
+
+            await Task.CompletedTask;
         }
     }
 }

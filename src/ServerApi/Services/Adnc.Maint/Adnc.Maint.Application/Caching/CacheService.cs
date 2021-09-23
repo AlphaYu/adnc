@@ -14,34 +14,17 @@ namespace Adnc.Maint.Application.Services.Caching
     public class CacheService : AbstractCacheService
     {
         private readonly Lazy<ICacheProvider> _cache;
-
-        //private readonly Lazy<IDistributedLocker> _distributedLocker;
-        private readonly Lazy<IBloomFilterFactory> _bloomFilterFactory;
-
         private readonly Lazy<IEfRepository<SysCfg>> _cfgRepository;
         private readonly Lazy<IEfRepository<SysDict>> _dictRepository;
 
         public CacheService(Lazy<ICacheProvider> cache
-            , Lazy<IRedisProvider> redisProvider
-            , Lazy<IDistributedLocker> distributedLocker
-            , Lazy<IBloomFilterFactory> bloomFilterFactory
             , Lazy<IEfRepository<SysCfg>> cfgRepository
             , Lazy<IEfRepository<SysDict>> dictRepository)
-            : base(cache, redisProvider, distributedLocker)
+            : base(cache)
         {
             _cache = cache;
             _cfgRepository = cfgRepository;
             _dictRepository = dictRepository;
-            _bloomFilterFactory = bloomFilterFactory;
-        }
-
-        internal (IBloomFilter CacheKeys, IBloomFilter Null) BloomFilters
-        {
-            get
-            {
-                var cacheFilter = _bloomFilterFactory.Value.GetBloomFilter(_cache.Value.CacheOptions.PenetrationSetting.BloomFilterSetting.Name);
-                return (cacheFilter, null);
-            }
         }
 
         public override async Task PreheatAsync()

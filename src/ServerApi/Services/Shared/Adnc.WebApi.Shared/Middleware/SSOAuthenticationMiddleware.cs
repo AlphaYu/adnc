@@ -1,5 +1,6 @@
 ﻿using Adnc.Infra.Caching;
 using Adnc.Infra.Helper;
+using Adnc.Shared.ConfigModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -19,17 +20,15 @@ using System.Threading.Tasks;
 
 namespace Adnc.WebApi.Shared.Middleware
 {
-    public class SSOAuthenticationMiddleware
+    public class SsoAuthenticationMiddleware
     {
         private readonly RequestDelegate _next;
-        private readonly JWTConfig _jwtConfig;
+        private readonly JwtConfig _jwtConfig;
         private readonly string tokenPrefx = "accesstoken";
-
-        //private readonly string refreshTokenPrefx = "refreshtoken";
         private readonly ICacheProvider _cache;
 
-        public SSOAuthenticationMiddleware(RequestDelegate next
-            , IOptions<JWTConfig> jwtConfig
+        public SsoAuthenticationMiddleware(RequestDelegate next
+            , IOptions<JwtConfig> jwtConfig
             , ICacheProvider cache)
         {
             _next = next ?? throw new ArgumentNullException(nameof(next));
@@ -50,7 +49,7 @@ namespace Adnc.WebApi.Shared.Middleware
             }
 
             var requiredValues = ((RouteEndpoint)endpoint).RoutePattern.RequiredValues;
-            if (requiredValues.Count() == 0)
+            if (!requiredValues.Any())
             {
                 await _next(context);
                 return;
@@ -65,10 +64,10 @@ namespace Adnc.WebApi.Shared.Middleware
             }
 
             //判断Api是否需要认证
-            bool isNeedAuthentication = endpoint.Metadata.GetMetadata<IAllowAnonymous>() == null ? true : false;
+            bool isNeedAuthentication = endpoint.Metadata.GetMetadata<IAllowAnonymous>() == null;
 
             //Api不需要认证
-            if (isNeedAuthentication == false)
+            if (!isNeedAuthentication)
             {
                 //如果是调用登录API、刷新token的Api,并且调用成功，需要保存accesstoken到cache
                 if (controller == "account" && (action == "login" || action == "refreshaccesstoken"))
@@ -83,7 +82,7 @@ namespace Adnc.WebApi.Shared.Middleware
             }
 
             //API需要认证
-            if (isNeedAuthentication == true)
+            if (isNeedAuthentication)
             {
                 //是修改密码,需要从cahce移除Token
                 if (controller == "account" && action == "password")
@@ -101,7 +100,7 @@ namespace Adnc.WebApi.Shared.Middleware
                     if (StatusCodeChecker.Is2xx(context.Response.StatusCode))
                     {
                         //主动注销，从cahce移除token
-                        if (await CheckToken(context) == true)
+                        if (await CheckToken(context))
                             await RemoveToken(context);
                         return;
                     }
@@ -154,7 +153,6 @@ namespace Adnc.WebApi.Shared.Middleware
             }
 
             await _next(context);
-            return;
         }
 
         /// <summary>
@@ -251,8 +249,8 @@ namespace Adnc.WebApi.Shared.Middleware
                 var token = new JwtSecurityTokenHandler().ReadJwtToken(tokenTxt);
                 if (token != null)
                 {
-                    var expireTimestamp = token.Claims.Where(p => p.Type == "exp").FirstOrDefault().Value.ToLong();
-                    var expireDt = expireTimestamp.Value.ToLocalTime().AddMinutes(_jwtConfig.ClockSkew);
+                    var expireTimestamp = token.Claims.FirstOrDefault(p => p.Type == "exp").Value.ToLong();
+                    var expireDt = expireTimestamp.Value.ToLocalTime().AddSeconds(_jwtConfig.ClockSkew);
                     var Id = token.Claims.First(x => x.Type == JwtRegisteredClaimNames.Sub).Value.ToLong();
                     var account = token.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
 
@@ -267,12 +265,12 @@ namespace Adnc.WebApi.Shared.Middleware
     /// <summary>
     /// 注册单点登录中间件
     /// </summary>
-    public static class SSOAuthenticationMiddlewareExtensions
+    public static class SsoAuthenticationMiddlewareExtensions
     {
         public static IApplicationBuilder UseSSOAuthentication(this IApplicationBuilder builder, bool isOpenSSOAuthentication = true)
         {
             if (isOpenSSOAuthentication)
-                return builder.UseMiddleware<SSOAuthenticationMiddleware>();
+                return builder.UseMiddleware<SsoAuthenticationMiddleware>();
 
             return builder;
         }

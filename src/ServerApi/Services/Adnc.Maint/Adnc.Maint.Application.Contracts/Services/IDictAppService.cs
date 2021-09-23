@@ -45,9 +45,9 @@ namespace Adnc.Maint.Application.Contracts.Services
         /// <summary>
         /// 字典列表
         /// </summary>
-        /// <param name="serach"></param>
+        /// <param name="search"></param>
         /// <returns></returns>
-        Task<List<DictDto>> GetListAsync(DictSearchDto serach);
+        Task<List<DictDto>> GetListAsync(DictSearchDto search);
 
         /// <summary>
         /// 获取字典

@@ -11,7 +11,7 @@ namespace Adnc.Infra.Caching
         /// <param name="timeoutSeconds">锁定时间</param>
         /// <param name="autoDelay">是否自己续期</param>
         /// <returns>Success 获取锁的状态，LockValue锁的版本号</returns>
-        Task<(bool Success, string LockValue)> LockAsync(string cacheKey, int timeoutSeconds = 5, bool autoDelay = true);
+        Task<(bool Success, string LockValue)> LockAsync(string cacheKey, int timeoutSeconds = 5, bool autoDelay = false);
 
         /// <summary>
         /// 安全解锁
@@ -28,7 +28,7 @@ namespace Adnc.Infra.Caching
         /// <param name="timeoutSeconds">锁定时间</param>
         /// <param name="autoDelay">是否自己续期</param>
         /// <returns>Success 获取锁的状态，LockValue锁的版本号</returns>
-        (bool Success, string LockValue) Lock(string cacheKey, int timeoutSeconds = 5, bool autoDelay = true);
+        (bool Success, string LockValue) Lock(string cacheKey, int timeoutSeconds = 5, bool autoDelay = false);
 
         /// <summary>
         /// 安全解锁

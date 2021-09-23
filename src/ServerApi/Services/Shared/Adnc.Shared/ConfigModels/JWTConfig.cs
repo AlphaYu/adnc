@@ -1,9 +1,9 @@
-﻿namespace Adnc.WebApi.Shared
+﻿namespace Adnc.Shared.ConfigModels
 {
     /// <summary>
     /// JWT配置
     /// </summary>
-    public class JWTConfig
+    public class JwtConfig
     {
         /// <summary>
         /// 加密Key
@@ -16,7 +16,7 @@
         public string Issuer { get; set; }
 
         /// <summary>
-        /// 时间歪斜
+        /// 时间歪斜，单位秒
         /// </summary>
         public int ClockSkew { get; set; }
 

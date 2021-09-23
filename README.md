@@ -25,7 +25,7 @@
 [请点击链接，查看详细介绍](https://github.com/AlphaYu/Adnc/wiki/%E5%A6%82%E4%BD%95%E5%BF%AB%E9%80%9F%E8%B7%91%E8%B5%B7%E6%9D%A5)
 
 #### 如何手动部署到服务器
-- 详细介绍如何使用docker安装consul集群、使用consul注册中心、安装配置Skywalking，以及相关项目dockerfile文件编写和配置等。<br/>
+- 详细介绍如何使用docker安装配置consul集群、Skywalking系列组件、相关项目的dockerfile文件编写与配置以及如何将多个服务部署到服务器。<br/>
 [请点击链接，查看详细介绍](https://github.com/AlphaYu/Adnc/wiki/Adnc%E5%A6%82%E4%BD%95%E6%89%8B%E5%8A%A8%E9%83%A8%E7%BD%B2(docker,consul,skywalking,nginx))
 
 
@@ -135,96 +135,95 @@
 
 ![.NET微服务开源框架-整体架构图](https://aspdotnetcore.net/adnc_solution)
 #### Infrastructures 基础架构相关工程
-##### Adnc.Infra.Core
+##### :white_check_mark: Adnc.Infra.Core
 该工程是Adnc所有工程的最顶层，任何工程都会者直接或间接依赖该层。该工程提供了大量的`C#`基础类型的扩展方法以及Configuration、DependencyInjection、ContainerBuilder的扩展方法，还定义了一些异常类。
 
-##### Adnc.Infra.Caching
+##### :white_check_mark: Adnc.Infra.Caching
 该工程集成了StackExchange.Redis，提供缓存的管理、Redis常用类型操作、分布式锁、布隆过滤器功能。
 
-##### Adnc.Infra.Consul
+##### :white_check_mark: Adnc.Infra.Consul
 该工程集成了Consul，提供服务的自动注册、发现以及系统配置读写操作。
 
-##### Adnc.Infra.EfCore.MySQL
+##### :white_check_mark: Adnc.Infra.EfCore.MySQL
 该工程负责Adnc.Infra.Repository仓储接口以及IUintofWork接口的EfCore的实现，提供mysql数据库的CURD操作，同时也集成了Dapper部分接口，用来处理复杂查询。
 
-##### Adnc.Infra.EventBus
+##### :white_check_mark: Adnc.Infra.EventBus
 该工程简单封装了CAP，同时集成了RabbitMq，封装了发布者与订阅者等公共类，方便更加便捷的调用Rabbitmq。
 
-##### Adnc.Infra.Gateway 
+##### :white_check_mark: Adnc.Infra.Gateway 
 该工程是一个Web项目，基于Ocelot实现的Api网关，如果项目采用整体结构开发，该项目可以直接删除。ocelot网关包含路由、服务聚合、服务发现、认证、鉴权、限流、熔断、缓存、Header头传递等功能。市面上主流网关还有Kong，Traefik，Ambassador，Tyk等。
 
-##### Adnc.Infra.HealthCheckUI
+##### :white_check_mark: Adnc.Infra.HealthCheckUI
 该工程是一个Web项目， AspNetCore.HealthChecks组件的Dashboard，直接配置需要监测的服务地址就可以了，没有代码，关键的代码参考webapi层的AddHealthChecks()方法。
 
-##### Adnc.Infra.Helper
+##### :white_check_mark: Adnc.Infra.Helper
 该工程提供一些通用帮助类，如IdGeneraterHelper,HashHelper,SecurityHelper等等。
 
-##### Adnc.Infra.Mongo
+##### :white_check_mark: Adnc.Infra.Mongo
 该工程负责Adnc.Infra.Repository仓储接口的Mongodb实现，提供mongodb数据库的CURD操作。
 
-##### Adnc.Infra.Mapper
+##### :white_check_mark: Adnc.Infra.Mapper
 该工程定义了IObjectMapper接口，并且提供了AutoMapper的实现。
 
-##### Adnc.Infra.Repository
+##### :white_check_mark: Adnc.Infra.Repository
 该工程定义了Entity对象的基类、UnitOfWork接口、仓储接口。
 
 #### Services 微服务相关工程
 该目录都是具体微服务业务的实现。
-##### Shared 
+##### :white_check_mark: Shared 
 微服务公用工程
 - `Adnc.Shared` 该层目前有三个目录Consts存放常量定义文件、Events存放事件定义文件、RPCServices存放RPC服务接口声明文件，任何层都可以依赖该层。
 - `Adnc.Application.Shared` 该层定义了DTO对象的基类、应用服务类基类、缓存相关服务基类以及操作日志拦截器、UnitOfWork拦截器。所有微服务Application/Application.Contracts层的共享层，并且都需要依赖该层。
 - `Adnc.WebApi.Shared` 该层实现了认证、鉴权、异常捕获、服务组件注册等公共类和中间件。所有微服务WebApi层的共享层，并且都需要依赖该层。
-##### Adnc.Usr 
+##### :white_check_mark: Adnc.Usr 
 用户中心微服务，系统支撑服务，实现了用户管理、角色管理、权限管理、菜单管理、组织架构管理。
-##### Adnc.Maint
+##### :white_check_mark: Adnc.Maint
 运维中心微服务，系统支撑服务，实现了登录日志、审计日志、异常日志、字典管理、配置参数管理。
-##### Adnc.Cus
+##### :white_check_mark: Adnc.Cus
 客户中心微服务，经典三层开发模式demo。
-##### Adnc.Ord
+##### :white_check_mark: Adnc.Ord
 订单中心微服务，DDD开发模式demo。
-##### Adnc.Whse
+##### :white_check_mark: Adnc.Whse
 仓储中心微服务，DDD开发模式demo。
 
 > 每个微服务的Migrations层是Efcore用来做数据迁移的，迁移的日志文件存放在各自Migrations目录中。
 
 ### 代码片段
 ```csharp
-    [Route("usr/session")]
-    [ApiController]
-    public class AccountController : ControllerBase
+namespace Adnc.Usr.WebApi
+{
+    public class Startup
     {
-        private readonly JWTConfig _jwtConfig;
-        private readonly IAccountAppService _accountService;
-        private readonly ILogger<AccountController> _logger;
+        private readonly IHostEnvironment _environment;
+        private IServiceCollection _services;
 
-        public AccountController(IOptionsSnapshot<JWTConfig> jwtConfig
-            , IAccountAppService accountService
-            , ILogger<AccountController> logger)
+        public Startup(IHostEnvironment environment)
         {
-            _jwtConfig = jwtConfig.Value;
-            _accountService = accountService;
-            _logger = logger;
+            _environment = environment;
         }
 
-        /// <summary>
-        /// 登录/验证
-        /// </summary>
-        /// <param name="userDto"><see cref="UserValidateInputDto"/></param>
-        /// <returns></returns>
-        [AllowAnonymous]
-        [HttpPost()]
-        public async Task<UserTokenInfoDto> Login([FromBody]UserValidateInputDto userDto)
+        public void ConfigureServices(IServiceCollection services)
         {
-            var userValidateDto = await _accountService.Login(userDto);
+            _services = services;
+            services.AddAdncServices<PermissionHandlerLocal>();
+        }
 
-            return new UserTokenInfoDto
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            builder.RegisterAdncModules(_services);
+        }
+
+        public void Configure(IApplicationBuilder app)
+        {
+            app.UseAdncMiddlewares();
+
+            if (_environment.IsProduction() || _environment.IsStaging())
             {
-                Token = JwtTokenHelper.CreateAccessToken(_jwtConfig, userValidateDto),
-                RefreshToken = JwtTokenHelper.CreateRefreshToken(_jwtConfig, userValidateDto)
-            };
+                app.RegisterToConsul();
+            }
         }
     }
+}
 ```
 
 ## 问题交流

@@ -9,14 +9,14 @@ using Xunit.Abstractions;
 
 namespace Adnc.UnitTest.CoreService
 {
-    public class CoreServiceTests : IClassFixture<CoreServiceFixture>
+    public class UnitOfWorkTests : IClassFixture<CoreServiceFixture>
     {
         private readonly ITestOutputHelper _output;
         private readonly IOperater _userContext;
         private readonly IEfRepository<Customer> _cusRsp;
         private CoreServiceFixture _fixture;
 
-        public CoreServiceTests(CoreServiceFixture fixture, ITestOutputHelper output)
+        public UnitOfWorkTests(CoreServiceFixture fixture, ITestOutputHelper output)
         {
             _fixture = fixture;
             _output = output;

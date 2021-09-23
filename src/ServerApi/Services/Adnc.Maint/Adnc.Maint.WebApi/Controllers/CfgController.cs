@@ -20,9 +20,7 @@ namespace Adnc.Maint.WebApi.Controllers
         private readonly ICfgAppService _cfgAppService;
 
         public CfgController(ICfgAppService cfgAppService)
-        {
-            _cfgAppService = cfgAppService;
-        }
+           => _cfgAppService = cfgAppService;
 
         /// <summary>
         /// 新增配置
@@ -33,9 +31,7 @@ namespace Adnc.Maint.WebApi.Controllers
         [Permission("cfgAdd")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<ActionResult<long>> CreateAsync([FromBody] CfgCreationDto input)
-        {
-            return CreatedResult(await _cfgAppService.CreateAsync(input));
-        }
+            => CreatedResult(await _cfgAppService.CreateAsync(input));
 
         /// <summary>
         /// 更新配置
@@ -47,9 +43,7 @@ namespace Adnc.Maint.WebApi.Controllers
         [Permission("cfgEdit")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult<long>> UpdateAsync([FromRoute] long id, [FromBody] CfgUpdationDto input)
-        {
-            return Result(await _cfgAppService.UpdateAsync(id, input));
-        }
+            => Result(await _cfgAppService.UpdateAsync(id, input));
 
         /// <summary>
         /// 删除配置节点
@@ -60,9 +54,7 @@ namespace Adnc.Maint.WebApi.Controllers
         [Permission("cfgDelete")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult> DeleteAsync([FromRoute] long id)
-        {
-            return Result(await _cfgAppService.DeleteAsync(id));
-        }
+            => Result(await _cfgAppService.DeleteAsync(id));
 
         /// <summary>
         /// 获取配置列表
@@ -73,8 +65,6 @@ namespace Adnc.Maint.WebApi.Controllers
         [Permission("cfgList")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<PageModelDto<CfgDto>>> GetPagedAsync([FromQuery] CfgSearchPagedDto search)
-        {
-            return await _cfgAppService.GetPagedAsync(search);
-        }
+            => await _cfgAppService.GetPagedAsync(search);
     }
 }

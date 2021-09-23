@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Adnc.WebApi.Shared
+namespace Adnc.Shared.ConfigModels
 {
     public class JwtAccountlistModel
     {

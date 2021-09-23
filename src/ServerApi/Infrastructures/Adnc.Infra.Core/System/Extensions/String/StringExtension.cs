@@ -387,8 +387,7 @@ namespace System
         /// <returns></returns>
         public static long? ToLong(this string @this)
         {
-            long result;
-            bool status = long.TryParse(@this, out result);
+            bool status = long.TryParse(@this, out long result);
 
             //return status ? result : null;
 

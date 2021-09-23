@@ -33,8 +33,8 @@ namespace Adnc.Maint.Application.Services
                 return Problem(HttpStatusCode.BadRequest, "参数名称已经存在");
 
             var cfg = Mapper.Map<SysCfg>(input);
-            cfg.Id = IdGenerater.GetNextId();
 
+            cfg.Id = IdGenerater.GetNextId();
             await _cfgRepository.InsertAsync(cfg);
 
             return cfg.Id;
@@ -49,9 +49,7 @@ namespace Adnc.Maint.Application.Services
             var entity = Mapper.Map<SysCfg>(input);
 
             entity.Id = id;
-
             var updatingProps = UpdatingProps<SysCfg>(x => x.Name, x => x.Value, x => x.Description);
-
             await _cfgRepository.UpdateAsync(entity, updatingProps);
 
             return AppSrvResult();
@@ -65,37 +63,29 @@ namespace Adnc.Maint.Application.Services
 
         public async Task<CfgDto> GetAsync(long id)
         {
-            return (await _cacheService.GetAllCfgsFromCacheAsync()).Where(x => x.Id == id).FirstOrDefault();
+            return (await _cacheService.GetAllCfgsFromCacheAsync()).FirstOrDefault(x => x.Id == id);
         }
 
         public async Task<PageModelDto<CfgDto>> GetPagedAsync(CfgSearchPagedDto search)
         {
-            Expression<Func<CfgDto, bool>> whereCondition = x => true;
-            if (search.Name.IsNotNullOrWhiteSpace())
-            {
-                whereCondition = whereCondition.And(x => x.Name.Contains(search.Name));
-            }
-            if (search.Value.IsNotNullOrWhiteSpace())
-            {
-                whereCondition = whereCondition.And(x => x.Value.Contains(search.Value));
-            }
+            var whereCondition = ExpressionCreator
+                                                                             .New<CfgDto>()
+                                                                             .AndIf(search.Name.IsNotNullOrWhiteSpace(), x => x.Name.Contains(search.Name))
+                                                                             .AndIf(search.Value.IsNotNullOrWhiteSpace(), x => x.Value.Contains(search.Value));
 
             var allCfgs = await _cacheService.GetAllCfgsFromCacheAsync();
 
             var pagedCfgs = allCfgs.Where(whereCondition.Compile())
-                                   .OrderByDescending(x => x.CreateTime)
-                                   .Skip((search.PageIndex - 1) * search.PageSize)
-                                   .Take(search.PageSize)
-                                   .ToArray();
+                                                   .OrderByDescending(x => x.CreateTime)
+                                                   .Skip((search.PageIndex - 1) * search.PageSize)
+                                                   .Take(search.PageSize)
+                                                   .ToArray();
 
             var result = new PageModelDto<CfgDto>()
             {
-                Data = pagedCfgs
-                ,
-                TotalCount = allCfgs.Count
-                ,
-                PageIndex = search.PageIndex
-                ,
+                Data = pagedCfgs ,
+                TotalCount = allCfgs.Count,
+                PageIndex = search.PageIndex,
                 PageSize = search.PageSize
             };
 

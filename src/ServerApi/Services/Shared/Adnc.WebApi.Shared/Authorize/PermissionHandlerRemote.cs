@@ -16,17 +16,16 @@ namespace Microsoft.AspNetCore.Authorization
             //_contextAccessor = contextAccessor;
         }
 
-        protected override async Task<bool> CheckUserPermissions(long userId, IEnumerable<string> codes)
+        protected override async Task<bool> CheckUserPermissions(long userId, IEnumerable<string> codes,string validationVersion)
         {
             //var jwtToken = await _contextAccessor.HttpContext.GetTokenAsync("access_token");
             //var refitResult = await _authRpcService.GetCurrenUserPermissions($"Bearer {jwtToken}", userId, codes);
-            var refitResult = await _authRpcService.GetCurrenUserPermissionsAsync(userId, codes);
+            var refitResult = await _authRpcService.GetCurrenUserPermissionsAsync(userId, codes, validationVersion);
             if (!refitResult.IsSuccessStatusCode)
                 return false;
 
             var permissions = refitResult.Content;
-            bool result = permissions != null && permissions.Any();
-            return result;
+            return permissions.IsNotNullOrEmpty();
         }
     }
 }

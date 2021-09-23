@@ -9,11 +9,11 @@ namespace Adnc.Cus.Application.Contracts.Services
     public interface ICustomerAppService : IAppService
     {
         [OperateLog(LogName = "注册")]
-        Task<AppSrvResult<CustomerDto>> RegisterAsync(CustomerRegisterDto inputDto);
+        Task<AppSrvResult<CustomerDto>> RegisterAsync(CustomerRegisterDto input);
 
         [OperateLog(LogName = "充值")]
         [UnitOfWork(SharedToCap = true)]
-        Task<AppSrvResult<SimpleDto<string>>> RechargeAsync(long id, CustomerRechargeDto inputDto);
+        Task<AppSrvResult<SimpleDto<string>>> RechargeAsync(long id, CustomerRechargeDto input);
 
         [OperateLog(LogName = "处理充值")]
         [UnitOfWork]

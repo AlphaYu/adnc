@@ -23,6 +23,6 @@ namespace Adnc.Usr.Application.Contracts.Dtos
         /// <summary>
         /// 子部门
         /// </summary>
-        public List<DeptSimpleTreeDto> Children { get; set; } = new List<DeptSimpleTreeDto>();
+        public List<DeptSimpleTreeDto> Children { get; private set; } = new List<DeptSimpleTreeDto>();
     }
 }
