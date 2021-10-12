@@ -1,4 +1,4 @@
-﻿using JetBrains.Annotations;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics;
 
 namespace System
@@ -11,7 +11,7 @@ namespace System
         /// <param name="r"></param>
         /// <param name="seed"></param>
         /// <returns></returns>
-        public static int StrictNext(this Random r, int seed = int.MaxValue)
+        public static int StrictNext(this Random _, int seed = int.MaxValue)
         {
             return new Random((int)Stopwatch.GetTimestamp()).Next(seed);
         }

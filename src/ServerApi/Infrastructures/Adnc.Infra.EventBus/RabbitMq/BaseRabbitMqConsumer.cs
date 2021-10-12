@@ -15,7 +15,7 @@ namespace Adnc.Infra.EventBus.RabbitMq
         private readonly IModel _channel;
         private readonly ILogger<dynamic> _logger;
 
-        public BaseRabbitMqConsumer(IOptionsMonitor<RabbitMqConfig> options, ILogger<dynamic> logger)
+        protected BaseRabbitMqConsumer(IOptionsMonitor<RabbitMqConfig> options, ILogger<dynamic> logger)
         {
             _connection = RabbitMqConnection.GetInstance(options, logger).Connection;
             _channel = _connection.CreateModel();

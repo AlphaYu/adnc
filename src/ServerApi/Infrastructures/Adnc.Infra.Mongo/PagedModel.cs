@@ -1,5 +1,4 @@
 ﻿using Adnc.Infra.IRepositories;
-using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 
@@ -16,7 +15,6 @@ namespace Adnc.Infra.Mongo
 
         private IReadOnlyList<T> _data = Array.Empty<T>();
 
-        [NotNull]
         public IReadOnlyList<T> Data
         {
             get => _data;

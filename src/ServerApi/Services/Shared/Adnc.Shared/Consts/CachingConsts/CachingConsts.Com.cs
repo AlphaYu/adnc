@@ -2,6 +2,8 @@
 {
     public class CachingConsts
     {
+        protected CachingConsts() { }
+
         public const string LinkChar = ":";
 
         public const int OneYear = 365 * 24 * 60 * 60;

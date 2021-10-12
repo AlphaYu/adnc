@@ -33,7 +33,6 @@ namespace Adnc.Application.Shared.Dtos
             this.XData = xData;
         }
 
-        [NotNull]
         public IReadOnlyList<T> Data
         {
             get => _data;

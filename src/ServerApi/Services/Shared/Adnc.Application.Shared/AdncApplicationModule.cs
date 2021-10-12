@@ -13,8 +13,10 @@ using Adnc.Infra.Mq;
 using Adnc.Infra.Repository;
 using Autofac;
 using Autofac.Extras.DynamicProxy;
+using DotNetCore.CAP;
 using FluentValidation;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,7 +34,6 @@ namespace Adnc.Application.Shared
         private readonly Assembly _repoAssemblieToScan;
         private readonly Assembly _domainAssemblieToScan;
         private readonly IConfigurationSection _redisSection;
-        private readonly string _appModuleName;
 
         protected AdncApplicationModule(Type modelType, IConfiguration configuration, IServiceInfo serviceInfo, bool isDddDevelopment = false)
         {
@@ -43,7 +44,6 @@ namespace Adnc.Application.Shared
             else
                 _repoAssemblieToScan = Assembly.Load(_appAssemblieToScan.FullName.Replace(".Application", ".Repository"));
 
-            _appModuleName = serviceInfo.ShortName;
             _redisSection = configuration.GetRedisSection();
         }
 
@@ -139,7 +139,7 @@ namespace Adnc.Application.Shared
             #endregion register cacheservice/bloomfilter
         }
 
-        private void LoadDepends(ContainerBuilder builder)
+        protected virtual void LoadDepends(ContainerBuilder builder)
         {
             builder.RegisterModuleIfNotRegistered(new AdncInfraEventBusModule(_appAssemblieToScan));
             builder.RegisterModuleIfNotRegistered(new AutoMapperModule(_appAssemblieToScan));

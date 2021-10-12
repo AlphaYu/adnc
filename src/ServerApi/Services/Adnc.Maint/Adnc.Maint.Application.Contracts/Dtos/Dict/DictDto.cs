@@ -1,5 +1,4 @@
 ﻿using Adnc.Application.Shared.Dtos;
-using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 
@@ -18,7 +17,6 @@ namespace Adnc.Maint.Application.Contracts.Dtos
 
         private IList<DictDto> _data = Array.Empty<DictDto>();
 
-        [NotNull]
         public IList<DictDto> Children
         {
             get => _data;

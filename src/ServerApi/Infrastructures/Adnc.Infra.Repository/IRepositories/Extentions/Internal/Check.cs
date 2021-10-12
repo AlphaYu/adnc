@@ -1,8 +1,8 @@
-﻿using JetBrains.Annotations;
-using Microsoft.EntityFrameworkCore.Diagnostics;
+﻿using Microsoft.EntityFrameworkCore.Diagnostics;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace Adnc.Infra.Repository.IRepositories.Extentions.Internal
@@ -10,8 +10,7 @@ namespace Adnc.Infra.Repository.IRepositories.Extentions.Internal
     [DebuggerStepThrough]
     internal static class Check
     {
-        [ContractAnnotation("value:null => halt")]
-        public static T NotNull<T>([NoEnumeration] T value, [InvokerParameterName][NotNull] string parameterName)
+        public static T NotNull<T>( T value, [NotNull] string parameterName)
         {
 #pragma warning disable IDE0041 // Use 'is null' check
             if (ReferenceEquals(value, null))
@@ -25,8 +24,7 @@ namespace Adnc.Infra.Repository.IRepositories.Extentions.Internal
             return value;
         }
 
-        [ContractAnnotation("value:null => halt")]
-        public static IReadOnlyList<T> NotEmpty<T>(IReadOnlyList<T> value, [InvokerParameterName][NotNull] string parameterName)
+        public static IReadOnlyList<T> NotEmpty<T>(IReadOnlyList<T> value, [NotNull] string parameterName)
         {
             NotNull(value, parameterName);
 
@@ -40,8 +38,7 @@ namespace Adnc.Infra.Repository.IRepositories.Extentions.Internal
             return value;
         }
 
-        [ContractAnnotation("value:null => halt")]
-        public static string NotEmpty(string value, [InvokerParameterName][NotNull] string parameterName)
+        public static string NotEmpty(string value, [NotNull] string parameterName)
         {
             Exception e = null;
             if (value is null)
@@ -63,7 +60,7 @@ namespace Adnc.Infra.Repository.IRepositories.Extentions.Internal
             return value;
         }
 
-        public static string NullButNotEmpty(string value, [InvokerParameterName][NotNull] string parameterName)
+        public static string NullButNotEmpty(string value, [NotNull] string parameterName)
         {
             if (!(value is null)
                 && value.Length == 0)
@@ -76,7 +73,7 @@ namespace Adnc.Infra.Repository.IRepositories.Extentions.Internal
             return value;
         }
 
-        public static IReadOnlyList<T> HasNoNulls<T>(IReadOnlyList<T> value, [InvokerParameterName][NotNull] string parameterName)
+        public static IReadOnlyList<T> HasNoNulls<T>(IReadOnlyList<T> value, [NotNull] string parameterName)
             where T : class
         {
             NotNull(value, parameterName);

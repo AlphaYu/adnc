@@ -16,7 +16,6 @@ namespace Adnc.Infra.EfCore
 
         private IReadOnlyList<T> _data = Array.Empty<T>();
 
-        [NotNull]
         public IReadOnlyList<T> Data
         {
             get => _data;

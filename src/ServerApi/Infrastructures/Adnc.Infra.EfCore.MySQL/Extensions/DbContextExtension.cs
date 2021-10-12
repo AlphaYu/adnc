@@ -1,8 +1,8 @@
 ﻿using Adnc.Infra.EfCore.Internal;
-using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace Microsoft.EntityFrameworkCore

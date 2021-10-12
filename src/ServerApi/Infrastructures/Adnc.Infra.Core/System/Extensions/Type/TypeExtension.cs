@@ -1,6 +1,5 @@
 ﻿using Adnc.Infra.Core.Internal;
-using JetBrains.Annotations;
-using System.Collections.Concurrent;
+using System.Diagnostics.CodeAnalysis;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -395,7 +394,6 @@ namespace System
             property?.GetValueSetter()?.Invoke(@this, value);
         }
 
-        [CanBeNull]
         public static Func<T, object> GetValueGetter<T>([NotNull] this PropertyInfo @this)
         {
             return StrongTypedDictionary<T>.PropertyValueGetters.GetOrAdd(@this, prop =>
@@ -410,7 +408,6 @@ namespace System
             });
         }
 
-        [CanBeNull]
         public static Func<object, object> GetValueGetter([NotNull] this PropertyInfo @this)
         {
             return ReflectionDictionary.PropertyValueGetters.GetOrAdd(@this, prop =>
@@ -429,7 +426,6 @@ namespace System
             });
         }
 
-        [CanBeNull]
         public static Action<object, object> GetValueSetter([NotNull] this PropertyInfo @this)
         {
             return ReflectionDictionary.PropertyValueSetters.GetOrAdd(@this, prop =>
@@ -456,7 +452,6 @@ namespace System
             });
         }
 
-        [CanBeNull]
         public static Action<T, object> GetValueSetter<T>([NotNull] this PropertyInfo @this) where T : class
         {
             return StrongTypedDictionary<T>.PropertyValueSetters.GetOrAdd(@this, prop =>
