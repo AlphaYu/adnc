@@ -544,7 +544,9 @@ namespace Adnc.UnitTest.EFCore
 
                 throw new Exception();
 
+#pragma warning disable CS0162 // 检测到无法访问的代码
                 _unitOfWork.Commit();
+#pragma warning restore CS0162 // 检测到无法访问的代码
             }
             catch (Exception)
             {
@@ -570,36 +572,34 @@ namespace Adnc.UnitTest.EFCore
         {
             var account = "alpha008";
 
-            using (var db = await _dbContext.Database.BeginTransactionAsync())
-            {
-                //_unitOfWork.BeginTransaction();
+            using var db = await _dbContext.Database.BeginTransactionAsync();
+            //_unitOfWork.BeginTransaction();
 
-                await _customerRsp.DeleteRangeAsync(x => x.Id <= 10000);
+            await _customerRsp.DeleteRangeAsync(x => x.Id <= 10000);
 
-                var id = IdGenerater.GetNextId();
-                var customer = new Customer() { Id = id, Account = account, Nickname = "招财猫", Realname = "张发财", FinanceInfo = new CustomerFinance { Id = id, Account = account, Balance = 0 } };
+            var id = IdGenerater.GetNextId();
+            var customer = new Customer() { Id = id, Account = account, Nickname = "招财猫", Realname = "张发财", FinanceInfo = new CustomerFinance { Id = id, Account = account, Balance = 0 } };
 
-                _dbContext.Add<Customer>(customer);
+            _dbContext.Add<Customer>(customer);
 
-                await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
 
-                var id2 = IdGenerater.GetNextId();
-                var customer2 = new Customer() { Id = id2, Account = account, Nickname = "招财猫02", Realname = "张发财02", FinanceInfo = new CustomerFinance { Id = id2, Account = account, Balance = 0 } };
+            var id2 = IdGenerater.GetNextId();
+            var customer2 = new Customer() { Id = id2, Account = account, Nickname = "招财猫02", Realname = "张发财02", FinanceInfo = new CustomerFinance { Id = id2, Account = account, Balance = 0 } };
 
-                _dbContext.Add<Customer>(customer2);
-                //_unitOfWork.Commit();
+            _dbContext.Add<Customer>(customer2);
+            //_unitOfWork.Commit();
 
-                await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
 
-                await db.CommitAsync();
-            }
+            await db.CommitAsync();
         }
 
         [Fact]
         public async Task TestAutoTransactions()
         {
             var defaultAutoTransaction = _dbContext.Database.AutoTransactionsEnabled;
-            if (defaultAutoTransaction == false)
+            if (!defaultAutoTransaction)
                 _dbContext.Database.AutoTransactionsEnabled = true;
 
             var id = IdGenerater.GetNextId();
