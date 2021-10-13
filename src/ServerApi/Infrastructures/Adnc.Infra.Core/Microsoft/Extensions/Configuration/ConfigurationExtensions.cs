@@ -57,5 +57,10 @@
         {
             return configuration.GetSection("ThreadPoolSettings");
         }
+
+        public static IConfigurationSection GetHangfireSection(this IConfiguration configuration)
+        {
+            return configuration.GetSection("Hangfire");
+        }
     }
 }

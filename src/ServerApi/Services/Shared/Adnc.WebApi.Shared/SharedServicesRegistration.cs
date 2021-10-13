@@ -17,6 +17,11 @@ using DotNetCore.CAP;
 using DotNetCore.CAP.Dashboard;
 using DotNetCore.CAP.Dashboard.NodeDiscovery;
 using FluentValidation.AspNetCore;
+using Hangfire;
+using Hangfire.Console;
+using Hangfire.Mongo;
+using Hangfire.Mongo.Migration.Strategies;
+using Hangfire.Mongo.Migration.Strategies.Backup;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -33,6 +38,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using MongoDB.Driver;
 using Polly;
 using Polly.Timeout;
 using Refit;
@@ -62,6 +68,7 @@ namespace Adnc.WebApi.Shared
         protected readonly IServiceCollection _services;
         protected readonly IHostEnvironment _environment;
         protected readonly IServiceInfo _serviceInfo;
+        protected internal IEnumerable<Type> _schedulingJobs;
 
         /// <summary>
         /// 服务注册与系统配置
@@ -79,6 +86,7 @@ namespace Adnc.WebApi.Shared
             _environment = environment;
             _services = services;
             _serviceInfo = serviceInfo;
+            _schedulingJobs = Enumerable.Empty<Type>();
         }
 
         /// <summary>
@@ -487,7 +495,7 @@ namespace Adnc.WebApi.Shared
         /// <param name="serviceName">在注册中心注册的服务名称，或者服务的Url</param>
         /// <param name="policies">Polly策略</param>
         public virtual void AddRpcService<TRpcService>(string serviceName
-        , List<IAsyncPolicy<HttpResponseMessage>> policies) 
+        , List<IAsyncPolicy<HttpResponseMessage>> policies)
          where TRpcService : class, IRpcService
         {
             var prefix = serviceName.Substring(0, 7);
@@ -507,6 +515,60 @@ namespace Adnc.WebApi.Shared
 
             //添加polly相关策略
             policies?.ForEach(policy => clientbuilder.AddPolicyHandler(policy));
+        }
+
+
+        /// <summary>
+        /// 添加任务调度
+        /// </summary>
+        /// <typeparam name="TSchedulingJob"></typeparam>
+        public virtual void AddSchedulingJobs<TSchedulingJob>()
+            where TSchedulingJob : class, IRecurringSchedulingJobs
+        {
+            _schedulingJobs = _schedulingJobs.Concat(new[] { typeof(TSchedulingJob) });
+        }
+
+        /// <summary>
+        ///  注册 Hangfire 任务调度
+        /// </summary>
+        public virtual void AddHangfire()
+        {
+            var hangfireConfig = _configuration.GetHangfireSection().Get<HangfireConfig>();
+
+            var mongoUrlBuilder = new MongoUrlBuilder(hangfireConfig.ConnectionString);
+            var mongoClient = new MongoClient(mongoUrlBuilder.ToMongoUrl());
+
+            _services.AddHangfire(config =>
+            {
+                config.SetDataCompatibilityLevel(CompatibilityLevel.Version_170);
+                config.UseSimpleAssemblyNameTypeSerializer();
+                config.UseRecommendedSerializerSettings();
+                // 设置 MongoDB 为持久化存储器
+                config.UseMongoStorage(mongoClient, mongoUrlBuilder.DatabaseName, new MongoStorageOptions
+                {
+                    MigrationOptions = new MongoMigrationOptions
+                    {
+                        MigrationStrategy = new MigrateMongoMigrationStrategy(),
+                        BackupStrategy = new CollectionMongoBackupStrategy()
+                    },
+                    ConnectionCheckTimeout = TimeSpan.FromMinutes(hangfireConfig.ConnectionCheckTimeout),
+                    QueuePollInterval = TimeSpan.FromMinutes(hangfireConfig.QueuePollInterval),
+                    CheckConnection = true,
+                })
+                // 任务超时时间
+                .JobExpirationTimeout = TimeSpan.FromMinutes(hangfireConfig.JobTimeout);
+                // 打印日志到控制面板和在线进度条展示
+                config.UseConsole();
+                config.UseRecurringJob(_schedulingJobs.ToArray());
+            });
+            // 将 Hangfire 服务添加为后台托管服务
+            _services.AddHangfireServer((service, options) =>
+            {
+                options.ServerName = $"{_serviceInfo.FullName.Replace(".", "/")}";
+                options.ShutdownTimeout = TimeSpan.FromMinutes(10);
+                // 最大 Job 处理并发数量的阈值，根据机子处理器数量设置或默认20
+                options.WorkerCount = Math.Max(Environment.ProcessorCount, 20);
+            });
         }
 
         /// <summary>
