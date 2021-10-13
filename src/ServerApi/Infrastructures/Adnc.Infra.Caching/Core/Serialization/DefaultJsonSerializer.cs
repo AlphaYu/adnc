@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.Json;
 
 namespace Adnc.Infra.Caching.Core.Serialization
 {
@@ -8,27 +9,27 @@ namespace Adnc.Infra.Caching.Core.Serialization
 
         public T Deserialize<T>(byte[] bytes)
         {
-            throw new NotImplementedException();
+            return JsonSerializer.Deserialize<T>(bytes);
         }
 
         public object Deserialize(byte[] bytes, Type type)
         {
-            throw new NotImplementedException();
+            return JsonSerializer.Deserialize<Type>(bytes);
         }
 
         public object DeserializeObject(ArraySegment<byte> value)
         {
-            throw new NotImplementedException();
+            return JsonSerializer.Deserialize<object>(value);
         }
 
         public byte[] Serialize<T>(T value)
         {
-            throw new NotImplementedException();
+            return JsonSerializer.SerializeToUtf8Bytes(value);
         }
 
         public ArraySegment<byte> SerializeObject(object obj)
         {
-            throw new NotImplementedException();
+            return JsonSerializer.SerializeToUtf8Bytes(obj);
         }
     }
 }
