@@ -141,9 +141,9 @@ namespace Adnc.Application.Shared
         protected virtual void LoadDepends(ContainerBuilder builder)
         {
             builder.RegisterModuleIfNotRegistered(new AdncInfraEventBusModule(_appAssemblieToScan));
-            builder.RegisterModuleIfNotRegistered(new AutoMapperModule(_appAssemblieToScan));
+            builder.RegisterModuleIfNotRegistered(new AdncInfraAutoMapperModule(_appAssemblieToScan));
             builder.RegisterModuleIfNotRegistered(new AdncInfraCachingModule(_redisSection));
-            builder.RegisterModuleIfNotRegistered(new HangfireModule(_appAssemblieToScan));
+            //builder.RegisterModuleIfNotRegistered(new AdncInfraHangfireModule(_appAssemblieToScan));
 
             if (_domainAssemblieToScan!=null)
             {

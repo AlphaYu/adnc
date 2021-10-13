@@ -35,11 +35,11 @@ namespace Microsoft.AspNetCore.Builder
             if (environment.IsDevelopment())
             {
                 IdentityModelEventSource.ShowPII = true;
-                app.UseHangfireDashboard(serviceInfo);
+                //app.UseHangfireDashboard(serviceInfo);
             }
             else
             {
-                app.UseHangfireDashboard(serviceInfo, hangfireConfig.Authorize);
+                //app.UseHangfireDashboard(serviceInfo, hangfireConfig.Authorize);
             }
 
             DefaultFilesOptions defaultFilesOptions = new DefaultFilesOptions();

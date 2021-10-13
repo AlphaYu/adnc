@@ -8,16 +8,16 @@ namespace Hangfire
     /// <summary>
     /// Hangfire 模块注册
     /// </summary>
-    public class HangfireModule : Autofac.Module
+    public class AdncInfraHangfireModule : Autofac.Module
     {
         private readonly IEnumerable<Assembly> _assembliesToScan;
 
-        public HangfireModule(IEnumerable<Assembly> assembliesToScan)
+        public AdncInfraHangfireModule(IEnumerable<Assembly> assembliesToScan)
         {
             _assembliesToScan = assembliesToScan;
         }
 
-        public HangfireModule(params Assembly[] assembliesToScan) : this((IEnumerable<Assembly>)assembliesToScan)
+        public AdncInfraHangfireModule(params Assembly[] assembliesToScan) : this((IEnumerable<Assembly>)assembliesToScan)
         {
         }
 

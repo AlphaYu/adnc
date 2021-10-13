@@ -12,16 +12,16 @@ namespace Adnc.Infra.Mapper.AutoMapper
     /// 注册automapper
     /// https://dotnetfalcon.com/autofac-support-for-automapper/
     /// </summary>
-    public class AutoMapperModule : Autofac.Module
+    public class AdncInfraAutoMapperModule : Autofac.Module
     {
         private readonly IEnumerable<Assembly> assembliesToScan;
 
-        public AutoMapperModule(IEnumerable<Assembly> assembliesToScan)
+        public AdncInfraAutoMapperModule(IEnumerable<Assembly> assembliesToScan)
         {
             this.assembliesToScan = assembliesToScan;
         }
 
-        public AutoMapperModule(params Assembly[] assembliesToScan) : this((IEnumerable<Assembly>)assembliesToScan)
+        public AdncInfraAutoMapperModule(params Assembly[] assembliesToScan) : this((IEnumerable<Assembly>)assembliesToScan)
         {
         }
 
