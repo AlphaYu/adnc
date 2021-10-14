@@ -10,32 +10,22 @@ namespace Adnc.Infra.EventBus.Cap
         private readonly ICapPublisher _eventBus;
 
         public CapPublisher(ICapPublisher capPublisher)
-        {
-            _eventBus = capPublisher;
-        }
+            => _eventBus = capPublisher;
 
         public virtual async Task PublishAsync<T>(T eventObj, string callbackName = null, CancellationToken cancellationToken = default)
             where T : IEvent
-        {
-            await _eventBus.PublishAsync(typeof(T).Name, eventObj, callbackName, cancellationToken);
-        }
+            => await _eventBus.PublishAsync(typeof(T).Name, eventObj, callbackName, cancellationToken);
 
         public virtual async Task PublishAsync<T>(T eventObj, IDictionary<string, string> headers, CancellationToken cancellationToken = default)
             where T : IEvent
-        {
-            await _eventBus.PublishAsync<T>(typeof(T).Name, eventObj, headers, cancellationToken);
-        }
+            => await _eventBus.PublishAsync<T>(typeof(T).Name, eventObj, headers, cancellationToken);
 
         public virtual void Publish<T>(T eventObj, string callbackName = null)
             where T : IEvent
-        {
-            _eventBus.Publish(typeof(T).Name, eventObj, callbackName);
-        }
+            => _eventBus.Publish(typeof(T).Name, eventObj, callbackName);
 
         public virtual void Publish<T>(T eventObj, IDictionary<string, string> headers)
             where T : IEvent
-        {
-            _eventBus.Publish(typeof(T).Name, eventObj, headers);
-        }
+            => _eventBus.Publish(typeof(T).Name, eventObj, headers);
     }
 }

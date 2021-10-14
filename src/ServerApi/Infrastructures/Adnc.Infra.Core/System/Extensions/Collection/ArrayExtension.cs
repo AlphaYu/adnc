@@ -1,5 +1,5 @@
-﻿using JetBrains.Annotations;
-using System.Collections;
+﻿using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 
 namespace System
 {

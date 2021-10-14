@@ -1,5 +1,5 @@
-﻿using JetBrains.Annotations;
-using System;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Adnc.Application.Shared.Services
 {

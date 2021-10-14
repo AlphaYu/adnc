@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace Microsoft.EntityFrameworkCore.ChangeTracking

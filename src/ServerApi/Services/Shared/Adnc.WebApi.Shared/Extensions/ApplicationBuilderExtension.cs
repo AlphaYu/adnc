@@ -1,6 +1,7 @@
 ﻿using Adnc.Infra.Consul;
 using Adnc.Infra.Core;
 using Adnc.WebApi.Shared.Middleware;
+using Hangfire;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
@@ -29,8 +30,17 @@ namespace Microsoft.AspNetCore.Builder
             var configuration = app.ApplicationServices.GetService<IConfiguration>();
             var environment = app.ApplicationServices.GetService<IHostEnvironment>();
             var serviceInfo = app.ApplicationServices.GetService<IServiceInfo>();
+            var hangfireConfig = configuration.GetHangfireSection().Get<HangfireConfig>();
 
-            if (environment.IsDevelopment()) IdentityModelEventSource.ShowPII = true;
+            if (environment.IsDevelopment())
+            {
+                IdentityModelEventSource.ShowPII = true;
+                //app.UseHangfireDashboard(serviceInfo);
+            }
+            else
+            {
+                //app.UseHangfireDashboard(serviceInfo, hangfireConfig.Authorize);
+            }
 
             DefaultFilesOptions defaultFilesOptions = new DefaultFilesOptions();
             defaultFilesOptions.DefaultFileNames.Clear();
