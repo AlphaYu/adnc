@@ -4,8 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -89,41 +87,9 @@ namespace Adnc.Infra.EfCore.MySQL
 
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly);
 
-            //增加全局软删除筛选器
-            foreach (var entityType in modelBuilder.Model.GetEntityTypes())
-            {
-                if (typeof(ISoftDelete).IsAssignableFrom(entityType.ClrType))
-                {
-                    entityType.AddSoftDeleteQueryFilter();
-                }
-            }
             base.OnModelCreating(modelBuilder);
         }
 
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.LogTo(Console.WriteLine);
-    }
-    /// <summary>
-    /// https://www.cnblogs.com/willick/p/13358580.html
-    /// </summary>
-    public static class SoftDeleteQueryExtension
-    {
-        public static void AddSoftDeleteQueryFilter(
-            this IMutableEntityType entityData)
-        {
-            var methodToCall = typeof(SoftDeleteQueryExtension)
-                .GetMethod(nameof(GetSoftDeleteFilter),
-                    BindingFlags.NonPublic | BindingFlags.Static)
-                ?.MakeGenericMethod(entityData.ClrType);
-            if (methodToCall == null) return;
-            var filter = methodToCall.Invoke(null, new object[] { });
-            entityData.SetQueryFilter((LambdaExpression)filter);
-        }
-
-        private static LambdaExpression GetSoftDeleteFilter<TEntity>()
-            where TEntity : class, ISoftDelete
-        {
-            Expression<Func<TEntity, bool>> filter = x => !x.IsDeleted;
-            return filter;
-        }
     }
 }
