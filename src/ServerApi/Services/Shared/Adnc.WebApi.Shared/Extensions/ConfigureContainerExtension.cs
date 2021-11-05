@@ -28,12 +28,10 @@ namespace Autofac
 
             var consulUrl = configuration.GetConsulSection().Get<ConsulConfig>().ConsulUrl;
             var applicationAssembly = Assembly.Load(serviceInfo.AssemblyFullName.Replace("WebApi", "Application"));
-            var applicationModelType = applicationAssembly.GetTypes()
-                                                                                            .FirstOrDefault(m =>
-                                                                                                                               m.FullName != null
-                                                                                                                               && typeof(AdncApplicationModule).IsAssignableFrom(m)
-                                                                                                                               && !m.IsAbstract);
-
+            var applicationModelType = applicationAssembly.GetTypes().FirstOrDefault(
+                m => m.FullName != null
+                && typeof(AdncApplicationModule).IsAssignableFrom(m)
+                && !m.IsAbstract);
             builder.RegisterModuleIfNotRegistered<AdncInfraMongoModule>();
             builder.RegisterModuleIfNotRegistered<AdncInfraEfCoreModule>();
             builder.RegisterModuleIfNotRegistered(new AdncInfraConsulModule(consulUrl));
