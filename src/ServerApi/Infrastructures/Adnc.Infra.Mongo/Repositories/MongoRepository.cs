@@ -38,6 +38,8 @@ namespace Adnc.Infra.Mongo
         public virtual async Task<TEntity> GetAsync(string id, CancellationToken cancellationToken = default) =>
             await FindOneAsync(Filter.IdEq(id), null, cancellationToken);
 
+        public async Task<TEntity> GetAsync(FilterDefinition<TEntity> filter, CancellationToken cancellationToken = default) =>
+           await FindOneAsync(filter, null, cancellationToken);
         /// <summary>
         /// Gets all entities in this repository.
         /// </summary>
@@ -82,6 +84,18 @@ namespace Adnc.Infra.Mongo
             return result?.Id == id;
         }
 
+        /// <summary>
+        /// 批量删除
+        /// </summary>
+        /// <param name="filter">删除条件</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        public virtual async Task<long> DeleteManyAsync(FilterDefinition<TEntity> filter, CancellationToken cancellationToken = default)
+        {
+            var collection = await GetCollectionAsync(cancellationToken);
+            var result = await collection.DeleteManyAsync(filter, cancellationToken);
+            return result.DeletedCount;
+        }
         /// <summary>
         /// Replaces the specified entity with the same identifier.
         /// </summary>
@@ -190,6 +204,8 @@ namespace Adnc.Infra.Mongo
         /// <returns></returns>
         protected async Task<IMongoCollection<TEntity>> GetCollectionAsync(CancellationToken cancellationToken = default) =>
             await _context.GetCollectionAsync<TEntity>(cancellationToken);
+
+       
 
         protected static FilterDefinitionBuilder<TEntity> Filter => Builders<TEntity>.Filter;
 

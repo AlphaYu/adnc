@@ -24,6 +24,14 @@ namespace Adnc.Infra.IRepositories
         Task<TEntity> GetAsync(string id, CancellationToken cancellationToken = default);
 
         /// <summary>
+        /// Gets the entity with the specified identifier.
+        /// </summary>
+        /// <param name="filter"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<TEntity> GetAsync(FilterDefinition<TEntity> filter, CancellationToken cancellationToken = default);
+
+        /// <summary>
         /// Gets all entities in this repository.
         /// </summary>
         /// <returns></returns>
@@ -54,6 +62,14 @@ namespace Adnc.Infra.IRepositories
         Task<bool> DeleteAsync(string id, CancellationToken cancellationToken = default);
 
         /// <summary>
+        /// Batch delete
+        /// </summary>
+        /// <param name="filter">删除条件</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        Task<long> DeleteManyAsync(FilterDefinition<TEntity> filter, CancellationToken cancellationToken = default);
+
+        /// <summary>
         /// Replaces the specified entity with the same identifier.
         /// </summary>
         /// <param name="entity">The entity.</param>
@@ -61,6 +77,16 @@ namespace Adnc.Infra.IRepositories
         /// <returns></returns>
         Task<TEntity> ReplaceAsync(TEntity entity, CancellationToken cancellationToken = default);
 
+        /// <summary>
+        /// 分页查询
+        /// </summary>
+        /// <param name="pageNumber"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="filter"></param>
+        /// <param name="orderByExpression"></param>
+        /// <param name="ascending"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         Task<IPagedModel<TEntity>> PagedAsync(int pageNumber, int pageSize, FilterDefinition<TEntity> filter, Expression<Func<TEntity, object>> orderByExpression, bool ascending = false, CancellationToken cancellationToken = default);
     }
 }
