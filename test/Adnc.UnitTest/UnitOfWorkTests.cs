@@ -14,7 +14,7 @@ namespace Adnc.UnitTest.CoreService
         private readonly ITestOutputHelper _output;
         private readonly IOperater _userContext;
         private readonly IEfRepository<Customer> _cusRsp;
-        private CoreServiceFixture _fixture;
+        private readonly CoreServiceFixture _fixture;
 
         public UnitOfWorkTests(CoreServiceFixture fixture, ITestOutputHelper output)
         {
@@ -56,6 +56,8 @@ namespace Adnc.UnitTest.CoreService
             //bool exists = await _cusRsp.AnyAsync(c => c.Id == id);
             // Assert.True(exists);
             Assert.True(true);
+
+            await Task.CompletedTask;
         }
     }
 }

@@ -1,14 +1,14 @@
-﻿using JetBrains.Annotations;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Adnc.Infra.Core
 {
     public static class Checker
     {
         public static decimal GTZero(decimal value
-        , [InvokerParameterName][NotNull] string parameterName)
+        , [NotNull] string parameterName)
         {
             if (value <= 0)
                 throw new AdncArgumentException("不能小于0", parameterName);
@@ -16,7 +16,7 @@ namespace Adnc.Infra.Core
         }
 
         public static int GTZero(int value
-        , [InvokerParameterName][NotNull] string parameterName)
+        , [NotNull] string parameterName)
         {
             if (value <= 0)
                 throw new AdncArgumentException("不能小于0", parameterName);
@@ -24,7 +24,7 @@ namespace Adnc.Infra.Core
         }
 
         public static long GTZero(long value
-            , [InvokerParameterName][NotNull] string parameterName)
+            , [NotNull] string parameterName)
         {
             if (value <= 0)
                 throw new AdncArgumentException("不能小于0", parameterName);
@@ -33,7 +33,7 @@ namespace Adnc.Infra.Core
 
         public static T NotEmptyCollection<T>(
     T value,
-    [InvokerParameterName][NotNull] string parameterName)
+    [NotNull] string parameterName)
         {
             if (value == null)
             {
@@ -48,10 +48,9 @@ namespace Adnc.Infra.Core
             return value;
         }
 
-        [ContractAnnotation("value:null => halt")]
         public static T NotNull<T>(
             T value,
-            [InvokerParameterName][NotNull] string parameterName)
+            [NotNull] string parameterName)
         {
             if (value == null)
             {
@@ -61,10 +60,9 @@ namespace Adnc.Infra.Core
             return value;
         }
 
-        [ContractAnnotation("value:null => halt")]
         public static T NotNull<T>(
             T value,
-            [InvokerParameterName][NotNull] string parameterName,
+            [NotNull] string parameterName,
             string message)
         {
             if (value == null)
@@ -74,11 +72,9 @@ namespace Adnc.Infra.Core
 
             return value;
         }
-
-        [ContractAnnotation("value:null => halt")]
         public static string NotNull(
             string value,
-            [InvokerParameterName][NotNull] string parameterName,
+            [NotNull] string parameterName,
             int maxLength = int.MaxValue,
             int minLength = 0)
         {
@@ -100,10 +96,9 @@ namespace Adnc.Infra.Core
             return value;
         }
 
-        [ContractAnnotation("value:null => halt")]
         public static string NotNullOrWhiteSpace(
             string value,
-            [InvokerParameterName][NotNull] string parameterName,
+            [NotNull] string parameterName,
             int maxLength = int.MaxValue,
             int minLength = 0)
         {
@@ -125,10 +120,9 @@ namespace Adnc.Infra.Core
             return value;
         }
 
-        [ContractAnnotation("value:null => halt")]
         public static string NotNullOrEmpty(
             string value,
-            [InvokerParameterName][NotNull] string parameterName,
+            [NotNull] string parameterName,
             int maxLength = int.MaxValue,
             int minLength = 0)
         {
@@ -150,8 +144,7 @@ namespace Adnc.Infra.Core
             return value;
         }
 
-        [ContractAnnotation("value:null => halt")]
-        public static ICollection<T> NotNullOrEmpty<T>(ICollection<T> value, [InvokerParameterName][NotNull] string parameterName)
+        public static ICollection<T> NotNullOrEmpty<T>(ICollection<T> value, [NotNull] string parameterName)
         {
             if (value.IsNullOrEmpty())
             {
@@ -162,8 +155,8 @@ namespace Adnc.Infra.Core
         }
 
         public static string Length(
-            [CanBeNull] string value,
-            [InvokerParameterName][NotNull] string parameterName,
+            string value,
+            [NotNull] string parameterName,
             int maxLength,
             int minLength = 0)
         {

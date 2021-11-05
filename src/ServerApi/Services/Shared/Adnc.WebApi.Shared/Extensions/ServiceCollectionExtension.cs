@@ -51,6 +51,7 @@ namespace Microsoft.Extensions.DependencyInjection
             _srvRegistration.AddEfCoreContext();
             _srvRegistration.AddMongoContext();
             _srvRegistration.AddSwaggerGen();
+            //_srvRegistration.AddHangfire();
 
             completedExecute?.Invoke(_srvRegistration);
 

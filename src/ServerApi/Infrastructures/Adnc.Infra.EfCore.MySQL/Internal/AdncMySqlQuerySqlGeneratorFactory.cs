@@ -1,11 +1,11 @@
 ﻿using Adnc.Infra.EfCore;
-using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using Microsoft.EntityFrameworkCore.Storage;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure.Internal;
 using Pomelo.EntityFrameworkCore.MySql.Query.Internal;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 
 namespace Pomelo.EntityFrameworkCore.MySql.Query.ExpressionVisitors.Internal
@@ -56,7 +56,7 @@ namespace Pomelo.EntityFrameworkCore.MySql.Query.ExpressionVisitors.Internal
         public AdncQuerySqlGenerator(
             [NotNull] QuerySqlGeneratorDependencies dependencies,
             [NotNull] MySqlSqlExpressionFactory sqlExpressionFactory,
-            [CanBeNull] IMySqlOptions options) : base(dependencies, sqlExpressionFactory, options)
+            [MaybeNull] IMySqlOptions options) : base(dependencies, sqlExpressionFactory, options)
         {
             ContextId = Guid.NewGuid();
         }

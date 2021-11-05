@@ -33,7 +33,6 @@ namespace Adnc.Application.Shared.Dtos
             this.XData = xData;
         }
 
-        [NotNull]
         public IReadOnlyList<T> Data
         {
             get => _data;
@@ -59,26 +58,4 @@ namespace Adnc.Application.Shared.Dtos
 
         public dynamic XData { get; set; }
     }
-
-    //[Serializable]
-    //public class PageModelDto<T, TXData> : PageModelDto<T>
-    //{
-    //    public PageModelDto(SearchPagedDto search, IReadOnlyList<T> data, int count, dynamic xData = null)
-    //        : this(search.PageIndex, search.PageSize, data, count)
-    //    {
-    //    }
-
-    //    public PageModelDto(int pageIndex, int pageSize, IReadOnlyList<T> data, int count, dynamic xData = null)
-    //        : base(pageIndex, pageSize, data, count)
-    //    {
-    //        this.XData = xData;
-    //    }
-
-    //    public TXData XData { get; set; }
-
-    //    public static PageModelDto<T, TXData> Convert(PageModelDto<T> source, TXData xData)
-    //    {
-    //        return new PageModelDto<T, TXData>(source.PageIndex, source.PageSize, source.Data, source.TotalCount, xData);
-    //    }
-    //}
 }

@@ -14,6 +14,7 @@ using Adnc.Infra.Repository;
 using Autofac;
 using Autofac.Extras.DynamicProxy;
 using FluentValidation;
+using Hangfire;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -32,7 +33,6 @@ namespace Adnc.Application.Shared
         private readonly Assembly _repoAssemblieToScan;
         private readonly Assembly _domainAssemblieToScan;
         private readonly IConfigurationSection _redisSection;
-        private readonly string _appModuleName;
 
         protected AdncApplicationModule(Type modelType, IConfiguration configuration, IServiceInfo serviceInfo, bool isDddDevelopment = false)
         {
@@ -43,7 +43,6 @@ namespace Adnc.Application.Shared
             else
                 _repoAssemblieToScan = Assembly.Load(_appAssemblieToScan.FullName.Replace(".Application", ".Repository"));
 
-            _appModuleName = serviceInfo.ShortName;
             _redisSection = configuration.GetRedisSection();
         }
 
@@ -139,13 +138,14 @@ namespace Adnc.Application.Shared
             #endregion register cacheservice/bloomfilter
         }
 
-        private void LoadDepends(ContainerBuilder builder)
+        protected virtual void LoadDepends(ContainerBuilder builder)
         {
             builder.RegisterModuleIfNotRegistered(new AdncInfraEventBusModule(_appAssemblieToScan));
-            builder.RegisterModuleIfNotRegistered(new AutoMapperModule(_appAssemblieToScan));
+            builder.RegisterModuleIfNotRegistered(new AdncInfraAutoMapperModule(_appAssemblieToScan));
             builder.RegisterModuleIfNotRegistered(new AdncInfraCachingModule(_redisSection));
+            //builder.RegisterModuleIfNotRegistered(new AdncInfraHangfireModule(_appAssemblieToScan));
 
-            if(_domainAssemblieToScan!=null)
+            if (_domainAssemblieToScan!=null)
             {
                 var modelType = _domainAssemblieToScan.GetTypes().FirstOrDefault(x => x.IsAssignableTo<AdncDomainModule>() && !x.IsAbstract);
                 builder.RegisterModuleIfNotRegistered(System.Activator.CreateInstance(modelType) as Autofac.Module);

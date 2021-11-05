@@ -1,6 +1,6 @@
 ﻿using Adnc.Infra.Mapper;
-using JetBrains.Annotations;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using System.Net;
 

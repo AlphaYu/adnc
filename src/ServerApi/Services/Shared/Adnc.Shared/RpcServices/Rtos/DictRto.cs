@@ -1,5 +1,4 @@
-﻿using JetBrains.Annotations;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Adnc.Shared.RpcServices.Rtos
@@ -18,7 +17,6 @@ namespace Adnc.Shared.RpcServices.Rtos
 
         private IReadOnlyList<DictRto> _data = Array.Empty<DictRto>();
 
-        [NotNull]
         public IReadOnlyList<DictRto> Children
         {
             get => _data;
