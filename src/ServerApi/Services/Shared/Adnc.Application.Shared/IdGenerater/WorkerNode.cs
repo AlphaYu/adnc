@@ -1,6 +1,6 @@
 ﻿using Adnc.Infra.Caching;
 using Adnc.Infra.Helper.IdGeneraterInternal;
-using Adnc.Shared.Consts.Caching.Com;
+using Adnc.Shared.Consts.Caching.Common;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;

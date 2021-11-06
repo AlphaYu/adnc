@@ -1,6 +1,6 @@
 ﻿namespace Adnc.Shared.Consts.Caching.Usr
 {
-    public class CachingConsts : Com.CachingConsts
+    public class CachingConsts : Common.CachingConsts
     {
         //cache key
         public const string MenuListCacheKey = "adnc:usr:menus:list";

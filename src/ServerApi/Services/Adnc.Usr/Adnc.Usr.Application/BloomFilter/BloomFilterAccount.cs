@@ -33,8 +33,8 @@ namespace Adnc.Usr.Application.BloomFilter
                 using var scope = _services.Value.CreateScope();
                 var repository = scope.ServiceProvider.GetRequiredService<IEfRepository<SysUser>>();
                 var values = await repository.GetAll()
-                                                               .Select(x => x.Account)
-                                                               .ToListAsync();
+                                             .Select(x => x.Account)
+                                             .ToListAsync();
                 await InitAsync(values);
             }
         }

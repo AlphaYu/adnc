@@ -27,7 +27,8 @@
 		<PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="5.0.1" />
 		<PackageReference Include="AspNetCore.HealthChecks.MySql" Version="5.0.1" />
 		<PackageReference Include="AspNetCore.HealthChecks.MongoDb" Version="5.0.1" />
-		<PackageReference Include="AspNetCore.HealthChecks.Redis" Version="5.0.2" />
+		<!--<PackageReference Include="AspNetCore.HealthChecks.Redis" Version="5.0.2" />-->
+		<PackageReference Include="LiteX.HealthChecks.Redis" Version="3.0.0" />
 		<PackageReference Include="AspNetCore.HealthChecks.System" Version="5.0.1" />
 		<PackageReference Include="AspNetCore.HealthChecks.Uris" Version="5.0.1" />
 		<PackageReference Include="DotNetCore.CAP" Version="5.0.3" />

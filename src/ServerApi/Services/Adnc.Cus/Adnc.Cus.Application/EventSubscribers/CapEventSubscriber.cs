@@ -39,7 +39,6 @@ namespace Adnc.Cus.Application.EventSubscribers
         #endregion local event
 
         #region across service event
-
         /// <summary>
         /// 订阅付款事件
         /// </summary>
