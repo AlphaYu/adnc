@@ -1,7 +1,7 @@
 ﻿using Adnc.Infra.Caching;
 using Adnc.Infra.Caching.Core;
 using Adnc.Infra.Mapper;
-using Adnc.Shared.Consts.Caching.Com;
+using Adnc.Shared.Consts.Caching.Common;
 using Polly;
 using System;
 using System.Threading;
