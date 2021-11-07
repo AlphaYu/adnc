@@ -1,4 +1,5 @@
-﻿using Adnc.Infra.Helper;
+﻿using Adnc.Infra.Core;
+using Adnc.Infra.Helper;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -29,7 +30,7 @@ namespace Adnc.Application.Shared.Services
 
         public override string ToString()
         {
-            return JsonSerializer.Serialize(this, SystemTextJsonHelper.GetAdncDefaultOptions());
+            return JsonSerializer.Serialize(this, SystemTextJson.GetAdncDefaultOptions());
         }
 
         [JsonPropertyName("detail")]

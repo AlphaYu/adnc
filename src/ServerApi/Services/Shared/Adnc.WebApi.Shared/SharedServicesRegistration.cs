@@ -116,7 +116,7 @@ namespace Adnc.WebApi.Shared
                      {
                          options.JsonSerializerOptions.Converters.Add(new DateTimeConverter());
                          options.JsonSerializerOptions.Converters.Add(new DateTimeNullableConverter());
-                         options.JsonSerializerOptions.Encoder = SystemTextJsonHelper.GetAdncDefaultEncoder();
+                         options.JsonSerializerOptions.Encoder = SystemTextJson.GetAdncDefaultEncoder();
                          //该值指示是否允许、不允许或跳过注释。
                          options.JsonSerializerOptions.ReadCommentHandling = JsonCommentHandling.Skip;
                          //dynamic与匿名类型序列化设置
@@ -502,7 +502,7 @@ namespace Adnc.WebApi.Shared
             var prefix = serviceName.Substring(0, 7);
             bool isConsulAdderss = prefix != "http://" && prefix != "https:/";
 
-            var refitSettings = new RefitSettings(new SystemTextJsonContentSerializer(SystemTextJsonHelper.GetAdncDefaultOptions()));
+            var refitSettings = new RefitSettings(new SystemTextJsonContentSerializer(SystemTextJson.GetAdncDefaultOptions()));
             //注册RefitClient,设置httpclient生命周期时间，默认也是2分钟。
             var clientbuilder = _services.AddRefitClient<TRpcService>(refitSettings)
                                                          .SetHandlerLifetime(TimeSpan.FromMinutes(2));

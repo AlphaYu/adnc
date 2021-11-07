@@ -1,4 +1,5 @@
-﻿using Adnc.Infra.Entities;
+﻿using Adnc.Infra.Core;
+using Adnc.Infra.Entities;
 using Adnc.Infra.Helper;
 using Castle.DynamicProxy;
 using Microsoft.Extensions.Logging;
@@ -157,7 +158,7 @@ namespace Adnc.Application.Shared.Interceptors
                 CreateTime = DateTime.Now,
                 LogName = logName,
                 LogType = "操作日志",
-                Message = JsonSerializer.Serialize(arguments, SystemTextJsonHelper.GetAdncDefaultOptions()),
+                Message = JsonSerializer.Serialize(arguments, SystemTextJson.GetAdncDefaultOptions()),
                 Method = methodName,
                 Succeed = "false",
                 UserId = userContext.Id,
