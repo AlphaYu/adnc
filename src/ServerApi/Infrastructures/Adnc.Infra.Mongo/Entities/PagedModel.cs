@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Adnc.Infra.Mongo
+namespace Adnc.Infra.Mongo.Entities
 {
     /// <summary>
     /// 分页Model
