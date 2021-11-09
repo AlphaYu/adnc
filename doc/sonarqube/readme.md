@@ -1,5 +1,6 @@
 ```bash
 --安装服务端
+--https://www.cnblogs.com/7tiny/p/11342902.html
 mkdir /root/sonarqube
 cd  /root/sonarqube
 docker run -d --name sonarqube \

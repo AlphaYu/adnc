@@ -1,4 +1,5 @@
-﻿using Adnc.Infra.Helper;
+﻿using Adnc.Infra.Core;
+using Adnc.Infra.Helper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -85,7 +86,7 @@ namespace Adnc.WebApi.Shared.Middleware
 
             context.Response.StatusCode = status;
             context.Response.ContentType = "application/problem+json";
-            var errorText = JsonSerializer.Serialize(problemDetails, SystemTextJsonHelper.GetAdncDefaultOptions());
+            var errorText = JsonSerializer.Serialize(problemDetails, SystemTextJson.GetAdncDefaultOptions());
             await context.Response.WriteAsync(errorText);
         }
     }

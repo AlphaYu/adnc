@@ -189,9 +189,9 @@ namespace Adnc.Usr.Application.Services
             {
                 var roleIds = userProfile.RoleIds.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(x => long.Parse(x));
                 var roles = await _roleRepository
-                                                                  .Where(x => roleIds.Contains(x.Id))
-                                                                  .Select(r => new { r.Id, r.Tips, r.Name })
-                                                                  .ToListAsync();
+                                                .Where(x => roleIds.Contains(x.Id))
+                                                .Select(r => new { r.Id, r.Tips, r.Name })
+                                                .ToListAsync();
                 foreach (var role in roles)
                 {
                     userInfoDto.Roles.Add(role.Tips);
