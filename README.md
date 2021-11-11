@@ -98,8 +98,8 @@
     npm run build:prod
     ```
   - 界面
-![.NET微服务开源框架-异常日志界面](https://aspdotnetcore.net/wp-content/uploads/2020/11/adnc-dashboard-nlog.webp)
-![.NET微服务开源框架-角色管理界面](https://aspdotnetcore.net/wp-content/uploads/2020/11/adnc-dashboard-role.webp)
+![.NET微服务开源框架-异常日志界面](https://aspdotnetcore.net/adnc-dashboard-nlog-2/)
+![.NET微服务开源框架-角色管理界面](https://aspdotnetcore.net/adnc-dashboard-role/)
 
 #### ServerApi
   - ServerApi基于`.NET 5.0`搭建。
