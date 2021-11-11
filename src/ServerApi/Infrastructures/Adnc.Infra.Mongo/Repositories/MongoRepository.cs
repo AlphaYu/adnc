@@ -2,6 +2,7 @@
 using Adnc.Infra.IRepositories;
 using Adnc.Infra.Mongo.Extensions;
 using Adnc.Infra.Mongo.Interfaces;
+using Adnc.Infra.Mongo.Entities;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;

@@ -6,15 +6,12 @@ using Autofac;
 namespace Adnc.Infra.Mongo
 {
     /// <summary>
-    /// Autofac注册
+    /// MongoDb模块注册
     /// </summary>
     public class AdncInfraMongoModule : Module
     {
         protected override void Load(ContainerBuilder builder)
         {
-            //注册依赖模块
-            this.LoadDepends(builder);
-
             //注册mongo公共Repository
             builder.RegisterGeneric(typeof(MongoRepository<>))
                    .UsingConstructor(typeof(IMongoContext))
@@ -31,10 +28,6 @@ namespace Adnc.Infra.Mongo
                    .Where(t => t.IsClosedTypeOf(typeof(IMongoEntityConfiguration<>)))
                    .AsImplementedInterfaces()
                    .InstancePerLifetimeScope();
-        }
-
-        private void LoadDepends(ContainerBuilder builder)
-        {
         }
     }
 }

@@ -10,7 +10,8 @@
 </a>
 </div>
 
-# <div align="center">![Adnc是一个微服务开发框架 代码改变世界 开源活跃社区](https://aspdotnetcore.net/wp-content/uploads/2020/12/adnc-homepage-logo-3.webp)</div>
+# <div align="center">![Adnc是一个微服务开发框架 代码改变世界 开源推动社区](https://aspdotnetcore.net/cropped-adnc-logo-3-1-png/)</div>
+## <div align="center">*代码改变世界，开源推动社区*</div>
 &ensp;&ensp;&ensp;&ensp;<a target="_blank" title="一个轻量级的.Net 5.0微服务开发框架" href="https://aspdotnetcore.net">Adnc</a>是一个轻量级的<a target="_blank" href="https://github.com/dotnet/core">.Net 5.0</a>微服务开发框架，同时也适用于单体架构系统的开发。支持经典三层与DDD架构开发模式、集成了一系列主流稳定的微服务配套技术栈。一个前后端分离的框架，前端基于<a target="_blank" href="https://github.com/vuejs/vue">Vue</a>、后端基于<a target="_blank" href="https://github.com/dotnet/core">.Net 5.0</a>构建。Webapi遵循RESTful设计规范、基于JWT认证授权、基于<a target="_blank" href="https://github.com/mariadb-corporation/MaxScale">Maxscale</a>实现了读写分离、部署灵活、代码简洁、开箱即用、容器化微服务的最佳实践。
 
 - 用户中心：系统支撑服务，实现了用户管理、角色管理、权限管理、菜单管理、组织架构管理
@@ -47,7 +48,7 @@
 
 ## 总体结构设计
 - 经典三层
-![.NET微服务开源框架-总体设计](https://aspdotnetcore.net/adnc-traditional/)
+![.NET微服务开源框架-总体设计](https://aspdotnetcore.net/dotnet6/adnc-traditional/)
 - DDD三层
 ![.NET微服务开源框架-总体设计](https://aspdotnetcore.net/adnc-ddd/)
 - 总体结构
@@ -98,8 +99,8 @@
     npm run build:prod
     ```
   - 界面
-![.NET微服务开源框架-异常日志界面](https://aspdotnetcore.net/wp-content/uploads/2020/11/adnc-dashboard-nlog.webp)
-![.NET微服务开源框架-角色管理界面](https://aspdotnetcore.net/wp-content/uploads/2020/11/adnc-dashboard-role.webp)
+![.NET微服务开源框架-异常日志界面](https://aspdotnetcore.net/adnc-dashboard-nlog-2/)
+![.NET微服务开源框架-角色管理界面](https://aspdotnetcore.net/adnc-dashboard-role/)
 
 #### ServerApi
   - ServerApi基于`.NET 5.0`搭建。
@@ -133,7 +134,7 @@
 - `Services` 微服务相关工程
 - `Tests` 框架测试相关工程
 
-![.NET微服务开源框架-整体架构图](https://aspdotnetcore.net/adnc_solution)
+![.NET微服务开源框架-整体架构图](https://aspdotnetcore.net/dotnet6/adnc_solution)
 #### Infrastructures 基础架构相关工程
 ##### :white_check_mark: Adnc.Infra.Core
 该工程是Adnc所有工程的最顶层，任何工程都会者直接或间接依赖该层。该工程提供了大量的`C#`基础类型的扩展方法以及Configuration、DependencyInjection、ContainerBuilder的扩展方法，还定义了一些异常类。
