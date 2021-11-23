@@ -42,7 +42,6 @@ namespace Pomelo.EntityFrameworkCore.MySql.Query.ExpressionVisitors.Internal
         }
     }
 
-
     /// <summary>
     /// adnc sql 生成类
     /// </summary>

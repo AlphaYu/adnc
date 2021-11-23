@@ -2,6 +2,6 @@
 {
     public static class AuthorizePolicy
     {
-        public  static string Default => "PermissionCheck";
+        public static string Default => "PermissionCheck";
     }
 }

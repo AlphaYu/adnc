@@ -178,7 +178,7 @@ namespace Adnc.Whse.Application.Services
         {
             var whereCondition = ExpressionCreator
                                                                              .New<Product>()
-                                                                             .AndIf(search.Ids.IsNotNullOrEmpty(), x=>(search.Ids.Select(x=>x).Distinct()).Contains(x.Id))
+                                                                             .AndIf(search.Ids.IsNotNullOrEmpty(), x => (search.Ids.Select(x => x).Distinct()).Contains(x.Id))
                                                                              .AndIf(search.StatusCode > 0, x => (int)x.Status.Code == search.StatusCode);
 
             var products = await _productRepo.Where(whereCondition).ToListAsync();

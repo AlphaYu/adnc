@@ -24,7 +24,7 @@ namespace Adnc.WebApi.Shared.HostedServices
             _logger = logger;
         }
 
-        public async override Task StartAsync(CancellationToken cancellationToken)
+        public override async Task StartAsync(CancellationToken cancellationToken)
         {
             await _workerNode.InitWorkerNodesAsync(_serviceName);
             var workerId = await _workerNode.GetWorkerIdAsync(_serviceName);
@@ -34,7 +34,7 @@ namespace Adnc.WebApi.Shared.HostedServices
             await base.StartAsync(cancellationToken);
         }
 
-        public async override Task StopAsync(CancellationToken cancellationToken)
+        public override async Task StopAsync(CancellationToken cancellationToken)
         {
             await base.StopAsync(cancellationToken);
 
@@ -47,7 +47,7 @@ namespace Adnc.WebApi.Shared.HostedServices
             _logger.LogInformation("stopped service {0}:{1}", _serviceName, score);
         }
 
-        protected async override Task ExecuteAsync(CancellationToken stoppingToken)
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             while (!stoppingToken.IsCancellationRequested)
             {

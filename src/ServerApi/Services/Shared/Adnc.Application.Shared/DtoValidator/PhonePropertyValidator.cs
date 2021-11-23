@@ -1,6 +1,6 @@
-﻿using System;
-using FluentValidation;
+﻿using FluentValidation;
 using FluentValidation.Validators;
+using System;
 using System.Text.RegularExpressions;
 
 namespace Adnc.Application.Shared.DtoValidators

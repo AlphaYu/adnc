@@ -25,6 +25,7 @@ namespace Hangfire
         {
             _registry = registry;
         }
+
         /// <summary>
         /// Create <see cref="RecurringJob"/> with the provider for specified interface or class.
         /// </summary>
@@ -62,6 +63,7 @@ namespace Hangfire
                 }
             }
         }
+
         /// <summary>
         /// Create <see cref="RecurringJob"/> with the provider for specified list <see cref="RecurringJobInfo"/>.
         /// </summary>

@@ -14,6 +14,7 @@ namespace Hangfire.Configuration
         /// </summary>
         [JsonProperty("job-name")]
         public string JobName { get; set; }
+
         /// <summary>
         /// The job type while impl the interface <see cref="IRecurringJob"/>.
         /// </summary>
@@ -26,32 +27,37 @@ namespace Hangfire.Configuration
         [JsonProperty("cron-expression")]
         public string Cron { get; set; }
 
-        /// <summary>  
+        /// <summary>
         /// The value of <see cref="TimeZoneInfo"/> can be created by <seealso cref="TimeZoneInfo.FindSystemTimeZoneById(string)"/>
         /// </summary>
         [JsonProperty("timezone")]
         [JsonConverter(typeof(TimeZoneInfoConverter))]
         public TimeZoneInfo TimeZone { get; set; }
+
         /// <summary>
         /// Whether the property <see cref="TimeZone"/> can be serialized or not.
         /// </summary>
         /// <returns>true if value not null, otherwise false.</returns>
         public bool ShouldSerializeTimeZone() => TimeZone != null;
+
         /// <summary>
         /// Hangfire queue name
         /// </summary>
         [JsonProperty("queue")]
         public string Queue { get; set; }
+
         /// <summary>
         /// Whether the property <see cref="Queue"/> can be serialized or not.
         /// </summary>
         /// <returns>true if value not null or empty, otherwise false.</returns>
         public bool ShouldSerializeQueue() => !string.IsNullOrEmpty(Queue);
+
         /// <summary>
-        /// The <see cref="RecurringJob"/> data persisted in storage.  
+        /// The <see cref="RecurringJob"/> data persisted in storage.
         /// </summary>
         [JsonProperty("job-data")]
         public IDictionary<string, object> JobData { get; set; }
+
         /// <summary>
         /// Whether the property <see cref="JobData"/> can be serialized or not.
         /// </summary>

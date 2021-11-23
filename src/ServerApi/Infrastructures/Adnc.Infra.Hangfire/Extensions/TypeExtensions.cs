@@ -11,8 +11,9 @@ namespace Hangfire
         {
             return $"{method.DeclaringType.ToGenericTypeString()}.{method.Name}";
         }
+
         /// <summary>
-        /// Fork the extension method from 
+        /// Fork the extension method from
         /// https://github.com/HangfireIO/Hangfire/blob/master/src/Hangfire.Core/Common/TypeExtensions.cs
         /// </summary>
         /// <param name="type"></param>
@@ -30,6 +31,7 @@ namespace Hangfire
                     .ReplacePlusWithDotInNestedTypeName()
                     .ReplaceGenericParametersInGenericTypeName(type);
         }
+
         private static string GetFullNameWithoutNamespace(this Type type)
         {
             if (type.IsGenericParameter)
@@ -43,10 +45,12 @@ namespace Hangfire
                 ? type.FullName.Substring(type.Namespace.Length + dotLength)
                 : type.FullName;
         }
+
         private static string ReplacePlusWithDotInNestedTypeName(this string typeName)
         {
             return typeName.Replace('+', '.');
         }
+
         private static string ReplaceGenericParametersInGenericTypeName(this string typeName, Type type)
         {
             var genericArguments = type.GetTypeInfo().GetAllGenericArguments();
@@ -65,6 +69,7 @@ namespace Hangfire
 
             return typeName;
         }
+
         public static Type[] GetAllGenericArguments(this TypeInfo type)
         {
             return type.GenericTypeArguments.Length > 0 ? type.GenericTypeArguments : type.GenericTypeParameters;

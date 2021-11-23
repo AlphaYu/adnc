@@ -11,7 +11,6 @@ namespace Adnc.Shared.Events
     {
         public WarehouseQtyBlockedEvent()
         {
-
         }
 
         public WarehouseQtyBlockedEvent(long id, EventData eventData, string eventSource)

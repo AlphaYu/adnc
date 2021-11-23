@@ -1,9 +1,9 @@
 ﻿using Adnc.Infra.Core.Internal;
-using System.Diagnostics.CodeAnalysis;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -287,7 +287,7 @@ namespace System
             return field;
         }
 
-         /// <summary>An object extension method that gets the properties.</summary>
+        /// <summary>An object extension method that gets the properties.</summary>
         /// <param name="this">The @this to act on.</param>
         /// <returns>An array of property information.</returns>
         public static PropertyInfo[] GetProperties([NotNull] this object @this)

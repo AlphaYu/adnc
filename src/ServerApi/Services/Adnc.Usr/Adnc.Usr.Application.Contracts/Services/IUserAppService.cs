@@ -79,7 +79,7 @@ namespace Adnc.Usr.Application.Contracts.Services
         /// <param name="permissions"></param>
         /// <param name="validationVersion"></param>
         /// <returns></returns>
-        Task<List<string>> GetPermissionsAsync(long userId, IEnumerable<string> permissions, string validationVersion=null);
+        Task<List<string>> GetPermissionsAsync(long userId, IEnumerable<string> permissions, string validationVersion = null);
 
         /// <summary>
         /// 获取用户列表

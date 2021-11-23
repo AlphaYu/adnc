@@ -50,7 +50,7 @@ namespace Adnc.Ord.Core.Services
             //AddProduct会判断是否有重复的产品
             foreach (var (Product, Count) in items)
             {
-                order.AddProduct(IdGenerater.GetNextId(),new OrderItemProduct(Product.Id, Product.Name, Product.Price), Count);
+                order.AddProduct(IdGenerater.GetNextId(), new OrderItemProduct(Product.Id, Product.Name, Product.Price), Count);
             }
 
             //发送OrderCreatedEvent事件，通知仓储中心冻结库存

@@ -28,6 +28,7 @@ namespace Hangfire
 
             Register(jobId, method, cron, timeZone, queue);
         }
+
         /// <summary>
         /// Register RecurringJob via <see cref="MethodInfo"/>.
         /// </summary>
@@ -72,6 +73,7 @@ namespace Hangfire
 
             Expression.Lambda(addOrUpdate).Compile().DynamicInvoke();
         }
+
         /// <summary>
         /// Register RecurringJob via <see cref="RecurringJobInfo"/>.
         /// </summary>

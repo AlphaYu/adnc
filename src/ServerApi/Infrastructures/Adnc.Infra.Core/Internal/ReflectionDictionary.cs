@@ -23,7 +23,6 @@ namespace Adnc.Infra.Core.Internal
         internal static readonly ConcurrentDictionary<PropertyInfo, Action<object, object>> PropertyValueSetters = new ConcurrentDictionary<PropertyInfo, Action<object, object>>();
 
         internal static readonly ConcurrentDictionary<Type, object> TypeObejctCache = new ConcurrentDictionary<Type, object>();
-
     }
 
     internal static class StrongTypedDictionary<T>

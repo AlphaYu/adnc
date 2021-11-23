@@ -46,6 +46,7 @@ namespace Hangfire.Configuration
 
             Initialize();
         }
+
         private void Initialize()
         {
             _fileWatcher = new FileSystemWatcher(ConfigFile.DirectoryName, ConfigFile.Name);
@@ -53,6 +54,7 @@ namespace Hangfire.Configuration
             _fileWatcher.Changed += OnChanged;
             _fileWatcher.Error += OnError;
         }
+
         private void OnError(object sender, ErrorEventArgs e)
         {
             _logger.InfoException($"File {ConfigFile} occurred errors.", e.GetException());
@@ -103,7 +105,7 @@ namespace Hangfire.Configuration
             {
                 try
                 {
-                    // Do stuff with file  
+                    // Do stuff with file
                     using (var file = ConfigFile.OpenRead())
                     using (StreamReader reader = new StreamReader(file))
                         content = reader.ReadToEnd();

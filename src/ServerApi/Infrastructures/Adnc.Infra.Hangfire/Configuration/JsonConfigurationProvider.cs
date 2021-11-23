@@ -70,7 +70,6 @@ namespace Hangfire.Configuration
             {
                 throw new ArgumentException($"job-type: {option.JobType} must impl the interface {typeof(IRecurringJob)}.");
             }
-
         }
     }
 }

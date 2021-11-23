@@ -17,6 +17,7 @@ namespace Hangfire
         {
             return objectType == typeof(TimeZoneInfo);
         }
+
         /// <summary>
         /// Reads the JSON representation of the object.
         /// </summary>
@@ -33,6 +34,7 @@ namespace Hangfire
 
             return TimeZoneInfo.FindSystemTimeZoneById(reader.Value.ToString());
         }
+
         /// <summary>
         /// Writes the JSON representation of the <see cref="TimeZoneInfo"/>.
         /// </summary>

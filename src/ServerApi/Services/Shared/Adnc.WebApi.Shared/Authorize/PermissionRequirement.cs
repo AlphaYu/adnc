@@ -4,11 +4,11 @@
     {
         public string _permissionName { get; }
 
-        public PermissionRequirement() 
-        { 
+        public PermissionRequirement()
+        {
         }
 
         public PermissionRequirement(string permissionName)
-            =>_permissionName = permissionName;
+            => _permissionName = permissionName;
     }
 }

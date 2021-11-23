@@ -6,7 +6,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Adnc.Infra.EfCore.MySQL
 {

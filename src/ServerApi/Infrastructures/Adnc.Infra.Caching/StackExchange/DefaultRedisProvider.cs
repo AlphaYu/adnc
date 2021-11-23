@@ -51,14 +51,17 @@ namespace Adnc.Infra.Caching.StackExchange
         /// </summary>
         private readonly CacheStats _cacheStats;
 
-        public override string Name { get { return CachingConstValue.StackExchange; } }
+        public override string Name
+        { get { return CachingConstValue.StackExchange; } }
 
-        public override string CachingProviderType { get { return nameof(DefaultRedisProvider); } }
+        public override string CachingProviderType
+        { get { return nameof(DefaultRedisProvider); } }
 
         /// <summary>
         /// The serializer.
         /// </summary>
-        public override ICachingSerializer Serializer { get { return _serializer; } }
+        public override ICachingSerializer Serializer
+        { get { return _serializer; } }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="T:EasyCaching.Redis.DefaultRedisCachingProvider"/> class.

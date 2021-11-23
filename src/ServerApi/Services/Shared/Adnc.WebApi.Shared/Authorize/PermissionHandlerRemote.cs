@@ -1,6 +1,5 @@
 ﻿using Adnc.Shared.RpcServices.Services;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Microsoft.AspNetCore.Authorization
@@ -16,7 +15,7 @@ namespace Microsoft.AspNetCore.Authorization
             //_contextAccessor = contextAccessor;
         }
 
-        protected override async Task<bool> CheckUserPermissions(long userId, IEnumerable<string> codes,string validationVersion)
+        protected override async Task<bool> CheckUserPermissions(long userId, IEnumerable<string> codes, string validationVersion)
         {
             //var jwtToken = await _contextAccessor.HttpContext.GetTokenAsync("access_token");
             //var refitResult = await _authRpcService.GetCurrenUserPermissions($"Bearer {jwtToken}", userId, codes);

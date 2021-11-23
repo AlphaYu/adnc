@@ -45,6 +45,7 @@ namespace Hangfire
             foreach (var jsonFile in jsonFiles)
                 AddOrUpdate(jsonFile, reloadOnChange);
         }
+
         /// <summary>
         /// Builds <see cref="RecurringJob"/> automatically by using a JSON configuration.
         /// </summary>
@@ -58,7 +59,6 @@ namespace Hangfire
                 Path.Combine(
                 AppContext.BaseDirectory,
                 jsonFile);
-
 
             if (!File.Exists(configFile)) throw new FileNotFoundException($"The json file {configFile} does not exist.");
 

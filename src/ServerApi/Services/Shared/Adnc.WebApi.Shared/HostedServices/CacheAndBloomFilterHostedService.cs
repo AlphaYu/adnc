@@ -30,7 +30,7 @@ namespace Adnc.Application.Shared.HostedServices
             _cacheService = cacheService;
         }
 
-        protected async override Task ExecuteAsync(CancellationToken stoppingToken)
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             #region Init BloomFilter
 

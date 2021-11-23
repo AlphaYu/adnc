@@ -1,5 +1,4 @@
 ﻿using Adnc.Infra.IRepositories;
-using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 

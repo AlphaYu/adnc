@@ -13,6 +13,7 @@ namespace Hangfire
         /// </summary>
         /// <param name="typesProvider">Specified interface or class</param>
         void Build(Func<IEnumerable<Type>> typesProvider);
+
         /// <summary>
         /// Create <see cref="RecurringJob"/> with the provider for specified list <see cref="RecurringJobInfo"/>.
         /// </summary>

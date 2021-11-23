@@ -14,7 +14,7 @@ namespace Adnc.Infra.Consul.Consumer
 {
     public class ConsulDiscoverDelegatingHandler : DelegatingHandler
     {
-        private readonly static SemaphoreSlim _slimlock = new SemaphoreSlim(1, 1);
+        private static readonly SemaphoreSlim _slimlock = new SemaphoreSlim(1, 1);
         private readonly ConsulClient _consulClient;
         private readonly ITokenGenerator _tokenGenerator;
         private readonly IMemoryCache _memoryCache;

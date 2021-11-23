@@ -22,10 +22,11 @@ namespace Adnc.WebApi.Shared.HostedServices
             _logger = logger;
         }
 
-        protected async override Task ExecuteAsync(CancellationToken stoppingToken)
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             //save loginlogs
-            _= Task.Run(async() => {
+            _ = Task.Run(async () =>
+            {
                 var channelLoginReader = ChannelHelper<LoginLog>.Instance.Reader;
                 while (await channelLoginReader.WaitToReadAsync(stoppingToken))
                 {
@@ -40,7 +41,8 @@ namespace Adnc.WebApi.Shared.HostedServices
             }, stoppingToken);
 
             //save operationlogs
-            _ = Task.Run(async () => {
+            _ = Task.Run(async () =>
+            {
                 var channelOperationLogReader = ChannelHelper<OperationLog>.Instance.Reader;
                 while (await channelOperationLogReader.WaitToReadAsync(stoppingToken))
                 {

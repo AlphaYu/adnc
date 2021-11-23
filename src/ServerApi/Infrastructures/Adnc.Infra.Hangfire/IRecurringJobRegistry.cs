@@ -16,6 +16,7 @@ namespace Hangfire
         /// <param name="timeZone"><see cref="TimeZoneInfo"/></param>
         /// <param name="queue">Queue name</param>
         void Register(MethodInfo method, string cron, TimeZoneInfo timeZone, string queue);
+
         /// <summary>
         /// Register RecurringJob via <see cref="MethodInfo"/>.
         /// </summary>
@@ -25,6 +26,7 @@ namespace Hangfire
         /// <param name="timeZone"><see cref="TimeZoneInfo"/></param>
         /// <param name="queue">Queue name</param>
         void Register(string recurringJobId, MethodInfo method, string cron, TimeZoneInfo timeZone, string queue);
+
         /// <summary>
         /// Register RecurringJob via <see cref="RecurringJobInfo"/>.
         /// </summary>

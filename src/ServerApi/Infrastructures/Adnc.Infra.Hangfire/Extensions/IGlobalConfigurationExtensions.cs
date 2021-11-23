@@ -36,6 +36,7 @@ namespace Hangfire
 
             return configuration;
         }
+
         /// <summary>
         /// Builds <see cref="RecurringJob"/> automatically by using a JSON configuration.
         /// To the Hangfire client, alternatively way is to use the class <seealso cref="CronJob"/> to add or update <see cref="RecurringJob"/>.

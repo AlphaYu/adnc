@@ -1,5 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.ComponentModel;
+﻿using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -107,7 +107,7 @@ namespace System
                 return (T)converter.ConvertTo(@this, targetType);
 
             converter = TypeDescriptor.GetConverter(targetType);
-            if (converter != null&& converter.CanConvertFrom(@this.GetType()))
+            if (converter != null && converter.CanConvertFrom(@this.GetType()))
                 return (T)converter.ConvertFrom(@this);
 
             if (@this == DBNull.Value)
@@ -136,11 +136,11 @@ namespace System
                 }
 
                 var converter = TypeDescriptor.GetConverter(@this);
-                if (converter != null&& converter.CanConvertTo(targetType))
+                if (converter != null && converter.CanConvertTo(targetType))
                     return converter.ConvertTo(@this, targetType);
 
                 converter = TypeDescriptor.GetConverter(targetType);
-                if (converter != null&& converter.CanConvertFrom(@this.GetType()))
+                if (converter != null && converter.CanConvertFrom(@this.GetType()))
                     return converter.ConvertFrom(@this);
 
                 if (@this == DBNull.Value)

@@ -72,6 +72,7 @@ namespace Adnc.Infra.Core
 
             return value;
         }
+
         public static string NotNull(
             string value,
             [NotNull] string parameterName,
