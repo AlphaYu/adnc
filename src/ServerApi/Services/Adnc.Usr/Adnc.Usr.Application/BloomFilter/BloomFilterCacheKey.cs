@@ -39,7 +39,7 @@ namespace Adnc.Usr.Application.BloomFilter
             if (!exists)
             {
                 var values = new List<string>()
-                { 
+                {
                     CachingConsts.MenuListCacheKey,
                     CachingConsts.MenuTreeListCacheKey,
                     CachingConsts.MenuRelationCacheKey,

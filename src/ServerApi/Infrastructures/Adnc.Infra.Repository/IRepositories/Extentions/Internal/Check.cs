@@ -10,7 +10,7 @@ namespace Adnc.Infra.Repository.IRepositories.Extentions.Internal
     [DebuggerStepThrough]
     internal static class Check
     {
-        public static T NotNull<T>( T value, [NotNull] string parameterName)
+        public static T NotNull<T>(T value, [NotNull] string parameterName)
         {
 #pragma warning disable IDE0041 // Use 'is null' check
             if (ReferenceEquals(value, null))

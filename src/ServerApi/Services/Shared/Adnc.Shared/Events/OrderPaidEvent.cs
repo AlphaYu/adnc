@@ -11,7 +11,6 @@ namespace Adnc.Shared.Events
     {
         public OrderPaidEvent()
         {
-
         }
 
         public OrderPaidEvent(long id, EventData eventData, string eventSource)

@@ -1,5 +1,4 @@
-﻿using JetBrains.Annotations;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Adnc.Application.Shared.Dtos
@@ -46,7 +45,8 @@ namespace Adnc.Application.Shared.Dtos
             }
         }
 
-        public int RowsCount { get { return _data.Count; } }
+        public int RowsCount
+        { get { return _data.Count; } }
 
         public int PageIndex { get; set; }
 
@@ -54,7 +54,8 @@ namespace Adnc.Application.Shared.Dtos
 
         public int TotalCount { get; set; }
 
-        public int PageCount { get { return ((this.RowsCount + this.PageSize - 1) / this.PageSize); } }
+        public int PageCount
+        { get { return ((this.RowsCount + this.PageSize - 1) / this.PageSize); } }
 
         public dynamic XData { get; set; }
     }

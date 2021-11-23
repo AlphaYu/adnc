@@ -14,7 +14,6 @@ using Adnc.Infra.Repository;
 using Autofac;
 using Autofac.Extras.DynamicProxy;
 using FluentValidation;
-using Hangfire;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -145,18 +144,17 @@ namespace Adnc.Application.Shared
             builder.RegisterModuleIfNotRegistered(new AdncInfraCachingModule(_redisSection));
             //builder.RegisterModuleIfNotRegistered(new AdncInfraHangfireModule(_appAssemblieToScan));
 
-            if (_domainAssemblieToScan!=null)
+            if (_domainAssemblieToScan != null)
             {
                 var modelType = _domainAssemblieToScan.GetTypes().FirstOrDefault(x => x.IsAssignableTo<AdncDomainModule>() && !x.IsAbstract);
                 builder.RegisterModuleIfNotRegistered(System.Activator.CreateInstance(modelType) as Autofac.Module);
             }
 
-            if(_repoAssemblieToScan!=null)
+            if (_repoAssemblieToScan != null)
             {
                 var modelType = _repoAssemblieToScan.GetTypes().FirstOrDefault(x => x.IsAssignableTo<AdncRepositoryModule>() && !x.IsAbstract);
                 builder.RegisterModuleIfNotRegistered(System.Activator.CreateInstance(modelType) as Autofac.Module);
             }
-
         }
     }
 }

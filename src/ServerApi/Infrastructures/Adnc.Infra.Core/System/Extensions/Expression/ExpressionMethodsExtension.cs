@@ -52,7 +52,7 @@ namespace System.Linq.Expressions
         /// <typeparam name="TMember">TMember</typeparam>
         /// <param name="memberExpression">get member expression</param>
         /// <returns></returns>
-        public static string GetMemberName<TEntity, TMember>([NotNull] this Expression<Func<TEntity, TMember>> memberExpression) 
+        public static string GetMemberName<TEntity, TMember>([NotNull] this Expression<Func<TEntity, TMember>> memberExpression)
             => GetMemberInfo(memberExpression)?.Name;
 
         /// <summary>

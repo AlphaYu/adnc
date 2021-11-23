@@ -30,7 +30,7 @@ namespace Adnc.Usr.Application.Services
            , IEfRepository<SysRole> roleRepository
            , IEfRepository<SysMenu> menuRepository
            , CacheService cacheService
-           ,IBloomFilterFactory bloomFilterFactory)
+           , IBloomFilterFactory bloomFilterFactory)
         {
             _userRepository = userRepository;
             _roleRepository = roleRepository;

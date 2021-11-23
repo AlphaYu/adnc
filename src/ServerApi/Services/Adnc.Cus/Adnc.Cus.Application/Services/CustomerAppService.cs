@@ -60,7 +60,7 @@ namespace Adnc.Cus.Application.Services
             customer.FinanceInfo = new CustomerFinance()
             {
                 Account = customer.Account,
-                Balance = 0 ,
+                Balance = 0,
                 Id = customer.Id
             };
 
@@ -84,12 +84,12 @@ namespace Adnc.Cus.Application.Services
 
             var cusTransactionLog = new CustomerTransactionLog()
             {
-                Id = IdGenerater.GetNextId() ,
+                Id = IdGenerater.GetNextId(),
                 CustomerId = customer.Id,
-                Account = customer.Account ,
+                Account = customer.Account,
                 ExchangeType = ExchangeTypeEnum.Recharge,
                 Remark = "",
-                Amount = input.Amount ,
+                Amount = input.Amount,
                 ExchageStatus = ExchageStatusEnum.Processing
             };
 

@@ -58,7 +58,7 @@ namespace Adnc.Ord.Domain.Entities
         /// </summary>
         /// <param name="product"></param>
         /// <param name="count"></param>
-        public void AddProduct(long itemId,OrderItemProduct product, int count)
+        public void AddProduct(long itemId, OrderItemProduct product, int count)
         {
             Checker.NotNull(product, nameof(product));
             Checker.GTZero(count, nameof(count));

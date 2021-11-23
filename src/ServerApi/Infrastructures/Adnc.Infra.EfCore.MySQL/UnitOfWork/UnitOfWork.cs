@@ -16,7 +16,8 @@ namespace Adnc.Infra.EfCore
         private readonly ICapPublisher _capPublisher;
         private IDbContextTransaction _dbTransaction;
 
-        public bool IsStartingUow { get { return _unitOfWorkStatus.IsStartingUow; } }
+        public bool IsStartingUow
+        { get { return _unitOfWorkStatus.IsStartingUow; } }
 
         public UnitOfWork(TDbContext context
             , UnitOfWorkStatus unitOfWorkStatus

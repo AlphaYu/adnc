@@ -83,7 +83,7 @@ namespace Adnc.Maint.Application.Services
 
             var result = new PageModelDto<CfgDto>()
             {
-                Data = pagedCfgs ,
+                Data = pagedCfgs,
                 TotalCount = allCfgs.Count,
                 PageIndex = search.PageIndex,
                 PageSize = search.PageSize

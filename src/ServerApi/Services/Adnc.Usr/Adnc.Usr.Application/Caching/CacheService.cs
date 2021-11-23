@@ -30,7 +30,7 @@ namespace Adnc.Usr.Application.Caching
             , Lazy<IEfRepository<SysRelation>> relationRepository
             , Lazy<IEfRepository<SysRole>> roleRepository
             , Lazy<IEfRepository<SysUser>> userRepository
-            ,Lazy<IOptionsSnapshot<JwtConfig>> jwtConfig)
+            , Lazy<IOptionsSnapshot<JwtConfig>> jwtConfig)
             : base(cache)
         {
             _cache = cache;
@@ -151,7 +151,7 @@ namespace Adnc.Usr.Application.Caching
 
             var roots = depts.Where(d => d.Pid == 0)
                                         .OrderBy(d => d.Ordinal)
-                                        .Select(x => new DeptSimpleTreeDto { Id = x.Id, Label = x.SimpleName})
+                                        .Select(x => new DeptSimpleTreeDto { Id = x.Id, Label = x.SimpleName })
                                         .ToList();
             foreach (var node in roots)
             {

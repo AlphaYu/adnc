@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
 
 namespace System.Linq.Expressions
 {
@@ -19,7 +18,7 @@ namespace System.Linq.Expressions
                 Expression.OrElse(left, right), parameter);
         }
 
-        public static Expression<Func<T, bool>> OrIf<T>([NotNull] this Expression<Func<T, bool>> @this, bool condition,Expression<Func<T, bool>> expr)
+        public static Expression<Func<T, bool>> OrIf<T>([NotNull] this Expression<Func<T, bool>> @this, bool condition, Expression<Func<T, bool>> expr)
             => condition ? Or<T>(@this, expr) : @this;
 
         public static Expression<Func<T, bool>> And<T>([NotNull] this Expression<Func<T, bool>> @this, Expression<Func<T, bool>> expr)
@@ -37,7 +36,6 @@ namespace System.Linq.Expressions
 
         public static Expression<Func<T, bool>> AndIf<T>([NotNull] this Expression<Func<T, bool>> @this, bool condition, Expression<Func<T, bool>> expr)
             => condition ? And<T>(@this, expr) : @this;
-
 
         [Obsolete("Obsoleted")]
         public static Expression<Func<T, bool>> True<T>()
@@ -82,6 +80,5 @@ namespace System.Linq.Expressions
                 return base.Visit(node);
             }
         }
-
     }
 }

@@ -3,7 +3,6 @@ using System;
 
 namespace Adnc.Shared.Events
 {
-
     /// <summary>
     /// 客户充值
     /// </summary>

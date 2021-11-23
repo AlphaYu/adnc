@@ -12,7 +12,7 @@ namespace Hangfire
             var options = new DashboardOptions
             {
                 AppPath = $"/{serviceInfo.ShortName}/hangfire",
-                DashboardTitle = $"{serviceInfo.Description}任务控制台",
+                DashboardTitle = $"{serviceInfo.Description} Jobs Dashboard",
                 DisplayStorageConnectionString = false
             };
 
@@ -26,7 +26,7 @@ namespace Hangfire
             var options = new DashboardOptions
             {
                 AppPath = $"/{serviceInfo.ShortName}/hangfire",
-                DashboardTitle = $"{serviceInfo.Description}任务控制台",
+                DashboardTitle = $"{serviceInfo.Description} Jobs Dashboard",
                 DisplayStorageConnectionString = false
             };
             if (authorize.Any())

@@ -18,7 +18,7 @@ namespace Adnc.Infra.Mq
         public AdncInfraEventBusModule(IEnumerable<Assembly> assembliesToScan)
             => _assembliesToScan = assembliesToScan;
 
-        public AdncInfraEventBusModule(params Assembly[] assembliesToScan) 
+        public AdncInfraEventBusModule(params Assembly[] assembliesToScan)
             : this((IEnumerable<Assembly>)assembliesToScan)
         {
         }
@@ -44,7 +44,7 @@ namespace Adnc.Infra.Mq
 
         protected virtual void Load(IServiceCollection service)
         {
-            var implements = _assembliesToScan.SelectMany(x=>x.GetTypes())
+            var implements = _assembliesToScan.SelectMany(x => x.GetTypes())
                                                                          .Where(imp => typeof(ICapSubscribe).IsAssignableFrom(imp) && !imp.IsAbstract)
                                                                          .ToList();
             implements.ForEach(loader => service.AddSingleton(loader));

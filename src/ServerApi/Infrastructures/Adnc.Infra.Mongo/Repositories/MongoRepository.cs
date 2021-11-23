@@ -1,8 +1,8 @@
 ﻿using Adnc.Infra.Entities;
 using Adnc.Infra.IRepositories;
+using Adnc.Infra.Mongo.Entities;
 using Adnc.Infra.Mongo.Extensions;
 using Adnc.Infra.Mongo.Interfaces;
-using Adnc.Infra.Mongo.Entities;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -41,6 +41,7 @@ namespace Adnc.Infra.Mongo
 
         public async Task<TEntity> GetAsync(FilterDefinition<TEntity> filter, CancellationToken cancellationToken = default) =>
            await FindOneAsync(filter, null, cancellationToken);
+
         /// <summary>
         /// Gets all entities in this repository.
         /// </summary>
@@ -97,6 +98,7 @@ namespace Adnc.Infra.Mongo
             var result = await collection.DeleteManyAsync(filter, cancellationToken);
             return result.DeletedCount;
         }
+
         /// <summary>
         /// Replaces the specified entity with the same identifier.
         /// </summary>
@@ -205,8 +207,6 @@ namespace Adnc.Infra.Mongo
         /// <returns></returns>
         protected async Task<IMongoCollection<TEntity>> GetCollectionAsync(CancellationToken cancellationToken = default) =>
             await _context.GetCollectionAsync<TEntity>(cancellationToken);
-
-       
 
         protected static FilterDefinitionBuilder<TEntity> Filter => Builders<TEntity>.Filter;
 

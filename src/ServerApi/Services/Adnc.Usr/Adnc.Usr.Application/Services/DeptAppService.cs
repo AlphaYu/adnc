@@ -100,10 +100,10 @@ namespace Adnc.Usr.Application.Services
             Func<DeptDto, DeptTreeDto> selector = x =>
                                                                                       new DeptTreeDto
                                                                                       {
-                                                                                          Id = x.Id ,
+                                                                                          Id = x.Id,
                                                                                           SimpleName = x.SimpleName,
                                                                                           FullName = x.FullName,
-                                                                                          Ordinal = x.Ordinal ,
+                                                                                          Ordinal = x.Ordinal,
                                                                                           Pid = x.Pid,
                                                                                           Pids = x.Pids,
                                                                                           Tips = x.Tips,
