@@ -15,7 +15,7 @@ namespace Adnc.Infra.Entities.Config
             ConfigureQueryFilter(builder, entityType);
         }
 
-        protected virtual void ConfigureKey(EntityTypeBuilder<TEntity> builder,Type entityType)
+        protected virtual void ConfigureKey(EntityTypeBuilder<TEntity> builder, Type entityType)
         {
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id).ValueGeneratedNever();
