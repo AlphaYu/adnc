@@ -1,6 +1,4 @@
-﻿using Adnc.Infra.EventBus;
-
-namespace Adnc.Shared.Events;
+﻿namespace Adnc.Shared.Events;
 
 /// <summary>
 /// 客户充值

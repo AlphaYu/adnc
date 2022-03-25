@@ -1,17 +1,12 @@
-﻿using Adnc.Shared.RpcServices.Rtos;
-using Refit;
-using System.Threading;
+﻿namespace Adnc.Shared.RpcServices.Services;
 
-namespace Adnc.Shared.RpcServices.Services
+public interface IWhseRpcService : IRpcService
 {
-    public interface IWhseRpcService : IRpcService
-    {
-        /// <summary>
-        /// 获取商品列表
-        /// </summary>
-        /// <returns></returns>
-        [Headers("Authorization: Bearer", "Cache: 1000")]
-        [Get("/whse/products")]
-        Task<ApiResponse<List<ProductRto>>> GetProductsAsync(ProductSearchListRto search, CancellationToken cancellationToken = default);
-    }
+    /// <summary>
+    /// 获取商品列表
+    /// </summary>
+    /// <returns></returns>
+    [Headers("Authorization: Bearer", "Cache: 1000")]
+    [Get("/whse/products")]
+    Task<ApiResponse<List<ProductRto>>> GetProductsAsync(ProductSearchListRto search, CancellationToken cancellationToken = default);
 }
