@@ -1,12 +1,4 @@
-﻿using Adnc.Infra.Consul;
-using Adnc.WebApi.Shared.Middleware;
-using Hangfire;
-using HealthChecks.UI.Client;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using Microsoft.IdentityModel.Logging;
-using Microsoft.OpenApi.Models;
-
-namespace Microsoft.AspNetCore.Builder;
+﻿namespace Microsoft.AspNetCore.Builder;
 
 public static class ApplicationBuilderExtension
 {

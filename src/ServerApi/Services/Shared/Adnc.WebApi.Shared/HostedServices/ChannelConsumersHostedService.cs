@@ -1,7 +1,4 @@
-﻿using Adnc.Infra.Entities;
-using Adnc.Infra.IRepositories;
-
-namespace Adnc.WebApi.Shared.HostedServices;
+﻿namespace Adnc.WebApi.Shared.HostedServices;
 
 public class ChannelConsumersHostedService : BackgroundService
 {

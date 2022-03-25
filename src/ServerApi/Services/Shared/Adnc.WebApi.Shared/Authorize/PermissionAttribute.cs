@@ -1,4 +1,7 @@
-﻿namespace Microsoft.AspNetCore.Mvc.Filters;
+﻿using AttributeUsageAttribute = System.AttributeUsageAttribute;
+using AuthorizeAttribute = Microsoft.AspNetCore.Authorization.AuthorizeAttribute;
+
+namespace Microsoft.AspNetCore.Mvc.Filters;
 
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]
 public class PermissionAttribute : AuthorizeAttribute

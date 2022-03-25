@@ -1,6 +1,5 @@
 ﻿using Adnc.Application.Shared.BloomFilter;
 using Adnc.Application.Shared.Caching;
-using Adnc.Infra.Caching;
 using Adnc.Infra.Caching.Core;
 
 namespace Adnc.Application.Shared.HostedServices;

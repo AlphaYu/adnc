@@ -1,50 +1,6 @@
-﻿using Adnc.Application.Shared.Caching.SkyApm;
-using Adnc.Infra.Consul;
-using Adnc.Infra.Consul.Consumer;
-using Adnc.Infra.EfCore.Interceptors;
-using Adnc.Infra.EfCore.MySQL;
-using Adnc.Infra.EventBus.RabbitMq;
-using Adnc.Infra.Mongo;
-using Adnc.Infra.Mongo.Configuration;
-using Adnc.Infra.Mongo.Extensions;
-using Adnc.Shared.ConfigModels;
-using Adnc.Shared.RpcServices;
-using Adnc.WebApi.Shared.Extensions;
-using DotNetCore.CAP;
-using DotNetCore.CAP.Dashboard;
-using DotNetCore.CAP.Dashboard.NodeDiscovery;
-using FluentValidation.AspNetCore;
-using Hangfire;
-using Hangfire.Console;
-using Hangfire.Mongo;
-using Hangfire.Mongo.Migration.Strategies;
-using Hangfire.Mongo.Migration.Strategies.Backup;
-using LiteX.HealthChecks.Redis;
-using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Memory;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
-using MongoDB.Driver;
-using Polly;
-using Polly.Timeout;
-using Refit;
-using SkyApm.Diagnostics.CAP;
-using SkyApm.Utilities.DependencyInjection;
-using System.IdentityModel.Tokens.Jwt;
-using System.IO;
-using System.Net;
-using System.Net.Http;
-using System.Net.NetworkInformation;
-using System.Net.Sockets;
-using System.Security.Claims;
-using System.Text.Json;
-using System.Threading;
-using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
+﻿namespace Adnc.WebApi.Shared;
 
-namespace Adnc.WebApi.Shared;
+using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
 
 public class SharedServicesRegistration
 {

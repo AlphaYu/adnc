@@ -1,7 +1,4 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-
-namespace Microsoft.AspNetCore.Authorization;
+﻿namespace Microsoft.AspNetCore.Authorization;
 
 public abstract class PermissionHandler : AuthorizationHandler<PermissionRequirement>
 {

@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-
-namespace Adnc.WebApi.Shared;
+﻿namespace Adnc.WebApi.Shared;
 
 public sealed class ServiceInfo : IServiceInfo
 {

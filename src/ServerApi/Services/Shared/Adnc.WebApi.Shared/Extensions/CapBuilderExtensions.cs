@@ -1,7 +1,4 @@
-﻿using DotNetCore.CAP;
-using System.Reflection;
-
-namespace Adnc.WebApi.Shared.Extensions;
+﻿namespace Adnc.WebApi.Shared.Extensions;
 
 public static class CapBuilderExtensions
 {

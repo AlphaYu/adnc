@@ -1,5 +1,4 @@
-﻿using Adnc.Application.Shared.IdGenerater;
-using Adnc.Infra.Helper.IdGeneraterInternal;
+﻿using Adnc.Infra.Helper.IdGeneraterInternal;
 
 namespace Adnc.WebApi.Shared.HostedServices;
 

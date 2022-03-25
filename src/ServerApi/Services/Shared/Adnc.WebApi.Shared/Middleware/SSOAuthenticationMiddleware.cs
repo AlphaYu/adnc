@@ -1,13 +1,4 @@
-﻿using Adnc.Infra.Caching;
-using Adnc.Shared.ConfigModels;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Routing;
-using Newtonsoft.Json.Linq;
-using System.IdentityModel.Tokens.Jwt;
-using System.IO;
-using System.Net;
-using System.Security.Claims;
-using System.Text.Json;
+﻿using ProblemDetails = Adnc.Application.Shared.Services.ProblemDetails;
 
 namespace Adnc.WebApi.Shared.Middleware;
 

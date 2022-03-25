@@ -1,6 +1,4 @@
-﻿using Adnc.Application.Shared.Services;
-
-namespace Adnc.WebApi.Shared;
+﻿namespace Adnc.WebApi.Shared;
 
 public abstract class AdncControllerBase : ControllerBase
 {

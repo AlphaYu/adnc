@@ -1,6 +1,4 @@
-﻿using System.Net;
-
-namespace Adnc.WebApi.Shared.Middleware;
+﻿namespace Adnc.WebApi.Shared.Middleware;
 
 public class RealIpMiddleware
 {

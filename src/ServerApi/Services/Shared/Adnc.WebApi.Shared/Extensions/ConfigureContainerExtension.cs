@@ -1,10 +1,4 @@
-﻿using Adnc.Infra.Consul;
-using Adnc.Infra.EfCore;
-using Adnc.Infra.Mongo;
-using Autofac.Core;
-using System.Reflection;
-
-namespace Autofac;
+﻿namespace Autofac;
 
 public static class ConfigureContainerExtension
 {

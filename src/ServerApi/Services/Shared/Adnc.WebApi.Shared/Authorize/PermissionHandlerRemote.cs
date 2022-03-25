@@ -1,6 +1,4 @@
-﻿using Adnc.Shared.RpcServices.Services;
-
-namespace Microsoft.AspNetCore.Authorization;
+﻿namespace Microsoft.AspNetCore.Authorization;
 
 public class PermissionHandlerRemote : PermissionHandler
 {

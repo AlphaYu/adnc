@@ -1,4 +1,4 @@
-﻿using System.Text.Json;
+﻿using ProblemDetails = Adnc.Application.Shared.Services.ProblemDetails;
 
 namespace Adnc.WebApi.Shared.Middleware;
 

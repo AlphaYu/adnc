@@ -1,8 +1,4 @@
-﻿using Adnc.Application.Shared.HostedServices;
-using Adnc.Application.Shared.IdGenerater;
-using Adnc.WebApi.Shared.HostedServices;
-
-namespace Microsoft.Extensions.DependencyInjection;
+﻿namespace Microsoft.Extensions.DependencyInjection;
 
 public static class ServiceCollectionExtension
 {
