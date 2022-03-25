@@ -4,17 +4,16 @@ using Adnc.Whse.Application.Contracts.Dtos;
 using Adnc.Whse.Domain.Entities;
 using AutoMapper;
 
-namespace Adnc.Whse.Application
+namespace Adnc.Whse.Application;
+
+public class AdncWhseProfile : Profile
 {
-    public class AdncWhseProfile : Profile
+    public AdncWhseProfile()
     {
-        public AdncWhseProfile()
-        {
-            CreateMap(typeof(IPagedModel<>), typeof(PageModelDto<>)).ForMember("XData", opt => opt.Ignore());
+        CreateMap(typeof(IPagedModel<>), typeof(PageModelDto<>)).ForMember("XData", opt => opt.Ignore());
 
-            CreateMap<Product, ProductDto>();
+        CreateMap<Product, ProductDto>();
 
-            CreateMap<Warehouse, WarehouseDto>();
-        }
+        CreateMap<Warehouse, WarehouseDto>();
     }
 }
