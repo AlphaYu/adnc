@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-namespace Adnc.Usr.Repository.Entities.Config;
+﻿namespace Adnc.Usr.Repository.Entities.Config;
 
 public class UserConfig : EntityTypeConfiguration<SysUser>
 {

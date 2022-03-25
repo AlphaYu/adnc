@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-
-namespace Adnc.Usr.Entities;
+﻿namespace Adnc.Usr.Entities;
 
 public class EntityInfo : AbstractEntityInfo
 {

@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-namespace Adnc.Usr.Entities.Config;
+﻿namespace Adnc.Usr.Entities.Config;
 
 public class DetpConfig : EntityTypeConfiguration<SysDept>
 {
