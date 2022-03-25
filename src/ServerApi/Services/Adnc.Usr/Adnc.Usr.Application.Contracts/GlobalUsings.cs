@@ -1,0 +1,13 @@
+﻿global using Adnc.Application.Shared.Dtos;
+global using Adnc.Application.Shared.Interceptors.OperateLog;
+global using Adnc.Application.Shared.Interceptors.UnitOfWork;
+global using Adnc.Application.Shared.Services;
+global using Adnc.Infra.Caching.Interceptor;
+global using Adnc.Shared.Consts.Caching.Usr;
+global using Adnc.Shared.Consts.Entity.Usr;
+global using Adnc.Usr.Application.Contracts.Dtos;
+global using FluentValidation;
+global using System;
+global using System.Collections.Generic;
+global using System.Linq;
+global using System.Threading.Tasks;

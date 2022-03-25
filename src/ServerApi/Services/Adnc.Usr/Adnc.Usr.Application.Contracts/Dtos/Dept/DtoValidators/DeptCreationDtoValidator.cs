@@ -1,7 +1,4 @@
-﻿using Adnc.Shared.Consts.Entity.Usr;
-using FluentValidation;
-
-namespace Adnc.Usr.Application.Contracts.DtoValidators;
+﻿namespace Adnc.Usr.Application.Contracts.DtoValidators;
 
 /// <summary>
 /// DeptCreationDto

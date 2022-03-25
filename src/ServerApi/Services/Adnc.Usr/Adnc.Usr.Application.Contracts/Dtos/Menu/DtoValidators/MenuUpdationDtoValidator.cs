@@ -1,6 +1,4 @@
-﻿using FluentValidation;
-
-namespace Adnc.Usr.Application.Contracts.DtoValidators;
+﻿namespace Adnc.Usr.Application.Contracts.DtoValidators;
 
 public class MenuUpdationDtoValidator : AbstractValidator<MenuUpdationDto>
 {

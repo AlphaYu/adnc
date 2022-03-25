@@ -1,6 +1,4 @@
-﻿using FluentValidation;
-
-namespace Adnc.Usr.Application.Contracts.DtoValidators;
+﻿namespace Adnc.Usr.Application.Contracts.DtoValidators;
 
 /// <summary>
 /// DeptUpdationDtoValidator
