@@ -1,7 +1,5 @@
 ﻿using Adnc.Shared.RpcServices.Rtos;
 using Refit;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Adnc.Shared.RpcServices.Services
 {

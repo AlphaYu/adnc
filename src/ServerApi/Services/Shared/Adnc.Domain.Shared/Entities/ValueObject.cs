@@ -1,5 +1,5 @@
-﻿namespace Adnc.Domain.Shared.Entities
+﻿namespace Adnc.Domain.Shared.Entities;
+
+public class ValueObject
 {
-    public class ValueObject
-    { }
 }

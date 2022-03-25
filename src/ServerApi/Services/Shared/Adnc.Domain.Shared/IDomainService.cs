@@ -1,6 +1,5 @@
-﻿namespace Adnc.Domain.Shared
+﻿namespace Adnc.Domain.Shared;
+
+public interface IDomainService
 {
-    public interface IDomainService
-    {
-    }
 }

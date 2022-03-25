@@ -1,9 +1,8 @@
 ﻿using Adnc.Infra.Entities;
 
-namespace Adnc.Domain.Shared.Entities
+namespace Adnc.Domain.Shared.Entities;
+
+public abstract class AggregateRoot : DomainEntity, IConcurrency, IEfEntity<long>
 {
-    public abstract class AggregateRoot : DomainEntity, IConcurrency, IEfEntity<long>
-    {
-        public byte[] RowVersion { get; set; }
-    }
+    public byte[] RowVersion { get; set; }
 }

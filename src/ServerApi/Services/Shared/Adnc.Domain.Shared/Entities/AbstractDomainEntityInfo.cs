@@ -4,23 +4,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace Adnc.Domain.Shared.Entities
+namespace Adnc.Domain.Shared.Entities;
+
+public abstract class AbstractDomainEntityInfo : AbstractEntityInfo
 {
-    public abstract class AbstractDomainEntityInfo : AbstractEntityInfo
+    protected override IEnumerable<Type> GetEntityTypes(Assembly assembly)
     {
-        protected override IEnumerable<Type> GetEntityTypes(Assembly assembly)
-        {
-            var efEntities = assembly.GetTypes().Where(m =>
-                                                       m.FullName != null
-                                                       && (typeof(AggregateRoot).IsAssignableFrom(m) || typeof(DomainEntity).IsAssignableFrom(m))
-                                                       && !m.IsAbstract).ToArray();
+        var efEntities = assembly.GetTypes().Where(m =>
+                                                   m.FullName != null
+                                                   && (typeof(AggregateRoot).IsAssignableFrom(m) || typeof(DomainEntity).IsAssignableFrom(m))
+                                                   && !m.IsAbstract).ToArray();
 
-            return efEntities;
-        }
+        return efEntities;
+    }
 
-        public override (Assembly Assembly, IEnumerable<Type> Types) GetEntitiesInfo()
-        {
-            return (default, default);
-        }
+    public override (Assembly Assembly, IEnumerable<Type> Types) GetEntitiesInfo()
+    {
+        return (default, default);
     }
 }

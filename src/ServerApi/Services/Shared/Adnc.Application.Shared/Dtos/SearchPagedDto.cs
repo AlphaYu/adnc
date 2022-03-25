@@ -1,48 +1,47 @@
-﻿namespace Adnc.Application.Shared.Dtos
+﻿namespace Adnc.Application.Shared.Dtos;
+
+/// <summary>
+/// 查询条件基类
+/// </summary>
+public abstract class SearchPagedDto : ISearchPagedDto
 {
+    private int _pageIndex;
+    private int _pageSize;
+
     /// <summary>
-    /// 查询条件基类
+    /// 页码
     /// </summary>
-    public abstract class SearchPagedDto : ISearchPagedDto
+    public int PageIndex
     {
-        private int _pageIndex;
-        private int _pageSize;
-
-        /// <summary>
-        /// 页码
-        /// </summary>
-        public int PageIndex
+        get
         {
-            get
-            {
-                return _pageIndex < 1 ? 1 : _pageIndex;
-            }
-            set
-            {
-                _pageIndex = value;
-            }
+            return _pageIndex < 1 ? 1 : _pageIndex;
         }
-
-        /// <summary>
-        /// 每页显示条数
-        /// </summary>
-        public int PageSize
+        set
         {
-            get
-            {
-                if (_pageSize < 5) _pageSize = 5;
-                if (_pageSize > 100) _pageSize = 100;
-                return _pageSize;
-            }
-            set
-            {
-                _pageSize = value;
-            }
+            _pageIndex = value;
         }
+    }
 
-        public int SkipRows()
+    /// <summary>
+    /// 每页显示条数
+    /// </summary>
+    public int PageSize
+    {
+        get
         {
-            return (this.PageIndex - 1) * this.PageSize;
+            if (_pageSize < 5) _pageSize = 5;
+            if (_pageSize > 100) _pageSize = 100;
+            return _pageSize;
         }
+        set
+        {
+            _pageSize = value;
+        }
+    }
+
+    public int SkipRows()
+    {
+        return (this.PageIndex - 1) * this.PageSize;
     }
 }

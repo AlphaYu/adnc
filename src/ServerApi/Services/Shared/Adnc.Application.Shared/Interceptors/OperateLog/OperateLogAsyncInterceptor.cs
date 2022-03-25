@@ -1,201 +1,195 @@
-﻿using Adnc.Infra.Core;
-using Adnc.Infra.Entities;
-using Adnc.Infra.Helper;
-using Castle.DynamicProxy;
+﻿using Castle.DynamicProxy;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Reflection;
 using System.Text.Json;
-using System.Threading.Tasks;
 
-namespace Adnc.Application.Shared.Interceptors
+namespace Adnc.Application.Shared.Interceptors.OperateLog;
+
+/// <summary>
+/// 操作日志拦截器
+/// </summary>
+public sealed class OperateLogAsyncInterceptor : IAsyncInterceptor
 {
-    /// <summary>
-    /// 操作日志拦截器
-    /// </summary>
-    public sealed class OperateLogAsyncInterceptor : IAsyncInterceptor
+    private readonly IUserContext _userContext;
+    private readonly ILogger<OperateLogAsyncInterceptor> _logger;
+
+    public OperateLogAsyncInterceptor(IUserContext userContext
+        , ILogger<OperateLogAsyncInterceptor> logger)
     {
-        private readonly IUserContext _userContext;
-        private readonly ILogger<OperateLogAsyncInterceptor> _logger;
+        _userContext = userContext;
+        _logger = logger;
+    }
 
-        public OperateLogAsyncInterceptor(IUserContext userContext
-            , ILogger<OperateLogAsyncInterceptor> logger)
+    /// <summary>
+    /// 同步拦截器
+    /// </summary>
+    /// <param name="invocation"></param>
+    public void InterceptSynchronous(IInvocation invocation)
+    {
+        var attribute = GetAttribute(invocation);
+        if (attribute == null)
+            invocation.Proceed();
+        else
+            InternalInterceptSynchronous(invocation, attribute);
+    }
+
+    /// <summary>
+    /// 异步拦截器 无返回值
+    /// </summary>
+    /// <param name="invocation"></param>
+    public void InterceptAsynchronous(IInvocation invocation)
+    {
+        var attribute = GetAttribute(invocation);
+
+        invocation.ReturnValue = attribute == null
+                                 ? InternalInterceptAsynchronousWithOutOpsLog(invocation)
+                                 : InternalInterceptAsynchronous(invocation, attribute)
+                                 ;
+    }
+
+    /// <summary>
+    /// 异步拦截器 有返回值
+    /// </summary>
+    /// <typeparam name="TResult"></typeparam>
+    /// <param name="invocation"></param>
+    public void InterceptAsynchronous<TResult>(IInvocation invocation)
+    {
+        var attribute = GetAttribute(invocation);
+
+        invocation.ReturnValue = attribute == null
+                                 ? InternalInterceptAsynchronousWithOutOpsLog<TResult>(invocation)
+                                 : InternalInterceptAsynchronous<TResult>(invocation, attribute)
+                                 ;
+    }
+
+    private void InternalInterceptSynchronous(IInvocation invocation, OperateLogAttribute attribute)
+    {
+        var methodInfo = invocation.Method ?? invocation.MethodInvocationTarget;
+        var log = CreateOpsLog(methodInfo.DeclaringType.FullName, methodInfo.Name, attribute.LogName, invocation.Arguments, _userContext);
+        try
         {
-            _userContext = userContext;
-            _logger = logger;
+            invocation.Proceed();
+            log.Succeed = "true";
         }
-
-        /// <summary>
-        /// 同步拦截器
-        /// </summary>
-        /// <param name="invocation"></param>
-        public void InterceptSynchronous(IInvocation invocation)
+        catch (Exception ex)
         {
-            var attribute = GetAttribute(invocation);
-            if (attribute == null)
-                invocation.Proceed();
-            else
-                InternalInterceptSynchronous(invocation, attribute);
+            throw new Exception(ex.Message, ex);
         }
-
-        /// <summary>
-        /// 异步拦截器 无返回值
-        /// </summary>
-        /// <param name="invocation"></param>
-        public void InterceptAsynchronous(IInvocation invocation)
+        finally
         {
-            var attribute = GetAttribute(invocation);
-
-            invocation.ReturnValue = attribute == null
-                                     ? InternalInterceptAsynchronousWithOutOpsLog(invocation)
-                                     : InternalInterceptAsynchronous(invocation, attribute)
-                                     ;
+            WriteOpsLog(log);
         }
+    }
 
-        /// <summary>
-        /// 异步拦截器 有返回值
-        /// </summary>
-        /// <typeparam name="TResult"></typeparam>
-        /// <param name="invocation"></param>
-        public void InterceptAsynchronous<TResult>(IInvocation invocation)
-        {
-            var attribute = GetAttribute(invocation);
+    private async Task InternalInterceptAsynchronous(IInvocation invocation, OperateLogAttribute attribute)
+    {
+        var methodInfo = invocation.Method ?? invocation.MethodInvocationTarget;
+        var log = CreateOpsLog(methodInfo.DeclaringType.FullName, methodInfo.Name, attribute.LogName, invocation.Arguments, _userContext);
 
-            invocation.ReturnValue = attribute == null
-                                     ? InternalInterceptAsynchronousWithOutOpsLog<TResult>(invocation)
-                                     : InternalInterceptAsynchronous<TResult>(invocation, attribute)
-                                     ;
-        }
-
-        private void InternalInterceptSynchronous(IInvocation invocation, OperateLogAttribute attribute)
-        {
-            var methodInfo = invocation.Method ?? invocation.MethodInvocationTarget;
-            var log = CreateOpsLog(methodInfo.DeclaringType.FullName, methodInfo.Name, attribute.LogName, invocation.Arguments, _userContext);
-            try
-            {
-                invocation.Proceed();
-                log.Succeed = "true";
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message, ex);
-            }
-            finally
-            {
-                WriteOpsLog(log);
-            }
-        }
-
-        private async Task InternalInterceptAsynchronous(IInvocation invocation, OperateLogAttribute attribute)
-        {
-            var methodInfo = invocation.Method ?? invocation.MethodInvocationTarget;
-            var log = CreateOpsLog(methodInfo.DeclaringType.FullName, methodInfo.Name, attribute.LogName, invocation.Arguments, _userContext);
-
-            try
-            {
-                invocation.Proceed();
-                var task = (Task)invocation.ReturnValue;
-                await task;
-                log.Succeed = "true";
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message, ex);
-            }
-            finally
-            {
-                WriteOpsLog(log);
-            }
-        }
-
-        private async Task InternalInterceptAsynchronousWithOutOpsLog(IInvocation invocation)
+        try
         {
             invocation.Proceed();
             var task = (Task)invocation.ReturnValue;
             await task;
+            log.Succeed = "true";
         }
-
-        private async Task<TResult> InternalInterceptAsynchronous<TResult>(IInvocation invocation, OperateLogAttribute attribute)
+        catch (Exception ex)
         {
-            TResult result;
-
-            var methodInfo = invocation.Method ?? invocation.MethodInvocationTarget;
-            var log = CreateOpsLog(methodInfo.DeclaringType.FullName, methodInfo.Name, attribute.LogName, invocation.Arguments, _userContext);
-
-            try
-            {
-                invocation.Proceed();
-                var task = (Task<TResult>)invocation.ReturnValue;
-                result = await task;
-                log.Succeed = "true";
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message, ex);
-            }
-            finally
-            {
-                WriteOpsLog(log);
-            }
-            return result;
+            throw new Exception(ex.Message, ex);
         }
-
-        private async Task<TResult> InternalInterceptAsynchronousWithOutOpsLog<TResult>(IInvocation invocation)
+        finally
         {
-            TResult result;
+            WriteOpsLog(log);
+        }
+    }
+
+    private async Task InternalInterceptAsynchronousWithOutOpsLog(IInvocation invocation)
+    {
+        invocation.Proceed();
+        var task = (Task)invocation.ReturnValue;
+        await task;
+    }
+
+    private async Task<TResult> InternalInterceptAsynchronous<TResult>(IInvocation invocation, OperateLogAttribute attribute)
+    {
+        TResult result;
+
+        var methodInfo = invocation.Method ?? invocation.MethodInvocationTarget;
+        var log = CreateOpsLog(methodInfo.DeclaringType.FullName, methodInfo.Name, attribute.LogName, invocation.Arguments, _userContext);
+
+        try
+        {
             invocation.Proceed();
             var task = (Task<TResult>)invocation.ReturnValue;
             result = await task;
-
-            return result;
+            log.Succeed = "true";
         }
-
-        private OperationLog CreateOpsLog(string className, string methodName, string logName, object[] arguments, IUserContext userContext)
+        catch (Exception ex)
         {
-            var log = new OperationLog
-            {
-                ClassName = className,
-                CreateTime = DateTime.Now,
-                LogName = logName,
-                LogType = "操作日志",
-                Message = JsonSerializer.Serialize(arguments, SystemTextJson.GetAdncDefaultOptions()),
-                Method = methodName,
-                Succeed = "false",
-                UserId = userContext.Id,
-                UserName = userContext.Name,
-                Account = userContext.Account,
-                RemoteIpAddress = userContext.RemoteIpAddress
-            };
-            return log;
+            throw new Exception(ex.Message, ex);
         }
-
-        private void WriteOpsLog(OperationLog logInfo)
+        finally
         {
-            try
-            {
-                //var properties = _mqProducer.CreateBasicProperties();
-                ////设置消息持久化
-                //properties.Persistent = true;
-                //_mqProducer.BasicPublish(MqExchanges.Logs, MqRoutingKeys.OpsLog, logInfo, properties);
-                var operationLogWriter = ChannelHelper<OperationLog>.Instance.Writer;
-                operationLogWriter.WriteAsync(logInfo).GetAwaiter().GetResult();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message, ex);
-            }
+            WriteOpsLog(log);
         }
+        return result;
+    }
 
-        /// <summary>
-        /// 获取拦截器attrbute
-        /// </summary>
-        /// <param name="invocation"></param>
-        /// <returns></returns>
-        private OperateLogAttribute GetAttribute(IInvocation invocation)
+    private async Task<TResult> InternalInterceptAsynchronousWithOutOpsLog<TResult>(IInvocation invocation)
+    {
+        TResult result;
+        invocation.Proceed();
+        var task = (Task<TResult>)invocation.ReturnValue;
+        result = await task;
+
+        return result;
+    }
+
+    private OperationLog CreateOpsLog(string className, string methodName, string logName, object[] arguments, IUserContext userContext)
+    {
+        var log = new OperationLog
         {
-            var methodInfo = invocation.Method ?? invocation.MethodInvocationTarget;
-            var attribute = methodInfo.GetCustomAttribute<OperateLogAttribute>();
-            return attribute;
+            ClassName = className,
+            CreateTime = DateTime.Now,
+            LogName = logName,
+            LogType = "操作日志",
+            Message = JsonSerializer.Serialize(arguments, SystemTextJson.GetAdncDefaultOptions()),
+            Method = methodName,
+            Succeed = "false",
+            UserId = userContext.Id,
+            UserName = userContext.Name,
+            Account = userContext.Account,
+            RemoteIpAddress = userContext.RemoteIpAddress
+        };
+        return log;
+    }
+
+    private void WriteOpsLog(OperationLog logInfo)
+    {
+        try
+        {
+            //var properties = _mqProducer.CreateBasicProperties();
+            ////设置消息持久化
+            //properties.Persistent = true;
+            //_mqProducer.BasicPublish(MqExchanges.Logs, MqRoutingKeys.OpsLog, logInfo, properties);
+            var operationLogWriter = ChannelHelper<OperationLog>.Instance.Writer;
+            operationLogWriter.WriteAsync(logInfo).GetAwaiter().GetResult();
         }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.Message, ex);
+        }
+    }
+
+    /// <summary>
+    /// 获取拦截器attrbute
+    /// </summary>
+    /// <param name="invocation"></param>
+    /// <returns></returns>
+    private OperateLogAttribute GetAttribute(IInvocation invocation)
+    {
+        var methodInfo = invocation.Method ?? invocation.MethodInvocationTarget;
+        var attribute = methodInfo.GetCustomAttribute<OperateLogAttribute>();
+        return attribute;
     }
 }

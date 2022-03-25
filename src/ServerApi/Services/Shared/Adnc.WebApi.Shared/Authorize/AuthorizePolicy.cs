@@ -1,7 +1,6 @@
-﻿namespace Microsoft.AspNetCore.Authorization
+﻿namespace Microsoft.AspNetCore.Authorization;
+
+public static class AuthorizePolicy
 {
-    public static class AuthorizePolicy
-    {
-        public static string Default => "PermissionCheck";
-    }
+    public static string Default => "PermissionCheck";
 }

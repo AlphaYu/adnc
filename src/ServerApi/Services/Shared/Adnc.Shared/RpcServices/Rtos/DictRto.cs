@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Adnc.Shared.RpcServices.Rtos
+﻿namespace Adnc.Shared.RpcServices.Rtos
 {
     public class DictRto
     {

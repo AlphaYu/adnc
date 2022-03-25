@@ -1,30 +1,28 @@
 ﻿using Adnc.Infra.EventBus;
-using System;
 
-namespace Adnc.Shared.Events
+namespace Adnc.Shared.Events;
+
+/// <summary>
+/// 锁定库存事件
+/// </summary>
+[Serializable]
+public class WarehouseQtyBlockedEvent : BaseEvent<WarehouseQtyBlockedEvent.EventData>
 {
-    /// <summary>
-    /// 锁定库存事件
-    /// </summary>
-    [Serializable]
-    public class WarehouseQtyBlockedEvent : BaseEvent<WarehouseQtyBlockedEvent.EventData>
+    public WarehouseQtyBlockedEvent()
     {
-        public WarehouseQtyBlockedEvent()
-        {
-        }
+    }
 
-        public WarehouseQtyBlockedEvent(long id, EventData eventData, string eventSource)
-            : base(id, eventData, eventSource)
-        {
-        }
+    public WarehouseQtyBlockedEvent(long id, EventData eventData, string eventSource)
+        : base(id, eventData, eventSource)
+    {
+    }
 
-        public class EventData
-        {
-            public long OrderId { get; set; }
+    public class EventData
+    {
+        public long OrderId { get; set; }
 
-            public bool IsSuccess { get; set; }
+        public bool IsSuccess { get; set; }
 
-            public string Remark { get; set; }
-        }
+        public string Remark { get; set; }
     }
 }

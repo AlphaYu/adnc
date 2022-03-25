@@ -1,9 +1,6 @@
-﻿using Adnc.Infra.Mapper;
+﻿namespace Adnc.Application.Shared.Services;
 
-namespace Adnc.Application.Shared.Services
+public interface IAppService
 {
-    public interface IAppService
-    {
-        IObjectMapper Mapper { get; set; }
-    }
+    IObjectMapper Mapper { get; set; }
 }

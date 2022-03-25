@@ -1,14 +1,13 @@
-﻿namespace Microsoft.AspNetCore.Authorization
+﻿namespace Microsoft.AspNetCore.Authorization;
+
+public class PermissionRequirement : IAuthorizationRequirement
 {
-    public class PermissionRequirement : IAuthorizationRequirement
+    public string _permissionName { get; }
+
+    public PermissionRequirement()
     {
-        public string _permissionName { get; }
-
-        public PermissionRequirement()
-        {
-        }
-
-        public PermissionRequirement(string permissionName)
-            => _permissionName = permissionName;
     }
+
+    public PermissionRequirement(string permissionName)
+        => _permissionName = permissionName;
 }

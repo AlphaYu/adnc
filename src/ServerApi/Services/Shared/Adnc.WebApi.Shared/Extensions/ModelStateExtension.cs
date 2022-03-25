@@ -1,36 +1,33 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
-using System.Linq;
-using System.Text;
 
-namespace Adnc.WebApi.Shared.Extensions
+namespace Adnc.WebApi.Shared.Extensions;
+
+public static class ModelStateExtensions
 {
-    public static class ModelStateExtensions
+    /// <summary>
+    /// 获取验证消息提示并格式化提示
+    /// </summary>
+    public static string GetValidationSummary(this ModelStateDictionary modelState, string separator = "\r\n")
     {
-        /// <summary>
-        /// 获取验证消息提示并格式化提示
-        /// </summary>
-        public static string GetValidationSummary(this ModelStateDictionary modelState, string separator = "\r\n")
+        if (modelState.IsValid) return null;
+
+        var error = new StringBuilder();
+
+        foreach (var item in modelState)
         {
-            if (modelState.IsValid) return null;
+            var state = item.Value;
+            var message = state.Errors.FirstOrDefault(p => !string.IsNullOrWhiteSpace(p.ErrorMessage))?.ErrorMessage;
+            if (string.IsNullOrWhiteSpace(message))
+                message = state.Errors.FirstOrDefault(o => o.Exception != null)?.Exception.Message;
 
-            var error = new StringBuilder();
+            if (string.IsNullOrWhiteSpace(message)) continue;
 
-            foreach (var item in modelState)
-            {
-                var state = item.Value;
-                var message = state.Errors.FirstOrDefault(p => !string.IsNullOrWhiteSpace(p.ErrorMessage))?.ErrorMessage;
-                if (string.IsNullOrWhiteSpace(message))
-                    message = state.Errors.FirstOrDefault(o => o.Exception != null)?.Exception.Message;
+            if (error.Length > 0)
+                error.Append(separator);
 
-                if (string.IsNullOrWhiteSpace(message)) continue;
-
-                if (error.Length > 0)
-                    error.Append(separator);
-
-                error.Append(message);
-            }
-
-            return error.ToString();
+            error.Append(message);
         }
+
+        return error.ToString();
     }
 }

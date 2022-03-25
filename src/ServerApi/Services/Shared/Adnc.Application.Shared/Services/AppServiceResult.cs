@@ -1,96 +1,92 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
+﻿namespace Adnc.Application.Shared.Services;
 
-namespace Adnc.Application.Shared.Services
+/// <summary>
+/// Application返回结果包装类,无返回类型(void,task)
+/// </summary>
+public sealed class AppSrvResult
 {
-    /// <summary>
-    /// Application返回结果包装类,无返回类型(void,task)
-    /// </summary>
-    public sealed class AppSrvResult
+    public AppSrvResult()
     {
-        public AppSrvResult()
-        {
-        }
+    }
 
-        public AppSrvResult([NotNull] ProblemDetails problemDetails)
-        {
-            ProblemDetails = problemDetails;
-        }
+    public AppSrvResult([NotNull] ProblemDetails problemDetails)
+    {
+        ProblemDetails = problemDetails;
+    }
 
-        public bool IsSuccess
+    public bool IsSuccess
+    {
+        get
         {
-            get
-            {
-                return ProblemDetails == null;
-            }
-        }
-
-        public ProblemDetails ProblemDetails { get; set; }
-
-        public static implicit operator AppSrvResult([NotNull] ProblemDetails problemDetails)
-        {
-            return new AppSrvResult
-            {
-                ProblemDetails = problemDetails
-            };
+            return ProblemDetails == null;
         }
     }
 
-    /// <summary>
-    /// Application返回结果包装类,有返回类型
-    /// </summary>
-    [Serializable]
-    public sealed class AppSrvResult<TValue>
+    public ProblemDetails ProblemDetails { get; set; }
+
+    public static implicit operator AppSrvResult([NotNull] ProblemDetails problemDetails)
     {
-        public AppSrvResult()
+        return new AppSrvResult
         {
-        }
+            ProblemDetails = problemDetails
+        };
+    }
+}
 
-        public AppSrvResult([NotNull] TValue value)
+/// <summary>
+/// Application返回结果包装类,有返回类型
+/// </summary>
+[Serializable]
+public sealed class AppSrvResult<TValue>
+{
+    public AppSrvResult()
+    {
+    }
+
+    public AppSrvResult([NotNull] TValue value)
+    {
+        Content = value;
+    }
+
+    public AppSrvResult([NotNull] ProblemDetails problemDetails)
+    {
+        ProblemDetails = problemDetails;
+    }
+
+    public bool IsSuccess
+    {
+        get
         {
-            Content = value;
+            return ProblemDetails == null && Content != null;
         }
+    }
 
-        public AppSrvResult([NotNull] ProblemDetails problemDetails)
+    public TValue Content { get; set; }
+
+    public ProblemDetails ProblemDetails { get; set; }
+
+    public static implicit operator AppSrvResult<TValue>(AppSrvResult result)
+    {
+        return new AppSrvResult<TValue>
         {
-            ProblemDetails = problemDetails;
-        }
+            Content = default
+            ,
+            ProblemDetails = result.ProblemDetails
+        };
+    }
 
-        public bool IsSuccess
+    public static implicit operator AppSrvResult<TValue>(ProblemDetails problemDetails)
+    {
+        return new AppSrvResult<TValue>
         {
-            get
-            {
-                return ProblemDetails == null && Content != null;
-            }
-        }
+            Content = default
+            ,
+            ProblemDetails = problemDetails
+        };
+    }
 
-        public TValue Content { get; set; }
-
-        public ProblemDetails ProblemDetails { get; set; }
-
-        public static implicit operator AppSrvResult<TValue>(AppSrvResult result)
-        {
-            return new AppSrvResult<TValue>
-            {
-                Content = default
-                ,
-                ProblemDetails = result.ProblemDetails
-            };
-        }
-
-        public static implicit operator AppSrvResult<TValue>(ProblemDetails problemDetails)
-        {
-            return new AppSrvResult<TValue>
-            {
-                Content = default
-                ,
-                ProblemDetails = problemDetails
-            };
-        }
-
-        public static implicit operator AppSrvResult<TValue>(TValue value)
-        {
-            return new AppSrvResult<TValue>(value);
-        }
+    public static implicit operator AppSrvResult<TValue>(TValue value)
+    {
+        return new AppSrvResult<TValue>(value);
     }
 }

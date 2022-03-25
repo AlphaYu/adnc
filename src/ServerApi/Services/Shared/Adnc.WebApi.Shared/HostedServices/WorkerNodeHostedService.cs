@@ -1,69 +1,63 @@
 ﻿using Adnc.Application.Shared.IdGenerater;
 using Adnc.Infra.Helper.IdGeneraterInternal;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 
-namespace Adnc.WebApi.Shared.HostedServices
+namespace Adnc.WebApi.Shared.HostedServices;
+
+public class WorkerNodeHostedService : BackgroundService
 {
-    public class WorkerNodeHostedService : BackgroundService
+    private readonly ILogger<WorkerNodeHostedService> _logger;
+    private readonly string _serviceName;
+    private readonly WorkerNode _workerNode;
+    private readonly int _millisecondsDelay = 1000 * 60;
+
+    public WorkerNodeHostedService(ILogger<WorkerNodeHostedService> logger
+       , WorkerNode workerNode
+       , string serviceName)
     {
-        private readonly ILogger<WorkerNodeHostedService> _logger;
-        private readonly string _serviceName;
-        private readonly WorkerNode _workerNode;
-        private readonly int _millisecondsDelay = 1000 * 60;
+        _serviceName = serviceName;
+        _workerNode = workerNode;
+        _logger = logger;
+    }
 
-        public WorkerNodeHostedService(ILogger<WorkerNodeHostedService> logger
-           , WorkerNode workerNode
-           , string serviceName)
+    public override async Task StartAsync(CancellationToken cancellationToken)
+    {
+        await _workerNode.InitWorkerNodesAsync(_serviceName);
+        var workerId = await _workerNode.GetWorkerIdAsync(_serviceName);
+
+        YitterSnowFlake.CurrentWorkerId = (short)workerId;
+
+        await base.StartAsync(cancellationToken);
+    }
+
+    public override async Task StopAsync(CancellationToken cancellationToken)
+    {
+        await base.StopAsync(cancellationToken);
+
+        _logger.LogInformation("stopping service {0}", _serviceName);
+
+        var subtractionMilliseconds = 0 - (_millisecondsDelay * 1.5);
+        var score = DateTime.Now.AddMilliseconds(subtractionMilliseconds).GetTotalMilliseconds();
+        await _workerNode.RefreshWorkerIdScoreAsync(_serviceName, YitterSnowFlake.CurrentWorkerId, score);
+
+        _logger.LogInformation("stopped service {0}:{1}", _serviceName, score);
+    }
+
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    {
+        while (!stoppingToken.IsCancellationRequested)
         {
-            _serviceName = serviceName;
-            _workerNode = workerNode;
-            _logger = logger;
-        }
-
-        public override async Task StartAsync(CancellationToken cancellationToken)
-        {
-            await _workerNode.InitWorkerNodesAsync(_serviceName);
-            var workerId = await _workerNode.GetWorkerIdAsync(_serviceName);
-
-            YitterSnowFlake.CurrentWorkerId = (short)workerId;
-
-            await base.StartAsync(cancellationToken);
-        }
-
-        public override async Task StopAsync(CancellationToken cancellationToken)
-        {
-            await base.StopAsync(cancellationToken);
-
-            _logger.LogInformation("stopping service {0}", _serviceName);
-
-            var subtractionMilliseconds = 0 - (_millisecondsDelay * 1.5);
-            var score = DateTime.Now.AddMilliseconds(subtractionMilliseconds).GetTotalMilliseconds();
-            await _workerNode.RefreshWorkerIdScoreAsync(_serviceName, YitterSnowFlake.CurrentWorkerId, score);
-
-            _logger.LogInformation("stopped service {0}:{1}", _serviceName, score);
-        }
-
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-        {
-            while (!stoppingToken.IsCancellationRequested)
+            try
             {
-                try
-                {
-                    await Task.Delay(_millisecondsDelay, stoppingToken);
+                await Task.Delay(_millisecondsDelay, stoppingToken);
 
-                    if (stoppingToken.IsCancellationRequested) break;
+                if (stoppingToken.IsCancellationRequested) break;
 
-                    await _workerNode.RefreshWorkerIdScoreAsync(_serviceName, YitterSnowFlake.CurrentWorkerId);
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex.Message, ex);
-                    await Task.Delay(_millisecondsDelay / 3, stoppingToken);
-                }
+                await _workerNode.RefreshWorkerIdScoreAsync(_serviceName, YitterSnowFlake.CurrentWorkerId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                await Task.Delay(_millisecondsDelay / 3, stoppingToken);
             }
         }
     }

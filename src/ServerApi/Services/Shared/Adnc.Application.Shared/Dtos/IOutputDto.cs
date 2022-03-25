@@ -1,13 +1,12 @@
-﻿namespace Adnc.Application.Shared.Dtos
+﻿namespace Adnc.Application.Shared.Dtos;
+
+/// <summary>
+/// OutputDto基类
+/// </summary>
+public interface IOutputDto : IDto
 {
     /// <summary>
-    /// OutputDto基类
+    /// 主键ID
     /// </summary>
-    public interface IOutputDto : IDto
-    {
-        /// <summary>
-        /// 主键ID
-        /// </summary>
-        public long Id { get; set; }
-    }
+    public long Id { get; set; }
 }

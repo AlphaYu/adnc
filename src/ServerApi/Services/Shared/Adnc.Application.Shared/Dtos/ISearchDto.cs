@@ -1,6 +1,5 @@
-﻿namespace Adnc.Application.Shared.Dtos
+﻿namespace Adnc.Application.Shared.Dtos;
+
+public interface ISearchDto : IDto
 {
-    public interface ISearchDto : IDto
-    {
-    }
 }

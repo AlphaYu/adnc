@@ -1,22 +1,21 @@
 ﻿using Castle.DynamicProxy;
 
-namespace Adnc.Application.Shared.Interceptors
+namespace Adnc.Application.Shared.Interceptors.UnitOfWork;
+
+/// <summary>
+/// 工作单元拦截器
+/// </summary>
+public class UowInterceptor : IInterceptor
 {
-    /// <summary>
-    /// 工作单元拦截器
-    /// </summary>
-    public class UowInterceptor : IInterceptor
+    private readonly UowAsyncInterceptor _uowAsyncInterceptor;
+
+    public UowInterceptor(UowAsyncInterceptor uowAsyncInterceptor)
     {
-        private readonly UowAsyncInterceptor _uowAsyncInterceptor;
+        _uowAsyncInterceptor = uowAsyncInterceptor;
+    }
 
-        public UowInterceptor(UowAsyncInterceptor uowAsyncInterceptor)
-        {
-            _uowAsyncInterceptor = uowAsyncInterceptor;
-        }
-
-        public void Intercept(IInvocation invocation)
-        {
-            this._uowAsyncInterceptor.ToInterceptor().Intercept(invocation);
-        }
+    public void Intercept(IInvocation invocation)
+    {
+        _uowAsyncInterceptor.ToInterceptor().Intercept(invocation);
     }
 }

@@ -1,27 +1,21 @@
-﻿using Adnc.Infra.Caching.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿namespace Adnc.Application.Shared.BloomFilter;
 
-namespace Adnc.Application.Shared.BloomFilter
+public class DefaultBloomFilterFactory : IBloomFilterFactory
 {
-    public class DefaultBloomFilterFactory : IBloomFilterFactory
+    private readonly IEnumerable<IBloomFilter> _filters;
+
+    public DefaultBloomFilterFactory(IEnumerable<IBloomFilter> filters)
+        => _filters = filters;
+
+    public IBloomFilter GetBloomFilter(string name)
     {
-        private readonly IEnumerable<IBloomFilter> _filters;
+        ArgumentCheck.NotNullOrWhiteSpace(name, nameof(name));
 
-        public DefaultBloomFilterFactory(IEnumerable<IBloomFilter> filters)
-            => _filters = filters;
+        var provider = _filters.FirstOrDefault(x => x.GetType().Name.Equals(name, StringComparison.OrdinalIgnoreCase));
 
-        public IBloomFilter GetBloomFilter(string name)
-        {
-            ArgumentCheck.NotNullOrWhiteSpace(name, nameof(name));
+        if (provider == null)
+            throw new ArgumentException("can not find a match bloom filters!");
 
-            var provider = _filters.FirstOrDefault(x => x.GetType().Name.Equals(name, StringComparison.OrdinalIgnoreCase));
-
-            if (provider == null)
-                throw new ArgumentException("can not find a match bloom filters!");
-
-            return provider;
-        }
+        return provider;
     }
 }

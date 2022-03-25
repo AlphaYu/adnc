@@ -1,7 +1,6 @@
-﻿namespace Adnc.Application.Shared.BloomFilter
+﻿namespace Adnc.Application.Shared.BloomFilter;
+
+public interface IBloomFilterFactory
 {
-    public interface IBloomFilterFactory
-    {
-        IBloomFilter GetBloomFilter(string name);
-    }
+    IBloomFilter GetBloomFilter(string name);
 }

@@ -1,62 +1,54 @@
 ﻿using Adnc.Infra.Entities;
-using Adnc.Infra.Helper;
 using Adnc.Infra.IRepositories;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 
-namespace Adnc.WebApi.Shared.HostedServices
+namespace Adnc.WebApi.Shared.HostedServices;
+
+public class ChannelConsumersHostedService : BackgroundService
 {
-    public class ChannelConsumersHostedService : BackgroundService
+    private readonly IServiceProvider _services;
+    private readonly ILogger<ChannelConsumersHostedService> _logger;
+
+    public ChannelConsumersHostedService(ILogger<ChannelConsumersHostedService> logger
+        , IServiceProvider services)
     {
-        private readonly IServiceProvider _services;
-        private readonly ILogger<ChannelConsumersHostedService> _logger;
+        _services = services;
+        _logger = logger;
+    }
 
-        public ChannelConsumersHostedService(ILogger<ChannelConsumersHostedService> logger
-            , IServiceProvider services)
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    {
+        //save loginlogs
+        _ = Task.Run(async () =>
         {
-            _services = services;
-            _logger = logger;
-        }
+            var channelLoginReader = ChannelHelper<LoginLog>.Instance.Reader;
+            while (await channelLoginReader.WaitToReadAsync(stoppingToken))
+            {
+                if (channelLoginReader.TryRead(out var entity))
+                {
+                    using var scope = _services.CreateScope();
+                    var repository = scope.ServiceProvider.GetRequiredService<IMongoRepository<LoginLog>>();
+                    await repository.AddAsync(entity, stoppingToken);
+                }
+                if (stoppingToken.IsCancellationRequested) break;
+            }
+        }, stoppingToken);
 
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        //save operationlogs
+        _ = Task.Run(async () =>
         {
-            //save loginlogs
-            _ = Task.Run(async () =>
+            var channelOperationLogReader = ChannelHelper<OperationLog>.Instance.Reader;
+            while (await channelOperationLogReader.WaitToReadAsync(stoppingToken))
             {
-                var channelLoginReader = ChannelHelper<LoginLog>.Instance.Reader;
-                while (await channelLoginReader.WaitToReadAsync(stoppingToken))
+                if (channelOperationLogReader.TryRead(out var entity))
                 {
-                    if (channelLoginReader.TryRead(out var entity))
-                    {
-                        using var scope = _services.CreateScope();
-                        var repository = scope.ServiceProvider.GetRequiredService<IMongoRepository<LoginLog>>();
-                        await repository.AddAsync(entity, stoppingToken);
-                    }
-                    if (stoppingToken.IsCancellationRequested) break;
+                    using var scope = _services.CreateScope();
+                    var repository = scope.ServiceProvider.GetRequiredService<IMongoRepository<OperationLog>>();
+                    await repository.AddAsync(entity, stoppingToken);
                 }
-            }, stoppingToken);
+                if (stoppingToken.IsCancellationRequested) break;
+            }
+        }, stoppingToken);
 
-            //save operationlogs
-            _ = Task.Run(async () =>
-            {
-                var channelOperationLogReader = ChannelHelper<OperationLog>.Instance.Reader;
-                while (await channelOperationLogReader.WaitToReadAsync(stoppingToken))
-                {
-                    if (channelOperationLogReader.TryRead(out var entity))
-                    {
-                        using var scope = _services.CreateScope();
-                        var repository = scope.ServiceProvider.GetRequiredService<IMongoRepository<OperationLog>>();
-                        await repository.AddAsync(entity, stoppingToken);
-                    }
-                    if (stoppingToken.IsCancellationRequested) break;
-                }
-            }, stoppingToken);
-
-            await Task.CompletedTask;
-        }
+        await Task.CompletedTask;
     }
 }

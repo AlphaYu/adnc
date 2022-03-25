@@ -1,6 +1,4 @@
-﻿using Adnc.Infra.IRepositories;
-
-namespace Adnc.Application.Shared
+﻿namespace Adnc.Application.Shared
 {
     public interface IUserContext : IOperater
     {

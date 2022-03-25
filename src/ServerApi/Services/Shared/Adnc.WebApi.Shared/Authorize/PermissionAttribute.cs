@@ -1,15 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using System;
+﻿namespace Microsoft.AspNetCore.Mvc.Filters;
 
-namespace Microsoft.AspNetCore.Mvc.Filters
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]
+public class PermissionAttribute : AuthorizeAttribute
 {
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]
-    public class PermissionAttribute : AuthorizeAttribute
-    {
-        public string[] Codes { get; private set; }
+    public string[] Codes { get; private set; }
 
-        public PermissionAttribute(params string[] codes)
-            : base(AuthorizePolicy.Default)
-            => Codes = codes;
-    }
+    public PermissionAttribute(params string[] codes)
+        : base(AuthorizePolicy.Default)
+        => Codes = codes;
 }

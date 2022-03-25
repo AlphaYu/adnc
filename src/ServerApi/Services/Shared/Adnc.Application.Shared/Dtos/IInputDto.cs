@@ -1,9 +1,8 @@
-﻿namespace Adnc.Application.Shared.Dtos
+﻿namespace Adnc.Application.Shared.Dtos;
+
+/// <summary>
+/// 输入DTO基类
+/// </summary>
+public interface IInputDto : IDto
 {
-    /// <summary>
-    /// 输入DTO基类
-    /// </summary>
-    public interface IInputDto : IDto
-    {
-    }
 }

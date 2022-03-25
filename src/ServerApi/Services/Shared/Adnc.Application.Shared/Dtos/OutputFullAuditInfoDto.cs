@@ -1,22 +1,19 @@
-﻿using System;
+﻿namespace Adnc.Application.Shared.Dtos;
 
-namespace Adnc.Application.Shared.Dtos
+/// <summary>
+/// DTO基类
+/// </summary>
+/// <typeparam name="TKey"></typeparam>
+[Serializable]
+public abstract class OutputFullAuditInfoDto : OutputBaseAuditDto, IFullAuditInfo
 {
     /// <summary>
-    /// DTO基类
+    /// 最后更新人
     /// </summary>
-    /// <typeparam name="TKey"></typeparam>
-   	[Serializable]
-    public abstract class OutputFullAuditInfoDto : OutputBaseAuditDto, IFullAuditInfo
-    {
-        /// <summary>
-        /// 最后更新人
-        /// </summary>
-        public virtual long? ModifyBy { get; set; }
+    public virtual long? ModifyBy { get; set; }
 
-        /// <summary>
-        /// 最后更新时间
-        /// </summary>
-        public virtual DateTime? ModifyTime { get; set; }
-    }
+    /// <summary>
+    /// 最后更新时间
+    /// </summary>
+    public virtual DateTime? ModifyTime { get; set; }
 }
