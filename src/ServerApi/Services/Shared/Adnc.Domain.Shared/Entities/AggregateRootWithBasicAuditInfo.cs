@@ -1,7 +1,4 @@
-﻿using Adnc.Infra.Entities;
-using System;
-
-namespace Adnc.Domain.Shared.Entities;
+﻿namespace Adnc.Domain.Shared.Entities;
 
 public class AggregateRootWithBasicAuditInfo : AggregateRoot, IBasicAuditInfo
 {

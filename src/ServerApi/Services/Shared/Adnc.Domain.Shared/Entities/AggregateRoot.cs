@@ -1,6 +1,4 @@
-﻿using Adnc.Infra.Entities;
-
-namespace Adnc.Domain.Shared.Entities;
+﻿namespace Adnc.Domain.Shared.Entities;
 
 public abstract class AggregateRoot : DomainEntity, IConcurrency, IEfEntity<long>
 {

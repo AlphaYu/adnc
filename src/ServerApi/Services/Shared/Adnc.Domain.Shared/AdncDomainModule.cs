@@ -1,10 +1,4 @@
-﻿using Adnc.Infra.Entities;
-using Autofac;
-using System;
-using System.Linq;
-using System.Reflection;
-
-namespace Adnc.Domain.Shared;
+﻿namespace Adnc.Domain.Shared;
 
 /// <summary>
 /// Autofac注册
