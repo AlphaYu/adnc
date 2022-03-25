@@ -1,6 +1,4 @@
-﻿using Castle.DynamicProxy;
-
-namespace Adnc.Application.Shared.Interceptors.OperateLog;
+﻿namespace Adnc.Application.Shared.Interceptors.OperateLog;
 
 /// <summary>
 /// 操作日志拦截器

@@ -1,8 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using SkyApm;
-using SkyApm.Utilities.DependencyInjection;
-
-namespace Adnc.Application.Shared.Caching.SkyApm;
+﻿namespace Adnc.Application.Shared.Caching.SkyApm;
 
 public static class SkyWalkingBuilderExtensions
 {

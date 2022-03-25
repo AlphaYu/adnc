@@ -1,9 +1,4 @@
-﻿using Castle.DynamicProxy;
-using Microsoft.Extensions.Logging;
-using System.Reflection;
-using System.Text.Json;
-
-namespace Adnc.Application.Shared.Interceptors.OperateLog;
+﻿namespace Adnc.Application.Shared.Interceptors.OperateLog;
 
 /// <summary>
 /// 操作日志拦截器

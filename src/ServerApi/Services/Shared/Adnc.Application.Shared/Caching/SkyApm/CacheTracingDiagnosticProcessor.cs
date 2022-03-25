@@ -1,12 +1,4 @@
-﻿using Adnc.Infra.Caching.Core.Diagnostics;
-using SkyApm;
-using SkyApm.Common;
-using SkyApm.Config;
-using SkyApm.Diagnostics;
-using SkyApm.Tracing;
-using SkyApm.Tracing.Segments;
-
-namespace Adnc.Application.Shared.Caching.SkyApm;
+﻿namespace Adnc.Application.Shared.Caching.SkyApm;
 
 public class CacheTracingDiagnosticProcessor : ITracingDiagnosticProcessor
 {

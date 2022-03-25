@@ -1,7 +1,4 @@
-﻿using Adnc.Shared.Consts.Caching.Common;
-using Polly;
-
-namespace Adnc.Application.Shared.Caching;
+﻿namespace Adnc.Application.Shared.Caching;
 
 public abstract class AbstractCacheService : ICacheService
 {

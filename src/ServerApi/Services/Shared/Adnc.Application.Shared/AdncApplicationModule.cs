@@ -1,21 +1,4 @@
-﻿using Adnc.Application.Shared.BloomFilter;
-using Adnc.Application.Shared.Caching;
-using Adnc.Application.Shared.IdGenerater;
-using Adnc.Application.Shared.Interceptors.OperateLog;
-using Adnc.Application.Shared.Interceptors.UnitOfWork;
-using Adnc.Application.Shared.Services;
-using Adnc.Domain.Shared;
-using Adnc.Infra.Caching.Interceptor.Castle;
-using Adnc.Infra.Mapper.AutoMapper;
-using Adnc.Infra.Mq;
-using Adnc.Infra.Repository;
-using Autofac;
-using Autofac.Extras.DynamicProxy;
-using FluentValidation;
-using Microsoft.Extensions.Configuration;
-using System.Reflection;
-
-namespace Adnc.Application.Shared;
+﻿namespace Adnc.Application.Shared;
 
 /// <summary>
 /// Autofac注册

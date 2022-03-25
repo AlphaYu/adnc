@@ -1,7 +1,4 @@
-﻿using Castle.DynamicProxy;
-using System.Reflection;
-
-namespace Adnc.Application.Shared.Interceptors.UnitOfWork;
+﻿namespace Adnc.Application.Shared.Interceptors.UnitOfWork;
 
 /// <summary>
 /// 工作单元拦截器

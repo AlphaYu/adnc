@@ -1,6 +1,4 @@
-﻿using System.Net;
-
-namespace Adnc.Application.Shared.Services;
+﻿namespace Adnc.Application.Shared.Services;
 
 public abstract class AbstractAppService : IAppService
 {

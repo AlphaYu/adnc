@@ -1,8 +1,4 @@
-﻿using FluentValidation;
-using FluentValidation.Validators;
-using System.Text.RegularExpressions;
-
-namespace Adnc.Application.Shared.DtoValidator;
+﻿namespace Adnc.Application.Shared.DtoValidator;
 
 public class PhonePropertyValidator<T> : PropertyValidator<T, string>
 {

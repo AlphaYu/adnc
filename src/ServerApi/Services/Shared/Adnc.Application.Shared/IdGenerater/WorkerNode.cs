@@ -1,8 +1,4 @@
-﻿using Adnc.Infra.Helper.IdGeneraterInternal;
-using Adnc.Shared.Consts.Caching.Common;
-using Microsoft.Extensions.Logging;
-
-namespace Adnc.Application.Shared.IdGenerater;
+﻿namespace Adnc.Application.Shared.IdGenerater;
 
 public class WorkerNode
 {
