@@ -24,7 +24,7 @@ namespace Pomelo.EntityFrameworkCore.MySql.Query.ExpressionVisitors.Internal
         public AdncMySqlQuerySqlGeneratorFactory(
             [NotNull] QuerySqlGeneratorDependencies dependencies,
             ISqlExpressionFactory sqlExpressionFactory,
-            IMySqlOptions options) : base(dependencies, sqlExpressionFactory, options)
+            IMySqlOptions options) : base(dependencies, options)
         {
             _dependencies = dependencies;
             _sqlExpressionFactory = (MySqlSqlExpressionFactory)sqlExpressionFactory;
@@ -55,7 +55,7 @@ namespace Pomelo.EntityFrameworkCore.MySql.Query.ExpressionVisitors.Internal
         public AdncQuerySqlGenerator(
             [NotNull] QuerySqlGeneratorDependencies dependencies,
             [NotNull] MySqlSqlExpressionFactory sqlExpressionFactory,
-            [MaybeNull] IMySqlOptions options) : base(dependencies, sqlExpressionFactory, options)
+            [MaybeNull] IMySqlOptions options) : base(dependencies, options)
         {
             ContextId = Guid.NewGuid();
         }
