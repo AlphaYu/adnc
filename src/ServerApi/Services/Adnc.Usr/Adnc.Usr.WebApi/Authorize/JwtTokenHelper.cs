@@ -1,9 +1,4 @@
-﻿using Adnc.Shared.ConfigModels;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-
-namespace Adnc.Usr.WebApi.Authorize;
+﻿namespace Adnc.Usr.WebApi.Authorize;
 
 //认证服务器安装：System.IdentityModel.Tokens.Jwt
 //资源服务器安装：Microsoft.AspNetCore.Authentication.JwtBearer

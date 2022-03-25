@@ -1,7 +1,3 @@
-using Adnc.Infra.Consul;
-using NLog.Web;
-using System.Reflection;
-
 namespace Adnc.Usr.WebApi;
 
 internal static class Program

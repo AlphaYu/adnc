@@ -1,7 +1,4 @@
-﻿using Adnc.Shared.ConfigModels;
-using Adnc.Usr.WebApi.Authorize;
-
-namespace Adnc.Usr.WebApi.Controllers;
+﻿namespace Adnc.Usr.WebApi.Controllers;
 
 /// <summary>
 /// 认证/修改密码/注销
