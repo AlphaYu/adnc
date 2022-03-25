@@ -1,13 +1,9 @@
-﻿using Adnc.Maint.Application.Contracts.Dtos;
-using FluentValidation;
+﻿namespace Adnc.Maint.Application.Contracts.DtoValidators;
 
-namespace Adnc.Maint.Application.Contracts.DtoValidators
+public class CfgUpdationDtoValidator : AbstractValidator<CfgUpdationDto>
 {
-    public class CfgUpdationDtoValidator : AbstractValidator<CfgUpdationDto>
+    public CfgUpdationDtoValidator()
     {
-        public CfgUpdationDtoValidator()
-        {
-            Include(new CfgCreationDtoValidator());
-        }
+        Include(new CfgCreationDtoValidator());
     }
 }
