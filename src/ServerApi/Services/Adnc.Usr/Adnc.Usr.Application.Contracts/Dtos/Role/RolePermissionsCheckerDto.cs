@@ -1,7 +1,4 @@
-﻿using Adnc.Application.Shared.Dtos;
-using System.Collections.Generic;
-
-namespace Adnc.Usr.Application.Contracts.Dtos
+﻿namespace Adnc.Usr.Application.Contracts.Dtos
 {
     public class RolePermissionsCheckerDto : IDto
     {

@@ -1,16 +1,7 @@
 ﻿using Adnc.Application.Shared.Caching;
 using Adnc.Infra.Caching;
-using Adnc.Infra.Helper;
-using Adnc.Infra.IRepositories;
 using Adnc.Shared.ConfigModels;
-using Adnc.Shared.Consts.Caching.Usr;
-using Adnc.Usr.Application.Contracts.Dtos;
-using Adnc.Usr.Entities;
 using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Adnc.Usr.Application.Caching
 {

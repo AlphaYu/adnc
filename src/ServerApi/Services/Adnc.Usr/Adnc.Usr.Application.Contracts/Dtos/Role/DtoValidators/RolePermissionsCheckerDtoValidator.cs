@@ -1,6 +1,4 @@
-﻿using Adnc.Usr.Application.Contracts.Dtos;
-using FluentValidation;
-using System.Linq;
+﻿using FluentValidation;
 
 namespace Adnc.Usr.Application.Contracts.DtoValidators
 {

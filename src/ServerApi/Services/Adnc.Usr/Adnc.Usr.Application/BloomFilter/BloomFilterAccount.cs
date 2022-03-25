@@ -1,11 +1,6 @@
 ﻿using Adnc.Application.Shared.BloomFilter;
 using Adnc.Infra.Caching;
-using Adnc.Infra.IRepositories;
-using Adnc.Usr.Entities;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Adnc.Usr.Application.BloomFilter
 {

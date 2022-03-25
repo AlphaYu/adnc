@@ -1,7 +1,4 @@
-﻿using Adnc.Application.Shared.Dtos;
-using System;
-
-namespace Adnc.Usr.Application.Contracts.Dtos
+﻿namespace Adnc.Usr.Application.Contracts.Dtos
 {
     public abstract class UserCreationAndUpdationDto : IInputDto
     {
