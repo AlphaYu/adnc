@@ -1,9 +1,4 @@
-﻿using Adnc.Application.Shared.BloomFilter;
-using Adnc.Infra.Caching;
-using Adnc.Infra.Caching.Configurations;
-using Microsoft.Extensions.DependencyInjection;
-
-namespace Adnc.Usr.Application.BloomFilter
+﻿namespace Adnc.Usr.Application.BloomFilter
 {
     public class BloomFilterCacheKey : AbstractBloomFilter
     {

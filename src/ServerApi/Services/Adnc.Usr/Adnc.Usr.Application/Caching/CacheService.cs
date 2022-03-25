@@ -1,9 +1,4 @@
-﻿using Adnc.Application.Shared.Caching;
-using Adnc.Infra.Caching;
-using Adnc.Shared.ConfigModels;
-using Microsoft.Extensions.Options;
-
-namespace Adnc.Usr.Application.Caching
+﻿namespace Adnc.Usr.Application.Caching
 {
     public class CacheService : AbstractCacheService
     {

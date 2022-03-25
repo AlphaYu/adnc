@@ -1,7 +1,4 @@
-﻿using Adnc.Application.Shared.BloomFilter;
-using Adnc.Usr.Application.BloomFilter;
-
-namespace Adnc.Usr.Application.Services;
+﻿namespace Adnc.Usr.Application.Services;
 
 public class UserAppService : AbstractAppService, IUserAppService
 {

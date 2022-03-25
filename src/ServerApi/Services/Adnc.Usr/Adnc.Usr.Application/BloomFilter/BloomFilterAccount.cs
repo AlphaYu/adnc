@@ -1,8 +1,4 @@
-﻿using Adnc.Application.Shared.BloomFilter;
-using Adnc.Infra.Caching;
-using Microsoft.Extensions.DependencyInjection;
-
-namespace Adnc.Usr.Application.BloomFilter
+﻿namespace Adnc.Usr.Application.BloomFilter
 {
     public class BloomFilterAccount : AbstractBloomFilter
     {
