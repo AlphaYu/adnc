@@ -112,17 +112,18 @@ public class SharedServicesRegistration
         {
             options.UseMySql(mysqlConfig.ConnectionString, serverVersion, optionsBuilder =>
             {
-                optionsBuilder.MinBatchSize(4);
-                optionsBuilder.CommandTimeout(10);
-                optionsBuilder.MigrationsAssembly(_serviceInfo.AssemblyName.Replace("WebApi", "Migrations"));
-                optionsBuilder.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
+                optionsBuilder.MinBatchSize(4)
+                                        .CommandTimeout(10)
+                                        .MigrationsAssembly(_serviceInfo.AssemblyName.Replace("WebApi", "Migrations"))
+                                        .UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
             });
 
             if (_environment.IsDevelopment())
             {
-                options.AddInterceptors(new DefaultDbCommandInterceptor());
-                options.EnableSensitiveDataLogging();
-                options.EnableDetailedErrors();
+                //options.AddInterceptors(new DefaultDbCommandInterceptor())
+                options.LogTo(Console.WriteLine, LogLevel.Information)
+                            .EnableSensitiveDataLogging()
+                            .EnableDetailedErrors();
             }
 
             //替换默认查询sql生成器,如果通过mycat中间件实现读写分离需要替换默认SQL工厂。
@@ -342,7 +343,7 @@ public class SharedServicesRegistration
     public virtual void AddEventBusSubscribers<TSubscriber>()
         where TSubscriber : class, ICapSubscribe
     {
-        var tableNamePrefix = "Cap";
+        var tableNamePrefix = "cap";
         var groupName = $"cap.{_serviceInfo.ShortName}.{_environment.EnvironmentName.ToLower()}";
 
         //add skyamp
@@ -355,10 +356,17 @@ public class SharedServicesRegistration
         {
             //如果你使用的 EF 进行数据操作，你需要添加如下配置：
             //可选项，你不需要再次配置 x.UseSqlServer 了
-            x.UseEntityFramework<AdncDbContext>(option =>
+            //x.UseEntityFramework<AdncDbContext>(option =>
+            //{
+            //    option.TableNamePrefix = tableNamePrefix;
+            //});
+            var mysqlConfig = _configuration.GetMysqlSection().Get<MysqlConfig>();
+            x.UseMySql(config =>
             {
-                option.TableNamePrefix = tableNamePrefix;
+                config.ConnectionString = mysqlConfig.ConnectionString;
+                config.TableNamePrefix = tableNamePrefix;
             });
+
             //CAP支持 RabbitMQ、Kafka、AzureServiceBus 等作为MQ，根据使用选择配置：
             x.UseRabbitMQ(option =>
             {
@@ -393,6 +401,8 @@ public class SharedServicesRegistration
                 x.PathMatch = $"/{_serviceInfo.ShortName}/cap";
                 x.UseAuth = false;
             });
+
+            /* CAP目前不需要自动注册，先注释
             //必须是生产环境才注册cap服务到consul
             if ((_environment.IsProduction() || _environment.IsStaging()))
             {
@@ -421,6 +431,7 @@ public class SharedServicesRegistration
                     discoverOptions.MatchPath = $"/{_serviceInfo.ShortName}/cap";
                 });
             }
+            */
         });
     }
 
