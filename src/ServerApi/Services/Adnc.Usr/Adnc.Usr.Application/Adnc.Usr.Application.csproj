@@ -2,8 +2,6 @@
 	<Import Project="..\..\..\build\common.props" />
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
-		<AssemblyName>Adnc.Usr.Application</AssemblyName>
-		<RootNamespace>Adnc.Usr.Application</RootNamespace>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
