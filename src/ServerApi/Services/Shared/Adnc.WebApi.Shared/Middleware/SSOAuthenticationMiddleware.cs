@@ -1,4 +1,4 @@
-﻿using ProblemDetails = Adnc.Application.Shared.Services.ProblemDetails;
+﻿using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
 
 namespace Adnc.WebApi.Shared.Middleware;
 

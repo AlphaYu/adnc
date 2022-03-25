@@ -1,6 +1,6 @@
-﻿namespace Adnc.WebApi.Shared;
+﻿using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
 
-using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
+namespace Adnc.WebApi.Shared;
 
 public class SharedServicesRegistration
 {
