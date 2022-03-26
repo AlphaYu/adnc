@@ -1,4 +1,4 @@
-﻿namespace Adnc.Application.Shared.Services;
+﻿namespace Adnc.Shared.ResultModels;
 
 /// <summary>
 /// Application返回结果包装类,无返回类型(void,task)

@@ -1,4 +1,4 @@
-﻿namespace Adnc.WebApi.Shared.HostedServices;
+﻿namespace Adnc.Application.Shared.Channels;
 
 public class ChannelConsumersHostedService : BackgroundService
 {

@@ -1,4 +1,5 @@
-﻿using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
+﻿using Microsoft.EntityFrameworkCore;
+using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
 
 namespace Adnc.WebApi.Shared;
 
@@ -98,7 +99,7 @@ public class SharedServicesRegistration
         });
 
         //add skyamp
-        _services.AddSkyApmExtensions().AddCaching();
+        //_services.AddSkyApmExtensions().AddCaching();
     }
 
     /// <summary>
@@ -108,7 +109,7 @@ public class SharedServicesRegistration
     {
         var mysqlConfig = _configuration.GetMysqlSection().Get<MysqlConfig>();
         var serverVersion = new MariaDbServerVersion(new Version(10, 5, 4));
-        _services.AddDbContext<AdncDbContext>(options =>
+        _services.AddDbContext<Adnc.Infra.EfCore.MySQL.AdncDbContext>(options =>
         {
             options.UseMySql(mysqlConfig.ConnectionString, serverVersion, optionsBuilder =>
             {
@@ -468,54 +469,54 @@ public class SharedServicesRegistration
     /// 添加任务调度
     /// </summary>
     /// <typeparam name="TSchedulingJob"></typeparam>
-    public virtual void AddSchedulingJobs<TSchedulingJob>()
-        where TSchedulingJob : class, IRecurringSchedulingJobs
-    {
-        _schedulingJobs = _schedulingJobs.Concat(new[] { typeof(TSchedulingJob) });
-    }
+    //public virtual void AddSchedulingJobs<TSchedulingJob>()
+    //    where TSchedulingJob : class, IRecurringSchedulingJobs
+    //{
+    //    _schedulingJobs = _schedulingJobs.Concat(new[] { typeof(TSchedulingJob) });
+    //}
 
     /// <summary>
     ///  注册 Hangfire 任务调度
     /// </summary>
-    public virtual void AddHangfire()
-    {
-        var hangfireConfig = _configuration.GetHangfireSection().Get<HangfireConfig>();
+    //public virtual void AddHangfire()
+    //{
+    //    var hangfireConfig = _configuration.GetHangfireSection().Get<HangfireConfig>();
 
-        var mongoUrlBuilder = new MongoUrlBuilder(hangfireConfig.ConnectionString);
-        var mongoClient = new MongoClient(mongoUrlBuilder.ToMongoUrl());
+    //    var mongoUrlBuilder = new MongoUrlBuilder(hangfireConfig.ConnectionString);
+    //    var mongoClient = new MongoClient(mongoUrlBuilder.ToMongoUrl());
 
-        _services.AddHangfire(config =>
-        {
-            config.SetDataCompatibilityLevel(CompatibilityLevel.Version_170);
-            config.UseSimpleAssemblyNameTypeSerializer();
-            config.UseRecommendedSerializerSettings();
-            // 设置 MongoDB 为持久化存储器
-            config.UseMongoStorage(mongoClient, mongoUrlBuilder.DatabaseName, new MongoStorageOptions
-            {
-                MigrationOptions = new MongoMigrationOptions
-                {
-                    MigrationStrategy = new MigrateMongoMigrationStrategy(),
-                    BackupStrategy = new CollectionMongoBackupStrategy()
-                },
-                ConnectionCheckTimeout = TimeSpan.FromMinutes(hangfireConfig.ConnectionCheckTimeout),
-                QueuePollInterval = TimeSpan.FromMinutes(hangfireConfig.QueuePollInterval),
-                CheckConnection = true,
-            })
-            // 任务超时时间
-            .JobExpirationTimeout = TimeSpan.FromMinutes(hangfireConfig.JobTimeout);
-            // 打印日志到控制面板和在线进度条展示
-            config.UseConsole();
-            config.UseRecurringJob(_schedulingJobs.ToArray());
-        });
-        // 将 Hangfire 服务添加为后台托管服务
-        _services.AddHangfireServer((service, options) =>
-        {
-            options.ServerName = $"{_serviceInfo.FullName.Replace(".", "/")}";
-            options.ShutdownTimeout = TimeSpan.FromMinutes(10);
-            // 最大 Job 处理并发数量的阈值，根据机子处理器数量设置或默认20
-            options.WorkerCount = Math.Max(Environment.ProcessorCount, 20);
-        });
-    }
+    //    _services.AddHangfire(config =>
+    //    {
+    //        config.SetDataCompatibilityLevel(CompatibilityLevel.Version_170);
+    //        config.UseSimpleAssemblyNameTypeSerializer();
+    //        config.UseRecommendedSerializerSettings();
+    //        // 设置 MongoDB 为持久化存储器
+    //        config.UseMongoStorage(mongoClient, mongoUrlBuilder.DatabaseName, new MongoStorageOptions
+    //        {
+    //            MigrationOptions = new MongoMigrationOptions
+    //            {
+    //                MigrationStrategy = new MigrateMongoMigrationStrategy(),
+    //                BackupStrategy = new CollectionMongoBackupStrategy()
+    //            },
+    //            ConnectionCheckTimeout = TimeSpan.FromMinutes(hangfireConfig.ConnectionCheckTimeout),
+    //            QueuePollInterval = TimeSpan.FromMinutes(hangfireConfig.QueuePollInterval),
+    //            CheckConnection = true,
+    //        })
+    //        // 任务超时时间
+    //        .JobExpirationTimeout = TimeSpan.FromMinutes(hangfireConfig.JobTimeout);
+    //        // 打印日志到控制面板和在线进度条展示
+    //        config.UseConsole();
+    //        config.UseRecurringJob(_schedulingJobs.ToArray());
+    //    });
+    //    // 将 Hangfire 服务添加为后台托管服务
+    //    _services.AddHangfireServer((service, options) =>
+    //    {
+    //        options.ServerName = $"{_serviceInfo.FullName.Replace(".", "/")}";
+    //        options.ShutdownTimeout = TimeSpan.FromMinutes(10);
+    //        // 最大 Job 处理并发数量的阈值，根据机子处理器数量设置或默认20
+    //        options.WorkerCount = Math.Max(Environment.ProcessorCount, 20);
+    //    });
+    //}
 
     /// <summary>
     /// 生成默认的Polly策略

@@ -1,4 +1,6 @@
-﻿namespace Adnc.Application.Shared;
+﻿using Adnc.WebApi.Shared.IdGenerater;
+
+namespace Adnc.Application.Shared;
 
 /// <summary>
 /// Autofac注册
@@ -10,6 +12,7 @@ public abstract class AdncApplicationModule : Autofac.Module
     private readonly Assembly _repoAssemblieToScan;
     private readonly Assembly _domainAssemblieToScan;
     private readonly IConfigurationSection _redisSection;
+    private readonly IServiceInfo _serviceInfo;
 
     protected AdncApplicationModule(Type modelType, IConfiguration configuration, IServiceInfo serviceInfo, bool isDddDevelopment = false)
     {
@@ -21,6 +24,7 @@ public abstract class AdncApplicationModule : Autofac.Module
             _repoAssemblieToScan = Assembly.Load(_appAssemblieToScan.FullName.Replace(".Application", ".Repository"));
 
         _redisSection = configuration.GetRedisSection();
+        _serviceInfo = serviceInfo;
     }
 
     protected override void Load(ContainerBuilder builder)
@@ -93,8 +97,11 @@ public abstract class AdncApplicationModule : Autofac.Module
         builder.RegisterType<WorkerNode>()
                     .AsSelf()
                     .SingleInstance();
-
-        #endregion register idgenerater services
+        builder.RegisterType<WorkerNodeHostedService>()
+                    .As<IHostedService>()
+                    .WithParameter("serviceName", _serviceInfo.ShortName)
+                    .SingleInstance();
+                #endregion register idgenerater services
 
         #region register cacheservice/bloomfilter
 
@@ -104,15 +111,29 @@ public abstract class AdncApplicationModule : Autofac.Module
                    .Where(t => t.IsAssignableTo<ICacheService>() && !t.IsAbstract)
                    .AsSelf().PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies).InstancePerLifetimeScope()
                    .As<ICacheService>().SingleInstance();
+        builder.RegisterType<CachingHostedService>()
+                    .As<IHostedService>()
+                    .InstancePerLifetimeScope();
+
         //bloomfilter
         builder.RegisterAssemblyTypes(_appAssemblieToScan)
                    .Where(t => t.IsAssignableTo<IBloomFilter>() && !t.IsAbstract)
                    .AsImplementedInterfaces()
                    .SingleInstance();
-        //bloomfilter factory
-        builder.RegisterType<DefaultBloomFilterFactory>().As<IBloomFilterFactory>().SingleInstance();
+        builder.RegisterType<DefaultBloomFilterFactory>()
+                    .As<IBloomFilterFactory>()
+                    .SingleInstance();
+        builder.RegisterType<BloomFilterHostedService>()
+                    .As<IHostedService>()
+                    .SingleInstance();
 
         #endregion register cacheservice/bloomfilter
+
+        #region register channelConsumers
+        builder.RegisterType<ChannelConsumersHostedService>()
+                    .As<IHostedService>()
+                    .SingleInstance();
+        #endregion
     }
 
     protected virtual void LoadDepends(ContainerBuilder builder)
@@ -120,17 +141,19 @@ public abstract class AdncApplicationModule : Autofac.Module
         builder.RegisterModuleIfNotRegistered(new AdncInfraEventBusModule(_appAssemblieToScan));
         builder.RegisterModuleIfNotRegistered(new AdncInfraAutoMapperModule(_appAssemblieToScan));
         builder.RegisterModuleIfNotRegistered(new AdncInfraCachingModule(_redisSection));
+        builder.RegisterModuleIfNotRegistered<AdncInfraMongoModule>();
+        builder.RegisterModuleIfNotRegistered<AdncInfraEfCoreModule>();
         //builder.RegisterModuleIfNotRegistered(new AdncInfraHangfireModule(_appAssemblieToScan));
 
         if (_domainAssemblieToScan != null)
         {
-            var modelType = _domainAssemblieToScan.GetTypes().FirstOrDefault(x => x.IsAssignableTo<AdncDomainModule>() && !x.IsAbstract);
+            var modelType = _domainAssemblieToScan.GetTypes().FirstOrDefault(x => x.IsAssignableTo<Autofac.Module>() && !x.IsAbstract);
             builder.RegisterModuleIfNotRegistered(System.Activator.CreateInstance(modelType) as Autofac.Module);
         }
 
         if (_repoAssemblieToScan != null)
         {
-            var modelType = _repoAssemblieToScan.GetTypes().FirstOrDefault(x => x.IsAssignableTo<AdncRepositoryModule>() && !x.IsAbstract);
+            var modelType = _repoAssemblieToScan.GetTypes().FirstOrDefault(x => x.IsAssignableTo<Autofac.Module>() && !x.IsAbstract);
             builder.RegisterModuleIfNotRegistered(System.Activator.CreateInstance(modelType) as Autofac.Module);
         }
     }

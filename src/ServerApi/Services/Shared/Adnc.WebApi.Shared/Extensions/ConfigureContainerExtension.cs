@@ -16,17 +16,18 @@ public static class ConfigureContainerExtension
         var serviceInfo = services.GetServiceInfo();
 
         var consulUrl = configuration.GetConsulSection().Get<ConsulConfig>().ConsulUrl;
-        var applicationAssembly = Assembly.Load(serviceInfo.AssemblyFullName.Replace("WebApi", "Application"));
+        builder.RegisterModuleIfNotRegistered(new AdncInfraConsulModule(consulUrl));
+
+        var applicationAssemblyName = serviceInfo.AssemblyFullName.Replace("WebApi", "Application");
+        //var assemblyPath = serviceInfo.AssemblyLocation.Replace("WebApi", "Application");
+        var applicationAssembly = Assembly.Load(applicationAssemblyName);
         var applicationModelType = applicationAssembly.GetTypes()
                                                       .FirstOrDefault(
                                                         m => m.FullName != null
-                                                        && typeof(AdncApplicationModule).IsAssignableFrom(m)
+                                                        && typeof(Autofac.Module).IsAssignableFrom(m)
                                                         && !m.IsAbstract
                                                        );
-        builder.RegisterModuleIfNotRegistered<AdncInfraMongoModule>();
-        builder.RegisterModuleIfNotRegistered<AdncInfraEfCoreModule>();
-        builder.RegisterModuleIfNotRegistered(new AdncInfraConsulModule(consulUrl));
-        builder.RegisterModuleIfNotRegistered(Activator.CreateInstance(applicationModelType, configuration, serviceInfo) as IModule);
+        builder.RegisterModuleIfNotRegistered(Activator.CreateInstance(applicationModelType, configuration, serviceInfo) as Autofac.Module);
 
         completedExecute?.Invoke(builder);
 

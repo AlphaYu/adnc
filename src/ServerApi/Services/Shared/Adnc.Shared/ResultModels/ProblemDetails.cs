@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace Adnc.Application.Shared.Services;
+﻿namespace Adnc.Shared.ResultModels;
 
 /// <summary>
 /// 错误信息类

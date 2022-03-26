@@ -3,7 +3,7 @@
 public static class ServiceCollectionExtension
 {
     /// <summary>
-    /// 统一注册Adnc.Webpi通用服务
+    /// 统一注册Adnc.WebApi通用服务
     /// </summary>
     /// <typeparam name="TPermissionHandler"></typeparam>
     /// <param name="services"></param>
@@ -22,16 +22,6 @@ public static class ServiceCollectionExtension
 
         services.AddHttpContextAccessor();
         services.AddMemoryCache();
-
-        services.AddHostedService<ChannelConsumersHostedService>();
-        services.AddHostedService<CacheAndBloomFilterHostedService>();
-        services.AddHostedService(provider =>
-        {
-            var wokerNode = provider.GetService<WorkerNode>();
-            var logger = provider.GetService<ILogger<WorkerNodeHostedService>>();
-            var serviceName = serviceInfo.ShortName;
-            return new WorkerNodeHostedService(logger, wokerNode, serviceName);
-        });
 
         var _srvRegistration = new SharedServicesRegistration(configuration, services, environment, serviceInfo);
         _srvRegistration.Configure();

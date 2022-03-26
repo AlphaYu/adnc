@@ -8,7 +8,7 @@ public abstract class AdncControllerBase : ControllerBase
     /// <param name="problemDetails"><see cref="Adnc.Application.Shared.Services.ProblemDetails"/></param>
     /// <returns><see cref="ObjectResult"/></returns>
     [NonAction]
-    protected virtual ObjectResult Problem(Adnc.Application.Shared.Services.ProblemDetails problemDetails)
+    protected virtual ObjectResult Problem(Adnc.Shared.ResultModels.ProblemDetails problemDetails)
     {
         problemDetails.Instance = problemDetails.Instance ?? this.Request.Path.ToString();
         return Problem(problemDetails.Detail

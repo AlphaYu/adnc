@@ -15,7 +15,7 @@ public static class ApplicationBuilderExtension
         var configuration = app.ApplicationServices.GetService<IConfiguration>();
         var environment = app.ApplicationServices.GetService<IHostEnvironment>();
         var serviceInfo = app.ApplicationServices.GetService<IServiceInfo>();
-        var hangfireConfig = configuration.GetHangfireSection().Get<HangfireConfig>();
+        //var hangfireConfig = configuration.GetHangfireSection().Get<HangfireConfig>();
 
         if (environment.IsDevelopment())
         {

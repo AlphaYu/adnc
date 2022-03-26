@@ -10,6 +10,7 @@ public sealed class ServiceInfo : IServiceInfo
     public string Description { get; set; }
     public string AssemblyName { get; set; }
     public string AssemblyFullName { get; set; }
+    public string AssemblyLocation { get; set; }
 
     private ServiceInfo()
     {
@@ -36,6 +37,8 @@ public sealed class ServiceInfo : IServiceInfo
             AssemblyName = assemblyName.Name
             ,
             AssemblyFullName = assembly.FullName
+            ,
+            AssemblyLocation = assembly.Location
             ,
             Description = description
             ,

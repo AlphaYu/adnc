@@ -1,48 +1,29 @@
-﻿using Adnc.Application.Shared.BloomFilter;
-using Adnc.Application.Shared.Caching;
-using Adnc.Infra.Caching.Core;
+﻿namespace Adnc.Application.Shared.Caching;
 
-namespace Adnc.Application.Shared.HostedServices;
-
-public class CacheAndBloomFilterHostedService : BackgroundService
+public class CachingHostedService : BackgroundService
 {
-    private readonly ILogger<CacheAndBloomFilterHostedService> _logger;
+    private readonly ILogger<CachingHostedService> _logger;
     private readonly ICacheProvider _cache;
-    private readonly IEnumerable<IBloomFilter> _bloomFilters;
     private readonly ICacheService _cacheService;
 
-    public CacheAndBloomFilterHostedService(ILogger<CacheAndBloomFilterHostedService> logger
+    public CachingHostedService(ILogger<CachingHostedService> logger
        , ICacheProvider cache
-       , IEnumerable<IBloomFilter> bloomFilters
        , ICacheService cacheService)
     {
         _logger = logger;
         _cache = cache;
-        _bloomFilters = bloomFilters;
         _cacheService = cacheService;
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        #region Init BloomFilter
-
-        if (_bloomFilters.IsNotNullOrEmpty())
-        {
-            foreach (var filter in _bloomFilters)
-            {
-                await filter.InitAsync();
-            }
-        }
-
-        #endregion Init BloomFilter
-
         #region Init Caches
 
         await _cacheService.PreheatAsync();
 
         #endregion Init Caches
 
-        #region Confirm Caching Removed
+        #region Confirm Caches Removed
 
         while (!stoppingToken.IsCancellationRequested)
         {
@@ -72,6 +53,6 @@ public class CacheAndBloomFilterHostedService : BackgroundService
             }
         }
 
-        #endregion Confirm Caching Removed
+        #endregion Confirm Caches Removed
     }
 }
