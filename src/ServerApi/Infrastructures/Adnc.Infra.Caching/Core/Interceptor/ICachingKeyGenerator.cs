@@ -3,7 +3,7 @@
 namespace Adnc.Infra.Core.Interceptor
 {
     /// <summary>
-    /// Easycaching key generator.
+    /// Adnc.Infra.Caching key generator.
     /// </summary>
     public interface ICachingKeyGenerator
     {

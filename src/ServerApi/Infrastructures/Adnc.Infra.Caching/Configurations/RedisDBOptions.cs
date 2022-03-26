@@ -54,7 +54,7 @@ namespace Adnc.Infra.Caching.Configurations
         public IList<ServerEndPoint> Endpoints { get; } = new List<ServerEndPoint>();
 
         /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="T:EasyCaching.Core.Internal.BaseRedisOptions"/>
+        /// Gets or sets a value indicating whether this <see cref="T:Adnc.Infra.Caching.Core.Internal.BaseRedisOptions"/>
         /// allow admin.
         /// </summary>
         /// <value><c>true</c> if allow admin; otherwise, <c>false</c>.</value>
@@ -67,7 +67,7 @@ namespace Adnc.Infra.Caching.Configurations
         public string ConnectionString { get; set; } = "";
 
         /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="T:EasyCaching.Core.Internal.BaseRedisOptions"/>
+        /// Gets or sets a value indicating whether this <see cref="T:Adnc.Infra.Caching.Core.Internal.BaseRedisOptions"/>
         /// abort on connect fail.
         /// </summary>
         /// <value><c>true</c> if abort on connect fail; otherwise, <c>false</c>.</value>

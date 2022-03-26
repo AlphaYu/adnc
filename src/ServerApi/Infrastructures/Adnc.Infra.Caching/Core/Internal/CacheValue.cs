@@ -6,7 +6,7 @@
     public class CacheValue<T>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:EasyCaching.Core.CacheValue`1"/> class.
+        /// Initializes a new instance of the <see cref="T:Adnc.Infra.Caching.Core.CacheValue`1"/> class.
         /// </summary>
         /// <param name="value">Value.</param>
         /// <param name="hasValue">If set to <c>true</c> has value.</param>
@@ -17,13 +17,13 @@
         }
 
         /// <summary>
-        /// Gets a value indicating whether this <see cref="T:EasyCaching.Core.CacheValue`1"/> has value.
+        /// Gets a value indicating whether this <see cref="T:Adnc.Infra.Caching.Core.CacheValue`1"/> has value.
         /// </summary>
         /// <value><c>true</c> if has value; otherwise, <c>false</c>.</value>
         public bool HasValue { get; }
 
         /// <summary>
-        /// Gets a value indicating whether this <see cref="T:EasyCaching.Core.CacheValue`1"/> is null.
+        /// Gets a value indicating whether this <see cref="T:Adnc.Infra.Caching.Core.CacheValue`1"/> is null.
         /// </summary>
         /// <value><c>true</c> if is null; otherwise, <c>false</c>.</value>
         public bool IsNull => Value == null;

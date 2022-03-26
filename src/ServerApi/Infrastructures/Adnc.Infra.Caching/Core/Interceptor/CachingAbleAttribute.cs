@@ -3,7 +3,7 @@
 namespace Adnc.Infra.Caching.Interceptor
 {
     /// <summary>
-    /// Easycaching able attribute.
+    /// Adnc.Infra.Caching able attribute.
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, Inherited = true)]
     public class CachingAbleAttribute : CachingInterceptorAttribute
