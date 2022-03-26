@@ -11,6 +11,7 @@ global using Adnc.Infra.Helper;
 global using Adnc.Infra.IRepositories;
 global using Adnc.Shared.ConfigModels;
 global using Adnc.Shared.Consts.Caching.Usr;
+global using Adnc.Shared.ResultModels;
 global using Adnc.Usr.Application.BloomFilter;
 global using Adnc.Usr.Application.Caching;
 global using Adnc.Usr.Application.Contracts.Dtos;

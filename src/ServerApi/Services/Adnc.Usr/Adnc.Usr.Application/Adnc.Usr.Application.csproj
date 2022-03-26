@@ -10,6 +10,10 @@
 		<OutputPath></OutputPath>
 	</PropertyGroup>
 
+	<!--<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<OutputPath>..\Adnc.Usr.WebApi\bin\$(Configuration)</OutputPath>
+	</PropertyGroup>-->
+	
 	<ItemGroup>
 		<ProjectReference Include="..\Adnc.Usr.Application.Contracts\Adnc.Usr.Application.Contracts.csproj" />
 		<ProjectReference Include="..\Adnc.Usr.Repository\Adnc.Usr.Repository.csproj" />
