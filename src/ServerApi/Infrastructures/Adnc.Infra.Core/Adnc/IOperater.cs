@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.IRepositories
+﻿namespace Adnc.Infra.Core
 {
     public interface IOperater
     {

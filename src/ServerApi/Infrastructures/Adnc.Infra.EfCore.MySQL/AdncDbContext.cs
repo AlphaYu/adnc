@@ -1,5 +1,5 @@
-﻿using Adnc.Infra.Entities;
-using Adnc.Infra.IRepositories;
+﻿using Adnc.Infra.Core;
+using Adnc.Infra.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Diagnostics.CodeAnalysis;
