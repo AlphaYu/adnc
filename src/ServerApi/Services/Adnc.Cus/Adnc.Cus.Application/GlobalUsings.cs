@@ -13,6 +13,7 @@ global using Adnc.Infra.EventBus;
 global using Adnc.Infra.Helper;
 global using Adnc.Infra.IRepositories;
 global using Adnc.Shared.Events;
+global using Adnc.Shared.ResultModels;
 global using Autofac;
 global using AutoMapper;
 global using DotNetCore.CAP;

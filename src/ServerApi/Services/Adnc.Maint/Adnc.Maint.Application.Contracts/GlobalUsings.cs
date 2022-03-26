@@ -6,6 +6,7 @@ global using Adnc.Infra.Caching.Interceptor;
 global using Adnc.Maint.Application.Contracts.Dtos;
 global using Adnc.Shared.Consts.Caching.Maint;
 global using Adnc.Shared.Consts.Entity.Maint;
+global using Adnc.Shared.ResultModels;
 global using FluentValidation;
 global using System;
 global using System.Collections.Generic;

@@ -14,6 +14,7 @@ global using Adnc.Maint.Application.Contracts.Services;
 global using Adnc.Maint.Application.Services.Caching;
 global using Adnc.Maint.Entities;
 global using Adnc.Shared.Consts.Caching.Maint;
+global using Adnc.Shared.ResultModels;
 global using Autofac;
 global using AutoMapper;
 global using Microsoft.Extensions.Configuration;
