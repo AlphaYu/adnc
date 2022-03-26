@@ -1,4 +1,5 @@
 ﻿using Adnc.Cus.Entities;
+using Adnc.Infra.Core;
 using Adnc.Infra.EfCore.MySQL;
 using Adnc.Infra.Helper;
 using Adnc.Infra.Helper.IdGeneraterInternal;
