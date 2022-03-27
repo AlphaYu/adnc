@@ -1,16 +1,4 @@
-﻿using Adnc.Application.Shared.Dtos;
-using Adnc.Application.Shared.Services;
-using Adnc.Infra.IRepositories;
-using Adnc.Whse.Application.Contracts.Dtos;
-using Adnc.Whse.Application.Contracts.Services;
-using Adnc.Whse.Domain.Entities;
-using Adnc.Whse.Domain.Services;
-using AutoMapper;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Adnc.Whse.Application.Services;
+﻿namespace Adnc.Whse.Application.Services;
 
 /// <summary>
 /// 仓储管理

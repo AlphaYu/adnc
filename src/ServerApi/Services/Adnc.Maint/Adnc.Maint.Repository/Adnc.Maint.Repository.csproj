@@ -10,7 +10,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="RepositoryExtensions\" />
+	  <Folder Include="Extensions\" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -27,10 +27,10 @@ public class UserAppService : AbstractAppService, IUserAppService
         user.Password = HashHelper.GetHashedString(HashType.MD5, user.Password, user.Salt);
 
         var cacheKey = _cacheService.ConcatCacheKey(CachingConsts.UserValidateInfoKeyPrefix, user.Id);
-        var bloomFilterCacheKey = _bloomFilterFactory.GetBloomFilter(nameof(BloomFilterCacheKey));
+        var bloomFilterCacheKey = _bloomFilterFactory.GetBloomFilter(nameof(CacheKeyBloomFilter));
         await bloomFilterCacheKey.AddAsync(cacheKey);
 
-        var bloomFilterAccount = _bloomFilterFactory.GetBloomFilter(nameof(BloomFilterAccount));
+        var bloomFilterAccount = _bloomFilterFactory.GetBloomFilter(nameof(AccountBloomFilter));
         await bloomFilterAccount.AddAsync(user.Account);
 
         await _userRepository.InsertAsync(user);

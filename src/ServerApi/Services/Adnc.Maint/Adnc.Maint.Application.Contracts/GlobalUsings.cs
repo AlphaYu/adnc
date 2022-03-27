@@ -1,8 +1,7 @@
-﻿global using Adnc.Application.Contracts.Shared.Attributes;
-global using Adnc.Application.Contracts.Shared.Dtos;
-global using Adnc.Application.Contracts.Shared.DtoValidator;
-global using Adnc.Application.Contracts.Shared.Services;
-global using Adnc.Infra.Caching.Interceptor
+﻿global using Adnc.Shared.Application.Contracts.Attributes;
+global using Adnc.Shared.Application.Contracts.Dtos;
+global using Adnc.Shared.Application.Contracts.Services;
+global using Adnc.Infra.Caching.Interceptor;
 global using Adnc.Maint.Application.Contracts.Dtos;
 global using Adnc.Shared.Consts.Caching.Maint;
 global using Adnc.Shared.Consts.Entity.Maint;

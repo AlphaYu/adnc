@@ -1,10 +1,4 @@
-﻿using Adnc.Application.Shared.Dtos;
-using Adnc.Infra.IRepositories;
-using Adnc.Whse.Application.Contracts.Dtos;
-using Adnc.Whse.Domain.Entities;
-using AutoMapper;
-
-namespace Adnc.Whse.Application;
+﻿namespace Adnc.Whse.Application;
 
 public class AdncWhseProfile : Profile
 {

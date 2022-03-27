@@ -1,7 +1,4 @@
-﻿using Adnc.Application.Shared.Dtos;
-using System.Collections.Generic;
-
-namespace Adnc.Whse.Application.Contracts.Dtos;
+﻿namespace Adnc.Whse.Application.Contracts.Dtos;
 
 public class WarehouseBlockQtyDto : IDto
 {

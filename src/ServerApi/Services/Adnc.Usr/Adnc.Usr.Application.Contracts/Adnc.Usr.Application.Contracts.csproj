@@ -10,7 +10,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Caching\Adnc.Infra.Caching.csproj" />
-		<ProjectReference Include="..\..\Shared\Adnc.Application.Contracts.Shared\Adnc.Application.Contracts.Shared.csproj" />
+		<ProjectReference Include="..\..\Shared\Adnc.Shared.Application.Contracts\Adnc.Shared.Application.Contracts.csproj" />
 		<ProjectReference Include="..\..\Shared\Adnc.Shared\Adnc.Shared.csproj" />
 	</ItemGroup>
 </Project>

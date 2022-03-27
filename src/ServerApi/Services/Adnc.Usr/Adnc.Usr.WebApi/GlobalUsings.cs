@@ -1,11 +1,11 @@
-﻿global using Adnc.Application.Contracts.Shared.Dtos;
-global using Adnc.Infra.Consul;
+﻿global using Adnc.Infra.Consul;
 global using Adnc.Infra.Core;
+global using Adnc.Shared.Application.Contracts.Dtos;
 global using Adnc.Shared.ConfigModels;
+global using Adnc.Shared.WebApi;
 global using Adnc.Usr.Application.Contracts.Dtos;
 global using Adnc.Usr.Application.Contracts.Services;
 global using Adnc.Usr.WebApi.Authorize;
-global using Adnc.WebApi.Shared;
 global using Autofac;
 global using Autofac.Extensions.DependencyInjection;
 global using Microsoft.AspNetCore.Authorization;

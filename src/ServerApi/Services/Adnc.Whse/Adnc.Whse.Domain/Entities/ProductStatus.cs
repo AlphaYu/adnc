@@ -1,4 +1,4 @@
-﻿using Adnc.Domain.Shared.Entities;
+﻿using Adnc.Shared.Domain.Entities;
 
 namespace Adnc.Whse.Domain.Entities;
 

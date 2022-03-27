@@ -1,5 +1,5 @@
-﻿global using Adnc.Domain.Shared;
-global using Adnc.Domain.Shared.Entities;
+﻿global using Adnc.Shared.Domain;
+global using Adnc.Shared.Domain.Entities;
 global using Adnc.Infra.Core;
 global using Adnc.Infra.Entities.Config;
 global using Adnc.Infra.EventBus;

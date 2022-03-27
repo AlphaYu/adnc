@@ -1,4 +1,4 @@
-﻿using Adnc.Application.Shared;
+﻿using Adnc.Shared.Application;
 using Adnc.Infra.Core;
 using Autofac;
 using Microsoft.Extensions.Configuration;

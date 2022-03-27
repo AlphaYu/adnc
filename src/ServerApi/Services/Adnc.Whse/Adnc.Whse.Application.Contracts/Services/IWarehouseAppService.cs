@@ -1,10 +1,4 @@
-﻿using Adnc.Application.Shared.Dtos;
-using Adnc.Application.Shared.Interceptors;
-using Adnc.Application.Shared.Services;
-using Adnc.Whse.Application.Contracts.Dtos;
-using System.Threading.Tasks;
-
-namespace Adnc.Whse.Application.Contracts.Services;
+﻿namespace Adnc.Whse.Application.Contracts.Services;
 
 /// <summary>
 /// 仓储管理

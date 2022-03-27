@@ -1,4 +1,4 @@
-﻿using Adnc.Domain.Shared.Entities;
+﻿using Adnc.Shared.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Reflection;

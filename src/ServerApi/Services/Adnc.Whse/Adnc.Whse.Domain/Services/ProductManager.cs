@@ -1,4 +1,4 @@
-﻿using Adnc.Domain.Shared;
+﻿using Adnc.Shared.Domain;
 using Adnc.Infra.Core;
 using Adnc.Infra.Helper;
 using Adnc.Infra.IRepositories;

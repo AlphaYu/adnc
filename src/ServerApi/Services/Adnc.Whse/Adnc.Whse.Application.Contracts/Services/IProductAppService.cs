@@ -1,11 +1,4 @@
-﻿using Adnc.Application.Shared.Dtos;
-using Adnc.Application.Shared.Interceptors;
-using Adnc.Application.Shared.Services;
-using Adnc.Whse.Application.Contracts.Dtos;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
-namespace Adnc.Whse.Application.Contracts.Services;
+﻿namespace Adnc.Whse.Application.Contracts.Services;
 
 public interface IProductAppService : IAppService
 {

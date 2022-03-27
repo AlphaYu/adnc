@@ -1,20 +1,4 @@
-﻿using Adnc.Application.Shared.Dtos;
-using Adnc.Application.Shared.Services;
-using Adnc.Infra.Core;
-using Adnc.Infra.IRepositories;
-using Adnc.Shared.RpcServices;
-using Adnc.Shared.RpcServices.Services;
-using Adnc.Whse.Application.Contracts.Dtos;
-using Adnc.Whse.Application.Contracts.Services;
-using Adnc.Whse.Domain.Entities;
-using Adnc.Whse.Domain.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
-
-namespace Adnc.Whse.Application.Services;
+﻿namespace Adnc.Whse.Application.Services;
 
 /// <summary>
 /// 商品管理

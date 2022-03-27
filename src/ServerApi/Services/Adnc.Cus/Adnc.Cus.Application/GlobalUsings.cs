@@ -1,8 +1,8 @@
-﻿global using Adnc.Application.Shared;
-global using Adnc.Application.Shared.BloomFilter;
-global using Adnc.Application.Shared.Caching;
-global using Adnc.Application.Shared.Dtos;
-global using Adnc.Application.Shared.Services;
+﻿global using Adnc.Shared.Application.Contracts.Dtos;
+global using Adnc.Shared.Application;
+global using Adnc.Shared.Application.BloomFilter;
+global using Adnc.Shared.Application.Caching;
+global using Adnc.Shared.Application.Services;
 global using Adnc.Cus.Application.Contracts.Dtos;
 global using Adnc.Cus.Application.Contracts.Services;
 global using Adnc.Cus.Entities;

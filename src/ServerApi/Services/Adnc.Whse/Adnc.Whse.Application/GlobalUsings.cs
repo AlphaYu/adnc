@@ -1,7 +1,7 @@
-﻿global using Adnc.Application.Shared;
-global using Adnc.Application.Shared.Caching;
-global using Adnc.Application.Shared.Dtos;
-global using Adnc.Application.Shared.Services;
+﻿global using Adnc.Shared.Application;
+global using Adnc.Shared.Application.Caching;
+global using Adnc.Shared.Application.Contracts.Dtos;
+global using Adnc.Shared.Application.Services;
 global using Adnc.Infra.Caching;
 global using Adnc.Infra.Core;
 global using Adnc.Infra.IRepositories;
