@@ -12,7 +12,7 @@
 
 # <div align="center">![Adnc是一个微服务开发框架 代码改变世界 开源推动社区](https://aspdotnetcore.net/cropped-adnc-logo-3-1-png/)</div>
 ## <div align="center">*代码改变世界，开源推动社区*</div>
-&ensp;&ensp;&ensp;&ensp;<a target="_blank" title="一个轻量级的.Net 5.0微服务开发框架" href="https://aspdotnetcore.net">Adnc</a>是一个轻量级的<a target="_blank" href="https://github.com/dotnet/core">.Net 5.0</a>微服务开发框架，同时也适用于单体架构系统的开发。支持经典三层与DDD架构开发模式、集成了一系列主流稳定的微服务配套技术栈。一个前后端分离的框架，前端基于<a target="_blank" href="https://github.com/vuejs/vue">Vue</a>、后端基于<a target="_blank" href="https://github.com/dotnet/core">.Net 5.0</a>构建。Webapi遵循RESTful设计规范、基于JWT认证授权、基于<a target="_blank" href="https://github.com/mariadb-corporation/MaxScale">Maxscale</a>实现了读写分离、部署灵活、代码简洁、开箱即用、容器化微服务的最佳实践。
+&ensp;&ensp;&ensp;&ensp;<a target="_blank" title="一个轻量级的.Net 5.0微服务开发框架" href="https://aspdotnetcore.net">Adnc</a>是一个轻量级的<a target="_blank" href="https://github.com/dotnet/core">.Net6.0</a>微服务开发框架，同时也适用于单体架构系统的开发。支持经典三层与DDD架构开发模式、集成了一系列主流稳定的微服务配套技术栈。一个前后端分离的框架，前端基于<a target="_blank" href="https://github.com/vuejs/vue">Vue</a>、后端基于<a target="_blank" href="https://github.com/dotnet/core">.Net6.0</a>构建。Webapi遵循RESTful设计规范、基于JWT认证授权、基于<a target="_blank" href="https://github.com/mariadb-corporation/MaxScale">Maxscale</a>实现了读写分离、部署灵活、代码简洁、开箱即用、容器化微服务的最佳实践。
 
 - 用户中心：系统支撑服务，实现了用户管理、角色管理、权限管理、菜单管理、组织架构管理
 - 运维中心：系统支撑服务，实现了登录日志、审计日志、异常日志、字典管理、配置参数管理
@@ -82,7 +82,7 @@
 ## 目录结构
   - src
     - clientApp 前端项目(`Vue`)
-    - serverApi 后端项目(`.NET 5.0`)
+    - serverApi 后端项目(`.NET6.0`)
   - doc 项目相关文档(sql脚本、docker脚本、docker-compose.yaml文件)
   - tools 工具软件  
   - test 测试工程
