@@ -7,7 +7,7 @@
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
 		<DocumentationFile></DocumentationFile>
 		<NoWarn>$(NoWarn);1591</NoWarn>
-		<OutputPath>..\Adnc.Usr.WebApi\bin\$(Configuration)</OutputPath>
+		<!--<OutputPath>..\Adnc.Usr.WebApi\bin\$(Configuration)</OutputPath>-->
 	</PropertyGroup>
 
 	<ItemGroup>
