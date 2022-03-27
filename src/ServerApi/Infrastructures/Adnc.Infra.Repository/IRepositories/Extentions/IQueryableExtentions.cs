@@ -139,7 +139,7 @@ namespace System.Linq
             return ExecuteAsync<TSource, Task<bool>>(QueryableMethods.All, source, predicate, cancellationToken);
         }
 
-        #endregion
+        #endregion Any/All
 
         #region Count/LongCount
 
@@ -270,7 +270,7 @@ namespace System.Linq
             return ExecuteAsync<TSource, Task<long>>(QueryableMethods.LongCountWithPredicate, source, predicate, cancellationToken);
         }
 
-        #endregion
+        #endregion Count/LongCount
 
         #region First/FirstOrDefault
 
@@ -416,7 +416,7 @@ namespace System.Linq
                 QueryableMethods.FirstOrDefaultWithPredicate, source, predicate, cancellationToken);
         }
 
-        #endregion
+        #endregion First/FirstOrDefault
 
         #region Last/LastOrDefault
 
@@ -561,7 +561,7 @@ namespace System.Linq
             return ExecuteAsync<TSource, Task<TSource?>>(QueryableMethods.LastOrDefaultWithPredicate, source, predicate, cancellationToken);
         }
 
-        #endregion
+        #endregion Last/LastOrDefault
 
         #region Single/SingleOrDefault
 
@@ -731,7 +731,7 @@ namespace System.Linq
                 QueryableMethods.SingleOrDefaultWithPredicate, source, predicate, cancellationToken);
         }
 
-        #endregion
+        #endregion Single/SingleOrDefault
 
         #region Min
 
@@ -802,7 +802,7 @@ namespace System.Linq
             return ExecuteAsync<TSource, Task<TResult>>(QueryableMethods.MinWithSelector, source, selector, cancellationToken);
         }
 
-        #endregion
+        #endregion Min
 
         #region Max
 
@@ -873,7 +873,7 @@ namespace System.Linq
             return ExecuteAsync<TSource, Task<TResult>>(QueryableMethods.MaxWithSelector, source, selector, cancellationToken);
         }
 
-        #endregion
+        #endregion Max
 
         #region Sum
 
@@ -1497,7 +1497,7 @@ namespace System.Linq
                 QueryableMethods.GetSumWithSelector(typeof(float?)), source, selector, cancellationToken);
         }
 
-        #endregion
+        #endregion Sum
 
         #region Average
 
@@ -2146,7 +2146,7 @@ namespace System.Linq
                 QueryableMethods.GetAverageWithSelector(typeof(float?)), source, selector, cancellationToken);
         }
 
-        #endregion
+        #endregion Average
 
         #region Contains
 
@@ -2184,7 +2184,7 @@ namespace System.Linq
                 Expression.Constant(item, typeof(TSource)),
                 cancellationToken);
 
-        #endregion
+        #endregion Contains
 
         #region ToList/Array
 
@@ -2251,7 +2251,7 @@ namespace System.Linq
             CancellationToken cancellationToken = default)
             => (await source.ToListAsync(cancellationToken).ConfigureAwait(false)).ToArray();
 
-        #endregion
+        #endregion ToList/Array
 
         #region Include
 
@@ -2473,7 +2473,7 @@ namespace System.Linq
                     : source;
         }
 
-        #endregion
+        #endregion Include
 
         #region Auto included navigations
 
@@ -2500,7 +2500,7 @@ namespace System.Linq
                         arguments: source.Expression))
                 : source;
 
-        #endregion
+        #endregion Auto included navigations
 
         #region Query Filters
 
@@ -2528,7 +2528,7 @@ namespace System.Linq
                         arguments: source.Expression))
                 : source;
 
-        #endregion
+        #endregion Query Filters
 
         #region ToDictionary
 
@@ -2695,7 +2695,7 @@ namespace System.Linq
             return d;
         }
 
-        #endregion
+        #endregion ToDictionary
 
         #region ForEach
 
@@ -2734,7 +2734,7 @@ namespace System.Linq
             }
         }
 
-        #endregion
+        #endregion ForEach
 
         #region AsAsyncEnumerable
 
@@ -2767,7 +2767,7 @@ namespace System.Linq
             throw new InvalidOperationException(CoreStrings.IQueryableNotAsync(typeof(TSource)));
         }
 
-        #endregion
+        #endregion AsAsyncEnumerable
 
         #region Impl.
 
@@ -2815,6 +2815,6 @@ namespace System.Linq
             => ExecuteAsync<TSource, TResult>(
                 operatorMethodInfo, source, (Expression?)null, cancellationToken);
 
-        #endregion
+        #endregion Impl.
     }
 }
