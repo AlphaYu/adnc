@@ -1,4 +1,4 @@
-﻿namespace Adnc.Application.Shared.Interceptors.OperateLog;
+﻿namespace Adnc.Application.Shared.Interceptors;
 
 /// <summary>
 /// 操作日志拦截器

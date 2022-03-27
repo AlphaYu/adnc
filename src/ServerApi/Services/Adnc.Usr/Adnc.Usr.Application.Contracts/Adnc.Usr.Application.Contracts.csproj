@@ -10,13 +10,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Caching\Adnc.Infra.Caching.csproj" />
-		<ProjectReference Include="..\..\Shared\Adnc.Application.Shared\Adnc.Application.Shared.csproj" />
+		<ProjectReference Include="..\..\Shared\Adnc.Application.Contracts.Shared\Adnc.Application.Contracts.Shared.csproj" />
 		<ProjectReference Include="..\..\Shared\Adnc.Shared\Adnc.Shared.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<None Update="Adnc.Usr.Application.Contracts.xml">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
 	</ItemGroup>
 </Project>

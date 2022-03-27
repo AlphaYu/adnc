@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29728.190
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32319.34
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructures", "Infrastructures", "{3B899133-BEAC-4438-977F-B28FDFF3AE27}"
 EndProject
@@ -111,7 +111,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Bulid", "Bulid", "{5F46F98A
 		build\version.props = build\version.props
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adnc.Infra.Hangfire", "Infrastructures\Adnc.Infra.Hangfire\Adnc.Infra.Hangfire.csproj", "{69B2785A-E760-4097-80AB-F047AF7979E4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Hangfire", "Infrastructures\Adnc.Infra.Hangfire\Adnc.Infra.Hangfire.csproj", "{69B2785A-E760-4097-80AB-F047AF7979E4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adnc.Application.Contracts.Shared", "Services\Shared\Adnc.Application.Contracts.Shared\Adnc.Application.Contracts.Shared.csproj", "{014411C4-C3BA-4AC7-8B26-6976897F1881}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -465,6 +467,14 @@ Global
 		{69B2785A-E760-4097-80AB-F047AF7979E4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{69B2785A-E760-4097-80AB-F047AF7979E4}.Release|x64.ActiveCfg = Release|Any CPU
 		{69B2785A-E760-4097-80AB-F047AF7979E4}.Release|x64.Build.0 = Release|Any CPU
+		{014411C4-C3BA-4AC7-8B26-6976897F1881}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{014411C4-C3BA-4AC7-8B26-6976897F1881}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{014411C4-C3BA-4AC7-8B26-6976897F1881}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{014411C4-C3BA-4AC7-8B26-6976897F1881}.Debug|x64.Build.0 = Debug|Any CPU
+		{014411C4-C3BA-4AC7-8B26-6976897F1881}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{014411C4-C3BA-4AC7-8B26-6976897F1881}.Release|Any CPU.Build.0 = Release|Any CPU
+		{014411C4-C3BA-4AC7-8B26-6976897F1881}.Release|x64.ActiveCfg = Release|Any CPU
+		{014411C4-C3BA-4AC7-8B26-6976897F1881}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -519,6 +529,7 @@ Global
 		{F75F21E6-2C4A-45D0-9DF6-19A097254FE1} = {1D4DB6DE-CDE0-4B60-A71D-DFD792C6D864}
 		{382E6BFE-F809-4E29-BEAB-57BA9C7FA69B} = {1D4DB6DE-CDE0-4B60-A71D-DFD792C6D864}
 		{69B2785A-E760-4097-80AB-F047AF7979E4} = {3B899133-BEAC-4438-977F-B28FDFF3AE27}
+		{014411C4-C3BA-4AC7-8B26-6976897F1881} = {1D4DB6DE-CDE0-4B60-A71D-DFD792C6D864}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3DED72E8-74C9-4A51-A9CE-62ECFEEA1921}

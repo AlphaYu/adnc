@@ -1,6 +1,4 @@
-﻿using Adnc.Application.Shared.DtoValidator;
-
-namespace Adnc.Usr.Application.Contracts.DtoValidators
+﻿namespace Adnc.Usr.Application.Contracts.DtoValidators
 {
     public class UserCreationAndUpdationDtoValidator : AbstractValidator<UserCreationAndUpdationDto>
     {

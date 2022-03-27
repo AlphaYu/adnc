@@ -1,4 +1,4 @@
-﻿namespace Adnc.Application.Shared.Dtos;
+﻿namespace Adnc.Application.Contracts.Shared.Dtos;
 
 [Serializable]
 public abstract class OutputDto : IOutputDto

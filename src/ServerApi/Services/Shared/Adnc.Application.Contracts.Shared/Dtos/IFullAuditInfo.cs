@@ -1,4 +1,4 @@
-﻿namespace Adnc.Application.Shared.Dtos;
+﻿namespace Adnc.Application.Contracts.Shared.Dtos;
 
 public interface IFullAuditInfo : IBasicAuditInfo
 {

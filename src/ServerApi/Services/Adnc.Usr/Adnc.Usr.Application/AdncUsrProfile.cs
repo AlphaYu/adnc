@@ -1,4 +1,6 @@
-﻿namespace Adnc.Usr.Application;
+﻿using AutoMapper;
+
+namespace Adnc.Usr.Application;
 
 public class AdncUsrProfile : Profile
 {

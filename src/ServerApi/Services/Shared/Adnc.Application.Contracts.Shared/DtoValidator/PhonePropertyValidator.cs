@@ -1,4 +1,7 @@
-﻿namespace Adnc.Application.Shared.DtoValidator;
+﻿using FluentValidation;
+using FluentValidation.Validators;
+
+namespace Adnc.Application.Contracts.Shared.DtoValidator;
 
 public class PhonePropertyValidator<T> : PropertyValidator<T, string>
 {

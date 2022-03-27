@@ -71,7 +71,7 @@ public class UserController : AdncControllerBase
     [HttpPut("{id}/status")]
     [Permission("userFreeze")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<ActionResult> ChangeStatus([FromRoute] long id, [FromBody] Adnc.Application.Shared.Dtos.SimpleDto<int> status)
+    public async Task<ActionResult> ChangeStatus([FromRoute] long id, [FromBody] SimpleDto<int> status)
         => Result(await _userService.ChangeStatusAsync(id, status.Value));
 
     /// <summary>

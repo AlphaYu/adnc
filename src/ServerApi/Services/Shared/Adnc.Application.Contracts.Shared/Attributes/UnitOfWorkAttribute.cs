@@ -1,4 +1,4 @@
-﻿namespace Adnc.Application.Shared.Interceptors.UnitOfWork;
+﻿namespace Adnc.Application.Contracts.Shared.Attributes;
 
 [AttributeUsage(AttributeTargets.Method, Inherited = true)]
 public class UnitOfWorkAttribute : Attribute

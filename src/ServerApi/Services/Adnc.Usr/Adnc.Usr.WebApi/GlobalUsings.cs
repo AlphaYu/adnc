@@ -1,5 +1,4 @@
-﻿global using Adnc.Application.Shared;
-global using Adnc.Application.Shared.Dtos;
+﻿global using Adnc.Application.Contracts.Shared.Dtos;
 global using Adnc.Infra.Consul;
 global using Adnc.Infra.Core;
 global using Adnc.Shared.ConfigModels;

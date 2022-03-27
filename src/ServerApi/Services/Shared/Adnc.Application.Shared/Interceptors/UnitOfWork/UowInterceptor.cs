@@ -1,4 +1,4 @@
-﻿namespace Adnc.Application.Shared.Interceptors.UnitOfWork;
+﻿namespace Adnc.Application.Shared.Interceptors;
 
 /// <summary>
 /// 工作单元拦截器

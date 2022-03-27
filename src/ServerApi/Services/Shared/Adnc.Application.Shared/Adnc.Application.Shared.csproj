@@ -17,6 +17,7 @@
 		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Helper\Adnc.Infra.Helper.csproj" />
 		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Mapper\Adnc.Infra.Mapper.csproj" />
 		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Mongo\Adnc.Infra.Mongo.csproj" />
+		<ProjectReference Include="..\Adnc.Application.Contracts.Shared\Adnc.Application.Contracts.Shared.csproj" />
 		<ProjectReference Include="..\Adnc.Shared\Adnc.Shared.csproj" />
 	</ItemGroup>
 </Project>

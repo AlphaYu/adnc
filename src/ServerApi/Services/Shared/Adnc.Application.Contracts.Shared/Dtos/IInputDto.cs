@@ -1,4 +1,4 @@
-﻿namespace Adnc.Application.Shared.Dtos;
+﻿namespace Adnc.Application.Contracts.Shared.Dtos;
 
 /// <summary>
 /// 输入DTO基类

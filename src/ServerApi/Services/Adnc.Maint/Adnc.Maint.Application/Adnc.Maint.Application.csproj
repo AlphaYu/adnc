@@ -8,6 +8,7 @@
 		<DocumentationFile></DocumentationFile>
 	</PropertyGroup>
 
+	
 	<ItemGroup>
 		<Compile Remove="Services\Task\**" />
 		<EmbeddedResource Remove="Services\Task\**" />

@@ -37,9 +37,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="AutoMapper" Version="11.0.1" />
+	</ItemGroup>
+	
+	<ItemGroup>
 		<ProjectReference Include="..\..\Shared\Adnc.WebApi.Shared\Adnc.WebApi.Shared.csproj" />
 		<ProjectReference Include="..\Adnc.Usr.Application.Contracts\Adnc.Usr.Application.Contracts.csproj" />
-		<ProjectReference Include="..\Adnc.Usr.Application\Adnc.Usr.Application.csproj" />
 	</ItemGroup>
 
 	<ProjectExtensions>

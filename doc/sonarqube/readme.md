@@ -9,7 +9,7 @@ docker run -d --name sonarqube \
 -v /root/sonarqube/logs:/opt/sonarqube/logs \
 -v /root/sonarqube/extensions:/opt/sonarqube/extensions \
 -e SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true \
--p 9000:9000 \
+-p 19000:9000 \
 sonarqube:8.9.0-community
 
 --VS-NUGET

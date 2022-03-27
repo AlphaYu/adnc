@@ -1,6 +1,4 @@
-﻿using Adnc.WebApi.Shared.IdGenerater;
-
-namespace Adnc.Application.Shared;
+﻿namespace Adnc.Application.Shared;
 
 /// <summary>
 /// Autofac注册
@@ -101,7 +99,8 @@ public abstract class AdncApplicationModule : Autofac.Module
                     .As<IHostedService>()
                     .WithParameter("serviceName", _serviceInfo.ShortName)
                     .SingleInstance();
-                #endregion register idgenerater services
+
+        #endregion register idgenerater services
 
         #region register cacheservice/bloomfilter
 
@@ -130,10 +129,12 @@ public abstract class AdncApplicationModule : Autofac.Module
         #endregion register cacheservice/bloomfilter
 
         #region register channelConsumers
+
         builder.RegisterType<ChannelConsumersHostedService>()
                     .As<IHostedService>()
                     .SingleInstance();
-        #endregion
+
+        #endregion register channelConsumers
     }
 
     protected virtual void LoadDepends(ContainerBuilder builder)

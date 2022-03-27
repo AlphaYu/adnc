@@ -1,4 +1,4 @@
-﻿namespace Adnc.WebApi.Shared.IdGenerater;
+﻿namespace Adnc.Application.Shared.IdGenerater;
 
 public class WorkerNodeHostedService : BackgroundService
 {

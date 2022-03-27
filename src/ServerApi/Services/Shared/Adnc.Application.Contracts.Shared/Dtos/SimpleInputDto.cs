@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Adnc.Application.Shared.Dtos;
+namespace Adnc.Application.Contracts.Shared.Dtos;
 
 /// <summary>
 /// 用于解决API frompost 方式接收 string,int,long等基础类型的问题。

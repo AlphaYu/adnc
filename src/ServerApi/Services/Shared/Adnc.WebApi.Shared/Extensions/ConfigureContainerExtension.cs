@@ -12,25 +12,24 @@ public static class ConfigureContainerExtension
     /// <returns></returns>
     public static ContainerBuilder RegisterAdncModules(this ContainerBuilder builder, IServiceCollection services, Action<ContainerBuilder> completedExecute = null)
     {
+        //注册Consul服务
         var configuration = services.GetConfiguration();
-        var serviceInfo = services.GetServiceInfo();
-
         var consulUrl = configuration.GetConsulSection().Get<ConsulConfig>().ConsulUrl;
         builder.RegisterModuleIfNotRegistered(new AdncInfraConsulModule(consulUrl));
 
-        var applicationAssemblyName = serviceInfo.AssemblyFullName.Replace("WebApi", "Application");
-        //var assemblyPath = serviceInfo.AssemblyLocation.Replace("WebApi", "Application");
-        var applicationAssembly = Assembly.Load(applicationAssemblyName);
-        var applicationModelType = applicationAssembly.GetTypes()
+        //注册Application服务
+        var serviceInfo = services.GetServiceInfo();
+        var appAssemblyPath = serviceInfo.AssemblyLocation.Replace("WebApi", "Application");
+        var appAssembly = Assembly.LoadFrom(appAssemblyPath);
+        var appModelType = appAssembly.GetTypes()
                                                       .FirstOrDefault(
                                                         m => m.FullName != null
                                                         && typeof(Autofac.Module).IsAssignableFrom(m)
                                                         && !m.IsAbstract
                                                        );
-        builder.RegisterModuleIfNotRegistered(Activator.CreateInstance(applicationModelType, configuration, serviceInfo) as Autofac.Module);
+        builder.RegisterModuleIfNotRegistered(Activator.CreateInstance(appModelType, configuration, serviceInfo) as Autofac.Module);
 
         completedExecute?.Invoke(builder);
-
         return builder;
     }
 }
