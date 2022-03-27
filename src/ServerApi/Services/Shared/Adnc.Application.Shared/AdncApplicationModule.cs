@@ -1,4 +1,6 @@
-﻿namespace Adnc.Application.Shared;
+﻿using Adnc.Infra.Consul;
+
+namespace Adnc.Application.Shared;
 
 /// <summary>
 /// Autofac注册
@@ -10,26 +12,42 @@ public abstract class AdncApplicationModule : Autofac.Module
     private readonly Assembly _repoAssemblieToScan;
     private readonly Assembly _domainAssemblieToScan;
     private readonly IConfigurationSection _redisSection;
+    private readonly IConfigurationSection _consulSection;
     private readonly IServiceInfo _serviceInfo;
 
     protected AdncApplicationModule(Type modelType, IConfiguration configuration, IServiceInfo serviceInfo, bool isDddDevelopment = false)
     {
+        _serviceInfo = serviceInfo;
+        _redisSection = configuration.GetRedisSection();
+        _consulSection = configuration.GetConsulSection();
         _appAssemblieToScan = modelType?.Assembly ?? throw new ArgumentNullException(nameof(modelType));
         _appContractsAssemblieToScan = Assembly.Load(_appAssemblieToScan.FullName.Replace(".Application", ".Application.Contracts"));
         if (isDddDevelopment)
             _domainAssemblieToScan = Assembly.Load(_appAssemblieToScan.FullName.Replace(".Application", ".Domain"));
         else
             _repoAssemblieToScan = Assembly.Load(_appAssemblieToScan.FullName.Replace(".Application", ".Repository"));
-
-        _redisSection = configuration.GetRedisSection();
-        _serviceInfo = serviceInfo;
     }
 
+    /// <summary>
+    /// 注册服务
+    /// </summary>
+    /// <param name="builder"></param>
     protected override void Load(ContainerBuilder builder)
     {
-        //注册依赖模块
-        this.LoadDepends(builder);
+        RegisterApplicationServices(builder);
+        RegisterCachingServices(builder);
+        RegisterBloomfilters(builder);
+        RegisterIdChannelConsumers(builder);
+        RegisterIdGenerater(builder);
+        LoadDepends(builder);
+    }
 
+    /// <summary>
+    ///注册Appliaction相关服务
+    /// </summary>
+    /// <param name="builder"></param>
+    protected virtual void RegisterApplicationServices(ContainerBuilder builder)
+    {
         #region register usercontext,operater
 
         //注册UserContext(IUserContext,IOperater)
@@ -88,10 +106,58 @@ public abstract class AdncApplicationModule : Autofac.Module
                    .InstancePerLifetimeScope();
 
         #endregion register dto validators
+    }
 
-        #region register idgenerater services
+    /// <summary>
+    /// 注册Caching相关处理服务
+    /// </summary>
+    /// <param name="builder"></param>
+    protected virtual void RegisterCachingServices(ContainerBuilder builder)
+    {
+        builder.RegisterAssemblyTypes(_appAssemblieToScan)
+           .Where(t => t.IsAssignableTo<ICacheService>() && !t.IsAbstract)
+           .AsSelf().PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies).InstancePerLifetimeScope()
+           .As<ICacheService>().SingleInstance();
+        builder.RegisterType<CachingHostedService>()
+                    .As<IHostedService>()
+                    .InstancePerLifetimeScope();
+    }
 
-        //注册Id生成器
+    /// <summary>
+    /// 注册Bloomfilters相关服务
+    /// </summary>
+    /// <param name="builder"></param>
+    protected virtual void RegisterBloomfilters(ContainerBuilder builder)
+    {
+        builder.RegisterAssemblyTypes(_appAssemblieToScan)
+           .Where(t => t.IsAssignableTo<IBloomFilter>() && !t.IsAbstract)
+           .AsImplementedInterfaces()
+           .SingleInstance();
+        builder.RegisterType<DefaultBloomFilterFactory>()
+                    .As<IBloomFilterFactory>()
+                    .SingleInstance();
+        builder.RegisterType<BloomFilterHostedService>()
+                    .As<IHostedService>()
+                    .SingleInstance();
+    }
+
+    /// <summary>
+    ///注册ChannelConsumers相关服务
+    /// </summary>
+    /// <param name="builder"></param>
+    protected virtual void RegisterIdChannelConsumers(ContainerBuilder builder)
+    {
+        builder.RegisterType<ChannelConsumersHostedService>()
+                    .As<IHostedService>()
+                    .SingleInstance();
+    }
+
+    /// <summary>
+    ///   注册Id生成器相关服务
+    /// </summary>
+    /// <param name="builder"></param>
+    protected virtual void RegisterIdGenerater(ContainerBuilder builder)
+    {
         builder.RegisterType<WorkerNode>()
                     .AsSelf()
                     .SingleInstance();
@@ -99,44 +165,12 @@ public abstract class AdncApplicationModule : Autofac.Module
                     .As<IHostedService>()
                     .WithParameter("serviceName", _serviceInfo.ShortName)
                     .SingleInstance();
-
-        #endregion register idgenerater services
-
-        #region register cacheservice/bloomfilter
-
-        //注册布隆过滤器、cacheservice、cache补偿服务/布隆过滤器初始化服务
-        //cacheservcie
-        builder.RegisterAssemblyTypes(_appAssemblieToScan)
-                   .Where(t => t.IsAssignableTo<ICacheService>() && !t.IsAbstract)
-                   .AsSelf().PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies).InstancePerLifetimeScope()
-                   .As<ICacheService>().SingleInstance();
-        builder.RegisterType<CachingHostedService>()
-                    .As<IHostedService>()
-                    .InstancePerLifetimeScope();
-
-        //bloomfilter
-        builder.RegisterAssemblyTypes(_appAssemblieToScan)
-                   .Where(t => t.IsAssignableTo<IBloomFilter>() && !t.IsAbstract)
-                   .AsImplementedInterfaces()
-                   .SingleInstance();
-        builder.RegisterType<DefaultBloomFilterFactory>()
-                    .As<IBloomFilterFactory>()
-                    .SingleInstance();
-        builder.RegisterType<BloomFilterHostedService>()
-                    .As<IHostedService>()
-                    .SingleInstance();
-
-        #endregion register cacheservice/bloomfilter
-
-        #region register channelConsumers
-
-        builder.RegisterType<ChannelConsumersHostedService>()
-                    .As<IHostedService>()
-                    .SingleInstance();
-
-        #endregion register channelConsumers
     }
 
+    /// <summary>
+    /// 注册依赖模块相关服务
+    /// </summary>
+    /// <param name="builder"></param>
     protected virtual void LoadDepends(ContainerBuilder builder)
     {
         builder.RegisterModuleIfNotRegistered(new AdncInfraEventBusModule(_appAssemblieToScan));
@@ -144,18 +178,20 @@ public abstract class AdncApplicationModule : Autofac.Module
         builder.RegisterModuleIfNotRegistered(new AdncInfraCachingModule(_redisSection));
         builder.RegisterModuleIfNotRegistered<AdncInfraMongoModule>();
         builder.RegisterModuleIfNotRegistered<AdncInfraEfCoreModule>();
+        builder.RegisterModuleIfNotRegistered(new AdncInfraConsulModule(_consulSection.Get<ConsulConfig>().ConsulUrl));
         //builder.RegisterModuleIfNotRegistered(new AdncInfraHangfireModule(_appAssemblieToScan));
 
         if (_domainAssemblieToScan != null)
         {
             var modelType = _domainAssemblieToScan.GetTypes().FirstOrDefault(x => x.IsAssignableTo<Autofac.Module>() && !x.IsAbstract);
-            builder.RegisterModuleIfNotRegistered(System.Activator.CreateInstance(modelType) as Autofac.Module);
+            var adncDomainModule = System.Activator.CreateInstance(modelType) as Autofac.Module;
+            builder.RegisterModuleIfNotRegistered(adncDomainModule);
         }
-
         if (_repoAssemblieToScan != null)
         {
             var modelType = _repoAssemblieToScan.GetTypes().FirstOrDefault(x => x.IsAssignableTo<Autofac.Module>() && !x.IsAbstract);
-            builder.RegisterModuleIfNotRegistered(System.Activator.CreateInstance(modelType) as Autofac.Module);
+            var adncRepositoryModule = System.Activator.CreateInstance(modelType) as Autofac.Module;
+            builder.RegisterModuleIfNotRegistered(adncRepositoryModule);
         }
     }
 }

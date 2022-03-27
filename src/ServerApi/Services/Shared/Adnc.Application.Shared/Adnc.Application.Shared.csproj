@@ -9,6 +9,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Consul\Adnc.Infra.Consul.csproj" />
 		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Core\Adnc.Infra.Core.csproj" />
 		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Caching\Adnc.Infra.Caching.csproj" />
 		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.EfCore.MySQL\Adnc.Infra.EfCore.MySQL.csproj" />

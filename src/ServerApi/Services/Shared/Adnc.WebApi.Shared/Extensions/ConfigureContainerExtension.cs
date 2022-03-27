@@ -12,24 +12,31 @@ public static class ConfigureContainerExtension
     /// <returns></returns>
     public static ContainerBuilder RegisterAdncModules(this ContainerBuilder builder, IServiceCollection services, Action<ContainerBuilder> completedExecute = null)
     {
-        //注册Consul服务
-        var configuration = services.GetConfiguration();
-        var consulUrl = configuration.GetConsulSection().Get<ConsulConfig>().ConsulUrl;
-        builder.RegisterModuleIfNotRegistered(new AdncInfraConsulModule(consulUrl));
+        LoadDepends(builder, services);
+        completedExecute?.Invoke(builder);
+        return builder;
+    }
 
-        //注册Application服务
+    /// <summary>
+    /// 注册依赖模块
+    /// </summary>
+    /// <param name="builder"></param>
+    /// <param name="services"></param>
+    internal static void LoadDepends(ContainerBuilder builder, IServiceCollection services)
+    {
+        var configuration = services.GetConfiguration();
         var serviceInfo = services.GetServiceInfo();
-        var appAssemblyPath = serviceInfo.AssemblyLocation.Replace("WebApi", "Application");
-        var appAssembly = Assembly.LoadFrom(appAssemblyPath);
+        //var appAssemblyPath = serviceInfo.AssemblyLocation.Replace("WebApi", "Application");
+        //var appAssembly = Assembly.LoadFrom(appAssemblyPath);
+        var appAssemblyName = serviceInfo.AssemblyFullName.Replace("WebApi", "Application");
+        var appAssembly = Assembly.Load(appAssemblyName);
         var appModelType = appAssembly.GetTypes()
                                                       .FirstOrDefault(
                                                         m => m.FullName != null
                                                         && typeof(Autofac.Module).IsAssignableFrom(m)
                                                         && !m.IsAbstract
                                                        );
-        builder.RegisterModuleIfNotRegistered(Activator.CreateInstance(appModelType, configuration, serviceInfo) as Autofac.Module);
-
-        completedExecute?.Invoke(builder);
-        return builder;
+        var adncApplicationModule = Activator.CreateInstance(appModelType, configuration, serviceInfo) as Autofac.Module;
+        builder.RegisterModuleIfNotRegistered(adncApplicationModule);
     }
 }
