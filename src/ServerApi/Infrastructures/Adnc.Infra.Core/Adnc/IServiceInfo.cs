@@ -10,5 +10,6 @@
         public string Description { get; set; }
         public string AssemblyName { get; set; }
         public string AssemblyFullName { get; set; }
+        public string AssemblyLocation { get; set; }
     }
 }

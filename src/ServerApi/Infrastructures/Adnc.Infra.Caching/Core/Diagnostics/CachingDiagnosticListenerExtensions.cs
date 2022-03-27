@@ -4,7 +4,7 @@ using System.Diagnostics;
 namespace Adnc.Infra.Caching.Core.Diagnostics
 {
     /// <summary>
-    /// Extension methods on the DiagnosticListener class to log EasyCaching
+    /// Extension methods on the DiagnosticListener class to log Adnc.Infra.Caching
     /// </summary>
     public static class CachingDiagnosticListenerExtensions
     {

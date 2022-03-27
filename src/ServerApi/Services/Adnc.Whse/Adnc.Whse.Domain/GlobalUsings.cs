@@ -1,0 +1,17 @@
+﻿global using Adnc.Shared.Domain;
+global using Adnc.Shared.Domain.Entities;
+global using Adnc.Infra.Core;
+global using Adnc.Infra.Entities.Config;
+global using Adnc.Infra.EventBus;
+global using Adnc.Infra.Helper;
+global using Adnc.Infra.IRepositories;
+global using Adnc.Whse.Domain.Entities;
+global using Adnc.Shared.Consts.Entity.Whse;
+global using Adnc.Shared.Events;
+global using Autofac;
+global using Microsoft.EntityFrameworkCore.Metadata.Builders;
+global using System;
+global using System.Collections.Generic;
+global using System.Linq;
+global using System.Reflection;
+global using System.Threading.Tasks;

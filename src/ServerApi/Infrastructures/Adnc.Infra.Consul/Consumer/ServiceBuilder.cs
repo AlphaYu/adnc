@@ -5,12 +5,12 @@ namespace Adnc.Infra.Consul.Consumer
 {
     public class ServiceBuilder : IServiceBuilder
     {
-        public IServiceProvider ServiceProvider { get; set; }
+        public IConsulServiceProvider ServiceProvider { get; set; }
         public string ServiceName { get; set; }
         public string UriScheme { get; set; }
         public ILoadBalancer LoadBalancer { get; set; }
 
-        public ServiceBuilder(IServiceProvider serviceProvider)
+        public ServiceBuilder(IConsulServiceProvider serviceProvider)
         {
             ServiceProvider = serviceProvider;
         }

@@ -1,14 +1,10 @@
-﻿using Adnc.Usr.Application.Contracts.Dtos;
-using FluentValidation;
+﻿namespace Adnc.Usr.Application.Contracts.DtoValidators;
 
-namespace Adnc.Usr.Application.Contracts.DtoValidators
+public class RoleSetPermissonsDtoValidator : AbstractValidator<RoleSetPermissonsDto>
 {
-    public class RoleSetPermissonsDtoValidator : AbstractValidator<RoleSetPermissonsDto>
+    public RoleSetPermissonsDtoValidator()
     {
-        public RoleSetPermissonsDtoValidator()
-        {
-            RuleFor(x => x.RoleId).GreaterThan(0);
-            RuleFor(x => x.Permissions).NotNull();
-        }
+        RuleFor(x => x.RoleId).GreaterThan(0);
+        RuleFor(x => x.Permissions).NotNull();
     }
 }

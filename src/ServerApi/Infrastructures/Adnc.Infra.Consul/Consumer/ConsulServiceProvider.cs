@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Adnc.Infra.Consul.Consumer
 {
-    public class ConsulServiceProvider : IServiceProvider
+    public class ConsulServiceProvider : IConsulServiceProvider
     {
         private readonly ConsulClient _consulClient;
 

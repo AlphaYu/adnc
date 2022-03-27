@@ -8,7 +8,7 @@ namespace Adnc.Infra.Consul.Consumer
         /// <summary>
         /// 服务提供者
         /// </summary>
-        IServiceProvider ServiceProvider { get; set; }
+        IConsulServiceProvider ServiceProvider { get; set; }
 
         /// <summary>
         /// 服务名称

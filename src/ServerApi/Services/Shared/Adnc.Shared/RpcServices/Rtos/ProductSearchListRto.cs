@@ -1,12 +1,9 @@
-﻿using Refit;
+﻿namespace Adnc.Shared.RpcServices.Rtos;
 
-namespace Adnc.Shared.RpcServices.Rtos
+public class ProductSearchListRto
 {
-    public class ProductSearchListRto
-    {
-        [Query(CollectionFormat.Multi)]
-        public long[] Ids { get; set; }
+    [Query(CollectionFormat.Multi)]
+    public long[] Ids { get; set; }
 
-        public int StatusCode { get; set; }
-    }
+    public int StatusCode { get; set; }
 }

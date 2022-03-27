@@ -21,7 +21,7 @@ namespace Adnc.Infra.Caching.Configurations
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:EasyCaching.Core.Configurations.ServerEndPoint"/> class.
+        /// Initializes a new instance of the <see cref="T:Adnc.Infra.Caching.Core.Configurations.ServerEndPoint"/> class.
         /// </summary>
         public ServerEndPoint()
         {

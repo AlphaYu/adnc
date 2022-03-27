@@ -1,50 +1,41 @@
-using Adnc.Shared.RpcServices.Services;
-using Autofac;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+namespace Adnc.Maint.WebApi;
 
-namespace Adnc.Maint.WebApi
+public class Startup
 {
-    public class Startup
+    private readonly IHostEnvironment _environment;
+    private IServiceCollection _services;
+
+    public Startup(IHostEnvironment environment)
     {
-        private readonly IHostEnvironment _environment;
-        private IServiceCollection _services;
+        _environment = environment;
+    }
 
-        public Startup(IHostEnvironment environment)
+    public void ConfigureServices(IServiceCollection services)
+    {
+        _services = services;
+        services.AddAdncServices<PermissionHandlerRemote>(registion =>
         {
-            _environment = environment;
-        }
+            var policies = registion.GenerateDefaultRefitPolicies();
+            var authServeiceAddress = _environment.IsDevelopment() ? "http://localhost:5010" : "adnc.usr.webapi";
+            registion.AddRpcService<IAuthRpcService>(authServeiceAddress, policies);
 
-        public void ConfigureServices(IServiceCollection services)
+            var maintServiceAddress = _environment.IsDevelopment() ? "http://localhost:5020" : "adnc.maint.webapi";
+            registion.AddRpcService<IMaintRpcService>(maintServiceAddress, policies);
+        });
+    }
+
+    public void ConfigureContainer(ContainerBuilder builder)
+    {
+        builder.RegisterAdncModules(_services);
+    }
+
+    public void Configure(IApplicationBuilder app)
+    {
+        app.UseAdncMiddlewares();
+
+        if (_environment.IsProduction() || _environment.IsStaging())
         {
-            _services = services;
-            services.AddAdncServices<PermissionHandlerRemote>(registion =>
-            {
-                var policies = registion.GenerateDefaultRefitPolicies();
-                var authServeiceAddress = _environment.IsDevelopment() ? "http://localhost:5010" : "adnc.usr.webapi";
-                registion.AddRpcService<IAuthRpcService>(authServeiceAddress, policies);
-
-                var maintServiceAddress = _environment.IsDevelopment() ? "http://localhost:5020" : "adnc.maint.webapi";
-                registion.AddRpcService<IMaintRpcService>(maintServiceAddress, policies);
-            });
-        }
-
-        public void ConfigureContainer(ContainerBuilder builder)
-        {
-            builder.RegisterAdncModules(_services);
-        }
-
-        public void Configure(IApplicationBuilder app)
-        {
-            app.UseAdncMiddlewares();
-
-            if (_environment.IsProduction() || _environment.IsStaging())
-            {
-                app.RegisterToConsul();
-            }
+            app.RegisterToConsul();
         }
     }
 }

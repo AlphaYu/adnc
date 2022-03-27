@@ -1,30 +1,29 @@
-﻿using Adnc.Domain.Shared.Entities;
+﻿using Adnc.Shared.Domain.Entities;
 
-namespace Adnc.Whse.Domain.Entities
+namespace Adnc.Whse.Domain.Entities;
+
+public class ProductStatus : ValueObject
 {
-    public class ProductStatus : ValueObject
+    public ProductStatusEnum Code { get; }
+
+    public string ChangesReason { get; }
+
+    private ProductStatus()
     {
-        public ProductStatusEnum Code { get; }
-
-        public string ChangesReason { get; }
-
-        private ProductStatus()
-        {
-        }
-
-        internal ProductStatus(ProductStatusEnum statusCode, string reason)
-        {
-            Code = statusCode;
-            ChangesReason = reason != null ? reason.Trim() : string.Empty;
-        }
     }
 
-    public enum ProductStatusEnum
+    internal ProductStatus(ProductStatusEnum statusCode, string reason)
     {
-        UnKnow = 1000
-        ,
-        SaleOff = 1008
-        ,
-        SaleOn = 1016
+        Code = statusCode;
+        ChangesReason = reason != null ? reason.Trim() : string.Empty;
     }
+}
+
+public enum ProductStatusEnum
+{
+    UnKnow = 1000
+    ,
+    SaleOff = 1008
+    ,
+    SaleOn = 1016
 }

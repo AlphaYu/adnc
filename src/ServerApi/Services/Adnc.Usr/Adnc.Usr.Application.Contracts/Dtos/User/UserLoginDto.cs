@@ -1,6 +1,4 @@
-﻿using Adnc.Application.Shared.Dtos;
-
-namespace Adnc.Usr.Application.Contracts.Dtos
+﻿namespace Adnc.Usr.Application.Contracts.Dtos
 {
     /// <summary>
     /// 登录信息

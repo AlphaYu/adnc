@@ -1,25 +1,21 @@
-﻿using Adnc.Domain.Shared.Entities;
-using Adnc.Infra.Core;
+﻿namespace Adnc.Ord.Domain.Entities;
 
-namespace Adnc.Ord.Domain.Entities
+public class OrderItemProduct : ValueObject
 {
-    public class OrderItemProduct : ValueObject
+    public long Id { get; }
+
+    public string Name { get; }
+
+    public decimal Price { get; }
+
+    private OrderItemProduct()
     {
-        public long Id { get; }
+    }
 
-        public string Name { get; }
-
-        public decimal Price { get; }
-
-        private OrderItemProduct()
-        {
-        }
-
-        public OrderItemProduct(long id, string name, decimal price)
-        {
-            this.Id = Checker.GTZero(id, nameof(id));
-            this.Name = Checker.NotNullOrEmpty(name, nameof(name));
-            this.Price = Checker.GTZero(price, nameof(price));
-        }
+    public OrderItemProduct(long id, string name, decimal price)
+    {
+        this.Id = Checker.GTZero(id, nameof(id));
+        this.Name = Checker.NotNullOrEmpty(name, nameof(name));
+        this.Price = Checker.GTZero(price, nameof(price));
     }
 }

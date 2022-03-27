@@ -6,10 +6,13 @@ namespace Adnc.Infra.Helper.IdGeneraterInternal
     public class YitterSnowFlake
     {
         private static readonly Lazy<YitterSnowFlake> lazy = new Lazy<YitterSnowFlake>(() => new YitterSnowFlake());
+
         public static byte YitterWorkerIdBitLength
         { get { return 6; } }
+
         public static byte YitterSeqBitLength
         { get { return 6; } }
+
         public static ushort MaxWorkerId
         { get { return (ushort)(Math.Pow(2.0, YitterWorkerIdBitLength) - 1); } }
 

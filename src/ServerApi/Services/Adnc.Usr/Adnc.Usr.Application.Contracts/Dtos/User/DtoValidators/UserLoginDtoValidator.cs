@@ -1,8 +1,4 @@
-﻿using Adnc.Shared.Consts.Entity.Usr;
-using Adnc.Usr.Application.Contracts.Dtos;
-using FluentValidation;
-
-namespace Adnc.Usr.Application.Contracts.DtoValidators
+﻿namespace Adnc.Usr.Application.Contracts.DtoValidators
 {
     public class UserLoginDtoValidator : AbstractValidator<UserLoginDto>
     {

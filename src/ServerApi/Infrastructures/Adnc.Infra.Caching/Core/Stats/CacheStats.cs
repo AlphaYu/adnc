@@ -18,7 +18,7 @@
         private const string DEFAULT_KEY = "easycahing_catche_stats";
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:EasyCaching.Core.CacheStats"/> class.
+        /// Initializes a new instance of the <see cref="T:Adnc.Infra.Caching.Core.CacheStats"/> class.
         /// </summary>
         public CacheStats()
         {

@@ -1,4 +1,6 @@
-﻿namespace Adnc.Infra.IRepositories
+﻿using Adnc.Infra.Core;
+
+namespace Adnc.Infra.IRepositories
 {
     public class Operater : IOperater
     {

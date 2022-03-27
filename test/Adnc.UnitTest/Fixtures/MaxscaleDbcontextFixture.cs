@@ -1,5 +1,6 @@
 ﻿using Adnc.Cus.Entities;
 using Adnc.Cus.Repository;
+using Adnc.Infra.Core;
 using Adnc.Infra.EfCore.Interceptors;
 using Adnc.Infra.EfCore.MySQL;
 using Adnc.Infra.Entities;
