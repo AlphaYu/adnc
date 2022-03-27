@@ -26,10 +26,10 @@ public static class ConfigureContainerExtension
     {
         var configuration = services.GetConfiguration();
         var serviceInfo = services.GetServiceInfo();
-        //var appAssemblyPath = serviceInfo.AssemblyLocation.Replace("WebApi", "Application");
-        //var appAssembly = Assembly.LoadFrom(appAssemblyPath);
-        var appAssemblyName = serviceInfo.AssemblyFullName.Replace("WebApi", "Application");
-        var appAssembly = Assembly.Load(appAssemblyName);
+        var appAssemblyPath = serviceInfo.AssemblyLocation.Replace(".WebApi.dll", ".Application.dll");
+        var appAssembly = Assembly.LoadFrom(appAssemblyPath);
+        //var appAssemblyName = serviceInfo.AssemblyFullName.Replace("WebApi", "Application");
+        //var appAssembly = Assembly.Load(appAssemblyName);
         var appModelType = appAssembly.GetTypes()
                                                       .FirstOrDefault(
                                                         m => m.FullName != null
