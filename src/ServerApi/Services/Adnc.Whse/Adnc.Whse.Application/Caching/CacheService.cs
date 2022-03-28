@@ -1,9 +1,4 @@
-﻿using Adnc.Shared.Application.Caching;
-using Adnc.Infra.Caching;
-using System;
-using System.Threading.Tasks;
-
-namespace Adnc.Whse.Application.Services.Caching;
+﻿namespace Adnc.Whse.Application.Services.Caching;
 
 public class CacheService : AbstractCacheService
 {

@@ -1,14 +1,4 @@
-﻿using Adnc.Shared.Events;
-using Adnc.Whse.Application.Contracts.Dtos;
-using Adnc.Whse.Application.Contracts.Services;
-using DotNetCore.CAP;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Adnc.Whse.Application.EventSubscribers;
+﻿namespace Adnc.Whse.Application.EventSubscribers;
 
 public sealed class CapEventSubscriber : ICapSubscribe
 {

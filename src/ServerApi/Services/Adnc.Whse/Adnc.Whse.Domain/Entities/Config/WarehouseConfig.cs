@@ -1,7 +1,4 @@
-﻿using Adnc.Infra.Entities.Config;
-using Adnc.Shared.Consts.Entity.Whse;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace Adnc.Whse.Domain.Entities.Config;
 

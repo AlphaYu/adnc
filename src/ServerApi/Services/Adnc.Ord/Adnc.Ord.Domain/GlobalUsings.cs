@@ -1,12 +1,12 @@
-﻿global using Adnc.Shared.Domain;
-global using Adnc.Shared.Domain.Entities;
-global using Adnc.Infra.Core;
+﻿global using Adnc.Infra.Core;
 global using Adnc.Infra.Entities.Config;
 global using Adnc.Infra.EventBus;
 global using Adnc.Infra.Helper;
 global using Adnc.Infra.IRepositories;
 global using Adnc.Ord.Domain.Entities;
 global using Adnc.Shared.Consts.Entity.Ord;
+global using Adnc.Shared.Domain;
+global using Adnc.Shared.Domain.Entities;
 global using Adnc.Shared.Events;
 global using Autofac;
 global using Microsoft.EntityFrameworkCore.Metadata.Builders;
