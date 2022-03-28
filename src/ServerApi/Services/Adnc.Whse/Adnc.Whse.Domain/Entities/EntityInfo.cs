@@ -1,9 +1,4 @@
-﻿using Adnc.Shared.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Reflection;
-
-namespace Adnc.Whse.Domain.Entities;
+﻿namespace Adnc.Whse.Domain.Entities;
 
 public class EntityInfo : AbstractDomainEntityInfo
 {

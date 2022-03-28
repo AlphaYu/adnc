@@ -1,8 +1,4 @@
-﻿using Adnc.Shared.Domain.Entities;
-using Adnc.Infra.Core;
-using System;
-
-namespace Adnc.Whse.Domain.Entities;
+﻿namespace Adnc.Whse.Domain.Entities;
 
 /// <summary>
 /// 货架

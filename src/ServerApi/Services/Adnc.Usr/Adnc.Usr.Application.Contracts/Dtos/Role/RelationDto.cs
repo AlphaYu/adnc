@@ -3,7 +3,7 @@
 /// <summary>
 /// 菜单-角色关联
 /// </summary>
-	[Serializable]
+[Serializable]
 public class RelationDto : IDto
 {
     /// <summary>

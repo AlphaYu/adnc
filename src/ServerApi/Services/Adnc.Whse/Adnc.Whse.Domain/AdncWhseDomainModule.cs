@@ -1,7 +1,4 @@
-﻿using Adnc.Shared.Domain;
-using Autofac;
-
-namespace Adnc.Whse.Domain;
+﻿namespace Adnc.Whse.Domain;
 
 public class AdncWhseDomainModule : AdncDomainModule
 {

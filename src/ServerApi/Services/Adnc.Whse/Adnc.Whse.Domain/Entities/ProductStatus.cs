@@ -1,6 +1,4 @@
-﻿using Adnc.Shared.Domain.Entities;
-
-namespace Adnc.Whse.Domain.Entities;
+﻿namespace Adnc.Whse.Domain.Entities;
 
 public class ProductStatus : ValueObject
 {

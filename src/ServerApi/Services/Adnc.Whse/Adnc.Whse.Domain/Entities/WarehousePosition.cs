@@ -1,7 +1,4 @@
-﻿using Adnc.Shared.Domain.Entities;
-using Adnc.Infra.Core;
-
-namespace Adnc.Whse.Domain.Entities;
+﻿namespace Adnc.Whse.Domain.Entities;
 
 public class WarehousePosition : ValueObject
 {

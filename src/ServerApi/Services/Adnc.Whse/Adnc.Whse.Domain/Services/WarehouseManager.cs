@@ -1,16 +1,4 @@
-﻿using Adnc.Shared.Domain;
-using Adnc.Infra.Core;
-using Adnc.Infra.EventBus;
-using Adnc.Infra.Helper;
-using Adnc.Infra.IRepositories;
-using Adnc.Shared.Events;
-using Adnc.Whse.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Adnc.Whse.Domain.Services;
+﻿namespace Adnc.Whse.Domain.Services;
 
 public class WarehouseManager : IDomainService
 {
