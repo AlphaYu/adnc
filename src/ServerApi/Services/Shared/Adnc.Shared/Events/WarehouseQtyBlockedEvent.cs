@@ -4,7 +4,7 @@
 /// 锁定库存事件
 /// </summary>
 [Serializable]
-public class WarehouseQtyBlockedEvent : BaseEvent<WarehouseQtyBlockedEvent.EventData>
+public class WarehouseQtyBlockedEvent : EventEntity<WarehouseQtyBlockedEvent.EventData>
 {
     public WarehouseQtyBlockedEvent()
     {

@@ -1,4 +1,6 @@
-﻿namespace Microsoft.AspNetCore.Builder;
+﻿using Adnc.Infra.Consul;
+
+namespace Microsoft.AspNetCore.Builder;
 
 public static class ApplicationBuilderExtension
 {

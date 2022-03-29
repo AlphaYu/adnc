@@ -1,15 +1,13 @@
-﻿using System;
-
-namespace Adnc.Infra.EventBus
+﻿namespace Adnc.Shared.Events
 {
     [Serializable]
-    public class BaseEvent<TData> : IEvent
+    public class EventEntity<TData>
     {
-        public BaseEvent()
+        public EventEntity()
         {
         }
 
-        public BaseEvent(long id, TData data, string source)
+        public EventEntity(long id, TData data, string source)
         {
             this.Id = id;
             this.Data = data;

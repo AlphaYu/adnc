@@ -4,7 +4,7 @@
 /// 订单支付事件
 /// </summary>
 [Serializable]
-public sealed class OrderPaidEvent : BaseEvent<OrderPaidEvent.EventData>
+public sealed class OrderPaidEvent : EventEntity<OrderPaidEvent.EventData>
 {
     public OrderPaidEvent()
     {

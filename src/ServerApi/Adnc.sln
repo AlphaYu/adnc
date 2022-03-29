@@ -113,7 +113,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Bulid", "Bulid", "{5F46F98A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Hangfire", "Infrastructures\Adnc.Infra.Hangfire\Adnc.Infra.Hangfire.csproj", "{69B2785A-E760-4097-80AB-F047AF7979E4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adnc.Shared.Application.Contracts", "Services\Shared\Adnc.Shared.Application.Contracts\Adnc.Shared.Application.Contracts.csproj", "{014411C4-C3BA-4AC7-8B26-6976897F1881}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Shared.Application.Contracts", "Services\Shared\Adnc.Shared.Application.Contracts\Adnc.Shared.Application.Contracts.csproj", "{014411C4-C3BA-4AC7-8B26-6976897F1881}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

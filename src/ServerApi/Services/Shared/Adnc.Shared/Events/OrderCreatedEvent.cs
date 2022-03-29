@@ -4,7 +4,7 @@
 /// 订单创建事件
 /// </summary>
 [Serializable]
-public class OrderCreatedEvent : BaseEvent<OrderCreatedEvent.EventData>
+public class OrderCreatedEvent : EventEntity<OrderCreatedEvent.EventData>
 {
     public OrderCreatedEvent()
     {

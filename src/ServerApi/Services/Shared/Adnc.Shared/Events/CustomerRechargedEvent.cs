@@ -4,7 +4,7 @@
 /// 客户充值
 /// </summary>
 [Serializable]
-public class CustomerRechargedEvent : BaseEvent<CustomerRechargedEvent.EventData>
+public class CustomerRechargedEvent : EventEntity<CustomerRechargedEvent.EventData>
 {
     public CustomerRechargedEvent()
     {

@@ -14,17 +14,7 @@ public class Startup
     {
         _services = services;
 
-        services.AddAdncServices<PermissionHandlerRemote>(registion =>
-        {
-            var policies = registion.GenerateDefaultRefitPolicies();
-            var authServeiceAddress = _environment.IsDevelopment() ? "http://localhost:5010" : "adnc.usr.webapi";
-            registion.AddRpcService<IAuthRpcService>(authServeiceAddress, policies);
-
-            var maintServiceAddress = _environment.IsDevelopment() ? "http://localhost:5020" : "adnc.maint.webapi";
-            registion.AddRpcService<IMaintRpcService>(maintServiceAddress, policies);
-
-            registion.AddEventBusSubscribers<CapEventSubscriber>();
-        });
+        services.AddAdncServices<PermissionHandlerRemote>();
     }
 
     public void ConfigureContainer(ContainerBuilder builder)
