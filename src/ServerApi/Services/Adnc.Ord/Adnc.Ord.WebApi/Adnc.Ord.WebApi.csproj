@@ -7,25 +7,6 @@
 		<Description>订单中心服务</Description>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'"/>
-
-	<Target Name="BuildTheApplicationProject" BeforeTargets="BeforeBuild">
-		<MSBuild Projects="..\Adnc.Ord.Application\Adnc.Ord.Application.csproj" Targets="Build" Properties="Configuration=$(Configuration);Platform=$(Platform)" />
-	</Target>
-	<Target Name="CopyTheApplicationFilesAfterBuild" AfterTargets="AfterBuild">
-		<ItemGroup>
-			<OutputFileToCopy Include="..\Adnc.Ord.Application\bin\$(Configuration)\$(TargetFramework)\*.*" />
-		</ItemGroup>
-		<Copy SkipUnchangedFiles="true" SourceFiles="@(OutputFileToCopy)" DestinationFolder=".\bin\$(Configuration)\$(TargetFramework)" />
-		<Copy SkipUnchangedFiles="true" SourceFiles="@(OutputFileToCopy)" DestinationFolder=".\bin\$(Configuration)\$(TargetFramework)\$(RuntimeIdentifier)" Condition="'$(Configuration)'=='Release'" />
-	</Target>
-	<Target Name="CopyTheApplicationFilesAfterPublish" AfterTargets="AfterPublish">
-		<ItemGroup>
-			<OutputFileToCopy Include=".\bin\$(Configuration)\$(TargetFramework)\$(RuntimeIdentifier)\*.*" />
-		</ItemGroup>
-		<Copy SkipUnchangedFiles="true" SourceFiles="@(OutputFileToCopy)" DestinationFolder="$(PublishUrl)" Condition="'$(Configuration)'=='Release'" />
-	</Target>
-	
 	<ItemGroup>
 		<PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.2.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.3">
@@ -39,17 +20,6 @@
 	</ItemGroup>
 	
 	<ItemGroup>
-		<Compile Remove="logs\**" />
-		<Content Remove="logs\**" />
-		<EmbeddedResource Remove="logs\**" />
-		<None Remove="logs\**" />
-	</ItemGroup>
-	
-	<ItemGroup>
-	  <_WebToolingArtifacts Remove="Properties\PublishProfiles\NET6_linux-x64.pubxml" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<Content Update="nlog.config">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</Content>
@@ -58,6 +28,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\..\Shared\Adnc.Shared.WebApi\Adnc.Shared.WebApi.csproj" />
 		<ProjectReference Include="..\Adnc.Ord.Application.Contracts\Adnc.Ord.Application.Contracts.csproj" />
+		<ProjectReference Include="..\Adnc.Ord.Application\Adnc.Ord.Application.csproj" />
 	</ItemGroup>
 
 	<ProjectExtensions>

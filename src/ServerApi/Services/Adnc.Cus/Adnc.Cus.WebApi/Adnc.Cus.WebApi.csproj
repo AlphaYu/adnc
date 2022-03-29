@@ -7,31 +7,6 @@
     <Description>客户中心服务</Description>
   </PropertyGroup>
 
-	<Target Name="BuildTheApplicationProject" BeforeTargets="BeforeBuild">
-		<MSBuild Projects="..\Adnc.Cus.Application\Adnc.Cus.Application.csproj" Targets="Build" Properties="Configuration=$(Configuration);Platform=$(Platform)" />
-	</Target>
-	<Target Name="CopyTheApplicationFilesAfterBuild" AfterTargets="AfterBuild">
-		<ItemGroup>
-			<OutputFileToCopy Include="..\Adnc.Cus.Application\bin\$(Configuration)\$(TargetFramework)\*.*" />
-		</ItemGroup>
-		<Copy SkipUnchangedFiles="true" SourceFiles="@(OutputFileToCopy)" DestinationFolder=".\bin\$(Configuration)\$(TargetFramework)" />
-		<Copy SkipUnchangedFiles="true" SourceFiles="@(OutputFileToCopy)" DestinationFolder=".\bin\$(Configuration)\$(TargetFramework)\$(RuntimeIdentifier)" Condition="'$(Configuration)'=='Release'" />
-	</Target>
-	<Target Name="CopyTheApplicationFilesAfterPublish" AfterTargets="AfterPublish">
-		<ItemGroup>
-			<OutputFileToCopy Include=".\bin\$(Configuration)\$(TargetFramework)\$(RuntimeIdentifier)\*.*" />
-		</ItemGroup>
-		<Copy SkipUnchangedFiles="true" SourceFiles="@(OutputFileToCopy)" DestinationFolder="$(PublishUrl)" Condition="'$(Configuration)'=='Release'" />
-	</Target>
-	
-  <ItemGroup>
-    <Compile Remove="logs\**" />
-    <Content Remove="logs\**" />
-    <EmbeddedResource Remove="logs\**" />
-    <None Remove="logs\**" />
-  </ItemGroup>
-
-
 	<ItemGroup>
 		<PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.2.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.3">
@@ -54,6 +29,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Shared\Adnc.Shared.WebApi\Adnc.Shared.WebApi.csproj" />
     <ProjectReference Include="..\Adnc.Cus.Application.Contracts\Adnc.Cus.Application.Contracts.csproj" />
+    <ProjectReference Include="..\Adnc.Cus.Application\Adnc.Cus.Application.csproj" />
   </ItemGroup>
 
   <ProjectExtensions>

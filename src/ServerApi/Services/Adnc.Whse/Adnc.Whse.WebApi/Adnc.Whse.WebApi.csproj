@@ -7,36 +7,6 @@
 		<Description>仓储中心服务</Description>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'"/>
-
-	<Target Name="BuildTheApplicationProject" BeforeTargets="BeforeBuild">
-		<MSBuild Projects="..\Adnc.Whse.Application\Adnc.Whse.Application.csproj" Targets="Build" Properties="Configuration=$(Configuration);Platform=$(Platform)" />
-	</Target>
-	<Target Name="CopyTheApplicationFilesAfterBuild" AfterTargets="AfterBuild">
-		<ItemGroup>
-			<OutputFileToCopy Include="..\Adnc.Whse.Application\bin\$(Configuration)\$(TargetFramework)\*.*" />
-		</ItemGroup>
-		<Copy SkipUnchangedFiles="true" SourceFiles="@(OutputFileToCopy)" DestinationFolder=".\bin\$(Configuration)\$(TargetFramework)" />
-		<Copy SkipUnchangedFiles="true" SourceFiles="@(OutputFileToCopy)" DestinationFolder=".\bin\$(Configuration)\$(TargetFramework)\$(RuntimeIdentifier)" Condition="'$(Configuration)'=='Release'" />
-	</Target>
-	<Target Name="CopyTheApplicationFilesAfterPublish" AfterTargets="AfterPublish">
-		<ItemGroup>
-			<OutputFileToCopy Include=".\bin\$(Configuration)\$(TargetFramework)\$(RuntimeIdentifier)\*.*" />
-		</ItemGroup>
-		<Copy SkipUnchangedFiles="true" SourceFiles="@(OutputFileToCopy)" DestinationFolder="$(PublishUrl)" Condition="'$(Configuration)'=='Release'" />
-	</Target>
-	
-	<ItemGroup>
-		<Compile Remove="logs\**" />
-		<Content Remove="logs\**" />
-		<EmbeddedResource Remove="logs\**" />
-		<None Remove="logs\**" />
-	</ItemGroup>
-	
-	<ItemGroup>
-	  <_WebToolingArtifacts Remove="Properties\PublishProfiles\NET6_linux-x64.pubxml" />
-	</ItemGroup>
-
 	<ItemGroup>
 		<PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.2.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.3">
@@ -52,6 +22,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\..\Shared\Adnc.Shared.WebApi\Adnc.Shared.WebApi.csproj" />
 		<ProjectReference Include="..\Adnc.Whse.Application.Contracts\Adnc.Whse.Application.Contracts.csproj" />
+		<ProjectReference Include="..\Adnc.Whse.Application\Adnc.Whse.Application.csproj" />
 	</ItemGroup>
 
 	<ProjectExtensions>
