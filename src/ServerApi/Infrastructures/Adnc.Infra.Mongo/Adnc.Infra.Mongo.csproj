@@ -1,11 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<Import Project="..\..\build\common.props" />
-	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
-		<RootNamespace>Adnc.Infra.Mongo</RootNamespace>
-		<AssemblyName>Adnc.Infra.Mongo</AssemblyName>
-	</PropertyGroup>
-
 	<ItemGroup>
 		<!--<PackageReference Include="Kogel.Dapper.Extension.MySql" Version="3.1.9.8" />-->
 		<PackageReference Include="Humanizer.Core" Version="2.14.1" />

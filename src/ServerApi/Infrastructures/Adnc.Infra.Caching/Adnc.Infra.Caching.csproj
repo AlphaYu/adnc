@@ -1,11 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<Import Project="..\..\build\common.props" />
-	<PropertyGroup>
-		<TargetFramework>netstandard2.1</TargetFramework>
-		<RootNamespace>Adnc.Infra.Caching</RootNamespace>
-		<AssemblyName>Adnc.Infra.Caching</AssemblyName>
-	</PropertyGroup>
-
 	<ItemGroup>
 		<Compile Remove="Core\Interceptor\CachingPutAttribute.cs" />
 	</ItemGroup>

@@ -6,7 +6,6 @@ global using Adnc.Shared.RpcServices.Services;
 global using Adnc.Shared.WebApi;
 global using Adnc.Whse.Application.Contracts.Dtos;
 global using Adnc.Whse.Application.Contracts.Services;
-global using Adnc.Whse.Application.EventSubscribers;
 global using Autofac;
 global using Autofac.Extensions.DependencyInjection;
 global using Microsoft.AspNetCore.Authorization;

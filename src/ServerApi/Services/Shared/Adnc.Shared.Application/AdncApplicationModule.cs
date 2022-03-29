@@ -36,9 +36,9 @@ public abstract class AdncApplicationModule : Autofac.Module
     {
         RegisterApplicationServices(builder);
         RegisterCachingServices(builder);
-        RegisterBloomfilters(builder);
-        RegisterIdChannelConsumers(builder);
-        RegisterIdGenerater(builder);
+        RegisterBloomfilterServices(builder);
+        RegisterIdChannelConsumerServices(builder);
+        RegisterIdGeneraterServices(builder);
         LoadDepends(builder);
     }
 
@@ -127,7 +127,7 @@ public abstract class AdncApplicationModule : Autofac.Module
     /// 注册Bloomfilters相关服务
     /// </summary>
     /// <param name="builder"></param>
-    protected virtual void RegisterBloomfilters(ContainerBuilder builder)
+    protected virtual void RegisterBloomfilterServices(ContainerBuilder builder)
     {
         builder.RegisterAssemblyTypes(_appAssemblieToScan)
            .Where(t => t.IsAssignableTo<IBloomFilter>() && !t.IsAbstract)
@@ -145,7 +145,7 @@ public abstract class AdncApplicationModule : Autofac.Module
     ///注册ChannelConsumers相关服务
     /// </summary>
     /// <param name="builder"></param>
-    protected virtual void RegisterIdChannelConsumers(ContainerBuilder builder)
+    protected virtual void RegisterIdChannelConsumerServices(ContainerBuilder builder)
     {
         builder.RegisterType<ChannelConsumersHostedService>()
                     .As<IHostedService>()
@@ -156,7 +156,7 @@ public abstract class AdncApplicationModule : Autofac.Module
     ///   注册Id生成器相关服务
     /// </summary>
     /// <param name="builder"></param>
-    protected virtual void RegisterIdGenerater(ContainerBuilder builder)
+    protected virtual void RegisterIdGeneraterServices(ContainerBuilder builder)
     {
         builder.RegisterType<WorkerNode>()
                     .AsSelf()

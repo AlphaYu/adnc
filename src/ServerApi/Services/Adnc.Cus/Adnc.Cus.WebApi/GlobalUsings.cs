@@ -1,6 +1,5 @@
 ﻿global using Adnc.Cus.Application.Contracts.Dtos;
 global using Adnc.Cus.Application.Contracts.Services;
-global using Adnc.Cus.Application.EventSubscribers;
 global using Adnc.Infra.Consul;
 global using Adnc.Infra.Core;
 global using Adnc.Shared.Application.Contracts.Dtos;

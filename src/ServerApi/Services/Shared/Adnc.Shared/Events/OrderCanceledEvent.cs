@@ -4,7 +4,7 @@
 /// 订单取消事件
 /// </summary>
 [Serializable]
-public sealed class OrderCanceledEvent : BaseEvent<OrderCanceledEvent.EventData>
+public sealed class OrderCanceledEvent : EventEntity<OrderCanceledEvent.EventData>
 {
     public OrderCanceledEvent()
     {

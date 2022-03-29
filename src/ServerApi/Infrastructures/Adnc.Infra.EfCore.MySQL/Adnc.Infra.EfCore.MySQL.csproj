@@ -1,10 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<Import Project="..\..\build\common.props" />
-	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
-		<RootNamespace>Adnc.Infra.EfCore</RootNamespace>
-		<AssemblyName>Adnc.Infra.EfCore</AssemblyName>
-	</PropertyGroup>
 	<ItemGroup>
 		<Compile Remove="DbContextFactory.cs" />
 		<Compile Remove="Repositories\EfDDDRepository.cs" />

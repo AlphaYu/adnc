@@ -49,13 +49,6 @@ namespace System
         public static bool IsNotNullOrWhiteSpace(this string @this) => !string.IsNullOrWhiteSpace(@this);
 
         /// <summary>
-        ///     Creates a new instance of  with the same value as a specified .
-        /// </summary>
-        /// <param name="str">The string to copy.</param>
-        /// <returns>A new string with the same value as .</returns>
-        public static string Copy([NotNull] this string str) => string.Copy(str);
-
-        /// <summary>
         ///     Retrieves the system&#39;s reference to the specified .
         /// </summary>
         /// <param name="str">A string to search for in the intern pool.</param>
