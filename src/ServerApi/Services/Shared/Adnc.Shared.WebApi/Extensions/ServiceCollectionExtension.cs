@@ -22,12 +22,11 @@ public static class ServiceCollectionExtension
     {
         var configuration = services.GetConfiguration();
         var serviceInfo = services.GetServiceInfo();
-        var environment = services.GetHostEnvironment();
 
         services.AddHttpContextAccessor();
         services.AddMemoryCache();
 
-        var _srvRegistration = new SharedServicesRegistration(configuration, services, environment, serviceInfo);
+        var _srvRegistration = new SharedServicesRegistration(configuration, services, serviceInfo);
         _srvRegistration.Configure();
         _srvRegistration.AddControllers();
         _srvRegistration.AddJWTAuthentication();

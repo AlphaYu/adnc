@@ -19,14 +19,14 @@ namespace Adnc.Shared.Application
         protected readonly IServiceCollection _services;
         protected readonly IConfiguration _configuration;
         protected readonly IServiceInfo _serviceInfo;
-        protected readonly IHostEnvironment _environment;
+        public bool IsDevelopment { get; set; }
 
         protected AdncServiceCollection(IServiceCollection services)
         {
             _services = services;
             _configuration = services.GetConfiguration();
             _serviceInfo = services.GetServiceInfo();
-            _environment = services.GetHostEnvironment();
+            IsDevelopment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT").EqualsIgnoreCase("Development");
         }
 
         public abstract void AddAdncServices();
@@ -48,7 +48,7 @@ namespace Adnc.Shared.Application
                                             .UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
                 });
 
-                if (_environment.IsDevelopment())
+                if (IsDevelopment)
                 {
                     //options.AddInterceptors(new DefaultDbCommandInterceptor())
                     options.LogTo(Console.WriteLine, LogLevel.Information)
@@ -84,7 +84,7 @@ namespace Adnc.Shared.Application
             where TSubscriber : class, ICapSubscribe
         {
             var tableNamePrefix = "cap";
-            var groupName = $"cap.{_serviceInfo.ShortName}.{_environment.EnvironmentName.ToLower()}";
+            var groupName = $"cap.{_serviceInfo.ShortName}.{System.Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT").ToLower()}";
 
             //add skyamp
             _services.AddSkyApmExtensions().AddCap();
@@ -236,7 +236,7 @@ namespace Adnc.Shared.Application
                                     TimeSpan.FromSeconds(4)
                                     });
             //超时策略
-            var timeoutPolicy = Policy.TimeoutAsync<HttpResponseMessage>(_environment.IsDevelopment() ? 10 : 3);
+            var timeoutPolicy = Policy.TimeoutAsync<HttpResponseMessage>(IsDevelopment ? 10 : 3);
 
             //熔断策略
             //如下，如果我们的业务代码连续失败50次，就触发熔断(onBreak),就不会再调用我们的业务代码，而是直接抛出BrokenCircuitException异常。

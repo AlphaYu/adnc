@@ -2,9 +2,9 @@
   <Import Project="..\..\build\common.props" />
 	<ItemGroup>
     <PackageReference Include="Hangfire.Dashboard.BasicAuthorization" Version="1.0.2" />
-    <PackageReference Include="Hangfire.AspNetCore" Version="1.7.25" />
+    <PackageReference Include="Hangfire.AspNetCore" Version="1.7.28" />
     <PackageReference Include="Hangfire.Console" Version="1.4.2" />
-    <PackageReference Include="Hangfire.Mongo" Version="0.7.25" />
+    <PackageReference Include="Hangfire.Mongo" Version="1.7.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Adnc.Infra.Core\Adnc.Infra.Core.csproj" />
