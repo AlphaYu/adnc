@@ -21,11 +21,9 @@ public class SharedServicesRegistration
     /// <param name="serviceInfo"><see cref="ServiceInfo"/></param>
     public SharedServicesRegistration(IConfiguration configuration
         , IServiceCollection services
-        , IHostEnvironment environment
         , IServiceInfo serviceInfo)
     {
         _configuration = configuration;
-        _environment = environment;
         _services = services;
         _serviceInfo = serviceInfo;
         _schedulingJobs = Enumerable.Empty<Type>();

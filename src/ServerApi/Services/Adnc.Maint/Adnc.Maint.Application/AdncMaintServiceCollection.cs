@@ -18,7 +18,7 @@ namespace Adnc.Maint.Application
             AddMongoContext();
 
             var policies = GenerateDefaultRefitPolicies();
-            var authServeiceAddress = _environment.IsDevelopment() ? "http://localhost:5010" : "adnc.usr.webapi";
+            var authServeiceAddress = IsDevelopment ? "http://localhost:5010" : "adnc.usr.webapi";
             AddRpcService<IAuthRpcService>(authServeiceAddress, policies);
         }
     }

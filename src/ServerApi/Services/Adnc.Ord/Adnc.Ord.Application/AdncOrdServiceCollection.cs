@@ -18,11 +18,11 @@ namespace Adnc.Ord.Application
             AddMongoContext();
 
             var policies = GenerateDefaultRefitPolicies();
-            var authServeiceAddress = _environment.IsDevelopment() ? "http://localhost:5010" : "adnc.usr.webapi";
+            var authServeiceAddress = IsDevelopment ? "http://localhost:5010" : "adnc.usr.webapi";
             AddRpcService<IAuthRpcService>(authServeiceAddress, policies);
-            var maintServiceAddress = _environment.IsDevelopment() ? "http://localhost:5020" : "adnc.maint.webapi";
+            var maintServiceAddress = IsDevelopment ? "http://localhost:5020" : "adnc.maint.webapi";
             AddRpcService<IMaintRpcService>(maintServiceAddress, policies);
-            var whseServiceAddress = _environment.IsDevelopment() ? "http://localhost:8065" : "adnc.whse.webapi";
+            var whseServiceAddress = IsDevelopment ? "http://localhost:8065" : "adnc.whse.webapi";
             AddRpcService<IWhseRpcService>(whseServiceAddress, policies);
 
             AddEventBusSubscribers<CapEventSubscriber>();
