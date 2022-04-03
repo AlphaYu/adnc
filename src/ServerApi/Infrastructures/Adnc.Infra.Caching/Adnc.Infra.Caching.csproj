@@ -19,5 +19,6 @@
 		<PackageReference Include="StackExchange.Redis" Version="2.5.43" />
 		<PackageReference Include="protobuf-net" Version="3.0.101" />
 		<PackageReference Include="System.Text.Json" Version="6.0.2" />
+		<PackageReference Include="Scrutor" Version="4.1.0" />
 	</ItemGroup>
 </Project>
