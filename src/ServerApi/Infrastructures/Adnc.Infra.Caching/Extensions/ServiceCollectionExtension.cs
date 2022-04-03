@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
-public static class AdncInfraCachingServiceCollectionExtension
+public static class ServiceCollectionExtension
 {
     public static IServiceCollection AddAdncCaching(this IServiceCollection services, IConfigurationSection redisSection)
     {
