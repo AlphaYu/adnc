@@ -6,20 +6,23 @@ namespace Adnc.Infra.Core;
 
 public static class SystemTextJson
 {
-    public static JsonSerializerOptions GetAdncDefaultOptions() => new()
+    public static JsonSerializerOptions GetAdncDefaultOptions()
     {
-        PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-            ,
-        Encoder = GetAdncDefaultEncoder()
-            ,
-        //该值指示是否允许、不允许或跳过注释
-        ReadCommentHandling = JsonCommentHandling.Skip
-            ,
+        var options = new JsonSerializerOptions();
+        options.Converters.Add(new DateTimeConverter());
+        options.Converters.Add(new DateTimeNullableConverter());
+        options.Encoder = GetAdncDefaultEncoder();
+        //该值指示是否允许、不允许或跳过注释。
+        options.ReadCommentHandling = JsonCommentHandling.Skip;
         //dynamic与匿名类型序列化设置
-        PropertyNameCaseInsensitive = true
-            ,
-        DictionaryKeyPolicy = JsonNamingPolicy.CamelCase
-    };
+        options.PropertyNameCaseInsensitive = true;
+        //dynamic
+        options.DictionaryKeyPolicy = JsonNamingPolicy.CamelCase;
+        //匿名类型
+        options.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+
+        return options;
+    }
 
     public static JavaScriptEncoder GetAdncDefaultEncoder() => JavaScriptEncoder.Create(new TextEncoderSettings(UnicodeRanges.All));
 }

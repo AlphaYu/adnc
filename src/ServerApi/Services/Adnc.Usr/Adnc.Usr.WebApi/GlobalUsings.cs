@@ -2,6 +2,7 @@
 global using Adnc.Infra.Core;
 global using Adnc.Shared.Application.Contracts.Dtos;
 global using Adnc.Shared.ConfigModels;
+global using Adnc.Shared.Consts.Permissions.Usr;
 global using Adnc.Shared.WebApi;
 global using Adnc.Usr.Application.Contracts.Dtos;
 global using Adnc.Usr.Application.Contracts.Services;
@@ -25,7 +26,6 @@ global using System;
 global using System.Collections.Generic;
 global using System.IdentityModel.Tokens.Jwt;
 global using System.Linq;
-global using System.Reflection;
 global using System.Security.Claims;
 global using System.Text;
 global using System.Threading.Tasks;
