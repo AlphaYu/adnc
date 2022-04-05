@@ -4,12 +4,15 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Adnc.Infra.EfCore.MySQL
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S125:Sections of code should not be commented out", Justification = "<挂起>")]
+    /// <summary>
+    /// AdncDbContext
+    /// </summary>
     public class AdncDbContext : DbContext
     {
         private readonly IOperater _operater;
@@ -52,43 +55,60 @@ namespace Adnc.Infra.EfCore.MySQL
 
         private int SetAuditFields()
         {
-            var allEntities = ChangeTracker.Entries<Entity>();
-
-            var allBasicAuditEntities = ChangeTracker.Entries<IBasicAuditInfo>().Where(x => x.State == EntityState.Added);
-            foreach (var entry in allBasicAuditEntities)
+            var allBasicAuditEntities = ChangeTracker.Entries<IBasicAuditInfo>().Where(x => x.State == EntityState.Added).ToList();
+            allBasicAuditEntities.ForEach(entry =>
             {
                 var entity = entry.Entity;
                 entity.CreateBy = _operater.Id;
                 entity.CreateTime = DateTime.Now;
-            }
+            });
 
-            var auditFullEntities = ChangeTracker.Entries<IFullAuditInfo>().Where(x => x.State == EntityState.Modified);
-            foreach (var entry in auditFullEntities)
+            var auditFullEntities = ChangeTracker.Entries<IFullAuditInfo>().Where(x => x.State == EntityState.Modified).ToList();
+            auditFullEntities.ForEach(entry =>
             {
                 var entity = entry.Entity;
                 entity.ModifyBy = _operater.Id;
                 entity.ModifyTime = DateTime.Now;
-            }
+            });
 
-            return allEntities.Count();
+            return ChangeTracker.Entries<Entity>().Count();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            //Debugger.Launch();
+
             modelBuilder.HasCharSet("utf8mb4 ");
 
-            var (Assembly, Types) = _entityInfo.GetEntitiesInfo();
+            var (assembly, types) = _entityInfo.GetEntitiesInfo();
 
-            foreach (var entityType in Types)
+            foreach (var entityType in types)
             {
                 modelBuilder.Entity(entityType);
             }
 
-            modelBuilder.ApplyConfigurationsFromAssembly(Assembly);
+            modelBuilder.ApplyConfigurationsFromAssembly(assembly);
+
+            var entityTypes = modelBuilder.Model.GetEntityTypes().Where(x => types.Contains(x.ClrType)).ToList();
+            entityTypes.ForEach(entityType =>
+            {
+                modelBuilder.Entity(entityType.Name, buider =>
+                {
+                    var typeSummary = entityType.ClrType.GetSummary();
+                    buider.ToTable(entityType.ClrType.Name.ToLower()).HasComment(typeSummary);
+
+                    var properties = entityType.GetProperties().ToList();
+                    properties.ForEach(property =>
+                    {
+                        var memberSummary = entityType.ClrType.GetMember(property.Name).FirstOrDefault().GetSummary();
+                        buider.Property(property.Name)
+                            .HasColumnName(property.Name.ToLower())
+                            .HasComment(memberSummary);
+                    });
+                });
+            });
 
             base.OnModelCreating(modelBuilder);
         }
-
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.LogTo(Console.WriteLine);
     }
 }
