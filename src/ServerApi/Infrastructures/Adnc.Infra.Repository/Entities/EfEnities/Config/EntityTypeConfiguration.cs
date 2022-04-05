@@ -18,7 +18,7 @@ namespace Adnc.Infra.Entities.Config
         protected virtual void ConfigureKey(EntityTypeBuilder<TEntity> builder, Type entityType)
         {
             builder.HasKey(x => x.Id);
-            builder.Property(x => x.Id).ValueGeneratedNever();
+            builder.Property(x => x.Id).HasColumnOrder(1).ValueGeneratedNever();
         }
 
         protected virtual void ConfigureConcurrency(EntityTypeBuilder<TEntity> builder, Type entityType)
@@ -32,7 +32,8 @@ namespace Adnc.Infra.Entities.Config
             if (typeof(ISoftDelete).IsAssignableFrom(entityType))
             {
                 builder.Property("IsDeleted")
-                       .HasDefaultValue(false);
+                           .HasDefaultValue(false)
+                           .HasColumnOrder(2);
                 builder.HasQueryFilter(d => EF.Property<bool>(d, "IsDeleted") == false);
             }
         }

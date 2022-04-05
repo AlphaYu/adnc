@@ -2,14 +2,14 @@
 {
     public interface IServiceInfo
     {
-        public string Id { get; set; }
+        public string Id { get; }
         public string CorsPolicy { get; set; }
-        public string ShortName { get; set; }
-        public string FullName { get; set; }
-        public string Version { get; set; }
-        public string Description { get; set; }
-        public string AssemblyName { get; set; }
-        public string AssemblyFullName { get; set; }
-        public string AssemblyLocation { get; set; }
+        public string ShortName { get; }
+        public string FullName { get; }
+        public string Version { get; }
+        public string Description { get; }
+        public string AssemblyName { get; }
+        public string AssemblyFullName { get; }
+        public string AssemblyLocation { get; }
     }
 }
