@@ -47,7 +47,7 @@ public sealed class ServiceInfo : IServiceInfo
                         AssemblyFullName = assembly.FullName,
                         AssemblyLocation = assembly.Location,
                         Description = description,
-                        Version = string.Format("{0}.{1}.{2}.{3}", version.Major, version.Minor, version.Build, version.Revision.ToString("00"))
+                        Version = $"{version.Major}.{version.Minor}.{version.Build}.{version.Revision:00}"
                     };
                 }
             }
