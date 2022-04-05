@@ -12,9 +12,9 @@ public class OrderItemConfig : EntityTypeConfiguration<OrderItem>
 
         builder.OwnsOne(x => x.Product, y =>
          {
-             y.Property(y => y.Id).IsRequired().HasColumnName("ProductId");
-             y.Property(y => y.Name).IsRequired().HasMaxLength(OrderItemConsts.Name_MaxLength).HasColumnName("ProductName");
-             y.Property(y => y.Price).IsRequired().HasColumnName("ProductPrice").HasColumnType("decimal(18,4)");
+             y.Property(z => z.Id).IsRequired().HasColumnName("producid");
+             y.Property(z => z.Name).IsRequired().HasMaxLength(OrderItemConsts.Name_MaxLength).HasColumnName("productname");
+             y.Property(z => z.Price).IsRequired().HasColumnName("productprice").HasColumnType("decimal(18,4)");
          });
 
         builder.Property(x => x.Count).IsRequired();

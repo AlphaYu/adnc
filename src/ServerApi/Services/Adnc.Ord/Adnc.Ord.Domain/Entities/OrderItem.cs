@@ -5,10 +5,19 @@
 /// </summary>
 public class OrderItem : DomainEntity
 {
+    /// <summary>
+    /// 订单Id
+    /// </summary>
     public long OrderId { get; private set; }
 
+    /// <summary>
+    /// 产品
+    /// </summary>
     public OrderItemProduct Product { get; private set; }
 
+    /// <summary>
+    /// 数量
+    /// </summary>
     public int Count { get; private set; }
 
     //public decimal Amount { get; private set; }
