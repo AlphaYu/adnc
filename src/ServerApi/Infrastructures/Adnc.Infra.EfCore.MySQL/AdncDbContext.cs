@@ -58,17 +58,15 @@ public class AdncDbContext : DbContext
         var allBasicAuditEntities = ChangeTracker.Entries<IBasicAuditInfo>().Where(x => x.State == EntityState.Added).ToList();
         allBasicAuditEntities.ForEach(entry =>
         {
-            var entity = entry.Entity;
-            entity.CreateBy = _operater.Id;
-            entity.CreateTime = DateTime.Now;
+            entry.Entity.CreateBy = _operater.Id;
+            entry.Entity.CreateTime = DateTime.Now;
         });
 
         var auditFullEntities = ChangeTracker.Entries<IFullAuditInfo>().Where(x => x.State == EntityState.Modified).ToList();
         auditFullEntities.ForEach(entry =>
         {
-            var entity = entry.Entity;
-            entity.ModifyBy = _operater.Id;
-            entity.ModifyTime = DateTime.Now;
+            entry.Entity.ModifyBy = _operater.Id;
+            entry.Entity.ModifyTime = DateTime.Now;
         });
 
         return ChangeTracker.Entries<Entity>().Count();

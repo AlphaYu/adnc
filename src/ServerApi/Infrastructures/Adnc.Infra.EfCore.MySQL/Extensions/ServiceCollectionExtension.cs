@@ -3,7 +3,6 @@ using Adnc.Infra.EfCore.MySQL;
 using Adnc.Infra.EfCore.Repositories;
 using Adnc.Infra.Entities;
 using Adnc.Infra.IRepositories;
-using System;
 using System.Reflection;
 
 namespace Microsoft.Extensions.DependencyInjection;
