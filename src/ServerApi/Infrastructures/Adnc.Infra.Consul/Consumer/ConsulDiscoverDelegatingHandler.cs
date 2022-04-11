@@ -16,17 +16,17 @@ namespace Adnc.Infra.Consul.Consumer
     {
         private static readonly SemaphoreSlim _slimlock = new SemaphoreSlim(1, 1);
         private readonly ConsulClient _consulClient;
-        private readonly ITokenGenerator _tokenGenerator;
+        private readonly IEnumerable<ITokenGenerator> _tokenGenerators;
         private readonly IMemoryCache _memoryCache;
         private readonly ILogger<ConsulDiscoverDelegatingHandler> _logger;
 
         public ConsulDiscoverDelegatingHandler(ConsulClient consulClient
-            , ITokenGenerator tokenGenerator
+            , IEnumerable<ITokenGenerator> tokenGenerators
             , IMemoryCache memoryCache
             , ILogger<ConsulDiscoverDelegatingHandler> logger)
         {
             _consulClient = consulClient;
-            _tokenGenerator = tokenGenerator;
+            _tokenGenerators = tokenGenerators;
             _memoryCache = memoryCache;
             _logger = logger;
         }
@@ -43,7 +43,8 @@ namespace Adnc.Infra.Consul.Consumer
                 var auth = headers.Authorization;
                 if (auth != null)
                 {
-                    var tokenTxt = _tokenGenerator?.Create();
+                    var tokenGenerator = _tokenGenerators.FirstOrDefault(x => x.Scheme.EqualsIgnoreCase(auth.Scheme));
+                    var tokenTxt = tokenGenerator?.Create();
 
                     if (!string.IsNullOrEmpty(tokenTxt))
                         request.Headers.Authorization = new AuthenticationHeaderValue(auth.Scheme, tokenTxt);

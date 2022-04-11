@@ -1,6 +1,8 @@
 ﻿using Adnc.Infra.Consul.TokenGenerator;
 using Microsoft.Extensions.Caching.Memory;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
@@ -10,13 +12,13 @@ namespace Adnc.Infra.Consul.Consumer
 {
     public class SimpleDiscoveryDelegatingHandler : DelegatingHandler
     {
-        private readonly ITokenGenerator _tokenGenerator;
+        private readonly IEnumerable<ITokenGenerator> _tokenGenerators;
         private readonly IMemoryCache _memoryCache;
 
-        public SimpleDiscoveryDelegatingHandler(ITokenGenerator tokenGenerator
+        public SimpleDiscoveryDelegatingHandler(IEnumerable<ITokenGenerator> tokenGenerators
             , IMemoryCache memoryCache)
         {
-            _tokenGenerator = tokenGenerator;
+            _tokenGenerators = tokenGenerators;
             _memoryCache = memoryCache;
         }
 
@@ -31,7 +33,8 @@ namespace Adnc.Infra.Consul.Consumer
             var auth = headers.Authorization;
             if (auth != null)
             {
-                var tokenTxt = _tokenGenerator?.Create();
+                var tokenGenerator = _tokenGenerators.FirstOrDefault(x => x.Scheme.EqualsIgnoreCase(auth.Scheme));
+                var tokenTxt = tokenGenerator?.Create();
 
                 if (!string.IsNullOrEmpty(tokenTxt))
                     request.Headers.Authorization = new AuthenticationHeaderValue(auth.Scheme, tokenTxt);

@@ -12,6 +12,8 @@ namespace Adnc.Infra.Consul.TokenGenerator
             _httpContextAccessor = httpContextAccessor;
         }
 
+        public string Scheme => "Bearer";
+
         public string Create()
         {
             var token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"].FirstOrDefault();
