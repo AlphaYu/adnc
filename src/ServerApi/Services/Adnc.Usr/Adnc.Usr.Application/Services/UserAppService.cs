@@ -88,6 +88,9 @@ public class UserAppService : AbstractAppService, IUserAppService
         if (validationVersion.IsNotNullOrWhiteSpace() && userValidateInfo.ValidationVersion != validationVersion)
             return default;
 
+        if (permissions.IsNullOrEmpty())
+            return new List<string> { "allow" };
+
         var roleIds = userValidateInfo.RoleIds.Trim().Split(",", StringSplitOptions.RemoveEmptyEntries).Select(x => long.Parse(x));
 
         var allMenuCodes = await _cacheService.GetAllMenuCodesFromCacheAsync();
