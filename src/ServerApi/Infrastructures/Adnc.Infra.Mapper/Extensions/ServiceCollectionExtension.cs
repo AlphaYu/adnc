@@ -1,6 +1,5 @@
 ﻿using Adnc.Infra.Mapper;
 using Adnc.Infra.Mapper.AutoMapper;
-using AutoMapper;
 using System;
 using System.Reflection;
 
