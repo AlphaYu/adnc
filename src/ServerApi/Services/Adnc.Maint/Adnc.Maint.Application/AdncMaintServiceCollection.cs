@@ -18,6 +18,7 @@ namespace Adnc.Maint.Application
             var policies = GenerateDefaultRefitPolicies();
             var authServeiceAddress = IsDevelopment ? "http://localhost:5010" : "adnc.usr.webapi";
             AddRpcService<IAuthRpcService>(authServeiceAddress, policies);
+            AddRpcService<IUsrRpcService>(authServeiceAddress, policies);
         }
     }
 }

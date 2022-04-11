@@ -13,13 +13,13 @@
         {
             if (appAssembly == null)
             {
-                var appAssemblyPath = serviceInfo.AssemblyLocation.Replace(".WebApi.dll", ".Application.dll");
                 lock (lockObj)
                 {
                     if (appAssembly == null)
                     {
                         var appAssemblyName = serviceInfo.AssemblyFullName.Replace("WebApi", "Application");
                         appAssembly = Assembly.Load(appAssemblyName);
+                        //var appAssemblyPath = serviceInfo.AssemblyLocation.Replace(".WebApi.dll", ".Application.dll");
                         ///appAssembly = Assembly.LoadFrom(appAssemblyPath);
                     }
                 }

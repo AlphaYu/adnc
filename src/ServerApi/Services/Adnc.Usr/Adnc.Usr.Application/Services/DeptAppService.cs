@@ -79,32 +79,31 @@ public class DeptAppService : AbstractAppService, IDeptAppService
     public async Task<List<DeptTreeDto>> GetTreeListAsync()
     {
         var result = new List<DeptTreeDto>();
-
         var depts = await _cacheService.GetAllDeptsFromCacheAsync();
         if (depts.IsNullOrEmpty())
             return result;
 
-        Func<DeptDto, DeptTreeDto> selector = x =>
-                                                                                  new DeptTreeDto
-                                                                                  {
-                                                                                      Id = x.Id,
-                                                                                      SimpleName = x.SimpleName,
-                                                                                      FullName = x.FullName,
-                                                                                      Ordinal = x.Ordinal,
-                                                                                      Pid = x.Pid,
-                                                                                      Pids = x.Pids,
-                                                                                      Tips = x.Tips,
-                                                                                      Version = x.Version
-                                                                                  };
+        Func<DeptDto, DeptTreeDto> selector = x => new DeptTreeDto
+        {
+            Id = x.Id,
+            SimpleName = x.SimpleName,
+            FullName = x.FullName,
+            Ordinal = x.Ordinal,
+            Pid = x.Pid,
+            Pids = x.Pids,
+            Tips = x.Tips,
+            Version = x.Version
+        };
+
         var roots = depts.Where(d => d.Pid == 0)
                                     .OrderBy(d => d.Ordinal)
                                     .Select(selector)
                                     .ToList();
-        foreach (var node in roots)
+        roots.ForEach(node =>
         {
             GetChildren(node, depts);
             result.Add(node);
-        }
+        });
 
         void GetChildren(DeptTreeDto currentNode, List<DeptDto> allDeptNodes)
         {
@@ -121,6 +120,7 @@ public class DeptAppService : AbstractAppService, IDeptAppService
                 }
             }
         }
+
         return result;
     }
 

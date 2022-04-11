@@ -1,6 +1,5 @@
 ﻿using Adnc.Ord.Application.EventSubscribers;
 using Adnc.Shared.Application.Contracts.Services;
-using Microsoft.Extensions.Hosting;
 
 namespace Adnc.Ord.Application
 {

@@ -51,7 +51,7 @@ public class DeptController : AdncControllerBase
     /// </summary>
     /// <returns></returns>
     [HttpGet()]
-    [Permission(PermissionConsts.Dept.GetList)]
+    [Permission(PermissionConsts.Dept.GetList, PermissionAttribute.JwtWithBasicSchemes)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<List<DeptTreeDto>>> GetListAsync()
         => await _deptService.GetTreeListAsync();

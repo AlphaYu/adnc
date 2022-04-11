@@ -188,7 +188,10 @@ namespace Adnc.Shared.Application
             var prefix = serviceName.Substring(0, 7);
             bool isConsulAdderss = prefix != "http://" && prefix != "https:/";
 
-            var refitSettings = new RefitSettings(new SystemTextJsonContentSerializer(SystemTextJson.GetAdncDefaultOptions()));
+            var refitSettings = new RefitSettings()
+            {
+                ContentSerializer = new SystemTextJsonContentSerializer(SystemTextJson.GetAdncDefaultOptions())
+            };
             //注册RefitClient,设置httpclient生命周期时间，默认也是2分钟。
             var clientbuilder = _services.AddRefitClient<TRpcService>(refitSettings)
                                                          .SetHandlerLifetime(TimeSpan.FromMinutes(2));

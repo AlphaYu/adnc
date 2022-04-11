@@ -102,11 +102,12 @@ public class SharedServicesRegistration
     }
 
     /// <summary>
-    /// 注册Jwt认证组件
+    /// 注册身份认证组件
     /// </summary>
     public virtual void AddAuthentication()
     {
         var jwtConfig = _configuration.GetJWTSection().Get<JwtConfig>();
+
         _services.AddAuthentication(HybridDefaults.AuthenticationScheme)
         .AddHybrid()
         .AddBasic()

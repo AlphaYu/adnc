@@ -183,7 +183,7 @@ public class CustomerAppService : AbstractAppService, ICustomerAppService
                                                                         Realname = x.Realname,
                                                                         CreateBy = x.CreateBy,
                                                                         CreateTime = x.CreateTime,
-                                                                        FinanceInfoBalance = x.FinanceInfo.Balance
+                                                                        FinanceInfoBalance = x.FinanceInfo == null ? 0 : x.FinanceInfo.Balance
                                                                     })
                                                                     .Skip(search.SkipRows())
                                                                     .Take(search.PageSize)

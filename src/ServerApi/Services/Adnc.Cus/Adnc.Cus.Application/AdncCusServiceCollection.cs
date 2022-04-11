@@ -1,7 +1,6 @@
 ﻿using Adnc.Cus.Application.EventSubscribers;
 using Adnc.Shared.Application.Contracts.Services;
 using Adnc.Shared.RpcServices.Services;
-using Microsoft.Extensions.Hosting;
 
 namespace Adnc.Cus.Application
 {
