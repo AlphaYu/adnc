@@ -22,7 +22,7 @@ public class LogController : AdncControllerBase
     /// <param name="searchDto">查询条件</param>
     /// <returns></returns>
     [HttpGet("opslogs")]
-    [Permission("opsLog")]
+    [Permission(PermissionConsts.Log.GetListForOperationLog)]
     public async Task<ActionResult<PageModelDto<OpsLogDto>>> GetOpsLogsPaged([FromQuery] LogSearchPagedDto searchDto)
         => await _logService.GetOpsLogsPagedAsync(searchDto);
 
@@ -49,7 +49,7 @@ public class LogController : AdncControllerBase
     /// <param name="searchDto">查询条件</param>
     /// <returns></returns>
     [HttpGet("loginlogs")]
-    [Permission("loginLog")]
+    [Permission(PermissionConsts.Log.GetListForLogingLog)]
     public async Task<ActionResult<PageModelDto<LoginLogDto>>> GetLoginLogsPagedAsync([FromQuery] LogSearchPagedDto searchDto)
         => await _logService.GetLoginLogsPagedAsync(searchDto);
 
@@ -59,7 +59,7 @@ public class LogController : AdncControllerBase
     /// <param name="searchDto">查询条件</param>
     /// <returns></returns>
     [HttpGet("nloglogs")]
-    [Permission("nlogLog")]
+    [Permission(PermissionConsts.Log.GetListForNLog)]
     public async Task<ActionResult<PageModelDto<NlogLogDto>>> GetNlogLogsPagedAsync([FromQuery] LogSearchPagedDto searchDto)
         => await _logService.GetNlogLogsPagedAsync(searchDto);
 }

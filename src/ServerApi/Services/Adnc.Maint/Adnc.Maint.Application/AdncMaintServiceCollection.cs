@@ -1,6 +1,4 @@
 ﻿using Adnc.Shared.RpcServices.Services;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 
 namespace Adnc.Maint.Application
 {

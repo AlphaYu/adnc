@@ -61,7 +61,7 @@ public class DictController : AdncControllerBase
     /// </summary>
     /// <returns></returns>
     [HttpGet("{id}")]
-    // [Permission("dict")]
+    [Permission(PermissionConsts.Dict.GetList, PermissionAttribute.JwtWithBasicSchemes)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<DictDto>> GetAsync([FromRoute] long id)
     {
