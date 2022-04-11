@@ -74,8 +74,7 @@ public class AccountController : AdncControllerBase
     /// </summary>
     /// <param name="input"><see cref="UserRefreshTokenDto"/></param>
     /// <returns></returns>
-    [AllowAnonymous]
-    [HttpPut()]
+    [AllowAnonymous, HttpPut()]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<UserTokenInfoDto>> RefreshAccessTokenAsync([FromBody] UserRefreshTokenDto input)
     {

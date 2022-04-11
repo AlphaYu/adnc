@@ -35,12 +35,10 @@ public static class JwtTokenHelper
     {
         var claims = new Claim[]
         {
-            new Claim(ClaimTypes.NameIdentifier, user.Account),
-            new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-            new Claim(ClaimTypes.Name, user.Name),
-            new Claim(ClaimTypes.Version, user.ValidationVersion)
-            //new Claim(ClaimTypes.Role, user.RoleIds??"0")
-            //new Claim(JwtRegisteredClaimNames.Email, user.Email),
+            new Claim(JwtRegisteredClaimNames.UniqueName, user.Account),
+            new Claim(JwtRegisteredClaimNames.NameId, user.Id.ToString()),
+            new Claim(JwtRegisteredClaimNames.Name, user.Name),
+            new Claim("version", user.ValidationVersion)
         };
         return CreateToken(jwtConfig, claims, TokenType.AccessToken);
     }
@@ -49,7 +47,7 @@ public static class JwtTokenHelper
     {
         var claims = new Claim[]
         {
-            new Claim(ClaimTypes.NameIdentifier, user.Account),
+            new Claim(JwtRegisteredClaimNames.UniqueName, user.Account),
         };
         return CreateToken(jwtConfig, claims, TokenType.RefreshToken);
     }
@@ -59,7 +57,7 @@ public static class JwtTokenHelper
         var token = new JwtSecurityTokenHandler().ReadJwtToken(refreshTokenTxt);
         if (token != null)
         {
-            var claimAccount = token.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
+            var claimAccount = token.Claims.First(x => x.Type == JwtRegisteredClaimNames.UniqueName).Value;
 
             if (user != null && user.Account == claimAccount)
             {

@@ -80,7 +80,7 @@ public class UserController : AdncControllerBase
     /// <param name="input">用户Ids与状态</param>
     /// <returns></returns>
     [HttpPut("batch/status")]
-    [Permission("userFreeze")]
+    [Permission(PermissionConsts.User.ChangeStatus)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult> ChangeStatus([FromBody] UserChangeStatusDto input)
         => Result(await _userService.ChangeStatusAsync(input.UserIds, input.Status));
