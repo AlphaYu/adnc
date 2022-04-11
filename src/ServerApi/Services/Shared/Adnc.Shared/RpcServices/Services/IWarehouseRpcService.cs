@@ -6,7 +6,7 @@ public interface IWhseRpcService : IRpcService
     /// 获取商品列表
     /// </summary>
     /// <returns></returns>
-    [Headers("Authorization: Bearer", "Cache: 1000")]
+    [Headers("Authorization: Basic", "Cache: 1000")]
     [Get("/whse/products")]
     Task<ApiResponse<List<ProductRto>>> GetProductsAsync(ProductSearchListRto search, CancellationToken cancellationToken = default);
 }

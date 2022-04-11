@@ -16,6 +16,7 @@ public static class PermissionConsts
         public const string Update = "dictEdit";
         public const string Delete = "dictDelete";
         public const string GetList = "dictList";
+        public const string Get = "dictGet";
     }
 
     public static class Log

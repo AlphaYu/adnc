@@ -5,7 +5,7 @@ public sealed class ServiceInfo : IServiceInfo
     private static ServiceInfo _instance = null;
     private static object _lockObj = new();
 
-    public string Id => Guid.NewGuid().ToString().ToLower();
+    public string Id => DateTime.Now.GetTotalMilliseconds().ToString();
     public string CorsPolicy { get; set; } = "default";
     public string ShortName { get; private set; }
     public string FullName { get; private set; }

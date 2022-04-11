@@ -9,6 +9,6 @@ public interface IMaintRpcService : IRpcService
     /// <param name="id">id</param>
     /// <returns></returns>
     [Get("/maint/dicts/{id}")]
-    [Headers("Authorization: Bearer", "Cache: 2000")]
+    [Headers("Authorization: Basic", "Cache: 2000")]
     Task<ApiResponse<DictRto>> GetDictAsync(long id);
 }
