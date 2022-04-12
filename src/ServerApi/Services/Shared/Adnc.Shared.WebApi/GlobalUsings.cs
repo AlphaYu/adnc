@@ -1,6 +1,7 @@
-﻿global using Adnc.Infra.Core;
+﻿global using Adnc.Infra.Core.Configuration;
+global using Adnc.Infra.Core.Interfaces;
+global using Adnc.Infra.Core.Json;
 global using Adnc.Infra.Helper;
-global using Adnc.Shared.ConfigModels;
 global using Adnc.Shared.ResultModels;
 global using Adnc.Shared.RpcServices.Services;
 global using Adnc.Shared.WebApi;
@@ -33,7 +34,6 @@ global using Microsoft.IdentityModel.Logging;
 global using Microsoft.IdentityModel.Tokens;
 global using Microsoft.OpenApi.Models;
 global using MongoDB.Driver;
-global using Newtonsoft.Json.Linq;
 global using System;
 global using System.Collections.Generic;
 global using System.IdentityModel.Tokens.Jwt;

@@ -3,23 +3,23 @@
 public class CachingHostedService : BackgroundService
 {
     private readonly ILogger<CachingHostedService> _logger;
-    private readonly ICacheProvider _cache;
-    private readonly ICacheService _cacheService;
+    private readonly ICacheProvider _cacheProvider;
+    private readonly ICachePreheatable _cachePreheatService;
 
     public CachingHostedService(ILogger<CachingHostedService> logger
-       , ICacheProvider cache
-       , ICacheService cacheService)
+       , ICacheProvider cacheProvider
+       , ICachePreheatable cachePreheatService)
     {
         _logger = logger;
-        _cache = cache;
-        _cacheService = cacheService;
+        _cacheProvider = cacheProvider;
+        _cachePreheatService = cachePreheatService;
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         #region Init Caches
 
-        await _cacheService.PreheatAsync();
+        await _cachePreheatService.PreheatAsync();
 
         #endregion Init Caches
 
@@ -31,7 +31,7 @@ public class CachingHostedService : BackgroundService
                 || model.CacheKeys?.Any() == false
                 || DateTime.Now > model.ExpireDt)
             {
-                await Task.Delay(_cache.CacheOptions.LockMs, stoppingToken);
+                await Task.Delay(_cacheProvider.CacheOptions.LockMs, stoppingToken);
                 continue;
             }
 
@@ -41,14 +41,14 @@ public class CachingHostedService : BackgroundService
                 {
                     if (DateTime.Now > model.ExpireDt) break;
 
-                    await _cache.RemoveAllAsync(model.CacheKeys);
+                    await _cacheProvider.RemoveAllAsync(model.CacheKeys);
 
                     break;
                 }
                 catch (Exception ex)
                 {
                     _logger.LogError(ex.Message, ex);
-                    await Task.Delay(_cache.CacheOptions.LockMs, stoppingToken);
+                    await Task.Delay(_cacheProvider.CacheOptions.LockMs, stoppingToken);
                 }
             }
         }

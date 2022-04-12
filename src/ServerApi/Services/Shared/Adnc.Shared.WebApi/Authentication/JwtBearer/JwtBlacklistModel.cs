@@ -1,4 +1,4 @@
-﻿namespace Adnc.Shared.ConfigModels;
+﻿namespace Microsoft.AspNetCore.Authentication.JwtBearer;
 
 public class JwtAccountlistModel
 {

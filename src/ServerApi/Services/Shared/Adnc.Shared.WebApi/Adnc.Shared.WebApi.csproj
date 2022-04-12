@@ -40,8 +40,4 @@
 		<ProjectReference Include="..\Adnc.Shared.Application.Contracts\Adnc.Shared.Application.Contracts.csproj" />
 		<ProjectReference Include="..\Adnc.Shared\Adnc.Shared.csproj" />
 	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Authentication\JwtBearer\" />
-	</ItemGroup>
 </Project>

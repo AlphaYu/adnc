@@ -3,10 +3,10 @@
 public sealed class ServiceInfo : IServiceInfo
 {
     private static ServiceInfo _instance = null;
-    private static object _lockObj = new();
+    private static readonly object _lockObj = new();
 
-    public string Id => DateTime.Now.GetTotalMilliseconds().ToString();
-    public string CorsPolicy { get; set; } = "default";
+    public string Id { get; private set; }
+    public string CorsPolicy { get; set; }
     public string ShortName { get; private set; }
     public string FullName { get; private set; }
     public string Version { get; private set; }
@@ -41,6 +41,8 @@ public sealed class ServiceInfo : IServiceInfo
 
                     _instance = new ServiceInfo
                     {
+                        Id = DateTime.Now.GetTotalMilliseconds().ToString(),
+                        CorsPolicy = "default",
                         FullName = fullName,
                         ShortName = shortName,
                         AssemblyName = assemblyName.Name,

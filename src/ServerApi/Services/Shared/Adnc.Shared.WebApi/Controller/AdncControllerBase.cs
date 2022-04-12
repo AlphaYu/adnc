@@ -1,4 +1,4 @@
-﻿namespace Adnc.Shared.WebApi;
+﻿namespace Microsoft.AspNetCore.Mvc;
 
 public abstract class AdncControllerBase : ControllerBase
 {

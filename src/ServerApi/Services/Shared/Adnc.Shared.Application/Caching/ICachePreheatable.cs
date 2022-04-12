@@ -1,6 +1,6 @@
 ﻿namespace Adnc.Shared.Application.Caching;
 
-public interface ICacheService
+public interface ICachePreheatable
 {
     /// <summary>
     /// 预热缓存

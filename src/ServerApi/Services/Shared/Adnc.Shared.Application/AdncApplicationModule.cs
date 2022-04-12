@@ -115,9 +115,9 @@ public abstract class AdncApplicationModule : Autofac.Module
     protected virtual void RegisterCachingServices(ContainerBuilder builder)
     {
         builder.RegisterAssemblyTypes(_appAssemblieToScan)
-           .Where(t => t.IsAssignableTo<ICacheService>() && !t.IsAbstract)
+           .Where(t => t.IsAssignableTo<ICachePreheatable>() && !t.IsAbstract)
            .AsSelf().PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies).InstancePerLifetimeScope()
-           .As<ICacheService>().SingleInstance();
+           .As<ICachePreheatable>().SingleInstance();
         builder.RegisterType<CachingHostedService>()
                     .As<IHostedService>()
                     .InstancePerLifetimeScope();

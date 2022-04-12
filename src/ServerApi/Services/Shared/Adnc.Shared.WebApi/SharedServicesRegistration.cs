@@ -1,5 +1,4 @@
-﻿using Adnc.Infra.Consul;
-using Adnc.Infra.EventBus.RabbitMq;
+﻿using Adnc.Infra.EventBus.RabbitMq;
 using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
 
 namespace Adnc.Shared.WebApi;
