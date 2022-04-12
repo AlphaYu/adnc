@@ -1,5 +1,6 @@
 ﻿global using Adnc.Infra.Caching;
-global using Adnc.Infra.Core;
+global using Adnc.Infra.Core.Interfaces;
+global using Adnc.Infra.Core.Exceptions;
 global using Adnc.Infra.Helper;
 global using Adnc.Infra.IRepositories;
 global using Adnc.Ord.Application.Contracts.Dtos;
