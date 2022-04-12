@@ -1,5 +1,5 @@
-﻿global using Adnc.Infra.Consul;
-global using Adnc.Infra.Core;
+﻿global using Adnc.Infra.Core.Configuration;
+global using Adnc.Infra.Core.Interfaces;
 global using Adnc.Shared.Application.Contracts.Dtos;
 global using Adnc.Shared.RpcServices.Rtos;
 global using Adnc.Shared.RpcServices.Services;

@@ -1,4 +1,4 @@
-﻿global using Adnc.Infra.Core;
+﻿global using Adnc.Infra.Core.Exceptions;
 global using Adnc.Infra.Entities.Config;
 global using Adnc.Infra.EventBus;
 global using Adnc.Infra.Helper;
@@ -10,6 +10,7 @@ global using Adnc.Shared.Events;
 global using Adnc.Whse.Domain.Entities;
 global using Autofac;
 global using Microsoft.EntityFrameworkCore.Metadata.Builders;
+global using Microsoft.EntityFrameworkCore;
 global using System;
 global using System.Collections.Generic;
 global using System.Linq;
