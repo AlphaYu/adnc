@@ -1,6 +1,5 @@
 ﻿using Adnc.Cus.Entities;
 using Adnc.Cus.Repository;
-using Adnc.Infra.EfCore.Interceptors;
 using Adnc.Infra.EfCore.MySQL;
 using Adnc.Infra.Entities;
 
@@ -31,7 +30,7 @@ namespace Adnc.UnitTest.Fixtures
                 .UseMySql(dbstring, serverVersion, mySqlOptions =>
                 {
                 })
-                .AddInterceptors(new DefaultDbCommandInterceptor())
+                //.AddInterceptors(new DefaultDbCommandInterceptor())
                 .Options;
                 return options;
             }).InstancePerLifetimeScope();
