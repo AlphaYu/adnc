@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Adnc.Infra.Entities
+﻿namespace Adnc.Infra.Entities
 {
     public interface IFullAuditInfo : IBasicAuditInfo
     {

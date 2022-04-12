@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Adnc.Infra.IRepositories
+﻿namespace Adnc.Infra.IRepositories
 {
     public interface IPagedModel<out T>
     {

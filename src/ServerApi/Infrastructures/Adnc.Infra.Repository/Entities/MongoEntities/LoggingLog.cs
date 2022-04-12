@@ -1,5 +1,4 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
-using System;
 
 namespace Adnc.Infra.Entities
 {

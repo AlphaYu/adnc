@@ -1,6 +1,4 @@
-﻿using Adnc.Infra.Entities;
-
-namespace Microsoft.Extensions.DependencyInjection;
+﻿namespace Microsoft.Extensions.DependencyInjection;
 
 public static class AdncRepositoryServiceCollectionExtension
 {
