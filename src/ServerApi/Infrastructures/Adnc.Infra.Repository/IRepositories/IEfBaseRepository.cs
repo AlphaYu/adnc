@@ -92,5 +92,5 @@ public interface IEfBaseRepository<TEntity> : IRepository<TEntity>
     /// <param name="writeDb">是否读写库，默认false,可选参数</param>
     /// param name="cancellationToken"><see cref="CancellationToken"/></param>
     /// <returns></returns>
-    Task<IPagedModel<TEntity>> PagedAsync(int pageIndex, int pageSize, Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, object>> orderByExpression, bool ascending = false, bool writeDb = false, CancellationToken cancellationToken = default);
+    Task<PagedModel<TEntity>> PagedAsync(int pageIndex, int pageSize, Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, object>> orderByExpression, bool ascending = false, bool writeDb = false, CancellationToken cancellationToken = default);
 }

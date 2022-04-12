@@ -81,5 +81,5 @@ public interface IMongoRepository<TEntity> : IRepository<TEntity>
     /// <param name="ascending"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<IPagedModel<TEntity>> PagedAsync(int pageNumber, int pageSize, FilterDefinition<TEntity> filter, Expression<Func<TEntity, object>> orderByExpression, bool ascending = false, CancellationToken cancellationToken = default);
+    Task<PagedModel<TEntity>> PagedAsync(int pageNumber, int pageSize, FilterDefinition<TEntity> filter, Expression<Func<TEntity, object>> orderByExpression, bool ascending = false, CancellationToken cancellationToken = default);
 }

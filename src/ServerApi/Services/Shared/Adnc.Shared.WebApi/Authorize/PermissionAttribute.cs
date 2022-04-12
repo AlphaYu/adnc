@@ -1,6 +1,6 @@
 ﻿namespace Microsoft.AspNetCore.Authorization;
 
-[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false)]
 public class PermissionAttribute : AuthorizeAttribute
 {
     public const string JwtWithBasicSchemes = $"{JwtBearerDefaults.AuthenticationScheme},{BasicDefaults.AuthenticationScheme}";

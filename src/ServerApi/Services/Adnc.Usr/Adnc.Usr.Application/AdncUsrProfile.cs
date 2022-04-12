@@ -6,7 +6,7 @@ public class AdncUsrProfile : Profile
 {
     public AdncUsrProfile()
     {
-        CreateMap(typeof(IPagedModel<>), typeof(PageModelDto<>)).ForMember("XData", opt => opt.Ignore());
+        CreateMap(typeof(PagedModel<>), typeof(PageModelDto<>)).ForMember("XData", opt => opt.Ignore());
         CreateMap(typeof(ZTreeNodeDto<,>), typeof(Node<>)).IgnoreAllPropertiesWithAnInaccessibleSetter();
         CreateMap<MenuCreationDto, SysMenu>();
         CreateMap<MenuUpdationDto, SysMenu>();

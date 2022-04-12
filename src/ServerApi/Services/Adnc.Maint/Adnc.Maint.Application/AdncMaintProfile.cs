@@ -4,7 +4,7 @@ public class AdncMaintProfile : Profile
 {
     public AdncMaintProfile()
     {
-        CreateMap(typeof(IPagedModel<>), typeof(PageModelDto<>)).ForMember("XData", opt => opt.Ignore());
+        CreateMap(typeof(PagedModel<>), typeof(PageModelDto<>)).ForMember("XData", opt => opt.Ignore());
         CreateMap<OpsLogCreationDto, OperationLog>();
         CreateMap<OperationLog, OpsLogDto>();
         CreateMap<LoginLog, LoginLogDto>();
