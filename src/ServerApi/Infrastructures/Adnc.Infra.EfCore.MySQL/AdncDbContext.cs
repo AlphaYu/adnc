@@ -1,14 +1,4 @@
-﻿using Adnc.Infra.Core;
-using Adnc.Infra.Entities;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Reflection;
-using System.Threading;
-using System.Threading.Tasks;
-
-namespace Adnc.Infra.EfCore.MySQL;
+﻿namespace Adnc.Infra.EfCore.MySQL;
 
 /// <summary>
 /// AdncDbContext
@@ -19,7 +9,7 @@ public class AdncDbContext : DbContext
     private readonly IEntityInfo _entityInfo;
     private readonly UnitOfWorkStatus _unitOfWorkStatus;
 
-    public AdncDbContext([NotNull] DbContextOptions options, IOperater operater, [NotNull] IEntityInfo entityInfo, UnitOfWorkStatus unitOfWorkStatus)
+    public AdncDbContext(DbContextOptions options, IOperater operater, IEntityInfo entityInfo, UnitOfWorkStatus unitOfWorkStatus)
         : base(options)
     {
         _operater = operater;
@@ -105,7 +95,5 @@ public class AdncDbContext : DbContext
                 });
             });
         });
-
-        base.OnModelCreating(modelBuilder);
     }
 }

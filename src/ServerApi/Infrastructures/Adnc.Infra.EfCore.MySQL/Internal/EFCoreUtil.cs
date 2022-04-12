@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-
-namespace Adnc.Infra.EfCore.Internal
+﻿namespace Adnc.Infra.EfCore.Internal
 {
     public static class EFCoreUtil
     {

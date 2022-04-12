@@ -1,11 +1,4 @@
-﻿using Adnc.Infra.EfCore;
-using Adnc.Infra.EfCore.MySQL;
-using Adnc.Infra.EfCore.Repositories;
-using Adnc.Infra.Entities;
-using Adnc.Infra.IRepositories;
-using System.Reflection;
-
-namespace Microsoft.Extensions.DependencyInjection;
+﻿namespace Microsoft.Extensions.DependencyInjection;
 
 public static class AdncEfCoreMySqlServiceCollectionExtension
 {

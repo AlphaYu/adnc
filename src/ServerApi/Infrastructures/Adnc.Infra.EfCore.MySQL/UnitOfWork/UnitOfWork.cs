@@ -1,11 +1,6 @@
-﻿using Adnc.Infra.IRepositories;
-using DotNetCore.CAP;
-using Microsoft.EntityFrameworkCore;
+﻿using DotNetCore.CAP;
 using Microsoft.EntityFrameworkCore.Storage;
-using System;
 using System.Data;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Adnc.Infra.EfCore
 {

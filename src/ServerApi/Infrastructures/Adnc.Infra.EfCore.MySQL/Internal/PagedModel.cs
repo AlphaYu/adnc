@@ -1,8 +1,4 @@
-﻿using Adnc.Infra.IRepositories;
-using System;
-using System.Collections.Generic;
-
-namespace Adnc.Infra.EfCore
+﻿namespace Adnc.Infra.EfCore
 {
     /// <summary>
     /// 分页Model

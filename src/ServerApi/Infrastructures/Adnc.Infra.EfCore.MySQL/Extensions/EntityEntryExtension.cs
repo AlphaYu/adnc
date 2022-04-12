@@ -1,7 +1,4 @@
-﻿using Adnc.Infra.EfCore.Internal;
-using Microsoft.EntityFrameworkCore.Metadata;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
+﻿using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Microsoft.EntityFrameworkCore.ChangeTracking
 {

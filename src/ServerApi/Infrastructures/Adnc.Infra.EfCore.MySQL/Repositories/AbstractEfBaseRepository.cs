@@ -1,14 +1,6 @@
-﻿using Adnc.Infra.Entities;
-using Adnc.Infra.IRepositories;
-using Dapper;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
+﻿using Dapper;
 using System.Data;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Adnc.Infra.EfCore.Repositories
 {
@@ -71,7 +63,7 @@ namespace Adnc.Infra.EfCore.Repositories
 
         public virtual async Task<int> InsertRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
         {
-            await DbContext.Set<TEntity>().AddRangeAsync(entities);
+            await DbContext.Set<TEntity>().AddRangeAsync(entities, cancellationToken);
             return await DbContext.SaveChangesAsync(cancellationToken);
         }
 
