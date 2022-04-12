@@ -1,6 +1,6 @@
 ﻿global using Adnc.Infra.Caching;
 global using Adnc.Infra.Caching.Configurations;
-global using Adnc.Infra.Core;
+global using Adnc.Infra.Core.Interfaces;
 global using Adnc.Infra.Entities;
 global using Adnc.Infra.EventBus.RabbitMq;
 global using Adnc.Infra.Helper;
@@ -19,6 +19,7 @@ global using Adnc.Shared.Consts.Mq;
 global using Adnc.Shared.ResultModels;
 global using Autofac;
 global using AutoMapper;
+global using Microsoft.EntityFrameworkCore;
 global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Logging;
