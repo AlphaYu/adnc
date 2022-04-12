@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-namespace System
+﻿namespace System
 {
     public static class GuidExtension
     {

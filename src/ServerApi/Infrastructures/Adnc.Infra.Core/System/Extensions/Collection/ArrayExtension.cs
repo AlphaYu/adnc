@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Diagnostics.CodeAnalysis;
-
-namespace System
+﻿namespace System
 {
     public static class ArrayExtension
     {

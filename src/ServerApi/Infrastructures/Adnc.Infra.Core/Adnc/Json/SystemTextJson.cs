@@ -1,8 +1,7 @@
 ﻿using System.Text.Encodings.Web;
-using System.Text.Json;
 using System.Text.Unicode;
 
-namespace Adnc.Infra.Core;
+namespace Adnc.Infra.Core.Json;
 
 public static class SystemTextJson
 {
