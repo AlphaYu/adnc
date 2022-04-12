@@ -1,8 +1,8 @@
 ﻿namespace Adnc.Usr.Application.Caching;
 
-public class CacheService : AbstractCacheService
+public class CacheService : AbstractCacheService, ICachePreheatable
 {
-    private readonly Lazy<ICacheProvider> _cache;
+    private readonly Lazy<ICacheProvider> _cacheProvider;
     private readonly Lazy<IEfRepository<SysDept>> _deptRepository;
     private readonly Lazy<IEfRepository<SysMenu>> _menuRepository;
     private readonly Lazy<IEfRepository<SysRelation>> _relationRepository;
@@ -10,16 +10,16 @@ public class CacheService : AbstractCacheService
     private readonly Lazy<IEfRepository<SysUser>> _userRepository;
     private readonly Lazy<IOptionsSnapshot<JwtConfig>> _jwtConfig;
 
-    public CacheService(Lazy<ICacheProvider> cache
+    public CacheService(Lazy<ICacheProvider> cacheProvider
         , Lazy<IEfRepository<SysDept>> deptRepository
         , Lazy<IEfRepository<SysMenu>> menuRepository
         , Lazy<IEfRepository<SysRelation>> relationRepository
         , Lazy<IEfRepository<SysRole>> roleRepository
         , Lazy<IEfRepository<SysUser>> userRepository
         , Lazy<IOptionsSnapshot<JwtConfig>> jwtConfig)
-        : base(cache)
+        : base(cacheProvider)
     {
-        _cache = cache;
+        _cacheProvider = cacheProvider;
         _deptRepository = deptRepository;
         _menuRepository = menuRepository;
         _relationRepository = relationRepository;
@@ -41,12 +41,12 @@ public class CacheService : AbstractCacheService
     internal async Task SetValidateInfoToCacheAsync(UserValidateDto value)
     {
         var cacheKey = ConcatCacheKey(CachingConsts.UserValidateInfoKeyPrefix, value.Id);
-        await _cache.Value.SetAsync(cacheKey, value, TimeSpan.FromSeconds(CachingConsts.OneDay));
+        await _cacheProvider.Value.SetAsync(cacheKey, value, TimeSpan.FromSeconds(CachingConsts.OneDay));
     }
 
     internal async Task<List<DeptDto>> GetAllDeptsFromCacheAsync()
     {
-        var cahceValue = await _cache.Value.GetAsync(CachingConsts.DetpListCacheKey, async () =>
+        var cahceValue = await _cacheProvider.Value.GetAsync(CachingConsts.DetpListCacheKey, async () =>
         {
             var allDepts = await _deptRepository.Value.GetAll(writeDb: true).OrderBy(x => x.Ordinal).ToListAsync();
             return Mapper.Map<List<DeptDto>>(allDepts);
@@ -57,7 +57,7 @@ public class CacheService : AbstractCacheService
 
     internal async Task<List<RelationDto>> GetAllRelationsFromCacheAsync()
     {
-        var cahceValue = await _cache.Value.GetAsync(CachingConsts.MenuRelationCacheKey, async () =>
+        var cahceValue = await _cacheProvider.Value.GetAsync(CachingConsts.MenuRelationCacheKey, async () =>
         {
             var allRelations = await _relationRepository.Value.GetAll(writeDb: true).ToListAsync();
             return Mapper.Map<List<RelationDto>>(allRelations);
@@ -68,7 +68,7 @@ public class CacheService : AbstractCacheService
 
     internal async Task<List<MenuDto>> GetAllMenusFromCacheAsync()
     {
-        var cahceValue = await _cache.Value.GetAsync(CachingConsts.MenuListCacheKey, async () =>
+        var cahceValue = await _cacheProvider.Value.GetAsync(CachingConsts.MenuListCacheKey, async () =>
         {
             var allMenus = await _menuRepository.Value.GetAll(writeDb: true).OrderBy(x => x.Ordinal).ToListAsync();
             return Mapper.Map<List<MenuDto>>(allMenus);
@@ -79,7 +79,7 @@ public class CacheService : AbstractCacheService
 
     internal async Task<List<RoleDto>> GetAllRolesFromCacheAsync()
     {
-        var cahceValue = await _cache.Value.GetAsync(CachingConsts.RoleListCacheKey, async () =>
+        var cahceValue = await _cacheProvider.Value.GetAsync(CachingConsts.RoleListCacheKey, async () =>
         {
             var allRoles = await _roleRepository.Value.GetAll(writeDb: true).OrderBy(x => x.Ordinal).ToListAsync();
             return Mapper.Map<List<RoleDto>>(allRoles);
@@ -90,7 +90,7 @@ public class CacheService : AbstractCacheService
 
     internal async Task<List<RoleMenuCodesDto>> GetAllMenuCodesFromCacheAsync()
     {
-        var cahceValue = await _cache.Value.GetAsync(CachingConsts.MenuCodesCacheKey, async () =>
+        var cahceValue = await _cacheProvider.Value.GetAsync(CachingConsts.MenuCodesCacheKey, async () =>
         {
             var allMenus = await _relationRepository.Value.GetAll(writeDb: true)
                                                                                         .Where(x => x.Menu.Status)
@@ -106,7 +106,7 @@ public class CacheService : AbstractCacheService
     {
         var cacheKey = ConcatCacheKey(CachingConsts.UserValidateInfoKeyPrefix, Id.ToString());
 
-        var cacheValue = await _cache.Value.GetAsync(cacheKey, async () =>
+        var cacheValue = await _cacheProvider.Value.GetAsync(cacheKey, async () =>
         {
             return await _userRepository.Value.FetchAsync(x => new UserValidateDto()
             {
@@ -126,7 +126,7 @@ public class CacheService : AbstractCacheService
     {
         var result = new List<DeptSimpleTreeDto>();
 
-        var cacheValue = await _cache.Value.GetAsync<List<DeptSimpleTreeDto>>(CachingConsts.DetpSimpleTreeListCacheKey);
+        var cacheValue = await _cacheProvider.Value.GetAsync<List<DeptSimpleTreeDto>>(CachingConsts.DetpSimpleTreeListCacheKey);
         if (cacheValue.HasValue)
             return cacheValue.Value;
 
@@ -161,7 +161,7 @@ public class CacheService : AbstractCacheService
             }
         }
 
-        await _cache.Value.SetAsync(CachingConsts.DetpSimpleTreeListCacheKey, result, TimeSpan.FromSeconds(CachingConsts.OneYear));
+        await _cacheProvider.Value.SetAsync(CachingConsts.DetpSimpleTreeListCacheKey, result, TimeSpan.FromSeconds(CachingConsts.OneYear));
 
         return result;
     }

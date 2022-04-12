@@ -24,7 +24,7 @@ public class AccountController : AdncControllerBase
     /// 登录/验证
     /// </summary>
     /// <param name="input"><see cref="UserLoginDto"/></param>
-    /// <returns></returns>
+    /// <returns><see cref="UserTokenInfoDto"></see>/></returns>
     [AllowAnonymous]
     [HttpPost()]
     [ProducesResponseType(StatusCodes.Status201Created)]
