@@ -1,7 +1,5 @@
 ﻿using Adnc.Infra.Caching;
 using Adnc.Infra.Caching.Configurations;
-using Autofac;
-using System;
 
 namespace Adnc.UnitTest.Fixtures
 {

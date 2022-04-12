@@ -1,13 +1,7 @@
 ﻿using Adnc.Cus.Entities;
-using Adnc.Infra.Core;
 using Adnc.Infra.EfCore;
 using Adnc.Infra.EfCore.MySQL;
 using Adnc.Infra.Entities;
-using Adnc.Infra.IRepositories;
-using Autofac;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using System;
 
 namespace Adnc.UnitTest.Fixtures
 {
