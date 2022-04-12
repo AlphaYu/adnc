@@ -1,9 +1,4 @@
-﻿using Consul;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
-namespace Adnc.Infra.Consul.Consumer
+﻿namespace Adnc.Infra.Consul.Consumer
 {
     public class ConsulServiceProvider : IConsulServiceProvider
     {

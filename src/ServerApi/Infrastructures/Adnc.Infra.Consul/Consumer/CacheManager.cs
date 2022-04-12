@@ -1,8 +1,5 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
-using System;
-using System.Threading.Tasks;
 
 namespace Adnc.Infra.Consul.Consumer
 {

@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Http;
-using System.Linq;
 
 namespace Adnc.Infra.Consul.TokenGenerator
 {

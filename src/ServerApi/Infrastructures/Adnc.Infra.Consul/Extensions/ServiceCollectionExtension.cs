@@ -1,10 +1,4 @@
-﻿using Adnc.Infra.Consul;
-using Adnc.Infra.Consul.Consumer;
-using Adnc.Infra.Consul.TokenGenerator;
-using Consul;
-using Microsoft.Extensions.Configuration;
-
-namespace Microsoft.Extensions.DependencyInjection;
+﻿namespace Microsoft.Extensions.DependencyInjection;
 
 public static class AdncInfraConsulServiceCollectionExtension
 {
