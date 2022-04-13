@@ -3,7 +3,7 @@ using Adnc.Infra.EfCore.MySQL;
 using Adnc.Infra.EventBus.RabbitMq;
 using Adnc.Infra.Mongo.Configuration;
 using Adnc.Infra.Mongo.Extensions;
-using Adnc.Shared.ConfigModels;
+using Adnc.Infra.Core.Configuration;
 using Adnc.Shared.RpcServices;
 using DotNetCore.CAP;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +11,7 @@ using Polly.Timeout;
 using Refit;
 using SkyApm.Diagnostics.CAP;
 using System.Net.Http;
+using Adnc.Infra.Core.Json;
 
 namespace Adnc.Shared.Application
 {
@@ -188,7 +189,10 @@ namespace Adnc.Shared.Application
             var prefix = serviceName.Substring(0, 7);
             bool isConsulAdderss = prefix != "http://" && prefix != "https:/";
 
-            var refitSettings = new RefitSettings(new SystemTextJsonContentSerializer(SystemTextJson.GetAdncDefaultOptions()));
+            var refitSettings = new RefitSettings()
+            {
+                ContentSerializer = new SystemTextJsonContentSerializer(SystemTextJson.GetAdncDefaultOptions())
+            };
             //注册RefitClient,设置httpclient生命周期时间，默认也是2分钟。
             var clientbuilder = _services.AddRefitClient<TRpcService>(refitSettings)
                                                          .SetHandlerLifetime(TimeSpan.FromMinutes(2));

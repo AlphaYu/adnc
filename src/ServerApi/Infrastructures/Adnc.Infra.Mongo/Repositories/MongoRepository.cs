@@ -119,7 +119,7 @@ namespace Adnc.Infra.Mongo
                 cancellationToken);
         }
 
-        public virtual async Task<IPagedModel<TEntity>> PagedAsync(int pageIndex, int pageSize, FilterDefinition<TEntity> filter, Expression<Func<TEntity, object>> orderByExpression, bool ascending = false, CancellationToken cancellationToken = default)
+        public virtual async Task<PagedModel<TEntity>> PagedAsync(int pageIndex, int pageSize, FilterDefinition<TEntity> filter, Expression<Func<TEntity, object>> orderByExpression, bool ascending = false, CancellationToken cancellationToken = default)
         {
             var collection = await GetCollectionAsync(cancellationToken);
             var total = await collection.CountDocumentsAsync(filter);

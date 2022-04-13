@@ -1,5 +1,6 @@
 ﻿global using Adnc.Infra.Caching;
-global using Adnc.Infra.Core;
+global using Adnc.Infra.Core.Interfaces;
+global using Adnc.Infra.Core.Exceptions;
 global using Adnc.Infra.IRepositories;
 global using Adnc.Shared.Application;
 global using Adnc.Shared.Application.Caching;
@@ -15,6 +16,7 @@ global using Adnc.Whse.Domain.Services;
 global using Autofac;
 global using AutoMapper;
 global using DotNetCore.CAP;
+global using Microsoft.EntityFrameworkCore;
 global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Logging;

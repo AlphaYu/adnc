@@ -1,7 +1,7 @@
 ﻿global using Adnc.Cus.Application.Contracts.Dtos;
 global using Adnc.Cus.Application.Contracts.Services;
-global using Adnc.Infra.Consul;
-global using Adnc.Infra.Core;
+global using Adnc.Infra.Core.Configuration;
+global using Adnc.Infra.Core.Interfaces;
 global using Adnc.Shared.Application.Contracts.Dtos;
 global using Adnc.Shared.RpcServices.Rtos;
 global using Adnc.Shared.RpcServices.Services;
@@ -19,5 +19,4 @@ global using Microsoft.Extensions.Hosting;
 global using Microsoft.Extensions.Logging;
 global using NLog.Web;
 global using System.Diagnostics.CodeAnalysis;
-global using System.Reflection;
 global using System.Threading.Tasks;

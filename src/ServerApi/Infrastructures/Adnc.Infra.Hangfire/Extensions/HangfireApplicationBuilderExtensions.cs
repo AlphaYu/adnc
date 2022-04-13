@@ -1,4 +1,4 @@
-﻿using Adnc.Infra.Core;
+﻿using Adnc.Infra.Core.Interfaces;
 using Hangfire.Dashboard.BasicAuthorization;
 using Microsoft.AspNetCore.Builder;
 using System.Linq;

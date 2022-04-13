@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Adnc.Infra.Consul.Consumer
+﻿namespace Adnc.Infra.Consul.Consumer
 {
     public interface ILoadBalancer
     {

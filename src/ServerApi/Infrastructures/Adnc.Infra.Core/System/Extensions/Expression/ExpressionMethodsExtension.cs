@@ -1,7 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
-
-namespace System.Linq.Expressions
+﻿namespace System.Linq.Expressions
 {
     public static class ExpressionMethodsExtension
     {

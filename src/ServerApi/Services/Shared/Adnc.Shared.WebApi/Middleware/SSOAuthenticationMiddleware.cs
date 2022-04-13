@@ -168,7 +168,8 @@ public class SsoAuthenticationMiddleware
 
         if (StatusCodeChecker.Is2xx(context.Response.StatusCode))
         {
-            var tokenTxt = JObject.Parse(responseContent).GetValue("token")?.ToString();
+            //var tokenTxt = JObject.Parse(responseContent).GetValue("token")?.ToString();
+            var tokenTxt = string.Empty;
             if (tokenTxt.IsNullOrWhiteSpace())
                 return;
             //refreshTokenTxt = JObject.Parse(responseContent).GetValue("refreshToken").ToString();

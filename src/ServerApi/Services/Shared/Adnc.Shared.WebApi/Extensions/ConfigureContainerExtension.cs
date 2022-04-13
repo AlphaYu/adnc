@@ -26,7 +26,7 @@ public static class ConfigureContainerExtension
     {
         var configuration = services.GetConfiguration();
         var serviceInfo = services.GetServiceInfo();
-        var appAssembly = services.GetApplicationAssembly();
+        var appAssembly = serviceInfo.GetApplicationAssembly();
         var appModelType = appAssembly.GetTypes()
                                                       .FirstOrDefault(
                                                         m => m.FullName != null

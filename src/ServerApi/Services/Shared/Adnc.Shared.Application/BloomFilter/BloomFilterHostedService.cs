@@ -5,12 +5,12 @@ public class BloomFilterHostedService : BackgroundService
     private readonly ILogger<BloomFilterHostedService> _logger;
     private readonly ICacheProvider _cache;
     private readonly IEnumerable<IBloomFilter> _bloomFilters;
-    private readonly ICacheService _cacheService;
+    private readonly ICachePreheatable _cacheService;
 
     public BloomFilterHostedService(ILogger<BloomFilterHostedService> logger
        , ICacheProvider cache
        , IEnumerable<IBloomFilter> bloomFilters
-       , ICacheService cacheService)
+       , ICachePreheatable cacheService)
     {
         _logger = logger;
         _cache = cache;

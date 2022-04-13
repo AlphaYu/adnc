@@ -1,15 +1,11 @@
 ﻿namespace Microsoft.AspNetCore.Authorization;
 
-public class PermissionHandlerRemote : PermissionHandler
+public sealed class PermissionHandlerRemote : AbstractPermissionHandler
 {
     private readonly IAuthRpcService _authRpcService;
     //private readonly IHttpContextAccessor _contextAccessor;
 
-    public PermissionHandlerRemote(IAuthRpcService authRpcService)
-    {
-        _authRpcService = authRpcService;
-        //_contextAccessor = contextAccessor;
-    }
+    public PermissionHandlerRemote(IAuthRpcService authRpcService) => _authRpcService = authRpcService;
 
     protected override async Task<bool> CheckUserPermissions(long userId, IEnumerable<string> codes, string validationVersion)
     {

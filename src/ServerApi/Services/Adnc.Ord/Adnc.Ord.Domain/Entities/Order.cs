@@ -1,5 +1,8 @@
 ﻿namespace Adnc.Ord.Domain.Entities;
 
+/// <summary>
+/// 订单
+/// </summary>
 public class Order : AggregateRootWithBasicAuditInfo
 {
     /// <summary>
@@ -15,7 +18,7 @@ public class Order : AggregateRootWithBasicAuditInfo
     /// <summary>
     /// 备注
     /// </summary>
-    public string Remark { get; set; }
+    public string? Remark { get; set; }
 
     /// <summary>
     /// 订单状态
@@ -36,7 +39,7 @@ public class Order : AggregateRootWithBasicAuditInfo
     {
     }
 
-    internal Order(long id, long customerId, OrderReceiver orderReceiver, string remark = null)
+    internal Order(long id, long customerId, OrderReceiver orderReceiver, string? remark = null)
     {
         this.Id = Checker.GTZero(id, nameof(id));
         this.CustomerId = Checker.GTZero(customerId, nameof(customerId));
@@ -50,6 +53,7 @@ public class Order : AggregateRootWithBasicAuditInfo
     /// <summary>
     /// 添加订单产品
     /// </summary>
+    /// <param name="itemId"></param>
     /// <param name="product"></param>
     /// <param name="count"></param>
     public void AddProduct(long itemId, OrderItemProduct product, int count)
@@ -94,7 +98,6 @@ public class Order : AggregateRootWithBasicAuditInfo
     /// <summary>
     /// 标记订单删除状态
     /// </summary>
-    /// <param name="isCreatedResult"></param>
     /// <param name="changesReason"></param>
     public void MarkDeletedStatus(string changesReason)
     {
@@ -104,7 +107,8 @@ public class Order : AggregateRootWithBasicAuditInfo
     /// <summary>
     /// 调整订单状态
     /// </summary>
-    /// <param name="id"></param>
+    /// <param name="newStatus"></param>
+    /// <param name="changesReason"></param>
     internal void ChangeStatus(OrderStatusEnum newStatus, string changesReason)
     {
         if (newStatus == OrderStatusEnum.Canceling)
@@ -112,7 +116,7 @@ public class Order : AggregateRootWithBasicAuditInfo
             if (this.Status.Code == OrderStatusEnum.WaitPay)
                 this.Status = new OrderStatus(newStatus, changesReason);
             else
-                throw new Exception();
+                throw new ArgumentException(nameof(newStatus));
         }
 
         if (newStatus == OrderStatusEnum.Cancelled)
@@ -120,7 +124,7 @@ public class Order : AggregateRootWithBasicAuditInfo
             if (this.Status.Code == OrderStatusEnum.Canceling)
                 this.Status = new OrderStatus(newStatus, changesReason);
             else
-                throw new Exception();
+                throw new ArgumentException(nameof(newStatus));
         }
 
         if (newStatus == OrderStatusEnum.Deleted)
@@ -128,7 +132,7 @@ public class Order : AggregateRootWithBasicAuditInfo
             if (this.Status.Code == OrderStatusEnum.Cancelled)
                 this.Status = new OrderStatus(newStatus, changesReason);
             else
-                throw new Exception();
+                throw new ArgumentException(nameof(newStatus));
         }
 
         if (newStatus == OrderStatusEnum.Paying)
@@ -136,7 +140,7 @@ public class Order : AggregateRootWithBasicAuditInfo
             if (this.Status.Code == OrderStatusEnum.WaitPay)
                 this.Status = new OrderStatus(newStatus, changesReason);
             else
-                throw new Exception();
+                throw new ArgumentException(nameof(newStatus));
         }
 
         if (newStatus == OrderStatusEnum.WaitSend)
@@ -144,7 +148,7 @@ public class Order : AggregateRootWithBasicAuditInfo
             if (this.Status.Code == OrderStatusEnum.Paying)
                 this.Status = new OrderStatus(newStatus, changesReason);
             else
-                throw new Exception();
+                throw new ArgumentException(nameof(newStatus));
         }
 
         if (newStatus == OrderStatusEnum.WaitConfirm)
@@ -152,7 +156,7 @@ public class Order : AggregateRootWithBasicAuditInfo
             if (this.Status.Code == OrderStatusEnum.WaitSend)
                 this.Status = new OrderStatus(newStatus, changesReason);
             else
-                throw new Exception();
+                throw new ArgumentException(nameof(newStatus));
         }
 
         if (newStatus == OrderStatusEnum.WaitRate)
@@ -160,7 +164,7 @@ public class Order : AggregateRootWithBasicAuditInfo
             if (this.Status.Code == OrderStatusEnum.WaitConfirm)
                 this.Status = new OrderStatus(newStatus, changesReason);
             else
-                throw new Exception();
+                throw new ArgumentException(nameof(newStatus));
         }
 
         if (newStatus == OrderStatusEnum.Finished)
@@ -168,7 +172,7 @@ public class Order : AggregateRootWithBasicAuditInfo
             if (this.Status.Code == OrderStatusEnum.WaitRate)
                 this.Status = new OrderStatus(newStatus, changesReason);
             else
-                throw new Exception();
+                throw new ArgumentException(nameof(newStatus));
         }
     }
 }

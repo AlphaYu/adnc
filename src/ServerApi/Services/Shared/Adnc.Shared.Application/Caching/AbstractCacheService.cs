@@ -1,6 +1,6 @@
 ﻿namespace Adnc.Shared.Application.Caching;
 
-public abstract class AbstractCacheService : ICacheService
+public abstract class AbstractCacheService : ICachePreheatable
 {
     private readonly Lazy<ICacheProvider> _cache;
 

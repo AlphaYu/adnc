@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-
-namespace System.Text
+﻿namespace System.Text
 {
     public static class StringBuilderExtension
     {

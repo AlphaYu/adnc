@@ -2,5 +2,5 @@
 
 public static class AuthorizePolicy
 {
-    public static string Default => "PermissionCheck";
+    public const string Default = "default";
 }

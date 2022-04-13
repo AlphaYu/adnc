@@ -20,14 +20,14 @@ public class OrderManager : IDomainService
     /// </summary>
     /// <param name="id"></param>
     /// <param name="customerId"></param>
-    /// <param name="products"></param>
+    ///  <param name="items"></param>
     /// <param name="deliveryInfomation"></param>
     /// <param name="remark"></param>
     /// <returns></returns>
     public virtual async Task<Order> CreateAsync(long id, long customerId
         , IEnumerable<(OrderItemProduct Product, int Count)> items
-        , OrderReceiver deliveryInfomation = null
-        , string remark = null)
+        , OrderReceiver deliveryInfomation
+        , string? remark = null)
     {
         var order = new Order(
             id
@@ -46,7 +46,7 @@ public class OrderManager : IDomainService
         var products = order.Items.Select(x => new OrderCreatedEvent.OrderItem { ProductId = x.Product.Id, Qty = x.Count });
         var eventId = IdGenerater.GetNextId();
         var eventData = new OrderCreatedEvent.EventData() { OrderId = order.Id, Products = products };
-        var eventSource = System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.FullName;
+        var eventSource = MethodBase.GetCurrentMethod()?.DeclaringType?.FullName;
         await _eventPubliser.PublishAsync(new OrderCreatedEvent(eventId, eventData, eventSource));
         return order;
     }
@@ -64,7 +64,7 @@ public class OrderManager : IDomainService
         //发布领域事件，通知仓储中心解冻被冻结的库存
         var eventId = IdGenerater.GetNextId();
         var eventData = new OrderCanceledEvent.EventData() { OrderId = order.Id };
-        var eventSource = System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.FullName;
+        var eventSource = MethodBase.GetCurrentMethod()?.DeclaringType?.FullName;
         await _eventPubliser.PublishAsync(new OrderCanceledEvent(eventId, eventData, eventSource));
     }
 
@@ -81,7 +81,7 @@ public class OrderManager : IDomainService
         //发布领域事件，通知客户中心扣款(Demo是从余额中扣款)
         var eventId = IdGenerater.GetNextId();
         var eventData = new OrderPaidEvent.EventData() { OrderId = order.Id, CustomerId = order.CustomerId, Amount = order.Amount };
-        var eventSource = System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.FullName;
+        var eventSource = MethodBase.GetCurrentMethod()?.DeclaringType?.FullName;
         await _eventPubliser.PublishAsync(new OrderPaidEvent(eventId, eventData, eventSource));
     }
 }

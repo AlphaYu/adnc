@@ -1,5 +1,5 @@
-﻿global using Adnc.Infra.Consul;
-global using Adnc.Infra.Core;
+﻿global using Adnc.Infra.Core.Configuration;
+global using Adnc.Infra.Core.Interfaces;
 global using Adnc.Ord.Application.Contracts.Dtos;
 global using Adnc.Ord.Application.Contracts.Services;
 global using Adnc.Shared.Application.Contracts.Dtos;
@@ -17,5 +17,4 @@ global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Hosting;
 global using Microsoft.Extensions.Logging;
 global using NLog.Web;
-global using System.Reflection;
 global using System.Threading.Tasks;

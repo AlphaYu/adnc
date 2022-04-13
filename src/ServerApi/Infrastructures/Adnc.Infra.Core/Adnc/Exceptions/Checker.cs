@@ -1,185 +1,179 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
+﻿namespace Adnc.Infra.Core.Exceptions;
 
-namespace Adnc.Infra.Core
+public static class Checker
 {
-    public static class Checker
+    public static decimal GTZero(decimal value
+    , [NotNull] string parameterName)
     {
-        public static decimal GTZero(decimal value
+        if (value <= 0)
+            throw new AdncArgumentException("不能小于0", parameterName);
+        return value;
+    }
+
+    public static int GTZero(int value
+    , [NotNull] string parameterName)
+    {
+        if (value <= 0)
+            throw new AdncArgumentException("不能小于0", parameterName);
+        return value;
+    }
+
+    public static long GTZero(long value
         , [NotNull] string parameterName)
+    {
+        if (value <= 0)
+            throw new AdncArgumentException("不能小于0", parameterName);
+        return value;
+    }
+
+    public static T NotEmptyCollection<T>(
+T value,
+[NotNull] string parameterName)
+    {
+        if (value == null)
         {
-            if (value <= 0)
-                throw new AdncArgumentException("不能小于0", parameterName);
-            return value;
+            throw new AdncArgumentNullException(parameterName);
         }
 
-        public static int GTZero(int value
-        , [NotNull] string parameterName)
+        if (value is ICollection collection && collection.Count < 1)
         {
-            if (value <= 0)
-                throw new AdncArgumentException("不能小于0", parameterName);
-            return value;
+            throw new AdncArgumentNullException(parameterName);
         }
 
-        public static long GTZero(long value
-            , [NotNull] string parameterName)
+        return value;
+    }
+
+    public static T NotNull<T>(
+        T value,
+        [NotNull] string parameterName)
+    {
+        if (value == null)
         {
-            if (value <= 0)
-                throw new AdncArgumentException("不能小于0", parameterName);
-            return value;
+            throw new AdncArgumentNullException(parameterName);
         }
 
-        public static T NotEmptyCollection<T>(
-    T value,
-    [NotNull] string parameterName)
+        return value;
+    }
+
+    public static T NotNull<T>(
+        T value,
+        [NotNull] string parameterName,
+        string message)
+    {
+        if (value == null)
         {
-            if (value == null)
-            {
-                throw new AdncArgumentNullException(parameterName);
-            }
-
-            if (value is ICollection collection && collection.Count < 1)
-            {
-                throw new AdncArgumentNullException(parameterName);
-            }
-
-            return value;
+            throw new AdncArgumentNullException(parameterName, message);
         }
 
-        public static T NotNull<T>(
-            T value,
-            [NotNull] string parameterName)
-        {
-            if (value == null)
-            {
-                throw new AdncArgumentNullException(parameterName);
-            }
+        return value;
+    }
 
-            return value;
+    public static string NotNull(
+        string value,
+        [NotNull] string parameterName,
+        int maxLength = int.MaxValue,
+        int minLength = 0)
+    {
+        if (value == null)
+        {
+            throw new AdncArgumentException($"{parameterName} can not be null!", parameterName);
         }
 
-        public static T NotNull<T>(
-            T value,
-            [NotNull] string parameterName,
-            string message)
+        if (value.Length > maxLength)
         {
-            if (value == null)
-            {
-                throw new AdncArgumentNullException(parameterName, message);
-            }
-
-            return value;
+            throw new AdncArgumentException($"{parameterName} length must be equal to or lower than {maxLength}!", parameterName);
         }
 
-        public static string NotNull(
-            string value,
-            [NotNull] string parameterName,
-            int maxLength = int.MaxValue,
-            int minLength = 0)
+        if (minLength > 0 && value.Length < minLength)
         {
-            if (value == null)
-            {
-                throw new AdncArgumentException($"{parameterName} can not be null!", parameterName);
-            }
-
-            if (value.Length > maxLength)
-            {
-                throw new AdncArgumentException($"{parameterName} length must be equal to or lower than {maxLength}!", parameterName);
-            }
-
-            if (minLength > 0 && value.Length < minLength)
-            {
-                throw new AdncArgumentException($"{parameterName} length must be equal to or bigger than {minLength}!", parameterName);
-            }
-
-            return value;
+            throw new AdncArgumentException($"{parameterName} length must be equal to or bigger than {minLength}!", parameterName);
         }
 
-        public static string NotNullOrWhiteSpace(
-            string value,
-            [NotNull] string parameterName,
-            int maxLength = int.MaxValue,
-            int minLength = 0)
+        return value;
+    }
+
+    public static string NotNullOrWhiteSpace(
+        string value,
+        [NotNull] string parameterName,
+        int maxLength = int.MaxValue,
+        int minLength = 0)
+    {
+        if (value.IsNullOrWhiteSpace())
         {
-            if (value.IsNullOrWhiteSpace())
-            {
-                throw new AdncArgumentException($"{parameterName} can not be null, empty or white space!", parameterName);
-            }
-
-            if (value.Length > maxLength)
-            {
-                throw new AdncArgumentException($"{parameterName} length must be equal to or lower than {maxLength}!", parameterName);
-            }
-
-            if (minLength > 0 && value.Length < minLength)
-            {
-                throw new AdncArgumentException($"{parameterName} length must be equal to or bigger than {minLength}!", parameterName);
-            }
-
-            return value;
+            throw new AdncArgumentException($"{parameterName} can not be null, empty or white space!", parameterName);
         }
 
-        public static string NotNullOrEmpty(
-            string value,
-            [NotNull] string parameterName,
-            int maxLength = int.MaxValue,
-            int minLength = 0)
+        if (value.Length > maxLength)
         {
-            if (value.IsNullOrEmpty())
-            {
-                throw new AdncArgumentException($"{parameterName} can not be null or empty!", parameterName);
-            }
-
-            if (value.Length > maxLength)
-            {
-                throw new AdncArgumentException($"{parameterName} length must be equal to or lower than {maxLength}!", parameterName);
-            }
-
-            if (minLength > 0 && value.Length < minLength)
-            {
-                throw new AdncArgumentException($"{parameterName} length must be equal to or bigger than {minLength}!", parameterName);
-            }
-
-            return value;
+            throw new AdncArgumentException($"{parameterName} length must be equal to or lower than {maxLength}!", parameterName);
         }
 
-        public static ICollection<T> NotNullOrEmpty<T>(ICollection<T> value, [NotNull] string parameterName)
+        if (minLength > 0 && value.Length < minLength)
         {
-            if (value.IsNullOrEmpty())
+            throw new AdncArgumentException($"{parameterName} length must be equal to or bigger than {minLength}!", parameterName);
+        }
+
+        return value;
+    }
+
+    public static string NotNullOrEmpty(
+        string value,
+        [NotNull] string parameterName,
+        int maxLength = int.MaxValue,
+        int minLength = 0)
+    {
+        if (value.IsNullOrEmpty())
+        {
+            throw new AdncArgumentException($"{parameterName} can not be null or empty!", parameterName);
+        }
+
+        if (value.Length > maxLength)
+        {
+            throw new AdncArgumentException($"{parameterName} length must be equal to or lower than {maxLength}!", parameterName);
+        }
+
+        if (minLength > 0 && value.Length < minLength)
+        {
+            throw new AdncArgumentException($"{parameterName} length must be equal to or bigger than {minLength}!", parameterName);
+        }
+
+        return value;
+    }
+
+    public static ICollection<T> NotNullOrEmpty<T>(ICollection<T> value, [NotNull] string parameterName)
+    {
+        if (value.IsNullOrEmpty())
+        {
+            throw new AdncArgumentException(parameterName + " can not be null or empty!", parameterName);
+        }
+
+        return value;
+    }
+
+    public static string Length(
+        string value,
+        [NotNull] string parameterName,
+        int maxLength,
+        int minLength = 0)
+    {
+        if (minLength > 0)
+        {
+            if (string.IsNullOrEmpty(value))
             {
                 throw new AdncArgumentException(parameterName + " can not be null or empty!", parameterName);
             }
 
-            return value;
+            if (value.Length < minLength)
+            {
+                throw new AdncArgumentException($"{parameterName} length must be equal to or bigger than {minLength}!", parameterName);
+            }
         }
 
-        public static string Length(
-            string value,
-            [NotNull] string parameterName,
-            int maxLength,
-            int minLength = 0)
+        if (value != null && value.Length > maxLength)
         {
-            if (minLength > 0)
-            {
-                if (string.IsNullOrEmpty(value))
-                {
-                    throw new AdncArgumentException(parameterName + " can not be null or empty!", parameterName);
-                }
-
-                if (value.Length < minLength)
-                {
-                    throw new AdncArgumentException($"{parameterName} length must be equal to or bigger than {minLength}!", parameterName);
-                }
-            }
-
-            if (value != null && value.Length > maxLength)
-            {
-                throw new AdncArgumentException($"{parameterName} length must be equal to or lower than {maxLength}!", parameterName);
-            }
-
-            return value;
+            throw new AdncArgumentException($"{parameterName} length must be equal to or lower than {maxLength}!", parameterName);
         }
+
+        return value;
     }
 }

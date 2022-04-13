@@ -1,8 +1,7 @@
-﻿namespace Adnc.Infra.EfCore
+﻿namespace Adnc.Infra.EfCore.Internal;
+
+internal static class EfCoreConsts
 {
-    public static class EfCoreConsts
-    {
-        public const string MyCAT_ROUTE_TO_MASTER = "#mycat:db_type=master";
-        public const string MAXSCALE_ROUTE_TO_MASTER = "maxscale route to master";
-    }
+    internal const string MyCAT_ROUTE_TO_MASTER = "#mycat:db_type=master";
+    internal const string MAXSCALE_ROUTE_TO_MASTER = "maxscale route to master";
 }

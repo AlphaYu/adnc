@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace System.Reflection
+﻿namespace System.Reflection
 {
     public static class MethodInfoExtension
     {

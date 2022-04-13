@@ -1,6 +1,6 @@
 ﻿namespace Microsoft.AspNetCore.Authorization;
 
-public class PermissionHandlerLocal : PermissionHandler
+public class PermissionHandlerLocal : AbstractPermissionHandler
 {
     private readonly IUserAppService _userAppService;
 

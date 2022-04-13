@@ -20,10 +20,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Compile Remove="Controllers\TaskController.cs" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<Content Update="nlog.config">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</Content>

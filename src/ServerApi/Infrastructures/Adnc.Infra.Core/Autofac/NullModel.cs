@@ -1,10 +1,9 @@
-﻿namespace Autofac
+﻿namespace Autofac;
+
+public class NullModel : Module
 {
-    public class NullModel : Module
+    protected override void Load(ContainerBuilder builder)
     {
-        protected override void Load(ContainerBuilder builder)
-        {
-            // Method intentionally left empty.
-        }
+        // Method intentionally left empty.
     }
 }

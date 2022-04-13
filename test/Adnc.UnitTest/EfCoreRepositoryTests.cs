@@ -1,18 +1,7 @@
 ﻿using Adnc.Cus.Entities;
-using Adnc.Infra.Core;
 using Adnc.Infra.EfCore.MySQL;
 using Adnc.Infra.Helper;
 using Adnc.Infra.Helper.IdGeneraterInternal;
-using Adnc.Infra.IRepositories;
-using Adnc.UnitTest.Fixtures;
-using Autofac;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
-using Xunit;
-using Xunit.Abstractions;
 
 namespace Adnc.UnitTest.EFCore
 {
@@ -83,10 +72,10 @@ namespace Adnc.UnitTest.EFCore
 
             await _customerRsp.InsertAsync(cusotmer);
 
-            var newCust = await _customerRsp.QueryAsync<Customer>("SELECT *  FROM Customer WHERE Id=@Id",new { Id= id });
+            var newCust = await _customerRsp.QueryAsync<Customer>("SELECT *  FROM Customer WHERE Id=@Id", new { Id = id });
             Assert.NotEmpty(newCust);
 
-            var newCustAccounts= await _customerRsp.QueryAsync<string>("SELECT Account  FROM CustomerFinance WHERE Account=@account", new { account = newCust.First().Account });
+            var newCustAccounts = await _customerRsp.QueryAsync<string>("SELECT Account  FROM CustomerFinance WHERE Account=@account", new { account = newCust.First().Account });
             Assert.Equal(newCust.First().Account, newCustAccounts.First());
         }
 
@@ -130,7 +119,7 @@ namespace Adnc.UnitTest.EFCore
             //实体已经被跟踪
             customer.Realname = "被跟踪01";
             await _customerRsp.UpdateAsync(customer);
-            var newCust1 = await _customerRsp.QueryAsync<Customer>("SELECT * FROM Customer WHERE Id=@Id", new { Id= id0 });
+            var newCust1 = await _customerRsp.QueryAsync<Customer>("SELECT * FROM Customer WHERE Id=@Id", new { Id = id0 });
             Assert.Equal("被跟踪01", newCust1.FirstOrDefault().Realname);
 
             var customerId = (await _customerRsp.QueryAsync<long>("SELECT Id  FROM CustomerFinance limit 0,1")).FirstOrDefault();

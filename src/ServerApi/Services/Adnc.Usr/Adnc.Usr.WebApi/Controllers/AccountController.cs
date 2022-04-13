@@ -24,7 +24,7 @@ public class AccountController : AdncControllerBase
     /// 登录/验证
     /// </summary>
     /// <param name="input"><see cref="UserLoginDto"/></param>
-    /// <returns></returns>
+    /// <returns><see cref="UserTokenInfoDto"></see>/></returns>
     [AllowAnonymous]
     [HttpPost()]
     [ProducesResponseType(StatusCodes.Status201Created)]
@@ -74,22 +74,23 @@ public class AccountController : AdncControllerBase
     /// </summary>
     /// <param name="input"><see cref="UserRefreshTokenDto"/></param>
     /// <returns></returns>
-    [AllowAnonymous]
-    [HttpPut()]
+    [AllowAnonymous, HttpPut()]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<UserTokenInfoDto>> RefreshAccessTokenAsync([FromBody] UserRefreshTokenDto input)
     {
-        //这个方法可以解析Token信息
-        //var Token = new JwtSecurityTokenHandler().ReadJwtToken(accessToken);
-        var result = await _accountService.GetUserValidateInfoAsync(input.Id);
-
-        if (result == null)
-            return Ok(new UserTokenInfoDto
+        var user = await _accountService.GetUserValidateInfoAsync(input.Id);
+        if (user is not null)
+        {
+            var claimAccount = JwtTokenHelper.GetAccountFromRefeshToken(input.RefreshToken);
+            if (user.Account.EqualsIgnoreCase(claimAccount))
             {
-                Token = JwtTokenHelper.CreateAccessToken(_jwtConfig, result, input.RefreshToken),
-                RefreshToken = input.RefreshToken
-            });
-
+                return Ok(new UserTokenInfoDto
+                {
+                    Token = JwtTokenHelper.CreateAccessToken(_jwtConfig, user),
+                    RefreshToken = input.RefreshToken
+                }); ;
+            }
+        }
         return NotFound();
     }
 

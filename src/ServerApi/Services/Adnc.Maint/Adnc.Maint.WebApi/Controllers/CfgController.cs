@@ -18,7 +18,7 @@ public class CfgController : AdncControllerBase
     /// <param name="input"><see cref="CfgCreationDto"/></param>
     /// <returns></returns>
     [HttpPost]
-    [Permission("cfgAdd")]
+    [Permission(PermissionConsts.Cfg.Create)]
     [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<ActionResult<long>> CreateAsync([FromBody] CfgCreationDto input)
         => CreatedResult(await _cfgAppService.CreateAsync(input));
@@ -30,7 +30,7 @@ public class CfgController : AdncControllerBase
     /// <param name="input"><see cref="CfgUpdationDto"/></param>
     /// <returns></returns>
     [HttpPut("{id}")]
-    [Permission("cfgEdit")]
+    [Permission(PermissionConsts.Cfg.Update)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult<long>> UpdateAsync([FromRoute] long id, [FromBody] CfgUpdationDto input)
         => Result(await _cfgAppService.UpdateAsync(id, input));
@@ -41,7 +41,7 @@ public class CfgController : AdncControllerBase
     /// <param name="id">节点id</param>
     /// <returns></returns>
     [HttpDelete("{id}")]
-    [Permission("cfgDelete")]
+    [Permission(PermissionConsts.Cfg.Delete)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult> DeleteAsync([FromRoute] long id)
         => Result(await _cfgAppService.DeleteAsync(id));
@@ -52,7 +52,7 @@ public class CfgController : AdncControllerBase
     /// <param name="search"><see cref="CfgSearchPagedDto"/></param>
     /// <returns><see cref="PageModelDto{CfgDto}"/></returns>
     [HttpGet()]
-    [Permission("cfgList")]
+    [Permission(PermissionConsts.Cfg.GetList)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<PageModelDto<CfgDto>>> GetPagedAsync([FromQuery] CfgSearchPagedDto search)
         => await _cfgAppService.GetPagedAsync(search);

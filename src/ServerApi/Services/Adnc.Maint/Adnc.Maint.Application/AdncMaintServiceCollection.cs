@@ -1,6 +1,4 @@
 ﻿using Adnc.Shared.RpcServices.Services;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 
 namespace Adnc.Maint.Application
 {
@@ -20,6 +18,7 @@ namespace Adnc.Maint.Application
             var policies = GenerateDefaultRefitPolicies();
             var authServeiceAddress = IsDevelopment ? "http://localhost:5010" : "adnc.usr.webapi";
             AddRpcService<IAuthRpcService>(authServeiceAddress, policies);
+            AddRpcService<IUsrRpcService>(authServeiceAddress, policies);
         }
     }
 }

@@ -4,8 +4,6 @@ namespace Microsoft.Extensions.DependencyInjection;
 
 public static class ServiceCollectionExtension
 {
-    private static Assembly appAssembly;
-
     /// <summary>
     /// 统一注册Adnc.WebApi通用服务
     /// </summary>
@@ -18,7 +16,7 @@ public static class ServiceCollectionExtension
     /// <returns></returns>
     public static IServiceCollection AddAdncServices<TPermissionHandler>(this IServiceCollection services
         , Action<SharedServicesRegistration> completedExecute = null)
-        where TPermissionHandler : PermissionHandler
+        where TPermissionHandler : AbstractPermissionHandler
     {
         var configuration = services.GetConfiguration();
         var serviceInfo = services.GetServiceInfo();
@@ -29,14 +27,14 @@ public static class ServiceCollectionExtension
         var _srvRegistration = new SharedServicesRegistration(configuration, services, serviceInfo);
         _srvRegistration.Configure();
         _srvRegistration.AddControllers();
-        _srvRegistration.AddJWTAuthentication();
+        _srvRegistration.AddAuthentication();
         _srvRegistration.AddAuthorization<TPermissionHandler>();
         _srvRegistration.AddCors();
         _srvRegistration.AddHealthChecks();
         _srvRegistration.AddSwaggerGen();
 
-        var assembly = services.GetApplicationAssembly();
-        if (assembly != null)
+        var appAssembly = serviceInfo.GetApplicationAssembly();
+        if (appAssembly != null)
         {
             var modelType = appAssembly.GetTypes()
                                                  .FirstOrDefault(
@@ -53,22 +51,5 @@ public static class ServiceCollectionExtension
 
         completedExecute?.Invoke(_srvRegistration);
         return services;
-    }
-
-    /// <summary>
-    /// 获取Application程序集
-    /// </summary>
-    /// <returns></returns>
-    public static Assembly GetApplicationAssembly(this IServiceCollection services)
-    {
-        if (appAssembly == null)
-        {
-            //var appAssemblyName = serviceInfo.AssemblyFullName.Replace("WebApi", "Application");
-            //var appAssembly = Assembly.Load(appAssemblyName);
-            var serviceInfo = services.GetServiceInfo();
-            var appAssemblyPath = serviceInfo.AssemblyLocation.Replace(".WebApi.dll", ".Application.dll");
-            appAssembly = Assembly.LoadFrom(appAssemblyPath);
-        }
-        return appAssembly;
     }
 }

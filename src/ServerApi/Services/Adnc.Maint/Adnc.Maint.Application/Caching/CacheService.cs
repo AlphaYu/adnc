@@ -1,17 +1,17 @@
 ﻿namespace Adnc.Maint.Application.Services.Caching;
 
-public class CacheService : AbstractCacheService
+public class CacheService : AbstractCacheService, ICachePreheatable
 {
-    private readonly Lazy<ICacheProvider> _cache;
+    private readonly Lazy<ICacheProvider> _cacheProvider;
     private readonly Lazy<IEfRepository<SysCfg>> _cfgRepository;
     private readonly Lazy<IEfRepository<SysDict>> _dictRepository;
 
-    public CacheService(Lazy<ICacheProvider> cache
+    public CacheService(Lazy<ICacheProvider> cacheProvider
         , Lazy<IEfRepository<SysCfg>> cfgRepository
         , Lazy<IEfRepository<SysDict>> dictRepository)
-        : base(cache)
+        : base(cacheProvider)
     {
-        _cache = cache;
+        _cacheProvider = cacheProvider;
         _cfgRepository = cfgRepository;
         _dictRepository = dictRepository;
     }
@@ -24,7 +24,7 @@ public class CacheService : AbstractCacheService
 
     public async Task<List<CfgDto>> GetAllCfgsFromCacheAsync()
     {
-        var cahceValue = await _cache.Value.GetAsync(CachingConsts.CfgListCacheKey, async () =>
+        var cahceValue = await _cacheProvider.Value.GetAsync(CachingConsts.CfgListCacheKey, async () =>
         {
             var allCfgs = await _cfgRepository.Value.GetAll(writeDb: true).ToListAsync();
             return Mapper.Map<List<CfgDto>>(allCfgs);
@@ -35,7 +35,7 @@ public class CacheService : AbstractCacheService
 
     public async Task<List<DictDto>> GetAllDictsFromCacheAsync()
     {
-        var cahceValue = await _cache.Value.GetAsync(CachingConsts.DictListCacheKey, async () =>
+        var cahceValue = await _cacheProvider.Value.GetAsync(CachingConsts.DictListCacheKey, async () =>
         {
             var allDicts = await _dictRepository.Value.GetAll(writeDb: true).OrderBy(x => x.Ordinal).ToListAsync();
             return Mapper.Map<List<DictDto>>(allDicts);

@@ -1,14 +1,24 @@
-﻿using AttributeUsageAttribute = System.AttributeUsageAttribute;
-using AuthorizeAttribute = Microsoft.AspNetCore.Authorization.AuthorizeAttribute;
+﻿namespace Microsoft.AspNetCore.Authorization;
 
-namespace Microsoft.AspNetCore.Mvc.Filters;
-
-[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false)]
 public class PermissionAttribute : AuthorizeAttribute
 {
-    public string[] Codes { get; private set; }
+    public const string JwtWithBasicSchemes = $"{JwtBearerDefaults.AuthenticationScheme},{BasicDefaults.AuthenticationScheme}";
 
-    public PermissionAttribute(params string[] codes)
-        : base(AuthorizePolicy.Default)
-        => Codes = codes;
+    public string[] Codes { get; set; }
+
+    public PermissionAttribute(string code, string schemes = JwtBearerDefaults.AuthenticationScheme)
+        : this(new string[] { code }, schemes)
+    {
+    }
+
+    public PermissionAttribute(string[] codes, string schemes = JwtBearerDefaults.AuthenticationScheme)
+    {
+        Codes = codes;
+        Policy = AuthorizePolicy.Default;
+        if (schemes.IsNullOrEmpty())
+            throw new ArgumentNullException(nameof(schemes));
+        else
+            AuthenticationSchemes = schemes;
+    }
 }

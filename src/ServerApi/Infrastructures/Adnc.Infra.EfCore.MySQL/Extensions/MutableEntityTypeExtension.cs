@@ -1,7 +1,4 @@
-﻿using Adnc.Infra.Entities;
-using System;
-using System.Linq.Expressions;
-using System.Reflection;
+﻿using System.Linq.Expressions;
 
 namespace Microsoft.EntityFrameworkCore.Metadata
 {

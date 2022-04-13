@@ -1,12 +1,4 @@
 ﻿using Adnc.Infra.Caching;
-using Adnc.UnitTest.Fixtures;
-using Autofac;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Xunit;
-using Xunit.Abstractions;
 
 namespace Adnc.UnitTest.Cache
 {

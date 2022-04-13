@@ -1,7 +1,4 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-
-namespace System.Collections.Generic
+﻿namespace System.Collections.Generic
 {
     public static class IEnumerableExtensions
     {

@@ -1,14 +1,6 @@
-﻿using Adnc.Infra.Entities;
-using Adnc.Infra.IRepositories;
-using Dapper;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
+﻿using Dapper;
 using System.Data;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Adnc.Infra.EfCore.Repositories
 {
@@ -23,10 +15,7 @@ namespace Adnc.Infra.EfCore.Repositories
     {
         protected virtual TDbContext DbContext { get; }
 
-        protected AbstractEfBaseRepository(TDbContext dbContext)
-        {
-            DbContext = dbContext;
-        }
+        protected AbstractEfBaseRepository(TDbContext dbContext) => DbContext = dbContext;
 
         protected virtual IQueryable<TEntity> GetDbSet(bool writeDb, bool noTracking)
         {
@@ -65,13 +54,13 @@ namespace Adnc.Infra.EfCore.Repositories
 
         public virtual async Task<int> InsertAsync(TEntity entity, CancellationToken cancellationToken = default)
         {
-            await DbContext.Set<TEntity>().AddAsync(entity);
+            await DbContext.Set<TEntity>().AddAsync(entity, cancellationToken);
             return await DbContext.SaveChangesAsync(cancellationToken);
         }
 
         public virtual async Task<int> InsertRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
         {
-            await DbContext.Set<TEntity>().AddRangeAsync(entities);
+            await DbContext.Set<TEntity>().AddRangeAsync(entities, cancellationToken);
             return await DbContext.SaveChangesAsync(cancellationToken);
         }
 
@@ -88,7 +77,7 @@ namespace Adnc.Infra.EfCore.Repositories
             var dbSet = DbContext.Set<TEntity>().AsNoTracking();
             if (writeDb)
                 dbSet = dbSet.TagWith(EfCoreConsts.MAXSCALE_ROUTE_TO_MASTER);
-            return await EntityFrameworkQueryableExtensions.CountAsync(dbSet, whereExpression);
+            return await EntityFrameworkQueryableExtensions.CountAsync(dbSet, whereExpression, cancellationToken);
         }
 
         public virtual Task<int> UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
@@ -131,7 +120,7 @@ namespace Adnc.Infra.EfCore.Repositories
         protected virtual async Task<int> UpdateInternalAsync(TEntity entity, CancellationToken cancellationToken = default)
             => await DbContext.SaveChangesAsync(cancellationToken);
 
-        public virtual async Task<IPagedModel<TEntity>> PagedAsync(int pageIndex, int pageSize, Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, object>> orderByExpression, bool ascending = false, bool writeDb = false, CancellationToken cancellationToken = default)
+        public virtual async Task<PagedModel<TEntity>> PagedAsync(int pageIndex, int pageSize, Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, object>> orderByExpression, bool ascending = false, bool writeDb = false, CancellationToken cancellationToken = default)
         {
             var dbSet = this.GetDbSet(writeDb, false);
 

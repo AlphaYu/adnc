@@ -42,6 +42,9 @@
 - 详细介绍Yitter雪花算法的特点、配置以及如何动态获取WorkerId。<br/>
 [请点击链接，查看详细介绍](https://github.com/AlphaYu/Adnc/wiki/%E5%A6%82%E4%BD%95%E5%8A%A8%E6%80%81%E5%88%86%E9%85%8D%E9%9B%AA%E8%8A%B1%E7%AE%97%E6%B3%95%E7%9A%84WorkerId)
 
+#### 如何认证与授权
+- 详细介绍为什么要采用JwtBearer+Basic混合认证模式以及它们的实现逻辑，如何灵活配置与应用。  
+[请点击链接，查看详细介绍](https://github.com/AlphaYu/Adnc/wiki/%E5%A6%82%E4%BD%95%E8%AE%A4%E8%AF%81%E4%B8%8E%E6%8E%88%E6%9D%83)
 #### 如何使用EFCore仓储
 - 详细介绍EFCore仓储基础功能、工作单元、CodeFirst，提供了丰富的演示代码以及演示代码对应的Sql语句。<br/>
 [请点击链接，查看详细介绍](https://github.com/AlphaYu/Adnc/wiki/%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E4%BB%93%E5%82%A8(%E4%B8%80)-%E5%9F%BA%E7%A1%80%E5%8A%9F%E8%83%BD)

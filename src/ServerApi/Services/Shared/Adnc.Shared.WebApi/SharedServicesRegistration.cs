@@ -1,5 +1,4 @@
-﻿using Adnc.Infra.Consul;
-using Adnc.Infra.EventBus.RabbitMq;
+﻿using Adnc.Infra.EventBus.RabbitMq;
 using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
 
 namespace Adnc.Shared.WebApi;
@@ -51,27 +50,27 @@ public class SharedServicesRegistration
     public virtual void AddControllers()
     {
         _services.AddControllers(options => options.Filters.Add(typeof(CustomExceptionFilterAttribute)))
-                 .AddJsonOptions(options =>
-                 {
-                     options.JsonSerializerOptions.Converters.Add(new DateTimeConverter());
-                     options.JsonSerializerOptions.Converters.Add(new DateTimeNullableConverter());
-                     options.JsonSerializerOptions.Encoder = SystemTextJson.GetAdncDefaultEncoder();
-                     //该值指示是否允许、不允许或跳过注释。
-                     options.JsonSerializerOptions.ReadCommentHandling = JsonCommentHandling.Skip;
-                     //dynamic与匿名类型序列化设置
-                     options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
-                     //dynamic
-                     options.JsonSerializerOptions.DictionaryKeyPolicy = JsonNamingPolicy.CamelCase;
-                     //匿名类型
-                     options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
-                 })
-                 .AddFluentValidation(cfg =>
-                 {
-                     //Continue 验证失败，继续验证其他项
-                     cfg.ValidatorOptions.CascadeMode = FluentValidation.CascadeMode.Continue;
-                     // Optionally set validator factory if you have problems with scope resolve inside validators.
-                     // cfg.ValidatorFactoryType = typeof(HttpContextServiceProviderValidatorFactory);
-                 });
+        .AddJsonOptions(options =>
+        {
+            options.JsonSerializerOptions.Converters.Add(new DateTimeConverter());
+            options.JsonSerializerOptions.Converters.Add(new DateTimeNullableConverter());
+            options.JsonSerializerOptions.Encoder = SystemTextJson.GetAdncDefaultEncoder();
+            //该值指示是否允许、不允许或跳过注释。
+            options.JsonSerializerOptions.ReadCommentHandling = JsonCommentHandling.Skip;
+            //dynamic与匿名类型序列化设置
+            options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+            //dynamic
+            options.JsonSerializerOptions.DictionaryKeyPolicy = JsonNamingPolicy.CamelCase;
+            //匿名类型
+            options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+        })
+        .AddFluentValidation(cfg =>
+        {
+            //Continue 验证失败，继续验证其他项
+            cfg.ValidatorOptions.CascadeMode = FluentValidation.CascadeMode.Continue;
+            // Optionally set validator factory if you have problems with scope resolve inside validators.
+            // cfg.ValidatorFactoryType = typeof(HttpContextServiceProviderValidatorFactory);
+        });
 
         //参数验证返回信息格式调整
         _services.Configure<ApiBehaviorOptions>(options =>
@@ -102,90 +101,63 @@ public class SharedServicesRegistration
     }
 
     /// <summary>
-    /// 注册Jwt认证组件
+    /// 注册身份认证组件
     /// </summary>
-    public virtual void AddJWTAuthentication()
+    public virtual void AddAuthentication()
     {
         var jwtConfig = _configuration.GetJWTSection().Get<JwtConfig>();
 
-        //认证配置
-        _services.AddAuthentication(options =>
+        _services.AddAuthentication(HybridDefaults.AuthenticationScheme)
+        .AddHybrid()
+        .AddBasic()
+        .AddJwtBearer(options =>
+        {
+            //校验配置
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidIssuer = jwtConfig.Issuer,
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtConfig.SymmetricSecurityKey)),
+                ValidateAudience = false,
+                ValidateLifetime = true,
+                ClockSkew = TimeSpan.FromSeconds(jwtConfig.ClockSkew),
+                //AudienceValidator = (m, n, z) =>m != null && m.FirstOrDefault().Equals(Const.ValidAudience)
+            };
+            //校验后事件
+            options.Events = new JwtBearerEvents
+            {
+                //接受到消息时调用
+                OnMessageReceived = context => Task.CompletedTask
+                ,
+                //在Token验证通过后调用
+                OnTokenValidated = context =>
                 {
-                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                })
-                 .AddJwtBearer(options =>
+                    var userContext = context.HttpContext.RequestServices.GetService<IUserContext>();
+                    var claims = context.Principal.Claims;
+                    userContext.Id = long.Parse(claims.First(x => x.Type == JwtRegisteredClaimNames.NameId).Value);
+                    userContext.Account = claims.First(x => x.Type == JwtRegisteredClaimNames.UniqueName).Value;
+                    userContext.Name = claims.First(x => x.Type == JwtRegisteredClaimNames.Name).Value;
+                    userContext.RemoteIpAddress = context.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
+                    return Task.CompletedTask;
+                }
+                 ,
+                //认证失败时调用
+                OnAuthenticationFailed = context =>
                 {
-                    //验证的一些设置，比如是否验证发布者，订阅者，密钥，以及生命时间等等
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuer = true,
-                        ValidIssuer = jwtConfig.Issuer,
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtConfig.SymmetricSecurityKey)),
-                        ValidateAudience = false,
-                        ValidateLifetime = true,
-                        ClockSkew = TimeSpan.FromSeconds(jwtConfig.ClockSkew),
-                        //AudienceValidator = (m, n, z) =>
-                        //{
-                        //    return m != null && m.FirstOrDefault().Equals(Const.ValidAudience);
-                        //}
-                    };
-                    options.Events = new JwtBearerEvents
-                    {
-                        //接受到消息时调用
-                        OnMessageReceived = context =>
-                        {
-                            return Task.CompletedTask;
-                        }
-                        //在Token验证通过后调用
-                        ,
-                        OnTokenValidated = context =>
-                        {
-                            var userContext = context.HttpContext.RequestServices.GetService<IUserContext>();
-                            var claims = context.Principal.Claims;
-                            userContext.Id = long.Parse(claims.First(x => x.Type == JwtRegisteredClaimNames.Sub).Value);
-                            userContext.Account = claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
-                            userContext.Name = claims.First(x => x.Type == ClaimTypes.Name).Value;
-                            //userContext.Email = claims.First(x => x.Type == JwtRegisteredClaimNames.Email).Value;
-                            //string[] roleIds = claims.First(x => x.Type == ClaimTypes.Role).Value.Split(",", StringSplitOptions.RemoveEmptyEntries);
-                            userContext.RemoteIpAddress = context.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
+                    //如果是过期，在http heard中加入act参数
+                    if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+                        context.Response.Headers.Add("act", "expired");
+                    return Task.CompletedTask;
+                }
+                ,
+                //未授权时调用
+                OnChallenge = context => Task.CompletedTask
+            };
+        });
 
-                            return Task.CompletedTask;
-                        }
-                        //认证失败时调用
-                        ,
-                        OnAuthenticationFailed = context =>
-                        {
-                            //如果是过期，在http heard中加入act参数
-                            if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
-                            {
-                                context.Response.Headers.Add("act", "expired");
-                            }
-                            return Task.CompletedTask;
-                        }
-                        //未授权时调用
-                        ,
-                        OnChallenge = context =>
-                        {
-                            return Task.CompletedTask;
-
-                            // Skip the default logic.
-                            //context.HandleResponse();
-
-                            //var payload = new JObject
-                            //{
-                            //    ["error"] = context.Error,
-                            //    ["error_description"] = context.ErrorDescription,
-                            //    ["error_uri"] = context.ErrorUri
-                            //};
-
-                            //return context.Response.WriteAsync(payload.ToString());
-                        }
-                    };
-                });
-
-        //因为获取声明的方式默认是走微软定义的一套映射方式，如果我们想要走JWT映射声明，那么我们需要将默认映射方式给移除掉
+        //因为获取声明的方式默认是走微软定义的一套映射方式
+        //如果我们想要走JWT映射声明，那么我们需要将默认映射方式给移除掉
         JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
     }
 
@@ -196,13 +168,16 @@ public class SharedServicesRegistration
     /// </summary>
     /// <typeparam name="THandler"></typeparam>
     public virtual void AddAuthorization<THandler>()
-        where THandler : PermissionHandler
+        where THandler : AbstractPermissionHandler
     {
+        _services.AddScoped<IAuthorizationHandler, THandler>();
         _services.AddAuthorization(options =>
         {
-            options.AddPolicy(AuthorizePolicy.Default, policy => policy.Requirements.Add(new PermissionRequirement()));
+            options.AddPolicy(AuthorizePolicy.Default, policy =>
+            {
+                policy.Requirements.Add(new PermissionRequirement());
+            });
         });
-        _services.AddScoped<IAuthorizationHandler, THandler>();
     }
 
     /// <summary>
@@ -216,9 +191,9 @@ public class SharedServicesRegistration
             options.AddPolicy(_serviceInfo.CorsPolicy, policy =>
             {
                 policy.WithOrigins(_corsHosts)
-                          .AllowAnyHeader()
-                          .AllowAnyMethod()
-                          .AllowCredentials();
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials();
             });
         });
     }
@@ -287,15 +262,7 @@ public class SharedServicesRegistration
                          ).Connection;
                      })
                     //.AddUrlGroup(new Uri("https://localhost:5001/weatherforecast"), "index endpoint")
+                    //await HttpContextUtility.GetCurrentHttpContext().GetTokenAsync("access_token");
                     .AddRedis(redisConfig.dbconfig.ConnectionString);
-    }
-
-    /// <summary>
-    /// 默认获取Token的方法
-    /// </summary>
-    /// <returns></returns>
-    public virtual async Task<string> GetTokenDefaultFunc()
-    {
-        return await HttpContextUtility.GetCurrentHttpContext().GetTokenAsync("access_token");
     }
 }

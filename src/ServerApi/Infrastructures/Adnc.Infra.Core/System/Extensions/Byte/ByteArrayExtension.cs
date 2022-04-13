@@ -1,8 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.IO;
-using System.Text;
-
-namespace System
+﻿namespace System
 {
     public static class ByteArrayExtension
     {

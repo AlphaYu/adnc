@@ -1,10 +1,5 @@
 ﻿using Adnc.Infra.Helper;
 using Adnc.Infra.Helper.IdGeneraterInternal;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Xunit;
-using Xunit.Abstractions;
 
 namespace Adnc.UnitTest.Helper
 {

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Adnc.Infra.Consul.Consumer
+﻿namespace Adnc.Infra.Consul.Consumer
 {
     public static class ServiceProviderExtension
     {

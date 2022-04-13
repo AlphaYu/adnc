@@ -32,18 +32,10 @@ public class PageModelDto<T> : IDto
     public IReadOnlyList<T> Data
     {
         get => _data;
-        set
-        {
-            // ReSharper disable once ConditionIsAlwaysTrueOrFalse
-            if (value != null)
-            {
-                _data = value;
-            }
-        }
+        set => _data = value ?? Array.Empty<T>();
     }
 
-    public int RowsCount
-    { get { return _data.Count; } }
+    public int RowsCount => _data.Count;
 
     public int PageIndex { get; set; }
 
@@ -51,8 +43,7 @@ public class PageModelDto<T> : IDto
 
     public int TotalCount { get; set; }
 
-    public int PageCount
-    { get { return ((this.RowsCount + this.PageSize - 1) / this.PageSize); } }
+    public int PageCount => (this.RowsCount + this.PageSize - 1) / this.PageSize;
 
     public dynamic XData { get; set; }
 }

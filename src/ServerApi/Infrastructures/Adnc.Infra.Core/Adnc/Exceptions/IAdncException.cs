@@ -1,6 +1,5 @@
-﻿namespace Adnc.Infra.Core
+﻿namespace Adnc.Infra.Core.Exceptions;
+
+public interface IAdncException
 {
-    public interface IAdncException
-    {
-    }
 }

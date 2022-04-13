@@ -4,19 +4,22 @@ public class OrderStatus : ValueObject
 {
     public OrderStatusEnum Code { get; }
 
-    public string ChangesReason { get; }
+    public string? ChangesReason { get; }
 
     private OrderStatus()
     {
     }
 
-    public OrderStatus(OrderStatusEnum statusCode, string reason = null)
+    public OrderStatus(OrderStatusEnum statusCode, string? reason = null)
     {
         this.Code = statusCode;
         this.ChangesReason = reason != null ? reason.Trim() : string.Empty;
     }
 }
 
+/// <summary>
+/// 订单状态枚举
+/// </summary>
 public enum OrderStatusEnum
 {
     Creating = 1000

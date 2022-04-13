@@ -1,16 +1,5 @@
 ﻿using Adnc.Cus.Entities;
-using Adnc.Infra.Core;
 using Adnc.Infra.Helper;
-using Adnc.Infra.IRepositories;
-using Adnc.UnitTest.Fixtures;
-using Autofac;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
-using Xunit;
-using Xunit.Abstractions;
 
 namespace Adnc.UnitTests.EFCore
 {

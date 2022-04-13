@@ -1,12 +1,12 @@
-﻿namespace Adnc.Maint.Application.Services.Caching;
+﻿namespace Adnc.Ord.Application.Services.Caching;
 
-public class CacheService : AbstractCacheService
+public class CacheService : AbstractCacheService, ICachePreheatable
 {
-    private readonly Lazy<ICacheProvider> _cache;
+    private readonly Lazy<ICacheProvider> _cacheProvider;
 
-    public CacheService(Lazy<ICacheProvider> cache)
-        : base(cache)
-        => _cache = cache;
+    public CacheService(Lazy<ICacheProvider> cacheProvider)
+        : base(cacheProvider)
+        => _cacheProvider = cacheProvider;
 
     public override async Task PreheatAsync()
     {

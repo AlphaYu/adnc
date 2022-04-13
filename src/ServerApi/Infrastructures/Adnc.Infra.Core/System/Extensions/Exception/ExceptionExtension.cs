@@ -1,6 +1,4 @@
-﻿using System.Text;
-
-namespace System
+﻿namespace System
 {
     public static class ExceptionExtension
     {

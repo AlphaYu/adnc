@@ -1,6 +1,4 @@
-﻿using Adnc.Infra.Caching.Interceptor;
-
-namespace Adnc.Maint.Application.Contracts.Services;
+﻿namespace Adnc.Maint.Application.Contracts.Services;
 
 /// <summary>
 /// 配置管理
