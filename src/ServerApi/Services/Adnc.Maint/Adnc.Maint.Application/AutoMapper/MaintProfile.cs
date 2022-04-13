@@ -1,8 +1,8 @@
-﻿namespace Adnc.Maint.Application;
+﻿namespace Adnc.Maint.Application.AutoMapper;
 
-public class AdncMaintProfile : Profile
+public class MaintProfile : Profile
 {
-    public AdncMaintProfile()
+    public MaintProfile()
     {
         CreateMap(typeof(PagedModel<>), typeof(PageModelDto<>)).ForMember("XData", opt => opt.Ignore());
         CreateMap<OpsLogCreationDto, OperationLog>();

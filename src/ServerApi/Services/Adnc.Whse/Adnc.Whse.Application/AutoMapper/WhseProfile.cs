@@ -1,8 +1,8 @@
-﻿namespace Adnc.Whse.Application;
+﻿namespace Adnc.Whse.Application.AutoMapper;
 
-public class AdncWhseProfile : Profile
+public class WhseProfile : Profile
 {
-    public AdncWhseProfile()
+    public WhseProfile()
     {
         CreateMap(typeof(PagedModel<>), typeof(PageModelDto<>)).ForMember("XData", opt => opt.Ignore());
 

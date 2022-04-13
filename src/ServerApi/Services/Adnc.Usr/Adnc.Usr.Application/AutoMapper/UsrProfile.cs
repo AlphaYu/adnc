@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 
-namespace Adnc.Usr.Application;
+namespace Adnc.Usr.Application.AutoMapper;
 
-public class AdncUsrProfile : Profile
+public sealed class UsrProfile : Profile
 {
-    public AdncUsrProfile()
+    public UsrProfile()
     {
         CreateMap(typeof(PagedModel<>), typeof(PageModelDto<>)).ForMember("XData", opt => opt.Ignore());
         CreateMap(typeof(ZTreeNodeDto<,>), typeof(Node<>)).IgnoreAllPropertiesWithAnInaccessibleSetter();

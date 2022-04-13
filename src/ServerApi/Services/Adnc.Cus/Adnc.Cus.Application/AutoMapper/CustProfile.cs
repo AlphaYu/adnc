@@ -1,8 +1,8 @@
-﻿namespace Adnc.Cus.Application;
+﻿namespace Adnc.Cus.Application.AutoMapper;
 
-public class AdncCusProfile : Profile
+public class CustProfile : Profile
 {
-    public AdncCusProfile()
+    public CustProfile()
     {
         CreateMap(typeof(PagedModel<>), typeof(PageModelDto<>)).ForMember("XData", opt => opt.Ignore());
         CreateMap<CustomerRegisterDto, Customer>();

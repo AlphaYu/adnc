@@ -15,10 +15,7 @@ namespace Adnc.Infra.EfCore.Repositories
     {
         protected virtual TDbContext DbContext { get; }
 
-        protected AbstractEfBaseRepository(TDbContext dbContext)
-        {
-            DbContext = dbContext;
-        }
+        protected AbstractEfBaseRepository(TDbContext dbContext) => DbContext = dbContext;
 
         protected virtual IQueryable<TEntity> GetDbSet(bool writeDb, bool noTracking)
         {
@@ -57,7 +54,7 @@ namespace Adnc.Infra.EfCore.Repositories
 
         public virtual async Task<int> InsertAsync(TEntity entity, CancellationToken cancellationToken = default)
         {
-            await DbContext.Set<TEntity>().AddAsync(entity);
+            await DbContext.Set<TEntity>().AddAsync(entity, cancellationToken);
             return await DbContext.SaveChangesAsync(cancellationToken);
         }
 
@@ -80,7 +77,7 @@ namespace Adnc.Infra.EfCore.Repositories
             var dbSet = DbContext.Set<TEntity>().AsNoTracking();
             if (writeDb)
                 dbSet = dbSet.TagWith(EfCoreConsts.MAXSCALE_ROUTE_TO_MASTER);
-            return await EntityFrameworkQueryableExtensions.CountAsync(dbSet, whereExpression);
+            return await EntityFrameworkQueryableExtensions.CountAsync(dbSet, whereExpression, cancellationToken);
         }
 
         public virtual Task<int> UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)

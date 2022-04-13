@@ -1,8 +1,8 @@
-﻿namespace Adnc.Ord.Application;
+﻿namespace Adnc.Ord.Application.AutoMapper;
 
-public class AdncOrdProfile : Profile
+public class OrdProfile : Profile
 {
-    public AdncOrdProfile()
+    public OrdProfile()
     {
         CreateMap(typeof(PagedModel<>), typeof(PageModelDto<>)).ForMember("XData", opt => opt.Ignore());
 

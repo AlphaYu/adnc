@@ -78,7 +78,7 @@ public class BasicAuthenticationHandler : AuthenticationHandler<BasicSchemeOptio
         var unPackTotalSeconds = unPackPassword[1].ToLong();
         var currentTotalSeconds = DateTime.Now.GetTotalSeconds();
         var differTotalSeconds = currentTotalSeconds - unPackTotalSeconds;
-        if (differTotalSeconds > 12000 || differTotalSeconds < -3)
+        if (differTotalSeconds > 120 || differTotalSeconds < -3)
             return false;
 
         var unPackTicket = unPackPassword[2];

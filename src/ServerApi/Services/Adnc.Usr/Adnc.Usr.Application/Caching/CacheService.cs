@@ -1,6 +1,6 @@
 ﻿namespace Adnc.Usr.Application.Caching;
 
-public class CacheService : AbstractCacheService, ICachePreheatable
+public sealed class CacheService : AbstractCacheService, ICachePreheatable
 {
     private readonly Lazy<ICacheProvider> _cacheProvider;
     private readonly Lazy<IEfRepository<SysDept>> _deptRepository;
