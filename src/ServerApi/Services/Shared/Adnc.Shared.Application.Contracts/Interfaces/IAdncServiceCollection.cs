@@ -1,4 +1,4 @@
-﻿namespace Adnc.Shared.Application.Contracts.Services;
+﻿namespace Adnc.Shared.Application.Contracts.Interfaces;
 
 public interface IAdncServiceCollection
 {

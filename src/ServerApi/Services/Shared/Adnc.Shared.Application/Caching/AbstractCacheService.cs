@@ -2,10 +2,9 @@
 
 public abstract class AbstractCacheService : ICachePreheatable
 {
-    private readonly Lazy<ICacheProvider> _cache;
+    private readonly Lazy<ICacheProvider> _cacheProvider;
 
-    protected AbstractCacheService(Lazy<ICacheProvider> cache)
-        => _cache = cache;
+    protected AbstractCacheService(Lazy<ICacheProvider> cacheProvider) => _cacheProvider = cacheProvider;
 
     public IObjectMapper Mapper { get; set; }
 
@@ -21,10 +20,10 @@ public abstract class AbstractCacheService : ICachePreheatable
 
     public virtual async Task RemoveCachesAsync(Func<CancellationToken, Task> dataOperater, params string[] cacheKeys)
     {
-        var pollyTimeoutSeconds = _cache.Value.CacheOptions.PollyTimeoutSeconds;
+        var pollyTimeoutSeconds = _cacheProvider.Value.CacheOptions.PollyTimeoutSeconds;
         var keyExpireSeconds = pollyTimeoutSeconds + 1;
 
-        await _cache.Value.KeyExpireAsync(cacheKeys, keyExpireSeconds);
+        await _cacheProvider.Value.KeyExpireAsync(cacheKeys, keyExpireSeconds);
 
         var expireDt = DateTime.Now.AddSeconds(keyExpireSeconds);
         var cancelTokenSource = new CancellationTokenSource();
@@ -37,7 +36,7 @@ public abstract class AbstractCacheService : ICachePreheatable
 
         try
         {
-            await _cache.Value.RemoveAllAsync(cacheKeys);
+            await _cacheProvider.Value.RemoveAllAsync(cacheKeys);
         }
         catch (Exception ex)
         {

@@ -18,7 +18,7 @@ global using Adnc.Shared.Application.BloomFilter;
 global using Adnc.Shared.Application.Caching;
 global using Adnc.Shared.Application.Channels;
 global using Adnc.Shared.Application.Contracts.Attributes;
-global using Adnc.Shared.Application.Contracts.Services;
+global using Adnc.Shared.Application.Contracts.Interfaces;
 global using Adnc.Shared.Application.IdGenerater;
 global using Adnc.Shared.Application.Interceptors;
 global using Adnc.Shared.Consts.Caching.Common;

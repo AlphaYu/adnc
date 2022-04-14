@@ -2,7 +2,7 @@
 global using Adnc.Shared.Application.Contracts.Attributes;
 global using Adnc.Shared.Application.Contracts.Dtos;
 global using Adnc.Shared.Application.Contracts.DtoValidator;
-global using Adnc.Shared.Application.Contracts.Services;
+global using Adnc.Shared.Application.Contracts.Interfaces;
 global using Adnc.Shared.Consts.Caching.Usr;
 global using Adnc.Shared.Consts.Entity.Usr;
 global using Adnc.Shared.ResultModels;

@@ -1,4 +1,4 @@
-﻿using Adnc.Shared.Application.Contracts.Services;
+﻿using Adnc.Shared.Application.Contracts.Interfaces;
 using Adnc.Whse.Application.EventSubscribers;
 
 namespace Adnc.Whse.Application
