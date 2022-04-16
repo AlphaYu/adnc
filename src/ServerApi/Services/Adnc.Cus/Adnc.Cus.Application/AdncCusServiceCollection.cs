@@ -1,5 +1,5 @@
 ﻿using Adnc.Cus.Application.EventSubscribers;
-using Adnc.Shared.Application.Contracts.Services;
+using Adnc.Shared.Application.Contracts.Interfaces;
 using Adnc.Shared.RpcServices.Services;
 
 namespace Adnc.Cus.Application

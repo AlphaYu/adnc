@@ -3,7 +3,7 @@ using Adnc.Infra.EfCore.MySQL;
 using Adnc.Infra.EventBus.RabbitMq;
 using Adnc.Infra.Mongo.Configuration;
 using Adnc.Infra.Mongo.Extensions;
-using Adnc.Infra.Core.Configuration;
+using Adnc.Shared.Application.Contracts.Interfaces;
 using Adnc.Shared.RpcServices;
 using DotNetCore.CAP;
 using Microsoft.EntityFrameworkCore;
@@ -11,7 +11,6 @@ using Polly.Timeout;
 using Refit;
 using SkyApm.Diagnostics.CAP;
 using System.Net.Http;
-using Adnc.Infra.Core.Json;
 
 namespace Adnc.Shared.Application
 {

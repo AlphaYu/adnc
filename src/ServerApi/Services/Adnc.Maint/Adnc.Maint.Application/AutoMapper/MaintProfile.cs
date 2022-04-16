@@ -16,9 +16,5 @@ public class MaintProfile : Profile
         CreateMap<DictCreationDto, SysDict>();
         CreateMap<SysDict, DictDto>();
         CreateMap<SysNotice, NoticeDto>().ReverseMap();
-
-        //CreateMap<TaskSaveInputDto, SysTask>();
-        //CreateMap<SysTask, TaskDto>();
-        //CreateMap<SysTaskLog, TaskLogDto>().ReverseMap();
     }
 }
