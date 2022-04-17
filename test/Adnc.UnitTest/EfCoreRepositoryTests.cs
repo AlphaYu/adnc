@@ -14,19 +14,18 @@ namespace Adnc.UnitTest.EFCore
         private readonly IEfRepository<CustomerFinance> _cusFinanceRsp;
         private readonly IEfRepository<CustomerTransactionLog> _custLogsRsp;
         private readonly AdncDbContext _dbContext;
-
         private readonly EfCoreDbcontextFixture _fixture;
 
         public EfCoreRepositoryTests(EfCoreDbcontextFixture fixture, ITestOutputHelper output)
         {
             _fixture = fixture;
             _output = output;
-            _unitOfWork = _fixture.Container.Resolve<IUnitOfWork>();
-            _userContext = _fixture.Container.Resolve<IOperater>();
-            _customerRsp = _fixture.Container.Resolve<IEfRepository<Customer>>();
-            _cusFinanceRsp = _fixture.Container.Resolve<IEfRepository<CustomerFinance>>();
-            _custLogsRsp = _fixture.Container.Resolve<IEfRepository<CustomerTransactionLog>>();
-            _dbContext = _fixture.Container.Resolve<AdncDbContext>();
+            _unitOfWork = _fixture.Container.GetRequiredService<IUnitOfWork>();
+            _userContext = _fixture.Container.GetRequiredService<IOperater>();
+            _customerRsp = _fixture.Container.GetRequiredService<IEfRepository<Customer>>();
+            _cusFinanceRsp = _fixture.Container.GetRequiredService<IEfRepository<CustomerFinance>>();
+            _custLogsRsp = _fixture.Container.GetRequiredService<IEfRepository<CustomerTransactionLog>>();
+            _dbContext = _fixture.Container.GetRequiredService<AdncDbContext>();
 
             if (YitterSnowFlake.CurrentWorkerId < 0)
                 YitterSnowFlake.CurrentWorkerId = 63;

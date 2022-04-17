@@ -14,8 +14,8 @@ namespace Adnc.UnitTest.CoreService
         {
             _fixture = fixture;
             _output = output;
-            _cusRsp = _fixture.Container.Resolve<IEfRepository<Customer>>();
-            _userContext = _fixture.Container.Resolve<IOperater>();
+            _cusRsp = _fixture.Container.GetRequiredService<IEfRepository<Customer>>();
+            _userContext = _fixture.Container.GetRequiredService<IOperater>();
             Initialize();
         }
 
