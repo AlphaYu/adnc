@@ -19,6 +19,7 @@ public sealed class OrdWebApiDependencyRegistrar : AbstractWebApiDependencyRegis
         AddCors();
         AddSwaggerGen();
         AddHealthChecks();
+        AddMiniProfiler();
         AddApplicationServices();
     }
 }

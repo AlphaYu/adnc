@@ -2,11 +2,21 @@
 	<Import Project="..\..\..\build\common.props" />
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'" />
 	<ItemGroup>
+	  <None Remove="swagger_miniprofiler.html" />
+	</ItemGroup>
+	<ItemGroup>
+	  <EmbeddedResource Include="swagger_miniprofiler.html">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	  </EmbeddedResource>
+	</ItemGroup>
+	<ItemGroup>
 		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.8" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="MicroElements.Swashbuckle.FluentValidation" Version="5.4.0" />
+		<PackageReference Include="MiniProfiler.AspNetCore.Mvc" Version="4.2.22" />
+		<PackageReference Include="MiniProfiler.EntityFrameworkCore" Version="4.2.22" />
 		<!--<PackageReference Include="SkyApm.Diagnostics.MongoDB" Version="1.0.0" />-->
 		<PackageReference Include="System.ValueTuple" Version="4.5.0" />
 		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.15.0" />

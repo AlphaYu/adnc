@@ -2,10 +2,6 @@ namespace Adnc.Usr.WebApi;
 
 public class Startup
 {
-    public Startup()
-    {
-    }
-
     public void ConfigureServices(IServiceCollection services) => services.GetWebApiRegistrar().AddAdncServices();
 
     public void Configure(IApplicationBuilder app, IHostEnvironment environment)

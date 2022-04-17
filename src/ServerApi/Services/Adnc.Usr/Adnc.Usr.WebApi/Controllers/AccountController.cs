@@ -1,4 +1,6 @@
-﻿namespace Adnc.Usr.WebApi.Controllers;
+﻿using StackExchange.Profiling;
+
+namespace Adnc.Usr.WebApi.Controllers;
 
 /// <summary>
 /// 认证/修改密码/注销
@@ -103,4 +105,17 @@ public class AccountController : AdncControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult> ChangePassword([FromBody] UserChangePwdDto input)
         => Result(await _accountService.UpdatePasswordAsync(_userContext.Id, input));
+
+    /// <summary>
+    /// 获取miniprofiler配置信息
+    /// </summary>
+    /// <returns></returns>
+    [AllowAnonymous]
+    [HttpGet("miniprofiler")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public IActionResult GetMiniProfilerInfo()
+    {
+        var html = MiniProfiler.Current.RenderIncludes(Adnc.Infra.Helper.HttpContextUtility.GetCurrentHttpContext());
+        return Ok(html.Value);
+    }
 }

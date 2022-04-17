@@ -3,7 +3,25 @@
     public static class ServiceInfoExtension
     {
         private static object lockObj = new();
+        private static Assembly webApiAssembly;
         private static Assembly appAssembly;
+
+        /// <summary>
+        /// 获取WebApiAssembly程序集
+        /// </summary>
+        /// <returns></returns>
+        public static Assembly GetWebApiAssembly(this IServiceInfo _)
+        {
+            if (webApiAssembly == null)
+            {
+                lock (lockObj)
+                {
+                    if (webApiAssembly == null)
+                        webApiAssembly = Assembly.GetEntryAssembly();
+                }
+            }
+            return webApiAssembly;
+        }
 
         /// <summary>
         /// 获取Application程序集

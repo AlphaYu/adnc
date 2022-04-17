@@ -19,6 +19,7 @@ public sealed class CustWebApiDependencyRegistrar : AbstractWebApiDependencyRegi
         AddCors();
         AddSwaggerGen();
         AddHealthChecks();
+        AddMiniProfiler();
         AddApplicationServices();
     }
 }

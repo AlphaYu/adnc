@@ -1,4 +1,5 @@
-﻿using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
+﻿using StackExchange.Profiling.Storage;
+using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
 
 namespace Adnc.Shared.WebApi.Registrar;
 
@@ -267,6 +268,13 @@ public abstract class AbstractWebApiDependencyRegistrar : IDependencyRegistrar
                     .AddRedis(redisConfig.dbconfig.ConnectionString);
     }
 
+    /// <summary>
+    /// 注册 MiniProfiler 组件
+    /// </summary>
+    public virtual void AddMiniProfiler()
+    {
+        Services.AddMiniProfiler(options => options.RouteBasePath = "/usr/profiler").AddEntityFramework();
+    }
 
     /// <summary>
     /// 注册Application层服务
