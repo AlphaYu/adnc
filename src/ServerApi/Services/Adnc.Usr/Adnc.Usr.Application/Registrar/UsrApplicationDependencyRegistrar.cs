@@ -16,15 +16,15 @@ public sealed class UsrApplicationDependencyRegistrar : AbstractApplicationDepen
     {
     }
 
-    public override void AddAdncServices()
+    public override void AddAdnc()
     {
         Services.AddValidatorsFromAssembly(ContractsAssembly, ServiceLifetime.Scoped);
-        Services.AddAdncMapper(typeof(UsrProfile));
+        Services.AddAdncInfraAutoMapper(typeof(UsrProfile));
         AddApplicationSharedServices();
         AddConsulServices();
         AddCachingServices();
         AddBloomFilterServices();
-        AddEfCoreContextWithRepositories<EntityInfo>();
+        AddEfCoreContextWithRepositories();
         AddMongoContextWithRepositries();
         AddAppliactionSerivcesWithInterceptors();
         AddApplicaitonHostedServices();

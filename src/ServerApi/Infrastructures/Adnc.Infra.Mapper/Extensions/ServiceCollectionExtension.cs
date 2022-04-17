@@ -7,14 +7,14 @@ namespace Microsoft.Extensions.DependencyInjection;
 
 public static class ServiceCollectionExtension
 {
-    public static IServiceCollection AddAdncMapper(this IServiceCollection services, params Type[] profileAssemblyMarkerTypes)
+    public static IServiceCollection AddAdncInfraAutoMapper(this IServiceCollection services, params Type[] profileAssemblyMarkerTypes)
     {
         services.AddAutoMapper(profileAssemblyMarkerTypes);
         services.AddSingleton<IObjectMapper, AutoMapperMapperImpl>();
         return services;
     }
 
-    public static IServiceCollection AddAdncMapper(this IServiceCollection services, params Assembly[] assemblies)
+    public static IServiceCollection AddAdncInfraAutoMapper(this IServiceCollection services, params Assembly[] assemblies)
     {
         services.AddAutoMapper(assemblies);
         services.AddSingleton<IObjectMapper, AutoMapperMapperImpl>();

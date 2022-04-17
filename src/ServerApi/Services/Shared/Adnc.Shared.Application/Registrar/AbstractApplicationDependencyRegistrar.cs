@@ -43,7 +43,7 @@ public abstract class AbstractApplicationDependencyRegistrar : IDependencyRegist
         RabbitMqSection = Configuration.GetRabbitMqSection();
     }
 
-    public abstract void AddAdncServices();
+    public abstract void AddAdnc();
 
     /// <summary>
     /// 注册Shared.Application通用服务
@@ -70,14 +70,20 @@ public abstract class AbstractApplicationDependencyRegistrar : IDependencyRegist
     /// <summary>
     /// 注册EFCoreContext与仓储
     /// </summary>
-    protected virtual void AddEfCoreContextWithRepositories<TEntityInfo>(Action<IServiceCollection> action = null) where TEntityInfo : class, IEntityInfo
+    protected virtual void AddEfCoreContextWithRepositories(Action<IServiceCollection> action = null)
     {
         action?.Invoke(Services);
 
+        var serviceType = typeof(IEntityInfo);
+        var implType = RepositoryOrDomainAssembly.ExportedTypes.FirstOrDefault(type => type.IsAssignableTo(serviceType) && type.IsNotAbstractClass(true));
+        if (implType is null)
+            throw new NullReferenceException(nameof(IEntityInfo));
+        else
+            Services.AddSingleton(serviceType, implType);
+        Services.AddAdncInfraEfCoreMySql();
+
         var mysqlConfig = MysqlSection.Get<MysqlConfig>();
         var serverVersion = new MariaDbServerVersion(new Version(10, 5, 4));
-        Services.AddSingleton<IEntityInfo, TEntityInfo>();
-        Services.AddAdncEfRepositries();
         Services.AddDbContext<AdncDbContext>(options =>
         {
             options.UseMySql(mysqlConfig.ConnectionString, serverVersion, optionsBuilder =>
@@ -108,7 +114,7 @@ public abstract class AbstractApplicationDependencyRegistrar : IDependencyRegist
         action?.Invoke(Services);
 
         var mongoConfig = MongoDbSection.Get<MongoConfig>();
-        Services.AddMongoWithRepositories<MongoContext>(options =>
+        Services.AddAdncInfraMongo<MongoContext>(options =>
         {
             options.ConnectionString = mongoConfig.ConnectionString;
             options.PluralizeCollectionNames = mongoConfig.PluralizeCollectionNames;
@@ -138,12 +144,6 @@ public abstract class AbstractApplicationDependencyRegistrar : IDependencyRegist
         var rabbitMqConfig = Configuration.GetRabbitMqSection().Get<RabbitMqConfig>();
         Services.AddCap(x =>
         {
-            //如果你使用的 EF 进行数据操作，你需要添加如下配置：
-            //可选项，你不需要再次配置 x.UseSqlServer 了
-            //x.UseEntityFramework<AdncDbContext>(option =>
-            //{
-            //    option.TableNamePrefix = tableNamePrefix;
-            //});
             var mysqlConfig = Configuration.GetMysqlSection().Get<MysqlConfig>();
             x.UseMySql(config =>
             {
@@ -320,7 +320,7 @@ public abstract class AbstractApplicationDependencyRegistrar : IDependencyRegist
     {
         action?.Invoke(Services);
 
-        Services.AddAdncCaching(RedisSection);
+        Services.AddAdncInfraCaching(RedisSection);
         var serviceType = typeof(ICachePreheatable);
         var implTypes = ApplicationAssembly.ExportedTypes.Where(type => type.IsAssignableTo(serviceType) && type.IsNotAbstractClass(true)).ToList();
         if (implTypes.IsNotNullOrEmpty())
@@ -356,7 +356,7 @@ public abstract class AbstractApplicationDependencyRegistrar : IDependencyRegist
         action?.Invoke(Services);
 
         if (ConsulSection is not null)
-            Services.AddAdncConsul(ConsulSection);
+            Services.AddAdncInfraConsul(ConsulSection);
     }
 
     /// <summary>
@@ -368,6 +368,6 @@ public abstract class AbstractApplicationDependencyRegistrar : IDependencyRegist
         action?.Invoke(Services);
 
         if (RabbitMqSection is not null)
-            Services.AddAdncEventBusPublishers();
+            Services.AddAdncInfraEventBus();
     }
 }

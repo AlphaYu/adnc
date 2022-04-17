@@ -3,5 +3,5 @@
 public interface IDependencyRegistrar
 {
     public string Name { get; }
-    public void AddAdncServices();
+    public void AddAdnc();
 }

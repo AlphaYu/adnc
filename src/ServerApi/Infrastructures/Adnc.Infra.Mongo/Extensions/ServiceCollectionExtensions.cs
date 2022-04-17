@@ -20,7 +20,7 @@ namespace Adnc.Infra.Mongo.Extensions
         /// <remarks>
         /// This currently requires wiring up memory caching and logging.
         /// </remarks>
-        public static MongoConfigurationBuilder AddMongoWithRepositories<TContext>(this IServiceCollection services, Action<MongoRepositoryOptions> configurator)
+        public static MongoConfigurationBuilder AddAdncInfraMongo<TContext>(this IServiceCollection services, Action<MongoRepositoryOptions> configurator)
             where TContext : IMongoContext
         {
             services.Configure(configurator);
@@ -39,10 +39,10 @@ namespace Adnc.Infra.Mongo.Extensions
         /// <remarks>
         /// This currently requires wiring up memory caching and logging.
         /// </remarks>
-        public static MongoConfigurationBuilder AddMongoWithRepositories<TContext>(this IServiceCollection services, string connectionString)
+        public static MongoConfigurationBuilder AddAdncInfraMongo<TContext>(this IServiceCollection services, string connectionString)
              where TContext : IMongoContext
         {
-            return services.AddMongoWithRepositories<TContext>(c => c.ConnectionString = connectionString);
+            return services.AddAdncInfraMongo<TContext>(c => c.ConnectionString = connectionString);
         }
     }
 }

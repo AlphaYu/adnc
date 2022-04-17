@@ -16,7 +16,7 @@ public static class ServiceCollectionExtension
     public static IServiceCollection AddAdncServices(this IServiceCollection services)
     {
         var registrar = services.GetWebApiRegistrar();
-        registrar.AddAdncServices();
+        registrar.AddAdnc();
         return services;
     }
 }

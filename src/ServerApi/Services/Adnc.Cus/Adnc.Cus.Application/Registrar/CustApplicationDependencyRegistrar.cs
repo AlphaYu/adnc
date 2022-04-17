@@ -19,15 +19,15 @@ public sealed class CustApplicationDependencyRegistrar : AbstractApplicationDepe
     {
     }
 
-    public override void AddAdncServices()
+    public override void AddAdnc()
     {
         Services.AddValidatorsFromAssembly(ContractsAssembly, ServiceLifetime.Scoped);
-        Services.AddAdncMapper(typeof(CustProfile));
+        Services.AddAdncInfraAutoMapper(typeof(CustProfile));
         AddApplicationSharedServices();
         AddConsulServices();
         AddCachingServices();
         AddBloomFilterServices();
-        AddEfCoreContextWithRepositories<EntityInfo>();
+        AddEfCoreContextWithRepositories();
         AddMongoContextWithRepositries();
         AddAppliactionSerivcesWithInterceptors();
         AddApplicaitonHostedServices();

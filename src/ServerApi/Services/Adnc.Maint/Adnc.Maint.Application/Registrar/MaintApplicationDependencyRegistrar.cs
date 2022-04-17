@@ -17,15 +17,15 @@ public sealed class MaintApplicationDependencyRegistrar : AbstractApplicationDep
     {
     }
 
-    public override void AddAdncServices()
+    public override void AddAdnc()
     {
         Services.AddValidatorsFromAssembly(ContractsAssembly, ServiceLifetime.Scoped);
-        Services.AddAdncMapper(typeof(MaintProfile));
+        Services.AddAdncInfraAutoMapper(typeof(MaintProfile));
         AddApplicationSharedServices();
         AddConsulServices();
         AddCachingServices();
         AddBloomFilterServices();
-        AddEfCoreContextWithRepositories<EntityInfo>();
+        AddEfCoreContextWithRepositories();
         AddMongoContextWithRepositries();
         AddAppliactionSerivcesWithInterceptors();
         AddApplicaitonHostedServices();

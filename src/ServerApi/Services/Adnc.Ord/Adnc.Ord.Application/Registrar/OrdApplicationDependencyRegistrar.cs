@@ -19,15 +19,15 @@ public sealed class OrdApplicationDependencyRegistrar : AbstractApplicationDepen
     {
     }
 
-    public override void AddAdncServices()
+    public override void AddAdnc()
     {
         Services.AddValidatorsFromAssembly(ContractsAssembly, ServiceLifetime.Scoped);
-        Services.AddAdncMapper(typeof(OrdProfile));
+        Services.AddAdncInfraAutoMapper(typeof(OrdProfile));
         AddApplicationSharedServices();
         AddConsulServices();
         AddCachingServices();
         AddBloomFilterServices();
-        AddEfCoreContextWithRepositories<EntityInfo>();
+        AddEfCoreContextWithRepositories();
         AddMongoContextWithRepositries();
         AddAppliactionSerivcesWithInterceptors();
         AddApplicaitonHostedServices();

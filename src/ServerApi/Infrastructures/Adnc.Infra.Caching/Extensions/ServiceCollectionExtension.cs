@@ -12,9 +12,14 @@ namespace Microsoft.Extensions.DependencyInjection;
 
 public static class ServiceCollectionExtension
 {
-    public static IServiceCollection AddAdncCaching(this IServiceCollection services, IConfigurationSection redisSection)
+    public static IServiceCollection AddAdncInfraCaching(this IServiceCollection services, IConfigurationSection redisSection)
     {
         var cacheOptions = redisSection.Get<CacheOptions>();
+        return AddAdncInfraCaching(services, cacheOptions);
+    }
+
+    public static IServiceCollection AddAdncInfraCaching(this IServiceCollection services, CacheOptions cacheOptions)
+    {
         services.AddSingleton(cacheOptions);
         services.AddSingleton<IRedisDatabaseProvider, DefaultDatabaseProvider>();
         services.AddSingleton<ICachingKeyGenerator, DefaultCachingKeyGenerator>();
@@ -29,6 +34,6 @@ public static class ServiceCollectionExtension
         var implementations = serviceType.Assembly.ExportedTypes.Where(type => type.IsAssignableTo(serviceType) && type.IsNotAbstractClass(true)).ToList();
         implementations.ForEach(implementationType => services.AddSingleton(serviceType, implementationType));
 
-       return services;
+        return services;
     }
 }

@@ -2,7 +2,7 @@
 
 public static class AdncEfCoreMySqlServiceCollectionExtension
 {
-    public static IServiceCollection AddAdncEfRepositries(this IServiceCollection services)
+    public static IServiceCollection AddAdncInfraEfCoreMySql(this IServiceCollection services)
     {
         services.AddScoped<UnitOfWorkStatus>();
         services.AddScoped<IUnitOfWork, UnitOfWork<AdncDbContext>>();

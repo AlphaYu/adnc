@@ -28,7 +28,7 @@ public abstract class AbstractWebApiDependencyRegistrar : IDependencyRegistrar
     /// <summary>
     /// 
     /// </summary>
-    public abstract void AddAdncServices();
+    public abstract void AddAdnc();
 
     /// <summary>
     /// 注册配置类到IOC容器
@@ -288,7 +288,7 @@ public abstract class AbstractWebApiDependencyRegistrar : IDependencyRegistrar
             if (modelType != null)
             {
                 var adncServiceCollection = Activator.CreateInstance(modelType, Services) as IDependencyRegistrar;
-                adncServiceCollection.AddAdncServices();
+                adncServiceCollection.AddAdnc();
             }
         }
     }

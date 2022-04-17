@@ -8,7 +8,7 @@ public sealed class OrdWebApiDependencyRegistrar : AbstractWebApiDependencyRegis
     {
     }
 
-    public override void AddAdncServices()
+    public override void AddAdnc()
     {
         Services.AddHttpContextAccessor();
         Services.AddMemoryCache();

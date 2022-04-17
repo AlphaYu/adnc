@@ -19,15 +19,15 @@ public sealed class WhseApplicationDependencyRegistrar : AbstractApplicationDepe
     {
     }
 
-    public override void AddAdncServices()
+    public override void AddAdnc()
     {
         Services.AddValidatorsFromAssembly(ContractsAssembly, ServiceLifetime.Scoped);
-        Services.AddAdncMapper(typeof(WhseProfile));
+        Services.AddAdncInfraAutoMapper(typeof(WhseProfile));
         AddApplicationSharedServices();
         AddConsulServices();
         AddCachingServices();
         AddBloomFilterServices();
-        AddEfCoreContextWithRepositories<EntityInfo>();
+        AddEfCoreContextWithRepositories();
         AddMongoContextWithRepositries();
         AddAppliactionSerivcesWithInterceptors();
         AddApplicaitonHostedServices();
