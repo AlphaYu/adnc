@@ -8,7 +8,6 @@ global using Adnc.Shared.Consts.Entity.Ord;
 global using Adnc.Shared.Domain;
 global using Adnc.Shared.Domain.Entities;
 global using Adnc.Shared.Events;
-global using Autofac;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.EntityFrameworkCore.Metadata.Builders;
 global using System;

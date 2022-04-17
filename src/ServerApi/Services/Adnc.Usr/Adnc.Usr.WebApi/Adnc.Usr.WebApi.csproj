@@ -8,14 +8,15 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.2.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.3">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+			<TreatAsUsed>true</TreatAsUsed>
 		</PackageReference>
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.3">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+			<TreatAsUsed>true</TreatAsUsed>
 		</PackageReference>
 	</ItemGroup>
 
@@ -28,9 +29,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\..\Shared\Adnc.Shared.WebApi\Adnc.Shared.WebApi.csproj" />
 		<ProjectReference Include="..\Adnc.Usr.Application.Contracts\Adnc.Usr.Application.Contracts.csproj" />
-		<ProjectReference Include="..\Adnc.Usr.Application\Adnc.Usr.Application.csproj">
-			<!--<ReferenceOutputAssembly>false</ReferenceOutputAssembly>-->
-		</ProjectReference>
+		<ProjectReference Include="..\Adnc.Usr.Application\Adnc.Usr.Application.csproj" />
 	</ItemGroup>
 
 	<!--<Target Name="BuildTheApplicationProject" BeforeTargets="BeforeBuild">
@@ -51,8 +50,6 @@
 	</Target>-->
 
 	<ProjectExtensions>
-		<VisualStudio>
-			<UserProperties properties_4launchsettings_1json__JsonSchema="" />
-		</VisualStudio>
+		<VisualStudio><UserProperties /></VisualStudio>
 	</ProjectExtensions>
 </Project>

@@ -2,16 +2,16 @@
 
 public class CacheKeyBloomFilter : AbstractBloomFilter
 {
-    private readonly Lazy<IServiceProvider> _services;
+    private readonly Lazy<IServiceProvider> _serviceProvider;
     private readonly CacheOptions.BloomFilterSetting _setting;
 
     public CacheKeyBloomFilter(Lazy<ICacheProvider> cache
         , Lazy<IRedisProvider> redisProvider
         , Lazy<IDistributedLocker> distributedLocker
-        , Lazy<IServiceProvider> services)
+        , Lazy<IServiceProvider> serviceProvider)
         : base(redisProvider, distributedLocker)
     {
-        _services = services;
+        _serviceProvider = serviceProvider;
         _setting = cache.Value.CacheOptions.PenetrationSetting.BloomFilterSetting;
     }
 
@@ -38,7 +38,7 @@ public class CacheKeyBloomFilter : AbstractBloomFilter
                 CachingConsts.RoleListCacheKey
             };
 
-            using var scope = _services.Value.CreateScope();
+            using var scope = _serviceProvider.Value.CreateScope();
             var repository = scope.ServiceProvider.GetRequiredService<IEfRepository<SysUser>>();
             var ids = await repository
                                                     .GetAll()

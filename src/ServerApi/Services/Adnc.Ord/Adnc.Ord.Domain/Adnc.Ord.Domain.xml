@@ -4,12 +4,6 @@
         <name>Adnc.Ord.Domain</name>
     </assembly>
     <members>
-        <member name="M:Adnc.Ord.Domain.AdncOrdDomainModule.Load(Autofac.ContainerBuilder)">
-            <summary>
-            Autofac注册
-            </summary>
-            <param name="builder"><see cref="T:Autofac.ContainerBuilder"/></param>
-        </member>
         <member name="T:Adnc.Ord.Domain.Entities.Order">
             <summary>
             订单

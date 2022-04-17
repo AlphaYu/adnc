@@ -2,7 +2,7 @@
   "profiles": {
     "Adnc.Usr.WebApi": {
       "commandName": "Project",
-      "launchBrowser": true,
+      "launchBrowser": false,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "SKYWALKING__SERVICENAME": "adnc.usr.webapi.dev",

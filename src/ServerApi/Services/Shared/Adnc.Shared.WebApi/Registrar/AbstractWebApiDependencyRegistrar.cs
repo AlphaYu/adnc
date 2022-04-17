@@ -1,15 +1,14 @@
-﻿using Adnc.Infra.EventBus.RabbitMq;
-using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
+﻿using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
 
-namespace Adnc.Shared.WebApi;
+namespace Adnc.Shared.WebApi.Registrar;
 
-public class SharedServicesRegistration
+public abstract class AbstractWebApiDependencyRegistrar : IDependencyRegistrar
 {
-    protected readonly IConfiguration _configuration;
-    protected readonly IServiceCollection _services;
-    protected readonly IHostEnvironment _environment;
-    protected readonly IServiceInfo _serviceInfo;
-    protected internal IEnumerable<Type> _schedulingJobs;
+    public string Name => "webapi";
+    protected IConfiguration Configuration;
+    protected readonly IServiceCollection Services;
+    protected readonly IHostEnvironment HostEnvironment;
+    protected readonly IServiceInfo ServiceInfo;
 
     /// <summary>
     /// 服务注册与系统配置
@@ -18,27 +17,29 @@ public class SharedServicesRegistration
     /// <param name="services"><see cref="IServiceInfo"/></param>
     /// <param name="environment"><see cref="IHostEnvironment"/></param>
     /// <param name="serviceInfo"><see cref="ServiceInfo"/></param>
-    public SharedServicesRegistration(IConfiguration configuration
-        , IServiceCollection services
-        , IServiceInfo serviceInfo)
+    protected AbstractWebApiDependencyRegistrar(IServiceCollection services)
     {
-        _configuration = configuration;
-        _services = services;
-        _serviceInfo = serviceInfo;
-        _schedulingJobs = Enumerable.Empty<Type>();
+        Services = services;
+        Configuration = services.GetConfiguration();
+        ServiceInfo = services.GetServiceInfo();
     }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public abstract void AddAdncServices();
 
     /// <summary>
     /// 注册配置类到IOC容器
     /// </summary>
     public virtual void Configure()
     {
-        _services.Configure<JwtConfig>(_configuration.GetJWTSection());
-        _services.Configure<MongoConfig>(_configuration.GetMongoDbSection());
-        _services.Configure<MysqlConfig>(_configuration.GetMysqlSection());
-        _services.Configure<RabbitMqConfig>(_configuration.GetRabbitMqSection());
-        _services.Configure<ConsulConfig>(_configuration.GetConsulSection());
-        _services.Configure<ThreadPoolSettings>(_configuration.GetThreadPoolSettingsSection());
+        Services.Configure<JwtConfig>(Configuration.GetJWTSection());
+        Services.Configure<MongoConfig>(Configuration.GetMongoDbSection());
+        Services.Configure<MysqlConfig>(Configuration.GetMysqlSection());
+        Services.Configure<RabbitMqConfig>(Configuration.GetRabbitMqSection());
+        Services.Configure<ConsulConfig>(Configuration.GetConsulSection());
+        Services.Configure<ThreadPoolSettings>(Configuration.GetThreadPoolSettingsSection());
     }
 
     /// <summary>
@@ -49,7 +50,7 @@ public class SharedServicesRegistration
     /// </summary>
     public virtual void AddControllers()
     {
-        _services.AddControllers(options => options.Filters.Add(typeof(CustomExceptionFilterAttribute)))
+        Services.AddControllers(options => options.Filters.Add(typeof(CustomExceptionFilterAttribute)))
         .AddJsonOptions(options =>
         {
             options.JsonSerializerOptions.Converters.Add(new DateTimeConverter());
@@ -73,7 +74,7 @@ public class SharedServicesRegistration
         });
 
         //参数验证返回信息格式调整
-        _services.Configure<ApiBehaviorOptions>(options =>
+        Services.Configure<ApiBehaviorOptions>(options =>
         {
             //关闭自动验证
             //options.SuppressModelStateInvalidFilter = true;
@@ -105,9 +106,9 @@ public class SharedServicesRegistration
     /// </summary>
     public virtual void AddAuthentication()
     {
-        var jwtConfig = _configuration.GetJWTSection().Get<JwtConfig>();
+        var jwtConfig = Configuration.GetJWTSection().Get<JwtConfig>();
 
-        _services.AddAuthentication(HybridDefaults.AuthenticationScheme)
+        Services.AddAuthentication(HybridDefaults.AuthenticationScheme)
         .AddHybrid()
         .AddBasic()
         .AddJwtBearer(options =>
@@ -170,8 +171,8 @@ public class SharedServicesRegistration
     public virtual void AddAuthorization<THandler>()
         where THandler : AbstractPermissionHandler
     {
-        _services.AddScoped<IAuthorizationHandler, THandler>();
-        _services.AddAuthorization(options =>
+        Services.AddScoped<IAuthorizationHandler, THandler>();
+        Services.AddAuthorization(options =>
         {
             options.AddPolicy(AuthorizePolicy.Default, policy =>
             {
@@ -185,10 +186,10 @@ public class SharedServicesRegistration
     /// </summary>
     public virtual void AddCors()
     {
-        _services.AddCors(options =>
+        Services.AddCors(options =>
         {
-            var _corsHosts = _configuration.GetAllowCorsHosts().Split(",", StringSplitOptions.RemoveEmptyEntries);
-            options.AddPolicy(_serviceInfo.CorsPolicy, policy =>
+            var _corsHosts = Configuration.GetAllowCorsHosts().Split(",", StringSplitOptions.RemoveEmptyEntries);
+            options.AddPolicy(ServiceInfo.CorsPolicy, policy =>
             {
                 policy.WithOrigins(_corsHosts)
                 .AllowAnyHeader()
@@ -203,9 +204,9 @@ public class SharedServicesRegistration
     /// </summary>
     public virtual void AddSwaggerGen()
     {
-        var openApiInfo = new OpenApiInfo { Title = _serviceInfo.ShortName, Version = _serviceInfo.Version };
+        var openApiInfo = new OpenApiInfo { Title = ServiceInfo.ShortName, Version = ServiceInfo.Version };
 
-        _services.AddSwaggerGen(c =>
+        Services.AddSwaggerGen(c =>
         {
             c.SwaggerDoc(openApiInfo.Version, openApiInfo);
 
@@ -234,11 +235,11 @@ public class SharedServicesRegistration
                     Array.Empty<string>()
                 }
             });
-            c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{_serviceInfo.AssemblyName}.xml"));
-            c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{_serviceInfo.AssemblyName.Replace("WebApi", "Application.Contracts")}.xml"));
+            c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{ServiceInfo.AssemblyName}.xml"));
+            c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{ServiceInfo.AssemblyName.Replace("WebApi", "Application.Contracts")}.xml"));
         });
 
-        _services.AddFluentValidationRulesToSwagger();
+        Services.AddFluentValidationRulesToSwagger();
     }
 
     /// <summary>
@@ -246,10 +247,10 @@ public class SharedServicesRegistration
     /// </summary>
     public virtual void AddHealthChecks()
     {
-        var mysqlConfig = _configuration.GetMysqlSection().Get<MysqlConfig>();
-        var mongoConfig = _configuration.GetMongoDbSection().Get<MongoConfig>();
-        var redisConfig = _configuration.GetRedisSection().Get<RedisConfig>();
-        _services.AddHealthChecks()
+        var mysqlConfig = Configuration.GetMysqlSection().Get<MysqlConfig>();
+        var mongoConfig = Configuration.GetMongoDbSection().Get<MongoConfig>();
+        var redisConfig = Configuration.GetRedisSection().Get<RedisConfig>();
+        Services.AddHealthChecks()
                      //.AddProcessAllocatedMemoryHealthCheck(maximumMegabytesAllocated: 200, tags: new[] { "memory" })
                      //.AddProcessHealthCheck("ProcessName", p => p.Length > 0) // check if process is running
                      .AddMySql(mysqlConfig.ConnectionString)
@@ -257,12 +258,30 @@ public class SharedServicesRegistration
                      .AddRabbitMQ(x =>
                      {
                          return
-                         RabbitMqConnection.GetInstance(x.GetService<IOptionsMonitor<RabbitMqConfig>>()
+                         Adnc.Infra.EventBus.RabbitMq.RabbitMqConnection.GetInstance(x.GetService<IOptionsMonitor<RabbitMqConfig>>()
                              , x.GetService<ILogger<dynamic>>()
                          ).Connection;
                      })
                     //.AddUrlGroup(new Uri("https://localhost:5001/weatherforecast"), "index endpoint")
                     //await HttpContextUtility.GetCurrentHttpContext().GetTokenAsync("access_token");
                     .AddRedis(redisConfig.dbconfig.ConnectionString);
+    }
+
+
+    /// <summary>
+    /// 注册Application层服务
+    /// </summary>
+    public virtual void AddApplicationServices()
+    {
+        var appAssembly = ServiceInfo.GetApplicationAssembly();
+        if (appAssembly != null)
+        {
+            var modelType = appAssembly.GetTypes().FirstOrDefault(m => m.IsAssignableTo(typeof(IDependencyRegistrar)) && m.IsNotAbstractClass(true));
+            if (modelType != null)
+            {
+                var adncServiceCollection = Activator.CreateInstance(modelType, Services) as IDependencyRegistrar;
+                adncServiceCollection.AddAdncServices();
+            }
+        }
     }
 }

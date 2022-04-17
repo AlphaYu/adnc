@@ -6,8 +6,6 @@ global using Adnc.Shared.WebApi;
 global using Adnc.Usr.Application.Contracts.Dtos;
 global using Adnc.Usr.Application.Contracts.Services;
 global using Adnc.Usr.WebApi.Authorize;
-global using Autofac;
-global using Autofac.Extensions.DependencyInjection;
 global using Microsoft.AspNetCore.Authorization;
 global using Microsoft.AspNetCore.Builder;
 global using Microsoft.AspNetCore.Hosting;

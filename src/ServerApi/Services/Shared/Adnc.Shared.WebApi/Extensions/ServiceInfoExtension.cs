@@ -18,7 +18,9 @@
                     if (appAssembly == null)
                     {
                         var appAssemblyName = serviceInfo.AssemblyFullName.Replace("WebApi", "Application");
-                        appAssembly = Assembly.Load(appAssemblyName);
+                        appAssembly = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(x => x.FullName.EqualsIgnoreCase(appAssemblyName));
+                        if (appAssembly is null)
+                            appAssembly = Assembly.Load(appAssemblyName);
                         //var appAssemblyPath = serviceInfo.AssemblyLocation.Replace(".WebApi.dll", ".Application.dll");
                         ///appAssembly = Assembly.LoadFrom(appAssemblyPath);
                     }

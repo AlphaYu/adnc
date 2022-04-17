@@ -2,31 +2,11 @@
 
 public sealed class CacheService : AbstractCacheService, ICachePreheatable
 {
-    private readonly Lazy<ICacheProvider> _cacheProvider;
-    private readonly Lazy<IEfRepository<SysDept>> _deptRepository;
-    private readonly Lazy<IEfRepository<SysMenu>> _menuRepository;
-    private readonly Lazy<IEfRepository<SysRelation>> _relationRepository;
-    private readonly Lazy<IEfRepository<SysRole>> _roleRepository;
-    private readonly Lazy<IEfRepository<SysUser>> _userRepository;
-    private readonly Lazy<IOptionsSnapshot<JwtConfig>> _jwtConfig;
+    private readonly Lazy<IOptions<JwtConfig>> _jwtConfig;
 
-    public CacheService(Lazy<ICacheProvider> cacheProvider
-        , Lazy<IEfRepository<SysDept>> deptRepository
-        , Lazy<IEfRepository<SysMenu>> menuRepository
-        , Lazy<IEfRepository<SysRelation>> relationRepository
-        , Lazy<IEfRepository<SysRole>> roleRepository
-        , Lazy<IEfRepository<SysUser>> userRepository
-        , Lazy<IOptionsSnapshot<JwtConfig>> jwtConfig)
-        : base(cacheProvider)
-    {
-        _cacheProvider = cacheProvider;
-        _deptRepository = deptRepository;
-        _menuRepository = menuRepository;
-        _relationRepository = relationRepository;
-        _roleRepository = roleRepository;
-        _userRepository = userRepository;
-        _jwtConfig = jwtConfig;
-    }
+    public CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IServiceProvider> serviceProvider, Lazy<IOptions<JwtConfig>> jwtConfig)
+        : base(cacheProvider, serviceProvider)
+        => _jwtConfig = jwtConfig;
 
     public override async Task PreheatAsync()
     {
@@ -41,15 +21,17 @@ public sealed class CacheService : AbstractCacheService, ICachePreheatable
     internal async Task SetValidateInfoToCacheAsync(UserValidateDto value)
     {
         var cacheKey = ConcatCacheKey(CachingConsts.UserValidateInfoKeyPrefix, value.Id);
-        await _cacheProvider.Value.SetAsync(cacheKey, value, TimeSpan.FromSeconds(CachingConsts.OneDay));
+        await CacheProvider.Value.SetAsync(cacheKey, value, TimeSpan.FromSeconds(CachingConsts.OneDay));
     }
 
     internal async Task<List<DeptDto>> GetAllDeptsFromCacheAsync()
     {
-        var cahceValue = await _cacheProvider.Value.GetAsync(CachingConsts.DetpListCacheKey, async () =>
+        var cahceValue = await CacheProvider.Value.GetAsync(CachingConsts.DetpListCacheKey, async () =>
         {
-            var allDepts = await _deptRepository.Value.GetAll(writeDb: true).OrderBy(x => x.Ordinal).ToListAsync();
-            return Mapper.Map<List<DeptDto>>(allDepts);
+            using var scope = ServiceProvider.Value.CreateScope();
+            var deptRepository = scope.ServiceProvider.GetRequiredService<IEfRepository<SysDept>>();
+            var allDepts = await deptRepository.GetAll(writeDb: true).OrderBy(x => x.Ordinal).ToListAsync();
+            return Mapper.Value.Map<List<DeptDto>>(allDepts);
         }, TimeSpan.FromSeconds(CachingConsts.OneYear));
 
         return cahceValue.Value;
@@ -57,10 +39,12 @@ public sealed class CacheService : AbstractCacheService, ICachePreheatable
 
     internal async Task<List<RelationDto>> GetAllRelationsFromCacheAsync()
     {
-        var cahceValue = await _cacheProvider.Value.GetAsync(CachingConsts.MenuRelationCacheKey, async () =>
+        var cahceValue = await CacheProvider.Value.GetAsync(CachingConsts.MenuRelationCacheKey, async () =>
         {
-            var allRelations = await _relationRepository.Value.GetAll(writeDb: true).ToListAsync();
-            return Mapper.Map<List<RelationDto>>(allRelations);
+            using var scope = ServiceProvider.Value.CreateScope();
+            var relationRepository = scope.ServiceProvider.GetRequiredService<IEfRepository<SysRelation>>();
+            var allRelations = await relationRepository.GetAll(writeDb: true).ToListAsync();
+            return Mapper.Value.Map<List<RelationDto>>(allRelations);
         }, TimeSpan.FromSeconds(CachingConsts.OneYear));
 
         return cahceValue.Value;
@@ -68,10 +52,12 @@ public sealed class CacheService : AbstractCacheService, ICachePreheatable
 
     internal async Task<List<MenuDto>> GetAllMenusFromCacheAsync()
     {
-        var cahceValue = await _cacheProvider.Value.GetAsync(CachingConsts.MenuListCacheKey, async () =>
+        var cahceValue = await CacheProvider.Value.GetAsync(CachingConsts.MenuListCacheKey, async () =>
         {
-            var allMenus = await _menuRepository.Value.GetAll(writeDb: true).OrderBy(x => x.Ordinal).ToListAsync();
-            return Mapper.Map<List<MenuDto>>(allMenus);
+            using var scope = ServiceProvider.Value.CreateScope();
+            var menuRepository = scope.ServiceProvider.GetRequiredService<IEfRepository<SysMenu>>();
+            var allMenus = await menuRepository.GetAll(writeDb: true).OrderBy(x => x.Ordinal).ToListAsync();
+            return Mapper.Value.Map<List<MenuDto>>(allMenus);
         }, TimeSpan.FromSeconds(CachingConsts.OneYear));
 
         return cahceValue.Value;
@@ -79,10 +65,12 @@ public sealed class CacheService : AbstractCacheService, ICachePreheatable
 
     internal async Task<List<RoleDto>> GetAllRolesFromCacheAsync()
     {
-        var cahceValue = await _cacheProvider.Value.GetAsync(CachingConsts.RoleListCacheKey, async () =>
+        var cahceValue = await CacheProvider.Value.GetAsync(CachingConsts.RoleListCacheKey, async () =>
         {
-            var allRoles = await _roleRepository.Value.GetAll(writeDb: true).OrderBy(x => x.Ordinal).ToListAsync();
-            return Mapper.Map<List<RoleDto>>(allRoles);
+            using var scope = ServiceProvider.Value.CreateScope();
+            var roleRepository = scope.ServiceProvider.GetRequiredService<IEfRepository<SysRole>>();
+            var allRoles = await roleRepository.GetAll(writeDb: true).OrderBy(x => x.Ordinal).ToListAsync();
+            return Mapper.Value.Map<List<RoleDto>>(allRoles);
         }, TimeSpan.FromSeconds(CachingConsts.OneYear));
 
         return cahceValue.Value;
@@ -90,12 +78,14 @@ public sealed class CacheService : AbstractCacheService, ICachePreheatable
 
     internal async Task<List<RoleMenuCodesDto>> GetAllMenuCodesFromCacheAsync()
     {
-        var cahceValue = await _cacheProvider.Value.GetAsync(CachingConsts.MenuCodesCacheKey, async () =>
+        var cahceValue = await CacheProvider.Value.GetAsync(CachingConsts.MenuCodesCacheKey, async () =>
         {
-            var allMenus = await _relationRepository.Value.GetAll(writeDb: true)
-                                                                                        .Where(x => x.Menu.Status)
-                                                                                        .Select(x => new RoleMenuCodesDto { RoleId = x.RoleId, Code = x.Menu.Code })
-                                                                                        .ToListAsync();
+            using var scope = ServiceProvider.Value.CreateScope();
+            var relationRepository = scope.ServiceProvider.GetRequiredService<IEfRepository<SysRelation>>();
+            var allMenus = await relationRepository.GetAll(writeDb: true)
+                                                                            .Where(x => x.Menu.Status)
+                                                                            .Select(x => new RoleMenuCodesDto { RoleId = x.RoleId, Code = x.Menu.Code })
+                                                                            .ToListAsync();
             return allMenus.Distinct().ToList();
         }, TimeSpan.FromSeconds(CachingConsts.OneYear));
 
@@ -106,9 +96,11 @@ public sealed class CacheService : AbstractCacheService, ICachePreheatable
     {
         var cacheKey = ConcatCacheKey(CachingConsts.UserValidateInfoKeyPrefix, Id.ToString());
 
-        var cacheValue = await _cacheProvider.Value.GetAsync(cacheKey, async () =>
+        var cacheValue = await CacheProvider.Value.GetAsync(cacheKey, async () =>
         {
-            return await _userRepository.Value.FetchAsync(x => new UserValidateDto()
+            using var scope = ServiceProvider.Value.CreateScope();
+            var userRepository = scope.ServiceProvider.GetRequiredService<IEfRepository<SysUser>>();
+            return await userRepository.FetchAsync(x => new UserValidateDto()
             {
                 Id = x.Id,
                 Account = x.Account,
@@ -126,7 +118,7 @@ public sealed class CacheService : AbstractCacheService, ICachePreheatable
     {
         var result = new List<DeptSimpleTreeDto>();
 
-        var cacheValue = await _cacheProvider.Value.GetAsync<List<DeptSimpleTreeDto>>(CachingConsts.DetpSimpleTreeListCacheKey);
+        var cacheValue = await CacheProvider.Value.GetAsync<List<DeptSimpleTreeDto>>(CachingConsts.DetpSimpleTreeListCacheKey);
         if (cacheValue.HasValue)
             return cacheValue.Value;
 
@@ -161,7 +153,7 @@ public sealed class CacheService : AbstractCacheService, ICachePreheatable
             }
         }
 
-        await _cacheProvider.Value.SetAsync(CachingConsts.DetpSimpleTreeListCacheKey, result, TimeSpan.FromSeconds(CachingConsts.OneYear));
+        await CacheProvider.Value.SetAsync(CachingConsts.DetpSimpleTreeListCacheKey, result, TimeSpan.FromSeconds(CachingConsts.OneYear));
 
         return result;
     }

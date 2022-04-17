@@ -2,7 +2,7 @@
   "profiles": {
     "Adnc.Whse.WebApi": {
       "commandName": "Project",
-      "launchBrowser": true,
+      "launchBrowser": false,
       "environmentVariables": {
         "SKYWALKING__SERVICENAME": "adnc.whse.webapi.dev",
         "ASPNETCORE_ENVIRONMENT": "Development",

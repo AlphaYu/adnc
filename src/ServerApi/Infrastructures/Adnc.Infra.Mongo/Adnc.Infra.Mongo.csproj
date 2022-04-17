@@ -3,9 +3,6 @@
 	<ItemGroup>
 		<!--<PackageReference Include="Kogel.Dapper.Extension.MySql" Version="3.1.9.8" />-->
 		<PackageReference Include="Humanizer.Core" Version="2.14.1" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
-		<PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
-		<PackageReference Include="MongoDB.Driver" Version="2.15.0" />
 	</ItemGroup>
 
 	<ItemGroup>

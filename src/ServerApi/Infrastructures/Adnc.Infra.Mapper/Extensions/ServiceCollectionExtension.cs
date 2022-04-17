@@ -10,14 +10,14 @@ public static class ServiceCollectionExtension
     public static IServiceCollection AddAdncMapper(this IServiceCollection services, params Type[] profileAssemblyMarkerTypes)
     {
         services.AddAutoMapper(profileAssemblyMarkerTypes);
-        services.AddScoped<IObjectMapper, AutoMapperMapperImpl>();
+        services.AddSingleton<IObjectMapper, AutoMapperMapperImpl>();
         return services;
     }
 
     public static IServiceCollection AddAdncMapper(this IServiceCollection services, params Assembly[] assemblies)
     {
         services.AddAutoMapper(assemblies);
-        services.AddScoped<IObjectMapper, AutoMapperMapperImpl>();
+        services.AddSingleton<IObjectMapper, AutoMapperMapperImpl>();
         return services;
     }
 }

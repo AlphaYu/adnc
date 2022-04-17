@@ -1,0 +1,24 @@
+﻿using Adnc.Shared.WebApi.Registrar;
+
+namespace Adnc.Usr.WebApi.Registrar;
+
+public sealed class UsrWebApiDependencyRegistrar : AbstractWebApiDependencyRegistrar
+{
+    public UsrWebApiDependencyRegistrar(IServiceCollection services) : base(services)
+    {
+    }
+
+    public override void AddAdncServices()
+    {
+        Services.AddHttpContextAccessor();
+        Services.AddMemoryCache();
+        Configure();
+        AddControllers();
+        AddAuthentication();
+        AddAuthorization<PermissionHandlerLocal>();
+        AddCors();
+        AddSwaggerGen();
+        AddHealthChecks();
+        AddApplicationServices();
+    }
+}
