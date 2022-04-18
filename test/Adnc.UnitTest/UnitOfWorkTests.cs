@@ -1,5 +1,11 @@
 ﻿using Adnc.Cus.Entities;
 using Adnc.Infra.Helper;
+using Adnc.Infra.IRepositories;
+using Adnc.UnitTest.Fixtures;
+using Autofac;
+using System.Threading.Tasks;
+using Xunit;
+using Xunit.Abstractions;
 
 namespace Adnc.UnitTest.CoreService
 {
@@ -8,14 +14,14 @@ namespace Adnc.UnitTest.CoreService
         private readonly ITestOutputHelper _output;
         private readonly IOperater _userContext;
         private readonly IEfRepository<Customer> _cusRsp;
-        private readonly CoreServiceFixture _fixture;
+        private CoreServiceFixture _fixture;
 
         public UnitOfWorkTests(CoreServiceFixture fixture, ITestOutputHelper output)
         {
             _fixture = fixture;
             _output = output;
-            _cusRsp = _fixture.Container.GetRequiredService<IEfRepository<Customer>>();
-            _userContext = _fixture.Container.GetRequiredService<IOperater>();
+            _cusRsp = _fixture.Container.Resolve<IEfRepository<Customer>>();
+            _userContext = _fixture.Container.Resolve<IOperater>();
             Initialize();
         }
 
@@ -50,8 +56,6 @@ namespace Adnc.UnitTest.CoreService
             //bool exists = await _cusRsp.AnyAsync(c => c.Id == id);
             // Assert.True(exists);
             Assert.True(true);
-
-            await Task.CompletedTask;
         }
     }
 }

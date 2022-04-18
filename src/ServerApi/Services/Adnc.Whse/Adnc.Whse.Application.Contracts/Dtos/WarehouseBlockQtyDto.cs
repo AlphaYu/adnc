@@ -1,8 +1,12 @@
-﻿namespace Adnc.Whse.Application.Contracts.Dtos;
+﻿using Adnc.Application.Shared.Dtos;
+using System.Collections.Generic;
 
-public class WarehouseBlockQtyDto : IDto
+namespace Adnc.Whse.Application.Contracts.Dtos
 {
-    public long OrderId { get; set; }
+    public class WarehouseBlockQtyDto : IDto
+    {
+        public long OrderId { get; set; }
 
-    public IEnumerable<(long ProductId, int Qty)> Products { get; set; }
+        public IEnumerable<(long ProductId, int Qty)> Products { get; set; }
+    }
 }

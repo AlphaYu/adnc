@@ -1,9 +1,12 @@
-﻿namespace Adnc.Whse.Domain.Entities;
+﻿using Adnc.Domain.Shared.Entities;
 
-public class InventoryChangesLog : DomainEntity
+namespace Adnc.Whse.Domain.Entities
 {
-}
+    public class InventoryChangesLog : DomainEntity
+    {
+    }
 
-public enum InventoryChangesEnum
-{
+    public enum InventoryChangesEnum
+    {
+    }
 }

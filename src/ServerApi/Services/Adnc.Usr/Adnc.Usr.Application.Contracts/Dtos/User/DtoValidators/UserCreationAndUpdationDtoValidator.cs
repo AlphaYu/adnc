@@ -1,4 +1,9 @@
-﻿namespace Adnc.Usr.Application.Contracts.DtoValidators
+﻿using Adnc.Application.Shared.DtoValidators;
+using Adnc.Shared.Consts.Entity.Usr;
+using Adnc.Usr.Application.Contracts.Dtos;
+using FluentValidation;
+
+namespace Adnc.Usr.Application.Contracts.DtoValidators
 {
     public class UserCreationAndUpdationDtoValidator : AbstractValidator<UserCreationAndUpdationDto>
     {

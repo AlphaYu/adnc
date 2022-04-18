@@ -1,14 +1,19 @@
-﻿namespace Microsoft.AspNetCore.Builder;
+﻿using Adnc.Infra.Consul;
+using Adnc.Infra.Consul.Registration;
+using System;
 
-public static class ApplicationBuilderExtension
+namespace Microsoft.AspNetCore.Builder
 {
-    public static void RegisterToConsul(this IApplicationBuilder app)
+    public static class ApplicationBuilderExtension
     {
-        ConsulRegistration.Register(app);
-    }
+        public static void RegisterToConsul(this IApplicationBuilder app)
+        {
+            ConsulRegistration.Register(app);
+        }
 
-    public static Uri GetServiceAddress(this IApplicationBuilder app, ConsulConfig config)
-    {
-        return ConsulRegistration.GetServiceAddress(app, config);
+        public static Uri GetServiceAddress(this IApplicationBuilder app, ConsulConfig config)
+        {
+            return ConsulRegistration.GetServiceAddress(app, config);
+        }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace Adnc.Infra.Entities
+﻿using System;
+
+namespace Adnc.Infra.Entities
 {
     public abstract class EfFullAuditEntity : EfEntity, IFullAuditInfo
     {

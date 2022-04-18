@@ -11,8 +11,10 @@ namespace Adnc.Infra.Helper
         /// 默认情况下，500毫秒可以生成10W个号码。
         /// 如果需要提高速度，可以修改SeqBitLength长度。当SeqBitLength =10 ,100W个id约800毫秒。
         /// </summary>
-        /// <returns>Id</returns>
+        /// <returns></returns>
         public static long GetNextId()
-            => YitterSnowFlake.Instance.NextId();
+        {
+            return YitterSnowFlake.Instance.NextId();
+        }
     }
 }

@@ -1,17 +1,20 @@
-﻿namespace Adnc.Maint.Entities;
+﻿using Adnc.Infra.Entities;
 
-/// <summary>
-/// 字典
-/// </summary>
-public class SysDict : EfFullAuditEntity, ISoftDelete
+namespace Adnc.Maint.Entities
 {
-    public string Name { get; set; }
+    /// <summary>
+    /// 字典
+    /// </summary>
+    public class SysDict : EfFullAuditEntity, ISoftDelete
+    {
+        public string Name { get; set; }
 
-    public int Ordinal { get; set; }
+        public int Ordinal { get; set; }
 
-    public long Pid { get; set; }
+        public long Pid { get; set; }
 
-    public string Value { get; set; }
+        public string Value { get; set; }
 
-    public bool IsDeleted { get; set; }
+        public bool IsDeleted { get; set; }
+    }
 }

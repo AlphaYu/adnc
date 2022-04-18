@@ -1,15 +1,18 @@
-﻿namespace Adnc.Cus.Entities;
+﻿using Adnc.Infra.Entities;
 
-/// <summary>
-/// 客户财务表
-/// </summary>
-public class CustomerFinance : EfFullAuditEntity, IConcurrency
+namespace Adnc.Cus.Entities
 {
-    public string Account { get; set; }
+    /// <summary>
+    /// 客户财务表
+    /// </summary>
+    public class CustomerFinance : EfFullAuditEntity, IConcurrency
+    {
+        public string Account { get; set; }
 
-    public decimal Balance { get; set; }
+        public decimal Balance { get; set; }
 
-    public virtual Customer Customer { get; set; }
+        public virtual Customer Customer { get; set; }
 
-    public byte[] RowVersion { get; set; }
+        public byte[] RowVersion { get; set; }
+    }
 }

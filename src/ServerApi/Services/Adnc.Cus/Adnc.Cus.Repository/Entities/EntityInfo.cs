@@ -1,12 +1,18 @@
-﻿namespace Adnc.Cus.Entities;
+﻿using Adnc.Infra.Entities;
+using System;
+using System.Collections.Generic;
+using System.Reflection;
 
-public class EntityInfo : AbstractEntityInfo
+namespace Adnc.Cus.Entities
 {
-    public override (Assembly Assembly, IEnumerable<Type> Types) GetEntitiesInfo()
+    public class EntityInfo : AbstractEntityInfo
     {
-        var assembly = this.GetType().Assembly;
-        var entityTypes = base.GetEntityTypes(assembly);
+        public override (Assembly Assembly, IEnumerable<Type> Types) GetEntitiesInfo()
+        {
+            var assembly = this.GetType().Assembly;
+            var entityTypes = base.GetEntityTypes(assembly);
 
-        return (assembly, entityTypes);
+            return (assembly, entityTypes);
+        }
     }
 }

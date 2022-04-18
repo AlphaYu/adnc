@@ -1,19 +1,24 @@
-﻿using Microsoft.Extensions.Caching.Memory;
+﻿using Adnc.Infra.Consul.TokenGenerator;
+using Microsoft.Extensions.Caching.Memory;
+using System;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Adnc.Infra.Consul.Consumer
 {
-    //https://www.siakabaro.com/use-http-2-with-httpclient-in-net-6-0/
     public class SimpleDiscoveryDelegatingHandler : DelegatingHandler
     {
-        private readonly IEnumerable<ITokenGenerator> _tokenGenerators;
+        private readonly ITokenGenerator _tokenGenerator;
         private readonly IMemoryCache _memoryCache;
 
-        public SimpleDiscoveryDelegatingHandler(IEnumerable<ITokenGenerator> tokenGenerators
+        public SimpleDiscoveryDelegatingHandler(ITokenGenerator tokenGenerator
             , IMemoryCache memoryCache)
         {
-            _tokenGenerators = tokenGenerators;
+            _tokenGenerator = tokenGenerator;
             _memoryCache = memoryCache;
         }
 
@@ -24,15 +29,16 @@ namespace Adnc.Infra.Consul.Consumer
                 request.Version = new Version(2, 0);
 
             var headers = request.Headers;
+
             var auth = headers.Authorization;
-            if (auth is not null)
+            if (auth != null)
             {
-                var tokenGenerator = _tokenGenerators.FirstOrDefault(x => x.Scheme.EqualsIgnoreCase(auth.Scheme));
-                var tokenTxt = tokenGenerator?.Create();
+                var tokenTxt = _tokenGenerator?.Create();
 
                 if (!string.IsNullOrEmpty(tokenTxt))
                     request.Headers.Authorization = new AuthenticationHeaderValue(auth.Scheme, tokenTxt);
             }
+
             #region 缓存处理
 
             //if (request.Method == HttpMethod.Get)
@@ -70,8 +76,8 @@ namespace Adnc.Infra.Consul.Consumer
             //}
 
             #endregion 缓存处理
-            var response = await base.SendAsync(request, cancellationToken);
-            return response;
+
+            return await base.SendAsync(request, cancellationToken);
         }
     }
 }

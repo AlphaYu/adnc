@@ -17,18 +17,20 @@ namespace Adnc.Infra.EventBus.Cap
 
         public void Publish<T>(string name, T contentObj, string callbackName = null)
         {
-            // Method intentionally left empty.
         }
 
         public void Publish<T>(string name, T contentObj, IDictionary<string, string> headers)
         {
-            // Method intentionally left empty.
         }
 
         public Task PublishAsync<T>(string name, T contentObj, string callbackName = null, CancellationToken cancellationToken = default)
-            => Task.CompletedTask;
+        {
+            return Task.CompletedTask;
+        }
 
         public Task PublishAsync<T>(string name, T contentObj, IDictionary<string, string> headers, CancellationToken cancellationToken = default)
-            => Task.CompletedTask;
+        {
+            return Task.CompletedTask;
+        }
     }
 }

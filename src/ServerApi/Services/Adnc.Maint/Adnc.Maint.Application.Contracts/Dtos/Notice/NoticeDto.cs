@@ -1,22 +1,25 @@
-﻿namespace Adnc.Maint.Application.Contracts.Dtos;
+﻿using Adnc.Application.Shared.Dtos;
 
-/// <summary>
-/// 系统通知
-/// </summary>
-public class NoticeDto : OutputBaseAuditDto
+namespace Adnc.Maint.Application.Contracts.Dtos
 {
     /// <summary>
-    /// 内容
+    /// 系统通知
     /// </summary>
-    public string Content { get; set; }
+    public class NoticeDto : OutputBaseAuditDto
+    {
+        /// <summary>
+        /// 内容
+        /// </summary>
+        public string Content { get; set; }
 
-    /// <summary>
-    /// 标题
-    /// </summary>
-    public string Title { get; set; }
+        /// <summary>
+        /// 标题
+        /// </summary>
+        public string Title { get; set; }
 
-    /// <summary>
-    /// 类型
-    /// </summary>
-    public int? Type { get; set; }
+        /// <summary>
+        /// 类型
+        /// </summary>
+        public int? Type { get; set; }
+    }
 }

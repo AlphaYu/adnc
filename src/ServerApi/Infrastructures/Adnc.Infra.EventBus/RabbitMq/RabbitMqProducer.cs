@@ -1,5 +1,4 @@
-﻿using Adnc.Infra.Core.Configuration;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Polly;
 using RabbitMQ.Client;
@@ -70,7 +69,7 @@ namespace Adnc.Infra.EventBus.RabbitMq
 
                       _channel.BasicPublish(exchange, routingKey, mandatory, basicProperties: properties, body);
 
-                      //开启发布消息确认模式
+                      //开启确认模式
                       //_channel.ConfirmSelect();
                       //消息是否到达服务器
                       //bool publishStatus = _channel.WaitForConfirms();

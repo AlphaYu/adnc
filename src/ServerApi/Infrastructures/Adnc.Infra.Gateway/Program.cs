@@ -1,4 +1,4 @@
-using Adnc.Infra.Core.Configuration;
+using Adnc.Infra.Consul;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;

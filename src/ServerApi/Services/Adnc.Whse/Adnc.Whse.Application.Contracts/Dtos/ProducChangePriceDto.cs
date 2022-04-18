@@ -1,6 +1,9 @@
-﻿namespace Adnc.Whse.Application.Contracts.Dtos;
+﻿using Adnc.Application.Shared.Dtos;
 
-public class ProducChangePriceDto : IDto
+namespace Adnc.Whse.Application.Contracts.Dtos
 {
-    public decimal Price { set; get; }
+    public class ProducChangePriceDto : IDto
+    {
+        public decimal Price { set; get; }
+    }
 }

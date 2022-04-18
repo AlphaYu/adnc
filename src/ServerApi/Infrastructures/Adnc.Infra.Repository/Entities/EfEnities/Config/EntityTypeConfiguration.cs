@@ -1,36 +1,29 @@
-﻿namespace Adnc.Infra.Entities.Config;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-public abstract class EntityTypeConfiguration<TEntity> : IEntityTypeConfiguration<TEntity>
-   where TEntity : Entity
+namespace Adnc.Infra.Entities.Config
 {
-    public virtual void Configure(EntityTypeBuilder<TEntity> builder)
+    public abstract class EntityTypeConfiguration<TEntity> : IEntityTypeConfiguration<TEntity>
+       where TEntity : Entity
     {
-        var entityType = typeof(TEntity);
-        ConfigureKey(builder, entityType);
-        ConfigureConcurrency(builder, entityType);
-        ConfigureQueryFilter(builder, entityType);
-    }
-
-    protected virtual void ConfigureKey(EntityTypeBuilder<TEntity> builder, Type entityType)
-    {
-        builder.HasKey(x => x.Id);
-        builder.Property(x => x.Id).HasColumnOrder(1).ValueGeneratedNever();
-    }
-
-    protected virtual void ConfigureConcurrency(EntityTypeBuilder<TEntity> builder, Type entityType)
-    {
-        if (typeof(IConcurrency).IsAssignableFrom(entityType))
-            builder.Property("RowVersion").IsRequired().IsRowVersion().ValueGeneratedOnAddOrUpdate();
-    }
-
-    protected virtual void ConfigureQueryFilter(EntityTypeBuilder<TEntity> builder, Type entityType)
-    {
-        if (typeof(ISoftDelete).IsAssignableFrom(entityType))
+        public virtual void Configure(EntityTypeBuilder<TEntity> builder)
         {
-            builder.Property("IsDeleted")
-                       .HasDefaultValue(false)
-                       .HasColumnOrder(2);
-            builder.HasQueryFilter(d => !EF.Property<bool>(d, "IsDeleted"));
+            var entityType = typeof(TEntity);
+
+            builder.HasKey(x => x.Id);
+            builder.Property(x => x.Id).ValueGeneratedNever();
+
+            if (typeof(IConcurrency).IsAssignableFrom(entityType))
+            {
+                builder.Property("RowVersion").IsRequired().IsRowVersion().ValueGeneratedOnAddOrUpdate();
+            }
+
+            if (typeof(ISoftDelete).IsAssignableFrom(entityType))
+            {
+                builder.Property("IsDeleted")
+                       .HasDefaultValue(false);
+                builder.HasQueryFilter(d => EF.Property<bool>(d, "IsDeleted") == false);
+            }
         }
     }
 }

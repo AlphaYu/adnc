@@ -1,12 +1,15 @@
-﻿namespace Adnc.Usr.Application.Contracts.Dtos;
+﻿using Adnc.Application.Shared.Dtos;
 
-/// <summary>
-/// 角色检索条件
-/// </summary>
-public class RolePagedSearchDto : SearchPagedDto
+namespace Adnc.Usr.Application.Contracts.Dtos
 {
     /// <summary>
-    /// 角色名
+    /// 角色检索条件
     /// </summary>
-    public string RoleName { get; set; }
+    public class RolePagedSearchDto : SearchPagedDto
+    {
+        /// <summary>
+        /// 角色名
+        /// </summary>
+        public string RoleName { get; set; }
+    }
 }

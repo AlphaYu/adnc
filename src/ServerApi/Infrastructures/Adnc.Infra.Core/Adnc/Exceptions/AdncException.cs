@@ -1,16 +1,20 @@
-﻿namespace Adnc.Infra.Core.Exceptions;
+﻿using System;
+using System.Net;
 
-public class BusinessException : Exception, IAdncException
+namespace Adnc.Infra.Core
 {
-    public BusinessException(string message)
-        : base(message)
+    public class BusinessException : Exception, IAdncException
     {
-        base.HResult = (int)HttpStatusCode.Forbidden;
-    }
+        public BusinessException(string message)
+            : base(message)
+        {
+            base.HResult = (int)HttpStatusCode.Forbidden;
+        }
 
-    public BusinessException(HttpStatusCode statusCode, string message)
-    : base(message)
-    {
-        base.HResult = (int)statusCode;
+        public BusinessException(HttpStatusCode statusCode, string message)
+        : base(message)
+        {
+            base.HResult = (int)statusCode;
+        }
     }
 }

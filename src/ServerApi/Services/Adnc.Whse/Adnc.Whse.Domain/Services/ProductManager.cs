@@ -1,95 +1,105 @@
-﻿namespace Adnc.Whse.Domain.Services;
+﻿using Adnc.Domain.Shared;
+using Adnc.Infra.Core;
+using Adnc.Infra.Helper;
+using Adnc.Infra.IRepositories;
+using Adnc.Whse.Domain.Entities;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
-public class ProductManager : IDomainService
+namespace Adnc.Whse.Domain.Services
 {
-    private readonly IEfBasicRepository<Product> _productRepo;
-
-    public ProductManager(IEfBasicRepository<Product> productRepo)
+    public class ProductManager : IDomainService
     {
-        _productRepo = productRepo;
-    }
+        private readonly IEfBasicRepository<Product> _productRepo;
 
-    /// <summary>
-    /// 创建商品
-    /// </summary>
-    /// <param name="sku"></param>
-    /// <param name="name"></param>
-    /// <param name="unit"></param>
-    /// <param name="describe"></param>
-    /// <returns></returns>
-    public virtual async Task<Product> CreateAsync(string sku, decimal price, string name, string unit, string describe = null)
-    {
-        var product = await _productRepo.Where(x => x.Sku == sku || x.Name == name).FirstOrDefaultAsync();
-        if (product != null)
+        public ProductManager(IEfBasicRepository<Product> productRepo)
         {
-            if (product.Sku == sku)
-                throw new ArgumentException("sku exists");
-            if (product.Name == name)
-                throw new ArgumentException("name exists");
+            _productRepo = productRepo;
         }
 
-        return new Product(
-            IdGenerater.GetNextId()
-            , sku
-            , price
-            , name
-            , unit
-            , describe
-        );
-    }
+        /// <summary>
+        /// 创建商品
+        /// </summary>
+        /// <param name="sku"></param>
+        /// <param name="name"></param>
+        /// <param name="unit"></param>
+        /// <param name="describe"></param>
+        /// <returns></returns>
+        public virtual async Task<Product> CreateAsync(string sku, decimal price, string name, string unit, string describe = null)
+        {
+            var product = await _productRepo.Where(x => x.Sku == sku || x.Name == name).FirstOrDefaultAsync();
+            if (product != null)
+            {
+                if (product.Sku == sku)
+                    throw new ArgumentException("sku exists");
+                if (product.Name == name)
+                    throw new ArgumentException("name exists");
+            }
 
-    /// <summary>
-    /// 修改SKU
-    /// </summary>
-    /// <param name="product"></param>
-    /// <param name="newSku"></param>
-    /// <returns></returns>
-    public virtual async Task ChangeSkuAsync(Product product, string newSku)
-    {
-        if (product.Sku == newSku)
-            return;
+            return new Product(
+                IdGenerater.GetNextId()
+                , sku
+                , price
+                , name
+                , unit
+                , describe
+            );
+        }
 
-        var exists = await _productRepo.AnyAsync(x => x.Sku == newSku);
-        if (exists)
-            throw new ArgumentException("newsku");
+        /// <summary>
+        /// 修改SKU
+        /// </summary>
+        /// <param name="product"></param>
+        /// <param name="newSku"></param>
+        /// <returns></returns>
+        public virtual async Task ChangeSkuAsync(Product product, string newSku)
+        {
+            if (product.Sku == newSku)
+                return;
 
-        product.SetSku(newSku);
-    }
+            var exists = await _productRepo.AnyAsync(x => x.Sku == newSku);
+            if (exists)
+                throw new ArgumentException("newsku");
 
-    /// <summary>
-    /// 修改商品名称
-    /// </summary>
-    /// <param name="product"></param>
-    /// <param name="newName"></param>
-    /// <returns></returns>
-    public virtual async Task ChangeNameAsync(Product product, string newName)
-    {
-        if (product.Name == newName)
-            return;
+            product.SetSku(newSku);
+        }
 
-        var exists = await _productRepo.AnyAsync(x => x.Name == newName);
-        if (exists)
-            throw new ArgumentException("newName");
+        /// <summary>
+        /// 修改商品名称
+        /// </summary>
+        /// <param name="product"></param>
+        /// <param name="newName"></param>
+        /// <returns></returns>
+        public virtual async Task ChangeNameAsync(Product product, string newName)
+        {
+            if (product.Name == newName)
+                return;
 
-        product.SetName(newName);
-    }
+            var exists = await _productRepo.AnyAsync(x => x.Name == newName);
+            if (exists)
+                throw new ArgumentException("newName");
 
-    /// <summary>
-    /// 上架商品
-    /// </summary>
-    /// <param name="product"></param>
-    /// <param name="warehouseInfo"></param>
-    /// <param name="reason"></param>
-    /// <returns></returns>
-    public virtual void PutOnSale(Product product, Warehouse warehouseInfo, string reason)
-    {
-        Checker.NotNull(product, nameof(product));
+            product.SetName(newName);
+        }
 
-        Checker.NotNull(warehouseInfo, nameof(warehouseInfo));
+        /// <summary>
+        /// 上架商品
+        /// </summary>
+        /// <param name="product"></param>
+        /// <param name="warehouseInfo"></param>
+        /// <param name="reason"></param>
+        /// <returns></returns>
+        public virtual void PutOnSale(Product product, Warehouse warehouseInfo, string reason)
+        {
+            Checker.NotNull(product, nameof(product));
 
-        if (warehouseInfo.Qty > 0 && warehouseInfo.ProductId == product.Id)
-            product.SetStatus(new ProductStatus(ProductStatusEnum.SaleOn, reason));
-        else
-            throw new ArgumentException("warehouseInfo");
+            Checker.NotNull(warehouseInfo, nameof(warehouseInfo));
+
+            if (warehouseInfo.Qty > 0 && warehouseInfo.ProductId == product.Id)
+                product.SetStatus(new ProductStatus(ProductStatusEnum.SaleOn, reason));
+            else
+                throw new ArgumentException("warehouseInfo");
+        }
     }
 }

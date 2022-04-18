@@ -1,6 +1,9 @@
-﻿namespace Adnc.Whse.Application.Contracts.Dtos;
+﻿using Adnc.Application.Shared.Dtos;
 
-public class WarehouseAllocateToProductDto : IDto
+namespace Adnc.Whse.Application.Contracts.Dtos
 {
-    public long ProductId { get; set; }
+    public class WarehouseAllocateToProductDto : IDto
+    {
+        public long ProductId { get; set; }
+    }
 }

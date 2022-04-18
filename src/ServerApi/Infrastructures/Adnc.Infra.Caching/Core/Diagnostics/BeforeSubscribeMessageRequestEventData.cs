@@ -2,11 +2,11 @@
 {
     public class BeforeSubscribeMessageRequestEventData //: EventData
     {
-        //public BeforeSubscribeMessageRequestEventData(Bus.Adnc.Infra.CachingMessage msg)
+        //public BeforeSubscribeMessageRequestEventData(Bus.EasyCachingMessage msg)
         //{
         //    this.Msg = msg;
         //}
 
-        //public Bus.Adnc.Infra.CachingMessage Msg { get; set; }
+        //public Bus.EasyCachingMessage Msg { get; set; }
     }
 }

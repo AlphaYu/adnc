@@ -1,14 +1,17 @@
-﻿namespace Adnc.Whse.Application.Contracts.Dtos;
+﻿using Adnc.Application.Shared.Dtos;
 
-public class ProductCreationDto : IDto
+namespace Adnc.Whse.Application.Contracts.Dtos
 {
-    public string Sku { set; get; }
+    public class ProductCreationDto : IDto
+    {
+        public string Sku { set; get; }
 
-    public string Name { set; get; }
+        public string Name { set; get; }
 
-    public string Describe { set; get; }
+        public string Describe { set; get; }
 
-    public decimal Price { set; get; }
+        public decimal Price { set; get; }
 
-    public string Unit { set; get; }
+        public string Unit { set; get; }
+    }
 }

@@ -1,50 +1,58 @@
-﻿namespace Microsoft.EntityFrameworkCore;
+﻿using Adnc.Infra.EfCore.Internal;
+using JetBrains.Annotations;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using System;
+using System.Linq;
 
-public static class DbContextExtension
+namespace Microsoft.EntityFrameworkCore
 {
-    public static string GetTableName<TEntity>([NotNull] this DbContext @this)
+    public static class DbContextExtension
     {
-        var entityType = @this.Model.FindEntityType(typeof(TEntity));
-        return entityType?.GetTableName();
-    }
-
-    public static string GetGetSchema<TEntity>([NotNull] this DbContext @this)
-    {
-        var entityType = @this.Model.FindEntityType(typeof(TEntity));
-        return entityType?.GetSchema();
-    }
-
-    public static EntityEntry<TEntity> GetEntityEntry<TEntity>([NotNull] this DbContext @this, TEntity entity, out bool existBefore)
-    where TEntity : class
-    {
-        var type = typeof(TEntity);
-
-        var entityType = @this.Model.FindEntityType(type);
-
-        var keysGetter = entityType.FindPrimaryKey().Properties
-            .Select(x => x.PropertyInfo.GetValueGetter<TEntity>())
-            .ToArray();
-
-        var keyValues = keysGetter
-            .Select(x => x.Invoke(entity))
-            .ToArray();
-
-        var originalEntity = @this.Set<TEntity>().Local
-            .FirstOrDefault(x => EFCoreUtil.GetEntityKeyValues(keysGetter, x).SequenceEqual(keyValues));
-
-        EntityEntry<TEntity> entityEntry;
-        if (null == originalEntity)
+        public static string GetTableName<TEntity>([NotNull] this DbContext @this)
         {
-            existBefore = false;
-            entityEntry = @this.Attach(entity);
-        }
-        else
-        {
-            existBefore = true;
-            entityEntry = @this.Entry(originalEntity);
-            entityEntry.CurrentValues.SetValues(entity);
+            var entityType = @this.Model.FindEntityType(typeof(TEntity));
+            return entityType?.GetTableName();
         }
 
-        return entityEntry;
+        public static string GetGetSchema<TEntity>([NotNull] this DbContext @this)
+        {
+            var entityType = @this.Model.FindEntityType(typeof(TEntity));
+            return entityType?.GetSchema();
+        }
+
+        public static EntityEntry<TEntity> GetEntityEntry<TEntity>([NotNull] this DbContext @this, TEntity entity, out bool existBefore)
+        where TEntity : class
+        {
+            var type = typeof(TEntity);
+
+            var entityType = @this.Model.FindEntityType(type);
+
+            var keysGetter = entityType.FindPrimaryKey().Properties
+                .Select(x => x.PropertyInfo.GetValueGetter<TEntity>())
+                .ToArray();
+
+            var keyValues = keysGetter
+                .Select(x => x.Invoke(entity))
+                .ToArray();
+
+            var originalEntity = @this.Set<TEntity>().Local
+                .FirstOrDefault(x => EFCoreUtil.GetEntityKeyValues(keysGetter, x).SequenceEqual(keyValues));
+
+            EntityEntry<TEntity> entityEntry;
+            if (null == originalEntity)
+            {
+                existBefore = false;
+                entityEntry = @this.Attach(entity);
+            }
+            else
+            {
+                existBefore = true;
+                entityEntry = @this.Entry(originalEntity);
+                entityEntry.CurrentValues.SetValues(entity);
+            }
+
+            return entityEntry;
+        }
     }
 }

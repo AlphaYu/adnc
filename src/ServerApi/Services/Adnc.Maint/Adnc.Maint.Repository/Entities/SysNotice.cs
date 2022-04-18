@@ -1,13 +1,16 @@
-﻿namespace Adnc.Maint.Entities;
+﻿using Adnc.Infra.Entities;
 
-/// <summary>
-/// 通知
-/// </summary>
-public class SysNotice : EfFullAuditEntity
+namespace Adnc.Maint.Entities
 {
-    public string Content { get; set; }
+    /// <summary>
+    /// 通知
+    /// </summary>
+    public class SysNotice : EfFullAuditEntity
+    {
+        public string Content { get; set; }
 
-    public string Title { get; set; }
+        public string Title { get; set; }
 
-    public int? Type { get; set; }
+        public int? Type { get; set; }
+    }
 }

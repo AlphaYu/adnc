@@ -1,34 +1,40 @@
-﻿namespace Autofac;
+﻿using Autofac.Core;
+using Autofac.Core.Registration;
+using System;
+using System.Collections.Concurrent;
 
-public static class ModuleRegistrationExtensions
+namespace Autofac
 {
-    private static readonly ConcurrentDictionary<string, int> s_KeyValues = new ConcurrentDictionary<string, int>();
-
-    public static IModuleRegistrar RegisterModuleIfNotRegistered(this ContainerBuilder builder, IModule module)
+    public static class ModuleRegistrationExtensions
     {
-        if (builder == null)
+        private static readonly ConcurrentDictionary<string, int> s_KeyValues = new ConcurrentDictionary<string, int>();
+
+        public static IModuleRegistrar RegisterModuleIfNotRegistered(this ContainerBuilder builder, IModule module)
         {
-            throw new ArgumentNullException(nameof(builder));
+            if (builder == null)
+            {
+                throw new ArgumentNullException(nameof(builder));
+            }
+
+            if (module == null)
+            {
+                throw new ArgumentNullException(nameof(module));
+            }
+
+            string modelName = module.GetType().FullName;
+            if (s_KeyValues.ContainsKey(modelName))
+                return builder.RegisterModule<NullModel>();
+
+            if (s_KeyValues.TryAdd(modelName, 1))
+                return builder.RegisterModule(module);
+
+            throw new ArgumentException($"autofac register module fail:{modelName}");
         }
 
-        if (module == null)
+        public static IModuleRegistrar RegisterModuleIfNotRegistered<TModule>(this ContainerBuilder builder)
+        where TModule : IModule, new()
         {
-            throw new ArgumentNullException(nameof(module));
+            return builder.RegisterModuleIfNotRegistered(new TModule());
         }
-
-        string modelName = module.GetType().FullName;
-        if (s_KeyValues.ContainsKey(modelName))
-            return builder.RegisterModule<NullModel>();
-
-        if (s_KeyValues.TryAdd(modelName, 1))
-            return builder.RegisterModule(module);
-
-        throw new ArgumentException($"autofac register module fail:{modelName}");
-    }
-
-    public static IModuleRegistrar RegisterModuleIfNotRegistered<TModule>(this ContainerBuilder builder)
-    where TModule : IModule, new()
-    {
-        return builder.RegisterModuleIfNotRegistered(new TModule());
     }
 }

@@ -1,4 +1,6 @@
-﻿using System.ComponentModel;
+﻿using JetBrains.Annotations;
+using System.ComponentModel;
+using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 
@@ -20,7 +22,7 @@ namespace System
             }
             catch (Exception)
             {
-                return default;
+                return default(T);
             }
         }
 
@@ -101,12 +103,22 @@ namespace System
                 return (T)@this;
             }
             var converter = TypeDescriptor.GetConverter(@this);
-            if (converter != null && converter.CanConvertTo(targetType))
-                return (T)converter.ConvertTo(@this, targetType);
+            if (converter != null)
+            {
+                if (converter.CanConvertTo(targetType))
+                {
+                    return (T)converter.ConvertTo(@this, targetType);
+                }
+            }
 
             converter = TypeDescriptor.GetConverter(targetType);
-            if (converter != null && converter.CanConvertFrom(@this.GetType()))
-                return (T)converter.ConvertFrom(@this);
+            if (converter != null)
+            {
+                if (converter.CanConvertFrom(@this.GetType()))
+                {
+                    return (T)converter.ConvertFrom(@this);
+                }
+            }
 
             if (@this == DBNull.Value)
             {
@@ -122,7 +134,7 @@ namespace System
         /// <param name="this">this.</param>
         /// <param name="type">The type.</param>
         /// <returns>An object.</returns>
-        public static object To([MaybeNull] this object @this, Type type)
+        public static object To([CanBeNull] this object @this, Type type)
         {
             if (@this != null)
             {
@@ -134,15 +146,27 @@ namespace System
                 }
 
                 var converter = TypeDescriptor.GetConverter(@this);
-                if (converter != null && converter.CanConvertTo(targetType))
-                    return converter.ConvertTo(@this, targetType);
+                if (converter != null)
+                {
+                    if (converter.CanConvertTo(targetType))
+                    {
+                        return converter.ConvertTo(@this, targetType);
+                    }
+                }
 
                 converter = TypeDescriptor.GetConverter(targetType);
-                if (converter != null && converter.CanConvertFrom(@this.GetType()))
-                    return converter.ConvertFrom(@this);
+                if (converter != null)
+                {
+                    if (converter.CanConvertFrom(@this.GetType()))
+                    {
+                        return converter.ConvertFrom(@this);
+                    }
+                }
 
                 if (@this == DBNull.Value)
+                {
                     return null;
+                }
 
                 return Convert.ChangeType(@this, targetType);
             }
@@ -157,7 +181,7 @@ namespace System
         /// <param name="this">this.</param>
         /// <param name="defaultValueFactory">The default value factory.</param>
         /// <returns>The given data converted to a T.</returns>
-        public static T ToOrDefault<T>([MaybeNull] this object @this, Func<object, T> defaultValueFactory)
+        public static T ToOrDefault<T>([CanBeNull] this object @this, Func<object, T> defaultValueFactory)
         {
             try
             {
@@ -205,7 +229,7 @@ namespace System
         /// <typeparam name="T">Generic type parameter.</typeparam>
         /// <param name="this">this.</param>
         /// <returns>The given data converted to a T.</returns>
-        public static T ToOrDefault<T>([MaybeNull] this object @this)
+        public static T ToOrDefault<T>([CanBeNull] this object @this)
         {
             return @this.ToOrDefault(x => default(T));
         }
@@ -217,7 +241,7 @@ namespace System
         /// <param name="this">this.</param>
         /// <param name="defaultValue">The default value.</param>
         /// <returns>The given data converted to a T.</returns>
-        public static T ToOrDefault<T>([MaybeNull] this object @this, T defaultValue)
+        public static T ToOrDefault<T>([CanBeNull] this object @this, T defaultValue)
         {
             return @this.ToOrDefault(x => defaultValue);
         }
@@ -268,12 +292,14 @@ namespace System
         /// <returns>the copied object.</returns>
         public static T DeepClone<T>([NotNull] this T @this)
         {
-            using var stream = new MemoryStream();
-            IFormatter formatter = new BinaryFormatter();
-            formatter.Serialize(stream, @this);
-            formatter.Context = new StreamingContext(StreamingContextStates.Clone);
-            stream.Seek(0, SeekOrigin.Begin);
-            return (T)formatter.Deserialize(stream);
+            using (var stream = new MemoryStream())
+            {
+                IFormatter formatter = new BinaryFormatter();
+                formatter.Serialize(stream, @this);
+                formatter.Context = new StreamingContext(StreamingContextStates.Clone);
+                stream.Seek(0, SeekOrigin.Begin);
+                return (T)formatter.Deserialize(stream);
+            }
         }
 
         /// <summary>
@@ -308,7 +334,7 @@ namespace System
             }
             catch (Exception)
             {
-                return default;
+                return default(TResult);
             }
         }
 
@@ -387,7 +413,7 @@ namespace System
             }
             catch
             {
-                result = default;
+                result = default(TResult);
                 return false;
             }
         }

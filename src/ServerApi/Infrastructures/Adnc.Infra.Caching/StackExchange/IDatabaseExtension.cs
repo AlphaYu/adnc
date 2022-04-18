@@ -29,7 +29,7 @@ namespace StackExchange.Redis
                 if (!addResult)
                 {
                     autoDelayTimer?.Dispose();
-                    redisDb.SafedUnLock(cacheKey, lockValue);
+                    redisDb.SafedUnLock(lockKey, lockValue);
                     return (false, null);
                 }
             }
@@ -54,7 +54,7 @@ namespace StackExchange.Redis
                 if (!addResult)
                 {
                     autoDelayTimer?.Dispose();
-                    await redisDb.SafedUnLockAsync(cacheKey, lockValue);
+                    await redisDb.SafedUnLockAsync(lockKey, lockValue);
                     return (false, null);
                 }
             }

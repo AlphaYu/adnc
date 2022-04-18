@@ -1,9 +1,13 @@
-﻿namespace Adnc.Cus.Application.Contracts.DtoValidators;
+﻿using Adnc.Cus.Application.Contracts.Dtos;
+using FluentValidation;
 
-public class RechargeInputDtoValidator : AbstractValidator<CustomerRechargeDto>
+namespace Adnc.Cus.Application.Contracts.DtoValidators
 {
-    public RechargeInputDtoValidator()
+    public class RechargeInputDtoValidator : AbstractValidator<CustomerRechargeDto>
     {
-        RuleFor(x => x.Amount).NotEqual(0).WithMessage("充值金额不能等于{ComparisonValue}");
+        public RechargeInputDtoValidator()
+        {
+            RuleFor(x => x.Amount).NotEqual(0).WithMessage("充值金额不能等于{ComparisonValue}");
+        }
     }
 }

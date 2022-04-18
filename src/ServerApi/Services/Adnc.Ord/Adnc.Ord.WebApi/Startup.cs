@@ -1,16 +1,56 @@
-namespace Adnc.Ord.WebApi;
+using Adnc.Ord.Application.EventSubscribers;
+using Adnc.Shared.RpcServices.Services;
+using Autofac;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
-public class Startup
+namespace Adnc.Ord.WebApi
 {
-    public void ConfigureServices(IServiceCollection services) => services.GetWebApiRegistrar().AddAdnc();
-
-    public void Configure(IApplicationBuilder app, IHostEnvironment hostEnvironment)
+    public class Startup
     {
-        app.UseAdncMiddlewares();
+        private readonly IHostEnvironment _environment;
+        private IServiceCollection _services;
 
-        if (hostEnvironment.IsProduction() || hostEnvironment.IsStaging())
+        public Startup(IHostEnvironment environment)
         {
-            app.RegisterToConsul();
+            _environment = environment;
+        }
+
+        public void ConfigureServices(IServiceCollection services)
+        {
+            _services = services;
+            services.AddAdncServices<PermissionHandlerRemote>(registion =>
+            {
+                var policies = registion.GenerateDefaultRefitPolicies();
+                var authServeiceAddress = _environment.IsDevelopment() ? "http://localhost:5010" : "adnc.usr.webapi";
+                registion.AddRpcService<IAuthRpcService>(authServeiceAddress, policies);
+
+                var maintServiceAddress = _environment.IsDevelopment() ? "http://localhost:5020" : "adnc.maint.webapi";
+                registion.AddRpcService<IMaintRpcService>(maintServiceAddress, policies);
+
+                var whseServiceAddress = _environment.IsDevelopment() ? "http://localhost:8065" : "adnc.whse.webapi";
+                registion.AddRpcService<IWhseRpcService>(whseServiceAddress, policies);
+
+                registion.AddEventBusSubscribers<CapEventSubscriber>();
+            });
+        }
+
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            builder.RegisterAdncModules(_services);
+        }
+
+        public void Configure(IApplicationBuilder app)
+        {
+            app.UseAdncMiddlewares();
+
+            if (_environment.IsProduction() || _environment.IsStaging())
+            {
+                app.RegisterToConsul();
+            }
         }
     }
 }

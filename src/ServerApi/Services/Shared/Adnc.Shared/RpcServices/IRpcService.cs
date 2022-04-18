@@ -1,5 +1,6 @@
-﻿namespace Adnc.Shared.RpcServices;
-
-public interface IRpcService
+﻿namespace Adnc.Shared.RpcServices
 {
+    public interface IRpcService
+    {
+    }
 }

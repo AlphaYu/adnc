@@ -1,5 +1,6 @@
-﻿namespace Adnc.Maint.Application.Contracts.Dtos;
-
-public class DictUpdationDto : DictCreationDto
+﻿namespace Adnc.Maint.Application.Contracts.Dtos
 {
+    public class DictUpdationDto : DictCreationDto
+    {
+    }
 }

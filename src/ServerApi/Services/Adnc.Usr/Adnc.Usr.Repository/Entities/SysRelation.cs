@@ -1,15 +1,18 @@
-﻿namespace Adnc.Usr.Entities;
+﻿using Adnc.Infra.Entities;
 
-/// <summary>
-/// 菜单角色关系
-/// </summary>
-public class SysRelation : EfEntity
+namespace Adnc.Usr.Entities
 {
-    public long MenuId { get; set; }
+    /// <summary>
+    /// 菜单角色关系
+    /// </summary>
+    public class SysRelation : EfEntity
+    {
+        public long MenuId { get; set; }
 
-    public long RoleId { get; set; }
+        public long RoleId { get; set; }
 
-    public virtual SysRole Role { get; set; }
+        public virtual SysRole Role { get; set; }
 
-    public virtual SysMenu Menu { get; set; }
+        public virtual SysMenu Menu { get; set; }
+    }
 }

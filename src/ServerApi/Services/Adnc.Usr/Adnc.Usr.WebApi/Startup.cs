@@ -1,16 +1,41 @@
-namespace Adnc.Usr.WebApi;
+using Autofac;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
-public class Startup
+namespace Adnc.Usr.WebApi
 {
-    public void ConfigureServices(IServiceCollection services) => services.GetWebApiRegistrar().AddAdnc();
-
-    public void Configure(IApplicationBuilder app, IHostEnvironment environment)
+    public class Startup
     {
-        app.UseAdncMiddlewares();
+        private readonly IHostEnvironment _environment;
+        private IServiceCollection _services;
 
-        if (environment.IsProduction() || environment.IsStaging())
+        public Startup(IHostEnvironment environment)
         {
-            app.RegisterToConsul();
+            _environment = environment;
+        }
+
+        public void ConfigureServices(IServiceCollection services)
+        {
+            _services = services;
+            services.AddAdncServices<PermissionHandlerLocal>();
+        }
+
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            builder.RegisterAdncModules(_services);
+        }
+
+        public void Configure(IApplicationBuilder app)
+        {
+            app.UseAdncMiddlewares();
+
+            if (_environment.IsProduction() || _environment.IsStaging())
+            {
+                app.RegisterToConsul();
+            }
         }
     }
 }

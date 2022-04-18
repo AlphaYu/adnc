@@ -1,17 +1,20 @@
-﻿namespace Adnc.Maint.Application.Contracts.Dtos;
+﻿using Adnc.Application.Shared.Dtos;
 
-/// <summary>
-/// 系统配置
-/// </summary>
-public class CfgSearchPagedDto : SearchPagedDto
+namespace Adnc.Maint.Application.Contracts.Dtos
 {
     /// <summary>
-    /// 参数名
+    /// 系统配置
     /// </summary>
-    public string Name { get; set; }
+    public class CfgSearchPagedDto : SearchPagedDto
+    {
+        /// <summary>
+        /// 参数名
+        /// </summary>
+        public string Name { get; set; }
 
-    /// <summary>
-    /// 参数值
-    /// </summary>
-    public string Value { get; set; }
+        /// <summary>
+        /// 参数值
+        /// </summary>
+        public string Value { get; set; }
+    }
 }

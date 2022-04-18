@@ -1,11 +1,16 @@
-﻿namespace Adnc.Maint.Application.Contracts.DtoValidators;
+﻿using Adnc.Maint.Application.Contracts.Dtos;
+using Adnc.Shared.Consts.Entity.Maint;
+using FluentValidation;
 
-public class CfgCreationDtoValidator : AbstractValidator<CfgCreationDto>
+namespace Adnc.Maint.Application.Contracts.DtoValidators
 {
-    public CfgCreationDtoValidator()
+    public class CfgCreationDtoValidator : AbstractValidator<CfgCreationDto>
     {
-        RuleFor(x => x.Name).NotEmpty().Length(2, CfgConsts.Name_MaxLength);
-        RuleFor(x => x.Value).NotEmpty().Length(2, CfgConsts.Value_MaxLength);
-        RuleFor(x => x.Description).MaximumLength(CfgConsts.Description_MaxLength);
+        public CfgCreationDtoValidator()
+        {
+            RuleFor(x => x.Name).NotEmpty().Length(2, CfgConsts.Name_MaxLength);
+            RuleFor(x => x.Value).NotEmpty().Length(2, CfgConsts.Value_MaxLength);
+            RuleFor(x => x.Description).MaximumLength(CfgConsts.Description_MaxLength);
+        }
     }
 }

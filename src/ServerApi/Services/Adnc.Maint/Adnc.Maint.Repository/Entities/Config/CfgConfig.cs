@@ -1,13 +1,18 @@
-﻿namespace Adnc.Maint.Entities.Config;
+﻿using Adnc.Infra.Entities.Config;
+using Adnc.Shared.Consts.Entity.Maint;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-public class CfgConfig : EntityTypeConfiguration<SysCfg>
+namespace Adnc.Maint.Entities.Config
 {
-    public override void Configure(EntityTypeBuilder<SysCfg> builder)
+    public class CfgConfig : EntityTypeConfiguration<SysCfg>
     {
-        base.Configure(builder);
+        public override void Configure(EntityTypeBuilder<SysCfg> builder)
+        {
+            base.Configure(builder);
 
-        builder.Property(x => x.Name).IsRequired().HasMaxLength(CfgConsts.Name_MaxLength);
-        builder.Property(x => x.Value).IsRequired().HasMaxLength(CfgConsts.Value_MaxLength);
-        builder.Property(x => x.Description).HasMaxLength(CfgConsts.Description_MaxLength);
+            builder.Property(x => x.Name).IsRequired().HasMaxLength(CfgConsts.Name_MaxLength);
+            builder.Property(x => x.Value).IsRequired().HasMaxLength(CfgConsts.Value_MaxLength);
+            builder.Property(x => x.Description).HasMaxLength(CfgConsts.Description_MaxLength);
+        }
     }
 }

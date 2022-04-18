@@ -1,6 +1,9 @@
-﻿namespace Adnc.Whse.Application.Contracts.Dtos;
+﻿using Adnc.Application.Shared.Dtos;
 
-public class ProductPutOnSaleDto : IDto
+namespace Adnc.Whse.Application.Contracts.Dtos
 {
-    public string Reason { get; set; }
+    public class ProductPutOnSaleDto : IDto
+    {
+        public string Reason { get; set; }
+    }
 }

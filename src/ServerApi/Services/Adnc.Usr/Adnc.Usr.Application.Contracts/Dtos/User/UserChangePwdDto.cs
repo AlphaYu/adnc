@@ -1,4 +1,6 @@
-﻿namespace Adnc.Usr.Application.Contracts.Dtos
+﻿using Adnc.Application.Shared.Dtos;
+
+namespace Adnc.Usr.Application.Contracts.Dtos
 {
     /// <summary>
     /// 修改密码数据模型

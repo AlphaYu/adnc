@@ -1,4 +1,6 @@
-﻿namespace Adnc.Usr.Application.Contracts.Dtos
+﻿using Adnc.Application.Shared.Dtos;
+
+namespace Adnc.Usr.Application.Contracts.Dtos
 {
     /// <summary>
     /// 刷新Token实体

@@ -2,8 +2,6 @@
 {
     public interface ITokenGenerator
     {
-        public string Scheme { get; }
-
         /// <summary>
         /// 创建一个token
         /// </summary>

@@ -1,10 +1,13 @@
-﻿namespace Adnc.Cus.Application.Contracts.Dtos;
+﻿using Adnc.Application.Shared.Dtos;
 
-public class CustomerRegisterDto : IInputDto
+namespace Adnc.Cus.Application.Contracts.Dtos
 {
-    public string Account { get; set; }
+    public class CustomerRegisterDto : IInputDto
+    {
+        public string Account { get; set; }
 
-    public string Nickname { get; set; }
+        public string Nickname { get; set; }
 
-    public string Realname { get; set; }
+        public string Realname { get; set; }
+    }
 }

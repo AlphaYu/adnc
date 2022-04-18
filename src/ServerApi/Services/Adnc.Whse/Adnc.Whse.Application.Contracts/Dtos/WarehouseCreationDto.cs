@@ -1,8 +1,11 @@
-﻿namespace Adnc.Whse.Application.Contracts.Dtos;
+﻿using Adnc.Application.Shared.Dtos;
 
-public class WarehouseCreationDto : IDto
+namespace Adnc.Whse.Application.Contracts.Dtos
 {
-    public string PositionCode { get; set; }
+    public class WarehouseCreationDto : IDto
+    {
+        public string PositionCode { get; set; }
 
-    public string PositionDescription { get; set; }
+        public string PositionDescription { get; set; }
+    }
 }

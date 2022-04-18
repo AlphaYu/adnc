@@ -1,14 +1,14 @@
 ﻿namespace Adnc.Infra.Caching.Core
 {
     /// <summary>
-    /// Adnc.Infra.Caching const value.
+    /// EasyCaching const value.
     /// </summary>
     public class CachingConstValue
     {
         /// <summary>
         /// The config section.
         /// </summary>
-        //public const string ConfigSection = "Adnc.Infra.Caching";
+        //public const string ConfigSection = "easycaching";
         /// <summary>
         /// The default name of the serializer.
         /// </summary>

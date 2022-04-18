@@ -1,27 +1,33 @@
-﻿namespace Adnc.Shared.RpcServices.Rtos;
+﻿using JetBrains.Annotations;
+using System;
+using System.Collections.Generic;
 
-public class DictRto
+namespace Adnc.Shared.RpcServices.Rtos
 {
-    public long ID { get; set; }
-
-    public string Name { get; set; }
-
-    public string Num { get; set; }
-
-    public long? Pid { get; set; }
-
-    public string Value { get; set; }
-
-    private IReadOnlyList<DictRto> _data = Array.Empty<DictRto>();
-
-    public IReadOnlyList<DictRto> Children
+    public class DictRto
     {
-        get => _data;
-        set
+        public long ID { get; set; }
+
+        public string Name { get; set; }
+
+        public string Num { get; set; }
+
+        public long? Pid { get; set; }
+
+        public string Value { get; set; }
+
+        private IReadOnlyList<DictRto> _data = Array.Empty<DictRto>();
+
+        [NotNull]
+        public IReadOnlyList<DictRto> Children
         {
-            if (value != null)
+            get => _data;
+            set
             {
-                _data = value;
+                if (value != null)
+                {
+                    _data = value;
+                }
             }
         }
     }

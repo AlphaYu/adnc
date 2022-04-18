@@ -1,42 +1,31 @@
-﻿namespace Adnc.Maint.WebApi.Controllers;
+﻿using Adnc.Maint.Application.Contracts.Dtos;
+using Adnc.Maint.Application.Contracts.Services;
+using Adnc.WebApi.Shared;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
-/// <summary>
-/// 通知管理
-/// </summary>
-[Route("maint/notices")]
-[ApiController]
-public class NoticeController : AdncControllerBase
+namespace Adnc.Maint.WebApi.Controllers
 {
-    private readonly INoticeAppService _noticeService;
-    private readonly IUsrRpcService _usrRpcService;
-
-    public NoticeController(INoticeAppService noticeService
-        , IUsrRpcService usrRpcService)
-    {
-        _noticeService = noticeService;
-        _usrRpcService = usrRpcService;
-    }
-
     /// <summary>
-    /// 获取通知消息列表
+    /// 通知管理
     /// </summary>
-    /// <param name="search"><see cref="NoticeSearchDto"/></param>
-    /// <returns></returns>
-    [HttpGet()]
-    public async Task<ActionResult<List<NoticeDto>>> GetList([FromQuery] NoticeSearchDto search)
-        => Result(await _noticeService.GetListAsync(search));
-
-    /// <summary>
-    /// 测试用途，获取用户服务部门列表
-    /// </summary>
-    /// <returns></returns>
-    [HttpGet()]
-    [Route("depts")]
-    public async Task<IActionResult> GetDeptListAsync()
+    [Route("maint/notices")]
+    [ApiController]
+    public class NoticeController : AdncControllerBase
     {
-        var result = await _usrRpcService.GeDeptsAsync();
-        if (result.IsSuccessStatusCode)
-            return Ok(result.Content);
-        return NoContent();
+        private readonly INoticeAppService _noticeService;
+
+        public NoticeController(INoticeAppService noticeService)
+            => _noticeService = noticeService;
+
+        /// <summary>
+        /// 获取通知消息列表
+        /// </summary>
+        /// <param name="search"><see cref="NoticeSearchDto"/></param>
+        /// <returns></returns>
+        [HttpGet()]
+        public async Task<ActionResult<List<NoticeDto>>> GetList([FromQuery] NoticeSearchDto search)
+            => Result(await _noticeService.GetListAsync(search));
     }
 }

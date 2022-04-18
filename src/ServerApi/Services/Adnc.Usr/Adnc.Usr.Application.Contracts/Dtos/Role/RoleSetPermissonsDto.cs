@@ -1,7 +1,10 @@
-﻿namespace Adnc.Usr.Application.Contracts.Dtos;
+﻿using Adnc.Application.Shared.Dtos;
 
-public class RoleSetPermissonsDto : IDto
+namespace Adnc.Usr.Application.Contracts.Dtos
 {
-    public long RoleId { set; get; }
-    public long[] Permissions { get; set; }
+    public class RoleSetPermissonsDto : IDto
+    {
+        public long RoleId { set; get; }
+        public long[] Permissions { get; set; }
+    }
 }

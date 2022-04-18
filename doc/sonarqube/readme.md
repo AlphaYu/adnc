@@ -1,6 +1,5 @@
 ```bash
 --安装服务端
---https://www.cnblogs.com/7tiny/p/11342902.html
 mkdir /root/sonarqube
 cd  /root/sonarqube
 docker run -d --name sonarqube \
@@ -9,7 +8,7 @@ docker run -d --name sonarqube \
 -v /root/sonarqube/logs:/opt/sonarqube/logs \
 -v /root/sonarqube/extensions:/opt/sonarqube/extensions \
 -e SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true \
--p 19000:9000 \
+-p 9000:9000 \
 sonarqube:8.9.0-community
 
 --VS-NUGET
