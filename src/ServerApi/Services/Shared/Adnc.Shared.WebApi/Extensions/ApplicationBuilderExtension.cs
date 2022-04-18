@@ -15,17 +15,9 @@ public static class ApplicationBuilderExtension
         var configuration = app.ApplicationServices.GetService<IConfiguration>();
         var environment = app.ApplicationServices.GetService<IHostEnvironment>();
         var serviceInfo = app.ApplicationServices.GetService<IServiceInfo>();
-        //var hangfireConfig = configuration.GetHangfireSection().Get<HangfireConfig>();
 
         if (environment.IsDevelopment())
-        {
             IdentityModelEventSource.ShowPII = true;
-            //app.UseHangfireDashboard(serviceInfo);
-        }
-        else
-        {
-            //app.UseHangfireDashboard(serviceInfo, hangfireConfig.Authorize);
-        }
 
         var defaultFilesOptions = new DefaultFilesOptions();
         defaultFilesOptions.DefaultFileNames.Clear();
@@ -43,6 +35,8 @@ public static class ApplicationBuilderExtension
 
         app.UseCors(serviceInfo.CorsPolicy);
 
+        app.UseMiniProfiler();
+
         app.UseSwagger(c =>
         {
             c.RouteTemplate = $"/{serviceInfo.ShortName}/swagger/{{documentName}}/swagger.json";
@@ -54,6 +48,8 @@ public static class ApplicationBuilderExtension
 
         app.UseSwaggerUI(c =>
         {
+            var assembly = Assembly.GetExecutingAssembly();
+            c.IndexStream = () => assembly.GetManifestResourceStream($"{assembly.GetName().Name}.swagger_miniprofiler.html");
             c.SwaggerEndpoint($"/{serviceInfo.ShortName}/swagger/{serviceInfo.Version}/swagger.json", $"{serviceInfo.FullName}-{serviceInfo.Version}");
             c.RoutePrefix = $"{serviceInfo.ShortName}";
         });

@@ -1,29 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<Import Project="..\..\build\common.props" />
 	<ItemGroup>
+		<Compile Remove="AdncInfraEfCoreModule.cs" />
 		<Compile Remove="DbContextFactory.cs" />
 		<Compile Remove="Repositories\EfDDDRepository.cs" />
 		<Compile Remove="Repositories\RepositoryModule.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Autofac" Version="6.3.0" />
 		<PackageReference Include="Dapper" Version="2.0.123" />
-		<PackageReference Include="Humanizer" Version="2.14.1" />
-		<PackageReference Include="Microsoft.Data.SqlClient" Version="4.1.0" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.3" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="6.0.3" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.3" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.3">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
 		<PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="6.0.1" />
-		<PackageReference Include="System.Threading.Tasks" Version="4.3.0" />
 		<PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="6.13.15" />
-		<PackageReference Include="DotNetCore.CAP" Version="6.0.1" />
 		<PackageReference Include="DotNetCore.CAP.MySql" Version="6.0.1" />
-		<PackageReference Include="Scrutor" Version="4.1.0" />
 	</ItemGroup>
 
 	<ItemGroup>

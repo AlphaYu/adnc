@@ -24,8 +24,11 @@ internal static class Program
                   cb.AddConsulConfiguration(consulOption, true);
               }
           })
-          .UseServiceProviderFactory(new AutofacServiceProviderFactory())
-          .ConfigureServices(services => services.Add(ServiceDescriptor.Singleton(typeof(IServiceInfo), ServiceInfo.GetInstance())))
+          .ConfigureServices(services =>
+          {
+              services.Add(ServiceDescriptor.Singleton(typeof(IServiceInfo), ServiceInfo.GetInstance()));
+              services.Add(ServiceDescriptor.Singleton(typeof(IDependencyRegistrar), new Registrar.MaintWebApiDependencyRegistrar(services)));
+          })
           .ConfigureWebHostDefaults(webBuilder => webBuilder.UseStartup<Startup>())
           .ConfigureLogging((context, logging) => logging.ClearProviders().AddConsole().AddDebug())
           .UseNLog();

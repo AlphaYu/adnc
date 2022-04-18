@@ -79,13 +79,11 @@ public sealed class OpsLogMqConsumer : BaseRabbitMqConsumer
         bool result = false;
         try
         {
-            using (var scope = _services.CreateScope())
-            {
-                var repository = scope.ServiceProvider.GetRequiredService<IMongoRepository<OperationLog>>();
-                var entity = JsonSerializer.Deserialize<OperationLog>(message);
-                await repository.AddAsync(entity);
-                result = true;
-            }
+            using var scope = _services.CreateScope();
+            var repository = scope.ServiceProvider.GetRequiredService<IMongoRepository<OperationLog>>();
+            var entity = JsonSerializer.Deserialize<OperationLog>(message);
+            await repository.AddAsync(entity);
+            result = true;
         }
         catch (Exception ex)
         {

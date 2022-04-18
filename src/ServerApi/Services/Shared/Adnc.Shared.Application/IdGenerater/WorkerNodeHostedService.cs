@@ -9,9 +9,9 @@ public class WorkerNodeHostedService : BackgroundService
 
     public WorkerNodeHostedService(ILogger<WorkerNodeHostedService> logger
        , WorkerNode workerNode
-       , string serviceName)
+       , IServiceInfo serviceInfo)
     {
-        _serviceName = serviceName;
+        _serviceName = serviceInfo.ShortName;
         _workerNode = workerNode;
         _logger = logger;
     }

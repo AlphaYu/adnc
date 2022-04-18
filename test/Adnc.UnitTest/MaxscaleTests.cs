@@ -11,17 +11,17 @@ namespace Adnc.UnitTests.EFCore
         private readonly IEfRepository<Customer> _cusRsp;
         private readonly IEfRepository<CustomerFinance> _cusFinanceRsp;
         private readonly IEfRepository<CustomerTransactionLog> _cusLogsRsp;
-        private MaxscaleDbcontextFixture _fixture;
+        private readonly MaxscaleDbcontextFixture _fixture;
 
         public MaxscaleTests(MaxscaleDbcontextFixture fixture, ITestOutputHelper output)
         {
             _fixture = fixture;
             _output = output;
-            _unitOfWork = _fixture.Container.Resolve<IUnitOfWork>();
-            _userContext = _fixture.Container.Resolve<IOperater>();
-            _cusRsp = _fixture.Container.Resolve<IEfRepository<Customer>>();
-            _cusFinanceRsp = _fixture.Container.Resolve<IEfRepository<CustomerFinance>>();
-            _cusLogsRsp = _fixture.Container.Resolve<IEfRepository<CustomerTransactionLog>>();
+            _unitOfWork = _fixture.Container.GetRequiredService<IUnitOfWork>();
+            _userContext = _fixture.Container.GetRequiredService<IOperater>();
+            _cusRsp = _fixture.Container.GetRequiredService<IEfRepository<Customer>>();
+            _cusFinanceRsp = _fixture.Container.GetRequiredService<IEfRepository<CustomerFinance>>();
+            _cusLogsRsp = _fixture.Container.GetRequiredService<IEfRepository<CustomerTransactionLog>>();
 
             Initialize();
         }
@@ -39,7 +39,7 @@ namespace Adnc.UnitTests.EFCore
         }
 
         [Fact]
-        public async void TestReadFromWirteDb()
+        public async Task TestReadFromWirteDb()
         {
             var result = await InsertCustomer();
             var cusFinance = await InsertCusFinance(result.Id);
@@ -52,7 +52,7 @@ namespace Adnc.UnitTests.EFCore
         }
 
         [Fact]
-        public async void TestDapperReadFromWirteDb()
+        public async Task TestDapperReadFromWirteDb()
         {
             var result = await InsertCustomer();
             var cusFinance = await InsertCusFinance(result.Id);
@@ -65,7 +65,7 @@ namespace Adnc.UnitTests.EFCore
         }
 
         [Fact]
-        public async void TestInsertRange()
+        public async Task TestInsertRange()
         {
             var list = await InsertRangeCustomer(10);
             var ids = list.Select(c => c.Id).ToArray();
@@ -80,7 +80,7 @@ namespace Adnc.UnitTests.EFCore
         }
 
         [Fact]
-        public async void TestUpdate()
+        public async Task TestUpdate()
         {
             var newRealName = "测试用户";
             var newNickname = "测试";
@@ -114,7 +114,7 @@ namespace Adnc.UnitTests.EFCore
         }
 
         [Fact]
-        public async void TestUpdateFullColumn()
+        public async Task TestUpdateFullColumn()
         {
             var newRealName = "测试用户";
             var newNickname = "测试";
@@ -148,7 +148,7 @@ namespace Adnc.UnitTests.EFCore
         }
 
         [Fact]
-        public async void TestUpdateRange()
+        public async Task TestUpdateRange()
         {
             var list = await InsertRangeCustomer(10);
             var ids = list.Select(c => c.Id).ToArray();

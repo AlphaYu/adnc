@@ -1,4 +1,5 @@
-﻿using Adnc.Infra.Mongo.Configuration;
+﻿using Adnc.Infra.IRepositories;
+using Adnc.Infra.Mongo.Configuration;
 using Adnc.Infra.Mongo.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -19,13 +20,13 @@ namespace Adnc.Infra.Mongo.Extensions
         /// <remarks>
         /// This currently requires wiring up memory caching and logging.
         /// </remarks>
-        public static MongoConfigurationBuilder AddMongo<TContext>(this IServiceCollection services, Action<MongoRepositoryOptions> configurator)
+        public static MongoConfigurationBuilder AddAdncInfraMongo<TContext>(this IServiceCollection services, Action<MongoRepositoryOptions> configurator)
             where TContext : IMongoContext
         {
             services.Configure(configurator);
             services.AddSingleton(typeof(IMongoContext), typeof(TContext));
-            //services.AddTransient(typeof(IMongoRepository<>), typeof(MongoRepository<>));
-            //services.AddTransient(typeof(ISoftDeletableMongoRepository<>), typeof(SoftDeletableMongoRepository<>));
+            services.AddTransient(typeof(IMongoRepository<>), typeof(MongoRepository<>));
+            services.AddTransient(typeof(ISoftDeletableMongoRepository<>), typeof(SoftDeletableMongoRepository<>));
             return new MongoConfigurationBuilder(services);
         }
 
@@ -38,10 +39,10 @@ namespace Adnc.Infra.Mongo.Extensions
         /// <remarks>
         /// This currently requires wiring up memory caching and logging.
         /// </remarks>
-        public static MongoConfigurationBuilder AddMongo<TContext>(this IServiceCollection services, string connectionString)
+        public static MongoConfigurationBuilder AddAdncInfraMongo<TContext>(this IServiceCollection services, string connectionString)
              where TContext : IMongoContext
         {
-            return services.AddMongo<TContext>(c => c.ConnectionString = connectionString);
+            return services.AddAdncInfraMongo<TContext>(c => c.ConnectionString = connectionString);
         }
     }
 }

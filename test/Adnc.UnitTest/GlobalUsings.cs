@@ -1,7 +1,6 @@
 ﻿global using Adnc.Infra.Core.Interfaces;
 global using Adnc.Infra.IRepositories;
 global using Adnc.UnitTest.Fixtures;
-global using Autofac;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Logging;

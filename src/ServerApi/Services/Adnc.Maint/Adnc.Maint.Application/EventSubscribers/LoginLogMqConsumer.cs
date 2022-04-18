@@ -80,13 +80,11 @@ public sealed class LoginLogMqConsumer : BaseRabbitMqConsumer
         bool result = false;
         try
         {
-            using (var scope = _services.CreateScope())
-            {
-                var repository = scope.ServiceProvider.GetRequiredService<IMongoRepository<LoginLog>>();
-                var entity = JsonSerializer.Deserialize<LoginLog>(message);
-                await repository.AddAsync(entity);
-                result = true;
-            }
+            using var scope = _services.CreateScope();
+            var repository = scope.ServiceProvider.GetRequiredService<IMongoRepository<LoginLog>>();
+            var entity = JsonSerializer.Deserialize<LoginLog>(message);
+            await repository.AddAsync(entity);
+            result = true;
         }
         catch (Exception ex)
         {

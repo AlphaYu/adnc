@@ -2,30 +2,13 @@ namespace Adnc.Maint.WebApi;
 
 public class Startup
 {
-    private readonly IHostEnvironment _environment;
-    private IServiceCollection _services;
+    public void ConfigureServices(IServiceCollection services) => services.GetWebApiRegistrar().AddAdnc();
 
-    public Startup(IHostEnvironment environment)
-    {
-        _environment = environment;
-    }
-
-    public void ConfigureServices(IServiceCollection services)
-    {
-        _services = services;
-        services.AddAdncServices<PermissionHandlerRemote>();
-    }
-
-    public void ConfigureContainer(ContainerBuilder builder)
-    {
-        builder.RegisterAdncModules(_services);
-    }
-
-    public void Configure(IApplicationBuilder app)
+    public void Configure(IApplicationBuilder app, IHostEnvironment environment)
     {
         app.UseAdncMiddlewares();
 
-        if (_environment.IsProduction() || _environment.IsStaging())
+        if (environment.IsProduction() || environment.IsStaging())
         {
             app.RegisterToConsul();
         }

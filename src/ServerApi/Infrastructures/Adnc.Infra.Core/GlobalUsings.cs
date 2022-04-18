@@ -1,6 +1,4 @@
 ﻿global using Adnc.Infra.Core.Interfaces;
-global using Autofac.Core;
-global using Autofac.Core.Registration;
 global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.Hosting;
 global using Microsoft.Extensions.Logging;

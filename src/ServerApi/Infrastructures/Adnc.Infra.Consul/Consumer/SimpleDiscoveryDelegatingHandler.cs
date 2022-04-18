@@ -4,6 +4,7 @@ using System.Net.Http.Headers;
 
 namespace Adnc.Infra.Consul.Consumer
 {
+    //https://www.siakabaro.com/use-http-2-with-httpclient-in-net-6-0/
     public class SimpleDiscoveryDelegatingHandler : DelegatingHandler
     {
         private readonly IEnumerable<ITokenGenerator> _tokenGenerators;
@@ -23,9 +24,8 @@ namespace Adnc.Infra.Consul.Consumer
                 request.Version = new Version(2, 0);
 
             var headers = request.Headers;
-
             var auth = headers.Authorization;
-            if (auth != null)
+            if (auth is not null)
             {
                 var tokenGenerator = _tokenGenerators.FirstOrDefault(x => x.Scheme.EqualsIgnoreCase(auth.Scheme));
                 var tokenTxt = tokenGenerator?.Create();
@@ -33,7 +33,6 @@ namespace Adnc.Infra.Consul.Consumer
                 if (!string.IsNullOrEmpty(tokenTxt))
                     request.Headers.Authorization = new AuthenticationHeaderValue(auth.Scheme, tokenTxt);
             }
-
             #region 缓存处理
 
             //if (request.Method == HttpMethod.Get)
@@ -71,8 +70,8 @@ namespace Adnc.Infra.Consul.Consumer
             //}
 
             #endregion 缓存处理
-
-            return await base.SendAsync(request, cancellationToken);
+            var response = await base.SendAsync(request, cancellationToken);
+            return response;
         }
     }
 }

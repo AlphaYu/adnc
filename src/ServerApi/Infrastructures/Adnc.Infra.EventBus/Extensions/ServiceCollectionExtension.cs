@@ -6,7 +6,7 @@ namespace Microsoft.Extensions.DependencyInjection;
 
 public static class AdncInfraEventBusServiceCollectionExtension
 {
-    public static IServiceCollection AddAdncEventBus(this IServiceCollection services)
+    public static IServiceCollection AddAdncInfraEventBus(this IServiceCollection services)
     {
         services.AddSingleton<RabbitMqProducer>();
         services.AddSingleton<IEventPublisher, CapPublisher>();
