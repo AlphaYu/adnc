@@ -1,4 +1,6 @@
-﻿namespace System
+﻿using JetBrains.Annotations;
+
+namespace System
 {
     public static class EventHandlerExtension
     {
@@ -7,9 +9,9 @@
         /// </summary>
         /// <param name="this">The @this to act on.</param>
         /// <param name="sender">Source of the event.</param>
-        public static void RaiseEvent([MaybeNull] this EventHandler @this, object sender)
+        public static void RaiseEvent([CanBeNull] this EventHandler @this, object sender)
         {
-            @this?.Invoke(sender, EventArgs.Empty);
+            @this?.Invoke(sender, null);
         }
 
         /// <summary>
@@ -18,7 +20,7 @@
         /// <param name="handler">The handler to act on.</param>
         /// <param name="sender">Source of the event.</param>
         /// <param name="e">Event information.</param>
-        public static void RaiseEvent([MaybeNull] this EventHandler handler, object sender, EventArgs e)
+        public static void RaiseEvent([CanBeNull] this EventHandler handler, object sender, EventArgs e)
         {
             handler?.Invoke(sender, e);
         }
@@ -29,7 +31,7 @@
         /// <typeparam name="TEventArgs">Type of the event arguments.</typeparam>
         /// <param name="this">The @this to act on.</param>
         /// <param name="sender">Source of the event.</param>
-        public static void RaiseEvent<TEventArgs>([MaybeNull] this EventHandler<TEventArgs> @this, object sender) where TEventArgs : EventArgs
+        public static void RaiseEvent<TEventArgs>([CanBeNull] this EventHandler<TEventArgs> @this, object sender) where TEventArgs : EventArgs
         {
             @this?.Invoke(sender, Activator.CreateInstance<TEventArgs>());
         }
@@ -41,7 +43,7 @@
         /// <param name="this">The @this to act on.</param>
         /// <param name="sender">Source of the event.</param>
         /// <param name="e">Event information to send to registered event handlers.</param>
-        public static void RaiseEvent<TEventArgs>([MaybeNull] this EventHandler<TEventArgs> @this, object sender, TEventArgs e) where TEventArgs : EventArgs
+        public static void RaiseEvent<TEventArgs>([CanBeNull] this EventHandler<TEventArgs> @this, object sender, TEventArgs e) where TEventArgs : EventArgs
         {
             @this?.Invoke(sender, e);
         }

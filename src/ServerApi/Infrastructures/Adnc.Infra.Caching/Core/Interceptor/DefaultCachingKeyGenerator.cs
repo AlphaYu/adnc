@@ -8,7 +8,7 @@ using System.Text;
 namespace Adnc.Infra.Core.Interceptor
 {
     /// <summary>
-    /// Default Adnc.Infra.Caching key generator.
+    /// Default easycaching key generator.
     /// </summary>
     public class DefaultCachingKeyGenerator : ICachingKeyGenerator
     {

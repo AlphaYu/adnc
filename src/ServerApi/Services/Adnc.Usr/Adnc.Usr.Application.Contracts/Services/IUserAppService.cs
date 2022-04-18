@@ -1,4 +1,13 @@
-﻿namespace Adnc.Usr.Application.Contracts.Services
+﻿using Adnc.Application.Shared.Dtos;
+using Adnc.Application.Shared.Interceptors;
+using Adnc.Application.Shared.Services;
+using Adnc.Infra.Caching.Interceptor;
+using Adnc.Shared.Consts.Caching.Usr;
+using Adnc.Usr.Application.Contracts.Dtos;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace Adnc.Usr.Application.Contracts.Services
 {
     /// <summary>
     /// 用户管理
@@ -70,7 +79,7 @@
         /// <param name="permissions"></param>
         /// <param name="validationVersion"></param>
         /// <returns></returns>
-        Task<List<string>> GetPermissionsAsync(long userId, IEnumerable<string> permissions, string validationVersion = null);
+        Task<List<string>> GetPermissionsAsync(long userId, IEnumerable<string> permissions, string validationVersion=null);
 
         /// <summary>
         /// 获取用户列表

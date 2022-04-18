@@ -1,15 +1,19 @@
-﻿namespace Adnc.Usr.Application.Contracts.DtoValidators;
+﻿using Adnc.Usr.Application.Contracts.Dtos;
+using FluentValidation;
 
-/// <summary>
-/// DeptUpdationDtoValidator
-/// </summary>
-public class DeptUpdationDtoValidator : AbstractValidator<DeptUpdationDto>
+namespace Adnc.Usr.Application.Contracts.DtoValidators
 {
     /// <summary>
     /// DeptUpdationDtoValidator
     /// </summary>
-    public DeptUpdationDtoValidator()
+    public class DeptUpdationDtoValidator : AbstractValidator<DeptUpdationDto>
     {
-        Include(new DeptCreationDtoValidator());
+        /// <summary>
+        /// DeptUpdationDtoValidator
+        /// </summary>
+        public DeptUpdationDtoValidator()
+        {
+            Include(new DeptCreationDtoValidator());
+        }
     }
 }

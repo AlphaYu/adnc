@@ -1,6 +1,9 @@
-﻿namespace Adnc.Maint.Application.Contracts.Dtos;
+﻿using Adnc.Application.Shared.Dtos;
 
-public class NoticeSearchDto : SearchDto
+namespace Adnc.Maint.Application.Contracts.Dtos
 {
-    public string Title { get; set; }
+    public class NoticeSearchDto : SearchDto
+    {
+        public string Title { get; set; }
+    }
 }

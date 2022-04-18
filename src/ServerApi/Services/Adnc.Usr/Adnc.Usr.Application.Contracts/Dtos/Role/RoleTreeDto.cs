@@ -1,8 +1,13 @@
-﻿namespace Adnc.Usr.Application.Contracts.Dtos;
+﻿using Adnc.Application.Shared.Dtos;
+using System;
+using System.Collections.Generic;
 
-[Serializable]
-public class RoleTreeDto : IDto
+namespace Adnc.Usr.Application.Contracts.Dtos
 {
-    public IEnumerable<Node<long>> TreeData { get; set; }
-    public IEnumerable<long> CheckedIds { get; set; }
+    [Serializable]
+    public class RoleTreeDto : IDto
+    {
+        public IEnumerable<Node<long>> TreeData { get; set; }
+        public IEnumerable<long> CheckedIds { get; set; }
+    }
 }

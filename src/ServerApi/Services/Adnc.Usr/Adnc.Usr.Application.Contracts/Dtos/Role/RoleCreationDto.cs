@@ -1,19 +1,22 @@
-﻿namespace Adnc.Usr.Application.Contracts.Dtos;
+﻿using Adnc.Application.Shared.Dtos;
 
-public class RoleCreationDto : IInputDto
+namespace Adnc.Usr.Application.Contracts.Dtos
 {
-    /// <summary>
-    /// 角色名
-    /// </summary>
-    public string Name { get; set; }
+    public class RoleCreationDto : IInputDto
+    {
+        /// <summary>
+        /// 角色名
+        /// </summary>
+        public string Name { get; set; }
 
-    /// <summary>
-    /// 角色描述
-    /// </summary>
-    public string Tips { get; set; }
+        /// <summary>
+        /// 角色描述
+        /// </summary>
+        public string Tips { get; set; }
 
-    /// <summary>
-    /// 序号
-    /// </summary>
-    public int Ordinal { get; set; }
+        /// <summary>
+        /// 序号
+        /// </summary>
+        public int Ordinal { get; set; }
+    }
 }

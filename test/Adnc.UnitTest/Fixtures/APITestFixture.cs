@@ -1,4 +1,6 @@
-﻿namespace Adnc.UnitTest.Fixtures
+﻿using System;
+
+namespace Adnc.UnitTest.Fixtures
 {
     /// <summary>
     /// Shared Context https://xunit.github.io/docs/shared-context.html

@@ -1,6 +1,11 @@
-﻿namespace Adnc.Infra.Consul.Consumer
+﻿using Consul;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace Adnc.Infra.Consul.Consumer
 {
-    public class ConsulServiceProvider : IConsulServiceProvider
+    public class ConsulServiceProvider : IServiceProvider
     {
         private readonly ConsulClient _consulClient;
 

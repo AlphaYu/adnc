@@ -1,26 +1,19 @@
-﻿namespace Adnc.Ord.Domain.Entities;
+﻿using Adnc.Domain.Shared.Entities;
+using Adnc.Infra.Core;
 
-public class OrderReceiver : ValueObject
+namespace Adnc.Ord.Domain.Entities
 {
-    /// <summary>
-    /// 姓名
-    /// </summary>
-    public string Name { get; }
-
-    /// <summary>
-    /// 电话
-    /// </summary>
-    public string Phone { get; }
-
-    /// <summary>
-    /// 地址
-    /// </summary>
-    public string Address { get; }
-
-    public OrderReceiver(string name, string phone, string address)
+    public class OrderReceiver : ValueObject
     {
-        this.Name = Checker.NotNullOrEmpty(name, nameof(name));
-        this.Phone = Checker.NotNullOrEmpty(phone, nameof(phone));
-        this.Address = Checker.NotNullOrEmpty(address, nameof(address));
+        public string Name { get; }
+        public string Phone { get; }
+        public string Address { get; }
+
+        public OrderReceiver(string name, string phone, string address)
+        {
+            this.Name = Checker.NotNullOrEmpty(name, nameof(name));
+            this.Phone = Checker.NotNullOrEmpty(phone, nameof(phone));
+            this.Address = Checker.NotNullOrEmpty(address, nameof(address));
+        }
     }
 }

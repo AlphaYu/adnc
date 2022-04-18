@@ -1,4 +1,12 @@
-﻿namespace Adnc.Usr.Application.Contracts.Services
+﻿using Adnc.Application.Shared.Interceptors;
+using Adnc.Application.Shared.Services;
+using Adnc.Infra.Caching.Interceptor;
+using Adnc.Shared.Consts.Caching.Usr;
+using Adnc.Usr.Application.Contracts.Dtos;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace Adnc.Usr.Application.Contracts.Services
 {
     /// <summary>
     /// 部门服务

@@ -1,4 +1,6 @@
-﻿namespace System
+﻿using System.Net;
+
+namespace System
 {
     public static class ShortExtension
     {

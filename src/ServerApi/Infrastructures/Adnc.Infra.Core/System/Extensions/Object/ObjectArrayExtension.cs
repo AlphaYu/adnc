@@ -1,4 +1,6 @@
-﻿namespace System
+﻿using JetBrains.Annotations;
+
+namespace System
 {
     public static class ObjectArrayExtension
     {

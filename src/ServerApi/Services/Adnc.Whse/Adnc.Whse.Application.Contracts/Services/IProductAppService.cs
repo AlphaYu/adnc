@@ -1,23 +1,31 @@
-﻿namespace Adnc.Whse.Application.Contracts.Services;
+﻿using Adnc.Application.Shared.Dtos;
+using Adnc.Application.Shared.Interceptors;
+using Adnc.Application.Shared.Services;
+using Adnc.Whse.Application.Contracts.Dtos;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
-public interface IProductAppService : IAppService
+namespace Adnc.Whse.Application.Contracts.Services
 {
-    [OperateLog(LogName = "创建商品")]
-    Task<ProductDto> CreateAsync(ProductCreationDto input);
+    public interface IProductAppService : IAppService
+    {
+        [OperateLog(LogName = "创建商品")]
+        Task<ProductDto> CreateAsync(ProductCreationDto input);
 
-    [OperateLog(LogName = "更新商品")]
-    Task<ProductDto> UpdateAsync(long id, ProductUpdationDto input);
+        [OperateLog(LogName = "更新商品")]
+        Task<ProductDto> UpdateAsync(long id, ProductUpdationDto input);
 
-    [OperateLog(LogName = "调整商品价格")]
-    Task<ProductDto> ChangePriceAsync(long id, ProducChangePriceDto input);
+        [OperateLog(LogName = "调整商品价格")]
+        Task<ProductDto> ChangePriceAsync(long id, ProducChangePriceDto input);
 
-    [OperateLog(LogName = "上架商品")]
-    Task<ProductDto> PutOnSaleAsync(long id, ProductPutOnSaleDto input);
+        [OperateLog(LogName = "上架商品")]
+        Task<ProductDto> PutOnSaleAsync(long id, ProductPutOnSaleDto input);
 
-    [OperateLog(LogName = "下架商品")]
-    Task<ProductDto> PutOffSaleAsync(long id, ProductPutOffSaleDto input);
+        [OperateLog(LogName = "下架商品")]
+        Task<ProductDto> PutOffSaleAsync(long id, ProductPutOffSaleDto input);
 
-    Task<PageModelDto<ProductDto>> GetPagedAsync(ProductSearchPagedDto search);
+        Task<PageModelDto<ProductDto>> GetPagedAsync(ProductSearchPagedDto search);
 
-    Task<List<ProductDto>> GetListAsync(ProductSearchListDto search);
+        Task<List<ProductDto>> GetListAsync(ProductSearchListDto search);
+    }
 }

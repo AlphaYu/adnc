@@ -1,8 +1,11 @@
-﻿namespace Adnc.Ord.Application.Contracts.Dtos;
+﻿using Adnc.Application.Shared.Dtos;
 
-public class OrderReceiverDto : IDto
+namespace Adnc.Ord.Application.Contracts.Dtos
 {
-    public string Name { get; set; }
-    public string Phone { get; set; }
-    public string Address { get; set; }
+    public class OrderReceiverDto : IDto
+    {
+        public string Name { get; set; }
+        public string Phone { get; set; }
+        public string Address { get; set; }
+    }
 }

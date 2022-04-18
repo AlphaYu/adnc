@@ -1,11 +1,22 @@
-﻿namespace Adnc.Whse.Application.Services.Caching;
+﻿using Adnc.Application.Shared.Caching;
+using Adnc.Infra.Caching;
+using System;
+using System.Threading.Tasks;
 
-public class CacheService : AbstractCacheService, ICachePreheatable
+namespace Adnc.Whse.Application.Services.Caching
 {
-    public CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IServiceProvider> serviceProvider)
-        : base(cacheProvider, serviceProvider)
+    public class CacheService : AbstractCacheService
     {
-    }
+        private readonly Lazy<ICacheProvider> _cache;
 
-    public override async Task PreheatAsync() => await Task.CompletedTask;
+        public CacheService(Lazy<ICacheProvider> cache)
+            : base(cache)
+            => _cache = cache;
+
+        public override async Task PreheatAsync()
+        {
+            // TODO
+            await Task.CompletedTask;
+        }
+    }
 }

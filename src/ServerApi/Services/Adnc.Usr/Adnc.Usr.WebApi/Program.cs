@@ -1,78 +1,63 @@
-namespace Adnc.Usr.WebApi;
+using Adnc.Infra.Consul;
+using Adnc.Infra.Core;
+using Adnc.WebApi.Shared;
+using Autofac.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using NLog.Web;
+using System.Reflection;
 
-internal static class Program
+namespace Adnc.Usr.WebApi
 {
-    internal static async Task Main(string[] args)
+    public class Program
     {
-        await CreateHostBuilder(args)
-                          .Build()
-                          .ChangeThreadPoolSettings()
-                          .RunAsync();
-    }
+        public static void Main(string[] args)
+        {
+            //var logger = NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
+            var hostBuilder = CreateHostBuilder(args);
+            var host = hostBuilder.Build();
+            host.ChangeThreadPoolSettings();
+            host.Run();
+        }
 
-    internal static IHostBuilder CreateHostBuilder(string[] args)
-    {
-        return Host.CreateDefaultBuilder(args)
-          .ConfigureHostConfiguration(configuration => configuration.AddCommandLine(args))
-          .ConfigureAppConfiguration((context, cb) =>
-          {
-              var env = context.HostingEnvironment;
-              if (env.IsProduction() || env.IsStaging())
-              {
-                  var configuration = cb.Build();
-                  var consulOption = configuration.GetConsulSection().Get<ConsulConfig>();
-                  cb.AddConsulConfiguration(consulOption, true);
-              }
-          })
-          .ConfigureServices(services => 
-          {
-              services.Add(ServiceDescriptor.Singleton(typeof(IServiceInfo), ServiceInfo.GetInstance()));
-              services.Add(ServiceDescriptor.Singleton(typeof(IDependencyRegistrar), new Registrar.UsrWebApiDependencyRegistrar(services)));
-          })
-          .ConfigureWebHostDefaults(webBuilder => webBuilder.UseStartup<Startup>())
-          .ConfigureLogging((context, logging) => logging.ClearProviders().AddConsole().AddDebug())
-          .UseNLog();
-    }
+        public static IHostBuilder CreateHostBuilder(string[] args)
+        {
+            IHostBuilder hostBuilder = Host.CreateDefaultBuilder(args);
+            hostBuilder.ConfigureHostConfiguration(configuration =>
+            {
+                configuration.AddCommandLine(args);
+            });
+            hostBuilder.ConfigureAppConfiguration((context, cb) =>
+            {
+                var env = context.HostingEnvironment;
+                if (env.IsProduction() || env.IsStaging())
+                {
+                    var configuration = cb.Build();
+                    var consulOption = configuration.GetConsulSection().Get<ConsulConfig>();
+                    cb.AddConsulConfiguration(consulOption, true);
+                }
+            });
+            hostBuilder.UseServiceProviderFactory(new AutofacServiceProviderFactory());
+            hostBuilder.ConfigureServices(services =>
+            {
+                services.Add(ServiceDescriptor.Singleton(typeof(IServiceInfo), ServiceInfo.Create(Assembly.GetExecutingAssembly())));
+            });
+            hostBuilder.ConfigureWebHostDefaults(webBuilder =>
+            {
+                webBuilder.UseStartup<Startup>();
+            });
+            hostBuilder.ConfigureLogging((context, logging) =>
+            {
+                logging.ClearProviders();
+                logging.AddConsole();
+                logging.AddDebug();
+            });
+            hostBuilder.UseNLog();
 
-    //internal static async Task AspNet6(string[] args)
-    //{
-    //    var currentAssembly = Assembly.GetExecutingAssembly();
-    //    var builder = WebApplication.CreateBuilder(new WebApplicationOptions
-    //    {
-    //        Args = args
-    //        ,
-    //        ApplicationName = currentAssembly.FullName
-    //    });
-    //    //add configuration
-    //    builder.Services.ReplaceConfiguration(builder.Configuration);
-    //    builder.Configuration.AddCommandLine(args);
-    //    if (builder.Environment.IsProduction() || builder.Environment.IsStaging())
-    //    {
-    //        var consulOption = builder.Configuration.GetConsulSection().Get<ConsulConfig>();
-    //        builder.Configuration.AddConsulConfiguration(consulOption, true);
-    //    }
-    //    //add services to ms container
-    //    builder.Services.AddSingleton<IServiceInfo>(ServiceInfo.Create(currentAssembly));
-    //    builder.Services.AddAdncServices<PermissionHandlerLocal>();
-    //    builder.Logging.ClearProviders();
-    //    builder.Logging.AddConsole();
-    //    builder.Logging.AddDebug();
-    //    builder.Host.UseNLog();
-    //    //add services to autofac container
-    //    builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
-    //    builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
-    //    {
-    //        containerBuilder.RegisterAdncModules(builder.Services);
-    //    });
-    //    //configure the HTTP request pipeline.
-    //    var app = builder.Build();
-    //    app.ChangeThreadPoolSettings();
-    //    app.UseAdncMiddlewares();
-    //    if (app.Environment.IsProduction() || app.Environment.IsStaging())
-    //    {
-    //        app.RegisterToConsul();
-    //    }
-    //    //run application server
-    //    await app.RunAsync();
-    //}
+            return hostBuilder;
+        }
+    }
 }

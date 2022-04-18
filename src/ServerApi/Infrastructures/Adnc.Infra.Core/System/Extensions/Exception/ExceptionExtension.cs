@@ -1,4 +1,6 @@
-﻿namespace System
+﻿using System.Text;
+
+namespace System
 {
     public static class ExceptionExtension
     {

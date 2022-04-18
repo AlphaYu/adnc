@@ -1,20 +1,26 @@
-﻿namespace Adnc.Shared.RpcServices.Services;
+﻿using Adnc.Shared.RpcServices.Rtos;
+using Refit;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
-public interface IAuthRpcService : IRpcService
+namespace Adnc.Shared.RpcServices.Services
 {
-    /// <summary>
-    ///  登录
-    /// </summary>
-    /// <returns></returns>
-    [Post("/usr/session")]
-    Task<ApiResponse<LoginReplyRto>> LoginAsync(LoginRto loginRequest);
+    public interface IAuthRpcService : IRpcService
+    {
+        /// <summary>
+        ///  登录
+        /// </summary>
+        /// <returns></returns>
+        [Post("/usr/session")]
+        Task<ApiResponse<LoginReplyRto>> LoginAsync(LoginRto loginRequest);
 
-    /// <summary>
-    /// 获取当前用户权限
-    /// </summary>
-    /// <returns></returns>
-    [Headers("Authorization: Bearer", "Cache: 2000")]
-    [Get("/usr/users/{userId}/permissions")]
-    //Task<ApiResponse<List<string>>> GetCurrenUserPermissions([Header("Authorization")] string jwtToken, long userId, [Query(CollectionFormat.Multi)] string[] permissions);
-    Task<ApiResponse<List<string>>> GetCurrenUserPermissionsAsync(long userId, [Query(CollectionFormat.Multi)] IEnumerable<string> permissions, string validationVersion);
+        /// <summary>
+        /// 获取当前用户权限
+        /// </summary>
+        /// <returns></returns>
+        [Headers("Authorization: Bearer", "Cache: 2000")]
+        [Get("/usr/users/{userId}/permissions")]
+        //Task<ApiResponse<List<string>>> GetCurrenUserPermissions([Header("Authorization")] string jwtToken, long userId, [Query(CollectionFormat.Multi)] string[] permissions);
+        Task<ApiResponse<List<string>>> GetCurrenUserPermissionsAsync(long userId, [Query(CollectionFormat.Multi)] IEnumerable<string> permissions, string validationVersion);
+    }
 }

@@ -1,11 +1,14 @@
-﻿namespace Adnc.Infra.Consul.Consumer
+﻿using System;
+using System.Threading.Tasks;
+
+namespace Adnc.Infra.Consul.Consumer
 {
     public interface IServiceBuilder
     {
         /// <summary>
         /// 服务提供者
         /// </summary>
-        IConsulServiceProvider ServiceProvider { get; set; }
+        IServiceProvider ServiceProvider { get; set; }
 
         /// <summary>
         /// 服务名称

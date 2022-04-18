@@ -1,18 +1,22 @@
-﻿namespace Adnc.Whse.Domain.Entities;
+﻿using Adnc.Domain.Shared.Entities;
+using Adnc.Infra.Core;
 
-public class WarehousePosition : ValueObject
+namespace Adnc.Whse.Domain.Entities
 {
-    public string Code { get; }
-
-    public string Description { get; }
-
-    private WarehousePosition()
+    public class WarehousePosition : ValueObject
     {
-    }
+        public string Code { get; }
 
-    internal WarehousePosition(string code, string description)
-    {
-        this.Code = Checker.NotNullOrEmpty(code, nameof(code));
-        this.Description = description != null ? description.Trim() : string.Empty;
+        public string Description { get; }
+
+        private WarehousePosition()
+        {
+        }
+
+        internal WarehousePosition(string code, string description)
+        {
+            this.Code = Checker.NotNullOrEmpty(code, nameof(code));
+            this.Description = description != null ? description.Trim() : string.Empty;
+        }
     }
 }

@@ -1,9 +1,13 @@
-﻿namespace Adnc.Maint.Application.Contracts.DtoValidators;
+﻿using Adnc.Maint.Application.Contracts.Dtos;
+using FluentValidation;
 
-public class DictUpdationDtoValidator : AbstractValidator<DictUpdationDto>
+namespace Adnc.Maint.Application.Contracts.DtoValidators
 {
-    public DictUpdationDtoValidator()
+    public class DictUpdationDtoValidator : AbstractValidator<DictUpdationDto>
     {
-        Include(new DictCreationDtoValidator());
+        public DictUpdationDtoValidator()
+        {
+            Include(new DictCreationDtoValidator());
+        }
     }
 }

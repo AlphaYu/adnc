@@ -1,8 +1,9 @@
-﻿namespace Adnc.Shared.RpcServices.Rtos;
-
-public class LoginReplyRto
+﻿namespace Adnc.Shared.RpcServices.Rtos
 {
-    public string Token { get; set; }
+    public class LoginReplyRto
+    {
+        public string Token { get; set; }
 
-    public string RefreshToken { get; set; }
+        public string RefreshToken { get; set; }
+    }
 }

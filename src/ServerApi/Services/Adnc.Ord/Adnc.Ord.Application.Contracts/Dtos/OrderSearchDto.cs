@@ -1,6 +1,9 @@
-﻿namespace Adnc.Ord.Application.Contracts.Dtos;
+﻿using Adnc.Application.Shared.Dtos;
 
-public class OrderSearchPagedDto : SearchPagedDto
+namespace Adnc.Ord.Application.Contracts.Dtos
 {
-    public long? Id { get; set; }
+    public class OrderSearchPagedDto : SearchPagedDto
+    {
+        public long? Id { get; set; }
+    }
 }

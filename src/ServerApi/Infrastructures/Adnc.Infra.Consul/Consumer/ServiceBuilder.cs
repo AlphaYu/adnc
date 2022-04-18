@@ -1,13 +1,16 @@
-﻿namespace Adnc.Infra.Consul.Consumer
+﻿using System;
+using System.Threading.Tasks;
+
+namespace Adnc.Infra.Consul.Consumer
 {
     public class ServiceBuilder : IServiceBuilder
     {
-        public IConsulServiceProvider ServiceProvider { get; set; }
+        public IServiceProvider ServiceProvider { get; set; }
         public string ServiceName { get; set; }
         public string UriScheme { get; set; }
         public ILoadBalancer LoadBalancer { get; set; }
 
-        public ServiceBuilder(IConsulServiceProvider serviceProvider)
+        public ServiceBuilder(IServiceProvider serviceProvider)
         {
             ServiceProvider = serviceProvider;
         }

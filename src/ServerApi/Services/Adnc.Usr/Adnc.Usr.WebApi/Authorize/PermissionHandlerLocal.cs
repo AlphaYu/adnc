@@ -1,15 +1,21 @@
-﻿namespace Microsoft.AspNetCore.Authorization;
+﻿using Adnc.Usr.Application.Contracts.Services;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-public class PermissionHandlerLocal : AbstractPermissionHandler
+namespace Microsoft.AspNetCore.Authorization
 {
-    private readonly IUserAppService _userAppService;
-
-    public PermissionHandlerLocal(IUserAppService userAppService)
-        => _userAppService = userAppService;
-
-    protected override async Task<bool> CheckUserPermissions(long userId, IEnumerable<string> codes, string validationVersion)
+    public class PermissionHandlerLocal : PermissionHandler
     {
-        var permissions = await _userAppService.GetPermissionsAsync(userId, codes, validationVersion);
-        return permissions.IsNotNullOrEmpty();
+        private readonly IUserAppService _userAppService;
+
+        public PermissionHandlerLocal(IUserAppService userAppService)
+            => _userAppService = userAppService;
+
+        protected override async Task<bool> CheckUserPermissions(long userId, IEnumerable<string> codes,string validationVersion)
+        {
+            var permissions = await _userAppService.GetPermissionsAsync(userId, codes, validationVersion);
+            return permissions.IsNotNullOrEmpty();
+        }
     }
 }

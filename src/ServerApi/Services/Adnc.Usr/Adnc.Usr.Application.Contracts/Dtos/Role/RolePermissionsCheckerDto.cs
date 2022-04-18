@@ -1,7 +1,11 @@
-﻿namespace Adnc.Usr.Application.Contracts.Dtos;
+﻿using Adnc.Application.Shared.Dtos;
+using System.Collections.Generic;
 
-public class RolePermissionsCheckerDto : IDto
+namespace Adnc.Usr.Application.Contracts.Dtos
 {
-    public IEnumerable<long> RoleIds { get; set; }
-    public IEnumerable<string> Permissions { get; set; }
+    public class RolePermissionsCheckerDto : IDto
+    {
+        public IEnumerable<long> RoleIds { get; set; }
+        public IEnumerable<string> Permissions { get; set; }
+    }
 }

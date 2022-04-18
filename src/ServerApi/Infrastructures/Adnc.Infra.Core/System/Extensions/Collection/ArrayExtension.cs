@@ -1,4 +1,7 @@
-﻿namespace System
+﻿using JetBrains.Annotations;
+using System.Collections;
+
+namespace System
 {
     public static class ArrayExtension
     {

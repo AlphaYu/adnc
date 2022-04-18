@@ -1,32 +1,36 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Adnc.Infra.Entities.Config;
+using Adnc.Shared.Consts.Entity.Ord;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Adnc.Ord.Domain.Entities.Config;
-
-public class OrderConfig : EntityTypeConfiguration<Order>
+namespace Adnc.Ord.Domain.Entities.Config
 {
-    public override void Configure(EntityTypeBuilder<Order> builder)
+    public class OrderConfig : EntityTypeConfiguration<Order>
     {
-        base.Configure(builder);
-
-        builder.Property(x => x.CustomerId);
-
-        builder.Property(x => x.Amount).HasColumnType("decimal(18,4)");
-
-        builder.Property(x => x.Remark).HasMaxLength(OrdConsts.Remark_MaxLength);
-
-        builder.OwnsOne(x => x.Status, y =>
+        public override void Configure(EntityTypeBuilder<Order> builder)
         {
-            y.Property(z => z.Code).HasColumnName("statuscode");
-            y.Property(z => z.ChangesReason).HasColumnName("statuschangesreason").HasMaxLength(OrdConsts.ChangesReason_MaxLength);
-        });
+            base.Configure(builder);
 
-        builder.OwnsOne(x => x.Receiver, y =>
-        {
-            y.Property(z => z.Name).HasColumnName("receivername").HasMaxLength(OrdConsts.Name_MaxLength);
-            y.Property(z => z.Phone).HasColumnName("receiverphone").HasMaxLength(OrdConsts.Phone_MaxLength);
-            y.Property(z => z.Address).HasColumnName("receiveraddress").HasMaxLength(OrdConsts.Address_MaxLength);
-        });
+            builder.Property(x => x.CustomerId).IsRequired();
 
-        builder.HasMany(x => x.Items).WithOne().HasForeignKey(y => y.OrderId);
+            builder.Property(x => x.Amount).IsRequired().HasColumnType("decimal(18,4)");
+
+            builder.Property(x => x.Remark).HasMaxLength(OrdConsts.Remark_MaxLength);
+
+            builder.OwnsOne(x => x.Status, y =>
+            {
+                y.Property(y => y.Code).IsRequired().HasColumnName("StatusCode");
+                y.Property(y => y.ChangesReason).HasColumnName("StatusChangesReason").HasMaxLength(OrdConsts.ChangesReason_MaxLength);
+            });
+
+            builder.OwnsOne(x => x.Receiver, y =>
+            {
+                y.Property(y => y.Name).IsRequired().HasColumnName("ReceiverName").HasMaxLength(OrdConsts.Name_MaxLength);
+                y.Property(y => y.Phone).IsRequired().HasColumnName("ReceiverPhone").HasMaxLength(OrdConsts.Phone_MaxLength);
+                y.Property(y => y.Address).IsRequired().HasColumnName("ReceiverAddress").HasMaxLength(OrdConsts.Address_MaxLength);
+            });
+
+            builder.HasMany(x => x.Items).WithOne().HasForeignKey(y => y.OrderId);
+        }
     }
 }

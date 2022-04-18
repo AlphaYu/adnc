@@ -1,12 +1,15 @@
-﻿namespace Adnc.Cus.Application.Contracts.Dtos;
+﻿using Adnc.Application.Shared.Dtos;
 
-public class CustomerDto : OutputBaseAuditDto
+namespace Adnc.Cus.Application.Contracts.Dtos
 {
-    public string Account { get; set; }
+    public class CustomerDto : OutputBaseAuditDto
+    {
+        public string Account { get; set; }
 
-    public string Nickname { get; set; }
+        public string Nickname { get; set; }
 
-    public string Realname { get; set; }
+        public string Realname { get; set; }
 
-    public decimal FinanceInfoBalance { get; set; }
+        public decimal FinanceInfoBalance { get; set; }
+    }
 }

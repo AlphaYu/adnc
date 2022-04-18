@@ -1,8 +1,9 @@
-﻿namespace Adnc.Ord.Application.Contracts.Dtos;
-
-public class OrderMarkCreatedStatusDto
+﻿namespace Adnc.Ord.Application.Contracts.Dtos
 {
-    public bool IsSuccess { get; set; }
+    public class OrderMarkCreatedStatusDto
+    {
+        public bool IsSuccess { get; set; }
 
-    public string Remark { get; set; }
+        public string Remark { get; set; }
+    }
 }

@@ -1,4 +1,8 @@
-﻿namespace System
+﻿using JetBrains.Annotations;
+using System.IO;
+using System.Text;
+
+namespace System
 {
     public static class ByteArrayExtension
     {

@@ -1,33 +1,44 @@
-﻿namespace Adnc.Whse.Application.EventSubscribers;
+﻿using Adnc.Shared.Events;
+using Adnc.Whse.Application.Contracts.Dtos;
+using Adnc.Whse.Application.Contracts.Services;
+using DotNetCore.CAP;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
-public sealed class CapEventSubscriber : ICapSubscribe
+namespace Adnc.Whse.Application.EventSubscribers
 {
-    private readonly IServiceProvider _services;
-    private readonly ILogger<CapEventSubscriber> _logger;
-
-    public CapEventSubscriber(
-        IServiceProvider services
-        , ILogger<CapEventSubscriber> logger)
+    public sealed class CapEventSubscriber : ICapSubscribe
     {
-        _services = services;
-        _logger = logger;
+        private readonly IServiceProvider _services;
+        private readonly ILogger<CapEventSubscriber> _logger;
+
+        public CapEventSubscriber(
+            IServiceProvider services
+            , ILogger<CapEventSubscriber> logger)
+        {
+            _services = services;
+            _logger = logger;
+        }
+
+        #region across service event
+
+        /// <summary>
+        /// 订阅订单创建事件
+        /// </summary>
+        /// <param name="warehouseQtyBlockedEvent"></param>
+        /// <returns></returns>
+        [CapSubscribe(nameof(OrderCreatedEvent))]
+        public async Task ProcessOrderCreatedEvent(OrderCreatedEvent eto)
+        {
+            using var scope = _services.CreateScope();
+            var data = eto.Data;
+            var appSrv = scope.ServiceProvider.GetRequiredService<IWarehouseAppService>();
+            await appSrv.BlockQtyAsync(new WarehouseBlockQtyDto { OrderId = data.OrderId, Products = data.Products.Select(x => (x.ProductId, x.Qty)) });
+        }
+
+        #endregion across service event
     }
-
-    #region across service event
-
-    /// <summary>
-    /// 订阅订单创建事件
-    /// </summary>
-    /// <param name="warehouseQtyBlockedEvent"></param>
-    /// <returns></returns>
-    [CapSubscribe(nameof(OrderCreatedEvent))]
-    public async Task ProcessOrderCreatedEvent(OrderCreatedEvent eto)
-    {
-        using var scope = _services.CreateScope();
-        var data = eto.Data;
-        var appSrv = scope.ServiceProvider.GetRequiredService<IWarehouseAppService>();
-        await appSrv.BlockQtyAsync(new WarehouseBlockQtyDto { OrderId = data.OrderId, Products = data.Products.Select(x => (x.ProductId, x.Qty)) });
-    }
-
-    #endregion across service event
 }

@@ -1,9 +1,12 @@
-﻿namespace Adnc.Ord.Application.Contracts.Dtos;
+﻿using Adnc.Application.Shared.Dtos;
 
-public class OrderUpdationDto : IDto
+namespace Adnc.Ord.Application.Contracts.Dtos
 {
-    /// <summary>
-    /// 收货信息
-    /// </summary>
-    public OrderReceiverDto DeliveryInfomaton { get; set; }
+    public class OrderUpdationDto : IDto
+    {
+        /// <summary>
+        /// 收货信息
+        /// </summary>
+        public OrderReceiverDto DeliveryInfomaton { get; set; }
+    }
 }

@@ -1,26 +1,33 @@
-﻿namespace Adnc.Maint.Application.Contracts.Dtos;
+﻿using Adnc.Application.Shared.Dtos;
+using JetBrains.Annotations;
+using System;
+using System.Collections.Generic;
 
-[Serializable]
-public class DictDto : OutputDto
+namespace Adnc.Maint.Application.Contracts.Dtos
 {
-    public string Name { get; set; }
-
-    public int Ordinal { get; set; }
-
-    public long? Pid { get; set; }
-
-    public string Value { get; set; }
-
-    private IList<DictDto> _data = Array.Empty<DictDto>();
-
-    public IList<DictDto> Children
+    [Serializable]
+    public class DictDto : OutputDto
     {
-        get => _data;
-        set
+        public string Name { get; set; }
+
+        public int Ordinal { get; set; }
+
+        public long? Pid { get; set; }
+
+        public string Value { get; set; }
+
+        private IList<DictDto> _data = Array.Empty<DictDto>();
+
+        [NotNull]
+        public IList<DictDto> Children
         {
-            if (value != null)
+            get => _data;
+            set
             {
-                _data = value;
+                if (value != null)
+                {
+                    _data = value;
+                }
             }
         }
     }

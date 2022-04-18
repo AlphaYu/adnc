@@ -1,13 +1,17 @@
-﻿namespace Adnc.Usr.Application.Contracts.Dtos;
+﻿using System;
+using System.Collections.Generic;
 
-/// <summary>
-/// 部门节点
-/// </summary>
-[Serializable]
-public class DeptTreeDto : DeptDto
+namespace Adnc.Usr.Application.Contracts.Dtos
 {
     /// <summary>
-    /// 子部门
+    /// 部门节点
     /// </summary>
-    public List<DeptTreeDto> Children { get; private set; } = new List<DeptTreeDto>();
+    [Serializable]
+    public class DeptTreeDto : DeptDto
+    {
+        /// <summary>
+        /// 子部门
+        /// </summary>
+        public List<DeptTreeDto> Children { get; private set; } = new List<DeptTreeDto>();
+    }
 }

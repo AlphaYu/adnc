@@ -1,8 +1,11 @@
-﻿namespace Adnc.Cus.Application.Contracts.Dtos;
+﻿using Adnc.Application.Shared.Dtos;
 
-public class CustomerSearchPagedDto : SearchPagedDto
+namespace Adnc.Cus.Application.Contracts.Dtos
 {
-    public long Id { get; set; }
+    public class CustomerSearchPagedDto : SearchPagedDto
+    {
+        public long Id { get; set; }
 
-    public string Account { get; set; }
+        public string Account { get; set; }
+    }
 }

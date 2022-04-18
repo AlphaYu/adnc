@@ -1,44 +1,39 @@
-﻿namespace Adnc.Ord.Domain.Entities;
+﻿using Adnc.Domain.Shared.Entities;
+using Adnc.Infra.Core;
 
-/// <summary>
-/// 订单条目
-/// </summary>
-public class OrderItem : DomainEntity
+namespace Adnc.Ord.Domain.Entities
 {
     /// <summary>
-    /// 订单Id
+    /// 订单条目
     /// </summary>
-    public long OrderId { get; private set; }
-
-    /// <summary>
-    /// 产品
-    /// </summary>
-    public OrderItemProduct Product { get; private set; }
-
-    /// <summary>
-    /// 数量
-    /// </summary>
-    public int Count { get; private set; }
-
-    //public decimal Amount { get; private set; }
-
-    private OrderItem()
+    public class OrderItem : DomainEntity
     {
-    }
+        public long OrderId { get; private set; }
 
-    internal OrderItem(long id, long orderId, OrderItemProduct product, int count)
-    {
-        this.Id = id;
-        this.OrderId = Checker.GTZero(orderId, nameof(orderId));
-        this.Product = Checker.NotNull(product, nameof(product));
-        this.Count = Checker.GTZero(count, nameof(count));
-        //this.Amount = product.Price * count;
-    }
+        public OrderItemProduct Product { get; private set; }
 
-    internal void ChangeCount(int count)
-    {
-        Checker.GTZero(count, nameof(count));
-        this.Count += count;
-        //this.Amount += this.Product.Price * count;
+        public int Count { get; private set; }
+
+        //public decimal Amount { get; private set; }
+
+        private OrderItem()
+        {
+        }
+
+        internal OrderItem(long id,long orderId, OrderItemProduct product, int count)
+        {
+            this.Id = id;
+            this.OrderId = Checker.GTZero(orderId, nameof(orderId));
+            this.Product = Checker.NotNull(product, nameof(product));
+            this.Count = Checker.GTZero(count, nameof(count));
+            //this.Amount = product.Price * count;
+        }
+
+        internal void ChangeCount(int count)
+        {
+            Checker.GTZero(count, nameof(count));
+            this.Count += count;
+            //this.Amount += this.Product.Price * count;
+        }
     }
 }

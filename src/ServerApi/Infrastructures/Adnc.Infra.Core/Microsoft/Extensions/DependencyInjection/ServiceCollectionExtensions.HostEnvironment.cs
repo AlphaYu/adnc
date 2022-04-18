@@ -1,4 +1,6 @@
-﻿namespace Microsoft.Extensions.DependencyInjection
+﻿using Microsoft.Extensions.Hosting;
+
+namespace Microsoft.Extensions.DependencyInjection
 {
     public static partial class ServiceCollectionExtensions
     {

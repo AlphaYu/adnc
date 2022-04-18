@@ -1,6 +1,9 @@
-﻿namespace Adnc.Cus.Application.Contracts.Dtos;
+﻿using Adnc.Application.Shared.Dtos;
 
-public class CustomerRechargeDto : IInputDto
+namespace Adnc.Cus.Application.Contracts.Dtos
 {
-    public decimal Amount { get; set; }
+    public class CustomerRechargeDto : IInputDto
+    {
+        public decimal Amount { get; set; }
+    }
 }

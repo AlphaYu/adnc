@@ -1,8 +1,11 @@
-﻿namespace Adnc.Whse.Application.Contracts.Dtos;
+﻿using Adnc.Application.Shared.Dtos;
 
-public class ProductSearchPagedDto : SearchPagedDto
+namespace Adnc.Whse.Application.Contracts.Dtos
 {
-    public long Id { get; set; }
+    public class ProductSearchPagedDto : SearchPagedDto
+    {
+        public long Id { get; set; }
 
-    public int StatusCode { get; set; }
+        public int StatusCode { get; set; }
+    }
 }

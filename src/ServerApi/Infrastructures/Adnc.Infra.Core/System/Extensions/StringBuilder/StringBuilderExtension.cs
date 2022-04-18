@@ -1,4 +1,7 @@
-﻿namespace System.Text
+﻿using JetBrains.Annotations;
+using System.Collections.Generic;
+
+namespace System.Text
 {
     public static class StringBuilderExtension
     {

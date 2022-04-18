@@ -1,23 +1,31 @@
-﻿namespace Adnc.Cus.WebApi.Controllers;
+﻿using Adnc.Shared.RpcServices.Rtos;
+using Adnc.Shared.RpcServices.Services;
+using Adnc.WebApi.Shared;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
-[Route("cus/session")]
-[ApiController]
-public class AccountController : AdncControllerBase
+namespace Adnc.Cus.WebApi.Controllers
 {
-    private readonly IAuthRpcService _authRpcService;
-
-    public AccountController(IAuthRpcService authRpcService)
-        => _authRpcService = authRpcService;
-
-    [AllowAnonymous]
-    [HttpPost()]
-    public async Task<IActionResult> Login([FromBody] LoginRto input)
+    [Route("cus/session")]
+    [ApiController]
+    public class AccountController : AdncControllerBase
     {
-        var result = await _authRpcService.LoginAsync(input);
+        private readonly IAuthRpcService _authRpcService;
 
-        if (result.IsSuccessStatusCode)
-            return Ok(result.Content);
+        public AccountController(IAuthRpcService authRpcService)
+            => _authRpcService = authRpcService;
 
-        return Problem(result.Error);
+        [AllowAnonymous]
+        [HttpPost()]
+        public async Task<IActionResult> Login([FromBody] LoginRto input)
+        {
+            var result = await _authRpcService.LoginAsync(input);
+
+            if (result.IsSuccessStatusCode)
+                return Ok(result.Content);
+
+            return Problem(result.Error);
+        }
     }
 }

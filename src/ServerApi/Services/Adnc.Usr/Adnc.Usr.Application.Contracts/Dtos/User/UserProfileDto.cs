@@ -1,4 +1,8 @@
-﻿namespace Adnc.Usr.Application.Contracts.Dtos
+﻿using Adnc.Application.Shared.Dtos;
+using System;
+using System.Collections.Generic;
+
+namespace Adnc.Usr.Application.Contracts.Dtos
 {
     /// <summary>
     /// 用户个人信息

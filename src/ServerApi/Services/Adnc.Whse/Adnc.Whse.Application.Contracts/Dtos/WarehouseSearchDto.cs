@@ -1,5 +1,8 @@
-﻿namespace Adnc.Whse.Application.Contracts.Dtos;
+﻿using Adnc.Application.Shared.Dtos;
 
-public class WarehouseSearchDto : SearchPagedDto
+namespace Adnc.Whse.Application.Contracts.Dtos
 {
+    public class WarehouseSearchDto : SearchPagedDto
+    {
+    }
 }

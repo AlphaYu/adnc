@@ -1,4 +1,7 @@
-﻿namespace Adnc.Usr.Application.Contracts.Dtos
+﻿using Adnc.Application.Shared.Dtos;
+using System;
+
+namespace Adnc.Usr.Application.Contracts.Dtos
 {
     [Serializable]
     public class UserValidateDto : IDto

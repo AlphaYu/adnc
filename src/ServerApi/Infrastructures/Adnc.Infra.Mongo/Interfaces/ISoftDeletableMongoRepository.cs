@@ -1,5 +1,5 @@
 ﻿using Adnc.Infra.IRepositories;
-using Adnc.Infra.Mongo.Entities;
+using Adnc.Infra.Mongo.Models;
 using System.Threading;
 using System.Threading.Tasks;
 

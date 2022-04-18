@@ -1,5 +1,15 @@
 ﻿using Adnc.Cus.Entities;
 using Adnc.Infra.Helper;
+using Adnc.Infra.IRepositories;
+using Adnc.UnitTest.Fixtures;
+using Autofac;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
+using Xunit;
+using Xunit.Abstractions;
 
 namespace Adnc.UnitTests.EFCore
 {
@@ -11,17 +21,17 @@ namespace Adnc.UnitTests.EFCore
         private readonly IEfRepository<Customer> _cusRsp;
         private readonly IEfRepository<CustomerFinance> _cusFinanceRsp;
         private readonly IEfRepository<CustomerTransactionLog> _cusLogsRsp;
-        private readonly MaxscaleDbcontextFixture _fixture;
+        private MaxscaleDbcontextFixture _fixture;
 
         public MaxscaleTests(MaxscaleDbcontextFixture fixture, ITestOutputHelper output)
         {
             _fixture = fixture;
             _output = output;
-            _unitOfWork = _fixture.Container.GetRequiredService<IUnitOfWork>();
-            _userContext = _fixture.Container.GetRequiredService<IOperater>();
-            _cusRsp = _fixture.Container.GetRequiredService<IEfRepository<Customer>>();
-            _cusFinanceRsp = _fixture.Container.GetRequiredService<IEfRepository<CustomerFinance>>();
-            _cusLogsRsp = _fixture.Container.GetRequiredService<IEfRepository<CustomerTransactionLog>>();
+            _unitOfWork = _fixture.Container.Resolve<IUnitOfWork>();
+            _userContext = _fixture.Container.Resolve<IOperater>();
+            _cusRsp = _fixture.Container.Resolve<IEfRepository<Customer>>();
+            _cusFinanceRsp = _fixture.Container.Resolve<IEfRepository<CustomerFinance>>();
+            _cusLogsRsp = _fixture.Container.Resolve<IEfRepository<CustomerTransactionLog>>();
 
             Initialize();
         }
@@ -39,7 +49,7 @@ namespace Adnc.UnitTests.EFCore
         }
 
         [Fact]
-        public async Task TestReadFromWirteDb()
+        public async void TestReadFromWirteDb()
         {
             var result = await InsertCustomer();
             var cusFinance = await InsertCusFinance(result.Id);
@@ -52,7 +62,7 @@ namespace Adnc.UnitTests.EFCore
         }
 
         [Fact]
-        public async Task TestDapperReadFromWirteDb()
+        public async void TestDapperReadFromWirteDb()
         {
             var result = await InsertCustomer();
             var cusFinance = await InsertCusFinance(result.Id);
@@ -65,7 +75,7 @@ namespace Adnc.UnitTests.EFCore
         }
 
         [Fact]
-        public async Task TestInsertRange()
+        public async void TestInsertRange()
         {
             var list = await InsertRangeCustomer(10);
             var ids = list.Select(c => c.Id).ToArray();
@@ -80,7 +90,7 @@ namespace Adnc.UnitTests.EFCore
         }
 
         [Fact]
-        public async Task TestUpdate()
+        public async void TestUpdate()
         {
             var newRealName = "测试用户";
             var newNickname = "测试";
@@ -114,7 +124,7 @@ namespace Adnc.UnitTests.EFCore
         }
 
         [Fact]
-        public async Task TestUpdateFullColumn()
+        public async void TestUpdateFullColumn()
         {
             var newRealName = "测试用户";
             var newNickname = "测试";
@@ -148,7 +158,7 @@ namespace Adnc.UnitTests.EFCore
         }
 
         [Fact]
-        public async Task TestUpdateRange()
+        public async void TestUpdateRange()
         {
             var list = await InsertRangeCustomer(10);
             var ids = list.Select(c => c.Id).ToArray();

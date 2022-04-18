@@ -5,8 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-#nullable disable
-
 namespace Adnc.Ord.Migrations.Migrations
 {
     [DbContext(typeof(AdncDbContext))]
@@ -16,84 +14,57 @@ namespace Adnc.Ord.Migrations.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.3")
-                .HasAnnotation("Relational:MaxIdentifierLength", 64);
-
-            MySqlModelBuilderExtensions.HasCharSet(modelBuilder, "utf8mb4 ");
+                .HasCharSet("utf8mb4 ")
+                .HasAnnotation("Relational:MaxIdentifierLength", 64)
+                .HasAnnotation("ProductVersion", "5.0.5");
 
             modelBuilder.Entity("Adnc.Ord.Domain.Entities.Order", b =>
                 {
                     b.Property<long>("Id")
-                        .HasColumnType("bigint")
-                        .HasColumnName("id")
-                        .HasColumnOrder(1)
-                        .HasComment("");
+                        .HasColumnType("bigint");
 
                     b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,4)")
-                        .HasColumnName("amount")
-                        .HasComment("订单金额");
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<long>("CreateBy")
-                        .HasColumnType("bigint")
-                        .HasColumnName("createby")
-                        .HasComment("");
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("CreateTime")
-                        .HasColumnType("datetime(6)")
-                        .HasColumnName("createtime")
-                        .HasComment("");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<long>("CustomerId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("customerid")
-                        .HasComment("客户Id");
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Remark")
                         .HasMaxLength(64)
-                        .HasColumnType("varchar(64)")
-                        .HasColumnName("remark")
-                        .HasComment("备注");
+                        .HasColumnType("varchar(64)");
 
                     b.Property<DateTime>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("timestamp(6)")
-                        .HasColumnName("rowversion")
-                        .HasComment("");
+                        .HasColumnType("timestamp(6)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("order", (string)null);
-
-                    b.HasComment("订单");
+                    b.ToTable("Order");
                 });
 
             modelBuilder.Entity("Adnc.Ord.Domain.Entities.OrderItem", b =>
                 {
                     b.Property<long>("Id")
-                        .HasColumnType("bigint")
-                        .HasColumnName("id")
-                        .HasColumnOrder(1)
-                        .HasComment("");
+                        .HasColumnType("bigint");
 
                     b.Property<int>("Count")
-                        .HasColumnType("int")
-                        .HasColumnName("count")
-                        .HasComment("数量");
+                        .HasColumnType("int");
 
                     b.Property<long>("OrderId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("orderid")
-                        .HasComment("订单Id");
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("orderitem", (string)null);
-
-                    b.HasComment("订单条目");
+                    b.ToTable("OrderItem");
                 });
 
             modelBuilder.Entity("Adnc.Ord.Domain.Entities.Order", b =>
@@ -107,23 +78,23 @@ namespace Adnc.Ord.Migrations.Migrations
                                 .IsRequired()
                                 .HasMaxLength(64)
                                 .HasColumnType("varchar(64)")
-                                .HasColumnName("receiveraddress");
+                                .HasColumnName("ReceiverAddress");
 
                             b1.Property<string>("Name")
                                 .IsRequired()
                                 .HasMaxLength(16)
                                 .HasColumnType("varchar(16)")
-                                .HasColumnName("receivername");
+                                .HasColumnName("ReceiverName");
 
                             b1.Property<string>("Phone")
                                 .IsRequired()
                                 .HasMaxLength(11)
                                 .HasColumnType("varchar(11)")
-                                .HasColumnName("receiverphone");
+                                .HasColumnName("ReceiverPhone");
 
                             b1.HasKey("OrderId");
 
-                            b1.ToTable("order");
+                            b1.ToTable("Order");
 
                             b1.WithOwner()
                                 .HasForeignKey("OrderId");
@@ -137,25 +108,23 @@ namespace Adnc.Ord.Migrations.Migrations
                             b1.Property<string>("ChangesReason")
                                 .HasMaxLength(32)
                                 .HasColumnType("varchar(32)")
-                                .HasColumnName("statuschangesreason");
+                                .HasColumnName("StatusChangesReason");
 
                             b1.Property<int>("Code")
                                 .HasColumnType("int")
-                                .HasColumnName("statuscode");
+                                .HasColumnName("StatusCode");
 
                             b1.HasKey("OrderId");
 
-                            b1.ToTable("order");
+                            b1.ToTable("Order");
 
                             b1.WithOwner()
                                 .HasForeignKey("OrderId");
                         });
 
-                    b.Navigation("Receiver")
-                        .IsRequired();
+                    b.Navigation("Receiver");
 
-                    b.Navigation("Status")
-                        .IsRequired();
+                    b.Navigation("Status");
                 });
 
             modelBuilder.Entity("Adnc.Ord.Domain.Entities.OrderItem", b =>
@@ -173,28 +142,27 @@ namespace Adnc.Ord.Migrations.Migrations
 
                             b1.Property<long>("Id")
                                 .HasColumnType("bigint")
-                                .HasColumnName("producid");
+                                .HasColumnName("ProductId");
 
                             b1.Property<string>("Name")
                                 .IsRequired()
                                 .HasMaxLength(64)
                                 .HasColumnType("varchar(64)")
-                                .HasColumnName("productname");
+                                .HasColumnName("ProductName");
 
                             b1.Property<decimal>("Price")
                                 .HasColumnType("decimal(18,4)")
-                                .HasColumnName("productprice");
+                                .HasColumnName("ProductPrice");
 
                             b1.HasKey("OrderItemId");
 
-                            b1.ToTable("orderitem");
+                            b1.ToTable("OrderItem");
 
                             b1.WithOwner()
                                 .HasForeignKey("OrderItemId");
                         });
 
-                    b.Navigation("Product")
-                        .IsRequired();
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Adnc.Ord.Domain.Entities.Order", b =>

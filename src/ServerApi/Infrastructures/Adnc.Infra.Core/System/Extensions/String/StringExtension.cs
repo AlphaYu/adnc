@@ -1,4 +1,8 @@
-﻿using System.Globalization;
+﻿using JetBrains.Annotations;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace System
@@ -43,6 +47,13 @@ namespace System
         /// <param name="this">The @this to act on.</param>
         /// <returns>false if null or whiteSpace, true if not.</returns>
         public static bool IsNotNullOrWhiteSpace(this string @this) => !string.IsNullOrWhiteSpace(@this);
+
+        /// <summary>
+        ///     Creates a new instance of  with the same value as a specified .
+        /// </summary>
+        /// <param name="str">The string to copy.</param>
+        /// <returns>A new string with the same value as .</returns>
+        public static string Copy([NotNull] this string str) => string.Copy(str);
 
         /// <summary>
         ///     Retrieves the system&#39;s reference to the specified .
@@ -202,7 +213,7 @@ namespace System
             {
                 return string.Empty;
             }
-            return @this[startIndex..];
+            return @this.Substring(startIndex);
         }
 
         /// <summary>
@@ -237,7 +248,7 @@ namespace System
             {
                 return string.Empty;
             }
-            return @this[(@this.Length + startIndex)..];
+            return @this.Substring(@this.Length + startIndex);
         }
 
         /// <summary>
@@ -377,6 +388,8 @@ namespace System
         public static long? ToLong(this string @this)
         {
             bool status = long.TryParse(@this, out long result);
+
+            //return status ? result : null;
 
             if (status)
                 return result;
