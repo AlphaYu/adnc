@@ -1,5 +1,5 @@
 ﻿using Adnc.Infra.Entities;
-using Adnc.Infra.Mongo.Models;
+using Adnc.Infra.Mongo.Entities;
 using MongoDB.Driver;
 
 namespace Adnc.Infra.Mongo.Extensions

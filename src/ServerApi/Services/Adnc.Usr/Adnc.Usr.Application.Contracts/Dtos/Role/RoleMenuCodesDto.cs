@@ -1,22 +1,18 @@
-﻿using Adnc.Application.Shared.Dtos;
-using System;
+﻿namespace Adnc.Usr.Application.Contracts.Dtos;
 
-namespace Adnc.Usr.Application.Contracts.Dtos
+/// <summary>
+/// 角色，权限
+/// </summary>
+[Serializable]
+public class RoleMenuCodesDto : IDto
 {
     /// <summary>
-    /// 角色，权限
+    /// 菜单Code
     /// </summary>
-    [Serializable]
-    public class RoleMenuCodesDto : IDto
-    {
-        /// <summary>
-        /// 菜单Code
-        /// </summary>
-        public string Code { get; set; }
+    public string Code { get; set; }
 
-        /// <summary>
-        /// 角色Id
-        /// </summary>
-        public long RoleId { get; set; }
-    }
+    /// <summary>
+    /// 角色Id
+    /// </summary>
+    public long RoleId { get; set; }
 }

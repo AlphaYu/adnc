@@ -1,7 +1,6 @@
-﻿namespace Adnc.Shared.RpcServices.Rtos
+﻿namespace Adnc.Shared.RpcServices.Rtos;
+
+public class OrderRto
 {
-    public class OrderRto
-    {
-        public long Id { get; set; }
-    }
+    public long Id { get; set; }
 }

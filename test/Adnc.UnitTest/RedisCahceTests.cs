@@ -1,12 +1,4 @@
 ﻿using Adnc.Infra.Caching;
-using Adnc.UnitTest.Fixtures;
-using Autofac;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Xunit;
-using Xunit.Abstractions;
 
 namespace Adnc.UnitTest.Cache
 {
@@ -16,15 +8,15 @@ namespace Adnc.UnitTest.Cache
         private readonly ICacheProvider _cache;
         private readonly IRedisProvider _redisProvider;
         private readonly IDistributedLocker _distributedLocker;
-        private RedisCacheFixture _fixture;
+        private readonly RedisCacheFixture _fixture;
 
         public RedisCahceTests(RedisCacheFixture fixture, ITestOutputHelper output)
         {
             _fixture = fixture;
             _output = output;
-            _cache = _fixture.Container.Resolve<ICacheProvider>();
-            _redisProvider = _fixture.Container.Resolve<IRedisProvider>();
-            _distributedLocker = _fixture.Container.Resolve<IDistributedLocker>();
+            _cache = _fixture.Container.GetRequiredService<ICacheProvider>();
+            _redisProvider = _fixture.Container.GetRequiredService<IRedisProvider>();
+            _distributedLocker = _fixture.Container.GetRequiredService<IDistributedLocker>();
         }
 
         [Fact]
@@ -42,7 +34,7 @@ namespace Adnc.UnitTest.Cache
         /// 测试lua脚本
         /// </summary>
         [Fact]
-        public async void TestScriptEvaluateStoreSet()
+        public async Task TestScriptEvaluateStoreSet()
         {
             var cacheKey = nameof(TestScriptEvaluateStoreSet).ToLower();
 
@@ -95,7 +87,7 @@ namespace Adnc.UnitTest.Cache
         /// 测试分布式锁
         /// </summary>
         [Fact]
-        public async void TestDistributedLocker()
+        public async Task TestDistributedLocker()
         {
             //autodelay = false
             var cacheKey = nameof(TestDistributedLocker).ToLower() + "-" + new Random().Next(10000, 20000).ToString();
@@ -214,7 +206,7 @@ namespace Adnc.UnitTest.Cache
         /// 测试布隆过滤器
         /// </summary>
         [Fact]
-        public async void TestBloomFilter()
+        public async Task TestBloomFilter()
         {
             var cacheKey = nameof(TestBloomFilter).ToLower();
 

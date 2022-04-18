@@ -51,17 +51,20 @@ namespace Adnc.Infra.Caching.StackExchange
         /// </summary>
         private readonly CacheStats _cacheStats;
 
-        public override string Name { get { return CachingConstValue.StackExchange; } }
+        public override string Name
+        { get { return CachingConstValue.StackExchange; } }
 
-        public override string CachingProviderType { get { return nameof(DefaultRedisProvider); } }
+        public override string CachingProviderType
+        { get { return nameof(DefaultRedisProvider); } }
 
         /// <summary>
         /// The serializer.
         /// </summary>
-        public override ICachingSerializer Serializer { get { return _serializer; } }
+        public override ICachingSerializer Serializer
+        { get { return _serializer; } }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:EasyCaching.Redis.DefaultRedisCachingProvider"/> class.
+        /// Initializes a new instance of the <see cref="T:Adnc.Infra.Caching.Redis.DefaultRedisCachingProvider"/> class.
         /// </summary>
         /// <param name="dbProviders">Db providers.</param>
         /// <param name="serializers">Serializers.</param>
@@ -287,7 +290,7 @@ namespace Adnc.Infra.Caching.StackExchange
 
             foreach (var server in _servers)
                 // the default pageSize is 10, if there are too many keys here, it will hurt performance
-                // see https://github.com/dotnetcore/EasyCaching/pull/199 for more information
+                // see https://github.com/dotnetcore/Adnc.Infra.Caching/pull/199 for more information
                 // from this redis dev specification, https://yq.aliyun.com/articles/531067 , maybe the appropriate scope is 100~500, using 200 here.
                 keys.AddRange(server.Keys(pattern: pattern, database: _redisDb.Database, pageSize: 200));
 

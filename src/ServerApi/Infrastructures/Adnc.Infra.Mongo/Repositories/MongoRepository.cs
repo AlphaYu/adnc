@@ -1,5 +1,6 @@
 ﻿using Adnc.Infra.Entities;
 using Adnc.Infra.IRepositories;
+using Adnc.Infra.Mongo.Entities;
 using Adnc.Infra.Mongo.Extensions;
 using Adnc.Infra.Mongo.Interfaces;
 using MongoDB.Driver;
@@ -37,6 +38,9 @@ namespace Adnc.Infra.Mongo
         /// <returns></returns>
         public virtual async Task<TEntity> GetAsync(string id, CancellationToken cancellationToken = default) =>
             await FindOneAsync(Filter.IdEq(id), null, cancellationToken);
+
+        public async Task<TEntity> GetAsync(FilterDefinition<TEntity> filter, CancellationToken cancellationToken = default) =>
+           await FindOneAsync(filter, null, cancellationToken);
 
         /// <summary>
         /// Gets all entities in this repository.
@@ -83,6 +87,19 @@ namespace Adnc.Infra.Mongo
         }
 
         /// <summary>
+        /// 批量删除
+        /// </summary>
+        /// <param name="filter">删除条件</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        public virtual async Task<long> DeleteManyAsync(FilterDefinition<TEntity> filter, CancellationToken cancellationToken = default)
+        {
+            var collection = await GetCollectionAsync(cancellationToken);
+            var result = await collection.DeleteManyAsync(filter, cancellationToken);
+            return result.DeletedCount;
+        }
+
+        /// <summary>
         /// Replaces the specified entity with the same identifier.
         /// </summary>
         /// <param name="entity">The entity.</param>
@@ -102,7 +119,7 @@ namespace Adnc.Infra.Mongo
                 cancellationToken);
         }
 
-        public virtual async Task<IPagedModel<TEntity>> PagedAsync(int pageIndex, int pageSize, FilterDefinition<TEntity> filter, Expression<Func<TEntity, object>> orderByExpression, bool ascending = false, CancellationToken cancellationToken = default)
+        public virtual async Task<PagedModel<TEntity>> PagedAsync(int pageIndex, int pageSize, FilterDefinition<TEntity> filter, Expression<Func<TEntity, object>> orderByExpression, bool ascending = false, CancellationToken cancellationToken = default)
         {
             var collection = await GetCollectionAsync(cancellationToken);
             var total = await collection.CountDocumentsAsync(filter);

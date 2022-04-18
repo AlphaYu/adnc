@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-
-namespace Adnc.Infra.Entities
+﻿namespace Adnc.Infra.Entities
 {
     public abstract class AbstractEntityInfo : IEntityInfo
     {

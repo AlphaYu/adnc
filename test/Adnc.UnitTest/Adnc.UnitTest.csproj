@@ -1,10 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net5.0</TargetFramework>
+		<TargetFramework>net6.0</TargetFramework>
 		<IsPackable>false</IsPackable>
-		<RootNamespace>Adnc.UnitTest</RootNamespace>
-		<AssemblyName>Adnc.UnitTest</AssemblyName>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -14,19 +12,19 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="5.0.0" />
-		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.10.0" />
-		<PackageReference Include="NLog.Mongo" Version="4.6.0.118" />
-		<PackageReference Include="RestSharp" Version="106.11.7" />
-		<PackageReference Include="RestSharp.Serializers.SystemTextJson" Version="106.11.7" />
-		<PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="6.0.0" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
+		<PackageReference Include="NLog.Mongo" Version="4.6.0.191" />
+		<PackageReference Include="RestSharp" Version="107.3.0" />
+		<PackageReference Include="RestSharp.Serializers.SystemTextJson" Version="106.15.0" />
+		<PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
 		<PackageReference Include="xunit" Version="2.4.1" />
 		<PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="coverlet.collector" Version="3.0.3">
+		<PackageReference Include="coverlet.collector" Version="3.1.2">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
@@ -34,9 +32,9 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\src\ServerApi\Infrastructures\Adnc.Infra.Caching\Adnc.Infra.Caching.csproj" />
-		<ProjectReference Include="..\..\src\ServerApi\Infrastructures\Adnc.Infra.Core\Adnc.Infra.Core.csproj" />
 		<ProjectReference Include="..\..\src\ServerApi\Infrastructures\Adnc.Infra.EfCore.MySQL\Adnc.Infra.EfCore.MySQL.csproj" />
 		<ProjectReference Include="..\..\src\ServerApi\Infrastructures\Adnc.Infra.Helper\Adnc.Infra.Helper.csproj" />
 		<ProjectReference Include="..\..\src\ServerApi\Services\Adnc.Cus\Adnc.Cus.Repository\Adnc.Cus.Repository.csproj" />
+		<ProjectReference Include="..\..\src\ServerApi\Services\Shared\Adnc.Shared.WebApi\Adnc.Shared.WebApi.csproj" />
 	</ItemGroup>
 </Project>

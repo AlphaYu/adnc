@@ -1,23 +1,14 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 	<Import Project="..\..\..\build\common.props" />
-	<PropertyGroup>
-		<TargetFramework>netstandard2.1</TargetFramework>
-		<AssemblyName>Adnc.Whse.Application.Contracts</AssemblyName>
-		<RootNamespace>Adnc.Whse.Application.Contracts</RootNamespace>
-	</PropertyGroup>
-
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
 		<DocumentationFile>.\Adnc.Whse.Application.Contracts.xml</DocumentationFile>
 	</PropertyGroup>
-
 	<ItemGroup>
 		<Folder Include="Dtos\DtoValidators\" />
 	</ItemGroup>
-
 	<ItemGroup>
-	  <ProjectReference Include="..\..\Shared\Adnc.Application.Shared\Adnc.Application.Shared.csproj" />
+	  <ProjectReference Include="..\..\Shared\Adnc.Shared.Application.Contracts\Adnc.Shared.Application.Contracts.csproj" />
 	</ItemGroup>
-
 	<ItemGroup>
 		<None Update="Adnc.Whse.Application.Contracts.xml">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

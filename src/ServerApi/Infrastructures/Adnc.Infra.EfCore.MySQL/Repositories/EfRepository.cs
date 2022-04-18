@@ -1,13 +1,4 @@
-﻿using Adnc.Infra.EfCore.MySQL;
-using Adnc.Infra.Entities;
-using Adnc.Infra.IRepositories;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Linq.Expressions;
 using Z.EntityFramework.Plus;
 
 namespace Adnc.Infra.EfCore.Repositories
@@ -17,7 +8,7 @@ namespace Adnc.Infra.EfCore.Repositories
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
     public sealed class EfRepository<TEntity> : AbstractEfBaseRepository<AdncDbContext, TEntity>, IEfRepository<TEntity>
-      where TEntity : EfEntity,new()
+      where TEntity : EfEntity, new()
     {
         public EfRepository(AdncDbContext dbContext)
             : base(dbContext)
@@ -66,7 +57,7 @@ namespace Adnc.Infra.EfCore.Repositories
 
             return result;
         }
-        
+
         public async Task<TResult> FetchAsync<TResult>(Expression<Func<TEntity, TResult>> selector, Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, object>> orderByExpression = null, bool ascending = false, bool writeDb = false, bool noTracking = true, CancellationToken cancellationToken = default)
         {
             TResult result;
@@ -96,6 +87,7 @@ namespace Adnc.Infra.EfCore.Repositories
             return await DbContext.SaveChangesAsync();
 
             #region old code
+
 #pragma warning disable S125 // Sections of code should not be commented out
             /*
                         //如果实体被跟踪，调用Ef原生方法删除
@@ -121,7 +113,8 @@ namespace Adnc.Infra.EfCore.Repositories
                         return await DbContext.Database.ExecuteSqlRawAsync(string.Concat(sql, where), cancellationToken);
                         */
 #pragma warning restore S125 // Sections of code should not be commented outs
-            #endregion
+
+            #endregion old code
         }
 
         public async Task<int> DeleteRangeAsync(Expression<Func<TEntity, bool>> whereExpression, CancellationToken cancellationToken = default)
@@ -173,7 +166,8 @@ namespace Adnc.Infra.EfCore.Repositories
             }
 
             #region removed code
-            #pragma warning disable S125 // Sections of code should not be commented out
+
+#pragma warning disable S125 // Sections of code should not be commented out
             /*
                             var originalEntity = DbContext.Set<TEntity>().Local.FirstOrDefault(x => x.Id == entity.Id);
                             if (originalEntity == null)
@@ -195,8 +189,9 @@ namespace Adnc.Infra.EfCore.Repositories
                                 });
                             }
                             */
-            #pragma warning restore S125 // Sections of code should not be commented out
-            #endregion
+#pragma warning restore S125 // Sections of code should not be commented out
+
+            #endregion removed code
 
             return await DbContext.SaveChangesAsync();
         }
@@ -209,7 +204,7 @@ namespace Adnc.Infra.EfCore.Repositories
             if (hasConcurrencyMember)
                 throw new ArgumentException("该实体有RowVersion列，不能使用批量更新");
 
-            return UpdateRangeInternalAsync(whereExpression, updatingExpression,cancellationToken);
+            return UpdateRangeInternalAsync(whereExpression, updatingExpression, cancellationToken);
         }
 
         public async Task<int> UpdateRangeAsync(Dictionary<long, List<(string propertyName, dynamic propertyValue)>> propertyNameAndValues, CancellationToken cancellationToken = default)
@@ -239,6 +234,5 @@ namespace Adnc.Infra.EfCore.Repositories
 
         private async Task<int> UpdateRangeInternalAsync(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, TEntity>> updatingExpression, CancellationToken cancellationToken = default)
             => await DbContext.Set<TEntity>().Where(whereExpression).UpdateAsync(updatingExpression, cancellationToken);
-    
     }
 }

@@ -1,7 +1,4 @@
-﻿using Adnc.Usr.Application.Contracts.Dtos;
-using FluentValidation;
-
-namespace Adnc.Usr.Application.Contracts.DtoValidators
+﻿namespace Adnc.Usr.Application.Contracts.DtoValidators
 {
     public class UserSetRoleDtoValidator : AbstractValidator<UserSetRoleDto>
     {

@@ -1,11 +1,7 @@
-﻿using System;
-using System.Linq;
+﻿namespace Adnc.Infra.EfCore.Internal;
 
-namespace Adnc.Infra.EfCore.Internal
+internal static class EFCoreUtil
 {
-    public static class EFCoreUtil
-    {
-        public static object[] GetEntityKeyValues<TEntity>(Func<TEntity, object>[] keyValueGetter, TEntity entity)
-            => keyValueGetter.Select(x => x.Invoke(entity)).ToArray();
-    }
+    internal static object[] GetEntityKeyValues<TEntity>(Func<TEntity, object>[] keyValueGetter, TEntity entity)
+        => keyValueGetter.Select(x => x.Invoke(entity)).ToArray();
 }

@@ -1,11 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text.Json;
-
-namespace Adnc.Infra.Consul.Configuration
+﻿namespace Adnc.Infra.Consul.Configuration
 {
     internal class JsonConfigurationFileParser
     {

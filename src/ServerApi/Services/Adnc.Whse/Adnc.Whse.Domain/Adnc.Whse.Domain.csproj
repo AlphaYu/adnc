@@ -1,13 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<Import Project="..\..\..\build\common.props" />
-	<PropertyGroup>
-		<TargetFramework>netstandard2.1</TargetFramework>
-	</PropertyGroup>
-
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.EventBus\Adnc.Infra.EventBus.csproj" />
 		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Helper\Adnc.Infra.Helper.csproj" />
-		<ProjectReference Include="..\..\Shared\Adnc.Domain.Shared\Adnc.Domain.Shared.csproj" />
+		<ProjectReference Include="..\..\Shared\Adnc.Shared.Domain\Adnc.Shared.Domain.csproj" />
 		<ProjectReference Include="..\..\Shared\Adnc.Shared\Adnc.Shared.csproj" />
 	</ItemGroup>
 </Project>

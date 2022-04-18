@@ -1,8 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using System.Threading;
-
-namespace Microsoft.Extensions.Hosting
+﻿namespace Microsoft.Extensions.Hosting
 {
     public static class HostExtensions
     {

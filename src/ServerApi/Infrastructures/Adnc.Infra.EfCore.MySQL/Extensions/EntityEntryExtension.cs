@@ -1,10 +1,4 @@
-﻿using Adnc.Infra.EfCore.Internal;
-using JetBrains.Annotations;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Microsoft.EntityFrameworkCore.Metadata;
-using System;
-using System.Linq;
+﻿using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Microsoft.EntityFrameworkCore.ChangeTracking
 {

@@ -1,11 +1,4 @@
-﻿using Adnc.Application.Shared.Interceptors;
-using Adnc.Application.Shared.Services;
-using Adnc.Infra.Caching.Interceptor;
-using Adnc.Shared.Consts.Caching.Usr;
-using Adnc.Usr.Application.Contracts.Dtos;
-using System.Threading.Tasks;
-
-namespace Adnc.Usr.Application.Contracts.Services
+﻿namespace Adnc.Usr.Application.Contracts.Services
 {
     /// <summary>
     /// 账户服务

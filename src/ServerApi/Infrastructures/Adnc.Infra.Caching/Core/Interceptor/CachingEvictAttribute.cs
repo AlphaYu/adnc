@@ -3,7 +3,7 @@
     using System;
 
     /// <summary>
-    /// Easycaching evict attribute.
+    /// Adnc.Infra.Caching evict attribute.
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, Inherited = true)]
     public class CachingEvictAttribute : CachingInterceptorAttribute

@@ -2,16 +2,6 @@
 using Adnc.Infra.EfCore.MySQL;
 using Adnc.Infra.Helper;
 using Adnc.Infra.Helper.IdGeneraterInternal;
-using Adnc.Infra.IRepositories;
-using Adnc.UnitTest.Fixtures;
-using Autofac;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
-using Xunit;
-using Xunit.Abstractions;
 
 namespace Adnc.UnitTest.EFCore
 {
@@ -24,19 +14,18 @@ namespace Adnc.UnitTest.EFCore
         private readonly IEfRepository<CustomerFinance> _cusFinanceRsp;
         private readonly IEfRepository<CustomerTransactionLog> _custLogsRsp;
         private readonly AdncDbContext _dbContext;
-
         private readonly EfCoreDbcontextFixture _fixture;
 
         public EfCoreRepositoryTests(EfCoreDbcontextFixture fixture, ITestOutputHelper output)
         {
             _fixture = fixture;
             _output = output;
-            _unitOfWork = _fixture.Container.Resolve<IUnitOfWork>();
-            _userContext = _fixture.Container.Resolve<IOperater>();
-            _customerRsp = _fixture.Container.Resolve<IEfRepository<Customer>>();
-            _cusFinanceRsp = _fixture.Container.Resolve<IEfRepository<CustomerFinance>>();
-            _custLogsRsp = _fixture.Container.Resolve<IEfRepository<CustomerTransactionLog>>();
-            _dbContext = _fixture.Container.Resolve<AdncDbContext>();
+            _unitOfWork = _fixture.Container.GetRequiredService<IUnitOfWork>();
+            _userContext = _fixture.Container.GetRequiredService<IOperater>();
+            _customerRsp = _fixture.Container.GetRequiredService<IEfRepository<Customer>>();
+            _cusFinanceRsp = _fixture.Container.GetRequiredService<IEfRepository<CustomerFinance>>();
+            _custLogsRsp = _fixture.Container.GetRequiredService<IEfRepository<CustomerTransactionLog>>();
+            _dbContext = _fixture.Container.GetRequiredService<AdncDbContext>();
 
             if (YitterSnowFlake.CurrentWorkerId < 0)
                 YitterSnowFlake.CurrentWorkerId = 63;
@@ -82,10 +71,10 @@ namespace Adnc.UnitTest.EFCore
 
             await _customerRsp.InsertAsync(cusotmer);
 
-            var newCust = await _customerRsp.QueryAsync<Customer>("SELECT *  FROM Customer WHERE Id=@Id",new { Id= id });
+            var newCust = await _customerRsp.QueryAsync<Customer>("SELECT *  FROM Customer WHERE Id=@Id", new { Id = id });
             Assert.NotEmpty(newCust);
 
-            var newCustAccounts= await _customerRsp.QueryAsync<string>("SELECT Account  FROM CustomerFinance WHERE Account=@account", new { account = newCust.First().Account });
+            var newCustAccounts = await _customerRsp.QueryAsync<string>("SELECT Account  FROM CustomerFinance WHERE Account=@account", new { account = newCust.First().Account });
             Assert.Equal(newCust.First().Account, newCustAccounts.First());
         }
 
@@ -129,7 +118,7 @@ namespace Adnc.UnitTest.EFCore
             //实体已经被跟踪
             customer.Realname = "被跟踪01";
             await _customerRsp.UpdateAsync(customer);
-            var newCust1 = await _customerRsp.QueryAsync<Customer>("SELECT * FROM Customer WHERE Id=@Id", new { Id= id0 });
+            var newCust1 = await _customerRsp.QueryAsync<Customer>("SELECT * FROM Customer WHERE Id=@Id", new { Id = id0 });
             Assert.Equal("被跟踪01", newCust1.FirstOrDefault().Realname);
 
             var customerId = (await _customerRsp.QueryAsync<long>("SELECT Id  FROM CustomerFinance limit 0,1")).FirstOrDefault();
@@ -544,7 +533,9 @@ namespace Adnc.UnitTest.EFCore
 
                 throw new Exception();
 
+#pragma warning disable CS0162 // 检测到无法访问的代码
                 _unitOfWork.Commit();
+#pragma warning restore CS0162 // 检测到无法访问的代码
             }
             catch (Exception)
             {
@@ -570,36 +561,34 @@ namespace Adnc.UnitTest.EFCore
         {
             var account = "alpha008";
 
-            using (var db = await _dbContext.Database.BeginTransactionAsync())
-            {
-                //_unitOfWork.BeginTransaction();
+            using var db = await _dbContext.Database.BeginTransactionAsync();
+            //_unitOfWork.BeginTransaction();
 
-                await _customerRsp.DeleteRangeAsync(x => x.Id <= 10000);
+            await _customerRsp.DeleteRangeAsync(x => x.Id <= 10000);
 
-                var id = IdGenerater.GetNextId();
-                var customer = new Customer() { Id = id, Account = account, Nickname = "招财猫", Realname = "张发财", FinanceInfo = new CustomerFinance { Id = id, Account = account, Balance = 0 } };
+            var id = IdGenerater.GetNextId();
+            var customer = new Customer() { Id = id, Account = account, Nickname = "招财猫", Realname = "张发财", FinanceInfo = new CustomerFinance { Id = id, Account = account, Balance = 0 } };
 
-                _dbContext.Add<Customer>(customer);
+            _dbContext.Add<Customer>(customer);
 
-                await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
 
-                var id2 = IdGenerater.GetNextId();
-                var customer2 = new Customer() { Id = id2, Account = account, Nickname = "招财猫02", Realname = "张发财02", FinanceInfo = new CustomerFinance { Id = id2, Account = account, Balance = 0 } };
+            var id2 = IdGenerater.GetNextId();
+            var customer2 = new Customer() { Id = id2, Account = account, Nickname = "招财猫02", Realname = "张发财02", FinanceInfo = new CustomerFinance { Id = id2, Account = account, Balance = 0 } };
 
-                _dbContext.Add<Customer>(customer2);
-                //_unitOfWork.Commit();
+            _dbContext.Add<Customer>(customer2);
+            //_unitOfWork.Commit();
 
-                await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
 
-                await db.CommitAsync();
-            }
+            await db.CommitAsync();
         }
 
         [Fact]
         public async Task TestAutoTransactions()
         {
             var defaultAutoTransaction = _dbContext.Database.AutoTransactionsEnabled;
-            if (defaultAutoTransaction == false)
+            if (!defaultAutoTransaction)
                 _dbContext.Database.AutoTransactionsEnabled = true;
 
             var id = IdGenerater.GetNextId();

@@ -1,11 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<Import Project="..\..\build\common.props" />
-	<PropertyGroup>
-		<TargetFramework>netstandard2.1</TargetFramework>
-		<AssemblyName>Adnc.Infra.Helper</AssemblyName>
-		<RootNamespace>Adnc.Infra.Helper</RootNamespace>
-	</PropertyGroup>
-
 	<ItemGroup>
 		<Compile Remove="Obsolete\**" />
 		<EmbeddedResource Remove="Obsolete\**" />
@@ -18,10 +12,10 @@
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
-		<PackageReference Include="Microsoft.Extensions.Configuration" Version="5.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.1" />
 		<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
-		<PackageReference Include="System.Text.Json" Version="5.0.0" />
-		<PackageReference Include="System.Threading.Channels" Version="5.0.0" />
+		<PackageReference Include="System.Text.Json" Version="6.0.2" />
+		<PackageReference Include="System.Threading.Channels" Version="6.0.0" />
 		<PackageReference Include="Yitter.IdGenerator" Version="1.0.12" />
 	</ItemGroup>
 

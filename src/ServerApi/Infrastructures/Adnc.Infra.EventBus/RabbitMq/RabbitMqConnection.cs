@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Adnc.Infra.Core.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Polly;
 using RabbitMQ.Client;

@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Http;
-using System.Linq;
 
 namespace Adnc.Infra.Consul.TokenGenerator
 {
@@ -11,6 +10,8 @@ namespace Adnc.Infra.Consul.TokenGenerator
         {
             _httpContextAccessor = httpContextAccessor;
         }
+
+        public string Scheme => "Bearer";
 
         public string Create()
         {

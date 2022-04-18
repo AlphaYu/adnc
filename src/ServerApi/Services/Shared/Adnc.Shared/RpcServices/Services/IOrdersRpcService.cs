@@ -1,6 +1,5 @@
-﻿namespace Adnc.Shared.RpcServices.Services
+﻿namespace Adnc.Shared.RpcServices.Services;
+
+public interface IOrdersRpcService : IRpcService
 {
-    public interface IOrdersRpcService : IRpcService
-    {
-    }
 }

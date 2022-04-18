@@ -1,7 +1,4 @@
-﻿using JetBrains.Annotations;
-using System.Collections;
-
-namespace System
+﻿namespace System
 {
     public static class ArrayExtension
     {

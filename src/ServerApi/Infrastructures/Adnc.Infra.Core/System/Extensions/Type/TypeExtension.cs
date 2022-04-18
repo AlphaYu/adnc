@@ -1,13 +1,9 @@
 ﻿using Adnc.Infra.Core.Internal;
-using JetBrains.Annotations;
-using System.Collections.Concurrent;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 
 namespace System
 {
@@ -288,7 +284,7 @@ namespace System
             return field;
         }
 
-         /// <summary>An object extension method that gets the properties.</summary>
+        /// <summary>An object extension method that gets the properties.</summary>
         /// <param name="this">The @this to act on.</param>
         /// <returns>An array of property information.</returns>
         public static PropertyInfo[] GetProperties([NotNull] this object @this)
@@ -395,7 +391,6 @@ namespace System
             property?.GetValueSetter()?.Invoke(@this, value);
         }
 
-        [CanBeNull]
         public static Func<T, object> GetValueGetter<T>([NotNull] this PropertyInfo @this)
         {
             return StrongTypedDictionary<T>.PropertyValueGetters.GetOrAdd(@this, prop =>
@@ -410,7 +405,6 @@ namespace System
             });
         }
 
-        [CanBeNull]
         public static Func<object, object> GetValueGetter([NotNull] this PropertyInfo @this)
         {
             return ReflectionDictionary.PropertyValueGetters.GetOrAdd(@this, prop =>
@@ -429,7 +423,6 @@ namespace System
             });
         }
 
-        [CanBeNull]
         public static Action<object, object> GetValueSetter([NotNull] this PropertyInfo @this)
         {
             return ReflectionDictionary.PropertyValueSetters.GetOrAdd(@this, prop =>
@@ -456,7 +449,6 @@ namespace System
             });
         }
 
-        [CanBeNull]
         public static Action<T, object> GetValueSetter<T>([NotNull] this PropertyInfo @this) where T : class
         {
             return StrongTypedDictionary<T>.PropertyValueSetters.GetOrAdd(@this, prop =>

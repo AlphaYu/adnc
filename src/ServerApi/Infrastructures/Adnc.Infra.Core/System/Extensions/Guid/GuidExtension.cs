@@ -1,6 +1,4 @@
-﻿using JetBrains.Annotations;
-
-namespace System
+﻿namespace System
 {
     public static class GuidExtension
     {

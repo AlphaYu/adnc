@@ -1,13 +1,9 @@
-﻿using Adnc.Usr.Application.Contracts.Dtos;
-using FluentValidation;
+﻿namespace Adnc.Usr.Application.Contracts.DtoValidators;
 
-namespace Adnc.Usr.Application.Contracts.DtoValidators
+public class RoleUpdationDtoValidator : AbstractValidator<RoleUpdationDto>
 {
-    public class RoleUpdationDtoValidator : AbstractValidator<RoleUpdationDto>
+    public RoleUpdationDtoValidator()
     {
-        public RoleUpdationDtoValidator()
-        {
-            Include(new RoleCreationDtoValidator());
-        }
+        Include(new RoleCreationDtoValidator());
     }
 }

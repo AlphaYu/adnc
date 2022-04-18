@@ -1,6 +1,5 @@
-﻿namespace Adnc.Usr.Application.Contracts.Dtos
+﻿namespace Adnc.Usr.Application.Contracts.Dtos;
+
+public class RoleUpdationDto : RoleCreationDto
 {
-    public class RoleUpdationDto : RoleCreationDto
-    {
-    }
 }

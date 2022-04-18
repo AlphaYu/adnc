@@ -1,31 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<Import Project="..\..\..\build\common.props" />
-	<PropertyGroup>
-		<TargetFramework>netstandard2.1</TargetFramework>
-	</PropertyGroup>
-
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-		<DocumentationFile></DocumentationFile>
-	</PropertyGroup>
-
-	<ItemGroup>
-		<Compile Remove="Services\Task\**" />
-		<EmbeddedResource Remove="Services\Task\**" />
-		<None Remove="Services\Task\**" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Compile Remove="EventSubscribers\LoginLogMqConsumer.cs" />
-	  <Compile Remove="EventSubscribers\OpsLogMqConsumer.cs" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Caching\Adnc.Infra.Caching.csproj" />
-		<ProjectReference Include="..\Adnc.Maint.Application.Contracts\Adnc.Maint.Application.Contracts.csproj" />
-		<ProjectReference Include="..\Adnc.Maint.Repository\Adnc.Maint.Repository.csproj" />
-	</ItemGroup>
-
 	<ItemGroup>
 	  <Folder Include="EventSubscribers\" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\..\Shared\Adnc.Shared.Application\Adnc.Shared.Application.csproj" />
+	  <ProjectReference Include="..\Adnc.Maint.Application.Contracts\Adnc.Maint.Application.Contracts.csproj" />
+	  <ProjectReference Include="..\Adnc.Maint.Repository\Adnc.Maint.Repository.csproj" />
 	</ItemGroup>
 </Project>

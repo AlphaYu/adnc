@@ -1,23 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<Import Project="..\..\..\build\common.props" />
-	<PropertyGroup>
-		<TargetFramework>netstandard2.1</TargetFramework>
-		<AssemblyName>Adnc.Usr.Application</AssemblyName>
-		<RootNamespace>Adnc.Usr.Application</RootNamespace>
-	</PropertyGroup>
-
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-		<DocumentationFile></DocumentationFile>
-		<NoWarn>$(NoWarn);1591</NoWarn>
-		<OutputPath></OutputPath>
-	</PropertyGroup>
-
 	<ItemGroup>
+		<ProjectReference Include="..\..\Shared\Adnc.Shared.Application\Adnc.Shared.Application.csproj" />
 		<ProjectReference Include="..\Adnc.Usr.Application.Contracts\Adnc.Usr.Application.Contracts.csproj" />
 		<ProjectReference Include="..\Adnc.Usr.Repository\Adnc.Usr.Repository.csproj" />
 	</ItemGroup>
-
 	<ItemGroup>
-	  <Folder Include="EventSubscribers\" />
+		<Folder Include="EventSubscribers\" />
 	</ItemGroup>
 </Project>

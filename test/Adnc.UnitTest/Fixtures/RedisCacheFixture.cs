@@ -1,49 +1,39 @@
-﻿using Adnc.Infra.Caching;
-using Adnc.Infra.Caching.Configurations;
-using Autofac;
-using System;
+﻿using Adnc.Infra.Caching.Configurations;
 
-namespace Adnc.UnitTest.Fixtures
+namespace Adnc.UnitTest.Fixtures;
+
+public class RedisCacheFixture 
 {
-    public class RedisCacheFixture : IDisposable
+    public IServiceProvider Container { get; private set; }
+
+    public RedisCacheFixture()
     {
-        public IContainer Container { get; private set; }
-
-        public RedisCacheFixture()
+        var services = new ServiceCollection();
+        var redisOptions = new RedisDBOptions() { Password = "football", ConnectionTimeout = 1000 * 20 };
+        redisOptions.Endpoints.Add(new ServerEndPoint() { Host = "106.14.139.201", Port = 13379 });
+        var cacheOptions = new CacheOptions()
         {
-            var containerBuilder = new ContainerBuilder();
-            var redisOptions = new RedisDBOptions() { Password = "football", ConnectionTimeout = 1000 * 20 };
-            redisOptions.Endpoints.Add(new ServerEndPoint() { Host = "106.14.139.201", Port = 13379 });
-
-            var cacheOptions = new CacheOptions()
+            EnableLogging = true
+           ,
+            DBConfig = redisOptions
+            ,
+            PenetrationSetting = new CacheOptions.PenetrationOptions
             {
-                EnableLogging = true
-               ,
-                DBConfig = redisOptions
+                Disable = true
                 ,
-                PenetrationSetting = new CacheOptions.PenetrationOptions
+                BloomFilterSetting = new CacheOptions.BloomFilterSetting
                 {
-                    Disable = true
+                    Capacity = 10000000
                     ,
-                    BloomFilterSetting = new CacheOptions.BloomFilterSetting
-                    {
-                        Capacity = 10000000
-                        ,
-                        Name = "adnc:bloomfilter"
-                        ,
-                        ErrorRate = 0.001
-                    }
+                    Name = "adnc:bloomfilter"
+                    ,
+                    ErrorRate = 0.001
                 }
-            };
+            }
+        };
 
-            containerBuilder.RegisterModule(new AdncInfraCachingModule(cacheOptions));
+        services.AddAdncInfraCaching(cacheOptions);
 
-            Container = containerBuilder.Build();
-        }
-
-        public void Dispose()
-        {
-            this.Container?.Dispose();
-        }
+        Container = services.BuildServiceProvider();
     }
 }

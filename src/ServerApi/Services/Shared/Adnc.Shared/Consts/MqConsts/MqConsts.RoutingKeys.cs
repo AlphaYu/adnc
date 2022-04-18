@@ -1,8 +1,7 @@
-﻿namespace Adnc.Shared.Consts.Mq
+﻿namespace Adnc.Shared.Consts.Mq;
+
+public static class MqRoutingKeys
 {
-    public static class MqRoutingKeys
-    {
-        public const string OpsLog = "opslog";
-        public const string Loginlog = "loginlog";
-    }
+    public const string OpsLog = "opslog";
+    public const string Loginlog = "loginlog";
 }

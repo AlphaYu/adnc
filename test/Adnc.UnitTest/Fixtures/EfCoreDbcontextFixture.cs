@@ -1,77 +1,33 @@
 ﻿using Adnc.Cus.Entities;
-using Adnc.Infra.EfCore;
 using Adnc.Infra.EfCore.MySQL;
 using Adnc.Infra.Entities;
-using Adnc.Infra.IRepositories;
-using Autofac;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using System;
 
 namespace Adnc.UnitTest.Fixtures
 {
-    public class EfCoreDbcontextFixture : IDisposable
+    public class EfCoreDbcontextFixture
     {
-        public IContainer Container { get; private set; }
+        public IServiceProvider Container { get; private set; }
 
-        public EfCoreDbcontextFixture()
+        protected EfCoreDbcontextFixture()
         {
-            var containerBuilder = new ContainerBuilder();
-            //内存数据库
-            //var option = new DbContextOptionsBuilder<MyDbContext>().UseInMemoryDatabase("My.D3").Options;
-            //MyDbContext context = new MyDbContext(option);            //InitializeDbForTests  初始化测试数据
-            //new TestDataBuilder(context).Build();
-            //注入
-            //Server.ContentRootPath = Path.GetFullPath(@"..\..\..\..\..\") + @"src\My.D3";
-            //IConfigurationRoot configuration = AppConfigurationHelper.Get(Server.ContentRootPath);
-
-            //builder.RegisterType<SimpleDbContextProvider<MyDbContext>>().As<IDbContextProvider<MyDbContext>>().InstancePerLifetimeScope();
-            //var assemblysServices = Assembly.Load("My.D3.Application");
-            //builder.RegisterAssemblyTypes(assemblysServices).AsImplementedInterfaces();
-            //builder.RegisterAssemblyTypes(typeof(DbFixture).GetTypeInfo().Assembly);
-            //var config = new MapperConfiguration(c => c.AddProfile(typeof(AdncProfile)));
-            //IMapper mapper = config.CreateMapper();
-            //builder.RegisterInstance(mapper).As<IMapper>();
-            //var userContext = new UserContext() { ID = 1600000000000, Account = "alpha2008", Name = "余小猫" };
-
-            var dbstring = "Server=106.14.139.201;Port=13308;database=adnc_cus_dev;uid=root;pwd=alpha.netcore;";
-
-            //注册操作用户
-            containerBuilder.RegisterType<Operater>()
-                        .As<IOperater>()
-                        .InstancePerLifetimeScope();
-
-            //注册DbContext Options
+            var services = new ServiceCollection();
             var serverVersion = new MariaDbServerVersion(new Version(10, 5, 4));
-            containerBuilder.Register<DbContextOptions>(c =>
+            services.AddSingleton<IEntityInfo, EntityInfo>();
+            services.AddScoped<IOperater, Operater>();
+            services.AddAdncInfraEfCoreMySql();
+            services.AddDbContext<AdncDbContext>(options =>
             {
-                return new DbContextOptionsBuilder<AdncDbContext>()
-                .UseLoggerFactory(LoggerFactory.Create(builder => builder.AddDebug()))
-                .UseMySql(dbstring, serverVersion, mySqlOptions =>
+                options.UseMySql(FixtureConsts.MySqlConnectString, serverVersion, optionsBuilder =>
                 {
-                    mySqlOptions.MinBatchSize(4);
-                })
-                .Options;
-            }).InstancePerLifetimeScope();
+                    optionsBuilder.MinBatchSize(4)
+                                            .CommandTimeout(10)
+                                            .EnableRetryOnFailure()
+                                            .UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
+                });
+                options.LogTo(Console.WriteLine, LogLevel.Information);
+            });
 
-            //注册EntityInfo
-            containerBuilder.RegisterType<EntityInfo>()
-                            .As<IEntityInfo>()
-                            .InstancePerLifetimeScope();
-
-            //注册DbContext2
-            containerBuilder.RegisterType<AdncDbContext>()
-                            .InstancePerLifetimeScope();
-
-            //注册Adnc.Infra.EfCore
-            AdncInfraEfCoreModule.Register(containerBuilder);
-
-            Container = containerBuilder.Build();
-        }
-
-        public void Dispose()
-        {
-            this.Container?.Dispose();
+            Container = services.BuildServiceProvider();
         }
     }
 }

@@ -32,5 +32,5 @@ apt-get update
 apt install iputils-ping
 
 # portainer
-docker run -d -p 49111:9000 --name portainer --restart=always  -e TZ=Asia/Shanghai -v /var/run/docker.sock:/var/run/docker.sock -v  portainer_data:/data portainer/portainer
+docker run -d -p 49111:9000 --name portainer --restart=always  -e TZ=Asia/Shanghai -v /var/run/docker.sock:/var/run/docker.sock -v  /root/data/portainer:/data portainer/portainer
 ```

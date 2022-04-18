@@ -3,7 +3,7 @@
     using System;
 
     /// <summary>
-    /// Easycaching interceptor attribute.
+    /// Adnc.Infra.Caching interceptor attribute.
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, Inherited = true)]
     public class CachingInterceptorAttribute : Attribute
@@ -21,7 +21,7 @@
         public string CacheKeyPrefix { get; set; } = string.Empty;
 
         /// <summary>
-        /// Gets or sets the cache provider name. The default value is EasyCachingInterceptorOptions.CacheProviderName"/>
+        /// Gets or sets the cache provider name. The default value is Adnc.Infra.CachingInterceptorOptions.CacheProviderName"/>
         /// </summary>
         /// <value>The cache key prefix.</value>
         //public string CacheProviderName { get; set; }

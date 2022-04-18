@@ -1,13 +1,12 @@
 .vs
 bin
 obj
+txtlogs
 *.user
 *.pubxml
 node_modules
 /src/ClientApp/package-lock.json
 /README.html
 /src/ClientApp/dist
-*.log
-logs
 /src/ServerApi/.sonarqube
 /src/ServerApi/.sonarlint
