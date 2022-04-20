@@ -15,6 +15,7 @@ global using Adnc.Shared.RpcServices.Rtos;
 global using Adnc.Shared.RpcServices.Services;
 global using AutoMapper;
 global using DotNetCore.CAP;
+global using Microsoft.EntityFrameworkCore;
 global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Logging;
 global using MongoDB.Driver;

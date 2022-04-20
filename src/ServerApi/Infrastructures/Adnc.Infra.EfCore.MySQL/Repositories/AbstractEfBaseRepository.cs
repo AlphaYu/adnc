@@ -119,34 +119,5 @@ namespace Adnc.Infra.EfCore.Repositories
 
         protected virtual async Task<int> UpdateInternalAsync(TEntity entity, CancellationToken cancellationToken = default)
             => await DbContext.SaveChangesAsync(cancellationToken);
-
-        public virtual async Task<PagedModel<TEntity>> PagedAsync(int pageIndex, int pageSize, Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, object>> orderByExpression, bool ascending = false, bool writeDb = false, CancellationToken cancellationToken = default)
-        {
-            var dbSet = this.GetDbSet(writeDb, false);
-
-            var total = await EntityFrameworkQueryableExtensions.CountAsync(dbSet, whereExpression, cancellationToken);
-            if (total == 0)
-                return new PagedModel<TEntity>() { PageSize = pageSize };
-
-            if (pageIndex <= 0)
-                pageIndex = 1;
-
-            if (pageSize <= 0)
-                pageSize = 10;
-
-            var query = dbSet.Where(whereExpression);
-            query = ascending ? query.OrderBy(orderByExpression) : query.OrderByDescending(orderByExpression);
-            var data = await EntityFrameworkQueryableExtensions.ToArrayAsync(
-                                    query.Skip((pageIndex - 1) * pageSize).Take(pageSize)
-                                   , cancellationToken);
-
-            return new PagedModel<TEntity>()
-            {
-                PageIndex = pageIndex,
-                PageSize = pageSize,
-                TotalCount = total,
-                Data = data
-            };
-        }
     }
 }

@@ -120,14 +120,24 @@ public class RoleAppService : AbstractAppService, IRoleAppService
         return result;
     }
 
-    public async Task<PageModelDto<RoleDto>> GetPagedAsync(RolePagedSearchDto input)
+    public async Task<PageModelDto<RoleDto>> GetPagedAsync(RolePagedSearchDto search)
     {
-        var whereCondition = ExpressionCreator
+        var whereExpression = ExpressionCreator
                                               .New<SysRole>()
-                                              .AndIf(input.RoleName.IsNotNullOrWhiteSpace(), x => x.Name.Contains(input.RoleName));
+                                              .AndIf(search.RoleName.IsNotNullOrWhiteSpace(), x => x.Name.Contains(search.RoleName));
 
-        var pagedModel = await _roleRepository.PagedAsync(input.PageIndex, input.PageSize, whereCondition, x => x.Ordinal, true);
+        var total = await _roleRepository.CountAsync(whereExpression);
+        if (total == 0)
+            return new PageModelDto<RoleDto>(search);
 
-        return Mapper.Map<PageModelDto<RoleDto>>(pagedModel);
+        var entities =await _roleRepository
+                            .Where(whereExpression)
+                            .OrderByDescending(x => x.Id)
+                            .Skip(search.SkipRows())
+                            .Take(search.PageSize)
+                            .ToListAsync();
+        var dtos = Mapper.Map<List<RoleDto>>(entities);
+
+        return new PageModelDto<RoleDto>(search, dtos, total);
     }
 }

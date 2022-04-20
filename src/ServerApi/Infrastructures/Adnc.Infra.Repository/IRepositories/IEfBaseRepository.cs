@@ -80,17 +80,4 @@ public interface IEfBaseRepository<TEntity> : IRepository<TEntity>
     /// <param name="writeDb">是否读写库，默认false,可选参数</param>
     /// <returns></returns>
     Task<IEnumerable<TResult>> QueryAsync<TResult>(string sql, object param = null, int? commandTimeout = null, CommandType? commandType = null, bool writeDb = false);
-
-    /// <summary>
-    /// 分页方法
-    /// </summary>
-    /// <param name="pageNumber">第几页</param>
-    /// <param name="pageSize">每页显示条数</param>
-    /// <param name="whereExpression">查询条件</param>
-    /// <param name="orderByExpression">排序条件</param>
-    /// <param name="ascending">排序方式</param>
-    /// <param name="writeDb">是否读写库，默认false,可选参数</param>
-    /// param name="cancellationToken"><see cref="CancellationToken"/></param>
-    /// <returns></returns>
-    Task<PagedModel<TEntity>> PagedAsync(int pageIndex, int pageSize, Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, object>> orderByExpression, bool ascending = false, bool writeDb = false, CancellationToken cancellationToken = default);
 }

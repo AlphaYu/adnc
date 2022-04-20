@@ -13,14 +13,8 @@ public abstract class SearchPagedDto : ISearchPagedDto
     /// </summary>
     public int PageIndex
     {
-        get
-        {
-            return _pageIndex < 1 ? 1 : _pageIndex;
-        }
-        set
-        {
-            _pageIndex = value;
-        }
+        get => _pageIndex < 1 ? 1 : _pageIndex;
+        set => _pageIndex = value;
     }
 
     /// <summary>
@@ -34,14 +28,6 @@ public abstract class SearchPagedDto : ISearchPagedDto
             if (_pageSize > 100) _pageSize = 100;
             return _pageSize;
         }
-        set
-        {
-            _pageSize = value;
-        }
-    }
-
-    public int SkipRows()
-    {
-        return (this.PageIndex - 1) * this.PageSize;
+        set => _pageSize = value;
     }
 }
