@@ -15,7 +15,16 @@ public class CoreServiceFixture
         var services = new ServiceCollection();
         var serverVersion = new MariaDbServerVersion(new Version(10, 5, 4));
         services.AddSingleton<IEntityInfo, EntityInfo>();
-        services.AddScoped<IOperater, Operater>();
+        services.AddScoped(provider =>
+        {
+            return new Operater
+            {
+                Id = 1600000000000,
+                Account = "alpha2008",
+                Name = "余小猫"
+            };
+        });
+
         services.AddAdncInfraEfCoreMySql();
         services.AddDbContext<AdncDbContext>(options =>
         {
