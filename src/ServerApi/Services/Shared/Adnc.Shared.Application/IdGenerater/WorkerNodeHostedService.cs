@@ -1,4 +1,5 @@
 ﻿namespace Adnc.Shared.Application.IdGenerater;
+using IdGenerater = Adnc.Infra.Helper.IdGenerater;
 
 public class WorkerNodeHostedService : BackgroundService
 {
@@ -21,7 +22,7 @@ public class WorkerNodeHostedService : BackgroundService
         await _workerNode.InitWorkerNodesAsync(_serviceName);
         var workerId = await _workerNode.GetWorkerIdAsync(_serviceName);
 
-        YitterSnowFlake.CurrentWorkerId = (short)workerId;
+        IdGenerater.SetWorkerId((ushort)workerId);
 
         await base.StartAsync(cancellationToken);
     }
@@ -34,7 +35,7 @@ public class WorkerNodeHostedService : BackgroundService
 
         var subtractionMilliseconds = 0 - (_millisecondsDelay * 1.5);
         var score = DateTime.Now.AddMilliseconds(subtractionMilliseconds).GetTotalMilliseconds();
-        await _workerNode.RefreshWorkerIdScoreAsync(_serviceName, YitterSnowFlake.CurrentWorkerId, score);
+        await _workerNode.RefreshWorkerIdScoreAsync(_serviceName, IdGenerater.CurrentWorkerId, score);
 
         _logger.LogInformation("stopped service {0}:{1}", _serviceName, score);
     }
@@ -49,7 +50,7 @@ public class WorkerNodeHostedService : BackgroundService
 
                 if (stoppingToken.IsCancellationRequested) break;
 
-                await _workerNode.RefreshWorkerIdScoreAsync(_serviceName, YitterSnowFlake.CurrentWorkerId);
+                await _workerNode.RefreshWorkerIdScoreAsync(_serviceName, IdGenerater.CurrentWorkerId);
             }
             catch (Exception ex)
             {
