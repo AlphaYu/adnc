@@ -61,7 +61,7 @@ public class BasicAuthenticationHandler : AuthenticationHandler<BasicSchemeOptio
     public static bool UnpackFromBase64(string base64Token, out string userName, out string appId)
     {
         appId = string.Empty;
-        var credentialstring = base64Token.ToByteArray(Encoding.UTF8).GetString();
+        var credentialstring = Encoding.UTF8.GetString(Convert.FromBase64String(base64Token));
         var credentials = credentialstring.Split(':');
         var unPackUserName = userName = credentials[0];
         var unPackPassword = credentials[1].Split('_');
@@ -95,7 +95,7 @@ public class BasicAuthenticationHandler : AuthenticationHandler<BasicSchemeOptio
         var currentTotalSeconds = DateTime.Now.GetTotalSeconds();
         var md5String = SecurityHelper.MD5($"{userName}_{appId}_{currentTotalSeconds}_{securityKey}", true);
         var plainToken = $"{userName}:{appId}_{currentTotalSeconds}_{md5String}";
-        byte[] byteToken = plainToken.ToByteArray(Encoding.UTF8);
-        return byteToken.ToBase64String();
+        byte[] byteToken = Encoding.UTF8.GetBytes(plainToken);
+        return Convert.ToBase64String(byteToken);
     }
 }
