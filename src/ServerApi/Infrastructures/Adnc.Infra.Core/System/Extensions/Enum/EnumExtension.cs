@@ -22,8 +22,9 @@ namespace System
         /// <returns>The description attribute.</returns>
         public static string GetDescription([NotNull] this Enum value)
         {
-            var attr = value.GetType().GetField(value.ToString())
-                .GetCustomAttribute<DescriptionAttribute>();
+            var attr = value.GetType()
+                                     .GetField(value.ToString())
+                                     .GetCustomAttribute<DescriptionAttribute>();
             return attr?.Description;
         }
     }
