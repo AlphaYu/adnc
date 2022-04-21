@@ -1,61 +1,58 @@
 ﻿using Adnc.Infra.Helper;
-using Adnc.Infra.Helper.IdGeneraterInternal;
 
-namespace Adnc.UnitTest.Helper
+namespace Adnc.UnitTest.Helper;
+
+public class IdGeneraterTests
 {
-    public class IdGeneraterTests
+    private  readonly ITestOutputHelper _output;
+
+    public IdGeneraterTests(ITestOutputHelper output)
     {
-        private ITestOutputHelper _output;
+        _output = output;
+        IdGenerater.SetWorkerId(1);
+    }
 
-        public IdGeneraterTests(ITestOutputHelper output)
-        {
-            _output = output;
-            if (YitterSnowFlake.CurrentWorkerId < 0)
-                YitterSnowFlake.CurrentWorkerId = 63;
-        }
+    /// <summary>
+    /// id 小于 js 最大值 151599672553541
+    /// </summary>
+    [Fact]
+    public void TestIdLessThanjJsMaxNumber()
+    {
+        long id = IdGenerater.GetNextId();
+        _output.WriteLine(id.ToString());
+        Assert.True(9007199254740992 > id);
+    }
 
-        /// <summary>
-        /// id 小于 js 最大值 151599672553541
-        /// </summary>
-        [Fact]
-        public void TestIdLessThanjJsMaxNumber()
+    /// <summary>
+    /// 100W个ids,没有重复
+    /// </summary>
+    [Fact]
+    public void TestNotContainsDuplicateIds()
+    {
+        var set = new HashSet<long>();
+        for (int index = 0; index < 100000; index++)
         {
-            long id = IdGenerater.GetNextId();
-            _output.WriteLine(id.ToString());
-            Assert.True(9007199254740992 > id);
+            long id01 = IdGenerater.GetNextId();
+            set.Add(id01);
         }
+        Assert.Equal(100000, set.Count);
+    }
 
-        /// <summary>
-        /// 100W个ids,没有重复
-        /// </summary>
-        [Fact]
-        public void TestNotContainsDuplicateIds()
+    /// <summary>
+    /// 100W个ids,517毫秒
+    /// </summary>
+    [Fact]
+    public void TestSpeed()
+    {
+        System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
+        stopwatch.Start();
+        Parallel.For(1, 100000, index =>
         {
-            var set = new HashSet<long>();
-            for (int index = 0; index < 100000; index++)
-            {
-                long id01 = IdGenerater.GetNextId();
-                set.Add(id01);
-            }
-            Assert.Equal(100000, set.Count());
-        }
-
-        /// <summary>
-        /// 100W个ids,517毫秒
-        /// </summary>
-        [Fact]
-        public void TestSpeed()
-        {
-            System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
-            stopwatch.Start();
-            Parallel.For(1, 1000000, index =>
-            {
-                IdGenerater.GetNextId();
-            });
-            stopwatch.Stop();
-            //持续时间: 517 毫秒
-            _output.WriteLine(stopwatch.ElapsedMilliseconds.ToString());
-            stopwatch.Reset();
-        }
+            IdGenerater.GetNextId();
+        });
+        stopwatch.Stop();
+        //持续时间: 517 毫秒
+        _output.WriteLine(stopwatch.ElapsedMilliseconds.ToString());
+        stopwatch.Reset();
     }
 }

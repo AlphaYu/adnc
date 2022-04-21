@@ -1,7 +1,6 @@
 ﻿using Adnc.Cus.Entities;
 using Adnc.Infra.EfCore.MySQL;
 using Adnc.Infra.Helper;
-using Adnc.Infra.Helper.IdGeneraterInternal;
 
 namespace Adnc.UnitTest.EFCore
 {
@@ -27,8 +26,7 @@ namespace Adnc.UnitTest.EFCore
             _custLogsRsp = _fixture.Container.GetRequiredService<IEfRepository<CustomerTransactionLog>>();
             _dbContext = _fixture.Container.GetRequiredService<AdncDbContext>();
 
-            if (YitterSnowFlake.CurrentWorkerId < 0)
-                YitterSnowFlake.CurrentWorkerId = 63;
+            IdGenerater.SetWorkerId(1);
         }
 
         protected static Expression<Func<TEntity, object>>[] UpdatingProps<TEntity>(params Expression<Func<TEntity, object>>[] expressions)
