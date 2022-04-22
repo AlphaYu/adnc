@@ -2,9 +2,6 @@
 	<Import Project="..\..\..\build\common.props" />
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'" />
 	<ItemGroup>
-	  <None Remove="swagger_miniprofiler.html" />
-	</ItemGroup>
-	<ItemGroup>
 	  <EmbeddedResource Include="swagger_miniprofiler.html">
 	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 	  </EmbeddedResource>

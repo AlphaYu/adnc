@@ -165,30 +165,30 @@ public class CustomerAppService : AbstractAppService, ICustomerAppService
     public async Task<AppSrvResult<PageModelDto<CustomerDto>>> GetPagedAsync(CustomerSearchPagedDto search)
     {
         var whereCondition = ExpressionCreator
-                                                                         .New<Customer>()
-                                                                         .AndIf(search.Id > 0, x => x.Id == search.Id)
-                                                                         .AndIf(search.Account.IsNotNullOrEmpty(), x => x.Account == search.Account);
+                                            .New<Customer>()
+                                            .AndIf(search.Id > 0, x => x.Id == search.Id)
+                                            .AndIf(search.Account.IsNotNullOrEmpty(), x => x.Account == search.Account);
 
         var count = await _customerRepo.CountAsync(whereCondition);
         if (count == 0)
             return new PageModelDto<CustomerDto>(search);
 
         var customers = await _customerRepo
-                                                                    .Where(whereCondition)
-                                                                    .Select(x => new CustomerDto
-                                                                    {
-                                                                        Id = x.Id,
-                                                                        Account = x.Account,
-                                                                        Nickname = x.Nickname,
-                                                                        Realname = x.Realname,
-                                                                        CreateBy = x.CreateBy,
-                                                                        CreateTime = x.CreateTime,
-                                                                        FinanceInfoBalance = x.FinanceInfo == null ? 0 : x.FinanceInfo.Balance
-                                                                    })
-                                                                    .Skip(search.SkipRows())
-                                                                    .Take(search.PageSize)
-                                                                    .OrderByDescending(x => x.Id)
-                                                                    .ToListAsync();
+                                            .Where(whereCondition)
+                                            .Select(x => new CustomerDto
+                                            {
+                                                Id = x.Id,
+                                                Account = x.Account,
+                                                Nickname = x.Nickname,
+                                                Realname = x.Realname,
+                                                CreateBy = x.CreateBy,
+                                                CreateTime = x.CreateTime,
+                                                FinanceInfoBalance = x.FinanceInfo == null ? 0 : x.FinanceInfo.Balance
+                                            })
+                                            .Skip(search.SkipRows())
+                                            .Take(search.PageSize)
+                                            .OrderByDescending(x => x.Id)
+                                            .ToListAsync();
 
         return new PageModelDto<CustomerDto>(search, customers, count);
     }

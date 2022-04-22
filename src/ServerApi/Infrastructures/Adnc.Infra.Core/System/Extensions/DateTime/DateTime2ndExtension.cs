@@ -1,13 +1,13 @@
 ﻿namespace System
 {
-    public static class DateTime2ndExtension
+    public static class DateTime2NdExtension
     {
         /// <summary>
         ///     A DateTime extension method that ages the given this.
         /// </summary>
         /// <param name="this">The @this to act on.</param>
         /// <returns>An int.</returns>
-        public static int Age(this DateTime @this)
+        public static int GetAge(this DateTime @this)
         {
             if (DateTime.Today.Month < @this.Month ||
                 DateTime.Today.Month == @this.Month &&
@@ -16,24 +16,6 @@
                 return DateTime.Today.Year - @this.Year - 1;
             }
             return DateTime.Today.Year - @this.Year;
-        }
-
-        /// <summary>
-        ///     A DateTime extension method that query if 'date' is date equal.
-        /// </summary>
-        /// <param name="date">The date to act on.</param>
-        /// <param name="dateToCompare">Date/Time of the date to compare.</param>
-        /// <returns>true if date equal, false if not.</returns>
-        public static bool IsDateEqual(this DateTime date, DateTime dateToCompare) => date.Date == dateToCompare.Date;
-
-        /// <summary>
-        ///     A DateTime extension method that query if '@this' is today.
-        /// </summary>
-        /// <param name="this">The @this to act on.</param>
-        /// <returns>true if today, false if not.</returns>
-        public static bool IsToday(this DateTime @this)
-        {
-            return @this.Date == DateTime.Today;
         }
 
         /// <summary>
@@ -54,28 +36,6 @@
         public static bool IsWeekendDay(this DateTime @this)
         {
             return @this.DayOfWeek == DayOfWeek.Saturday || @this.DayOfWeek == DayOfWeek.Sunday;
-        }
-
-        /// <summary>
-        ///     A DateTime extension method that return a DateTime with the time set to "00:00:00:000". The first moment of
-        ///     the day.
-        /// </summary>
-        /// <param name="this">The @this to act on.</param>
-        /// <returns>A DateTime of the day with the time set to "00:00:00:000".</returns>
-        public static DateTime StartOfDay(this DateTime @this)
-        {
-            return new DateTime(@this.Year, @this.Month, @this.Day);
-        }
-
-        /// <summary>
-        ///     A DateTime extension method that return a DateTime of the first day of the month with the time set to
-        ///     "00:00:00:000". The first moment of the first day of the month.
-        /// </summary>
-        /// <param name="this">The @this to act on.</param>
-        /// <returns>A DateTime of the first day of the month with the time set to "00:00:00:000".</returns>
-        public static DateTime StartOfMonth(this DateTime @this)
-        {
-            return new DateTime(@this.Year, @this.Month, 1);
         }
 
         /// <summary>
@@ -101,16 +61,6 @@
             return start;
         }
 
-        /// <summary>
-        ///     A DateTime extension method that return a DateTime of the first day of the year with the time set to
-        ///     "00:00:00:000". The first moment of the first day of the year.
-        /// </summary>
-        /// <param name="this">The @this to act on.</param>
-        /// <returns>A DateTime of the first day of the year with the time set to "00:00:00:000".</returns>
-        public static DateTime StartOfYear(this DateTime @this)
-        {
-            return new DateTime(@this.Year, 1, 1);
-        }
 
         /// <summary>
         ///     A DateTime extension method that converts the @this to an epoch time span.

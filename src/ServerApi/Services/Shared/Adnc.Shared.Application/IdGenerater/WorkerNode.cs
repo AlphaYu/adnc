@@ -1,4 +1,5 @@
 ﻿namespace Adnc.Shared.Application.IdGenerater;
+using IdGenerater = Adnc.Infra.Helper.IdGenerater;
 
 public class WorkerNode
 {
@@ -35,7 +36,7 @@ public class WorkerNode
             try
             {
                 var set = new Dictionary<long, double>();
-                for (long index = 0; index <= YitterSnowFlake.MaxWorkerId; index++)
+                for (long index = 0; index <= IdGenerater.MaxWorkerId; index++)
                 {
                     set.Add(index, DateTime.Now.GetTotalMilliseconds());
                 }
@@ -75,8 +76,8 @@ public class WorkerNode
 
     public async Task RefreshWorkerIdScoreAsync(string serviceName, long workerId, double? workerIdScore = null)
     {
-        if (workerId < 0 || workerId > YitterSnowFlake.MaxWorkerId)
-            throw new Exception(string.Format("worker Id can't be greater than {0} or less than 0", YitterSnowFlake.MaxWorkerId));
+        if (workerId < 0 || workerId > IdGenerater.MaxWorkerId)
+            throw new Exception(string.Format("worker Id can't be greater than {0} or less than 0", IdGenerater.MaxWorkerId));
 
         var workerIdSortedSetCacheKey = string.Format(CachingConsts.WorkerIdSortedSetCacheKey, serviceName);
 

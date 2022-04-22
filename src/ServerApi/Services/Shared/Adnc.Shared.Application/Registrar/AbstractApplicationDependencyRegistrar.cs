@@ -52,9 +52,7 @@ public abstract class AbstractApplicationDependencyRegistrar : IDependencyRegist
     {
         Services.AddSingleton(typeof(Lazy<>));
         //https://andrewlock.net/how-to-register-a-service-with-multiple-interfaces-for-in-asp-net-core-di/
-        Services.AddScoped<UserContext>();
-        Services.AddScoped<IUserContext>(x => x.GetRequiredService<UserContext>());
-        Services.AddScoped<IOperater>(x => x.GetRequiredService<UserContext>());
+        Services.AddScoped<IUserContext,UserContext>();
         Services.AddScoped<OperateLogInterceptor>();
         Services.AddScoped<OperateLogAsyncInterceptor>();
         Services.AddScoped<UowInterceptor>();
@@ -80,6 +78,18 @@ public abstract class AbstractApplicationDependencyRegistrar : IDependencyRegist
             throw new NullReferenceException(nameof(IEntityInfo));
         else
             Services.AddSingleton(serviceType, implType);
+
+        Services.AddScoped(provider =>
+        {
+            var userContext = provider.GetRequiredService<IUserContext>();
+            return new Operater
+            {
+                Id = userContext.Id,
+                Account = userContext.Account,
+                Name = userContext.Name
+            };
+        });
+
         Services.AddAdncInfraEfCoreMySql();
 
         var mysqlConfig = MysqlSection.Get<MysqlConfig>();

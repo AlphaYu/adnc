@@ -7,7 +7,6 @@ global using Adnc.Infra.Core.Interfaces;
 global using Adnc.Infra.Core.Json;
 global using Adnc.Infra.Entities;
 global using Adnc.Infra.Helper;
-global using Adnc.Infra.Helper.IdGeneraterInternal;
 global using Adnc.Infra.IRepositories;
 global using Adnc.Infra.Mapper;
 global using Adnc.Infra.Mongo;

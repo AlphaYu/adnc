@@ -1,305 +1,205 @@
-﻿// ReSharper disable once CheckNamespace
-namespace System.Collections.Generic
+﻿namespace System.Collections.Generic;
+
+/// <summary>
+/// CollectionExtension
+/// </summary>
+public static class CollectionExtension
 {
     /// <summary>
-    /// CollectionExtension
+    ///     An ICollection&lt;T&gt; extension method that adds only if the value satisfies the predicate.
     /// </summary>
-    public static class CollectionExtension
+    /// <typeparam name="T">Generic type parameter.</typeparam>
+    /// <param name="this">The @this to act on.</param>
+    /// <param name="predicate">The predicate.</param>
+    /// <param name="value">The value.</param>
+    /// <returns>true if it succeeds, false if it fails.</returns>
+    public static void AddIf<T>([NotNull] this ICollection<T> @this, Func<T, bool> predicate, T value)
     {
-        /// <summary>
-        ///     An ICollection&lt;T&gt; extension method that adds only if the value satisfies the predicate.
-        /// </summary>
-        /// <typeparam name="T">Generic type parameter.</typeparam>
-        /// <param name="this">The @this to act on.</param>
-        /// <param name="predicate">The predicate.</param>
-        /// <param name="value">The value.</param>
-        /// <returns>true if it succeeds, false if it fails.</returns>
-        public static bool AddIf<T>([NotNull] this ICollection<T> @this, Func<T, bool> predicate, T value)
-        {
-            if (@this.IsReadOnly) return false;
-            if (predicate(value))
-            {
-                @this.Add(value);
-                return true;
-            }
+        if (@this.IsReadOnly)
+            throw new InvalidOperationException($"{ nameof(@this) } is readonly");
 
-            return false;
+        if (predicate(value))
+            @this.Add(value);
+    }
+
+    /// <summary>
+    ///     An ICollection&lt;T&gt; extension method that add value if the ICollection doesn't contains it already.
+    /// </summary>
+    /// <typeparam name="T">Generic type parameter.</typeparam>
+    /// <param name="this">The @this to act on.</param>
+    /// <param name="value">The value.</param>
+    /// <returns>true if it succeeds, false if it fails.</returns>
+    public static void AddIfNotContains<T>([NotNull] this ICollection<T> @this, T value)
+    {
+        if (@this.IsReadOnly)
+            throw new InvalidOperationException($"{ nameof(@this) } is readonly");
+        
+        if (!@this.Contains(value))
+            @this.Add(value);
+    }
+
+    /// <summary>
+    ///     An ICollection&lt;T&gt; extension method that adds a range to 'values'.
+    /// </summary>
+    /// <typeparam name="T">Generic type parameter.</typeparam>
+    /// <param name="this">The @this to act on.</param>
+    /// <param name="values">A variable-length parameters list containing values.</param>
+    public static void AddRange<T>([NotNull] this ICollection<T> @this, params T[] values)
+    {
+        if (@this.IsReadOnly)
+            throw new InvalidOperationException($"{ nameof(@this) } is readonly");
+
+        foreach (var value in values)
+        {
+            @this.Add(value);
         }
+    }
 
-        /// <summary>
-        ///     An ICollection&lt;T&gt; extension method that add value if the ICollection doesn't contains it already.
-        /// </summary>
-        /// <typeparam name="T">Generic type parameter.</typeparam>
-        /// <param name="this">The @this to act on.</param>
-        /// <param name="value">The value.</param>
-        /// <returns>true if it succeeds, false if it fails.</returns>
-        public static bool AddIfNotContains<T>([NotNull] this ICollection<T> @this, T value)
+    /// <summary>
+    ///     An ICollection&lt;T&gt; extension method that adds a collection of objects to the end of this collection only
+    ///     for value who satisfies the predicate.
+    /// </summary>
+    /// <typeparam name="T">Generic type parameter.</typeparam>
+    /// <param name="this">The @this to act on.</param>
+    /// <param name="predicate">The predicate.</param>
+    /// <param name="values">A variable-length parameters list containing values.</param>
+    public static void AddRangeIf<T>([NotNull] this ICollection<T> @this, Func<T, bool> predicate, params T[] values)
+    {
+        if (@this.IsReadOnly)
+            throw new InvalidOperationException($"{ nameof(@this) } is readonly");
+
+        foreach (var value in values.Where(predicate))
         {
-            if (@this.IsReadOnly) return false;
+            @this.Add(value);
+        }
+    }
+
+    /// <summary>
+    ///     An ICollection&lt;T&gt; extension method that adds a range of values that's not already in the ICollection.
+    /// </summary>
+    /// <typeparam name="T">Generic type parameter.</typeparam>
+    /// <param name="this">The @this to act on.</param>
+    /// <param name="values">A variable-length parameters list containing values.</param>
+    public static void AddRangeIfNotContains<T>([NotNull] this ICollection<T> @this, params T[] values)
+    {
+        if (@this.IsReadOnly)
+            throw new InvalidOperationException($"{ nameof(@this) } is readonly");
+        
+        foreach (var value in values)
+        {
             if (!@this.Contains(value))
             {
                 @this.Add(value);
-                return true;
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        ///     An ICollection&lt;T&gt; extension method that adds a range to 'values'.
-        /// </summary>
-        /// <typeparam name="T">Generic type parameter.</typeparam>
-        /// <param name="this">The @this to act on.</param>
-        /// <param name="values">A variable-length parameters list containing values.</param>
-        public static void AddRange<T>([NotNull] this ICollection<T> @this, params T[] values)
-        {
-            if (@this.IsReadOnly)
-            {
-                return;
-            }
-            foreach (var value in values)
-            {
-                @this.Add(value);
-            }
-        }
-
-        /// <summary>
-        ///     An ICollection&lt;T&gt; extension method that adds a collection of objects to the end of this collection only
-        ///     for value who satisfies the predicate.
-        /// </summary>
-        /// <typeparam name="T">Generic type parameter.</typeparam>
-        /// <param name="this">The @this to act on.</param>
-        /// <param name="predicate">The predicate.</param>
-        /// <param name="values">A variable-length parameters list containing values.</param>
-        public static void AddRangeIf<T>([NotNull] this ICollection<T> @this, Func<T, bool> predicate, params T[] values)
-        {
-            if (@this.IsReadOnly) return;
-            foreach (var value in values)
-            {
-                if (predicate(value))
-                {
-                    @this.Add(value);
-                }
-            }
-        }
-
-        /// <summary>
-        ///     An ICollection&lt;T&gt; extension method that adds a range of values that's not already in the ICollection.
-        /// </summary>
-        /// <typeparam name="T">Generic type parameter.</typeparam>
-        /// <param name="this">The @this to act on.</param>
-        /// <param name="values">A variable-length parameters list containing values.</param>
-        public static void AddRangeIfNotContains<T>([NotNull] this ICollection<T> @this, params T[] values)
-        {
-            if (@this.IsReadOnly) return;
-            foreach (var value in values)
-            {
-                if (!@this.Contains(value))
-                {
-                    @this.Add(value);
-                }
-            }
-        }
-
-        /// <summary>
-        ///     An ICollection&lt;T&gt; extension method that query if '@this' contains all values.
-        /// </summary>
-        /// <typeparam name="T">Generic type parameter.</typeparam>
-        /// <param name="this">The @this to act on.</param>
-        /// <param name="values">A variable-length parameters list containing values.</param>
-        /// <returns>true if it succeeds, false if it fails.</returns>
-        public static bool ContainsAll<T>([NotNull] this ICollection<T> @this, params T[] values)
-        {
-            foreach (var value in values)
-            {
-                if (!@this.Contains(value))
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        /// <summary>
-        ///     An ICollection&lt;T&gt; extension method that query if '@this' contains any value.
-        /// </summary>
-        /// <typeparam name="T">Generic type parameter.</typeparam>
-        /// <param name="this">The @this to act on.</param>
-        /// <param name="values">A variable-length parameters list containing values.</param>
-        /// <returns>true if it succeeds, false if it fails.</returns>
-        public static bool ContainsAny<T>([NotNull] this ICollection<T> @this, params T[] values)
-        {
-            foreach (var value in values)
-            {
-                if (@this.Contains(value))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        ///     An ICollection&lt;T&gt; extension method that queries if the collection is null or is empty.
-        /// </summary>
-        /// <typeparam name="T">Generic type parameter.</typeparam>
-        /// <param name="this">The @this to act on.</param>
-        /// <returns>true if null or empty&lt; t&gt;, false if not.</returns>
-        public static bool IsNullOrEmpty<T>(this ICollection<T> @this)
-        {
-            return @this == null || !@this.Any();
-        }
-
-        /// <summary>
-        ///     An ICollection&lt;T&gt; extension method that queries if the collection is not (null or is empty).
-        /// </summary>
-        /// <typeparam name="T">Generic type parameter.</typeparam>
-        /// <param name="this">The @this to act on.</param>
-        /// <returns>true if the collection is not (null or empty), false if not.</returns>
-        public static bool IsNotNullOrEmpty<T>(this ICollection<T> @this)
-        {
-            return @this != null && @this.Any();
-        }
-
-        /// <summary>
-        ///     An ICollection&lt;T&gt; extension method that removes if.
-        /// </summary>
-        /// <typeparam name="T">Generic type parameter.</typeparam>
-        /// <param name="this">The @this to act on.</param>
-        /// <param name="value">The value.</param>
-        /// <param name="predicate">The predicate.</param>
-        public static void RemoveIf<T>([NotNull] this ICollection<T> @this, T value, Func<T, bool> predicate)
-        {
-            if (@this.IsReadOnly) return;
-            if (predicate(value))
-            {
-                @this.Remove(value);
-            }
-        }
-
-        /// <summary>
-        ///     An ICollection&lt;T&gt; extension method that removes if contains.
-        /// </summary>
-        /// <typeparam name="T">Generic type parameter.</typeparam>
-        /// <param name="this">The @this to act on.</param>
-        /// <param name="value">The value.</param>
-        public static void RemoveIfContains<T>([NotNull] this ICollection<T> @this, T value)
-        {
-            if (@this.IsReadOnly) return;
-            if (@this.Contains(value))
-            {
-                @this.Remove(value);
-            }
-        }
-
-        /// <summary>
-        ///     An ICollection&lt;T&gt; extension method that removes the range.
-        /// </summary>
-        /// <typeparam name="T">Generic type parameter.</typeparam>
-        /// <param name="this">The @this to act on.</param>
-        /// <param name="values">A variable-length parameters list containing values.</param>
-        public static void RemoveRange<T>([NotNull] this ICollection<T> @this, params T[] values)
-        {
-            foreach (var value in values)
-            {
-                @this.Remove(value);
-            }
-        }
-
-        /// <summary>
-        ///     An ICollection&lt;T&gt; extension method that removes range item that satisfy the predicate.
-        /// </summary>
-        /// <typeparam name="T">Generic type parameter.</typeparam>
-        /// <param name="this">The @this to act on.</param>
-        /// <param name="predicate">The predicate.</param>
-        /// <param name="values">A variable-length parameters list containing values.</param>
-        public static void RemoveRangeIf<T>([NotNull] this ICollection<T> @this, Func<T, bool> predicate, params T[] values)
-        {
-            if (@this.IsReadOnly) return;
-            foreach (var value in values)
-            {
-                if (predicate(value))
-                {
-                    @this.Remove(value);
-                }
-            }
-        }
-
-        /// <summary>
-        ///     An ICollection&lt;T&gt; extension method that removes the range if contains.
-        /// </summary>
-        /// <typeparam name="T">Generic type parameter.</typeparam>
-        /// <param name="this">The @this to act on.</param>
-        /// <param name="values">A variable-length parameters list containing values.</param>
-        public static void RemoveRangeIfContains<T>([NotNull] this ICollection<T> @this, params T[] values)
-        {
-            if (@this.IsReadOnly) return;
-            foreach (var value in values)
-            {
-                if (@this.Contains(value))
-                {
-                    @this.Remove(value);
-                }
-            }
-        }
-
-        /// <summary>
-        ///     An ICollection&lt;T&gt; extension method that removes value that satisfy the predicate.
-        /// </summary>
-        /// <typeparam name="T">Generic type parameter.</typeparam>
-        /// <param name="this">The @this to act on.</param>
-        /// <param name="predicate">The predicate.</param>
-        public static void RemoveWhere<T>([NotNull] this ICollection<T> @this, Func<T, bool> predicate)
-        {
-            if (@this.IsReadOnly) return;
-            var list = @this.Where(predicate).ToList();
-            foreach (var item in list)
-            {
-                @this.Remove(item);
             }
         }
     }
-}
 
-namespace System.Collections.Specialized
-{
     /// <summary>
-    ///NameValueCollection
+    ///     An ICollection&lt;T&gt; extension method that query if '@this' contains all values.
     /// </summary>
-    public static class NameValueCollectionExtension
+    /// <typeparam name="T">Generic type parameter.</typeparam>
+    /// <param name="this">The @this to act on.</param>
+    /// <param name="values">A variable-length parameters list containing values.</param>
+    /// <returns>true if it succeeds, false if it fails.</returns>
+    public static bool ContainsAll<T>([NotNull] this ICollection<T> @this, params T[] values)
     {
-        /// <summary>将名值集合转换成字符串，key1=value1&amp;key2=value2，k/v会编码</summary>
-        /// <param name="source">数据源</param>
-        /// <returns>字符串</returns>
-
-        public static string ToQueryString(this NameValueCollection source)
+        foreach (var value in values)
         {
-            if (source == null)
+            if (!@this.Contains(value))
             {
-                return null;
+                return false;
             }
+        }
 
-            var sb = new StringBuilder(1024);
+        return true;
+    }
 
-            foreach (var key in source.AllKeys)
+    /// <summary>
+    ///     An ICollection&lt;T&gt; extension method that query if '@this' contains any value.
+    /// </summary>
+    /// <typeparam name="T">Generic type parameter.</typeparam>
+    /// <param name="this">The @this to act on.</param>
+    /// <param name="values">A variable-length parameters list containing values.</param>
+    /// <returns>true if it succeeds, false if it fails.</returns>
+    public static bool ContainsAny<T>([NotNull] this ICollection<T> @this, params T[] values)
+    {
+        foreach (var value in values)
+        {
+            if (@this.Contains(value))
             {
-                if (string.IsNullOrWhiteSpace(key))
-                {
-                    continue;
-                }
-                sb.Append("&");
-                sb.Append(WebUtility.UrlEncode(key));
-                sb.Append("=");
-                var val = source.Get(key);
-                if (val != null)
-                {
-                    sb.Append(WebUtility.UrlEncode(val));
-                }
+                return true;
             }
+        }
 
-            return sb.Length > 0 ? sb.ToString(1, sb.Length - 1) : "";
+        return false;
+    }
+
+    /// <summary>
+    ///     An ICollection&lt;T&gt; extension method that queries if the collection is null or is empty.
+    /// </summary>
+    /// <typeparam name="T">Generic type parameter.</typeparam>
+    /// <param name="this">The @this to act on.</param>
+    /// <returns>true if null or empty&lt; t&gt;, false if not.</returns>
+    public static bool IsNullOrEmpty<T>(this ICollection<T> @this)=> @this == null || !@this.Any();
+
+    /// <summary>
+    ///     An ICollection&lt;T&gt; extension method that queries if the collection is not (null or is empty).
+    /// </summary>
+    /// <typeparam name="T">Generic type parameter.</typeparam>
+    /// <param name="this">The @this to act on.</param>
+    /// <returns>true if the collection is not (null or empty), false if not.</returns>
+    public static bool IsNotNullOrEmpty<T>(this ICollection<T> @this)=> @this != null && @this.Any();
+
+    /// <summary>
+    ///     An ICollection&lt;T&gt; extension method that removes the range.
+    /// </summary>
+    /// <typeparam name="T">Generic type parameter.</typeparam>
+    /// <param name="this">The @this to act on.</param>
+    /// <param name="values">A variable-length parameters list containing values.</param>
+    public static void RemoveRange<T>([NotNull] this ICollection<T> @this, params T[] values)
+    {
+        if (@this.IsReadOnly)
+            throw new InvalidOperationException($"{ nameof(@this) } is readonly");
+
+        foreach (var value in values)
+        {
+            @this.Remove(value);
+        }
+    }
+
+    /// <summary>
+    ///     An ICollection&lt;T&gt; extension method that removes range item that satisfy the predicate.
+    /// </summary>
+    /// <typeparam name="T">Generic type parameter.</typeparam>
+    /// <param name="this">The @this to act on.</param>
+    /// <param name="predicate">The predicate.</param>
+    /// <param name="values">A variable-length parameters list containing values.</param>
+    public static void RemoveRangeIf<T>([NotNull] this ICollection<T> @this, Func<T, bool> predicate, params T[] values)
+    {
+        if (@this.IsReadOnly)
+            throw new InvalidOperationException($"{ nameof(@this) } is readonly");
+
+        foreach (var value in values.Where(predicate))
+        {
+            @this.Remove(value);
+        }
+    }
+
+    /// <summary>
+    ///     An ICollection&lt;T&gt; extension method that removes value that satisfy the predicate.
+    /// </summary>
+    /// <typeparam name="T">Generic type parameter.</typeparam>
+    /// <param name="this">The @this to act on.</param>
+    /// <param name="predicate">The predicate.</param>
+    public static void RemoveWhere<T>([NotNull] this ICollection<T> @this, Func<T, bool> predicate)
+    {
+        if (@this.IsReadOnly)
+            throw new InvalidOperationException($"{ nameof(@this) } is readonly");
+
+        var list = @this.Where(predicate).ToList();
+        foreach (var item in list)
+        {
+            @this.Remove(item);
         }
     }
 }

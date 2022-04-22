@@ -60,21 +60,11 @@ public class CfgAppService : AbstractAppService, ICfgAppService
                                             .AndIf(search.Value.IsNotNullOrWhiteSpace(), x => x.Value.Contains(search.Value));
 
         var allCfgs = await _cacheService.GetAllCfgsFromCacheAsync();
-
         var pagedCfgs = allCfgs.Where(whereCondition.Compile())
-                               .OrderByDescending(x => x.CreateTime)
-                               .Skip((search.PageIndex - 1) * search.PageSize)
-                               .Take(search.PageSize)
-                               .ToArray();
-
-        var result = new PageModelDto<CfgDto>()
-        {
-            Data = pagedCfgs,
-            TotalCount = allCfgs.Count,
-            PageIndex = search.PageIndex,
-            PageSize = search.PageSize
-        };
-
-        return result;
+                                   .OrderByDescending(x => x.CreateTime)
+                                   .Skip(search.SkipRows())
+                                   .Take(search.PageSize)
+                                   .ToArray();
+        return new PageModelDto<CfgDto>(search, pagedCfgs, allCfgs.Count);
     }
 }

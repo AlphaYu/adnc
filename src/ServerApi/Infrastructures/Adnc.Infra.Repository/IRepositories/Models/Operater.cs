@@ -1,6 +1,5 @@
 ﻿namespace Adnc.Infra.IRepositories;
-
-public class Operater : IOperater
+public class Operater
 {
     public long Id { get; set; }
 

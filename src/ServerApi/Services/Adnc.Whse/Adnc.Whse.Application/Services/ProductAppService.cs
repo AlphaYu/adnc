@@ -130,27 +130,36 @@ public class ProductAppService : AbstractAppService, IProductAppService
     public async Task<PageModelDto<ProductDto>> GetPagedAsync(ProductSearchPagedDto search)
     {
         var whereCondition = ExpressionCreator
-                                                             .New<Product>()
-                                                             .AndIf(search.Id > 0, x => x.Id == search.Id);
+                                            .New<Product>()
+                                            .AndIf(search.Id > 0, x => x.Id == search.Id);
 
-        var pagedEntity = await _productRepo.PagedAsync(search.PageIndex, search.PageSize, whereCondition, x => x.Id);
+        var total = await _productRepo.CountAsync(whereCondition);
+        if (total == 0)
+            return new PageModelDto<ProductDto>(search);
 
-        var pagedDto = Mapper.Map<PageModelDto<ProductDto>>(pagedEntity);
+        var entities = await _productRepo
+                            .Where(whereCondition)
+                            .OrderByDescending(x => x.Id)
+                            .Skip(search.SkipRows())
+                            .Take(search.PageSize)
+                            .ToListAsync();
 
-        if (pagedDto.Data.Count > 0)
+        var productDtos = Mapper.Map<List<ProductDto>>(entities);
+        if (productDtos.IsNotNullOrEmpty())
         {
             //调用maint微服务获取字典,组合商品状态信息
             var rpcReuslt = await _maintRpcSrv.GetDictAsync(Consts.ProdunctStatusId);
             if (rpcReuslt.IsSuccessStatusCode && rpcReuslt.Content.Children.Count > 0)
             {
                 var dicts = rpcReuslt.Content.Children;
-                pagedDto.Data.ForEach(x =>
+                productDtos.ForEach(x =>
                 {
                     x.StatusDescription = dicts.FirstOrDefault(d => d.Value == x.StatusCode.ToString())?.Name;
                 });
             }
         }
-        return pagedDto;
+
+        return new PageModelDto<ProductDto>(search, productDtos, total);
     }
 
     /// <summary>
@@ -161,9 +170,9 @@ public class ProductAppService : AbstractAppService, IProductAppService
     public async Task<List<ProductDto>> GetListAsync(ProductSearchListDto search)
     {
         var whereCondition = ExpressionCreator
-                                                                         .New<Product>()
-                                                                         .AndIf(search.Ids.IsNotNullOrEmpty(), x => (search.Ids.Select(x => x).Distinct()).Contains(x.Id))
-                                                                         .AndIf(search.StatusCode > 0, x => (int)x.Status.Code == search.StatusCode);
+                                            .New<Product>()
+                                            .AndIf(search.Ids.IsNotNullOrEmpty(), x => (search.Ids.Select(x => x).Distinct()).Contains(x.Id))
+                                            .AndIf(search.StatusCode > 0, x => (int)x.Status.Code == search.StatusCode);
 
         var products = await _productRepo.Where(whereCondition).ToListAsync();
 

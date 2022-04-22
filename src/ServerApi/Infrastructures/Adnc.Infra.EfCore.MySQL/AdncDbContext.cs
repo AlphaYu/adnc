@@ -5,11 +5,11 @@
 /// </summary>
 public class AdncDbContext : DbContext
 {
-    private readonly IOperater _operater;
+    private readonly Operater _operater;
     private readonly IEntityInfo _entityInfo;
     private readonly UnitOfWorkStatus _unitOfWorkStatus;
 
-    public AdncDbContext(DbContextOptions options, IOperater operater, IEntityInfo entityInfo, UnitOfWorkStatus unitOfWorkStatus)
+    public AdncDbContext(DbContextOptions options, Operater operater, IEntityInfo entityInfo, UnitOfWorkStatus unitOfWorkStatus)
         : base(options)
     {
         _operater = operater;

@@ -1,7 +1,6 @@
 ﻿using Adnc.Cus.Entities;
 using Adnc.Infra.EfCore.MySQL;
 using Adnc.Infra.Helper;
-using Adnc.Infra.Helper.IdGeneraterInternal;
 
 namespace Adnc.UnitTest.EFCore
 {
@@ -9,7 +8,7 @@ namespace Adnc.UnitTest.EFCore
     {
         private readonly ITestOutputHelper _output;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IOperater _userContext;
+        private readonly Operater _userContext;
         private readonly IEfRepository<Customer> _customerRsp;
         private readonly IEfRepository<CustomerFinance> _cusFinanceRsp;
         private readonly IEfRepository<CustomerTransactionLog> _custLogsRsp;
@@ -21,30 +20,18 @@ namespace Adnc.UnitTest.EFCore
             _fixture = fixture;
             _output = output;
             _unitOfWork = _fixture.Container.GetRequiredService<IUnitOfWork>();
-            _userContext = _fixture.Container.GetRequiredService<IOperater>();
+            _userContext = _fixture.Container.GetRequiredService<Operater>();
             _customerRsp = _fixture.Container.GetRequiredService<IEfRepository<Customer>>();
             _cusFinanceRsp = _fixture.Container.GetRequiredService<IEfRepository<CustomerFinance>>();
             _custLogsRsp = _fixture.Container.GetRequiredService<IEfRepository<CustomerTransactionLog>>();
             _dbContext = _fixture.Container.GetRequiredService<AdncDbContext>();
 
-            if (YitterSnowFlake.CurrentWorkerId < 0)
-                YitterSnowFlake.CurrentWorkerId = 63;
-
-            Initialize().Wait();
+            IdGenerater.SetWorkerId(1);
         }
 
         protected static Expression<Func<TEntity, object>>[] UpdatingProps<TEntity>(params Expression<Func<TEntity, object>>[] expressions)
         {
             return expressions;
-        }
-
-        private async Task Initialize()
-        {
-            _userContext.Id = 1600000000000;
-            _userContext.Account = "alpha2008";
-            _userContext.Name = "余小猫";
-
-            await Task.CompletedTask;
         }
 
         /// <summary>

@@ -178,26 +178,34 @@ public class OrderAppService : AbstractAppService, IOrderAppService
     public async Task<PageModelDto<OrderDto>> GetPagedAsync(OrderSearchPagedDto search)
     {
         var whereCondition = ExpressionCreator
-                                                             .New<Order>()
-                                                             .AndIf(search.Id > 0, x => x.Id == search.Id);
+                                            .New<Order>()
+                                            .AndIf(search.Id > 0, x => x.Id == search.Id);
 
-        var pagedEntity = await _orderRepo.PagedAsync(search.PageIndex, search.PageSize, whereCondition, x => x.Id);
+        var total = await _orderRepo.CountAsync(whereCondition);
+        if (total == 0)
+            return new PageModelDto<OrderDto>(search);
 
-        var pagedDto = Mapper.Map<PageModelDto<OrderDto>>(pagedEntity);
-
-        if (pagedDto.Data.Count > 0)
+        var entities = _orderRepo
+                                .Where(whereCondition)
+                                .OrderByDescending(x => x.Id)
+                                .Skip(search.SkipRows())
+                                .Take(search.PageSize)
+                                .ToListAsync();
+        var orderDtos = Mapper.Map<List<OrderDto>>(entities);
+        if (orderDtos.IsNotNullOrEmpty())
         {
             //调用maint微服务获取字典,组合订单状态信息
             var rpcReuslt = await _maintRpc.GetDictAsync(Consts.OrderStatusId);
             if (rpcReuslt.IsSuccessStatusCode && rpcReuslt.Content.Children.Count > 0)
             {
                 var dicts = rpcReuslt.Content.Children;
-                pagedDto.Data.ForEach(x =>
+                orderDtos.ForEach(x =>
                 {
                     x.StatusChangesReason = dicts.FirstOrDefault(d => d.Name == x.StatusCode.ToSafeString())?.Name;
                 });
             }
         }
-        return pagedDto;
+
+        return new PageModelDto<OrderDto>(search, orderDtos, total);
     }
 }

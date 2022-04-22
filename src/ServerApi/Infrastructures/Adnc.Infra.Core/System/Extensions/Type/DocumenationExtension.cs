@@ -8,6 +8,14 @@ namespace System.Reflection;
 public static class DocumenationExtension
 {
     /// <summary>
+    /// Provides the documentation comments for a specific type
+    /// </summary>
+    /// <param name="type">Type to find the documentation for</param>
+    /// <returns>The XML fragment that describes the type</returns>
+    /// <remarks>  Prefix in type names is T</remarks>
+    public static XmlElement GetDocumentation(this Type type) => XmlFromName(type, 'T', "");
+
+    /// <summary>
     /// Provides the documentation comments for a specific method
     /// </summary>
     /// <param name="methodInfo">The MethodInfo (reflection data ) of the member to find documentation for</param>
@@ -69,17 +77,6 @@ public static class DocumenationExtension
             return summaryElm.InnerText.Trim();
         }
         return null;
-    }
-
-    /// <summary>
-    /// Provides the documentation comments for a specific type
-    /// </summary>
-    /// <param name="type">Type to find the documentation for</param>
-    /// <returns>The XML fragment that describes the type</returns>
-    public static XmlElement GetDocumentation(this Type type)
-    {
-        // Prefix in type names is T
-        return XmlFromName(type, 'T', "");
     }
 
     /// <summary>
