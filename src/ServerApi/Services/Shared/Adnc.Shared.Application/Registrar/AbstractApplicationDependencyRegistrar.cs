@@ -102,15 +102,13 @@ public abstract class AbstractApplicationDependencyRegistrar : IDependencyRegist
                                         .CommandTimeout(10)
                                         .MigrationsAssembly(ServiceInfo.AssemblyName.Replace("WebApi", "Migrations"))
                                         .UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
-                if(IsDevelopment)
-                    optionsBuilder.EnableRetryOnFailure();
             });
 
             if (IsDevelopment)
             {
                 //options.AddInterceptors(new DefaultDbCommandInterceptor())
                 options.LogTo(Console.WriteLine, LogLevel.Information)
-                            .EnableSensitiveDataLogging()
+                            //.EnableSensitiveDataLogging()
                             .EnableDetailedErrors();
             }
             //替换默认查询sql生成器,如果通过mycat中间件实现读写分离需要替换默认SQL工厂。
