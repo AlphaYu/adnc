@@ -1,6 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Adnc.Whse.Domain.Aggregates.ProductAggregate;
 
-namespace Adnc.Whse.Domain.Entities.Config;
+namespace Adnc.Whse.Domain.EntityConfig;
 
 public class ProductConfig : EntityTypeConfiguration<Product>
 {

@@ -1,4 +1,6 @@
-﻿namespace Adnc.Ord.Application.AutoMapper;
+﻿using Adnc.Ord.Domain.Aggregates.OrderAggregate;
+
+namespace Adnc.Ord.Application.AutoMapper;
 
 public class OrdProfile : Profile
 {

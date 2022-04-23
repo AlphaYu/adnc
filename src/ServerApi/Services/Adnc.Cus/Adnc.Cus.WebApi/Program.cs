@@ -26,7 +26,7 @@ internal static class Program
           })
           .ConfigureServices(services =>
           {
-              services.Add(ServiceDescriptor.Singleton(typeof(IServiceInfo), ServiceInfo.GetInstance()));
+              services.Add(ServiceDescriptor.Singleton(typeof(IServiceInfo), ServiceInfo.GetInstance(typeof(Program).Assembly)));
               services.Add(ServiceDescriptor.Singleton(typeof(IDependencyRegistrar), new Registrar.CustWebApiDependencyRegistrar(services)));
           })
           .ConfigureWebHostDefaults(webBuilder => webBuilder.UseStartup<Startup>())

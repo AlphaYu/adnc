@@ -9,8 +9,7 @@ public class ProductController : AdncControllerBase
 {
     private readonly IProductAppService _productSrv;
 
-    public ProductController(IProductAppService productSrv)
-        => _productSrv = productSrv;
+    public ProductController(IProductAppService productSrv) => _productSrv = productSrv;
 
     /// <summary>
     /// 新建商品
@@ -18,16 +17,14 @@ public class ProductController : AdncControllerBase
     /// <param name="input"><see cref="ProductCreationDto"/></param>
     /// <returns></returns>
     [HttpPost]
-    public async Task<ActionResult<ProductDto>> CreateAsync([FromBody] ProductCreationDto input)
-        => await _productSrv.CreateAsync(input);
+    public async Task<ActionResult<ProductDto>> CreateAsync([FromBody] ProductCreationDto input) => await _productSrv.CreateAsync(input);
 
     /// <summary>
     /// 更新商品
     /// </summary>
     /// <returns></returns>
     [HttpPut("{id}")]
-    public async Task<ActionResult<ProductDto>> UpdateAsync([FromRoute] long id, [FromBody] ProductUpdationDto input)
-        => await _productSrv.UpdateAsync(id, input);
+    public async Task<ActionResult<ProductDto>> UpdateAsync([FromRoute] long id, [FromBody] ProductUpdationDto input) => await _productSrv.UpdateAsync(id, input);
 
     /// <summary>
     /// 调整价格
@@ -36,8 +33,7 @@ public class ProductController : AdncControllerBase
     /// <param name="input"></param>
     /// <returns></returns>
     [HttpPatch("{id}/price")]
-    public async Task<ActionResult<ProductDto>> ChangePriceAsync([FromRoute] long id, ProducChangePriceDto input)
-        => await _productSrv.ChangePriceAsync(id, input);
+    public async Task<ActionResult<ProductDto>> ChangePriceAsync([FromRoute] long id, ProducChangePriceDto input) => await _productSrv.ChangePriceAsync(id, input);
 
     /// <summary>
     /// 上架商品
@@ -46,8 +42,7 @@ public class ProductController : AdncControllerBase
     /// <param name="input"></param>
     /// <returns></returns>
     [HttpPatch("{id}/status/1001")]
-    public async Task<ActionResult<ProductDto>> PutOnSaleAsync([FromRoute] long id, ProductPutOnSaleDto input)
-        => await _productSrv.PutOnSaleAsync(id, input);
+    public async Task<ActionResult<ProductDto>> PutOnSaleAsync([FromRoute] long id, ProductPutOnSaleDto input) => await _productSrv.PutOnSaleAsync(id, input);
 
     /// <summary>
     /// 下架商品
@@ -56,8 +51,7 @@ public class ProductController : AdncControllerBase
     /// <param name="input"></param>
     /// <returns></returns>
     [HttpPatch("{id}/status/1002")]
-    public async Task<ActionResult<ProductDto>> PutOffSaleAsync([FromRoute] long id, ProductPutOffSaleDto input)
-        => await _productSrv.PutOffSaleAsync(id, input);
+    public async Task<ActionResult<ProductDto>> PutOffSaleAsync([FromRoute] long id, ProductPutOffSaleDto input) => await _productSrv.PutOffSaleAsync(id, input);
 
     /// <summary>
     /// 商品列表
@@ -66,8 +60,7 @@ public class ProductController : AdncControllerBase
     /// <returns></returns>
     [HttpGet]
     [Permission("", PermissionAttribute.JwtWithBasicSchemes)]
-    public async Task<ActionResult<List<ProductDto>>> GetListAsync([FromQuery] ProductSearchListDto search)
-        => await _productSrv.GetListAsync(search);
+    public async Task<ActionResult<List<ProductDto>>> GetListAsync([FromQuery] ProductSearchListDto search) => await _productSrv.GetListAsync(search);
 
     /// <summary>
     /// 商品分页列表
@@ -75,6 +68,5 @@ public class ProductController : AdncControllerBase
     /// <param name="search"></param>
     /// <returns></returns>
     [HttpGet("paged")]
-    public async Task<ActionResult<PageModelDto<ProductDto>>> GetPagedAsync([FromQuery] ProductSearchPagedDto search)
-        => await _productSrv.GetPagedAsync(search);
+    public async Task<ActionResult<PageModelDto<ProductDto>>> GetPagedAsync([FromQuery] ProductSearchPagedDto search) => await _productSrv.GetPagedAsync(search);
 }

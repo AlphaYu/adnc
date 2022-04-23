@@ -1,4 +1,4 @@
-﻿namespace Adnc.Whse.Domain.Entities;
+﻿namespace Adnc.Whse.Domain.EntityConfig;
 
 public class EntityInfo : AbstractDomainEntityInfo
 {

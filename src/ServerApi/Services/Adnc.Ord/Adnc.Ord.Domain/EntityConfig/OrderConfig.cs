@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-namespace Adnc.Ord.Domain.Entities.Config;
+﻿namespace Adnc.Ord.Domain.EntityConfig;
 
 public class OrderConfig : EntityTypeConfiguration<Order>
 {

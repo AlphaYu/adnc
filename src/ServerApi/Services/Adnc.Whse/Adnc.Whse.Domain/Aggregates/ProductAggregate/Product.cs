@@ -1,4 +1,4 @@
-﻿namespace Adnc.Whse.Domain.Entities;
+﻿namespace Adnc.Whse.Domain.Aggregates.ProductAggregate;
 
 public class Product : AggregateRootWithBasicAuditInfo
 {
@@ -35,7 +35,7 @@ public class Product : AggregateRootWithBasicAuditInfo
         SetPrice(price);
         SetUnit(unit);
         this.Describe = describe != null ? describe.Trim() : string.Empty;
-        this.Status = new ProductStatus(ProductStatusEnum.UnKnow, string.Empty);
+        this.Status = new ProductStatus(ProductStatusCodes.UnKnow, string.Empty);
     }
 
     /// <summary>
@@ -44,7 +44,7 @@ public class Product : AggregateRootWithBasicAuditInfo
     /// <param name="sku"></param>
     internal void SetSku(string sku)
     {
-        this.Sku = Checker.NotNullOrEmpty(sku.Trim(), nameof(sku));
+        this.Sku = Guard.Checker.NotNullOrEmpty(sku.Trim(), nameof(sku));
     }
 
     /// <summary>
@@ -53,7 +53,7 @@ public class Product : AggregateRootWithBasicAuditInfo
     /// <param name="name"></param>
     internal void SetName(string name)
     {
-        this.Name = Checker.NotNullOrEmpty(name.Trim(), nameof(name));
+        this.Name = Guard.Checker.NotNullOrEmpty(name.Trim(), nameof(name));
     }
 
     /// <summary>
@@ -62,7 +62,7 @@ public class Product : AggregateRootWithBasicAuditInfo
     /// <param name="status"></param>
     internal void SetStatus(ProductStatus status)
     {
-        this.Status = Checker.NotNull(status, nameof(status));
+        this.Status = Guard.Checker.NotNull(status, nameof(status));
     }
 
     /// <summary>
@@ -71,7 +71,7 @@ public class Product : AggregateRootWithBasicAuditInfo
     /// <param name="newSku"></param>
     public void SetUnit(string unit)
     {
-        this.Unit = Checker.NotNullOrEmpty(unit.Trim(), nameof(unit));
+        this.Unit = Guard.Checker.NotNullOrEmpty(unit.Trim(), nameof(unit));
     }
 
     /// <summary>
@@ -91,6 +91,6 @@ public class Product : AggregateRootWithBasicAuditInfo
     /// </summary>
     public void PutOffSale(string reason)
     {
-        this.Status = new ProductStatus(ProductStatusEnum.SaleOff, reason);
+        this.Status = new ProductStatus(ProductStatusCodes.SaleOff, reason);
     }
 }

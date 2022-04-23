@@ -1,4 +1,4 @@
-﻿namespace Adnc.Whse.Domain.Entities;
+﻿namespace Adnc.Whse.Domain.Aggregates.WarehouseAggregate;
 
 /// <summary>
 /// 货架
@@ -13,7 +13,7 @@ public class Warehouse : AggregateRootWithBasicAuditInfo
 
     public WarehousePosition Position { get; private set; }
 
-    private Warehouse()
+    internal Warehouse()
     {
     }
 
@@ -22,7 +22,7 @@ public class Warehouse : AggregateRootWithBasicAuditInfo
         this.Id = id;
         this.Qty = 0;
         this.BlockedQty = 0;
-        this.Position = Checker.NotNull(position, nameof(position));
+        this.Position = Guard.Checker.NotNull(position, nameof(position));
     }
 
     /// <summary>

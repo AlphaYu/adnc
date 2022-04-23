@@ -6,8 +6,6 @@ global using Adnc.Shared.Application.Contracts.Dtos;
 global using Adnc.Shared.RpcServices.Rtos;
 global using Adnc.Shared.RpcServices.Services;
 global using Adnc.Shared.WebApi;
-global using Autofac;
-global using Autofac.Extensions.DependencyInjection;
 global using Microsoft.AspNetCore.Authorization;
 global using Microsoft.AspNetCore.Builder;
 global using Microsoft.AspNetCore.Hosting;

@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-namespace Adnc.Ord.Domain.Entities.Config;
+﻿namespace Adnc.Ord.Domain.EntityConfig;
 
 public class OrderItemConfig : EntityTypeConfiguration<OrderItem>
 {
@@ -18,8 +16,5 @@ public class OrderItemConfig : EntityTypeConfiguration<OrderItem>
          });
 
         builder.Property(x => x.Count).IsRequired();
-
-        //builder.Property(x => x.Amount)
-        //       .HasComputedColumnSql("[ProductPrice]*[Count]");
     }
 }

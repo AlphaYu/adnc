@@ -6,6 +6,14 @@
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<Description>用户中心服务</Description>
 	</PropertyGroup>
+	<ItemGroup>
+	  <None Remove="swagger_miniprofiler.html" />
+	</ItemGroup>
+	<ItemGroup>
+	  <EmbeddedResource Include="swagger_miniprofiler.html">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	  </EmbeddedResource>
+	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.3">

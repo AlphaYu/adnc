@@ -9,8 +9,7 @@ public class OrderController : AdncControllerBase
 {
     private readonly IOrderAppService _orderSrv;
 
-    public OrderController(IOrderAppService orderSrv)
-        => _orderSrv = orderSrv;
+    public OrderController(IOrderAppService orderSrv) => _orderSrv = orderSrv;
 
     /// <summary>
     /// 新建订单
@@ -18,8 +17,7 @@ public class OrderController : AdncControllerBase
     /// <param name="input"><see cref="OrderCreationDto"/></param>
     /// <returns></returns>
     [HttpPost]
-    public async Task<ActionResult<OrderDto>> CreateAsync([FromBody] OrderCreationDto input)
-        => await _orderSrv.CreateAsync(input);
+    public async Task<ActionResult<OrderDto>> CreateAsync([FromBody] OrderCreationDto input) => await _orderSrv.CreateAsync(input);
 
     /// <summary>
     /// 订单付款
@@ -63,8 +61,7 @@ public class OrderController : AdncControllerBase
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpGet("{id}")]
-    public async Task<ActionResult<OrderDto>> GetAsync([FromRoute] long id)
-        => await _orderSrv.GetAsync(id);
+    public async Task<ActionResult<OrderDto>> GetAsync([FromRoute] long id) => await _orderSrv.GetAsync(id);
 
     /// <summary>
     /// 订单分页列表
@@ -72,6 +69,5 @@ public class OrderController : AdncControllerBase
     /// <param name="search"></param>
     /// <returns></returns>
     [HttpGet]
-    public async Task<ActionResult<PageModelDto<OrderDto>>> GetPagedAsync([FromQuery] OrderSearchPagedDto search)
-        => await _orderSrv.GetPagedAsync(search);
+    public async Task<ActionResult<PageModelDto<OrderDto>>> GetPagedAsync([FromQuery] OrderSearchPagedDto search) => await _orderSrv.GetPagedAsync(search);
 }

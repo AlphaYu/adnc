@@ -27,16 +27,16 @@ public class NoticeController : AdncControllerBase
         => Result(await _noticeService.GetListAsync(search));
 
     /// <summary>
-    /// 测试用途，获取用户服务部门列表
+    /// 测试Basic认证用途，获取用户服务部门列表
     /// </summary>
     /// <returns></returns>
     [HttpGet()]
     [Route("depts")]
     public async Task<IActionResult> GetDeptListAsync()
     {
-        var result = await _usrRpcService.GeDeptsAsync();
-        if (result.IsSuccessStatusCode)
-            return Ok(result.Content);
+        var depts = await _usrRpcService.GeDeptsAsync();
+        if (depts.IsNotNullOrEmpty())
+            return Ok(depts);
         return NoContent();
     }
 }

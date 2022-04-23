@@ -1,7 +1,8 @@
-﻿using Adnc.Whse.Application.AutoMapper;
-using Adnc.Whse.Application.EventSubscribers;
-using Adnc.Shared.Application.Registrar;
+﻿using Adnc.Shared.Application.Registrar;
 using Adnc.Shared.Domain;
+using Adnc.Whse.Application.AutoMapper;
+using Adnc.Whse.Application.EventSubscribers;
+using Adnc.Whse.Domain.EntityConfig;
 using FluentValidation;
 using System.Reflection;
 
