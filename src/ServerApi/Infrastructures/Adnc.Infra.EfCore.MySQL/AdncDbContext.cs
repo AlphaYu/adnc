@@ -1,4 +1,6 @@
-﻿namespace Adnc.Infra.EfCore.MySQL;
+﻿using Adnc.Infra.Core.Guard;
+
+namespace Adnc.Infra.EfCore.MySQL;
 
 /// <summary>
 /// AdncDbContext
@@ -65,18 +67,22 @@ public class AdncDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         //System.Diagnostics.Debugger.Launch();
-
         modelBuilder.HasCharSet("utf8mb4 ");
 
-        var (assembly, types) = _entityInfo.GetEntitiesInfo();
-
-        foreach (var entityType in types)
+        var entityInfos = _entityInfo.GetEntitiesTypeInfo().ToList();
+        Guard.Checker.NotNullOrAny(entityInfos, nameof(entityInfos));
+        foreach (var info in entityInfos)
         {
-            modelBuilder.Entity(entityType);
+            if (info.DataSeeding.IsNullOrEmpty())
+                modelBuilder.Entity(info.Type);
+            else
+                modelBuilder.Entity(info.Type).HasData(info.DataSeeding);
         }
 
+        var assembly = entityInfos.FirstOrDefault().Type.Assembly;
         modelBuilder.ApplyConfigurationsFromAssembly(assembly);
 
+        var types = entityInfos.Select(x => x.Type);
         var entityTypes = modelBuilder.Model.GetEntityTypes().Where(x => types.Contains(x.ClrType)).ToList();
         entityTypes.ForEach(entityType =>
         {
