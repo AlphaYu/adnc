@@ -64,7 +64,7 @@ public class AdncDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        //Debugger.Launch();
+        //System.Diagnostics.Debugger.Launch();
 
         modelBuilder.HasCharSet("utf8mb4 ");
 

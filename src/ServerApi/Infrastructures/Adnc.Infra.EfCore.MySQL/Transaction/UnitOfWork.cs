@@ -11,19 +11,18 @@ public sealed class UnitOfWork<TDbContext> : IUnitOfWork where TDbContext : DbCo
     private readonly ICapPublisher _capPublisher;
     private IDbContextTransaction _dbTransaction;
 
-    public bool IsStartingUow
-    { get { return _unitOfWorkStatus.IsStartingUow; } }
+    public bool IsStartingUow => _unitOfWorkStatus.IsStartingUow;
 
     public UnitOfWork(TDbContext context
         , UnitOfWorkStatus unitOfWorkStatus
         , ICapPublisher capPublisher = null)
     {
-        _unitOfWorkStatus = unitOfWorkStatus;
+        _unitOfWorkStatus = unitOfWorkStatus ?? throw new ArgumentNullException(nameof(unitOfWorkStatus));
         _dbContext = context ?? throw new ArgumentNullException(nameof(context));
         _capPublisher = capPublisher;
     }
 
-    private IDbContextTransaction GetDbContextTransaction(IsolationLevel isolationLevel, bool sharedToCap = false)
+    private IDbContextTransaction GetDbContextTransaction(IsolationLevel isolationLevel, bool distributed = false)
     {
         if (_unitOfWorkStatus.IsStartingUow)
             throw new ArgumentException("UnitOfWork Error");
@@ -32,7 +31,7 @@ public sealed class UnitOfWork<TDbContext> : IUnitOfWork where TDbContext : DbCo
 
         IDbContextTransaction trans;
 
-        if (sharedToCap)
+        if (distributed)
         {
             if (_capPublisher == null)
                 throw new ArgumentException("CapPublisher is null");
@@ -45,9 +44,9 @@ public sealed class UnitOfWork<TDbContext> : IUnitOfWork where TDbContext : DbCo
         return trans;
     }
 
-    public void BeginTransaction(IsolationLevel isolationLevel = IsolationLevel.RepeatableRead, bool sharedToCap = false)
+    public void BeginTransaction(IsolationLevel isolationLevel = IsolationLevel.ReadCommitted, bool distributed = false)
     {
-        _dbTransaction = GetDbContextTransaction(isolationLevel, sharedToCap);
+        _dbTransaction = GetDbContextTransaction(isolationLevel, distributed);
     }
 
     public void Commit()
