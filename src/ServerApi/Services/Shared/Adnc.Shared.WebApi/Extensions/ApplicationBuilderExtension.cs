@@ -48,7 +48,7 @@ public static class ApplicationBuilderExtension
 
         app.UseSwaggerUI(c =>
         {
-            var assembly = Assembly.GetExecutingAssembly();
+            var assembly = serviceInfo.GetWebApiAssembly();
             c.IndexStream = () => assembly.GetManifestResourceStream($"{assembly.GetName().Name}.swagger_miniprofiler.html");
             c.SwaggerEndpoint($"/{serviceInfo.ShortName}/swagger/{serviceInfo.Version}/swagger.json", $"{serviceInfo.FullName}-{serviceInfo.Version}");
             c.RoutePrefix = $"{serviceInfo.ShortName}";

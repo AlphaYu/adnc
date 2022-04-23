@@ -102,6 +102,8 @@ public abstract class AbstractApplicationDependencyRegistrar : IDependencyRegist
                                         .CommandTimeout(10)
                                         .MigrationsAssembly(ServiceInfo.AssemblyName.Replace("WebApi", "Migrations"))
                                         .UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
+                if(IsDevelopment)
+                    optionsBuilder.EnableRetryOnFailure();
             });
 
             if (IsDevelopment)
@@ -147,7 +149,7 @@ public abstract class AbstractApplicationDependencyRegistrar : IDependencyRegist
         var groupName = $"cap.{ServiceInfo.ShortName}.{ASPNETCORE_ENVIRONMENT[..3]}".ToLower();
 
         //add skyamp
-        Services.AddSkyApmExtensions().AddCap();
+        //Services.AddSkyApmExtensions().AddCap();
 
         Services.AddSingleton<TSubscriber>();
 

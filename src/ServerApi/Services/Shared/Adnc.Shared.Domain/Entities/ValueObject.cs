@@ -1,5 +1,5 @@
 ﻿namespace Adnc.Shared.Domain.Entities;
 
-public class ValueObject
+public record ValueObject
 {
 }

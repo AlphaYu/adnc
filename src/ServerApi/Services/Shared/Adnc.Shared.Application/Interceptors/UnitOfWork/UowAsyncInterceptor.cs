@@ -7,10 +7,7 @@ public class UowAsyncInterceptor : IAsyncInterceptor
 {
     private readonly IUnitOfWork _unitOfWork;
 
-    public UowAsyncInterceptor(IUnitOfWork unitOfWork)
-    {
-        _unitOfWork = unitOfWork;
-    }
+    public UowAsyncInterceptor(IUnitOfWork unitOfWork) => _unitOfWork = unitOfWork;
 
     /// <summary>
     /// 同步拦截器
@@ -34,10 +31,10 @@ public class UowAsyncInterceptor : IAsyncInterceptor
     {
         var attribute = GetAttribute(invocation);
 
-        invocation.ReturnValue = attribute == null
-                                ? InternalInterceptAsynchronousWithoutUow(invocation)
-                                : InternalInterceptAsynchronous(invocation, attribute)
-                                ;
+        invocation.ReturnValue = (attribute is null)
+                                                    ? InternalInterceptAsynchronousWithoutUow(invocation)
+                                                    : InternalInterceptAsynchronous(invocation, attribute)
+                                                    ;
     }
 
     /// <summary>
@@ -49,10 +46,10 @@ public class UowAsyncInterceptor : IAsyncInterceptor
     {
         var attribute = GetAttribute(invocation);
 
-        invocation.ReturnValue = attribute == null
-                                ? InternalInterceptAsynchronousWithoutUow<TResult>(invocation)
-                                : InternalInterceptAsynchronous<TResult>(invocation, attribute)
-                                ;
+        invocation.ReturnValue = (attribute is null)
+                                                    ? InternalInterceptAsynchronousWithoutUow<TResult>(invocation)
+                                                    : InternalInterceptAsynchronous<TResult>(invocation, attribute)
+                                                    ;
     }
 
     /// <summary>
@@ -64,14 +61,14 @@ public class UowAsyncInterceptor : IAsyncInterceptor
     {
         try
         {
-            _unitOfWork.BeginTransaction(sharedToCap: attribute.SharedToCap);
+            _unitOfWork.BeginTransaction(distributed: attribute.SharedToCap);
             invocation.Proceed();
             _unitOfWork.Commit();
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             _unitOfWork.Rollback();
-            throw new Exception(ex.Message, ex);
+            throw;
         }
         finally
         {
@@ -89,7 +86,7 @@ public class UowAsyncInterceptor : IAsyncInterceptor
     {
         try
         {
-            _unitOfWork.BeginTransaction(sharedToCap: attribute.SharedToCap);
+            _unitOfWork.BeginTransaction(distributed: attribute.SharedToCap);
 
             invocation.Proceed();
             var task = (Task)invocation.ReturnValue;
@@ -97,10 +94,10 @@ public class UowAsyncInterceptor : IAsyncInterceptor
 
             await _unitOfWork.CommitAsync();
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             await _unitOfWork.RollbackAsync();
-            throw new Exception(ex.Message, ex);
+            throw;
         }
         finally
         {
@@ -121,7 +118,7 @@ public class UowAsyncInterceptor : IAsyncInterceptor
 
         try
         {
-            _unitOfWork.BeginTransaction(sharedToCap: attribute.SharedToCap);
+            _unitOfWork.BeginTransaction(distributed: attribute.SharedToCap);
 
             invocation.Proceed();
             var task = (Task<TResult>)invocation.ReturnValue;
@@ -129,10 +126,10 @@ public class UowAsyncInterceptor : IAsyncInterceptor
 
             await _unitOfWork.CommitAsync();
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             await _unitOfWork.RollbackAsync();
-            throw new Exception(ex.Message, ex);
+            throw;
         }
         finally
         {

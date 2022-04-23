@@ -273,7 +273,7 @@ public abstract class AbstractWebApiDependencyRegistrar : IDependencyRegistrar
     /// </summary>
     public virtual void AddMiniProfiler()
     {
-        Services.AddMiniProfiler(options => options.RouteBasePath = "/usr/profiler").AddEntityFramework();
+        Services.AddMiniProfiler(options => options.RouteBasePath = $"/{ServiceInfo.ShortName}/profiler").AddEntityFramework();
     }
 
     /// <summary>

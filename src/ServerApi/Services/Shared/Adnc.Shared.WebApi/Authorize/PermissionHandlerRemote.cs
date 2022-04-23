@@ -11,11 +11,7 @@ public sealed class PermissionHandlerRemote : AbstractPermissionHandler
     {
         //var jwtToken = await _contextAccessor.HttpContext.GetTokenAsync("access_token");
         //var refitResult = await _authRpcService.GetCurrenUserPermissions($"Bearer {jwtToken}", userId, codes);
-        var refitResult = await _authRpcService.GetCurrenUserPermissionsAsync(userId, codes, validationVersion);
-        if (!refitResult.IsSuccessStatusCode)
-            return false;
-
-        var permissions = refitResult.Content;
+        var permissions = await _authRpcService.GetCurrenUserPermissionsAsync(userId, codes, validationVersion);
         return permissions.IsNotNullOrEmpty();
     }
 }

@@ -1,7 +1,7 @@
 ﻿namespace Adnc.Shared.Events
 {
     [Serializable]
-    public class EventEntity<TData>
+    public class EventEntity<TData> where TData : class
     {
         public EventEntity()
         {

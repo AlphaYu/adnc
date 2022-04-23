@@ -10,5 +10,5 @@ public interface IUsrRpcService : IRpcService
     /// <returns></returns>
     [Get("/usr/depts")]
     [Headers("Authorization: Basic", "Cache: 2000")]
-    Task<ApiResponse<List<DeptRto>>> GeDeptsAsync();
+    Task<List<DeptRto>> GeDeptsAsync();
 }
