@@ -13,7 +13,7 @@ public class Warehouse : AggregateRootWithBasicAuditInfo
 
     public WarehousePosition Position { get; private set; }
 
-    internal Warehouse()
+    private Warehouse()
     {
     }
 
@@ -32,9 +32,10 @@ public class Warehouse : AggregateRootWithBasicAuditInfo
     internal void BlockQty(int needBlockedQty)
     {
         if (this.Qty < needBlockedQty)
-            throw new AdncArgumentException("Qty<needFreezedQty", nameof(needBlockedQty));
-        if (!this.ProductId.HasValue)
-            throw new AdncArgumentNullException("ProductId", nameof(ProductId));
+            throw new BusinessException("Qty<needFreezedQty");
+
+        Guard.Checker.GTZero(ProductId.Value, nameof(ProductId));
+
         this.BlockedQty += needBlockedQty;
         this.Qty -= needBlockedQty;
     }
@@ -46,9 +47,9 @@ public class Warehouse : AggregateRootWithBasicAuditInfo
     internal void RemoveBlockedQty(int needRemoveQty)
     {
         if (this.BlockedQty < needRemoveQty)
-            throw new AdncArgumentException("FreezedQty<needUnfreezeQty", nameof(needRemoveQty));
-        if (!this.ProductId.HasValue)
-            throw new ArgumentNullException("ProductId", nameof(ProductId));
+            throw new BusinessException("FreezedQty<needUnfreezeQty");
+
+        Guard.Checker.GTZero(ProductId.Value, nameof(ProductId));
 
         this.BlockedQty -= needRemoveQty;
         this.Qty += needRemoveQty;
@@ -61,9 +62,10 @@ public class Warehouse : AggregateRootWithBasicAuditInfo
     internal void Deliver(int qty)
     {
         if (this.BlockedQty < qty)
-            throw new AdncArgumentException("FreezedQty<qty", nameof(qty));
-        if (!this.ProductId.HasValue)
-            throw new AdncArgumentException("ProductId", nameof(ProductId));
+            throw new BusinessException("FreezedQty<qty");
+
+        Guard.Checker.GTZero(ProductId.Value, nameof(ProductId));
+
         this.BlockedQty -= qty;
     }
 
@@ -73,10 +75,8 @@ public class Warehouse : AggregateRootWithBasicAuditInfo
     /// <param name="qty"></param>
     internal void Entry(int qty)
     {
-        if (qty <= 0)
-            throw new AdncArgumentException("qty <= 0", nameof(qty));
-        if (!this.ProductId.HasValue)
-            throw new AdncArgumentException("ProductId", nameof(ProductId));
+        Guard.Checker.GTZero(qty,nameof(qty));
+        Guard.Checker.GTZero(ProductId.Value, nameof(ProductId));
         this.Qty += qty;
     }
 
@@ -89,8 +89,8 @@ public class Warehouse : AggregateRootWithBasicAuditInfo
         //if (this.ProductId.HasValue && this.ProductId == productId)
         //    throw new ArgumentException("ProductId");
 
-        if (productId == 0)
-            throw new ArgumentException("ProductId");
+        Guard.Checker.GTZero(productId, nameof(productId));
+
 
         this.ProductId = productId;
     }

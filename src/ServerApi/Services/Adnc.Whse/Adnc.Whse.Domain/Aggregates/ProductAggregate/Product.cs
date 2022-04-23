@@ -71,7 +71,7 @@ public class Product : AggregateRootWithBasicAuditInfo
     /// <param name="newSku"></param>
     public void SetUnit(string unit)
     {
-        this.Unit = Guard.Checker.NotNullOrEmpty(unit.Trim(), nameof(unit));
+        this.Unit = Guard.Checker.NotNullOrEmpty(unit, nameof(unit));
     }
 
     /// <summary>
@@ -80,9 +80,7 @@ public class Product : AggregateRootWithBasicAuditInfo
     /// <param name="price"></param>
     public void SetPrice(decimal price)
     {
-        if (price <= 0)
-            throw new AdncArgumentException("不能小于等于0", nameof(price));
-
+        Guard.Checker.GTZero(price, nameof(price));
         this.Price = price;
     }
 

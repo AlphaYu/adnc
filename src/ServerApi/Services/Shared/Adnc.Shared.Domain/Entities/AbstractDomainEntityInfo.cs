@@ -11,9 +11,4 @@ public abstract class AbstractDomainEntityInfo : AbstractEntityInfo
 
         return efEntities;
     }
-
-    public override (Assembly Assembly, IEnumerable<Type> Types) GetEntitiesInfo()
-    {
-        return (default, default);
-    }
 }

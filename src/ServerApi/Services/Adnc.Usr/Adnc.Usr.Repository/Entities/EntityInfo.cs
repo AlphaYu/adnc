@@ -2,11 +2,8 @@
 
 public class EntityInfo : AbstractEntityInfo
 {
-    public override (Assembly Assembly, IEnumerable<Type> Types) GetEntitiesInfo()
+    public override IEnumerable<EntityTypeInfo> GetEntitiesTypeInfo()
     {
-        var assembly = this.GetType().Assembly;
-        var entityTypes = base.GetEntityTypes(assembly);
-
-        return (assembly, entityTypes);
+        return base.GetEntityTypes(this.GetType().Assembly).Select(x => new EntityTypeInfo() { Type = x, DataSeeding = default });
     }
 }

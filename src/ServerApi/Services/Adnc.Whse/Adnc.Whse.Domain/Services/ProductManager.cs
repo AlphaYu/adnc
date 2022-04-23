@@ -18,11 +18,11 @@ public class ProductManager : IDomainService
     {
         var exists = await _productRepo.AnyAsync(x => x.Sku == sku);
         if (exists)
-            throw new ArgumentException("sku exists");
+            throw new BusinessException($"sku exists({sku})");
 
         exists = await _productRepo.AnyAsync(x => x.Name == name);
         if (exists)
-            throw new ArgumentException("name exists");
+            throw new BusinessException($"name exists{name}");
 
         return new Product(
                             IdGenerater.GetNextId()
@@ -49,7 +49,7 @@ public class ProductManager : IDomainService
 
         var exists = await _productRepo.AnyAsync(x => x.Sku == newSku);
         if (exists)
-            throw new ArgumentException("newsku");
+            throw new BusinessException($"sku exists({newSku})");
 
         product.SetSku(newSku);
     }
@@ -69,7 +69,7 @@ public class ProductManager : IDomainService
 
         var exists = await _productRepo.AnyAsync(x => x.Name == newName);
         if (exists)
-            throw new ArgumentException(nameof(newName));
+            throw new BusinessException($"name exists{newName}");
 
         product.SetName(newName);
     }
@@ -89,6 +89,6 @@ public class ProductManager : IDomainService
         if (warehouseInfo.Qty > 0 && warehouseInfo.ProductId == product.Id)
             product.SetStatus(new ProductStatus(ProductStatusCodes.SaleOn, reason));
         else
-            throw new ArgumentException(nameof(warehouseInfo));
+            throw new BusinessException($"product exists{product.Id}");
     }
 }

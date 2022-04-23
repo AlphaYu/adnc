@@ -18,7 +18,7 @@ public class WarehouseManager : IDomainService
     {
         var exists = await _warehouseRepo.AnyAsync(x => x.Position.Code == positionCode);
         if (exists)
-            throw new AdncArgumentException("warehouseInfo");
+            throw new BusinessException($"positionCode exists({positionCode})");
 
         return new Warehouse(
             IdGenerater.GetNextId()
@@ -41,7 +41,7 @@ public class WarehouseManager : IDomainService
 
         //一个商品只能分配一个货架，但可以调整货架。
         if (existWarehouse != null && existWarehouse.Id != warehouse.Id)
-            throw new AdncArgumentException("AssignedWarehouseId", nameof(warehouse));
+            throw new BusinessException($"exist warehouse ({product.Id})");
 
         warehouse.SetProductId(product.Id);
     }
@@ -65,11 +65,11 @@ public class WarehouseManager : IDomainService
 
         if (orderId <= 0)
             remark += $"{orderId}订单号错误";
-        else if (blockQtyProductsInfo?.Count == 0)
+        else if (blockQtyProductsInfo.Count == 0)
             remark += $"商品数量为空";
-        else if (warehouses?.Count == 0)
+        else if (warehouses.Count == 0)
             remark += $"仓储数量为空";
-        else if (products?.Count == 0)
+        else if (products.Count == 0)
             remark += remark + $"产品数量为空";
         else if (warehouses.Count != blockQtyProductsInfo.Count)
             remark += remark + $"商品数量与库存数量不一致";
@@ -107,7 +107,7 @@ public class WarehouseManager : IDomainService
         var eventId = IdGenerater.GetNextId();
         var eventData = new WarehouseQtyBlockedEvent.EventData() { OrderId = orderId, IsSuccess = isSuccess, Remark = remark };
         var eventSource = nameof(BlockQtyAsync);
-        await new Warehouse().EventPublisher.Value.PublishAsync(new WarehouseQtyBlockedEvent(eventId, eventData, eventSource));
+        await warehouses[0].EventPublisher.Value.PublishAsync(new WarehouseQtyBlockedEvent(eventId, eventData, eventSource));
 
         return isSuccess;
     }
