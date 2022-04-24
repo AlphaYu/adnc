@@ -1,18 +1,15 @@
 namespace Adnc.Ord.WebApi;
 
-internal static class Program
+public  static class Program
 {
-    internal static async Task Main(string[] args)
-    {
-        await CreateHostBuilder(args)
-                          .Build()
-                          .ChangeThreadPoolSettings()
-                          .RunAsync();
-    }
+    public static async Task Main(string[] args)
+    => await CreateHostBuilder(args)
+                    .Build()
+                    .ChangeThreadPoolSettings()
+                    .RunAsync();
 
-    internal static IHostBuilder CreateHostBuilder(string[] args)
-    {
-        return Host.CreateDefaultBuilder(args)
+    public static IHostBuilder CreateHostBuilder(string[] args)
+    => Host.CreateDefaultBuilder(args)
           .ConfigureHostConfiguration(configuration => configuration.AddCommandLine(args))
           .ConfigureAppConfiguration((context, cb) =>
           {
@@ -26,11 +23,10 @@ internal static class Program
           })
           .ConfigureServices(services =>
           {
-             services.Add(ServiceDescriptor.Singleton(typeof(IServiceInfo), ServiceInfo.GetInstance()));
-             services.Add(ServiceDescriptor.Singleton(typeof(IDependencyRegistrar), new Registrar.OrdWebApiDependencyRegistrar(services)));
+              services.Add(ServiceDescriptor.Singleton(typeof(IServiceInfo), ServiceInfo.GetInstance(typeof(Program).Assembly)));
+              services.Add(ServiceDescriptor.Singleton(typeof(IDependencyRegistrar), new Registrar.OrdWebApiDependencyRegistrar(services)));
           })
           .ConfigureWebHostDefaults(webBuilder => webBuilder.UseStartup<Startup>())
           .ConfigureLogging((context, logging) => logging.ClearProviders().AddConsole().AddDebug())
           .UseNLog();
-    }
 }

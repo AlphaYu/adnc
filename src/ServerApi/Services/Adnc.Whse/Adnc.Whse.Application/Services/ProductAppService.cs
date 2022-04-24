@@ -1,4 +1,7 @@
-﻿namespace Adnc.Whse.Application.Services;
+﻿using Adnc.Whse.Domain.Aggregates.ProductAggregate;
+using Adnc.Whse.Domain.Aggregates.WarehouseAggregate;
+
+namespace Adnc.Whse.Application.Services;
 
 /// <summary>
 /// 商品管理
@@ -54,8 +57,6 @@ public class ProductAppService : AbstractAppService, IProductAppService
     {
         var product = await _productRepo.GetAsync(id);
 
-        Checker.NotNull(product, nameof(product));
-
         product.Describe = input.Describe;
         product.SetUnit(input.Unit);
         product.SetPrice(input.Price);
@@ -78,9 +79,7 @@ public class ProductAppService : AbstractAppService, IProductAppService
     {
         var product = await _productRepo.GetAsync(id);
 
-        Checker.NotNull(product, nameof(product));
-
-        product.SetPrice(input.Price);
+       product.SetPrice(input.Price);
 
         await _productRepo.UpdateAsync(product);
 
@@ -96,7 +95,6 @@ public class ProductAppService : AbstractAppService, IProductAppService
     public async Task<ProductDto> PutOnSaleAsync(long id, ProductPutOnSaleDto input)
     {
         var product = await _productRepo.GetAsync(id);
-
         var warehouseInfo = await _warehouseInfoRepo.Where(x => x.ProductId == id).FirstOrDefaultAsync();
 
         _productMgr.PutOnSale(product, warehouseInfo, input.Reason);
@@ -148,13 +146,12 @@ public class ProductAppService : AbstractAppService, IProductAppService
         if (productDtos.IsNotNullOrEmpty())
         {
             //调用maint微服务获取字典,组合商品状态信息
-            var rpcReuslt = await _maintRpcSrv.GetDictAsync(Consts.ProdunctStatusId);
-            if (rpcReuslt.IsSuccessStatusCode && rpcReuslt.Content.Children.Count > 0)
+            var dict = await _maintRpcSrv.GetDictAsync(Consts.ProdunctStatusId);
+            if (dict is not null && dict.Children.IsNotNullOrEmpty())
             {
-                var dicts = rpcReuslt.Content.Children;
                 productDtos.ForEach(x =>
                 {
-                    x.StatusDescription = dicts.FirstOrDefault(d => d.Value == x.StatusCode.ToString())?.Name;
+                    x.StatusDescription = dict.Children.FirstOrDefault(d => d.Value == x.StatusCode.ToString())?.Name;
                 });
             }
         }
@@ -175,7 +172,6 @@ public class ProductAppService : AbstractAppService, IProductAppService
                                             .AndIf(search.StatusCode > 0, x => (int)x.Status.Code == search.StatusCode);
 
         var products = await _productRepo.Where(whereCondition).ToListAsync();
-
         var productsDto = Mapper.Map<List<ProductDto>>(products);
 
         return productsDto;

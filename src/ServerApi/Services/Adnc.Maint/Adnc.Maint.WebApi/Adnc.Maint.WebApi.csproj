@@ -5,7 +5,15 @@
 		<DockerfileContext>..\..\..</DockerfileContext>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<Description>运维中心服务</Description>
-	</PropertyGroup>	
+	</PropertyGroup>
+	<ItemGroup>
+	  <None Remove="swagger_miniprofiler.html" />
+	</ItemGroup>
+	<ItemGroup>
+	  <EmbeddedResource Include="swagger_miniprofiler.html">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	  </EmbeddedResource>
+	</ItemGroup>	
 
 	<ItemGroup>
 		<PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.2.0" />

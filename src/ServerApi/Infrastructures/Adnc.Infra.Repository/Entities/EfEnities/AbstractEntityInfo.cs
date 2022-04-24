@@ -12,6 +12,6 @@
             return efEntities;
         }
 
-        public abstract (Assembly Assembly, IEnumerable<Type> Types) GetEntitiesInfo();
+        public abstract IEnumerable<EntityTypeInfo> GetEntitiesTypeInfo();
     }
 }

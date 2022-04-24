@@ -1,7 +1,13 @@
-﻿namespace Adnc.Infra.Entities
+﻿namespace Adnc.Infra.Entities;
+
+public interface IEntityInfo
 {
-    public interface IEntityInfo
-    {
-        (Assembly Assembly, IEnumerable<Type> Types) GetEntitiesInfo();
-    }
+    IEnumerable<EntityTypeInfo> GetEntitiesTypeInfo();
+}
+
+public class EntityTypeInfo
+{
+    public Type Type { get; set; }
+
+    public IEnumerable<object> DataSeeding { get; set; }
 }

@@ -1,10 +1,9 @@
 ﻿global using Adnc.Infra.Caching;
-global using Adnc.Infra.Core.Exceptions;
+global using Adnc.Infra.Core.Guard;
 global using Adnc.Infra.Helper;
 global using Adnc.Infra.IRepositories;
 global using Adnc.Ord.Application.Contracts.Dtos;
 global using Adnc.Ord.Application.Contracts.Services;
-global using Adnc.Ord.Domain.Entities;
 global using Adnc.Ord.Domain.Services;
 global using Adnc.Shared.Application.Caching;
 global using Adnc.Shared.Application.Contracts.Dtos;
@@ -24,3 +23,4 @@ global using System.Collections.Generic;
 global using System.Linq;
 global using System.Linq.Expressions;
 global using System.Threading.Tasks;
+

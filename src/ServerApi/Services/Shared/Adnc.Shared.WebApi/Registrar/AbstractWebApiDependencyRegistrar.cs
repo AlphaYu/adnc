@@ -273,7 +273,7 @@ public abstract class AbstractWebApiDependencyRegistrar : IDependencyRegistrar
     /// </summary>
     public virtual void AddMiniProfiler()
     {
-        Services.AddMiniProfiler(options => options.RouteBasePath = "/usr/profiler").AddEntityFramework();
+        Services.AddMiniProfiler(options => options.RouteBasePath = $"/{ServiceInfo.ShortName}/profiler").AddEntityFramework();
     }
 
     /// <summary>
@@ -282,10 +282,10 @@ public abstract class AbstractWebApiDependencyRegistrar : IDependencyRegistrar
     public virtual void AddApplicationServices()
     {
         var appAssembly = ServiceInfo.GetApplicationAssembly();
-        if (appAssembly != null)
+        if (appAssembly is not null)
         {
             var modelType = appAssembly.GetTypes().FirstOrDefault(m => m.IsAssignableTo(typeof(IDependencyRegistrar)) && m.IsNotAbstractClass(true));
-            if (modelType != null)
+            if (modelType is not null)
             {
                 var adncServiceCollection = Activator.CreateInstance(modelType, Services) as IDependencyRegistrar;
                 adncServiceCollection.AddAdnc();

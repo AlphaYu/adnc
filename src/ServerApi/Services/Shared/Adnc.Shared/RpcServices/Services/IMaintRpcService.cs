@@ -10,5 +10,5 @@ public interface IMaintRpcService : IRpcService
     /// <returns></returns>
     [Get("/maint/dicts/{id}")]
     [Headers("Authorization: Basic", "Cache: 2000")]
-    Task<ApiResponse<DictRto>> GetDictAsync(long id);
+    Task<DictRto> GetDictAsync(long id);
 }

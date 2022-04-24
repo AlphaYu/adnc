@@ -6,8 +6,7 @@ public class AccountController : AdncControllerBase
 {
     private readonly IAuthRpcService _authRpcService;
 
-    public AccountController(IAuthRpcService authRpcService)
-        => _authRpcService = authRpcService;
+    public AccountController(IAuthRpcService authRpcService) => _authRpcService = authRpcService;
 
     [AllowAnonymous]
     [HttpPost()]

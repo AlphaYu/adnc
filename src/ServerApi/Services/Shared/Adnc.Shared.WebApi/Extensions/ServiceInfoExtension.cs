@@ -12,11 +12,11 @@
         /// <returns></returns>
         public static Assembly GetWebApiAssembly(this IServiceInfo _)
         {
-            if (webApiAssembly == null)
+            if (webApiAssembly is null)
             {
                 lock (lockObj)
                 {
-                    if (webApiAssembly == null)
+                    if (webApiAssembly is null)
                         webApiAssembly = Assembly.GetEntryAssembly();
                 }
             }
@@ -29,11 +29,11 @@
         /// <returns></returns>
         public static Assembly GetApplicationAssembly(this IServiceInfo serviceInfo)
         {
-            if (appAssembly == null)
+            if (appAssembly is null)
             {
                 lock (lockObj)
                 {
-                    if (appAssembly == null)
+                    if (appAssembly is null)
                     {
                         var appAssemblyName = serviceInfo.AssemblyFullName.Replace("WebApi", "Application");
                         appAssembly = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(x => x.FullName.EqualsIgnoreCase(appAssemblyName));

@@ -1,5 +1,4 @@
 ﻿global using Adnc.Infra.Caching;
-global using Adnc.Infra.Core.Exceptions;
 global using Adnc.Infra.IRepositories;
 global using Adnc.Shared.Application.Caching;
 global using Adnc.Shared.Application.Contracts.Dtos;
@@ -9,7 +8,8 @@ global using Adnc.Shared.RpcServices;
 global using Adnc.Shared.RpcServices.Services;
 global using Adnc.Whse.Application.Contracts.Dtos;
 global using Adnc.Whse.Application.Contracts.Services;
-global using Adnc.Whse.Domain.Entities;
+global using Adnc.Whse.Domain.Aggregates.ProductAggregate;
+global using Adnc.Whse.Domain.Aggregates.WarehouseAggregate;
 global using Adnc.Whse.Domain.Services;
 global using AutoMapper;
 global using DotNetCore.CAP;

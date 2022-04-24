@@ -108,7 +108,7 @@ public abstract class AbstractApplicationDependencyRegistrar : IDependencyRegist
             {
                 //options.AddInterceptors(new DefaultDbCommandInterceptor())
                 options.LogTo(Console.WriteLine, LogLevel.Information)
-                            .EnableSensitiveDataLogging()
+                            //.EnableSensitiveDataLogging()
                             .EnableDetailedErrors();
             }
             //替换默认查询sql生成器,如果通过mycat中间件实现读写分离需要替换默认SQL工厂。
@@ -147,7 +147,7 @@ public abstract class AbstractApplicationDependencyRegistrar : IDependencyRegist
         var groupName = $"cap.{ServiceInfo.ShortName}.{ASPNETCORE_ENVIRONMENT[..3]}".ToLower();
 
         //add skyamp
-        Services.AddSkyApmExtensions().AddCap();
+        //Services.AddSkyApmExtensions().AddCap();
 
         Services.AddSingleton<TSubscriber>();
 

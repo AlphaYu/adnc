@@ -2,18 +2,9 @@
 
 public class WarehouseManager : IDomainService
 {
-    private readonly IEfBasicRepository<Product> _productRepo;
     private readonly IEfBasicRepository<Warehouse> _warehouseRepo;
-    private readonly IEventPublisher _eventPublisher;
 
-    public WarehouseManager(IEfBasicRepository<Product> productRepo
-        , IEfBasicRepository<Warehouse> warehouseRepo
-        , IEventPublisher eventPublisher)
-    {
-        _productRepo = productRepo;
-        _warehouseRepo = warehouseRepo;
-        _eventPublisher = eventPublisher;
-    }
+    public WarehouseManager(IEfBasicRepository<Warehouse> warehouseRepo) => _warehouseRepo = warehouseRepo;
 
     /// <summary>
     /// 创建货架
@@ -27,7 +18,7 @@ public class WarehouseManager : IDomainService
     {
         var exists = await _warehouseRepo.AnyAsync(x => x.Position.Code == positionCode);
         if (exists)
-            throw new AdncArgumentException("warehouseInfo");
+            throw new BusinessException($"positionCode exists({positionCode})");
 
         return new Warehouse(
             IdGenerater.GetNextId()
@@ -43,14 +34,14 @@ public class WarehouseManager : IDomainService
     /// <returns></returns>
     public async Task AllocateShelfToProductAsync(Warehouse warehouse, Product product)
     {
-        Checker.NotNull(warehouse, nameof(warehouse));
-        Checker.NotNull(product, nameof(product));
+        Guard.Checker.NotNull(warehouse, nameof(warehouse));
+        Guard.Checker.NotNull(product, nameof(product));
 
         var existWarehouse = await _warehouseRepo.Where(x => x.ProductId == product.Id).SingleOrDefaultAsync();
 
         //一个商品只能分配一个货架，但可以调整货架。
         if (existWarehouse != null && existWarehouse.Id != warehouse.Id)
-            throw new AdncArgumentException("AssignedWarehouseId", nameof(warehouse));
+            throw new BusinessException($"exist warehouse ({product.Id})");
 
         warehouse.SetProductId(product.Id);
     }
@@ -68,17 +59,17 @@ public class WarehouseManager : IDomainService
         bool isSuccess = false;
         string remark = string.Empty;
 
-        Checker.NotEmptyCollection(blockQtyProductsInfo, nameof(blockQtyProductsInfo));
-        Checker.NotEmptyCollection(warehouses, nameof(warehouses));
-        Checker.NotEmptyCollection(products, nameof(products));
+        Guard.Checker.NotNullOrAny(blockQtyProductsInfo, nameof(blockQtyProductsInfo));
+        Guard.Checker.NotNullOrAny(warehouses, nameof(warehouses));
+        Guard.Checker.NotNullOrAny(products, nameof(products));
 
         if (orderId <= 0)
             remark += $"{orderId}订单号错误";
-        else if (blockQtyProductsInfo?.Count == 0)
+        else if (blockQtyProductsInfo.Count == 0)
             remark += $"商品数量为空";
-        else if (warehouses?.Count == 0)
+        else if (warehouses.Count == 0)
             remark += $"仓储数量为空";
-        else if (products?.Count == 0)
+        else if (products.Count == 0)
             remark += remark + $"产品数量为空";
         else if (warehouses.Count != blockQtyProductsInfo.Count)
             remark += remark + $"商品数量与库存数量不一致";
@@ -93,7 +84,7 @@ public class WarehouseManager : IDomainService
 
                     if (product == null)
                         remark += $"{productId}已经被删除;";
-                    else if (product.Status.Code != ProductStatusEnum.SaleOn)
+                    else if (product.Status.Code != ProductStatusCodes.SaleOn)
                         remark += $"{productId}已经下架;";
                     else
                     {
@@ -115,8 +106,8 @@ public class WarehouseManager : IDomainService
         //发布冻结库存事件(不管是否冻结成功)
         var eventId = IdGenerater.GetNextId();
         var eventData = new WarehouseQtyBlockedEvent.EventData() { OrderId = orderId, IsSuccess = isSuccess, Remark = remark };
-        var eventSource = System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.FullName;
-        await _eventPublisher.PublishAsync(new WarehouseQtyBlockedEvent(eventId, eventData, eventSource));
+        var eventSource = nameof(BlockQtyAsync);
+        await warehouses[0].EventPublisher.Value.PublishAsync(new WarehouseQtyBlockedEvent(eventId, eventData, eventSource));
 
         return isSuccess;
     }

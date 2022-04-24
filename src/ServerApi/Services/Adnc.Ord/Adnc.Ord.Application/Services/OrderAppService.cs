@@ -1,4 +1,6 @@
-﻿namespace Adnc.Ord.Application.Services;
+﻿using Adnc.Ord.Domain.Aggregates.OrderAggregate;
+
+namespace Adnc.Ord.Application.Services;
 
 /// <summary>
 /// 订单管理
@@ -38,39 +40,30 @@ public class OrderAppService : AbstractAppService, IOrderAppService
     public async Task<OrderDto> CreateAsync(OrderCreationDto input)
     {
         var productIds = input.Items.Select(x => x.ProductId).ToArray();
-
-        //获取产品的价格,名字
-        var rpcResult = await _warehouseRpc.GetProductsAsync(new ProductSearchListRto { Ids = productIds });
-        if (!rpcResult.IsSuccessStatusCode)
-        {
-            var apiError = ((Refit.ValidationApiException)rpcResult.Error).Content;
-            throw new BusinessException(rpcResult.StatusCode, apiError.Detail);
-        }
+        //调用whse服务获取产品的价格,名字
+        var products = await _warehouseRpc.GetProductsAsync(new ProductSearchListRto { Ids = productIds });
+        Guard.Checker.NotNullOrAny(products, nameof(products));
 
         var orderId = IdGenerater.GetNextId();
-        var products = rpcResult.Content;
-
         var items = from o in input.Items
-                    join p in products on o.ProductId equals p.Id
-                    select (new OrderItemProduct(p.Id, p.Name, p.Price), o.Count);
+                            join p in products on o.ProductId equals p.Id
+                            select (new OrderItemProduct(p.Id, p.Name, p.Price), o.Count);
 
         //需要发布领域事件,通知仓储中心冻结库存
-        var order = await _orderMgr.CreateAsync(orderId
-            ,
-            input.CustomerId
-            ,
-            items
-            ,
-            new OrderReceiver(input.DeliveryInfomaton?.Name, input.DeliveryInfomaton?.Phone, input.DeliveryInfomaton?.Address)
-            );
-
+        var order = await _orderMgr.CreateAsync
+                                    (orderId
+                                    , input.CustomerId
+                                    , items
+                                    , new OrderReceiver(input.DeliveryInfomaton?.Name, input.DeliveryInfomaton?.Phone, input.DeliveryInfomaton?.Address)
+                                    );
+        // 保存到数据库
         await _orderRepo.InsertAsync(order);
 
         return Mapper.Map<OrderDto>(order);
     }
 
     /// <summary>
-    /// 标记订单创建状态
+    /// 标记订单状态
     /// </summary>
     /// <param name="id"></param>
     /// <param name="input"></param>
@@ -78,16 +71,13 @@ public class OrderAppService : AbstractAppService, IOrderAppService
     public async Task MarkCreatedStatusAsync(long id, OrderMarkCreatedStatusDto input)
     {
         var order = await _orderRepo.GetAsync(id);
-        Checker.NotNull(order, nameof(order));
-
-        //需要发布领域事件，仓储中心订阅该事件
         order.MarkCreatedStatus(input.IsSuccess, input.Remark);
 
         await _orderRepo.UpdateAsync(order);
     }
 
     /// <summary>
-    /// 修改订单
+    /// 修改订单信息
     /// </summary>
     /// <param name="id"></param>
     /// <param name="input"></param>
@@ -95,8 +85,6 @@ public class OrderAppService : AbstractAppService, IOrderAppService
     public async Task<OrderDto> UpdateAsync(long id, OrderUpdationDto input)
     {
         var order = await _orderRepo.GetAsync(id);
-
-        Checker.NotNull(order, nameof(order));
 
         order.ChangeReceiver(new OrderReceiver(
             input.DeliveryInfomaton.Name
@@ -117,10 +105,7 @@ public class OrderAppService : AbstractAppService, IOrderAppService
     public async Task DeleteAsync(long id)
     {
         var order = await _orderRepo.GetAsync(id);
-
-        Checker.NotNull(order, nameof(order));
-
-        order.MarkDeletedStatus("");
+        order.MarkDeletedStatus(string.Empty);
 
         await _orderRepo.UpdateAsync(order);
     }
@@ -195,13 +180,12 @@ public class OrderAppService : AbstractAppService, IOrderAppService
         if (orderDtos.IsNotNullOrEmpty())
         {
             //调用maint微服务获取字典,组合订单状态信息
-            var rpcReuslt = await _maintRpc.GetDictAsync(Consts.OrderStatusId);
-            if (rpcReuslt.IsSuccessStatusCode && rpcReuslt.Content.Children.Count > 0)
+            var dict = await _maintRpc.GetDictAsync(Consts.OrderStatusId);
+            if (dict is not null && dict.Children.IsNotNullOrEmpty())
             {
-                var dicts = rpcReuslt.Content.Children;
                 orderDtos.ForEach(x =>
                 {
-                    x.StatusChangesReason = dicts.FirstOrDefault(d => d.Name == x.StatusCode.ToSafeString())?.Name;
+                    x.StatusChangesReason = dict.Children.FirstOrDefault(d => d.Name == x.StatusCode.ToSafeString())?.Name;
                 });
             }
         }

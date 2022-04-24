@@ -6,9 +6,16 @@
 		<DockerfileContext>..\..\..</DockerfileContext>
 		<Description>订单中心服务</Description>
 	</PropertyGroup>
+	<ItemGroup>
+	  <None Remove="swagger_miniprofiler.html" />
+	</ItemGroup>
+	<ItemGroup>
+	  <EmbeddedResource Include="swagger_miniprofiler.html">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	  </EmbeddedResource>
+	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.2.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.3">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

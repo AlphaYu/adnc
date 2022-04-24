@@ -70,57 +70,31 @@ public class WarehouseAppService : AbstractAppService, IWarehouseAppService
         var total = await _warehouseRepo.CountAsync(x => true);
 
         if (total == 0)
-            return new PageModelDto<WarehouseDto>
-            {
-                TotalCount = 0
-                ,
-                PageIndex = search.PageIndex
-                ,
-                PageSize = search.PageSize
-            };
+            return new PageModelDto<WarehouseDto>(search);
 
         var products = _productRepo.Where(x => true);
         var warehouses = _warehouseRepo.Where(x => true);
-
-        var skipNumber = (search.PageIndex - 1) * search.PageSize;
-
         var data = await (from s in warehouses
                           join p in products
                           on s.ProductId equals p.Id into sp
                           from x in sp.DefaultIfEmpty()
                           select new WarehouseDto()
                           {
-                              Id = s.Id
-                              ,
-                              FreezedQty = s.BlockedQty
-                              ,
-                              PositionCode = s.Position.Code
-                              ,
-                              PositionDescription = s.Position.Description
-                              ,
-                              ProductId = s.ProductId
-                              ,
-                              ProductName = x.Name
-                              ,
-                              ProductSku = x.Sku
-                              ,
+                              Id = s.Id,
+                              FreezedQty = s.BlockedQty,
+                              PositionCode = s.Position.Code,
+                              PositionDescription = s.Position.Description,
+                              ProductId = s.ProductId,
+                              ProductName = x.Name,
+                              ProductSku = x.Sku,
                               Qty = s.Qty
                           })
-                       .Skip(skipNumber)
+                       .Skip(search.SkipRows())
                        .Take(search.PageSize)
                        .OrderByDescending(x => x.Id)
                        .ToListAsync();
 
-        return new PageModelDto<WarehouseDto>()
-        {
-            PageIndex = search.PageIndex
-            ,
-            PageSize = search.PageSize
-            ,
-            TotalCount = total
-            ,
-            Data = data
-        };
+        return new PageModelDto<WarehouseDto>(search, data, total);
     }
 
     /// <summary>

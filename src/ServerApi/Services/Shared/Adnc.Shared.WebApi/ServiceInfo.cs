@@ -23,7 +23,7 @@ public sealed class ServiceInfo : IServiceInfo
     {
     }
 
-    public static ServiceInfo GetInstance()
+    public static ServiceInfo GetInstance(Assembly startAssembly)
     {
         if (_instance == null)
         {
@@ -31,9 +31,10 @@ public sealed class ServiceInfo : IServiceInfo
             {
                 if (_instance == null)
                 {
-                    var assembly = Assembly.GetEntryAssembly();
-                    var description = assembly.GetCustomAttribute<AssemblyDescriptionAttribute>().Description;
-                    var assemblyName = assembly.GetName();
+                    if(startAssembly is null)
+                        startAssembly = Assembly.GetEntryAssembly();
+                    var description = startAssembly.GetCustomAttribute<AssemblyDescriptionAttribute>().Description;
+                    var assemblyName = startAssembly.GetName();
                     var version = assemblyName.Version;
                     var fullName = assemblyName.Name.ToLower();
                     var splitFullName = fullName.Split(".");
@@ -46,8 +47,8 @@ public sealed class ServiceInfo : IServiceInfo
                         FullName = fullName,
                         ShortName = shortName,
                         AssemblyName = assemblyName.Name,
-                        AssemblyFullName = assembly.FullName,
-                        AssemblyLocation = assembly.Location,
+                        AssemblyFullName = startAssembly.FullName,
+                        AssemblyLocation = startAssembly.Location,
                         Description = description,
                         Version = $"{version.Major}.{version.Minor}.{version.Build}.{version.Revision:00}"
                     };

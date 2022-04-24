@@ -1,5 +1,6 @@
 ﻿using Adnc.Ord.Application.AutoMapper;
 using Adnc.Ord.Application.EventSubscribers;
+using Adnc.Ord.Domain.EntityConfig;
 using Adnc.Shared.Application.Registrar;
 using Adnc.Shared.Domain;
 using FluentValidation;
