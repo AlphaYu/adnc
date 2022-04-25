@@ -1,6 +1,4 @@
-﻿using System.Linq.Expressions;
-
-namespace Adnc.Infra.EfCore.Repositories
+﻿namespace Adnc.Infra.EfCore.Repositories
 {
     /// <summary>
     /// Ef简单的、基础的，初级的仓储接口

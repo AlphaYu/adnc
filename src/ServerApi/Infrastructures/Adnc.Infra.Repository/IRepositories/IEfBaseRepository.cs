@@ -57,27 +57,4 @@ public interface IEfBaseRepository<TEntity> : IRepository<TEntity>
     /// <param name="noTracking">是否开启跟踪，默认false,可选参数</param>
     /// <returns></returns>
     IQueryable<TEntity> Where(Expression<Func<TEntity, bool>> expression, bool writeDb = false, bool noTracking = true);
-
-    /// <summary>
-    /// Dapper查询
-    /// </summary>
-    /// <param name="sql">sql</param>
-    /// <param name="param">参数</param>
-    /// <param name="commandTimeout">commandTimeout</param>
-    /// <param name="commandType">commandType</param>
-    /// <param name="writeDb">是否读写库，默认false,可选参数</param>
-    /// <returns></returns>
-    Task<IEnumerable<dynamic>> QueryAsync(string sql, object param = null, int? commandTimeout = null, CommandType? commandType = null, bool writeDb = false);
-
-    /// <summary>
-    /// Dapper查询
-    /// </summary>
-    /// <typeparam name="TResult"><see cref="TResult"/></typeparam>
-    /// <param name="sql">sql</param>
-    /// <param name="param">参数</param>
-    /// <param name="commandTimeout">commandTimeout</param>
-    /// <param name="commandType">commandType</param>
-    /// <param name="writeDb">是否读写库，默认false,可选参数</param>
-    /// <returns></returns>
-    Task<IEnumerable<TResult>> QueryAsync<TResult>(string sql, object param = null, int? commandTimeout = null, CommandType? commandType = null, bool writeDb = false);
 }
