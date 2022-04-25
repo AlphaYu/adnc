@@ -25,6 +25,8 @@ public sealed class DapperRepository : IAdoQuerierRepository, IAdoExecuterReposi
         };
     }
 
+    public bool HasDbConnection() => DbConnection is not null;
+
     public async Task<int> ExecuteAsync(string sql, object? param = null, IDbTransaction? transaction = null, int? commandTimeout = null, CommandType? commandType = null)
      => await SqlMapper.ExecuteAsync(DbConnection, sql, param, transaction, commandTimeout, commandType);
 

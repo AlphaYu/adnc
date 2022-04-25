@@ -28,6 +28,7 @@ public sealed class OrdApplicationDependencyRegistrar : AbstractApplicationDepen
         AddConsulServices();
         AddCachingServices();
         AddBloomFilterServices();
+        AddDapperRepositories();
         AddEfCoreContextWithRepositories();
         AddMongoContextWithRepositries();
         AddAppliactionSerivcesWithInterceptors();

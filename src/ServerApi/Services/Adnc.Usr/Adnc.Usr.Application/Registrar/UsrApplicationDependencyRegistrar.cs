@@ -24,6 +24,7 @@ public sealed class UsrApplicationDependencyRegistrar : AbstractApplicationDepen
         AddConsulServices();
         AddCachingServices();
         AddBloomFilterServices();
+        AddDapperRepositories();
         AddEfCoreContextWithRepositories();
         AddMongoContextWithRepositries();
         AddAppliactionSerivcesWithInterceptors();

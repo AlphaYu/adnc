@@ -17,4 +17,8 @@
 	<ItemGroup>
 		<ProjectReference Include="..\Adnc.Infra.Repository\Adnc.Infra.Repository.csproj" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Interceptors\" />
+	</ItemGroup>
 </Project>

@@ -27,6 +27,7 @@ public sealed class CustApplicationDependencyRegistrar : AbstractApplicationDepe
         AddConsulServices();
         AddCachingServices();
         AddBloomFilterServices();
+        AddDapperRepositories();
         AddEfCoreContextWithRepositories();
         AddMongoContextWithRepositries();
         AddAppliactionSerivcesWithInterceptors();

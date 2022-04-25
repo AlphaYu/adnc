@@ -21,7 +21,8 @@ namespace Adnc.Infra.EfCore.Repositories
             {
                 if (_adoQuerier is null)
                     return null;
-                _adoQuerier.ChangeOrSetDbConnection(DbContext.Database.GetDbConnection());
+                if (!_adoQuerier.HasDbConnection())
+                    _adoQuerier.ChangeOrSetDbConnection(DbContext.Database.GetDbConnection());
                 return _adoQuerier;
             }
         }
@@ -87,6 +88,7 @@ namespace Adnc.Infra.EfCore.Repositories
 
         public async Task<int> DeleteAsync(long keyValue, CancellationToken cancellationToken = default)
         {
+            int rows = 0;
             //查询当前上下文中，有没有同Id实体
             var entity = DbContext.Set<TEntity>().Local.FirstOrDefault(x => x.Id == keyValue);
 
@@ -94,7 +96,16 @@ namespace Adnc.Infra.EfCore.Repositories
                 entity = new TEntity { Id = keyValue };
 
             DbContext.Remove(entity);
-            return await DbContext.SaveChangesAsync(cancellationToken);
+
+            try
+            {
+                rows = await DbContext.SaveChangesAsync(cancellationToken);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                rows = 0;
+            }
+            return rows;
 
             #region old code
 

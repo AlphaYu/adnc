@@ -28,6 +28,7 @@ public sealed class WhseApplicationDependencyRegistrar : AbstractApplicationDepe
         AddConsulServices();
         AddCachingServices();
         AddBloomFilterServices();
+        AddDapperRepositories();
         AddEfCoreContextWithRepositories();
         AddMongoContextWithRepositries();
         AddAppliactionSerivcesWithInterceptors();
