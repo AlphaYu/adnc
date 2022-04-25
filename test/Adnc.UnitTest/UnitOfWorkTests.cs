@@ -1,12 +1,13 @@
 ﻿using Adnc.Cus.Entities;
 using Adnc.Infra.Helper;
+using Adnc.Infra.IRepositories;
 
 namespace Adnc.UnitTest.CoreService
 {
     public class UnitOfWorkTests : IClassFixture<CoreServiceFixture>
     {
         private readonly ITestOutputHelper _output;
-        private readonly Operater _userContext;
+        private readonly Operater _operater;
         private readonly IEfRepository<Customer> _cusRsp;
         private readonly CoreServiceFixture _fixture;
 
@@ -15,7 +16,7 @@ namespace Adnc.UnitTest.CoreService
             _fixture = fixture;
             _output = output;
             _cusRsp = _fixture.Container.GetRequiredService<IEfRepository<Customer>>();
-            _userContext = _fixture.Container.GetRequiredService<Operater>();
+            _operater = _fixture.Container.GetRequiredService<Operater>();
         }
 
         /// <summary>

@@ -1,13 +1,13 @@
 ﻿using Adnc.Cus.Entities;
 using Adnc.Infra.Helper;
+using Adnc.Infra.IRepositories;
 
-namespace Adnc.UnitTests.EFCore
+namespace Adnc.UnitTest.EFCore
 {
     public class MaxscaleTests : IClassFixture<MaxscaleDbcontextFixture>
     {
         private readonly ITestOutputHelper _output;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly Operater _userContext;
         private readonly IEfRepository<Customer> _cusRsp;
         private readonly IEfRepository<CustomerFinance> _cusFinanceRsp;
         private readonly IEfRepository<CustomerTransactionLog> _cusLogsRsp;
@@ -18,16 +18,14 @@ namespace Adnc.UnitTests.EFCore
             _fixture = fixture;
             _output = output;
             _unitOfWork = _fixture.Container.GetRequiredService<IUnitOfWork>();
-            _userContext = _fixture.Container.GetRequiredService<Operater>();
             _cusRsp = _fixture.Container.GetRequiredService<IEfRepository<Customer>>();
             _cusFinanceRsp = _fixture.Container.GetRequiredService<IEfRepository<CustomerFinance>>();
             _cusLogsRsp = _fixture.Container.GetRequiredService<IEfRepository<CustomerTransactionLog>>();
+            if(IdGenerater.CurrentWorkerId<0)
+                IdGenerater.SetWorkerId(1);
         }
 
-        protected Expression<Func<TEntity, object>>[] UpdatingProps<TEntity>(params Expression<Func<TEntity, object>>[] expressions)
-        {
-            return expressions;
-        }
+        protected Expression<Func<TEntity, object>>[] UpdatingProps<TEntity>(params Expression<Func<TEntity, object>>[] expressions) => expressions;
 
         [Fact]
         public async Task TestReadFromWirteDb()
@@ -48,7 +46,7 @@ namespace Adnc.UnitTests.EFCore
             var result = await InsertCustomer();
             var cusFinance = await InsertCusFinance(result.Id);
 
-            var cus = await _cusRsp.QueryAsync<Customer>("select * from customer where id=@id", new { id = result.Id }, writeDb: true);
+            var cus = await _cusRsp.AdoQuerier.QueryAsync<Customer>("select * from customer where id=@id", new { id = result.Id }, writeDb: true);
             Assert.NotNull(cus);
 
             await _cusFinanceRsp.DeleteAsync(result.Id);
