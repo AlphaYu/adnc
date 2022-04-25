@@ -1,5 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<Import Project="..\..\..\build\common.props" />
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<DocumentationFile>.\Adnc.Maint.Repository.xml</DocumentationFile>
+	</PropertyGroup>
+	<ItemGroup>
+	  <None Remove="Adnc.Maint.Repository.xml" />
+	</ItemGroup>
+	<ItemGroup>
+	  <EmbeddedResource Include="Adnc.Maint.Repository.xml">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </EmbeddedResource>
+	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="Extensions\" />
 	</ItemGroup>

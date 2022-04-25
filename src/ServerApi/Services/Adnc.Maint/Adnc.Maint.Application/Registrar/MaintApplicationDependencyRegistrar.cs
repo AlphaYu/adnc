@@ -25,6 +25,7 @@ public sealed class MaintApplicationDependencyRegistrar : AbstractApplicationDep
         AddConsulServices();
         AddCachingServices();
         AddBloomFilterServices();
+        AddDapperRepositories();
         AddEfCoreContextWithRepositories();
         AddMongoContextWithRepositries();
         AddAppliactionSerivcesWithInterceptors();

@@ -1,5 +1,4 @@
-﻿using System.Linq.Expressions;
-using Z.EntityFramework.Plus;
+﻿using Z.EntityFramework.Plus;
 
 namespace Adnc.Infra.EfCore.Repositories
 {
@@ -10,20 +9,32 @@ namespace Adnc.Infra.EfCore.Repositories
     public sealed class EfRepository<TEntity> : AbstractEfBaseRepository<AdncDbContext, TEntity>, IEfRepository<TEntity>
       where TEntity : EfEntity, new()
     {
-        public EfRepository(AdncDbContext dbContext)
+        private readonly IAdoQuerierRepository _adoQuerier;
+
+        public EfRepository(AdncDbContext dbContext, IAdoQuerierRepository adoQuerier = null)
             : base(dbContext)
+        => _adoQuerier = adoQuerier;
+
+        public IAdoQuerierRepository AdoQuerier
         {
+            get
+            {
+                if (_adoQuerier is null)
+                    return null;
+                if (!_adoQuerier.HasDbConnection())
+                    _adoQuerier.ChangeOrSetDbConnection(DbContext.Database.GetDbConnection());
+                return _adoQuerier;
+            }
         }
 
-        public IQueryable<TEntity> GetAll(bool writeDb = false, bool noTracking = true)
-            => this.GetDbSet(writeDb, noTracking);
+        public IQueryable<TEntity> GetAll(bool writeDb = false, bool noTracking = true) => this.GetDbSet(writeDb, noTracking);
 
         public IQueryable<TrdEntity> GetAll<TrdEntity>(bool writeDb = false, bool noTracking = true)
                where TrdEntity : EfEntity
         {
             var queryAble = DbContext.Set<TrdEntity>().AsQueryable();
             if (writeDb)
-                queryAble = queryAble.TagWith(EfCoreConsts.MAXSCALE_ROUTE_TO_MASTER);
+                queryAble = queryAble.TagWith(RepositoryConsts.MAXSCALE_ROUTE_TO_MASTER);
             if (noTracking)
                 queryAble = queryAble.AsNoTracking();
             return queryAble;
@@ -77,6 +88,7 @@ namespace Adnc.Infra.EfCore.Repositories
 
         public async Task<int> DeleteAsync(long keyValue, CancellationToken cancellationToken = default)
         {
+            int rows = 0;
             //查询当前上下文中，有没有同Id实体
             var entity = DbContext.Set<TEntity>().Local.FirstOrDefault(x => x.Id == keyValue);
 
@@ -84,7 +96,16 @@ namespace Adnc.Infra.EfCore.Repositories
                 entity = new TEntity { Id = keyValue };
 
             DbContext.Remove(entity);
-            return await DbContext.SaveChangesAsync();
+
+            try
+            {
+                rows = await DbContext.SaveChangesAsync(cancellationToken);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                rows = 0;
+            }
+            return rows;
 
             #region old code
 
@@ -193,7 +214,7 @@ namespace Adnc.Infra.EfCore.Repositories
 
             #endregion removed code
 
-            return await DbContext.SaveChangesAsync();
+            return await DbContext.SaveChangesAsync(cancellationToken);
         }
 
         public Task<int> UpdateRangeAsync(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, TEntity>> updatingExpression, CancellationToken cancellationToken = default)
@@ -209,7 +230,7 @@ namespace Adnc.Infra.EfCore.Repositories
 
         public async Task<int> UpdateRangeAsync(Dictionary<long, List<(string propertyName, dynamic propertyValue)>> propertyNameAndValues, CancellationToken cancellationToken = default)
         {
-            var existsEntities = DbContext.Set<TEntity>().Local.Where(x => propertyNameAndValues.Keys.Contains(x.Id));
+            var existsEntities = DbContext.Set<TEntity>().Local.Where(x => propertyNameAndValues.ContainsKey(x.Id));
 
             foreach (var item in propertyNameAndValues)
             {
@@ -229,7 +250,7 @@ namespace Adnc.Infra.EfCore.Repositories
                 }
             }
 
-            return await DbContext.SaveChangesAsync();
+            return await DbContext.SaveChangesAsync(cancellationToken);
         }
 
         private async Task<int> UpdateRangeInternalAsync(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, TEntity>> updatingExpression, CancellationToken cancellationToken = default)

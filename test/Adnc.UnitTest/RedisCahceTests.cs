@@ -109,7 +109,7 @@ namespace Adnc.UnitTest.Cache
 
             //autodelay = true
             cacheKey = nameof(TestDistributedLocker).ToLower() + "-" + new Random().Next(20001, 30000).ToString();
-            flagtrue = await _distributedLocker.LockAsync(cacheKey, 3);
+            flagtrue = await _distributedLocker.LockAsync(cacheKey, 3, true);
             Assert.True(flagtrue.Success);
 
             await Task.Delay(1000 * 10);

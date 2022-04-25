@@ -32,10 +32,10 @@ namespace Pomelo.EntityFrameworkCore.MySql.Query.ExpressionVisitors.Internal
         /// <param name="selectExpression"></param>
         protected override void GenerateTagsHeaderComment(SelectExpression selectExpression)
         {
-            if (selectExpression.Tags.Contains(EfCoreConsts.MyCAT_ROUTE_TO_MASTER))
+            if (selectExpression.Tags.Contains(RepositoryConsts.MYCAT_ROUTE_TO_MASTER))
             {
                 _isQueryMaseter = true;
-                selectExpression.Tags.Remove(EfCoreConsts.MyCAT_ROUTE_TO_MASTER);
+                selectExpression.Tags.Remove(RepositoryConsts.MYCAT_ROUTE_TO_MASTER);
             }
             base.GenerateTagsHeaderComment(selectExpression);
         }
@@ -68,7 +68,7 @@ namespace Pomelo.EntityFrameworkCore.MySql.Query.ExpressionVisitors.Internal
             LIMIT 1
             */
             if (_isQueryMaseter)
-                Sql.Append(string.Concat("/*", EfCoreConsts.MyCAT_ROUTE_TO_MASTER, "*/ "));
+                Sql.Append(string.Concat("/*", RepositoryConsts.MYCAT_ROUTE_TO_MASTER, "*/ "));
 
             return base.VisitSelect(selectExpression);
         }

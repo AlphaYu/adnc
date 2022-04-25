@@ -9,6 +9,11 @@ public interface IEfRepository<TEntity> : IEfBaseRepository<TEntity>
    where TEntity : EfEntity
 {
     /// <summary>
+    /// 执行Sql原生查询
+    /// </summary>
+    IAdoQuerierRepository AdoQuerier { get; }
+
+    /// <summary>
     /// 返回IQueryable<TEntity>
     /// </summary>
     /// <param name="writeDb">是否读写库，默认false,可选参数</param>

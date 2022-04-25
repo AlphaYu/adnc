@@ -1,5 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<Import Project="..\..\..\build\common.props" />
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<DocumentationFile>.\Adnc.Usr.Repository.xml</DocumentationFile>
+	</PropertyGroup>
+	<ItemGroup>
+	  <None Remove="Adnc.Usr.Repository.xml" />
+	</ItemGroup>
+	<ItemGroup>
+	  <EmbeddedResource Include="Adnc.Usr.Repository.xml">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </EmbeddedResource>
+	</ItemGroup>
 	<ItemGroup>
     <ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Repository\Adnc.Infra.Repository.csproj" />
     <ProjectReference Include="..\..\Shared\Adnc.Shared\Adnc.Shared.csproj" />

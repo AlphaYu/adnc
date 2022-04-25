@@ -5,7 +5,7 @@ namespace Adnc.Infra.EfCore.MySQL;
 /// <summary>
 /// AdncDbContext
 /// </summary>
-public class AdncDbContext : DbContext
+public sealed class AdncDbContext : DbContext
 {
     private readonly Operater _operater;
     private readonly IEntityInfo _entityInfo;
@@ -17,7 +17,6 @@ public class AdncDbContext : DbContext
         _operater = operater;
         _entityInfo = entityInfo;
         _unitOfWorkStatus = unitOfWorkStatus;
-
         //关闭DbContext默认事务
         Database.AutoTransactionsEnabled = false;
         //关闭查询跟踪
@@ -43,25 +42,6 @@ public class AdncDbContext : DbContext
             Database.AutoTransactionsEnabled = false;
 
         return result;
-    }
-
-    private int SetAuditFields()
-    {
-        var allBasicAuditEntities = ChangeTracker.Entries<IBasicAuditInfo>().Where(x => x.State == EntityState.Added).ToList();
-        allBasicAuditEntities.ForEach(entry =>
-        {
-            entry.Entity.CreateBy = _operater.Id;
-            entry.Entity.CreateTime = DateTime.Now;
-        });
-
-        var auditFullEntities = ChangeTracker.Entries<IFullAuditInfo>().Where(x => x.State == EntityState.Modified).ToList();
-        auditFullEntities.ForEach(entry =>
-        {
-            entry.Entity.ModifyBy = _operater.Id;
-            entry.Entity.ModifyTime = DateTime.Now;
-        });
-
-        return ChangeTracker.Entries<Entity>().Count();
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -101,5 +81,24 @@ public class AdncDbContext : DbContext
                 });
             });
         });
+    }
+
+    private int SetAuditFields()
+    {
+        var allBasicAuditEntities = ChangeTracker.Entries<IBasicAuditInfo>().Where(x => x.State == EntityState.Added).ToList();
+        allBasicAuditEntities.ForEach(entry =>
+        {
+            entry.Entity.CreateBy = _operater.Id;
+            entry.Entity.CreateTime = DateTime.Now;
+        });
+
+        var auditFullEntities = ChangeTracker.Entries<IFullAuditInfo>().Where(x => x.State == EntityState.Modified).ToList();
+        auditFullEntities.ForEach(entry =>
+        {
+            entry.Entity.ModifyBy = _operater.Id;
+            entry.Entity.ModifyTime = DateTime.Now;
+        });
+
+        return ChangeTracker.Entries<Entity>().Count();
     }
 }
