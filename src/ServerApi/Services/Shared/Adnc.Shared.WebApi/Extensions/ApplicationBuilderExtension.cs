@@ -1,4 +1,6 @@
-﻿namespace Microsoft.AspNetCore.Builder;
+﻿using Adnc.Infra.Core.DependencyInjection;
+
+namespace Microsoft.AspNetCore.Builder;
 
 public static class ApplicationBuilderExtension
 {
@@ -12,6 +14,8 @@ public static class ApplicationBuilderExtension
     /// <returns></returns>
     public static IApplicationBuilder UseAdncMiddlewares(this IApplicationBuilder app, Action<IApplicationBuilder> completedExecute = null)
     {
+        ServiceLocator.Provider = app.ApplicationServices;
+
         var configuration = app.ApplicationServices.GetService<IConfiguration>();
         var environment = app.ApplicationServices.GetService<IHostEnvironment>();
         var serviceInfo = app.ApplicationServices.GetService<IServiceInfo>();

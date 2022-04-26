@@ -159,10 +159,10 @@ public abstract class AbstractApplicationDependencyRegistrar : IDependencyRegist
 
         Services.AddSingleton<TSubscriber>();
 
-        var rabbitMqConfig = Configuration.GetRabbitMqSection().Get<RabbitMqConfig>();
+        var rabbitMqConfig = RabbitMqSection.Get<RabbitMqConfig>();
         Services.AddCap(x =>
         {
-            var mysqlConfig = Configuration.GetMysqlSection().Get<MysqlConfig>();
+            var mysqlConfig = MysqlSection.Get<MysqlConfig>();
             x.UseMySql(config =>
             {
                 config.ConnectionString = mysqlConfig.ConnectionString;
