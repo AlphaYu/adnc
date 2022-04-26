@@ -4,9 +4,9 @@ public static class AdncInfraDapperServiceCollectionExtension
 {
     public static IServiceCollection AddAdncInfraDapper(this IServiceCollection services)
     {
-        services.TryAddScoped<DapperRepository>();
-        services.TryAddScoped<IAdoExecuterRepository>(provider => provider.GetRequiredService<DapperRepository>());
-        services.TryAddScoped<IAdoQuerierRepository>(provider => provider.GetRequiredService<DapperRepository>());
+        services.TryAddScoped<IAdoExecuterWithQuerierRepository, DapperRepository>();
+        services.TryAddScoped<IAdoExecuterRepository>(provider => provider.GetRequiredService<IAdoExecuterWithQuerierRepository>());
+        services.TryAddScoped<IAdoQuerierRepository>(provider => provider.GetRequiredService<IAdoExecuterWithQuerierRepository>());
         return services;
     }
 }

@@ -9,6 +9,7 @@ global using Microsoft.EntityFrameworkCore.ChangeTracking;
 global using Microsoft.Extensions.DependencyInjection.Extensions;
 global using System;
 global using System.Collections.Generic;
+global using System.Data;
 global using System.Diagnostics.CodeAnalysis;
 global using System.Linq;
 global using System.Linq.Expressions;

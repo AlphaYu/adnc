@@ -1,8 +1,4 @@
-﻿using Dapper;
-using System.Data;
-using System.Linq.Expressions;
-
-namespace Adnc.Infra.EfCore.Repositories
+﻿namespace Adnc.Infra.EfCore.Repositories
 {
     /// <summary>
     /// Ef仓储的基类实现,抽象类
@@ -98,6 +94,6 @@ namespace Adnc.Infra.EfCore.Repositories
         }
 
         protected virtual async Task<int> UpdateInternalAsync(TEntity entity, CancellationToken cancellationToken = default)
-            => await DbContext.SaveChangesAsync(cancellationToken);
+        => await DbContext.SaveChangesAsync(cancellationToken);
     }
 }

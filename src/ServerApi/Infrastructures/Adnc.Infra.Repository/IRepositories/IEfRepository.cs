@@ -9,9 +9,24 @@ public interface IEfRepository<TEntity> : IEfBaseRepository<TEntity>
    where TEntity : EfEntity
 {
     /// <summary>
-    /// 执行Sql原生查询
+    /// 执行原生Sql查询
     /// </summary>
-    IAdoQuerierRepository AdoQuerier { get; }
+    IAdoQuerierRepository? AdoQuerier { get; }
+
+    /// <summary>
+    /// 执行原生Sql写操作
+    /// </summary>
+    Task<int> ExecuteSqlInterpolatedAsync(FormattableString sql, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// 执行原生Sql写操作
+    /// </summary>
+    Task<int> ExecuteSqlRawAsync(string sql, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// 当前事务
+    /// </summary>
+    IDbTransaction? CurrentDbTransaction { get; }
 
     /// <summary>
     /// 返回IQueryable<TEntity>
@@ -20,7 +35,6 @@ public interface IEfRepository<TEntity> : IEfBaseRepository<TEntity>
     /// <param name="noTracking">是否开启跟踪，默认false,可选参数</param>
     /// <returns></returns>
     IQueryable<TEntity> GetAll(bool writeDb = false, bool noTracking = true);
-
     IQueryable<TrdEntity> GetAll<TrdEntity>(bool writeDb = false, bool noTracking = true) where TrdEntity : EfEntity;
 
     /// <summary>
@@ -32,7 +46,7 @@ public interface IEfRepository<TEntity> : IEfBaseRepository<TEntity>
     /// <param name="noTracking">是否开启跟踪，默认不开启，可选参数</param>
     /// <param name="cancellationToken"><see cref="CancellationToken"/></param>
     /// <returns><see cref="TEntity"/></returns>
-    Task<TEntity> FindAsync(long keyValue, Expression<Func<TEntity, dynamic>> navigationPropertyPath = null, bool writeDb = false, bool noTracking = true, CancellationToken cancellationToken = default);
+    Task<TEntity> FindAsync(long keyValue, Expression<Func<TEntity, dynamic>>? navigationPropertyPath = null, bool writeDb = false, bool noTracking = true, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// 根据条件查询,返回单个实体
@@ -45,7 +59,7 @@ public interface IEfRepository<TEntity> : IEfBaseRepository<TEntity>
     /// <param name="noTracking">是否开启跟踪，默认不开启，可选参数</param>
     /// <param name="cancellationToken"><see cref="CancellationToken"/></param>
     /// <returns></returns>
-    Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, dynamic>> navigationPropertyPath = null, Expression<Func<TEntity, object>> orderByExpression = null, bool ascending = false, bool writeDb = false, bool noTracking = true, CancellationToken cancellationToken = default);
+    Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, dynamic>>? navigationPropertyPath = null, Expression<Func<TEntity, object>> orderByExpression = null, bool ascending = false, bool writeDb = false, bool noTracking = true, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// 根据条件查询,返回单个实体或对象

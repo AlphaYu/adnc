@@ -1,4 +1,5 @@
 ﻿using Z.EntityFramework.Plus;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Adnc.Infra.EfCore.Repositories
 {
@@ -26,6 +27,14 @@ namespace Adnc.Infra.EfCore.Repositories
                 return _adoQuerier;
             }
         }
+
+        public async Task<int> ExecuteSqlInterpolatedAsync(FormattableString sql, CancellationToken cancellationToken = default)
+            => await DbContext.Database.ExecuteSqlInterpolatedAsync(sql, cancellationToken);
+
+        public async Task<int> ExecuteSqlRawAsync(string sql, CancellationToken cancellationToken = default)
+            => await DbContext.Database.ExecuteSqlRawAsync(sql, cancellationToken);
+
+        public IDbTransaction CurrentDbTransaction => DbContext.Database.CurrentTransaction.GetDbTransaction();
 
         public IQueryable<TEntity> GetAll(bool writeDb = false, bool noTracking = true) => this.GetDbSet(writeDb, noTracking);
 
@@ -254,6 +263,8 @@ namespace Adnc.Infra.EfCore.Repositories
         }
 
         private async Task<int> UpdateRangeInternalAsync(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, TEntity>> updatingExpression, CancellationToken cancellationToken = default)
-            => await DbContext.Set<TEntity>().Where(whereExpression).UpdateAsync(updatingExpression, cancellationToken);
+        {
+            return await DbContext.Set<TEntity>().Where(whereExpression).UpdateAsync(updatingExpression, cancellationToken);
+        }
     }
 }
