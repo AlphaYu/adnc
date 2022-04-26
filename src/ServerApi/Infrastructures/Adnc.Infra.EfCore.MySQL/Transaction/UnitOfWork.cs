@@ -22,7 +22,7 @@ public sealed class UnitOfWork<TDbContext> : IUnitOfWork where TDbContext : DbCo
         _capPublisher = capPublisher;
     }
 
-    private IDbContextTransaction GetDbContextTransaction(IsolationLevel isolationLevel, bool distributed = false)
+    private IDbContextTransaction GetDbContextTransaction(IsolationLevel isolationLevel = IsolationLevel.ReadCommitted, bool distributed = false)
     {
         if (_unitOfWorkStatus.IsStartingUow)
             throw new ArgumentException("UnitOfWork Error");
