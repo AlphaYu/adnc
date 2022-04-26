@@ -1,8 +1,21 @@
-﻿namespace Adnc.Shared.Application.Services;
+﻿using Adnc.Infra.Core.DependencyInjection;
+
+namespace Adnc.Shared.Application.Services;
 
 public abstract class AbstractAppService : IAppService
 {
-    public IObjectMapper Mapper => HttpContextUtility.GetCurrentHttpContext().RequestServices.GetRequiredService<IObjectMapper>();
+    public IObjectMapper Mapper
+    {
+        get
+        {
+            var httpContext = HttpContextUtility.GetCurrentHttpContext();
+            if (httpContext is not null)
+                return httpContext.RequestServices.GetRequiredService<IObjectMapper>();
+            if (ServiceLocator.Provider is not null)
+                return ServiceLocator.Provider.GetService<IObjectMapper>();
+            throw new NotImplementedException();
+        }
+    }
 
     protected AppSrvResult AppSrvResult() => new();
 
