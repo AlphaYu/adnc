@@ -17,9 +17,7 @@ public sealed class AdncDbContext : DbContext
         _operater = operater;
         _entityInfo = entityInfo;
         _unitOfWorkStatus = unitOfWorkStatus;
-        //关闭DbContext默认事务
         Database.AutoTransactionsEnabled = false;
-        //关闭查询跟踪
         //ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
     }
 
@@ -63,21 +61,21 @@ public sealed class AdncDbContext : DbContext
         modelBuilder.ApplyConfigurationsFromAssembly(assembly);
 
         var types = entityInfos.Select(x => x.Type);
-        var entityTypes = modelBuilder.Model.GetEntityTypes().Where(x => types.Contains(x.ClrType)).ToList();
+        var entityTypes = modelBuilder.Model.GetEntityTypes().Where(x => types.Contains(x.ClrType));
         entityTypes.ForEach(entityType =>
         {
             modelBuilder.Entity(entityType.Name, buider =>
             {
                 var typeSummary = entityType.ClrType.GetSummary();
-                buider.ToTable(entityType.ClrType.Name.ToLower()).HasComment(typeSummary);
+                var newTableName = entityType.ClrType.Name.ToLower();
+                buider.ToTable(newTableName).HasComment(typeSummary);
 
-                var properties = entityType.GetProperties().ToList();
-                properties.ForEach(property =>
+                entityType.GetProperties().ForEach(property =>
                 {
-                    var memberSummary = entityType.ClrType.GetMember(property.Name).FirstOrDefault().GetSummary();
-                    buider.Property(property.Name)
-                        .HasColumnName(property.Name.ToLower())
-                        .HasComment(memberSummary);
+                    var propertyName = property.Name;
+                    var newColumnName = propertyName.ToLower();
+                    var memberSummary = entityType.ClrType.GetMember(propertyName).FirstOrDefault().GetSummary();
+                    buider.Property(propertyName).HasColumnName(newColumnName).HasComment(memberSummary);
                 });
             });
         });
