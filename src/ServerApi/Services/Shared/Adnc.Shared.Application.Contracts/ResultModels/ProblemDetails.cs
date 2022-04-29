@@ -1,4 +1,4 @@
-﻿namespace Adnc.Shared.ResultModels;
+﻿namespace Adnc.Shared.Application.Contracts.ResultModels;
 
 /// <summary>
 /// 错误信息类
@@ -6,11 +6,9 @@
 [Serializable]
 public sealed class ProblemDetails
 {
-    public ProblemDetails()
-    {
-    }
+    public ProblemDetails() { }
 
-    public ProblemDetails(HttpStatusCode? statusCode = null, string detail = null, string title = null, string instance = null, string type = null)
+    public ProblemDetails(HttpStatusCode? statusCode, string detail = null, string title = null, string instance = null, string type = null)
     {
         var status = statusCode.HasValue ? (int)statusCode.Value : (int)HttpStatusCode.BadRequest;
         Status = status;
@@ -20,10 +18,7 @@ public sealed class ProblemDetails
         Type = type ?? string.Concat("https://httpstatuses.com/", status);
     }
 
-    public override string ToString()
-    {
-        return JsonSerializer.Serialize(this, SystemTextJson.GetAdncDefaultOptions());
-    }
+    public override string ToString() => JsonSerializer.Serialize(this, SystemTextJson.GetAdncDefaultOptions());
 
     [JsonPropertyName("detail")]
     public string Detail { get; set; }

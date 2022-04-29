@@ -52,7 +52,7 @@ public abstract class AbstractApplicationDependencyRegistrar : IDependencyRegist
     {
         Services.AddSingleton(typeof(Lazy<>));
         //https://andrewlock.net/how-to-register-a-service-with-multiple-interfaces-for-in-asp-net-core-di/
-        Services.AddScoped<IUserContext,UserContext>();
+        Services.AddScoped<UserContext>();
         Services.AddScoped<OperateLogInterceptor>();
         Services.AddScoped<OperateLogAsyncInterceptor>();
         Services.AddScoped<UowInterceptor>();
@@ -90,7 +90,7 @@ public abstract class AbstractApplicationDependencyRegistrar : IDependencyRegist
 
         Services.AddScoped(provider =>
         {
-            var userContext = provider.GetRequiredService<IUserContext>();
+            var userContext = provider.GetRequiredService<UserContext>();
             return new Operater
             {
                 Id = userContext.Id,

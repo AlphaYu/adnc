@@ -1,4 +1,5 @@
 ﻿using Adnc.Infra.Core.DependencyInjection;
+using Adnc.Shared.Application.Contracts.ResultModels;
 
 namespace Adnc.Shared.Application.Services;
 

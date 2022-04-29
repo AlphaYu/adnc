@@ -1,4 +1,4 @@
-﻿using StackExchange.Profiling.Storage;
+﻿using Adnc.Shared.Application.Contracts;
 using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
 
 namespace Adnc.Shared.WebApi.Registrar;
@@ -135,7 +135,7 @@ public abstract class AbstractWebApiDependencyRegistrar : IDependencyRegistrar
                 //在Token验证通过后调用
                 OnTokenValidated = context =>
                 {
-                    var userContext = context.HttpContext.RequestServices.GetService<IUserContext>();
+                    var userContext = context.HttpContext.RequestServices.GetService<UserContext>();
                     var claims = context.Principal.Claims;
                     userContext.Id = long.Parse(claims.First(x => x.Type == JwtRegisteredClaimNames.NameId).Value);
                     userContext.Account = claims.First(x => x.Type == JwtRegisteredClaimNames.UniqueName).Value;

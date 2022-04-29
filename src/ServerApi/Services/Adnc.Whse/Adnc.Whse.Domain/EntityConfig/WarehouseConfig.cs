@@ -13,8 +13,8 @@ public class WarehouseConfig : EntityTypeConfiguration<Warehouse>
 
         builder.OwnsOne(x => x.Position, y =>
         {
-            y.Property(x => x.Code).IsRequired().HasColumnName("PositionCode").HasMaxLength(WhseConsts.Code_MaxLength);
-            y.Property(x => x.Description).HasColumnName("PositionDescription").HasMaxLength(WhseConsts.Description_MaxLength);
+            y.Property(x => x.Code).IsRequired().HasColumnName("positioncode").HasMaxLength(WhseConsts.Code_MaxLength);
+            y.Property(x => x.Description).HasColumnName("positiondescription").HasMaxLength(WhseConsts.Description_MaxLength);
         });
     }
 }

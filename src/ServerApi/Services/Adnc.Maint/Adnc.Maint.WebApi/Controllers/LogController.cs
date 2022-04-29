@@ -1,4 +1,6 @@
-﻿namespace Adnc.Maint.WebApi.Controllers;
+﻿using Adnc.Shared.Application.Contracts;
+
+namespace Adnc.Maint.WebApi.Controllers;
 
 /// <summary>
 /// 操作日志
@@ -7,10 +9,10 @@
 public class LogController : AdncControllerBase
 {
     private readonly ILogAppService _logService;
-    private readonly IUserContext _userContext;
+    private readonly UserContext _userContext;
 
     public LogController(ILogAppService logService
-        , IUserContext userContext)
+        , UserContext userContext)
     {
         _logService = logService;
         _userContext = userContext;

@@ -1,6 +1,6 @@
-﻿namespace Adnc.Shared.ResultModels;
+﻿namespace Adnc.Shared.Application.Contracts;
 
-public class UserContext : IUserContext
+public class UserContext
 {
     public string RemoteIpAddress { get; set; }
 

@@ -116,7 +116,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Shared.Application.Con
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Usr.Application", "Services\Adnc.Usr\Adnc.Usr.Application\Adnc.Usr.Application.csproj", "{ABA5BFEF-7D6A-4379-86FD-F34403FECF4F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adnc.Infra.Dapper", "Infrastructures\Adnc.Infra.Dapper\Adnc.Infra.Dapper.csproj", "{71AE9D65-18B4-47AD-9003-2AE399949971}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Dapper", "Infrastructures\Adnc.Infra.Dapper\Adnc.Infra.Dapper.csproj", "{71AE9D65-18B4-47AD-9003-2AE399949971}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

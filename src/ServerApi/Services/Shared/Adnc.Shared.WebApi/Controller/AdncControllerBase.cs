@@ -1,4 +1,6 @@
-﻿namespace Microsoft.AspNetCore.Mvc;
+﻿using Adnc.Shared.Application.Contracts.ResultModels;
+
+namespace Microsoft.AspNetCore.Mvc;
 
 public abstract class AdncControllerBase : ControllerBase
 {
@@ -8,7 +10,7 @@ public abstract class AdncControllerBase : ControllerBase
     /// <param name="problemDetails"><see cref="Adnc.Shared.Application.Services.ProblemDetails"/></param>
     /// <returns><see cref="ObjectResult"/></returns>
     [NonAction]
-    protected virtual ObjectResult Problem(Adnc.Shared.ResultModels.ProblemDetails problemDetails)
+    protected virtual ObjectResult Problem(Adnc.Shared.Application.Contracts.ResultModels.ProblemDetails problemDetails)
     {
         problemDetails.Instance = problemDetails.Instance ?? this.Request.Path.ToString();
         return Problem(problemDetails.Detail

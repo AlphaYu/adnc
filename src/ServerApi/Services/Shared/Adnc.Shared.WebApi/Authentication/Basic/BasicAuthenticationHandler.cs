@@ -1,4 +1,5 @@
-﻿using System.Text.Encodings.Web;
+﻿using Adnc.Shared.Application.Contracts;
+using System.Text.Encodings.Web;
 
 namespace Microsoft.AspNetCore.Authentication.Basic;
 
@@ -30,7 +31,7 @@ public class BasicAuthenticationHandler : AuthenticationHandler<BasicSchemeOptio
                 var claimsPrincipal = new ClaimsPrincipal(identity);
                 authResult = AuthenticateResult.Success(new AuthenticationTicket(claimsPrincipal, BasicDefaults.AuthenticationScheme));
 
-                var userContext = Context.RequestServices.GetService<IUserContext>();
+                var userContext = Context.RequestServices.GetService<UserContext>();
                 userContext.Id = appId.ToLong().Value;
                 userContext.Account = userName;
                 userContext.Name = userName;
