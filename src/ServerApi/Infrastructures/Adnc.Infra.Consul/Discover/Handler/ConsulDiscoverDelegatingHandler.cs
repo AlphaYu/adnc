@@ -2,11 +2,11 @@
 using System.Net.Http;
 using System.Net.Http.Headers;
 
-namespace Adnc.Infra.Consul.Consumer
+namespace Adnc.Infra.Consul.Discover
 {
     public class ConsulDiscoverDelegatingHandler : DelegatingHandler
     {
-        private static readonly SemaphoreSlim _slimlock = new SemaphoreSlim(1, 1);
+        private static readonly SemaphoreSlim _slimlock = new (1, 1);
         private readonly ConsulClient _consulClient;
         private readonly IEnumerable<ITokenGenerator> _tokenGenerators;
         private readonly IMemoryCache _memoryCache;
@@ -42,14 +42,13 @@ namespace Adnc.Infra.Consul.Consumer
                         request.Headers.Authorization = new AuthenticationHeaderValue(auth.Scheme, tokenTxt);
                 }
                 var serviceUrls = await GetAllHealthServiceAddressAsync(currentUri.Host, serviceAddressCacheKey);
-                var serviceUrl = GetServiceAddress(serviceUrls);
+                var serviceUrl = LoadRandomBalancer(serviceUrls);
                 if (serviceUrl.IsNullOrWhiteSpace())
                     throw new ArgumentNullException($"{currentUri.Host} does not contain helath service address!");
                 else
                     request.RequestUri = new Uri($"{currentUri.Scheme}://{serviceUrl}{currentUri.PathAndQuery}");
 
-                //如果调用地址是https,使用http2
-                if (request.RequestUri.Scheme.Equals("https", StringComparison.OrdinalIgnoreCase))
+                if (request.RequestUri.Scheme.Equals("https", StringComparison.OrdinalIgnoreCase) && request.Version != new Version(2, 0))
                     request.Version = new Version(2, 0);
 
                 #region 缓存处理
@@ -106,7 +105,7 @@ namespace Adnc.Infra.Consul.Consumer
             }
         }
 
-        private string GetServiceAddress(IEnumerable<string> healthAddresses)
+        private string LoadRandomBalancer(IEnumerable<string> healthAddresses)
         {
             if (healthAddresses != null && healthAddresses.Any())
             {
@@ -153,5 +152,6 @@ namespace Adnc.Infra.Consul.Consumer
                 _slimlock.Release();
             }
         }
+
     }
 }

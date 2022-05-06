@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.Consul.Consumer
+﻿namespace Adnc.Infra.Consul.Discover
 {
     public class ConsulServiceProvider : IConsulServiceProvider
     {
@@ -36,5 +36,10 @@
             }
             return result;
         }
+    }
+
+    public interface IConsulServiceProvider
+    {
+        Task<IList<string>> GetHealthServicesAsync(string serviceName);
     }
 }

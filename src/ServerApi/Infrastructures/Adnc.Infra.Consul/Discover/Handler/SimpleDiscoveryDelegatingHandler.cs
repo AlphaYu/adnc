@@ -2,7 +2,7 @@
 using System.Net.Http;
 using System.Net.Http.Headers;
 
-namespace Adnc.Infra.Consul.Consumer
+namespace Adnc.Infra.Consul.Discover
 {
     //https://www.siakabaro.com/use-http-2-with-httpclient-in-net-6-0/
     public class SimpleDiscoveryDelegatingHandler : DelegatingHandler
@@ -19,8 +19,7 @@ namespace Adnc.Infra.Consul.Consumer
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            //如果调用地址是https,使用http2
-            if (request.RequestUri.Scheme.Equals("https", StringComparison.OrdinalIgnoreCase))
+            if (request.RequestUri.Scheme.Equals("https", StringComparison.OrdinalIgnoreCase) && request.Version != new Version(2, 0))
                 request.Version = new Version(2, 0);
 
             var headers = request.Headers;

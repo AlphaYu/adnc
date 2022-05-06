@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.Consul.Consumer
+﻿namespace Adnc.Infra.Consul.Discover
 {
     public interface ILoadBalancer
     {

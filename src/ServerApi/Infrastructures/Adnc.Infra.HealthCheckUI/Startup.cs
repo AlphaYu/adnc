@@ -1,4 +1,4 @@
-using Adnc.Infra.Consul.Consumer;
+using Adnc.Infra.Consul.Discover;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
