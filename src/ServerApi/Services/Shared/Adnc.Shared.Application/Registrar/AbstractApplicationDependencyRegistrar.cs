@@ -1,9 +1,9 @@
-﻿using Adnc.Infra.Consul.Consumer;
+﻿using Adnc.Infra.Consul.Discover;
 using Adnc.Infra.EfCore.MySQL;
 using Adnc.Infra.Mongo.Configuration;
 using Adnc.Infra.Mongo.Extensions;
 using Adnc.Shared.Application.Channels;
-using Adnc.Shared.RpcServices;
+using Adnc.Shared.Rest.Services;
 using DotNetCore.CAP;
 using Microsoft.EntityFrameworkCore;
 using Refit;
@@ -238,13 +238,13 @@ public abstract class AbstractApplicationDependencyRegistrar : IDependencyRegist
     }
 
     /// <summary>
-    /// 注册Rpc服务(跨微服务之间的同步通讯)
+    /// 注册Rest服务(跨微服务之间的同步通讯)
     /// </summary>
-    /// <typeparam name="TRpcService">Rpc服务接口</typeparam>
+    /// <typeparam name="TRestClient">Rpc服务接口</typeparam>
     /// <param name="serviceName">在注册中心注册的服务名称，或者服务的Url</param>
     /// <param name="policies">Polly策略</param>
-    protected virtual void AddRpcService<TRpcService>(string serviceName, List<IAsyncPolicy<HttpResponseMessage>> policies)
-     where TRpcService : class, IRpcService
+    protected virtual void AddRestClient<TRestClient>(string serviceName, List<IAsyncPolicy<HttpResponseMessage>> policies)
+     where TRestClient : class
     {
         var prefix = serviceName[..7];
         bool isConsulAdderss = prefix != "http://" && prefix != "https:/";
@@ -256,7 +256,7 @@ public abstract class AbstractApplicationDependencyRegistrar : IDependencyRegist
         {
             ContentSerializer = new SystemTextJsonContentSerializer(SystemTextJson.GetAdncDefaultOptions())
         };
-        var clientbuilder = Services.AddRefitClient<TRpcService>(refitSettings)
+        var clientbuilder = Services.AddRefitClient<TRestClient>(refitSettings)
                                                      .SetHandlerLifetime(TimeSpan.FromMinutes(2))
                                                      .ConfigureHttpClient(httpClient => httpClient.BaseAddress = new Uri(baseAddress));
         if (isConsulAdderss)
@@ -265,6 +265,34 @@ public abstract class AbstractApplicationDependencyRegistrar : IDependencyRegist
             clientbuilder.AddHttpMessageHandler<SimpleDiscoveryDelegatingHandler>();
 
         //添加polly相关策略
+        policies?.ForEach(policy => clientbuilder.AddPolicyHandler(policy));
+    }
+
+    /// <summary>
+    /// 注册Grpc服务(跨微服务之间的同步通讯)
+    /// </summary>
+    /// <typeparam name="TRpcService">Rpc服务接口</typeparam>
+    /// <param name="serviceName">在注册中心注册的服务名称，或者服务的Url</param>
+    /// <param name="policies">Polly策略</param>
+    protected virtual void AddGrpcClient<TGrpcClient>(string serviceName, List<IAsyncPolicy<HttpResponseMessage>> policies)
+     where TGrpcClient : class
+    {
+        var switchName = "System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport";
+        var switchResult = AppContext.TryGetSwitch(switchName, out bool isEnabled);
+        if (!switchResult || !isEnabled)
+            AppContext.SetSwitch(switchName, true);
+
+        var prefix = serviceName[..7];
+        bool isConsulAdderss = prefix != "http://" && prefix != "https:/";
+        //如果参数是服务名字，那么需要从consul获取地址
+        var baseAddress = isConsulAdderss ? $"http://{serviceName}" : serviceName;
+
+        var clientbuilder = Services.AddGrpcClient<TGrpcClient>(options => options.Address = new Uri(baseAddress));
+        if (isConsulAdderss)
+            clientbuilder.AddHttpMessageHandler<ConsulWithGrpcDiscoverDelegatingHandler>();
+        else
+            clientbuilder.AddHttpMessageHandler<SimpleDiscoveryDelegatingHandler>();
+        ////添加polly相关策略
         policies?.ForEach(policy => clientbuilder.AddPolicyHandler(policy));
     }
 

@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+import "google/protobuf/wrappers.proto";
+
+option csharp_namespace = "Adnc.Shared.Grpc.Rtos";
+
+package rtos;
+
+message DictRequest{
+	int64 Id=1;
+}
+
+message DictReply{
+  string Name= 1;
+  int32 Ordinal=2;
+ google.protobuf.Int64Value Pid =3;
+ string Value = 4;
+ repeated DictReply Children = 5;
+}

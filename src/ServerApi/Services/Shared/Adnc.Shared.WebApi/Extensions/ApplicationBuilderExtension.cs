@@ -12,7 +12,9 @@ public static class ApplicationBuilderExtension
     /// <param name="serviceInfo"></param>
     /// <param name="completedExecute"></param>
     /// <returns></returns>
-    public static IApplicationBuilder UseAdncMiddlewares(this IApplicationBuilder app, Action<IApplicationBuilder> completedExecute = null)
+    public static IApplicationBuilder UseAdncMiddlewares(this IApplicationBuilder app
+        , Action<IApplicationBuilder> applicationBuilder = null
+        , Action<IEndpointRouteBuilder> endpointRouteBuilder = null)
     {
         ServiceLocator.Provider = app.ApplicationServices;
 
@@ -68,7 +70,7 @@ public static class ApplicationBuilderExtension
 
         app.UseRouting();
 
-        completedExecute?.Invoke(app);
+        applicationBuilder?.Invoke(app);
 
         app.UseAuthentication();
 
@@ -79,6 +81,7 @@ public static class ApplicationBuilderExtension
 
         app.UseEndpoints(endpoints =>
         {
+            endpointRouteBuilder?.Invoke(endpoints);
             endpoints.MapControllers().RequireAuthorization();
         });
 

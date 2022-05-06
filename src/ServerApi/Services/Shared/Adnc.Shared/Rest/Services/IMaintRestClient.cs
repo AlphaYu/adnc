@@ -1,6 +1,6 @@
-﻿namespace Adnc.Shared.RpcServices.Services;
+﻿namespace Adnc.Shared.Rest.Services;
 
-public interface IMaintRpcService : IRpcService
+public interface IMaintRestClient : IRestClient
 {
     /// <summary>
     /// 获取字典数据
@@ -10,5 +10,5 @@ public interface IMaintRpcService : IRpcService
     /// <returns></returns>
     [Get("/maint/dicts/{id}")]
     [Headers("Authorization: Basic", "Cache: 2000")]
-    Task<DictRto> GetDictAsync(long id);
+    Task<ApiResponse<DictRto>> GetDictAsync(long id);
 }

@@ -41,6 +41,7 @@ public abstract class AbstractWebApiDependencyRegistrar : IDependencyRegistrar
         Services.Configure<RabbitMqConfig>(Configuration.GetRabbitMqSection());
         Services.Configure<ConsulConfig>(Configuration.GetConsulSection());
         Services.Configure<ThreadPoolSettings>(Configuration.GetThreadPoolSettingsSection());
+        Services.Configure<KestrelConfig>(Configuration.GetKestrelSection());
     }
 
     /// <summary>
@@ -291,5 +292,16 @@ public abstract class AbstractWebApiDependencyRegistrar : IDependencyRegistrar
                 adncServiceCollection.AddAdnc();
             }
         }
+    }
+
+    /// <summary>
+    /// 注册Gprc服务端
+    /// </summary>
+    public virtual void AddGrpcServer(Action<AutoMapper.IMapperConfigurationExpression> mapperConfig)
+    {
+        if (mapperConfig is not null)
+            Services.AddAutoMapper(mapperConfig);
+
+        Services.AddGrpc();
     }
 }

@@ -6,7 +6,7 @@ namespace Adnc.Shared.Application.Registrar
     public static class AbstractApplicationDependencyRegistrarExtension
     {
         /// <summary>
-        /// 生成默认的Polly策略
+        /// default rest policies
         /// </summary>
         /// <returns></returns>
         public static List<IAsyncPolicy<HttpResponseMessage>> GenerateDefaultRefitPolicies(this AbstractApplicationDependencyRegistrar registrar)
@@ -80,5 +80,13 @@ namespace Adnc.Shared.Application.Registrar
                            ,circuitBreakerPolicy.AsAsyncPolicy<HttpResponseMessage>()
                         };
         }
+
+        /// <summary>
+        /// default grpc policies
+        /// </summary>
+        /// <param name="registrar"></param>
+        /// <returns></returns>
+        public static List<IAsyncPolicy<HttpResponseMessage>> GenerateDefaultGrpcPolicies(this AbstractApplicationDependencyRegistrar registrar)
+            => GenerateDefaultRefitPolicies(registrar);
     }
 }

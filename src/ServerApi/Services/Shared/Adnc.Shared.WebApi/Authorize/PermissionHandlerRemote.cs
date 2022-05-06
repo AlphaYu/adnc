@@ -1,17 +1,31 @@
-﻿namespace Microsoft.AspNetCore.Authorization;
+﻿using Adnc.Shared.Grpc;
+using Adnc.Shared.Grpc.Rtos;
+using Adnc.Shared.Grpc.Services;
+
+namespace Microsoft.AspNetCore.Authorization;
 
 public sealed class PermissionHandlerRemote : AbstractPermissionHandler
 {
-    private readonly IAuthRpcService _authRpcService;
-    //private readonly IHttpContextAccessor _contextAccessor;
+    private readonly UsrGrpc.UsrGrpcClient _usrGrpcClient;
 
-    public PermissionHandlerRemote(IAuthRpcService authRpcService) => _authRpcService = authRpcService;
+    public PermissionHandlerRemote(UsrGrpc.UsrGrpcClient usrGrpcClient) => _usrGrpcClient = usrGrpcClient;
 
     protected override async Task<bool> CheckUserPermissions(long userId, IEnumerable<string> codes, string validationVersion)
     {
-        //var jwtToken = await _contextAccessor.HttpContext.GetTokenAsync("access_token");
-        //var refitResult = await _authRpcService.GetCurrenUserPermissions($"Bearer {jwtToken}", userId, codes);
-        var permissions = await _authRpcService.GetCurrenUserPermissionsAsync(userId, codes, validationVersion);
-        return permissions.IsNotNullOrEmpty();
+        var grpcRequest = new UserPermissionsRequest
+        {
+            UserId = userId,
+            ValidationVersion = validationVersion
+        };
+        grpcRequest.Permissions.AddRange(codes);
+
+        var result = await _usrGrpcClient.GetCurrenUserPermissionsAsync(grpcRequest, GrpcClientConsts.BearerHeader);
+        if (result.IsSuccessStatusCode && result.Content.Is(UserPermissionsReply.Descriptor))
+        {
+            var grpcReply = result.Content.Unpack<UserPermissionsReply>();
+            if (grpcReply.Permissions.IsNotNullOrEmpty())
+                return true;
+        }
+        return false;
     }
 }

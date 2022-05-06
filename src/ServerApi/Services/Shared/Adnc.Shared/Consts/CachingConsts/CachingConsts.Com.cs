@@ -2,8 +2,7 @@
 
 public class CachingConsts
 {
-    protected CachingConsts()
-    { }
+    protected CachingConsts(){ }
 
     public const string LinkChar = ":";
 

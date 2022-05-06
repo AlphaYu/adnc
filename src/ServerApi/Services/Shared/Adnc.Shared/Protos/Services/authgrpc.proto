@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+import "protos/rtos/common.proto";
+import "protos/rtos/authgrpc_login.proto";
+
+option csharp_namespace = "Adnc.Shared.Grpc.Services";
+
+package services;
+
+service  AuthGrpc {
+  rpc Login(rtos.LoginRequest) returns (rtos.GrpcResponse);
+}

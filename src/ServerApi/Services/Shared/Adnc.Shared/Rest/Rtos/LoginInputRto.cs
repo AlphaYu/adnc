@@ -1,6 +1,6 @@
-﻿namespace Adnc.Shared.RpcServices.Rtos;
+﻿namespace Adnc.Shared.Rest.Rtos;
 
-public class LoginRto
+public class LoginInputRto
 {
     /// <summary>
     /// 账户

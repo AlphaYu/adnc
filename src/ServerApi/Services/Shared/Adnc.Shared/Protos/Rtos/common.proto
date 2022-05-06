@@ -1,0 +1,32 @@
+syntax = "proto3";
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/any.proto";
+
+option csharp_namespace = "Adnc.Shared.Grpc.Rtos";
+
+package rtos;
+
+message GrpcResponse {
+  bool IsSuccessStatusCode = 1;
+  google.protobuf.Any Content =2; 
+  string Error = 3;
+}
+
+message DecimalValue {
+   // Example: 12345.6789 -> { units = 12345, nanos = 678900000 }
+  // Whole units part of the amount
+  int64 units = 1;
+  // Nano units of the amount (10^-9)
+  // Must be same sign as units
+  sfixed32 nanos = 2;
+}
+
+/*
+message ProblemDetails{
+	string Detail =1;
+	string Instance =2;
+	google.protobuf.Int32Value Status =3;
+	string Title =4;
+	string Type =5;
+}
+*/
