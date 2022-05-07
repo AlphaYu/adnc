@@ -1,4 +1,4 @@
-﻿using Adnc.Shared.Rpc.Grpc.Rtos;
+﻿using Adnc.Shared.Rpc.Grpc.Messages;
 using Adnc.Shared.WebApi.Registrar;
 
 namespace Adnc.Whse.WebApi.Registrar;

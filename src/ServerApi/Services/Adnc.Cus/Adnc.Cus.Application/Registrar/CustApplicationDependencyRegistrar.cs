@@ -14,25 +14,33 @@ public sealed class CustApplicationDependencyRegistrar : AbstractApplicationDepe
 
     public override Assembly RepositoryOrDomainLayerAssembly => typeof(EntityInfo).Assembly;
 
-    public CustApplicationDependencyRegistrar(IServiceCollection services) : base(services)
-    {
-    }
+    public CustApplicationDependencyRegistrar(IServiceCollection services) : base(services) { }
 
     public override void AddAdnc()
     {
         AddApplicaitonDefault();
 
-        //rpc-rest
-        var policies = this.GenerateDefaultRefitPolicies();
-        var authServeiceAddress = IsDevelopment ? "http://localhost:5010" : "adnc.usr.webapi";
-        var maintServiceAddress = IsDevelopment ? "http://localhost:5020" : "adnc.maint.webapi";
-        AddRestClient<IAuthRestClient>(authServeiceAddress, policies);
-        AddRestClient<IMaintRestClient>(maintServiceAddress, policies);
-        //rpc-grpc
+        //rpc-restclient
+        var restPolicies = this.GenerateDefaultRefitPolicies();
+        var authRestAddress = IsDevelopment ? "http://localhost:5010" : "adnc.usr.webapi";
+        var usrRestAddress = authRestAddress;
+        var maintRestAddress = IsDevelopment ? "http://localhost:5020" : "adnc.maint.webapi";
+        var whseRestAddress = IsDevelopment ? "http://localhost:5060" : "adnc.whse.webapi";
+        AddRestClient<IAuthRestClient>(authRestAddress, restPolicies);
+        AddRestClient<IUsrRestClient>(usrRestAddress, restPolicies);
+        AddRestClient<IMaintRestClient>(maintRestAddress, restPolicies);
+        AddRestClient<IWhseRestClient>(whseRestAddress, restPolicies);
+        //rpc-grpcclient
         var gprcPolicies = this.GenerateDefaultGrpcPolicies();
         var authGrpcAddress = IsDevelopment ? "http://localhost:5011" : "adnc.usr.webapi";
-        AddGrpcClient<UsrGrpc.UsrGrpcClient>(authGrpcAddress, gprcPolicies);
-     
+        var usrGrpcAddress = authGrpcAddress;
+        var maintGrpcAddress = IsDevelopment ? "http://localhost:5021" : "adnc.maint.webapi";
+        var whseGrpcAddress = IsDevelopment ? "http://localhost:5061" : "adnc.whse.webapi";
+        AddGrpcClient<AuthGrpc.AuthGrpcClient>(authGrpcAddress, gprcPolicies);
+        AddGrpcClient<UsrGrpc.UsrGrpcClient>(usrGrpcAddress, gprcPolicies);
+        AddGrpcClient<MaintGrpc.MaintGrpcClient>(maintGrpcAddress, gprcPolicies);
+        AddGrpcClient<WhseGrpc.WhseGrpcClient>(whseGrpcAddress, gprcPolicies);
+        //rpc-even
         AddEventBusPublishers();
         AddEventBusSubscribers<CapEventSubscriber>();
     }

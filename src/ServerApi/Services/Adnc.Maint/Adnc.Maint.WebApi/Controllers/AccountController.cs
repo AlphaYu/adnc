@@ -1,6 +1,4 @@
-﻿using Adnc.Shared.Rpc.Grpc.Rtos;
-using Adnc.Shared.Rpc.Grpc.Services;
-using Adnc.Shared.Rpc.Rest.Rtos;
+﻿using Adnc.Shared.Rpc.Rest.Rtos;
 using Adnc.Shared.Rpc.Rest.Services;
 
 namespace Adnc.Maint.WebApi.Controllers;
@@ -10,13 +8,8 @@ namespace Adnc.Maint.WebApi.Controllers;
 public class AccountController : AdncControllerBase
 {
     private readonly IAuthRestClient _authRestClient;
-    private readonly AuthGrpc.AuthGrpcClient _authGrpcClinet;
 
-    public AccountController(IAuthRestClient authRestClinet, AuthGrpc.AuthGrpcClient authGrpcClient)
-    {
-        _authRestClient = authRestClinet;
-        _authGrpcClinet = authGrpcClient;
-    }
+    public AccountController(IAuthRestClient authRestClinet) => _authRestClient = authRestClinet;
 
     /// <summary>
     /// for debugging purposes(rest)
@@ -33,24 +26,5 @@ public class AccountController : AdncControllerBase
             return Ok(result.Content);
 
         return Problem(result.Error);
-    }
-
-    /// <summary>
-    /// for debugging purposes(grpc)
-    /// </summary>
-    /// <param name="input"></param>
-    /// <returns></returns>
-    [AllowAnonymous]
-    [HttpPost("grpc")]
-    public async Task<IActionResult> LoginGrpcAsync([FromBody] LoginRequest input)
-    {
-        var result = await _authGrpcClinet.LoginAsync(input);
-
-        if (result.IsSuccessStatusCode && result.Content.Is(LoginReply.Descriptor))
-        {
-            var outputDto = result.Content.Unpack<LoginReply>();
-            return Ok(outputDto);
-        }
-        return BadRequest(result);
     }
 }

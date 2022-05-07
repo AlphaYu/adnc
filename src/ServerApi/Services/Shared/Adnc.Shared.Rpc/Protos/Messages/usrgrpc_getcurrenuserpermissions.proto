@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-option csharp_namespace = "Adnc.Shared.Rpc.Grpc.Rtos";
+option csharp_namespace = "Adnc.Shared.Rpc.Grpc.Messages";
 
-package rtos;
+package messages;
 
 message UserPermissionsReply{
   repeated string Permissions= 1;

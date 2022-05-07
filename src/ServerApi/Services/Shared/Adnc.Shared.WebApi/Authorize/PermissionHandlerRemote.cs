@@ -1,5 +1,5 @@
 ﻿using Adnc.Shared.Rpc.Grpc;
-using Adnc.Shared.Rpc.Grpc.Rtos;
+using Adnc.Shared.Rpc.Grpc.Messages;
 using Adnc.Shared.Rpc.Grpc.Services;
 
 namespace Microsoft.AspNetCore.Authorization;

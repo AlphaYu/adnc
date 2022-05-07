@@ -1,11 +1,11 @@
 syntax = "proto3";
 
 import "google/protobuf/wrappers.proto";
-import "protos/rtos/common.proto";
+import "protos/messages/common.proto";
 
-option csharp_namespace = "Adnc.Shared.Rpc.Grpc.Rtos";
+option csharp_namespace = "Adnc.Shared.Rpc.Grpc.Messages";
 
-package rtos;
+package messages;
 
 message ProductSearchRequest{
   repeated int64 Ids=1;
@@ -15,7 +15,7 @@ message ProductSearchRequest{
 message ProductReply{
   int64 Id= 1;
   string Name=2;
-  rtos.DecimalValue Price =3;
+  messages.DecimalValue Price =3;
 }
 
 message ProductListReply{

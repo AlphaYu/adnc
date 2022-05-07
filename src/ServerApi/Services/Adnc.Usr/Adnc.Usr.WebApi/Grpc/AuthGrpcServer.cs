@@ -1,5 +1,5 @@
 ﻿using Adnc.Infra.Mapper;
-using Adnc.Shared.Rpc.Grpc.Rtos;
+using Adnc.Shared.Rpc.Grpc.Messages;
 using Adnc.Shared.Rpc.Grpc.Services;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;

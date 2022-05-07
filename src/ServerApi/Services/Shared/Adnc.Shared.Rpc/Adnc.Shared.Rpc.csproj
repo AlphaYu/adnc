@@ -17,7 +17,7 @@
 		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Core\Adnc.Infra.Core.csproj" />
 	</ItemGroup>
 	<ItemGroup>
-		<Protobuf Include="Protos\Rtos\*.proto" GrpcServices="Client" />
+		<Protobuf Include="Protos\Messages\*.proto" GrpcServices="Client" />
 		<Protobuf Include="Protos\Services\*.proto" GrpcServices="Client" />
 	</ItemGroup>
 </Project>

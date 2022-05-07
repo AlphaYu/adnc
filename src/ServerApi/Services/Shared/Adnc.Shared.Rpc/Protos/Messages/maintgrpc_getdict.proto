@@ -2,9 +2,9 @@ syntax = "proto3";
 
 import "google/protobuf/wrappers.proto";
 
-option csharp_namespace = "Adnc.Shared.Rpc.Grpc.Rtos";
+option csharp_namespace = "Adnc.Shared.Rpc.Grpc.Messages";
 
-package rtos;
+package messages;
 
 message DictRequest{
 	int64 Id=1;
