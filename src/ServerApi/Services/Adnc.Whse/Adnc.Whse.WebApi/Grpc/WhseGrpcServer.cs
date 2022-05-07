@@ -22,11 +22,14 @@ public class WhseGrpcServer : Adnc.Shared.Rpc.Grpc.Services.WhseGrpc.WhseGrpcBas
         var grpcResponse = new GrpcResponse();
         var searchDto = _mapper.Map<ProductSearchListDto>(request);
         var products = await _productAppService.GetListAsync(searchDto) ;
-        if (products.IsNotNullOrEmpty())
-        {
-            var replyList = _mapper.Map<ProductListReply>(products);
-            grpcResponse.Content = Any.Pack(replyList);
-        }
+
+        var replyProducts = products.IsNullOrEmpty()
+                                        ? new List<ProductReply>()
+                                        : _mapper.Map<List<ProductReply>>(products);
+
+        var replyList = new ProductListReply();
+        replyList.List.AddRange(replyProducts);
+        grpcResponse.Content = Any.Pack(replyList);
         grpcResponse.IsSuccessStatusCode = true;
         return grpcResponse;
     }

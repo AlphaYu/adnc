@@ -119,6 +119,7 @@ public abstract class AbstractApplicationDependencyRegistrar : IDependencyRegist
         var serverVersion = new MariaDbServerVersion(new Version(10, 5, 4));
         Services.AddDbContext<AdncDbContext>(options =>
         {
+            options.UseLowerCaseNamingConvention();
             options.UseMySql(mysqlConfig.ConnectionString, serverVersion, optionsBuilder =>
             {
                 optionsBuilder.MinBatchSize(4)

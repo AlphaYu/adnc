@@ -11,9 +11,10 @@ message DictRequest{
 }
 
 message DictReply{
-  string Name= 1;
-  int32 Ordinal=2;
- google.protobuf.Int64Value Pid =3;
- string Value = 4;
- repeated DictReply Children = 5;
+  int64 Id=1;
+  string Name= 2;
+  int32 Ordinal=3;
+ google.protobuf.Int64Value Pid =4;
+ string Value = 5;
+ repeated DictReply Children = 6;
 }

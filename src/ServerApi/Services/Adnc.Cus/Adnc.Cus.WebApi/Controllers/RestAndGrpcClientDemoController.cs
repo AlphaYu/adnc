@@ -10,7 +10,7 @@ namespace Adnc.Cus.WebApi.Controllers;
 /// </summary>
 [Route("cus/restandgrpcdemo")]
 [ApiController]
-public class RestAndGrpcClientController : AdncControllerBase
+public class RestAndGrpcClientDemoController : AdncControllerBase
 {
     private readonly IUsrRestClient _usrRestClient;
     private readonly IMaintRestClient _maintRestClient;
@@ -19,7 +19,7 @@ public class RestAndGrpcClientController : AdncControllerBase
     private readonly MaintGrpc.MaintGrpcClient _maintGrpcClient;
     private readonly WhseGrpc.WhseGrpcClient _whseGrpcClient;
 
-    public RestAndGrpcClientController(IUsrRestClient usrRestClient
+    public RestAndGrpcClientDemoController(IUsrRestClient usrRestClient
     , IMaintRestClient maintRestClient
     , IWhseRestClient whseRestClient
     , UsrGrpc.UsrGrpcClient usrGrpcClient
@@ -35,7 +35,7 @@ public class RestAndGrpcClientController : AdncControllerBase
     }
 
     /// <summary>
-    /// 测试Basic认证，获取用户服务部门列表
+    /// 测试Basic(Rest)认证，获取用户服务部门列表
     /// </summary>
     /// <returns></returns>
     [HttpGet()]
@@ -66,7 +66,7 @@ public class RestAndGrpcClientController : AdncControllerBase
     }
 
     /// <summary>
-    /// 测试Basic认证，获取字典
+    /// 测试Basic(Rest)认证，获取字典
     /// </summary>
     /// <returns></returns>
     [HttpGet()]
@@ -98,7 +98,7 @@ public class RestAndGrpcClientController : AdncControllerBase
     }
 
     /// <summary>
-    /// 测试Basic认证，获取产品
+    /// 测试Basic认证(Rest)，获取产品
     /// </summary>
     /// <returns></returns>
     [HttpGet()]
@@ -107,8 +107,8 @@ public class RestAndGrpcClientController : AdncControllerBase
     {
         var searchDto = new ProductSearchListRto()
         {
-            Ids = new long[] { 188 },
-            StatusCode = 10002
+            Ids = new long[] { 285806185760389, 285806311700101 },
+            StatusCode = 1000
         };
         var restResult = await _whseRestClient.GetProductsAsync(searchDto);
         if (restResult.IsSuccessStatusCode && restResult.Content is not null)
@@ -126,9 +126,9 @@ public class RestAndGrpcClientController : AdncControllerBase
     {
         var request = new ProductSearchRequest
         {
-            StatusCode = 10002
+            StatusCode = 1000
         };
-        request.Ids.AddRange(new long[] { 190000 });
+        request.Ids.AddRange(new long[] { 285806185760389, 285806311700101 });
         var grpcResult = await _whseGrpcClient.GetProductsAsync(request, GrpcClientConsts.BasicHeader);
         if (grpcResult.IsSuccessStatusCode && grpcResult.Content.Is(ProductListReply.Descriptor))
         {

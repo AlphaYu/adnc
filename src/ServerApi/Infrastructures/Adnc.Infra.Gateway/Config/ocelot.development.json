@@ -10,7 +10,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5010
+          "Port": 50010
         }
       ],
       "UpstreamPathTemplate": "/usr{everything}",
@@ -34,7 +34,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5020
+          "Port": 50020
         }
       ],
       "UpstreamPathTemplate": "/maint{everything}",
@@ -54,7 +54,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5030
+          "Port": 50030
         }
       ],
       "UpstreamPathTemplate": "/cus{everything}",

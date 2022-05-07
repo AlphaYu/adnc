@@ -67,15 +67,13 @@ public sealed class AdncDbContext : DbContext
             modelBuilder.Entity(entityType.Name, buider =>
             {
                 var typeSummary = entityType.ClrType.GetSummary();
-                var newTableName = entityType.ClrType.Name.ToLower();
-                buider.ToTable(newTableName).HasComment(typeSummary);
+                buider.HasComment(typeSummary);
 
                 entityType.GetProperties().ForEach(property =>
                 {
                     var propertyName = property.Name;
-                    var newColumnName = propertyName.ToLower();
                     var memberSummary = entityType.ClrType.GetMember(propertyName).FirstOrDefault().GetSummary();
-                    buider.Property(propertyName).HasColumnName(newColumnName).HasComment(memberSummary);
+                    buider.Property(propertyName).HasComment(memberSummary);
                 });
             });
         });
