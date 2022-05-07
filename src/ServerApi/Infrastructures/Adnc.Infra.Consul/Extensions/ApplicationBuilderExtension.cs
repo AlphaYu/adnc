@@ -43,4 +43,12 @@ public static class ApplicationBuilderExtension
         var registration = app.ApplicationServices.GetRequiredService<ConsulRegistration>();
         registration.Register(instance);
     }
+
+    public static void RegisterToConsulIfProduction(this IApplicationBuilder app)
+    {
+        var environment = app.ApplicationServices.GetRequiredService<IHostEnvironment>();
+        if (environment.IsProduction())
+            RegisterToConsul(app);
+    }
+
 }
