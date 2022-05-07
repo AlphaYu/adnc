@@ -1,25 +1,20 @@
-﻿using Adnc.Shared.WebApi.Registrar;
+﻿using Adnc.Shared.Rpc.Grpc.Rtos;
+using Adnc.Shared.WebApi.Registrar;
 
 namespace Adnc.Maint.WebApi.Registrar;
 
 public sealed class MaintWebApiDependencyRegistrar : AbstractWebApiDependencyRegistrar
 {
-    public MaintWebApiDependencyRegistrar(IServiceCollection services) : base(services)
+    private readonly Action<AutoMapper.IMapperConfigurationExpression> _createMaper = maperConfig =>
     {
-    }
+        maperConfig.CreateMap<DictDto, DictReply>();
+    };
+
+    public MaintWebApiDependencyRegistrar(IServiceCollection services) : base(services) { }
 
     public override void AddAdnc()
     {
-        Services.AddHttpContextAccessor();
-        Services.AddMemoryCache();
-        Configure();
-        AddControllers();
-        AddAuthentication();
-        AddAuthorization<PermissionHandlerRemote>();
-        AddCors();
-        AddSwaggerGen();
-        AddHealthChecks();
-        AddMiniProfiler();
-        AddApplicationServices();
+        AddWebApiDefault();
+        AddGrpcServer(_createMaper);
     }
 }

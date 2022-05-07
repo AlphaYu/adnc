@@ -9,27 +9,26 @@ public class OrderAppService : AbstractAppService, IOrderAppService
 {
     private readonly OrderManager _orderMgr;
     private readonly IEfBasicRepository<Order> _orderRepo;
-    private readonly IWhseRpcService _warehouseRpc;
-    private readonly IMaintRpcService _maintRpc;
+    private readonly IWhseRestClient _whseRestClient;
+    private readonly IMaintRestClient _maintRestClient;
 
     /// <summary>
     /// 构造函数
     /// </summary>
     /// <param name="orderRepo"></param>
     /// <param name="orderMgr"></param>
-    /// <param name="warehouseRpc"></param>
-    /// <param name="maintRpc"></param>
-    /// <param name="mapper"></param>
+    /// <param name="whseRestClient"></param>
+    /// <param name="maintRestClient"></param>
     public OrderAppService(
          IEfBasicRepository<Order> orderRepo
         , OrderManager orderMgr
-        , IWhseRpcService warehouseRpc
-        , IMaintRpcService maintRpc)
+        , IWhseRestClient whseRestClient
+        , IMaintRestClient maintRestClient)
     {
         _orderRepo = orderRepo;
         _orderMgr = orderMgr;
-        _warehouseRpc = warehouseRpc;
-        _maintRpc = maintRpc;
+        _whseRestClient = whseRestClient;
+        _maintRestClient = maintRestClient;
     }
 
     /// <summary>
@@ -41,9 +40,9 @@ public class OrderAppService : AbstractAppService, IOrderAppService
     {
         var productIds = input.Items.Select(x => x.ProductId).ToArray();
         //调用whse服务获取产品的价格,名字
-        var products = await _warehouseRpc.GetProductsAsync(new ProductSearchListRto { Ids = productIds });
-        Guard.Checker.NotNullOrAny(products, nameof(products));
-
+        var restRpcResult = await _whseRestClient.GetProductsAsync(new ProductSearchListRto { Ids = productIds });
+        Guard.Checker.ThrowIf(() => (!restRpcResult.IsSuccessStatusCode || restRpcResult.Content.IsNullOrEmpty()), "product is not extists");
+        var products = restRpcResult.Content;
         var orderId = IdGenerater.GetNextId();
         var items = from o in input.Items
                             join p in products on o.ProductId equals p.Id
@@ -180,13 +179,17 @@ public class OrderAppService : AbstractAppService, IOrderAppService
         if (orderDtos.IsNotNullOrEmpty())
         {
             //调用maint微服务获取字典,组合订单状态信息
-            var dict = await _maintRpc.GetDictAsync(Consts.OrderStatusId);
-            if (dict is not null && dict.Children.IsNotNullOrEmpty())
+            var restRpcResult = await _maintRestClient.GetDictAsync(RestClientConsts.OrderStatusId);
+            if (restRpcResult.IsSuccessStatusCode)
             {
-                orderDtos.ForEach(x =>
+                var dict = restRpcResult.Content;
+                if (dict is not null && dict.Children.IsNotNullOrEmpty())
                 {
-                    x.StatusChangesReason = dict.Children.FirstOrDefault(d => d.Name == x.StatusCode.ToSafeString())?.Name;
-                });
+                    orderDtos.ForEach(x =>
+                    {
+                        x.StatusChangesReason = dict.Children.FirstOrDefault(d => d.Name == x.StatusCode.ToSafeString())?.Name;
+                    });
+                }
             }
         }
 

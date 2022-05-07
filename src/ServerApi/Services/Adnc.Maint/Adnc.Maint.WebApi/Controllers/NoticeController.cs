@@ -1,4 +1,9 @@
-﻿namespace Adnc.Maint.WebApi.Controllers;
+﻿using Adnc.Shared.Rpc.Grpc;
+using Adnc.Shared.Rpc.Grpc.Rtos;
+using Adnc.Shared.Rpc.Grpc.Services;
+using Adnc.Shared.Rpc.Rest.Services;
+
+namespace Adnc.Maint.WebApi.Controllers;
 
 /// <summary>
 /// 通知管理
@@ -8,13 +13,16 @@
 public class NoticeController : AdncControllerBase
 {
     private readonly INoticeAppService _noticeService;
-    private readonly IUsrRpcService _usrRpcService;
+    private readonly IUsrRestClient _usrRestClient;
+    private readonly UsrGrpc.UsrGrpcClient _usrGrpcClient;
 
     public NoticeController(INoticeAppService noticeService
-        , IUsrRpcService usrRpcService)
+        , IUsrRestClient usrRestService
+        , UsrGrpc.UsrGrpcClient usrGrpcClient)
     {
         _noticeService = noticeService;
-        _usrRpcService = usrRpcService;
+        _usrRestClient = usrRestService;
+        _usrGrpcClient = usrGrpcClient;
     }
 
     /// <summary>
@@ -27,16 +35,34 @@ public class NoticeController : AdncControllerBase
         => Result(await _noticeService.GetListAsync(search));
 
     /// <summary>
-    /// 测试Basic认证用途，获取用户服务部门列表
+    /// 测试Basic认证，获取用户服务部门列表
     /// </summary>
     /// <returns></returns>
     [HttpGet()]
     [Route("depts")]
     public async Task<IActionResult> GetDeptListAsync()
     {
-        var depts = await _usrRpcService.GeDeptsAsync();
-        if (depts.IsNotNullOrEmpty())
-            return Ok(depts);
+        var depts = await _usrRestClient.GeDeptsAsync();
+        if (depts.IsSuccessStatusCode && depts.Content.IsNotNullOrEmpty())
+            return Ok(depts.Content);
         return NoContent();
+    }
+
+
+    /// <summary>
+    ///  测试Basic(Grpc)认证，获取用户服务部门列表
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet()]
+    [Route("deptsgrpc")]
+    public async Task<IActionResult> GetDeptListGrpcAsync()
+    {
+        var grpcResult = await _usrGrpcClient.GetDeptsAsync(GrpcClientConsts.Empty, GrpcClientConsts.BasicHeader);
+        if (grpcResult.IsSuccessStatusCode && grpcResult.Content.Is(DeptListReply.Descriptor))
+        {
+            var outputDto = grpcResult.Content.Unpack<DeptListReply>();
+            return Ok(outputDto);
+        }
+        return BadRequest(grpcResult);
     }
 }

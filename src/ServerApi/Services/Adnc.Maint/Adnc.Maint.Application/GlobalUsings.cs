@@ -16,7 +16,7 @@ global using Adnc.Shared.Application.Services;
 global using Adnc.Shared.Consts.Caching.Maint;
 global using Adnc.Shared.Consts.Mq;
 global using Adnc.Shared.Application.Contracts.ResultModels;
-global using Adnc.Shared.RpcServices.Services;
+global using Adnc.Shared.Rpc.Rest.Services;
 global using AutoMapper;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.Extensions.DependencyInjection;

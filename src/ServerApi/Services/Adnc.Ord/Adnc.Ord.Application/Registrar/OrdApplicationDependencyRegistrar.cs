@@ -1,48 +1,39 @@
-﻿using Adnc.Ord.Application.AutoMapper;
-using Adnc.Ord.Application.EventSubscribers;
+﻿using Adnc.Ord.Application.EventSubscribers;
 using Adnc.Ord.Domain.EntityConfig;
 using Adnc.Shared.Application.Registrar;
 using Adnc.Shared.Domain;
-using FluentValidation;
 using System.Reflection;
 
 namespace Adnc.Ord.Application.Registrar;
 
 public sealed class OrdApplicationDependencyRegistrar : AbstractApplicationDependencyRegistrar
 {
-    public override Assembly ApplicationAssembly => Assembly.GetExecutingAssembly();
+    public override Assembly ApplicationLayerAssembly => Assembly.GetExecutingAssembly();
 
-    public override Assembly ContractsAssembly => typeof(IOrderAppService).Assembly;
+    public override Assembly ContractsLayerAssembly => typeof(IOrderAppService).Assembly;
 
-    public override Assembly RepositoryOrDomainAssembly => typeof(EntityInfo).Assembly;
+    public override Assembly RepositoryOrDomainLayerAssembly => typeof(EntityInfo).Assembly;
 
-    public OrdApplicationDependencyRegistrar(IServiceCollection services) : base(services)
-    {
-    }
+    public OrdApplicationDependencyRegistrar(IServiceCollection services) : base(services) { }
 
     public override void AddAdnc()
     {
-        Services.AddValidatorsFromAssembly(ContractsAssembly, ServiceLifetime.Scoped);
-        Services.AddAdncInfraAutoMapper(typeof(OrdProfile));
-        AddApplicationSharedServices();
-        AddConsulServices();
-        AddCachingServices();
-        AddBloomFilterServices();
-        AddDapperRepositories();
-        AddEfCoreContextWithRepositories();
-        AddMongoContextWithRepositries();
-        AddAppliactionSerivcesWithInterceptors();
-        AddApplicaitonHostedServices();
+        AddApplicaitonDefault();
         AddDomainSerivces<IDomainService>();
 
-        var policies = this.GenerateDefaultRefitPolicies();
-        var authServeiceAddress = IsDevelopment ? "http://localhost:5010" : "adnc.usr.webapi";
-        AddRpcService<IAuthRpcService>(authServeiceAddress, policies);
-        var maintServiceAddress = IsDevelopment ? "http://localhost:5020" : "adnc.maint.webapi";
-        AddRpcService<IMaintRpcService>(maintServiceAddress, policies);
-        var whseServiceAddress = IsDevelopment ? "http://localhost:8065" : "adnc.whse.webapi";
-        AddRpcService<IWhseRpcService>(whseServiceAddress, policies);
-
+        //rpc-rest
+        var restPolicies = this.GenerateDefaultRefitPolicies();
+        var authRestAddress = IsDevelopment ? "http://localhost:5010" : "adnc.usr.webapi";
+        AddRestClient<IAuthRestClient>(authRestAddress, restPolicies);
+        var maintRestAddress = IsDevelopment ? "http://localhost:5020" : "adnc.maint.webapi";
+        AddRestClient<IMaintRestClient>(maintRestAddress, restPolicies);
+        var whseRestAddress = IsDevelopment ? "http://localhost:8065" : "adnc.whse.webapi";
+        AddRestClient<IWhseRestClient>(whseRestAddress, restPolicies);
+        //rpc-grpc
+        var grpcPolicies = this.GenerateDefaultGrpcPolicies();
+        var usrGrpcAddress = IsDevelopment ? "http://localhost:5011" : "adnc.usr.webapi";
+        AddGrpcClient<Adnc.Shared.Rpc.Grpc.Services.UsrGrpc.UsrGrpcClient>(usrGrpcAddress, grpcPolicies);
+        //rpc-event
         AddEventBusPublishers();
         AddEventBusSubscribers<CapEventSubscriber>();
     }

@@ -24,9 +24,9 @@ public abstract class AdncControllerBase : ControllerBase
     /// <param name="problemDetails"></param>
     /// <returns></returns>
     [NonAction]
-    protected virtual ObjectResult Problem(Refit.ApiException exception)
+    protected virtual ObjectResult Problem(dynamic exception)
     {
-        var problemDetails = ((Refit.ValidationApiException)exception).Content;
+        var problemDetails = exception.Content;
 
         return Problem(problemDetails.Detail
                 , problemDetails.Instance

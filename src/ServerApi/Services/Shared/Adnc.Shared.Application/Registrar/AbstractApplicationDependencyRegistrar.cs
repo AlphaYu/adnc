@@ -3,7 +3,6 @@ using Adnc.Infra.EfCore.MySQL;
 using Adnc.Infra.Mongo.Configuration;
 using Adnc.Infra.Mongo.Extensions;
 using Adnc.Shared.Application.Channels;
-using Adnc.Shared.Rest.Services;
 using DotNetCore.CAP;
 using Microsoft.EntityFrameworkCore;
 using Refit;
@@ -14,9 +13,9 @@ namespace Adnc.Shared.Application.Registrar;
 
 public abstract class AbstractApplicationDependencyRegistrar : IDependencyRegistrar
 {
-    public abstract Assembly ApplicationAssembly { get; }
-    public abstract Assembly ContractsAssembly { get; }
-    public abstract Assembly RepositoryOrDomainAssembly { get; }
+    public abstract Assembly ApplicationLayerAssembly { get; }
+    public abstract Assembly ContractsLayerAssembly { get; }
+    public abstract Assembly RepositoryOrDomainLayerAssembly { get; }
     public string Name => "application";
     public virtual string ASPNETCORE_ENVIRONMENT => Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
     public virtual bool IsDevelopment => ASPNETCORE_ENVIRONMENT.EqualsIgnoreCase("Development");
@@ -44,6 +43,21 @@ public abstract class AbstractApplicationDependencyRegistrar : IDependencyRegist
     }
 
     public abstract void AddAdnc();
+
+    protected virtual void AddApplicaitonDefault()
+    {
+        Services.AddValidatorsFromAssembly(ContractsLayerAssembly, ServiceLifetime.Scoped);
+        Services.AddAdncInfraAutoMapper(ApplicationLayerAssembly);
+        AddApplicationSharedServices();
+        AddConsulServices();
+        AddCachingServices();
+        AddBloomFilterServices();
+        AddDapperRepositories();
+        AddEfCoreContextWithRepositories();
+        AddMongoContextWithRepositries();
+        AddAppliactionSerivcesWithInterceptors();
+        AddApplicaitonHostedServices();
+    }
 
     /// <summary>
     /// 注册Shared.Application通用服务
@@ -82,7 +96,7 @@ public abstract class AbstractApplicationDependencyRegistrar : IDependencyRegist
         action?.Invoke(Services);
 
         var serviceType = typeof(IEntityInfo);
-        var implType = RepositoryOrDomainAssembly.ExportedTypes.FirstOrDefault(type => type.IsAssignableTo(serviceType) && type.IsNotAbstractClass(true));
+        var implType = RepositoryOrDomainLayerAssembly.ExportedTypes.FirstOrDefault(type => type.IsAssignableTo(serviceType) && type.IsNotAbstractClass(true));
         if (implType is null)
             throw new NullReferenceException(nameof(IEntityInfo));
         else
@@ -304,14 +318,14 @@ public abstract class AbstractApplicationDependencyRegistrar : IDependencyRegist
         action?.Invoke(Services);
 
         var appServiceType = typeof(IAppService);
-        var serviceTypes = ContractsAssembly.GetExportedTypes().Where(type => type.IsInterface && type.IsAssignableTo(appServiceType)).ToList();
+        var serviceTypes = ContractsLayerAssembly.GetExportedTypes().Where(type => type.IsInterface && type.IsAssignableTo(appServiceType)).ToList();
         serviceTypes.Remove(appServiceType);
         var lifetime = ServiceLifetime.Scoped;
         if (serviceTypes.IsNullOrEmpty())
             return;
         serviceTypes.ForEach(serviceType =>
         {
-            var implType = ApplicationAssembly.ExportedTypes.FirstOrDefault(type => type.IsAssignableTo(serviceType) && type.IsNotAbstractClass(true));
+            var implType = ApplicationLayerAssembly.ExportedTypes.FirstOrDefault(type => type.IsAssignableTo(serviceType) && type.IsNotAbstractClass(true));
             if (implType is null)
                 return;
 
@@ -338,7 +352,7 @@ public abstract class AbstractApplicationDependencyRegistrar : IDependencyRegist
         action?.Invoke(Services);
 
         var serviceType = typeof(TDomainService);
-        var implTypes = RepositoryOrDomainAssembly.ExportedTypes.Where(type => type.IsAssignableTo(serviceType) && type.IsNotAbstractClass(true)).ToList();
+        var implTypes = RepositoryOrDomainLayerAssembly.ExportedTypes.Where(type => type.IsAssignableTo(serviceType) && type.IsNotAbstractClass(true)).ToList();
         implTypes.ForEach(implType =>
         {
             Services.AddScoped(implType, implType);
@@ -351,7 +365,7 @@ public abstract class AbstractApplicationDependencyRegistrar : IDependencyRegist
     protected virtual void AddApplicaitonHostedServices()
     {
         var serviceType = typeof(IHostedService);
-        var implTypes = ApplicationAssembly.ExportedTypes.Where(type => type.IsAssignableTo(serviceType) && type.IsNotAbstractClass(true)).ToList();
+        var implTypes = ApplicationLayerAssembly.ExportedTypes.Where(type => type.IsAssignableTo(serviceType) && type.IsNotAbstractClass(true)).ToList();
         implTypes.ForEach(implType =>
         {
             Services.AddSingleton(serviceType, implType);
@@ -368,7 +382,7 @@ public abstract class AbstractApplicationDependencyRegistrar : IDependencyRegist
 
         Services.AddAdncInfraCaching(RedisSection);
         var serviceType = typeof(ICachePreheatable);
-        var implTypes = ApplicationAssembly.ExportedTypes.Where(type => type.IsAssignableTo(serviceType) && type.IsNotAbstractClass(true)).ToList();
+        var implTypes = ApplicationLayerAssembly.ExportedTypes.Where(type => type.IsAssignableTo(serviceType) && type.IsNotAbstractClass(true)).ToList();
         if (implTypes.IsNotNullOrEmpty())
         {
             implTypes.ForEach(implType =>
@@ -388,7 +402,7 @@ public abstract class AbstractApplicationDependencyRegistrar : IDependencyRegist
         action?.Invoke(Services);
 
         var serviceType = typeof(IBloomFilter);
-        var implTypes = ApplicationAssembly.ExportedTypes.Where(type => type.IsAssignableTo(serviceType) && type.IsNotAbstractClass(true)).ToList();
+        var implTypes = ApplicationLayerAssembly.ExportedTypes.Where(type => type.IsAssignableTo(serviceType) && type.IsNotAbstractClass(true)).ToList();
         if (implTypes.IsNotNullOrEmpty())
             implTypes.ForEach(implType => Services.AddSingleton(serviceType, implType));
     }

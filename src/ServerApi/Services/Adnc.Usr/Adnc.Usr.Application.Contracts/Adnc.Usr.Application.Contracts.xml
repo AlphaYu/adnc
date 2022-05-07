@@ -59,7 +59,7 @@
             部门简称
             </summary>
         </member>
-        <member name="P:Adnc.Usr.Application.Contracts.Dtos.DeptDto.Tips">
+        <member name="F:Adnc.Usr.Application.Contracts.Dtos.DeptDto._tips">
             <summary>
             部门描述
             </summary>
@@ -94,7 +94,7 @@
             部门节点
             </summary>
         </member>
-        <member name="P:Adnc.Usr.Application.Contracts.Dtos.DeptTreeDto.Children">
+        <member name="F:Adnc.Usr.Application.Contracts.Dtos.DeptTreeDto._children">
             <summary>
             子部门
             </summary>
