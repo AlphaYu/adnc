@@ -107,7 +107,7 @@ public sealed class CacheService : AbstractCacheService, ICachePreheatable
                 Status = x.Status,
                 Name = x.Name,
                 RoleIds = x.RoleIds,
-                ValidationVersion = HashHelper.GetHashedString(HashType.MD5, x.Account + x.Password)
+                ValidationVersion = InfraHelper.Hash.GetHashedString(HashType.MD5, x.Account + x.Password)
             }, x => x.Id == Id);
         }, TimeSpan.FromSeconds(_jwtConfig.Value.Value.Expire * 60 + _jwtConfig.Value.Value.ClockSkew));
 

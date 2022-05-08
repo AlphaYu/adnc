@@ -43,7 +43,7 @@ public class AccountAppService : AbstractAppService, IAccountAppService
         if (user == null)
             return Problem(HttpStatusCode.BadRequest, "用户名或密码错误");
 
-        var httpContext = HttpContextUtility.GetCurrentHttpContext();
+        var httpContext = HttpContextHelper.GetCurrentHttpContext();
         var channelWriter = ChannelHelper<LoginLog>.Instance.Writer;
         var log = new LoginLog
         {
@@ -83,7 +83,7 @@ public class AccountAppService : AbstractAppService, IAccountAppService
             return problem;
         }
 
-        if (HashHelper.GetHashedString(HashType.MD5, input.Password, user.Salt) != user.Password)
+        if (InfraHelper.Hash.GetHashedString(HashType.MD5, input.Password, user.Salt) != user.Password)
         {
             var problem = Problem(HttpStatusCode.BadRequest, "用户名或密码错误");
             log.Message = problem.Detail;
@@ -113,7 +113,7 @@ public class AccountAppService : AbstractAppService, IAccountAppService
             RoleIds = user.RoleIds,
             Status = user.Status,
             Name = user.Name,
-            ValidationVersion = HashHelper.GetHashedString(HashType.MD5, user.Account + user.Password)
+            ValidationVersion = InfraHelper.Hash.GetHashedString(HashType.MD5, user.Account + user.Password)
         };
 
         return userValidteInfo;
@@ -131,11 +131,11 @@ public class AccountAppService : AbstractAppService, IAccountAppService
         if (user == null)
             return Problem(HttpStatusCode.NotFound, "用户不存在,参数信息不完整");
 
-        var md5OldPwdString = HashHelper.GetHashedString(HashType.MD5, input.OldPassword, user.Salt);
+        var md5OldPwdString = InfraHelper.Hash.GetHashedString(HashType.MD5, input.OldPassword, user.Salt);
         if (!md5OldPwdString.EqualsIgnoreCase(user.Password))
             return Problem(HttpStatusCode.BadRequest, "旧密码输入错误");
 
-        var newPwdString = HashHelper.GetHashedString(HashType.MD5, input.Password, user.Salt);
+        var newPwdString = InfraHelper.Hash.GetHashedString(HashType.MD5, input.Password, user.Salt);
 
         await _userRepository.UpdateAsync(new SysUser { Id = user.Id, Password = newPwdString }, UpdatingProps<SysUser>(x => x.Password));
 

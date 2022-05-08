@@ -83,7 +83,7 @@ public class BasicAuthenticationHandler : AuthenticationHandler<BasicSchemeOptio
             return false;
 
         var unPackTicket = unPackPassword[2];
-        var validationTicket = SecurityHelper.MD5($"{unPackUserName}_{unPackAppId}_{unPackTotalSeconds}_{securityKey}", true);
+        var validationTicket = InfraHelper.Security.MD5($"{unPackUserName}_{unPackAppId}_{unPackTotalSeconds}_{securityKey}", true);
         return validationTicket.EqualsIgnoreCase(unPackTicket);
     }
 
@@ -94,7 +94,7 @@ public class BasicAuthenticationHandler : AuthenticationHandler<BasicSchemeOptio
         var (appId, securityKey) = Partners[userName];
 
         var currentTotalSeconds = DateTime.Now.GetTotalSeconds();
-        var md5String = SecurityHelper.MD5($"{userName}_{appId}_{currentTotalSeconds}_{securityKey}", true);
+        var md5String = InfraHelper.Security.MD5($"{userName}_{appId}_{currentTotalSeconds}_{securityKey}", true);
         var plainToken = $"{userName}:{appId}_{currentTotalSeconds}_{md5String}";
         byte[] byteToken = Encoding.UTF8.GetBytes(plainToken);
         return Convert.ToBase64String(byteToken);

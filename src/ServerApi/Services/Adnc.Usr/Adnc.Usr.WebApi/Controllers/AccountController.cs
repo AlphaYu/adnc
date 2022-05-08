@@ -1,4 +1,5 @@
-﻿using Adnc.Shared.Application.Contracts;
+﻿using Adnc.Infra.Helper;
+using Adnc.Shared.Application.Contracts;
 using StackExchange.Profiling;
 
 namespace Adnc.Usr.WebApi.Controllers;
@@ -116,7 +117,7 @@ public class AccountController : AdncControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public IActionResult GetMiniProfilerInfo()
     {
-        var html = MiniProfiler.Current.RenderIncludes(Adnc.Infra.Helper.HttpContextUtility.GetCurrentHttpContext());
+        var html = MiniProfiler.Current.RenderIncludes(HttpContextHelper.GetCurrentHttpContext());
         return Ok(html.Value);
     }
 }
