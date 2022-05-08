@@ -1,5 +1,4 @@
 ﻿using StackExchange.Redis;
-using System.Threading.Tasks;
 
 namespace Adnc.Infra.Caching.StackExchange
 {

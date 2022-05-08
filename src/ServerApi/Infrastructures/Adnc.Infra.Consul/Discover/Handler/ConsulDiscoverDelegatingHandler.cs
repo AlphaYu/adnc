@@ -1,12 +1,11 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
-using System.Net.Http;
 using System.Net.Http.Headers;
 
 namespace Adnc.Infra.Consul.Discover
 {
     public class ConsulDiscoverDelegatingHandler : DelegatingHandler
     {
-        private static readonly SemaphoreSlim _slimlock = new (1, 1);
+        private static readonly SemaphoreSlim _slimlock = new(1, 1);
         private readonly ConsulClient _consulClient;
         private readonly IEnumerable<ITokenGenerator> _tokenGenerators;
         private readonly IMemoryCache _memoryCache;
@@ -152,6 +151,5 @@ namespace Adnc.Infra.Consul.Discover
                 _slimlock.Release();
             }
         }
-
     }
 }

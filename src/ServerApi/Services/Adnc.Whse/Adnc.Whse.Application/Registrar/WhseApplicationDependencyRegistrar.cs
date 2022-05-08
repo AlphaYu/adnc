@@ -14,7 +14,9 @@ public sealed class WhseApplicationDependencyRegistrar : AbstractApplicationDepe
 
     public override Assembly RepositoryOrDomainLayerAssembly => typeof(EntityInfo).Assembly;
 
-    public WhseApplicationDependencyRegistrar(IServiceCollection services) : base(services) { }
+    public WhseApplicationDependencyRegistrar(IServiceCollection services) : base(services)
+    {
+    }
 
     public override void AddAdnc()
     {

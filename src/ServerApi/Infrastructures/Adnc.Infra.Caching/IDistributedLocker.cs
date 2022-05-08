@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace Adnc.Infra.Caching
+﻿namespace Adnc.Infra.Caching
 {
     public interface IDistributedLocker
     {

@@ -6,11 +6,13 @@ namespace Adnc.Maint.WebApi.Registrar;
 public sealed class MaintWebApiDependencyRegistrar : AbstractWebApiDependencyRegistrar
 {
     private readonly Action<AutoMapper.IMapperConfigurationExpression> _createMaper = maperConfig =>
-    {
-        maperConfig.CreateMap<DictDto, DictReply>();
-    };
+        {
+            maperConfig.CreateMap<DictDto, DictReply>();
+        };
 
-    public MaintWebApiDependencyRegistrar(IServiceCollection services) : base(services) { }
+    public MaintWebApiDependencyRegistrar(IServiceCollection services) : base(services)
+    {
+    }
 
     public override void AddAdnc()
     {

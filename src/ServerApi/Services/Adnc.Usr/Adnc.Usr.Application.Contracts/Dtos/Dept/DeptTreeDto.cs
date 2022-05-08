@@ -10,6 +10,7 @@ public class DeptTreeDto : DeptDto
     /// 子部门
     /// </summary>
     private List<DeptTreeDto> _children;
+
     public List<DeptTreeDto> Children
     {
         get => _children;

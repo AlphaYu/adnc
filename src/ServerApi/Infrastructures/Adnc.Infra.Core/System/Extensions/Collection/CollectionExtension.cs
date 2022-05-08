@@ -33,7 +33,7 @@ public static class CollectionExtension
     {
         if (@this.IsReadOnly)
             throw new InvalidOperationException($"{ nameof(@this) } is readonly");
-        
+
         if (!@this.Contains(value))
             @this.Add(value);
     }
@@ -84,7 +84,7 @@ public static class CollectionExtension
     {
         if (@this.IsReadOnly)
             throw new InvalidOperationException($"{ nameof(@this) } is readonly");
-        
+
         foreach (var value in values)
         {
             if (!@this.Contains(value))
@@ -140,7 +140,7 @@ public static class CollectionExtension
     /// <typeparam name="T">Generic type parameter.</typeparam>
     /// <param name="this">The @this to act on.</param>
     /// <returns>true if null or empty&lt; t&gt;, false if not.</returns>
-    public static bool IsNullOrEmpty<T>(this ICollection<T> @this)=> @this == null || !@this.Any();
+    public static bool IsNullOrEmpty<T>(this ICollection<T> @this) => @this == null || !@this.Any();
 
     /// <summary>
     ///     An ICollection&lt;T&gt; extension method that queries if the collection is not (null or is empty).
@@ -148,7 +148,7 @@ public static class CollectionExtension
     /// <typeparam name="T">Generic type parameter.</typeparam>
     /// <param name="this">The @this to act on.</param>
     /// <returns>true if the collection is not (null or empty), false if not.</returns>
-    public static bool IsNotNullOrEmpty<T>(this ICollection<T> @this)=> @this != null && @this.Any();
+    public static bool IsNotNullOrEmpty<T>(this ICollection<T> @this) => @this != null && @this.Any();
 
     /// <summary>
     ///     An ICollection&lt;T&gt; extension method that removes the range.

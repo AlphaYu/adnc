@@ -35,5 +35,4 @@ namespace Pomelo.EntityFrameworkCore.MySql.Query.ExpressionVisitors.Internal
             return result;
         }
     }
-
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using Yitter.IdGenerator;
+﻿using Yitter.IdGenerator;
 
 namespace Adnc.Infra.Helper;
 
@@ -40,7 +39,6 @@ public static class IdGenerater
             _isSet = true;
         }
     }
-
 
     /// <summary>
     /// 获取唯一Id，默认支持64个节点，每毫秒下的序列数6位。

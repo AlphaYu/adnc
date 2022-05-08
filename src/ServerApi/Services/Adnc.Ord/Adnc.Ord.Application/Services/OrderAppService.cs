@@ -45,8 +45,8 @@ public class OrderAppService : AbstractAppService, IOrderAppService
         var products = restRpcResult.Content;
         var orderId = IdGenerater.GetNextId();
         var items = from o in input.Items
-                            join p in products on o.ProductId equals p.Id
-                            select (new OrderItemProduct(p.Id, p.Name, p.Price), o.Count);
+                    join p in products on o.ProductId equals p.Id
+                    select (new OrderItemProduct(p.Id, p.Name, p.Price), o.Count);
 
         //需要发布领域事件,通知仓储中心冻结库存
         var order = await _orderMgr.CreateAsync

@@ -6,7 +6,6 @@ namespace System;
 
 public static class ObjectExtension
 {
-
     /// <summary>
     ///     A System.Object extension method that toes the given this.
     /// </summary>

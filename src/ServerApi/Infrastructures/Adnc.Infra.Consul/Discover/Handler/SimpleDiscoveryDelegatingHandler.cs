@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
-using System.Net.Http;
 using System.Net.Http.Headers;
 
 namespace Adnc.Infra.Consul.Discover
@@ -32,6 +31,7 @@ namespace Adnc.Infra.Consul.Discover
                 if (!string.IsNullOrEmpty(tokenTxt))
                     request.Headers.Authorization = new AuthenticationHeaderValue(auth.Scheme, tokenTxt);
             }
+
             #region 缓存处理
 
             //if (request.Method == HttpMethod.Get)
@@ -69,6 +69,7 @@ namespace Adnc.Infra.Consul.Discover
             //}
 
             #endregion 缓存处理
+
             var response = await base.SendAsync(request, cancellationToken);
             return response;
         }

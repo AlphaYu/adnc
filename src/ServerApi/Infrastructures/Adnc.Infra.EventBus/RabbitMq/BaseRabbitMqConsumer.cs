@@ -5,8 +5,6 @@ using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Adnc.Infra.EventBus.RabbitMq
 {

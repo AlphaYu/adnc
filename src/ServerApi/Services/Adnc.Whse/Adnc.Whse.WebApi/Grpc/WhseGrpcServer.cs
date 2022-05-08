@@ -21,7 +21,7 @@ public class WhseGrpcServer : Adnc.Shared.Rpc.Grpc.Services.WhseGrpc.WhseGrpcBas
     {
         var grpcResponse = new GrpcResponse();
         var searchDto = _mapper.Map<ProductSearchListDto>(request);
-        var products = await _productAppService.GetListAsync(searchDto) ;
+        var products = await _productAppService.GetListAsync(searchDto);
 
         var replyProducts = products.IsNullOrEmpty()
                                         ? new List<ProductReply>()

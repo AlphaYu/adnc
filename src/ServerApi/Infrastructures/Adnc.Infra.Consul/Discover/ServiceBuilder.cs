@@ -46,5 +46,4 @@
 
         Task<Uri> BuildAsync(string path);
     }
-
 }

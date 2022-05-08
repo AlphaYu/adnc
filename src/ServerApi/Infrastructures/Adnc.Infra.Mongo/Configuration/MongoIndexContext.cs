@@ -1,9 +1,6 @@
 ﻿using Adnc.Infra.Entities;
 using MongoDB.Driver;
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Adnc.Infra.Mongo.Configuration
 {

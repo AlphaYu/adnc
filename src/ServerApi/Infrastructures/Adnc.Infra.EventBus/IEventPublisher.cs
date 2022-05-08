@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-
-namespace Adnc.Infra.EventBus
+﻿namespace Adnc.Infra.EventBus
 {
     public interface IEventPublisher
     {

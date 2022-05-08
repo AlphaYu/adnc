@@ -79,5 +79,4 @@ public static partial class ConfigurationExtensions
     /// <param name="configuration"></param>
     /// <returns></returns>
     public static IConfigurationSection GetKestrelSection(this IConfiguration configuration) => configuration.GetSection("Kestrel");
-
 }

@@ -50,5 +50,4 @@ public static class ApplicationBuilderExtension
         if (environment.IsProduction())
             RegisterToConsul(app);
     }
-
 }

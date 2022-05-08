@@ -6,12 +6,14 @@ namespace Adnc.Whse.WebApi.Registrar;
 public sealed class WhseWebApiDependencyRegistrar : AbstractWebApiDependencyRegistrar
 {
     private readonly Action<AutoMapper.IMapperConfigurationExpression> _createMaper = maperConfig =>
-    {
-        maperConfig.CreateMap<ProductSearchRequest, ProductSearchListDto>();
-        maperConfig.CreateMap<ProductDto, ProductReply>();
-    };
+        {
+            maperConfig.CreateMap<ProductSearchRequest, ProductSearchListDto>();
+            maperConfig.CreateMap<ProductDto, ProductReply>();
+        };
 
-    public WhseWebApiDependencyRegistrar(IServiceCollection services) : base(services) { }
+    public WhseWebApiDependencyRegistrar(IServiceCollection services) : base(services)
+    {
+    }
 
     public override void AddAdnc()
     {

@@ -1,14 +1,9 @@
 ﻿using Adnc.Infra.Entities;
 using Adnc.Infra.IRepositories;
-using Adnc.Infra.Mongo.Entities;
 using Adnc.Infra.Mongo.Extensions;
 using Adnc.Infra.Mongo.Interfaces;
 using MongoDB.Driver;
-using System;
-using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Adnc.Infra.Mongo
 {

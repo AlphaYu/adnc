@@ -1,5 +1,4 @@
 ﻿using Polly.Timeout;
-using System.Net.Http;
 
 namespace Adnc.Shared.Application.Registrar
 {

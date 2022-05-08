@@ -61,7 +61,6 @@
             return start;
         }
 
-
         /// <summary>
         ///     A DateTime extension method that converts the @this to an epoch time span.
         /// </summary>

@@ -38,6 +38,7 @@ public static class HostingHostBuilderExtension
                     .ConfigureLogging((context, logging) => logging.ClearProviders().AddConsole().AddDebug())
                     .UseNLog();
     }
+
     //internal static async Task AspNet6(string[] args)
     //{
     //    var currentAssembly = Assembly.GetExecutingAssembly();

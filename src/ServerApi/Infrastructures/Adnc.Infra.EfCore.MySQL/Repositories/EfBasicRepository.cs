@@ -1,6 +1,5 @@
 ﻿namespace Adnc.Infra.EfCore.Repositories
 {
-
     /// <summary>
     /// Ef简单的、基础的，初级的仓储接口
     /// 适合DDD开发模式,实体必须继承AggregateRoot

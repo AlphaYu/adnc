@@ -2,7 +2,6 @@
 using Adnc.Infra.Mongo.Configuration;
 using Adnc.Infra.Mongo.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 
 namespace Adnc.Infra.Mongo.Extensions
 {

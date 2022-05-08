@@ -1,8 +1,5 @@
 ﻿using Adnc.Infra.Caching.Configurations;
 using StackExchange.Redis;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 
 namespace Adnc.Infra.Caching.StackExchange

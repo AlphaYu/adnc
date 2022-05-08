@@ -35,6 +35,7 @@ public class DeptDto : OutputDto
     /// 部门描述
     /// </summary>
     private string _tips;
+
     public string Tips
     {
         get => _tips is null ? string.Empty : _tips;

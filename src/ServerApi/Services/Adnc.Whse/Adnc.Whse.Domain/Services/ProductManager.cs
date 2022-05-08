@@ -62,7 +62,7 @@ public class ProductManager : IDomainService
     /// <returns></returns>
     public virtual async Task ChangeNameAsync(Product product, string newName)
     {
-        Guard.Checker.NotNull(product,nameof(product));
+        Guard.Checker.NotNull(product, nameof(product));
 
         if (product.Name.EqualsIgnoreCase(newName))
             return;

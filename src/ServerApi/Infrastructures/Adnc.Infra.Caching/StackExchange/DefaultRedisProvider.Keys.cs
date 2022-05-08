@@ -1,6 +1,4 @@
 ﻿using Adnc.Infra.Caching.Core;
-using System;
-using System.Threading.Tasks;
 
 namespace Adnc.Infra.Caching.StackExchange
 {

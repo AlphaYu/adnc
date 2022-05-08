@@ -1,7 +1,5 @@
 ﻿using DotNetCore.CAP.Messages;
 using DotNetCore.CAP.Serialization;
-using System;
-using System.Threading.Tasks;
 
 namespace Adnc.Infra.EventBus.Cap.Serialization
 {

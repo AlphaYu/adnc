@@ -1,5 +1,4 @@
 ﻿using MongoDB.Driver;
-using System;
 
 namespace Adnc.Infra.Mongo.Extensions
 {

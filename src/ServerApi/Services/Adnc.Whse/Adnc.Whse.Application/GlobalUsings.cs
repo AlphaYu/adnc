@@ -5,7 +5,6 @@ global using Adnc.Shared.Application.Contracts.Dtos;
 global using Adnc.Shared.Application.Services;
 global using Adnc.Shared.Events;
 global using Adnc.Shared.Rpc.Rest;
-global using Adnc.Shared.Rpc.Rest.Rtos;
 global using Adnc.Shared.Rpc.Rest.Services;
 global using Adnc.Whse.Application.Contracts.Dtos;
 global using Adnc.Whse.Application.Contracts.Services;

@@ -41,7 +41,6 @@ public class UsrGrpcServer : Adnc.Shared.Rpc.Grpc.Services.UsrGrpc.UsrGrpcBase
         return grpcResponse;
     }
 
-
     public override async Task<GrpcResponse> GetDepts(Empty request, ServerCallContext context)
     {
         var grpcResponse = new GrpcResponse() { IsSuccessStatusCode = true };

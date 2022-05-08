@@ -1,5 +1,4 @@
 ﻿using Adnc.Infra.Entities;
-using System;
 
 namespace Adnc.Infra.Mongo.Entities
 {

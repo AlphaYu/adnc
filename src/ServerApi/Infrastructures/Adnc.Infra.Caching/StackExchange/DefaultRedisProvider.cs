@@ -3,9 +3,6 @@ using Adnc.Infra.Caching.Core;
 using Adnc.Infra.Caching.Core.Serialization;
 using Microsoft.Extensions.Logging;
 using StackExchange.Redis;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Adnc.Infra.Caching.StackExchange
 {

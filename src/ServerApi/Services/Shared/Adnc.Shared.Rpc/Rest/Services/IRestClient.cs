@@ -1,3 +1,4 @@
 ﻿namespace Adnc.Shared.Rpc.Rest.Services;
 
-public interface IRestClient { }
+public interface IRestClient
+{ }

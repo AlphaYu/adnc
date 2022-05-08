@@ -7,7 +7,6 @@ using DotNetCore.CAP;
 using Microsoft.EntityFrameworkCore;
 using Refit;
 using SkyApm.Diagnostics.CAP;
-using System.Net.Http;
 
 namespace Adnc.Shared.Application.Registrar;
 

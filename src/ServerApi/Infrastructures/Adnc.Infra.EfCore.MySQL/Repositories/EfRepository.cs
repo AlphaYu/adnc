@@ -1,5 +1,5 @@
-﻿using Z.EntityFramework.Plus;
-using Microsoft.EntityFrameworkCore.Storage;
+﻿using Microsoft.EntityFrameworkCore.Storage;
+using Z.EntityFramework.Plus;
 
 namespace Adnc.Infra.EfCore.Repositories
 {

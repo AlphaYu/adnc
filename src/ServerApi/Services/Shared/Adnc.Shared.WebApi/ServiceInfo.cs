@@ -31,7 +31,7 @@ public sealed class ServiceInfo : IServiceInfo
             {
                 if (_instance == null)
                 {
-                    if(startAssembly is null)
+                    if (startAssembly is null)
                         startAssembly = Assembly.GetEntryAssembly();
                     var description = startAssembly.GetCustomAttribute<AssemblyDescriptionAttribute>().Description;
                     var assemblyName = startAssembly.GetName();

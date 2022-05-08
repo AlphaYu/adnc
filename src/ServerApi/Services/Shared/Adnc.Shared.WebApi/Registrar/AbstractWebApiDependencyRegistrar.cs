@@ -30,7 +30,6 @@ public abstract class AbstractWebApiDependencyRegistrar : IDependencyRegistrar
     /// </summary>
     public abstract void AddAdnc();
 
-
     /// <summary>
     /// 注册Webapi通用的服务
     /// </summary>

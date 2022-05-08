@@ -15,6 +15,7 @@ public class AccountController : AdncControllerBase
         _authRestClient = authRestClient;
         _authGrpcClinet = authGrpcClient;
     }
+
     /// <summary>
     /// for debugging purposes
     /// </summary>

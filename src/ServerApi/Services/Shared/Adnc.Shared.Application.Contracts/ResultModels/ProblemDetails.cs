@@ -6,7 +6,8 @@
 [Serializable]
 public sealed class ProblemDetails
 {
-    public ProblemDetails() { }
+    public ProblemDetails()
+    { }
 
     public ProblemDetails(HttpStatusCode? statusCode, string detail = null, string title = null, string instance = null, string type = null)
     {

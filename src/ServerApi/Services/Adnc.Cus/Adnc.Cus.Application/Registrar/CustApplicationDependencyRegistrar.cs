@@ -14,7 +14,9 @@ public sealed class CustApplicationDependencyRegistrar : AbstractApplicationDepe
 
     public override Assembly RepositoryOrDomainLayerAssembly => typeof(EntityInfo).Assembly;
 
-    public CustApplicationDependencyRegistrar(IServiceCollection services) : base(services) { }
+    public CustApplicationDependencyRegistrar(IServiceCollection services) : base(services)
+    {
+    }
 
     public override void AddAdnc()
     {

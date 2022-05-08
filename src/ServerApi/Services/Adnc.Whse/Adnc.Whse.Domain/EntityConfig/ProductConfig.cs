@@ -1,6 +1,4 @@
-﻿using Adnc.Whse.Domain.Aggregates.ProductAggregate;
-
-namespace Adnc.Whse.Domain.EntityConfig;
+﻿namespace Adnc.Whse.Domain.EntityConfig;
 
 public class ProductConfig : EntityTypeConfiguration<Product>
 {

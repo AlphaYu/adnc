@@ -2,7 +2,6 @@
 global using Adnc.Infra.Consul.TokenGenerator;
 global using Adnc.Infra.Core.Configuration;
 global using Consul;
-global using Microsoft.AspNetCore.Hosting.Server.Features;
 global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Hosting;

@@ -10,6 +10,7 @@ public class DictDto : OutputDto
     public long? Pid { get; set; }
 
     private string _value;
+
     public string Value
     {
         get => _value is not null ? _value : string.Empty;

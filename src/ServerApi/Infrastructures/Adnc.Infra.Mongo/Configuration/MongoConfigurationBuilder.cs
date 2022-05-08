@@ -1,9 +1,6 @@
 ﻿using Adnc.Infra.IRepositories;
 using Adnc.Infra.Mongo.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 
 namespace Adnc.Infra.Mongo.Configuration

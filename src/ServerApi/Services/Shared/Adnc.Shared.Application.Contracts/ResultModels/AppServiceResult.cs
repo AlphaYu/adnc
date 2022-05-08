@@ -6,7 +6,8 @@
 [Serializable]
 public sealed class AppSrvResult
 {
-    public AppSrvResult() { }
+    public AppSrvResult()
+    { }
 
     public AppSrvResult(ProblemDetails problemDetails) => ProblemDetails = problemDetails;
 
@@ -29,7 +30,8 @@ public sealed class AppSrvResult
 [Serializable]
 public sealed class AppSrvResult<TValue>
 {
-    public AppSrvResult() { }
+    public AppSrvResult()
+    { }
 
     public AppSrvResult(TValue value) => Content = value;
 

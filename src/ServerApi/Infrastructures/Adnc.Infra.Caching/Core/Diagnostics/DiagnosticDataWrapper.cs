@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Adnc.Infra.Caching.Core.Diagnostics
+﻿namespace Adnc.Infra.Caching.Core.Diagnostics
 {
     public class DiagnosticDataWrapper
     {
