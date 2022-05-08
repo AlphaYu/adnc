@@ -11,9 +11,5 @@ public class DeptTreeDto : DeptDto
     /// </summary>
     private List<DeptTreeDto> _children;
 
-    public List<DeptTreeDto> Children
-    {
-        get => _children;
-        set => _children = value ?? new List<DeptTreeDto>();
-    }
+    public List<DeptTreeDto> Children { get; set; } = new List<DeptTreeDto>();
 }
