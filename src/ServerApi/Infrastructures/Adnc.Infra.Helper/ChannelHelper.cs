@@ -4,14 +4,13 @@ namespace Adnc.Infra.Helper
 {
     public class ChannelHelper<TModel>
     {
-        private static readonly Lazy<ChannelHelper<TModel>> lazy = new Lazy<ChannelHelper<TModel>>(() => new ChannelHelper<TModel>());
+        private static readonly Lazy<ChannelHelper<TModel>> lazy = new(() => new ChannelHelper<TModel>());
 
         private readonly ChannelWriter<TModel> _writer;
         private readonly ChannelReader<TModel> _reader;
 
         static ChannelHelper()
-        {
-        }
+        { }
 
         private ChannelHelper()
         {
@@ -24,13 +23,7 @@ namespace Adnc.Infra.Helper
             _reader = channel.Reader;
         }
 
-        public static ChannelHelper<TModel> Instance
-        {
-            get
-            {
-                return lazy.Value;
-            }
-        }
+        public static ChannelHelper<TModel> Instance => lazy.Value;
 
         public ChannelWriter<TModel> Writer => _writer;
 
