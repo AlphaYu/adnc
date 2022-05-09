@@ -27,14 +27,12 @@ public sealed class OrdApplicationDependencyRegistrar : AbstractApplicationDepen
         var restPolicies = this.GenerateDefaultRefitPolicies();
         var authRestAddress = IsDevelopment ? "http://localhost:50010" : "adnc.usr.webapi";
         AddRestClient<IAuthRestClient>(authRestAddress, restPolicies);
+        var usrRestAddress = authRestAddress;
+        AddRestClient<IUsrRestClient>(usrRestAddress, restPolicies);
         var maintRestAddress = IsDevelopment ? "http://localhost:50020" : "adnc.maint.webapi";
         AddRestClient<IMaintRestClient>(maintRestAddress, restPolicies);
         var whseRestAddress = IsDevelopment ? "http://localhost:50050" : "adnc.whse.webapi";
         AddRestClient<IWhseRestClient>(whseRestAddress, restPolicies);
-        //rpc-grpc
-        var grpcPolicies = this.GenerateDefaultGrpcPolicies();
-        var usrGrpcAddress = IsDevelopment ? "http://localhost:50011" : "adnc.usr.webapi";
-        AddGrpcClient<Adnc.Shared.Rpc.Grpc.Services.UsrGrpc.UsrGrpcClient>(usrGrpcAddress, grpcPolicies);
         //rpc-event
         AddEventBusPublishers();
         AddEventBusSubscribers<CapEventSubscriber>();

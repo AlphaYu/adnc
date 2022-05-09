@@ -22,10 +22,8 @@ public sealed class MaintApplicationDependencyRegistrar : AbstractApplicationDep
         //rpc-rest
         var restPolicies = this.GenerateDefaultRefitPolicies();
         var authRestAddress = IsDevelopment ? "http://localhost:50010" : "adnc.usr.webapi";
+        var usrRestAddress = authRestAddress;
         AddRestClient<IAuthRestClient>(authRestAddress, restPolicies);
-        //rpc-grpc
-        var gprcPolicies = this.GenerateDefaultGrpcPolicies();
-        var authGrpcAddress = IsDevelopment ? "http://localhost:50011" : "adnc.usr.webapi";
-        AddGrpcClient<UsrGrpc.UsrGrpcClient>(authGrpcAddress, gprcPolicies);
+        AddRestClient<IUsrRestClient>(usrRestAddress, restPolicies);
     }
 }
