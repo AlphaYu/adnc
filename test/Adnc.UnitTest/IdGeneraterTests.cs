@@ -4,7 +4,7 @@ namespace Adnc.UnitTest.Helper;
 
 public class IdGeneraterTests
 {
-    private  readonly ITestOutputHelper _output;
+    private readonly ITestOutputHelper _output;
 
     public IdGeneraterTests(ITestOutputHelper output)
     {

@@ -1,7 +1,7 @@
 ﻿using Adnc.Cus.Entities;
-using Adnc.Infra.IRepositories;
 using Adnc.Infra.EfCore.MySQL;
 using Adnc.Infra.Helper;
+using Adnc.Infra.IRepositories;
 
 namespace Adnc.UnitTest.EFCore
 {
@@ -516,9 +516,9 @@ namespace Adnc.UnitTest.EFCore
 
                 throw new Exception();
 
-                #pragma warning disable CS0162 // 检测到无法访问的代码
+#pragma warning disable CS0162 // 检测到无法访问的代码
                 _unitOfWork.Commit();
-                #pragma warning restore CS0162 // 检测到无法访问的代码
+#pragma warning restore CS0162 // 检测到无法访问的代码
             }
             catch (Exception)
             {
@@ -671,6 +671,7 @@ namespace Adnc.UnitTest.EFCore
         }
 
         #region old testing codes
+
         //[Fact]
         //public async Task TestConcurrencyCheck()
         //{
@@ -833,6 +834,7 @@ namespace Adnc.UnitTest.EFCore
         //    //SELECT `s`.`ID`, `s`.`FullName`FROM `SysDept` AS `s`INNER JOIN `SysUser` AS `s0` ON `s`.`ID` = `s0`.`DeptId` WHERE `s`.`ID` > 4
         //    //Assert.NotNull(user5);
         //}
+
         #endregion old testing codes
     }
 }

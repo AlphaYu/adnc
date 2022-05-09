@@ -2,7 +2,7 @@
 
 namespace Adnc.UnitTest.Fixtures;
 
-public class RedisCacheFixture 
+public class RedisCacheFixture
 {
     public IServiceProvider Container { get; private set; }
 
