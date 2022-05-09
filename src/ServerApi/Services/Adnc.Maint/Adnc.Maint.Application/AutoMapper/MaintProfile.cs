@@ -1,4 +1,6 @@
-﻿namespace Adnc.Maint.Application.AutoMapper;
+﻿using Adnc.Shared.Rpc.Grpc.Messages;
+
+namespace Adnc.Maint.Application.AutoMapper;
 
 public class MaintProfile : Profile
 {
@@ -16,5 +18,8 @@ public class MaintProfile : Profile
         CreateMap<DictCreationDto, SysDict>();
         CreateMap<SysDict, DictDto>();
         CreateMap<SysNotice, NoticeDto>().ReverseMap();
+
+        CreateMap<DictDto, DictReply>();
+
     }
 }

@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Adnc.Shared.Rpc.Grpc.Messages;
+using AutoMapper;
 
 namespace Adnc.Usr.Application.AutoMapper;
 
@@ -26,5 +27,8 @@ public sealed class UsrProfile : Profile
         CreateMap<DeptUpdationDto, SysDept>();
         CreateMap<SysDept, DeptDto>();
         CreateMap<SysDept, DeptTreeDto>();
+
+        CreateMap<LoginRequest, UserLoginDto>();
+        CreateMap<DeptTreeDto, DeptReply>();
     }
 }
