@@ -75,7 +75,7 @@ public class Warehouse : AggregateRootWithBasicAuditInfo
     /// <param name="qty"></param>
     internal void Entry(int qty)
     {
-        Guard.Checker.GTZero(qty,nameof(qty));
+        Guard.Checker.GTZero(qty, nameof(qty));
         Guard.Checker.GTZero(ProductId.Value, nameof(ProductId));
         this.Qty += qty;
     }
@@ -90,7 +90,6 @@ public class Warehouse : AggregateRootWithBasicAuditInfo
         //    throw new ArgumentException("ProductId");
 
         Guard.Checker.GTZero(productId, nameof(productId));
-
 
         this.ProductId = productId;
     }

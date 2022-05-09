@@ -14,8 +14,8 @@
 	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 	  </EmbeddedResource>
 	</ItemGroup>
-
 	<ItemGroup>
+		<PackageReference Include="Grpc.AspNetCore" Version="2.45.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.3">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -27,20 +27,22 @@
 			<TreatAsUsed>true</TreatAsUsed>
 		</PackageReference>
 	</ItemGroup>
-
 	<ItemGroup>
 		<Content Update="nlog.config">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</Content>
 	</ItemGroup>
-
 	<ItemGroup>
 		<ProjectReference Include="..\..\Shared\Adnc.Shared.WebApi\Adnc.Shared.WebApi.csproj" />
 		<ProjectReference Include="..\Adnc.Usr.Application.Contracts\Adnc.Usr.Application.Contracts.csproj" />
 		<ProjectReference Include="..\Adnc.Usr.Application\Adnc.Usr.Application.csproj" />
 	</ItemGroup>
-
-	<!--<Target Name="BuildTheApplicationProject" BeforeTargets="BeforeBuild">
+	<ItemGroup>
+		<!--<Protobuf Include="..\..\Shared\Adnc.Shared\Protos\Rtos\*.proto" GrpcServices="Server" Link="Grpc\Protos\Rtos\%(RecursiveDir)%(Filename)%(Extension)" ProtoRoot="..\..\Shared\Adnc.Shared\" />-->
+		<Protobuf Include="..\..\Shared\Adnc.Shared.Rpc\Protos\Services\authgrpc.proto" GrpcServices="Server" Link="Grpc\Protos\Services\authgrpc.proto" ProtoRoot="..\..\Shared\Adnc.Shared.Rpc\" />
+		<Protobuf Include="..\..\Shared\Adnc.Shared.Rpc\Protos\Services\usrgrpc.proto" GrpcServices="Server" Link="Grpc\Protos\Services\usrgrpc.proto" ProtoRoot="..\..\Shared\Adnc.Shared.Rpc\" />
+	</ItemGroup>
+<!--<Target Name="BuildTheApplicationProject" BeforeTargets="BeforeBuild">
 			<MSBuild Projects="..\Adnc.Usr.Application\Adnc.Usr.Application.csproj" Targets="Build" Properties="Configuration=$(Configuration);Platform=$(Platform)" />
 	</Target>
 	<Target Name="CopyTheApplicationFilesAfterBuild" AfterTargets="AfterBuild">
@@ -56,7 +58,6 @@
 		</ItemGroup>
 		<Copy SkipUnchangedFiles="true" SourceFiles="@(OutputFileToCopy)" DestinationFolder="$(PublishUrl)" Condition="'$(Configuration)'=='Release'" />
 	</Target>-->
-
 	<ProjectExtensions>
 		<VisualStudio><UserProperties /></VisualStudio>
 	</ProjectExtensions>

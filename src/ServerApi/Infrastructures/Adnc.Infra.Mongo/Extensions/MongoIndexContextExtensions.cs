@@ -2,7 +2,6 @@
 using Adnc.Infra.Mongo.Configuration;
 using Adnc.Infra.Mongo.Entities;
 using MongoDB.Driver;
-using System;
 
 namespace Adnc.Infra.Mongo.Extensions
 {

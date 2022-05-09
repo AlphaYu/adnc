@@ -1,7 +1,5 @@
 ﻿using Adnc.Infra.Entities;
 using MongoDB.Driver;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Adnc.Infra.Mongo.Interfaces
 {

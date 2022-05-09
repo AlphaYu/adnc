@@ -1,4 +1,6 @@
-﻿namespace Adnc.Usr.WebApi.Controllers;
+﻿using Adnc.Shared.Application.Contracts;
+
+namespace Adnc.Usr.WebApi.Controllers;
 
 /// <summary>
 /// 菜单管理
@@ -9,11 +11,11 @@ public class MenuController : AdncControllerBase
 {
     private readonly IMenuAppService _menuService;
     private readonly IAccountAppService _accountService;
-    private readonly IUserContext _userContext;
+    private readonly UserContext _userContext;
 
     public MenuController(IMenuAppService menuService
         , IAccountAppService accountService
-        , IUserContext userContext)
+        , UserContext userContext)
     {
         _menuService = menuService;
         _accountService = accountService;

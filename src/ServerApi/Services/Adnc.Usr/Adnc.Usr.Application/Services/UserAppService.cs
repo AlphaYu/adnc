@@ -23,8 +23,8 @@ public class UserAppService : AbstractAppService, IUserAppService
         var user = Mapper.Map<SysUser>(input);
         user.Id = IdGenerater.GetNextId();
         user.Account = user.Account.ToLower();
-        user.Salt = SecurityHelper.GenerateRandomCode(5);
-        user.Password = HashHelper.GetHashedString(HashType.MD5, user.Password, user.Salt);
+        user.Salt = InfraHelper.Security.GenerateRandomCode(5);
+        user.Password = InfraHelper.Hash.GetHashedString(HashType.MD5, user.Password, user.Salt);
 
         var cacheKey = _cacheService.ConcatCacheKey(CachingConsts.UserValidateInfoKeyPrefix, user.Id);
         var bloomFilterCacheKey = _bloomFilterFactory.GetBloomFilter(nameof(CacheKeyBloomFilter));

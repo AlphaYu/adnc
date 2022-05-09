@@ -130,7 +130,7 @@ public class RoleAppService : AbstractAppService, IRoleAppService
         if (total == 0)
             return new PageModelDto<RoleDto>(search);
 
-        var entities =await _roleRepository
+        var entities = await _roleRepository
                             .Where(whereExpression)
                             .OrderByDescending(x => x.Id)
                             .Skip(search.SkipRows())

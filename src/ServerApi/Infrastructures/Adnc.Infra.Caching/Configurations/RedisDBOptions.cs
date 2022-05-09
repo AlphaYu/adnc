@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Adnc.Infra.Caching.Configurations
+﻿namespace Adnc.Infra.Caching.Configurations
 {
     public class RedisDBOptions
     {

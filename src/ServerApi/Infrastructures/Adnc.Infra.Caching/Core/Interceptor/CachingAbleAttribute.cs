@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Adnc.Infra.Caching.Interceptor
+﻿namespace Adnc.Infra.Caching.Interceptor
 {
     /// <summary>
     /// Adnc.Infra.Caching able attribute.

@@ -5,11 +5,7 @@ using Adnc.Infra.Mongo.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
-using System;
 using System.Collections.Concurrent;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Adnc.Infra.Mongo
 {

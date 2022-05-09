@@ -9,9 +9,9 @@ global using Adnc.Shared.Application.Caching;
 global using Adnc.Shared.Application.Contracts.Dtos;
 global using Adnc.Shared.Application.Services;
 global using Adnc.Shared.Events;
-global using Adnc.Shared.RpcServices;
-global using Adnc.Shared.RpcServices.Rtos;
-global using Adnc.Shared.RpcServices.Services;
+global using Adnc.Shared.Rpc.Rest;
+global using Adnc.Shared.Rpc.Rest.Rtos;
+global using Adnc.Shared.Rpc.Rest.Services;
 global using AutoMapper;
 global using DotNetCore.CAP;
 global using Microsoft.EntityFrameworkCore;
@@ -23,4 +23,3 @@ global using System.Collections.Generic;
 global using System.Linq;
 global using System.Linq.Expressions;
 global using System.Threading.Tasks;
-

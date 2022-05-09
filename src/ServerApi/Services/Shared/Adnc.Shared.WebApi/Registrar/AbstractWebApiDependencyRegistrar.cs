@@ -1,4 +1,4 @@
-﻿using StackExchange.Profiling.Storage;
+﻿using Adnc.Shared.Application.Contracts;
 using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
 
 namespace Adnc.Shared.WebApi.Registrar;
@@ -26,14 +26,39 @@ public abstract class AbstractWebApiDependencyRegistrar : IDependencyRegistrar
     }
 
     /// <summary>
-    /// 
+    /// 注册服务入口方法
     /// </summary>
     public abstract void AddAdnc();
 
     /// <summary>
+    /// 注册Webapi通用的服务
+    /// </summary>
+    /// <typeparam name="THandler"></typeparam>
+    protected virtual void AddWebApiDefault() => AddWebApiDefault<PermissionHandlerRemote>();
+
+    /// <summary>
+    /// 注册Webapi通用的服务
+    /// </summary>
+    /// <typeparam name="THandler"></typeparam>
+    protected virtual void AddWebApiDefault<THandler>() where THandler : AbstractPermissionHandler
+    {
+        Services.AddHttpContextAccessor();
+        Services.AddMemoryCache();
+        Configure();
+        AddControllers();
+        AddAuthentication();
+        AddAuthorization<THandler>();
+        AddCors();
+        AddSwaggerGen();
+        AddHealthChecks();
+        AddMiniProfiler();
+        AddApplicationServices();
+    }
+
+    /// <summary>
     /// 注册配置类到IOC容器
     /// </summary>
-    public virtual void Configure()
+    protected virtual void Configure()
     {
         Services.Configure<JwtConfig>(Configuration.GetJWTSection());
         Services.Configure<MongoConfig>(Configuration.GetMongoDbSection());
@@ -41,6 +66,7 @@ public abstract class AbstractWebApiDependencyRegistrar : IDependencyRegistrar
         Services.Configure<RabbitMqConfig>(Configuration.GetRabbitMqSection());
         Services.Configure<ConsulConfig>(Configuration.GetConsulSection());
         Services.Configure<ThreadPoolSettings>(Configuration.GetThreadPoolSettingsSection());
+        Services.Configure<KestrelConfig>(Configuration.GetKestrelSection());
     }
 
     /// <summary>
@@ -49,7 +75,7 @@ public abstract class AbstractWebApiDependencyRegistrar : IDependencyRegistrar
     /// FluentValidation 注册
     /// ApiBehaviorOptions 配置
     /// </summary>
-    public virtual void AddControllers()
+    protected virtual void AddControllers()
     {
         Services.AddControllers(options => options.Filters.Add(typeof(CustomExceptionFilterAttribute)))
         .AddJsonOptions(options =>
@@ -105,7 +131,7 @@ public abstract class AbstractWebApiDependencyRegistrar : IDependencyRegistrar
     /// <summary>
     /// 注册身份认证组件
     /// </summary>
-    public virtual void AddAuthentication()
+    protected virtual void AddAuthentication()
     {
         var jwtConfig = Configuration.GetJWTSection().Get<JwtConfig>();
 
@@ -135,7 +161,7 @@ public abstract class AbstractWebApiDependencyRegistrar : IDependencyRegistrar
                 //在Token验证通过后调用
                 OnTokenValidated = context =>
                 {
-                    var userContext = context.HttpContext.RequestServices.GetService<IUserContext>();
+                    var userContext = context.HttpContext.RequestServices.GetService<UserContext>();
                     var claims = context.Principal.Claims;
                     userContext.Id = long.Parse(claims.First(x => x.Type == JwtRegisteredClaimNames.NameId).Value);
                     userContext.Account = claims.First(x => x.Type == JwtRegisteredClaimNames.UniqueName).Value;
@@ -169,7 +195,7 @@ public abstract class AbstractWebApiDependencyRegistrar : IDependencyRegistrar
     /// PermissionHandlerLocal  本地授权,adnc.usr走本地授权，其他服务走Rpc授权
     /// </summary>
     /// <typeparam name="THandler"></typeparam>
-    public virtual void AddAuthorization<THandler>()
+    protected virtual void AddAuthorization<THandler>()
         where THandler : AbstractPermissionHandler
     {
         Services.AddScoped<IAuthorizationHandler, THandler>();
@@ -185,7 +211,7 @@ public abstract class AbstractWebApiDependencyRegistrar : IDependencyRegistrar
     /// <summary>
     /// 注册跨域组件
     /// </summary>
-    public virtual void AddCors()
+    protected virtual void AddCors()
     {
         Services.AddCors(options =>
         {
@@ -203,7 +229,7 @@ public abstract class AbstractWebApiDependencyRegistrar : IDependencyRegistrar
     /// <summary>
     /// 注册swagger组件
     /// </summary>
-    public virtual void AddSwaggerGen()
+    protected virtual void AddSwaggerGen()
     {
         var openApiInfo = new OpenApiInfo { Title = ServiceInfo.ShortName, Version = ServiceInfo.Version };
 
@@ -246,7 +272,7 @@ public abstract class AbstractWebApiDependencyRegistrar : IDependencyRegistrar
     /// <summary>
     /// 注册健康监测组件
     /// </summary>
-    public virtual void AddHealthChecks()
+    protected virtual void AddHealthChecks()
     {
         var mysqlConfig = Configuration.GetMysqlSection().Get<MysqlConfig>();
         var mongoConfig = Configuration.GetMongoDbSection().Get<MongoConfig>();
@@ -271,7 +297,7 @@ public abstract class AbstractWebApiDependencyRegistrar : IDependencyRegistrar
     /// <summary>
     /// 注册 MiniProfiler 组件
     /// </summary>
-    public virtual void AddMiniProfiler()
+    protected virtual void AddMiniProfiler()
     {
         Services.AddMiniProfiler(options => options.RouteBasePath = $"/{ServiceInfo.ShortName}/profiler").AddEntityFramework();
     }
@@ -279,7 +305,7 @@ public abstract class AbstractWebApiDependencyRegistrar : IDependencyRegistrar
     /// <summary>
     /// 注册Application层服务
     /// </summary>
-    public virtual void AddApplicationServices()
+    protected virtual void AddApplicationServices()
     {
         var appAssembly = ServiceInfo.GetApplicationAssembly();
         if (appAssembly is not null)

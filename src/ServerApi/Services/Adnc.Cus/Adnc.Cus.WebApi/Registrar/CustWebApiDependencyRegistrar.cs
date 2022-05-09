@@ -8,18 +8,5 @@ public sealed class CustWebApiDependencyRegistrar : AbstractWebApiDependencyRegi
     {
     }
 
-    public override void AddAdnc()
-    {
-        Services.AddHttpContextAccessor();
-        Services.AddMemoryCache();
-        Configure();
-        AddControllers();
-        AddAuthentication();
-        AddAuthorization<PermissionHandlerRemote>();
-        AddCors();
-        AddSwaggerGen();
-        AddHealthChecks();
-        AddMiniProfiler();
-        AddApplicationServices();
-    }
+    public override void AddAdnc() => AddWebApiDefault();
 }

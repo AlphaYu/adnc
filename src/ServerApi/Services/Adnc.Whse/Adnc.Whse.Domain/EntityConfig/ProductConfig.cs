@@ -1,6 +1,4 @@
-﻿using Adnc.Whse.Domain.Aggregates.ProductAggregate;
-
-namespace Adnc.Whse.Domain.EntityConfig;
+﻿namespace Adnc.Whse.Domain.EntityConfig;
 
 public class ProductConfig : EntityTypeConfiguration<Product>
 {
@@ -25,8 +23,8 @@ public class ProductConfig : EntityTypeConfiguration<Product>
 
         builder.OwnsOne(x => x.Status, y =>
         {
-            y.Property(x => x.Code).IsRequired().HasColumnName("StatusCode");
-            y.Property(x => x.ChangesReason).HasColumnName("StatusChangesReason").HasMaxLength(ProductConts.ChangesReason_MaxLength);
+            y.Property(x => x.Code).IsRequired().HasColumnName("statuscode");
+            y.Property(x => x.ChangesReason).HasColumnName("statuschangesreason").HasMaxLength(ProductConts.ChangesReason_MaxLength);
         });
 
         builder.Property(x => x.Unit)

@@ -7,8 +7,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development",
         "SKYWALKING__SERVICENAME": "adnc.usr.webapi.dev",
         "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "SkyAPM.Agent.AspNetCore"
-      },
-      "applicationUrl": "http://localhost:5010"
+      }
     },
     "Docker": {
       "commandName": "Docker",

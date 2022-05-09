@@ -1,4 +1,6 @@
-﻿using StackExchange.Profiling;
+﻿using Adnc.Infra.Helper;
+using Adnc.Shared.Application.Contracts;
+using StackExchange.Profiling;
 
 namespace Adnc.Usr.WebApi.Controllers;
 
@@ -10,12 +12,12 @@ namespace Adnc.Usr.WebApi.Controllers;
 public class AccountController : AdncControllerBase
 {
     private readonly JwtConfig _jwtConfig;
-    private readonly IUserContext _userContext;
+    private readonly UserContext _userContext;
     private readonly IAccountAppService _accountService;
 
     public AccountController(IOptionsSnapshot<JwtConfig> jwtConfig
         , IAccountAppService accountService
-        , IUserContext userContext)
+        , UserContext userContext)
     {
         _jwtConfig = jwtConfig.Value;
         _accountService = accountService;
@@ -115,7 +117,7 @@ public class AccountController : AdncControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public IActionResult GetMiniProfilerInfo()
     {
-        var html = MiniProfiler.Current.RenderIncludes(Adnc.Infra.Helper.HttpContextUtility.GetCurrentHttpContext());
+        var html = MiniProfiler.Current.RenderIncludes(HttpContextHelper.GetCurrentHttpContext());
         return Ok(html.Value);
     }
 }

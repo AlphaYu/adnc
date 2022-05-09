@@ -1,6 +1,6 @@
 ﻿namespace Adnc.Infra.IRepositories;
 
-public interface IAdoExecuterRepository: IAdoRepository
+public interface IAdoExecuterRepository : IAdoRepository
 {
     /// <summary>
     /// Execute parameterized SQL and return an <see cref="IDataReader"/>.

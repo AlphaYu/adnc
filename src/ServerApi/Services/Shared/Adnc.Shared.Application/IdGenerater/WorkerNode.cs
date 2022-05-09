@@ -1,4 +1,5 @@
 ﻿namespace Adnc.Shared.Application.IdGenerater;
+
 using IdGenerater = Adnc.Infra.Helper.IdGenerater;
 
 public class WorkerNode

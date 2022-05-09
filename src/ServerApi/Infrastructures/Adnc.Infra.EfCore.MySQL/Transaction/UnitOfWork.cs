@@ -1,6 +1,5 @@
 ﻿using DotNetCore.CAP;
 using Microsoft.EntityFrameworkCore.Storage;
-using System.Data;
 
 namespace Adnc.Infra.EfCore.Transaction;
 

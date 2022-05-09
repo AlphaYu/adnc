@@ -8,5 +8,6 @@ public class Guard : IGuard
 {
     public static IGuard Checker { get; } = new Guard();
 
-    private Guard() { }
+    private Guard()
+    { }
 }

@@ -5,8 +5,6 @@ using Adnc.Infra.Caching.Interceptor.Castle;
 using Adnc.Infra.Caching.StackExchange;
 using Adnc.Infra.Core.Interceptor;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Linq;
 
 namespace Microsoft.Extensions.DependencyInjection;
 

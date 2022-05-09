@@ -8,9 +8,9 @@ public abstract class AdncControllerBase : ControllerBase
     /// <param name="problemDetails"><see cref="Adnc.Shared.Application.Services.ProblemDetails"/></param>
     /// <returns><see cref="ObjectResult"/></returns>
     [NonAction]
-    protected virtual ObjectResult Problem(Adnc.Shared.ResultModels.ProblemDetails problemDetails)
+    protected virtual ObjectResult Problem(Adnc.Shared.Application.Contracts.ResultModels.ProblemDetails problemDetails)
     {
-        problemDetails.Instance = problemDetails.Instance ?? this.Request.Path.ToString();
+        problemDetails.Instance ??= this.Request.Path.ToString();
         return Problem(problemDetails.Detail
             , problemDetails.Instance
             , problemDetails.Status
@@ -24,9 +24,9 @@ public abstract class AdncControllerBase : ControllerBase
     /// <param name="problemDetails"></param>
     /// <returns></returns>
     [NonAction]
-    protected virtual ObjectResult Problem(Refit.ApiException exception)
+    protected virtual ObjectResult Problem(dynamic exception)
     {
-        var problemDetails = ((Refit.ValidationApiException)exception).Content;
+        var problemDetails = exception.Content;
 
         return Problem(problemDetails.Detail
                 , problemDetails.Instance

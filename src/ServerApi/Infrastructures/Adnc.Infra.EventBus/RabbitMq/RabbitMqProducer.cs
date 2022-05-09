@@ -3,7 +3,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Polly;
 using RabbitMQ.Client;
-using System;
 using System.Text;
 using System.Text.Json;
 

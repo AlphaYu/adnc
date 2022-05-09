@@ -4,13 +4,13 @@ public class Startup
 {
     public void ConfigureServices(IServiceCollection services) => services.GetWebApiRegistrar().AddAdnc();
 
-    public void Configure(IApplicationBuilder app, IHostEnvironment environment)
+    public void Configure(IApplicationBuilder app)
     {
-        app.UseAdncMiddlewares();
-
-        if (environment.IsProduction() || environment.IsStaging())
+        app.UseAdncDefault(endpointRoute: endpoint =>
         {
-            app.RegisterToConsul();
-        }
+            endpoint.MapGrpcService<Grpc.AuthGrpcServer>();
+            endpoint.MapGrpcService<Grpc.UsrGrpcServer>();
+        });
+        app.RegisterToConsulIfProduction();
     }
 }

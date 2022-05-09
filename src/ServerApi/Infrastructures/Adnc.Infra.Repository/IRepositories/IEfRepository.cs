@@ -35,6 +35,7 @@ public interface IEfRepository<TEntity> : IEfBaseRepository<TEntity>
     /// <param name="noTracking">是否开启跟踪，默认false,可选参数</param>
     /// <returns></returns>
     IQueryable<TEntity> GetAll(bool writeDb = false, bool noTracking = true);
+
     IQueryable<TrdEntity> GetAll<TrdEntity>(bool writeDb = false, bool noTracking = true) where TrdEntity : EfEntity;
 
     /// <summary>

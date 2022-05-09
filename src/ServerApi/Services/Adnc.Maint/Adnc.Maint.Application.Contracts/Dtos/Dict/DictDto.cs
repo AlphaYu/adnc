@@ -9,7 +9,13 @@ public class DictDto : OutputDto
 
     public long? Pid { get; set; }
 
-    public string Value { get; set; }
+    private string _value;
+
+    public string Value
+    {
+        get => _value is not null ? _value : string.Empty;
+        set => _value = value;
+    }
 
     private IList<DictDto> _data = Array.Empty<DictDto>();
 

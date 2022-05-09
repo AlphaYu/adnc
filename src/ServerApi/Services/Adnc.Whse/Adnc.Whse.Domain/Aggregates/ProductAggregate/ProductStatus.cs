@@ -13,6 +13,6 @@ public record ProductStatus : ValueObject
     internal ProductStatus(ProductStatusCodes statusCode, string reason)
     {
         Code = statusCode;
-        ChangesReason = reason is null ? string.Empty : reason.Trim(); 
+        ChangesReason = reason is null ? string.Empty : reason.Trim();
     }
 }

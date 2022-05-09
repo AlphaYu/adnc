@@ -1,7 +1,5 @@
 ﻿using Adnc.Infra.IRepositories;
 using Adnc.Infra.Mongo.Entities;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Adnc.Infra.Mongo.Interfaces
 {

@@ -34,7 +34,13 @@ public class DeptDto : OutputDto
     /// <summary>
     /// 部门描述
     /// </summary>
-    public string Tips { get; set; }
+    private string _tips;
+
+    public string Tips
+    {
+        get => _tips is null ? string.Empty : _tips;
+        set => _tips = value;
+    }
 
     /// <summary>
     /// 版本号

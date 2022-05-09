@@ -1,6 +1,6 @@
 ﻿namespace Adnc.Usr.WebApi.Authorize;
 
-public  static class JwtTokenHelper
+public static class JwtTokenHelper
 {
     //认证服务器安装：System.IdentityModel.Tokens.Jwt
     //资源服务器安装：Microsoft.AspNetCore.Authentication.JwtBearer

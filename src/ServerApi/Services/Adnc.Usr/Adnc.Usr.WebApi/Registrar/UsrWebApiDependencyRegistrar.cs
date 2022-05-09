@@ -10,16 +10,7 @@ public sealed class UsrWebApiDependencyRegistrar : AbstractWebApiDependencyRegis
 
     public override void AddAdnc()
     {
-        Services.AddHttpContextAccessor();
-        Services.AddMemoryCache();
-        Configure();
-        AddControllers();
-        AddAuthentication();
-        AddAuthorization<PermissionHandlerLocal>();
-        AddCors();
-        AddSwaggerGen();
-        AddHealthChecks();
-        AddMiniProfiler();
-        AddApplicationServices();
+        AddWebApiDefault<PermissionHandlerLocal>();
+        Services.AddGrpc();
     }
 }

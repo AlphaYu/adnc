@@ -1,4 +1,5 @@
-﻿using System.Text.Encodings.Web;
+﻿using Adnc.Shared.Application.Contracts;
+using System.Text.Encodings.Web;
 
 namespace Microsoft.AspNetCore.Authentication.Basic;
 
@@ -30,7 +31,7 @@ public class BasicAuthenticationHandler : AuthenticationHandler<BasicSchemeOptio
                 var claimsPrincipal = new ClaimsPrincipal(identity);
                 authResult = AuthenticateResult.Success(new AuthenticationTicket(claimsPrincipal, BasicDefaults.AuthenticationScheme));
 
-                var userContext = Context.RequestServices.GetService<IUserContext>();
+                var userContext = Context.RequestServices.GetService<UserContext>();
                 userContext.Id = appId.ToLong().Value;
                 userContext.Account = userName;
                 userContext.Name = userName;
@@ -82,7 +83,7 @@ public class BasicAuthenticationHandler : AuthenticationHandler<BasicSchemeOptio
             return false;
 
         var unPackTicket = unPackPassword[2];
-        var validationTicket = SecurityHelper.MD5($"{unPackUserName}_{unPackAppId}_{unPackTotalSeconds}_{securityKey}", true);
+        var validationTicket = InfraHelper.Security.MD5($"{unPackUserName}_{unPackAppId}_{unPackTotalSeconds}_{securityKey}", true);
         return validationTicket.EqualsIgnoreCase(unPackTicket);
     }
 
@@ -93,7 +94,7 @@ public class BasicAuthenticationHandler : AuthenticationHandler<BasicSchemeOptio
         var (appId, securityKey) = Partners[userName];
 
         var currentTotalSeconds = DateTime.Now.GetTotalSeconds();
-        var md5String = SecurityHelper.MD5($"{userName}_{appId}_{currentTotalSeconds}_{securityKey}", true);
+        var md5String = InfraHelper.Security.MD5($"{userName}_{appId}_{currentTotalSeconds}_{securityKey}", true);
         var plainToken = $"{userName}:{appId}_{currentTotalSeconds}_{md5String}";
         byte[] byteToken = Encoding.UTF8.GetBytes(plainToken);
         return Convert.ToBase64String(byteToken);

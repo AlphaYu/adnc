@@ -14,9 +14,7 @@
 	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 	  </EmbeddedResource>
 	</ItemGroup>
-
 	<ItemGroup>
-		<PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.2.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.3">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -26,13 +24,15 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 	</ItemGroup>
-
 	<ItemGroup>
 		<ProjectReference Include="..\..\Shared\Adnc.Shared.WebApi\Adnc.Shared.WebApi.csproj" />
 		<ProjectReference Include="..\Adnc.Whse.Application.Contracts\Adnc.Whse.Application.Contracts.csproj" />
 		<ProjectReference Include="..\Adnc.Whse.Application\Adnc.Whse.Application.csproj" />
 	</ItemGroup>
-
+	<ItemGroup>
+		<PackageReference Include="Grpc.AspNetCore" Version="2.45.0" />
+		<Protobuf Include="..\..\Shared\Adnc.Shared.Rpc\Protos\Services\whsegrpc.proto" GrpcServices="Server" Link="Grpc\Protos\Services\whsegrpc.proto" ProtoRoot="..\..\Shared\Adnc.Shared.Rpc\" />
+	</ItemGroup>
 	<ProjectExtensions>
 		<VisualStudio>
 			<UserProperties properties_4launchsettings_1json__JsonSchema="http://json.schemastore.org/launchsettings.json" />

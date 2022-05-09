@@ -1,7 +1,4 @@
-﻿using Adnc.Whse.Domain.Aggregates.ProductAggregate;
-using Adnc.Whse.Domain.Aggregates.WarehouseAggregate;
-
-namespace Adnc.Whse.Application.Services;
+﻿namespace Adnc.Whse.Application.Services;
 
 /// <summary>
 /// 商品管理
@@ -11,26 +8,25 @@ public class ProductAppService : AbstractAppService, IProductAppService
     private readonly ProductManager _productMgr;
     private readonly IEfBasicRepository<Product> _productRepo;
     private readonly IEfBasicRepository<Warehouse> _warehouseInfoRepo;
-    private readonly IMaintRpcService _maintRpcSrv;
+    private readonly IMaintRestClient _maintRestClient;
 
     /// <summary>
     /// 商品管理构造函数
     /// </summary>
     /// <param name="productRepo"></param>
     /// <param name="warehouseInfoRepo"></param>
-    /// <param name="maintRpcSrv"></param>
+    /// <param name="maintRestClient"></param>
     /// <param name="productMgr"></param>
-    /// <param name="mapper"></param>
     public ProductAppService(
          IEfBasicRepository<Product> productRepo
         , IEfBasicRepository<Warehouse> warehouseInfoRepo
-        , IMaintRpcService maintRpcSrv
+        , IMaintRestClient maintRestClient
         , ProductManager productMgr)
     {
         _productMgr = productMgr;
         _productRepo = productRepo;
         _warehouseInfoRepo = warehouseInfoRepo;
-        _maintRpcSrv = maintRpcSrv;
+        _maintRestClient = maintRestClient;
     }
 
     /// <summary>
@@ -79,7 +75,7 @@ public class ProductAppService : AbstractAppService, IProductAppService
     {
         var product = await _productRepo.GetAsync(id);
 
-       product.SetPrice(input.Price);
+        product.SetPrice(input.Price);
 
         await _productRepo.UpdateAsync(product);
 
@@ -146,13 +142,17 @@ public class ProductAppService : AbstractAppService, IProductAppService
         if (productDtos.IsNotNullOrEmpty())
         {
             //调用maint微服务获取字典,组合商品状态信息
-            var dict = await _maintRpcSrv.GetDictAsync(Consts.ProdunctStatusId);
-            if (dict is not null && dict.Children.IsNotNullOrEmpty())
+            var restRpcResult = await _maintRestClient.GetDictAsync(RestClientConsts.ProdunctStatusId);
+            if (restRpcResult.IsSuccessStatusCode)
             {
-                productDtos.ForEach(x =>
+                var dict = restRpcResult.Content;
+                if (dict is not null && dict.Children.IsNotNullOrEmpty())
                 {
-                    x.StatusDescription = dict.Children.FirstOrDefault(d => d.Value == x.StatusCode.ToString())?.Name;
-                });
+                    productDtos.ForEach(x =>
+                    {
+                        x.StatusDescription = dict.Children.FirstOrDefault(d => d.Value == x.StatusCode.ToString())?.Name;
+                    });
+                }
             }
         }
 

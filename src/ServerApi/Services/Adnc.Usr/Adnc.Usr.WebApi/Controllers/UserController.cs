@@ -1,4 +1,6 @@
-﻿namespace Adnc.Usr.WebApi.Controllers;
+﻿using Adnc.Shared.Application.Contracts;
+
+namespace Adnc.Usr.WebApi.Controllers;
 
 /// <summary>
 /// 用户管理
@@ -8,9 +10,9 @@
 public class UserController : AdncControllerBase
 {
     private readonly IUserAppService _userService;
-    private readonly IUserContext _userContext;
+    private readonly UserContext _userContext;
 
-    public UserController(IUserAppService userService, IUserContext userContext)
+    public UserController(IUserAppService userService, UserContext userContext)
     {
         _userService = userService;
         _userContext = userContext;

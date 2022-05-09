@@ -84,7 +84,7 @@ public class MenuAppService : AbstractAppService, IMenuAppService
     {
         var result = new List<MenuNodeDto>();
 
-        var menus = (await _cacheService.GetAllMenusFromCacheAsync()).OrderBy(o => o.Levels).ThenBy(x => x.Ordinal);
+        var menus = (await _cacheService.GetAllMenusFromCacheAsync()).OrderBy(o => o.Levels).ThenBy(x => x.Ordinal).ToArray();
 
         var menuNodes = Mapper.Map<List<MenuNodeDto>>(menus);
         foreach (var node in menuNodes)

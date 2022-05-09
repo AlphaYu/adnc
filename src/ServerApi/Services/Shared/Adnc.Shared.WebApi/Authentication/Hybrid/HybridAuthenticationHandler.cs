@@ -13,6 +13,10 @@ public sealed class HybridAuthenticationHandler : AuthenticationHandler<HybridSc
 
     protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
     {
+        var endpoint = Context.GetEndpoint();
+        if (endpoint?.Metadata?.GetMetadata<IAllowAnonymous>() != null)
+            return await Task.FromResult(AuthenticateResult.NoResult());
+
         var authHeader = Request.Headers["Authorization"].ToString();
         if (authHeader.IsNotNullOrWhiteSpace())
         {
@@ -22,10 +26,6 @@ public sealed class HybridAuthenticationHandler : AuthenticationHandler<HybridSc
             if (authHeader.StartsWith(BasicDefaults.AuthenticationScheme, StringComparison.OrdinalIgnoreCase))
                 return await Context.AuthenticateAsync(BasicDefaults.AuthenticationScheme);
         }
-
-        var endpoint = Context.GetEndpoint();
-        if (endpoint?.Metadata?.GetMetadata<IAllowAnonymous>() != null)
-            return await Task.FromResult(AuthenticateResult.NoResult());
 
         Response.StatusCode = (int)HttpStatusCode.Forbidden;
         return await Task.FromResult(AuthenticateResult.Fail("Invalid Authorization Header"));

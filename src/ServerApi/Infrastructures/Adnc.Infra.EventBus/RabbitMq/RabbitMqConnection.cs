@@ -4,7 +4,6 @@ using Microsoft.Extensions.Options;
 using Polly;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Exceptions;
-using System;
 using System.Net.Sockets;
 
 namespace Adnc.Infra.EventBus.RabbitMq

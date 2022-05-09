@@ -4,7 +4,7 @@ namespace Adnc.Infra.Core.Guard;
 
 public static class GuardExtensions
 {
-    public static T GTZero<T>(this IGuard _, T value, string parameterName,string? message=null)
+    public static T GTZero<T>(this IGuard _, T value, string parameterName, string? message = null)
         where T : struct, IConvertible, IComparable<T>
     {
         var target = default(T);
@@ -23,7 +23,7 @@ public static class GuardExtensions
     public static T NotNullOrAny<T>(this IGuard _, T value, string parameterName, string? message = null)
         where T : ICollection
     {
-        if (value is null || value.Count<1)
+        if (value is null || value.Count < 1)
             throw new BusinessException(message ?? $"{nameof(parameterName)}不能是空");
         return value;
     }
@@ -37,4 +37,10 @@ public static class GuardExtensions
         return value;
     }
 
+    public static void ThrowIf(this IGuard _, Func<bool> predicate, string? message)
+    {
+        var result = predicate.Invoke();
+        if (result)
+            throw new BusinessException(message);
+    }
 }

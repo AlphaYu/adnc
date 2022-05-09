@@ -21,7 +21,7 @@ namespace Adnc.UnitTest.EFCore
             _cusRsp = _fixture.Container.GetRequiredService<IEfRepository<Customer>>();
             _cusFinanceRsp = _fixture.Container.GetRequiredService<IEfRepository<CustomerFinance>>();
             _cusLogsRsp = _fixture.Container.GetRequiredService<IEfRepository<CustomerTransactionLog>>();
-            if(IdGenerater.CurrentWorkerId<0)
+            if (IdGenerater.CurrentWorkerId < 0)
                 IdGenerater.SetWorkerId(1);
         }
 

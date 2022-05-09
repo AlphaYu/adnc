@@ -3,12 +3,7 @@ using Adnc.Infra.Core.Interceptor;
 using Castle.DynamicProxy;
 using Microsoft.Extensions.Logging;
 using Polly;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Adnc.Infra.Caching.Interceptor.Castle
 {

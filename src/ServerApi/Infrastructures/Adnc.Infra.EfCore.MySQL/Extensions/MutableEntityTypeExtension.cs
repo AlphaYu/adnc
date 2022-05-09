@@ -1,6 +1,4 @@
-﻿using System.Linq.Expressions;
-
-namespace Microsoft.EntityFrameworkCore.Metadata
+﻿namespace Microsoft.EntityFrameworkCore.Metadata
 {
     /// <summary>
     /// https://www.cnblogs.com/willick/p/13358580.html

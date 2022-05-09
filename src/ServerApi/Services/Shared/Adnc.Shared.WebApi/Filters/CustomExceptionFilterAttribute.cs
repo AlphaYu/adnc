@@ -1,4 +1,5 @@
 ﻿using Adnc.Infra.Core.Exceptions;
+using Adnc.Shared.Application.Contracts;
 using Microsoft.AspNetCore.Mvc.Controllers;
 
 namespace Microsoft.AspNetCore.Mvc.Filters;
@@ -23,7 +24,7 @@ public sealed class CustomExceptionFilterAttribute : ExceptionFilterAttribute
         var status = 500;
         var exception = context.Exception;
         var eventId = new EventId(exception.HResult);
-        var userContext = context.HttpContext.RequestServices.GetService<IUserContext>();
+        var userContext = context.HttpContext.RequestServices.GetService<UserContext>();
         var descriptor = context.ActionDescriptor as ControllerActionDescriptor;
         //string className = descriptor.ControllerName;
         //string method = descriptor.ActionName;

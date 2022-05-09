@@ -46,6 +46,8 @@ public class SsoAuthenticationMiddleware
             return;
         }
 
+        var statusCode = (HttpStatusCode)context.Response.StatusCode;
+
         //判断Api是否需要认证
         bool isNeedAuthentication = endpoint.Metadata.GetMetadata<IAllowAnonymous>() == null;
 
@@ -71,7 +73,7 @@ public class SsoAuthenticationMiddleware
             if (controller == "account" && action == "password")
             {
                 await _next(context);
-                if (StatusCodeChecker.Is2xx(context.Response.StatusCode))
+                if (statusCode.Is2xx())
                     await RemoveToken(context);
                 return;
             }
@@ -80,7 +82,7 @@ public class SsoAuthenticationMiddleware
             if (controller == "account" && action == "logout")
             {
                 await _next(context);
-                if (StatusCodeChecker.Is2xx(context.Response.StatusCode))
+                if (statusCode.Is2xx())
                 {
                     //主动注销，从cahce移除token
                     if (await CheckToken(context))
@@ -91,7 +93,7 @@ public class SsoAuthenticationMiddleware
         }
 
         //API需要认证，并且验证成功，需要检查accesstoken是否在缓存中。
-        if (StatusCodeChecker.Is2xx(context.Response.StatusCode))
+        if (statusCode.Is2xx())
         {
             //需要先检查token是否是最新的，再走其它中间件
             var result = await CheckToken(context);
@@ -166,7 +168,9 @@ public class SsoAuthenticationMiddleware
             }
         }
 
-        if (StatusCodeChecker.Is2xx(context.Response.StatusCode))
+        var statusCode = (HttpStatusCode)context.Response.StatusCode;
+
+        if (statusCode.Is2xx())
         {
             //var tokenTxt = JObject.Parse(responseContent).GetValue("token")?.ToString();
             var tokenTxt = string.Empty;

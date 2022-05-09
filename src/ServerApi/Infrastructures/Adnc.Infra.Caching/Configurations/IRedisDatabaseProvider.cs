@@ -1,5 +1,4 @@
 ﻿using StackExchange.Redis;
-using System.Collections.Generic;
 
 namespace Adnc.Infra.Caching.Configurations
 {

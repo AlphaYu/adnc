@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using System.Reflection;
-using System.Threading.Tasks;
 
 namespace Adnc.Infra.Caching.Interceptor.Castle
 {

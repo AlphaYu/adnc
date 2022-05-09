@@ -72,4 +72,11 @@ public static partial class ConfigurationExtensions
     /// <param name="configuration"></param>
     /// <returns></returns>
     public static IConfigurationSection GetHangfireSection(this IConfiguration configuration) => configuration.GetSection("Hangfire");
+
+    /// <summary>
+    /// 获取Kestrel配置
+    /// </summary>
+    /// <param name="configuration"></param>
+    /// <returns></returns>
+    public static IConfigurationSection GetKestrelSection(this IConfiguration configuration) => configuration.GetSection("Kestrel");
 }

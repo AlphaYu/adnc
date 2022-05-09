@@ -1,11 +1,7 @@
 ﻿using Adnc.Infra.Caching.Configurations;
 using Adnc.Infra.Caching.Core.Diagnostics;
 using Adnc.Infra.Caching.Core.Serialization;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Adnc.Infra.Caching.Core
 {

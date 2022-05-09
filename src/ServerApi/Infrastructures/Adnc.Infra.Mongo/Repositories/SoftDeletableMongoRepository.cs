@@ -2,10 +2,6 @@
 using Adnc.Infra.Mongo.Extensions;
 using Adnc.Infra.Mongo.Interfaces;
 using MongoDB.Driver;
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Adnc.Infra.Mongo
 {

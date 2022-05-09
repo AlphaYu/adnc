@@ -1,6 +1,6 @@
 ﻿namespace Adnc.Infra.Dapper.Repositories;
 
-public sealed class DapperRepository :  IAdoExecuterWithQuerierRepository
+public sealed class DapperRepository : IAdoExecuterWithQuerierRepository
 {
     internal IDbConnection? DbConnection { get; private set; }
 

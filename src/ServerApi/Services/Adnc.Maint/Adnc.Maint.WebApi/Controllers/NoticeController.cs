@@ -8,14 +8,8 @@
 public class NoticeController : AdncControllerBase
 {
     private readonly INoticeAppService _noticeService;
-    private readonly IUsrRpcService _usrRpcService;
 
-    public NoticeController(INoticeAppService noticeService
-        , IUsrRpcService usrRpcService)
-    {
-        _noticeService = noticeService;
-        _usrRpcService = usrRpcService;
-    }
+    public NoticeController(INoticeAppService noticeService) => _noticeService = noticeService;
 
     /// <summary>
     /// 获取通知消息列表
@@ -25,18 +19,4 @@ public class NoticeController : AdncControllerBase
     [HttpGet()]
     public async Task<ActionResult<List<NoticeDto>>> GetList([FromQuery] NoticeSearchDto search)
         => Result(await _noticeService.GetListAsync(search));
-
-    /// <summary>
-    /// 测试Basic认证用途，获取用户服务部门列表
-    /// </summary>
-    /// <returns></returns>
-    [HttpGet()]
-    [Route("depts")]
-    public async Task<IActionResult> GetDeptListAsync()
-    {
-        var depts = await _usrRpcService.GeDeptsAsync();
-        if (depts.IsNotNullOrEmpty())
-            return Ok(depts);
-        return NoContent();
-    }
 }
