@@ -58,10 +58,10 @@ public class ConsulWithGrpcDiscoverDelegatingHandler : DelegatingHandler
                 if (_kestrelConfig is not null)
                 {
                     var defaultEnpoint = _kestrelConfig.Endpoints.FirstOrDefault(x => x.Key.EqualsIgnoreCase("default")).Value;
-                    if (defaultEnpoint is not null || defaultEnpoint.Url.IsNotNullOrWhiteSpace())
+                    if (defaultEnpoint is not null && defaultEnpoint.Url.IsNotNullOrWhiteSpace())
                         port = new Uri(defaultEnpoint.Url).Port.ToString();
                 }
-                request.RequestUri = new Uri($"{scheme}://{host}:{port}/{pathAndQuery}");
+                request.RequestUri = new Uri($"{scheme}://{host}:{port}{pathAndQuery}");
             }
 
             if (request.RequestUri.Scheme.Equals("https", StringComparison.OrdinalIgnoreCase) && request.Version != new Version(2, 0))

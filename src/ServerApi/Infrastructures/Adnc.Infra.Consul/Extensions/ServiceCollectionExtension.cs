@@ -12,6 +12,7 @@ public static class AdncInfraConsulServiceCollectionExtension
         services.AddScoped<ITokenGenerator, DefaultTokenGenerator>();
         services.AddScoped<SimpleDiscoveryDelegatingHandler>();
         services.AddScoped<ConsulDiscoverDelegatingHandler>();
+        services.AddScoped<ConsulWithGrpcDiscoverDelegatingHandler>();
         services.AddSingleton(x => new ConsulClient(x => x.Address = new Uri(consulConfig.ConsulUrl)));
         services.AddSingleton<ConsulRegistration>();
         return services;
