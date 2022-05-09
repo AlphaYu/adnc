@@ -318,9 +318,4 @@ public abstract class AbstractWebApiDependencyRegistrar : IDependencyRegistrar
             }
         }
     }
-
-    /// <summary>
-    /// 注册Gprc服务端
-    /// </summary>
-    protected virtual void AddGrpcServer() => Services.AddGrpc();
 }

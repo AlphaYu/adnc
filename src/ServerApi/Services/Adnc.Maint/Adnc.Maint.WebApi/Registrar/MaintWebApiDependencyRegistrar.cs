@@ -11,6 +11,6 @@ public sealed class MaintWebApiDependencyRegistrar : AbstractWebApiDependencyReg
     public override void AddAdnc()
     {
         AddWebApiDefault();
-        AddGrpcServer();
+        Services.AddGrpc();
     }
 }

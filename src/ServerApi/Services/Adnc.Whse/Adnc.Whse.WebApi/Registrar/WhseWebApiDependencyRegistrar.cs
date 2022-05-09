@@ -1,5 +1,4 @@
-﻿using Adnc.Shared.Rpc.Grpc.Messages;
-using Adnc.Shared.WebApi.Registrar;
+﻿using Adnc.Shared.WebApi.Registrar;
 
 namespace Adnc.Whse.WebApi.Registrar;
 
@@ -12,6 +11,6 @@ public sealed class WhseWebApiDependencyRegistrar : AbstractWebApiDependencyRegi
     public override void AddAdnc()
     {
         AddWebApiDefault();
-        AddGrpcServer();
+        Services.AddGrpc();
     }
 }

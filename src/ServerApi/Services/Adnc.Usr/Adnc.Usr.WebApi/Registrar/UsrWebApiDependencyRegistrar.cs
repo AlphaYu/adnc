@@ -11,6 +11,6 @@ public sealed class UsrWebApiDependencyRegistrar : AbstractWebApiDependencyRegis
     public override void AddAdnc()
     {
         AddWebApiDefault<PermissionHandlerLocal>();
-        AddGrpcServer();
+        Services.AddGrpc();
     }
 }
