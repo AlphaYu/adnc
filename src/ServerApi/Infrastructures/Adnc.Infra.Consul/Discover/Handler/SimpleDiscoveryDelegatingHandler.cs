@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using System.Net.Http.Headers;
 
-namespace Adnc.Infra.Consul.Discover
+namespace Adnc.Infra.Consul.Discover.Handler
 {
     //https://www.siakabaro.com/use-http-2-with-httpclient-in-net-6-0/
     public class SimpleDiscoveryDelegatingHandler : DelegatingHandler

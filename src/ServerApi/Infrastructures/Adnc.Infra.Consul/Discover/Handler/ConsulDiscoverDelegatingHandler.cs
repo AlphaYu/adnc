@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using System.Net.Http.Headers;
 
-namespace Adnc.Infra.Consul.Discover
+namespace Adnc.Infra.Consul.Discover.Handler
 {
     public class ConsulDiscoverDelegatingHandler : DelegatingHandler
     {
