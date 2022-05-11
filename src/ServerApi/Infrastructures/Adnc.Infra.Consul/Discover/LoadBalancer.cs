@@ -18,7 +18,7 @@
 
     public class RoundRobinLoadBalancer : ILoadBalancer
     {
-        private readonly object _lock = new object();
+        private readonly object _lock = new();
         private int _index = 0;
 
         public string Resolve(IList<string> services)
@@ -36,7 +36,7 @@
 
     public static class TypeLoadBalancer
     {
-        public static ILoadBalancer RandomLoad = new RandomLoadBalancer();
-        public static ILoadBalancer RoundRobinLoad = new RoundRobinLoadBalancer();
+        public static ILoadBalancer RandomLoad => new RandomLoadBalancer();
+        public static ILoadBalancer RoundRobinLoad => new RoundRobinLoadBalancer();
     }
 }
