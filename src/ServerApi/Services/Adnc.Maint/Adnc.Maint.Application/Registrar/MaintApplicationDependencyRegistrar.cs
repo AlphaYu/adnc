@@ -1,5 +1,4 @@
 ﻿using Adnc.Shared.Application.Registrar;
-using Adnc.Shared.Rpc.Grpc.Services;
 using System.Reflection;
 
 namespace Adnc.Maint.Application.Registrar;

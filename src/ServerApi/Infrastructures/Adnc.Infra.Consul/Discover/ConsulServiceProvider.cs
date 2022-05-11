@@ -4,20 +4,12 @@
     {
         private readonly ConsulClient _consulClient;
 
-        public ConsulServiceProvider(string uri)
+        public ConsulServiceProvider(ConsulClient consulClient)
         {
-            _consulClient = new ConsulClient(consulConfig =>
-            {
-                consulConfig.Address = new Uri(uri);
-            });
-        }
+            if (consulClient is null)
+                throw new ArgumentNullException(nameof(consulClient));
 
-        public ConsulServiceProvider(Uri uri)
-        {
-            _consulClient = new ConsulClient(consulConfig =>
-            {
-                consulConfig.Address = uri;
-            });
+            _consulClient = consulClient;
         }
 
         public async Task<IList<ServiceEntry>> GetAllServicesAsync(string serviceName)

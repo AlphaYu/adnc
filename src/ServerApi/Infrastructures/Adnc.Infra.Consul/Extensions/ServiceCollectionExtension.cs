@@ -1,4 +1,5 @@
-﻿using Adnc.Infra.Consul.Registrar;
+﻿using Adnc.Infra.Consul.Discover.Handler;
+using Adnc.Infra.Consul.Registrar;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -12,9 +13,9 @@ public static class AdncInfraConsulServiceCollectionExtension
         services.AddScoped<ITokenGenerator, DefaultTokenGenerator>();
         services.AddScoped<SimpleDiscoveryDelegatingHandler>();
         services.AddScoped<ConsulDiscoverDelegatingHandler>();
-        services.AddScoped<ConsulWithGrpcDiscoverDelegatingHandler>();
         services.AddSingleton(x => new ConsulClient(x => x.Address = new Uri(consulConfig.ConsulUrl)));
         services.AddSingleton<ConsulRegistration>();
+        services.AddSingleton<IConsulServiceProvider, ConsulServiceProvider>();
         return services;
     }
 }

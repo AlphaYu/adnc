@@ -1,10 +1,14 @@
-﻿using Adnc.Infra.Consul.Discover;
+﻿using Adnc.Infra.Consul.Discover.GrpcResolver;
+using Adnc.Infra.Consul.Discover.Handler;
 using Adnc.Infra.EfCore.MySQL;
 using Adnc.Infra.Mongo.Configuration;
 using Adnc.Infra.Mongo.Extensions;
 using Adnc.Shared.Application.Channels;
 using DotNetCore.CAP;
+using Grpc.Core;
+using Grpc.Net.Client.Balancer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Refit;
 using SkyApm.Diagnostics.CAP;
 
@@ -217,37 +221,6 @@ public abstract class AbstractApplicationDependencyRegistrar : IDependencyRegist
                 x.PathMatch = $"/{ServiceInfo.ShortName}/cap";
                 x.UseAuth = false;
             });
-
-            /* CAP目前不需要自动注册，先注释
-            //必须是生产环境才注册cap服务到consul
-            if ((_environment.IsProduction() || _environment.IsStaging()))
-            {
-                x.UseDiscovery(discoverOptions =>
-                {
-                    var consulConfig = _configuration.GetConsulSection().Get<ConsulConfig>();
-                    var consulAdderss = new Uri(consulConfig.ConsulUrl);
-
-                    var hostIps = NetworkInterface
-                                                                    .GetAllNetworkInterfaces()
-                                                                    .Where(network => network.OperationalStatus == OperationalStatus.Up)
-                                                                    .Select(network => network.GetIPProperties())
-                                                                    .OrderByDescending(properties => properties.GatewayAddresses.Count)
-                                                                    .SelectMany(properties => properties.UnicastAddresses)
-                                                                    .Where(address => !IPAddress.IsLoopback(address.Address) && address.Address.AddressFamily == AddressFamily.InterNetwork)
-                                                                    .ToArray();
-
-                    var currenServerAddress = hostIps.First().Address.MapToIPv4().ToString();
-
-                    discoverOptions.DiscoveryServerHostName = consulAdderss.Host;
-                    discoverOptions.DiscoveryServerPort = consulAdderss.Port;
-                    discoverOptions.CurrentNodeHostName = currenServerAddress;
-                    discoverOptions.CurrentNodePort = 80;
-                    discoverOptions.NodeId = DateTime.Now.Ticks.ToString();
-                    discoverOptions.NodeName = _serviceInfo.FullName.Replace("webapi", "cap");
-                    discoverOptions.MatchPath = $"/{_serviceInfo.ShortName}/cap";
-                });
-            }
-            */
         });
     }
 
@@ -298,14 +271,16 @@ public abstract class AbstractApplicationDependencyRegistrar : IDependencyRegist
 
         var prefix = serviceName[..7];
         bool isConsulAdderss = prefix != "http://" && prefix != "https:/";
-        //如果参数是服务名字，那么需要从consul获取地址
-        var baseAddress = isConsulAdderss ? $"http://{serviceName}" : serviceName;
-
-        var clientbuilder = Services.AddGrpcClient<TGrpcClient>(options => options.Address = new Uri(baseAddress));
+        var baseAddress = serviceName;
         if (isConsulAdderss)
-            clientbuilder.AddHttpMessageHandler<ConsulWithGrpcDiscoverDelegatingHandler>();
-        else
-            clientbuilder.AddHttpMessageHandler<SimpleDiscoveryDelegatingHandler>();
+        {
+            //如果参数是服务名字，那么需要从consul获取地址
+            baseAddress = $"consul://{serviceName}";
+            Services.TryAddSingleton<ResolverFactory, ConsulGrpcResolverFactory>();
+        }
+        var clientbuilder = Services.AddGrpcClient<TGrpcClient>(options => options.Address = new Uri(baseAddress))
+                                                    .ConfigureChannel(options => options.Credentials = ChannelCredentials.Insecure)
+                                                    .AddHttpMessageHandler<SimpleDiscoveryDelegatingHandler>();
         ////添加polly相关策略
         policies?.ForEach(policy => clientbuilder.AddPolicyHandler(policy));
     }
