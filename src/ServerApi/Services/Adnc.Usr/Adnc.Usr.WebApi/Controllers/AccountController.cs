@@ -117,7 +117,7 @@ public class AccountController : AdncControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public IActionResult GetMiniProfilerInfo()
     {
-        var html = MiniProfiler.Current.RenderIncludes(HttpContextHelper.GetCurrentHttpContext());
+        var html = MiniProfiler.Current.RenderIncludes(InfraHelper.Accessor.GetCurrentHttpContext());
         return Ok(html.Value);
     }
 }

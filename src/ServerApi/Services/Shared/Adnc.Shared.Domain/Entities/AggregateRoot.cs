@@ -7,5 +7,5 @@ public abstract class AggregateRoot : DomainEntity, IConcurrency, IEfEntity<long
 {
     public byte[] RowVersion { get; set; }
 
-    public Lazy<IEventPublisher> EventPublisher => new(() => HttpContextHelper.GetCurrentHttpContext().RequestServices.GetRequiredService<IEventPublisher>());
+    public Lazy<IEventPublisher> EventPublisher => new(() => InfraHelper.Accessor.GetCurrentHttpContext().RequestServices.GetRequiredService<IEventPublisher>());
 }

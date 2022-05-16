@@ -7,6 +7,5 @@ global using Adnc.Shared.Application.Contracts.ResultModels;
 global using Adnc.Shared.Consts.Caching.Maint;
 global using Adnc.Shared.Consts.Entity.Maint;
 global using FluentValidation;
-global using System;
-global using System.Collections.Generic;
-global using System.Threading.Tasks;
+
+

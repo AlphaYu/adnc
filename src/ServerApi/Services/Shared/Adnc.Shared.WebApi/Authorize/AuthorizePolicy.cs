@@ -2,5 +2,5 @@
 
 public static class AuthorizePolicy
 {
-    public const string Default = "default";
+    public static readonly string Default = "default";
 }

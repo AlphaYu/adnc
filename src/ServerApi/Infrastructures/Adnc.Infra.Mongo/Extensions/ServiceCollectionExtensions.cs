@@ -22,6 +22,9 @@ namespace Adnc.Infra.Mongo.Extensions
         public static MongoConfigurationBuilder AddAdncInfraMongo<TContext>(this IServiceCollection services, Action<MongoRepositoryOptions> configurator)
             where TContext : IMongoContext
         {
+            if (services.HasRegistered(nameof(AddAdncInfraMongo)))
+                return default;
+
             services.Configure(configurator);
             services.AddSingleton(typeof(IMongoContext), typeof(TContext));
             services.AddTransient(typeof(IMongoRepository<>), typeof(MongoRepository<>));

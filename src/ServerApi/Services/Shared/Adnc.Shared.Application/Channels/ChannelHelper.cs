@@ -1,6 +1,6 @@
 ﻿using System.Threading.Channels;
 
-namespace Adnc.Infra.Helper
+namespace Adnc.Shared.Application.Channels
 {
     public class ChannelHelper<TModel>
     {

@@ -1,20 +1,16 @@
-﻿using Microsoft.AspNetCore.Http;
-using System.Linq.Expressions;
-using System.Reflection;
-
-namespace Adnc.Infra.Helper;
+﻿namespace Adnc.Infra.Helper;
 
 /// <summary>
 /// “传统”方式获取当前HttpContext
 /// https://www.cnblogs.com/artech/p/how-to-get-httpcontext.html
 /// </summary>
-public static class HttpContextHelper
+public static partial class AccessorExtentions
 {
     private static Func<object> _asyncLocalAccessor;
     private static Func<object, object> _holderAccessor;
     private static Func<object, HttpContext> _httpContextAccessor;
 
-    public static HttpContext GetCurrentHttpContext()
+    public static HttpContext GetCurrentHttpContext(this IAccessor _)
     {
         var asyncLocal = (_asyncLocalAccessor ??= CreateAsyncLocalAccessor())();
         if (asyncLocal == null)

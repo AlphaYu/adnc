@@ -43,7 +43,7 @@ public class AccountAppService : AbstractAppService, IAccountAppService
         if (user == null)
             return Problem(HttpStatusCode.BadRequest, "用户名或密码错误");
 
-        var httpContext = HttpContextHelper.GetCurrentHttpContext();
+        var httpContext = InfraHelper.Accessor.GetCurrentHttpContext();
         var channelWriter = ChannelHelper<LoginLog>.Instance.Writer;
         var log = new LoginLog
         {

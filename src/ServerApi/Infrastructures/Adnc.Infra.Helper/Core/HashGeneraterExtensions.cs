@@ -1,7 +1,4 @@
-﻿using System.Security.Cryptography;
-using System.Text;
-
-namespace Adnc.Infra.Helper;
+﻿namespace Adnc.Infra.Helper;
 
 /// <summary>
 /// HashHelper

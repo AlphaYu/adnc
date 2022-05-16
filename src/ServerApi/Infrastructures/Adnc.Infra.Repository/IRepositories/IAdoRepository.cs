@@ -1,6 +1,6 @@
 ﻿namespace Adnc.Infra.IRepositories;
 
-public interface IAdoRepository
+public interface IAdoRepository : IRepository
 {
     void ChangeOrSetDbConnection(IDbConnection dbConnection);
 

@@ -1,6 +1,4 @@
-﻿using System.Text;
-
-namespace Adnc.Infra.Helper;
+﻿namespace Adnc.Infra.Helper;
 
 /// <summary>
 /// 安全助手

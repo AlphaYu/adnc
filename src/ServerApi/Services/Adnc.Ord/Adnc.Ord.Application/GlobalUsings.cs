@@ -1,6 +1,6 @@
 ﻿global using Adnc.Infra.Caching;
 global using Adnc.Infra.Core.Guard;
-global using Adnc.Infra.Helper;
+global using Adnc.Infra.IdGenerater.Yitter;
 global using Adnc.Infra.IRepositories;
 global using Adnc.Ord.Application.Contracts.Dtos;
 global using Adnc.Ord.Application.Contracts.Services;
@@ -18,8 +18,4 @@ global using Microsoft.EntityFrameworkCore;
 global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Logging;
 global using MongoDB.Driver;
-global using System;
-global using System.Collections.Generic;
-global using System.Linq;
 global using System.Linq.Expressions;
-global using System.Threading.Tasks;

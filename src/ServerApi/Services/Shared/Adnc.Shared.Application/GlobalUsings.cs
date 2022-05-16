@@ -16,7 +16,6 @@ global using Adnc.Shared.Application.Contracts;
 global using Adnc.Shared.Application.Contracts.Attributes;
 global using Adnc.Shared.Application.Contracts.Interfaces;
 global using Adnc.Shared.Application.Contracts.ResultModels;
-global using Adnc.Shared.Application.IdGenerater;
 global using Adnc.Shared.Application.Interceptors;
 global using Adnc.Shared.Consts.Caching.Common;
 global using Castle.DynamicProxy;
@@ -33,13 +32,12 @@ global using SkyApm.Diagnostics;
 global using SkyApm.Tracing;
 global using SkyApm.Tracing.Segments;
 global using SkyApm.Utilities.DependencyInjection;
-global using System;
-global using System.Collections.Generic;
+
+
 global using System.Diagnostics.CodeAnalysis;
-global using System.Linq;
+
 global using System.Linq.Expressions;
 global using System.Net;
 global using System.Reflection;
 global using System.Text.Json;
 global using System.Threading;
-global using System.Threading.Tasks;

@@ -51,6 +51,7 @@ public abstract class AbstractApplicationDependencyRegistrar : IDependencyRegist
     {
         Services.AddValidatorsFromAssembly(ContractsLayerAssembly, ServiceLifetime.Scoped);
         Services.AddAdncInfraAutoMapper(ApplicationLayerAssembly);
+        Services.AddAdncInfraYitterIdGenerater(RedisSection);
         AddApplicationSharedServices();
         AddConsulServices();
         AddCachingServices();
@@ -75,9 +76,7 @@ public abstract class AbstractApplicationDependencyRegistrar : IDependencyRegist
         Services.AddScoped<UowInterceptor>();
         Services.AddScoped<UowAsyncInterceptor>();
         Services.AddSingleton<IBloomFilterFactory, DefaultBloomFilterFactory>();
-        Services.AddSingleton<WorkerNode>();
         Services.AddHostedService<CachingHostedService>();
-        Services.AddHostedService<WorkerNodeHostedService>();
         Services.AddHostedService<ChannelConsumersHostedService>();
         Services.AddHostedService<BloomFilterHostedService>();
     }

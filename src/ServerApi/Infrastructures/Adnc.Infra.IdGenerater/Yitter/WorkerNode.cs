@@ -1,8 +1,6 @@
-﻿namespace Adnc.Shared.Application.IdGenerater;
+﻿namespace Adnc.Infra.IdGenerater.Yitter;
 
-using IdGenerater = Adnc.Infra.Helper.IdGenerater;
-
-public class WorkerNode
+public sealed class WorkerNode
 {
     private readonly ILogger<WorkerNode> _logger;
     private readonly IRedisProvider _redisProvider;
@@ -17,9 +15,9 @@ public class WorkerNode
         _logger = logger;
     }
 
-    public async Task InitWorkerNodesAsync(string serviceName)
+    internal async Task InitWorkerNodesAsync(string serviceName)
     {
-        var workerIdSortedSetCacheKey = string.Format(CachingConsts.WorkerIdSortedSetCacheKey, serviceName);
+        var workerIdSortedSetCacheKey = GetWorkerIdCacheKey(serviceName);
 
         if (!_redisProvider.KeyExists(workerIdSortedSetCacheKey))
         {
@@ -58,9 +56,9 @@ public class WorkerNode
             _logger.LogInformation("Exists WorkerNodes:{0}", workerIdSortedSetCacheKey);
     }
 
-    public async Task<long> GetWorkerIdAsync(string serviceName)
+    internal async Task<long> GetWorkerIdAsync(string serviceName)
     {
-        var workerIdSortedSetCacheKey = string.Format(CachingConsts.WorkerIdSortedSetCacheKey, serviceName);
+        var workerIdSortedSetCacheKey = GetWorkerIdCacheKey(serviceName);
 
         var scirpt = @"local workerids = redis.call('ZRANGE', @key, @start,@stop)
                                     redis.call('ZADD',@key,@score,workerids[1])
@@ -75,15 +73,17 @@ public class WorkerNode
         return workerId;
     }
 
-    public async Task RefreshWorkerIdScoreAsync(string serviceName, long workerId, double? workerIdScore = null)
+    internal async Task RefreshWorkerIdScoreAsync(string serviceName, long workerId, double? workerIdScore = null)
     {
         if (workerId < 0 || workerId > IdGenerater.MaxWorkerId)
             throw new Exception(string.Format("worker Id can't be greater than {0} or less than 0", IdGenerater.MaxWorkerId));
 
-        var workerIdSortedSetCacheKey = string.Format(CachingConsts.WorkerIdSortedSetCacheKey, serviceName);
+        var workerIdSortedSetCacheKey = GetWorkerIdCacheKey(serviceName);
 
         var score = workerIdScore == null ? DateTime.Now.GetTotalMilliseconds() : workerIdScore.Value;
         await _redisProvider.ZAddAsync(workerIdSortedSetCacheKey, new Dictionary<long, double> { { workerId, score } });
         _logger.LogDebug("Refresh WorkerNodes:{0}:{1}", workerId, score);
     }
+
+    internal static string GetWorkerIdCacheKey(string serviceName) => $"adnc:{serviceName}:workids";
 }

@@ -5,12 +5,15 @@
         public static IHost ChangeThreadPoolSettings(this IHost host)
         {
             var poolOptions = host.Services.GetService(typeof(IOptionsMonitor<ThreadPoolSettings>)) as IOptionsMonitor<ThreadPoolSettings>;
-            return ChangeThreadPoolSettings(host, poolOptions);
+            if(poolOptions is not null)
+                ChangeThreadPoolSettings(host, poolOptions);
+            return host;
         }
 
         public static IHost ChangeThreadPoolSettings(this IHost host, IOptionsMonitor<ThreadPoolSettings> poolOptions)
         {
-            var logger = host.Services.GetService(typeof(ILogger<IHost>)) as ILogger<IHost>;
+            if (host.Services.GetService(typeof(ILogger<IHost>)) is not ILogger<IHost> logger)
+                throw new NullReferenceException(nameof(logger));
 
             poolOptions.OnChange(poolSetting =>
             {

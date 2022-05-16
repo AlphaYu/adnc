@@ -1,8 +1,6 @@
-﻿namespace Adnc.Shared.Application.IdGenerater;
+﻿namespace Adnc.Infra.IdGenerater.Yitter;
 
-using IdGenerater = Adnc.Infra.Helper.IdGenerater;
-
-public class WorkerNodeHostedService : BackgroundService
+public sealed class WorkerNodeHostedService : BackgroundService
 {
     private readonly ILogger<WorkerNodeHostedService> _logger;
     private readonly string _serviceName;

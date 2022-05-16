@@ -1,11 +1,11 @@
 ﻿using Yitter.IdGenerator;
 
-namespace Adnc.Infra.Helper;
+namespace Adnc.Infra.IdGenerater.Yitter;
 
 public static class IdGenerater
 {
     private static bool _isSet = false;
-    private static object _locker = new();
+    private static readonly object _locker = new();
 
     public static byte WorkerIdBitLength => 6;
     public static byte SeqBitLength => 6;
