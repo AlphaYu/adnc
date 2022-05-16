@@ -10,6 +10,9 @@ node_modules
 /src/ClientApp/dist
 /src/ServerApi/.sonarqube
 /src/ServerApi/.sonarlint
+/src/ServerApi/Services/Adnc.Usr/Adnc.Usr.Migrations/Migrations
+/src/ServerApi/Services/Adnc.Maint/Adnc.Maint.Migrations/Migrations
+/src/ServerApi/Services/Adnc.Cus/Adnc.Cus.Migrations/Migrations
 /src/ServerApi/Services/Adnc.Ord/Adnc.Ord.Migrations/Migrations
 /src/ServerApi/Services/Adnc.Whse/Adnc.Whse.Migrations/Migrations
 /src/ClientApp/target/npmlist.json
