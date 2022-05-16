@@ -1,4 +1,5 @@
 ﻿using Adnc.Infra.Caching.Configurations;
+using System;
 
 namespace Adnc.UnitTest.Fixtures;
 

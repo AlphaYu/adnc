@@ -1,7 +1,11 @@
 ﻿using Adnc.Cus.Entities;
 using Adnc.Infra.EfCore.MySQL;
-using Adnc.Infra.Helper;
+using Adnc.Infra.IdGenerater.Yitter;
 using Adnc.Infra.IRepositories;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Adnc.UnitTest.EFCore
 {

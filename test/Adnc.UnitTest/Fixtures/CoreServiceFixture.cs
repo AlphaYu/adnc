@@ -4,6 +4,7 @@ using Adnc.Infra.Entities;
 using Adnc.Infra.EventBus.Cap;
 using Adnc.Infra.IRepositories;
 using DotNetCore.CAP;
+using System;
 
 namespace Adnc.UnitTest.Fixtures;
 

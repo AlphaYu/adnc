@@ -1,6 +1,7 @@
 ﻿using Adnc.Cus.Entities;
-using Adnc.Infra.Helper;
+using Adnc.Infra.IdGenerater.Yitter;
 using Adnc.Infra.IRepositories;
+using System.Threading.Tasks;
 
 namespace Adnc.UnitTest.CoreService
 {

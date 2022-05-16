@@ -2,6 +2,7 @@
 using Adnc.Infra.EfCore.MySQL;
 using Adnc.Infra.Entities;
 using Adnc.Infra.IRepositories;
+using System;
 
 namespace Adnc.UnitTest.Fixtures
 {
