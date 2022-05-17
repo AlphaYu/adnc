@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 	<Import Project="..\..\build\common.props" />
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'"/>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'" />
 
 	<ItemGroup>
 		<PackageReference Include="Ocelot.Provider.Consul" Version="18.0.0" />
@@ -9,11 +9,6 @@
 		<PackageReference Include="System.Runtime.Handles" Version="4.3.0" />
 		<PackageReference Include="System.IO.FileSystem.Primitives" Version="4.3.0" />
 		<PackageReference Include="System.Runtime.InteropServices" Version="4.3.0" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Compile Remove="Controllers\AuthController.cs" />
-		<Compile Remove="WebUtiliy\JwtTokenUtil.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -28,18 +23,13 @@
 		<Content Update="Config\ocelot.consul.json">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</Content>
-		<Content Update="Config\ocelot.development.json">
+		<Content Update="Config\ocelot.direct.json">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</Content>
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="Controllers\" />
-		<Folder Include="WebUtiliy\" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<ProjectReference Include="..\Adnc.Infra.Consul\Adnc.Infra.Consul.csproj" />
+	  <ProjectReference Include="..\..\Infrastructures\Adnc.Infra.Consul\Adnc.Infra.Consul.csproj" />
 	</ItemGroup>
 
 	<ProjectExtensions>
