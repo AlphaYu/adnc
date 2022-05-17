@@ -50,4 +50,14 @@ public static class ApplicationBuilderExtension
         if (environment.IsProduction())
             RegisterToConsul(app);
     }
+
+    public static void RegisterToConsulIfProductionNotK8S(this IApplicationBuilder app)
+    {
+        var configuration = app.ApplicationServices.GetRequiredService<IConfiguration>();
+        var environment = app.ApplicationServices.GetRequiredService<IHostEnvironment>();
+        if (environment.IsProduction() && !configuration.IsK8S())
+        {
+            RegisterToConsulIfProduction(app);
+        }
+    }
 }

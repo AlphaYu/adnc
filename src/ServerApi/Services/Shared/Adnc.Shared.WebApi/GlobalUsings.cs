@@ -1,4 +1,5 @@
 ﻿global using Adnc.Infra.Core.Configuration;
+global using Adnc.Infra.Core.DependencyInjection;
 global using Adnc.Infra.Core.Interfaces;
 global using Adnc.Infra.Core.Json;
 global using Adnc.Infra.Helper;
@@ -33,14 +34,12 @@ global using Microsoft.IdentityModel.Logging;
 global using Microsoft.IdentityModel.Tokens;
 global using Microsoft.OpenApi.Models;
 global using MongoDB.Driver;
-
-
+global using Prometheus;
+global using Prometheus.DotNetRuntime;
 global using System.IdentityModel.Tokens.Jwt;
 global using System.IO;
-
 global using System.Net;
 global using System.Reflection;
 global using System.Security.Claims;
 global using System.Text;
 global using System.Text.Json;
-global using System.Threading;

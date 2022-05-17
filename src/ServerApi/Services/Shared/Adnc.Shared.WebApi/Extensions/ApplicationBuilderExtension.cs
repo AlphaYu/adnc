@@ -1,6 +1,4 @@
-﻿using Adnc.Infra.Core.DependencyInjection;
-
-namespace Microsoft.AspNetCore.Builder;
+﻿namespace Microsoft.AspNetCore.Builder;
 
 public static class ApplicationBuilderExtension
 {
@@ -57,6 +55,13 @@ public static class ApplicationBuilderExtension
             ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
         });
         app.UseRouting();
+        app.UseHttpMetrics();
+        DotNetRuntimeStatsBuilder.Customize()
+                                            .WithContentionStats()
+                                            .WithGcStats()
+                                            .WithThreadPoolStats()
+                                            .StartCollecting()
+                                            ;
         beforeAuthentication?.Invoke(app);
         app.UseAuthentication();
         app.UseSSOAuthentication(configuration.IsSSOAuthentication());
@@ -65,6 +70,7 @@ public static class ApplicationBuilderExtension
         app.UseEndpoints(endpoints =>
         {
             endpointRoute?.Invoke(endpoints);
+            endpoints.MapMetrics();
             endpoints.MapControllers().RequireAuthorization();
         });
         return app;

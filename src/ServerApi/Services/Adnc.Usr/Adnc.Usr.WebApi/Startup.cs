@@ -2,7 +2,8 @@ namespace Adnc.Usr.WebApi;
 
 public class Startup
 {
-    public void ConfigureServices(IServiceCollection services) => services.GetWebApiRegistrar().AddAdnc();
+    public void ConfigureServices(IServiceCollection services)
+        => services.GetWebApiRegistrar().AddAdnc();
 
     public void Configure(IApplicationBuilder app)
     {
@@ -11,6 +12,6 @@ public class Startup
             endpoint.MapGrpcService<Grpc.AuthGrpcServer>();
             endpoint.MapGrpcService<Grpc.UsrGrpcServer>();
         });
-        app.RegisterToConsulIfProduction();
+        app.RegisterToConsulIfProductionNotK8S();
     }
 }

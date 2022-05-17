@@ -32,10 +32,7 @@ global using SkyApm.Diagnostics;
 global using SkyApm.Tracing;
 global using SkyApm.Tracing.Segments;
 global using SkyApm.Utilities.DependencyInjection;
-
-
 global using System.Diagnostics.CodeAnalysis;
-
 global using System.Linq.Expressions;
 global using System.Net;
 global using System.Reflection;

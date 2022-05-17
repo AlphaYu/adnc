@@ -9,6 +9,7 @@ using Grpc.Core;
 using Grpc.Net.Client.Balancer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Prometheus;
 using Refit;
 using SkyApm.Diagnostics.CAP;
 
@@ -244,7 +245,9 @@ public abstract class AbstractApplicationDependencyRegistrar : IDependencyRegist
         };
         var clientbuilder = Services.AddRefitClient<TRestClient>(refitSettings)
                                                      .SetHandlerLifetime(TimeSpan.FromMinutes(2))
-                                                     .ConfigureHttpClient(httpClient => httpClient.BaseAddress = new Uri(baseAddress));
+                                                     .ConfigureHttpClient(httpClient => httpClient.BaseAddress = new Uri(baseAddress))
+                                                     //.UseHttpClientMetrics()
+                                                     ;
         if (isConsulAdderss)
             clientbuilder.AddHttpMessageHandler<ConsulDiscoverDelegatingHandler>();
         else
