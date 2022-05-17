@@ -14,7 +14,7 @@ namespace Adnc.Infra.EfCore.Repositories
 
         public EfRepository(AdncDbContext dbContext, IAdoQuerierRepository adoQuerier = null)
             : base(dbContext)
-        => _adoQuerier = adoQuerier;
+            => _adoQuerier = adoQuerier;
 
         public IAdoQuerierRepository AdoQuerier
         {
