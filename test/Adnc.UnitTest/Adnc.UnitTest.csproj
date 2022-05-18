@@ -2,6 +2,7 @@
 
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
 		<IsPackable>false</IsPackable>
 	</PropertyGroup>
 
@@ -9,10 +10,6 @@
 		<Compile Remove="ApplicationServicesTests.cs" />
 		<Compile Remove="MyDatabaseTests.cs" />
 		<Compile Remove="RemoteTests.cs" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <None Remove="aevur0tz.gaa~" />
 	</ItemGroup>
 
 	<ItemGroup>

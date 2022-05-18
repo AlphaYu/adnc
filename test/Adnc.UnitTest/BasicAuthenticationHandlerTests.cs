@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication.Basic;
-
-namespace Adnc.UnitTest.BasicAuthentication;
+﻿namespace Adnc.UnitTest.BasicAuthentication;
 
 public class BasicAuthenticationHandlerTests
 {

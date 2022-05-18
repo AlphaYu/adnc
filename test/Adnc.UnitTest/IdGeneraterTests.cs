@@ -1,8 +1,4 @@
-﻿using Adnc.Infra.IdGenerater.Yitter;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
-namespace Adnc.UnitTest.Helper;
+﻿namespace Adnc.UnitTest.Helper;
 
 public class IdGeneraterTests
 {
