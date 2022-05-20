@@ -2,7 +2,7 @@ using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 using Ocelot.Provider.Consul;
 
-namespace Adnc.Ocelot;
+namespace Adnc.Gateway.Ocelot;
 
 public class Startup
 {

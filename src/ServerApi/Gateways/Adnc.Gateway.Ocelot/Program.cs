@@ -1,6 +1,6 @@
 using Adnc.Infra.Core.Configuration;
 
-namespace Adnc.Ocelot;
+namespace Adnc.Gateway.Ocelot;
 
 internal class Program
 {
