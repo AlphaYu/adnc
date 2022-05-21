@@ -4,12 +4,12 @@ using Adnc.Infra.EfCore.MySQL;
 using Adnc.Infra.Mongo.Configuration;
 using Adnc.Infra.Mongo.Extensions;
 using Adnc.Shared.Application.Channels;
+using Adnc.Shared.Rpc;
 using DotNetCore.CAP;
 using Grpc.Core;
 using Grpc.Net.Client.Balancer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Prometheus;
 using Refit;
 using SkyApm.Diagnostics.CAP;
 
@@ -233,28 +233,41 @@ public abstract class AbstractApplicationDependencyRegistrar : IDependencyRegist
     protected virtual void AddRestClient<TRestClient>(string serviceName, List<IAsyncPolicy<HttpResponseMessage>> policies)
      where TRestClient : class
     {
-        var prefix = serviceName[..7];
-        bool isConsulAdderss = prefix != "http://" && prefix != "https:/";
-        //如果参数是服务名字，那么需要从consul获取地址
-        var baseAddress = isConsulAdderss ? $"http://{serviceName}" : serviceName;
+        var addressNode = RpcAddressInfo.GetAddressNode(serviceName);
+        if (addressNode is null)
+            throw new NullReferenceException(nameof(addressNode));
+
+        var registeredType = Configuration.GetRegisteredType().ToLower();
 
         //注册RefitClient,设置httpclient生命周期时间，默认也是2分钟。
-        var refitSettings = new RefitSettings()
-        {
-            ContentSerializer = new SystemTextJsonContentSerializer(SystemTextJson.GetAdncDefaultOptions())
-        };
+        var contentSerializer = new SystemTextJsonContentSerializer(SystemTextJson.GetAdncDefaultOptions());
+        var refitSettings = new RefitSettings(contentSerializer);
         var clientbuilder = Services.AddRefitClient<TRestClient>(refitSettings)
-                                                     .SetHandlerLifetime(TimeSpan.FromMinutes(2))
-                                                     .ConfigureHttpClient(httpClient => httpClient.BaseAddress = new Uri(baseAddress))
-                                                     //.UseHttpClientMetrics()
-                                                     ;
-        if (isConsulAdderss)
-            clientbuilder.AddHttpMessageHandler<ConsulDiscoverDelegatingHandler>();
-        else
-            clientbuilder.AddHttpMessageHandler<SimpleDiscoveryDelegatingHandler>();
-
-        //添加polly相关策略
-        policies?.ForEach(policy => clientbuilder.AddPolicyHandler(policy));
+                                                    .SetHandlerLifetime(TimeSpan.FromMinutes(2))
+                                                    .AddPolicyHandlerICollection(policies)
+                                                    //.UseHttpClientMetrics()
+                                                    ;
+        switch (registeredType)
+        {
+            case RpcConsts.Direct:
+                {
+                    clientbuilder.ConfigureHttpClient(httpClient => httpClient.BaseAddress = new Uri(addressNode.Direct))
+                                        .AddHttpMessageHandler<SimpleDiscoveryDelegatingHandler>();
+                    break;
+                }
+            case RpcConsts.CoreDns:
+                {
+                    clientbuilder.ConfigureHttpClient(httpClient => httpClient.BaseAddress = new Uri(addressNode.CoreDns))
+                                        .AddHttpMessageHandler<SimpleDiscoveryDelegatingHandler>();
+                    break;
+                }
+            case RpcConsts.Consul:
+                {
+                    clientbuilder.ConfigureHttpClient(httpClient => httpClient.BaseAddress = new Uri(addressNode.Consul))
+                                        .AddHttpMessageHandler<ConsulDiscoverDelegatingHandler>();
+                    break;
+                }
+        }
     }
 
     /// <summary>
@@ -266,25 +279,43 @@ public abstract class AbstractApplicationDependencyRegistrar : IDependencyRegist
     protected virtual void AddGrpcClient<TGrpcClient>(string serviceName, List<IAsyncPolicy<HttpResponseMessage>> policies)
      where TGrpcClient : class
     {
+        var addressNode = RpcAddressInfo.GetAddressNode(serviceName);
+        if (addressNode is null)
+            throw new NullReferenceException(nameof(addressNode));
+
+        var registeredType = Configuration.GetRegisteredType().ToLower();
+
         var switchName = "System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport";
         var switchResult = AppContext.TryGetSwitch(switchName, out bool isEnabled);
         if (!switchResult || !isEnabled)
             AppContext.SetSwitch(switchName, true);
 
-        var prefix = serviceName[..7];
-        bool isConsulAdderss = prefix != "http://" && prefix != "https:/";
-        var baseAddress = serviceName;
-        if (isConsulAdderss)
+        var baseAddress = string.Empty;
+        switch (registeredType)
         {
-            //如果参数是服务名字，那么需要从consul获取地址
-            baseAddress = $"consul://{serviceName}";
-            Services.TryAddSingleton<ResolverFactory, ConsulGrpcResolverFactory>();
+            case RpcConsts.Direct:
+                {
+                    var restBaseAddress = new Uri(addressNode.Direct);
+                    baseAddress = $"{restBaseAddress.Scheme}://{restBaseAddress.Host}:{restBaseAddress.Port + 1}";
+                    break;
+                }
+            case RpcConsts.CoreDns:
+                {
+                    baseAddress = addressNode.CoreDns.Replace("http://", "dns:///").Replace("https://", "dns:///");
+                    break;
+                }
+            case RpcConsts.Consul:
+                {
+                    baseAddress = addressNode.Consul.Replace("http://", "consul://").Replace("https://", "consul://");
+                    Services.TryAddSingleton<ResolverFactory, ConsulGrpcResolverFactory>();
+                    break;
+                }
         }
-        var clientbuilder = Services.AddGrpcClient<TGrpcClient>(options => options.Address = new Uri(baseAddress))
-                                                    .ConfigureChannel(options => options.Credentials = ChannelCredentials.Insecure)
-                                                    .AddHttpMessageHandler<SimpleDiscoveryDelegatingHandler>();
-        ////添加polly相关策略
-        policies?.ForEach(policy => clientbuilder.AddPolicyHandler(policy));
+
+        Services.AddGrpcClient<TGrpcClient>(options => options.Address = new Uri(baseAddress))
+                     .ConfigureChannel(options => options.Credentials = ChannelCredentials.Insecure)
+                     .AddHttpMessageHandler<SimpleDiscoveryDelegatingHandler>()
+                     .AddPolicyHandlerICollection(policies);
     }
 
     /// <summary>

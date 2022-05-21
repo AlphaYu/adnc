@@ -3,12 +3,12 @@
 public static partial class ConfigurationExtensions
 {
     /// <summary>
-    /// 获取部署的环境配置
+    /// 服务注册类型
     /// </summary>
     /// <param name="serviceInfo"></param>
     /// <param name="configuration"></param>
     /// <returns></returns>
-    public static bool IsK8S(this IConfiguration configuration) => configuration.GetValue("IsK8S", false);
+    public static string GetRegisteredType(this IConfiguration configuration) => configuration.GetValue("RegisteredType", "direct");
 
     /// <summary>
     /// 获取SSOAuthentication是否开启

@@ -1,8 +1,4 @@
-﻿using Adnc.Ord.Application.EventSubscribers;
-using Adnc.Ord.Domain.EntityConfig;
-using Adnc.Shared.Application.Registrar;
-using Adnc.Shared.Domain;
-using System.Reflection;
+﻿using Adnc.Shared.Application.Registrar;
 
 namespace Adnc.Ord.Application.Registrar;
 
@@ -25,14 +21,10 @@ public sealed class OrdApplicationDependencyRegistrar : AbstractApplicationDepen
 
         //rpc-rest
         var restPolicies = this.GenerateDefaultRefitPolicies();
-        var authRestAddress = IsDevelopment ? "http://localhost:50010" : "adnc.usr.webapi";
-        AddRestClient<IAuthRestClient>(authRestAddress, restPolicies);
-        var usrRestAddress = authRestAddress;
-        AddRestClient<IUsrRestClient>(usrRestAddress, restPolicies);
-        var maintRestAddress = IsDevelopment ? "http://localhost:50020" : "adnc.maint.webapi";
-        AddRestClient<IMaintRestClient>(maintRestAddress, restPolicies);
-        var whseRestAddress = IsDevelopment ? "http://localhost:50050" : "adnc.whse.webapi";
-        AddRestClient<IWhseRestClient>(whseRestAddress, restPolicies);
+        AddRestClient<IAuthRestClient>(RpcConsts.UsrService, restPolicies);
+        AddRestClient<IUsrRestClient>(RpcConsts.UsrService, restPolicies);
+        AddRestClient<IMaintRestClient>(RpcConsts.MaintService, restPolicies);
+        AddRestClient<IWhseRestClient>(RpcConsts.WhseService, restPolicies);
         //rpc-event
         AddEventBusPublishers();
         AddEventBusSubscribers<CapEventSubscriber>();

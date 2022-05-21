@@ -55,7 +55,7 @@ public static class ApplicationBuilderExtension
     {
         var configuration = app.ApplicationServices.GetRequiredService<IConfiguration>();
         var environment = app.ApplicationServices.GetRequiredService<IHostEnvironment>();
-        if (environment.IsProduction() && !configuration.IsK8S())
+        if (environment.IsProduction() && configuration.GetRegisteredType().EqualsIgnoreCase("consul"))
         {
             RegisterToConsul(app);
         }

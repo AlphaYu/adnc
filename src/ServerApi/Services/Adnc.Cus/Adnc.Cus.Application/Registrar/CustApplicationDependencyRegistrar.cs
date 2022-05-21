@@ -1,8 +1,4 @@
-﻿using Adnc.Cus.Application.EventSubscribers;
-using Adnc.Shared.Application.Registrar;
-using Adnc.Shared.Rpc.Grpc.Services;
-using Adnc.Shared.Rpc.Rest.Services;
-using System.Reflection;
+﻿using Adnc.Shared.Application.Registrar;
 
 namespace Adnc.Cus.Application.Registrar;
 
@@ -24,24 +20,16 @@ public sealed class CustApplicationDependencyRegistrar : AbstractApplicationDepe
 
         //rpc-restclient
         var restPolicies = this.GenerateDefaultRefitPolicies();
-        var authRestAddress = IsDevelopment ? "http://localhost:50010" : "adnc.usr.webapi";
-        var usrRestAddress = authRestAddress;
-        var maintRestAddress = IsDevelopment ? "http://localhost:50020" : "adnc.maint.webapi";
-        var whseRestAddress = IsDevelopment ? "http://localhost:50050" : "adnc.whse.webapi";
-        AddRestClient<IAuthRestClient>(authRestAddress, restPolicies);
-        AddRestClient<IUsrRestClient>(usrRestAddress, restPolicies);
-        AddRestClient<IMaintRestClient>(maintRestAddress, restPolicies);
-        AddRestClient<IWhseRestClient>(whseRestAddress, restPolicies);
+        AddRestClient<IAuthRestClient>(RpcConsts.UsrService, restPolicies);
+        AddRestClient<IUsrRestClient>(RpcConsts.UsrService, restPolicies);
+        AddRestClient<IMaintRestClient>(RpcConsts.MaintService, restPolicies);
+        AddRestClient<IWhseRestClient>(RpcConsts.WhseService, restPolicies);
         //rpc-grpcclient
         var gprcPolicies = this.GenerateDefaultGrpcPolicies();
-        var authGrpcAddress = IsDevelopment ? "http://localhost:50011" : "adnc.usr.webapi";
-        var usrGrpcAddress = authGrpcAddress;
-        var maintGrpcAddress = IsDevelopment ? "http://localhost:50021" : "adnc.maint.webapi";
-        var whseGrpcAddress = IsDevelopment ? "http://localhost:50051" : "adnc.whse.webapi";
-        AddGrpcClient<AuthGrpc.AuthGrpcClient>(authGrpcAddress, gprcPolicies);
-        AddGrpcClient<UsrGrpc.UsrGrpcClient>(usrGrpcAddress, gprcPolicies);
-        AddGrpcClient<MaintGrpc.MaintGrpcClient>(maintGrpcAddress, gprcPolicies);
-        AddGrpcClient<WhseGrpc.WhseGrpcClient>(whseGrpcAddress, gprcPolicies);
+        AddGrpcClient<AuthGrpc.AuthGrpcClient>(RpcConsts.UsrService, gprcPolicies);
+        AddGrpcClient<UsrGrpc.UsrGrpcClient>(RpcConsts.UsrService, gprcPolicies);
+        AddGrpcClient<MaintGrpc.MaintGrpcClient>(RpcConsts.MaintService, gprcPolicies);
+        AddGrpcClient<WhseGrpc.WhseGrpcClient>(RpcConsts.WhseService, gprcPolicies);
         //rpc-even
         AddEventBusPublishers();
         AddEventBusSubscribers<CapEventSubscriber>();
