@@ -2,7 +2,7 @@
 
 namespace Microsoft.AspNetCore.Builder;
 
-public static class ApplicationBuilderExtension
+public static class ApplicationBuilderConsulExtension
 {
     public static void RegisterToConsul(this IApplicationBuilder app)
     {
@@ -42,22 +42,5 @@ public static class ApplicationBuilderExtension
 
         var registration = app.ApplicationServices.GetRequiredService<ConsulRegistration>();
         registration.Register(instance);
-    }
-
-    public static void RegisterToConsulIfProduction(this IApplicationBuilder app)
-    {
-        var environment = app.ApplicationServices.GetRequiredService<IHostEnvironment>();
-        if (environment.IsProduction())
-            RegisterToConsul(app);
-    }
-
-    public static void RegisterToConsulIfProductionNotK8S(this IApplicationBuilder app)
-    {
-        var configuration = app.ApplicationServices.GetRequiredService<IConfiguration>();
-        var environment = app.ApplicationServices.GetRequiredService<IHostEnvironment>();
-        if (environment.IsProduction() && configuration.GetRegisteredType().EqualsIgnoreCase("consul"))
-        {
-            RegisterToConsul(app);
-        }
     }
 }
