@@ -6,7 +6,7 @@ public class RpcAddressInfo
 
     private static readonly Lazy<RpcAddressInfo> s_Instance = new(() =>
     {
-        var filePath = @$"{AppDomain.CurrentDomain.BaseDirectory}\rpcserviceinfos.json";
+        var filePath = @$"{AppContext.BaseDirectory}/rpcserviceinfos.json";
         var json = File.ReadAllText(filePath);
         var result = JsonSerializer.Deserialize<RpcAddressInfo>(json);
         if (result is null)
