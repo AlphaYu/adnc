@@ -9,6 +9,7 @@ using Adnc.Shared.Rpc;
 using DotNetCore.CAP;
 using Grpc.Core;
 using Grpc.Net.Client.Balancer;
+using Grpc.Net.Client.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Refit;
@@ -314,7 +315,11 @@ public abstract class AbstractApplicationDependencyRegistrar : IDependencyRegist
         }
 
         Services.AddGrpcClient<TGrpcClient>(options => options.Address = new Uri(baseAddress))
-                     .ConfigureChannel(options => options.Credentials = ChannelCredentials.Insecure)
+                     .ConfigureChannel(options => 
+                     {
+                         options.Credentials = ChannelCredentials.Insecure;
+                         options.ServiceConfig = new ServiceConfig { LoadBalancingConfigs = { new RoundRobinConfig() } };
+                     })
                      .AddHttpMessageHandler<SimpleDiscoveryDelegatingHandler>()
                      .AddPolicyHandlerICollection(policies);
     }
