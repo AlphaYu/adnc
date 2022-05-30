@@ -1,6 +1,4 @@
-﻿using Adnc.Infra.Caching.Configurations;
-
-namespace Adnc.UnitTest.Fixtures;
+﻿namespace Adnc.UnitTest.Fixtures;
 
 public class RedisCacheFixture
 {

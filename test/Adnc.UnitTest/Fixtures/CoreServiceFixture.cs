@@ -1,11 +1,4 @@
-﻿using Adnc.Cus.Entities;
-using Adnc.Infra.EfCore.MySQL;
-using Adnc.Infra.Entities;
-using Adnc.Infra.EventBus.Cap;
-using Adnc.Infra.IRepositories;
-using DotNetCore.CAP;
-
-namespace Adnc.UnitTest.Fixtures;
+﻿namespace Adnc.UnitTest.Fixtures;
 
 public class CoreServiceFixture
 {

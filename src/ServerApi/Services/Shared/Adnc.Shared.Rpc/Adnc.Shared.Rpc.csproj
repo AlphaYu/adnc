@@ -20,4 +20,9 @@
 		<Protobuf Include="Protos\Messages\*.proto" GrpcServices="Client" />
 		<Protobuf Include="Protos\Services\*.proto" GrpcServices="Client" />
 	</ItemGroup>
+	<ItemGroup>
+	  <None Update="rpcserviceinfos.json">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
 </Project>

@@ -37,7 +37,7 @@
             <summary>
             修改unit
             </summary>
-            <param name="newSku"></param>
+            <param name="unit"></param>
         </member>
         <member name="M:Adnc.Whse.Domain.Aggregates.ProductAggregate.Product.SetPrice(System.Decimal)">
             <summary>
@@ -124,18 +124,17 @@
             <summary>
             创建货架
             </summary>
-            <param name="sku"></param>
-            <param name="name"></param>
-            <param name="unit"></param>
-            <param name="describe"></param>
+            <param name="positionCode">位置代码</param>
+            <param name="positionDescription">位置描述</param>
             <returns></returns>
+            <exception cref="T:Adnc.Infra.Core.Exceptions.BusinessException"></exception>
         </member>
         <member name="M:Adnc.Whse.Domain.Services.WarehouseManager.AllocateShelfToProductAsync(Adnc.Whse.Domain.Aggregates.WarehouseAggregate.Warehouse,Adnc.Whse.Domain.Aggregates.ProductAggregate.Product)">
             <summary>
             分配货架给商品
             </summary>
             <param name="warehouse"></param>
-            <param name="productId"></param>
+            <param name="product"></param>
             <returns></returns>
         </member>
         <member name="M:Adnc.Whse.Domain.Services.WarehouseManager.BlockQtyAsync(System.Int64,System.Collections.Generic.Dictionary{System.Int64,System.Int32},System.Collections.Generic.List{Adnc.Whse.Domain.Aggregates.WarehouseAggregate.Warehouse},System.Collections.Generic.List{Adnc.Whse.Domain.Aggregates.ProductAggregate.Product})">

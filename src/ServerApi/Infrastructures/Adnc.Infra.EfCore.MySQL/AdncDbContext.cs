@@ -1,10 +1,5 @@
-﻿using Adnc.Infra.Core.Guard;
+﻿namespace Adnc.Infra.EfCore.MySQL;
 
-namespace Adnc.Infra.EfCore.MySQL;
-
-/// <summary>
-/// AdncDbContext
-/// </summary>
 public sealed class AdncDbContext : DbContext
 {
     private readonly Operater _operater;

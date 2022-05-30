@@ -2,7 +2,8 @@
 
 namespace Adnc.Infra.Consul.Discover.GrpcResolver;
 
-public class ConsulGrpcResolver : PollingResolver
+//https://docs.microsoft.com/zh-cn/aspnet/core/grpc/loadbalancing?view=aspnetcore-6.0
+public sealed class ConsulGrpcResolver : PollingResolver
 {
     private readonly Uri _address;
     private readonly int _port;

@@ -2,6 +2,7 @@
 
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
 		<IsPackable>false</IsPackable>
 	</PropertyGroup>
 
@@ -9,10 +10,6 @@
 		<Compile Remove="ApplicationServicesTests.cs" />
 		<Compile Remove="MyDatabaseTests.cs" />
 		<Compile Remove="RemoteTests.cs" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <None Remove="aevur0tz.gaa~" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -39,6 +36,7 @@
 		<ProjectReference Include="..\..\src\ServerApi\Infrastructures\Adnc.Infra.Dapper\Adnc.Infra.Dapper.csproj" />
 		<ProjectReference Include="..\..\src\ServerApi\Infrastructures\Adnc.Infra.EfCore.MySQL\Adnc.Infra.EfCore.MySQL.csproj" />
 		<ProjectReference Include="..\..\src\ServerApi\Infrastructures\Adnc.Infra.Helper\Adnc.Infra.Helper.csproj" />
+		<ProjectReference Include="..\..\src\ServerApi\Infrastructures\Adnc.Infra.IdGenerater\Adnc.Infra.IdGenerater.csproj" />
 		<ProjectReference Include="..\..\src\ServerApi\Services\Adnc.Cus\Adnc.Cus.Repository\Adnc.Cus.Repository.csproj" />
 		<ProjectReference Include="..\..\src\ServerApi\Services\Shared\Adnc.Shared.WebApi\Adnc.Shared.WebApi.csproj" />
 	</ItemGroup>

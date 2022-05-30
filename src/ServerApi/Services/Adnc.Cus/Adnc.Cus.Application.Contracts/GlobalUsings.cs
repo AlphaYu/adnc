@@ -4,4 +4,3 @@ global using Adnc.Shared.Application.Contracts.Dtos;
 global using Adnc.Shared.Application.Contracts.Interfaces;
 global using Adnc.Shared.Application.Contracts.ResultModels;
 global using FluentValidation;
-global using System.Threading.Tasks;

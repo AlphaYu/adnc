@@ -16,7 +16,7 @@ public class PermissionAttribute : AuthorizeAttribute
     {
         Codes = codes;
         Policy = AuthorizePolicy.Default;
-        if (schemes.IsNullOrEmpty())
+        if (schemes.IsNullOrWhiteSpace())
             throw new ArgumentNullException(nameof(schemes));
         else
             AuthenticationSchemes = schemes;

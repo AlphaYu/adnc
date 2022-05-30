@@ -17,6 +17,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.EventBus\Adnc.Infra.EventBus.csproj" />
 		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Helper\Adnc.Infra.Helper.csproj" />
+		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.IdGenerater\Adnc.Infra.IdGenerater.csproj" />
 		<ProjectReference Include="..\..\Shared\Adnc.Shared.Domain\Adnc.Shared.Domain.csproj" />
 		<ProjectReference Include="..\..\Shared\Adnc.Shared\Adnc.Shared.csproj" />
 		<ProjectReference Include="..\Adnc.Ord.Application.Contracts\Adnc.Ord.Application.Contracts.csproj" />

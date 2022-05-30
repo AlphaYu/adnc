@@ -1,4 +1,4 @@
-﻿using Adnc.Infra.Core.DependencyInjection;
+﻿using Adnc.Shared.Consts.RegistrationCenter;
 
 namespace Microsoft.AspNetCore.Builder;
 
@@ -57,6 +57,13 @@ public static class ApplicationBuilderExtension
             ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
         });
         app.UseRouting();
+        app.UseHttpMetrics();
+        DotNetRuntimeStatsBuilder.Customize()
+                                            .WithContentionStats()
+                                            .WithGcStats()
+                                            .WithThreadPoolStats()
+                                            .StartCollecting()
+                                            ;
         beforeAuthentication?.Invoke(app);
         app.UseAuthentication();
         app.UseSSOAuthentication(configuration.IsSSOAuthentication());
@@ -65,8 +72,31 @@ public static class ApplicationBuilderExtension
         app.UseEndpoints(endpoints =>
         {
             endpointRoute?.Invoke(endpoints);
+            endpoints.MapMetrics();
             endpoints.MapControllers().RequireAuthorization();
         });
+        return app;
+    }
+
+    /// <summary>
+    /// 注册服务到注册中心
+    /// </summary>
+    public static IApplicationBuilder UseRegistrationCenter(this IApplicationBuilder app)
+    {
+        var configuration = app.ApplicationServices.GetRequiredService<IConfiguration>();
+        var registeredType = configuration.GetRegisteredType().ToLower();
+        switch (registeredType)
+        {
+            case RegisteredTypeConsts.Consul:
+                app.RegisterToConsul();
+                break;
+            case RegisteredTypeConsts.Nacos:
+                // TODO
+                //app.RegisterToNacos();
+                break;
+            default:
+                break;
+        }
         return app;
     }
 }

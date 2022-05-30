@@ -167,7 +167,7 @@ public sealed class OperateLogAsyncInterceptor : IAsyncInterceptor
             ////设置消息持久化
             //properties.Persistent = true;
             //_mqProducer.BasicPublish(MqExchanges.Logs, MqRoutingKeys.OpsLog, logInfo, properties);
-            var operationLogWriter = ChannelHelper<OperationLog>.Instance.Writer;
+            var operationLogWriter = Channels.ChannelHelper<OperationLog>.Instance.Writer;
             operationLogWriter.WriteAsync(logInfo).GetAwaiter().GetResult();
         }
         catch (Exception ex)
