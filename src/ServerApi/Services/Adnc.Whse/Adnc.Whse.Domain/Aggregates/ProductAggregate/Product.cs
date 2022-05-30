@@ -68,7 +68,7 @@ public class Product : AggregateRootWithBasicAuditInfo
     /// <summary>
     /// 修改unit
     /// </summary>
-    /// <param name="newSku"></param>
+    /// <param name="unit"></param>
     public void SetUnit(string unit)
     {
         this.Unit = Guard.Checker.NotNullOrEmpty(unit, nameof(unit));

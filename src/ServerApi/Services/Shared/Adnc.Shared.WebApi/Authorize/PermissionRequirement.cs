@@ -2,7 +2,7 @@
 
 public class PermissionRequirement : IAuthorizationRequirement
 {
-    public string Name { get; private set; }
+    public string Name { get; init; }
 
     public PermissionRequirement()
     {

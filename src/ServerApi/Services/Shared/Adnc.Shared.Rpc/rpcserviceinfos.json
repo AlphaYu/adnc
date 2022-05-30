@@ -1,0 +1,34 @@
+{
+  "RootAddresses": [
+    {
+      "Service": "adnc-usr-webapi",
+      "Direct": "http://localhost:50010",
+      "Consul": "http://adnc-usr-webapi",
+      "CoreDns": "http://adnc-usr-webapi.default.svc.cluster.local"
+    },
+    {
+      "Service": "adnc-maint-webapi",
+      "Direct": "http://localhost:50020",
+      "Consul": "http://adnc-maint-webapi",
+      "CoreDns": "http://adnc-maint-webapi.default.svc.cluster.local"
+    },
+    {
+      "Service": "adnc-cus-webapi",
+      "Direct": "http://localhost:50030",
+      "Consul": "http://adnc-cus-webapi",
+      "CoreDns": "http://adnc-cus-webapi.default.svc.cluster.local"
+    },
+    {
+      "Service": "adnc-ord-webapi",
+      "Direct": "http://localhost:50040",
+      "Consul": "http://adnc-ord-webapi",
+      "CoreDnsDomain": "http://adnc-ord-webapi.default.svc.cluster.local"
+    },
+    {
+      "Service": "adnc-whse-webapi",
+      "Direct": "http://localhost:50050",
+      "Consul": "http://adnc-whse-webapi",
+      "CoreDns": "http://adnc-whse-webapi.default.svc.cluster.local"
+    }
+  ]
+}

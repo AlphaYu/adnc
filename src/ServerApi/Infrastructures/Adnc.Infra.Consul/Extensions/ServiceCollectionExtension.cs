@@ -3,13 +3,16 @@ using Adnc.Infra.Consul.Registrar;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
-public static class AdncInfraConsulServiceCollectionExtension
+public static class ServiceCollectionExtension
 {
     public static IServiceCollection AddAdncInfraConsul(this IServiceCollection services, IConfigurationSection consulSection)
         => AddAdncInfraConsul(services, consulSection.Get<ConsulConfig>());
 
     public static IServiceCollection AddAdncInfraConsul(this IServiceCollection services, ConsulConfig consulConfig)
     {
+        if (services.HasRegistered(nameof(AddAdncInfraConsul)))
+            return services;
+
         services.AddScoped<ITokenGenerator, DefaultTokenGenerator>();
         services.AddScoped<SimpleDiscoveryDelegatingHandler>();
         services.AddScoped<ConsulDiscoverDelegatingHandler>();

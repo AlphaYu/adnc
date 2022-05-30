@@ -2,6 +2,19 @@
 
 public class DeptRto
 {
+    /// <summary>
+    /// 构造函数
+    /// 修复Warning, add by garfield 20220530
+    /// </summary>
+    public DeptRto()
+    {
+        FullName = "";
+        Pids = "";
+        SimpleName = "";
+        Tips = "";
+        Children = new List<DeptRto>();
+    }
+
     public long Id { get; set; }
 
     /// <summary>

@@ -17,7 +17,7 @@ public abstract class AbstractCacheService : ICachePreheatable
 
     public virtual string ConcatCacheKey(params object[] items)
     {
-        if (items == null || items.Length == 0)
+        if (items.IsNullOrEmpty())
             throw new ArgumentNullException(nameof(items));
 
         return string.Join(CachingConsts.LinkChar, items);
@@ -46,7 +46,8 @@ public abstract class AbstractCacheService : ICachePreheatable
         catch (Exception ex)
         {
             LocalVariables.Instance.Queue.Enqueue(new LocalVariables.Model(cacheKeys, expireDt));
-            throw new TimeoutException(ex.Message, ex);
+            var logger = ServiceProvider.Value.GetRequiredService<Lazy<ILogger<AbstractCacheService>>>();
+            logger.Value.LogError(ex, ex.Message);
         }
     }
 }

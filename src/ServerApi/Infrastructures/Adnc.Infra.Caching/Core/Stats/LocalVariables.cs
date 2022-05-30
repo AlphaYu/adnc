@@ -4,8 +4,8 @@ namespace Adnc.Infra.Caching.Core
 {
     public sealed class LocalVariables
     {
-        private static readonly Lazy<LocalVariables> lazy = new Lazy<LocalVariables>(() => new LocalVariables());
-        private static ConcurrentQueue<Model> _queue;
+        private static readonly Lazy<LocalVariables> lazy = new(() => new LocalVariables());
+        private static readonly ConcurrentQueue<Model> _queue = new();
 
         static LocalVariables()
         {
@@ -13,23 +13,16 @@ namespace Adnc.Infra.Caching.Core
 
         private LocalVariables()
         {
-            _queue = new ConcurrentQueue<Model>();
         }
 
-        public static LocalVariables Instance
-        {
-            get
-            {
-                return lazy.Value;
-            }
-        }
+        public static LocalVariables Instance => lazy.Value;
 
         public ConcurrentQueue<Model> Queue => _queue;
 
         public sealed class Model
         {
-            public List<string> CacheKeys { get; }
-            public DateTime ExpireDt { get; }
+            public List<string> CacheKeys { get; init; }
+            public DateTime ExpireDt { get; init; }
 
             public Model(IEnumerable<string> cacheKeys, DateTime expireDt)
             {

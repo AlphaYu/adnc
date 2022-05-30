@@ -2,6 +2,10 @@
 {
     public static partial class ServiceCollectionExtensions
     {
+        private static readonly ConcurrentDictionary<string, char> s_RegisteredModels = new();
+
+        public static bool HasRegistered(this IServiceCollection _, string modelName) => !s_RegisteredModels.TryAdd(modelName.ToLower(), '1');
+
         internal static T? GetSingletonInstanceOrNull<T>(this IServiceCollection services)
             where T : class
         {

@@ -9,11 +9,10 @@ public class WarehouseManager : IDomainService
     /// <summary>
     /// 创建货架
     /// </summary>
-    /// <param name="sku"></param>
-    /// <param name="name"></param>
-    /// <param name="unit"></param>
-    /// <param name="describe"></param>
+    /// <param name="positionCode">位置代码</param>
+    /// <param name="positionDescription">位置描述</param>
     /// <returns></returns>
+    /// <exception cref="BusinessException"></exception>
     public async Task<Warehouse> CreateAsync(string positionCode, string positionDescription)
     {
         var exists = await _warehouseRepo.AnyAsync(x => x.Position.Code == positionCode);
@@ -30,7 +29,7 @@ public class WarehouseManager : IDomainService
     /// 分配货架给商品
     /// </summary>
     /// <param name="warehouse"></param>
-    /// <param name="productId"></param>
+    /// <param name="product"></param>
     /// <returns></returns>
     public async Task AllocateShelfToProductAsync(Warehouse warehouse, Product product)
     {

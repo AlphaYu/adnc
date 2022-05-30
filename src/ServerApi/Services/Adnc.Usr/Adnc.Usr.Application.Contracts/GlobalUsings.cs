@@ -8,7 +8,6 @@ global using Adnc.Shared.Consts.Caching.Usr;
 global using Adnc.Shared.Consts.Entity.Usr;
 global using Adnc.Usr.Application.Contracts.Dtos;
 global using FluentValidation;
-global using System;
-global using System.Collections.Generic;
-global using System.Linq;
-global using System.Threading.Tasks;
+
+
+
