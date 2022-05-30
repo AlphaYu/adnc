@@ -2,6 +2,17 @@
 
 public class DictRto
 {
+    /// <summary>
+    /// 构造函数
+    /// 修复Warning, add by garfield 20220530
+    /// </summary>
+    public DictRto()
+    {
+        Name = "";
+        Num = "";
+        Value = "";
+    }
+
     public long ID { get; set; }
 
     public string Name { get; set; }
