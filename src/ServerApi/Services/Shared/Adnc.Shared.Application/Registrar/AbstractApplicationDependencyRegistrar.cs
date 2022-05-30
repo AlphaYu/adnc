@@ -4,6 +4,7 @@ using Adnc.Infra.EfCore.MySQL;
 using Adnc.Infra.Mongo.Configuration;
 using Adnc.Infra.Mongo.Extensions;
 using Adnc.Shared.Application.Channels;
+using Adnc.Shared.Consts.RegistrationCenter;
 using Adnc.Shared.Rpc;
 using DotNetCore.CAP;
 using Grpc.Core;
@@ -249,19 +250,19 @@ public abstract class AbstractApplicationDependencyRegistrar : IDependencyRegist
                                                     ;
         switch (registeredType)
         {
-            case RpcConsts.Direct:
+            case RegisteredTypeConsts.Direct:
                 {
                     clientbuilder.ConfigureHttpClient(httpClient => httpClient.BaseAddress = new Uri(addressNode.Direct))
                                         .AddHttpMessageHandler<SimpleDiscoveryDelegatingHandler>();
                     break;
                 }
-            case RpcConsts.CoreDns:
+            case RegisteredTypeConsts.ClusterIP:
                 {
                     clientbuilder.ConfigureHttpClient(httpClient => httpClient.BaseAddress = new Uri(addressNode.CoreDns))
                                         .AddHttpMessageHandler<SimpleDiscoveryDelegatingHandler>();
                     break;
                 }
-            case RpcConsts.Consul:
+            case RegisteredTypeConsts.Consul:
                 {
                     clientbuilder.ConfigureHttpClient(httpClient => httpClient.BaseAddress = new Uri(addressNode.Consul))
                                         .AddHttpMessageHandler<ConsulDiscoverDelegatingHandler>();
@@ -293,18 +294,18 @@ public abstract class AbstractApplicationDependencyRegistrar : IDependencyRegist
         var baseAddress = string.Empty;
         switch (registeredType)
         {
-            case RpcConsts.Direct:
+            case RegisteredTypeConsts.Direct:
                 {
                     var restBaseAddress = new Uri(addressNode.Direct);
                     baseAddress = $"{restBaseAddress.Scheme}://{restBaseAddress.Host}:{restBaseAddress.Port + 1}";
                     break;
                 }
-            case RpcConsts.CoreDns:
+            case RegisteredTypeConsts.ClusterIP:
                 {
-                    baseAddress = addressNode.CoreDns.Replace("http://", "dns:///").Replace("https://", "dns:///");
+                    baseAddress = addressNode.CoreDns.Replace("http://", "dns://").Replace("https://", "dns://");
                     break;
                 }
-            case RpcConsts.Consul:
+            case RegisteredTypeConsts.Consul:
                 {
                     baseAddress = addressNode.Consul.Replace("http://", "consul://").Replace("https://", "consul://");
                     Services.TryAddSingleton<ResolverFactory, ConsulGrpcResolverFactory>();
