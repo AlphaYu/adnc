@@ -8,6 +8,6 @@ public class Startup
     public void Configure(IApplicationBuilder app)
     {
         app.UseAdncDefault();
-        app.RegisterToConsulIfProductionNotK8S();
+        app.UseRegistrationCenter();
     }
 }

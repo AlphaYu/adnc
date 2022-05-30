@@ -8,6 +8,6 @@ public class Startup
     public void Configure(IApplicationBuilder app)
     {
         app.UseAdncDefault(endpointRoute: endpoint => endpoint.MapGrpcService<Grpc.WhseGrpcServer>());
-        app.RegisterToConsulIfProductionNotK8S();
+        app.UseRegistrationCenter();
     }
 }

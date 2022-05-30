@@ -12,6 +12,6 @@ public class Startup
             endpoint.MapGrpcService<Grpc.AuthGrpcServer>();
             endpoint.MapGrpcService<Grpc.UsrGrpcServer>();
         });
-        app.RegisterToConsulIfProductionNotK8S();
+        app.UseRegistrationCenter();
     }
 }
