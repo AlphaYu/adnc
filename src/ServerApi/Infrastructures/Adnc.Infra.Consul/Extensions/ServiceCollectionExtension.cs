@@ -13,12 +13,11 @@ public static class ServiceCollectionExtension
         if (services.HasRegistered(nameof(AddAdncInfraConsul)))
             return services;
 
-        services.AddScoped<ITokenGenerator, DefaultTokenGenerator>();
-        services.AddScoped<SimpleDiscoveryDelegatingHandler>();
         services.AddScoped<ConsulDiscoverDelegatingHandler>();
         services.AddSingleton(x => new ConsulClient(x => x.Address = new Uri(consulConfig.ConsulUrl)));
         services.AddSingleton<ConsulRegistration>();
         services.AddSingleton<IConsulServiceProvider, ConsulServiceProvider>();
+        services.AddSingleton<IServiceBuilder, ServiceBuilder>();
         return services;
     }
 }
