@@ -1,5 +1,4 @@
 ﻿global using Adnc.Infra.Consul.Discover;
-global using Adnc.Infra.Consul.TokenGenerator;
 global using Adnc.Infra.Core.Configuration;
 global using Consul;
 global using Microsoft.Extensions.Configuration;

@@ -6,6 +6,8 @@ using Adnc.Infra.Mongo.Extensions;
 using Adnc.Shared.Application.Channels;
 using Adnc.Shared.Consts.RegistrationCenter;
 using Adnc.Shared.Rpc;
+using Adnc.Shared.Rpc.Handlers;
+using Adnc.Shared.Rpc.Handlers.Token;
 using DotNetCore.CAP;
 using Grpc.Core;
 using Grpc.Net.Client.Balancer;
@@ -239,8 +241,11 @@ public abstract class AbstractApplicationDependencyRegistrar : IDependencyRegist
         if (addressNode is null)
             throw new NullReferenceException(nameof(addressNode));
 
-        var registeredType = Configuration.GetRegisteredType().ToLower();
+        Services.TryAddScoped<CacheDelegatingHandler>();
+        Services.TryAddScoped<TokenDelegatingHandler>();
+        Services.TryAddScoped<TokenFactory>();
 
+        var registeredType = Configuration.GetRegisteredType().ToLower();
         //注册RefitClient,设置httpclient生命周期时间，默认也是2分钟。
         var contentSerializer = new SystemTextJsonContentSerializer(SystemTextJson.GetAdncDefaultOptions());
         var refitSettings = new RefitSettings(contentSerializer);
@@ -248,19 +253,18 @@ public abstract class AbstractApplicationDependencyRegistrar : IDependencyRegist
                                                     .SetHandlerLifetime(TimeSpan.FromMinutes(2))
                                                     .AddPolicyHandlerICollection(policies)
                                                     //.UseHttpClientMetrics()
-                                                    ;
+                                                    .AddHttpMessageHandler<CacheDelegatingHandler>()
+                                                    .AddHttpMessageHandler<TokenDelegatingHandler>();
         switch (registeredType)
         {
             case RegisteredTypeConsts.Direct:
                 {
-                    clientbuilder.ConfigureHttpClient(httpClient => httpClient.BaseAddress = new Uri(addressNode.Direct))
-                                        .AddHttpMessageHandler<SimpleDiscoveryDelegatingHandler>();
+                    clientbuilder.ConfigureHttpClient(httpClient => httpClient.BaseAddress = new Uri(addressNode.Direct));
                     break;
                 }
             case RegisteredTypeConsts.ClusterIP:
                 {
-                    clientbuilder.ConfigureHttpClient(httpClient => httpClient.BaseAddress = new Uri(addressNode.CoreDns))
-                                        .AddHttpMessageHandler<SimpleDiscoveryDelegatingHandler>();
+                    clientbuilder.ConfigureHttpClient(httpClient => httpClient.BaseAddress = new Uri(addressNode.CoreDns));
                     break;
                 }
             case RegisteredTypeConsts.Consul:
@@ -285,8 +289,11 @@ public abstract class AbstractApplicationDependencyRegistrar : IDependencyRegist
         if (addressNode is null)
             throw new NullReferenceException(nameof(addressNode));
 
-        var registeredType = Configuration.GetRegisteredType().ToLower();
+        Services.TryAddScoped<CacheDelegatingHandler>();
+        Services.TryAddScoped<TokenDelegatingHandler>();
+        Services.TryAddScoped<TokenFactory>();
 
+        var registeredType = Configuration.GetRegisteredType().ToLower();
         var switchName = "System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport";
         var switchResult = AppContext.TryGetSwitch(switchName, out bool isEnabled);
         if (!switchResult || !isEnabled)
@@ -320,7 +327,7 @@ public abstract class AbstractApplicationDependencyRegistrar : IDependencyRegist
                          options.Credentials = ChannelCredentials.Insecure;
                          options.ServiceConfig = new ServiceConfig { LoadBalancingConfigs = { new RoundRobinConfig() } };
                      })
-                     .AddHttpMessageHandler<SimpleDiscoveryDelegatingHandler>()
+                     .AddHttpMessageHandler<TokenDelegatingHandler>()
                      .AddPolicyHandlerICollection(policies);
     }
 
