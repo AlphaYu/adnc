@@ -48,7 +48,7 @@ namespace Adnc.Infra.Consul.Discover
                 {
                     var entryOptions = new MemoryCacheEntryOptions
                     {
-                        AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(300)
+                        AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(3)
                     };
                     healthAddresses = query.Response.Select(entry => $"{entry.Service.Address}:{entry.Service.Port}").ToList();
                     _memoryCache.Set(serviceAddressCacheKey, healthAddresses, entryOptions);

@@ -13,21 +13,32 @@
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            if(request.RequestUri.Host.Contains('.'))
-                return await base.SendAsync(request, cancellationToken);
+            var currentUri = request.RequestUri;
 
             var baseUri = await _serviceBuilder
-                                                            .WithUriScheme(request.RequestUri.Scheme)
-                                                            .WithServiceName(request.RequestUri.Host)
+                                                            .WithUriScheme(currentUri.Scheme)
+                                                            .WithServiceName(currentUri.Host)
                                                             .WithLoadBalancer(TypeLoadBalancer.RandomLoad)
                                                             .BuildAsync()
                                                             ;
             if (baseUri is null)
-                throw new ArgumentNullException($"{request.RequestUri.Host} does not contain helath service address!");
+                throw new ArgumentNullException($"{currentUri.Host} does not contain helath service address!");
             else
-                request.RequestUri = new Uri(baseUri, request.RequestUri.PathAndQuery);
+                request.RequestUri = new Uri(baseUri, currentUri.PathAndQuery);
 
-            return await base.SendAsync(request, cancellationToken);
+            try
+            {
+                return await base.SendAsync(request, cancellationToken).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogDebug(ex, "Exception during SendAsync()");
+                throw;
+            }
+            finally
+            {
+                request.RequestUri = currentUri;
+            }
         }
     }
 }
