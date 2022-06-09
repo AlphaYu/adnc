@@ -1,0 +1,18 @@
+apiVersion: apps/v1 #指定api版本
+kind: ReplicaSet    #指定创建资源的角色/类型
+metadata: 
+  name: adnc.usr.webapi
+spec: 
+  replicas: 3       #副本集数量
+  selector: 
+    matchLabels: 
+      app: adnc.usr.webapi
+  template:         #pod模板
+    metadata:       #资源的元数据/属性  
+      labels:       #标签定义
+        app: adnc.usr.webapi  #标签值
+    spec:           # 指定该资源的内容
+      containers:    #容器定义
+        - name: adnc-usr-webapi   #容器的名字
+          imagePullPolicy: Never  
+          image: adnc-usr-webapi    #容器镜像
