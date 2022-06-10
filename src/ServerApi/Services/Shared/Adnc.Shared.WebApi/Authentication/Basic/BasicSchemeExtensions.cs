@@ -1,5 +1,4 @@
-﻿using Adnc.Infra.Consul.TokenGenerator;
-using Microsoft.Extensions.DependencyInjection.Extensions;
+﻿using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -24,7 +23,6 @@ public static class BasicSchemeExtensions
 
     public static AuthenticationBuilder AddBasic(this AuthenticationBuilder builder, string authenticationScheme, string? displayName, Action<BasicSchemeOptions> configureOptions)
     {
-        builder.Services.TryAddEnumerable(ServiceDescriptor.Scoped<ITokenGenerator, BasicTokenGenerator>());
         builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<IPostConfigureOptions<BasicSchemeOptions>, BasicPostConfigureOptions>());
         return builder.AddScheme<BasicSchemeOptions, BasicAuthenticationHandler>(authenticationScheme, displayName, configureOptions);
     }

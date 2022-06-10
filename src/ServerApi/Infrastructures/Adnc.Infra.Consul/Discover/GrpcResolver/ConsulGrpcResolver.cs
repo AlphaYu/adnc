@@ -38,11 +38,9 @@ public class ConsulGrpcResolverFactory : ResolverFactory
 {
     private IConsulServiceProvider _consulServiceProvider;
 
-    public ConsulGrpcResolverFactory(IConsulServiceProvider consulServiceProvider)
-     => _consulServiceProvider = consulServiceProvider;
+    public ConsulGrpcResolverFactory(IConsulServiceProvider consulServiceProvider) => _consulServiceProvider = consulServiceProvider;
 
     public override string Name => "consul";
 
-    public override Resolver Create(ResolverOptions options)
-     => new ConsulGrpcResolver(options.Address, options.DefaultPort, _consulServiceProvider, options.LoggerFactory);
+    public override Resolver Create(ResolverOptions options) => new ConsulGrpcResolver(options.Address, options.DefaultPort, _consulServiceProvider, options.LoggerFactory);
 }
