@@ -79,20 +79,21 @@ public static class ApplicationBuilderExtension
     }
 
     /// <summary>
-    /// 注册服务到注册中心
+    /// 注册服务到注册中心(consul/nacos/clusterip...)
     /// </summary>
     public static IApplicationBuilder UseRegistrationCenter(this IApplicationBuilder app)
     {
         var configuration = app.ApplicationServices.GetRequiredService<IConfiguration>();
+        var serviceInfo = app.ApplicationServices.GetService<IServiceInfo>();
         var registeredType = configuration.GetRegisteredType().ToLower();
         switch (registeredType)
         {
             case RegisteredTypeConsts.Consul:
-                app.RegisterToConsul();
+                app.RegisterToConsul(serviceInfo.Id);
                 break;
             case RegisteredTypeConsts.Nacos:
                 // TODO
-                //app.RegisterToNacos();
+                //app.RegisterToNacos(serviceInfo.Id);
                 break;
             default:
                 break;

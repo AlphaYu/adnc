@@ -4,7 +4,7 @@ namespace Microsoft.AspNetCore.Builder;
 
 public static class ApplicationBuilderConsulExtension
 {
-    public static void RegisterToConsul(this IApplicationBuilder app)
+    public static void RegisterToConsul(this IApplicationBuilder app,string serviceId = null)
     {
         var kestrelConfig = app.ApplicationServices.GetRequiredService<IOptions<KestrelConfig>>()?.Value;
         if (kestrelConfig is null)
@@ -23,16 +23,16 @@ public static class ApplicationBuilderConsulExtension
         if (serviceAddress.Host == "0.0.0.0")
             serviceAddress = new Uri($"{serviceAddress.Scheme}://{ipAddresses.FirstOrDefault()}:{serviceAddress.Port}");
 
-        registration.Register(serviceAddress);
+        registration.Register(serviceAddress, serviceId);
     }
 
-    public static void RegisterToConsul(this IApplicationBuilder app, Uri serviceAddress)
+    public static void RegisterToConsul(this IApplicationBuilder app, Uri serviceAddress, string serviceId = null)
     {
         if (serviceAddress is null)
             throw new ArgumentNullException(nameof(serviceAddress));
 
         var registration = app.ApplicationServices.GetRequiredService<ConsulRegistration>();
-        registration.Register(serviceAddress);
+        registration.Register(serviceAddress, serviceId);
     }
 
     public static void RegisterToConsul(this IApplicationBuilder app, AgentServiceRegistration instance)

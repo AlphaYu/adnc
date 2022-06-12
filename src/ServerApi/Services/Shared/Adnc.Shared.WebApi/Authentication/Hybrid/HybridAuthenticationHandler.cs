@@ -14,6 +14,8 @@ public sealed class HybridAuthenticationHandler : AuthenticationHandler<HybridSc
     protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
     {
         var endpoint = Context.GetEndpoint();
+        var requestId = System.Diagnostics.Activity.Current?.Id ?? Context.TraceIdentifier;
+        Logger.LogDebug($"requestid: {requestId}");
         if (endpoint?.Metadata?.GetMetadata<IAllowAnonymous>() != null)
             return await Task.FromResult(AuthenticateResult.NoResult());
 

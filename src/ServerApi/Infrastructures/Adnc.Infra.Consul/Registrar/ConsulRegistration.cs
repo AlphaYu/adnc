@@ -12,7 +12,6 @@ public sealed class ConsulRegistration
         IOptions<ConsulConfig> consulOption
         , ConsulClient consulClient
         , IHostApplicationLifetime hostApplicationLifetime
-        , IServiceProvider serviceProvider
         , ILogger<ConsulRegistration> logger)
     {
         _consulConfig = consulOption.Value;
@@ -22,12 +21,12 @@ public sealed class ConsulRegistration
         _logger = logger;
     }
 
-    public void Register(Uri serviceAddress)
+    public void Register(Uri serviceAddress,string serviceId=null)
     {
         if (serviceAddress is null)
             throw new ArgumentNullException(nameof(serviceAddress));
 
-        var instance = GetAgentServiceRegistration(serviceAddress);
+        var instance = GetAgentServiceRegistration(serviceAddress, serviceId);
         Register(instance);
     }
 
@@ -85,18 +84,17 @@ public sealed class ConsulRegistration
         return IPList;
     }
 
-    private AgentServiceRegistration GetAgentServiceRegistration(Uri serviceAddress)
+    private AgentServiceRegistration GetAgentServiceRegistration(Uri serviceAddress,string serviceId = null)
     {
         if (serviceAddress is null)
             throw new ArgumentNullException(nameof(serviceAddress));
 
-        var serverId = $"{_consulConfig.ServiceName}.{DateTime.Now.Ticks}";
         var protocol = serviceAddress.Scheme;
         var host = serviceAddress.Host;
         var port = serviceAddress.Port;
         var registrationInstance = new AgentServiceRegistration()
         {
-            ID = serverId,
+            ID = serviceId ?? $"{_consulConfig.ServiceName}-{DateTime.Now.GetTotalMilliseconds()}",
             Name = _consulConfig.ServiceName,
             Address = host,
             Port = port,

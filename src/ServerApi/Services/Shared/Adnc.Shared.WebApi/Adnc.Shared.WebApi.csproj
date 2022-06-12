@@ -2,6 +2,27 @@
 	<Import Project="..\..\..\build\common.props" />
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'" />
 	<ItemGroup>
+	  <None Remove="appsettings.shared.development.json" />
+	  <None Remove="nlog-mongodb.config" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Content Include="appsettings.shared.development.json">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+	  </Content>
+	  <Content Include="NLog\nlog-loki.config">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+	  </Content>
+	  <Content Include="NLog\nlog-mongodb.config">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+	  </Content>
+	</ItemGroup>
+	<ItemGroup>
 		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.8" />
 	</ItemGroup>
 
@@ -22,6 +43,7 @@
 		<!--<PackageReference Include="AspNetCore.HealthChecks.Redis" Version="5.0.2" />-->
 		<PackageReference Include="LiteX.HealthChecks.Redis" Version="3.0.0" />
 		<PackageReference Include="FluentValidation.AspNetCore" Version="10.4.0" />
+		<PackageReference Include="NLog.Targets.Loki" Version="1.4.4" />
 		<PackageReference Include="NLog.Mongo" Version="4.6.0.191">
 		  <TreatAsUsed>true</TreatAsUsed>
 		</PackageReference>

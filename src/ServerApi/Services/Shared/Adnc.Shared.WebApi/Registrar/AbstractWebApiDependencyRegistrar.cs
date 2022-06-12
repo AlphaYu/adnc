@@ -18,11 +18,12 @@ public abstract class AbstractWebApiDependencyRegistrar : IDependencyRegistrar
     /// <param name="services"><see cref="IServiceInfo"/></param>
     /// <param name="environment"><see cref="IHostEnvironment"/></param>
     /// <param name="serviceInfo"><see cref="ServiceInfo"/></param>
-    protected AbstractWebApiDependencyRegistrar(IServiceCollection services)
+    protected AbstractWebApiDependencyRegistrar(IServiceCollection services, Assembly webApiAssembly)
     {
         Services = services;
         Configuration = services.GetConfiguration();
-        ServiceInfo = services.GetServiceInfo();
+        ServiceInfo = new ServiceInfo(webApiAssembly);
+        services.AddSingleton(typeof(IServiceInfo), ServiceInfo);
     }
 
     /// <summary>
@@ -233,6 +234,8 @@ public abstract class AbstractWebApiDependencyRegistrar : IDependencyRegistrar
     {
         var openApiInfo = new OpenApiInfo { Title = ServiceInfo.ShortName, Version = ServiceInfo.Version };
 
+        //Services.AddEndpointsApiExplorer();
+
         Services.AddSwaggerGen(c =>
         {
             c.SwaggerDoc(openApiInfo.Version, openApiInfo);
@@ -262,8 +265,8 @@ public abstract class AbstractWebApiDependencyRegistrar : IDependencyRegistrar
                     Array.Empty<string>()
                 }
             });
-            c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{ServiceInfo.AssemblyName}.xml"));
-            c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{ServiceInfo.AssemblyName.Replace("WebApi", "Application.Contracts")}.xml"));
+            c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{ServiceInfo.StartAssembly.GetName().Name}.xml"));
+            c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{ServiceInfo.StartAssembly.GetName().Name.Replace("WebApi", "Application.Contracts")}.xml"));
         });
 
         Services.AddFluentValidationRulesToSwagger();
@@ -310,11 +313,11 @@ public abstract class AbstractWebApiDependencyRegistrar : IDependencyRegistrar
         var appAssembly = ServiceInfo.GetApplicationAssembly();
         if (appAssembly is not null)
         {
-            var modelType = appAssembly.GetTypes().FirstOrDefault(m => m.IsAssignableTo(typeof(IDependencyRegistrar)) && m.IsNotAbstractClass(true));
-            if (modelType is not null)
+            var applicationRegistrarType = appAssembly.ExportedTypes.FirstOrDefault(m => m.IsAssignableTo(typeof(IDependencyRegistrar)) && m.IsNotAbstractClass(true));
+            if (applicationRegistrarType is not null)
             {
-                var adncServiceCollection = Activator.CreateInstance(modelType, Services) as IDependencyRegistrar;
-                adncServiceCollection.AddAdnc();
+                var applicationRegistrar = Activator.CreateInstance(applicationRegistrarType, Services) as IDependencyRegistrar;
+                applicationRegistrar.AddAdnc();
             }
         }
     }

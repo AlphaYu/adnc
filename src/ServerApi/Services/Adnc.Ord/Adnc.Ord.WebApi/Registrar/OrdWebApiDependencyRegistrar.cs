@@ -4,7 +4,8 @@ namespace Adnc.Ord.WebApi.Registrar;
 
 public sealed class OrdWebApiDependencyRegistrar : AbstractWebApiDependencyRegistrar
 {
-    public OrdWebApiDependencyRegistrar(IServiceCollection services) : base(services)
+    public OrdWebApiDependencyRegistrar(IServiceCollection services)
+        : base(services, typeof(OrdWebApiDependencyRegistrar).Assembly)
     {
     }
 

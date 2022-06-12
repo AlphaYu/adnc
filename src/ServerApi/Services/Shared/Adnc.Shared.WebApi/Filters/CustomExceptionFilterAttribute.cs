@@ -23,7 +23,8 @@ public sealed class CustomExceptionFilterAttribute : ExceptionFilterAttribute
     {
         var status = 500;
         var exception = context.Exception;
-        var eventId = new EventId(exception.HResult);
+        var requestId = System.Diagnostics.Activity.Current?.Id ?? context.HttpContext.TraceIdentifier;
+        var eventId = new EventId(exception.HResult, requestId);
         var userContext = context.HttpContext.RequestServices.GetService<UserContext>();
         var descriptor = context.ActionDescriptor as ControllerActionDescriptor;
         //string className = descriptor.ControllerName;

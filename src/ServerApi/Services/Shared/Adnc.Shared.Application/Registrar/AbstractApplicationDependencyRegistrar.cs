@@ -130,7 +130,7 @@ public abstract class AbstractApplicationDependencyRegistrar : IDependencyRegist
             options.UseMySql(mysqlConfig.ConnectionString, serverVersion, optionsBuilder =>
             {
                 optionsBuilder.MinBatchSize(4)
-                                        .MigrationsAssembly(ServiceInfo.AssemblyName.Replace("WebApi", "Migrations"))
+                                        .MigrationsAssembly(ServiceInfo.StartAssembly.GetName().Name.Replace("WebApi", "Migrations"))
                                         .UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
             });
 
