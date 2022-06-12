@@ -3,7 +3,7 @@
 [Serializable]
 public class BusinessException : Exception, IAdncException
 {
-    public BusinessException(string? message)
+    public BusinessException(string message)
         : base(message)
     {
         base.HResult = (int)HttpStatusCode.BadRequest;
