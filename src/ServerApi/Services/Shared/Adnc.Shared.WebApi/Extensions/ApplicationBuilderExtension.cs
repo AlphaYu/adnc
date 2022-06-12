@@ -47,7 +47,7 @@ public static class ApplicationBuilderExtension
         {
             var assembly = serviceInfo.GetWebApiAssembly();
             c.IndexStream = () => assembly.GetManifestResourceStream($"{assembly.GetName().Name}.swagger_miniprofiler.html");
-            c.SwaggerEndpoint($"/{serviceInfo.ShortName}/swagger/{serviceInfo.Version}/swagger.json", $"{serviceInfo.FullName}-{serviceInfo.Version}");
+            c.SwaggerEndpoint($"/{serviceInfo.ShortName}/swagger/{serviceInfo.Version}/swagger.json", $"{serviceInfo.ServiceName}-{serviceInfo.Version}");
             c.RoutePrefix = $"{serviceInfo.ShortName}";
         });
         app.UseHealthChecks($"/{healthUrl}", new HealthCheckOptions()

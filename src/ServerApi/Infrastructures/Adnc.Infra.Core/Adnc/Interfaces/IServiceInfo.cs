@@ -8,6 +8,11 @@ public interface IServiceInfo
     public string Id { get; }
 
     /// <summary>
+    /// adnc-xxx-webapi/adnc-xxx-webapi-dev
+    /// </summary>
+    public string ServiceName { get; }
+
+    /// <summary>
     /// corsPolicy
     /// </summary>
     public string CorsPolicy { get; set; }
@@ -16,11 +21,6 @@ public interface IServiceInfo
     ///  usr or maint or cus or xxx
     /// </summary>
     public string ShortName { get; }
-
-    /// <summary>
-    /// adnc.xxx.webapi
-    /// </summary>
-    public string FullName { get; }
 
     /// <summary>
     /// 0.9.2.xx

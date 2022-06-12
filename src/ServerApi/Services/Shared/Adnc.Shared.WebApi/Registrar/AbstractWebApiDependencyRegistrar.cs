@@ -22,8 +22,7 @@ public abstract class AbstractWebApiDependencyRegistrar : IDependencyRegistrar
     {
         Services = services;
         Configuration = services.GetConfiguration();
-        ServiceInfo = new ServiceInfo(webApiAssembly);
-        services.AddSingleton(typeof(IServiceInfo), ServiceInfo);
+        ServiceInfo = services.GetServiceInfo();
     }
 
     /// <summary>
