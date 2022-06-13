@@ -9,10 +9,10 @@ public sealed class DefaultConsulConfigurationProvider : ConfigurationProvider
     private ulong _currentIndex;
     private Task _pollTask;
 
-    public DefaultConsulConfigurationProvider(ConsulConfig config, bool reloadOnChanges)
+    public DefaultConsulConfigurationProvider(ConsulClient consulClient, string consulKeyPath, bool reloadOnChanges)
     {
-        _consulClient = new ConsulClient(x => x.Address = new Uri(config.ConsulUrl));
-        _path = config.ConsulKeyPath;
+        _consulClient = consulClient;
+        _path = consulKeyPath;
         _waitMillisecond = 3;
         _reloadOnChange = reloadOnChanges;
     }
