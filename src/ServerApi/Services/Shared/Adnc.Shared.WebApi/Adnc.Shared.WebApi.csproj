@@ -4,9 +4,15 @@
 	<ItemGroup>
 	  <None Remove="appsettings.shared.development.json" />
 	  <None Remove="nlog-mongodb.config" />
+	  <None Remove="NLog\nlog-console.config" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Content Include="appsettings.shared.development.json">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+	  </Content>
+	  <Content Include="NLog\nlog-console.config">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
