@@ -1,8 +1,8 @@
 ﻿namespace Adnc.Shared.Application.BloomFilter;
 
-public abstract class NullBloomFilter : AbstractBloomFilter
+public sealed class NullBloomFilter : AbstractBloomFilter
 {
-    protected NullBloomFilter(Lazy<IRedisProvider> redisProvider, Lazy<IDistributedLocker> distributedLocker) : base(redisProvider, distributedLocker)
+    public NullBloomFilter(Lazy<IRedisProvider> redisProvider, Lazy<IDistributedLocker> distributedLocker) : base(redisProvider, distributedLocker)
     {
     }
 

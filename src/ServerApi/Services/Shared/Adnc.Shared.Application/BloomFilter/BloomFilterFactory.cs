@@ -1,6 +1,6 @@
 ﻿namespace Adnc.Shared.Application.BloomFilter;
 
-public class BloomFilterFactory
+public sealed class BloomFilterFactory
 {
     private readonly IEnumerable<IBloomFilter> _instances;
     private readonly RedisConfig _redisConfig;
