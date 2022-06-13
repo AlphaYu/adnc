@@ -28,7 +28,7 @@
             {
                 if (doc.RootElement.ValueKind != JsonValueKind.Object)
                 {
-                    throw new FormatException("数据格式不正确");
+                    throw new FormatException("data is invalid");
                 }
                 VisitElement(doc.RootElement);
             }
@@ -73,13 +73,13 @@
                     var key = _currentPath;
                     if (_data.ContainsKey(key))
                     {
-                        throw new FormatException($"键{key}重复定义");
+                        throw new FormatException($"duplicate key[{key}]");
                     }
                     _data[key] = value.ToString();
                     break;
 
                 default:
-                    throw new FormatException("数据格式不正确");
+                    throw new FormatException("Formater is invalid");
             }
         }
 

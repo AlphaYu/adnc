@@ -11,11 +11,7 @@ public sealed class DefaultConsulConfigurationProvider : ConfigurationProvider
 
     public DefaultConsulConfigurationProvider(ConsulConfig config, bool reloadOnChanges)
     {
-        _consulClient = new ConsulClient(x =>
-        {
-            // consul 服务地址
-            x.Address = new Uri(config.ConsulUrl);
-        });
+        _consulClient = new ConsulClient(x => x.Address = new Uri(config.ConsulUrl));
         _path = config.ConsulKeyPath;
         _waitMillisecond = 3;
         _reloadOnChange = reloadOnChanges;
@@ -27,13 +23,10 @@ public sealed class DefaultConsulConfigurationProvider : ConfigurationProvider
         {
             return;
         }
-        //加载数据
         LoadData(GetData().GetAwaiter().GetResult());
-        //处理数据变更
         PollReaload();
     }
 
-    //设置数据
     private void LoadData(QueryResult<KVPair> queryResult)
     {
         _currentIndex = queryResult.LastIndex;
@@ -47,7 +40,6 @@ public sealed class DefaultConsulConfigurationProvider : ConfigurationProvider
         Data = JsonConfigurationFileParser.Parse(stream);
     }
 
-    //获取consul配置中心数据
     private async Task<QueryResult<KVPair>> GetData()
     {
         var res = await _consulClient.KV.Get(_path);
@@ -58,7 +50,6 @@ public sealed class DefaultConsulConfigurationProvider : ConfigurationProvider
         throw new Exception($"Error loading configuration from consul. Status code: {res.StatusCode}.");
     }
 
-    //处理数据变更
     private void PollReaload()
     {
         if (_reloadOnChange)
