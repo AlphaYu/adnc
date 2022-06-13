@@ -80,7 +80,8 @@ public abstract class AbstractApplicationDependencyRegistrar : IDependencyRegist
         Services.AddScoped<OperateLogAsyncInterceptor>();
         Services.AddScoped<UowInterceptor>();
         Services.AddScoped<UowAsyncInterceptor>();
-        Services.AddSingleton<IBloomFilterFactory, DefaultBloomFilterFactory>();
+        Services.AddSingleton<IBloomFilter, NullBloomFilter>();
+        Services.AddSingleton<BloomFilterFactory>();
         Services.AddHostedService<CachingHostedService>();
         Services.AddHostedService<ChannelConsumersHostedService>();
         Services.AddHostedService<BloomFilterHostedService>();
