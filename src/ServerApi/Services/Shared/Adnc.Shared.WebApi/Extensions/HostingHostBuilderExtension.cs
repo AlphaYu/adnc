@@ -7,7 +7,7 @@ public static class WebApplicationBuilderExtension
 {
     public static WebApplicationBuilder ConfigureAdncDefault(this WebApplicationBuilder builder, string[] args, Assembly webApiAssembly)
     {
-        if (builder is null) 
+        if (builder is null)
             throw new ArgumentNullException(nameof(builder));
 
         _serviceInfo = new ServiceInfo(webApiAssembly, builder.Environment);
@@ -24,6 +24,7 @@ public static class WebApplicationBuilderExtension
         else if (builder.Environment.IsProduction() || builder.Environment.IsStaging())
         {
             var consulOption = builder.Configuration.GetConsulSection().Get<ConsulConfig>();
+            consulOption.ConsulKeyPath = consulOption.ConsulKeyPath.Replace("$SHORTNAME", _serviceInfo.ShortName);
             builder.Configuration.AddConsulConfiguration(consulOption, true);
         }
         OnSettingConfigurationChanged(builder.Configuration);
@@ -65,11 +66,11 @@ public static class WebApplicationBuilderExtension
                 continue;
 
             var sectionValue = section.Value;
-            if (sectionValue.Contains("$ServiceName"))
-                section.Value = sectionValue.Replace("$ServiceName", serviceInfo.ServiceName);
+            if (sectionValue.Contains("$SERVICENAME"))
+                section.Value = sectionValue.Replace("$SERVICENAME", serviceInfo.ServiceName);
 
-            if (sectionValue.Contains("$ShortName"))
-                section.Value = sectionValue.Replace("$ShortName", serviceInfo.ShortName);
+            if (sectionValue.Contains("$SHORTNAME"))
+                section.Value = sectionValue.Replace("$SHORTNAME", serviceInfo.ShortName);
         }
     }
 
