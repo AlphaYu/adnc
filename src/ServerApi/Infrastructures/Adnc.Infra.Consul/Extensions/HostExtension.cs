@@ -1,16 +1,16 @@
 ﻿using Adnc.Infra.Consul.Registrar;
 
-namespace Microsoft.AspNetCore.Builder;
+namespace Microsoft.Extensions.Hosting;
 
 public static class ApplicationBuilderConsulExtension
 {
-    public static void RegisterToConsul(this IApplicationBuilder app,string serviceId = null)
+    public static IHost RegisterToConsul(this IHost host, string serviceId = null)
     {
-        var kestrelConfig = app.ApplicationServices.GetRequiredService<IOptions<KestrelConfig>>()?.Value;
+        var kestrelConfig = host.Services.GetRequiredService<IOptions<KestrelConfig>>().Value;
         if (kestrelConfig is null)
             throw new NotImplementedException(nameof(kestrelConfig));
 
-        var registration = app.ApplicationServices.GetRequiredService<ConsulRegistration>();
+        var registration = host.Services.GetRequiredService<ConsulRegistration>();
         var ipAddresses = registration.GetLocalIpAddress("InterNetwork");
         if (ipAddresses.IsNullOrEmpty())
             throw new NotImplementedException(nameof(kestrelConfig));
@@ -24,23 +24,26 @@ public static class ApplicationBuilderConsulExtension
             serviceAddress = new Uri($"{serviceAddress.Scheme}://{ipAddresses.FirstOrDefault()}:{serviceAddress.Port}");
 
         registration.Register(serviceAddress, serviceId);
+        return host;
     }
 
-    public static void RegisterToConsul(this IApplicationBuilder app, Uri serviceAddress, string serviceId = null)
+    public static IHost RegisterToConsul(this IHost host, Uri serviceAddress, string serviceId = null)
     {
         if (serviceAddress is null)
             throw new ArgumentNullException(nameof(serviceAddress));
 
-        var registration = app.ApplicationServices.GetRequiredService<ConsulRegistration>();
+        var registration = host.Services.GetRequiredService<ConsulRegistration>();
         registration.Register(serviceAddress, serviceId);
+        return host;
     }
 
-    public static void RegisterToConsul(this IApplicationBuilder app, AgentServiceRegistration instance)
+    public static IHost RegisterToConsul(this IHost host, AgentServiceRegistration instance)
     {
         if (instance is null)
             throw new ArgumentNullException(nameof(instance));
 
-        var registration = app.ApplicationServices.GetRequiredService<ConsulRegistration>();
+        var registration = host.Services.GetRequiredService<ConsulRegistration>();
         registration.Register(instance);
+        return host;
     }
 }
