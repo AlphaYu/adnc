@@ -49,7 +49,7 @@ public abstract class AbstractApplicationDependencyRegistrar : IDependencyRegist
         MysqlSection = Configuration.GetMysqlSection() ?? throw new ArgumentException("MysqlSection is null.");
         ConsulSection = Configuration.GetConsulSection();
         RabbitMqSection = Configuration.GetRabbitMqSection();
-        RpcAddressInfo = Configuration.GetRabbitMqSection().Get<List<AddressNode>>();
+        RpcAddressInfo = Configuration.GetRpcAddressInfoSection().Get<List<AddressNode>>();
     }
 
     public abstract void AddAdnc();
