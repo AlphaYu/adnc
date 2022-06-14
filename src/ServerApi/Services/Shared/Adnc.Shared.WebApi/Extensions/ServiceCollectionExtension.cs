@@ -10,12 +10,12 @@ public static class ServiceCollectionExtension
     /// <returns></returns>
     /// <exception cref="ArgumentNullException"></exception>
     /// <exception cref="NullReferenceException"></exception>
-    public static IServiceCollection AddAdnc(this IServiceCollection services, Assembly webApiAssembly)
+    public static IServiceCollection AddAdnc(this IServiceCollection services, IServiceInfo serviceInfo)
     {
-        if (webApiAssembly is null)
-            throw new ArgumentNullException(nameof(webApiAssembly));
+        if (serviceInfo?.StartAssembly is null)
+            throw new ArgumentNullException(nameof(serviceInfo));
 
-        var webApiRegistarType = webApiAssembly.ExportedTypes.FirstOrDefault(m => m.IsAssignableTo(typeof(IDependencyRegistrar)) && m.IsNotAbstractClass(true));
+        var webApiRegistarType = serviceInfo.StartAssembly.ExportedTypes.FirstOrDefault(m => m.IsAssignableTo(typeof(IDependencyRegistrar)) && m.IsNotAbstractClass(true));
         if (webApiRegistarType is null)
             throw new NullReferenceException(nameof(IDependencyRegistrar));
 

@@ -7,7 +7,7 @@
 	  <None Remove="NLog\nlog-console.config" />
 	</ItemGroup>
 	<ItemGroup>
-	  <Content Include="appsettings.shared.development.json">
+	  <Content Include="appsettings.shared.Development.json">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>

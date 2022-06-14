@@ -37,6 +37,7 @@ public abstract class AbstractApplicationDependencyRegistrar : IDependencyRegist
     protected IConfigurationSection RabbitMqSection { get; private set; }
     protected IConfigurationSection MongoDbSection { get; private set; }
     protected IConfigurationSection MysqlSection { get; private set; }
+    protected List<AddressNode> RpcAddressInfo { get; private set; }
 
     protected AbstractApplicationDependencyRegistrar(IServiceCollection services)
     {
@@ -48,6 +49,7 @@ public abstract class AbstractApplicationDependencyRegistrar : IDependencyRegist
         MysqlSection = Configuration.GetMysqlSection() ?? throw new ArgumentException("MysqlSection is null.");
         ConsulSection = Configuration.GetConsulSection();
         RabbitMqSection = Configuration.GetRabbitMqSection();
+        RpcAddressInfo = Configuration.GetRabbitMqSection().Get<List<AddressNode>>();
     }
 
     public abstract void AddAdnc();
@@ -238,7 +240,7 @@ public abstract class AbstractApplicationDependencyRegistrar : IDependencyRegist
     protected virtual void AddRestClient<TRestClient>(string serviceName, List<IAsyncPolicy<HttpResponseMessage>> policies)
      where TRestClient : class
     {
-        var addressNode = RpcAddressInfo.GetAddressNode(serviceName);
+        var addressNode = RpcAddressInfo.FirstOrDefault(x=>x.Service.EqualsIgnoreCase(serviceName));
         if (addressNode is null)
             throw new NullReferenceException(nameof(addressNode));
 
@@ -286,7 +288,7 @@ public abstract class AbstractApplicationDependencyRegistrar : IDependencyRegist
     protected virtual void AddGrpcClient<TGrpcClient>(string serviceName, List<IAsyncPolicy<HttpResponseMessage>> policies)
      where TGrpcClient : class
     {
-        var addressNode = RpcAddressInfo.GetAddressNode(serviceName);
+        var addressNode = RpcAddressInfo.FirstOrDefault(x => x.Service.EqualsIgnoreCase(serviceName));
         if (addressNode is null)
             throw new NullReferenceException(nameof(addressNode));
 

@@ -5,33 +5,38 @@ namespace Microsoft.Extensions.Hosting;
 
 public static class WebApplicationBuilderExtension
 {
-    public static WebApplicationBuilder ConfigureAdncDefault(this WebApplicationBuilder builder, string[] args, Assembly webApiAssembly)
+    /// <summary>
+    /// Configure Configuration/ServiceCollection/Logging/WebHost(Kestrel)
+    /// </summary>
+    /// <param name="builder"></param>
+    /// <param name="args"></param>
+    /// <param name="webApiAssembly"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentNullException"></exception>
+    public static WebApplicationBuilder ConfigureAdncDefault(this WebApplicationBuilder builder, string[] args, IServiceInfo serviceInfo)
     {
         if (builder is null)
             throw new ArgumentNullException(nameof(builder));
 
-        _serviceInfo = new ServiceInfo(webApiAssembly, builder.Environment);
-        var initialData = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("ServiceName", _serviceInfo.ServiceName) };
+        var initialData = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("ServiceName", serviceInfo.ServiceName) };
 
         // Configuration
-        builder.Services.ReplaceConfiguration(builder.Configuration);
-        builder.Configuration.AddCommandLine(args);
         builder.Configuration.AddInMemoryCollection(initialData);
-        if (builder.Environment.IsDevelopment())
-        {
-            builder.Configuration.AddJsonFile($"{AppContext.BaseDirectory}/appsettings.shared.development.json", true, true);
-        }
-        else if (builder.Environment.IsProduction() || builder.Environment.IsStaging())
+        builder.Configuration.AddCommandLine(args);
+        builder.Configuration.AddJsonFile($"{AppContext.BaseDirectory}/appsettings.shared.{builder.Environment.EnvironmentName}.json", true, true);
+        builder.Configuration.AddJsonFile($"{AppContext.BaseDirectory}/appsettings.{builder.Environment.EnvironmentName}.json", true, true);
+        if (builder.Environment.IsProduction() || builder.Environment.IsStaging())
         {
             var consulOption = builder.Configuration.GetConsulSection().Get<ConsulConfig>();
-            consulOption.ConsulKeyPath = consulOption.ConsulKeyPath.Replace("$SHORTNAME", _serviceInfo.ShortName);
+            consulOption.ConsulKeyPath = consulOption.ConsulKeyPath.Replace("$SHORTNAME", serviceInfo.ShortName);
             builder.Configuration.AddConsulConfiguration(consulOption, true);
         }
         OnSettingConfigurationChanged(builder.Configuration);
 
         //ServiceCollection
-        builder.Services.AddSingleton(typeof(IServiceInfo), _serviceInfo);
-        builder.Services.AddAdnc(webApiAssembly);
+        builder.Services.ReplaceConfiguration(builder.Configuration);
+        builder.Services.AddSingleton(typeof(IServiceInfo), serviceInfo);
+        builder.Services.AddAdnc(serviceInfo);
 
         //Logging
         builder.Logging.ClearProviders();
@@ -54,13 +59,14 @@ public static class WebApplicationBuilderExtension
     /// </summary>
     /// <param name="sections"></param>
     /// <param name="serviceInfo"></param>
-    private static void ReplacePlaceholder(IEnumerable<IConfigurationSection> sections, IServiceInfo serviceInfo)
+    private static void ReplacePlaceholder(IEnumerable<IConfigurationSection> sections)
     {
+        var serviceInfo = ServiceInfo.GetInstance();
         foreach (var section in sections)
         {
             var childrenSections = section.GetChildren();
             if (childrenSections.IsNotNullOrEmpty())
-                ReplacePlaceholder(childrenSections, serviceInfo);
+                ReplacePlaceholder(childrenSections);
 
             if (section.Value.IsNullOrWhiteSpace())
                 continue;
@@ -79,7 +85,6 @@ public static class WebApplicationBuilderExtension
     /// </summary>
     /// <param name="state"></param>
     private static IDisposable _callbackRegistration;
-    private static IServiceInfo _serviceInfo;
     private static void OnSettingConfigurationChanged(object state)
     {
         _callbackRegistration?.Dispose();
@@ -87,7 +92,7 @@ public static class WebApplicationBuilderExtension
         var changedChildren = configuration.GetChildren();
         var reloadToken = configuration.GetReloadToken();
 
-        ReplacePlaceholder(changedChildren, _serviceInfo);
+        ReplacePlaceholder(changedChildren);
 
         _callbackRegistration = reloadToken.RegisterChangeCallback(OnSettingConfigurationChanged, state);
     }
