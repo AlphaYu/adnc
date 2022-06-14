@@ -4,7 +4,6 @@
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
-        "SKYWALKING__SERVICENAME": "adnc.gateway.dev",
         "ASPNETCORE_ENVIRONMENT": "Development",
         "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "SkyAPM.Agent.AspNetCore"
       },
