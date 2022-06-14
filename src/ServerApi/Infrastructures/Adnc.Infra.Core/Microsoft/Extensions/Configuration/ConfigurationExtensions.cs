@@ -87,4 +87,18 @@ public static partial class ConfigurationExtensions
     /// <param name="configuration"></param>
     /// <returns></returns>
     public static IConfigurationSection GetKestrelSection(this IConfiguration configuration) => configuration.GetSection("Kestrel");
+
+    /// <summary>
+    /// 获取RpcAddressInfo配置
+    /// </summary>
+    /// <param name="configuration"></param>
+    /// <returns></returns>
+    public static IConfigurationSection GetRpcAddressInfoSection(this IConfiguration configuration) => configuration.GetSection("RpcAddressInfo");
+
+    /// <summary>
+    /// 获取RpcPartners配置
+    /// </summary>
+    /// <param name="configuration"></param>
+    /// <returns></returns>
+    public static IConfigurationSection GetRpcPartnersSection(this IConfiguration configuration) => configuration.GetSection("RpcPartners");
 }

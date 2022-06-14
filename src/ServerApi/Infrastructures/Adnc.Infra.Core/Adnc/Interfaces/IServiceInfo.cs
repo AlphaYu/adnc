@@ -8,7 +8,7 @@ public interface IServiceInfo
     public string Id { get; }
 
     /// <summary>
-    /// adnc-xxx-webapi/adnc-xxx-webapi-dev
+    /// adnc-xxx-webapi
     /// </summary>
     public string ServiceName { get; }
 
