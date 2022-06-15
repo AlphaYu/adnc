@@ -12,7 +12,7 @@
 
 # <div align="center">![Adnc是一个微服务开发框架 代码改变世界 开源推动社区](https://aspdotnetcore.net/adnc-repository-open-graph/)</div>
 ## <div align="center">*代码改变世界，开源推动社区*</div>
-&ensp;&ensp;&ensp;&ensp;<a target="_blank" title="一个轻量级的.Net 5.0微服务开发框架" href="https://aspdotnetcore.net">Adnc</a>是一个轻量级的完全可以落的微服务/分布式开发框架，同时也适用于单体架构系统的开发。支持经典三层与DDD架构开发模式、集成了一系列主流稳定的微服务配套技术栈。一个前后端分离的框架，前端基于<a target="_blank" href="https://github.com/vuejs/vue">Vue</a>、后端基于<a target="_blank" href="https://github.com/dotnet/core">.Net6.0</a>构建。WebApi遵循RESTful设计规范、基于JWT认证授权、基于<a target="_blank" href="https://github.com/mariadb-corporation/MaxScale">Maxscale</a>实现了读写分离、部署灵活、代码简洁、开箱即用、容器化微服务的最佳实践。
+&ensp;&ensp;&ensp;&ensp;<a target="_blank" title="一个轻量级的.Net 5.0微服务开发框架" href="https://aspdotnetcore.net">Adnc</a>是一个轻量级的完全可以落地的微服务/分布式开发框架，同时也适用于单体架构系统的开发。支持经典三层与DDD架构开发模式、集成了一系列主流稳定的微服务配套技术栈。一个前后端分离的框架，前端基于<a target="_blank" href="https://github.com/vuejs/vue">Vue</a>、后端基于<a target="_blank" href="https://github.com/dotnet/core">.Net6</a>构建。WebApi遵循RESTful设计规范、基于JWT认证授权、基于<a target="_blank" href="https://github.com/mariadb-corporation/MaxScale">Maxscale</a>实现了读写分离、部署灵活、代码简洁、开箱即用、容器化微服务的最佳实践。
 
 - 用户中心：系统支撑服务，实现了用户管理、角色管理、权限管理、菜单管理、组织架构管理
 - 运维中心：系统支撑服务，实现了登录日志、审计日志、异常日志、字典管理、配置参数管理
@@ -66,7 +66,49 @@
 - 总体结构
 ![.NET微服务开源框架-总体设计](https://aspdotnetcore.net/adnc-rpc-eventbus/)
 
+## 代码片段
+
+```csharp
+internal static class Program
+{
+    internal static async Task Main(string[] args)
+    {
+        var webApiAssembly = System.Reflection.Assembly.GetExecutingAssembly();
+        var serviceInfo = Shared.WebApi.ServiceInfo.CreateInstance(webApiAssembly);
+        var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
+        logger.Debug($"init {nameof(Program.Main)}");
+        try
+        {
+            var app = WebApplication
+                .CreateBuilder(args)
+                .ConfigureAdncDefault(args, serviceInfo)
+                .Build();
+
+            app.UseAdncDefault(endpointRoute: endpoint =>
+            {
+                endpoint.MapGrpcService<Grpc.MaintGrpcServer>();
+            });
+
+            await app
+                .ChangeThreadPoolSettings()
+                .UseRegistrationCenter()
+                .RunAsync();
+        }
+        catch (Exception ex)
+        {
+            logger.Error(ex, "Stopped program because of exception");
+            throw;
+        }
+        finally
+        {
+            LogManager.Shutdown();
+        }
+    }
+}
+```
+
 ## Jmeter测试
+
 - ECS服务器配置：2核4G，带宽1M。服务器上装了很多东西，剩余大约40%的CPU资源，40%的内存资源。
 - 由于带宽有限，吞吐率约200/s左右。
 - 模拟并发线程1200/s
@@ -118,7 +160,7 @@
 | <a target="_blank" href="https://github.com/ThreeMammals/Ocelot">Ocelot</a> | 基于 `.NET6 编写的开源网关 |
 | <a target="_blank" href="https://github.com/hashicorp/consul">Consul</a> | 配置中心、注册中心组件|
 | <a target="_blank" href="https://github.com/reactiveui/refit">Refit</a>  | 一个声明式自动类型安全的RESTful服务调用组件，用于同步调用其他微服务|
-| [Grpc.Net.ClientFactory]([grpc/grpc-dotnet: gRPC for .NET (github.com)](https://github.com/grpc/grpc-dotnet))<br />[Grpc.Tools]([grpc/grpc: The C based gRPC (C++, Python, Ruby, Objective-C, PHP, C#) (github.com)](https://github.com/grpc/grpc)) | Grpc通讯框架 |
+| [Grpc.Net.ClientFactory]([grpc/grpc-dotnet: gRPC for .NET (github.com)](https://github.com/grpc/grpc-dotnet))<br />Grpc.Tools | Grpc通讯框架 |
 | <a target="_blank" href="https://github.com/SkyAPM/SkyAPM-dotnet">SkyAPM.Agent.AspNetCore</a> | Skywalking `.NET6探针，性能链路监测组件 |
 | <a target="_blank" href="https://github.com/castleproject/Core">Castle DynamicProxy</a> | 动态代理，AOP开源实现组件 |
 | <a target="_blank" href="https://github.com/PomeloFoundation/Pomelo.EntityFrameworkCore.MySql">Pomelo.EntityFrameworkCore.MySql</a> | EFCore ORM组件 |
@@ -210,54 +252,13 @@
 
 > 每个微服务的Migrations层是Efcore用来做数据迁移的，迁移的日志文件存放在各自Migrations目录中。
 
-### 代码片段
-```csharp
-internal static class Program
-{
-    internal static async Task Main(string[] args)
-    {
-        var webApiAssembly = System.Reflection.Assembly.GetExecutingAssembly();
-        var serviceInfo = Shared.WebApi.ServiceInfo.CreateInstance(webApiAssembly);
-        var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
-        logger.Debug($"init {nameof(Program.Main)}");
-        try
-        {
-            var app = WebApplication
-                .CreateBuilder(args)
-                .ConfigureAdncDefault(args, serviceInfo)
-                .Build();
-
-            app.UseAdncDefault(endpointRoute: endpoint =>
-            {
-                endpoint.MapGrpcService<Grpc.MaintGrpcServer>();
-            });
-
-            await app
-                .ChangeThreadPoolSettings()
-                .UseRegistrationCenter()
-                .RunAsync();
-        }
-        catch (Exception ex)
-        {
-            logger.Error(ex, "Stopped program because of exception");
-            throw;
-        }
-        finally
-        {
-            LogManager.Shutdown();
-        }
-    }
-}
-```
-
-## 问题交流
--  
-
 ## 贡献者
+
 <a href="https://github.com/alphayu/adnc/graphs/contributors">
   <img src="https://contributors-img.web.app/image?repo=alphayu/adnc" />
 </a>
 
 ## License
+
 **MIT**   
 **Free Software, Hell Yeah!**
