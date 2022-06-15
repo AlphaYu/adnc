@@ -25,11 +25,6 @@
 		</PackageReference>
 	</ItemGroup>
 	<ItemGroup>
-		<Content Update="nlog.config">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</Content>
-	</ItemGroup>
-	<ItemGroup>
 		<PackageReference Include="Grpc.AspNetCore" Version="2.45.0" />
 		<Protobuf Include="..\..\Shared\Adnc.Shared.Rpc\Protos\Services\maintgrpc.proto" GrpcServices="Server" Link="Grpc\Protos\Services\maintgrpc.proto" ProtoRoot="..\..\Shared\Adnc.Shared.Rpc\" />
 	</ItemGroup>

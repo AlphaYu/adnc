@@ -55,7 +55,8 @@ public class CustomExceptionHandlerMiddleware
 
     private async Task HandleExceptionAsync(HttpContext context, Exception exception)
     {
-        var eventId = new EventId(exception.HResult);
+        var requestId = System.Diagnostics.Activity.Current?.Id ?? context.TraceIdentifier; 
+        var eventId = new EventId( exception.HResult, requestId);
         _logger.LogError(eventId, exception, exception.Message);
 
         var status = 500;

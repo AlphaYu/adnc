@@ -1,83 +1,99 @@
-﻿using NLog.Web;
+﻿using NLog;
+using NLog.Web;
 
 namespace Microsoft.Extensions.Hosting;
 
-public static class HostingHostBuilderExtension
+public static class WebApplicationBuilderExtension
 {
-    public static IHostBuilder UseAdncDefault<TStartup, TRegistrar>(this IHostBuilder hostBuilder, string[] args)
-    where TStartup : class
-    where TRegistrar : IDependencyRegistrar
+    /// <summary>
+    /// Configure Configuration/ServiceCollection/Logging/WebHost(Kestrel)
+    /// </summary>
+    /// <param name="builder"></param>
+    /// <param name="args"></param>
+    /// <param name="webApiAssembly"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentNullException"></exception>
+    public static WebApplicationBuilder ConfigureAdncDefault(this WebApplicationBuilder builder, string[] args, IServiceInfo serviceInfo)
     {
-        if (hostBuilder is null) throw new ArgumentNullException(nameof(hostBuilder));
+        if (builder is null)
+            throw new ArgumentNullException(nameof(builder));
 
-        var startupAssembly = typeof(TStartup).Assembly;
-        return hostBuilder
-                    .ConfigureHostConfiguration(configuration => configuration.AddCommandLine(args))
-                    .ConfigureAppConfiguration((context, cb) =>
-                    {
-                        var env = context.HostingEnvironment;
-                        if (env.IsProduction() || env.IsStaging())
-                        {
-                            var configuration = cb.Build();
-                            var consulOption = configuration.GetConsulSection().Get<ConsulConfig>();
-                            cb.AddConsulConfiguration(consulOption, true);
-                        }
-                    })
-                    .ConfigureServices(services =>
-                    {
-                        var serviceInfoInstance = ServiceInfo.GetInstance(startupAssembly);
-                        services.Add(ServiceDescriptor.Singleton(typeof(IServiceInfo), serviceInfoInstance));
-                        var registrarInstance = Activator.CreateInstance(typeof(TRegistrar), services);
-                        services.Add(ServiceDescriptor.Singleton(typeof(IDependencyRegistrar), registrarInstance));
-                    })
-                    .ConfigureWebHostDefaults(webBuilder =>
-                    {
-                        webBuilder.UseStartup<TStartup>();
-                        webBuilder.ConfigureKestrel((context, serverOptions) => serverOptions.Configure(context.Configuration.GetKestrelSection(), true));
-                    })
-                    .ConfigureLogging((context, logging) => logging.ClearProviders().AddConsole().AddDebug())
-                    .UseNLog();
+        var initialData = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("ServiceName", serviceInfo.ServiceName) };
+
+        // Configuration
+        builder.Configuration.AddInMemoryCollection(initialData);
+        builder.Configuration.AddCommandLine(args);
+        builder.Configuration.AddJsonFile($"{AppContext.BaseDirectory}/appsettings.shared.{builder.Environment.EnvironmentName}.json", true, true);
+        builder.Configuration.AddJsonFile($"{AppContext.BaseDirectory}/appsettings.{builder.Environment.EnvironmentName}.json", true, true);
+        if (builder.Environment.IsProduction() || builder.Environment.IsStaging())
+        {
+            var consulOption = builder.Configuration.GetConsulSection().Get<ConsulConfig>();
+            consulOption.ConsulKeyPath = consulOption.ConsulKeyPath.Replace("$SHORTNAME", serviceInfo.ShortName);
+            builder.Configuration.AddConsulConfiguration(consulOption, true);
+        }
+        OnSettingConfigurationChanged(builder.Configuration);
+
+        //ServiceCollection
+        builder.Services.ReplaceConfiguration(builder.Configuration);
+        builder.Services.AddSingleton(typeof(IServiceInfo), serviceInfo);
+        builder.Services.AddAdnc(serviceInfo);
+
+        //Logging
+        builder.Logging.ClearProviders();
+        var logContainer = builder.Configuration.GetValue("Logging:LogContainer", "console");
+        LogManager.LoadConfiguration($"{AppContext.BaseDirectory}/NLog/nlog-{logContainer}.config");
+        builder.Host.UseNLog();
+
+        //WebHost(Kestrel)
+        builder.WebHost.ConfigureKestrel((context, serverOptions) =>
+        {
+            var kestrelSection = context.Configuration.GetKestrelSection();
+            serverOptions.Configure(kestrelSection);
+        });
+
+        return builder;
     }
 
-    //internal static async Task AspNet6(string[] args)
-    //{
-    //    var currentAssembly = Assembly.GetExecutingAssembly();
-    //    var builder = WebApplication.CreateBuilder(new WebApplicationOptions
-    //    {
-    //        Args = args
-    //        ,
-    //        ApplicationName = currentAssembly.FullName
-    //    });
-    //    //add configuration
-    //    builder.Services.ReplaceConfiguration(builder.Configuration);
-    //    builder.Configuration.AddCommandLine(args);
-    //    if (builder.Environment.IsProduction() || builder.Environment.IsStaging())
-    //    {
-    //        var consulOption = builder.Configuration.GetConsulSection().Get<ConsulConfig>();
-    //        builder.Configuration.AddConsulConfiguration(consulOption, true);
-    //    }
-    //    //add services to ms container
-    //    builder.Services.AddSingleton<IServiceInfo>(ServiceInfo.Create(currentAssembly));
-    //    builder.Services.AddAdncServices<PermissionHandlerLocal>();
-    //    builder.Logging.ClearProviders();
-    //    builder.Logging.AddConsole();
-    //    builder.Logging.AddDebug();
-    //    builder.Host.UseNLog();
-    //    //add services to autofac container
-    //    builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
-    //    builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
-    //    {
-    //        containerBuilder.RegisterAdncModules(builder.Services);
-    //    });
-    //    //configure the HTTP request pipeline.
-    //    var app = builder.Build();
-    //    app.ChangeThreadPoolSettings();
-    //    app.UseAdncMiddlewares();
-    //    if (app.Environment.IsProduction() || app.Environment.IsStaging())
-    //    {
-    //        app.RegisterToConsul();
-    //    }
-    //    //run application server
-    //    await app.RunAsync();
-    //}
+    /// <summary>
+    /// replace placeholder
+    /// </summary>
+    /// <param name="sections"></param>
+    /// <param name="serviceInfo"></param>
+    private static void ReplacePlaceholder(IEnumerable<IConfigurationSection> sections)
+    {
+        var serviceInfo = ServiceInfo.GetInstance();
+        foreach (var section in sections)
+        {
+            var childrenSections = section.GetChildren();
+            if (childrenSections.IsNotNullOrEmpty())
+                ReplacePlaceholder(childrenSections);
+
+            if (section.Value.IsNullOrWhiteSpace())
+                continue;
+
+            var sectionValue = section.Value;
+            if (sectionValue.Contains("$SERVICENAME"))
+                section.Value = sectionValue.Replace("$SERVICENAME", serviceInfo.ServiceName);
+
+            if (sectionValue.Contains("$SHORTNAME"))
+                section.Value = sectionValue.Replace("$SHORTNAME", serviceInfo.ShortName);
+        }
+    }
+
+    /// <summary>
+    /// Register Cofiguration ChangeCallback
+    /// </summary>
+    /// <param name="state"></param>
+    private static IDisposable _callbackRegistration;
+    private static void OnSettingConfigurationChanged(object state)
+    {
+        _callbackRegistration?.Dispose();
+        var configuration = state as IConfiguration;
+        var changedChildren = configuration.GetChildren();
+        var reloadToken = configuration.GetReloadToken();
+
+        ReplacePlaceholder(changedChildren);
+
+        _callbackRegistration = reloadToken.RegisterChangeCallback(OnSettingConfigurationChanged, state);
+    }
 }

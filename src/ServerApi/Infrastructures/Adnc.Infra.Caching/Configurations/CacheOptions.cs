@@ -28,6 +28,12 @@
         public bool EnableLogging { get; set; }
 
         /// <summary>
+        ///  Gets or sets a value indicating whether enable bloomfilter.
+        /// </summary>
+        /// <value><c>true</c> if enable bloomfilter; otherwise, <c>false</c>.</value>
+        public bool EnableBloomFilter { get; set; }
+
+        /// <summary>
         /// Gets or sets the sleep ms.
         /// when mutex key alive, it will sleep some time, default is 300
         /// </summary>

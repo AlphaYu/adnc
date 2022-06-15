@@ -4,11 +4,11 @@ public class UserAppService : AbstractAppService, IUserAppService
 {
     private readonly IEfRepository<SysUser> _userRepository;
     private readonly CacheService _cacheService;
-    private readonly IBloomFilterFactory _bloomFilterFactory;
+    private readonly BloomFilterFactory _bloomFilterFactory;
 
     public UserAppService(IEfRepository<SysUser> userRepository
         , CacheService cacheService
-       , IBloomFilterFactory bloomFilterFactory)
+       , BloomFilterFactory bloomFilterFactory)
     {
         _userRepository = userRepository;
         _cacheService = cacheService;
@@ -27,10 +27,10 @@ public class UserAppService : AbstractAppService, IUserAppService
         user.Password = InfraHelper.Security.MD5(user.Password + user.Salt);
 
         var cacheKey = _cacheService.ConcatCacheKey(CachingConsts.UserValidateInfoKeyPrefix, user.Id);
-        var bloomFilterCacheKey = _bloomFilterFactory.GetBloomFilter(nameof(CacheKeyBloomFilter));
+        var bloomFilterCacheKey = _bloomFilterFactory.Create(CachingConsts.BloomfilterOfCacheKey);
         await bloomFilterCacheKey.AddAsync(cacheKey);
 
-        var bloomFilterAccount = _bloomFilterFactory.GetBloomFilter(nameof(AccountBloomFilter));
+        var bloomFilterAccount = _bloomFilterFactory.Create(CachingConsts.BloomfilterOfAccountsKey);
         await bloomFilterAccount.AddAsync(user.Account);
 
         await _userRepository.InsertAsync(user);

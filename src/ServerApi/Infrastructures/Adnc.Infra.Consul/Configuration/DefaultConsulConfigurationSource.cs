@@ -2,18 +2,20 @@
 {
     public class DefaultConsulConfigurationSource : IConfigurationSource
     {
-        private readonly ConsulConfig _config;
+        private readonly ConsulClient _configClient;
+        private readonly string _consulKeyPath;
         private readonly bool _reloadOnChanges;
 
-        public DefaultConsulConfigurationSource(ConsulConfig config, bool reloadOnChanges)
+        public DefaultConsulConfigurationSource(ConsulClient configClient, string consulKeyPath, bool reloadOnChanges)
         {
-            _config = config;
+            _configClient = configClient;
+            _consulKeyPath = consulKeyPath;
             _reloadOnChanges = reloadOnChanges;
         }
 
         public IConfigurationProvider Build(IConfigurationBuilder builder)
         {
-            return new DefaultConsulConfigurationProvider(_config, _reloadOnChanges);
+            return new DefaultConsulConfigurationProvider(_configClient, _consulKeyPath, _reloadOnChanges);
         }
     }
 }

@@ -17,4 +17,8 @@ public class CachingConsts : Common.CachingConsts
 
     //cache prefix
     public const string UserValidateInfoKeyPrefix = "adnc:usr:users:validateinfo";
+
+    //bloomfilter
+    public const string BloomfilterOfAccountsKey = "adnc:usr:bloomfilter:accouts";
+    public const string BloomfilterOfCacheKey = "adnc:usr:bloomfilter:cachekeys";
 }

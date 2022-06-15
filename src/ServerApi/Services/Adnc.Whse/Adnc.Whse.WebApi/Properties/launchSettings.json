@@ -4,7 +4,6 @@
       "commandName": "Project",
       "launchBrowser": false,
       "environmentVariables": {
-        "SKYWALKING__SERVICENAME": "adnc.whse.webapi.dev",
         "ASPNETCORE_ENVIRONMENT": "Development",
         "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "SkyAPM.Agent.AspNetCore"
       }

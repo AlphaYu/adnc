@@ -37,6 +37,7 @@ public abstract class AbstractApplicationDependencyRegistrar : IDependencyRegist
     protected IConfigurationSection RabbitMqSection { get; private set; }
     protected IConfigurationSection MongoDbSection { get; private set; }
     protected IConfigurationSection MysqlSection { get; private set; }
+    protected List<AddressNode> RpcAddressInfo { get; private set; }
 
     protected AbstractApplicationDependencyRegistrar(IServiceCollection services)
     {
@@ -48,6 +49,7 @@ public abstract class AbstractApplicationDependencyRegistrar : IDependencyRegist
         MysqlSection = Configuration.GetMysqlSection() ?? throw new ArgumentException("MysqlSection is null.");
         ConsulSection = Configuration.GetConsulSection();
         RabbitMqSection = Configuration.GetRabbitMqSection();
+        RpcAddressInfo = Configuration.GetRpcAddressInfoSection().Get<List<AddressNode>>();
     }
 
     public abstract void AddAdnc();
@@ -80,7 +82,8 @@ public abstract class AbstractApplicationDependencyRegistrar : IDependencyRegist
         Services.AddScoped<OperateLogAsyncInterceptor>();
         Services.AddScoped<UowInterceptor>();
         Services.AddScoped<UowAsyncInterceptor>();
-        Services.AddSingleton<IBloomFilterFactory, DefaultBloomFilterFactory>();
+        Services.AddSingleton<IBloomFilter, NullBloomFilter>();
+        Services.AddSingleton<BloomFilterFactory>();
         Services.AddHostedService<CachingHostedService>();
         Services.AddHostedService<ChannelConsumersHostedService>();
         Services.AddHostedService<BloomFilterHostedService>();
@@ -130,7 +133,7 @@ public abstract class AbstractApplicationDependencyRegistrar : IDependencyRegist
             options.UseMySql(mysqlConfig.ConnectionString, serverVersion, optionsBuilder =>
             {
                 optionsBuilder.MinBatchSize(4)
-                                        .MigrationsAssembly(ServiceInfo.AssemblyName.Replace("WebApi", "Migrations"))
+                                        .MigrationsAssembly(ServiceInfo.StartAssembly.GetName().Name.Replace("WebApi", "Migrations"))
                                         .UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
             });
 
@@ -237,7 +240,7 @@ public abstract class AbstractApplicationDependencyRegistrar : IDependencyRegist
     protected virtual void AddRestClient<TRestClient>(string serviceName, List<IAsyncPolicy<HttpResponseMessage>> policies)
      where TRestClient : class
     {
-        var addressNode = RpcAddressInfo.GetAddressNode(serviceName);
+        var addressNode = RpcAddressInfo.FirstOrDefault(x=>x.Service.EqualsIgnoreCase(serviceName));
         if (addressNode is null)
             throw new NullReferenceException(nameof(addressNode));
 
@@ -285,7 +288,7 @@ public abstract class AbstractApplicationDependencyRegistrar : IDependencyRegist
     protected virtual void AddGrpcClient<TGrpcClient>(string serviceName, List<IAsyncPolicy<HttpResponseMessage>> policies)
      where TGrpcClient : class
     {
-        var addressNode = RpcAddressInfo.GetAddressNode(serviceName);
+        var addressNode = RpcAddressInfo.FirstOrDefault(x => x.Service.EqualsIgnoreCase(serviceName));
         if (addressNode is null)
             throw new NullReferenceException(nameof(addressNode));
 
