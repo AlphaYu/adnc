@@ -19,7 +19,7 @@ namespace Adnc.Infra.Caching.StackExchange
         {
             ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
-            if (!_cacheOptions.PenetrationSetting.Disable)
+            if (!_cacheOptions.PenetrationSetting.Disable && _cacheOptions.EnableBloomFilter)
             {
                 var exists = await _redisDb.BloomExistsAsync(_cacheOptions.PenetrationSetting.BloomFilterSetting.Name, cacheKey);
                 if (!exists)
@@ -65,7 +65,7 @@ namespace Adnc.Infra.Caching.StackExchange
             ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
             ArgumentCheck.NotNegativeOrZero(expiration, nameof(expiration));
 
-            if (!_cacheOptions.PenetrationSetting.Disable)
+            if (!_cacheOptions.PenetrationSetting.Disable && _cacheOptions.EnableBloomFilter)
             {
                 var exists = await _redisDb.BloomExistsAsync(_cacheOptions.PenetrationSetting.BloomFilterSetting.Name, cacheKey);
                 if (!exists)
@@ -135,7 +135,7 @@ namespace Adnc.Infra.Caching.StackExchange
         {
             ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
-            if (!_cacheOptions.PenetrationSetting.Disable)
+            if (!_cacheOptions.PenetrationSetting.Disable && _cacheOptions.EnableBloomFilter)
             {
                 var exists = await _redisDb.BloomExistsAsync(_cacheOptions.PenetrationSetting.BloomFilterSetting.Name, cacheKey);
                 if (!exists)

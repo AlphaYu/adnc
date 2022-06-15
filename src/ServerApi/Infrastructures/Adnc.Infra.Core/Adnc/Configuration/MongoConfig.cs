@@ -1,7 +1,7 @@
 ﻿namespace Adnc.Infra.Core.Configuration;
 
 /// <summary>
-/// JWT配置
+/// Mongodb配置
 /// </summary>
 public class MongoConfig
 {

@@ -11,9 +11,9 @@ public class BasicAuthenticationHandlerTests
     [Fact]
     public void PackAndUnPackBase64()
     {
-        var token = BasicTokenGeneratorExtension.PackToBase64(null, "usr");
-        var (isSuccessful, userName, appId) = BasicTokenGeneratorExtension.UnPackFromBase64(null, token);
-        Assert.Equal("usr", userName);
+        var token = BasicTokenValidator.PackToBase64(BasicTokenValidator.InternalCaller);
+        var (isSuccessful, userName, appId) = BasicTokenValidator.UnPackFromBase64(token);
+        Assert.Equal(BasicTokenValidator.InternalCaller,userName);
         Assert.NotEmpty(appId);
         Assert.True(isSuccessful);
     }

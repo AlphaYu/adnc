@@ -10,7 +10,7 @@ public class AccountBloomFilter : AbstractBloomFilter
         : base(redisProvider, distributedLocker)
        => _services = services;
 
-    public override string Name => "adnc:usr:bloomfilter:accouts";
+    public override string Name => CachingConsts.BloomfilterOfAccountsKey;
 
     public override double ErrorRate => 0.001;
 

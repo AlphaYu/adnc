@@ -25,12 +25,6 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 	</ItemGroup>
-	
-	<ItemGroup>
-		<Content Update="nlog.config">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</Content>
-	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\Shared\Adnc.Shared.WebApi\Adnc.Shared.WebApi.csproj" />

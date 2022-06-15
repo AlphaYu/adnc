@@ -6,13 +6,13 @@ public class AccountAppService : AbstractAppService, IAccountAppService
     private readonly IEfRepository<SysRole> _roleRepository;
     private readonly IEfRepository<SysMenu> _menuRepository;
     private readonly CacheService _cacheService;
-    private readonly IBloomFilterFactory _bloomFilterFactory;
+    private readonly BloomFilterFactory _bloomFilterFactory;
 
     public AccountAppService(IEfRepository<SysUser> userRepository
        , IEfRepository<SysRole> roleRepository
        , IEfRepository<SysMenu> menuRepository
        , CacheService cacheService
-       , IBloomFilterFactory bloomFilterFactory)
+       , BloomFilterFactory bloomFilterFactory)
     {
         _userRepository = userRepository;
         _roleRepository = roleRepository;
@@ -23,7 +23,7 @@ public class AccountAppService : AbstractAppService, IAccountAppService
 
     public async Task<AppSrvResult<UserValidateDto>> LoginAsync(UserLoginDto input)
     {
-        var bloomFilterAccount = _bloomFilterFactory.GetBloomFilter(nameof(AccountBloomFilter));
+        var bloomFilterAccount = _bloomFilterFactory.Create(CachingConsts.BloomfilterOfAccountsKey);
         var exists = await bloomFilterAccount.ExistsAsync(input.Account.ToLower());
         if (!exists)
             return Problem(HttpStatusCode.BadRequest, "用户名或密码错误");
@@ -142,8 +142,7 @@ public class AccountAppService : AbstractAppService, IAccountAppService
         return AppSrvResult();
     }
 
-    public async Task<UserValidateDto> GetUserValidateInfoAsync(long id)
-        => await _cacheService.GetUserValidateInfoFromCacheAsync(id);
+    public async Task<UserValidateDto> GetUserValidateInfoAsync(long id)    => await _cacheService.GetUserValidateInfoFromCacheAsync(id);
 
     public async Task<UserInfoDto> GetUserInfoAsync(long id)
     {

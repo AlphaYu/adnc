@@ -3,20 +3,25 @@
 public static class ServiceCollectionExtension
 {
     /// <summary>
-    /// 统一注册Adnc.WebApi通用服务
+    ///  统一注册Adnc.WebApi通用服务
     /// </summary>
-    /// <typeparam name="TPermissionHandler"></typeparam>
     /// <param name="services"></param>
-    /// <param name="configuration"></param>
-    /// <param name="environment"></param>
-    /// <param name="serviceInfo"></param>
-    /// <param name="completedExecute"></param>
+    /// <param name="startupAssembly"></param>
     /// <returns></returns>
-    [Obsolete("use : var registrar = services.GetWebApiRegistrar().AddAdncServices();")]
-    public static IServiceCollection AddAdncServices(this IServiceCollection services)
+    /// <exception cref="ArgumentNullException"></exception>
+    /// <exception cref="NullReferenceException"></exception>
+    public static IServiceCollection AddAdnc(this IServiceCollection services, IServiceInfo serviceInfo)
     {
-        var registrar = services.GetWebApiRegistrar();
-        registrar.AddAdnc();
+        if (serviceInfo?.StartAssembly is null)
+            throw new ArgumentNullException(nameof(serviceInfo));
+
+        var webApiRegistarType = serviceInfo.StartAssembly.ExportedTypes.FirstOrDefault(m => m.IsAssignableTo(typeof(IDependencyRegistrar)) && m.IsNotAbstractClass(true));
+        if (webApiRegistarType is null)
+            throw new NullReferenceException(nameof(IDependencyRegistrar));
+
+        var webapiRegistar = Activator.CreateInstance(webApiRegistarType, services)  as IDependencyRegistrar;
+        webapiRegistar.AddAdnc();
+
         return services;
     }
 }

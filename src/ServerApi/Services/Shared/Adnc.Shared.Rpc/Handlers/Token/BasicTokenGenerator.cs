@@ -10,5 +10,5 @@ public class BasicTokenGenerator : ITokenGenerator
 
     public static string Scheme => "Basic";
 
-    public virtual string Create() => this.PackToBase64(_serviceInfo.ShortName);
+    public virtual string Create() => BasicTokenValidator.PackToBase64(BasicTokenValidator.InternalCaller);
 }

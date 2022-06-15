@@ -6,15 +6,17 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         public static IServiceCollection ReplaceConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
-            return services.Replace(ServiceDescriptor.Singleton<IConfiguration>(configuration));
+            return services.Replace(ServiceDescriptor.Singleton(configuration));
         }
 
         public static IConfiguration GetConfiguration(this IServiceCollection services)
         {
             var hostBuilderContext = services.GetSingletonInstanceOrNull<HostBuilderContext>();
-            if (hostBuilderContext?.Configuration != null)
+            if (hostBuilderContext?.Configuration is not null)
             {
-                return hostBuilderContext.Configuration as IConfigurationRoot;
+                var instance = hostBuilderContext.Configuration as IConfigurationRoot;
+                if (instance is not null)
+                    return instance;
             }
 
             return services.GetSingletonInstance<IConfiguration>();

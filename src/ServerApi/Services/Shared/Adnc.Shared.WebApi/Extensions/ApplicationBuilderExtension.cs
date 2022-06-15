@@ -1,6 +1,4 @@
-﻿using Adnc.Shared.Consts.RegistrationCenter;
-
-namespace Microsoft.AspNetCore.Builder;
+﻿namespace Microsoft.AspNetCore.Builder;
 
 public static class ApplicationBuilderExtension
 {
@@ -47,7 +45,7 @@ public static class ApplicationBuilderExtension
         {
             var assembly = serviceInfo.GetWebApiAssembly();
             c.IndexStream = () => assembly.GetManifestResourceStream($"{assembly.GetName().Name}.swagger_miniprofiler.html");
-            c.SwaggerEndpoint($"/{serviceInfo.ShortName}/swagger/{serviceInfo.Version}/swagger.json", $"{serviceInfo.FullName}-{serviceInfo.Version}");
+            c.SwaggerEndpoint($"/{serviceInfo.ShortName}/swagger/{serviceInfo.Version}/swagger.json", $"{serviceInfo.ServiceName}-{serviceInfo.Version}");
             c.RoutePrefix = $"{serviceInfo.ShortName}";
         });
         app.UseHealthChecks($"/{healthUrl}", new HealthCheckOptions()
@@ -75,28 +73,6 @@ public static class ApplicationBuilderExtension
             endpoints.MapMetrics();
             endpoints.MapControllers().RequireAuthorization();
         });
-        return app;
-    }
-
-    /// <summary>
-    /// 注册服务到注册中心
-    /// </summary>
-    public static IApplicationBuilder UseRegistrationCenter(this IApplicationBuilder app)
-    {
-        var configuration = app.ApplicationServices.GetRequiredService<IConfiguration>();
-        var registeredType = configuration.GetRegisteredType().ToLower();
-        switch (registeredType)
-        {
-            case RegisteredTypeConsts.Consul:
-                app.RegisterToConsul();
-                break;
-            case RegisteredTypeConsts.Nacos:
-                // TODO
-                //app.RegisterToNacos();
-                break;
-            default:
-                break;
-        }
         return app;
     }
 }

@@ -27,7 +27,7 @@ public class BasicAuthenticationHandler : AuthenticationHandler<BasicSchemeOptio
         {
             var startIndex = BasicDefaults.AuthenticationScheme.Length+1;
             var token = authHeader[startIndex..].Trim();
-            var (isSuccessful, userName, appId) = BasicTokenGeneratorExtension.UnPackFromBase64(null, token);
+            var (isSuccessful, userName, appId) = BasicTokenValidator.UnPackFromBase64(token);
             if (isSuccessful)
             {
                 var claims = new[] { new Claim("name", userName), new Claim(ClaimTypes.Role, "partner") };
