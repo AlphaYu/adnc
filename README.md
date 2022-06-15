@@ -78,7 +78,7 @@ internal static class Program
         try
         {
             var webApiAssembly = System.Reflection.Assembly.GetExecutingAssembly();
-        	var serviceInfo = Shared.WebApi.ServiceInfo.CreateInstance(webApiAssembly);
+            var serviceInfo = Shared.WebApi.ServiceInfo.CreateInstance(webApiAssembly);
             
             var app = WebApplication
                 .CreateBuilder(args)
