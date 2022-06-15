@@ -12,13 +12,19 @@
 
 # <div align="center">![Adnc是一个微服务开发框架 代码改变世界 开源推动社区](https://aspdotnetcore.net/adnc-repository-open-graph/)</div>
 ## <div align="center">*代码改变世界，开源推动社区*</div>
-&ensp;&ensp;&ensp;&ensp;<a target="_blank" title="一个轻量级的.Net 5.0微服务开发框架" href="https://aspdotnetcore.net">Adnc</a>是一个轻量级的<a target="_blank" href="https://github.com/dotnet/core">.Net6.0</a>微服务开发框架，同时也适用于单体架构系统的开发。支持经典三层与DDD架构开发模式、集成了一系列主流稳定的微服务配套技术栈。一个前后端分离的框架，前端基于<a target="_blank" href="https://github.com/vuejs/vue">Vue</a>、后端基于<a target="_blank" href="https://github.com/dotnet/core">.Net6.0</a>构建。Webapi遵循RESTful设计规范、基于JWT认证授权、基于<a target="_blank" href="https://github.com/mariadb-corporation/MaxScale">Maxscale</a>实现了读写分离、部署灵活、代码简洁、开箱即用、容器化微服务的最佳实践。
+&ensp;&ensp;&ensp;&ensp;<a target="_blank" title="一个轻量级的.Net 5.0微服务开发框架" href="https://aspdotnetcore.net">Adnc</a>是一个轻量级的完全可以落地的微服务/分布式开发框架，同时也适用于单体架构系统的开发。支持经典三层与DDD架构开发模式、集成了一系列主流稳定的微服务配套技术栈。一个前后端分离的框架，前端基于<a target="_blank" href="https://github.com/vuejs/vue">Vue</a>、后端基于<a target="_blank" href="https://github.com/dotnet/core">.Net6</a>构建。WebApi遵循RESTful设计规范、基于JWT认证授权、基于<a target="_blank" href="https://github.com/mariadb-corporation/MaxScale">Maxscale</a>实现了读写分离、部署灵活、代码简洁、开箱即用、容器化微服务的最佳实践。
 
 - 用户中心：系统支撑服务，实现了用户管理、角色管理、权限管理、菜单管理、组织架构管理
 - 运维中心：系统支撑服务，实现了登录日志、审计日志、异常日志、字典管理、配置参数管理
 - 客户中心：经典三层开发模式demo
 - 订单中心：DDD开发模式demo
 - 仓储中心：DDD开发模式demo
+
+## 问题交流
+
+- 企&ensp;鹅&ensp;群：780634162
+- 项目官网：<a target="_blank" href="https://aspdotnetcore.net">https://aspdotnetcore.net</a>
+- 博&ensp;&ensp;&ensp;&ensp;客：<a target="_blank" href="https://www.cnblogs.com/alphayu">https://www.cnblogs.com/alphayu</a></a>
 
 ## 文档
 #### 如何快速跑起来
@@ -60,7 +66,50 @@
 - 总体结构
 ![.NET微服务开源框架-总体设计](https://aspdotnetcore.net/adnc-rpc-eventbus/)
 
+## 代码片段
+
+```csharp
+internal static class Program
+{
+    internal static async Task Main(string[] args)
+    {
+        var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
+        logger.Debug($"init {nameof(Program.Main)}");
+        try
+        {
+            var webApiAssembly = System.Reflection.Assembly.GetExecutingAssembly();
+            var serviceInfo = Shared.WebApi.ServiceInfo.CreateInstance(webApiAssembly);
+            
+            var app = WebApplication
+                .CreateBuilder(args)
+                .ConfigureAdncDefault(args, serviceInfo)
+                .Build();
+
+            app.UseAdncDefault(endpointRoute: endpoint =>
+            {
+                endpoint.MapGrpcService<Grpc.MaintGrpcServer>();
+            });
+
+            await app
+                .ChangeThreadPoolSettings()
+                .UseRegistrationCenter()
+                .RunAsync();
+        }
+        catch (Exception ex)
+        {
+            logger.Error(ex, "Stopped program because of exception");
+            throw;
+        }
+        finally
+        {
+            LogManager.Shutdown();
+        }
+    }
+}
+```
+
 ## Jmeter测试
+
 - ECS服务器配置：2核4G，带宽1M。服务器上装了很多东西，剩余大约40%的CPU资源，40%的内存资源。
 - 由于带宽有限，吞吐率约200/s左右。
 - 模拟并发线程1200/s
@@ -73,17 +122,12 @@
 ## 演示
 - <a href="http://adnc.aspdotnetcore.net" target="_blank">http://adnc.aspdotnetcore.net</a>
 
-## 问题交流
-- 780634162(QQ群)
-
 ## GitHub
 - <a href="https://github.com/alphayu/adnc" target="_blank">https://github.com/alphayu/adnc</a>
 - 开源不易，如果您喜欢这个项目, 请给个星星⭐️。
 
-## Roadmap
-  - 开发微服务项目生成工具
-  - 集成<a href="https://github.com/dapr/dapr" target="_blank">Dapr</a>
-  - 集成<a href="https://github.com/HangfireIO/Hangfire" target="_blank">Hangfire</a>实现框架计划调度功能，目前尚未完成，还需要调整与测试。
+## 路线图
+  - [计划完善与新增的模块](https://docs.qq.com/doc/DY2hrYkFYVEl5YW9Y)
 
 ## 目录结构
   - src
@@ -111,18 +155,19 @@
 #### ServerApi
   - ServerApi基于`.NET 5.0`搭建。
   - 后端主要技术栈
-  
+
 | 名称 | 描述 |
 | ---- | -----|
-| <a target="_blank" href="https://github.com/ThreeMammals/Ocelot">Ocelot</a> | 基于 `.NET 5.0` 编写的开源网关  |
+| <a target="_blank" href="https://github.com/ThreeMammals/Ocelot">Ocelot</a> | 基于 `.NET6 编写的开源网关 |
 | <a target="_blank" href="https://github.com/hashicorp/consul">Consul</a> | 配置中心、注册中心组件|
 | <a target="_blank" href="https://github.com/reactiveui/refit">Refit</a>  | 一个声明式自动类型安全的RESTful服务调用组件，用于同步调用其他微服务|
-| <a target="_blank" href="https://github.com/SkyAPM/SkyAPM-dotnet">SkyAPM.Agent.AspNetCore</a> | Skywalking `.NET 5.0`探针，性能链路监测组件 |
+| [Grpc.Net.ClientFactory]([grpc/grpc-dotnet: gRPC for .NET (github.com)](https://github.com/grpc/grpc-dotnet))<br />Grpc.Tools | Grpc通讯框架 |
+| <a target="_blank" href="https://github.com/SkyAPM/SkyAPM-dotnet">SkyAPM.Agent.AspNetCore</a> | Skywalking `.NET6探针，性能链路监测组件 |
 | <a target="_blank" href="https://github.com/castleproject/Core">Castle DynamicProxy</a> | 动态代理，AOP开源实现组件 |
 | <a target="_blank" href="https://github.com/PomeloFoundation/Pomelo.EntityFrameworkCore.MySql">Pomelo.EntityFrameworkCore.MySql</a> | EFCore ORM组件 |
 | <a target="_blank" href="https://github.com/StackExchange/Dapper">Dapper</a> | 轻量级ORM组件 |
 | <a target="_blank" href="https://entityframework-plus.net">Z.EntityFramework.Plus.EFCore</a> | 第三方高性能的EfCore组件 |
-| <a target="_blank" href="https://github.com/NLog/NLog">NLog</a> | 日志记录组件 |
+| <a target="_blank" href="https://github.com/NLog/NLog">NLog</a><br />Nlog.Mongdb<br />Nlog.Loki | 日志记录组件 |
 | <a target="_blank" href="https://github.com/AutoMapper/AutoMapper">AutoMapper</a> | 模型映射组件 |
 | <a target="_blank" href="https://github.com/domaindrivendev/Swashbuckle.AspNetCore">Swashbuckle.AspNetCore</a> | APIs文档生成工具(swagger) |
 | <a target="_blank" href="https://github.com/StackExchange/StackExchange.Redis">StackExchange.Redis</a> | 开源的Redis客户端SDK |
@@ -135,11 +180,21 @@
 
 ## 后端解决方案
 #### 整体架构图
+
+- `Gateways` 网关相关工程
+
 - `Infrastructures` 基础架构相关工程
 - `Services` 微服务相关工程
 - `Tests` 框架测试相关工程
 
 ![.NET微服务开源框架-整体架构图](https://aspdotnetcore.net/dotnet6/adnc_solution)
+
+### Gateways网关相关工程
+
+##### :white_check_mark: Adnc.Gateway.Ocelot 
+
+基于Ocelot实现的Api网关，如果项目采用整体结构开发，该项目可以直接删除。Ocelot网关包含路由、服务聚合、服务发现、认证、鉴权、限流、熔断、缓存、Header头传递等功能。市面上主流网关还有Kong，Traefik，Ambassador，Tyk等等。网关和实际业务有没有关联，可以自由选择。
+
 #### Infrastructures 基础架构相关工程
 ##### :white_check_mark: Adnc.Infra.Core
 该工程是Adnc所有工程的最顶层，任何工程都会者直接或间接依赖该层。该工程提供了大量的`C#`基础类型的扩展方法以及Configuration、DependencyInjection、ContainerBuilder的扩展方法，还定义了一些异常类。
@@ -150,23 +205,14 @@
 ##### :white_check_mark: Adnc.Infra.Consul
 该工程集成了Consul，提供服务的自动注册、发现以及系统配置读写操作。
 
-##### :white_check_mark: Adnc.Infra.EfCore.MySQL
-该工程负责Adnc.Infra.Repository仓储接口以及IUintofWork接口的EfCore的实现，提供mysql数据库的CURD操作，同时也集成了Dapper部分接口，用来处理复杂查询。
-
 ##### :white_check_mark: Adnc.Infra.EventBus
-该工程简单封装了CAP，同时集成了RabbitMq，封装了发布者与订阅者等公共类，方便更加便捷的调用Rabbitmq。
+该工程简单封装了CAP，同时集成了RabbitMq，封装了发布者与订阅者等公共类，能让开发人员更加便捷的调用。
 
-##### :white_check_mark: Adnc.Infra.Gateway 
-该工程是一个Web项目，基于Ocelot实现的Api网关，如果项目采用整体结构开发，该项目可以直接删除。ocelot网关包含路由、服务聚合、服务发现、认证、鉴权、限流、熔断、缓存、Header头传递等功能。市面上主流网关还有Kong，Traefik，Ambassador，Tyk等。
-
-##### :white_check_mark: Adnc.Infra.HealthCheckUI
-该工程是一个Web项目， AspNetCore.HealthChecks组件的Dashboard，直接配置需要监测的服务地址就可以了，没有代码，关键的代码参考webapi层的AddHealthChecks()方法。
+##### :white_check_mark: Adnc.Infra.IdGenerater
+该工程负责Id的生成。
 
 ##### :white_check_mark: Adnc.Infra.Helper
-该工程提供一些通用帮助类，如IdGeneraterHelper,HashHelper,SecurityHelper等等。
-
-##### :white_check_mark: Adnc.Infra.Mongo
-该工程负责Adnc.Infra.Repository仓储接口的Mongodb实现，提供mongodb数据库的CURD操作。
+该工程提供一些通用帮助类，如HashHelper,SecurityHelper等等。
 
 ##### :white_check_mark: Adnc.Infra.Mapper
 该工程定义了IObjectMapper接口，并且提供了AutoMapper的实现。
@@ -174,12 +220,25 @@
 ##### :white_check_mark: Adnc.Infra.Repository
 该工程定义了Entity对象的基类、UnitOfWork接口、仓储接口。
 
+##### :white_check_mark: Adnc.Infra.EfCore.MySQL
+
+该工程负责Adnc.Infra.Repository仓储接口`IAdoExecuterWithQuerierRepository`的实现，提供mysql数据库的CURD操作。
+
+##### :white_check_mark: Adnc.Infra.Dapper
+
+该工程负责Adnc.Infra.Repository仓储接口以及IUintofWork接口的EfCore的实现，提供mysql数据库的CURD操作，同时也集成了Dapper部分接口，用来处理复杂查询。
+
+##### :white_check_mark: Adnc.Infra.Mongo
+
+该工程负责Adnc.Infra.Repository仓储接口的Mongodb实现，提供mongodb数据库的CURD操作。
+
 #### Services 微服务相关工程
 该目录都是具体微服务业务的实现。
 ##### :white_check_mark: Shared 
 微服务公用工程
-- `Adnc.Shared` 该层目前有三个目录Consts存放常量定义文件、Events存放事件定义文件、RPCServices存放RPC服务接口声明文件，任何层都可以依赖该层。
-- `Adnc.Application.Shared` 该层定义了DTO对象的基类、应用服务类基类、缓存相关服务基类以及操作日志拦截器、UnitOfWork拦截器。所有微服务Application/Application.Contracts层的共享层，并且都需要依赖该层。
+- `Adnc.Shared` 该层目前只有两个目录Consts存放常量定义文件、Events存放事件定义文件。
+- `Adnc.Shared.Rpc`该层负责proto文件的定义、refit接口定义以及DelegatingHandler实现。微服务同步通讯主要由该层处理，adnc支持Grpc与RestAPI两种通讯方式混用。
+- `Adnc.Application.Shared` 该层定义了DTO对象的基类、应用服务类基类、缓存相关服务基类以及操作日志拦截器、UnitOfWork拦截器。所有微服务Application层的共享层，并且都需要依赖该层。
 - `Adnc.WebApi.Shared` 该层实现了认证、鉴权、异常捕获、服务组件注册等公共类和中间件。所有微服务WebApi层的共享层，并且都需要依赖该层。
 ##### :white_check_mark: Adnc.Usr 
 用户中心微服务，系统支撑服务，实现了用户管理、角色管理、权限管理、菜单管理、组织架构管理。
@@ -194,55 +253,13 @@
 
 > 每个微服务的Migrations层是Efcore用来做数据迁移的，迁移的日志文件存放在各自Migrations目录中。
 
-### 代码片段
-```csharp
-namespace Adnc.Usr.WebApi
-{
-    public class Startup
-    {
-        private readonly IHostEnvironment _environment;
-        private IServiceCollection _services;
-
-        public Startup(IHostEnvironment environment)
-        {
-            _environment = environment;
-        }
-
-        public void ConfigureServices(IServiceCollection services)
-        {
-            _services = services;
-            services.AddAdncServices<PermissionHandlerLocal>();
-        }
-
-        public void ConfigureContainer(ContainerBuilder builder)
-        {
-            builder.RegisterAdncModules(_services);
-        }
-
-        public void Configure(IApplicationBuilder app)
-        {
-            app.UseAdncMiddlewares();
-
-            if (_environment.IsProduction() || _environment.IsStaging())
-            {
-                app.RegisterToConsul();
-            }
-        }
-    }
-}
-```
-
-## 问题交流
--  企&ensp;鹅&ensp;群：780634162
--  项目官网：<a target="_blank" href="https://aspdotnetcore.net">https://aspdotnetcore.net</a>
--  博&ensp;&ensp;&ensp;&ensp;客：<a target="_blank" href="https://www.cnblogs.com/alphayu">https://www.cnblogs.com/alphayu</a>
--  GitHub&ensp;：<a target="_blank" href="https://github.com/alphayu/adnc">https://github.com/alphayu/adnc</a>
-
 ## 贡献者
+
 <a href="https://github.com/alphayu/adnc/graphs/contributors">
   <img src="https://contributors-img.web.app/image?repo=alphayu/adnc" />
 </a>
 
 ## License
+
 **MIT**   
 **Free Software, Hell Yeah!**
