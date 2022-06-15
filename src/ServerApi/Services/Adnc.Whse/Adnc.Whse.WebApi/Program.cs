@@ -16,7 +16,7 @@ internal static class Program
 
             var app = WebApplication
                 .CreateBuilder(args)
-                .ConfigureAdncDefault(args, serviceInfo)
+                .ConfigureAdncDefault(serviceInfo)
                 .Build();
 
             app.UseAdncDefault(endpointRoute: endpoint =>

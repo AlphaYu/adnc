@@ -17,7 +17,7 @@ internal static class Program
             //Configuration,ServiceCollection,Logging,WebHost(Kestrel)
             var app = WebApplication
                 .CreateBuilder(args)
-                .ConfigureAdncDefault(args, serviceInfo)
+                .ConfigureAdncDefault(serviceInfo)
                 .Build();
 
             //Middlewares
