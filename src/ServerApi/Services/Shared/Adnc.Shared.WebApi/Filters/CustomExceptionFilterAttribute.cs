@@ -1,5 +1,4 @@
 ﻿using Adnc.Infra.Core.Exceptions;
-using Adnc.Shared.Application.Contracts;
 using Microsoft.AspNetCore.Mvc.Controllers;
 
 namespace Microsoft.AspNetCore.Mvc.Filters;

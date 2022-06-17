@@ -2,7 +2,7 @@
 global using Adnc.Infra.Core.DependencyInjection;
 global using Adnc.Infra.Core.Interfaces;
 global using Adnc.Infra.Core.Json;
-global using Adnc.Infra.Helper;
+global using Adnc.Shared;
 global using Adnc.Shared.Application.Contracts.ResultModels;
 global using Adnc.Shared.WebApi;
 global using Adnc.Shared.WebApi.Extensions;

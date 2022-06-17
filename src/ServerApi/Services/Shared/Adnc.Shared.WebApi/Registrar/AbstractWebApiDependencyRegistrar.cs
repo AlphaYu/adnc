@@ -1,4 +1,5 @@
 ﻿using Adnc.Shared.Application.Contracts;
+using Adnc.Shared.Rpc.Handlers.Token;
 using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
 
 namespace Adnc.Shared.WebApi.Registrar;
@@ -61,6 +62,7 @@ public abstract class AbstractWebApiDependencyRegistrar : IDependencyRegistrar
     protected virtual void Configure()
     {
         Services.Configure<JwtConfig>(Configuration.GetJWTSection());
+        Services.Configure<RedisConfig>(Configuration.GetRedisSection());
         Services.Configure<MongoConfig>(Configuration.GetMongoDbSection());
         Services.Configure<MysqlConfig>(Configuration.GetMysqlSection());
         Services.Configure<RabbitMqConfig>(Configuration.GetRabbitMqSection());
@@ -137,7 +139,20 @@ public abstract class AbstractWebApiDependencyRegistrar : IDependencyRegistrar
 
         Services.AddAuthentication(HybridDefaults.AuthenticationScheme)
         .AddHybrid()
-        .AddBasic()
+        .AddBasic(options =>
+        {
+            options.Events.OnTokenValidating = BasicTokenValidator.UnPackFromBase64;
+            options.Events.OnTokenValidated = context =>
+            {
+                var userContext = context.HttpContext.RequestServices.GetService<UserContext>();
+                var claims = context.Principal.Claims;
+                userContext.Id = long.Parse(claims.First(x => x.Type ==BasicDefaults.NameId).Value);
+                userContext.Account = claims.First(x => x.Type == BasicDefaults.UniqueName).Value;
+                userContext.Name = claims.First(x => x.Type == BasicDefaults.Name).Value;
+                userContext.RemoteIpAddress = context.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
+                return Task.CompletedTask;
+            };
+        })
         .AddJwtBearer(options =>
         {
             //校验配置

@@ -1,7 +1,5 @@
-﻿using Adnc.Shared.Application.Contracts;
+﻿using Adnc.Shared.Rpc.Handlers.Token;
 using System.Text.Encodings.Web;
-using Adnc.Shared.Rpc.Handlers.Token;
-
 
 namespace Microsoft.AspNetCore.Authentication.Basic;
 
@@ -23,24 +21,39 @@ public class BasicAuthenticationHandler : AuthenticationHandler<BasicSchemeOptio
     {
         AuthenticateResult authResult;
         var authHeader = Request.Headers["Authorization"].ToString();
-        if (authHeader != null && authHeader.StartsWith(BasicDefaults.AuthenticationScheme, StringComparison.OrdinalIgnoreCase))
+        if (authHeader is not null && authHeader.StartsWith(BasicDefaults.AuthenticationScheme))
         {
-            var startIndex = BasicDefaults.AuthenticationScheme.Length+1;
+            var startIndex = BasicDefaults.AuthenticationScheme.Length + 1;
             var token = authHeader[startIndex..].Trim();
-            var (isSuccessful, userName, appId) = BasicTokenValidator.UnPackFromBase64(token);
-            if (isSuccessful)
+            if (token.IsNullOrWhiteSpace())
             {
-                var claims = new[] { new Claim("name", userName), new Claim(ClaimTypes.Role, "partner") };
+                Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                authResult = AuthenticateResult.Fail("Invalid Authorization Token");
+                return await Task.FromResult(authResult);
+            }
+
+            var validatedResult = Options.Events.OnTokenValidating.Invoke(token);
+            if (validatedResult.IsSuccessful)
+            {
+                var id =
+                    BasicTokenValidator.IsInternalCaller(validatedResult.UserName)
+                    ? validatedResult.UserName.Split('-')[1]
+                    : validatedResult.AppId
+                    ;
+
+                var claims = new[] {
+                        new Claim(BasicDefaults.NameId, id)
+                        , new Claim(BasicDefaults.UniqueName, validatedResult.UserName)
+                        , new Claim(BasicDefaults.Name, validatedResult.UserName)
+                };
                 var identity = new ClaimsIdentity(claims, BasicDefaults.AuthenticationScheme);
                 var claimsPrincipal = new ClaimsPrincipal(identity);
                 authResult = AuthenticateResult.Success(new AuthenticationTicket(claimsPrincipal, BasicDefaults.AuthenticationScheme));
-
-                var userContext = Context.RequestServices.GetService<UserContext>();
-                userContext.Id = appId.ToLong().Value;
-                userContext.Account = userName;
-                userContext.Name = userName;
-                userContext.RemoteIpAddress = Context.Connection.RemoteIpAddress.MapToIPv4().ToString();
-
+                var validatedContext = new BasicTokenValidatedContext(Context, Scheme, Options)
+                {
+                    Principal = claimsPrincipal
+                };
+                await Options.Events.OnTokenValidated.Invoke(validatedContext);
                 return await Task.FromResult(authResult);
             }
 
