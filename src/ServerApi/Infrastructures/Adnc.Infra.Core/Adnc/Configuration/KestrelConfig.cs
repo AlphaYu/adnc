@@ -2,6 +2,8 @@
 
 public class KestrelConfig
 {
+    public const string Name = "Kestrel";
+
     public IDictionary<string, Endpoint> Endpoints { get; set; }
 
     public KestrelConfig() => Endpoints = new Dictionary<string, Endpoint>();

@@ -2,6 +2,7 @@
 
 public class RabbitMqConfig
 {
+    public const string Name = "RabbitMq";
     public string HostName { get; set; }
     public string VirtualHost { get; set; }
     public string UserName { get; set; }

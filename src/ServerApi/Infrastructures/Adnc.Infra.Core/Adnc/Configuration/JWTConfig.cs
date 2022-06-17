@@ -5,6 +5,11 @@
 /// </summary>
 public class JwtConfig
 {
+    public const string Name = "JWT";
+    public readonly static Encoding DefaultEncoding = Encoding.UTF8;
+
+    public Encoding Encoding => DefaultEncoding;
+
     /// <summary>
     /// 加密Key
     /// </summary>
@@ -39,4 +44,5 @@ public class JwtConfig
     /// RefreshToken过期时间，单位分钟
     /// </summary>
     public int RefreshTokenExpire { get; set; }
+
 }

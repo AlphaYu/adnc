@@ -5,6 +5,8 @@
 /// </summary>
 public class MongoConfig
 {
+    public const string Name = "MongoDb";
+
     /// <summary>
     /// Gets or sets the MongoDB connection string.
     /// </summary>
