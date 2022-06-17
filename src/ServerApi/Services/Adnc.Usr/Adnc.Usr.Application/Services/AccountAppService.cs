@@ -23,8 +23,8 @@ public class AccountAppService : AbstractAppService, IAccountAppService
 
     public async Task<AppSrvResult<UserValidateDto>> LoginAsync(UserLoginDto input)
     {
-        var bloomFilterAccount = _bloomFilterFactory.Create(CachingConsts.BloomfilterOfAccountsKey);
-        var exists = await bloomFilterAccount.ExistsAsync(input.Account.ToLower());
+        var accountsFilter = _bloomFilterFactory.Create(CachingConsts.BloomfilterOfAccountsKey);
+        var exists = await accountsFilter.ExistsAsync(input.Account.ToLower());
         if (!exists)
             return Problem(HttpStatusCode.BadRequest, "用户名或密码错误");
 

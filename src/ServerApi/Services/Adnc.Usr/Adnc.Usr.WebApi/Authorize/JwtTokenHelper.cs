@@ -2,8 +2,6 @@
 
 public static class JwtTokenHelper
 {
-    //认证服务器安装：System.IdentityModel.Tokens.Jwt
-    //资源服务器安装：Microsoft.AspNetCore.Authentication.JwtBearer
     /// <summary>
     /// create access token
     /// </summary>
@@ -45,12 +43,11 @@ public static class JwtTokenHelper
     public static string GetAccountFromRefeshToken(string refreshToken)
     {
         var token = new JwtSecurityTokenHandler().ReadJwtToken(refreshToken);
-        if (token is not null)
-        {
-            var claimAccount = token.Claims.First(x => x.Type == JwtRegisteredClaimNames.UniqueName).Value;
-            return claimAccount;
-        }
-        return string.Empty;
+        if(token is null)
+            return string.Empty;
+
+        var claimAccount = token.Claims.First(x => x.Type == JwtRegisteredClaimNames.UniqueName).Value;
+        return claimAccount;
     }
 
     /// <summary>

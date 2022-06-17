@@ -1,5 +1,4 @@
 ﻿using Adnc.Infra.Helper;
-using Adnc.Shared.Application.Contracts;
 using StackExchange.Profiling;
 
 namespace Adnc.Usr.WebApi.Controllers;
@@ -70,8 +69,7 @@ public class AccountController : AdncControllerBase
     /// <returns></returns>
     [HttpDelete()]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public IActionResult Logout()
-        => NoContent();
+    public IActionResult Logout() => NoContent();
 
     /// <summary>
     /// 刷新Token

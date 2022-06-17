@@ -51,7 +51,7 @@ public class UserAppService : AbstractAppService, IUserAppService
 
     public async Task<AppSrvResult> SetRoleAsync(long id, UserSetRoleDto input)
     {
-        var roleIdStr = input.RoleIds == null ? null : string.Join(",", input.RoleIds);
+        var roleIdStr = input.RoleIds.IsNullOrEmpty() ? string.Empty : string.Join(",", input.RoleIds);
         await _userRepository.UpdateAsync(new SysUser() { Id = id, RoleIds = roleIdStr }, UpdatingProps<SysUser>(x => x.RoleIds));
 
         return AppSrvResult();
@@ -71,8 +71,7 @@ public class UserAppService : AbstractAppService, IUserAppService
 
     public async Task<AppSrvResult> ChangeStatusAsync(IEnumerable<long> ids, int status)
     {
-        string userids = string.Join(",", ids);
-        await _userRepository.UpdateRangeAsync(u => userids.Contains(u.Id.ToString()), u => new SysUser { Status = status });
+        await _userRepository.UpdateRangeAsync(u => ids.Contains(u.Id), u => new SysUser { Status = status });
         return AppSrvResult();
     }
 
@@ -91,26 +90,24 @@ public class UserAppService : AbstractAppService, IUserAppService
         if (permissions.IsNullOrEmpty())
             return new List<string> { "allow" };
 
-        var roleIds = userValidateInfo.RoleIds.Trim().Split(",", StringSplitOptions.RemoveEmptyEntries).Select(x => long.Parse(x));
+        var roleIds = userValidateInfo.RoleIds.Split(",", StringSplitOptions.RemoveEmptyEntries).Select(x => long.Parse(x.Trim()));
 
         var allMenuCodes = await _cacheService.GetAllMenuCodesFromCacheAsync();
 
-        var codes = allMenuCodes?.Where(x => roleIds.Contains(x.RoleId)).Select(x => x.Code.ToUpper());
-        if (codes.IsNotNullOrEmpty())
-        {
-            var result = codes.Intersect(permissions.Select(x => x.ToUpper()));
-            return result.ToList();
-        }
+        var upperCodes = allMenuCodes?.Where(x => roleIds.Contains(x.RoleId)).Select(x => x.Code.ToUpper());
+        if (upperCodes.IsNullOrEmpty())
+            return default;
 
-        return default;
+        var result = upperCodes.Intersect(permissions.Select(x => x.ToUpper()));
+        return result.ToList();
     }
 
     public async Task<PageModelDto<UserDto>> GetPagedAsync(UserSearchPagedDto search)
     {
         var whereExpression = ExpressionCreator
                                             .New<SysUser>()
-                                            .AndIf(search.Account.IsNotNullOrWhiteSpace(), x => x.Account.Contains(search.Account))
-                                            .AndIf(search.Name.IsNotNullOrWhiteSpace(), x => x.Name.Contains(search.Name));
+                                            .AndIf(search.Account.IsNotNullOrWhiteSpace(), x => EF.Functions.Like(x.Account, $"%{search.Account.Trim()}%"))
+                                            .AndIf(search.Name.IsNotNullOrWhiteSpace(), x => EF.Functions.Like(x.Name, $"%{search.Name.Trim()}%"));
 
         var total = await _userRepository.CountAsync(whereExpression);
         if (total == 0)
@@ -126,7 +123,7 @@ public class UserAppService : AbstractAppService, IUserAppService
         var userDtos = Mapper.Map<List<UserDto>>(entities);
         if (userDtos.IsNotNullOrEmpty())
         {
-            var deptIds = userDtos.Where(d => d.DeptId != null).Select(d => d.DeptId).Distinct();
+            var deptIds = userDtos.Where(d => d.DeptId is not null).Select(d => d.DeptId).Distinct();
             var depts = (await _cacheService.GetAllDeptsFromCacheAsync()).Where(x => deptIds.Contains(x.Id)).Select(d => new { d.Id, d.FullName });
             var roles = (await _cacheService.GetAllRolesFromCacheAsync()).Select(r => new { r.Id, r.Name });
             foreach (var user in userDtos)

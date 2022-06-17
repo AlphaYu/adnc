@@ -1,5 +1,6 @@
 ﻿global using Adnc.Maint.Application.Contracts.Dtos;
 global using Adnc.Maint.Application.Contracts.Services;
+global using Adnc.Shared;
 global using Adnc.Shared.Application.Contracts.Dtos;
 global using Adnc.Shared.Consts.Permissions.Maint;
 global using Microsoft.AspNetCore.Authorization;

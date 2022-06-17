@@ -1,4 +1,5 @@
 ﻿global using Adnc.Infra.Core.Configuration;
+global using Adnc.Shared;
 global using Adnc.Shared.Application.Contracts.Dtos;
 global using Adnc.Shared.Consts.Permissions.Usr;
 global using Adnc.Usr.Application.Contracts.Dtos;
