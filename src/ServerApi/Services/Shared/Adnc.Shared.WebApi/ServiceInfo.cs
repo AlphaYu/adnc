@@ -54,7 +54,7 @@ public class ServiceInfo : IServiceInfo
                 CorsPolicy = "default",
                 StartAssembly = startAssembly,
                 Description = description,
-                Version = $"{version.Major}.{version.Minor}.{version.Build}.{version.Revision:00}"
+                Version = $"{version.Major}.{version.Minor}.{version.Build}.{version.Revision}"
             };
         }
         return _instance;

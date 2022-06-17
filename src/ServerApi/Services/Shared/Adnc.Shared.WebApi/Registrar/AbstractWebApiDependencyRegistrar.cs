@@ -163,6 +163,7 @@ public abstract class AbstractWebApiDependencyRegistrar : IDependencyRegistrar
                 IssuerSigningKey = new SymmetricSecurityKey(jwtConfig.Encoding.GetBytes(jwtConfig.SymmetricSecurityKey)),
                 ValidateAudience = false,
                 ValidateLifetime = true,
+                RequireExpirationTime = true,
                 ClockSkew = TimeSpan.FromSeconds(jwtConfig.ClockSkew),
                 //AudienceValidator = (m, n, z) =>m != null && m.FirstOrDefault().Equals(Const.ValidAudience)
             };
