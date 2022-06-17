@@ -1,5 +1,4 @@
-﻿using Adnc.Shared.Application.Contracts;
-using Adnc.Shared.Rpc.Handlers.Token;
+﻿using Adnc.Shared.Rpc.Handlers.Token;
 using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
 
 namespace Adnc.Shared.WebApi.Registrar;
@@ -161,7 +160,7 @@ public abstract class AbstractWebApiDependencyRegistrar : IDependencyRegistrar
                 ValidateIssuer = true,
                 ValidIssuer = jwtConfig.Issuer,
                 ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtConfig.SymmetricSecurityKey)),
+                IssuerSigningKey = new SymmetricSecurityKey(jwtConfig.Encoding.GetBytes(jwtConfig.SymmetricSecurityKey)),
                 ValidateAudience = false,
                 ValidateLifetime = true,
                 ClockSkew = TimeSpan.FromSeconds(jwtConfig.ClockSkew),
