@@ -1,6 +1,6 @@
 ﻿namespace Adnc.Shared.WebApi.Authentication.Bearer;
 
-public static class BearerSecurityTokenHandlerExtension
+public static class BearerTokenHelper
 {
     public static Claim[] UnPackFromToken(string securityToken)
     {

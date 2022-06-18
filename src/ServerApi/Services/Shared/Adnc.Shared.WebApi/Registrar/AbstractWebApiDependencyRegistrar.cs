@@ -145,12 +145,12 @@ public abstract class AbstractWebApiDependencyRegistrar : IDependencyRegistrar
             .AddBasic(options =>
             {
                 options.Events.OnTokenValidating = BasicTokenValidator.UnPackFromBase64;
-                options.Events.OnTokenValidated = BasicSecurityTokenHandlerExtension.TokenValidatedDelegate;
+                options.Events.OnTokenValidated = BasicTokenHelper.TokenValidatedDelegate;
             })
             .AddBearer(options =>
             {
-                options.Events.OnTokenValidating = BearerSecurityTokenHandlerExtension.UnPackFromToken;
-                options.Events.OnTokenValidated = BearerSecurityTokenHandlerExtension.TokenValidatedDelegate;
+                options.Events.OnTokenValidating = BearerTokenHelper.UnPackFromToken;
+                options.Events.OnTokenValidated = BearerTokenHelper.TokenValidatedDelegate;
             })
             //.AddJwtBearer(options =>
             //{

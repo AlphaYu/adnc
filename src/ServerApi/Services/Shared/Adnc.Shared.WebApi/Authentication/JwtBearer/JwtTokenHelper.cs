@@ -1,0 +1,135 @@
+﻿namespace Adnc.Shared.WebApi.Authentication.JwtBearer;
+
+public static class JwtTokenHelper
+{
+    /// <summary>
+    ///  Create  a TokenValidationParameters instance
+    /// </summary>
+    /// <param name="tokenConfig"></param>
+    /// <returns></returns>
+    public static TokenValidationParameters GenarateTokenValidationParameters(JwtConfig tokenConfig) =>
+        new()
+        {
+            ValidateIssuer = tokenConfig.ValidateIssuer,
+            ValidIssuer = tokenConfig.ValidIssuer,
+            ValidateIssuerSigningKey = tokenConfig.ValidateIssuerSigningKey,
+            IssuerSigningKey = new SymmetricSecurityKey(tokenConfig.Encoding.GetBytes(tokenConfig.SymmetricSecurityKey)),
+            ValidateAudience = tokenConfig.ValidateAudience,
+            ValidAudience = tokenConfig.ValidAudience,
+            ValidateLifetime = tokenConfig.ValidateLifetime,
+            RequireExpirationTime = tokenConfig.RequireExpirationTime,
+            ClockSkew = TimeSpan.FromSeconds(tokenConfig.ClockSkew),
+            //AudienceValidator = (m, n, z) =>m != null && m.FirstOrDefault().Equals(Const.ValidAudience)
+        };
+
+    /// <summary>
+    /// Create a JwtBearerEvents instance
+    /// </summary>
+    /// <returns></returns>
+    public static JwtBearerEvents GenarateJwtBearerEvents() =>
+        new()
+        {
+            //接受到消息时调用
+            OnMessageReceived = context => Task.CompletedTask
+                ,
+            //在Token验证通过后调用
+            OnTokenValidated = context =>
+            {
+                var userContext = context.HttpContext.RequestServices.GetService<UserContext>();
+                var claims = context.Principal.Claims;
+                userContext.Id = long.Parse(claims.First(x => x.Type == JwtRegisteredClaimNames.NameId).Value);
+                userContext.Account = claims.First(x => x.Type == JwtRegisteredClaimNames.UniqueName).Value;
+                userContext.Name = claims.First(x => x.Type == JwtRegisteredClaimNames.Name).Value;
+                userContext.RemoteIpAddress = context.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
+                return Task.CompletedTask;
+            }
+                 ,
+            //认证失败时调用
+            OnAuthenticationFailed = context =>
+            {
+                //如果是过期，在http heard中加入act参数
+                if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+                    context.Response.Headers.Add("act", "expired");
+                return Task.CompletedTask;
+            }
+                ,
+            //未授权时调用
+            OnChallenge = context => Task.CompletedTask
+        };
+
+    /// <summary>
+    /// create access token
+    /// </summary>
+    /// <param name="jwtConfig"></param>
+    /// <param name="user"></param>
+    /// <returns></returns>
+    public static string CreateAccessToken(JwtConfig jwtConfig, dynamic user)
+    {
+        var claims = new Claim[]
+        {
+            new Claim(JwtRegisteredClaimNames.UniqueName, user.Account),
+            new Claim(JwtRegisteredClaimNames.NameId, user.Id.ToString()),
+            new Claim(JwtRegisteredClaimNames.Name, user.Name),
+            new Claim("version", user.ValidationVersion)
+        };
+        return WriteToken(jwtConfig, claims, Tokens.AccessToken);
+    }
+
+    /// <summary>
+    /// create refres token
+    /// </summary>
+    /// <param name="jwtConfig"></param>
+    /// <param name="user"></param>
+    /// <returns></returns>
+    public static string CreateRefreshToken(JwtConfig jwtConfig, dynamic user)
+    {
+        var claims = new Claim[]
+        {
+            new Claim(JwtRegisteredClaimNames.UniqueName, user.Account),
+        };
+        return WriteToken(jwtConfig, claims, Tokens.RefreshToken);
+    }
+
+    /// <summary>
+    /// get account from refesh token
+    /// </summary>
+    /// <param name="refreshToken"></param>
+    /// <returns></returns>
+    public static string GetAccountFromRefeshToken(string refreshToken)
+    {
+        var token = new JwtSecurityTokenHandler().ReadJwtToken(refreshToken);
+        if (token is null)
+            return string.Empty;
+
+        var claimAccount = token.Claims.First(x => x.Type == JwtRegisteredClaimNames.UniqueName).Value;
+        return claimAccount;
+    }
+
+    /// <summary>
+    ///  write token
+    /// </summary>
+    /// <param name="jwtConfig"></param>
+    /// <param name="claims"></param>
+    /// <param name="tokenType"></param>
+    /// <returns></returns>
+    private static string WriteToken(JwtConfig jwtConfig, Claim[] claims, Tokens tokenType)
+    {
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtConfig.SymmetricSecurityKey));
+
+        string issuer = jwtConfig.ValidIssuer;
+        string audience = tokenType.Equals(Tokens.AccessToken) ? jwtConfig.ValidAudience : jwtConfig.RefreshTokenAudience;
+        int expires = tokenType.Equals(Tokens.AccessToken) ? jwtConfig.Expire : jwtConfig.RefreshTokenExpire;
+
+        var token = new JwtSecurityToken(
+            issuer: issuer,
+            audience: audience,
+            claims: claims,
+            notBefore: DateTime.Now,
+            expires: DateTime.Now.AddMinutes(expires),
+            signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256)
+        );
+
+        var jwtAccessTokenToken = new JwtSecurityTokenHandler().WriteToken(token);
+        return jwtAccessTokenToken;
+    }
+}

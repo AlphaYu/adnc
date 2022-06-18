@@ -1,6 +1,6 @@
 ﻿namespace Adnc.Shared.WebApi.Authentication.Basic;
 
-public static class BasicSecurityTokenHandlerExtension
+public static class BasicTokenHelper
 {
     public static Func<BasicTokenValidatedContext, Task> TokenValidatedDelegate =>
         (context) =>

@@ -1,5 +1,4 @@
-﻿using Adnc.Infra.Helper;
-using StackExchange.Profiling;
+﻿using StackExchange.Profiling;
 
 namespace Adnc.Usr.WebApi.Controllers;
 
