@@ -1,6 +1,7 @@
 ﻿using Adnc.Shared.Rpc.Handlers.Token;
 using Adnc.Shared.WebApi.Authentication.Basic;
-using Adnc.Shared.WebApi.Authentication.JwtBearer;
+using Adnc.Shared.WebApi.Authentication.Bearer;
+using Adnc.Shared.WebApi.Authentication.Hybrid;
 using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
 
 namespace Adnc.Shared.WebApi.Registrar;
@@ -138,8 +139,6 @@ public abstract class AbstractWebApiDependencyRegistrar : IDependencyRegistrar
     {
         JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
         
-        var jwtConfig = Configuration.GetJWTSection().Get<JwtConfig>();
-
         Services
             .AddAuthentication(HybridDefaults.AuthenticationScheme)
             .AddHybrid()
@@ -148,11 +147,18 @@ public abstract class AbstractWebApiDependencyRegistrar : IDependencyRegistrar
                 options.Events.OnTokenValidating = BasicTokenValidator.UnPackFromBase64;
                 options.Events.OnTokenValidated = BasicSecurityTokenHandlerExtension.TokenValidatedDelegate;
             })
-            .AddJwtBearer(options =>
+            .AddBearer(options =>
             {
-                options.TokenValidationParameters = JwtSecurityTokenHandlerExtension.GenarateTokenValidationParameters(jwtConfig);
-                options.Events = JwtSecurityTokenHandlerExtension.GenarateJwtBearerEvents();
-            });
+                options.Events.OnTokenValidating = BearerSecurityTokenHandlerExtension.UnPackFromToken;
+                options.Events.OnTokenValidated = BearerSecurityTokenHandlerExtension.TokenValidatedDelegate;
+            })
+            //.AddJwtBearer(options =>
+            //{
+            //    var jwtConfig = Configuration.GetJWTSection().Get<JwtConfig>();
+            //    options.TokenValidationParameters = JwtSecurityTokenHandlerExtension.GenarateTokenValidationParameters(jwtConfig);
+            //    options.Events = JwtSecurityTokenHandlerExtension.GenarateJwtBearerEvents();
+            //})
+            ;
     }
 
     /// <summary>
