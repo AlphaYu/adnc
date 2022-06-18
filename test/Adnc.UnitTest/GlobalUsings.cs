@@ -8,7 +8,6 @@ global using Adnc.Infra.IdGenerater.Yitter;
 global using Adnc.Infra.IRepositories;
 global using Adnc.UnitTest.Fixtures;
 global using DotNetCore.CAP;
-global using Microsoft.AspNetCore.Authentication.Basic;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Logging;
