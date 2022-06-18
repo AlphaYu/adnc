@@ -18,7 +18,7 @@ public class Startup
         var threadPoolConfig = Configuration.GetThreadPoolSettingsSection();
         services.Configure<ThreadPoolSettings>(threadPoolConfig);
 
-        var authenticationProviderKey = "management";
+        var authenticationProviderKey = "mgmt";
         var jwtConfig = Configuration.GetJWTSection().Get<JwtConfig>();
         services
             .AddAuthentication()
