@@ -12,8 +12,6 @@ global using HealthChecks.UI.Client;
 global using LiteX.HealthChecks.Redis;
 global using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 global using Microsoft.AspNetCore.Authentication;
-global using Microsoft.AspNetCore.Authentication.Basic;
-global using Microsoft.AspNetCore.Authentication.Hybrid;
 global using Microsoft.AspNetCore.Authentication.JwtBearer;
 global using Microsoft.AspNetCore.Authorization;
 global using Microsoft.AspNetCore.Builder;

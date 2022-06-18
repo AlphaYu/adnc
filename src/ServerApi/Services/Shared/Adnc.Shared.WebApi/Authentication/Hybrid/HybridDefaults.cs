@@ -1,7 +1,6 @@
-﻿namespace Microsoft.AspNetCore.Authentication.Hybrid
+﻿namespace Adnc.Shared.WebApi.Authentication.Hybrid;
+
+public static class HybridDefaults
 {
-    public static class HybridDefaults
-    {
-        public const string AuthenticationScheme = "Hybrid";
-    }
+    public const string AuthenticationScheme = "Hybrid";
 }

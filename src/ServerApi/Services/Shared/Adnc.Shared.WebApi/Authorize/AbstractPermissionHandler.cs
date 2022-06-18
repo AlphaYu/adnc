@@ -1,4 +1,6 @@
-﻿namespace Microsoft.AspNetCore.Authorization;
+﻿using Adnc.Shared.WebApi.Authentication.Basic;
+
+namespace Microsoft.AspNetCore.Authorization;
 
 public abstract class AbstractPermissionHandler : AuthorizationHandler<PermissionRequirement>
 {

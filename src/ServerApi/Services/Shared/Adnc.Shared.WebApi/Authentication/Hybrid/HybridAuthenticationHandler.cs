@@ -1,6 +1,7 @@
-﻿using System.Text.Encodings.Web;
+﻿using Adnc.Shared.WebApi.Authentication.Basic;
+using System.Text.Encodings.Web;
 
-namespace Microsoft.AspNetCore.Authentication.Hybrid;
+namespace Adnc.Shared.WebApi.Authentication.Hybrid;
 
 /// <summary>
 /// Hybrid验证(认证)服务
