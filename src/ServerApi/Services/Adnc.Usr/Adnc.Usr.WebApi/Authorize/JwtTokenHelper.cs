@@ -61,8 +61,8 @@ public static class JwtTokenHelper
     {
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtConfig.SymmetricSecurityKey));
 
-        string issuer = jwtConfig.Issuer;
-        string audience = tokenType.Equals(Tokens.AccessToken) ? jwtConfig.Audience : jwtConfig.RefreshTokenAudience;
+        string issuer = jwtConfig.ValidIssuer;
+        string audience = tokenType.Equals(Tokens.AccessToken) ? jwtConfig.ValidAudience : jwtConfig.RefreshTokenAudience;
         int expires = tokenType.Equals(Tokens.AccessToken) ? jwtConfig.Expire : jwtConfig.RefreshTokenExpire;
 
         var token = new JwtSecurityToken(

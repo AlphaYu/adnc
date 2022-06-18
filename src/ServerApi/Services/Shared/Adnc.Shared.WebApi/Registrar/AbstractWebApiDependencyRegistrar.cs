@@ -1,4 +1,6 @@
 ﻿using Adnc.Shared.Rpc.Handlers.Token;
+using Adnc.Shared.WebApi.Authentication.Basic;
+using Adnc.Shared.WebApi.Authentication.JwtBearer;
 using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
 
 namespace Adnc.Shared.WebApi.Registrar;
@@ -134,74 +136,23 @@ public abstract class AbstractWebApiDependencyRegistrar : IDependencyRegistrar
     /// </summary>
     protected virtual void AddAuthentication()
     {
+        JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+        
         var jwtConfig = Configuration.GetJWTSection().Get<JwtConfig>();
 
-        Services.AddAuthentication(HybridDefaults.AuthenticationScheme)
-        .AddHybrid()
-        .AddBasic(options =>
-        {
-            options.Events.OnTokenValidating = BasicTokenValidator.UnPackFromBase64;
-            options.Events.OnTokenValidated = context =>
+        Services
+            .AddAuthentication(HybridDefaults.AuthenticationScheme)
+            .AddHybrid()
+            .AddBasic(options =>
             {
-                var userContext = context.HttpContext.RequestServices.GetService<UserContext>();
-                var claims = context.Principal.Claims;
-                userContext.Id = long.Parse(claims.First(x => x.Type ==BasicDefaults.NameId).Value);
-                userContext.Account = claims.First(x => x.Type == BasicDefaults.UniqueName).Value;
-                userContext.Name = claims.First(x => x.Type == BasicDefaults.Name).Value;
-                userContext.RemoteIpAddress = context.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
-                return Task.CompletedTask;
-            };
-        })
-        .AddJwtBearer(options =>
-        {
-            //校验配置
-            options.TokenValidationParameters = new TokenValidationParameters
+                options.Events.OnTokenValidating = BasicTokenValidator.UnPackFromBase64;
+                options.Events.OnTokenValidated = BasicSecurityTokenHandlerExtension.TokenValidatedDelegate;
+            })
+            .AddJwtBearer(options =>
             {
-                ValidateIssuer = true,
-                ValidIssuer = jwtConfig.Issuer,
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(jwtConfig.Encoding.GetBytes(jwtConfig.SymmetricSecurityKey)),
-                ValidateAudience = false,
-                ValidateLifetime = true,
-                RequireExpirationTime = true,
-                ClockSkew = TimeSpan.FromSeconds(jwtConfig.ClockSkew),
-                //AudienceValidator = (m, n, z) =>m != null && m.FirstOrDefault().Equals(Const.ValidAudience)
-            };
-            //校验后事件
-            options.Events = new JwtBearerEvents
-            {
-                //接受到消息时调用
-                OnMessageReceived = context => Task.CompletedTask
-                ,
-                //在Token验证通过后调用
-                OnTokenValidated = context =>
-                {
-                    var userContext = context.HttpContext.RequestServices.GetService<UserContext>();
-                    var claims = context.Principal.Claims;
-                    userContext.Id = long.Parse(claims.First(x => x.Type == JwtRegisteredClaimNames.NameId).Value);
-                    userContext.Account = claims.First(x => x.Type == JwtRegisteredClaimNames.UniqueName).Value;
-                    userContext.Name = claims.First(x => x.Type == JwtRegisteredClaimNames.Name).Value;
-                    userContext.RemoteIpAddress = context.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
-                    return Task.CompletedTask;
-                }
-                 ,
-                //认证失败时调用
-                OnAuthenticationFailed = context =>
-                {
-                    //如果是过期，在http heard中加入act参数
-                    if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
-                        context.Response.Headers.Add("act", "expired");
-                    return Task.CompletedTask;
-                }
-                ,
-                //未授权时调用
-                OnChallenge = context => Task.CompletedTask
-            };
-        });
-
-        //因为获取声明的方式默认是走微软定义的一套映射方式
-        //如果我们想要走JWT映射声明，那么我们需要将默认映射方式给移除掉
-        JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+                options.TokenValidationParameters = JwtSecurityTokenHandlerExtension.GenarateTokenValidationParameters(jwtConfig);
+                options.Events = JwtSecurityTokenHandlerExtension.GenarateJwtBearerEvents();
+            });
     }
 
     /// <summary>
