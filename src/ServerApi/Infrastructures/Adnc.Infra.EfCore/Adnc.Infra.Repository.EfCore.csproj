@@ -4,7 +4,9 @@
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
 	<ItemGroup>
-	  <Compile Remove="UnitOfWorkStatus.cs" />
+	  <Compile Remove="Extensions\DbContextExtension.cs" />
+	  <Compile Remove="Extensions\MutableEntityTypeExtension.cs" />
+	  <Compile Remove="Internal\EFCoreUtil.cs" />
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="DotNetCore.CAP" Version="6.0.1" />
@@ -14,5 +16,8 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\Adnc.Infra.Core\Adnc.Infra.Core.csproj" />
 	  <ProjectReference Include="..\Adnc.Infra.Repository\Adnc.Infra.Repository.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Extensions\" />
 	</ItemGroup>
 </Project>

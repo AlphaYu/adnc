@@ -2,9 +2,9 @@
 
 internal class KeyEntryModel
 {
-    public string PropertyName { get; set; } = default!;
+    public string PropertyName { get; set; } = string.Empty;
 
-    public string ColumnName { get; set; } = default!;
+    public string ColumnName { get; set; } = string.Empty;
 
     public object Value { get; set; } = default!;
 }
