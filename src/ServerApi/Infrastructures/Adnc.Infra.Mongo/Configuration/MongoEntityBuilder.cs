@@ -1,6 +1,6 @@
 ﻿using Adnc.Infra.Entities;
 
-namespace Adnc.Infra.Mongo.Configuration
+namespace Adnc.Infra.Repository.Mongo.Configuration
 {
     /// <summary>
     /// Mongo entity builder.

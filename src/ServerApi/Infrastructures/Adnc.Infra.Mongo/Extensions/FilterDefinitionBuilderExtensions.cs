@@ -1,8 +1,8 @@
 ﻿using Adnc.Infra.Entities;
-using Adnc.Infra.Mongo.Entities;
+using Adnc.Infra.Repository.Mongo.Entities;
 using MongoDB.Driver;
 
-namespace Adnc.Infra.Mongo.Extensions
+namespace Adnc.Infra.Repository.Mongo.Extensions
 {
     public static class FilterDefinitionBuilderExtensions
     {

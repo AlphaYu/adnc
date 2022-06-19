@@ -1,6 +1,6 @@
 ﻿using MongoDB.Driver;
 
-namespace Adnc.Infra.Mongo.Extensions
+namespace Adnc.Infra.Repository.Mongo.Extensions
 {
     /// <summary>
     /// Extensions for options classes in MongoDB. E.g. <see cref="FindOptions{TDocument}"/>, <see cref="CreateIndexOptions{TDocument}"/>.

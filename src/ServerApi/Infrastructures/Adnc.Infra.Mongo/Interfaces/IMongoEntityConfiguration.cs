@@ -1,7 +1,7 @@
 ﻿using Adnc.Infra.Entities;
-using Adnc.Infra.Mongo.Configuration;
+using Adnc.Infra.Repository.Mongo.Configuration;
 
-namespace Adnc.Infra.Mongo.Interfaces
+namespace Adnc.Infra.Repository.Mongo.Interfaces
 {
     /// <summary>
     /// Mongo entity configuration.

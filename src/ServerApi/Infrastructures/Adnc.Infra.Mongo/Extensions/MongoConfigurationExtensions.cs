@@ -1,7 +1,7 @@
-﻿using Adnc.Infra.Mongo.Configuration;
+﻿using Adnc.Infra.Repository.Mongo.Configuration;
 using Humanizer;
 
-namespace Adnc.Infra.Mongo.Extensions
+namespace Adnc.Infra.Repository.Mongo.Extensions
 {
     public static class MongoConfigurationExtensions
     {

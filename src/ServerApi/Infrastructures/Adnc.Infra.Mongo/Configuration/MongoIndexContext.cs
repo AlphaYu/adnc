@@ -2,7 +2,7 @@
 using MongoDB.Driver;
 using System.Collections;
 
-namespace Adnc.Infra.Mongo.Configuration
+namespace Adnc.Infra.Repository.Mongo.Configuration
 {
     /// <summary>
     /// A collection of mongo indexes.

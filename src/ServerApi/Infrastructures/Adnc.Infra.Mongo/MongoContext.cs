@@ -1,13 +1,13 @@
 ﻿using Adnc.Infra.Entities;
-using Adnc.Infra.Mongo.Configuration;
-using Adnc.Infra.Mongo.Extensions;
-using Adnc.Infra.Mongo.Interfaces;
+using Adnc.Infra.Repository.Mongo.Configuration;
+using Adnc.Infra.Repository.Mongo.Extensions;
+using Adnc.Infra.Repository.Mongo.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using System.Collections.Concurrent;
 
-namespace Adnc.Infra.Mongo
+namespace Adnc.Infra.Repository.Mongo
 {
     /// <summary>
     /// Context used to maintain a single MongoDB connection.

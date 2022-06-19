@@ -1,9 +1,9 @@
 ﻿using Adnc.Infra.IRepositories;
-using Adnc.Infra.Mongo.Interfaces;
+using Adnc.Infra.Repository.Mongo.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
-namespace Adnc.Infra.Mongo.Configuration
+namespace Adnc.Infra.Repository.Mongo.Configuration
 {
     /// <summary>
     /// A configuration builder for this package.

@@ -1,7 +1,7 @@
 ﻿using Adnc.Infra.Entities;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace Adnc.Infra.Mongo.Entities
+namespace Adnc.Infra.Repository.Mongo.Entities
 {
     /// <summary>
     /// A mongo entity with soft delete support.

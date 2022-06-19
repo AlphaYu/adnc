@@ -1,9 +1,9 @@
 ﻿using Adnc.Infra.Entities;
-using Adnc.Infra.Mongo.Configuration;
-using Adnc.Infra.Mongo.Entities;
+using Adnc.Infra.Repository.Mongo.Configuration;
+using Adnc.Infra.Repository.Mongo.Entities;
 using MongoDB.Driver;
 
-namespace Adnc.Infra.Mongo.Extensions
+namespace Adnc.Infra.Repository.Mongo.Extensions
 {
     /// <summary>
     /// Extensions for <see cref="MongoIndexContext{TEntity}"/>.

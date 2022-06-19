@@ -3,7 +3,7 @@ using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Reflection;
 
-namespace Adnc.Infra.Mongo.Diagnostics
+namespace Adnc.Infra.Repository.Mongo.Diagnostics
 {
     public class DiagnosticsActivityEventSubscriber : IEventSubscriber
     {
