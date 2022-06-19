@@ -47,7 +47,7 @@ namespace Adnc.Infra.EventBus.RabbitMq
         public virtual void BasicPublish<TMessage>(string exchange
             , string routingKey
             , TMessage message
-            , IBasicProperties properties = null
+            , IBasicProperties? properties = null
             , bool mandatory = false
         )
         {
