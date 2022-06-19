@@ -1,30 +1,26 @@
-﻿using Adnc.Infra.Core.Guard;
+﻿namespace Adnc.Infra.Repository.EfCore;
 
-namespace Adnc.Infra.Repository.EfCore;
-
-public sealed class AdncDbContext : DbContext
+public abstract class AdncDbContext : DbContext
 {
     private readonly Operater _operater;
     private readonly IEntityInfo _entityInfo;
-    private readonly UnitOfWorkStatus _unitOfWorkStatus;
 
-    public AdncDbContext(DbContextOptions options, Operater operater, IEntityInfo entityInfo, UnitOfWorkStatus unitOfWorkStatus)
+    public AdncDbContext(DbContextOptions options, Operater operater, IEntityInfo entityInfo)
         : base(options)
     {
         _operater = operater;
         _entityInfo = entityInfo;
-        _unitOfWorkStatus = unitOfWorkStatus;
         Database.AutoTransactionsEnabled = false;
         //ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
     }
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        var changedEntities = this.SetAuditFields();
+        var changedEntities = SetAuditFields();
 
         //没有自动开启事务的情况下,保证主从表插入，主从表更新开启事务。
         var isManualTransaction = false;
-        if (!Database.AutoTransactionsEnabled && !_unitOfWorkStatus.IsStartingUow && changedEntities > 1)
+        if (!Database.AutoTransactionsEnabled && Database.CurrentTransaction is null && changedEntities > 1)
         {
             isManualTransaction = true;
             Database.AutoTransactionsEnabled = true;
@@ -41,9 +37,6 @@ public sealed class AdncDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        //System.Diagnostics.Debugger.Launch();
-        //modelBuilder.HasCharSet("utf8mb4 ");
-
         var entityInfos = _entityInfo.GetEntitiesTypeInfo().ToList();
         Guard.Checker.NotNullOrAny(entityInfos, nameof(entityInfos));
         foreach (var info in entityInfos)
@@ -79,7 +72,7 @@ public sealed class AdncDbContext : DbContext
         });
     }
 
-    private int SetAuditFields()
+    protected virtual int SetAuditFields()
     {
         var allBasicAuditEntities = ChangeTracker.Entries<IBasicAuditInfo>().Where(x => x.State == EntityState.Added).ToList();
         allBasicAuditEntities.ForEach(entry =>

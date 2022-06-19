@@ -1,18 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore.Storage;
-using Z.EntityFramework.Plus;
-
-namespace Adnc.Infra.Repository.EfCore.Repositories
+﻿namespace Adnc.Infra.Repository.EfCore.Repositories
 {
     /// <summary>
     /// Ef默认的、全功能的仓储实现
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
-    public sealed class EfRepository<TEntity> : AbstractEfBaseRepository<AdncDbContext, TEntity>, IEfRepository<TEntity>
+    public class EfRepository<TEntity> : AbstractEfBaseRepository<DbContext, TEntity>, IEfRepository<TEntity>
       where TEntity : EfEntity, new()
     {
         private readonly IAdoQuerierRepository? _adoQuerier;
 
-        public EfRepository(AdncDbContext dbContext, IAdoQuerierRepository? adoQuerier = null)
+        public EfRepository(DbContext dbContext, IAdoQuerierRepository? adoQuerier = null)
             : base(dbContext)
             => _adoQuerier = adoQuerier;
 
@@ -36,9 +33,9 @@ namespace Adnc.Infra.Repository.EfCore.Repositories
 
         public IDbTransaction? CurrentDbTransaction => DbContext.Database.CurrentTransaction?.GetDbTransaction();
 
-        public IQueryable<TEntity> GetAll(bool writeDb = false, bool noTracking = true) => this.GetDbSet(writeDb, noTracking);
+        public virtual IQueryable<TEntity> GetAll(bool writeDb = false, bool noTracking = true) => this.GetDbSet(writeDb, noTracking);
 
-        public IQueryable<TrdEntity> GetAll<TrdEntity>(bool writeDb = false, bool noTracking = true)
+        public virtual IQueryable<TrdEntity> GetAll<TrdEntity>(bool writeDb = false, bool noTracking = true)
                where TrdEntity : EfEntity
         {
             var queryAble = DbContext.Set<TrdEntity>().AsQueryable();
@@ -49,7 +46,7 @@ namespace Adnc.Infra.Repository.EfCore.Repositories
             return queryAble;
         }
 
-        public async Task<TEntity?> FindAsync(long keyValue, Expression<Func<TEntity, dynamic>>? navigationPropertyPath = null, bool writeDb = false, bool noTracking = true, CancellationToken cancellationToken = default)
+        public virtual async Task<TEntity?> FindAsync(long keyValue, Expression<Func<TEntity, dynamic>>? navigationPropertyPath = null, bool writeDb = false, bool noTracking = true, CancellationToken cancellationToken = default)
         {
             var query = GetDbSet(writeDb, noTracking).Where(t => t.Id == keyValue);
             if (navigationPropertyPath is not null)
@@ -58,7 +55,7 @@ namespace Adnc.Infra.Repository.EfCore.Repositories
                 return await query.FirstOrDefaultAsync(cancellationToken);
         }
 
-        public async Task<TEntity?> FindAsync(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, dynamic>>? navigationPropertyPath = null, Expression<Func<TEntity, object>>? orderByExpression = null, bool ascending = false, bool writeDb = false, bool noTracking = true, CancellationToken cancellationToken = default)
+        public virtual async Task<TEntity?> FindAsync(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, dynamic>>? navigationPropertyPath = null, Expression<Func<TEntity, object>>? orderByExpression = null, bool ascending = false, bool writeDb = false, bool noTracking = true, CancellationToken cancellationToken = default)
         {
             TEntity? result;
 
@@ -78,7 +75,7 @@ namespace Adnc.Infra.Repository.EfCore.Repositories
             return result;
         }
 
-        public async Task<TResult?> FetchAsync<TResult>(Expression<Func<TEntity, TResult>> selector, Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, object>>? orderByExpression = null, bool ascending = false, bool writeDb = false, bool noTracking = true, CancellationToken cancellationToken = default)
+        public virtual async Task<TResult?> FetchAsync<TResult>(Expression<Func<TEntity, TResult>> selector, Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, object>>? orderByExpression = null, bool ascending = false, bool writeDb = false, bool noTracking = true, CancellationToken cancellationToken = default)
         {
             TResult? result;
 
@@ -95,7 +92,7 @@ namespace Adnc.Infra.Repository.EfCore.Repositories
             return result;
         }
 
-        public async Task<int> DeleteAsync(long keyValue, CancellationToken cancellationToken = default)
+        public virtual async Task<int> DeleteAsync(long keyValue, CancellationToken cancellationToken = default)
         {
             int rows = 0;
             //查询当前上下文中，有没有同Id实体
@@ -147,7 +144,7 @@ namespace Adnc.Infra.Repository.EfCore.Repositories
             #endregion old code
         }
 
-        public async Task<int> DeleteRangeAsync(Expression<Func<TEntity, bool>> whereExpression, CancellationToken cancellationToken = default)
+        public virtual async Task<int> DeleteRangeAsync(Expression<Func<TEntity, bool>> whereExpression, CancellationToken cancellationToken = default)
         {
             var enityType = typeof(TEntity);
             var hasSoftDeleteMember = typeof(ISoftDelete).IsAssignableFrom(enityType);
@@ -163,7 +160,7 @@ namespace Adnc.Infra.Repository.EfCore.Repositories
             return await DbContext.Set<TEntity>().Where(whereExpression).DeleteAsync(cancellationToken);
         }
 
-        public async Task<int> UpdateAsync(TEntity entity, Expression<Func<TEntity, object>>[] updatingExpressions, CancellationToken cancellationToken = default)
+        public virtual async Task<int> UpdateAsync(TEntity entity, Expression<Func<TEntity, object>>[] updatingExpressions, CancellationToken cancellationToken = default)
         {
             if (updatingExpressions.IsNullOrEmpty())
                 await UpdateAsync(entity, cancellationToken);
@@ -226,7 +223,7 @@ namespace Adnc.Infra.Repository.EfCore.Repositories
             return await DbContext.SaveChangesAsync(cancellationToken);
         }
 
-        public Task<int> UpdateRangeAsync(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, TEntity>> updatingExpression, CancellationToken cancellationToken = default)
+        public virtual Task<int> UpdateRangeAsync(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, TEntity>> updatingExpression, CancellationToken cancellationToken = default)
         {
             var enityType = typeof(TEntity);
             var hasConcurrencyMember = typeof(IConcurrency).IsAssignableFrom(enityType);
@@ -237,7 +234,7 @@ namespace Adnc.Infra.Repository.EfCore.Repositories
             return UpdateRangeInternalAsync(whereExpression, updatingExpression, cancellationToken);
         }
 
-        public async Task<int> UpdateRangeAsync(Dictionary<long, List<(string propertyName, dynamic propertyValue)>> propertyNameAndValues, CancellationToken cancellationToken = default)
+        public virtual async Task<int> UpdateRangeAsync(Dictionary<long, List<(string propertyName, dynamic propertyValue)>> propertyNameAndValues, CancellationToken cancellationToken = default)
         {
             var existsEntities = DbContext.Set<TEntity>().Local.Where(x => propertyNameAndValues.ContainsKey(x.Id));
 
@@ -262,7 +259,7 @@ namespace Adnc.Infra.Repository.EfCore.Repositories
             return await DbContext.SaveChangesAsync(cancellationToken);
         }
 
-        private async Task<int> UpdateRangeInternalAsync(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, TEntity>> updatingExpression, CancellationToken cancellationToken = default)
+        protected virtual async Task<int> UpdateRangeInternalAsync(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, TEntity>> updatingExpression, CancellationToken cancellationToken = default)
         {
             return await DbContext.Set<TEntity>().Where(whereExpression).UpdateAsync(updatingExpression, cancellationToken);
         }

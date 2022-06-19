@@ -4,6 +4,11 @@
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
 	<ItemGroup>
+	  <Compile Remove="SqlGenerator\**" />
+	  <EmbeddedResource Remove="SqlGenerator\**" />
+	  <None Remove="SqlGenerator\**" />
+	</ItemGroup>
+	<ItemGroup>
 		<Compile Remove="AdncInfraEfCoreModule.cs" />
 		<Compile Remove="DbContextFactory.cs" />
 	</ItemGroup>
@@ -17,6 +22,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\Adnc.Infra.EfCore\Adnc.Infra.Repository.EfCore.csproj" />
 		<ProjectReference Include="..\Adnc.Infra.Repository\Adnc.Infra.Repository.csproj" />
 	</ItemGroup>
 </Project>

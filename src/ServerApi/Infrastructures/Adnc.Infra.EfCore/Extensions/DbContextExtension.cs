@@ -1,6 +1,4 @@
-﻿using Adnc.Infra.Repository.EfCore.Internal;
-
-namespace Microsoft.EntityFrameworkCore;
+﻿namespace Microsoft.EntityFrameworkCore;
 
 public static class DbContextExtension
 {

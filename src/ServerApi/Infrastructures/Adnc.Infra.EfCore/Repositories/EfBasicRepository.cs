@@ -5,33 +5,33 @@
     /// 适合DDD开发模式,实体必须继承AggregateRoot
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
-    public sealed class EfBasicRepository<TEntity> : AbstractEfBaseRepository<AdncDbContext, TEntity>, IEfBasicRepository<TEntity>
+    public class EfBasicRepository<TEntity> : AbstractEfBaseRepository<DbContext, TEntity>, IEfBasicRepository<TEntity>
             where TEntity : Entity, IEfEntity<long>
     {
-        public EfBasicRepository(AdncDbContext dbContext)
+        public EfBasicRepository(DbContext dbContext)
             : base(dbContext)
         {
         }
 
-        public async Task<int> UpdateRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
+        public virtual async Task<int> UpdateRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
         {
             this.DbContext.UpdateRange(entities);
             return await this.DbContext.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<int> RemoveAsync(TEntity entity, CancellationToken cancellationToken = default)
+        public virtual async Task<int> RemoveAsync(TEntity entity, CancellationToken cancellationToken = default)
         {
             this.DbContext.Remove(entity);
             return await this.DbContext.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<int> RemoveRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
+        public virtual async Task<int> RemoveRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
         {
             this.DbContext.RemoveRange(entities);
             return await this.DbContext.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<TEntity?> GetAsync(long keyValue, Expression<Func<TEntity, dynamic>>? navigationPropertyPath = null, bool writeDb = false, CancellationToken cancellationToken = default)
+        public virtual async Task<TEntity?> GetAsync(long keyValue, Expression<Func<TEntity, dynamic>>? navigationPropertyPath = null, bool writeDb = false, CancellationToken cancellationToken = default)
         {
             var query = this.GetDbSet(writeDb, false).Where(t => t.Id == keyValue);
             if (navigationPropertyPath is null)
@@ -40,7 +40,7 @@
                 return await query.Include(navigationPropertyPath).FirstOrDefaultAsync(cancellationToken);
         }
 
-        public async Task<TEntity?> GetAsync(long keyValue, IEnumerable<Expression<Func<TEntity, dynamic>>>? navigationPropertyPaths = null, bool writeDb = false, CancellationToken cancellationToken = default)
+        public virtual async Task<TEntity?> GetAsync(long keyValue, IEnumerable<Expression<Func<TEntity, dynamic>>>? navigationPropertyPaths = null, bool writeDb = false, CancellationToken cancellationToken = default)
         {
             if (navigationPropertyPaths is null)
                 return await GetAsync(keyValue, navigationPropertyPath: null, writeDb, cancellationToken);

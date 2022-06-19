@@ -87,7 +87,7 @@ public static class HashGeneraterExtensions
         {
             return string.Empty;
         }
-        var hashedBytes = GetHashedBytes(_, type, source, key.IsNotNullOrEmpty() ? key : null);
+        var hashedBytes = GetHashedBytes(_, type, source, key);
         var sbText = new StringBuilder();
         if(hashedBytes is not null && hashedBytes.Any())
         {
