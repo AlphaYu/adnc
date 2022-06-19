@@ -3,9 +3,9 @@
     internal class ServiceBuilder : IServiceBuilder
     {
         public IConsulServiceProvider ServiceProvider { get; init; }
-        public string ServiceName { get; set; }
-        public string UriScheme { get; set; }
-        public ILoadBalancer LoadBalancer { get; set; }
+        public string ServiceName { get; set; } = string.Empty;
+        public string UriScheme { get; set; } = string.Empty;
+        public ILoadBalancer? LoadBalancer { get; set; }
 
         public ServiceBuilder(IConsulServiceProvider serviceProvider) => ServiceProvider = serviceProvider;
     }
@@ -30,6 +30,6 @@
         /// <summary>
         /// 使用哪种策略
         /// </summary>
-        ILoadBalancer LoadBalancer { get; set; }
+        ILoadBalancer? LoadBalancer { get; set; }
     }
 }

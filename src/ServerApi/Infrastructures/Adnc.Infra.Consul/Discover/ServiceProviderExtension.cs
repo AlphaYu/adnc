@@ -30,9 +30,11 @@
 
         public static async Task<Uri> BuildAsync(this IServiceBuilder buider) => await BuildAsync(buider, null);
 
-        public static async Task<Uri> BuildAsync(this IServiceBuilder buider, string pathAndQuery)
+        public static async Task<Uri> BuildAsync(this IServiceBuilder buider, string? pathAndQuery)
         {
             var serviceList = await buider.ServiceProvider.GetHealthServicesAsync(buider.ServiceName);
+            if(buider.LoadBalancer is null)
+                buider.LoadBalancer = TypeLoadBalancer.RandomLoad;
             var service = buider.LoadBalancer.Resolve(serviceList);
             var baseUri = new Uri($"{buider.UriScheme}://{service}");
             var uri = new Uri(baseUri, pathAndQuery);

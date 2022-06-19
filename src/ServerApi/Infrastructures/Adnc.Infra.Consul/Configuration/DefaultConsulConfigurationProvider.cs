@@ -7,7 +7,7 @@ public sealed class DefaultConsulConfigurationProvider : ConfigurationProvider
     private readonly int _waitMillisecond;
     private readonly bool _reloadOnChange;
     private ulong _currentIndex;
-    private Task _pollTask;
+    private Task? _pollTask;
 
     public DefaultConsulConfigurationProvider(ConsulClient consulClient, string consulKeyPath, bool reloadOnChanges)
     {
