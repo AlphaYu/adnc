@@ -2,7 +2,6 @@
 global using Adnc.Infra.Entities;
 global using Adnc.Infra.IRepositories;
 global using Adnc.Infra.Repository.EfCore.Internal;
-global using DotNetCore.CAP;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.EntityFrameworkCore.ChangeTracking;
 global using Microsoft.EntityFrameworkCore.Storage;

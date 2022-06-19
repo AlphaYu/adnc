@@ -14,8 +14,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="EFCore.NamingConventions" Version="6.0.0" />
-		<PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="6.13.15" />
 		<PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="6.0.1" />
 		<PackageReference Include="DotNetCore.CAP" Version="6.0.1" />
 		<PackageReference Include="DotNetCore.CAP.MySql" Version="6.0.1" />

@@ -3,11 +3,14 @@
 public class MySQLUnitOfWork<TDbContext> : UnitOfWork<TDbContext>
     where TDbContext : MySQLDbContext
 {
+    private ICapPublisher? _publisher;
+
     public MySQLUnitOfWork(
         TDbContext context
-        , ICapPublisher? capPublisher = null)
-        : base(context, capPublisher)
+        , ICapPublisher? publisher = null)
+        : base(context)
     {
+        _publisher = publisher;
     }
 
     protected override IDbContextTransaction GetDbContextTransaction(
@@ -15,10 +18,10 @@ public class MySQLUnitOfWork<TDbContext> : UnitOfWork<TDbContext>
         , bool distributed = false)
     {
         if (distributed)
-            if (CapPublisher is null)
+            if (_publisher is null)
                 throw new ArgumentException("CapPublisher is null");
             else
-                return AdncDbContext.Database.BeginTransaction(CapPublisher, false);
+                return AdncDbContext.Database.BeginTransaction(_publisher, false);
         else
             return AdncDbContext.Database.BeginTransaction(isolationLevel);
     }

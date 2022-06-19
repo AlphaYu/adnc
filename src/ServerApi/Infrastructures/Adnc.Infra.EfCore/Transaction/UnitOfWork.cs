@@ -4,15 +4,13 @@ public abstract class UnitOfWork<TDbContext> : IUnitOfWork
     where TDbContext : DbContext
 {
     protected TDbContext AdncDbContext { get; init; }
-    protected ICapPublisher? CapPublisher { get; init; }
     protected IDbContextTransaction? DbTransaction { get; set; }
 
     public bool IsStartingUow => AdncDbContext.Database.CurrentTransaction is not null;
 
-    protected UnitOfWork(TDbContext context, ICapPublisher? capPublisher = null)
+    protected UnitOfWork(TDbContext context)
     {
         AdncDbContext = context ?? throw new ArgumentNullException(nameof(context));
-        CapPublisher = capPublisher;
     }
 
     protected abstract IDbContextTransaction GetDbContextTransaction(IsolationLevel isolationLevel = IsolationLevel.ReadCommitted, bool distributed = false);
