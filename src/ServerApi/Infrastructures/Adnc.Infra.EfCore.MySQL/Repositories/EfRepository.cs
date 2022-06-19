@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage;
 using Z.EntityFramework.Plus;
 
-namespace Adnc.Infra.EfCore.Repositories
+namespace Adnc.Infra.Repository.EfCore.Repositories
 {
     /// <summary>
     /// Ef默认的、全功能的仓储实现
@@ -10,13 +10,13 @@ namespace Adnc.Infra.EfCore.Repositories
     public sealed class EfRepository<TEntity> : AbstractEfBaseRepository<AdncDbContext, TEntity>, IEfRepository<TEntity>
       where TEntity : EfEntity, new()
     {
-        private readonly IAdoQuerierRepository _adoQuerier;
+        private readonly IAdoQuerierRepository? _adoQuerier;
 
-        public EfRepository(AdncDbContext dbContext, IAdoQuerierRepository adoQuerier = null)
+        public EfRepository(AdncDbContext dbContext, IAdoQuerierRepository? adoQuerier = null)
             : base(dbContext)
             => _adoQuerier = adoQuerier;
 
-        public IAdoQuerierRepository AdoQuerier
+        public IAdoQuerierRepository? AdoQuerier
         {
             get
             {
@@ -28,13 +28,13 @@ namespace Adnc.Infra.EfCore.Repositories
             }
         }
 
-        public async Task<int> ExecuteSqlInterpolatedAsync(FormattableString sql, CancellationToken cancellationToken = default)
-            => await DbContext.Database.ExecuteSqlInterpolatedAsync(sql, cancellationToken);
+        public async Task<int> ExecuteSqlInterpolatedAsync(FormattableString sql, CancellationToken cancellationToken = default) =>
+           await DbContext.Database.ExecuteSqlInterpolatedAsync(sql, cancellationToken);
 
-        public async Task<int> ExecuteSqlRawAsync(string sql, CancellationToken cancellationToken = default)
-            => await DbContext.Database.ExecuteSqlRawAsync(sql, cancellationToken);
+        public async Task<int> ExecuteSqlRawAsync(string sql, CancellationToken cancellationToken = default) =>
+           await DbContext.Database.ExecuteSqlRawAsync(sql, cancellationToken);
 
-        public IDbTransaction CurrentDbTransaction => DbContext.Database.CurrentTransaction.GetDbTransaction();
+        public IDbTransaction? CurrentDbTransaction => DbContext.Database.CurrentTransaction?.GetDbTransaction();
 
         public IQueryable<TEntity> GetAll(bool writeDb = false, bool noTracking = true) => this.GetDbSet(writeDb, noTracking);
 
@@ -49,47 +49,47 @@ namespace Adnc.Infra.EfCore.Repositories
             return queryAble;
         }
 
-        public async Task<TEntity> FindAsync(long keyValue, Expression<Func<TEntity, dynamic>> navigationPropertyPath = null, bool writeDb = false, bool noTracking = true, CancellationToken cancellationToken = default)
+        public async Task<TEntity?> FindAsync(long keyValue, Expression<Func<TEntity, dynamic>>? navigationPropertyPath = null, bool writeDb = false, bool noTracking = true, CancellationToken cancellationToken = default)
         {
-            var query = this.GetDbSet(writeDb, noTracking).Where(t => t.Id == keyValue);
-            if (navigationPropertyPath != null)
-                return await EntityFrameworkQueryableExtensions.FirstOrDefaultAsync(EntityFrameworkQueryableExtensions.Include(query, navigationPropertyPath), cancellationToken);
+            var query = GetDbSet(writeDb, noTracking).Where(t => t.Id == keyValue);
+            if (navigationPropertyPath is not null)
+                return await query.Include(navigationPropertyPath).FirstOrDefaultAsync(cancellationToken);
             else
-                return await EntityFrameworkQueryableExtensions.FirstOrDefaultAsync(query, cancellationToken);
+                return await query.FirstOrDefaultAsync(cancellationToken);
         }
 
-        public async Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, dynamic>> navigationPropertyPath = null, Expression<Func<TEntity, object>> orderByExpression = null, bool ascending = false, bool writeDb = false, bool noTracking = true, CancellationToken cancellationToken = default)
+        public async Task<TEntity?> FindAsync(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, dynamic>>? navigationPropertyPath = null, Expression<Func<TEntity, object>>? orderByExpression = null, bool ascending = false, bool writeDb = false, bool noTracking = true, CancellationToken cancellationToken = default)
         {
-            TEntity result;
+            TEntity? result;
 
-            var query = this.GetDbSet(writeDb, noTracking).Where(whereExpression);
+            var query = GetDbSet(writeDb, noTracking).Where(whereExpression);
 
-            if (navigationPropertyPath != null)
-                query = EntityFrameworkQueryableExtensions.Include(query, navigationPropertyPath);
+            if (navigationPropertyPath is not null)
+                query = query.Include(navigationPropertyPath);
 
-            if (orderByExpression == null)
-                result = await EntityFrameworkQueryableExtensions.FirstOrDefaultAsync(query.OrderByDescending(x => x.Id), cancellationToken);
+            if (orderByExpression is null)
+                result = await query.OrderByDescending(x=>x.Id).FirstOrDefaultAsync(cancellationToken);
             else
                 result = ascending
-                          ? await EntityFrameworkQueryableExtensions.FirstOrDefaultAsync(query.OrderBy(orderByExpression), cancellationToken)
-                          : await EntityFrameworkQueryableExtensions.FirstOrDefaultAsync(query.OrderByDescending(orderByExpression), cancellationToken)
+                          ? await query.OrderBy(orderByExpression).FirstOrDefaultAsync(cancellationToken)
+                          : await query.OrderByDescending(orderByExpression).FirstOrDefaultAsync(cancellationToken)
                           ;
 
             return result;
         }
 
-        public async Task<TResult> FetchAsync<TResult>(Expression<Func<TEntity, TResult>> selector, Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, object>> orderByExpression = null, bool ascending = false, bool writeDb = false, bool noTracking = true, CancellationToken cancellationToken = default)
+        public async Task<TResult?> FetchAsync<TResult>(Expression<Func<TEntity, TResult>> selector, Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, object>>? orderByExpression = null, bool ascending = false, bool writeDb = false, bool noTracking = true, CancellationToken cancellationToken = default)
         {
-            TResult result;
+            TResult? result;
 
             var query = this.GetDbSet(writeDb, noTracking).Where(whereExpression);
 
-            if (orderByExpression == null)
-                result = await EntityFrameworkQueryableExtensions.FirstOrDefaultAsync(query.OrderByDescending(x => x.Id).Select(selector), cancellationToken);
+            if (orderByExpression is null)
+                result = await query.OrderByDescending(x => x.Id).Select(selector).FirstOrDefaultAsync(cancellationToken);
             else
                 result = ascending
-                          ? await EntityFrameworkQueryableExtensions.FirstOrDefaultAsync(query.OrderBy(orderByExpression).Select(selector), cancellationToken)
-                          : await EntityFrameworkQueryableExtensions.FirstOrDefaultAsync(query.OrderByDescending(orderByExpression).Select(selector), cancellationToken)
+                          ? await query.OrderBy(orderByExpression).Select(selector).FirstOrDefaultAsync(cancellationToken)
+                          : await query.OrderByDescending(orderByExpression).Select(selector).FirstOrDefaultAsync(cancellationToken)
                           ;
 
             return result;

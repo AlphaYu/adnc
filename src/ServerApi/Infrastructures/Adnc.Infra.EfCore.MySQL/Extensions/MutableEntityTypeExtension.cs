@@ -14,7 +14,9 @@
                     BindingFlags.NonPublic | BindingFlags.Static)
                 ?.MakeGenericMethod(entityData.ClrType);
             if (methodToCall == null) return;
-            var filter = methodToCall.Invoke(null, new object[] { });
+            var filter = methodToCall.Invoke(null, Array.Empty<object>());
+            if (filter is null)
+                return;
             entityData.SetQueryFilter((LambdaExpression)filter);
         }
 

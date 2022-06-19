@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.EfCore.Internal;
+﻿namespace Adnc.Infra.Repository.EfCore.Internal;
 
 internal static class EFCoreUtil
 {

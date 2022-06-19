@@ -7,14 +7,14 @@ public sealed class UnitOfWork<TDbContext> : IUnitOfWork where TDbContext : DbCo
 {
     private readonly TDbContext _dbContext;
     private readonly UnitOfWorkStatus _unitOfWorkStatus;
-    private readonly ICapPublisher _capPublisher;
-    private IDbContextTransaction _dbTransaction;
+    private readonly ICapPublisher? _capPublisher;
+    private IDbContextTransaction? _dbTransaction;
 
     public bool IsStartingUow => _unitOfWorkStatus.IsStartingUow;
 
     public UnitOfWork(TDbContext context
         , UnitOfWorkStatus unitOfWorkStatus
-        , ICapPublisher capPublisher = null)
+        , ICapPublisher? capPublisher = null)
     {
         _unitOfWorkStatus = unitOfWorkStatus ?? throw new ArgumentNullException(nameof(unitOfWorkStatus));
         _dbContext = context ?? throw new ArgumentNullException(nameof(context));
@@ -52,7 +52,7 @@ public sealed class UnitOfWork<TDbContext> : IUnitOfWork where TDbContext : DbCo
     {
         CheckNotNull(_dbTransaction);
 
-        _dbTransaction.Commit();
+        _dbTransaction?.Commit();
         _unitOfWorkStatus.IsStartingUow = false;
     }
 
@@ -60,7 +60,11 @@ public sealed class UnitOfWork<TDbContext> : IUnitOfWork where TDbContext : DbCo
     {
         CheckNotNull(_dbTransaction);
 
-        await _dbTransaction.CommitAsync(cancellationToken);
+        if (_dbTransaction is null)
+            await Task.CompletedTask;
+        else
+            await _dbTransaction.CommitAsync(cancellationToken);
+
         _unitOfWorkStatus.IsStartingUow = false;
     }
 
@@ -68,7 +72,7 @@ public sealed class UnitOfWork<TDbContext> : IUnitOfWork where TDbContext : DbCo
     {
         CheckNotNull(_dbTransaction);
 
-        _dbTransaction.Rollback();
+        _dbTransaction?.Rollback();
         _unitOfWorkStatus.IsStartingUow = false;
     }
 
@@ -76,7 +80,11 @@ public sealed class UnitOfWork<TDbContext> : IUnitOfWork where TDbContext : DbCo
     {
         CheckNotNull(_dbTransaction);
 
-        await _dbTransaction.RollbackAsync(cancellationToken);
+        if (_dbTransaction is null)
+            await Task.CompletedTask;
+        else
+            await _dbTransaction.RollbackAsync(cancellationToken);
+
         _unitOfWorkStatus.IsStartingUow = false;
     }
 
@@ -85,17 +93,17 @@ public sealed class UnitOfWork<TDbContext> : IUnitOfWork where TDbContext : DbCo
         var isNotNull = CheckNotNull(_dbTransaction, false);
         if (isNotNull)
         {
-            _dbTransaction.Dispose();
+            _dbTransaction?.Dispose();
             if (_unitOfWorkStatus != null)
                 _unitOfWorkStatus.IsStartingUow = false;
         }
     }
 
-    private bool CheckNotNull(IDbContextTransaction dbContextTransaction, bool isThrowException = true)
+    private bool CheckNotNull(IDbContextTransaction? dbContextTransaction, bool isThrowException = true)
     {
-        if (dbContextTransaction == null && isThrowException)
+        if (dbContextTransaction is null && isThrowException)
             throw new ArgumentNullException(nameof(dbContextTransaction), "IDbContextTransaction is null");
 
-        return dbContextTransaction != null;
+        return dbContextTransaction is not null;
     }
 }

@@ -1,10 +1,10 @@
-﻿namespace Adnc.Infra.EfCore.Internal;
+﻿namespace Adnc.Infra.Repository.EfCore.Internal;
 
 internal class KeyEntryModel
 {
-    public string PropertyName { get; set; }
+    public string PropertyName { get; set; } = default!;
 
-    public string ColumnName { get; set; }
+    public string ColumnName { get; set; } = default!;
 
-    public object Value { get; set; }
+    public object Value { get; set; } = default!;
 }

@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.EfCore.Repositories
+﻿namespace Adnc.Infra.Repository.EfCore.Repositories
 {
     /// <summary>
     /// Ef仓储的基类实现,抽象类
@@ -25,8 +25,8 @@
                 return DbContext.Set<TEntity>();
         }
 
-        public virtual IQueryable<TEntity> Where(Expression<Func<TEntity, bool>> expression, bool writeDb = false, bool noTracking = true)
-        => this.GetDbSet(writeDb, noTracking).Where(expression);
+        public virtual IQueryable<TEntity> Where(Expression<Func<TEntity, bool>> expression, bool writeDb = false, bool noTracking = true) =>
+            GetDbSet(writeDb, noTracking).Where(expression);
 
         public virtual async Task<int> InsertAsync(TEntity entity, CancellationToken cancellationToken = default)
         {
@@ -45,7 +45,7 @@
             var dbSet = DbContext.Set<TEntity>().AsNoTracking();
             if (writeDb)
                 dbSet = dbSet.TagWith(RepositoryConsts.MAXSCALE_ROUTE_TO_MASTER);
-            return await EntityFrameworkQueryableExtensions.AnyAsync(dbSet, whereExpression, cancellationToken);
+            return await dbSet.AnyAsync(whereExpression, cancellationToken);
         }
 
         public virtual async Task<int> CountAsync(Expression<Func<TEntity, bool>> whereExpression, bool writeDb = false, CancellationToken cancellationToken = default)
@@ -53,7 +53,7 @@
             var dbSet = DbContext.Set<TEntity>().AsNoTracking();
             if (writeDb)
                 dbSet = dbSet.TagWith(RepositoryConsts.MAXSCALE_ROUTE_TO_MASTER);
-            return await EntityFrameworkQueryableExtensions.CountAsync(dbSet, whereExpression, cancellationToken);
+            return await dbSet.CountAsync(whereExpression, cancellationToken);
         }
 
         public virtual Task<int> UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)

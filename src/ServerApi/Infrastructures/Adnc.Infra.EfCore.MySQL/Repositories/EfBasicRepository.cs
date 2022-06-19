@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.EfCore.Repositories
+﻿namespace Adnc.Infra.Repository.EfCore.Repositories
 {
     /// <summary>
     /// Ef简单的、基础的，初级的仓储接口
@@ -31,26 +31,29 @@
             return await this.DbContext.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<TEntity> GetAsync(long keyValue, Expression<Func<TEntity, dynamic>> navigationPropertyPath = null, bool writeDb = false, CancellationToken cancellationToken = default)
+        public async Task<TEntity?> GetAsync(long keyValue, Expression<Func<TEntity, dynamic>>? navigationPropertyPath = null, bool writeDb = false, CancellationToken cancellationToken = default)
         {
             var query = this.GetDbSet(writeDb, false).Where(t => t.Id == keyValue);
-            if (navigationPropertyPath == null)
-                return await EntityFrameworkQueryableExtensions.FirstOrDefaultAsync(query, cancellationToken);
+            if (navigationPropertyPath is null)
+                return await query.FirstOrDefaultAsync(cancellationToken);
             else
-                return await EntityFrameworkQueryableExtensions.FirstOrDefaultAsync(EntityFrameworkQueryableExtensions.Include(query, navigationPropertyPath), cancellationToken);
+                return await query.Include(navigationPropertyPath).FirstOrDefaultAsync(cancellationToken);
         }
 
-        public async Task<TEntity> GetAsync(long keyValue, IEnumerable<Expression<Func<TEntity, dynamic>>> navigationPropertyPaths = null, bool writeDb = false, CancellationToken cancellationToken = default)
+        public async Task<TEntity?> GetAsync(long keyValue, IEnumerable<Expression<Func<TEntity, dynamic>>>? navigationPropertyPaths = null, bool writeDb = false, CancellationToken cancellationToken = default)
         {
-            if (navigationPropertyPaths == null || navigationPropertyPaths.Count() <= 1)
-                return await this.GetAsync(keyValue, navigationPropertyPaths.FirstOrDefault(), writeDb, cancellationToken);
+            if (navigationPropertyPaths is null)
+                return await GetAsync(keyValue, navigationPropertyPath: null, writeDb, cancellationToken);
 
-            var query = this.GetDbSet(writeDb, false).Where(t => t.Id == keyValue);
+            if (navigationPropertyPaths.Count() == 1)
+                return await GetAsync(keyValue, navigationPropertyPaths.First(), writeDb, cancellationToken);
+
+            var query = GetDbSet(writeDb, false).Where(t => t.Id == keyValue);
             foreach (var navigationPath in navigationPropertyPaths)
             {
-                query = EntityFrameworkQueryableExtensions.Include(query, navigationPath);
+                query = query.Include(navigationPath);
             }
-            return await EntityFrameworkQueryableExtensions.FirstOrDefaultAsync(query, cancellationToken);
+            return await query.FirstOrDefaultAsync(cancellationToken);
         }
     }
 }

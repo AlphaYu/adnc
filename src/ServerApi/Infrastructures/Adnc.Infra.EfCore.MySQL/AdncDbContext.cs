@@ -1,4 +1,6 @@
-﻿namespace Adnc.Infra.EfCore.MySQL;
+﻿using Adnc.Infra.Core.Guard;
+
+namespace Adnc.Infra.Repository.EfCore;
 
 public sealed class AdncDbContext : DbContext
 {
@@ -40,19 +42,22 @@ public sealed class AdncDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         //System.Diagnostics.Debugger.Launch();
-        modelBuilder.HasCharSet("utf8mb4 ");
+        //modelBuilder.HasCharSet("utf8mb4 ");
 
         var entityInfos = _entityInfo.GetEntitiesTypeInfo().ToList();
         Guard.Checker.NotNullOrAny(entityInfos, nameof(entityInfos));
         foreach (var info in entityInfos)
         {
-            if (info.DataSeeding.IsNullOrEmpty())
+            if (info.DataSeeding is null)
                 modelBuilder.Entity(info.Type);
             else
                 modelBuilder.Entity(info.Type).HasData(info.DataSeeding);
         }
 
-        var assembly = entityInfos.FirstOrDefault().Type.Assembly;
+        var assembly = entityInfos.FirstOrDefault()?.Type.Assembly;
+        if (assembly is null)
+            return;
+
         modelBuilder.ApplyConfigurationsFromAssembly(assembly);
 
         var types = entityInfos.Select(x => x.Type);
@@ -66,8 +71,8 @@ public sealed class AdncDbContext : DbContext
 
                 entityType.GetProperties().ForEach(property =>
                 {
-                    var propertyName = property.Name;
-                    var memberSummary = entityType.ClrType.GetMember(propertyName).FirstOrDefault().GetSummary();
+                    string propertyName = property.Name;
+                    var memberSummary = entityType.ClrType?.GetMember(propertyName)?.FirstOrDefault()?.GetSummary();
                     buider.Property(propertyName).HasComment(memberSummary);
                 });
             });
