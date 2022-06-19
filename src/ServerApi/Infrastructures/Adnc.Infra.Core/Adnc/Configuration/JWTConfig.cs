@@ -17,7 +17,7 @@ public class JwtConfig
     /// <summary>
     /// 颁发者
     /// </summary>
-    public string ValidIssuer { get; set; } = default!;
+    public string ValidIssuer { get; set; } = string.Empty;
 
     /// <summary>
     /// 是否校验签名
@@ -27,8 +27,8 @@ public class JwtConfig
     /// <summary>
     /// 签名
     /// </summary>
-    public string SymmetricSecurityKey { get; set; } = default!;
-    public string IssuerSigningKey { get; set; } = default!;
+    public string SymmetricSecurityKey { get; set; } = string.Empty;
+    public string IssuerSigningKey { get; set; } = string.Empty;
 
     /// <summary>
     /// 是否校验受众
@@ -38,12 +38,12 @@ public class JwtConfig
     /// <summary>
     /// Accessoken受众
     /// </summary>
-    public string ValidAudience { get; set; } = default!;
+    public string ValidAudience { get; set; } = string.Empty;
 
     /// <summary>
     /// RefreshToken受众
     /// </summary>
-    public string RefreshTokenAudience { get; set; }
+    public string RefreshTokenAudience { get; set; } = string.Empty;
 
     /// <summary>
     /// 校验Lifetime
@@ -58,16 +58,16 @@ public class JwtConfig
     /// <summary>
     /// 时间歪斜，单位秒
     /// </summary>
-    public int ClockSkew { get; set; } = default!;
+    public int ClockSkew { get; set; } = default;
 
     /// <summary>
     /// AccessToken过期时间，单位分钟
     /// </summary>
-    public int Expire { get; set; } = default!;
+    public int Expire { get; set; } = default;
 
     /// <summary>
     /// RefreshToken过期时间，单位分钟
     /// </summary>
-    public int RefreshTokenExpire { get; set; } = default!;
+    public int RefreshTokenExpire { get; set; } = default;
 
 }

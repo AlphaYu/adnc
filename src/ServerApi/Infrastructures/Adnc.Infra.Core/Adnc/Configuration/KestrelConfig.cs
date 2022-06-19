@@ -4,7 +4,7 @@ public class KestrelConfig
 {
     public const string Name = "Kestrel";
 
-    public IDictionary<string, Endpoint> Endpoints { get; set; }
+    public IDictionary<string, Endpoint> Endpoints { get; set; } 
 
     public KestrelConfig() => Endpoints = new Dictionary<string, Endpoint>();
 
@@ -16,7 +16,7 @@ public class KestrelConfig
                 Protocols = "Http1AndHttp2";
         }
 
-        public string Url { get; set; }
+        public string Url { get; set; } = string.Empty;
 
         public string Protocols { get; set; }
     }

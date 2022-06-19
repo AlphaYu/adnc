@@ -10,7 +10,7 @@ public class MongoConfig
     /// <summary>
     /// Gets or sets the MongoDB connection string.
     /// </summary>
-    public string ConnectionString { get; set; }
+    public string ConnectionString { get; set; } = string.Empty;
 
     /// <summary>
     /// Gets or sets the collection naming convention.

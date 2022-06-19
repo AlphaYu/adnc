@@ -7,5 +7,5 @@ public class MysqlConfig
 {
     public const string Name = "Mysql";
 
-    public string ConnectionString { get; set; }
+    public string ConnectionString { get; set; } = string.Empty;
 }

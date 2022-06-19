@@ -5,33 +5,33 @@
         /// <summary>A GUID extension method that query if '@this' is empty.</summary>
         /// <param name="this">The @this to act on.</param>
         /// <returns>true if empty, false if not.</returns>
-        public static bool IsNullOrEmpty([NotNull] this Guid? @this)
+        public static bool IsNullOrEmpty(this Guid? guid)
         {
-            return !@this.HasValue || @this == Guid.Empty;
+            return guid is null || !guid.HasValue || guid == Guid.Empty;
         }
 
         /// <summary>A GUID extension method that query if '@this' is not null or empty.</summary>
         /// <param name="this">The @this to act on.</param>
         /// <returns>true if empty, false if not.</returns>
-        public static bool IsNotNullOrEmpty([NotNull] this Guid? @this)
+        public static bool IsNotNullOrEmpty(this Guid? guid)
         {
-            return @this.HasValue && @this.Value != Guid.Empty;
+            return guid.HasValue && guid.Value != Guid.Empty;
         }
 
         /// <summary>A GUID extension method that query if '@this' is empty.</summary>
         /// <param name="this">The @this to act on.</param>
         /// <returns>true if empty, false if not.</returns>
-        public static bool IsEmpty(this Guid @this)
+        public static bool IsEmpty(this Guid guid)
         {
-            return @this == Guid.Empty;
+            return guid == Guid.Empty;
         }
 
         /// <summary>A GUID extension method that queries if a not is empty.</summary>
         /// <param name="this">The @this to act on.</param>
         /// <returns>true if a not is empty, false if not.</returns>
-        public static bool IsNotEmpty(this Guid @this)
+        public static bool IsNotEmpty(this Guid guid)
         {
-            return @this != Guid.Empty;
+            return guid != Guid.Empty;
         }
     }
 }

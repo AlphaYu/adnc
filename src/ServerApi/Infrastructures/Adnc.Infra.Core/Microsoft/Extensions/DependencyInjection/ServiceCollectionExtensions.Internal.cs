@@ -6,7 +6,7 @@
 
         public static bool HasRegistered(this IServiceCollection _, string modelName) => !s_RegisteredModels.TryAdd(modelName.ToLower(), '1');
 
-        internal static T GetSingletonInstanceOrNull<T>(this IServiceCollection services)
+        internal static T? GetSingletonInstanceOrNull<T>(this IServiceCollection services)
             where T : class
         {
             var instance = services.FirstOrDefault(d => d.ServiceType == typeof(T))?.ImplementationInstance;

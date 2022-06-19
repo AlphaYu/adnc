@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<Import Project="..\..\build\common.props" />
 	<PropertyGroup>
-		<!--<Nullable>enable</Nullable>-->
+		<Nullable>enable</Nullable>
 	</PropertyGroup>
 	<ItemGroup>
 	  <Compile Remove="Autofac\**" />
