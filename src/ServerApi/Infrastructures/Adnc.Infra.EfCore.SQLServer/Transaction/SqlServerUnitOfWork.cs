@@ -1,11 +1,11 @@
-﻿namespace Adnc.Infra.Repository.EfCore.MySql.Transaction;
+﻿namespace Adnc.Infra.Repository.EfCore.SqlServer.Transaction;
 
-public class MySqlUnitOfWork<TDbContext> : UnitOfWork<TDbContext>
-    where TDbContext : MySqlDbContext
+public class SqlServerUnitOfWork<TDbContext> : UnitOfWork<TDbContext>
+    where TDbContext : SqlServerDbContext
 {
     private ICapPublisher? _publisher;
 
-    public MySqlUnitOfWork(
+    public SqlServerUnitOfWork(
         TDbContext context
         , ICapPublisher? publisher = null)
         : base(context)

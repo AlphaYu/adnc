@@ -1,8 +1,8 @@
-﻿namespace Adnc.Infra.Repository.EfCore;
+﻿namespace Adnc.Infra.Repository.EfCore.MySql;
 
-public class MySQLDbContext : AdncDbContext
+public class MySqlDbContext : AdncDbContext
 {
-    public MySQLDbContext(
+    public MySqlDbContext(
         DbContextOptions options
         , Operater operater
         , IEntityInfo entityInfo)

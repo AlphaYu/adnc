@@ -24,6 +24,7 @@ public class Product : AggregateRootWithBasicAuditInfo
     /// </summary>
     /// <param name="id"></param>
     /// <param name="sku"></param>
+    /// <param name="price"></param>
     /// <param name="name"></param>
     /// <param name="unit"></param>
     /// <param name="describe"></param>

@@ -1,4 +1,5 @@
-﻿using Adnc.Infra.Repository.EfCore.MySQL.Transaction;
+﻿using Adnc.Infra.Repository.EfCore.MySql;
+using Adnc.Infra.Repository.EfCore.MySql.Transaction;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -9,10 +10,10 @@ public static class ServiceCollectionExtension
         if (services.HasRegistered(nameof(AddAdncInfraEfCoreMySql)))
             return services;
 
-        services.TryAddScoped<IUnitOfWork,MySQLUnitOfWork<MySQLDbContext>>();
+        services.TryAddScoped<IUnitOfWork, MySqlUnitOfWork<MySqlDbContext>>();
         services.TryAddScoped(typeof(IEfRepository<>), typeof(EfRepository<>));
         services.TryAddScoped(typeof(IEfBasicRepository<>), typeof(EfBasicRepository<>));
-        services.AddDbContext<DbContext,MySQLDbContext>(optionsBuilder);
+        services.AddDbContext<DbContext, MySqlDbContext>(optionsBuilder);
 
         return services;
     }
