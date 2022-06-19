@@ -7,27 +7,27 @@ namespace Adnc.Infra.Entities
     /// </summary>
     public class OperationLog : MongoEntity
     {
-        public string ClassName { get; set; }
+        public string ClassName { get; set; } = default!;
 
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         public DateTime? CreateTime { get; set; }
 
-        public string LogName { get; set; }
+        public string LogName { get; set; } = default!;
 
-        public string LogType { get; set; }
+        public string LogType { get; set; } = default!;
 
-        public string Message { get; set; }
+        public string Message { get; set; } = default!;
 
-        public string Method { get; set; }
+        public string Method { get; set; } = default!;
 
-        public string Succeed { get; set; }
+        public string Succeed { get; set; } = default!;
 
-        public long? UserId { get; set; }
+        public long? UserId { get; set; } = default!;
 
-        public string Account { get; set; }
+        public string Account { get; set; } = default!;
 
-        public string UserName { get; set; }
+        public string UserName { get; set; } = default!;
 
-        public string RemoteIpAddress { get; set; }
+        public string RemoteIpAddress { get; set; } = default!;
     }
 }

@@ -12,52 +12,52 @@ namespace Adnc.Infra.Entities
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         public DateTime Date { get; set; }
 
-        public string Level { get; set; }
+        public string Level { get; set; } = default!;
 
-        public string Message { get; set; }
+        public string Message { get; set; } = default!;
 
-        public string Logger { get; set; }
+        public string Logger { get; set; } = default!;
 
-        public string Exception { get; set; }
+        public string Exception { get; set; } = default!;
 
-        public int ThreadID { get; set; }
+        public int ThreadID { get; set; } = default!;
 
-        public string ThreadName { get; set; }
+        public string ThreadName { get; set; } = default!;
 
-        public int ProcessID { get; set; }
+        public int ProcessID { get; set; } = default!;
 
-        public string ProcessName { get; set; }
+        public string ProcessName { get; set; } = default!;
 
-        public SysNloglogProperty Properties { get; set; }
+        public SysNloglogProperty Properties { get; set; } = default!;
     }
 
     [BsonIgnoreExtraElements]
     public class SysNloglogProperty
     {
-        public string TraceIdentifier { get; set; }
+        public string TraceIdentifier { get; set; } = default!;
 
-        public string ConnectionId { get; set; }
+        public string ConnectionId { get; set; } = default!;
 
-        public string EventId_Id { get; set; }
+        public string EventId_Id { get; set; } = default!;
 
-        public string EventId_Name { get; set; }
+        public string EventId_Name { get; set; } = default!;
 
-        public string EventId { get; set; }
+        public string EventId { get; set; } = default!;
 
-        public string RemoteIpAddress { get; set; }
+        public string RemoteIpAddress { get; set; } = default!;
 
-        public string BaseDir { get; set; }
+        public string BaseDir { get; set; } = default!;
 
-        public string QueryUrl { get; set; }
+        public string QueryUrl { get; set; } = default!;
 
-        public string RequestMethod { get; set; }
+        public string RequestMethod { get; set; } = default!;
 
-        public string Controller { get; set; }
+        public string Controller { get; set; } = default!;
 
-        public string Method { get; set; }
+        public string Method { get; set; } = default!;
 
-        public string FormContent { get; set; }
+        public string FormContent { get; set; } = default!;
 
-        public string QueryContent { get; set; }
+        public string QueryContent { get; set; } = default!;
     }
 }

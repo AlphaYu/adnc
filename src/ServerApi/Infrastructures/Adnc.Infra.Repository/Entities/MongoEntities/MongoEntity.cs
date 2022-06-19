@@ -16,6 +16,6 @@ namespace Adnc.Infra.Entities
         [BsonId(IdGenerator = typeof(StringObjectIdGenerator))]
         //告诉mongodb这个字段在数据库中的类型是ObjectId,加这个特性是为了解决nlog生成日志时，存入的是objectid类型。
         [BsonRepresentation(BsonType.ObjectId)]
-        public virtual string Id { get; set; }
+        public virtual string Id { get; set; } = default!;
     }
 }
