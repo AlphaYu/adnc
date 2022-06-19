@@ -1,7 +1,7 @@
 ﻿global using Adnc.Cus.Entities;
 global using Adnc.Infra.Caching;
 global using Adnc.Infra.Caching.Configurations;
-global using Adnc.Infra.EfCore.MySQL;
+global using Adnc.Infra.Repository.EfCore.MySQL;
 global using Adnc.Infra.Entities;
 global using Adnc.Infra.EventBus.Cap;
 global using Adnc.Infra.IdGenerater.Yitter;
