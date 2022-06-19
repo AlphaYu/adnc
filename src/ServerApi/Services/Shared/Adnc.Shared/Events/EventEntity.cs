@@ -5,6 +5,10 @@
     {
         public EventEntity()
         {
+            this.Id = default;
+            this.Data = default!;
+            this.OccurredDate = DateTime.Now;
+            this.EventSource = string.Empty;
         }
 
         public EventEntity(long id, TData data, string source)

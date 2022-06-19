@@ -51,7 +51,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Consul", "Infras
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.EventBus", "Infrastructures\Adnc.Infra.EventBus\Adnc.Infra.EventBus.csproj", "{13A88A12-58E6-403D-9BC0-66A04C36BABA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Mongo", "Infrastructures\Adnc.Infra.Mongo\Adnc.Infra.Mongo.csproj", "{43D81943-1D5A-4175-89BA-B48B486D1AA6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Repository.Mongo", "Infrastructures\Adnc.Infra.Mongo\Adnc.Infra.Repository.Mongo.csproj", "{43D81943-1D5A-4175-89BA-B48B486D1AA6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Usr.Application.Contracts", "Services\Adnc.Usr\Adnc.Usr.Application.Contracts\Adnc.Usr.Application.Contracts.csproj", "{71520BFB-26D6-4931-BAED-91AEA9A40DDE}"
 EndProject
@@ -79,7 +79,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Usr.Repository", "Serv
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Shared", "Services\Shared\Adnc.Shared\Adnc.Shared.csproj", "{A63A2707-1E9D-481E-8B1D-C90F79E0FEAF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.EfCore.MySQL", "Infrastructures\Adnc.Infra.EfCore.MySQL\Adnc.Infra.EfCore.MySQL.csproj", "{4996AD8D-3CB3-4C18-9E5E-DD58F01757C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Repository.EfCore.MySQL", "Infrastructures\Adnc.Infra.EfCore.MySQL\Adnc.Infra.Repository.EfCore.MySQL.csproj", "{4996AD8D-3CB3-4C18-9E5E-DD58F01757C6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Maint.Repository", "Services\Adnc.Maint\Adnc.Maint.Repository\Adnc.Maint.Repository.csproj", "{DBA375C1-A4A7-4D7B-A342-EA1D4C6F8B16}"
 EndProject
@@ -113,7 +113,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Shared.Application.Con
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Usr.Application", "Services\Adnc.Usr\Adnc.Usr.Application\Adnc.Usr.Application.csproj", "{ABA5BFEF-7D6A-4379-86FD-F34403FECF4F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Dapper", "Infrastructures\Adnc.Infra.Dapper\Adnc.Infra.Dapper.csproj", "{71AE9D65-18B4-47AD-9003-2AE399949971}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Repository.Dapper", "Infrastructures\Adnc.Infra.Dapper\Adnc.Infra.Repository.Dapper.csproj", "{71AE9D65-18B4-47AD-9003-2AE399949971}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Shared.Rpc", "Services\Shared\Adnc.Shared.Rpc\Adnc.Shared.Rpc.csproj", "{6E1862F8-B908-4AD3-AD2F-188F0C151A26}"
 EndProject
@@ -124,6 +124,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.PerformTest", "..\..\test\Adnc.PerformTest\Adnc.PerformTest.csproj", "{15859381-1082-437B-8F49-A92B0D89B846}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Gateway.Ocelot", "Gateways\Adnc.Gateway.Ocelot\Adnc.Gateway.Ocelot.csproj", "{3959A019-D8B6-4D90-96BC-A60CE91700E2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Repository.EfCore", "Infrastructures\Adnc.Infra.EfCore\Adnc.Infra.Repository.EfCore.csproj", "{2E1E570D-529F-4FDF-A05F-EC8735AE80F3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -493,6 +495,14 @@ Global
 		{3959A019-D8B6-4D90-96BC-A60CE91700E2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3959A019-D8B6-4D90-96BC-A60CE91700E2}.Release|x64.ActiveCfg = Release|Any CPU
 		{3959A019-D8B6-4D90-96BC-A60CE91700E2}.Release|x64.Build.0 = Release|Any CPU
+		{2E1E570D-529F-4FDF-A05F-EC8735AE80F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E1E570D-529F-4FDF-A05F-EC8735AE80F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E1E570D-529F-4FDF-A05F-EC8735AE80F3}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{2E1E570D-529F-4FDF-A05F-EC8735AE80F3}.Debug|x64.Build.0 = Debug|Any CPU
+		{2E1E570D-529F-4FDF-A05F-EC8735AE80F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E1E570D-529F-4FDF-A05F-EC8735AE80F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E1E570D-529F-4FDF-A05F-EC8735AE80F3}.Release|x64.ActiveCfg = Release|Any CPU
+		{2E1E570D-529F-4FDF-A05F-EC8735AE80F3}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -549,6 +559,7 @@ Global
 		{33F58CA4-F76D-4326-AAA5-447662AE8A30} = {3B899133-BEAC-4438-977F-B28FDFF3AE27}
 		{15859381-1082-437B-8F49-A92B0D89B846} = {23D3D93F-CE63-41DD-BE55-95EAFBB3280C}
 		{3959A019-D8B6-4D90-96BC-A60CE91700E2} = {A142E6FE-FDCF-48BD-AEE8-0C8A45993594}
+		{2E1E570D-529F-4FDF-A05F-EC8735AE80F3} = {3B899133-BEAC-4438-977F-B28FDFF3AE27}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3DED72E8-74C9-4A51-A9CE-62ECFEEA1921}

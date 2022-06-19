@@ -94,11 +94,6 @@
             部门节点
             </summary>
         </member>
-        <member name="F:Adnc.Usr.Application.Contracts.Dtos.DeptTreeDto._children">
-            <summary>
-            子部门
-            </summary>
-        </member>
         <member name="T:Adnc.Usr.Application.Contracts.Dtos.DeptUpdationDto">
             <summary>
             部门

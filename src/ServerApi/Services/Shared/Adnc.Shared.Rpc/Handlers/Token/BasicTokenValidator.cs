@@ -11,7 +11,9 @@ public static class BasicTokenValidator
 
     static BasicTokenValidator()
     {
-        var configuration = ServiceLocator.Provider.GetService<IConfiguration>();
+        var configuration = ServiceLocator.Provider?.GetService<IConfiguration>();
+        if (configuration == null)
+            throw new ArgumentNullException(nameof(configuration));
         var partners = configuration.GetRpcPartnersSection().Get<List<Partner>>();
         Partners = partners.ToDictionary(x => x.UserName);
     }
