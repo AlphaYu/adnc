@@ -253,12 +253,14 @@ public class SsoAuthenticationMiddleware
 /// <summary>
 /// 注册单点登录中间件
 /// </summary>
+[Obsolete("已经废弃")]
 public static class SsoAuthenticationMiddlewareExtensions
 {
     public static IApplicationBuilder UseSSOAuthentication(this IApplicationBuilder builder, bool isOpenSSOAuthentication = true)
     {
         if (isOpenSSOAuthentication)
-            return builder.UseMiddleware<SsoAuthenticationMiddleware>();
+            throw new NullReferenceException(nameof(isOpenSSOAuthentication));
+            //return builder.UseMiddleware<SsoAuthenticationMiddleware>();
 
         return builder;
     }
