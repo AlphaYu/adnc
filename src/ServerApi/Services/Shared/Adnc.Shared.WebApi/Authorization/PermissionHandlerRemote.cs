@@ -1,6 +1,6 @@
 ﻿using Adnc.Shared.Rpc.Rest.Services;
 
-namespace Microsoft.AspNetCore.Authorization;
+namespace Adnc.Shared.WebApi.Authentication;
 
 public sealed class PermissionHandlerRemote : AbstractPermissionHandler
 {

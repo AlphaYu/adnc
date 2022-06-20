@@ -12,7 +12,6 @@ global using Adnc.Shared.Application.Contracts.Dtos;
 global using Adnc.Shared.Application.Contracts.ResultModels;
 global using Adnc.Shared.Application.Services;
 global using Adnc.Shared.Consts.Caching.Usr;
-global using Adnc.Usr.Application.BloomFilters;
 global using Adnc.Usr.Application.Caching;
 global using Adnc.Usr.Application.Contracts.Dtos;
 global using Adnc.Usr.Application.Contracts.Services;
@@ -24,4 +23,5 @@ global using Microsoft.Extensions.Options;
 global using System.Linq.Expressions;
 global using System.Net;
 global using System.Reflection;
+
 

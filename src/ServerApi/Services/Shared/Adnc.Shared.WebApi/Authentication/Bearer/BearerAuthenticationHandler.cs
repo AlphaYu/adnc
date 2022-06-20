@@ -7,13 +7,17 @@ namespace Adnc.Shared.WebApi.Authentication.Bearer;
 /// </summary>
 public class BearerAuthenticationHandler : AuthenticationHandler<BearerSchemeOptions>
 {
+    private IAuthentication _authentication;
+
     public BearerAuthenticationHandler(
         IOptionsMonitor<BearerSchemeOptions> options,
         ILoggerFactory logger,
         UrlEncoder encoder,
-        ISystemClock clock
+        ISystemClock clock,
+        IAuthentication authentication
         ) : base(options, logger, encoder, clock)
     {
+        _authentication = authentication;
     }
 
     protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
@@ -31,7 +35,8 @@ public class BearerAuthenticationHandler : AuthenticationHandler<BearerSchemeOpt
                 return await Task.FromResult(authResult);
             }
 
-            var claims = Options.Events.OnTokenValidating.Invoke(token);
+            var claims = await _authentication.ValidateAsync(token);
+
             if (claims.IsNotNullOrEmpty())
             {
                 var identity = new ClaimsIdentity(claims, BearerDefaults.AuthenticationScheme);

@@ -1,4 +1,4 @@
-﻿namespace Microsoft.AspNetCore.Authorization;
+﻿namespace Adnc.Usr.WebApi.Authorization;
 
 public sealed class PermissionHandlerLocal : AbstractPermissionHandler
 {

@@ -1,6 +1,6 @@
 ﻿using Adnc.Shared.WebApi.Authentication.Basic;
 
-namespace Microsoft.AspNetCore.Authorization;
+namespace Adnc.Shared.WebApi.Authentication;
 
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false)]
 public class PermissionAttribute : AuthorizeAttribute

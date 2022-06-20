@@ -1,6 +1,4 @@
-﻿using Adnc.Shared.Application.Contracts;
-
-namespace Adnc.Usr.WebApi.Controllers;
+﻿namespace Adnc.Usr.WebApi.Controllers;
 
 /// <summary>
 /// 用户管理
@@ -99,7 +97,7 @@ public class UserController : AdncControllerBase
     public async Task<ActionResult<List<string>>> GetCurrenUserPermissions([FromRoute] long id, [FromQuery] IEnumerable<string> permissions, string validationVersion)
     {
         var result = await _userService.GetPermissionsAsync(_userContext.Id, permissions, validationVersion);
-        return result.IsNotNullOrEmpty() ? result : new List<string>();
+        return result ?? new List<string>();
     }
 
     /// <summary>
@@ -112,4 +110,24 @@ public class UserController : AdncControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<PageModelDto<UserDto>>> GetPagedAsync([FromQuery] UserSearchPagedDto search)
         => await _userService.GetPagedAsync(search);
+
+    /// <summary>
+    /// 获取登录用户个人信息
+    /// </summary>
+    /// <param name="id">id</param>
+    /// <returns></returns>
+    [HttpGet("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<ActionResult<UserInfoDto>> GetCurrentUserInfoAsync([FromRoute] long id)
+    {
+        if (id != _userContext.Id)
+            return NotFound();
+
+        var result = await _userService.GetUserInfoAsync(_userContext.Id);
+
+        if (result != null)
+            return result;
+
+        return NotFound();
+    }
 }

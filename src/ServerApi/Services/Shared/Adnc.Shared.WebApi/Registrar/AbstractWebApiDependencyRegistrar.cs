@@ -1,4 +1,4 @@
-﻿using Adnc.Shared.Rpc.Handlers.Token;
+﻿using Adnc.Shared.WebApi.Authentication;
 using Adnc.Shared.WebApi.Authentication.Basic;
 using Adnc.Shared.WebApi.Authentication.Bearer;
 using Adnc.Shared.WebApi.Authentication.Hybrid;
@@ -21,7 +21,7 @@ public abstract class AbstractWebApiDependencyRegistrar : IDependencyRegistrar
     /// <param name="services"><see cref="IServiceInfo"/></param>
     /// <param name="environment"><see cref="IHostEnvironment"/></param>
     /// <param name="serviceInfo"><see cref="ServiceInfo"/></param>
-    protected AbstractWebApiDependencyRegistrar(IServiceCollection services, Assembly webApiAssembly)
+    protected AbstractWebApiDependencyRegistrar(IServiceCollection services)
     {
         Services = services;
         Configuration = services.GetConfiguration();
@@ -37,20 +37,22 @@ public abstract class AbstractWebApiDependencyRegistrar : IDependencyRegistrar
     /// 注册Webapi通用的服务
     /// </summary>
     /// <typeparam name="THandler"></typeparam>
-    protected virtual void AddWebApiDefault() => AddWebApiDefault<PermissionHandlerRemote>();
+    protected virtual void AddWebApiDefault() => AddWebApiDefault<AuthenticationRemote,PermissionHandlerRemote>();
 
     /// <summary>
     /// 注册Webapi通用的服务
     /// </summary>
     /// <typeparam name="THandler"></typeparam>
-    protected virtual void AddWebApiDefault<THandler>() where THandler : AbstractPermissionHandler
+    protected virtual void AddWebApiDefault<TAuthentication,TAuthorizationHandler>() 
+        where TAuthentication : class, IAuthentication 
+        where TAuthorizationHandler : AbstractPermissionHandler
     {
         Services.AddHttpContextAccessor();
         Services.AddMemoryCache();
         Configure();
         AddControllers();
-        AddAuthentication();
-        AddAuthorization<THandler>();
+        AddAuthentication<TAuthentication>();
+        AddAuthorization<TAuthorizationHandler>();
         AddCors();
         AddSwaggerGen();
         AddHealthChecks();
@@ -135,23 +137,16 @@ public abstract class AbstractWebApiDependencyRegistrar : IDependencyRegistrar
     /// <summary>
     /// 注册身份认证组件
     /// </summary>
-    protected virtual void AddAuthentication()
+    protected virtual void AddAuthentication<TAuthentication>()
+        where TAuthentication : class, IAuthentication
     {
         JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
-        
+        Services.AddScoped<IAuthentication, TAuthentication>();
         Services
             .AddAuthentication(HybridDefaults.AuthenticationScheme)
             .AddHybrid()
-            .AddBasic(options =>
-            {
-                options.Events.OnTokenValidating = BasicTokenValidator.UnPackFromBase64;
-                options.Events.OnTokenValidated = BasicTokenHelper.TokenValidatedDelegate;
-            })
-            .AddBearer(options =>
-            {
-                options.Events.OnTokenValidating = BearerTokenHelper.UnPackFromToken;
-                options.Events.OnTokenValidated = BearerTokenHelper.TokenValidatedDelegate;
-            })
+            .AddBasic(options => options.Events.OnTokenValidated = BasicTokenHelper.TokenValidatedDelegate)
+            .AddBearer(options => options.Events.OnTokenValidated = BearerTokenHelper.TokenValidatedDelegate)
             //.AddJwtBearer(options =>
             //{
             //    var jwtConfig = Configuration.GetJWTSection().Get<JwtConfig>();
@@ -167,10 +162,10 @@ public abstract class AbstractWebApiDependencyRegistrar : IDependencyRegistrar
     /// PermissionHandlerLocal  本地授权,adnc.usr走本地授权，其他服务走Rpc授权
     /// </summary>
     /// <typeparam name="THandler"></typeparam>
-    protected virtual void AddAuthorization<THandler>()
-        where THandler : AbstractPermissionHandler
+    protected virtual void AddAuthorization<TAuthorizationHandler>()
+        where TAuthorizationHandler : AbstractPermissionHandler
     {
-        Services.AddScoped<IAuthorizationHandler, THandler>();
+        Services.AddScoped<IAuthorizationHandler, TAuthorizationHandler>();
         Services.AddAuthorization(options =>
         {
             options.AddPolicy(AuthorizePolicy.Default, policy =>

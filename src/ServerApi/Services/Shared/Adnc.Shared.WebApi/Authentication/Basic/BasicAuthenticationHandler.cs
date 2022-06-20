@@ -32,7 +32,7 @@ public class BasicAuthenticationHandler : AuthenticationHandler<BasicSchemeOptio
                 return await Task.FromResult(authResult);
             }
 
-            var validatedResult = Options.Events.OnTokenValidating.Invoke(token);
+            var validatedResult = BasicTokenValidator.UnPackFromBase64(token);
             if (validatedResult.IsSuccessful)
             {
                 var id =

@@ -6,6 +6,14 @@ public interface IAuthRestClient : IRestClient
     ///  登录
     /// </summary>
     /// <returns></returns>
-    [Post("/usr/session")]
+    [Post("/auth/session")]
     Task<ApiResponse<LoginRto>> LoginAsync(LoginInputRto loginRequest);
+
+    /// <summary>
+    ///  获取认证信息
+    /// </summary>
+    /// <returns></returns>
+    [Get("/auth/session")]
+    [Headers("Authorization: Bearer")]
+    Task<ApiResponse<UserValidatedInfoRto>> GetValidatedInfoAsync();
 }

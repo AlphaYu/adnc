@@ -1,6 +1,6 @@
 ﻿using Adnc.Shared.WebApi.Authentication.Basic;
 
-namespace Microsoft.AspNetCore.Authorization;
+namespace Adnc.Shared.WebApi.Authentication;
 
 public abstract class AbstractPermissionHandler : AuthorizationHandler<PermissionRequirement>
 {
@@ -15,8 +15,8 @@ public abstract class AbstractPermissionHandler : AuthorizationHandler<Permissio
                 return;
             }
 
-            var userId = long.Parse(context.User.Claims.First(x => x.Type == JwtRegisteredClaimNames.NameId).Value);
-            var validationVersion = context.User.Claims.FirstOrDefault(x => x.Type == "version")?.Value;
+            var userId = context.User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.NameId).Value.ToLong().Value;
+            var validationVersion = context.User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Jti).Value;
             var codes = httpContext.GetEndpoint().Metadata.GetMetadata<PermissionAttribute>().Codes;
             var result = await CheckUserPermissions(userId, codes, validationVersion);
             if (result)

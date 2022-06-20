@@ -1,15 +1,37 @@
 ﻿namespace Adnc.Usr.Application.Contracts.Dtos
 {
-    public class UserTokenInfoDto : IDto
+    public record UserTokenInfoDto : IDto
     {
+        private UserTokenInfoDto()
+        {
+        }
+
+        public UserTokenInfoDto(string token, DateTime exprie, string refreshToken, DateTime refreshExprie)
+        {
+            Token = token;
+            Expire = exprie;
+            RefreshToken = refreshToken;
+            RefreshExpire = refreshExprie;
+        }
+
         /// <summary>
-        /// 访问Token
+        /// accesstoken
         /// </summary>
         public string Token { get; set; }
 
         /// <summary>
-        /// 刷新Token
+        /// accesstoken exprie time
+        /// </summary>
+        public DateTime Expire { get; set; }
+
+        /// <summary>
+        /// refresh token
         /// </summary>
         public string RefreshToken { get; set; }
+
+        /// <summary>
+        /// refreshtoken exprie time
+        /// </summary>
+        public DateTime RefreshExpire { get; set; }
     }
 }

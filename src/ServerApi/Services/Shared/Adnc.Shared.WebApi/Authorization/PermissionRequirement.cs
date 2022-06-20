@@ -1,4 +1,4 @@
-﻿namespace Microsoft.AspNetCore.Authorization;
+﻿namespace Adnc.Shared.WebApi.Authentication;
 
 public class PermissionRequirement : IAuthorizationRequirement
 {
