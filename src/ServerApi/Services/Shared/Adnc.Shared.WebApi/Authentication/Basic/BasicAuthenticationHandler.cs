@@ -62,7 +62,7 @@ public class BasicAuthenticationHandler : AuthenticationHandler<BasicSchemeOptio
             return await Task.FromResult(authResult);
         }
         Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-        Response.Headers.Add("WWW-Authenticate", "Basic realm=\"aspdotnetcore.net\"");
+        //Response.Headers.Add("WWW-Authenticate", "Basic realm=\"aspdotnetcore.net\"");
         authResult = AuthenticateResult.Fail("Invalid Authorization Header");
         return await Task.FromResult(authResult);
     }
