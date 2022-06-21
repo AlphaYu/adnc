@@ -94,7 +94,7 @@ public class UserController : AdncControllerBase
     /// <returns></returns>
     [HttpGet("{id}/permissions")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<List<string>>> GetCurrenUserPermissions([FromRoute] long id, [FromQuery] IEnumerable<string> permissions, string validationVersion)
+    public async Task<ActionResult<List<string>>> GetCurrenUserPermissions([FromRoute] long id, [FromQuery] IEnumerable<string> permissions,  [FromQuery] string validationVersion)
     {
         var result = await _userService.GetPermissionsAsync(_userContext.Id, permissions, validationVersion);
         return result ?? new List<string>();
