@@ -48,9 +48,9 @@
       "UpstreamPathTemplate": "/{servicename}/health-{guid}",
       "UpstreamHttpMethod": [ "Get" ]
     },
-    //usr login service
+    //auth service
     {
-      "DownstreamPathTemplate": "/usr/session",
+      "DownstreamPathTemplate": "/auth/session",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -58,10 +58,42 @@
           "Port": 50010
         }
       ],
-      "UpstreamPathTemplate": "/usr/session",
-      "UpstreamHttpMethod": [ "Post" ]
+      "UpstreamPathTemplate": "/auth/session",
+      "UpstreamHttpMethod": [ "Post", "Put" ]
     },
-    //usr other services
+    {
+      "DownstreamPathTemplate": "/auth/session",
+      "DownstreamScheme": "http",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "mgmt",
+        "AllowedScopes": []
+      },
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 50010
+        }
+      ],
+      "UpstreamPathTemplate": "/auth/session",
+      "UpstreamHttpMethod": [ "Get", "Delete" ]
+    },
+    {
+      "DownstreamPathTemplate": "/auth/session/password",
+      "DownstreamScheme": "http",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "mgmt",
+        "AllowedScopes": []
+      },
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 50010
+        }
+      ],
+      "UpstreamPathTemplate": "/auth/session/password",
+      "UpstreamHttpMethod": [ "Put" ]
+    },
+    //usr services
     {
       "DownstreamPathTemplate": "/usr{everything}",
       "DownstreamScheme": "http",
