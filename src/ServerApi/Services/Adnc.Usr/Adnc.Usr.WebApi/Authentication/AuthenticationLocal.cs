@@ -11,8 +11,12 @@ public class AuthenticationLocal : IAuthentication
 
     public async Task<Claim[]> ValidateAsync(string securityToken)
     {
-        var claims = BearerTokenHelper.UnPackFromToken(securityToken);
-        if(claims.IsNullOrEmpty())
+        var token = new JwtSecurityTokenHandler().ReadJwtToken(securityToken);
+        if (token is null || token.Claims.IsNullOrEmpty())
+            return default;
+
+        var claims = token.Claims.ToArray();
+        if (claims.IsNullOrEmpty())
             return Array.Empty<Claim>();
 
         var idClaim = claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.NameId);

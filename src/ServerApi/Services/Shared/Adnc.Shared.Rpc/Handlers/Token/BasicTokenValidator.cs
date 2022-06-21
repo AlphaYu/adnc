@@ -1,8 +1,4 @@
-﻿using Adnc.Infra.Core.DependencyInjection;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-
-namespace Adnc.Shared.Rpc.Handlers.Token;
+﻿namespace Adnc.Shared.Rpc.Handlers.Token;
 
 public static class BasicTokenValidator
 {

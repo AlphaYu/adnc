@@ -97,7 +97,7 @@ public class AccountController : AdncControllerBase
     public async Task<ActionResult> ChangePassword([FromBody] UserChangePwdDto input) => Result(await _accountService.UpdatePasswordAsync(_userContext.Id, input));
 
     /// <summary>
-    ///  获取验证信息
+    ///  获取认证信息
     /// </summary>
     /// <returns></returns>
     [HttpGet()]

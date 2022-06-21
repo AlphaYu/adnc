@@ -31,12 +31,11 @@ namespace Adnc.Shared.Application.Registrar
                                     .OrResult<HttpResponseMessage>(response => (int)response.StatusCode >= 500)
                                     .WaitAndRetryAsync(new[]
                                     {
-                                    TimeSpan.FromSeconds(1),
-                                    TimeSpan.FromSeconds(2),
-                                    TimeSpan.FromSeconds(4)
+                                    TimeSpan.FromSeconds(3),
+                                    TimeSpan.FromSeconds(5),
                                     });
             //超时策略
-            var timeoutPolicy = Policy.TimeoutAsync<HttpResponseMessage>(registrar.IsDevelopment ? 10 : 3);
+            var timeoutPolicy = Policy.TimeoutAsync<HttpResponseMessage>(registrar.IsDevelopment ? 10 : 9);
 
             //熔断策略
             //如下，如果我们的业务代码连续失败50次，就触发熔断(onBreak),就不会再调用我们的业务代码，而是直接抛出BrokenCircuitException异常。
