@@ -20,7 +20,7 @@ internal class Program
             if (env.IsProduction() || env.IsStaging())
             {
                 var configuration = config.Build();
-                var consulOption = configuration.GetSection("Consul").Get<ConsulConfig>();
+                var consulOption = configuration.GetSection(ConsulConfig.Name).Get<ConsulConfig>();
                 config.AddConsulConfiguration(consulOption, true);
             }
             else
