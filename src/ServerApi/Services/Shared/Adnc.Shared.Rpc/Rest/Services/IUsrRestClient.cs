@@ -9,7 +9,7 @@ public interface IUsrRestClient : IRestClient
     [Headers("Authorization: Basic", "Cache: 2000")]
     [Get("/usr/users/{userId}/permissions")]
     //Task<ApiResponse<List<string>>> GetCurrenUserPermissions([Header("Authorization")] string jwtToken, long userId, [Query(CollectionFormat.Multi)] string[] permissions);
-    Task<ApiResponse<List<string>>> GetCurrenUserPermissionsAsync(long userId, [Query(CollectionFormat.Multi)] IEnumerable<string> permissions, string validationVersion);
+    Task<ApiResponse<List<string>>> GetCurrenUserPermissionsAsync(long userId, [Query(CollectionFormat.Multi)] IEnumerable<string> permissions, [Query]string validationVersion);
 
     /// <summary>
     /// 获取部门列表

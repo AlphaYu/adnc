@@ -14,6 +14,6 @@ public interface IAuthRestClient : IRestClient
     /// </summary>
     /// <returns></returns>
     [Get("/auth/session")]
-    [Headers("Authorization: Bearer")]
-    Task<ApiResponse<UserValidatedInfoRto>> GetValidatedInfoAsync();
+    [Headers("Authorization: Bearer", "Cache: 10000")]
+    Task<ApiResponse<UserValidatedInfoRto>> GetValidatedInfoAsync([Query]long id);
 }

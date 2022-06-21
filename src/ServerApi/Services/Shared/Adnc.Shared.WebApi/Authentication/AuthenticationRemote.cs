@@ -20,12 +20,14 @@ public class AuthenticationRemote : IAuthentication
         if (claims.IsNullOrEmpty())
             return Array.Empty<Claim>();
 
-        var apiReuslt = await _authRestClient.GetValidatedInfoAsync();
-        if (!apiReuslt.IsSuccessStatusCode)
-            return Array.Empty<Claim>();
 
         var idClaim = claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.NameId);
         if (idClaim is null)
+            return Array.Empty<Claim>();
+
+        var id = idClaim.Value.ToLong().Value;
+        var apiReuslt = await _authRestClient.GetValidatedInfoAsync(id);
+        if (!apiReuslt.IsSuccessStatusCode)
             return Array.Empty<Claim>();
 
         var validatedInfo = apiReuslt.Content;
