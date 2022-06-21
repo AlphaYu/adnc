@@ -1,7 +1,4 @@
-﻿using Adnc.Shared.Rpc.Handlers.Token;
-using System.Text.Encodings.Web;
-
-namespace Adnc.Shared.WebApi.Authentication.Basic;
+﻿namespace Adnc.Shared.WebApi.Authentication.Basic;
 
 /// <summary>
 /// Basic验证(认证)服务

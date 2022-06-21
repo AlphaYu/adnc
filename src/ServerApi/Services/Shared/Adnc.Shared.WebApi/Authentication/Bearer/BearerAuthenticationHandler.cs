@@ -1,6 +1,4 @@
-﻿using System.Text.Encodings.Web;
-
-namespace Adnc.Shared.WebApi.Authentication.Bearer;
+﻿namespace Adnc.Shared.WebApi.Authentication.Bearer;
 
 /// <summary>
 /// Bearer验证(认证)服务
@@ -55,7 +53,7 @@ public class BearerAuthenticationHandler : AuthenticationHandler<BearerSchemeOpt
             return await Task.FromResult(authResult);
         }
         Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-        Response.Headers.Add("WWW-Authenticate", "Basic realm=\"aspdotnetcore.net\"");
+        //Response.Headers.Add("WWW-Authenticate", "Basic realm=\"aspdotnetcore.net\"");
         authResult = AuthenticateResult.Fail("Invalid Authorization Header");
         return await Task.FromResult(authResult);
     }

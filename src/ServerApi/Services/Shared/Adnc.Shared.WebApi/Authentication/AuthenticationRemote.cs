@@ -1,7 +1,4 @@
-﻿using Adnc.Shared.Rpc.Rest.Services;
-using Adnc.Shared.WebApi.Authentication.Bearer;
-
-namespace Adnc.Shared.WebApi.Authentication;
+﻿namespace Adnc.Shared.WebApi.Authentication;
 
 public class AuthenticationRemote : IAuthentication
 {
@@ -16,7 +13,11 @@ public class AuthenticationRemote : IAuthentication
 
     public async Task<Claim[]> ValidateAsync(string securityToken)
     {
-        var claims = BearerTokenHelper.UnPackFromToken(securityToken);
+        var token = new JwtSecurityTokenHandler().ReadJwtToken(securityToken);
+        if (token is null || token.Claims.IsNullOrEmpty())
+            return default;
+
+        var claims = token.Claims.ToArray();
         if (claims.IsNullOrEmpty())
             return Array.Empty<Claim>();
 

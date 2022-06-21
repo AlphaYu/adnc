@@ -1,8 +1,6 @@
-﻿
-namespace Adnc.Shared.WebApi.Authentication
+﻿namespace Adnc.Shared.WebApi.Authentication;
+
+public interface IAuthentication
 {
-    public interface IAuthentication
-    {
-        Task<Claim[]> ValidateAsync(string securityToken);
-    }
+    Task<Claim[]> ValidateAsync(string securityToken);
 }

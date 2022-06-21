@@ -1,10 +1,10 @@
 ﻿namespace Adnc.Shared.Rpc.Handlers.Token;
 
-public class JwtTokenGenerator : ITokenGenerator
+public class BearerTokenGenerator : ITokenGenerator
 {
     private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public JwtTokenGenerator(IHttpContextAccessor httpContextAccessor)
+    public BearerTokenGenerator(IHttpContextAccessor httpContextAccessor)
     {
         _httpContextAccessor = httpContextAccessor;
     }

@@ -2,6 +2,7 @@
 using Adnc.Shared.WebApi.Authentication.Basic;
 using Adnc.Shared.WebApi.Authentication.Bearer;
 using Adnc.Shared.WebApi.Authentication.Hybrid;
+using Adnc.Shared.WebApi.Extensions;
 using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
 
 namespace Adnc.Shared.WebApi.Registrar;
@@ -141,12 +142,31 @@ public abstract class AbstractWebApiDependencyRegistrar : IDependencyRegistrar
         where TAuthentication : class, IAuthentication
     {
         JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
-        Services.AddScoped<IAuthentication, TAuthentication>();
+        Services
+            .AddScoped<IAuthentication, TAuthentication>();
         Services
             .AddAuthentication(HybridDefaults.AuthenticationScheme)
             .AddHybrid()
-            .AddBasic(options => options.Events.OnTokenValidated = BasicTokenHelper.TokenValidatedDelegate)
-            .AddBearer(options => options.Events.OnTokenValidated = BearerTokenHelper.TokenValidatedDelegate)
+            .AddBasic(options => options.Events.OnTokenValidated = (context) =>
+            {
+                var userContext = context.HttpContext.RequestServices.GetService<UserContext>();
+                var claims = context.Principal.Claims;
+                userContext.Id = long.Parse(claims.First(x => x.Type == BasicDefaults.NameId).Value);
+                userContext.Account = claims.First(x => x.Type == BasicDefaults.UniqueName).Value;
+                userContext.Name = claims.First(x => x.Type == BasicDefaults.Name).Value;
+                userContext.RemoteIpAddress = context.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
+                return Task.CompletedTask;
+            })
+            .AddBearer(options => options.Events.OnTokenValidated = (context) =>
+             {
+                 var userContext = context.HttpContext.RequestServices.GetService<UserContext>();
+                 var claims = context.Principal.Claims;
+                 userContext.Id = long.Parse(claims.First(x => x.Type == JwtRegisteredClaimNames.NameId).Value);
+                 userContext.Account = claims.First(x => x.Type == JwtRegisteredClaimNames.UniqueName).Value;
+                 userContext.Name = claims.First(x => x.Type == JwtRegisteredClaimNames.Name).Value;
+                 userContext.RemoteIpAddress = context.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
+                 return Task.CompletedTask;
+             })
             //.AddJwtBearer(options =>
             //{
             //    var jwtConfig = Configuration.GetJWTSection().Get<JwtConfig>();
@@ -165,14 +185,16 @@ public abstract class AbstractWebApiDependencyRegistrar : IDependencyRegistrar
     protected virtual void AddAuthorization<TAuthorizationHandler>()
         where TAuthorizationHandler : AbstractPermissionHandler
     {
-        Services.AddScoped<IAuthorizationHandler, TAuthorizationHandler>();
-        Services.AddAuthorization(options =>
-        {
-            options.AddPolicy(AuthorizePolicy.Default, policy =>
+        Services
+            .AddScoped<IAuthorizationHandler, TAuthorizationHandler>();
+        Services
+            .AddAuthorization(options =>
             {
-                policy.Requirements.Add(new PermissionRequirement());
+                options.AddPolicy(AuthorizePolicy.Default, policy =>
+                {
+                    policy.Requirements.Add(new PermissionRequirement());
+                });
             });
-        });
     }
 
     /// <summary>
