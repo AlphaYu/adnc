@@ -1,7 +1,4 @@
-﻿using Adnc.Shared.WebApi.Authentication.Bearer;
-using System.Security.Claims;
-
-namespace Adnc.Usr.WebApi.Authentication;
+﻿namespace Adnc.Usr.WebApi.Authentication;
 
 public class AuthenticationLocal : IAuthentication
 {

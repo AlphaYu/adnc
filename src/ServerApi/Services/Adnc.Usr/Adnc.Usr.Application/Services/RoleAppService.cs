@@ -86,9 +86,8 @@ public class RoleAppService : AbstractAppService, IRoleAppService
         RoleTreeDto result = null;
         IEnumerable<ZTreeNodeDto<long, dynamic>> treeNodes = null;
 
-        var user = await _cacheService.GetUserValidateInfoFromCacheAsync(userId);
-
-        if (user == null)
+        var user = await _userRepository.FetchAsync(x => new { x.RoleIds }, x => x.Id == userId);
+        if (user is null)
             return null;
 
         var roles = await _cacheService.GetAllRolesFromCacheAsync();

@@ -114,20 +114,8 @@ public class UserController : AdncControllerBase
     /// <summary>
     /// 获取登录用户个人信息
     /// </summary>
-    /// <param name="id">id</param>
     /// <returns></returns>
-    [HttpGet("{id}")]
+    [HttpGet("current")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<UserInfoDto>> GetCurrentUserInfoAsync([FromRoute] long id)
-    {
-        if (id != _userContext.Id)
-            return NotFound();
-
-        var result = await _userService.GetUserInfoAsync(_userContext.Id);
-
-        if (result != null)
-            return result;
-
-        return NotFound();
-    }
+    public async Task<ActionResult<UserInfoDto>> GetCurrentUserInfoAsync() => await _userService.GetUserInfoAsync(_userContext.Id);
 }
