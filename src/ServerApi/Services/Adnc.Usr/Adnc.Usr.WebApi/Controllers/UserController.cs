@@ -89,14 +89,17 @@ public class UserController : AdncControllerBase
     /// 获取当前用户是否拥有指定权限
     /// </summary>
     /// <param name="id">用户id</param>
-    /// <param name="permissions"></param>
-    /// <param name="validationVersion"></param>
+    /// <param name="requestPermissions"></param>
+    /// <param name="userBelongsRoleIds"></param>
     /// <returns></returns>
     [HttpGet("{id}/permissions")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<List<string>>> GetCurrenUserPermissions([FromRoute] long id, [FromQuery] IEnumerable<string> permissions,  [FromQuery] string validationVersion)
+    public async Task<ActionResult<List<string>>> GetCurrenUserPermissions([FromRoute] long id, [FromQuery] IEnumerable<string> requestPermissions, [FromQuery] string userBelongsRoleIds)
     {
-        var result = await _userService.GetPermissionsAsync(_userContext.Id, permissions, validationVersion);
+        if (id != _userContext.Id)
+            return Forbid();
+
+        var result = await _userService.GetPermissionsAsync(id, requestPermissions, userBelongsRoleIds);
         return result ?? new List<string>();
     }
 

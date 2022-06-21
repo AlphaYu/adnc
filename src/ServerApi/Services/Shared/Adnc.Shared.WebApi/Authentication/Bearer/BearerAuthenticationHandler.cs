@@ -5,17 +5,17 @@
 /// </summary>
 public class BearerAuthenticationHandler : AuthenticationHandler<BearerSchemeOptions>
 {
-    private IAuthentication _authentication;
+    private AbstracAuthenticationHandler _authenticationHandler;
 
     public BearerAuthenticationHandler(
         IOptionsMonitor<BearerSchemeOptions> options,
         ILoggerFactory logger,
         UrlEncoder encoder,
         ISystemClock clock,
-        IAuthentication authentication
+        AbstracAuthenticationHandler authenticationHandler
         ) : base(options, logger, encoder, clock)
     {
-        _authentication = authentication;
+        _authenticationHandler = authenticationHandler;
     }
 
     protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
@@ -33,7 +33,7 @@ public class BearerAuthenticationHandler : AuthenticationHandler<BearerSchemeOpt
                 return await Task.FromResult(authResult);
             }
 
-            var claims = await _authentication.ValidateAsync(token);
+            var claims = await _authenticationHandler.ValidateAsync(token);
 
             if (claims.IsNotNullOrEmpty())
             {

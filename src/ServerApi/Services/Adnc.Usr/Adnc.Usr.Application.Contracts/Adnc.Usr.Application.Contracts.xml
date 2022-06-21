@@ -1099,11 +1099,11 @@
         </member>
         <member name="M:Adnc.Usr.Application.Contracts.Services.IUserAppService.GetPermissionsAsync(System.Int64,System.Collections.Generic.IEnumerable{System.String},System.String)">
             <summary>
-            获取当前用户是否拥有指定权限
+            获取用户是否拥有指定权限
             </summary>
             <param name="userId"></param>
-            <param name="permissions"></param>
-            <param name="validationVersion"></param>
+            <param name="requestPermissions"></param>
+            <param name="userBelongsRoleIds"></param>
             <returns></returns>
         </member>
         <member name="M:Adnc.Usr.Application.Contracts.Services.IUserAppService.GetPagedAsync(Adnc.Usr.Application.Contracts.Dtos.UserSearchPagedDto)">

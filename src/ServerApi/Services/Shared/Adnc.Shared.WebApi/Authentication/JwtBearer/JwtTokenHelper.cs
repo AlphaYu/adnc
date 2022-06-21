@@ -71,6 +71,7 @@ public static class JwtTokenHelper
         , string uniqueName
         , string nameId
         , string name
+        ,string roleIds
         )
     {
         if (jti.IsNullOrWhiteSpace())
@@ -82,6 +83,7 @@ public static class JwtTokenHelper
             new Claim(JwtRegisteredClaimNames.UniqueName, uniqueName),
             new Claim(JwtRegisteredClaimNames.NameId, nameId),
             new Claim(JwtRegisteredClaimNames.Name, name),
+            new Claim("roleids", roleIds)
         };
         return WriteToken(jwtConfig, claims, Tokens.AccessToken);
     }

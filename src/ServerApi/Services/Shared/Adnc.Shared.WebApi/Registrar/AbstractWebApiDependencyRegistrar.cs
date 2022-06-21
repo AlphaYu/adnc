@@ -38,21 +38,21 @@ public abstract class AbstractWebApiDependencyRegistrar : IDependencyRegistrar
     /// 注册Webapi通用的服务
     /// </summary>
     /// <typeparam name="THandler"></typeparam>
-    protected virtual void AddWebApiDefault() => AddWebApiDefault<AuthenticationRemote,PermissionHandlerRemote>();
+    protected virtual void AddWebApiDefault() => AddWebApiDefault<AuthenticationHandlerRemote,PermissionHandlerRemote>();
 
     /// <summary>
     /// 注册Webapi通用的服务
     /// </summary>
     /// <typeparam name="THandler"></typeparam>
-    protected virtual void AddWebApiDefault<TAuthentication,TAuthorizationHandler>() 
-        where TAuthentication : class, IAuthentication 
+    protected virtual void AddWebApiDefault<TAuthenticationHandler,TAuthorizationHandler>() 
+        where TAuthenticationHandler : AbstracAuthenticationHandler 
         where TAuthorizationHandler : AbstractPermissionHandler
     {
         Services.AddHttpContextAccessor();
         Services.AddMemoryCache();
         Configure();
         AddControllers();
-        AddAuthentication<TAuthentication>();
+        AddAuthentication<TAuthenticationHandler>();
         AddAuthorization<TAuthorizationHandler>();
         AddCors();
         AddSwaggerGen();
@@ -138,12 +138,12 @@ public abstract class AbstractWebApiDependencyRegistrar : IDependencyRegistrar
     /// <summary>
     /// 注册身份认证组件
     /// </summary>
-    protected virtual void AddAuthentication<TAuthentication>()
-        where TAuthentication : class, IAuthentication
+    protected virtual void AddAuthentication<TAuthenticationHandler>()
+        where TAuthenticationHandler : AbstracAuthenticationHandler
     {
         JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
         Services
-            .AddScoped<IAuthentication, TAuthentication>();
+            .AddScoped<AbstracAuthenticationHandler, TAuthenticationHandler>();
         Services
             .AddAuthentication(HybridDefaults.AuthenticationScheme)
             .AddHybrid()
@@ -164,6 +164,7 @@ public abstract class AbstractWebApiDependencyRegistrar : IDependencyRegistrar
                  userContext.Id = long.Parse(claims.First(x => x.Type == JwtRegisteredClaimNames.NameId).Value);
                  userContext.Account = claims.First(x => x.Type == JwtRegisteredClaimNames.UniqueName).Value;
                  userContext.Name = claims.First(x => x.Type == JwtRegisteredClaimNames.Name).Value;
+                 userContext.RoleIds = claims.First(x => x.Type == "roleids").Value;
                  userContext.RemoteIpAddress = context.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
                  return Task.CompletedTask;
              })

@@ -6,7 +6,7 @@ public sealed class UserContext
     public string Account { get; set; } = string.Empty;
     public string Name { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
-    public long[] RoleIds { get; set; } = Array.Empty<long>();
+    public string RoleIds { get; set; } = string.Empty;
     public string Device { get; set; } = string.Empty;
     public string RemoteIpAddress { get; set; } = string.Empty;
 }

@@ -10,6 +10,6 @@ message UserPermissionsReply{
 
 message UserPermissionsRequest {
  int64 UserId = 1;
- repeated  string Permissions = 2;
- string ValidationVersion =3;
+ repeated  string RequestPermissions = 2;
+ string UserBelongsRoleIds =3;
 }

@@ -82,25 +82,15 @@ public class UserAppService : AbstractAppService, IUserAppService
         return AppSrvResult();
     }
 
-    public async Task<List<string>> GetPermissionsAsync(long userId, IEnumerable<string> permissions, string validationVersion)
+    public async Task<List<string>> GetPermissionsAsync(long userId, IEnumerable<string> requestPermissions, string userBelongsRoleIds)
     {
-        var userValidateInfo = await _cacheService.GetUserValidateInfoFromCacheAsync(userId);
-        if (userValidateInfo is null)
+        if (userBelongsRoleIds.IsNullOrWhiteSpace())
             return default;
 
-        if (userValidateInfo.ValidationVersion != validationVersion)
-            return default;
-
-        if (userValidateInfo.RoleIds.IsNullOrWhiteSpace())
-            return default;
-
-        if (userValidateInfo.Status != 1)
-            return default;
-
-        if (permissions.IsNullOrEmpty())
+        if (requestPermissions.IsNullOrEmpty())
             return new List<string> { "allow" };
 
-        var roleIds = userValidateInfo.RoleIds.Split(",", StringSplitOptions.RemoveEmptyEntries).Select(x => long.Parse(x.Trim()));
+        var roleIds = userBelongsRoleIds.Split(",", StringSplitOptions.RemoveEmptyEntries).Select(x => long.Parse(x.Trim()));
 
         var allMenuCodes = await _cacheService.GetAllMenuCodesFromCacheAsync();
 
@@ -108,7 +98,7 @@ public class UserAppService : AbstractAppService, IUserAppService
         if (upperCodes.IsNullOrEmpty())
             return default;
 
-        var result = upperCodes.Intersect(permissions.Select(x => x.ToUpper()));
+        var result = upperCodes.Intersect(requestPermissions.Select(x => x.ToUpper()));
         return result.ToList();
     }
 

@@ -1,5 +1,4 @@
 ﻿using Adnc.Infra.Mapper;
-using Adnc.Shared.Application.Contracts;
 using Adnc.Shared.Rpc.Grpc.Messages;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
@@ -33,7 +32,7 @@ public class UsrGrpcServer : Adnc.Shared.Rpc.Grpc.Services.UsrGrpc.UsrGrpcBase
             grpcResponse.Error = @"request.UserId != _userContext.Id";
             return grpcResponse;
         }
-        var result = await _userService.GetPermissionsAsync(_userContext.Id, request.Permissions, request.ValidationVersion);
+        var result = await _userService.GetPermissionsAsync(_userContext.Id, request.RequestPermissions, request.UserBelongsRoleIds);
         result ??= new List<string>();
         var response = new UserPermissionsReply();
         response.Permissions.AddRange(result);

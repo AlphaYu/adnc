@@ -64,14 +64,14 @@
         Task<AppSrvResult> ChangeStatusAsync([CachingParam] IEnumerable<long> ids, int status);
 
         /// <summary>
-        /// 获取当前用户是否拥有指定权限
+        /// 获取用户是否拥有指定权限
         /// </summary>
         /// <param name="userId"></param>
-        /// <param name="permissions"></param>
-        /// <param name="validationVersion"></param>
+        /// <param name="requestPermissions"></param>
+        /// <param name="userBelongsRoleIds"></param>
         /// <returns></returns>
-        [OperateLog(LogName = "测试用-获取当前用户是否拥有指定权限")]
-        Task<List<string>> GetPermissionsAsync(long userId, IEnumerable<string> permissions, string validationVersion);
+        [OperateLog(LogName = "获取当前用户是否拥有指定权限")]
+        Task<List<string>> GetPermissionsAsync(long userId, IEnumerable<string> requestPermissions, string userBelongsRoleIds);
 
         /// <summary>
         /// 获取用户列表
