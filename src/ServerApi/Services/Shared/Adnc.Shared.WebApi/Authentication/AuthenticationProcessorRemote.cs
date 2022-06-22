@@ -1,10 +1,10 @@
 ﻿namespace Adnc.Shared.WebApi.Authentication;
 
-public class AuthenticationHandlerRemote : AbstracAuthenticationHandler
+public class AuthenticationProcessorRemote : AbstracAuthenticationProcessor
 {
     public IAuthRestClient _authRestClient;
 
-    public AuthenticationHandlerRemote(IAuthRestClient authRestClient) => _authRestClient = authRestClient;
+    public AuthenticationProcessorRemote(IAuthRestClient authRestClient) => _authRestClient = authRestClient;
 
     protected override async Task<(string ValidationVersion, int Status)> GetValidatedInfoAsync(long userId)
     {

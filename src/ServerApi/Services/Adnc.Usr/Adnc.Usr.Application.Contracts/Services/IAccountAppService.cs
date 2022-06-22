@@ -1,7 +1,7 @@
 ﻿namespace Adnc.Usr.Application.Contracts.Services
 {
     /// <summary>
-    /// 账户服务
+    /// 认证服务
     /// </summary>
     public interface IAccountAppService : IAppService
     {
