@@ -8,7 +8,7 @@ public class AuthenticationHandlerRemote : AbstracAuthenticationHandler
 
     protected override async Task<(string ValidationVersion, int Status)> GetValidatedInfoAsync(long userId)
     {
-        var apiReuslt = await _authRestClient.GetValidatedInfoAsync(userId);
+        var apiReuslt = await _authRestClient.GetValidatedInfoAsync();
         if (!apiReuslt.IsSuccessStatusCode)
             return (null, 0);
 
