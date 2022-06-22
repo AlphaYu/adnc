@@ -1,4 +1,6 @@
-﻿namespace Adnc.Shared.Application.BloomFilter;
+﻿using Microsoft.Extensions.Options;
+
+namespace Adnc.Shared.Application.BloomFilter;
 
 public class BloomFilterHostedService : BackgroundService
 {
@@ -8,11 +10,11 @@ public class BloomFilterHostedService : BackgroundService
 
     public BloomFilterHostedService(ILogger<BloomFilterHostedService> logger
        , IEnumerable<IBloomFilter> bloomFilters
-       , IConfiguration configuration)
+       , IOptionsMonitor<RedisConfig> redisOptions)
     {
         _logger = logger;
         _bloomFilters = bloomFilters;
-        _redisConfig = configuration.GetRedisSection().Get<RedisConfig>();
+        _redisConfig = redisOptions.CurrentValue;
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)

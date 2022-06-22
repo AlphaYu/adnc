@@ -12,8 +12,8 @@ public sealed class TokenFactory
         if (authorizationScheme.EqualsIgnoreCase(BasicTokenGenerator.Scheme))
             return ActivatorUtilities.CreateInstance<BasicTokenGenerator>(_provider);
 
-        if (authorizationScheme.EqualsIgnoreCase(JwtTokenGenerator.Scheme))
-            return ActivatorUtilities.CreateInstance<JwtTokenGenerator>(_provider);
+        if (authorizationScheme.EqualsIgnoreCase(BearerTokenGenerator.Scheme))
+            return ActivatorUtilities.CreateInstance<BearerTokenGenerator>(_provider);
 
         return default;
     }

@@ -1,8 +1,4 @@
-﻿using Adnc.Infra.Core.DependencyInjection;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-
-namespace Adnc.Shared.Rpc.Handlers.Token;
+﻿namespace Adnc.Shared.Rpc.Handlers.Token;
 
 public static class BasicTokenValidator
 {
@@ -11,60 +7,73 @@ public static class BasicTokenValidator
 
     static BasicTokenValidator()
     {
-        var configuration = ServiceLocator.Provider.GetService<IConfiguration>();
+        var configuration = ServiceLocator.Provider?.GetService<IConfiguration>();
+        if (configuration == null)
+            throw new ArgumentNullException(nameof(configuration));
         var partners = configuration.GetRpcPartnersSection().Get<List<Partner>>();
         Partners = partners.ToDictionary(x => x.UserName);
     }
 
     public static string PackToBase64(string userName)
     {
-        if (!Partners.ContainsKey(userName))
-            return string.Empty;
+        var partnerAccount = IsInternalCaller(userName) ? InternalCaller : userName;
+        if (!Partners.ContainsKey(partnerAccount))
+            throw new ArgumentNullException(nameof(userName));
 
-        var partner = Partners[userName];
+        var partner = Partners[partnerAccount];
         var currentTotalSeconds = DateTime.Now.GetTotalSeconds();
-        var plainString = $"{partner.AppId}_{partner.SecurityKey}_{currentTotalSeconds}";
+        var plainString = $"{partner.AppId}-{partner.SecurityKey}-{currentTotalSeconds}";
         var md5String = InfraHelper.Security.MD5(plainString, true);
 
-        var password = $"{partner.AppId}_{currentTotalSeconds}_{md5String}";
+        var password = $"{partner.AppId}-{currentTotalSeconds}-{md5String}";
         var basicToken = $"{userName}:{password}";
 
         var bytes = Encoding.UTF8.GetBytes(basicToken);
         return Convert.ToBase64String(bytes);
     }
 
-    public static (bool isSuccessful, string userName, string appId) UnPackFromBase64(string base64String)
+    public static UnPackedResult UnPackFromBase64(string base64String)
     {
         var basicToken = Encoding.UTF8.GetString(Convert.FromBase64String(base64String));
         var credentials = basicToken.Split(':');
         var userName = credentials[0];
-        var passwordArrary = credentials[1].Split('_');
+        var passwordArrary = credentials[1].Split('-');
 
         var appId = passwordArrary[0];
         var tokenTotalSeconds = passwordArrary[1].ToLong();
         var tokenMd5String = passwordArrary[2];
 
-        if (!Partners.ContainsKey(userName))
-            return (false, string.Empty, string.Empty);
+        var partnerAccount = IsInternalCaller(userName) ? InternalCaller : userName;
+        if (!Partners.ContainsKey(partnerAccount))
+            return new UnPackedResult(false, null, null);
 
-        var partner = Partners[userName];
+        var partner = Partners[partnerAccount];
         if (!partner.AppId.EqualsIgnoreCase(appId))
-            return (false, string.Empty, string.Empty);
+            return new UnPackedResult(false, null, null);
 
         var currentTotalSeconds = DateTime.Now.GetTotalSeconds();
         var differenceTotalSeconds = currentTotalSeconds - tokenTotalSeconds;
         if (differenceTotalSeconds > 120 || differenceTotalSeconds < -3)
-            return (false, string.Empty, string.Empty);
+            return new UnPackedResult(false, null, null);
 
-        var validationMd5String = InfraHelper.Security.MD5($"{partner.AppId}_{partner.SecurityKey}_{tokenTotalSeconds}", true);
+        var validationMd5String = InfraHelper.Security.MD5($"{partner.AppId}-{partner.SecurityKey}-{tokenTotalSeconds}", true);
         var isSuccessful = validationMd5String.EqualsIgnoreCase(tokenMd5String);
-        return (isSuccessful, userName, appId);
+        return new UnPackedResult(isSuccessful, userName, appId);
     }
+
+    public static bool IsInternalCaller(string userName) => userName.StartsWith(InternalCaller);
 }
 
-public class Partner
+public class UnPackedResult
 {
-    public string UserName { get; set; } = string.Empty;
-    public string AppId { get; set; } = string.Empty;
-    public string SecurityKey { get; set; } = string.Empty;
+    public UnPackedResult(bool isSuccessful, string? userName, string? appId)
+    {
+        IsSuccessful = isSuccessful;
+        UserName = userName;
+        AppId = appId;
+    }
+
+    public bool IsSuccessful { get; set; }
+    public string? UserName { get; set; }
+    public string? AppId { get; set; }
 }

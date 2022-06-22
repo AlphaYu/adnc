@@ -49,8 +49,8 @@
         /// <typeparam name="TMember">TMember</typeparam>
         /// <param name="memberExpression">get member expression</param>
         /// <returns></returns>
-        public static string GetMemberName<TEntity, TMember>([NotNull] this Expression<Func<TEntity, TMember>> memberExpression)
-            => GetMemberInfo(memberExpression)?.Name;
+        public static string? GetMemberName<TEntity, TMember>(this Expression<Func<TEntity, TMember>> memberExpression)=>
+            GetMemberInfo(memberExpression)?.Name;
 
         /// <summary>
         /// GetMemberInfo
@@ -80,7 +80,7 @@
         /// <typeparam name="TProperty"></typeparam>
         /// <param name="expression"></param>
         /// <returns></returns>
-        public static PropertyInfo GetProperty<TEntity, TProperty>([NotNull] this Expression<Func<TEntity, TProperty>> expression)
+        public static PropertyInfo? GetProperty<TEntity, TProperty>([NotNull] this Expression<Func<TEntity, TProperty>> expression)
         {
             var member = GetMemberInfo(expression);
             if (null == member)
@@ -92,7 +92,7 @@
             return typeof(TEntity).GetProperty(member.Name);
         }
 
-        private static MemberExpression ExtractMemberExpression(Expression expression)
+        private static MemberExpression? ExtractMemberExpression(Expression expression)
         {
             if (expression.NodeType == ExpressionType.MemberAccess)
             {
@@ -105,7 +105,7 @@
                 return ExtractMemberExpression(operand);
             }
 
-            return null;
+            return default;
         }
     }
 }

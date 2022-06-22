@@ -19,9 +19,9 @@ public class EfCoreDbcontextFixture
             };
         });
         services.AddAdncInfraDapper();
-        services.AddAdncInfraEfCoreMySql();
-        services.AddDbContext<AdncDbContext>(options =>
+        services.AddAdncInfraEfCoreMySql(options =>
         {
+            options.UseLowerCaseNamingConvention();
             options.UseMySql(FixtureConsts.MySqlConnectString, serverVersion, optionsBuilder =>
             {
                 optionsBuilder.MinBatchSize(4)
@@ -29,7 +29,6 @@ public class EfCoreDbcontextFixture
             });
             options.LogTo(Console.WriteLine, LogLevel.Information);
         });
-
         Container = services.BuildServiceProvider();
     }
 }

@@ -51,7 +51,7 @@ public static class HashGeneraterExtensions
     /// <param name="encoding">编码类型</param>
     /// <param name="isLower">是否是小写</param>
     /// <returns>哈希算法处理之后的字符串</returns>
-    public static string GetHashedString(this IHashGenerater _, HashType type, string str, string key, Encoding encoding, bool isLower = false)
+    public static string GetHashedString(this IHashGenerater _, HashType type, string str, string? key, Encoding encoding, bool isLower = false)
     {
         return string.IsNullOrEmpty(str) ? string.Empty : GetHashedString(_, type, str.GetBytes(encoding), string.IsNullOrEmpty(key) ? null : encoding.GetBytes(key), isLower);
     }
@@ -81,26 +81,29 @@ public static class HashGeneraterExtensions
     /// <param name="key">key</param>
     /// <param name="isLower">是否是小写</param>
     /// <returns>哈希算法处理之后的字符串</returns>
-    public static string GetHashedString(this IHashGenerater _, HashType type, byte[] source, byte[] key, bool isLower = false)
+    public static string GetHashedString(this IHashGenerater _, HashType type, byte[] source, byte[]? key, bool isLower = false)
     {
         if (null == source)
         {
             return string.Empty;
         }
-        var hashedBytes = GetHashedBytes(_, type, source, key.IsNotNullOrEmpty() ? key : null);
+        var hashedBytes = GetHashedBytes(_, type, source, key);
         var sbText = new StringBuilder();
-        if (isLower)
+        if(hashedBytes is not null && hashedBytes.Any())
         {
-            foreach (var b in hashedBytes)
+            if (isLower)
             {
-                sbText.Append(b.ToString("x2"));
+                foreach (var b in hashedBytes)
+                {
+                    sbText.Append(b.ToString("x2"));
+                }
             }
-        }
-        else
-        {
-            foreach (var b in hashedBytes)
+            else
             {
-                sbText.Append(b.ToString("X2"));
+                foreach (var b in hashedBytes)
+                {
+                    sbText.Append(b.ToString("X2"));
+                }
             }
         }
         return sbText.ToString();
@@ -112,7 +115,7 @@ public static class HashGeneraterExtensions
     /// <param name="type">hash类型</param>
     /// <param name="str">要hash的字符串</param>
     /// <returns>hash过的字节数组</returns>
-    public static byte[] GetHashedBytes(this IHashGenerater _, HashType type, string str) => GetHashedBytes(_, type, str, Encoding.UTF8);
+    public static byte[]? GetHashedBytes(this IHashGenerater _, HashType type, string str) => GetHashedBytes(_, type, str, Encoding.UTF8);
 
     /// <summary>
     /// 计算字符串Hash值
@@ -121,7 +124,7 @@ public static class HashGeneraterExtensions
     /// <param name="str">要hash的字符串</param>
     /// <param name="encoding">编码类型</param>
     /// <returns>hash过的字节数组</returns>
-    public static byte[] GetHashedBytes(this IHashGenerater _, HashType type, string str, Encoding encoding)
+    public static byte[]? GetHashedBytes(this IHashGenerater _, HashType type, string str, Encoding encoding)
     {
         if (str is null)
             throw new ArgumentNullException(nameof(str));
@@ -136,7 +139,7 @@ public static class HashGeneraterExtensions
     /// <param name="type">哈希类型</param>
     /// <param name="bytes">原字节数组</param>
     /// <returns></returns>
-    public static byte[] GetHashedBytes(this IHashGenerater _, HashType type, byte[] bytes) => GetHashedBytes(_, type, bytes, null);
+    public static byte[]? GetHashedBytes(this IHashGenerater _, HashType type, byte[] bytes) => GetHashedBytes(_, type, bytes, null);
 
     /// <summary>
     /// 获取Hash后的字节数组
@@ -145,14 +148,14 @@ public static class HashGeneraterExtensions
     /// <param name="key">key</param>
     /// <param name="bytes">原字节数组</param>
     /// <returns></returns>
-    public static byte[] GetHashedBytes(this IHashGenerater _, HashType type, byte[] bytes, byte[] key)
+    public static byte[]? GetHashedBytes(this IHashGenerater _, HashType type, byte[] bytes, byte[]? key)
     {
         if (null == bytes)
         {
             return bytes;
         }
 
-        HashAlgorithm algorithm = null;
+        HashAlgorithm? algorithm = null;
         try
         {
             if (key == null)

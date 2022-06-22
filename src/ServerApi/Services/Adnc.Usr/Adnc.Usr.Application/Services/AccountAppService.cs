@@ -3,28 +3,23 @@
 public class AccountAppService : AbstractAppService, IAccountAppService
 {
     private readonly IEfRepository<SysUser> _userRepository;
-    private readonly IEfRepository<SysRole> _roleRepository;
-    private readonly IEfRepository<SysMenu> _menuRepository;
     private readonly CacheService _cacheService;
     private readonly BloomFilterFactory _bloomFilterFactory;
 
-    public AccountAppService(IEfRepository<SysUser> userRepository
-       , IEfRepository<SysRole> roleRepository
-       , IEfRepository<SysMenu> menuRepository
+    public AccountAppService(
+        IEfRepository<SysUser> userRepository
        , CacheService cacheService
        , BloomFilterFactory bloomFilterFactory)
     {
         _userRepository = userRepository;
-        _roleRepository = roleRepository;
-        _menuRepository = menuRepository;
         _cacheService = cacheService;
         _bloomFilterFactory = bloomFilterFactory;
     }
 
-    public async Task<AppSrvResult<UserValidateDto>> LoginAsync(UserLoginDto input)
+    public async Task<AppSrvResult<UserValidatedInfoDto>> LoginAsync(UserLoginDto input)
     {
-        var bloomFilterAccount = _bloomFilterFactory.Create(CachingConsts.BloomfilterOfAccountsKey);
-        var exists = await bloomFilterAccount.ExistsAsync(input.Account.ToLower());
+        var accountsFilter = _bloomFilterFactory.Create(CachingConsts.BloomfilterOfAccountsKey);
+        var exists = await accountsFilter.ExistsAsync(input.Account.ToLower());
         if (!exists)
             return Problem(HttpStatusCode.BadRequest, "用户名或密码错误");
 
@@ -77,8 +72,8 @@ public class AccountAppService : AbstractAppService, IAccountAppService
 
             await _cacheService.RemoveCachesAsync(async (cancellToken) =>
             {
-                await _userRepository.UpdateAsync(new SysUser() { Id = user.Id, Status = 1 }, UpdatingProps<SysUser>(x => x.Status), cancellToken);
-            }, _cacheService.ConcatCacheKey(CachingConsts.UserValidateInfoKeyPrefix, user.Id.ToString()));
+                await _userRepository.UpdateAsync(new SysUser() { Id = user.Id, Status = 0 }, UpdatingProps<SysUser>(x => x.Status), cancellToken);
+            }, _cacheService.ConcatCacheKey(CachingConsts.UserValidatedInfoKeyPrefix, user.Id));
 
             return problem;
         }
@@ -106,17 +101,16 @@ public class AccountAppService : AbstractAppService, IAccountAppService
         log.Succeed = true;
         await channelWriter.WriteAsync(log);
 
-        var userValidteInfo = new UserValidateDto
-        {
-            Id = user.Id,
-            Account = user.Account,
-            RoleIds = user.RoleIds,
-            Status = user.Status,
-            Name = user.Name,
-            ValidationVersion = InfraHelper.Hash.GetHashedString(HashType.MD5, user.Account + user.Password)
-        };
+        var userValidtedInfo = new UserValidatedInfoDto(user.Id, user.Account, user.Name, user.RoleIds, user.Status, user.Password);
+        await _cacheService.SetValidateInfoToCacheAsync(userValidtedInfo);
 
-        return userValidteInfo;
+        return userValidtedInfo;
+    }
+
+    public async Task<AppSrvResult> ChangeUserValidateInfoExpiresDtAsync(long id)
+    {
+        await _cacheService.ChangeUserValidateInfoCacheExpiresDtAsync(id);
+        return AppSrvResult();
     }
 
     public async Task<AppSrvResult> UpdatePasswordAsync(long id, UserChangePwdDto input)
@@ -140,50 +134,5 @@ public class AccountAppService : AbstractAppService, IAccountAppService
         await _userRepository.UpdateAsync(new SysUser { Id = user.Id, Password = newPwdString }, UpdatingProps<SysUser>(x => x.Password));
 
         return AppSrvResult();
-    }
-
-    public async Task<UserValidateDto> GetUserValidateInfoAsync(long id)    => await _cacheService.GetUserValidateInfoFromCacheAsync(id);
-
-    public async Task<UserInfoDto> GetUserInfoAsync(long id)
-    {
-        var userProfile = await _userRepository.FetchAsync(u => new UserProfileDto
-        {
-            Account = u.Account,
-            Avatar = u.Avatar,
-            Birthday = u.Birthday,
-            DeptId = u.DeptId,
-            DeptFullName = u.Dept.FullName,
-            Email = u.Email,
-            Name = u.Name,
-            Phone = u.Phone,
-            RoleIds = u.RoleIds,
-            Sex = u.Sex,
-            Status = u.Status
-        }, x => x.Id == id);
-
-        if (userProfile == null)
-            return null;
-
-        var userInfoDto = new UserInfoDto { Id = id, Profile = userProfile };
-
-        if (userProfile.RoleIds.IsNotNullOrEmpty())
-        {
-            var roleIds = userProfile.RoleIds.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(x => long.Parse(x));
-            var roles = await _roleRepository
-                                            .Where(x => roleIds.Contains(x.Id))
-                                            .Select(r => new { r.Id, r.Tips, r.Name })
-                                            .ToListAsync();
-            foreach (var role in roles)
-            {
-                userInfoDto.Roles.Add(role.Tips);
-                userInfoDto.Profile.Roles.Add(role.Name);
-            }
-
-            var roleMenus = await _menuRepository.GetMenusByRoleIdsAsync(roleIds.ToArray(), true);
-            if (roleMenus.IsNotNullOrEmpty())
-                userInfoDto.Permissions.AddRange(roleMenus.Select(x => x.Url).Distinct());
-        }
-
-        return userInfoDto;
     }
 }

@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="..\..\build\common.props" />
+	<PropertyGroup>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+	<ItemGroup>
+	  <Compile Remove="Extensions\DbContextExtension.cs" />
+	  <Compile Remove="Extensions\MutableEntityTypeExtension.cs" />
+	  <Compile Remove="Internal\EFCoreUtil.cs" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="EFCore.NamingConventions" Version="6.0.0" />
+		<PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="6.13.15" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\Adnc.Infra.Core\Adnc.Infra.Core.csproj" />
+	  <ProjectReference Include="..\Adnc.Infra.Repository\Adnc.Infra.Repository.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Extensions\" />
+	</ItemGroup>
+</Project>

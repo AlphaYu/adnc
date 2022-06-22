@@ -1,4 +1,8 @@
-﻿using Adnc.Shared.Application.Contracts;
+﻿using Adnc.Shared.WebApi.Authentication;
+using Adnc.Shared.WebApi.Authentication.Basic;
+using Adnc.Shared.WebApi.Authentication.Bearer;
+using Adnc.Shared.WebApi.Authentication.Hybrid;
+using Adnc.Shared.WebApi.Extensions;
 using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
 
 namespace Adnc.Shared.WebApi.Registrar;
@@ -18,7 +22,7 @@ public abstract class AbstractWebApiDependencyRegistrar : IDependencyRegistrar
     /// <param name="services"><see cref="IServiceInfo"/></param>
     /// <param name="environment"><see cref="IHostEnvironment"/></param>
     /// <param name="serviceInfo"><see cref="ServiceInfo"/></param>
-    protected AbstractWebApiDependencyRegistrar(IServiceCollection services, Assembly webApiAssembly)
+    protected AbstractWebApiDependencyRegistrar(IServiceCollection services)
     {
         Services = services;
         Configuration = services.GetConfiguration();
@@ -34,20 +38,22 @@ public abstract class AbstractWebApiDependencyRegistrar : IDependencyRegistrar
     /// 注册Webapi通用的服务
     /// </summary>
     /// <typeparam name="THandler"></typeparam>
-    protected virtual void AddWebApiDefault() => AddWebApiDefault<PermissionHandlerRemote>();
+    protected virtual void AddWebApiDefault() => AddWebApiDefault<AuthenticationHandlerRemote,PermissionHandlerRemote>();
 
     /// <summary>
     /// 注册Webapi通用的服务
     /// </summary>
     /// <typeparam name="THandler"></typeparam>
-    protected virtual void AddWebApiDefault<THandler>() where THandler : AbstractPermissionHandler
+    protected virtual void AddWebApiDefault<TAuthenticationHandler,TAuthorizationHandler>() 
+        where TAuthenticationHandler : AbstracAuthenticationHandler 
+        where TAuthorizationHandler : AbstractPermissionHandler
     {
         Services.AddHttpContextAccessor();
         Services.AddMemoryCache();
         Configure();
         AddControllers();
-        AddAuthentication();
-        AddAuthorization<THandler>();
+        AddAuthentication<TAuthenticationHandler>();
+        AddAuthorization<TAuthorizationHandler>();
         AddCors();
         AddSwaggerGen();
         AddHealthChecks();
@@ -61,6 +67,7 @@ public abstract class AbstractWebApiDependencyRegistrar : IDependencyRegistrar
     protected virtual void Configure()
     {
         Services.Configure<JwtConfig>(Configuration.GetJWTSection());
+        Services.Configure<RedisConfig>(Configuration.GetRedisSection());
         Services.Configure<MongoConfig>(Configuration.GetMongoDbSection());
         Services.Configure<MysqlConfig>(Configuration.GetMysqlSection());
         Services.Configure<RabbitMqConfig>(Configuration.GetRabbitMqSection());
@@ -131,62 +138,43 @@ public abstract class AbstractWebApiDependencyRegistrar : IDependencyRegistrar
     /// <summary>
     /// 注册身份认证组件
     /// </summary>
-    protected virtual void AddAuthentication()
+    protected virtual void AddAuthentication<TAuthenticationHandler>()
+        where TAuthenticationHandler : AbstracAuthenticationHandler
     {
-        var jwtConfig = Configuration.GetJWTSection().Get<JwtConfig>();
-
-        Services.AddAuthentication(HybridDefaults.AuthenticationScheme)
-        .AddHybrid()
-        .AddBasic()
-        .AddJwtBearer(options =>
-        {
-            //校验配置
-            options.TokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateIssuer = true,
-                ValidIssuer = jwtConfig.Issuer,
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtConfig.SymmetricSecurityKey)),
-                ValidateAudience = false,
-                ValidateLifetime = true,
-                ClockSkew = TimeSpan.FromSeconds(jwtConfig.ClockSkew),
-                //AudienceValidator = (m, n, z) =>m != null && m.FirstOrDefault().Equals(Const.ValidAudience)
-            };
-            //校验后事件
-            options.Events = new JwtBearerEvents
-            {
-                //接受到消息时调用
-                OnMessageReceived = context => Task.CompletedTask
-                ,
-                //在Token验证通过后调用
-                OnTokenValidated = context =>
-                {
-                    var userContext = context.HttpContext.RequestServices.GetService<UserContext>();
-                    var claims = context.Principal.Claims;
-                    userContext.Id = long.Parse(claims.First(x => x.Type == JwtRegisteredClaimNames.NameId).Value);
-                    userContext.Account = claims.First(x => x.Type == JwtRegisteredClaimNames.UniqueName).Value;
-                    userContext.Name = claims.First(x => x.Type == JwtRegisteredClaimNames.Name).Value;
-                    userContext.RemoteIpAddress = context.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
-                    return Task.CompletedTask;
-                }
-                 ,
-                //认证失败时调用
-                OnAuthenticationFailed = context =>
-                {
-                    //如果是过期，在http heard中加入act参数
-                    if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
-                        context.Response.Headers.Add("act", "expired");
-                    return Task.CompletedTask;
-                }
-                ,
-                //未授权时调用
-                OnChallenge = context => Task.CompletedTask
-            };
-        });
-
-        //因为获取声明的方式默认是走微软定义的一套映射方式
-        //如果我们想要走JWT映射声明，那么我们需要将默认映射方式给移除掉
         JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+        Services
+            .AddScoped<AbstracAuthenticationHandler, TAuthenticationHandler>();
+        Services
+            .AddAuthentication(HybridDefaults.AuthenticationScheme)
+            .AddHybrid()
+            .AddBasic(options => options.Events.OnTokenValidated = (context) =>
+            {
+                var userContext = context.HttpContext.RequestServices.GetService<UserContext>();
+                var claims = context.Principal.Claims;
+                userContext.Id = long.Parse(claims.First(x => x.Type == BasicDefaults.NameId).Value);
+                userContext.Account = claims.First(x => x.Type == BasicDefaults.UniqueName).Value;
+                userContext.Name = claims.First(x => x.Type == BasicDefaults.Name).Value;
+                userContext.RemoteIpAddress = context.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
+                return Task.CompletedTask;
+            })
+            .AddBearer(options => options.Events.OnTokenValidated = (context) =>
+             {
+                 var userContext = context.HttpContext.RequestServices.GetService<UserContext>();
+                 var claims = context.Principal.Claims;
+                 userContext.Id = long.Parse(claims.First(x => x.Type == JwtRegisteredClaimNames.NameId).Value);
+                 userContext.Account = claims.First(x => x.Type == JwtRegisteredClaimNames.UniqueName).Value;
+                 userContext.Name = claims.First(x => x.Type == JwtRegisteredClaimNames.Name).Value;
+                 userContext.RoleIds = claims.First(x => x.Type == "roleids").Value;
+                 userContext.RemoteIpAddress = context.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
+                 return Task.CompletedTask;
+             })
+            //.AddJwtBearer(options =>
+            //{
+            //    var jwtConfig = Configuration.GetJWTSection().Get<JwtConfig>();
+            //    options.TokenValidationParameters = JwtSecurityTokenHandlerExtension.GenarateTokenValidationParameters(jwtConfig);
+            //    options.Events = JwtSecurityTokenHandlerExtension.GenarateJwtBearerEvents();
+            //})
+            ;
     }
 
     /// <summary>
@@ -195,17 +183,19 @@ public abstract class AbstractWebApiDependencyRegistrar : IDependencyRegistrar
     /// PermissionHandlerLocal  本地授权,adnc.usr走本地授权，其他服务走Rpc授权
     /// </summary>
     /// <typeparam name="THandler"></typeparam>
-    protected virtual void AddAuthorization<THandler>()
-        where THandler : AbstractPermissionHandler
+    protected virtual void AddAuthorization<TAuthorizationHandler>()
+        where TAuthorizationHandler : AbstractPermissionHandler
     {
-        Services.AddScoped<IAuthorizationHandler, THandler>();
-        Services.AddAuthorization(options =>
-        {
-            options.AddPolicy(AuthorizePolicy.Default, policy =>
+        Services
+            .AddScoped<IAuthorizationHandler, TAuthorizationHandler>();
+        Services
+            .AddAuthorization(options =>
             {
-                policy.Requirements.Add(new PermissionRequirement());
+                options.AddPolicy(AuthorizePolicy.Default, policy =>
+                {
+                    policy.Requirements.Add(new PermissionRequirement());
+                });
             });
-        });
     }
 
     /// <summary>

@@ -18,10 +18,32 @@ public sealed class CacheService : AbstractCacheService, ICachePreheatable
         await GetDeptSimpleTreeListAsync();
     }
 
-    internal async Task SetValidateInfoToCacheAsync(UserValidateDto value)
+    internal int GetRefreshTokenExpires() =>
+        _jwtConfig.Value.Value.RefreshTokenExpire * 60 + _jwtConfig.Value.Value.ClockSkew;
+
+    internal async Task SetValidateInfoToCacheAsync(UserValidatedInfoDto value)
     {
-        var cacheKey = ConcatCacheKey(CachingConsts.UserValidateInfoKeyPrefix, value.Id);
-        await CacheProvider.Value.SetAsync(cacheKey, value, TimeSpan.FromSeconds(CachingConsts.OneDay));
+        var cacheKey = ConcatCacheKey(CachingConsts.UserValidatedInfoKeyPrefix, value.Id);
+        await CacheProvider.Value.SetAsync(cacheKey, value, TimeSpan.FromSeconds(GetRefreshTokenExpires()));
+    }
+
+    internal async Task<UserValidatedInfoDto> GetUserValidateInfoFromCacheAsync(long id)
+    {
+        var cacheKey = ConcatCacheKey(CachingConsts.UserValidatedInfoKeyPrefix, id.ToString());
+        //var cacheValue = await CacheProvider.Value.GetAsync(cacheKey, async () =>
+        //{
+        //    using var scope = ServiceProvider.Value.CreateScope();
+        //    var userRepository = scope.ServiceProvider.GetRequiredService<IEfRepository<SysUser>>();
+        //    return await userRepository.FetchAsync(x => new UserValidatedInfoDto(x.Id, x.Account, x.Name, x.RoleIds, x.Status, x.Password), x => x.Id == Id && x.Status == 1);
+        //}, GetRefreshTokenExpires());
+        var cacheValue = await CacheProvider.Value.GetAsync<UserValidatedInfoDto>(cacheKey);
+        return cacheValue.Value;
+    }
+
+    internal async Task ChangeUserValidateInfoCacheExpiresDtAsync(long id)
+    {
+        var cacheKey = ConcatCacheKey(CachingConsts.UserValidatedInfoKeyPrefix, id);
+        await CacheProvider.Value.KeyExpireAsync(new string[] { cacheKey }, GetRefreshTokenExpires());
     }
 
     internal async Task<List<DeptDto>> GetAllDeptsFromCacheAsync()
@@ -90,28 +112,6 @@ public sealed class CacheService : AbstractCacheService, ICachePreheatable
         }, TimeSpan.FromSeconds(CachingConsts.OneYear));
 
         return cahceValue.Value;
-    }
-
-    internal async Task<UserValidateDto> GetUserValidateInfoFromCacheAsync(long Id)
-    {
-        var cacheKey = ConcatCacheKey(CachingConsts.UserValidateInfoKeyPrefix, Id.ToString());
-
-        var cacheValue = await CacheProvider.Value.GetAsync(cacheKey, async () =>
-        {
-            using var scope = ServiceProvider.Value.CreateScope();
-            var userRepository = scope.ServiceProvider.GetRequiredService<IEfRepository<SysUser>>();
-            return await userRepository.FetchAsync(x => new UserValidateDto()
-            {
-                Id = x.Id,
-                Account = x.Account,
-                Status = x.Status,
-                Name = x.Name,
-                RoleIds = x.RoleIds,
-                ValidationVersion = InfraHelper.Hash.GetHashedString(HashType.MD5, x.Account + x.Password)
-            }, x => x.Id == Id);
-        }, TimeSpan.FromSeconds(_jwtConfig.Value.Value.Expire * 60 + _jwtConfig.Value.Value.ClockSkew));
-
-        return cacheValue.Value;
     }
 
     internal async Task<List<DeptSimpleTreeDto>> GetDeptSimpleTreeListAsync()

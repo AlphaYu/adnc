@@ -11,10 +11,10 @@ namespace Adnc.Infra.Entities.Extensions
              this Action<object, string> loader,
              object entity,
              ref TRelated navigationField,
-             [CallerMemberName] string navigationName = null)
+             [CallerMemberName] string? navigationName = null)
              where TRelated : class
         {
-            loader?.Invoke(entity, navigationName);
+            loader?.Invoke(entity, navigationName ?? string.Empty);
 
             return navigationField;
         }

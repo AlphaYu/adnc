@@ -14,6 +14,8 @@
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             var currentUri = request.RequestUri;
+            if (currentUri is null)
+                throw new ArgumentNullException(nameof(request.RequestUri));
 
             var baseUri = await _serviceBuilder
                                                             .WithUriScheme(currentUri.Scheme)

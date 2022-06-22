@@ -1,20 +1,32 @@
-﻿namespace Adnc.Usr.Application.Contracts.Dtos
+﻿using Adnc.Infra.Helper;
+
+namespace Adnc.Usr.Application.Contracts.Dtos
 {
     [Serializable]
-    public class UserValidateDto : IDto
+    public record UserValidatedInfoDto : IDto
     {
-        public long Id { get; set; }
+        public UserValidatedInfoDto(long id, string account, string name, string roleids, int status, string password)
+        {
+            Id = id;
+            Account = account;
+            Name = name;
+            RoleIds = roleids;
+            Status = status;
+            ValidationVersion = Guid.NewGuid().ToString("N");
+        }
 
-        public string Account { get; set; }
+        public long Id { get; init; }
 
-        public string Name { get; set; }
+        public string Account { get; init; }
+
+        public string Name { get; init; }
 
         //public string Email { get; set; }
 
-        public string RoleIds { get; set; }
+        public string RoleIds { get; init; }
 
-        public int Status { get; set; }
+        public int Status { get; init; }
 
-        public string ValidationVersion { get; set; }
+        public string ValidationVersion { get; init; }
     }
 }

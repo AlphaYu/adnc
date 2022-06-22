@@ -1,9 +1,11 @@
-﻿global using Adnc.Infra.Helper;
+﻿global using Adnc.Infra.Core.DependencyInjection;
+global using Adnc.Infra.Helper;
 global using Adnc.Shared.Rpc.Rest.Rtos;
 global using Microsoft.AspNetCore.Http;
 global using Microsoft.Extensions.Caching.Memory;
+global using Microsoft.Extensions.Configuration;
+global using Microsoft.Extensions.DependencyInjection;
 global using Refit;
 global using System.Net;
 global using System.Net.Http.Headers;
 global using System.Text;
-global using System.Text.Json;

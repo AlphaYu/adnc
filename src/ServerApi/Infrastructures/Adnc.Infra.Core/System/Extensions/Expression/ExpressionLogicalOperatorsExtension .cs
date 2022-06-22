@@ -3,47 +3,45 @@
     public static class ExpressionLogicalOperatorsExtension
     {
         // https://stackoverflow.com/questions/457316/combining-two-expressions-expressionfunct-bool/457328#457328
-        public static Expression<Func<T, bool>> Or<T>([NotNull] this Expression<Func<T, bool>> @this, Expression<Func<T, bool>> expr)
+        public static Expression<Func<T, bool>> Or<T>(this Expression<Func<T, bool>> firstExpr, Expression<Func<T, bool>> expr)
         {
             var parameter = Expression.Parameter(typeof(T));
 
-            var leftVisitor = new ReplaceExpressionVisitor(@this.Parameters[0], parameter);
-            var left = leftVisitor.Visit(@this.Body);
+            var leftVisitor = new ReplaceExpressionVisitor(firstExpr.Parameters[0], parameter);
+            var left = leftVisitor.Visit(firstExpr.Body);
             var rightVisitor = new ReplaceExpressionVisitor(expr.Parameters[0], parameter);
             var right = rightVisitor.Visit(expr.Body);
+
+            if(left is null || right is null)
+                return firstExpr;
 
             return Expression.Lambda<Func<T, bool>>(
                 Expression.OrElse(left, right), parameter);
         }
 
-        public static Expression<Func<T, bool>> OrIf<T>([NotNull] this Expression<Func<T, bool>> @this, bool condition, Expression<Func<T, bool>> expr)
-            => condition ? Or<T>(@this, expr) : @this;
+        public static Expression<Func<T, bool>> OrIf<T>(this Expression<Func<T, bool>> firstExpr, bool condition, Expression<Func<T, bool>> expr)=>
+           condition ? Or<T>(firstExpr, expr) : firstExpr;
 
-        public static Expression<Func<T, bool>> And<T>([NotNull] this Expression<Func<T, bool>> @this, Expression<Func<T, bool>> expr)
+        public static Expression<Func<T, bool>> And<T>(this Expression<Func<T, bool>> firstExpr, Expression<Func<T, bool>> expr)
         {
             var parameter = Expression.Parameter(typeof(T));
 
-            var leftVisitor = new ReplaceExpressionVisitor(@this.Parameters[0], parameter);
-            var left = leftVisitor.Visit(@this.Body);
+            var leftVisitor = new ReplaceExpressionVisitor(firstExpr.Parameters[0], parameter);
+            var left = leftVisitor.Visit(firstExpr.Body);
             var rightVisitor = new ReplaceExpressionVisitor(expr.Parameters[0], parameter);
             var right = rightVisitor.Visit(expr.Body);
+
+            if (left is null || right is null)
+                return firstExpr;
 
             return Expression.Lambda<Func<T, bool>>(
                 Expression.AndAlso(left, right), parameter);
         }
 
-        public static Expression<Func<T, bool>> AndIf<T>([NotNull] this Expression<Func<T, bool>> @this, bool condition, Expression<Func<T, bool>> expr)
-            => condition ? And<T>(@this, expr) : @this;
+        public static Expression<Func<T, bool>> AndIf<T>([NotNull] this Expression<Func<T, bool>> firstExpr, bool condition, Expression<Func<T, bool>> expr)=>
+            condition ? And<T>(firstExpr, expr) : firstExpr;
 
-        [Obsolete("Obsoleted")]
-        public static Expression<Func<T, bool>> True<T>()
-            => f => true;
-
-        [Obsolete("Obsoleted")]
-        public static Expression<Func<T, bool>> False<T>()
-            => f => false;
-
-        private static MemberExpression ExtractMemberExpression(Expression expression)
+        private static MemberExpression? ExtractMemberExpression(Expression expression)
         {
             if (expression.NodeType == ExpressionType.MemberAccess)
             {
@@ -56,7 +54,7 @@
                 return ExtractMemberExpression(operand);
             }
 
-            return null;
+            return default;
         }
 
         private class ReplaceExpressionVisitor : ExpressionVisitor
@@ -70,7 +68,7 @@
                 _newValue = newValue;
             }
 
-            public override Expression Visit(Expression node)
+            public override Expression? Visit(Expression? node)
             {
                 if (node == _oldValue)
                     return _newValue;

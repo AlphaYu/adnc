@@ -1,6 +1,5 @@
-﻿namespace Microsoft.AspNetCore.Authentication.Hybrid
+﻿namespace Adnc.Shared.WebApi.Authentication.Hybrid;
+
+public class HybridSchemeOptions : AuthenticationSchemeOptions
 {
-    public class HybridSchemeOptions : AuthenticationSchemeOptions
-    {
-    }
 }

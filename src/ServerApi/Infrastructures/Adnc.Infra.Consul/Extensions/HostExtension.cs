@@ -4,7 +4,7 @@ namespace Microsoft.Extensions.Hosting;
 
 public static class ApplicationBuilderConsulExtension
 {
-    public static IHost RegisterToConsul(this IHost host, string serviceId = null)
+    public static IHost RegisterToConsul(this IHost host, string? serviceId = null)
     {
         var kestrelConfig = host.Services.GetRequiredService<IOptions<KestrelConfig>>().Value;
         if (kestrelConfig is null)
@@ -27,7 +27,7 @@ public static class ApplicationBuilderConsulExtension
         return host;
     }
 
-    public static IHost RegisterToConsul(this IHost host, Uri serviceAddress, string serviceId = null)
+    public static IHost RegisterToConsul(this IHost host, Uri serviceAddress, string? serviceId = null)
     {
         if (serviceAddress is null)
             throw new ArgumentNullException(nameof(serviceAddress));

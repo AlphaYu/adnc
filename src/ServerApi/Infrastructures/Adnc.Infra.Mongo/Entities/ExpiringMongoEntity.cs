@@ -1,6 +1,6 @@
 ﻿using Adnc.Infra.Entities;
 
-namespace Adnc.Infra.Mongo.Entities
+namespace Adnc.Infra.Repository.Mongo.Entities
 {
     /// <summary>
     /// A mongo entity that will be automatically deleted after a configured time has elapsed.

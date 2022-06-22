@@ -1,4 +1,6 @@
-﻿namespace Microsoft.Extensions.DependencyInjection;
+﻿using Adnc.Infra.Dapper.Repositories;
+
+namespace Microsoft.Extensions.DependencyInjection;
 
 public static class ServiceCollectionExtension
 {

@@ -137,7 +137,7 @@ namespace Adnc.Infra.EventBus.RabbitMq
         {
             return new QueueConfig()
             {
-                Name = null
+                Name = string.Empty
                 ,
                 AutoDelete = false
                 ,

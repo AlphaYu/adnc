@@ -1,4 +1,7 @@
-﻿namespace Microsoft.AspNetCore.Builder;
+﻿using Adnc.Shared.WebApi;
+using Adnc.Shared.WebApi.Middleware;
+
+namespace Microsoft.AspNetCore.Builder;
 
 public static class ApplicationBuilderExtension
 {
@@ -64,7 +67,6 @@ public static class ApplicationBuilderExtension
                                             ;
         beforeAuthentication?.Invoke(app);
         app.UseAuthentication();
-        app.UseSSOAuthentication(configuration.IsSSOAuthentication());
         app.UseAuthorization();
         afterAuthorization?.Invoke(app);
         app.UseEndpoints(endpoints =>

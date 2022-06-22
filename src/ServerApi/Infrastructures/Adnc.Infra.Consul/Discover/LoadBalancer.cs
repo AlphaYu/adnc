@@ -11,9 +11,6 @@
 
         public string Resolve(IList<string> services)
         {
-            if (services.IsNullOrEmpty())
-                return default;
-
             var index = _random.Next(services.Count);
             return services[index];
         }
@@ -26,9 +23,6 @@
 
         public string Resolve(IList<string> services)
         {
-            if (services.IsNullOrEmpty())
-                return default;
-
             lock (_lock)
             {
                 if (_index >= services.Count)

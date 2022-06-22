@@ -1,6 +1,4 @@
-﻿using Adnc.Shared.Application.Contracts;
-
-namespace Adnc.Usr.WebApi.Controllers;
+﻿namespace Adnc.Usr.WebApi.Controllers;
 
 /// <summary>
 /// 用户管理
@@ -91,15 +89,18 @@ public class UserController : AdncControllerBase
     /// 获取当前用户是否拥有指定权限
     /// </summary>
     /// <param name="id">用户id</param>
-    /// <param name="permissions"></param>
-    /// <param name="validationVersion"></param>
+    /// <param name="requestPermissions"></param>
+    /// <param name="userBelongsRoleIds"></param>
     /// <returns></returns>
     [HttpGet("{id}/permissions")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<List<string>>> GetCurrenUserPermissions([FromRoute] long id, [FromQuery] IEnumerable<string> permissions, string validationVersion)
+    public async Task<ActionResult<List<string>>> GetCurrenUserPermissions([FromRoute] long id, [FromQuery] IEnumerable<string> requestPermissions, [FromQuery] string userBelongsRoleIds)
     {
-        var result = await _userService.GetPermissionsAsync(_userContext.Id, permissions, validationVersion);
-        return result.IsNotNullOrEmpty() ? result : new List<string>();
+        if (id != _userContext.Id)
+            return Forbid();
+
+        var result = await _userService.GetPermissionsAsync(id, requestPermissions, userBelongsRoleIds);
+        return result ?? new List<string>();
     }
 
     /// <summary>
@@ -112,4 +113,12 @@ public class UserController : AdncControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<PageModelDto<UserDto>>> GetPagedAsync([FromQuery] UserSearchPagedDto search)
         => await _userService.GetPagedAsync(search);
+
+    /// <summary>
+    /// 获取登录用户个人信息
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet("current")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<ActionResult<UserInfoDto>> GetCurrentUserInfoAsync() => await _userService.GetUserInfoAsync(_userContext.Id);
 }

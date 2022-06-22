@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection.Extensions;
+﻿using Adnc.Shared.WebApi.Authentication.Hybrid;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -21,7 +22,7 @@ public static class HybridSchemeExtensions
         return builder.AddHybrid(authenticationScheme, authenticationScheme, configureOptions);
     }
 
-    public static AuthenticationBuilder AddHybrid(this AuthenticationBuilder builder, string authenticationScheme, string? displayName, Action<HybridSchemeOptions> configureOptions)
+    public static AuthenticationBuilder AddHybrid(this AuthenticationBuilder builder, string authenticationScheme, string displayName, Action<HybridSchemeOptions> configureOptions)
     {
         builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<IPostConfigureOptions<HybridSchemeOptions>, HybridPostConfigureOptions>());
         return builder.AddScheme<HybridSchemeOptions, HybridAuthenticationHandler>(authenticationScheme, displayName, configureOptions);

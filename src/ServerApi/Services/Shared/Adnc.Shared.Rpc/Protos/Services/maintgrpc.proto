@@ -1,6 +1,5 @@
 syntax = "proto3";
 
-import "google/protobuf/empty.proto";
 import "protos/messages/common.proto";
 import "protos/messages/maintgrpc_getdict.proto";
 

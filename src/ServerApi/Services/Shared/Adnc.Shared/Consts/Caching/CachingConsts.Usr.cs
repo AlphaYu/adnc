@@ -16,7 +16,7 @@ public class CachingConsts : Common.CachingConsts
     public const string RoleListCacheKey = "adnc:usr:roles:list";
 
     //cache prefix
-    public const string UserValidateInfoKeyPrefix = "adnc:usr:users:validateinfo";
+    public const string UserValidatedInfoKeyPrefix = "adnc:usr:users:validatedinfo";
 
     //bloomfilter
     public const string BloomfilterOfAccountsKey = "adnc:usr:bloomfilter:accouts";

@@ -1,4 +1,5 @@
-﻿using NLog;
+﻿using Adnc.Shared.WebApi;
+using NLog;
 using NLog.Web;
 
 namespace Microsoft.Extensions.Hosting;
@@ -13,7 +14,7 @@ public static class WebApplicationBuilderExtension
     /// <param name="webApiAssembly"></param>
     /// <returns></returns>
     /// <exception cref="ArgumentNullException"></exception>
-    public static WebApplicationBuilder ConfigureAdncDefault(this WebApplicationBuilder builder, string[] args, IServiceInfo serviceInfo)
+    public static WebApplicationBuilder ConfigureAdncDefault(this WebApplicationBuilder builder, IServiceInfo serviceInfo)
     {
         if (builder is null)
             throw new ArgumentNullException(nameof(builder));
@@ -21,8 +22,8 @@ public static class WebApplicationBuilderExtension
         var initialData = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("ServiceName", serviceInfo.ServiceName) };
 
         // Configuration
+        //builder.Configuration.AddCommandLine(args);
         builder.Configuration.AddInMemoryCollection(initialData);
-        builder.Configuration.AddCommandLine(args);
         builder.Configuration.AddJsonFile($"{AppContext.BaseDirectory}/appsettings.shared.{builder.Environment.EnvironmentName}.json", true, true);
         builder.Configuration.AddJsonFile($"{AppContext.BaseDirectory}/appsettings.{builder.Environment.EnvironmentName}.json", true, true);
         if (builder.Environment.IsProduction() || builder.Environment.IsStaging())

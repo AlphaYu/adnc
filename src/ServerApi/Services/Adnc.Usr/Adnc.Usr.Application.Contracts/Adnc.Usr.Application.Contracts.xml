@@ -94,11 +94,6 @@
             部门节点
             </summary>
         </member>
-        <member name="F:Adnc.Usr.Application.Contracts.Dtos.DeptTreeDto._children">
-            <summary>
-            子部门
-            </summary>
-        </member>
         <member name="T:Adnc.Usr.Application.Contracts.Dtos.DeptUpdationDto">
             <summary>
             部门
@@ -822,11 +817,6 @@
             刷新Token实体
             </summary>
         </member>
-        <member name="P:Adnc.Usr.Application.Contracts.Dtos.UserRefreshTokenDto.Account">
-            <summary>
-            账号
-            </summary>
-        </member>
         <member name="P:Adnc.Usr.Application.Contracts.Dtos.UserRefreshTokenDto.RefreshToken">
             <summary>
             RefreshToken
@@ -849,12 +839,22 @@
         </member>
         <member name="P:Adnc.Usr.Application.Contracts.Dtos.UserTokenInfoDto.Token">
             <summary>
-            访问Token
+            accesstoken
+            </summary>
+        </member>
+        <member name="P:Adnc.Usr.Application.Contracts.Dtos.UserTokenInfoDto.Expire">
+            <summary>
+            accesstoken exprie time
             </summary>
         </member>
         <member name="P:Adnc.Usr.Application.Contracts.Dtos.UserTokenInfoDto.RefreshToken">
             <summary>
-            刷新Token
+            refresh token
+            </summary>
+        </member>
+        <member name="P:Adnc.Usr.Application.Contracts.Dtos.UserTokenInfoDto.RefreshExpire">
+            <summary>
+            refreshtoken exprie time
             </summary>
         </member>
         <member name="T:Adnc.Usr.Application.Contracts.DtoValidators.DeptCreationDtoValidator">
@@ -897,16 +897,23 @@
             <param name="input"></param>
             <returns></returns>
         </member>
-        <member name="M:Adnc.Usr.Application.Contracts.Services.IAccountAppService.GetUserValidateInfoAsync(System.Int64)">
+        <member name="M:Adnc.Usr.Application.Contracts.Services.IAccountAppService.GetUserValidatedInfoAsync(System.Int64)">
             <summary>
-            获取登录信息
+            获取认证信息
             </summary>
             <param name="id"></param>
             <returns></returns>
         </member>
-        <member name="M:Adnc.Usr.Application.Contracts.Services.IAccountAppService.GetUserInfoAsync(System.Int64)">
+        <member name="M:Adnc.Usr.Application.Contracts.Services.IAccountAppService.DeleteUserValidateInfoAsync(System.Int64)">
             <summary>
-            获取用户信息
+            移除认证信息
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Adnc.Usr.Application.Contracts.Services.IAccountAppService.ChangeUserValidateInfoExpiresDtAsync(System.Int64)">
+            <summary>
+            调整认证信息过期是时间
             </summary>
             <param name="id"></param>
             <returns></returns>
@@ -1092,11 +1099,11 @@
         </member>
         <member name="M:Adnc.Usr.Application.Contracts.Services.IUserAppService.GetPermissionsAsync(System.Int64,System.Collections.Generic.IEnumerable{System.String},System.String)">
             <summary>
-            获取当前用户是否拥有指定权限
+            获取用户是否拥有指定权限
             </summary>
             <param name="userId"></param>
-            <param name="permissions"></param>
-            <param name="validationVersion"></param>
+            <param name="requestPermissions"></param>
+            <param name="userBelongsRoleIds"></param>
             <returns></returns>
         </member>
         <member name="M:Adnc.Usr.Application.Contracts.Services.IUserAppService.GetPagedAsync(Adnc.Usr.Application.Contracts.Dtos.UserSearchPagedDto)">
@@ -1104,6 +1111,13 @@
             获取用户列表
             </summary>
             <param name="search"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Adnc.Usr.Application.Contracts.Services.IUserAppService.GetUserInfoAsync(System.Int64)">
+            <summary>
+            获取用户信息
+            </summary>
+            <param name="id"></param>
             <returns></returns>
         </member>
     </members>

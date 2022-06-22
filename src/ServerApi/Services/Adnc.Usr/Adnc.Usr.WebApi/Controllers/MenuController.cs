@@ -74,8 +74,7 @@ public class MenuController : AdncControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<List<MenuRouterDto>>> GetMenusForRouterAsync()
     {
-        var userValidateInfo = await _accountService.GetUserValidateInfoAsync(_userContext.Id);
-        var roleIds = userValidateInfo.RoleIds.Split(",", System.StringSplitOptions.RemoveEmptyEntries).ToList();
+        var roleIds = _userContext.RoleIds.Split(",", StringSplitOptions.RemoveEmptyEntries).ToList();
         return await _menuService.GetMenusForRouterAsync(roleIds.Select(x => long.Parse(x)));
     }
 

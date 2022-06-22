@@ -10,10 +10,10 @@ namespace Adnc.Infra.EventBus.RabbitMq
 {
     public sealed class RabbitMqConnection
     {
-        private static volatile RabbitMqConnection _uniqueInstance;
-        private static readonly object _lockObject = new object();
+        private static volatile RabbitMqConnection? _uniqueInstance;
+        private static readonly object _lockObject = new();
         private ILogger<dynamic> _logger;
-        public IConnection Connection { get; private set; }
+        public IConnection Connection { get; private set; } = default!;
 
         public static RabbitMqConnection GetInstance(IOptionsMonitor<RabbitMqConfig> options, ILogger<dynamic> logger)
         {

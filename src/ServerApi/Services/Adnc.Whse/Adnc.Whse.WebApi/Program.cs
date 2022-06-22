@@ -7,15 +7,16 @@ internal static class Program
 {
     internal static async Task Main(string[] args)
     {
-        var webApiAssembly = System.Reflection.Assembly.GetExecutingAssembly();
-        var serviceInfo = Shared.WebApi.ServiceInfo.CreateInstance(webApiAssembly);
         var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
         logger.Debug($"init {nameof(Program.Main)}");
         try
         {
+            var webApiAssembly = System.Reflection.Assembly.GetExecutingAssembly();
+            var serviceInfo = Shared.WebApi.ServiceInfo.CreateInstance(webApiAssembly);
+
             var app = WebApplication
                 .CreateBuilder(args)
-                .ConfigureAdncDefault(args, serviceInfo)
+                .ConfigureAdncDefault(serviceInfo)
                 .Build();
 
             app.UseAdncDefault(endpointRoute: endpoint =>

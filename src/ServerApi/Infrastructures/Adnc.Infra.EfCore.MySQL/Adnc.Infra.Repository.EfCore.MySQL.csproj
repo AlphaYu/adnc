@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="..\..\build\common.props" />
+	<PropertyGroup>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+	<ItemGroup>
+	  <Compile Remove="SqlGenerator\**" />
+	  <EmbeddedResource Remove="SqlGenerator\**" />
+	  <None Remove="SqlGenerator\**" />
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Remove="AdncInfraEfCoreModule.cs" />
+		<Compile Remove="DbContextFactory.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="6.0.1" />
+		<PackageReference Include="DotNetCore.CAP" Version="6.0.1" />
+		<PackageReference Include="DotNetCore.CAP.MySql" Version="6.0.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Adnc.Infra.EfCore\Adnc.Infra.Repository.EfCore.csproj" />
+		<ProjectReference Include="..\Adnc.Infra.Repository\Adnc.Infra.Repository.csproj" />
+	</ItemGroup>
+</Project>

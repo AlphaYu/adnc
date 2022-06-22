@@ -33,10 +33,11 @@ public class AuthGrpcServer : AuthGrpc.AuthGrpcBase
             return grpcResponse;
         }
 
+        var validatedInfo = loginResult.Content;
         var loginReply = new LoginReply
         {
-            Token = JwtTokenHelper.CreateAccessToken(_jwtConfig, loginResult.Content),
-            RefreshToken = JwtTokenHelper.CreateRefreshToken(_jwtConfig, loginResult.Content)
+            Token = JwtTokenHelper.CreateAccessToken(_jwtConfig, validatedInfo.ValidationVersion, validatedInfo.Account, validatedInfo.Id.ToString(), validatedInfo.Name, validatedInfo.RoleIds).Token,
+            RefreshToken = JwtTokenHelper.CreateRefreshToken(_jwtConfig, validatedInfo.ValidationVersion, validatedInfo.Id.ToString()).Token
         };
         grpcResponse.Content = Any.Pack(loginReply);
         return grpcResponse;

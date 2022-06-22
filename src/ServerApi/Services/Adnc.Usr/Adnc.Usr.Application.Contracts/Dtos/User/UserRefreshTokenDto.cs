@@ -5,13 +5,6 @@
     /// </summary>
     public class UserRefreshTokenDto : IInputDto
     {
-        public long Id { get; set; }
-
-        /// <summary>
-        /// 账号
-        /// </summary>
-        public string Account { get; set; }
-
         /// <summary>
         /// RefreshToken
         /// </summary>

@@ -33,8 +33,8 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\src\ServerApi\Infrastructures\Adnc.Infra.Caching\Adnc.Infra.Caching.csproj" />
-		<ProjectReference Include="..\..\src\ServerApi\Infrastructures\Adnc.Infra.Dapper\Adnc.Infra.Dapper.csproj" />
-		<ProjectReference Include="..\..\src\ServerApi\Infrastructures\Adnc.Infra.EfCore.MySQL\Adnc.Infra.EfCore.MySQL.csproj" />
+		<ProjectReference Include="..\..\src\ServerApi\Infrastructures\Adnc.Infra.Dapper\Adnc.Infra.Repository.Dapper.csproj" />
+		<ProjectReference Include="..\..\src\ServerApi\Infrastructures\Adnc.Infra.EfCore.MySQL\Adnc.Infra.Repository.EfCore.MySql.csproj" />
 		<ProjectReference Include="..\..\src\ServerApi\Infrastructures\Adnc.Infra.Helper\Adnc.Infra.Helper.csproj" />
 		<ProjectReference Include="..\..\src\ServerApi\Infrastructures\Adnc.Infra.IdGenerater\Adnc.Infra.IdGenerater.csproj" />
 		<ProjectReference Include="..\..\src\ServerApi\Services\Adnc.Cus\Adnc.Cus.Repository\Adnc.Cus.Repository.csproj" />

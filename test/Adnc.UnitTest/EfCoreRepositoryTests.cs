@@ -7,7 +7,7 @@ public class EfCoreRepositoryTests : IClassFixture<EfCoreDbcontextFixture>
     private readonly IEfRepository<Customer> _customerRsp;
     private readonly IEfRepository<CustomerFinance> _cusFinanceRsp;
     private readonly IEfRepository<CustomerTransactionLog> _custLogsRsp;
-    private readonly AdncDbContext _dbContext;
+    private readonly DbContext _dbContext;
     private readonly EfCoreDbcontextFixture _fixture;
 
     public EfCoreRepositoryTests(EfCoreDbcontextFixture fixture, ITestOutputHelper output)
@@ -18,7 +18,7 @@ public class EfCoreRepositoryTests : IClassFixture<EfCoreDbcontextFixture>
         _customerRsp = _fixture.Container.GetRequiredService<IEfRepository<Customer>>();
         _cusFinanceRsp = _fixture.Container.GetRequiredService<IEfRepository<CustomerFinance>>();
         _custLogsRsp = _fixture.Container.GetRequiredService<IEfRepository<CustomerTransactionLog>>();
-        _dbContext = _fixture.Container.GetRequiredService<AdncDbContext>();
+        _dbContext = _fixture.Container.GetRequiredService<DbContext>();
         if (IdGenerater.CurrentWorkerId < 0)
             IdGenerater.SetWorkerId(1);
     }

@@ -1,7 +1,7 @@
 ﻿using Adnc.Infra.Entities;
 using MongoDB.Driver;
 
-namespace Adnc.Infra.Mongo.Interfaces
+namespace Adnc.Infra.Repository.Mongo.Interfaces
 {
     /// <summary>
     /// Context used to maintain a single MongoDB connection.

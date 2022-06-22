@@ -20,7 +20,7 @@
         /// <param name="input"></param>
         /// <returns></returns>
         [OperateLog(LogName = "修改用户")]
-        [CachingEvict(CacheKeyPrefix = CachingConsts.UserValidateInfoKeyPrefix)]
+        [CachingEvict(CacheKeyPrefix = CachingConsts.UserValidatedInfoKeyPrefix)]
         Task<AppSrvResult> UpdateAsync([CachingParam] long id, UserUpdationDto input);
 
         /// <summary>
@@ -29,7 +29,7 @@
         /// <param name="id"></param>
         /// <returns></returns>
         [OperateLog(LogName = "删除用户")]
-        [CachingEvict(CacheKeyPrefix = CachingConsts.UserValidateInfoKeyPrefix)]
+        [CachingEvict(CacheKeyPrefix = CachingConsts.UserValidatedInfoKeyPrefix)]
         Task<AppSrvResult> DeleteAsync([CachingParam] long id);
 
         /// <summary>
@@ -40,7 +40,7 @@
         /// <returns></returns>
         [OperateLog(LogName = "设置用户角色")]
         [CachingEvict(CacheKeys = new[] { CachingConsts.MenuRelationCacheKey, CachingConsts.MenuCodesCacheKey }
-                             , CacheKeyPrefix = CachingConsts.UserValidateInfoKeyPrefix)]
+                             , CacheKeyPrefix = CachingConsts.UserValidatedInfoKeyPrefix)]
         Task<AppSrvResult> SetRoleAsync([CachingParam] long id, UserSetRoleDto input);
 
         /// <summary>
@@ -50,7 +50,7 @@
         /// <param name="status"></param>
         /// <returns></returns>
         [OperateLog(LogName = "修改用户状态")]
-        [CachingEvict(CacheKeyPrefix = CachingConsts.UserValidateInfoKeyPrefix)]
+        [CachingEvict(CacheKeyPrefix = CachingConsts.UserValidatedInfoKeyPrefix)]
         Task<AppSrvResult> ChangeStatusAsync([CachingParam] long id, int status);
 
         /// <summary>
@@ -60,17 +60,18 @@
         /// <param name="status"></param>
         /// <returns></returns>
         [OperateLog(LogName = "批量修改用户状态")]
-        [CachingEvict(CacheKeyPrefix = CachingConsts.UserValidateInfoKeyPrefix)]
+        [CachingEvict(CacheKeyPrefix = CachingConsts.UserValidatedInfoKeyPrefix)]
         Task<AppSrvResult> ChangeStatusAsync([CachingParam] IEnumerable<long> ids, int status);
 
         /// <summary>
-        /// 获取当前用户是否拥有指定权限
+        /// 获取用户是否拥有指定权限
         /// </summary>
         /// <param name="userId"></param>
-        /// <param name="permissions"></param>
-        /// <param name="validationVersion"></param>
+        /// <param name="requestPermissions"></param>
+        /// <param name="userBelongsRoleIds"></param>
         /// <returns></returns>
-        Task<List<string>> GetPermissionsAsync(long userId, IEnumerable<string> permissions, string validationVersion = null);
+        [OperateLog(LogName = "获取当前用户是否拥有指定权限")]
+        Task<List<string>> GetPermissionsAsync(long userId, IEnumerable<string> requestPermissions, string userBelongsRoleIds);
 
         /// <summary>
         /// 获取用户列表
@@ -78,5 +79,12 @@
         /// <param name="search"></param>
         /// <returns></returns>
         Task<PageModelDto<UserDto>> GetPagedAsync(UserSearchPagedDto search);
+
+        /// <summary>
+        /// 获取用户信息
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task<UserInfoDto> GetUserInfoAsync(long id);
     }
 }

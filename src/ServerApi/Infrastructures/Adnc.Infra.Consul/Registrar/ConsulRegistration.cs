@@ -21,7 +21,7 @@ public sealed class ConsulRegistration
         _logger = logger;
     }
 
-    public void Register(Uri serviceAddress,string serviceId=null)
+    public void Register(Uri serviceAddress,string? serviceId=null)
     {
         if (serviceAddress is null)
             throw new ArgumentNullException(nameof(serviceAddress));
@@ -84,7 +84,7 @@ public sealed class ConsulRegistration
         return IPList;
     }
 
-    private AgentServiceRegistration GetAgentServiceRegistration(Uri serviceAddress,string serviceId = null)
+    private AgentServiceRegistration GetAgentServiceRegistration(Uri serviceAddress,string? serviceId = null)
     {
         if (serviceAddress is null)
             throw new ArgumentNullException(nameof(serviceAddress));

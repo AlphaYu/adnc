@@ -1,7 +1,7 @@
 ﻿namespace Adnc.Shared.Application.Contracts.Dtos;
 
 /// <summary>
-/// 用于解决返回简单类型
+/// 用于解决返回基本类型
 /// </summary>
 /// <typeparam name="T"></typeparam>
 [Serializable]

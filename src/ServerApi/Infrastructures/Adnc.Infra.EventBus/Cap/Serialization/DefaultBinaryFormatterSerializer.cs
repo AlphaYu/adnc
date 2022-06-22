@@ -18,7 +18,7 @@ namespace Adnc.Infra.EventBus.Cap.Serialization
             throw new NotImplementedException();
         }
 
-        public Task<Message> DeserializeAsync(TransportMessage transportMessage, Type valueType)
+        public Task<Message> DeserializeAsync(TransportMessage transportMessage, Type? valueType)
         {
             throw new NotImplementedException();
         }

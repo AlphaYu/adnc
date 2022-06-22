@@ -45,7 +45,7 @@ public class CacheKeyBloomFilter : AbstractBloomFilter
                                                     .Select(x => x.Id)
                                                     .ToListAsync();
             if (ids.IsNotNullOrEmpty())
-                values.AddRange(ids.Select(x => string.Concat(CachingConsts.UserValidateInfoKeyPrefix, CachingConsts.LinkChar, x)));
+                values.AddRange(ids.Select(x => string.Concat(CachingConsts.UserValidatedInfoKeyPrefix, CachingConsts.LinkChar, x)));
 
             await InitAsync(values);
         }

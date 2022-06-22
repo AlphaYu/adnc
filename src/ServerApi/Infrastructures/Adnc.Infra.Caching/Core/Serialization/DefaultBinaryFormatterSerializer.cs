@@ -21,10 +21,10 @@ namespace Adnc.Infra.Caching.Core.Serialization
         /// <typeparam name="T">The 1st type parameter.</typeparam>
         public T Deserialize<T>(byte[] bytes)
         {
-            using (var ms = new MemoryStream(bytes))
-            {
-                return (T)new BinaryFormatter().Deserialize(ms);
-            }
+            using var ms = new MemoryStream(bytes);
+#pragma warning disable SYSLIB0011 // 类型或成员已过时
+            return (T)new BinaryFormatter().Deserialize(ms);
+#pragma warning restore SYSLIB0011 // 类型或成员已过时
         }
 
         /// <summary>
@@ -35,10 +35,10 @@ namespace Adnc.Infra.Caching.Core.Serialization
         /// <param name="type">Type.</param>
         public object Deserialize(byte[] bytes, Type type)
         {
-            using (var ms = new MemoryStream(bytes))
-            {
-                return new BinaryFormatter().Deserialize(ms);
-            }
+            using var ms = new MemoryStream(bytes);
+#pragma warning disable SYSLIB0011 // 类型或成员已过时
+            return new BinaryFormatter().Deserialize(ms);
+#pragma warning restore SYSLIB0011 // 类型或成员已过时
         }
 
         /// <summary>
@@ -48,10 +48,10 @@ namespace Adnc.Infra.Caching.Core.Serialization
         /// <param name="value">Value.</param>
         public object DeserializeObject(ArraySegment<byte> value)
         {
-            using (var ms = new MemoryStream(value.Array, value.Offset, value.Count))
-            {
-                return new BinaryFormatter().Deserialize(ms);
-            }
+            using var ms = new MemoryStream(value.Array, value.Offset, value.Count);
+#pragma warning disable SYSLIB0011 // 类型或成员已过时
+            return new BinaryFormatter().Deserialize(ms);
+#pragma warning restore SYSLIB0011 // 类型或成员已过时
         }
 
         /// <summary>
@@ -62,11 +62,11 @@ namespace Adnc.Infra.Caching.Core.Serialization
         /// <typeparam name="T">The 1st type parameter.</typeparam>
         public byte[] Serialize<T>(T value)
         {
-            using (var ms = new MemoryStream())
-            {
-                new BinaryFormatter().Serialize(ms, value);
-                return ms.ToArray();
-            }
+            using var ms = new MemoryStream();
+#pragma warning disable SYSLIB0011 // 类型或成员已过时
+            new BinaryFormatter().Serialize(ms, value);
+#pragma warning restore SYSLIB0011 // 类型或成员已过时
+            return ms.ToArray();
         }
 
         /// <summary>
@@ -76,11 +76,11 @@ namespace Adnc.Infra.Caching.Core.Serialization
         /// <param name="obj">Object.</param>
         public ArraySegment<byte> SerializeObject(object obj)
         {
-            using (var ms = new MemoryStream())
-            {
-                new BinaryFormatter().Serialize(ms, obj);
-                return new ArraySegment<byte>(ms.GetBuffer(), 0, (int)ms.Length);
-            }
+            using var ms = new MemoryStream();
+#pragma warning disable SYSLIB0011 // 类型或成员已过时
+            new BinaryFormatter().Serialize(ms, obj);
+#pragma warning restore SYSLIB0011 // 类型或成员已过时
+            return new ArraySegment<byte>(ms.GetBuffer(), 0, (int)ms.Length);
         }
     }
 }

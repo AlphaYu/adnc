@@ -7,21 +7,21 @@ namespace Adnc.Infra.Entities
     /// </summary>
     public class LoginLog : MongoEntity
     {
-        public string Device { get; set; }
+        public string Device { get; set; } = default!;
 
-        public string Message { get; set; }
+        public string Message { get; set; } = default!;
 
-        public bool Succeed { get; set; }
+        public bool Succeed { get; set; } = default!;
 
-        public int StatusCode { get; set; }
+        public int StatusCode { get; set; } = default!;
 
-        public long? UserId { get; set; }
+        public long? UserId { get; set; } = default!;
 
-        public string Account { get; set; }
+        public string Account { get; set; } = default!;
 
-        public string UserName { get; set; }
+        public string UserName { get; set; } = default!;
 
-        public string RemoteIpAddress { get; set; }
+        public string RemoteIpAddress { get; set; } = default!;
 
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         public DateTime? CreateTime { get; set; }

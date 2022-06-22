@@ -1,7 +1,7 @@
 ﻿using Adnc.Infra.IRepositories;
-using Adnc.Infra.Mongo.Entities;
+using Adnc.Infra.Repository.Mongo.Entities;
 
-namespace Adnc.Infra.Mongo.Interfaces
+namespace Adnc.Infra.Repository.Mongo.Interfaces
 {
     /// <summary>
     /// A MongoDB based repository of <see cref="TEntity" /> that supports soft deletion.

@@ -1,6 +1,9 @@
+using Adnc.Gateway.Ocelot.Identity;
+using Adnc.Infra.Core.Configuration;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 using Ocelot.Provider.Consul;
+using Ocelot.Provider.Polly;
 
 namespace Adnc.Gateway.Ocelot;
 
@@ -8,46 +11,53 @@ public class Startup
 {
     public IConfiguration Configuration { get; }
 
-    public Startup(IConfiguration configuration)
-    {
-        Configuration = configuration;
-    }
+    public Startup(IConfiguration configuration) => Configuration = configuration;
 
     public void ConfigureServices(IServiceCollection services)
     {
-        services.Configure<ThreadPoolSettings>(Configuration.GetThreadPoolSettingsSection());
+        var threadPoolConfig = Configuration.GetThreadPoolSettingsSection();
+        services.Configure<ThreadPoolSettings>(threadPoolConfig);
 
-        services.AddCors(options =>
-        {
-            options.AddPolicy("default", policy =>
+        var authenticationProviderKey = "mgmt";
+        var jwtConfig = Configuration.GetJWTSection().Get<JwtConfig>();
+        services
+            .AddAuthentication()
+            .AddJwtBearer(authenticationProviderKey, options =>
             {
-                var corsHosts = Configuration.GetValue<string>("CorsHosts");
-                var corsHostsArray = corsHosts.Split(',');
-                policy.WithOrigins(corsHostsArray)
-                .AllowAnyHeader()
-                .AllowAnyMethod()
-                .AllowCredentials();
+                options.TokenValidationParameters = JwtSecurityTokenHandlerExtension.GenarateTokenValidationParameters(jwtConfig);
             });
-        });
 
-        //不使用consul,对应ocelot.direct.json
-        //services.AddOcelot();
-
-        //使用consul,对应ocelot.consul.json
-        services.AddOcelot().AddConsul();
+        services
+            .AddCors(options =>
+            {
+                options.AddPolicy("default", policy =>
+                {
+                    var corsHosts = Configuration.GetValue<string>("CorsHosts");
+                    var corsHostsArray = corsHosts.Split(',');
+                    policy.WithOrigins(corsHostsArray)
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials();
+                });
+            })
+            .AddOcelot(Configuration)
+            .AddConsul()
+            .AddPolly();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
-        app.UseCors("default");
-        app.UseRouting();
-        app.UseEndpoints(endpoints =>
-        {
-            endpoints.MapGet("/", async context =>
+        app
+            .UseCors("default")
+            .UseRouting()
+            .UseEndpoints(endpoints =>
             {
-                await context.Response.WriteAsync($"Hello Ocelot,{env.EnvironmentName}!");
-            });
-        });
-        app.UseOcelot().Wait();
+                endpoints.MapGet("/", async context =>
+                {
+                    await context.Response.WriteAsync($"Hello Ocelot,{env.EnvironmentName}!");
+                });
+            })
+            .UseOcelot()
+            .Wait();
     }
 }

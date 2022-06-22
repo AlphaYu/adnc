@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.Mongo.Configuration
+﻿namespace Adnc.Infra.Repository.Mongo.Configuration
 {
     public class MongoRepositoryOptions
     {
