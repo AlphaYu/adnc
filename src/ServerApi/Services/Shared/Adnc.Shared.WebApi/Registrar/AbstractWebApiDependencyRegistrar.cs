@@ -38,14 +38,14 @@ public abstract class AbstractWebApiDependencyRegistrar : IDependencyRegistrar
     /// 注册Webapi通用的服务
     /// </summary>
     /// <typeparam name="THandler"></typeparam>
-    protected virtual void AddWebApiDefault() => AddWebApiDefault<AuthenticationHandlerRemote,PermissionHandlerRemote>();
+    protected virtual void AddWebApiDefault() => AddWebApiDefault<BearerAuthenticationRemoteProcessor, PermissionRemoteHandler>();
 
     /// <summary>
     /// 注册Webapi通用的服务
     /// </summary>
     /// <typeparam name="THandler"></typeparam>
     protected virtual void AddWebApiDefault<TAuthenticationHandler,TAuthorizationHandler>() 
-        where TAuthenticationHandler : AbstracAuthenticationHandler 
+        where TAuthenticationHandler : AbstracAuthenticationProcessor 
         where TAuthorizationHandler : AbstractPermissionHandler
     {
         Services.AddHttpContextAccessor();
@@ -139,11 +139,11 @@ public abstract class AbstractWebApiDependencyRegistrar : IDependencyRegistrar
     /// 注册身份认证组件
     /// </summary>
     protected virtual void AddAuthentication<TAuthenticationHandler>()
-        where TAuthenticationHandler : AbstracAuthenticationHandler
+        where TAuthenticationHandler : AbstracAuthenticationProcessor
     {
         JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
         Services
-            .AddScoped<AbstracAuthenticationHandler, TAuthenticationHandler>();
+            .AddScoped<AbstracAuthenticationProcessor, TAuthenticationHandler>();
         Services
             .AddAuthentication(HybridDefaults.AuthenticationScheme)
             .AddHybrid()

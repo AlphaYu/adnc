@@ -1,10 +1,10 @@
 ﻿namespace Adnc.Usr.WebApi.Authentication;
 
-public class AuthenticationHandlerLocal : AbstracAuthenticationHandler
+public class BearerAuthenticationLocalProcessor : AbstracAuthenticationProcessor
 {
     private readonly IAccountAppService _accountAppService;
 
-    public AuthenticationHandlerLocal(IAccountAppService accountAppService) => _accountAppService = accountAppService;
+    public BearerAuthenticationLocalProcessor(IAccountAppService accountAppService) => _accountAppService = accountAppService;
 
     protected override async Task<(string ValidationVersion, int Status)> GetValidatedInfoAsync(long userId)
     {

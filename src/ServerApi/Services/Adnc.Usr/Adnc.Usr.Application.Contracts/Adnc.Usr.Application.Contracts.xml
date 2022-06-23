@@ -879,7 +879,7 @@
         </member>
         <member name="T:Adnc.Usr.Application.Contracts.Services.IAccountAppService">
             <summary>
-            账户服务
+            认证服务
             </summary>
         </member>
         <member name="M:Adnc.Usr.Application.Contracts.Services.IAccountAppService.LoginAsync(Adnc.Usr.Application.Contracts.Dtos.UserLoginDto)">
