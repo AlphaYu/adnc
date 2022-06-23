@@ -38,7 +38,7 @@ public abstract class AbstractWebApiDependencyRegistrar : IDependencyRegistrar
     /// 注册Webapi通用的服务
     /// </summary>
     /// <typeparam name="THandler"></typeparam>
-    protected virtual void AddWebApiDefault() => AddWebApiDefault<AuthenticationProcessorRemote,PermissionHandlerRemote>();
+    protected virtual void AddWebApiDefault() => AddWebApiDefault<BearerAuthenticationRemoteProcessor, PermissionRemoteHandler>();
 
     /// <summary>
     /// 注册Webapi通用的服务

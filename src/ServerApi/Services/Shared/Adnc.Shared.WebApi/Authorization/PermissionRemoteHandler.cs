@@ -1,12 +1,10 @@
-﻿using Adnc.Shared.Rpc.Rest.Services;
+﻿namespace Adnc.Shared.WebApi.Authentication;
 
-namespace Adnc.Shared.WebApi.Authentication;
-
-public sealed class PermissionHandlerRemote : AbstractPermissionHandler
+public sealed class PermissionRemoteHandler : AbstractPermissionHandler
 {
     private readonly IUsrRestClient _usrRestClient;
 
-    public PermissionHandlerRemote(IUsrRestClient usrRestClient) => _usrRestClient = usrRestClient;
+    public PermissionRemoteHandler(IUsrRestClient usrRestClient) => _usrRestClient = usrRestClient;
 
     protected override async Task<bool> CheckUserPermissions(long userId, IEnumerable<string> requestPermissions, string userBelongsRoleIds)
     {

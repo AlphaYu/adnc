@@ -12,11 +12,15 @@ public class BasicTokenGenerator : ITokenGenerator
 
     public virtual string Create()
     {
-        var userName =
-            _userContext is null
-            ? $"{BasicTokenValidator.InternalCaller}-0"
-            : $"{BasicTokenValidator.InternalCaller}-{_userContext.Id}"
-            ;
+        long userId;
+        if (_userContext is null)
+            userId = 0;
+        else if (_userContext.Id == 0)
+            userId = _userContext.ExationId;
+        else
+            userId = _userContext.Id;
+
+        var userName = $"{BasicTokenValidator.InternalCaller}-{userId}";
         var token = BasicTokenValidator.PackToBase64(userName);
         return token;
     }
