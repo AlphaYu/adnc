@@ -99,12 +99,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Shared.Application", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Bulid", "Bulid", "{5F46F98A-6505-4767-82A7-95B0E12060AC}"
 	ProjectSection(SolutionItems) = preProject
-		build\00_g_ocelot_runner.bat = build\00_g_ocelot_runner.bat
-		build\01_usr_runner.bat = build\01_usr_runner.bat
-		build\02_maint_runner.bat = build\02_maint_runner.bat
-		build\03_cust_runner.bat = build\03_cust_runner.bat
-		build\04_ord_runner.bat = build\04_ord_runner.bat
-		build\05_whse_runner.bat = build\05_whse_runner.bat
 		build\common.props = build\common.props
 		build\version.props = build\version.props
 	EndProjectSection
