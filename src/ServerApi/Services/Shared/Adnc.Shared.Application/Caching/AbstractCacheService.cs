@@ -25,7 +25,7 @@ public abstract class AbstractCacheService : ICachePreheatable
 
     public virtual async Task RemoveCachesAsync(Func<CancellationToken, Task> dataOperater, params string[] cacheKeys)
     {
-        var pollyTimeoutSeconds = CacheProvider.Value.CacheOptions.PollyTimeoutSeconds;
+        var pollyTimeoutSeconds = CacheProvider.Value.CacheOptions.Value.PollyTimeoutSeconds;
         var keyExpireSeconds = pollyTimeoutSeconds + 1;
 
         await CacheProvider.Value.KeyExpireAsync(cacheKeys, keyExpireSeconds);

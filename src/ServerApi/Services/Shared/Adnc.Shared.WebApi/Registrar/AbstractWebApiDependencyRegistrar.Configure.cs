@@ -12,7 +12,6 @@ public abstract partial class AbstractWebApiDependencyRegistrar
         Services
             .Configure<JwtConfig>(Configuration.GetSection(JwtConfig.Name))
             .Configure<RedisConfig>(Configuration.GetSection(RedisConfig.Name))
-            .Configure<CacheOptions>(Configuration.GetSection(RedisConfig.Name))
             .Configure<MongoConfig>(Configuration.GetSection(MongoConfig.Name))
             .Configure<MysqlConfig>(Configuration.GetSection(MysqlConfig.Name))
             .Configure<RabbitMqConfig>(Configuration.GetSection(RabbitMqConfig.Name))

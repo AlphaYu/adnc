@@ -19,7 +19,7 @@ public abstract partial class AbstractWebApiDependencyRegistrar
             .AddRabbitMQ(x =>
             {
                 return
-                Adnc.Infra.EventBus.RabbitMq.RabbitMqConnection.GetInstance(x.GetService<IOptionsMonitor<RabbitMqConfig>>()
+                Infra.EventBus.RabbitMq.RabbitMqConnection.GetInstance(x.GetService<IOptionsMonitor<RabbitMqConfig>>()
                     , x.GetService<ILogger<dynamic>>()
                 ).Connection;
             })
