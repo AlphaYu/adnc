@@ -25,3 +25,5 @@ global using MongoDB.Driver;
 global using System.Linq.Expressions;
 global using System.Net;
 global using System.Reflection;
+global using Microsoft.Extensions.Options;
+
