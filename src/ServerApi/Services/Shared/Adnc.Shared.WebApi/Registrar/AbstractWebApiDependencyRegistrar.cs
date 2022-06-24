@@ -5,18 +5,15 @@ namespace Adnc.Shared.WebApi.Registrar;
 public abstract partial class AbstractWebApiDependencyRegistrar : IDependencyRegistrar
 {
     public string Name => "webapi";
-    protected IConfiguration Configuration;
-    protected readonly IServiceCollection Services;
-    protected readonly IHostEnvironment HostEnvironment;
-    protected readonly IServiceInfo ServiceInfo;
+    protected IConfiguration Configuration { get; init; }
+    protected IServiceCollection Services { get; init; }
+    protected IHostEnvironment HostEnvironment { get; init; }
+    protected IServiceInfo ServiceInfo { get; init; }
 
     /// <summary>
     /// 服务注册与系统配置
     /// </summary>
-    /// <param name="configuration"><see cref="IConfiguration"/></param>
     /// <param name="services"><see cref="IServiceInfo"/></param>
-    /// <param name="environment"><see cref="IHostEnvironment"/></param>
-    /// <param name="serviceInfo"><see cref="ServiceInfo"/></param>
     protected AbstractWebApiDependencyRegistrar(IServiceCollection services)
     {
         Services = services;
@@ -39,9 +36,10 @@ public abstract partial class AbstractWebApiDependencyRegistrar : IDependencyReg
     /// <summary>
     /// 注册Webapi通用的服务
     /// </summary>
-    /// <typeparam name="THandler"></typeparam>
-    protected virtual void AddWebApiDefault<TAuthenticationHandler, TAuthorizationHandler>()
-        where TAuthenticationHandler : AbstracAuthenticationProcessor
+    /// <typeparam name="TAuthenticationProcessor"><see cref="AbstracAuthenticationProcessor"/></typeparam>
+    /// <typeparam name="TAuthorizationHandler"><see cref="AbstractPermissionHandler"/></typeparam>
+    protected virtual void AddWebApiDefault<TAuthenticationProcessor, TAuthorizationHandler>()
+        where TAuthenticationProcessor : AbstracAuthenticationProcessor
         where TAuthorizationHandler : AbstractPermissionHandler
     {
         Services
@@ -49,7 +47,7 @@ public abstract partial class AbstractWebApiDependencyRegistrar : IDependencyReg
             .AddMemoryCache();
         Configure();
         AddControllers();
-        AddAuthentication<TAuthenticationHandler>();
+        AddAuthentication<TAuthenticationProcessor>();
         AddAuthorization<TAuthorizationHandler>();
         AddCors();
         AddSwaggerGen();
