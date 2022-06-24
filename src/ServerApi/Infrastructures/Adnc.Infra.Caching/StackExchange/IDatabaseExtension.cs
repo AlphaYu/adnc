@@ -145,19 +145,19 @@ namespace StackExchange.Redis
 
         #region Bloom Filter
 
-        public static async Task BloomReserveAsync(this IDatabase redisDb, RedisKey key, double errorRate, int initialCapacity)
+        public static async Task  BfReserveAsync(this IDatabase redisDb, RedisKey key, double errorRate, int initialCapacity)
             => await redisDb.ExecuteAsync("BF.RESERVE", key, errorRate, initialCapacity);
 
-        public static async Task<bool> BloomAddAsync(this IDatabase redisDb, RedisKey key, RedisValue value)
+        public static async Task<bool> BfAddAsync(this IDatabase redisDb, RedisKey key, RedisValue value)
             => (bool)await redisDb.ExecuteAsync("BF.ADD", key, value);
 
-        public static async Task<bool[]> BloomAddAsync(this IDatabase redisDb, RedisKey key, IEnumerable<RedisValue> values)
+        public static async Task<bool[]> BfAddAsync(this IDatabase redisDb, RedisKey key, IEnumerable<RedisValue> values)
             => (bool[])await redisDb.ExecuteAsync("BF.MADD", values.Cast<object>().Prepend(key).ToArray());
 
-        public static async Task<bool> BloomExistsAsync(this IDatabase redisDb, RedisKey key, RedisValue value)
+        public static async Task<bool> BfExistsAsync(this IDatabase redisDb, RedisKey key, RedisValue value)
             => (bool)await redisDb.ExecuteAsync("BF.EXISTS", key, value);
 
-        public static async Task<bool[]> BloomExistsAsync(this IDatabase redisDb, RedisKey key, IEnumerable<RedisValue> values)
+        public static async Task<bool[]> BfExistsAsync(this IDatabase redisDb, RedisKey key, IEnumerable<RedisValue> values)
             => (bool[])await redisDb.ExecuteAsync("BF.MEXISTS", values.Cast<object>().Prepend(key).ToArray());
 
         #endregion Bloom Filter

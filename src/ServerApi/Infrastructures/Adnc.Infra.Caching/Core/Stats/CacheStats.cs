@@ -1,7 +1,5 @@
 ﻿namespace Adnc.Infra.Caching.Core
 {
-    using System.Collections.Concurrent;
-
     /// <summary>
     /// Cache stats.
     /// </summary>

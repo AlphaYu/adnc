@@ -1,6 +1,4 @@
-﻿using System.Collections.Concurrent;
-
-namespace Adnc.Infra.Caching.Core
+﻿namespace Adnc.Infra.Caching.Core
 {
     public class AutoDelayTimers
     {

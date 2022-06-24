@@ -7,31 +7,31 @@ namespace Adnc.Infra.Caching.StackExchange
     /// </summary>
     public partial class DefaultRedisProvider : Adnc.Infra.Caching.IRedisProvider
     {
-        public async Task<bool> BloomAddAsync(string key, string value)
+        public async Task<bool> BfAddAsync(string key, string value)
         {
-            return await _redisDb.BloomAddAsync(key, value);
+            return await _redisDb.BfAddAsync(key, value);
         }
 
-        public async Task<bool[]> BloomAddAsync(string key, IEnumerable<string> values)
+        public async Task<bool[]> BfAddAsync(string key, IEnumerable<string> values)
         {
             var redisValues = values.Select(x => (RedisValue)x);
-            return await _redisDb.BloomAddAsync(key, redisValues);
+            return await _redisDb.BfAddAsync(key, redisValues);
         }
 
-        public async Task<bool> BloomExistsAsync(string key, string value)
+        public async Task<bool> BfExistsAsync(string key, string value)
         {
-            return await _redisDb.BloomExistsAsync(key, value);
+            return await _redisDb.BfExistsAsync(key, value);
         }
 
-        public async Task<bool[]> BloomExistsAsync(string key, IEnumerable<string> values)
+        public async Task<bool[]> BfExistsAsync(string key, IEnumerable<string> values)
         {
             var redisValues = values.Select(x => (RedisValue)x);
-            return await _redisDb.BloomExistsAsync(key, redisValues);
+            return await _redisDb.BfExistsAsync(key, redisValues);
         }
 
-        public async Task BloomReserveAsync(string key, double errorRate, int initialCapacity)
+        public async Task BfReserveAsync(string key, double errorRate, int initialCapacity)
         {
-            await _redisDb.BloomReserveAsync(key, errorRate, initialCapacity);
+            await _redisDb.BfReserveAsync(key, errorRate, initialCapacity);
         }
     }
 }

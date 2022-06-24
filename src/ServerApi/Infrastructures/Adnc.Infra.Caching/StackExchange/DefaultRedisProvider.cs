@@ -1,7 +1,6 @@
 ﻿using Adnc.Infra.Caching.Configurations;
 using Adnc.Infra.Caching.Core;
 using Adnc.Infra.Caching.Core.Serialization;
-using Microsoft.Extensions.Logging;
 using StackExchange.Redis;
 
 namespace Adnc.Infra.Caching.StackExchange
@@ -39,9 +38,9 @@ namespace Adnc.Infra.Caching.StackExchange
         /// <summary>
         /// The options.
         /// </summary>
-        private readonly CacheOptions _cacheOptions;
+        private readonly IOptions<CacheOptions> _cacheOptions;
 
-        public override CacheOptions CacheOptions => _cacheOptions;
+        public override IOptions<CacheOptions> CacheOptions => _cacheOptions;
 
         /// <summary>
         /// The cache stats.
@@ -70,15 +69,15 @@ namespace Adnc.Infra.Caching.StackExchange
         public DefaultRedisProvider(
             IRedisDatabaseProvider dbProviders,
             IEnumerable<ICachingSerializer> serializers,
-            CacheOptions cacheOptions,
+             IOptions<CacheOptions> cacheOptions,
             ILoggerFactory loggerFactory = null)
         {
             ArgumentCheck.NotNull(dbProviders, nameof(dbProviders));
 
             //this.ProviderName = nameof(DefaultRedisProvider);
             this._dbProvider = dbProviders;
-            this._serializer = !string.IsNullOrWhiteSpace(cacheOptions.SerializerName)
-                                       ? serializers.Single(x => x.Name.Equals(cacheOptions.SerializerName))
+            this._serializer = !string.IsNullOrWhiteSpace(cacheOptions.Value.SerializerName)
+                                       ? serializers.Single(x => x.Name.Equals(cacheOptions.Value.SerializerName))
                                        : serializers.Single(x => x.Name.Equals(CachingConstValue.DefaultSerializerName));
             this._cacheOptions = cacheOptions;
             this._logger = loggerFactory?.CreateLogger<DefaultRedisProvider>();
@@ -100,12 +99,12 @@ namespace Adnc.Infra.Caching.StackExchange
             ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
             ArgumentCheck.NotNegativeOrZero(expiration, nameof(expiration));
 
-            if (!_cacheOptions.PenetrationSetting.Disable && _cacheOptions.EnableBloomFilter)
+            if (!_cacheOptions.Value.PenetrationSetting.Disable && _cacheOptions.Value.EnableBloomFilter)
             {
-                var exists = _redisDb.BloomExistsAsync(_cacheOptions.PenetrationSetting.BloomFilterSetting.Name, cacheKey).GetAwaiter().GetResult();
+                var exists = _redisDb.BfExistsAsync(_cacheOptions.Value.PenetrationSetting.BloomFilterSetting.Name, cacheKey).GetAwaiter().GetResult();
                 if (!exists)
                 {
-                    if (_cacheOptions.EnableLogging)
+                    if (_cacheOptions.Value.EnableLogging)
                         _logger?.LogInformation($"Cache Penetrated : cachekey = {cacheKey}");
                     return CacheValue<T>.NoValue;
                 }
@@ -116,7 +115,7 @@ namespace Adnc.Infra.Caching.StackExchange
             {
                 _cacheStats.OnHit();
 
-                if (_cacheOptions.EnableLogging)
+                if (_cacheOptions.Value.EnableLogging)
                     _logger?.LogInformation($"Cache Hit : cachekey = {cacheKey}");
 
                 var value = _serializer.Deserialize<T>(result);
@@ -125,13 +124,13 @@ namespace Adnc.Infra.Caching.StackExchange
 
             _cacheStats.OnMiss();
 
-            if (_cacheOptions.EnableLogging)
+            if (_cacheOptions.Value.EnableLogging)
                 _logger?.LogInformation($"Cache Missed : cachekey = {cacheKey}");
 
-            var flag = _redisDb.Lock(cacheKey, _cacheOptions.LockMs / 1000);
+            var flag = _redisDb.Lock(cacheKey, _cacheOptions.Value.LockMs / 1000);
             if (!flag.Success)
             {
-                System.Threading.Thread.Sleep(_cacheOptions.SleepMs);
+                System.Threading.Thread.Sleep(_cacheOptions.Value.SleepMs);
                 return Get(cacheKey, dataRetriever, expiration);
             }
 
@@ -169,12 +168,12 @@ namespace Adnc.Infra.Caching.StackExchange
         {
             ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
-            if (!_cacheOptions.PenetrationSetting.Disable && _cacheOptions.EnableBloomFilter)
+            if (!_cacheOptions.Value.PenetrationSetting.Disable && _cacheOptions.Value.EnableBloomFilter)
             {
-                var exists = _redisDb.BloomExistsAsync(_cacheOptions.PenetrationSetting.BloomFilterSetting.Name, cacheKey).GetAwaiter().GetResult();
+                var exists = _redisDb.BfExistsAsync(_cacheOptions.Value.PenetrationSetting.BloomFilterSetting.Name, cacheKey).GetAwaiter().GetResult();
                 if (!exists)
                 {
-                    if (_cacheOptions.EnableLogging)
+                    if (_cacheOptions.Value.EnableLogging)
                         _logger?.LogInformation($"Cache Penetrated : cachekey = {cacheKey}");
                     return CacheValue<T>.NoValue;
                 }
@@ -185,7 +184,7 @@ namespace Adnc.Infra.Caching.StackExchange
             {
                 _cacheStats.OnHit();
 
-                if (_cacheOptions.EnableLogging)
+                if (_cacheOptions.Value.EnableLogging)
                     _logger?.LogInformation($"Cache Hit : cachekey = {cacheKey}");
 
                 var value = _serializer.Deserialize<T>(result);
@@ -195,7 +194,7 @@ namespace Adnc.Infra.Caching.StackExchange
             {
                 _cacheStats.OnMiss();
 
-                if (_cacheOptions.EnableLogging)
+                if (_cacheOptions.Value.EnableLogging)
                     _logger?.LogInformation($"Cache Missed : cachekey = {cacheKey}");
 
                 return CacheValue<T>.NoValue;
@@ -228,9 +227,9 @@ namespace Adnc.Infra.Caching.StackExchange
             ArgumentCheck.NotNull(cacheValue, nameof(cacheValue));
             ArgumentCheck.NotNegativeOrZero(expiration, nameof(expiration));
 
-            if (_cacheOptions.MaxRdSecond > 0)
+            if (_cacheOptions.Value.MaxRdSecond > 0)
             {
-                var addSec = new Random().Next(1, _cacheOptions.MaxRdSecond);
+                var addSec = new Random().Next(1, _cacheOptions.Value.MaxRdSecond);
                 expiration = expiration.Add(TimeSpan.FromSeconds(addSec));
             }
 
@@ -262,7 +261,7 @@ namespace Adnc.Infra.Caching.StackExchange
 
             prefix = this.HandlePrefix(prefix);
 
-            if (_cacheOptions.EnableLogging)
+            if (_cacheOptions.Value.EnableLogging)
                 _logger?.LogInformation($"RemoveByPrefix : prefix = {prefix}");
 
             var redisKeys = this.SearchRedisKeys(prefix);
@@ -445,7 +444,7 @@ namespace Adnc.Infra.Caching.StackExchange
         /// </summary>
         protected override void BaseFlush()
         {
-            if (_cacheOptions.EnableLogging)
+            if (_cacheOptions.Value.EnableLogging)
                 _logger?.LogInformation("Redis -- Flush");
 
             foreach (var server in _servers)
@@ -468,9 +467,9 @@ namespace Adnc.Infra.Caching.StackExchange
             ArgumentCheck.NotNull(cacheValue, nameof(cacheValue));
             ArgumentCheck.NotNegativeOrZero(expiration, nameof(expiration));
 
-            if (_cacheOptions.MaxRdSecond > 0)
+            if (_cacheOptions.Value.MaxRdSecond > 0)
             {
-                var addSec = new Random().Next(1, _cacheOptions.MaxRdSecond);
+                var addSec = new Random().Next(1, _cacheOptions.Value.MaxRdSecond);
                 expiration = expiration.Add(TimeSpan.FromSeconds(addSec));
             }
 

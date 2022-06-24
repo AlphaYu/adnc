@@ -1,7 +1,5 @@
 ﻿namespace Adnc.Infra.Caching.Core
 {
-    using System.Threading;
-
     /// <summary>
     /// Cache stats counter.
     /// </summary>

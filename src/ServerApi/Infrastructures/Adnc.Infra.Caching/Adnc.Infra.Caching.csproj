@@ -7,6 +7,7 @@
 	<ItemGroup>
 		<PackageReference Include="Castle.Core.AsyncInterceptor" Version="2.1.0" />
 		<PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="6.0.0" />
 		<PackageReference Include="Polly" Version="7.2.3" />
 		<PackageReference Include="StackExchange.Redis" Version="2.5.43" />
 		<PackageReference Include="protobuf-net" Version="3.0.101" />
