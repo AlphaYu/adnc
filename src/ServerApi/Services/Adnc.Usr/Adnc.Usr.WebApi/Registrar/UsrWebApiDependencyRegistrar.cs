@@ -14,6 +14,7 @@ public sealed class UsrWebApiDependencyRegistrar : AbstractWebApiDependencyRegis
     public override void AddAdnc()
     {
         AddWebApiDefault<BearerAuthenticationLocalProcessor, PermissionLocalHandler>();
+        AddHealthChecks(true, true, true, false);
         Services.AddGrpc();
     }
 }

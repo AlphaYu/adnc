@@ -9,5 +9,9 @@ public sealed class OrdWebApiDependencyRegistrar : AbstractWebApiDependencyRegis
     {
     }
 
-    public override void AddAdnc() => AddWebApiDefault();
+    public override void AddAdnc()
+    {
+        AddWebApiDefault();
+        AddHealthChecks(true, true, true, true);
+    }
 }

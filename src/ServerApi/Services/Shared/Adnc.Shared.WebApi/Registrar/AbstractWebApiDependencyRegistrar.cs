@@ -51,7 +51,6 @@ public abstract partial class AbstractWebApiDependencyRegistrar : IDependencyReg
         AddAuthorization<TAuthorizationHandler>();
         AddCors();
         AddSwaggerGen();
-        AddHealthChecks();
         AddMiniProfiler();
         AddApplicationServices();
     }
