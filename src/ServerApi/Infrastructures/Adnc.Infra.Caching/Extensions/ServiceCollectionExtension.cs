@@ -3,7 +3,6 @@ using Adnc.Infra.Caching.Configurations;
 using Adnc.Infra.Caching.Core.Serialization;
 using Adnc.Infra.Caching.Interceptor.Castle;
 using Adnc.Infra.Caching.StackExchange;
-using Adnc.Infra.Core.Interceptor;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -16,6 +15,7 @@ public static class ServiceCollectionExtension
 
         services
             .Configure<CacheOptions>(redisSection)
+            .Configure<RedisConfig>(redisSection)
             .AddSingleton<IRedisDatabaseProvider, DefaultDatabaseProvider>()
             .AddSingleton<ICachingKeyGenerator, DefaultCachingKeyGenerator>()
             .AddSingleton<DefaultRedisProvider>()

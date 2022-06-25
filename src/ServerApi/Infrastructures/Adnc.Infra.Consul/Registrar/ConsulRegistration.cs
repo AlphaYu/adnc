@@ -2,7 +2,7 @@
 
 public sealed class ConsulRegistration
 {
-    private readonly ConsulConfig _consulConfig;
+    private readonly IOptions<ConsulConfig> _consulConfig;
     private readonly IHostApplicationLifetime _hostApplicationLifetime;
     private readonly ILogger<ConsulRegistration> _logger;
     private readonly ConsulClient _consulClient;
@@ -14,7 +14,7 @@ public sealed class ConsulRegistration
         , IHostApplicationLifetime hostApplicationLifetime
         , ILogger<ConsulRegistration> logger)
     {
-        _consulConfig = consulOption.Value;
+        _consulConfig = consulOption;
         _consulClient = consulClient;
         _hostApplicationLifetime = hostApplicationLifetime;
         //_serverAddressesFeature = serviceProvider.GetRequiredService<IServer>().Features.Get<IServerAddressesFeature>();
@@ -94,22 +94,22 @@ public sealed class ConsulRegistration
         var port = serviceAddress.Port;
         var registrationInstance = new AgentServiceRegistration()
         {
-            ID = serviceId ?? $"{_consulConfig.ServiceName}-{DateTime.Now.GetTotalMilliseconds()}",
-            Name = _consulConfig.ServiceName,
+            ID = serviceId ?? $"{_consulConfig.Value.ServiceName}-{DateTime.Now.GetTotalMilliseconds()}",
+            Name = _consulConfig.Value.ServiceName,
             Address = host,
             Port = port,
             Meta = new Dictionary<string, string>() { ["Protocol"] = protocol },
-            Tags = _consulConfig.ServerTags,
+            Tags = _consulConfig.Value.ServerTags,
             Check = new AgentServiceCheck
             {
                 //服务停止多久后进行注销
-                DeregisterCriticalServiceAfter = TimeSpan.FromSeconds(_consulConfig.DeregisterCriticalServiceAfter),
+                DeregisterCriticalServiceAfter = TimeSpan.FromSeconds(_consulConfig.Value.DeregisterCriticalServiceAfter),
                 //健康检查间隔,心跳间隔
-                Interval = TimeSpan.FromSeconds(_consulConfig.HealthCheckIntervalInSecond),
+                Interval = TimeSpan.FromSeconds(_consulConfig.Value.HealthCheckIntervalInSecond),
                 //健康检查地址
-                HTTP = $"{protocol}://{host}:{port}/{_consulConfig.HealthCheckUrl}",
+                HTTP = $"{protocol}://{host}:{port}/{_consulConfig.Value.HealthCheckUrl}",
                 //超时时间
-                Timeout = TimeSpan.FromSeconds(_consulConfig.Timeout),
+                Timeout = TimeSpan.FromSeconds(_consulConfig.Value.Timeout),
             }
         };
         return registrationInstance;
@@ -119,17 +119,17 @@ public sealed class ConsulRegistration
     {
         if (_consulConfig == null)
             throw new ArgumentException(nameof(_consulConfig));
-        if (string.IsNullOrEmpty(_consulConfig.ConsulUrl))
-            throw new ArgumentException(nameof(_consulConfig.ConsulUrl));
-        if (string.IsNullOrEmpty(_consulConfig.ServiceName))
-            throw new ArgumentException(nameof(_consulConfig.ServiceName));
-        if (string.IsNullOrEmpty(_consulConfig.HealthCheckUrl))
-            throw new ArgumentException(nameof(_consulConfig.HealthCheckUrl));
-        if (_consulConfig.HealthCheckIntervalInSecond <= 0)
-            throw new ArgumentException(nameof(_consulConfig.HealthCheckIntervalInSecond));
-        if (_consulConfig.DeregisterCriticalServiceAfter <= 0)
-            throw new ArgumentException(nameof(_consulConfig.DeregisterCriticalServiceAfter));
-        if (_consulConfig.Timeout <= 0)
-            throw new ArgumentException(nameof(_consulConfig.Timeout));
+        if (string.IsNullOrEmpty(_consulConfig.Value.ConsulUrl))
+            throw new ArgumentException(nameof(_consulConfig.Value.ConsulUrl));
+        if (string.IsNullOrEmpty(_consulConfig.Value.ServiceName))
+            throw new ArgumentException(nameof(_consulConfig.Value.ServiceName));
+        if (string.IsNullOrEmpty(_consulConfig.Value.HealthCheckUrl))
+            throw new ArgumentException(nameof(_consulConfig.Value.HealthCheckUrl));
+        if (_consulConfig.Value.HealthCheckIntervalInSecond <= 0)
+            throw new ArgumentException(nameof(_consulConfig.Value.HealthCheckIntervalInSecond));
+        if (_consulConfig.Value.DeregisterCriticalServiceAfter <= 0)
+            throw new ArgumentException(nameof(_consulConfig.Value.DeregisterCriticalServiceAfter));
+        if (_consulConfig.Value.Timeout <= 0)
+            throw new ArgumentException(nameof(_consulConfig.Value.Timeout));
     }
 }

@@ -1,10 +1,4 @@
-﻿using Adnc.Infra.Core.Configuration;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using Polly;
-using RabbitMQ.Client;
-using System.Text;
-using System.Text.Json;
+﻿using RabbitMQ.Client;
 
 namespace Adnc.Infra.EventBus.RabbitMq
 {
@@ -13,10 +7,10 @@ namespace Adnc.Infra.EventBus.RabbitMq
         private readonly IModel _channel;
         private readonly ILogger<RabbitMqProducer> _logger;
 
-        public RabbitMqProducer(IOptionsMonitor<RabbitMqConfig> options, ILogger<RabbitMqProducer> logger)
+        public RabbitMqProducer(IRabbitMqConnection rabbitMqConnection, ILogger<RabbitMqProducer> logger)
         {
             _logger = logger;
-            _channel = RabbitMqConnection.GetInstance(options, logger).Connection.CreateModel();
+            _channel = rabbitMqConnection.Connection.CreateModel();
         }
 
         /// <summary>
@@ -83,8 +77,17 @@ namespace Adnc.Infra.EventBus.RabbitMq
 
         public void Dispose()
         {
-            if (_channel != null)
-                _channel.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (_channel != null)
+                    _channel.Dispose();
+            }
         }
     }
 }

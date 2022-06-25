@@ -1,4 +1,6 @@
-﻿global using Microsoft.Extensions.Configuration;
+﻿global using Adnc.Infra.Core.Configuration;
+global using Adnc.Infra.Core.Interceptor;
+global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.Logging;
 global using Microsoft.Extensions.Options;
 global using Polly;
