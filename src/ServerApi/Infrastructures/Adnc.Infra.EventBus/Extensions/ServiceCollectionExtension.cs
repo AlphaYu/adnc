@@ -7,13 +7,13 @@ namespace Microsoft.Extensions.DependencyInjection;
 
 public static class ServiceCollectionExtension
 {
-    public static IServiceCollection AddAdncInfraEventBus(this IServiceCollection services, IConfigurationSection consulSection)
+    public static IServiceCollection AddAdncInfraEventBus(this IServiceCollection services, IConfigurationSection rabitmqSection)
     {
         if (services.HasRegistered(nameof(AddAdncInfraEventBus)))
             return services;
 
         return services
-             .Configure<RabbitMqConfig>(consulSection)
+             .Configure<RabbitMqConfig>(rabitmqSection)
              .AddSingleton<IRabbitMqConnection>(provider =>
              {
                  var options = provider.GetRequiredService<IOptions<RabbitMqConfig>>();
