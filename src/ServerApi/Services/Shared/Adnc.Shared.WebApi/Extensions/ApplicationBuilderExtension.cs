@@ -1,5 +1,4 @@
-﻿using Adnc.Shared.WebApi;
-using Adnc.Shared.WebApi.Middleware;
+﻿using Adnc.Shared.WebApi.Middleware;
 
 namespace Microsoft.AspNetCore.Builder;
 
@@ -22,7 +21,7 @@ public static class ApplicationBuilderExtension
         var configuration = app.ApplicationServices.GetService<IConfiguration>();
         var environment = app.ApplicationServices.GetService<IHostEnvironment>();
         var serviceInfo = app.ApplicationServices.GetService<IServiceInfo>();
-        var healthUrl = configuration.GetConsulSection().Get<ConsulConfig>().HealthCheckUrl;
+        var consulOptions = app.ApplicationServices.GetService<IOptions<ConsulConfig>>();
 
         if (environment.IsDevelopment())
             IdentityModelEventSource.ShowPII = true;
@@ -52,7 +51,7 @@ public static class ApplicationBuilderExtension
                 c.SwaggerEndpoint($"/{serviceInfo.ShortName}/swagger/{serviceInfo.Version}/swagger.json", $"{serviceInfo.ServiceName}-{serviceInfo.Version}");
                 c.RoutePrefix = $"{serviceInfo.ShortName}";
             })
-            .UseHealthChecks($"/{healthUrl}", new HealthCheckOptions()
+            .UseHealthChecks($"/{consulOptions.Value.HealthCheckUrl}", new HealthCheckOptions()
             {
                 Predicate = _ => true,
                 // 该响应输出是一个json，包含所有检查项的详细检查结果

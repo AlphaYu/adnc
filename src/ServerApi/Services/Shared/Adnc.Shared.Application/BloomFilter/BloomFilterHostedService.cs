@@ -6,20 +6,21 @@ public class BloomFilterHostedService : BackgroundService
 {
     private readonly ILogger<BloomFilterHostedService> _logger;
     private readonly IEnumerable<IBloomFilter> _bloomFilters;
-    private readonly RedisConfig _redisConfig;
+    private readonly IOptions<RedisConfig> _redisOptions;
 
-    public BloomFilterHostedService(ILogger<BloomFilterHostedService> logger
+    public BloomFilterHostedService(
+        ILogger<BloomFilterHostedService> logger
        , IEnumerable<IBloomFilter> bloomFilters
-       , IOptionsMonitor<RedisConfig> redisOptions)
+       , IOptions<RedisConfig> redisOptions)
     {
         _logger = logger;
         _bloomFilters = bloomFilters;
-        _redisConfig = redisOptions.CurrentValue;
+        _redisOptions = redisOptions;
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        if (_redisConfig.EnableBloomFilter && _bloomFilters.IsNotNullOrEmpty())
+        if (_redisOptions.Value.EnableBloomFilter && _bloomFilters.IsNotNullOrEmpty())
         {
             foreach (var filter in _bloomFilters)
             {

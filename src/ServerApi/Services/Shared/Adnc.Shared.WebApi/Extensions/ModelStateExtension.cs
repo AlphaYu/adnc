@@ -1,4 +1,4 @@
-﻿namespace Adnc.Shared.WebApi.Extensions;
+﻿namespace Microsoft.AspNetCore.Mvc.ModelBinding;
 
 public static class ModelStateExtensions
 {

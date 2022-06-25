@@ -1,7 +1,6 @@
 ﻿using Adnc.Infra.Consul.Discover.GrpcResolver;
 using Adnc.Infra.Consul.Discover.Handler;
 using Adnc.Shared.Consts.RegistrationCenter;
-using Adnc.Shared.Rpc;
 using Adnc.Shared.Rpc.Handlers;
 using Adnc.Shared.Rpc.Handlers.Token;
 using Grpc.Core;
@@ -14,8 +13,6 @@ namespace Adnc.Shared.Application.Registrar;
 
 public abstract partial class AbstractApplicationDependencyRegistrar : IDependencyRegistrar
 {
-    protected List<AddressNode> RpcAddressInfo { get; init; }
-
     /// <summary>
     /// 注册Rest服务(跨微服务之间的同步通讯)
     /// </summary>

@@ -5,20 +5,22 @@ namespace Adnc.Shared.Application.Registrar;
 
 public abstract partial class AbstractApplicationDependencyRegistrar : IDependencyRegistrar
 {
+    public string Name => "application";
     public abstract Assembly ApplicationLayerAssembly { get; }
     public abstract Assembly ContractsLayerAssembly { get; }
     public abstract Assembly RepositoryOrDomainLayerAssembly { get; }
-    public string Name => "application";
+    protected List<AddressNode> RpcAddressInfo { get; init; }
+
     public string ASPNETCORE_ENVIRONMENT => Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
     public bool IsDevelopment => ASPNETCORE_ENVIRONMENT.EqualsIgnoreCase("Development");
-    protected IServiceCollection Services { get; private set; }
-    protected IConfiguration Configuration { get; private set; }
-    protected IServiceInfo ServiceInfo { get; private set; }
-    protected IConfigurationSection RedisSection { get; private set; }
-    protected IConfigurationSection ConsulSection { get; private set; }
-    protected IConfigurationSection RabbitMqSection { get; private set; }
-    protected IConfigurationSection MongoDbSection { get; private set; }
-    protected IConfigurationSection MysqlSection { get; private set; }
+    protected IServiceCollection Services { get; init; }
+    protected IConfiguration Configuration { get; init; }
+    protected IServiceInfo ServiceInfo { get; init; }
+    protected IConfigurationSection RedisSection { get; init; }
+    protected IConfigurationSection MysqlSection { get; init; }
+    protected IConfigurationSection MongoDbSection { get; init; }
+    protected IConfigurationSection ConsulSection { get; init; }
+    protected IConfigurationSection RabbitMqSection { get; init; }
 
     protected AbstractApplicationDependencyRegistrar(IServiceCollection services)
     {

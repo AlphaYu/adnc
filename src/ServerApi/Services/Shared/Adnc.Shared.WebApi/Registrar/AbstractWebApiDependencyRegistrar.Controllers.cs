@@ -1,5 +1,4 @@
-﻿using Adnc.Shared.WebApi.Extensions;
-using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
+﻿using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
 
 namespace Adnc.Shared.WebApi.Registrar;
 
@@ -37,10 +36,10 @@ public abstract partial class AbstractWebApiDependencyRegistrar
                 // cfg.ValidatorFactoryType = typeof(HttpContextServiceProviderValidatorFactory);
             });
 
-        //参数验证返回信息格式调整
         Services
             .Configure<ApiBehaviorOptions>(options =>
             {
+                //调整参数验证返回信息格式
                 //关闭自动验证
                 //options.SuppressModelStateInvalidFilter = true;
                 //格式化验证信息

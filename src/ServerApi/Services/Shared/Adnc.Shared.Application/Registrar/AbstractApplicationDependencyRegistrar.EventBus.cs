@@ -24,7 +24,6 @@ public abstract partial class AbstractApplicationDependencyRegistrar : IDependen
 
         Services.AddSingleton<TSubscriber>();
 
-        var rabbitMqConfig = RabbitMqSection.Get<RabbitMqConfig>();
         Services.AddCap(x =>
         {
             var mysqlConfig = MysqlSection.Get<MysqlConfig>();
@@ -35,6 +34,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar : IDependen
             });
 
             //CAP支持 RabbitMQ、Kafka、AzureServiceBus 等作为MQ，根据使用选择配置：
+            var rabbitMqConfig = RabbitMqSection.Get<RabbitMqConfig>();
             x.UseRabbitMQ(option =>
             {
                 option.HostName = rabbitMqConfig.HostName;
@@ -80,7 +80,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar : IDependen
         action?.Invoke(Services);
 
         if (RabbitMqSection is not null)
-            Services.AddAdncInfraEventBus();
+            Services.AddAdncInfraEventBus(RabbitMqSection);
     }
 
 }

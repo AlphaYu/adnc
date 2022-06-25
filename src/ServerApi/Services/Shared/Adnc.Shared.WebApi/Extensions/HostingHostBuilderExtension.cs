@@ -28,7 +28,7 @@ public static class WebApplicationBuilderExtension
         builder.Configuration.AddJsonFile($"{AppContext.BaseDirectory}/appsettings.{builder.Environment.EnvironmentName}.json", true, true);
         if (builder.Environment.IsProduction() || builder.Environment.IsStaging())
         {
-            var consulOption = builder.Configuration.GetConsulSection().Get<ConsulConfig>();
+            var consulOption = builder.Configuration.GetSection(ConsulConfig.Name).Get<ConsulConfig>();
             consulOption.ConsulKeyPath = consulOption.ConsulKeyPath.Replace("$SHORTNAME", serviceInfo.ShortName);
             builder.Configuration.AddConsulConfiguration(consulOption, true);
         }
@@ -48,7 +48,7 @@ public static class WebApplicationBuilderExtension
         //WebHost(Kestrel)
         builder.WebHost.ConfigureKestrel((context, serverOptions) =>
         {
-            var kestrelSection = context.Configuration.GetKestrelSection();
+            var kestrelSection = context.Configuration.GetSection(KestrelConfig.Name);
             serverOptions.Configure(kestrelSection);
         });
 
