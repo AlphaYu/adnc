@@ -9,8 +9,8 @@ public class DictController : AdncControllerBase
 {
     private readonly IDictAppService _dictAppService;
 
-    public DictController(IDictAppService dictAppService)
-        => _dictAppService = dictAppService;
+    public DictController(IDictAppService dictAppService) =>
+        _dictAppService = dictAppService;
 
     /// <summary>
     /// 新增字典
@@ -20,8 +20,8 @@ public class DictController : AdncControllerBase
     [HttpPost]
     [Permission(PermissionConsts.Dict.Create)]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    public async Task<ActionResult<long>> CreateAsync([FromBody] DictCreationDto input)
-        => CreatedResult(await _dictAppService.CreateAsync(input));
+    public async Task<ActionResult<long>> CreateAsync([FromBody] DictCreationDto input) =>
+        CreatedResult(await _dictAppService.CreateAsync(input));
 
     /// <summary>
     /// 修改字典
@@ -32,8 +32,8 @@ public class DictController : AdncControllerBase
     [HttpPut("{id}")]
     [Permission(PermissionConsts.Dict.Update)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<ActionResult<long>> UpdateAsync([FromRoute] long id, [FromBody] DictUpdationDto input)
-        => Result(await _dictAppService.UpdateAsync(id, input));
+    public async Task<ActionResult<long>> UpdateAsync([FromRoute] long id, [FromBody] DictUpdationDto input) =>
+        Result(await _dictAppService.UpdateAsync(id, input));
 
     /// <summary>
     /// 删除字典
@@ -43,8 +43,8 @@ public class DictController : AdncControllerBase
     [HttpDelete("{id}")]
     [Permission(PermissionConsts.Dict.Delete)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<ActionResult> DeleteAsync([FromRoute] long id)
-        => Result(await _dictAppService.DeleteAsync(id));
+    public async Task<ActionResult> DeleteAsync([FromRoute] long id) =>
+        Result(await _dictAppService.DeleteAsync(id));
 
     /// <summary>
     /// 获取字典列表
@@ -53,8 +53,8 @@ public class DictController : AdncControllerBase
     [HttpGet()]
     [Permission(PermissionConsts.Dict.GetList)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<List<DictDto>>> GetListAsync([FromQuery] DictSearchDto search)
-        => await _dictAppService.GetListAsync(search);
+    public async Task<ActionResult<List<DictDto>>> GetListAsync([FromQuery] DictSearchDto search) =>
+        await _dictAppService.GetListAsync(search);
 
     /// <summary>
     /// 获取单个字典数据
@@ -65,10 +65,10 @@ public class DictController : AdncControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<DictDto>> GetAsync([FromRoute] long id)
     {
-        var cfg = await _dictAppService.GetAsync(id);
-        if (cfg != null)
-            return cfg;
+        var dict = await _dictAppService.GetAsync(id);
+        if (dict is not null)
+            return dict;
 
-        return NoContent();
+        return NotFound();
     }
 }

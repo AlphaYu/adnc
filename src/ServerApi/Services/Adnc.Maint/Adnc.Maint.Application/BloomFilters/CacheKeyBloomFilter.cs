@@ -29,8 +29,6 @@ public class CacheKeyBloomFilter : AbstractBloomFilter
         {
             var values = new List<string>()
             {
-                 CachingConsts.CfgListCacheKey
-                ,CachingConsts.DictListCacheKey
             };
 
             await InitAsync(values);

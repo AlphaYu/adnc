@@ -103,5 +103,13 @@ public class AccountController : AdncControllerBase
     [HttpGet()]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<ActionResult<UserValidatedInfoDto>> GetUserValidatedInfoAsync() => await _accountService.GetUserValidatedInfoAsync(_userContext.Id);
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<UserValidatedInfoDto>> GetUserValidatedInfoAsync()
+    {
+        var result = await _accountService.GetUserValidatedInfoAsync(_userContext.Id);
+        if (result is null)
+            return NotFound();
+
+        return Ok(result);
+    }
 }

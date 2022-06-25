@@ -2,9 +2,8 @@
 
 public class CachingConsts : Common.CachingConsts
 {
-    public const string DictListCacheKey = "adnc:maint:dicts:list";
-    public const string CfgListCacheKey = "adnc:maint:cfgs:list";
-    public const string CfgSingleCacheKeyPrefix = "adnc:maint:cfgs";
+    public const string DictSingleKeyPrefix = "adnc:maint:dicts:single";
+    public const string CfgSingleKeyPrefix = "adnc:maint:cfgs:single";
 
     public const string BloomfilterOfCacheKey = "adnc:maint:bloomfilter:cachekeys";
 }
