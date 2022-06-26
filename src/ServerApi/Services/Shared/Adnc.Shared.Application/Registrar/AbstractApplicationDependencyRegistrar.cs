@@ -1,7 +1,4 @@
-﻿using Adnc.Shared.Application.Channels;
-using Adnc.Shared.Rpc;
-
-namespace Adnc.Shared.Application.Registrar;
+﻿namespace Adnc.Shared.Application.Registrar;
 
 public abstract partial class AbstractApplicationDependencyRegistrar : IDependencyRegistrar
 {
@@ -9,7 +6,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar : IDependen
     public abstract Assembly ApplicationLayerAssembly { get; }
     public abstract Assembly ContractsLayerAssembly { get; }
     public abstract Assembly RepositoryOrDomainLayerAssembly { get; }
-    protected List<AddressNode> RpcAddressInfo { get; init; }
+    protected List<Rpc.AddressNode> RpcAddressInfo { get; init; }
     protected IServiceCollection Services { get; init; }
     protected IConfiguration Configuration { get; init; }
     protected IServiceInfo ServiceInfo { get; init; }
@@ -29,7 +26,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar : IDependen
         MysqlSection = Configuration.GetSection(MysqlConfig.Name) ?? throw new ArgumentException("MysqlSection is null.");
         ConsulSection = Configuration.GetSection(ConsulConfig.Name);
         RabbitMqSection = Configuration.GetSection(RabbitMqConfig.Name);
-        RpcAddressInfo = Configuration.GetSection(AddressNode.Name).Get<List<AddressNode>>();
+        RpcAddressInfo = Configuration.GetSection(Rpc.AddressNode.Name).Get<List<Rpc.AddressNode>>();
     }
 
     /// <summary>
@@ -73,6 +70,6 @@ public abstract partial class AbstractApplicationDependencyRegistrar : IDependen
         Services.AddSingleton<BloomFilterFactory>();
         Services.AddHostedService<CachingHostedService>();
         Services.AddHostedService<BloomFilterHostedService>();
-        Services.AddHostedService<ChannelConsumersHostedService>();
+        Services.AddHostedService<Channels.ChannelConsumersHostedService>();
     }
 }
