@@ -8,7 +8,7 @@ namespace Adnc.Shared.Application.Registrar
         /// default rest policies
         /// </summary>
         /// <returns></returns>
-        public static List<IAsyncPolicy<HttpResponseMessage>> GenerateDefaultRefitPolicies(this AbstractApplicationDependencyRegistrar registrar)
+        public static List<IAsyncPolicy<HttpResponseMessage>> GenerateDefaultRefitPolicies(this AbstractApplicationDependencyRegistrar _)
         {
             //隔离策略
             //var bulkheadPolicy = Policy.BulkheadAsync<HttpResponseMessage>(10, 100);
@@ -35,7 +35,7 @@ namespace Adnc.Shared.Application.Registrar
                                     TimeSpan.FromSeconds(5),
                                     });
             //超时策略
-            var timeoutPolicy = Policy.TimeoutAsync<HttpResponseMessage>(registrar.IsDevelopment ? 10 : 9);
+            var timeoutPolicy = Policy.TimeoutAsync<HttpResponseMessage>(IsDevelopment(_) ? 10 : 9);
 
             //熔断策略
             //如下，如果我们的业务代码连续失败50次，就触发熔断(onBreak),就不会再调用我们的业务代码，而是直接抛出BrokenCircuitException异常。
@@ -84,7 +84,24 @@ namespace Adnc.Shared.Application.Registrar
         /// </summary>
         /// <param name="registrar"></param>
         /// <returns></returns>
-        public static List<IAsyncPolicy<HttpResponseMessage>> GenerateDefaultGrpcPolicies(this AbstractApplicationDependencyRegistrar registrar)
-            => GenerateDefaultRefitPolicies(registrar);
+        public static List<IAsyncPolicy<HttpResponseMessage>> GenerateDefaultGrpcPolicies(this AbstractApplicationDependencyRegistrar registrar) => 
+            GenerateDefaultRefitPolicies(registrar);
+
+
+        public static string ASPNETCORE_ENVIRONMENT => Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+
+        public static bool IsDevelopment(this AbstractApplicationDependencyRegistrar _) => ASPNETCORE_ENVIRONMENT.EqualsIgnoreCase("Development");
+
+        public static string GetEnvShortName(this AbstractApplicationDependencyRegistrar _)
+        {
+            return ASPNETCORE_ENVIRONMENT.ToLower() switch
+            {
+                "development" => "dev",
+                "test" => "test",
+                "staging" => $"stag",
+                "production" => $"prod",
+                _ => throw new NullReferenceException(nameof(ASPNETCORE_ENVIRONMENT))
+            };
+        }
     }
 }

@@ -56,7 +56,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar : IDependen
                                             .UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
                 });
 
-                if (IsDevelopment)
+                if (this.IsDevelopment())
                 {
                     //options.AddInterceptors(new DefaultDbCommandInterceptor())
                     options.LogTo(Console.WriteLine)

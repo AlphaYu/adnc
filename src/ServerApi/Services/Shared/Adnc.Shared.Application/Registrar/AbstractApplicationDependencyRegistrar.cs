@@ -10,9 +10,6 @@ public abstract partial class AbstractApplicationDependencyRegistrar : IDependen
     public abstract Assembly ContractsLayerAssembly { get; }
     public abstract Assembly RepositoryOrDomainLayerAssembly { get; }
     protected List<AddressNode> RpcAddressInfo { get; init; }
-
-    public string ASPNETCORE_ENVIRONMENT => Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-    public bool IsDevelopment => ASPNETCORE_ENVIRONMENT.EqualsIgnoreCase("Development");
     protected IServiceCollection Services { get; init; }
     protected IConfiguration Configuration { get; init; }
     protected IServiceInfo ServiceInfo { get; init; }

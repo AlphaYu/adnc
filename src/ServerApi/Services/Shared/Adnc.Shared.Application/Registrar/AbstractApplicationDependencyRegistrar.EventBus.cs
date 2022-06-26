@@ -17,7 +17,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar : IDependen
         action?.Invoke(Services);
 
         var tableNamePrefix = "cap";
-        var groupName = $"cap.{ServiceInfo.ShortName}.{ASPNETCORE_ENVIRONMENT[..3]}".ToLower();
+        var groupName = $"cap.{ServiceInfo.ShortName}.{this.GetEnvShortName()}".ToLower();
 
         //add skyamp
         //Services.AddSkyApmExtensions().AddCap();
