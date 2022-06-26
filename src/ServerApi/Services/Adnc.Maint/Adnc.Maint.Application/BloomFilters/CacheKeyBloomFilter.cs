@@ -27,9 +27,23 @@ public class CacheKeyBloomFilter : AbstractBloomFilter
         var exists = await ExistsBloomFilterAsync();
         if (!exists)
         {
-            var values = new List<string>()
-            {
-            };
+            var values = new List<string>();
+            using var scope = _serviceProvider.Value.CreateScope();
+            var dictRepository = scope.ServiceProvider.GetRequiredService<IEfRepository<SysDict>>();
+            var dictIds = await dictRepository
+                .Where(x => x.Pid == 0)
+                .Select(x => x.Id)
+                .ToListAsync();
+            if (dictIds.IsNotNullOrEmpty())
+                values.AddRange(dictIds.Select(x => string.Concat(CachingConsts.DictSingleKeyPrefix, CachingConsts.LinkChar, x)));
+
+            var cfgRepository = scope.ServiceProvider.GetRequiredService<IEfRepository<SysDict>>();
+            var cfgIds = await dictRepository
+                .GetAll()
+                .Select(x => x.Id)
+                .ToListAsync();
+            if (cfgIds.IsNotNullOrEmpty())
+                values.AddRange(cfgIds.Select(x => string.Concat(CachingConsts.CfgSingleKeyPrefix, CachingConsts.LinkChar, x)));
 
             await InitAsync(values);
         }
