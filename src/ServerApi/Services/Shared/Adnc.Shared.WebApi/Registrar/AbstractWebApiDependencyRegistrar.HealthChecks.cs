@@ -21,26 +21,37 @@ public abstract partial class AbstractWebApiDependencyRegistrar
         if (checkingMysql)
         {
             var mysqlConfig = Configuration.GetSection(MysqlConfig.Name).Get<MysqlConfig>();
+            if (mysqlConfig is null)
+                throw new NullReferenceException("mysqlconfig is null");
             checksBuilder.AddMySql(mysqlConfig.ConnectionString);
         }
 
         if (checkingMongodb)
         {
             var mongoConfig = Configuration.GetSection(MongoConfig.Name).Get<MongoConfig>();
+            if (mongoConfig is null)
+                throw new NullReferenceException("mongoConfig is null");
             checksBuilder.AddMongoDb(mongoConfig.ConnectionString);
         }
 
         if (checkingRedis)
         {
             var redisConfig = Configuration.GetSection(RedisConfig.Name).Get<RedisConfig>();
+            if (redisConfig is null)
+                throw new NullReferenceException("redisConfig is null");
             checksBuilder.AddRedis(redisConfig.Dbconfig.ConnectionString);
         }
 
         if (checkingRabitmq)
+        {
+            var rabitmqConfig = Configuration.GetSection(RabbitMqConfig.Name).Get<RabbitMqConfig>();
+            if (rabitmqConfig is null)
+                throw new NullReferenceException("rabitmqConfig is null");
             checksBuilder.AddRabbitMQ(provider =>
             {
                 return provider.GetRequiredService<IRabbitMqConnection>().Connection;
             });
+        }
 
         return checksBuilder;
     }
