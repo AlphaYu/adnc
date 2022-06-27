@@ -19,42 +19,43 @@ namespace Adnc.Infra.EventBus.RabbitMq
         {
         }
 
-        internal static RabbitMqConnection GetInstance(IOptions<RabbitMqConfig> options, ILogger<dynamic> logger)
+        internal static RabbitMqConnection GetInstance(IOptions<RabbitMqConfig> options, string clientProvidedName, ILogger<dynamic> logger)
         {
-            if (_uniqueInstance == null || _uniqueInstance.Connection == null || _uniqueInstance.Connection.IsOpen == false)
+            if (_uniqueInstance is null)
             {
                 lock (_lockObject)
                 {
-                    if (_uniqueInstance == null || _uniqueInstance.Connection == null || _uniqueInstance.Connection.IsOpen == false)
+                    if (_uniqueInstance is null)
                     {
-                        _uniqueInstance = new RabbitMqConnection(options, logger);
+                        _uniqueInstance = new RabbitMqConnection(options, clientProvidedName, logger);
                     }
                 }
             }
             return _uniqueInstance;
         }
 
-        private RabbitMqConnection(IOptions<RabbitMqConfig> options, ILogger<dynamic> logger)
+        private RabbitMqConnection(IOptions<RabbitMqConfig> options, string clientProvidedName, ILogger<dynamic> logger)
         {
             _logger = logger;
 
             var factory = new ConnectionFactory()
             {
+                ClientProvidedName = clientProvidedName,
                 HostName = options.Value.HostName,
                 VirtualHost = options.Value.VirtualHost,
                 UserName = options.Value.UserName,
                 Password = options.Value.Password,
-                Port = options.Value.Port
-                //Rabbitmq集群需要加这两个参数
-                //AutomaticRecoveryEnabled = true,
+                Port = options.Value.Port,
+                //Rabbitmq集群必需加这两个参数
+                AutomaticRecoveryEnabled = true,
                 //TopologyRecoveryEnabled=true
             };
 
             Policy.Handle<SocketException>()
                   .Or<BrokerUnreachableException>()
-                  .WaitAndRetry(6, retryAttempt => TimeSpan.FromSeconds(1), (ex, time, retryCount, content) =>
+                  .WaitAndRetry(2, retryAttempt => TimeSpan.FromSeconds(1), (ex, time, retryCount, content) =>
                   {
-                      if (6 == retryCount)
+                      if (2 == retryCount)
                           throw ex;
                       _logger.LogError(ex, string.Format("{0}:{1}", retryCount, ex.Message));
                   })
