@@ -59,7 +59,6 @@ public class ProductController : AdncControllerBase
     /// <param name="search"></param>
     /// <returns></returns>
     [HttpGet]
-    [Permission("", PermissionAttribute.JwtWithBasicSchemes)]
     public async Task<ActionResult<List<ProductDto>>> GetListAsync([FromQuery] ProductSearchListDto search) => await _productSrv.GetListAsync(search);
 
     /// <summary>
