@@ -11,21 +11,24 @@ public abstract partial class AbstractApplicationDependencyRegistrar : IDependen
     /// <param name="tableNamePrefix">cap表面前缀</param>
     /// <param name="groupName">群组名子</param>
     /// <param name="func">回调函数</param>
+    [Obsolete("please call AddAdncInfraCap method")]
     protected virtual void AddEventBusSubscribers<TSubscriber>(Action<IServiceCollection> action = null)
         where TSubscriber : class, ICapSubscribe
     {
+        AddCapEventBus<TSubscriber>(action);
+    }
+
+    /// <summary>
+    /// 注册CAP组件(实现事件总线及最终一致性（分布式事务）的一个开源的组件)
+    /// </summary>
+    protected virtual void AddCapEventBus<TSubscriber>(Action<IServiceCollection> action = null)
+    where TSubscriber : class, ICapSubscribe
+    {
         action?.Invoke(Services);
-
-        var tableNamePrefix = "cap";
-        var groupName = $"cap.{ServiceInfo.ShortName}.{this.GetEnvShortName()}".ToLower();
-
-        //add skyamp
-        //Services.AddSkyApmExtensions().AddCap();
-
-        Services.AddSingleton<TSubscriber>();
-
-        Services.AddCap(x =>
+        Services.AddAdncInfraCap<TSubscriber>(x =>
         {
+            var tableNamePrefix = "cap";
+            var groupName = $"cap.{ServiceInfo.ShortName}.{this.GetEnvShortName()}".ToLower();
             var mysqlConfig = MysqlSection.Get<MysqlConfig>();
             x.UseMySql(config =>
             {
@@ -42,6 +45,10 @@ public abstract partial class AbstractApplicationDependencyRegistrar : IDependen
                 option.Port = rabbitMqConfig.Port;
                 option.UserName = rabbitMqConfig.UserName;
                 option.Password = rabbitMqConfig.Password;
+                option.ConnectionFactoryOptions = (facotry) =>
+                {
+                    facotry.ClientProvidedName = ServiceInfo.Id;
+                };
             });
             x.Version = ServiceInfo.Version;
             //默认值：cap.queue.{程序集名称},在 RabbitMQ 中映射到 Queue Names。
@@ -75,12 +82,21 @@ public abstract partial class AbstractApplicationDependencyRegistrar : IDependen
     /// 注册事件发布者相关服务
     /// </summary>
     /// <param name="action"></param>
+    [Obsolete("please casll AddAdncInfraRabbitMq  or AddEventBusSubscribers methods")]
     protected virtual void AddEventBusPublishers(Action<IServiceCollection> action = null)
+    {
+        AddRabbitMqClient();
+    }
+
+    /// <summary>
+    /// 注册RabbitMq-Client
+    /// </summary>
+    protected virtual void AddRabbitMqClient(Action<IServiceCollection> action = null)
     {
         action?.Invoke(Services);
 
         if (RabbitMqSection is not null)
-            Services.AddAdncInfraEventBus(RabbitMqSection);
+            Services.AddAdncInfraRabbitMq(RabbitMqSection);
     }
 
 }

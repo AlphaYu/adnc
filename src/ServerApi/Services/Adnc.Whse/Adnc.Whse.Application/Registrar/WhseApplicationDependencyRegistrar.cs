@@ -25,7 +25,6 @@ public sealed class WhseApplicationDependencyRegistrar : AbstractApplicationDepe
         AddRestClient<IUsrRestClient>(RpcConsts.UsrService, restPolicies);
         AddRestClient<IMaintRestClient>(RpcConsts.MaintService, restPolicies);
         //rpc-event
-        AddEventBusPublishers();
-        AddEventBusSubscribers<CapEventSubscriber>();
+        AddCapEventBus<CapEventSubscriber>();
     }
 }

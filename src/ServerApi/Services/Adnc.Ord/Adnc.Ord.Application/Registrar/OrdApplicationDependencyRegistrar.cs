@@ -26,7 +26,6 @@ public sealed class OrdApplicationDependencyRegistrar : AbstractApplicationDepen
         AddRestClient<IMaintRestClient>(RpcConsts.MaintService, restPolicies);
         AddRestClient<IWhseRestClient>(RpcConsts.WhseService, restPolicies);
         //rpc-event
-        AddEventBusPublishers();
-        AddEventBusSubscribers<CapEventSubscriber>();
+        AddCapEventBus<CapEventSubscriber>();
     }
 }

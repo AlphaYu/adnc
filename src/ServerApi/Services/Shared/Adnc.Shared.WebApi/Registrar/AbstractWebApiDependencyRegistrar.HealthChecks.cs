@@ -1,4 +1,5 @@
 ﻿using Adnc.Infra.EventBus.RabbitMq;
+using RabbitMQ.Client;
 
 namespace Adnc.Shared.WebApi.Registrar;
 
@@ -49,7 +50,26 @@ public abstract partial class AbstractWebApiDependencyRegistrar
                 throw new NullReferenceException("rabitmqConfig is null");
             checksBuilder.AddRabbitMQ(provider =>
             {
-                return provider.GetRequiredService<IRabbitMqConnection>().Connection;
+                var mqConnection = provider.GetService<IRabbitMqConnection>()?.Connection;
+                if (mqConnection is null)
+                {
+                    var serviceInfo = provider.GetService<IServiceInfo>();
+                    if (serviceInfo is null)
+                        throw new NullReferenceException($"{nameof(IServiceInfo)} is null");
+                    var factory = new ConnectionFactory
+                    {
+                        HostName = rabitmqConfig.HostName,
+                        Port = rabitmqConfig.Port,
+                        UserName = rabitmqConfig.UserName,
+                        Password = rabitmqConfig.Password,
+                        VirtualHost = rabitmqConfig.VirtualHost,
+                        ClientProvidedName = serviceInfo.Id,
+                        //Uri = new Uri($"amqps://{user}:{pass}@{host}/{vhost}"),
+                        AutomaticRecoveryEnabled = true
+                    };
+                    mqConnection = factory.CreateConnection();
+                }
+                return mqConnection;
             });
         }
 

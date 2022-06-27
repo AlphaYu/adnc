@@ -35,14 +35,15 @@ public class ServiceInfo : IServiceInfo
             var version = assemblyName.Version;
             var fullName = assemblyName.Name.ToLower();
             var serviceName = fullName.Replace(".", "-");
-            var ticks = DateTime.Now.GetTotalMilliseconds();
+            var ticks = DateTime.Now.GetTotalMilliseconds().ToLong();
+            var ticksHex = Convert.ToString(ticks,16);
             var envName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")?.ToLower();
             var serviceId = envName switch
             {
-                "development" => $"{serviceName}-dev-{ticks}",
-                "test" => $"{serviceName}-test-{ticks}",
-                "staging" => $"{serviceName}-stag-{ticks}",
-                "production" => $"{serviceName}-{ticks}",
+                "development" => $"{serviceName}-dev-{ticksHex}",
+                "test" => $"{serviceName}-test-{ticksHex}",
+                "staging" => $"{serviceName}-stag-{ticksHex}",
+                "production" => $"{serviceName}-{ticksHex}",
                 _ => throw new NullReferenceException("ASPNETCORE_ENVIRONMENT")
             };
 
