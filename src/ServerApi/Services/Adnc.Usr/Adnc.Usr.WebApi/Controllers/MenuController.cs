@@ -28,7 +28,7 @@ public class MenuController : AdncControllerBase
     /// <param name="menuDto">菜单</param>
     /// <returns></returns>
     [HttpPost]
-    [Permission(PermissionConsts.Menu.Create)]
+    [AdncAuthorize(PermissionConsts.Menu.Create)]
     [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<ActionResult<long>> CreateAsync([FromBody] MenuCreationDto menuDto)
         => CreatedResult(await _menuService.CreateAsync(menuDto));
@@ -40,7 +40,7 @@ public class MenuController : AdncControllerBase
     /// <param name="input">菜单</param>
     /// <returns></returns>
     [HttpPut("{id}")]
-    [Permission(PermissionConsts.Menu.Update)]
+    [AdncAuthorize(PermissionConsts.Menu.Update)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult> UpdateAsync([FromRoute] long id, [FromBody] MenuUpdationDto input)
         => Result(await _menuService.UpdateAsync(id, input));
@@ -51,7 +51,7 @@ public class MenuController : AdncControllerBase
     /// <param name="id">菜单ID</param>
     /// <returns></returns>
     [HttpDelete("{id}")]
-    [Permission(PermissionConsts.Menu.Delete)]
+    [AdncAuthorize(PermissionConsts.Menu.Delete)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult> DeleteAsync([FromRoute] long id)
         => Result(await _menuService.DeleteAsync(id));
@@ -61,7 +61,7 @@ public class MenuController : AdncControllerBase
     /// </summary>
     /// <returns></returns>
     [HttpGet()]
-    [Permission(PermissionConsts.Menu.GetList)]
+    [AdncAuthorize(PermissionConsts.Menu.GetList)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<List<MenuNodeDto>>> GetlistAsync()
         => await _menuService.GetlistAsync();

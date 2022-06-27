@@ -1,4 +1,4 @@
-﻿namespace Adnc.Shared.WebApi.Authentication;
+﻿namespace Adnc.Shared.WebApi.Authorization;
 
 public sealed class PermissionRemoteHandler : AbstractPermissionHandler
 {

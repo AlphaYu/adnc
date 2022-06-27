@@ -22,7 +22,7 @@ public class UserController : AdncControllerBase
     /// <param name="input">用户信息</param>
     /// <returns></returns>
     [HttpPost]
-    [Permission(PermissionConsts.User.Create)]
+    [AdncAuthorize(PermissionConsts.User.Create)]
     [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<ActionResult<long>> CreateAsync([FromBody] UserCreationDto input)
         => CreatedResult(await _userService.CreateAsync(input));
@@ -34,7 +34,7 @@ public class UserController : AdncControllerBase
     /// <param name="input">用户信息</param>
     /// <returns></returns>
     [HttpPut("{id}")]
-    [Permission(PermissionConsts.User.Update)]
+    [AdncAuthorize(PermissionConsts.User.Update)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult> UpdateAsync([FromRoute] long id, [FromBody] UserUpdationDto input)
         => Result(await _userService.UpdateAsync(id, input));
@@ -45,7 +45,7 @@ public class UserController : AdncControllerBase
     /// <param name="id">用户ID</param>
     /// <returns></returns>
     [HttpDelete("{id}")]
-    [Permission(PermissionConsts.User.Delete)]
+    [AdncAuthorize(PermissionConsts.User.Delete)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult> DeleteAsync([FromRoute] long id)
         => Result(await _userService.DeleteAsync(id));
@@ -57,7 +57,7 @@ public class UserController : AdncControllerBase
     /// <param name="roleIds">角色</param>
     /// <returns></returns>
     [HttpPut("{id}/roles")]
-    [Permission(PermissionConsts.User.SetRole)]
+    [AdncAuthorize(PermissionConsts.User.SetRole)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult> SetRoleAsync([FromRoute] long id, [FromBody] long[] roleIds)
         => Result(await _userService.SetRoleAsync(id, new UserSetRoleDto { RoleIds = roleIds }));
@@ -69,7 +69,7 @@ public class UserController : AdncControllerBase
     /// <param name="status">状态</param>
     /// <returns></returns>
     [HttpPut("{id}/status")]
-    [Permission(PermissionConsts.User.ChangeStatus)]
+    [AdncAuthorize(PermissionConsts.User.ChangeStatus)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult> ChangeStatus([FromRoute] long id, [FromBody] SimpleDto<int> status)
         => Result(await _userService.ChangeStatusAsync(id, status.Value));
@@ -80,7 +80,7 @@ public class UserController : AdncControllerBase
     /// <param name="input">用户Ids与状态</param>
     /// <returns></returns>
     [HttpPut("batch/status")]
-    [Permission(PermissionConsts.User.ChangeStatus)]
+    [AdncAuthorize(PermissionConsts.User.ChangeStatus)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult> ChangeStatus([FromBody] UserChangeStatusDto input)
         => Result(await _userService.ChangeStatusAsync(input.UserIds, input.Status));
@@ -109,7 +109,7 @@ public class UserController : AdncControllerBase
     /// <param name="search">查询条件</param>
     /// <returns></returns>
     [HttpGet()]
-    [Permission(PermissionConsts.User.GetList)]
+    [AdncAuthorize(PermissionConsts.User.GetList)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<PageModelDto<UserDto>>> GetPagedAsync([FromQuery] UserSearchPagedDto search)
         => await _userService.GetPagedAsync(search);

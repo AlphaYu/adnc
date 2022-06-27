@@ -1,4 +1,5 @@
 ﻿using Adnc.Shared.WebApi.Authentication.Basic;
+using Adnc.Shared.WebApi.Authorization;
 
 namespace Adnc.Shared.WebApi.Authentication;
 

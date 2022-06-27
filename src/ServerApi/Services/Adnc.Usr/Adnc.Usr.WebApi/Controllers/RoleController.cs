@@ -18,7 +18,7 @@ public class RoleController : AdncControllerBase
     /// <param name="input">角色查询条件</param>
     /// <returns></returns>
     [HttpGet()]
-    [Permission(PermissionConsts.Role.GetList)]
+    [AdncAuthorize(PermissionConsts.Role.GetList)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<PageModelDto<RoleDto>>> GetPagedAsync([FromQuery] RolePagedSearchDto input)
         => await _roleService.GetPagedAsync(input);
@@ -39,7 +39,7 @@ public class RoleController : AdncControllerBase
     /// <param name="id">角色ID</param>
     /// <returns></returns>
     [HttpDelete("{id}")]
-    [Permission(PermissionConsts.Role.Delete)]
+    [AdncAuthorize(PermissionConsts.Role.Delete)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult> DeleteAsync([FromRoute] long id)
         => Result(await _roleService.DeleteAsync(id));
@@ -51,7 +51,7 @@ public class RoleController : AdncControllerBase
     /// <param name="permissions">用户权限Ids</param>
     /// <returns></returns>
     [HttpPut("{id}/permissons")]
-    [Permission(PermissionConsts.Role.SetPermissons)]
+    [AdncAuthorize(PermissionConsts.Role.SetPermissons)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult> SetPermissonsAsync([FromRoute] long id, [FromBody] long[] permissions)
         => Result(await _roleService.SetPermissonsAsync(new RoleSetPermissonsDto() { RoleId = id, Permissions = permissions }));
@@ -62,7 +62,7 @@ public class RoleController : AdncControllerBase
     /// <param name="input">角色</param>
     /// <returns></returns>
     [HttpPost]
-    [Permission(PermissionConsts.Role.Create)]
+    [AdncAuthorize(PermissionConsts.Role.Create)]
     [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<ActionResult<long>> CreateAsync([FromBody] RoleCreationDto input)
         => CreatedResult(await _roleService.CreateAsync(input));
@@ -74,7 +74,7 @@ public class RoleController : AdncControllerBase
     /// <param name="input">角色</param>
     /// <returns></returns>
     [HttpPut("{id}")]
-    [Permission(PermissionConsts.Role.Update)]
+    [AdncAuthorize(PermissionConsts.Role.Update)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult> UpdateAsync([FromRoute] long id, [FromBody] RoleUpdationDto input)
         => Result(await _roleService.UpdateAsync(id, input));
