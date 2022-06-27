@@ -5,15 +5,6 @@
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'" />
 	<ItemGroup>
-		<PackageReference Include="Refit.HttpClientFactory" Version="6.3.2" />
-		<PackageReference Include="Grpc.Net.ClientFactory" Version="2.45.0" />
-		<PackageReference Include="Google.Protobuf" Version="3.20.1" />
-		<PackageReference Include="Grpc.Tools" Version="2.45.0">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
-	</ItemGroup>
-	<ItemGroup>
 		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Core\Adnc.Infra.Core.csproj" />
 	</ItemGroup>
 </Project>

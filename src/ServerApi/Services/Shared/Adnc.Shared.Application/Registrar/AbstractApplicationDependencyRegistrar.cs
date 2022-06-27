@@ -6,6 +6,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar : IDependen
     public abstract Assembly ApplicationLayerAssembly { get; }
     public abstract Assembly ContractsLayerAssembly { get; }
     public abstract Assembly RepositoryOrDomainLayerAssembly { get; }
+    protected SkyApmExtensions SkyApm { get; init; }
     protected List<Rpc.AddressNode> RpcAddressInfo { get; init; }
     protected IServiceCollection Services { get; init; }
     protected IConfiguration Configuration { get; init; }
@@ -18,7 +19,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar : IDependen
 
     protected AbstractApplicationDependencyRegistrar(IServiceCollection services)
     {
-        Services = services ?? throw new ArgumentException("IServiceCollection is null."); ;
+        Services = services ?? throw new ArgumentException("IServiceCollection is null."); 
         Configuration = services.GetConfiguration() ?? throw new ArgumentException("Configuration is null.");
         ServiceInfo = services.GetServiceInfo() ?? throw new ArgumentException("ServiceInfo is null.");
         RedisSection = Configuration.GetSection(RedisConfig.Name) ?? throw new ArgumentException("RedisSection is null.");
@@ -26,6 +27,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar : IDependen
         MysqlSection = Configuration.GetSection(MysqlConfig.Name) ?? throw new ArgumentException("MysqlSection is null.");
         ConsulSection = Configuration.GetSection(ConsulConfig.Name);
         RabbitMqSection = Configuration.GetSection(RabbitMqConfig.Name);
+        SkyApm = Services.AddSkyApmExtensions();
         RpcAddressInfo = Configuration.GetSection(Rpc.AddressNode.Name).Get<List<Rpc.AddressNode>>();
     }
 

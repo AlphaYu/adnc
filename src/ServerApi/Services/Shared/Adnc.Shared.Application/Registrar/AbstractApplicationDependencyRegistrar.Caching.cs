@@ -1,4 +1,6 @@
-﻿namespace Adnc.Shared.Application.Registrar;
+﻿using Adnc.Shared.Application.Caching.SkyApm;
+
+namespace Adnc.Shared.Application.Registrar;
 
 public abstract partial class AbstractApplicationDependencyRegistrar : IDependencyRegistrar
 {
@@ -9,7 +11,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar : IDependen
     protected virtual void AddCachingServices(Action<IServiceCollection> action = null)
     {
         action?.Invoke(Services);
-
+        SkyApm.AddCaching();
         Services.AddAdncInfraCaching(RedisSection);
         var serviceType = typeof(ICachePreheatable);
         var implTypes = ApplicationLayerAssembly.ExportedTypes.Where(type => type.IsAssignableTo(serviceType) && type.IsNotAbstractClass(true)).ToList();

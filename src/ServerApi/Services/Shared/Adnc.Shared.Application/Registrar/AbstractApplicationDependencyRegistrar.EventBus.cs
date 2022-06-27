@@ -1,5 +1,6 @@
 ﻿using DotNetCore.CAP;
 using Microsoft.EntityFrameworkCore;
+using SkyApm.Diagnostics.CAP;
 
 namespace Adnc.Shared.Application.Registrar;
 
@@ -25,6 +26,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar : IDependen
     where TSubscriber : class, ICapSubscribe
     {
         action?.Invoke(Services);
+        SkyApm.AddCap();
         Services.AddAdncInfraCap<TSubscriber>(x =>
         {
             var tableNamePrefix = "cap";

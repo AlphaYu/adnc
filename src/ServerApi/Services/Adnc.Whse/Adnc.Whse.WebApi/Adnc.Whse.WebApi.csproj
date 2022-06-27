@@ -15,11 +15,11 @@
 	  </EmbeddedResource>
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.3">
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.6">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.3">
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.6">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
@@ -30,7 +30,7 @@
 		<ProjectReference Include="..\Adnc.Whse.Application\Adnc.Whse.Application.csproj" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="Grpc.AspNetCore" Version="2.45.0" />
+		<PackageReference Include="Grpc.AspNetCore" Version="2.46.0" />
 		<Protobuf Include="..\..\Shared\Adnc.Shared.Rpc\Protos\Services\whsegrpc.proto" GrpcServices="Server" Link="Grpc\Protos\Services\whsegrpc.proto" ProtoRoot="..\..\Shared\Adnc.Shared.Rpc\" />
 	</ItemGroup>
 	<ProjectExtensions>
