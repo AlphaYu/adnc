@@ -1,4 +1,5 @@
-﻿using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
+﻿using FluentValidation;
+using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
 
 namespace Adnc.Shared.WebApi.Registrar;
 
@@ -31,7 +32,8 @@ public abstract partial class AbstractWebApiDependencyRegistrar
             .AddFluentValidation(cfg =>
             {
                 //Continue 验证失败，继续验证其他项
-                cfg.ValidatorOptions.CascadeMode = FluentValidation.CascadeMode.Continue;
+                ValidatorOptions.Global.DefaultClassLevelCascadeMode = CascadeMode.Continue;
+                //cfg.ValidatorOptions.DefaultClassLevelCascadeMode = FluentValidation.CascadeMode.Continue;
                 // Optionally set validator factory if you have problems with scope resolve inside validators.
                 // cfg.ValidatorFactoryType = typeof(HttpContextServiceProviderValidatorFactory);
             });
