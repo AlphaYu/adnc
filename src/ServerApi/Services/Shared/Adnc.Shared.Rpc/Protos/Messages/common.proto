@@ -1,5 +1,4 @@
 syntax = "proto3";
-import "google/protobuf/wrappers.proto";
 import "google/protobuf/any.proto";
 
 option csharp_namespace = "Adnc.Shared.Rpc.Grpc.Messages";
