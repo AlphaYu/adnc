@@ -15,7 +15,7 @@
 		<SatelliteResourceLanguages>zh-Hans</SatelliteResourceLanguages>
 		<SatelliteResourceLanguages>zh-Hant</SatelliteResourceLanguages>
 		<SatelliteResourceLanguages>en</SatelliteResourceLanguages>
-		<NoWarn>$(NoWarn);1591</NoWarn>
+		<NoWarn>$(NoWarn);1591;0436</NoWarn>
 		<ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
 	</PropertyGroup>
 </Project>
