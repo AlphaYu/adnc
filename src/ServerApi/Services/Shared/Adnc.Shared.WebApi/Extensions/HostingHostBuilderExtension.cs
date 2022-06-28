@@ -18,17 +18,25 @@ public static class WebApplicationBuilderExtension
     {
         if (builder is null)
             throw new ArgumentNullException(nameof(builder));
-
-        var initialData = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("ServiceName", serviceInfo.ServiceName) };
+        if (serviceInfo is null)
+            throw new ArgumentNullException(nameof(serviceInfo));
 
         // Configuration
         //builder.Configuration.AddCommandLine(args);
+        var initialData = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("ServiceName", serviceInfo.ServiceName) };
         builder.Configuration.AddInMemoryCollection(initialData);
         builder.Configuration.AddJsonFile($"{AppContext.BaseDirectory}/appsettings.shared.{builder.Environment.EnvironmentName}.json", true, true);
         builder.Configuration.AddJsonFile($"{AppContext.BaseDirectory}/appsettings.{builder.Environment.EnvironmentName}.json", true, true);
         if (builder.Environment.IsProduction() || builder.Environment.IsStaging())
         {
-            var consulOption = builder.Configuration.GetSection(ConsulConfig.Name).Get<ConsulConfig>();
+            var consulSection = builder.Configuration.GetSection(ConsulConfig.Name);
+            if(consulSection is null)
+                throw new NullReferenceException(nameof(consulSection));
+
+            var consulOption = consulSection.Get<ConsulConfig>();
+            if(consulOption is null)
+                throw new NullReferenceException(nameof(consulOption));
+
             consulOption.ConsulKeyPath = consulOption.ConsulKeyPath.Replace("$SHORTNAME", serviceInfo.ShortName);
             builder.Configuration.AddConsulConfiguration(consulOption, true);
         }
@@ -49,6 +57,9 @@ public static class WebApplicationBuilderExtension
         builder.WebHost.ConfigureKestrel((context, serverOptions) =>
         {
             var kestrelSection = context.Configuration.GetSection(KestrelConfig.Name);
+            if(kestrelSection is null)
+                throw new NullReferenceException(nameof(kestrelSection));
+
             serverOptions.Configure(kestrelSection);
         });
 

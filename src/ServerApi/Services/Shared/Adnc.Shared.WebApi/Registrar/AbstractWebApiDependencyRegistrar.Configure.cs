@@ -10,6 +10,7 @@ public abstract partial class AbstractWebApiDependencyRegistrar
         Services
             .Configure<JwtConfig>(Configuration.GetSection(JwtConfig.Name))
             .Configure<ThreadPoolSettings>(Configuration.GetSection(ThreadPoolSettings.Name))
+            .Configure<KestrelConfig>(Configuration.GetSection(KestrelConfig.Name))
             ;
     }
 }
