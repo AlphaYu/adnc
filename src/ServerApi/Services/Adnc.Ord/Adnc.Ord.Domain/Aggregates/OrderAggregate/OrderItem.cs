@@ -22,6 +22,7 @@ public class OrderItem : DomainEntity
 
     private OrderItem()
     {
+        Product = default!;
     }
 
     internal OrderItem(long id, long orderId, OrderItemProduct product, int count)
