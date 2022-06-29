@@ -5,13 +5,14 @@ namespace Adnc.Shared.Application.BloomFilter;
 public sealed class BloomFilterFactory
 {
     private readonly IEnumerable<IBloomFilter> _instances;
-    private readonly RedisConfig _redisConfig;
+    private readonly IOptions<RedisConfig> _redisOptions;
 
-    public BloomFilterFactory(IEnumerable<IBloomFilter> instances
-        , IOptionsMonitor<RedisConfig> redisOptions)
+    public BloomFilterFactory(
+        IEnumerable<IBloomFilter> instances
+        , IOptions<RedisConfig> redisOptions)
     {
         _instances = instances;
-        _redisConfig = redisOptions.CurrentValue;
+        _redisOptions = redisOptions;
     }
 
     public IBloomFilter Create(string name)
@@ -19,7 +20,7 @@ public sealed class BloomFilterFactory
         ArgumentCheck.NotNullOrWhiteSpace(name, nameof(name));
 
         IBloomFilter bloomFilter;
-        if (_redisConfig.EnableBloomFilter)
+        if (_redisOptions.Value.EnableBloomFilter)
             bloomFilter = _instances.FirstOrDefault(x => x.Name.EqualsIgnoreCase(name));
         else
             bloomFilter = _instances.FirstOrDefault(x => x.Name.EqualsIgnoreCase("null"));

@@ -4,8 +4,8 @@
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="Consul" Version="1.6.10.4" />
-		<PackageReference Include="Grpc.Net.Client" Version="2.45.0" />
+		<PackageReference Include="Consul" Version="1.6.10.6" />
+		<PackageReference Include="Grpc.Net.Client" Version="2.46.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.7" />
 		<PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="6.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.1" />

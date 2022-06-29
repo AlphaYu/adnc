@@ -7,17 +7,17 @@
 [ApiController]
 public class AccountController : AdncControllerBase
 {
-    private readonly JwtConfig _jwtConfig;
+    private readonly IOptions<JwtConfig> _jwtOptions;
     private readonly UserContext _userContext;
     private readonly IAccountAppService _accountService;
 
     public AccountController(
-        IOptionsSnapshot<JwtConfig> jwtConfig
+        IOptions<JwtConfig> jwtOptions
         , UserContext userContext
         , IAccountAppService accountService
         )
     {
-        _jwtConfig = jwtConfig.Value;
+        _jwtOptions = jwtOptions;
         _userContext = userContext;
         _accountService = accountService;
     }
@@ -36,8 +36,8 @@ public class AccountController : AdncControllerBase
         if (result.IsSuccess)
         {
             var validatedInfo = result.Content;
-            var accessToken = JwtTokenHelper.CreateAccessToken(_jwtConfig, validatedInfo.ValidationVersion, validatedInfo.Account, validatedInfo.Id.ToString(), validatedInfo.Name, validatedInfo.RoleIds);
-            var refreshToken = JwtTokenHelper.CreateRefreshToken(_jwtConfig, validatedInfo.ValidationVersion, validatedInfo.Id.ToString());
+            var accessToken = JwtTokenHelper.CreateAccessToken(_jwtOptions.Value, validatedInfo.ValidationVersion, validatedInfo.Account, validatedInfo.Id.ToString(), validatedInfo.Name, validatedInfo.RoleIds);
+            var refreshToken = JwtTokenHelper.CreateRefreshToken(_jwtOptions.Value, validatedInfo.ValidationVersion, validatedInfo.Id.ToString());
             var tokenInfo = new UserTokenInfoDto(accessToken.Token, accessToken.Expire, refreshToken.Token, refreshToken.Expire);
             return Created($"/auth/session", tokenInfo);
         }
@@ -61,7 +61,7 @@ public class AccountController : AdncControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<UserTokenInfoDto>> RefreshAccessTokenAsync([FromBody] UserRefreshTokenDto input)
     {
-        var claimOfId = JwtTokenHelper.GetClaimFromRefeshToken(_jwtConfig, input.RefreshToken, JwtRegisteredClaimNames.NameId);
+        var claimOfId = JwtTokenHelper.GetClaimFromRefeshToken(_jwtOptions.Value, input.RefreshToken, JwtRegisteredClaimNames.NameId);
         if (claimOfId is not null)
         {
             var id = claimOfId.Value.ToLong();
@@ -72,12 +72,12 @@ public class AccountController : AdncControllerBase
             if (validatedInfo is null)
                 return Forbid();
 
-            var jti = JwtTokenHelper.GetClaimFromRefeshToken(_jwtConfig, input.RefreshToken, JwtRegisteredClaimNames.Jti);
+            var jti = JwtTokenHelper.GetClaimFromRefeshToken(_jwtOptions.Value, input.RefreshToken, JwtRegisteredClaimNames.Jti);
             if (jti.Value != validatedInfo.ValidationVersion)
                 return Forbid();
 
-            var accessToken = JwtTokenHelper.CreateAccessToken(_jwtConfig, validatedInfo.ValidationVersion, validatedInfo.Account, validatedInfo.Id.ToString(), validatedInfo.Name, validatedInfo.RoleIds);
-            var refreshToken = JwtTokenHelper.CreateRefreshToken(_jwtConfig, validatedInfo.ValidationVersion, validatedInfo.Id.ToString());
+            var accessToken = JwtTokenHelper.CreateAccessToken(_jwtOptions.Value, validatedInfo.ValidationVersion, validatedInfo.Account, validatedInfo.Id.ToString(), validatedInfo.Name, validatedInfo.RoleIds);
+            var refreshToken = JwtTokenHelper.CreateRefreshToken(_jwtOptions.Value, validatedInfo.ValidationVersion, validatedInfo.Id.ToString());
 
             await _accountService.ChangeUserValidateInfoExpiresDtAsync(id.Value);
 
@@ -103,5 +103,13 @@ public class AccountController : AdncControllerBase
     [HttpGet()]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<ActionResult<UserValidatedInfoDto>> GetUserValidatedInfoAsync() => await _accountService.GetUserValidatedInfoAsync(_userContext.Id);
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<UserValidatedInfoDto>> GetUserValidatedInfoAsync()
+    {
+        var result = await _accountService.GetUserValidatedInfoAsync(_userContext.Id);
+        if (result is null)
+            return NotFound();
+
+        return Ok(result);
+    }
 }

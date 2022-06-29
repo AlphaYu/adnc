@@ -2,35 +2,48 @@
 
 public class CacheKeyBloomFilter : AbstractBloomFilter
 {
-    private readonly Lazy<IServiceProvider> _services;
-    private readonly CacheOptions.BloomFilterSetting _setting;
+    private readonly Lazy<IServiceProvider> _serviceProvider;
+    private readonly Lazy<IOptions<CacheOptions>> _cacheOptions;
 
-    public CacheKeyBloomFilter(Lazy<ICacheProvider> cache
-        , Lazy<IRedisProvider> redisProvider
-        , Lazy<IDistributedLocker> distributedLocker
-        , Lazy<IServiceProvider> services)
+    public CacheKeyBloomFilter(
+        Lazy<IOptions<CacheOptions>> cacheOptions,
+        Lazy<IRedisProvider> redisProvider,
+        Lazy<IDistributedLocker> distributedLocker,
+        Lazy<IServiceProvider> serviceProvider)
         : base(redisProvider, distributedLocker)
     {
-        _services = services;
-        _setting = cache.Value.CacheOptions.PenetrationSetting.BloomFilterSetting;
+        _serviceProvider = serviceProvider;
+        _cacheOptions = cacheOptions;
     }
 
-    public override string Name => _setting.Name;
+    public override string Name => _cacheOptions.Value.Value.PenetrationSetting.BloomFilterSetting.Name;
 
-    public override double ErrorRate => _setting.ErrorRate;
+    public override double ErrorRate => _cacheOptions.Value.Value.PenetrationSetting.BloomFilterSetting.ErrorRate;
 
-    public override int Capacity => _setting.Capacity;
+    public override int Capacity => _cacheOptions.Value.Value.PenetrationSetting.BloomFilterSetting.Capacity;
 
     public override async Task InitAsync()
     {
         var exists = await ExistsBloomFilterAsync();
         if (!exists)
         {
-            var values = new List<string>()
-            {
-                 CachingConsts.CfgListCacheKey
-                ,CachingConsts.DictListCacheKey
-            };
+            var values = new List<string>();
+            using var scope = _serviceProvider.Value.CreateScope();
+            var dictRepository = scope.ServiceProvider.GetRequiredService<IEfRepository<SysDict>>();
+            var dictIds = await dictRepository
+                .Where(x => x.Pid == 0)
+                .Select(x => x.Id)
+                .ToListAsync();
+            if (dictIds.IsNotNullOrEmpty())
+                values.AddRange(dictIds.Select(x => string.Concat(CachingConsts.DictSingleKeyPrefix, CachingConsts.LinkChar, x)));
+
+            var cfgRepository = scope.ServiceProvider.GetRequiredService<IEfRepository<SysDict>>();
+            var cfgIds = await dictRepository
+                .GetAll()
+                .Select(x => x.Id)
+                .ToListAsync();
+            if (cfgIds.IsNotNullOrEmpty())
+                values.AddRange(cfgIds.Select(x => string.Concat(CachingConsts.CfgSingleKeyPrefix, CachingConsts.LinkChar, x)));
 
             await InitAsync(values);
         }

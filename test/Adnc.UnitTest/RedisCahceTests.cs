@@ -125,7 +125,7 @@ public class RedisCahceTests : IClassFixture<RedisCacheFixture>
     [Fact]
     public void TestRemoveAll()
     {
-        _cache.CacheOptions.PenetrationSetting.Disable = true;
+        _cache.CacheOptions.Value.PenetrationSetting.Disable = true;
 
         var key01 = "TestRemoveAll01".ToLower();
         var key02 = "TestRemoveAll02".ToLower();
@@ -170,7 +170,7 @@ public class RedisCahceTests : IClassFixture<RedisCacheFixture>
     [Fact]
     public async Task TestKeyExpire()
     {
-        _cache.CacheOptions.PenetrationSetting.Disable = true;
+        _cache.CacheOptions.Value.PenetrationSetting.Disable = true;
 
         var cacheKey1 = nameof(TestKeyExpire).ToLower() + ":" + DateTime.Now.Ticks;
         var cacheKey2 = nameof(TestKeyExpire).ToLower() + ":" + DateTime.Now.Ticks;
@@ -210,25 +210,25 @@ public class RedisCahceTests : IClassFixture<RedisCacheFixture>
 
         await _redisProvider.KeyDelAsync(cacheKey);
 
-        await _redisProvider.BloomReserveAsync(cacheKey, 0.001, 10000000);
+        await _redisProvider.BfReserveAsync(cacheKey, 0.001, 10000000);
 
         var initValues = new List<string>();
         for (int index = 0; index < 100000; index++) initValues.Add($"adnc{index}");
-        await _redisProvider.BloomAddAsync(cacheKey, initValues);
+        await _redisProvider.BfAddAsync(cacheKey, initValues);
 
-        var trueResult = await _redisProvider.BloomExistsAsync(cacheKey, "adnc100");
+        var trueResult = await _redisProvider.BfExistsAsync(cacheKey, "adnc100");
         Assert.True(trueResult);
 
-        var falseResult = await _redisProvider.BloomExistsAsync(cacheKey, "adnc");
+        var falseResult = await _redisProvider.BfExistsAsync(cacheKey, "adnc");
         Assert.False(falseResult);
 
         var values = new List<string>() { "adnc88888", "adnc78888", "adnc68888", "adnc58888" };
-        var results = await _redisProvider.BloomExistsAsync(cacheKey, values);
+        var results = await _redisProvider.BfExistsAsync(cacheKey, values);
         var trueLength = results.Where(x => x == true).Count();
         Assert.Equal(values.Count, trueLength);
 
         values = new List<string>() { "danc888889", "danc888888", "danc8888888", "danc8888889" };
-        results = await _redisProvider.BloomExistsAsync(cacheKey, values);
+        results = await _redisProvider.BfExistsAsync(cacheKey, values);
         var falseLength = results.Where(x => x == false).Count();
         Assert.Equal(values.Count, falseLength);
     }

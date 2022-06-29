@@ -1,7 +1,4 @@
-﻿using System.Collections.Concurrent;
-using System.Reflection;
-
-namespace Adnc.Infra.Caching.Interceptor.Castle
+﻿namespace Adnc.Infra.Caching.Interceptor.Castle
 {
     public static class TypeExtensions
     {

@@ -37,6 +37,9 @@ public class Order : AggregateRootWithBasicAuditInfo
 
     private Order()
     {
+        Status = default!;
+        Receiver = default!;
+        Items = Array.Empty<OrderItem>();
     }
 
     internal Order(long id, long customerId, OrderReceiver orderReceiver, string? remark = null)

@@ -1,5 +1,4 @@
 ﻿using Castle.DynamicProxy;
-using System.Reflection;
 
 namespace Adnc.Infra.Caching.Interceptor.Castle
 {

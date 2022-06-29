@@ -6,11 +6,9 @@ public abstract class AbstracAuthenticationProcessor
     {
         var token = new JwtSecurityTokenHandler().ReadJwtToken(securityToken);
         if (token is null || token.Claims.IsNullOrEmpty())
-            return default;
+            return Array.Empty<Claim>();
 
         var claims = token.Claims.ToArray();
-        if (claims.IsNullOrEmpty())
-            return Array.Empty<Claim>();
 
         var idClaim = claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.NameId);
         if (idClaim is null)

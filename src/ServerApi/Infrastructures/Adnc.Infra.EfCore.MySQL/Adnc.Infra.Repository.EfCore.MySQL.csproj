@@ -15,8 +15,8 @@
 
 	<ItemGroup>
 		<PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="6.0.1" />
-		<PackageReference Include="DotNetCore.CAP" Version="6.0.1" />
-		<PackageReference Include="DotNetCore.CAP.MySql" Version="6.0.1" />
+		<PackageReference Include="DotNetCore.CAP" Version="6.1.0" />
+		<PackageReference Include="DotNetCore.CAP.MySql" Version="6.1.0" />
 	</ItemGroup>
 
 	<ItemGroup>

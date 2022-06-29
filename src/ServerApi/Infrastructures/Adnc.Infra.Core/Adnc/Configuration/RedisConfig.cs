@@ -11,7 +11,7 @@ public class RedisConfig
     public bool EnableBloomFilter { get; set; }
     public int LockMs { get; set; }
     public int SleepMs { get; set; }
-    public Dbconfig dbconfig { get; set; } = default!;
+    public Dbconfig Dbconfig { get; set; } = default!;
 }
 
 public class Dbconfig

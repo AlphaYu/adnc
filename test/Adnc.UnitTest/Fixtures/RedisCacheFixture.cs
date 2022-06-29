@@ -29,8 +29,8 @@ public class RedisCacheFixture
                 }
             }
         };
-
-        services.AddAdncInfraCaching(cacheOptions);
+        services.ConfigureOptions(cacheOptions);
+        //services.AddAdncInfraCaching(cacheOptions);
 
         Container = services.BuildServiceProvider();
     }

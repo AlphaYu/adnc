@@ -15,18 +15,18 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
-        var threadPoolConfig = Configuration.GetThreadPoolSettingsSection();
-        services.Configure<ThreadPoolSettings>(threadPoolConfig);
-
         var authenticationProviderKey = "mgmt";
-        var jwtConfig = Configuration.GetJWTSection().Get<JwtConfig>();
+        var threadPoolConfig = Configuration.GetSection(ThreadPoolSettings.Name);
+
         services
+            .Configure<ThreadPoolSettings>(threadPoolConfig)
             .AddAuthentication()
             .AddJwtBearer(authenticationProviderKey, options =>
             {
-                options.TokenValidationParameters = JwtSecurityTokenHandlerExtension.GenarateTokenValidationParameters(jwtConfig);
-            });
-
+                var bearerConfig = Configuration.GetSection(JwtConfig.Name).Get<JwtConfig>();
+                options.TokenValidationParameters = JwtSecurityTokenHandlerExtension.GenarateTokenValidationParameters(bearerConfig);
+            })
+            ;
         services
             .AddCors(options =>
             {
@@ -42,7 +42,8 @@ public class Startup
             })
             .AddOcelot(Configuration)
             .AddConsul()
-            .AddPolly();
+            .AddPolly()
+            ;
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

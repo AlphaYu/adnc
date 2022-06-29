@@ -1,4 +1,4 @@
-﻿namespace Adnc.Shared.WebApi.Authentication;
+﻿namespace Adnc.Shared.WebApi.Authorization;
 
 public abstract class AbstractPermissionHandler : AuthorizationHandler<PermissionRequirement>
 {
@@ -7,14 +7,20 @@ public abstract class AbstractPermissionHandler : AuthorizationHandler<Permissio
         if (context.User.Identity.IsAuthenticated && context.Resource is HttpContext httpContext)
         {
             var authHeader = httpContext.Request.Headers["Authorization"].ToString();
-            if (authHeader != null && authHeader.StartsWith(Basic.BasicDefaults.AuthenticationScheme, StringComparison.OrdinalIgnoreCase))
+            if (authHeader != null && authHeader.StartsWith(Authentication.Basic.BasicDefaults.AuthenticationScheme, StringComparison.OrdinalIgnoreCase))
             {
                 context.Succeed(requirement);
                 return;
             }
 
             var userContext = httpContext.RequestServices.GetService<UserContext>();
-            var codes = httpContext.GetEndpoint().Metadata.GetMetadata<PermissionAttribute>().Codes;
+            var codes = httpContext.GetEndpoint().Metadata?.GetMetadata<AdncAuthorizeAttribute>()?.Codes;
+            if (codes.IsNullOrEmpty())
+            {
+                context.Succeed(requirement);
+                return;
+            }
+
             var result = await CheckUserPermissions(userContext.Id, codes, userContext.RoleIds);
             if (result)
             {

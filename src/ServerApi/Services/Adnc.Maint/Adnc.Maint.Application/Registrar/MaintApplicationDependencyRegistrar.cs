@@ -21,5 +21,7 @@ public sealed class MaintApplicationDependencyRegistrar : AbstractApplicationDep
         var restPolicies = this.GenerateDefaultRefitPolicies();
         AddRestClient<IAuthRestClient>(RpcConsts.UsrService, restPolicies);
         AddRestClient<IUsrRestClient>(RpcConsts.UsrService, restPolicies);
+
+        AddRabbitMqClient();
     }
 }

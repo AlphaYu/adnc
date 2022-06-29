@@ -139,6 +139,18 @@
     },
     //cus services
     {
+      "DownstreamPathTemplate": "/cus/cap/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 50030
+        }
+      ],
+      "UpstreamPathTemplate": "/cus/cap/{everything}",
+      "UpstreamHttpMethod": [ "Get"]
+    },
+    {
       "DownstreamPathTemplate": "/cus{everything}",
       "DownstreamScheme": "http",
       "AuthenticationOptions": {

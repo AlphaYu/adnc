@@ -1,9 +1,6 @@
 ﻿using Adnc.Infra.Caching.Core;
 using Adnc.Infra.Core.Interceptor;
 using Castle.DynamicProxy;
-using Microsoft.Extensions.Logging;
-using Polly;
-using System.Reflection;
 
 namespace Adnc.Infra.Caching.Interceptor.Castle
 {
@@ -132,7 +129,7 @@ namespace Adnc.Infra.Caching.Interceptor.Castle
                 var (cacheKeys, expireDt) = ProcessEvictBefore(invocation, evictAttribute);
 
                 var cancelTokenSource = new CancellationTokenSource();
-                var timeoutPolicy = Policy.Timeout(_cacheProvider.CacheOptions.PollyTimeoutSeconds, Polly.Timeout.TimeoutStrategy.Optimistic);
+                var timeoutPolicy = Policy.Timeout(_cacheProvider.CacheOptions.Value.PollyTimeoutSeconds, Polly.Timeout.TimeoutStrategy.Optimistic);
                 try
                 {
                     timeoutPolicy.Execute((cancellToken) =>
@@ -167,7 +164,7 @@ namespace Adnc.Infra.Caching.Interceptor.Castle
             {
                 var (cacheKeys, expireDt) = ProcessEvictBefore(invocation, evictAttribute);
                 var cancelTokenSource = new CancellationTokenSource();
-                var timeoutPolicy = Policy.TimeoutAsync(_cacheProvider.CacheOptions.PollyTimeoutSeconds, Polly.Timeout.TimeoutStrategy.Optimistic);
+                var timeoutPolicy = Policy.TimeoutAsync(_cacheProvider.CacheOptions.Value.PollyTimeoutSeconds, Polly.Timeout.TimeoutStrategy.Optimistic);
                 try
                 {
                     await timeoutPolicy.ExecuteAsync(async (cancellToken) =>
@@ -246,7 +243,7 @@ namespace Adnc.Infra.Caching.Interceptor.Castle
             {
                 var (cacheKeys, expireDt) = ProcessEvictBefore(invocation, evictAttribute);
                 var cancelTokenSource = new CancellationTokenSource();
-                var timeoutPolicy = Policy.TimeoutAsync<TResult>(_cacheProvider.CacheOptions.PollyTimeoutSeconds, Polly.Timeout.TimeoutStrategy.Optimistic);
+                var timeoutPolicy = Policy.TimeoutAsync<TResult>(_cacheProvider.CacheOptions.Value.PollyTimeoutSeconds, Polly.Timeout.TimeoutStrategy.Optimistic);
                 try
                 {
                     result = await timeoutPolicy.ExecuteAsync(async (cancellToken) =>
@@ -310,7 +307,7 @@ namespace Adnc.Infra.Caching.Interceptor.Castle
                 needRemovedKeys.UnionWith(cacheKeys);
             }
 
-            var keyExpireSeconds = _cacheProvider.CacheOptions.PollyTimeoutSeconds + 1;
+            var keyExpireSeconds = _cacheProvider.CacheOptions.Value.PollyTimeoutSeconds + 1;
             _cacheProvider.KeyExpireAsync(needRemovedKeys, keyExpireSeconds).GetAwaiter().GetResult();
 
             return (needRemovedKeys.ToList(), DateTime.Now.AddSeconds(keyExpireSeconds));

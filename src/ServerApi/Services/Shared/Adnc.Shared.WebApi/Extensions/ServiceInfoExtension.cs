@@ -1,8 +1,8 @@
-﻿namespace Adnc.Shared.WebApi
+﻿namespace System.Reflection
 {
     public static class ServiceInfoExtension
     {
-        private static object lockObj = new();
+        private static readonly object lockObj = new();
         private static Assembly appAssembly;
 
         /// <summary>

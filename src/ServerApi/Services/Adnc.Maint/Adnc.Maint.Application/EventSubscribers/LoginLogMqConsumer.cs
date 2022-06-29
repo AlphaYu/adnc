@@ -12,10 +12,11 @@ public sealed class LoginLogMqConsumer : BaseRabbitMqConsumer
 
     private readonly ILogger<LoginLogMqConsumer> _logger;
 
-    public LoginLogMqConsumer(IOptionsMonitor<RabbitMqConfig> options
+    public LoginLogMqConsumer(
+        IRabbitMqConnection mqConnection
        , ILogger<LoginLogMqConsumer> logger
        , IServiceProvider services)
-        : base(options, logger)
+        : base(mqConnection, logger)
     {
         _services = services;
         _logger = logger;

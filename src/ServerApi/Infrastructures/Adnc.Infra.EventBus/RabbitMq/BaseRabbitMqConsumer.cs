@@ -1,10 +1,5 @@
-﻿using Adnc.Infra.Core.Configuration;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using RabbitMQ.Client;
+﻿using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
-using System.Text;
 
 namespace Adnc.Infra.EventBus.RabbitMq
 {
@@ -14,9 +9,9 @@ namespace Adnc.Infra.EventBus.RabbitMq
         private readonly IModel _channel;
         private readonly ILogger<dynamic> _logger;
 
-        protected BaseRabbitMqConsumer(IOptionsMonitor<RabbitMqConfig> options, ILogger<dynamic> logger)
+        protected BaseRabbitMqConsumer(IRabbitMqConnection RabbitMqConnection, ILogger<dynamic> logger)
         {
-            _connection = RabbitMqConnection.GetInstance(options, logger).Connection;
+            _connection = RabbitMqConnection.Connection;
             _channel = _connection.CreateModel();
             _logger = logger;
         }

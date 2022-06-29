@@ -4,12 +4,13 @@ public record OrderItemProduct : ValueObject
 {
     public long Id { get; }
 
-    public string Name { get; }
+    public string Name { get; } 
 
     public decimal Price { get; }
 
     private OrderItemProduct()
     {
+        Name = string.Empty;
     }
 
     public OrderItemProduct(long id, string name, decimal price)

@@ -56,7 +56,7 @@ public abstract class AbstractBloomFilter : IBloomFilter
         if (!exists)
             throw new ArgumentNullException(this.Name, $"call {nameof(InitAsync)} methos before");
 
-        return await _redisProvider.Value.BloomAddAsync(this.Name, value);
+        return await _redisProvider.Value.BfAddAsync(this.Name, value);
     }
 
     public virtual async Task<bool[]> AddAsync(IEnumerable<string> values)
@@ -65,12 +65,12 @@ public abstract class AbstractBloomFilter : IBloomFilter
         if (!exists)
             throw new ArgumentNullException(this.Name, $"call {nameof(InitAsync)} methos before");
 
-        return await _redisProvider.Value.BloomAddAsync(this.Name, values);
+        return await _redisProvider.Value.BfAddAsync(this.Name, values);
     }
 
-    public virtual async Task<bool> ExistsAsync(string value)   => await _redisProvider.Value.BloomExistsAsync(this.Name, value);
+    public virtual async Task<bool> ExistsAsync(string value)   => await _redisProvider.Value.BfExistsAsync(this.Name, value);
 
-    public virtual async Task<bool[]> ExistsAsync(IEnumerable<string> values) => await _redisProvider.Value.BloomExistsAsync(this.Name, values);
+    public virtual async Task<bool[]> ExistsAsync(IEnumerable<string> values) => await _redisProvider.Value.BfExistsAsync(this.Name, values);
 
     public abstract Task InitAsync();
 
@@ -90,8 +90,8 @@ public abstract class AbstractBloomFilter : IBloomFilter
         {
             if (values.IsNotNullOrEmpty())
             {
-                await _redisProvider.Value.BloomReserveAsync(this.Name, this.ErrorRate, this.Capacity);
-                await _redisProvider.Value.BloomAddAsync(this.Name, values);
+                await _redisProvider.Value.BfReserveAsync(this.Name, this.ErrorRate, this.Capacity);
+                await _redisProvider.Value.BfAddAsync(this.Name, values);
             }
         }
         finally

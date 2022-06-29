@@ -18,7 +18,7 @@ public class DeptController : AdncControllerBase
     /// <param name="id">部门ID</param>
     /// <returns></returns>
     [HttpDelete("{id}")]
-    [Permission(PermissionConsts.Dept.Delete)]
+    [AdncAuthorize(PermissionConsts.Dept.Delete)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult> Delete([FromRoute] long id)
         => Result(await _deptService.DeleteAsync(id));
@@ -29,7 +29,7 @@ public class DeptController : AdncControllerBase
     /// <param name="input">部门</param>
     /// <returns></returns>
     [HttpPost]
-    [Permission(PermissionConsts.Dept.Create)]
+    [AdncAuthorize(PermissionConsts.Dept.Create)]
     [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<ActionResult<long>> CreateAsync([FromBody] DeptCreationDto input)
         => CreatedResult(await _deptService.CreateAsync(input));
@@ -41,7 +41,7 @@ public class DeptController : AdncControllerBase
     /// <param name="input">部门</param>
     /// <returns></returns>
     [HttpPut("{id}")]
-    [Permission(PermissionConsts.Dept.Update)]
+    [AdncAuthorize(PermissionConsts.Dept.Update)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult<long>> UpdateAsync([FromRoute] long id, [FromBody] DeptUpdationDto input)
         => Result(await _deptService.UpdateAsync(id, input));
@@ -51,7 +51,7 @@ public class DeptController : AdncControllerBase
     /// </summary>
     /// <returns></returns>
     [HttpGet()]
-    [Permission(PermissionConsts.Dept.GetList, PermissionAttribute.JwtWithBasicSchemes)]
+    [AdncAuthorize(PermissionConsts.Dept.GetList, AdncAuthorizeAttribute.JwtWithBasicSchemes)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<List<DeptTreeDto>>> GetListAsync()
         => await _deptService.GetTreeListAsync();

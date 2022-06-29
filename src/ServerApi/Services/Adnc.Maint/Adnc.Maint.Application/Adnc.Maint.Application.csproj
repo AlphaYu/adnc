@@ -1,9 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<Import Project="..\..\..\build\common.props" />
 	<ItemGroup>
-		<Folder Include="EventSubscribers\" />
-	</ItemGroup>
-	<ItemGroup>
 		<ProjectReference Include="..\..\Shared\Adnc.Shared.Rpc\Adnc.Shared.Rpc.csproj" />
 		<ProjectReference Include="..\..\Shared\Adnc.Shared.Application\Adnc.Shared.Application.csproj" />
 		<ProjectReference Include="..\Adnc.Maint.Application.Contracts\Adnc.Maint.Application.Contracts.csproj" />

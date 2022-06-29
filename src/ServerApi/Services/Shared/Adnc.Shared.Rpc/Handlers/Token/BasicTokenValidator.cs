@@ -10,7 +10,7 @@ public static class BasicTokenValidator
         var configuration = ServiceLocator.Provider?.GetService<IConfiguration>();
         if (configuration == null)
             throw new ArgumentNullException(nameof(configuration));
-        var partners = configuration.GetRpcPartnersSection().Get<List<Partner>>();
+        var partners = configuration.GetSection(Partner.Name).Get<List<Partner>>();
         Partners = partners.ToDictionary(x => x.UserName);
     }
 

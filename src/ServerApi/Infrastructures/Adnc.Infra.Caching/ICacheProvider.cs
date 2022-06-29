@@ -12,7 +12,7 @@ namespace Adnc.Infra.Caching
         /// <value>The name.</value>
         string Name { get; }
 
-        CacheOptions CacheOptions { get; }
+        IOptions<CacheOptions> CacheOptions { get; }
 
         /// <summary>
         /// The serializer.

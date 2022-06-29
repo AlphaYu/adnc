@@ -11,7 +11,6 @@ public interface IDictAppService : IAppService
     /// <param name="input"></param>
     /// <returns></returns>
     [OperateLog(LogName = "新增字典")]
-    [CachingEvict(CacheKey = CachingConsts.DictListCacheKey)]
     Task<AppSrvResult<long>> CreateAsync(DictCreationDto input);
 
     /// <summary>
@@ -21,9 +20,9 @@ public interface IDictAppService : IAppService
     /// <param name="input"></param>
     /// <returns></returns>
     [OperateLog(LogName = "修改字典")]
-    [CachingEvict(CacheKey = CachingConsts.DictListCacheKey)]
+    [CachingEvict(CacheKeyPrefix = CachingConsts.DictSingleKeyPrefix)]
     [UnitOfWork]
-    Task<AppSrvResult> UpdateAsync(long id, DictUpdationDto input);
+    Task<AppSrvResult> UpdateAsync([CachingParam] long id, DictUpdationDto input);
 
     /// <summary>
     /// 删除字典
@@ -31,8 +30,8 @@ public interface IDictAppService : IAppService
     /// <param name="id"></param>
     /// <returns></returns>
     [OperateLog(LogName = "删除字典")]
-    [CachingEvict(CacheKey = CachingConsts.DictListCacheKey)]
-    Task<AppSrvResult> DeleteAsync(long id);
+    [CachingEvict(CacheKeyPrefix = CachingConsts.DictSingleKeyPrefix)]
+    Task<AppSrvResult> DeleteAsync([CachingParam] long id);
 
     /// <summary>
     /// 字典列表
@@ -42,9 +41,10 @@ public interface IDictAppService : IAppService
     Task<List<DictDto>> GetListAsync(DictSearchDto search);
 
     /// <summary>
-    /// 获取字典
+    /// 获取单个字典
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    Task<DictDto> GetAsync(long id);
+    [CachingAble(CacheKeyPrefix = CachingConsts.DictSingleKeyPrefix,Expiration = CachingConsts.OneMonth)]
+    Task<DictDto> GetAsync([CachingParam] long id);
 }

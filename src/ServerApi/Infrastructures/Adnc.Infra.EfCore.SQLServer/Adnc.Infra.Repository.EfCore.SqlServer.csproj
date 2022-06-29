@@ -4,9 +4,9 @@
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="DotNetCore.CAP" Version="6.0.1" />
-		<PackageReference Include="DotNetCore.CAP.SqlServer" Version="6.0.1" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.1" />
+		<PackageReference Include="DotNetCore.CAP" Version="6.1.0" />
+		<PackageReference Include="DotNetCore.CAP.SqlServer" Version="6.1.0" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.6" />
 	</ItemGroup>
 
 	<ItemGroup>

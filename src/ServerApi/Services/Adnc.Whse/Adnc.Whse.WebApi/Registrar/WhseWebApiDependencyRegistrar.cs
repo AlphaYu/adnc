@@ -12,6 +12,7 @@ public sealed class WhseWebApiDependencyRegistrar : AbstractWebApiDependencyRegi
     public override void AddAdnc()
     {
         AddWebApiDefault();
+        AddHealthChecks(true, true, true, true);
         Services.AddGrpc();
     }
 }

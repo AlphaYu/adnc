@@ -1,5 +1,4 @@
 ﻿using DotNetCore.CAP;
-using System.Linq.Expressions;
 
 namespace Adnc.Infra.EventBus.Cap
 {

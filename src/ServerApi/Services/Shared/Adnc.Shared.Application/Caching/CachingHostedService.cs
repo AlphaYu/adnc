@@ -31,7 +31,7 @@ public class CachingHostedService : BackgroundService
                 || model.CacheKeys?.Any() == false
                 || DateTime.Now > model.ExpireDt)
             {
-                await Task.Delay(_cacheProvider.CacheOptions.LockMs, stoppingToken);
+                await Task.Delay(_cacheProvider.CacheOptions.Value.LockMs, stoppingToken);
                 continue;
             }
 
@@ -48,7 +48,7 @@ public class CachingHostedService : BackgroundService
                 catch (Exception ex)
                 {
                     _logger.LogError(ex.Message, ex);
-                    await Task.Delay(_cacheProvider.CacheOptions.LockMs, stoppingToken);
+                    await Task.Delay(_cacheProvider.CacheOptions.Value.LockMs, stoppingToken);
                 }
             }
         }
