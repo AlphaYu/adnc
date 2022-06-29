@@ -30,7 +30,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar : IDependen
         Services.AddAdncInfraCap<TSubscriber>(x =>
         {
             var tableNamePrefix = "cap";
-            var groupName = $"cap.{ServiceInfo.ShortName}.{this.GetEnvShortName()}".ToLower();
+            var groupName = $"cap.{ServiceInfo.ShortName}.{this.GetEnvShortName()}";
             var mysqlConfig = MysqlSection.Get<MysqlConfig>();
             x.UseMySql(config =>
             {
