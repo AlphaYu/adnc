@@ -53,7 +53,7 @@ public sealed class WorkerNodeHostedService : BackgroundService
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message, ex);
+                _logger.LogError(ex, ex.Message);
                 await Task.Delay(_millisecondsDelay / 3, stoppingToken);
             }
         }
