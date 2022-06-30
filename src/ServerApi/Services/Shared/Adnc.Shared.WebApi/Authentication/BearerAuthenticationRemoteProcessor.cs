@@ -1,6 +1,6 @@
 ﻿namespace Adnc.Shared.WebApi.Authentication;
 
-public class BearerAuthenticationRemoteProcessor : AbstracAuthenticationProcessor
+public class BearerAuthenticationRemoteProcessor : AbstractAuthenticationProcessor
 {
     private IHttpContextAccessor _contextAccessor;
     private IAuthRestClient _authRestClient;

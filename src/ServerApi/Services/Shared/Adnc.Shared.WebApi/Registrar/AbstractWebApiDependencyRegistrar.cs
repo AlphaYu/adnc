@@ -37,10 +37,10 @@ public abstract partial class AbstractWebApiDependencyRegistrar : IDependencyReg
     /// <summary>
     /// 注册Webapi通用的服务
     /// </summary>
-    /// <typeparam name="TAuthenticationProcessor"><see cref="AbstracAuthenticationProcessor"/></typeparam>
+    /// <typeparam name="TAuthenticationProcessor"><see cref="AbstractAuthenticationProcessor"/></typeparam>
     /// <typeparam name="TAuthorizationHandler"><see cref="AbstractPermissionHandler"/></typeparam>
     protected virtual void AddWebApiDefault<TAuthenticationProcessor, TAuthorizationHandler>()
-        where TAuthenticationProcessor : AbstracAuthenticationProcessor
+        where TAuthenticationProcessor : AbstractAuthenticationProcessor
         where TAuthorizationHandler : AbstractPermissionHandler
     {
         Services
