@@ -101,7 +101,7 @@ public class AccountAppService : AbstractAppService, IAccountAppService
         log.Succeed = true;
         await channelWriter.WriteAsync(log);
 
-        var userValidtedInfo = new UserValidatedInfoDto(user.Id, user.Account, user.Name, user.RoleIds, user.Status, user.Password);
+        var userValidtedInfo = new UserValidatedInfoDto(user.Id, user.Account, user.Name, user.RoleIds, user.Status);
         await _cacheService.SetValidateInfoToCacheAsync(userValidtedInfo);
 
         return userValidtedInfo;
