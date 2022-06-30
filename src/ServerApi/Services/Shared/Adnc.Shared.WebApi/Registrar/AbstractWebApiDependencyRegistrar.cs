@@ -8,7 +8,6 @@ public abstract partial class AbstractWebApiDependencyRegistrar : IDependencyReg
     public string Name => "webapi";
     protected IConfiguration Configuration { get; init; }
     protected IServiceCollection Services { get; init; }
-    protected IHostEnvironment HostEnvironment { get; init; }
     protected IServiceInfo ServiceInfo { get; init; }
 
     /// <summary>
