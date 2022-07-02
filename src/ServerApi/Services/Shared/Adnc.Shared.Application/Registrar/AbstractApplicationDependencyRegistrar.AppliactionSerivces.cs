@@ -1,9 +1,10 @@
-﻿namespace Adnc.Shared.Application.Registrar;
+﻿using Microsoft.Extensions.DependencyInjection.Extensions;
+
+namespace Adnc.Shared.Application.Registrar;
 
 public abstract partial class AbstractApplicationDependencyRegistrar : IDependencyRegistrar
 {
-    protected ProxyGenerator CastleProxyGenerator => new();
-    protected virtual List<Type> DefaultInterceptorTypes => new() { typeof(OperateLogInterceptor), typeof(CachingInterceptor), typeof(UowInterceptor) };
+    protected static List<Type> DefaultInterceptorTypes => new() { typeof(OperateLogInterceptor), typeof(CachingInterceptor), typeof(UowInterceptor) };
 
     /// <summary>
     /// 注册Application服务
@@ -15,7 +16,6 @@ public abstract partial class AbstractApplicationDependencyRegistrar : IDependen
         var appServiceType = typeof(IAppService);
         var serviceTypes = ContractsLayerAssembly.GetExportedTypes().Where(type => type.IsInterface && type.IsAssignableTo(appServiceType)).ToList();
         serviceTypes.Remove(appServiceType);
-        var lifetime = ServiceLifetime.Scoped;
         if (serviceTypes.IsNullOrEmpty())
             return;
         serviceTypes.ForEach(serviceType =>
@@ -24,17 +24,17 @@ public abstract partial class AbstractApplicationDependencyRegistrar : IDependen
             if (implType is null)
                 return;
 
-            Services.Add(new ServiceDescriptor(implType, implType, lifetime));
-
-            var serviceDescriptor = new ServiceDescriptor(serviceType, provider =>
+            Services.AddScoped(implType);
+            Services.TryAddSingleton(new ProxyGenerator());
+            Services.AddScoped(serviceType, provider =>
             {
-                var interceptors = DefaultInterceptorTypes.ConvertAll(interceptorType => provider.GetService(interceptorType) as IInterceptor).ToArray();
-                var target = provider.GetService(implType);
                 var interfaceToProxy = serviceType;
-                var proxy = CastleProxyGenerator.CreateInterfaceProxyWithTarget(interfaceToProxy, target, interceptors);
+                var target = provider.GetService(implType);
+                var interceptors = DefaultInterceptorTypes.ConvertAll(interceptorType => provider.GetService(interceptorType) as IInterceptor).ToArray();
+                var proxyGenerator = provider.GetService<ProxyGenerator>();
+                var proxy = proxyGenerator.CreateInterfaceProxyWithTargetInterface(interfaceToProxy, target, interceptors);
                 return proxy;
-            }, lifetime);
-            Services.Add(serviceDescriptor);
+            });
         });
     }
 
