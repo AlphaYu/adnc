@@ -1,6 +1,6 @@
 ﻿namespace Adnc.Shared.WebApi.Authentication;
 
-public abstract class AbstracAuthenticationProcessor
+public abstract class AbstractAuthenticationProcessor
 {
     public async Task<Claim[]> ValidateAsync(string securityToken)
     {

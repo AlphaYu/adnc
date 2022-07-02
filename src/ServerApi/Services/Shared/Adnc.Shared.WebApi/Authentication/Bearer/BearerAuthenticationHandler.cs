@@ -5,14 +5,14 @@
 /// </summary>
 public class BearerAuthenticationHandler : AuthenticationHandler<BearerSchemeOptions>
 {
-    private AbstracAuthenticationProcessor _authenticationProcessor;
+    private AbstractAuthenticationProcessor _authenticationProcessor;
 
     public BearerAuthenticationHandler(
         IOptionsMonitor<BearerSchemeOptions> options,
         ILoggerFactory logger,
         UrlEncoder encoder,
         ISystemClock clock,
-        AbstracAuthenticationProcessor authenticationProcessor
+        AbstractAuthenticationProcessor authenticationProcessor
         ) : base(options, logger, encoder, clock)
     {
         _authenticationProcessor = authenticationProcessor;

@@ -9,15 +9,11 @@ public abstract partial class AbstractWebApiDependencyRegistrar
     {
         Services.AddCors(options =>
         {
-            var _corsHosts = Configuration
-            .GetValue("CorsHosts", string.Empty)
-            .Split(",", StringSplitOptions.RemoveEmptyEntries)
-            ;
-            
+            var corsHosts = Configuration.GetValue("CorsHosts", string.Empty).Split(",", StringSplitOptions.RemoveEmptyEntries);
             options.AddPolicy(ServiceInfo.CorsPolicy, policy =>
             {
                 policy
-                .WithOrigins(_corsHosts)
+                .WithOrigins(corsHosts)
                 .AllowAnyHeader()
                 .AllowAnyMethod()
                 .AllowCredentials();

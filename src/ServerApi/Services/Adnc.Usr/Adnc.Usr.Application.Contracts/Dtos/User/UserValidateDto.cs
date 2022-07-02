@@ -5,7 +5,7 @@ namespace Adnc.Usr.Application.Contracts.Dtos
     [Serializable]
     public record UserValidatedInfoDto : IDto
     {
-        public UserValidatedInfoDto(long id, string account, string name, string roleids, int status, string password)
+        public UserValidatedInfoDto(long id, string account, string name, string roleids, int status)
         {
             Id = id;
             Account = account;

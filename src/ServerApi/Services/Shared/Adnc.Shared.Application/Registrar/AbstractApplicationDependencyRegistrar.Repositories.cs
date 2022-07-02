@@ -59,7 +59,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar : IDependen
                 if (this.IsDevelopment())
                 {
                     //options.AddInterceptors(new DefaultDbCommandInterceptor())
-                    options.LogTo(Console.WriteLine)
+                    options.LogTo(Console.WriteLine,LogLevel.Information)
                                 .EnableSensitiveDataLogging()
                                 .EnableDetailedErrors();
                 }

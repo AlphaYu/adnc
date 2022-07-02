@@ -1,8 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<Import Project="..\..\build\common.props" />
-	<PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
 		<Nullable>enable</Nullable>
+		<DocumentationFile>.\Adnc.Infra.Repository.xml</DocumentationFile>
 	</PropertyGroup>
+	<ItemGroup>
+		<None Remove="Adnc.Infra.Repository.xml" />
+	</ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Include="Adnc.Infra.Repository.xml">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</EmbeddedResource>
+	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.6" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.6" />

@@ -21,10 +21,7 @@ public static class ApplicationBuilderExtension
         var configuration = app.ApplicationServices.GetService<IConfiguration>();
         var environment = app.ApplicationServices.GetService<IHostEnvironment>();
         var serviceInfo = app.ApplicationServices.GetService<IServiceInfo>();
-        var consulOptions = app.ApplicationServices.GetService<IOptions<ConsulConfig>>();
-
-        if (environment.IsDevelopment())
-            IdentityModelEventSource.ShowPII = true;
+        var consulOptions = app.ApplicationServices.GetService<IOptions<ConsulConfig>>();       
 
         var defaultFilesOptions = new DefaultFilesOptions();
         defaultFilesOptions.DefaultFileNames.Clear();
@@ -34,8 +31,15 @@ public static class ApplicationBuilderExtension
             .UseStaticFiles()
             .UseCustomExceptionHandler()
             .UseRealIp(x => x.HeaderKeys = new string[] { "X-Forwarded-For", "X-Real-IP" })
-            .UseCors(serviceInfo.CorsPolicy)
-            .UseMiniProfiler()
+            .UseCors(serviceInfo.CorsPolicy);
+
+        if(environment.IsDevelopment())
+        {
+            IdentityModelEventSource.ShowPII = true;
+            app.UseMiniProfiler();
+        }   
+
+        app
             .UseSwagger(c =>
             {
                 c.RouteTemplate = $"/{serviceInfo.ShortName}/swagger/{{documentName}}/swagger.json";
@@ -58,21 +62,20 @@ public static class ApplicationBuilderExtension
                 ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
             })
             .UseRouting()
-            .UseHttpMetrics()
-            ;
-        DotNetRuntimeStatsBuilder
+            .UseHttpMetrics();
+            DotNetRuntimeStatsBuilder
             .Customize()
             .WithContentionStats()
             .WithGcStats()
             .WithThreadPoolStats()
-            .StartCollecting()
-            ;
+            .StartCollecting();
+
         beforeAuthentication?.Invoke(app);
         app
             .UseAuthentication()
-            .UseAuthorization()
-            ;
+            .UseAuthorization();
         afterAuthorization?.Invoke(app);
+
         app
             .UseEndpoints(endpoints =>
             {
@@ -80,6 +83,7 @@ public static class ApplicationBuilderExtension
                 endpoints.MapMetrics();
                 endpoints.MapControllers().RequireAuthorization();
             });
+
         return app;
     }
 }

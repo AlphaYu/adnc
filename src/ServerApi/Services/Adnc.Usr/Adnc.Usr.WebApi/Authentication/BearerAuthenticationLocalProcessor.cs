@@ -1,6 +1,6 @@
 ﻿namespace Adnc.Usr.WebApi.Authentication;
 
-public class BearerAuthenticationLocalProcessor : AbstracAuthenticationProcessor
+public class BearerAuthenticationLocalProcessor : AbstractAuthenticationProcessor
 {
     private readonly IAccountAppService _accountAppService;
 

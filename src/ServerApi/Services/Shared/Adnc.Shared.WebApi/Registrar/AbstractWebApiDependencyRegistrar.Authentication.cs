@@ -11,11 +11,11 @@ public abstract partial class AbstractWebApiDependencyRegistrar
     /// 注册身份认证组件
     /// </summary>
     protected virtual void AddAuthentication<TAuthenticationHandler>()
-        where TAuthenticationHandler : AbstracAuthenticationProcessor
+        where TAuthenticationHandler : AbstractAuthenticationProcessor
     {
         JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
         Services
-            .AddScoped<AbstracAuthenticationProcessor, TAuthenticationHandler>();
+            .AddScoped<AbstractAuthenticationProcessor, TAuthenticationHandler>();
         Services
             .AddAuthentication(HybridDefaults.AuthenticationScheme)
             .AddHybrid()
