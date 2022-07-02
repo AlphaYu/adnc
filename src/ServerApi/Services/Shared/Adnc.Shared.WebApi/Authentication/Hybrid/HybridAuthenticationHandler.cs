@@ -17,7 +17,11 @@ public sealed class HybridAuthenticationHandler : AuthenticationHandler<HybridSc
         var endpoint = Context.GetEndpoint();
         var requestId = System.Diagnostics.Activity.Current?.Id ?? Context.TraceIdentifier;
         Logger.LogDebug($"requestid: {requestId}");
-        if (endpoint?.Metadata?.GetMetadata<IAllowAnonymous>() != null)
+
+        if (endpoint is null)
+            return await Task.FromResult(AuthenticateResult.Fail($"Invalid Authorization Header,{nameof(endpoint)} is null"));
+
+        if (endpoint.Metadata.GetMetadata<IAllowAnonymous>() != null)
             return await Task.FromResult(AuthenticateResult.NoResult());
 
         var authHeader = Request.Headers["Authorization"].ToString();
