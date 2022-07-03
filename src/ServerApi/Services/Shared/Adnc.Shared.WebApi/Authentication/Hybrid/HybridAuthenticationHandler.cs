@@ -19,7 +19,7 @@ public sealed class HybridAuthenticationHandler : AuthenticationHandler<HybridSc
         Logger.LogDebug($"requestid: {requestId}");
 
         if (endpoint is null)
-            return await Task.FromResult(AuthenticateResult.Fail($"Invalid Authorization Header,{nameof(endpoint)} is null"));
+            return await Task.FromResult(AuthenticateResult.NoResult());
 
         if (endpoint.Metadata.GetMetadata<IAllowAnonymous>() != null)
             return await Task.FromResult(AuthenticateResult.NoResult());
