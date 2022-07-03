@@ -17,7 +17,6 @@ public class CustomerController : AdncControllerBase
     /// </summary>
     /// <param name="input"><see cref="CustomerRegisterDto"/></param>
     /// <returns></returns>
-    [AllowAnonymous]
     [HttpPost]
     //[Permission("customerRegister")]
     [ProducesResponseType(StatusCodes.Status201Created)]
@@ -28,7 +27,6 @@ public class CustomerController : AdncControllerBase
     /// 充值
     /// </summary>
     /// <returns></returns>
-    [AllowAnonymous]
     [HttpPut("{id}/balance")]
     //[Permission("customerRecharge")]
     [ProducesResponseType(StatusCodes.Status200OK)]
