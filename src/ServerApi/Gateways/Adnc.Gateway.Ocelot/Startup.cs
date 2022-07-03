@@ -40,6 +40,12 @@ public class Startup
                     .AllowCredentials();
                 });
             })
+            .AddHttpLogging(logging =>
+            {
+                logging.LoggingFields = Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.All;
+                logging.RequestBodyLogLimit = 4096;
+                logging.ResponseBodyLogLimit = 4096;
+            })
             .AddOcelot(Configuration)
             .AddConsul()
             .AddPolly()
