@@ -15,28 +15,36 @@ public class RealIpMiddleware
 
     public async Task Invoke(HttpContext context)
     {
-        var headers = context.Request.Headers;
-        if (_option.HeaderKeys != null && _option.HeaderKeys.Length > 0)
+        if (_option.HeaderKey.IsNullOrWhiteSpace())
         {
-            foreach (var headerKey in _option.HeaderKeys)
-            {
-                var ips = headers[headerKey].FirstOrDefault();
-                if (!string.IsNullOrWhiteSpace(ips))
-                {
-                    var realIp = ips.Split(",", StringSplitOptions.RemoveEmptyEntries)[0];
-                    context.Connection.RemoteIpAddress = IPAddress.Parse(realIp);
-                    _logger.LogDebug($"Resolve real ip success: {context.Connection.RemoteIpAddress}");
-                    break;
-                }
-            }
+            await _next(context);
+            return;
         }
+
+        var ips = context.Request.Headers[_option.HeaderKey].FirstOrDefault()?.Trim();
+        if (ips.IsNullOrEmpty())
+        {
+            await _next(context);
+            return;
+        }
+
+        var realIp = ips.Split(",")[0];
+        if (realIp == string.Empty)
+        {
+            await _next(context);
+            return;
+        }
+
+        context.Connection.RemoteIpAddress = IPAddress.Parse(realIp);
+        _logger.LogDebug($"Resolve real ip success: {context.Connection.RemoteIpAddress}");
+
         await _next(context);
     }
 }
 
 public class FilterOption
 {
-    public string[] HeaderKeys { get; set; }
+    public string HeaderKey { get; set; }
 }
 
 public static class RealIpMiddlewareExtensions

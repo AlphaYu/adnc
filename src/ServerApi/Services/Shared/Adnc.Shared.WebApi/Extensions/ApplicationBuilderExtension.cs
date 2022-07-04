@@ -30,7 +30,7 @@ public static class ApplicationBuilderExtension
             .UseDefaultFiles(defaultFilesOptions)
             .UseStaticFiles()
             .UseCustomExceptionHandler()
-            .UseRealIp(x => x.HeaderKeys = new string[] { "X-Forwarded-For", "X-Real-IP" })
+            .UseRealIp(x => x.HeaderKey = "X-Forwarded-For")
             .UseCors(serviceInfo.CorsPolicy);
 
         if(environment.IsDevelopment())
