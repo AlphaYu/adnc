@@ -24,7 +24,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar : IDependen
         ServiceInfo = services.GetServiceInfo() ?? throw new ArgumentException("ServiceInfo is null.");
         RedisSection = Configuration.GetSection(RedisConfig.Name) ?? throw new ArgumentException("RedisSection is null.");
         MongoDbSection = Configuration.GetSection(MongoConfig.Name) ?? throw new ArgumentException("MongoDbSection is null.");
-        MysqlSection = Configuration.GetSection(MysqlConfig.Name) ?? throw new ArgumentException("MysqlSection is null.");
+        MysqlSection = Configuration.GetSection(MysqlConfig.Name);
         ConsulSection = Configuration.GetSection(ConsulConfig.Name);
         RabbitMqSection = Configuration.GetSection(RabbitMqConfig.Name);
         SkyApm = Services.AddSkyApmExtensions();

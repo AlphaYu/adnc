@@ -4,7 +4,7 @@
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="Yitter.IdGenerator" Version="1.0.12" />
+		<PackageReference Include="Yitter.IdGenerator" Version="1.0.13" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Adnc.Infra.Caching\Adnc.Infra.Caching.csproj" />

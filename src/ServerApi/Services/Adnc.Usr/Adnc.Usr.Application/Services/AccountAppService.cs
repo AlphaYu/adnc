@@ -60,8 +60,7 @@ public class AccountAppService : AbstractAppService, IAccountAppService
             return problem;
         }
 
-        //var logins = await _loginLogRepository.SelectAsync(5, x => new { x.Id, x.Succeed,x.CreateTime }, x => x.UserId == user.Id, x => x.Id, false);
-        //var failLoginCount = logins.Count(x => x.Succeed == false);
+        // TODO
         var failLoginCount = 2;
         if (failLoginCount >= 5)
         {

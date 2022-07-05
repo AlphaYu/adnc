@@ -25,7 +25,7 @@
 		</PackageReference>
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="Grpc.AspNetCore" Version="2.46.0" />
+		<PackageReference Include="Grpc.AspNetCore" Version="2.47.0" />
 		<Protobuf Include="..\..\Shared\Adnc.Shared.Rpc\Protos\Services\maintgrpc.proto" GrpcServices="Server" Link="Grpc\Protos\Services\maintgrpc.proto" ProtoRoot="..\..\Shared\Adnc.Shared.Rpc\" />
 	</ItemGroup>
 	<ItemGroup>

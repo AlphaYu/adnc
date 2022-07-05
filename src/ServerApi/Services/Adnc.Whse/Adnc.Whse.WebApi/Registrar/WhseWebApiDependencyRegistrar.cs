@@ -12,7 +12,10 @@ public sealed class WhseWebApiDependencyRegistrar : AbstractWebApiDependencyRegi
     public override void AddAdnc()
     {
         AddWebApiDefault();
-        AddHealthChecks(true, true, true, true);
+
+        var connectionString = Configuration.GetValue<string>("SqlServer:ConnectionString");
+        AddHealthChecks(false, true, true, true).AddSqlServer(connectionString);
+
         Services.AddGrpc();
     }
 }

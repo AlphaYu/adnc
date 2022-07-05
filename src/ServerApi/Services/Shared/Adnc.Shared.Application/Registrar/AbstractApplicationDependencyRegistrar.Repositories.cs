@@ -20,7 +20,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar : IDependen
     /// <summary>
     /// 注册EFCoreContext与仓储
     /// </summary>
-    protected virtual void AddEfCoreContextWithRepositories(Action<IServiceCollection> replaceDbContext = null)
+    protected virtual void AddEfCoreContextWithRepositories()
     {
         var serviceType = typeof(IEntityInfo);
         var implType = RepositoryOrDomainLayerAssembly.ExportedTypes.FirstOrDefault(type => type.IsAssignableTo(serviceType) && type.IsNotAbstractClass(true));
@@ -40,33 +40,36 @@ public abstract partial class AbstractApplicationDependencyRegistrar : IDependen
             };
         });
 
-        if (replaceDbContext is not null)
-            replaceDbContext.Invoke(Services);
-        else
-        {
-            var mysqlConfig = MysqlSection.Get<MysqlConfig>();
-            var serverVersion = new MariaDbServerVersion(new Version(10, 5, 4));
-            Services.AddAdncInfraEfCoreMySql(options =>
-            {
-                options.UseLowerCaseNamingConvention();
-                options.UseMySql(mysqlConfig.ConnectionString, serverVersion, optionsBuilder =>
-                {
-                    optionsBuilder.MinBatchSize(4)
-                                            .MigrationsAssembly(ServiceInfo.StartAssembly.GetName().Name.Replace("WebApi", "Migrations"))
-                                            .UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
-                });
+        AddEfCoreContext();
+    }
 
-                if (this.IsDevelopment())
-                {
-                    //options.AddInterceptors(new DefaultDbCommandInterceptor())
-                    options.LogTo(Console.WriteLine,LogLevel.Information)
-                                .EnableSensitiveDataLogging()
-                                .EnableDetailedErrors();
-                }
-                //替换默认查询sql生成器,如果通过mycat中间件实现读写分离需要替换默认SQL工厂。
-                //options.ReplaceService<IQuerySqlGeneratorFactory, AdncMySqlQuerySqlGeneratorFactory>();
+    /// <summary>
+    /// 注册EFCoreContext
+    /// </summary>
+    protected virtual void AddEfCoreContext()
+    {
+        var mysqlConfig = MysqlSection.Get<MysqlConfig>();
+        var serverVersion = new MariaDbServerVersion(new Version(10, 5, 4));
+        Services.AddAdncInfraEfCoreMySql(options =>
+        {
+            options.UseLowerCaseNamingConvention();
+            options.UseMySql(mysqlConfig.ConnectionString, serverVersion, optionsBuilder =>
+            {
+                optionsBuilder.MinBatchSize(4)
+                                        .MigrationsAssembly(ServiceInfo.StartAssembly.GetName().Name.Replace("WebApi", "Migrations"))
+                                        .UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
             });
-        }
+
+            if (this.IsDevelopment())
+            {
+                //options.AddInterceptors(new DefaultDbCommandInterceptor())
+                options.LogTo(Console.WriteLine, LogLevel.Information)
+                            .EnableSensitiveDataLogging()
+                            .EnableDetailedErrors();
+            }
+            //替换默认查询sql生成器,如果通过mycat中间件实现读写分离需要替换默认SQL工厂。
+            //options.ReplaceService<IQuerySqlGeneratorFactory, AdncMySqlQuerySqlGeneratorFactory>();
+        });
     }
 
     /// <summary>
