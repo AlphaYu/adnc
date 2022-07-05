@@ -37,8 +37,10 @@ public abstract class AdncDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        var entityInfos = _entityInfo.GetEntitiesTypeInfo().ToList();
-        Guard.Checker.NotNullOrAny(entityInfos, nameof(entityInfos));
+        var entityInfos = _entityInfo.GetEntitiesTypeInfo();
+        if (entityInfos.IsNullOrEmpty())
+            return;
+
         foreach (var info in entityInfos)
         {
             if (info.DataSeeding is null)
@@ -47,29 +49,10 @@ public abstract class AdncDbContext : DbContext
                 modelBuilder.Entity(info.Type).HasData(info.DataSeeding);
         }
 
-        var assembly = entityInfos.FirstOrDefault()?.Type.Assembly;
-        if (assembly is null)
-            return;
-
+        var assembly = entityInfos.First().Type.Assembly;
         modelBuilder.ApplyConfigurationsFromAssembly(assembly);
 
-        var types = entityInfos.Select(x => x.Type);
-        var entityTypes = modelBuilder.Model.GetEntityTypes().Where(x => types.Contains(x.ClrType));
-        entityTypes.ForEach(entityType =>
-        {
-            modelBuilder.Entity(entityType.Name, buider =>
-            {
-                var typeSummary = entityType.ClrType.GetSummary();
-                buider.HasComment(typeSummary);
-
-                entityType.GetProperties().ForEach(property =>
-                {
-                    string propertyName = property.Name;
-                    var memberSummary = entityType.ClrType?.GetMember(propertyName)?.FirstOrDefault()?.GetSummary();
-                    buider.Property(propertyName).HasComment(memberSummary);
-                });
-            });
-        });
+        SetComment(modelBuilder, entityInfos);
     }
 
     protected virtual int SetAuditFields()
@@ -89,5 +72,26 @@ public abstract class AdncDbContext : DbContext
         });
 
         return ChangeTracker.Entries<Entity>().Count();
+    }
+
+    protected virtual void SetComment(ModelBuilder modelBuilder, IEnumerable<EntityTypeInfo> entityInfos)
+    {
+        var types = entityInfos.Select(x => x.Type);
+        var entityTypes = modelBuilder.Model.GetEntityTypes().Where(x => types.Contains(x.ClrType));
+        entityTypes.ForEach(entityType =>
+        {
+            modelBuilder.Entity(entityType.Name, buider =>
+            {
+                var typeSummary = entityType.ClrType.GetSummary();
+                buider.HasComment(typeSummary);
+
+                entityType.GetProperties().ForEach(property =>
+                {
+                    string propertyName = property.Name;
+                    var memberSummary = entityType.ClrType?.GetMember(propertyName)?.FirstOrDefault()?.GetSummary();
+                    buider.Property(propertyName).HasComment(memberSummary);
+                });
+            });
+        });
     }
 }
