@@ -52,7 +52,7 @@
 		<PackageReference Include="NLog.Web.AspNetCore" Version="5.0.0">
 		  <TreatAsUsed>true</TreatAsUsed>
 		</PackageReference>
-		<PackageReference Include="SkyAPM.Agent.AspNetCore" Version="2.0.0">
+		<PackageReference Include="SkyAPM.Agent.AspNetCore" Version="1.3.0">
 		  <TreatAsUsed>true</TreatAsUsed>
 		</PackageReference>
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.1" />
