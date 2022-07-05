@@ -4,9 +4,9 @@
 		<OutputPath>..\Adnc.Whse.WebApi\bin\$(Configuration)</OutputPath>
 	</PropertyGroup>
 	<ItemGroup>
-		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.EfCore.MySQL\Adnc.Infra.Repository.EfCore.MySql.csproj" />
+	  <Folder Include="Migrations\" />
 	</ItemGroup>
 	<ItemGroup>
-	  <Folder Include="Migrations\" />
+	  <ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.EfCore.SQLServer\Adnc.Infra.Repository.EfCore.SqlServer.csproj" />
 	</ItemGroup>
 </Project>

@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<Import Project="..\..\..\build\common.props" />
 	<ItemGroup>
+		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.EfCore.SQLServer\Adnc.Infra.Repository.EfCore.SqlServer.csproj" />
 		<ProjectReference Include="..\..\Shared\Adnc.Shared.Rpc\Adnc.Shared.Rpc.csproj" />	
 		<ProjectReference Include="..\..\Shared\Adnc.Shared.Application\Adnc.Shared.Application.csproj" />
 		<ProjectReference Include="..\Adnc.Whse.Application.Contracts\Adnc.Whse.Application.Contracts.csproj" />
