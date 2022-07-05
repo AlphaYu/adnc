@@ -16,7 +16,7 @@
 	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.6" />
 		<PackageReference Include="SkyAPM.Agent.AspNetCore" Version="2.0.0" />
-		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.20.0" />
+		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.21.0" />
 	</ItemGroup>
 
 	<ItemGroup>

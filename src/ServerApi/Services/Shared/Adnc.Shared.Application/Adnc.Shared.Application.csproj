@@ -3,7 +3,7 @@
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'" />
 	<ItemGroup>
 		<PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.1.0" />
-		<PackageReference Include="Grpc.Net.ClientFactory" Version="2.46.0" />
+		<PackageReference Include="Grpc.Net.ClientFactory" Version="2.47.0" />
 		<PackageReference Include="Microsoft.Extensions.Http.Polly" Version="6.0.6" />
 		<PackageReference Include="DotNetCore.CAP.RabbitMQ" Version="6.1.0" />
 		<PackageReference Include="DotNetCore.CAP.Dashboard" Version="6.1.0" />
