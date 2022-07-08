@@ -10,7 +10,8 @@ namespace Adnc.Shared.Application.Channels
         private readonly ChannelReader<TModel> _reader;
 
         static ChannelHelper()
-        { }
+        {
+        }
 
         private ChannelHelper()
         {
