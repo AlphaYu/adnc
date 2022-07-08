@@ -10,7 +10,7 @@ public static class ApplicationBuilderConsulExtension
         if (kestrelConfig is null)
             throw new NotImplementedException(nameof(kestrelConfig));
 
-        var registration = host.Services.GetRequiredService<ConsulRegistration>();
+        var registration = ActivatorUtilities.CreateInstance<RegistrationProvider>(host.Services);
         var ipAddresses = registration.GetLocalIpAddress("InterNetwork");
         if (ipAddresses.IsNullOrEmpty())
             throw new NotImplementedException(nameof(kestrelConfig));
@@ -32,7 +32,7 @@ public static class ApplicationBuilderConsulExtension
         if (serviceAddress is null)
             throw new ArgumentNullException(nameof(serviceAddress));
 
-        var registration = host.Services.GetRequiredService<ConsulRegistration>();
+        var registration = ActivatorUtilities.CreateInstance<RegistrationProvider>(host.Services);
         registration.Register(serviceAddress, serviceId);
         return host;
     }
@@ -42,7 +42,7 @@ public static class ApplicationBuilderConsulExtension
         if (instance is null)
             throw new ArgumentNullException(nameof(instance));
 
-        var registration = host.Services.GetRequiredService<ConsulRegistration>();
+        var registration = ActivatorUtilities.CreateInstance<RegistrationProvider>(host.Services);
         registration.Register(instance);
         return host;
     }

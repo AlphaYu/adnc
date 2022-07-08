@@ -1,13 +1,15 @@
-﻿namespace Adnc.Infra.Consul.Discover.Handler
+﻿using Adnc.Infra.Consul.Discover.Balancers;
+
+namespace Adnc.Infra.Consul.Discover.Handler
 {
     public class ConsulDiscoverDelegatingHandler : DelegatingHandler
     {
-        private readonly IServiceBuilder _serviceBuilder;
+        private readonly ConsulClient _consulClient;
         private readonly ILogger<ConsulDiscoverDelegatingHandler> _logger;
 
-        public ConsulDiscoverDelegatingHandler(IServiceBuilder serviceBuilder, ILogger<ConsulDiscoverDelegatingHandler> logger)
+        public ConsulDiscoverDelegatingHandler(ConsulClient consulClient, ILogger<ConsulDiscoverDelegatingHandler> logger)
         {
-            _serviceBuilder = serviceBuilder;
+            _consulClient = consulClient;
             _logger = logger;
         }
 
@@ -15,18 +17,19 @@
         {
             var currentUri = request.RequestUri;
             if (currentUri is null)
-                throw new ArgumentNullException(nameof(request.RequestUri));
+                throw new NullReferenceException(nameof(request.RequestUri));
 
-            var baseUri = await _serviceBuilder
-                                                            .WithUriScheme(currentUri.Scheme)
+            var discoverProvider = new DiscoverProviderBuilder(_consulClient)
+                                                            .WithCacheSeconds(5)
                                                             .WithServiceName(currentUri.Host)
                                                             .WithLoadBalancer(TypeLoadBalancer.RandomLoad)
-                                                            .BuildAsync()
+                                                            .Build()
                                                             ;
-            if (baseUri is null)
-                throw new ArgumentNullException($"{currentUri.Host} does not contain helath service address!");
+            var baseUri = await discoverProvider.GetSingleHealthServiceAsync();
+            if (baseUri.IsNullOrWhiteSpace())
+                throw new NullReferenceException($"{currentUri.Host} does not contain helath service address!");
             else
-                request.RequestUri = new Uri(baseUri, currentUri.PathAndQuery);
+                request.RequestUri = new Uri($"{currentUri.Scheme}://{baseUri}/{currentUri.PathAndQuery}");
 
             try
             {
