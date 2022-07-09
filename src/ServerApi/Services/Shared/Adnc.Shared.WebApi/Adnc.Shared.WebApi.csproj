@@ -2,6 +2,9 @@
 	<Import Project="..\..\..\build\common.props" />
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'" />
 	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
+	<ItemGroup>
 	  <Content Include="appsettings.shared.Development.json">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
@@ -26,9 +29,6 @@
 	<ItemGroup>
 		<PackageReference Include="FluentValidation" Version="11.1.0" />
 		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.8" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<PackageReference Include="MicroElements.Swashbuckle.FluentValidation" Version="5.7.0" />
 		<PackageReference Include="MiniProfiler.AspNetCore.Mvc" Version="4.2.22" />
 		<PackageReference Include="MiniProfiler.EntityFrameworkCore" Version="4.2.22" />
@@ -58,7 +58,6 @@
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.1" />
 		<PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.3.1" />
 	</ItemGroup>
-
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Caching\Adnc.Infra.Caching.csproj" />
 		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Consul\Adnc.Infra.Consul.csproj" />
