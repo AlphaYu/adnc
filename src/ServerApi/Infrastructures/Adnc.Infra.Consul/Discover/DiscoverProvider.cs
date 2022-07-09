@@ -7,8 +7,13 @@ namespace Adnc.Infra.Consul.Discover
     internal class DiscoverProvider : IDiscoverProvider
     {
         private static readonly SemaphoreSlim _slimlock = new(1, 1);
-        private static readonly IMemoryCache _memoryCache = ServiceLocator.Provider?.GetRequiredService<IMemoryCache>() ?? throw new NullReferenceException(nameof(IMemoryCache));
-        private static readonly ILogger<DiscoverProvider> _logger = ServiceLocator.Provider?.GetRequiredService<ILogger<DiscoverProvider>>() ?? throw new NullReferenceException(nameof(ILogger));
+        private static readonly IMemoryCache _memoryCache = new MemoryCache(Options.Create(new MemoryCacheOptions
+        {
+            CompactionPercentage = 0.05,
+            ExpirationScanFrequency= new TimeSpan(0, 0, 1),
+            SizeLimit = 5 * 1024 * 1024 //5M
+        }));
+        private static readonly ILogger<DiscoverProvider> _logger = new LoggerFactory().CreateLogger<DiscoverProvider>();
         private readonly ConsulClient _consulClient = default!;
 
         internal DiscoverProvider(ConsulClient client)
