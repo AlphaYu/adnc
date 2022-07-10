@@ -15,7 +15,7 @@ public static class ServiceCollectionExtension
             return services;
         services
             .AddSingleton<IEventPublisher, CapPublisher>()
-            .AddSingleton<TSubscriber>()
+            .AddScoped<TSubscriber>()
             .AddCap(setupAction)
             ;
         return services;
