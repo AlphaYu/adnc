@@ -1,4 +1,6 @@
-﻿namespace Adnc.Shared.Application.Registrar;
+﻿using Adnc.Shared.Application.Services.Trackers;
+
+namespace Adnc.Shared.Application.Registrar;
 
 public abstract partial class AbstractApplicationDependencyRegistrar : IDependencyRegistrar
 {
@@ -19,7 +21,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar : IDependen
 
     protected AbstractApplicationDependencyRegistrar(IServiceCollection services)
     {
-        Services = services ?? throw new ArgumentException("IServiceCollection is null."); 
+        Services = services ?? throw new ArgumentException("IServiceCollection is null.");
         Configuration = services.GetConfiguration() ?? throw new ArgumentException("Configuration is null.");
         ServiceInfo = services.GetServiceInfo() ?? throw new ArgumentException("ServiceInfo is null.");
         RedisSection = Configuration.GetSection(RedisConfig.Name) ?? throw new ArgumentException("RedisSection is null.");
@@ -73,5 +75,8 @@ public abstract partial class AbstractApplicationDependencyRegistrar : IDependen
         Services.AddHostedService<CachingHostedService>();
         Services.AddHostedService<BloomFilterHostedService>();
         Services.AddHostedService<Channels.ChannelConsumersHostedService>();
+        Services.AddScoped<IMessageTracker, DbMessageTrackerService>();
+        Services.AddScoped<IMessageTracker, RedisMessageTrackerService>();
+        Services.AddScoped<MessageTrackerFactory>();
     }
 }
