@@ -7,6 +7,12 @@ namespace Adnc.Infra.EventBus.Cap.Filters;
 /// </summary>
 public sealed class DefaultCapFilter : SubscribeFilter
 {
+    private readonly ILogger<DefaultCapFilter> _logger;
+    public DefaultCapFilter(ILogger<DefaultCapFilter> logger)
+    {
+        _logger = logger;
+    }
+
     public override void OnSubscribeExecuting(ExecutingContext context)
     {
     }
@@ -17,5 +23,6 @@ public sealed class DefaultCapFilter : SubscribeFilter
 
     public override void OnSubscribeException(ExceptionContext context)
     {
+        _logger.LogError(context.Exception, context.Exception.Message);
     }
 }
