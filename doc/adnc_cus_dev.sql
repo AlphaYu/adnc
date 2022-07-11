@@ -70,6 +70,17 @@ CREATE TABLE `customertransactionlog`  (
   CONSTRAINT `fk_customertransactionlog_customer_customerid` FOREIGN KEY (`customerid`) REFERENCES `customer` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
+DROP TABLE IF EXISTS `eventtracker`;
+CREATE TABLE `eventtracker` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `eventid` bigint(20) NOT NULL,
+  `trackername` varchar(50) NOT NULL,
+  `createby` bigint(20) NOT NULL COMMENT '创建人',
+  `createtime` datetime(6) NOT NULL COMMENT '创建时间/注册时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='事件跟踪/处理信息';
+
+
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
