@@ -11,7 +11,10 @@ public abstract partial class AbstractApplicationDependencyRegistrar : IDependen
     protected virtual void AddCachingServices(Action<IServiceCollection> action = null)
     {
         action?.Invoke(Services);
-        SkyApm.AddCaching();
+        if(this.IsEnableSkyApm())
+        {
+            SkyApm.AddCaching();
+        }
         Services.AddAdncInfraCaching(RedisSection);
         var serviceType = typeof(ICachePreheatable);
         var implTypes = ApplicationLayerAssembly.ExportedTypes.Where(type => type.IsAssignableTo(serviceType) && type.IsNotAbstractClass(true)).ToList();
