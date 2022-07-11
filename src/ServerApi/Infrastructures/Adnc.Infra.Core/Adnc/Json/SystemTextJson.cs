@@ -5,7 +5,7 @@ namespace Adnc.Infra.Core.Json;
 
 public static class SystemTextJson
 {
-    public static JsonSerializerOptions GetAdncDefaultOptions()
+    public static JsonSerializerOptions GetAdncDefaultOptions(Action<JsonSerializerOptions>? configOptions = null)
     {
         var options = new JsonSerializerOptions();
         options.Converters.Add(new DateTimeConverter());
@@ -19,7 +19,7 @@ public static class SystemTextJson
         options.DictionaryKeyPolicy = JsonNamingPolicy.CamelCase;
         //匿名类型
         options.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
-
+        configOptions?.Invoke(options);
         return options;
     }
 
