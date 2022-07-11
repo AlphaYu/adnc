@@ -24,11 +24,12 @@
             <param name="input"></param>
             <returns></returns>
         </member>
-        <member name="M:Adnc.Whse.Application.Contracts.Services.IWarehouseAppService.BlockQtyAsync(Adnc.Whse.Application.Contracts.Dtos.WarehouseBlockQtyDto)">
+        <member name="M:Adnc.Whse.Application.Contracts.Services.IWarehouseAppService.BlockQtyAsync(Adnc.Shared.Events.OrderCreatedEvent,Adnc.Shared.Application.Contracts.Interfaces.IMessageTracker)">
             <summary>
             锁定商品库存
             </summary>
-            <param name="input"></param>
+            <param name="eventDto"></param>
+             <param name="tracker"></param>
             <returns></returns>
         </member>
         <member name="M:Adnc.Whse.Application.Contracts.Services.IWarehouseAppService.GetPagedAsync(Adnc.Whse.Application.Contracts.Dtos.WarehouseSearchDto)">
