@@ -1,6 +1,6 @@
 ﻿namespace Adnc.Cus.Entities;
 
-public class EntityInfo : AbstractEntityInfo
+public class EntityInfo : Shared.Entities.AbstracSharedEntityInfo
 {
     public override IEnumerable<EntityTypeInfo> GetEntitiesTypeInfo()
     {

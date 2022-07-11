@@ -1,49 +1,46 @@
 ﻿namespace Adnc.Cus.Application.EventSubscribers;
 
-public sealed class CapEventSubscriber : ICapSubscribe
+public sealed partial class CapEventSubscriber : ICapSubscribe
 {
-    private readonly IServiceProvider _services;
+    private readonly ICustomerAppService _customerSrv;
     private readonly ILogger<CapEventSubscriber> _logger;
+    private readonly IMessageTracker _tracker;
 
     public CapEventSubscriber(
-        IServiceProvider services
-        , ILogger<CapEventSubscriber> logger)
+        ICustomerAppService customerSrv,
+        ILogger<CapEventSubscriber> logger,
+        MessageTrackerFactory trackerFactory)
     {
-        _services = services;
+        _customerSrv = customerSrv;
         _logger = logger;
+        _tracker = trackerFactory.Create();
     }
-
-    #region local event
 
     /// <summary>
     /// 订阅充值事件
     /// </summary>
-    /// <param name="eto"></param>
+    /// <param name="eventDto"></param>
     /// <returns></returns>
     [CapSubscribe(nameof(CustomerRechargedEvent))]
-    public async Task ProcessCustomerRechargedEvent(CustomerRechargedEvent eto)
+    public async Task ProcessCustomerRechargedEvent(CustomerRechargedEvent eventDto)
     {
-        using var scope = _services.CreateScope();
-        var appSrv = scope.ServiceProvider.GetRequiredService<ICustomerAppService>();
-        await appSrv.ProcessRechargingAsync(eto.Data.TransactionLogId, eto.Data.CustomerId, eto.Data.Amount);
+        eventDto.EventTarget = nameof(ProcessCustomerRechargedEvent);
+        var hasProcessed = await _tracker.HasProcessedAsync(eventDto);
+        if (!hasProcessed)
+            await _customerSrv.ProcessRechargingAsync(eventDto, _tracker);
     }
-
-    #endregion local event
-
-    #region across service event
 
     /// <summary>
     /// 订阅付款事件
     /// </summary>
-    /// <param name="warehouseQtyBlockedEvent"></param>
+    /// <param name="eventDto"></param>
     /// <returns></returns>
     [CapSubscribe(nameof(OrderPaidEvent))]
-    public async Task ProcessOrderPaidEvent(OrderPaidEvent eto)
+    public async Task ProcessOrderPaidEvent(OrderPaidEvent eventDto)
     {
-        _logger.LogInformation("start.....");
-        _logger.LogInformation("end.....");
-        await Task.CompletedTask;
+        eventDto.EventTarget = nameof(ProcessOrderPaidEvent);
+        var hasProcessed = await _tracker.HasProcessedAsync(eventDto);
+        if (!hasProcessed)
+            await Task.CompletedTask;
     }
-
-    #endregion across service event
 }

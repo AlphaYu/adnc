@@ -11,7 +11,7 @@ public interface ICustomerAppService : IAppService
 
     [OperateLog(LogName = "处理充值")]
     [UnitOfWork]
-    Task<AppSrvResult> ProcessRechargingAsync(long transactionLogId, long customerId, decimal amount);
+    Task<AppSrvResult> ProcessRechargingAsync(CustomerRechargedEvent eventDto, IMessageTracker tracker);
 
     [OperateLog(LogName = "处理付款")]
     [UnitOfWork(SharedToCap = true)]
