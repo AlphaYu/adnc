@@ -9,6 +9,7 @@
             this.Data = default!;
             this.OccurredDate = DateTime.Now;
             this.EventSource = string.Empty;
+            this.EventTarget = string.Empty;
         }
 
         public EventEntity(long id, TData data, string source)
@@ -17,6 +18,7 @@
             this.Data = data;
             this.OccurredDate = DateTime.Now;
             this.EventSource = source;
+            this.EventTarget = string.Empty;
         }
 
         /// <summary>
@@ -30,9 +32,14 @@
         public virtual DateTime OccurredDate { get; set; }
 
         /// <summary>
-        /// 触发事件的对象
+        /// 触发事件的方法
         /// </summary>
         public virtual string EventSource { get; set; }
+
+        /// <summary>
+        /// 处理事件的方法
+        /// </summary>
+        public virtual string EventTarget { get; set; }
 
         /// <summary>
         /// 事件数据
