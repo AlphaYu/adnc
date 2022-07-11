@@ -8,5 +8,3 @@ public interface IMessageTracker
     Task<bool> HasProcessedAsync(long eventId, string trackerName);
     Task MarkAsProcessedAsync(long eventId, string trackerName);
 }
-
-public delegate Task MarkAsProcessedDelegae();
