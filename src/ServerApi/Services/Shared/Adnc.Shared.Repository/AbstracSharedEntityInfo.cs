@@ -1,10 +1,18 @@
 ﻿namespace Adnc.Shared.Entities;
 
-public abstract class AbstracSharedEntityInfo : AbstractEntityInfo
+public abstract class AbstracSharedEntityInfo : IEntityInfo
 {
-    protected override IEnumerable<Type> GetEntityTypes(Assembly assembly)
+    public abstract IEnumerable<EntityTypeInfo> GetEntitiesTypeInfo();
+
+    protected virtual IEnumerable<Type> GetEntityTypes(Assembly assembly)
     {
-        var typeList = base.GetEntityTypes(assembly) ?? new List<Type>();
+        var typeList = assembly.GetTypes().Where(m =>
+                                                   m.FullName != null
+                                                   && typeof(EfEntity).IsAssignableFrom(m)
+                                                   && !m.IsAbstract);
+        if (typeList is null)
+            typeList = new List<Type>();
+
         return typeList.Append(typeof(EventTracker));
     }
 }
