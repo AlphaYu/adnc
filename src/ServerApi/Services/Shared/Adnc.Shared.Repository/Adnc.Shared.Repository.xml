@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Adnc.Shared.Repository</name>
+    </assembly>
+    <members>
+        <member name="T:Adnc.Shared.Entities.EventTracker">
+            <summary>
+            事件跟踪/处理信息
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -8,6 +8,6 @@ public class EventTracker : EfBasicAuditEntity
     public long EventId { get; set; }
 
     [Required]
-    [MaxLength(30)]
+    [MaxLength(50)]
     public string TrackerName { get; set; }
 }
