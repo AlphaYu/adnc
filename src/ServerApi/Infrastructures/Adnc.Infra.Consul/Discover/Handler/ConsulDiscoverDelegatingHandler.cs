@@ -30,7 +30,11 @@ namespace Adnc.Infra.Consul.Discover.Handler
             if (baseUri.IsNullOrWhiteSpace())
                 throw new NullReferenceException($"{currentUri.Host} does not contain helath service address!");
             else
-                request.RequestUri = new Uri($"{currentUri.Scheme}://{baseUri}/{currentUri.PathAndQuery}");
+            {
+                var realRequestUri = new Uri($"{currentUri.Scheme}://{baseUri}{currentUri.PathAndQuery}");
+                request.RequestUri = realRequestUri;
+                _logger.LogDebug($"RequestUri:{request.RequestUri}");
+            }
 
             try
             {
