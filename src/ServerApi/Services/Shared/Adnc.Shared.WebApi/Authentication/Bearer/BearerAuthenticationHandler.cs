@@ -29,7 +29,7 @@ public class BearerAuthenticationHandler : AuthenticationHandler<BearerSchemeOpt
             if (token.IsNullOrWhiteSpace())
             {
                 Response.StatusCode = (int)HttpStatusCode.Forbidden;
-                authResult = AuthenticateResult.Fail("Invalid Authorization Token");
+                authResult = AuthenticateResult.Fail("Invalid Authorization Token,token is null");
                 return await Task.FromResult(authResult);
             }
 
@@ -49,7 +49,7 @@ public class BearerAuthenticationHandler : AuthenticationHandler<BearerSchemeOpt
             }
 
             Response.StatusCode = (int)HttpStatusCode.Forbidden;
-            authResult = AuthenticateResult.Fail("Invalid Authorization Token");
+            authResult = AuthenticateResult.Fail("Invalid Authorization Token, claims is null");
             return await Task.FromResult(authResult);
         }
         Response.StatusCode = (int)HttpStatusCode.Unauthorized;
