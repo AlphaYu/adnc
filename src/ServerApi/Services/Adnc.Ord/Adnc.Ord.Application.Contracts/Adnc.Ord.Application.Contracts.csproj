@@ -11,6 +11,7 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\..\Shared\Adnc.Shared.Application.Contracts\Adnc.Shared.Application.Contracts.csproj" />
+	  <ProjectReference Include="..\..\Shared\Adnc.Shared\Adnc.Shared.csproj" />
 	</ItemGroup>
 	<ItemGroup>
 		<None Update="Adnc.Ord.Application.Contracts.xml">

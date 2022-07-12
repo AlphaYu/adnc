@@ -2,32 +2,31 @@
 
 public sealed class CapEventSubscriber : ICapSubscribe
 {
-    private readonly IServiceProvider _services;
+    private readonly IWarehouseAppService _wareHouserSrv;
     private readonly ILogger<CapEventSubscriber> _logger;
+    private readonly IMessageTracker _tracker;
 
     public CapEventSubscriber(
-        IServiceProvider services
-        , ILogger<CapEventSubscriber> logger)
+        IWarehouseAppService wareHouserSrv,
+        ILogger<CapEventSubscriber> logger,
+        MessageTrackerFactory trackerFactory)
     {
-        _services = services;
+        _wareHouserSrv = wareHouserSrv;
         _logger = logger;
+        _tracker = trackerFactory.Create();
     }
-
-    #region across service event
 
     /// <summary>
     /// 订阅订单创建事件
     /// </summary>
-    /// <param name="warehouseQtyBlockedEvent"></param>
+    /// <param name="eventDto"></param>
     /// <returns></returns>
     [CapSubscribe(nameof(OrderCreatedEvent))]
-    public async Task ProcessOrderCreatedEvent(OrderCreatedEvent eto)
+    public async Task ProcessOrderCreatedEvent(OrderCreatedEvent eventDto)
     {
-        using var scope = _services.CreateScope();
-        var data = eto.Data;
-        var appSrv = scope.ServiceProvider.GetRequiredService<IWarehouseAppService>();
-        await appSrv.BlockQtyAsync(new WarehouseBlockQtyDto { OrderId = data.OrderId, Products = data.Products.Select(x => (x.ProductId, x.Qty)) });
+        eventDto.EventTarget = nameof(ProcessOrderCreatedEvent);
+        var hasProcessed = await _tracker.HasProcessedAsync(eventDto);
+        if (!hasProcessed)
+            await _wareHouserSrv.BlockQtyAsync(eventDto, _tracker);
     }
-
-    #endregion across service event
 }

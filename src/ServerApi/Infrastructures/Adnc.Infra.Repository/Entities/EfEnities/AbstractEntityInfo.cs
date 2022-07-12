@@ -7,7 +7,7 @@
             var efEntities = assembly.GetTypes().Where(m =>
                                                        m.FullName != null
                                                        && typeof(EfEntity).IsAssignableFrom(m)
-                                                       && !m.IsAbstract).ToArray();
+                                                       && !m.IsAbstract);
 
             return efEntities;
         }

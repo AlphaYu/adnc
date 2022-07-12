@@ -103,5 +103,14 @@ namespace Adnc.Shared.Application.Registrar
                 _ => throw new NullReferenceException(nameof(ASPNETCORE_ENVIRONMENT))
             };
         }
+
+        public static bool IsEnableSkyApm(this AbstractApplicationDependencyRegistrar _)
+        {
+            var env = Environment.GetEnvironmentVariable("ASPNETCORE_HOSTINGSTARTUPASSEMBLIES");
+            if (env.IsNullOrEmpty())
+                return false;
+            else
+                return env.Contains("SkyAPM.Agent.AspNetCore");
+        }
     }
 }

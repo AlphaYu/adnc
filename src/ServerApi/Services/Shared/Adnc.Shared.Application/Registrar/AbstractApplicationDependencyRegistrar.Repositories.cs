@@ -34,9 +34,9 @@ public abstract partial class AbstractApplicationDependencyRegistrar : IDependen
             var userContext = provider.GetRequiredService<UserContext>();
             return new Operater
             {
-                Id = userContext.Id,
-                Account = userContext.Account,
-                Name = userContext.Name
+                Id = userContext.Id == 0 ? 1600000000000 : userContext.Id,
+                Account = userContext.Account.IsNullOrEmpty() ? "system" : userContext.Account,
+                Name = userContext.Name.IsNullOrEmpty() ? "system" : userContext.Name
             };
         });
 

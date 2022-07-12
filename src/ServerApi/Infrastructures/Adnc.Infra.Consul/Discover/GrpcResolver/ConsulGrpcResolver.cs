@@ -7,20 +7,21 @@ public sealed class ConsulGrpcResolver : PollingResolver
 {
     private readonly Uri _address;
     private readonly int _port;
-    private readonly IConsulServiceProvider _consulServiceProvider;
+    private readonly ConsulClient _client;
 
-    public ConsulGrpcResolver(Uri address, int defaultPort, IConsulServiceProvider consulServiceProvider, ILoggerFactory loggerFactory)
+    public ConsulGrpcResolver(Uri address, int defaultPort, ConsulClient client, ILoggerFactory loggerFactory)
         : base(loggerFactory)
     {
         _address = address;
         _port = defaultPort;
-        _consulServiceProvider = consulServiceProvider;
+        _client = client;
     }
 
     protected override async Task ResolveAsync(CancellationToken cancellationToken)
     {
         var address = _address.Host.Replace("consul://", string.Empty);
-        var results = await _consulServiceProvider.GetHealthServicesAsync(address);
+        var _consulServiceProvider = new DiscoverProviderBuilder(_client).WithServiceName(address).WithCacheSeconds(5).Build();
+        var results = await _consulServiceProvider.GetAllHealthServicesAsync();
         var balancerAddresses = new List<BalancerAddress>();
         results.ForEach(result =>
         {
@@ -36,11 +37,11 @@ public sealed class ConsulGrpcResolver : PollingResolver
 
 public class ConsulGrpcResolverFactory : ResolverFactory
 {
-    private IConsulServiceProvider _consulServiceProvider;
+    private ConsulClient _consulClient;
 
-    public ConsulGrpcResolverFactory(IConsulServiceProvider consulServiceProvider) => _consulServiceProvider = consulServiceProvider;
+    public ConsulGrpcResolverFactory(ConsulClient consulClient) => _consulClient = consulClient;
 
     public override string Name => "consul";
 
-    public override Resolver Create(ResolverOptions options) => new ConsulGrpcResolver(options.Address, options.DefaultPort, _consulServiceProvider, options.LoggerFactory);
+    public override Resolver Create(ResolverOptions options) => new ConsulGrpcResolver(options.Address, options.DefaultPort, _consulClient, options.LoggerFactory);
 }

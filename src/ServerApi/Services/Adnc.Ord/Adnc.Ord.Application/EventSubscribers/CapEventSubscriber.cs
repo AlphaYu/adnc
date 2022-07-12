@@ -2,33 +2,31 @@
 
 public sealed class CapEventSubscriber : ICapSubscribe
 {
-    private readonly IServiceProvider _services;
+    private readonly IOrderAppService _orderSrv;
     private readonly ILogger<CapEventSubscriber> _logger;
+    private readonly IMessageTracker _tracker;
 
     public CapEventSubscriber(
-        IServiceProvider services
-        , ILogger<CapEventSubscriber> logger)
+        IOrderAppService orderSrv,
+        ILogger<CapEventSubscriber> logger,
+        MessageTrackerFactory trackerFactory)
     {
-        _services = services;
+        _orderSrv = orderSrv;
         _logger = logger;
+        _tracker = trackerFactory.Create();
     }
-
-    #region across service event
 
     /// <summary>
     /// 订阅库存锁定事件
     /// </summary>
-    /// <param name="warehouseQtyBlockedEvent"></param>
+    /// <param name="eventDto"></param>
     /// <returns></returns>
     [CapSubscribe(nameof(WarehouseQtyBlockedEvent))]
-    public async Task ProcessWarehouseQtyBlockedEvent(WarehouseQtyBlockedEvent eto)
-
+    public async Task ProcessWarehouseQtyBlockedEvent(WarehouseQtyBlockedEvent eventDto)
     {
-        var data = eto.Data;
-        using var scope = _services.CreateScope();
-        var appSrv = scope.ServiceProvider.GetRequiredService<IOrderAppService>();
-        await appSrv.MarkCreatedStatusAsync(data.OrderId, new OrderMarkCreatedStatusDto { IsSuccess = data.IsSuccess, Remark = data.Remark });
+        eventDto.EventTarget = nameof(ProcessWarehouseQtyBlockedEvent);
+        var hasProcessed = await _tracker.HasProcessedAsync(eventDto);
+        if (!hasProcessed)
+            await _orderSrv.MarkCreatedStatusAsync(eventDto, _tracker);
     }
-
-    #endregion across service event
 }

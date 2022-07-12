@@ -5,8 +5,9 @@ public class ChannelConsumersHostedService : BackgroundService
     private readonly IServiceProvider _services;
     private readonly ILogger<ChannelConsumersHostedService> _logger;
 
-    public ChannelConsumersHostedService(ILogger<ChannelConsumersHostedService> logger
-        , IServiceProvider services)
+    public ChannelConsumersHostedService(
+       ILogger<ChannelConsumersHostedService> logger,
+       IServiceProvider services)
     {
         _services = services;
         _logger = logger;
@@ -15,7 +16,7 @@ public class ChannelConsumersHostedService : BackgroundService
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         //save loginlogs
-        _ = Task.Run(async () =>
+        _ = Task.Factory.StartNew(async () =>
         {
             var channelLoginReader = ChannelHelper<LoginLog>.Instance.Reader;
             while (await channelLoginReader.WaitToReadAsync(stoppingToken))
@@ -24,14 +25,22 @@ public class ChannelConsumersHostedService : BackgroundService
                 {
                     using var scope = _services.CreateScope();
                     var repository = scope.ServiceProvider.GetRequiredService<IMongoRepository<LoginLog>>();
-                    await repository.AddAsync(entity, stoppingToken);
+                    try
+                    {
+                        await repository.AddAsync(entity, stoppingToken);
+                    }
+                    catch (Exception ex)
+                    {
+                        var message = $"{nameof(ExecuteAsync)}:{nameof(channelLoginReader)}";
+                        _logger.LogError(ex, message);
+                    }
                 }
                 if (stoppingToken.IsCancellationRequested) break;
             }
-        }, stoppingToken);
+        }, stoppingToken, TaskCreationOptions.LongRunning, TaskScheduler.Default);
 
         //save operationlogs
-        _ = Task.Run(async () =>
+        _ = Task.Factory.StartNew(async () =>
         {
             var channelOperationLogReader = ChannelHelper<OperationLog>.Instance.Reader;
             while (await channelOperationLogReader.WaitToReadAsync(stoppingToken))
@@ -40,11 +49,19 @@ public class ChannelConsumersHostedService : BackgroundService
                 {
                     using var scope = _services.CreateScope();
                     var repository = scope.ServiceProvider.GetRequiredService<IMongoRepository<OperationLog>>();
-                    await repository.AddAsync(entity, stoppingToken);
+                    try
+                    {
+                        await repository.AddAsync(entity, stoppingToken);
+                    }
+                    catch (Exception ex)
+                    {
+                        var message = $"{nameof(ExecuteAsync)}:{nameof(channelOperationLogReader)}";
+                        _logger.LogError(ex, message);
+                    }
                 }
                 if (stoppingToken.IsCancellationRequested) break;
             }
-        }, stoppingToken);
+        }, stoppingToken, TaskCreationOptions.LongRunning, TaskScheduler.Default);
 
         await Task.CompletedTask;
     }

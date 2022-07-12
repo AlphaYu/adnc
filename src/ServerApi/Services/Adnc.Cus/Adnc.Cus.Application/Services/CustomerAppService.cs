@@ -10,17 +10,11 @@ public class CustomerAppService : AbstractAppService, ICustomerAppService
     private readonly IEfRepository<CustomerTransactionLog> _cusTransactionLogRepo;
     private readonly IEventPublisher _eventPublisher;
 
-    /// <summary>
-    /// 构造函数
-    /// </summary>
-    /// <param name="customerRepo"></param>
-    /// <param name="cusManagerService"></param>
-    /// <param name="mapper"></param>
     public CustomerAppService(
-         IEfRepository<Customer> customerRepo
-        , IEfRepository<CustomerFinance> cusFinaceRepo
-        , IEfRepository<CustomerTransactionLog> cusTransactionLogRepo
-        , IEventPublisher eventPublisher)
+        IEfRepository<Customer> customerRepo,
+        IEfRepository<CustomerFinance> cusFinaceRepo,
+        IEfRepository<CustomerTransactionLog> cusTransactionLogRepo,
+        IEventPublisher eventPublisher)
     {
         _customerRepo = customerRepo;
         _cusFinaceRepo = cusFinaceRepo;
@@ -83,7 +77,7 @@ public class CustomerAppService : AbstractAppService, ICustomerAppService
         //发布充值事件
         var eventId = IdGenerater.GetNextId();
         var eventData = new CustomerRechargedEvent.EventData() { CustomerId = cusTransactionLog.CustomerId, TransactionLogId = cusTransactionLog.Id, Amount = cusTransactionLog.Amount };
-        var eventSource = System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.FullName;
+        var eventSource = nameof(RechargeAsync);
         await _eventPublisher.PublishAsync(new CustomerRechargedEvent(eventId, eventData, eventSource));
         return new SimpleDto<string>(cusTransactionLog.Id.ToString());
     }
@@ -91,14 +85,17 @@ public class CustomerAppService : AbstractAppService, ICustomerAppService
     /// <summary>
     /// 处理充值
     /// </summary>
-    /// <param name="transactionLogId"></param>
-    /// <param name="customerId"></param>
-    /// <param name="amount"></param>
+    /// <param name="eventDto"></param>
+    /// <param name="tracker"></param>
     /// <returns></returns>
-    public async Task<AppSrvResult> ProcessRechargingAsync(long transactionLogId, long customerId, decimal amount)
+    public async Task<AppSrvResult> ProcessRechargingAsync(CustomerRechargedEvent eventDto, IMessageTracker tracker)
     {
+        var customerId = eventDto.Data.CustomerId;
+        var amount = eventDto.Data.Amount;
+        var transactionLogId = eventDto.Data.TransactionLogId;
+
         var transLog = await _cusTransactionLogRepo.FindAsync(transactionLogId, noTracking: false);
-        if (transLog == null || transLog.ExchageStatus != ExchageStatusEnum.Processing)
+        if (transLog is null)
             return AppSrvResult();
 
         var finance = await _cusFinaceRepo.FindAsync(customerId, noTracking: false);
@@ -113,6 +110,7 @@ public class CustomerAppService : AbstractAppService, ICustomerAppService
         transLog.ChangedAmount = newBalance;
         await _cusTransactionLogRepo.UpdateAsync(transLog);
 
+        await tracker?.MarkAsProcessedAsync(eventDto);
         return AppSrvResult();
     }
 

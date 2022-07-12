@@ -1,5 +1,6 @@
 ﻿using Adnc.Infra.EventBus;
 using Adnc.Infra.EventBus.Cap;
+using Adnc.Infra.EventBus.Cap.Filters;
 using Adnc.Infra.EventBus.RabbitMq;
 using DotNetCore.CAP;
 
@@ -15,8 +16,9 @@ public static class ServiceCollectionExtension
             return services;
         services
             .AddSingleton<IEventPublisher, CapPublisher>()
-            .AddSingleton<TSubscriber>()
+            .AddScoped<TSubscriber>()
             .AddCap(setupAction)
+            .AddSubscribeFilter<DefaultCapFilter>()
             ;
         return services;
     }

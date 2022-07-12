@@ -10,7 +10,8 @@ public interface IOrderAppService : IAppService
     Task<OrderDto> CreateAsync(OrderCreationDto input);
 
     [OperateLog(LogName = "调整订单状态")]
-    Task MarkCreatedStatusAsync(long id, OrderMarkCreatedStatusDto input);
+    [UnitOfWork]
+    Task MarkCreatedStatusAsync(WarehouseQtyBlockedEvent eventDto, IMessageTracker tracker);
 
     [OperateLog(LogName = "订单付款")]
     [UnitOfWork(SharedToCap = true)]

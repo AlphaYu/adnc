@@ -1,6 +1,4 @@
-﻿using Adnc.Ord.Domain.Aggregates.OrderAggregate;
-
-namespace Adnc.Ord.Application.Services;
+﻿namespace Adnc.Ord.Application.Services;
 
 /// <summary>
 /// 订单管理
@@ -64,15 +62,16 @@ public class OrderAppService : AbstractAppService, IOrderAppService
     /// <summary>
     /// 标记订单状态
     /// </summary>
-    /// <param name="id"></param>
-    /// <param name="input"></param>
+    /// <param name="eventDto"></param>
+    /// <param name="tracker"></param>
     /// <returns></returns>
-    public async Task MarkCreatedStatusAsync(long id, OrderMarkCreatedStatusDto input)
+    public async Task MarkCreatedStatusAsync(WarehouseQtyBlockedEvent eventDto, IMessageTracker tracker)
     {
-        var order = await _orderRepo.GetAsync(id);
-        order.MarkCreatedStatus(input.IsSuccess, input.Remark);
+        var order = await _orderRepo.GetAsync(eventDto.Data.OrderId);
+        order.MarkCreatedStatus(eventDto.Data.IsSuccess, eventDto.Data.Remark);
 
         await _orderRepo.UpdateAsync(order);
+        await tracker?.MarkAsProcessedAsync(eventDto);
     }
 
     /// <summary>

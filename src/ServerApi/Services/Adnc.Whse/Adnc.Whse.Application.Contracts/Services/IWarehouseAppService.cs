@@ -26,11 +26,12 @@ public interface IWarehouseAppService : IAppService
     /// <summary>
     /// 锁定商品库存
     /// </summary>
-    /// <param name="input"></param>
+    /// <param name="eventDto"></param>
+    ///  <param name="tracker"></param>
     /// <returns></returns>
     [UnitOfWork]
     [OperateLog(LogName = "锁定库存")]
-    Task BlockQtyAsync(WarehouseBlockQtyDto input);
+    Task BlockQtyAsync(OrderCreatedEvent eventDto, IMessageTracker tracker);
 
     /// <summary>
     /// 分页列表

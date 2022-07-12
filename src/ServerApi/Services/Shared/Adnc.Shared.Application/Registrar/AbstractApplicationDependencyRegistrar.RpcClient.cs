@@ -28,6 +28,11 @@ public abstract partial class AbstractApplicationDependencyRegistrar : IDependen
 
         Services.TryAddScoped<CacheDelegatingHandler>();
         Services.TryAddScoped<TokenDelegatingHandler>();
+        Services.TryAddScoped<ConsulDiscoverDelegatingHandler>();
+        Services.TryAddEnumerable(new List<ServiceDescriptor> {
+            new ServiceDescriptor(typeof(ITokenGenerator),typeof(BasicTokenGenerator),ServiceLifetime.Scoped),
+            new ServiceDescriptor(typeof(ITokenGenerator),typeof(BearerTokenGenerator),ServiceLifetime.Scoped)
+        });
         Services.TryAddScoped<TokenFactory>();
 
         var registeredType = Configuration.GetRegisteredType().ToLower();
@@ -77,6 +82,11 @@ public abstract partial class AbstractApplicationDependencyRegistrar : IDependen
 
         Services.TryAddScoped<CacheDelegatingHandler>();
         Services.TryAddScoped<TokenDelegatingHandler>();
+        Services.TryAddScoped<ConsulDiscoverDelegatingHandler>();
+        Services.TryAddEnumerable(new List<ServiceDescriptor> {
+            new ServiceDescriptor(typeof(ITokenGenerator),typeof(BasicTokenGenerator),ServiceLifetime.Scoped),
+            new ServiceDescriptor(typeof(ITokenGenerator),typeof(BearerTokenGenerator),ServiceLifetime.Scoped)
+        });
         Services.TryAddScoped<TokenFactory>();
 
         var registeredType = Configuration.GetRegisteredType().ToLower();

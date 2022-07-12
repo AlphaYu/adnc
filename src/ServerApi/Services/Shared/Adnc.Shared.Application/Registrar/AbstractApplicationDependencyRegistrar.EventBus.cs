@@ -27,7 +27,10 @@ public abstract partial class AbstractApplicationDependencyRegistrar : IDependen
         Action<CapOptions> replaceMqAction = null)
         where TSubscriber : class, ICapSubscribe
     {
-        SkyApm.AddCap();
+        if(this.IsEnableSkyApm())
+        {
+            SkyApm.AddCap();
+        }
         Services.AddAdncInfraCap<TSubscriber>(option =>
         {
             if (replaceDbAction is not null)
@@ -86,6 +89,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar : IDependen
             option.SucceedMessageExpiredAfter = 24 * 3600;
             //默认值：1,消费者线程并行处理消息的线程数，当这个值大于1时，将不能保证消息执行的顺序。
             option.ConsumerThreadCount = 1;
+            //Dashboard
             option.UseDashboard(x =>
             {
                 x.PathMatch = $"/{ServiceInfo.ShortName}/cap";

@@ -1,7 +1,4 @@
-﻿using Adnc.Infra.Consul.Discover.Handler;
-using Adnc.Infra.Consul.Registrar;
-
-namespace Microsoft.Extensions.DependencyInjection;
+﻿namespace Microsoft.Extensions.DependencyInjection;
 
 public static class ServiceCollectionExtension
 {
@@ -19,10 +16,6 @@ public static class ServiceCollectionExtension
                     throw new NullReferenceException(nameof(configOptions));
                 return new ConsulClient(x => x.Address = new Uri(configOptions.Value.ConsulUrl));
             })
-            .AddSingleton<ConsulRegistration>()
-            .AddSingleton<IConsulServiceProvider, ConsulServiceProvider>()
-            .AddSingleton<IServiceBuilder, ServiceBuilder>()
-            .AddScoped<ConsulDiscoverDelegatingHandler>()
             ;
     }
 }

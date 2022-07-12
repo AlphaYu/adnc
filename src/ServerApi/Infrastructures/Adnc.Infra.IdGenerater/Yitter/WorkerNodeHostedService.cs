@@ -41,21 +41,27 @@ public sealed class WorkerNodeHostedService : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        while (!stoppingToken.IsCancellationRequested)
+        _ = Task.Factory.StartNew(async () =>
         {
-            try
+            while (!stoppingToken.IsCancellationRequested)
             {
-                await Task.Delay(_millisecondsDelay, stoppingToken);
+                try
+                {
+                    await Task.Delay(_millisecondsDelay, stoppingToken);
 
-                if (stoppingToken.IsCancellationRequested) break;
+                    if (stoppingToken.IsCancellationRequested) break;
 
-                await _workerNode.RefreshWorkerIdScoreAsync(_serviceName, IdGenerater.CurrentWorkerId);
+                    await _workerNode.RefreshWorkerIdScoreAsync(_serviceName, IdGenerater.CurrentWorkerId);
+                }
+                catch (Exception ex)
+                {
+                    var message = $"{nameof(ExecuteAsync)}:{_serviceName}-{IdGenerater.CurrentWorkerId}";
+                    _logger.LogError(ex, message);
+                    await Task.Delay(_millisecondsDelay / 3, stoppingToken);
+                }
             }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, ex.Message);
-                await Task.Delay(_millisecondsDelay / 3, stoppingToken);
-            }
-        }
+        }, stoppingToken, TaskCreationOptions.LongRunning, TaskScheduler.Default);
+
+        await Task.CompletedTask;
     }
 }

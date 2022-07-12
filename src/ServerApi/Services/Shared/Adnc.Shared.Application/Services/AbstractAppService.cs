@@ -1,6 +1,4 @@
-﻿using Adnc.Infra.Core.DependencyInjection;
-
-namespace Adnc.Shared.Application.Services;
+﻿namespace Adnc.Shared.Application.Services;
 
 public abstract class AbstractAppService : IAppService
 {
