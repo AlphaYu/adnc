@@ -32,6 +32,12 @@ namespace Adnc.Infra.Consul.Discover
             return this;
         }
 
+        public DiscoverProviderBuilder WithLogger(ILogger<dynamic> logger)
+        {
+            _discoverProvider.Logger = logger;
+            return this;
+        }
+
         public IDiscoverProvider Build()
         {
             if (_discoverProvider.ServiceName is null)

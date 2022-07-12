@@ -23,6 +23,7 @@ namespace Adnc.Infra.Consul.Discover.Handler
                                                             .WithCacheSeconds(5)
                                                             .WithServiceName(currentUri.Host)
                                                             .WithLoadBalancer(TypeLoadBalancer.RandomLoad)
+                                                            .WithLogger(_logger)
                                                             .Build()
                                                             ;
             var baseUri = await discoverProvider.GetSingleHealthServiceAsync();

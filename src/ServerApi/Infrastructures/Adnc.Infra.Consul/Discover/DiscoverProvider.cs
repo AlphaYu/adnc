@@ -1,5 +1,4 @@
 ﻿using Adnc.Infra.Consul.Discover.Balancers;
-using Adnc.Infra.Core.DependencyInjection;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace Adnc.Infra.Consul.Discover
@@ -11,9 +10,7 @@ namespace Adnc.Infra.Consul.Discover
         {
             CompactionPercentage = 0.05,
             ExpirationScanFrequency= new TimeSpan(0, 0, 1),
-            SizeLimit = 5 * 1024 * 1024 //5M
         }));
-        private static readonly ILogger<DiscoverProvider> _logger = new LoggerFactory().CreateLogger<DiscoverProvider>();
         private readonly ConsulClient _consulClient = default!;
 
         internal DiscoverProvider(ConsulClient client)
@@ -24,6 +21,7 @@ namespace Adnc.Infra.Consul.Discover
         internal string ServiceName { get; set; } = string.Empty;
         internal ILoadBalancer LoadBalancer { get; set; } = default!;
         internal uint CacheSeconds { get; set; } = 5;
+        internal ILogger<dynamic> Logger { get; set; }= default!;
 
         public async Task<IList<string>> GetAllHealthServicesAsync()
         {
@@ -35,7 +33,7 @@ namespace Adnc.Infra.Consul.Discover
             await _slimlock.WaitAsync();
             try
             {
-                _logger.LogDebug($"SemaphoreSlim=true,{serviceAddressCacheKey}");
+                Logger?.LogDebug($"SemaphoreSlim=true,{serviceAddressCacheKey}");
                 healthAddresses = _memoryCache.Get<List<string>>(serviceAddressCacheKey);
                 if (healthAddresses.IsNotNullOrEmpty())
                     return healthAddresses;
@@ -66,6 +64,7 @@ namespace Adnc.Infra.Consul.Discover
         {
             var serviceList = await GetAllHealthServicesAsync();
             var service = LoadBalancer.Resolve(serviceList);
+            Logger?.LogDebug($"service-address:{service}");
             return service;
         }
     }
