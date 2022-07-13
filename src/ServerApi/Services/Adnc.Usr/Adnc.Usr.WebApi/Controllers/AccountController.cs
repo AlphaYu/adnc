@@ -10,16 +10,19 @@ public class AccountController : AdncControllerBase
     private readonly IOptions<JwtConfig> _jwtOptions;
     private readonly UserContext _userContext;
     private readonly IAccountAppService _accountService;
+    private readonly ILogger<AccountController> _logger;
 
     public AccountController(
-        IOptions<JwtConfig> jwtOptions
-        , UserContext userContext
-        , IAccountAppService accountService
+        IOptions<JwtConfig> jwtOptions,
+        UserContext userContext,
+        IAccountAppService accountService,
+        ILogger<AccountController> logger
         )
     {
         _jwtOptions = jwtOptions;
         _userContext = userContext;
         _accountService = accountService;
+        _logger = logger;
     }
 
     /// <summary>
@@ -107,6 +110,7 @@ public class AccountController : AdncControllerBase
     public async Task<ActionResult<UserValidatedInfoDto>> GetUserValidatedInfoAsync()
     {
         var result = await _accountService.GetUserValidatedInfoAsync(_userContext.Id);
+        _logger.LogDebug($"UserContext:{_userContext.Id}");
         if (result is null)
             return NotFound();
 

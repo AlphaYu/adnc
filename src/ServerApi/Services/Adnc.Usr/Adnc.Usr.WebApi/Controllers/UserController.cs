@@ -9,11 +9,16 @@ public class UserController : AdncControllerBase
 {
     private readonly IUserAppService _userService;
     private readonly UserContext _userContext;
+    private readonly ILogger<UserController> _logger;
 
-    public UserController(IUserAppService userService, UserContext userContext)
+    public UserController(
+        IUserAppService userService, 
+        UserContext userContext,
+        ILogger<UserController> logger)
     {
         _userService = userService;
         _userContext = userContext;
+        _logger = logger;
     }
 
     /// <summary>
@@ -97,8 +102,10 @@ public class UserController : AdncControllerBase
     public async Task<ActionResult<List<string>>> GetCurrenUserPermissions([FromRoute] long id, [FromQuery] IEnumerable<string> requestPermissions, [FromQuery] string userBelongsRoleIds)
     {
         if (id != _userContext.Id)
+        {
+            _logger.LogDebug($"id={id},usercontextid={_userContext.Id}");
             return Forbid();
-
+        }
         var result = await _userService.GetPermissionsAsync(id, requestPermissions, userBelongsRoleIds);
         return result ?? new List<string>();
     }
