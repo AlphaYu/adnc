@@ -1,12 +1,20 @@
-﻿namespace Adnc.Shared.Rpc.Handlers.Token;
+﻿using Microsoft.Extensions.DependencyInjection;
+
+namespace Adnc.Shared.Rpc.Handlers.Token;
 
 public sealed class TokenFactory
 {
-    private readonly IEnumerable<ITokenGenerator> _generators;
-    public TokenFactory(IEnumerable<ITokenGenerator> generators) => _generators = generators;
+    private readonly IServiceProvider _provider;
+    public TokenFactory(IServiceProvider provider) => _provider = provider;
 
     public ITokenGenerator? CreateGenerator(string authorizationScheme)
     {
-        return _generators.FirstOrDefault(x => x.GeneratorName.EqualsIgnoreCase(authorizationScheme));
+        if (authorizationScheme.EqualsIgnoreCase(BasicTokenGenerator.Scheme))
+            return ActivatorUtilities.CreateInstance<BasicTokenGenerator>(_provider);
+
+        if (authorizationScheme.EqualsIgnoreCase(BearerTokenGenerator.Scheme))
+            return ActivatorUtilities.CreateInstance<BearerTokenGenerator>(_provider);
+
+        return default;
     }
 }
