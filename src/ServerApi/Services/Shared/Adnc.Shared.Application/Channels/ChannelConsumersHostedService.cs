@@ -18,23 +18,33 @@ public class ChannelConsumersHostedService : BackgroundService
         //save loginlogs
         _ = Task.Factory.StartNew(async () =>
         {
+            using var scope = _services.CreateScope();
+            var repository = scope.ServiceProvider.GetRequiredService<IMongoRepository<LoginLog>>();
             var channelLoginReader = ChannelHelper<LoginLog>.Instance.Reader;
+            var entities = new List<LoginLog>();
             while (await channelLoginReader.WaitToReadAsync(stoppingToken))
             {
-                if (channelLoginReader.TryRead(out var entity))
+                var maxAllowInsert = 100;
+                var currentExistsCount = channelLoginReader.Count;
+                for (int index = 1; index <= currentExistsCount; index++)
                 {
-                    using var scope = _services.CreateScope();
-                    var repository = scope.ServiceProvider.GetRequiredService<IMongoRepository<LoginLog>>();
-                    try
+                    var entity = await channelLoginReader.ReadAsync();
+                    entities.Add(entity);
+                    if (index % maxAllowInsert == 0 || index == currentExistsCount)
                     {
-                        await repository.AddAsync(entity, stoppingToken);
-                    }
-                    catch (Exception ex)
-                    {
-                        var message = $"{nameof(ExecuteAsync)}:{nameof(channelLoginReader)}";
-                        _logger.LogError(ex, message);
+                        try
+                        {
+                            await repository.AddManyAsync(entities);
+                            entities.Clear();
+                        }
+                        catch (Exception ex)
+                        {
+                            var message = $"{nameof(ExecuteAsync)}:{nameof(channelLoginReader)}";
+                            _logger.LogError(ex, message);
+                        }
                     }
                 }
+
                 if (stoppingToken.IsCancellationRequested) break;
             }
         }, stoppingToken, TaskCreationOptions.LongRunning, TaskScheduler.Default);
@@ -42,23 +52,33 @@ public class ChannelConsumersHostedService : BackgroundService
         //save operationlogs
         _ = Task.Factory.StartNew(async () =>
         {
+            using var scope = _services.CreateScope();
+            var repository = scope.ServiceProvider.GetRequiredService<IMongoRepository<OperationLog>>();
             var channelOperationLogReader = ChannelHelper<OperationLog>.Instance.Reader;
-            while (await channelOperationLogReader.WaitToReadAsync(stoppingToken))
+            var entities = new List<OperationLog>();
+            while (await channelOperationLogReader.WaitToReadAsync())
             {
-                if (channelOperationLogReader.TryRead(out var entity))
+                var maxAllowInsert = 100;
+                var currentExistsCount = channelOperationLogReader.Count;
+                for (int index = 1; index <= currentExistsCount; index++)
                 {
-                    using var scope = _services.CreateScope();
-                    var repository = scope.ServiceProvider.GetRequiredService<IMongoRepository<OperationLog>>();
-                    try
+                    var entity = await channelOperationLogReader.ReadAsync();
+                    entities.Add(entity);
+                    if (index % maxAllowInsert == 0 || index == currentExistsCount)
                     {
-                        await repository.AddAsync(entity, stoppingToken);
-                    }
-                    catch (Exception ex)
-                    {
-                        var message = $"{nameof(ExecuteAsync)}:{nameof(channelOperationLogReader)}";
-                        _logger.LogError(ex, message);
+                        try
+                        {
+                            await repository.AddManyAsync(entities);
+                            entities.Clear();
+                        }
+                        catch (Exception ex)
+                        {
+                            var message = $"{nameof(ExecuteAsync)}:{nameof(channelOperationLogReader)}";
+                            _logger.LogError(ex, message);
+                        }
                     }
                 }
+
                 if (stoppingToken.IsCancellationRequested) break;
             }
         }, stoppingToken, TaskCreationOptions.LongRunning, TaskScheduler.Default);
