@@ -11,10 +11,24 @@ public sealed class UsrWebApiDependencyRegistrar : AbstractWebApiDependencyRegis
     {
     }
 
+    public UsrWebApiDependencyRegistrar(IApplicationBuilder app)
+        : base(app)
+    {
+    }
+
     public override void AddAdnc()
     {
         AddWebApiDefault<BearerAuthenticationLocalProcessor, PermissionLocalHandler>();
         AddHealthChecks(true, true, true, false);
         Services.AddGrpc();
+    }
+
+    public override void UseAdnc()
+    {
+        UseWebApiDefault(endpointRoute: endpoint =>
+        {
+            endpoint.MapGrpcService<Grpc.AuthGrpcServer>();
+            endpoint.MapGrpcService<Grpc.UsrGrpcServer>();
+        });
     }
 }

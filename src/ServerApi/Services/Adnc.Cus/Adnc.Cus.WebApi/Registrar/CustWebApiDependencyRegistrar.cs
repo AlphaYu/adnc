@@ -9,9 +9,19 @@ public sealed class CustWebApiDependencyRegistrar : AbstractWebApiDependencyRegi
     {
     }
 
-    public override void AddAdnc() 
+    public CustWebApiDependencyRegistrar(IApplicationBuilder app)
+       : base(app)
+    {
+    }
+
+    public override void AddAdnc()
     {
         AddWebApiDefault();
         AddHealthChecks(true, true, true, true);
+    }
+
+    public override void UseAdnc()
+    {
+        UseWebApiDefault();
     }
 }

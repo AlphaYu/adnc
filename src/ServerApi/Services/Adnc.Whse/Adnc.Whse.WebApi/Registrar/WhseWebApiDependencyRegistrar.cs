@@ -9,6 +9,11 @@ public sealed class WhseWebApiDependencyRegistrar : AbstractWebApiDependencyRegi
     {
     }
 
+    public WhseWebApiDependencyRegistrar(IApplicationBuilder app)
+        : base(app)
+    {
+    }
+
     public override void AddAdnc()
     {
         AddWebApiDefault();
@@ -17,5 +22,13 @@ public sealed class WhseWebApiDependencyRegistrar : AbstractWebApiDependencyRegi
         AddHealthChecks(false, true, true, true).AddSqlServer(connectionString);
 
         Services.AddGrpc();
+    }
+
+    public override void UseAdnc()
+    {
+        UseWebApiDefault(endpointRoute: endpoint =>
+        {
+            endpoint.MapGrpcService<Grpc.WhseGrpcServer>();
+        });
     }
 }

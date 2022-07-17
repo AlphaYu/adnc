@@ -19,7 +19,7 @@ internal static class Program
                 .ConfigureAdncDefault(serviceInfo)
                 .Build();
 
-            app.UseAdncDefault();
+            app.UseAdnc();
 
             await app
                 .ChangeThreadPoolSettings()
