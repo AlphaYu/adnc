@@ -5,13 +5,13 @@ namespace Adnc.Infra.Caching.Core.Serialization
     /// <summary>
     /// Default binary formatter serializer.
     /// </summary>
-    public class DefaultBinaryFormatterSerializer : ICachingSerializer
+    public class DefaultBinarySerializer : ICachingSerializer
     {
         /// <summary>
         /// Gets the name.
         /// </summary>
         /// <value>The name.</value>
-        public string Name => CachingConstValue.DefaultSerializerName;
+        public string Name => CachingConstValue.Serializer.DefaultBinarySerializerName;
 
         /// <summary>
         /// Deserialize the specified bytes.

@@ -1,6 +1,5 @@
 ﻿using Adnc.Infra.Caching.Core.Internal;
 using ProtoBuf;
-using System.Text;
 
 namespace Adnc.Infra.Caching.Core.Serialization
 {
@@ -13,7 +12,7 @@ namespace Adnc.Infra.Caching.Core.Serialization
         /// Gets the name.
         /// </summary>
         /// <value>The name.</value>
-        public string Name => CachingConstValue.DefaultProtobufSerializerName;
+        public string Name => CachingConstValue.Serializer.DefaultProtobufSerializerName;
 
         /// <summary>
         /// Deserialize the specified bytes.

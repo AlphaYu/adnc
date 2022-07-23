@@ -1187,5 +1187,9 @@ namespace Adnc.Infra.Caching
         Task<bool[]> BfExistsAsync(string key, IEnumerable<string> values);
 
         #endregion Bloom Filter
+
+        #region StreamAdd
+
+        #endregion
     }
 }
