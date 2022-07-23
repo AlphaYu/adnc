@@ -40,7 +40,7 @@ namespace Adnc.Infra.Caching.StackExchange
             return res;
         }
 
-        public bool StringSet(string cacheKey, string cacheValue, System.TimeSpan? expiration, string when)
+        public bool StringSet(string cacheKey, string cacheValue, System.TimeSpan? expiration = null, string when = "")
         {
             ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
@@ -59,7 +59,7 @@ namespace Adnc.Infra.Caching.StackExchange
             return flag;
         }
 
-        public async Task<bool> StringSetAsync(string cacheKey, string cacheValue, System.TimeSpan? expiration, string when)
+        public async Task<bool> StringSetAsync(string cacheKey, string cacheValue, System.TimeSpan? expiration = null, string when = "")
         {
             ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
