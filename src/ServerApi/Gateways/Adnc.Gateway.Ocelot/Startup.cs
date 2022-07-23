@@ -56,7 +56,7 @@ public class Startup
     {
         app
             .UseCors("default")
-            .UseHttpLogging()
+            //.UseHttpLogging()
             .UseRouting()
             .UseEndpoints(endpoints =>
             {
