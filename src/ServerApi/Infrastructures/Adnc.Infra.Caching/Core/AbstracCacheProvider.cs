@@ -8,7 +8,7 @@ namespace Adnc.Infra.Caching.Core
     public abstract class AbstracCacheProvider : ICacheProvider
     {
         protected static readonly DiagnosticListener s_diagnosticListener =
-                    new DiagnosticListener(CachingDiagnosticListenerExtensions.DiagnosticListenerName);
+                    new(CachingDiagnosticListenerExtensions.DiagnosticListenerName);
 
         public abstract string Name { get; }
 
