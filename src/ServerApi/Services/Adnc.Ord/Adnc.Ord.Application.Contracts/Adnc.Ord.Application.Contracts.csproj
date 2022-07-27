@@ -7,9 +7,6 @@
 		<Folder Include="Dtos\DtoValidators\" />
 	</ItemGroup>
 	<ItemGroup>
-	  <PackageReference Include="MediatR" Version="10.0.1" />
-	</ItemGroup>
-	<ItemGroup>
 	  <ProjectReference Include="..\..\Shared\Adnc.Shared.Application.Contracts\Adnc.Shared.Application.Contracts.csproj" />
 	  <ProjectReference Include="..\..\Shared\Adnc.Shared\Adnc.Shared.csproj" />
 	</ItemGroup>

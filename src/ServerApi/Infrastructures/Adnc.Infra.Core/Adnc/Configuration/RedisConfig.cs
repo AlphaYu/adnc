@@ -6,6 +6,7 @@
 public class RedisConfig
 {
     public const string Name = "Redis";
+    public string Provider { get; set; } = "StackExchange";
     public int MaxRdSecond { get; set; }
     public bool EnableLogging { get; set; }
     public bool EnableBloomFilter { get; set; }

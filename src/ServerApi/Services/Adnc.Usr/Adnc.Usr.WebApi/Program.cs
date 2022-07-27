@@ -21,11 +21,7 @@ internal static class Program
                 .Build();
 
             //Middlewares
-            app.UseAdncDefault(endpointRoute: endpoint =>
-            {
-                endpoint.MapGrpcService<Grpc.AuthGrpcServer>();
-                endpoint.MapGrpcService<Grpc.UsrGrpcServer>();
-            });
+            app.UseAdnc();
 
             //Start
             await app

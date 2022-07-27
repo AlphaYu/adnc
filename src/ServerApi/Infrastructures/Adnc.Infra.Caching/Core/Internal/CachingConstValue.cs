@@ -3,22 +3,24 @@
     /// <summary>
     /// Adnc.Infra.Caching const value.
     /// </summary>
-    public class CachingConstValue
+    public static class CachingConstValue
     {
-        /// <summary>
-        /// The config section.
-        /// </summary>
-        //public const string ConfigSection = "Adnc.Infra.Caching";
-        /// <summary>
-        /// The default name of the serializer.
-        /// </summary>
-        public const string DefaultSerializerName = "binary";
+        public static class Serializer
+        {
+            public const string DefaultBinarySerializerName = "binary";
 
-        public const string DefaultProtobufSerializerName = "proto";
+            public const string DefaultProtobufSerializerName = "proto";
 
-        public const string DefaultJsonSerializerName = "json";
+            public const string DefaultJsonSerializerName = "json";
+        }
 
-        public const string StackExchange = "redis.stackexchange";
+        public static class Provider
+        {
+            public const string StackExchange = "StackExchange";
+            public const string FreeRedis = "FreeRedis";
+            public const string ServiceStack = "ServiceStack";
+            public const string CSRedis = "CSRedis";
+        }
 
         public const int PollyTimeout = 5;
     }

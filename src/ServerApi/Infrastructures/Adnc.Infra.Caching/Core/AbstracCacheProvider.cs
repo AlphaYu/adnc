@@ -8,18 +8,11 @@ namespace Adnc.Infra.Caching.Core
     public abstract class AbstracCacheProvider : ICacheProvider
     {
         protected static readonly DiagnosticListener s_diagnosticListener =
-                    new DiagnosticListener(CachingDiagnosticListenerExtensions.DiagnosticListenerName);
-
-        //protected string ProviderName { get; set; }
-        //protected bool IsDistributedProvider { get; set; }
-        //protected int ProviderMaxRdSecond { get; set; }
-        //protected CacheStats ProviderStats { get; set; }
+                    new(CachingDiagnosticListenerExtensions.DiagnosticListenerName);
 
         public abstract string Name { get; }
+
         public abstract IOptions<CacheOptions> CacheOptions { get; }
-        //public bool IsDistributedCache => this.IsDistributedProvider;
-        //public int MaxRdSecond => this.ProviderMaxRdSecond;
-        //public CacheStats CacheStats => this.ProviderStats;
 
         public abstract string CachingProviderType { get; }
 

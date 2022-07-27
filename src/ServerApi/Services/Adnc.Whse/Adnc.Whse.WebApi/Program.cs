@@ -19,10 +19,7 @@ internal static class Program
                 .ConfigureAdncDefault(serviceInfo)
                 .Build();
 
-            app.UseAdncDefault(endpointRoute: endpoint =>
-            {
-                endpoint.MapGrpcService<Grpc.WhseGrpcServer>();
-            });
+            app.UseAdnc();
 
             await app
                 .ChangeThreadPoolSettings()

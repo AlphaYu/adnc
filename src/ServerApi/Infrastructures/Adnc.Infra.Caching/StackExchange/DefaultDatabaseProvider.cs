@@ -1,4 +1,5 @@
 ﻿using Adnc.Infra.Caching.Configurations;
+using Adnc.Infra.Caching.Core;
 using StackExchange.Redis;
 
 namespace Adnc.Infra.Caching.StackExchange
@@ -6,7 +7,7 @@ namespace Adnc.Infra.Caching.StackExchange
     /// <summary>
     /// Redis database provider.
     /// </summary>
-    public class DefaultDatabaseProvider : IRedisDatabaseProvider
+    public class DefaultDatabaseProvider
     {
         /// <summary>
         /// The options.
@@ -24,7 +25,7 @@ namespace Adnc.Infra.Caching.StackExchange
             _connectionMultiplexer = new Lazy<ConnectionMultiplexer>(CreateConnectionMultiplexer);
         }
 
-        public string DBProviderName => "StackExchange";
+        public string DBProviderName => CachingConstValue.Provider.StackExchange;
 
         /// <summary>
         /// Gets the database connection.

@@ -9,11 +9,11 @@ namespace Adnc.Infra.Caching.Core.Internal
         /// <summary>
         /// The subtract full name regex.
         /// </summary>
-        private static readonly Regex SubtractFullNameRegex = new Regex(@", Version=\d+.\d+.\d+.\d+, Culture=\w+, PublicKeyToken=\w+", RegexOptions.Compiled);
+        static readonly Regex SubtractFullNameRegex = new Regex(@", Version=\d+.\d+.\d+.\d+, Culture=\w+, PublicKeyToken=\w+", RegexOptions.Compiled);
 
         /// <summary>
         /// Builds the name of the type.
-        /// </summary>
+        /// </summary>     
         /// <returns>The type name.</returns>
         /// <param name="type">Type.</param>
         public static string BuildTypeName(Type type)
