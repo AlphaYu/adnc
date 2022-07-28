@@ -6,7 +6,4 @@
 		<ProjectReference Include="..\Adnc.Usr.Application.Contracts\Adnc.Usr.Application.Contracts.csproj" />
 		<ProjectReference Include="..\Adnc.Usr.Repository\Adnc.Usr.Repository.csproj" />
 	</ItemGroup>
-	<ItemGroup>
-		<Folder Include="EventSubscribers\" />
-	</ItemGroup>
 </Project>

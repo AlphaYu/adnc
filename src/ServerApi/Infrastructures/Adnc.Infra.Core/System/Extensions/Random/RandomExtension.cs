@@ -4,15 +4,95 @@ namespace System;
 
 public static class RandomExtension
 {
+    private static readonly char[] Constant = new[]
+{
+    '0',
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    'a',
+    'b',
+    'c',
+    'd',
+    'e',
+    'f',
+    'g',
+    'h',
+    'i',
+    'j',
+    'k',
+    'l',
+    'm',
+    'n',
+    'o',
+    'p',
+    'q',
+    'r',
+    's',
+    't',
+    'u',
+    'v',
+    'w',
+    'x',
+    'y',
+    'z'
+};
+
+    private static readonly char[] ConstantNumber = new[]
+    {
+    '0',
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9'
+};
+
     /// <summary>
     /// 生成真正的随机数
     /// </summary>
-    /// <param name="r"></param>
+    /// <param name="_"></param>
     /// <param name="seed"></param>
     /// <returns></returns>
     public static int StrictNext(this Random _, int seed = int.MaxValue)
     {
         return new Random((int)Stopwatch.GetTimestamp()).Next(seed);
+    }
+
+    /// <summary>
+    /// 生成随机数
+    /// </summary>
+    /// <param name="length">随机数长度</param>
+    /// <param name="isNumberOnly">随机数是否是纯数字</param>
+    /// <returns></returns>
+    public static string Next(this Random rand, int length, bool isNumberOnly)
+    {
+        char[] array;
+        if (isNumberOnly)
+        {
+            array = ConstantNumber;
+        }
+        else
+        {
+            array = Constant;
+        }
+        var stringBuilder = new StringBuilder(length);
+        for (var i = 0; i < length; i++)
+        {
+            var index = rand.Next(array.Length);
+            stringBuilder.Append(array[index]);
+        }
+        return stringBuilder.ToString();
     }
 
     /// <summary>
@@ -28,27 +108,5 @@ public static class RandomExtension
         double u2 = 1.0 - rand.NextDouble();
         double randStdNormal = Math.Sqrt(-2.0 * Math.Log(u1)) * Math.Sin(2.0 * Math.PI * u2);
         return mean + stdDev * randStdNormal;
-    }
-
-    /// <summary>
-    ///     A Random extension method that return a random value from the specified values.
-    /// </summary>
-    /// <typeparam name="T">Generic type parameter.</typeparam>
-    /// <param name="this">The @this to act on.</param>
-    /// <param name="values">A variable-length parameters list containing arguments.</param>
-    /// <returns>One of the specified value.</returns>
-    public static T OneOf<T>([NotNull] this Random @this, params T[] values)
-    {
-        return values[@this.Next(values.Length)];
-    }
-
-    /// <summary>
-    ///     A Random extension method that flip a coin toss.
-    /// </summary>
-    /// <param name="this">The @this to act on.</param>
-    /// <returns>true 50% of time, otherwise false.</returns>
-    public static bool CoinToss([NotNull] this Random @this)
-    {
-        return @this.Next(2) == 0;
     }
 }
