@@ -30,7 +30,7 @@ public class UserAppService : AbstractAppService, IUserAppService
         var user = Mapper.Map<SysUser>(input);
         user.Id = IdGenerater.GetNextId();
         user.Account = user.Account.ToLower();
-        user.Salt = InfraHelper.Security.GenerateRandomCode(5);
+        user.Salt = Random.Shared.Next(5, false);
         user.Password = InfraHelper.Security.MD5(user.Password + user.Salt);
 
         var cacheKey = _cacheService.ConcatCacheKey(CachingConsts.UserValidatedInfoKeyPrefix, user.Id);
