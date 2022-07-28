@@ -70,12 +70,12 @@ public static class RandomExtension
     }
 
     /// <summary>
-    /// 生成真正的随机数
+    /// 生成随机数
     /// </summary>
-    /// <param name="length">验证码长度</param>
-    /// <param name="isNumberOnly">验证码是否是纯数字</param>
+    /// <param name="length">随机数长度</param>
+    /// <param name="isNumberOnly">随机数是否是纯数字</param>
     /// <returns></returns>
-    public static string StrictNextCode(this Random rand, int length, bool isNumberOnly = false)
+    public static string Next(this Random rand, int length, bool isNumberOnly)
     {
         char[] array;
         if (isNumberOnly)
