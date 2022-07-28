@@ -89,7 +89,7 @@ public static class RandomExtension
         var stringBuilder = new StringBuilder(length);
         for (var i = 0; i < length; i++)
         {
-            var index = rand.StrictNext(array.Length);
+            var index = rand.Next(array.Length);
             stringBuilder.Append(array[index]);
         }
         return stringBuilder.ToString();
