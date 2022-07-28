@@ -4,19 +4,6 @@
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
 	<ItemGroup>
-		<Compile Remove="Core\IdGenerater\**" />
-		<Compile Remove="Obsolete\**" />
-		<EmbeddedResource Remove="Core\IdGenerater\**" />
-		<EmbeddedResource Remove="Obsolete\**" />
-		<None Remove="Core\IdGenerater\**" />
-		<None Remove="Obsolete\**" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Compile Remove="Extensions\CoreExtension.cs" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
 		<PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.1" />
 		<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
