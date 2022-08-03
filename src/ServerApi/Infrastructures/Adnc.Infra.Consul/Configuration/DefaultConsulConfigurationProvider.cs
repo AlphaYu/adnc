@@ -13,7 +13,7 @@ public sealed class DefaultConsulConfigurationProvider : ConfigurationProvider
     {
         _consulClient = consulClient;
         _path = consulKeyPath;
-        _waitMillisecond = 3;
+        _waitMillisecond = 1000;
         _reloadOnChange = reloadOnChanges;
     }
 
