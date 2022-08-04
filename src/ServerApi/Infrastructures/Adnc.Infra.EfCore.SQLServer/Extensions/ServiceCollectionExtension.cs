@@ -14,7 +14,9 @@ public static class ServiceCollectionExtension
 
         services.TryAddScoped<IUnitOfWork, SqlServerUnitOfWork<SqlServerDbContext>>();
         services.TryAddScoped(typeof(IEfRepository<>), typeof(EfRepository<>));
+        services.TryAddScoped(typeof(IEfNotKeyRepository<>), typeof(EfNotKeyRepository<>));
         services.TryAddScoped(typeof(IEfBasicRepository<>), typeof(EfBasicRepository<>));
+        services.TryAddScoped(typeof(IEfNotKeyBasicRepository<>), typeof(EfNotKeyBasicRepository<>));
         services.AddDbContext<DbContext, SqlServerDbContext>(optionsBuilder);
 
         return services;

@@ -39,6 +39,11 @@
             延时加载扩展方法
             </summary>
         </member>
+        <member name="T:Adnc.Infra.Entities.EntityNotKey">
+            <summary>
+            无键实体抽象类，视图、存储过程、函数依赖抽象类
+            </summary>
+        </member>
         <member name="P:Adnc.Infra.Entities.IBasicAuditInfo.CreateBy">
             <summary>
             创建人
@@ -52,6 +57,11 @@
         <member name="P:Adnc.Infra.Entities.IConcurrency.RowVersion">
             <summary>
             并发控制列
+            </summary>
+        </member>
+        <member name="T:Adnc.Infra.Entities.IEntityNotKey">
+            <summary>
+            无主键的实体接口
             </summary>
         </member>
         <member name="P:Adnc.Infra.Entities.IFullAuditInfo.ModifyBy">
@@ -525,6 +535,115 @@
             </summary>
             <typeparam name="TEntity"></typeparam>
         </member>
+        <member name="T:Adnc.Infra.IRepositories.IEfNotKeyBaseRepository`1">
+            <summary>
+            Ef仓储的基类接口
+            </summary>
+            <typeparam name="TEntity"></typeparam>
+        </member>
+        <member name="M:Adnc.Infra.IRepositories.IEfNotKeyBaseRepository`1.InsertAsync(`0,System.Threading.CancellationToken)">
+            <summary>
+            插入单个实体
+            </summary>
+            <param name="entity"><see cref="!:TEntity"/></param>
+            <param name="cancellationToken"><see cref="T:System.Threading.CancellationToken"/></param>
+            <returns></returns>
+        </member>
+        <member name="M:Adnc.Infra.IRepositories.IEfNotKeyBaseRepository`1.InsertRangeAsync(System.Collections.Generic.IEnumerable{`0},System.Threading.CancellationToken)">
+            <summary>
+            批量插入实体
+            </summary>
+            <param name="entities"><see cref="!:TEntity"/></param>
+            <param name="cancellationToken"><see cref="T:System.Threading.CancellationToken"/></param>
+            <returns></returns>
+        </member>
+        <member name="M:Adnc.Infra.IRepositories.IEfNotKeyBaseRepository`1.UpdateAsync(`0,System.Threading.CancellationToken)">
+            <summary>
+            更新单个实体
+            </summary>
+            <param name="entity"><see cref="!:TEntity"/></param>
+            <param name="cancellationToken"><see cref="T:System.Threading.CancellationToken"/></param>
+            <returns></returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Adnc.Infra.IRepositories.IEfNotKeyBaseRepository`1.AnyAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Boolean,System.Threading.CancellationToken)" -->
+        <!-- Badly formed XML comment ignored for member "M:Adnc.Infra.IRepositories.IEfNotKeyBaseRepository`1.CountAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Boolean,System.Threading.CancellationToken)" -->
+        <!-- Badly formed XML comment ignored for member "M:Adnc.Infra.IRepositories.IEfNotKeyBaseRepository`1.Where(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Boolean,System.Boolean)" -->
+        <member name="T:Adnc.Infra.IRepositories.IEfNotKeyBasicRepository`1">
+            <summary>
+            Ef简单的、基础的，初级的仓储接口
+            适合DDD开发模式,实体必须继承AggregateRoot
+            </summary>
+            <typeparam name="TEntity"></typeparam>
+        </member>
+        <member name="T:Adnc.Infra.IRepositories.IEfNotKeyRepository`1">
+            <summary>
+            Ef默认的、全功能的仓储接口
+            适合传统三层模式开发，实体必须继承 EfEntity
+            </summary>
+            <typeparam name="TEntity"></typeparam>
+        </member>
+        <member name="P:Adnc.Infra.IRepositories.IEfNotKeyRepository`1.AdoQuerier">
+            <summary>
+            执行原生Sql查询
+            </summary>
+        </member>
+        <member name="M:Adnc.Infra.IRepositories.IEfNotKeyRepository`1.ExecuteSqlInterpolatedAsync(System.FormattableString,System.Threading.CancellationToken)">
+            <summary>
+            执行原生Sql写操作
+            </summary>
+        </member>
+        <member name="M:Adnc.Infra.IRepositories.IEfNotKeyRepository`1.ExecuteSqlRawAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            执行原生Sql写操作
+            </summary>
+        </member>
+        <member name="P:Adnc.Infra.IRepositories.IEfNotKeyRepository`1.CurrentDbTransaction">
+            <summary>
+            当前事务
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Adnc.Infra.IRepositories.IEfNotKeyRepository`1.GetAll(System.Boolean,System.Boolean)" -->
+        <member name="M:Adnc.Infra.IRepositories.IEfNotKeyRepository`1.FetchAsync``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Boolean,System.Boolean,System.Boolean,System.Threading.CancellationToken)">
+            <summary>
+            根据条件查询,返回单个实体或对象
+            </summary>
+            <typeparam name="TResult">匿名对象</typeparam>
+            <param name="selector">选择器</param>
+            <param name="whereExpression">查询条件</param>
+            <param name="orderByExpression">排序字段，默认主键，可选参数</param>
+            <param name="ascending">排序方式，默认逆序，可选参数</param>
+            <param name="writeDb">是否读写库,默认false，可选参数</param>
+            <param name="noTracking">是否开启跟踪，默认不开启，可选参数</param>
+            <param name="cancellationToken"><see cref="T:System.Threading.CancellationToken"/></param>
+            <returns></returns>
+        </member>
+        <member name="M:Adnc.Infra.IRepositories.IEfNotKeyRepository`1.UpdateAsync(`0,System.Linq.Expressions.Expression{System.Func{`0,System.Object}}[],System.Threading.CancellationToken)">
+            <summary>
+            更新单个实体
+            </summary>
+            <param name="entity"><see cref="!:entity"/></param>
+            <param name="updatingExpressions">需要更新列的表达式树数组</param>
+            <param name="cancellationToken"><see cref="T:System.Threading.CancellationToken"/></param>
+            <returns></returns>
+        </member>
+        <member name="M:Adnc.Infra.IRepositories.IEfNotKeyRepository`1.UpdateRangeAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{`0,`0}},System.Threading.CancellationToken)">
+            <summary>
+            批量更新
+            </summary>
+            <param name="whereExpression">查询条件</param>
+            <param name="updatingExpression">需要更新的字段</param>
+            <param name="cancellationToken"><see cref="T:System.Threading.CancellationToken"/></param>
+            <returns></returns>
+        </member>
+        <member name="M:Adnc.Infra.IRepositories.IEfNotKeyRepository`1.DeleteRangeAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Boolean,System.Threading.CancellationToken)">
+            <summary>
+            批量删除实体
+            </summary>
+            <param name="whereExpression">查询条件</param>
+            <param name="isForceDel">是否强制删除</param>
+            <param name="cancellationToken"><see cref="T:System.Threading.CancellationToken"/></param>
+            <returns></returns>
+        </member>
         <member name="T:Adnc.Infra.IRepositories.IEfRepository`1">
             <summary>
             Ef默认的、全功能的仓储接口
@@ -625,11 +744,12 @@
             <param name="cancellationToken"><see cref="T:System.Threading.CancellationToken"/></param>
             <returns></returns>
         </member>
-        <member name="M:Adnc.Infra.IRepositories.IEfRepository`1.DeleteRangeAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Threading.CancellationToken)">
+        <member name="M:Adnc.Infra.IRepositories.IEfRepository`1.DeleteRangeAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Boolean,System.Threading.CancellationToken)">
             <summary>
             批量删除实体
             </summary>
             <param name="whereExpression">查询条件</param>
+            <param name="isForceDel">是否强制删除</param>
             <param name="cancellationToken"><see cref="T:System.Threading.CancellationToken"/></param>
             <returns></returns>
         </member>

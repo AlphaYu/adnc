@@ -8,7 +8,8 @@ public abstract class AbstracSharedEntityInfo : IEntityInfo
     {
         var typeList = assembly.GetTypes().Where(m =>
                                                    m.FullName != null
-                                                   && typeof(EfEntity).IsAssignableFrom(m)
+                                                   && (typeof(EfEntity).IsAssignableFrom(m)
+                                                   || typeof(EfEntityNotKey).IsAssignableFrom(m))
                                                    && !m.IsAbstract);
         if (typeList is null)
             typeList = new List<Type>();

@@ -65,7 +65,7 @@
                 query = query.Include(navigationPropertyPath);
 
             if (orderByExpression is null)
-                result = await query.OrderByDescending(x=>x.Id).FirstOrDefaultAsync(cancellationToken);
+                result = await query.OrderByDescending(x => x.Id).FirstOrDefaultAsync(cancellationToken);
             else
                 result = ascending
                           ? await query.OrderBy(orderByExpression).FirstOrDefaultAsync(cancellationToken)
@@ -144,8 +144,10 @@
             #endregion old code
         }
 
-        public virtual async Task<int> DeleteRangeAsync(Expression<Func<TEntity, bool>> whereExpression, CancellationToken cancellationToken = default)
+        public virtual async Task<int> DeleteRangeAsync(Expression<Func<TEntity, bool>> whereExpression, bool isForceDel = false, CancellationToken cancellationToken = default)
         {
+            if (isForceDel)
+                return await DbContext.Set<TEntity>().Where(whereExpression).DeleteAsync(cancellationToken);
             var enityType = typeof(TEntity);
             var hasSoftDeleteMember = typeof(ISoftDelete).IsAssignableFrom(enityType);
             if (hasSoftDeleteMember)

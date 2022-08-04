@@ -6,7 +6,7 @@ public sealed class InfraHelper
     {
     }
     static InfraHelper()
-    { 
+    {
     }
 
     public static ISecurity Security => new Security();

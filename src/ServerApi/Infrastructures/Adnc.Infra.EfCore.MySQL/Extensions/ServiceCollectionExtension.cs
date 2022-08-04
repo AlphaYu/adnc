@@ -12,7 +12,9 @@ public static class ServiceCollectionExtension
 
         services.TryAddScoped<IUnitOfWork, MySqlUnitOfWork<MySqlDbContext>>();
         services.TryAddScoped(typeof(IEfRepository<>), typeof(EfRepository<>));
+        services.TryAddScoped(typeof(IEfNotKeyRepository<>), typeof(EfNotKeyRepository<>));
         services.TryAddScoped(typeof(IEfBasicRepository<>), typeof(EfBasicRepository<>));
+        services.TryAddScoped(typeof(IEfNotKeyBasicRepository<>), typeof(EfNotKeyBasicRepository<>));
         services.AddDbContext<DbContext, MySqlDbContext>(optionsBuilder);
 
         return services;

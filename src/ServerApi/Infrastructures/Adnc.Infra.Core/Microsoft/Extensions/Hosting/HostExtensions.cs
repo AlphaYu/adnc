@@ -17,6 +17,18 @@
                 throw new NullReferenceException(nameof(logger));
 
             var poolSetting = poolOptions.Value;
+            //配置文件合法性
+            ThreadPool.GetMinThreads(out int initialWorkerThreads, out int initialCompletionPortThreads);
+            ThreadPool.GetMaxThreads(out int initialMaxWorkerThreads, out int initialMaxCompletionPortThreads);
+            if (poolSetting.MinThreads < initialWorkerThreads || poolSetting.MinThreads > initialMaxWorkerThreads)
+                poolSetting.MinThreads = initialWorkerThreads;
+            if (poolSetting.MinCompletionPortThreads < initialCompletionPortThreads || poolSetting.MinCompletionPortThreads > initialMaxCompletionPortThreads)
+                poolSetting.MinCompletionPortThreads = initialCompletionPortThreads;
+            if (poolSetting.MaxThreads > initialMaxWorkerThreads)
+                poolSetting.MaxThreads = initialMaxWorkerThreads;
+            if (poolSetting.MaxCompletionPortThreads > initialMaxCompletionPortThreads)
+                poolSetting.MaxCompletionPortThreads = initialMaxCompletionPortThreads;
+
             ThreadPool.SetMinThreads(poolSetting.MinThreads, poolSetting.MinCompletionPortThreads);
             ThreadPool.SetMaxThreads(poolSetting.MaxThreads, poolSetting.MaxCompletionPortThreads);
             ThreadPool.GetMinThreads(out int workerThreads, out int completionPortThreads);

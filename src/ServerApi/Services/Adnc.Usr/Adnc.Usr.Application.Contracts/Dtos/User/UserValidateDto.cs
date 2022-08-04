@@ -1,6 +1,4 @@
-﻿using Adnc.Infra.Helper;
-
-namespace Adnc.Usr.Application.Contracts.Dtos
+﻿namespace Adnc.Usr.Application.Contracts.Dtos
 {
     [Serializable]
     public record UserValidatedInfoDto : IDto
