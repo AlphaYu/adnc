@@ -1,6 +1,6 @@
 ﻿namespace Adnc.Shared.Application.Registrar;
 
-public abstract partial class AbstractApplicationDependencyRegistrar : IDependencyRegistrar
+public abstract partial class AbstractApplicationDependencyRegistrar
 {
     /// <summary>
     /// 注册Domain服务

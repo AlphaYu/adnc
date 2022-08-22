@@ -13,5 +13,6 @@
         }
 
         public abstract IEnumerable<EntityTypeInfo> GetEntitiesTypeInfo();
+        public abstract IEnumerable<Assembly> GetConfigAssemblys();
     }
 }

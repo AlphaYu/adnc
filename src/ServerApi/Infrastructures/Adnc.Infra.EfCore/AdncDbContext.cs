@@ -5,7 +5,7 @@ public abstract class AdncDbContext : DbContext
     private readonly Operater _operater;
     private readonly IEntityInfo _entityInfo;
 
-    public AdncDbContext(DbContextOptions options, Operater operater, IEntityInfo entityInfo)
+    protected AdncDbContext(DbContextOptions options, Operater operater, IEntityInfo entityInfo)
         : base(options)
     {
         _operater = operater;
@@ -38,19 +38,16 @@ public abstract class AdncDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         var entityInfos = _entityInfo.GetEntitiesTypeInfo();
-        if (entityInfos.IsNullOrEmpty())
-            return;
-
-        foreach (var info in entityInfos)
+        entityInfos?.ForEach(info =>
         {
             if (info.DataSeeding is null)
                 modelBuilder.Entity(info.Type);
             else
                 modelBuilder.Entity(info.Type).HasData(info.DataSeeding);
-        }
+        });
 
-        var assembly = entityInfos.First().Type.Assembly;
-        modelBuilder.ApplyConfigurationsFromAssembly(assembly);
+        var assemblys = _entityInfo.GetConfigAssemblys();
+        assemblys?.ForEach(assembly => modelBuilder.ApplyConfigurationsFromAssembly(assembly));
 
         SetComment(modelBuilder, entityInfos);
     }
@@ -74,8 +71,10 @@ public abstract class AdncDbContext : DbContext
         return ChangeTracker.Entries<Entity>().Count();
     }
 
-    protected virtual void SetComment(ModelBuilder modelBuilder, IEnumerable<EntityTypeInfo> entityInfos)
+    protected virtual void SetComment(ModelBuilder modelBuilder, IEnumerable<EntityTypeInfo>? entityInfos)
     {
+        if (entityInfos is null)
+            return;
         var types = entityInfos.Select(x => x.Type);
         var entityTypes = modelBuilder.Model.GetEntityTypes().Where(x => types.Contains(x.ClrType));
         entityTypes.ForEach(entityType =>

@@ -4,21 +4,8 @@ using SkyApm.Diagnostics.CAP;
 
 namespace Adnc.Shared.Application.Registrar;
 
-public abstract partial class AbstractApplicationDependencyRegistrar : IDependencyRegistrar
+public abstract partial class AbstractApplicationDependencyRegistrar
 {
-    /// <summary>
-    /// 注册CAP组件的订阅者(实现事件总线及最终一致性（分布式事务）的一个开源的组件)
-    /// </summary>
-    /// <param name="tableNamePrefix">cap表面前缀</param>
-    /// <param name="groupName">群组名子</param>
-    /// <param name="func">回调函数</param>
-    [Obsolete("please call AddAdncInfraCap method")]
-    protected virtual void AddEventBusSubscribers<TSubscriber>(Action<IServiceCollection> action = null)
-        where TSubscriber : class, ICapSubscribe
-    {
-        AddCapEventBus<TSubscriber>();
-    }
-
     /// <summary>
     /// 注册CAP组件(实现事件总线及最终一致性（分布式事务）的一个开源的组件)
     /// </summary>
@@ -96,16 +83,6 @@ public abstract partial class AbstractApplicationDependencyRegistrar : IDependen
                 x.UseAuth = false;
             });
         });
-    }
-
-    /// <summary>
-    /// 注册事件发布者相关服务
-    /// </summary>
-    /// <param name="action"></param>
-    [Obsolete("please casll AddAdncInfraRabbitMq  or AddEventBusSubscribers methods")]
-    protected virtual void AddEventBusPublishers(Action<IServiceCollection> action = null)
-    {
-        AddRabbitMqClient();
     }
 
     /// <summary>

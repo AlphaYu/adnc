@@ -16,3 +16,8 @@ node_modules
 /src/ServerApi/Services/Adnc.Ord/Adnc.Ord.Migrations/Migrations
 /src/ServerApi/Services/Adnc.Whse/Adnc.Whse.Migrations/Migrations
 /src/ClientApp/target/npmlist.json
+/src/ServerApi/.idea/.idea.Adnc/.idea/.gitignore
+/src/ServerApi/.idea/.idea.Adnc/.idea/.name
+/src/ServerApi/.idea/.idea.Adnc/.idea/encodings.xml
+/src/ServerApi/.idea/.idea.Adnc/.idea/indexLayout.xml
+/src/ServerApi/.idea/.idea.Adnc/.idea/vcs.xml

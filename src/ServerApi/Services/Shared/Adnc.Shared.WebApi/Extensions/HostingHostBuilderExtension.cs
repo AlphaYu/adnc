@@ -7,11 +7,9 @@ namespace Microsoft.Extensions.Hosting;
 public static class WebApplicationBuilderExtension
 {
     /// <summary>
-    /// Configure Configuration/ServiceCollection/Logging/WebHost(Kestrel)
-    /// </summary>
+    /// Configure Configuration/ServiceCollection/Logging
     /// <param name="builder"></param>
-    /// <param name="args"></param>
-    /// <param name="webApiAssembly"></param>
+    /// <param name="serviceInfo"></param>
     /// <returns></returns>
     /// <exception cref="ArgumentNullException"></exception>
     public static WebApplicationBuilder ConfigureAdncDefault(this WebApplicationBuilder builder, IServiceInfo serviceInfo)
@@ -22,20 +20,15 @@ public static class WebApplicationBuilderExtension
             throw new ArgumentNullException(nameof(serviceInfo));
 
         // Configuration
-        //builder.Configuration.AddCommandLine(args);
         var initialData = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("ServiceName", serviceInfo.ServiceName) };
         builder.Configuration.AddInMemoryCollection(initialData);
         builder.Configuration.AddJsonFile($"{AppContext.BaseDirectory}/appsettings.shared.{builder.Environment.EnvironmentName}.json", true, true);
         builder.Configuration.AddJsonFile($"{AppContext.BaseDirectory}/appsettings.{builder.Environment.EnvironmentName}.json", true, true);
         if (builder.Environment.IsProduction() || builder.Environment.IsStaging())
         {
-            var consulSection = builder.Configuration.GetSection(ConsulConfig.Name);
-            if(consulSection is null)
-                throw new NullReferenceException(nameof(consulSection));
-
-            var consulOption = consulSection.Get<ConsulConfig>();
-            if(consulOption is null)
-                throw new NullReferenceException(nameof(consulOption));
+            var consulOption = builder.Configuration.GetSection(ConsulConfig.Name).Get<ConsulConfig>();
+            if(consulOption.ConsulKeyPath.IsNullOrWhiteSpace())
+                throw new NotImplementedException(nameof(consulOption.ConsulKeyPath));
 
             consulOption.ConsulKeyPath = consulOption.ConsulKeyPath.Replace("$SHORTNAME", serviceInfo.ShortName);
             builder.Configuration.AddConsulConfiguration(consulOption, true);
@@ -53,16 +46,6 @@ public static class WebApplicationBuilderExtension
         LogManager.LoadConfiguration($"{AppContext.BaseDirectory}/NLog/nlog-{logContainer}.config");
         builder.Host.UseNLog();
 
-        //WebHost(Kestrel)
-        builder.WebHost.ConfigureKestrel((context, serverOptions) =>
-        {
-            var kestrelSection = context.Configuration.GetSection(KestrelConfig.Name);
-            if(kestrelSection is null)
-                throw new NullReferenceException(nameof(kestrelSection));
-
-            serverOptions.Configure(kestrelSection);
-        });
-
         return builder;
     }
 
@@ -70,7 +53,6 @@ public static class WebApplicationBuilderExtension
     /// replace placeholder
     /// </summary>
     /// <param name="sections"></param>
-    /// <param name="serviceInfo"></param>
     private static void ReplacePlaceholder(IEnumerable<IConfigurationSection> sections)
     {
         var serviceInfo = ServiceInfo.GetInstance();

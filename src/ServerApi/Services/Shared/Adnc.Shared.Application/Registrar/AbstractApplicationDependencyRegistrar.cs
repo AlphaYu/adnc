@@ -24,8 +24,8 @@ public abstract partial class AbstractApplicationDependencyRegistrar : IDependen
         Services = services ?? throw new ArgumentException("IServiceCollection is null.");
         Configuration = services.GetConfiguration() ?? throw new ArgumentException("Configuration is null.");
         ServiceInfo = services.GetServiceInfo() ?? throw new ArgumentException("ServiceInfo is null.");
-        RedisSection = Configuration.GetSection(RedisConfig.Name) ?? throw new ArgumentException("RedisSection is null.");
-        MongoDbSection = Configuration.GetSection(MongoConfig.Name) ?? throw new ArgumentException("MongoDbSection is null.");
+        RedisSection = Configuration.GetSection(RedisConfig.Name);
+        MongoDbSection = Configuration.GetSection(MongoConfig.Name);
         MysqlSection = Configuration.GetSection(MysqlConfig.Name);
         ConsulSection = Configuration.GetSection(ConsulConfig.Name);
         RabbitMqSection = Configuration.GetSection(RabbitMqConfig.Name);
@@ -46,17 +46,17 @@ public abstract partial class AbstractApplicationDependencyRegistrar : IDependen
         Services
             .AddValidatorsFromAssembly(ContractsLayerAssembly, ServiceLifetime.Scoped)
             .AddAdncInfraAutoMapper(ApplicationLayerAssembly)
-            .AddAdncInfraYitterIdGenerater(RedisSection);
+            .AddAdncInfraYitterIdGenerater(RedisSection)
+            .AddAdncInfraConsul(ConsulSection)
+            .AddAdncInfraDapper();
 
         AddApplicationSharedServices();
         AddAppliactionSerivcesWithInterceptors();
         AddApplicaitonHostedServices();
-        AddDapperRepositories();
         AddEfCoreContextWithRepositories();
         AddMongoContextWithRepositries();
-        AddCachingServices();
-        AddBloomFilterServices();
-        AddConsulServices();
+        AddCaching();
+        AddBloomFilters();
     }
 
     /// <summary>
