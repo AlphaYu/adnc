@@ -9,8 +9,7 @@ public static class WebApplicationBuilderExtension
     /// <summary>
     /// Configure Configuration/ServiceCollection/Logging
     /// <param name="builder"></param>
-    /// <param name="args"></param>
-    /// <param name="webApiAssembly"></param>
+    /// <param name="serviceInfo"></param>
     /// <returns></returns>
     /// <exception cref="ArgumentNullException"></exception>
     public static WebApplicationBuilder ConfigureAdncDefault(this WebApplicationBuilder builder, IServiceInfo serviceInfo)
@@ -54,7 +53,6 @@ public static class WebApplicationBuilderExtension
     /// replace placeholder
     /// </summary>
     /// <param name="sections"></param>
-    /// <param name="serviceInfo"></param>
     private static void ReplacePlaceholder(IEnumerable<IConfigurationSection> sections)
     {
         var serviceInfo = ServiceInfo.GetInstance();

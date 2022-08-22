@@ -21,11 +21,11 @@ public abstract partial class AbstractWebApiDependencyRegistrar : IMiddlewareReg
     /// </summary>
     protected virtual void UseWebApiDefault(
         Action<IApplicationBuilder> beforeAuthentication = null,
+        Action<IApplicationBuilder> afterAuthentication = null,
         Action<IApplicationBuilder> afterAuthorization = null,
         Action<IEndpointRouteBuilder> endpointRoute = null)
     {
         ServiceLocator.Provider = App.ApplicationServices;
-        var configuration = App.ApplicationServices.GetService<IConfiguration>();
         var environment = App.ApplicationServices.GetService<IHostEnvironment>();
         var serviceInfo = App.ApplicationServices.GetService<IServiceInfo>();
         var consulOptions = App.ApplicationServices.GetService<IOptions<ConsulConfig>>();
@@ -78,9 +78,9 @@ public abstract partial class AbstractWebApiDependencyRegistrar : IMiddlewareReg
         .StartCollecting();
 
         beforeAuthentication?.Invoke(App);
-        App
-            .UseAuthentication()
-            .UseAuthorization();
+        App.UseAuthentication();
+        afterAuthentication?.Invoke(App);
+        App.UseAuthorization();
         afterAuthorization?.Invoke(App);
 
         App
