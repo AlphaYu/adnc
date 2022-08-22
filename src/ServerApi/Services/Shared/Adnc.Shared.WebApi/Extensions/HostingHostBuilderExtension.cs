@@ -28,7 +28,7 @@ public static class WebApplicationBuilderExtension
         {
             var consulOption = builder.Configuration.GetSection(ConsulConfig.Name).Get<ConsulConfig>();
             if(consulOption.ConsulKeyPath.IsNullOrWhiteSpace())
-                throw new NullReferenceException(nameof(consulOption.ConsulKeyPath));
+                throw new NotImplementedException(nameof(consulOption.ConsulKeyPath));
 
             consulOption.ConsulKeyPath = consulOption.ConsulKeyPath.Replace("$SHORTNAME", serviceInfo.ShortName);
             builder.Configuration.AddConsulConfiguration(consulOption, true);
