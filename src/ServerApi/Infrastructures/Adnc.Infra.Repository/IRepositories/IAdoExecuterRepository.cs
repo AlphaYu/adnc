@@ -5,7 +5,6 @@ public interface IAdoExecuterRepository : IAdoRepository
     /// <summary>
     /// Execute parameterized SQL and return an <see cref="IDataReader"/>.
     /// </summary>
-    /// <param name="cnn">The connection to execute on.</param>
     /// <param name="sql">The SQL to execute.</param>
     /// <param name="param">The parameters to use for this command.</param>
     /// <param name="transaction">The transaction to use for this command.</param>
@@ -32,7 +31,6 @@ public interface IAdoExecuterRepository : IAdoRepository
     /// <summary>
     /// Execute parameterized SQL that selects a single value.
     /// </summary>
-    /// <param name="cnn">The connection to execute on.</param>
     /// <param name="sql">The SQL to execute.</param>
     /// <param name="param">The parameters to use for this command.</param>
     /// <param name="transaction">The transaction to use for this command.</param>
@@ -45,7 +43,6 @@ public interface IAdoExecuterRepository : IAdoRepository
     /// Execute parameterized SQL that selects a single value.
     /// </summary>
     /// <typeparam name="T">The type to return.</typeparam>
-    /// <param name="cnn">The connection to execute on.</param>
     /// <param name="sql">The SQL to execute.</param>
     /// <param name="param">The parameters to use for this command.</param>
     /// <param name="transaction">The transaction to use for this command.</param>
@@ -57,7 +54,6 @@ public interface IAdoExecuterRepository : IAdoRepository
     /// <summary>
     /// Execute a command asynchronously using Task.
     /// </summary>
-    /// <param name="cnn">The connection to query on.</param>
     /// <param name="sql">The SQL to execute for this query.</param>
     /// <param name="param">The parameters to use for this query.</param>
     /// <param name="transaction">The transaction to use for this query.</param>
