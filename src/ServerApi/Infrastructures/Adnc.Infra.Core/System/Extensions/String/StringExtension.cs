@@ -33,37 +33,6 @@ public static class StringExtension
     /// <returns>false if null or whiteSpace, true if not.</returns>
     public static bool IsNotNullOrWhiteSpace(this string @this) => !string.IsNullOrWhiteSpace(@this);
 
-    /// <summary>An IEnumerable&lt;string&gt; extension method that concatenates the given this.</summary>
-    /// <param name="this">The @this to act on.</param>
-    /// <returns>A string.</returns>
-    public static string Concatenate([NotNull] this IEnumerable<string> @this)
-    {
-        var sb = new StringBuilder();
-
-        foreach (var s in @this)
-        {
-            sb.Append(s);
-        }
-
-        return sb.ToString();
-    }
-
-    /// <summary>An IEnumerable&lt;T&gt; extension method that concatenates.</summary>
-    /// <typeparam name="T">Generic type parameter.</typeparam>
-    /// <param name="source">The source to act on.</param>
-    /// <param name="func">The function.</param>
-    /// <returns>A string.</returns>
-    public static string Concatenate<T>([NotNull] this IEnumerable<T> source, Func<T, string> func)
-    {
-        var sb = new StringBuilder();
-        foreach (var item in source)
-        {
-            sb.Append(func(item));
-        }
-
-        return sb.ToString();
-    }
-
     /// <summary>
     ///     A string extension method that query if '@this' satisfy the specified pattern.
     /// </summary>
@@ -84,37 +53,6 @@ public static class StringExtension
             .Replace(@"\#", @"\d");
 
         return Regex.IsMatch(@this, regexPattern);
-    }
-
-    /// <summary>
-    /// SafeSubstring
-    /// </summary>
-    /// <param name="this"></param>
-    /// <param name="startIndex"></param>
-    /// <returns></returns>
-    public static string SafeSubstring([NotNull] this string @this, int startIndex)
-    {
-        if (startIndex < 0 || startIndex > @this.Length)
-        {
-            return string.Empty;
-        }
-        return @this[startIndex..];
-    }
-
-    /// <summary>
-    /// SafeSubstring
-    /// </summary>
-    /// <param name="str"></param>
-    /// <param name="startIndex"></param>
-    /// <param name="length"></param>
-    /// <returns></returns>
-    public static string SafeSubstring([NotNull] this string str, int startIndex, int length)
-    {
-        if (startIndex < 0 || startIndex >= str.Length || length < 0)
-        {
-            return string.Empty;
-        }
-        return str.Substring(startIndex, Math.Min(str.Length - startIndex, length));
     }
 
     /// <summary>
