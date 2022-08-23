@@ -1,6 +1,6 @@
 ﻿namespace Adnc.Usr.Entities.Config;
 
-public class DetpConfig : EntityTypeConfiguration<SysDept>
+public class DetpConfig : AbstractEntityTypeConfiguration<SysDept>
 {
     public override void Configure(EntityTypeBuilder<SysDept> builder)
     {

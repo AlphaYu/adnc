@@ -1,4 +1,7 @@
-﻿namespace Adnc.Whse.Domain.Services;
+﻿using Adnc.Whse.Domain.Aggregates;
+using Adnc.Whse.Domain.Aggregates.ProductAggregate;
+
+namespace Adnc.Whse.Domain.Services;
 
 public class ProductManager : IDomainService
 {
@@ -79,17 +82,15 @@ public class ProductManager : IDomainService
     /// 上架商品
     /// </summary>
     /// <param name="product"></param>
-    /// <param name="warehouseInfo"></param>
     /// <param name="reason"></param>
     /// <returns></returns>
-    public virtual void PutOnSale(Product product, Warehouse warehouseInfo, string reason)
+    public virtual void PutOnSale(Product product, string reason)
     {
         Guard.Checker.NotNull(product, nameof(product));
-        Guard.Checker.NotNull(warehouseInfo, nameof(warehouseInfo));
-
-        if (warehouseInfo.Qty > 0 && warehouseInfo.ProductId == product.Id)
-            product.SetStatus(new ProductStatus(ProductStatusCodes.SaleOn, reason));
-        else
-            throw new BusinessException($"product exists{product.Id}");
+        product.SetStatus(new ProductStatus(ProductStatusCodes.SaleOn, reason));
+        //if (warehouseInfo.Qty > 0 && warehouseInfo.ProductId == product.Id)
+        //    product.SetStatus(new ProductStatus(ProductStatusCodes.SaleOn, reason));
+        //else
+        //    throw new BusinessException($"product exists{product.Id}");
     }
 }

@@ -1,8 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿namespace Adnc.Cus.Entities.Config;
 
-namespace Adnc.Cus.Entities.Config;
-
-public class CustomerConfig : EntityTypeConfiguration<Customer>
+public class CustomerConfig : AbstractEntityTypeConfiguration<Customer>
 {
     public override void Configure(EntityTypeBuilder<Customer> builder)
     {

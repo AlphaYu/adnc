@@ -1,6 +1,8 @@
-﻿namespace Adnc.Whse.Domain.EntityConfig;
+﻿using Adnc.Whse.Domain.Aggregates.ProductAggregate;
 
-public class ProductConfig : EntityTypeConfiguration<Product>
+namespace Adnc.Whse.Domain.EntityConfig;
+
+public class ProductConfig : AbstractEntityTypeConfiguration<Product>
 {
     public override void Configure(EntityTypeBuilder<Product> builder)
     {

@@ -1,6 +1,6 @@
 ﻿namespace Adnc.Maint.Entities.Config;
 
-public class CfgConfig : EntityTypeConfiguration<SysCfg>
+public class CfgConfig : AbstractEntityTypeConfiguration<SysCfg>
 {
     public override void Configure(EntityTypeBuilder<SysCfg> builder)
     {

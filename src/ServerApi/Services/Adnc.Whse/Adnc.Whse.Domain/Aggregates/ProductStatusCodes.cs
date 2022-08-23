@@ -1,4 +1,4 @@
-﻿namespace Adnc.Whse.Domain.Aggregates.ProductAggregate;
+﻿namespace Adnc.Whse.Domain.Aggregates;
 
 public enum ProductStatusCodes
 {

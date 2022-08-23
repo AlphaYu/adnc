@@ -33,9 +33,8 @@ public class CustomerAppService : AbstractAppService, ICustomerAppService
         if (exists)
             return Problem(HttpStatusCode.Forbidden, "该账号已经存在");
 
-        var customer = Mapper.Map<Customer>(input);
+        var customer = Mapper.Map<Customer>(input, IdGenerater.GetNextId());
 
-        customer.Id = IdGenerater.GetNextId();
         customer.FinanceInfo = new CustomerFinance()
         {
             Account = customer.Account,
@@ -66,10 +65,10 @@ public class CustomerAppService : AbstractAppService, ICustomerAppService
             Id = IdGenerater.GetNextId(),
             CustomerId = customer.Id,
             Account = customer.Account,
-            ExchangeType = ExchangeTypeEnum.Recharge,
+            ExchangeType = ExchangeBehavior.Recharge,
             Remark = "",
             Amount = input.Amount,
-            ExchageStatus = ExchageStatusEnum.Processing
+            ExchageStatus = ExchageStatus.Processing
         };
 
         await _cusTransactionLogRepo.InsertAsync(cusTransactionLog);
@@ -105,7 +104,7 @@ public class CustomerAppService : AbstractAppService, ICustomerAppService
         finance.Balance = newBalance;
         await _cusFinaceRepo.UpdateAsync(finance);
 
-        transLog.ExchageStatus = ExchageStatusEnum.Finished;
+        transLog.ExchageStatus = ExchageStatus.Finished;
         transLog.ChangingAmount = originalBalance;
         transLog.ChangedAmount = newBalance;
         await _cusTransactionLogRepo.UpdateAsync(transLog);
@@ -145,8 +144,8 @@ public class CustomerAppService : AbstractAppService, ICustomerAppService
                 ChangingAmount = originalBalance,
                 Amount = 0 - amount,
                 ChangedAmount = newBalance,
-                ExchangeType = ExchangeTypeEnum.Order,
-                ExchageStatus = ExchageStatusEnum.Finished
+                ExchangeType = ExchangeBehavior.Order,
+                ExchageStatus = ExchageStatus.Finished
             };
 
             await _cusTransactionLogRepo.InsertAsync(transLog);
