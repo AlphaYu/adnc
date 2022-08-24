@@ -3,9 +3,10 @@
 /// <summary>
 /// 客户
 /// </summary>
-public static class CustConsts
+public static class CustomerConsts
 {
     public const int Account_MaxLength = 16;
+    public const int Password_Maxlength = 32;
     public const int Nickname_MaxLength = 16;
     public const int Realname_Maxlength = 16;
 }
