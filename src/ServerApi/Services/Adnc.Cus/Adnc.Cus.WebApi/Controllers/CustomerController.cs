@@ -29,7 +29,7 @@ public class CustomerController : AdncControllerBase
     /// 后台管理员给客户充值
     /// </summary>
     /// <returns></returns>
-    [HttpPatch("{id}/balance")]
+    [HttpPut("{id}/balance")]
     [AdncAuthorize(PermissionConsts.Customer.Recharge)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<SimpleDto<string>>> RechargeAsync([FromRoute] long id, [FromBody] CustomerRechargeDto input) =>
