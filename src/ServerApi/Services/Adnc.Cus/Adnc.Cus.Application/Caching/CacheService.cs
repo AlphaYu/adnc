@@ -2,7 +2,9 @@
 
 public sealed class CacheService : AbstractCacheService, ICachePreheatable
 {
-    public CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IServiceProvider> serviceProvider)
+    public CacheService(
+        Lazy<ICacheProvider> cacheProvider,
+        Lazy<IServiceProvider> serviceProvider)
         : base(cacheProvider, serviceProvider)
     {
     }

@@ -1,4 +1,8 @@
-﻿namespace Adnc.Cus.Application.Services;
+﻿using Adnc.Cus.Application.Services.Caching;
+using Adnc.Shared.Application.Channels;
+using Adnc.Shared.Repository.MongoEntities;
+
+namespace Adnc.Cus.Application.Services;
 
 /// <summary>
 /// 客户管理服务
@@ -8,25 +12,23 @@ public class CustomerAppService : AbstractAppService, ICustomerAppService
     private readonly IEfRepository<Customer> _customerRepo;
     private readonly IEfRepository<CustomerFinance> _cusFinaceRepo;
     private readonly IEfRepository<CustomerTransactionLog> _cusTransactionLogRepo;
+    private readonly CacheService _cacheService;
     private readonly IEventPublisher _eventPublisher;
 
     public CustomerAppService(
         IEfRepository<Customer> customerRepo,
         IEfRepository<CustomerFinance> cusFinaceRepo,
         IEfRepository<CustomerTransactionLog> cusTransactionLogRepo,
+        CacheService cacheService,
         IEventPublisher eventPublisher)
     {
         _customerRepo = customerRepo;
         _cusFinaceRepo = cusFinaceRepo;
         _cusTransactionLogRepo = cusTransactionLogRepo;
+        _cacheService = cacheService;
         _eventPublisher = eventPublisher;
     }
 
-    /// <summary>
-    /// 注册
-    /// </summary>
-    /// <param name="input"></param>
-    /// <returns></returns>
     public async Task<AppSrvResult<CustomerDto>> RegisterAsync(CustomerRegisterDto input)
     {
         var exists = await _customerRepo.AnyAsync(t => t.Account == input.Account);
@@ -34,6 +36,7 @@ public class CustomerAppService : AbstractAppService, ICustomerAppService
             return Problem(HttpStatusCode.Forbidden, "该账号已经存在");
 
         var customer = Mapper.Map<Customer>(input, IdGenerater.GetNextId());
+        customer.Password = InfraHelper.Security.MD5(customer.Password);
 
         customer.FinanceInfo = new CustomerFinance()
         {
@@ -48,12 +51,6 @@ public class CustomerAppService : AbstractAppService, ICustomerAppService
         return dto;
     }
 
-    /// <summary>
-    /// 充值
-    /// </summary>
-    /// <param name="id"></param>
-    /// <param name="input"></param>
-    /// <returns></returns>
     public async Task<AppSrvResult<SimpleDto<string>>> RechargeAsync(long id, CustomerRechargeDto input)
     {
         var customer = await _customerRepo.FindAsync(id);
@@ -81,12 +78,6 @@ public class CustomerAppService : AbstractAppService, ICustomerAppService
         return new SimpleDto<string>(cusTransactionLog.Id.ToString());
     }
 
-    /// <summary>
-    /// 处理充值
-    /// </summary>
-    /// <param name="eventDto"></param>
-    /// <param name="tracker"></param>
-    /// <returns></returns>
     public async Task<AppSrvResult> ProcessRechargingAsync(CustomerRechargedEvent eventDto, IMessageTracker tracker)
     {
         var customerId = eventDto.Data.CustomerId;
@@ -113,13 +104,6 @@ public class CustomerAppService : AbstractAppService, ICustomerAppService
         return AppSrvResult();
     }
 
-    /// <summary>
-    /// 处理付款
-    /// </summary>
-    /// <param name="transactionLogId"></param>
-    /// <param name="customerId"></param>
-    /// <param name="amount"></param>
-    /// <returns></returns>
     public async Task<AppSrvResult> ProcessPayingAsync(long transactionLogId, long customerId, decimal amount)
     {
         var transLog = await _cusTransactionLogRepo.FindAsync(transactionLogId);
@@ -154,11 +138,6 @@ public class CustomerAppService : AbstractAppService, ICustomerAppService
         return AppSrvResult();
     }
 
-    /// <summary>
-    /// 分页列表
-    /// </summary>
-    /// <param name="search"></param>
-    /// <returns></returns>
     public async Task<AppSrvResult<PageModelDto<CustomerDto>>> GetPagedAsync(CustomerSearchPagedDto search)
     {
         var whereCondition = ExpressionCreator
