@@ -1,6 +1,6 @@
 ﻿namespace Adnc.Ord.Domain.EntityConfig;
 
-public class OrderConfig : EntityTypeConfiguration<Order>
+public class OrderConfig : AbstractEntityTypeConfiguration<Order>
 {
     public override void Configure(EntityTypeBuilder<Order> builder)
     {

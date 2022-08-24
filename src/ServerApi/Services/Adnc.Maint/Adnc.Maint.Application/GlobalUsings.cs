@@ -1,7 +1,5 @@
 ﻿global using Adnc.Infra.Caching;
 global using Adnc.Infra.Caching.Configurations;
-global using Adnc.Infra.Core.Configuration;
-global using Adnc.Infra.Entities;
 global using Adnc.Infra.EventBus.RabbitMq;
 global using Adnc.Infra.IdGenerater.Yitter;
 global using Adnc.Infra.IRepositories;
@@ -16,6 +14,7 @@ global using Adnc.Shared.Application.Contracts.ResultModels;
 global using Adnc.Shared.Application.Services;
 global using Adnc.Shared.Consts.Caching.Maint;
 global using Adnc.Shared.Consts.Mq;
+global using Adnc.Shared.Repository.MongoEntities;
 global using Adnc.Shared.Rpc;
 global using Adnc.Shared.Rpc.Rest.Services;
 global using AutoMapper;

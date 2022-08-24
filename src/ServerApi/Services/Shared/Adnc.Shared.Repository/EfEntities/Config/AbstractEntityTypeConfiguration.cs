@@ -1,6 +1,6 @@
-﻿namespace Adnc.Infra.Entities.Config;
+﻿namespace Adnc.Shared.Repository.EfEntities.Config;
 
-public abstract class EntityTypeConfiguration<TEntity> : IEntityTypeConfiguration<TEntity>
+public abstract class AbstractEntityTypeConfiguration<TEntity> : IEntityTypeConfiguration<TEntity>
    where TEntity : Entity
 {
     public virtual void Configure(EntityTypeBuilder<TEntity> builder)

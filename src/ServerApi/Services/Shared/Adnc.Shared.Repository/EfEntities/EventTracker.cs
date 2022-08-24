@@ -1,11 +1,11 @@
-﻿namespace Adnc.Shared.Entities;
+﻿namespace Adnc.Shared.Repository.EfEntities;
 
 /// <summary>
 /// 事件跟踪/处理信息
 /// </summary>
 /// <remarks>
 /// EventId,TrackerName 需要建联合唯一索引
-/// CREATE UNIQUE NONCLUSTERED INDEX UK_EventId_TrackerNam ON EventTracker(EventId, TrackerName);
+/// CREATE UNIQUE INDEX UK_EventId_TrackerNam ON EventTracker(EventId, TrackerName);
 /// </remarks>
 public class EventTracker : EfBasicAuditEntity
 {

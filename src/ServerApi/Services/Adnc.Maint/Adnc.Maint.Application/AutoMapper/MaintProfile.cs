@@ -10,7 +10,7 @@ public class MaintProfile : Profile
         CreateMap<OpsLogCreationDto, OperationLog>();
         CreateMap<OperationLog, OpsLogDto>();
         CreateMap<LoginLog, LoginLogDto>();
-        CreateMap<LoggingLog, NlogLogDto>();
+        CreateMap<LoggerLog, NlogLogDto>();
         CreateMap<SysNloglogProperty, NlogLogPropertyDto>();
         CreateMap<CfgCreationDto, SysCfg>();
         CreateMap<SysCfg, CfgDto>();

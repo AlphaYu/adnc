@@ -1,4 +1,7 @@
-﻿namespace Adnc.Whse.Domain.Services;
+﻿using Adnc.Whse.Domain.Aggregates;
+using Adnc.Whse.Domain.Aggregates.WarehouseAggregate;
+
+namespace Adnc.Whse.Domain.Services;
 
 public class WarehouseManager : IDomainService
 {
@@ -29,20 +32,19 @@ public class WarehouseManager : IDomainService
     /// 分配货架给商品
     /// </summary>
     /// <param name="warehouse"></param>
-    /// <param name="product"></param>
+    /// <param name="productId"></param>
     /// <returns></returns>
-    public async Task AllocateShelfToProductAsync(Warehouse warehouse, Product product)
+    public async Task AllocateShelfToProductAsync(Warehouse warehouse, long productId)
     {
         Guard.Checker.NotNull(warehouse, nameof(warehouse));
-        Guard.Checker.NotNull(product, nameof(product));
 
-        var existWarehouse = await _warehouseRepo.Where(x => x.ProductId == product.Id).SingleOrDefaultAsync();
+        var existWarehouse = await _warehouseRepo.Where(x => x.ProductId == productId).SingleOrDefaultAsync();
 
         //一个商品只能分配一个货架，但可以调整货架。
         if (existWarehouse != null && existWarehouse.Id != warehouse.Id)
-            throw new BusinessException($"exist warehouse ({product.Id})");
+            throw new BusinessException($"exist warehouse ({productId})");
 
-        warehouse.SetProductId(product.Id);
+        warehouse.SetProductId(productId);
     }
 
     /// <summary>
@@ -51,16 +53,14 @@ public class WarehouseManager : IDomainService
     /// <param name="orderId"></param>
     /// <param name="blockQtyProductsInfo"></param>
     /// <param name="warehouses"></param>
-    /// <param name="products"></param>
     /// <returns></returns>
-    public async Task<bool> BlockQtyAsync(long orderId, Dictionary<long, int> blockQtyProductsInfo, List<Warehouse> warehouses, List<Product> products)
+    public async Task<bool> BlockQtyAsync(long orderId, Dictionary<long, int> blockQtyProductsInfo, List<Warehouse> warehouses)
     {
         bool isSuccess = false;
         string remark = string.Empty;
 
         Guard.Checker.NotNullOrAny(blockQtyProductsInfo, nameof(blockQtyProductsInfo));
         Guard.Checker.NotNullOrAny(warehouses, nameof(warehouses));
-        Guard.Checker.NotNullOrAny(products, nameof(products));
 
         if (orderId <= 0)
             remark += $"{orderId}订单号错误";
@@ -68,8 +68,6 @@ public class WarehouseManager : IDomainService
             remark += $"商品数量为空";
         else if (warehouses.Count == 0)
             remark += $"仓储数量为空";
-        else if (products.Count == 0)
-            remark += remark + $"产品数量为空";
         else if (warehouses.Count != blockQtyProductsInfo.Count)
             remark += remark + $"商品数量与库存数量不一致";
         else
@@ -79,18 +77,9 @@ public class WarehouseManager : IDomainService
                 //这里需要捕获业务逻辑的异常
                 foreach (var productId in blockQtyProductsInfo.Keys)
                 {
-                    var product = products.FirstOrDefault(x => x.Id == productId);
-
-                    if (product == null)
-                        remark += $"{productId}已经被删除;";
-                    else if (product.Status.Code != ProductStatusCodes.SaleOn)
-                        remark += $"{productId}已经下架;";
-                    else
-                    {
-                        var needBlockQty = blockQtyProductsInfo[productId];
-                        var warehouse = warehouses.FirstOrDefault(x => x.ProductId == productId);
-                        warehouse.BlockQty(needBlockQty);
-                    }
+                    var needBlockQty = blockQtyProductsInfo[productId];
+                    var warehouse = warehouses.FirstOrDefault(x => x.ProductId == productId);
+                    warehouse.BlockQty(needBlockQty);
                 }
             }
             catch (Exception ex)

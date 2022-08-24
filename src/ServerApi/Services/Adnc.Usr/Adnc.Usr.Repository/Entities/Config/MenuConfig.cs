@@ -1,6 +1,6 @@
 ﻿namespace Adnc.Usr.Repository.Entities.Config;
 
-public class MenuConfig : EntityTypeConfiguration<SysMenu>
+public class MenuConfig : AbstractEntityTypeConfiguration<SysMenu>
 {
     public override void Configure(EntityTypeBuilder<SysMenu> builder)
     {

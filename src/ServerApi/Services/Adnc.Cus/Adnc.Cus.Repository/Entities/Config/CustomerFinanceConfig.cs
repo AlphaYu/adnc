@@ -1,8 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿namespace Adnc.Cus.Entities.Config;
 
-namespace Adnc.Cus.Entities.Config;
-
-public class CustomerFinanceConfig : EntityTypeConfiguration<CustomerFinance>
+public class CustomerFinanceConfig : AbstractEntityTypeConfiguration<CustomerFinance>
 {
     public override void Configure(EntityTypeBuilder<CustomerFinance> builder)
     {

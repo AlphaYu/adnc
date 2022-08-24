@@ -9,9 +9,9 @@ public class CustomerTransactionLog : EfBasicAuditEntity
 
     public string Account { get; set; }
 
-    public ExchangeTypeEnum ExchangeType { get; set; }
+    public ExchangeBehavior ExchangeType { get; set; }
 
-    public ExchageStatusEnum ExchageStatus { get; set; }
+    public ExchageStatus ExchageStatus { get; set; }
 
     public decimal ChangingAmount { get; set; }
 
@@ -22,14 +22,14 @@ public class CustomerTransactionLog : EfBasicAuditEntity
     public string Remark { get; set; }
 }
 
-public enum ExchangeTypeEnum
+public enum ExchangeBehavior
 {
     Recharge = 8000
     ,
     Order = 8008
 }
 
-public enum ExchageStatusEnum
+public enum ExchageStatus
 {
     Processing = 2000
     ,

@@ -1,8 +1,6 @@
-﻿using Adnc.Shared.Entities;
+﻿namespace Adnc.Shared.Repository.EfEntities.Config;
 
-namespace Adnc.Shared.Repository.Entities.Config;
-
-public class EventTrackerConfig : EntityTypeConfiguration<EventTracker>
+public class EventTrackerConfig : AbstractEntityTypeConfiguration<EventTracker>
 {
     public override void Configure(EntityTypeBuilder<EventTracker> builder)
     {

@@ -24,7 +24,7 @@ public class OrderController : AdncControllerBase
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    [HttpPatch("{id}/payment")]
+    [HttpPut("{id}/payment")]
     public async Task<ActionResult> PayAsync([FromRoute] long id)
     {
         await _orderSrv.PayAsync(id);
@@ -36,7 +36,7 @@ public class OrderController : AdncControllerBase
     /// </summary>
     /// <param name="id"></param>s
     /// <returns></returns>
-    [HttpPatch("{id}/status/canceler")]
+    [HttpPut("{id}/status/canceler")]
     public async Task<ActionResult> CancelAsync([FromRoute] long id)
     {
         await _orderSrv.CancelAsync(id);
@@ -68,6 +68,6 @@ public class OrderController : AdncControllerBase
     /// </summary>
     /// <param name="search"></param>
     /// <returns></returns>
-    [HttpGet]
+    [HttpGet("page")]
     public async Task<ActionResult<PageModelDto<OrderDto>>> GetPagedAsync([FromQuery] OrderSearchPagedDto search) => await _orderSrv.GetPagedAsync(search);
 }

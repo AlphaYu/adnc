@@ -1,6 +1,6 @@
 ﻿namespace Adnc.Maint.Entities.Config;
 
-public class DictConfig : EntityTypeConfiguration<SysDict>
+public class DictConfig : AbstractEntityTypeConfiguration<SysDict>
 {
     public override void Configure(EntityTypeBuilder<SysDict> builder)
     {

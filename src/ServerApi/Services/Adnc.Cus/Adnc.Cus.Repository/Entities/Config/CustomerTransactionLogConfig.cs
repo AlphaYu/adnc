@@ -1,8 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿namespace Adnc.Cus.Entities.Config;
 
-namespace Adnc.Cus.Entities.Config;
-
-public class CustomerTransactionLogConfig : EntityTypeConfiguration<CustomerTransactionLog>
+public class CustomerTransactionLogConfig : AbstractEntityTypeConfiguration<CustomerTransactionLog>
 {
     public override void Configure(EntityTypeBuilder<CustomerTransactionLog> builder)
     {

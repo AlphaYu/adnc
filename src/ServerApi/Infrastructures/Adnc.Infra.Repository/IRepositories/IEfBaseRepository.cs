@@ -1,4 +1,6 @@
-﻿namespace Adnc.Infra.IRepositories;
+﻿using Adnc.Infra.Entities;
+
+namespace Adnc.Infra.IRepositories;
 
 /// <summary>
 /// Ef仓储的基类接口

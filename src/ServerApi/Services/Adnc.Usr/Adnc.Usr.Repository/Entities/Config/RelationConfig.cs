@@ -1,6 +1,6 @@
 ﻿namespace Adnc.Usr.Repository.Entities.Config;
 
-public class RelationConfig : EntityTypeConfiguration<SysRelation>
+public class RelationConfig : AbstractEntityTypeConfiguration<SysRelation>
 {
     public override void Configure(EntityTypeBuilder<SysRelation> builder)
     {
