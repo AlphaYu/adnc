@@ -3,10 +3,9 @@
 public class MySqlDbContext : AdncDbContext
 {
     public MySqlDbContext(
-        DbContextOptions options
-        , Operater operater
-        , IEntityInfo entityInfo)
-        : base(options, operater, entityInfo)
+        DbContextOptions options,
+        IEntityInfo entityInfo)
+        : base(options, entityInfo)
     {
     }
     protected override void OnModelCreating(ModelBuilder modelBuilder)

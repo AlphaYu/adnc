@@ -15,20 +15,9 @@ public abstract partial class AbstractApplicationDependencyRegistrar
         var serviceType = typeof(IEntityInfo);
         var implType = RepositoryOrDomainLayerAssembly.ExportedTypes.FirstOrDefault(type => type.IsAssignableTo(serviceType) && type.IsNotAbstractClass(true));
         if (implType is null)
-            throw new NullReferenceException(nameof(IEntityInfo));
+            throw new NotImplementedException(nameof(IEntityInfo));
         else
-            Services.AddSingleton(serviceType, implType);
-
-        Services.AddScoped(provider =>
-        {
-            var userContext = provider.GetRequiredService<UserContext>();
-            return new Operater
-            {
-                Id = userContext.Id == 0 ? 1600000000000 : userContext.Id,
-                Account = userContext.Account.IsNullOrEmpty() ? "system" : userContext.Account,
-                Name = userContext.Name.IsNullOrEmpty() ? "system" : userContext.Name
-            };
-        });
+            Services.AddScoped(serviceType, implType);
 
         AddEfCoreContext();
     }
