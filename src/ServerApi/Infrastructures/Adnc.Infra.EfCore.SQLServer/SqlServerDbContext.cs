@@ -3,10 +3,9 @@
 public class SqlServerDbContext : AdncDbContext
 {
     public SqlServerDbContext(
-        DbContextOptions options
-        , Operater operater
-        , IEntityInfo entityInfo)
-        : base(options, operater, entityInfo)
+        DbContextOptions options,
+        IEntityInfo entityInfo)
+        : base(options, entityInfo)
     {
     }
 }
