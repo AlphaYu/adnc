@@ -1,12 +1,12 @@
-﻿namespace Adnc.Ord.Domain.EntityConfig;
+﻿using Adnc.Shared;
+
+namespace Adnc.Ord.Domain.EntityConfig;
 
 public class EntityInfo : AbstractDomainEntityInfo
 {
-    private readonly Assembly _assembly = typeof(EntityInfo).Assembly;
-
-    public override IEnumerable<Assembly> GetConfigAssemblys() =>
-        GetConfigAssemblys(_assembly);
-
-    public override IEnumerable<EntityTypeInfo> GetEntitiesTypeInfo() =>
-        GetEntityTypes(_assembly).Select(x => new EntityTypeInfo() { Type = x, DataSeeding = default });
+    public EntityInfo(UserContext userContext) : base(userContext)
+    {
+    }
+    
+    protected override Assembly GetCurrentAssembly() => GetType().Assembly;
 }

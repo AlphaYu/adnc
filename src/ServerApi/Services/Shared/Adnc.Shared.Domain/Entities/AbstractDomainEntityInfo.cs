@@ -1,12 +1,12 @@
 ﻿namespace Adnc.Shared.Domain.Entities;
 
-public abstract class AbstractDomainEntityInfo : IEntityInfo
+public abstract class AbstractDomainEntityInfo : AbstracSharedEntityInfo
 {
-    public abstract IEnumerable<EntityTypeInfo> GetEntitiesTypeInfo();
+    protected AbstractDomainEntityInfo(UserContext userContext) : base(userContext)
+    {
+    }
 
-    public abstract IEnumerable<Assembly> GetConfigAssemblys();
-
-    protected virtual IEnumerable<Type> GetEntityTypes(Assembly assembly)
+    protected  override IEnumerable<Type> GetEntityTypes(Assembly assembly)
     {
         var typeList = assembly.GetTypes().Where(m =>
                                                    m.FullName != null
@@ -16,10 +16,5 @@ public abstract class AbstractDomainEntityInfo : IEntityInfo
             typeList = new List<Type>();
 
         return typeList.Append(typeof(EventTracker));
-    }
-
-    protected virtual IEnumerable<Assembly> GetConfigAssemblys(Assembly assembly)
-    {
-        return new List<Assembly> { assembly, typeof(EventTracker).Assembly };
     }
 }
