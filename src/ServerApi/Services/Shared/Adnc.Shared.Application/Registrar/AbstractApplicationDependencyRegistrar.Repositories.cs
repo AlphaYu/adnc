@@ -5,18 +5,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Adnc.Shared.Application.Registrar;
 
-public abstract partial class AbstractApplicationDependencyRegistrar : IDependencyRegistrar
+public abstract partial class AbstractApplicationDependencyRegistrar
 {
-    /// <summary>
-    /// 注册Dapper仓储
-    /// </summary>
-    protected virtual void AddDapperRepositories(Action<IServiceCollection> action = null)
-    {
-        action?.Invoke(Services);
-        //https://andrewlock.net/how-to-register-a-service-with-multiple-interfaces-for-in-asp-net-core-di/
-        Services.AddAdncInfraDapper();
-    }
-
     /// <summary>
     /// 注册EFCoreContext与仓储
     /// </summary>

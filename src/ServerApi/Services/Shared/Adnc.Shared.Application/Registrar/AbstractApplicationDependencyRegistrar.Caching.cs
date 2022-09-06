@@ -2,13 +2,13 @@
 
 namespace Adnc.Shared.Application.Registrar;
 
-public abstract partial class AbstractApplicationDependencyRegistrar : IDependencyRegistrar
+public abstract partial class AbstractApplicationDependencyRegistrar
 {
     /// <summary>
     /// 注册Caching相关处理服务
     /// </summary>
     /// <param name="builder"></param>
-    protected virtual void AddCachingServices(Action<IServiceCollection> action = null)
+    protected virtual void AddCaching(Action<IServiceCollection> action = null)
     {
         action?.Invoke(Services);
         if(this.IsEnableSkyApm())
@@ -32,7 +32,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar : IDependen
     /// 注册BloomFilter相关处理服务
     /// </summary>
     /// <param name="builder"></param>
-    protected virtual void AddBloomFilterServices(Action<IServiceCollection> action = null)
+    protected virtual void AddBloomFilters(Action<IServiceCollection> action = null)
     {
         action?.Invoke(Services);
 

@@ -5,15 +5,6 @@ public static class DoubleExtension
     public static long ToLong(this double @this) => Convert.ToInt64(@this);
 
     /// <summary>
-    /// A T extension method that check if the value is between inclusively the minValue and maxValue.
-    /// </summary>
-    /// <param name="this">The @this to act on.</param>
-    /// <param name="minValue">The minimum value.</param>
-    /// <param name="maxValue">The maximum value.</param>
-    /// <returns>true if the value is between inclusively the minValue and maxValue, otherwise false.</returns>
-    public static bool InRange(this double @this, double minValue, double maxValue) => @this.CompareTo(minValue) >= 0 && @this.CompareTo(maxValue) <= 0;
-
-    /// <summary>
     ///     Returns the smallest integral value that is greater than or equal to the specified double-precision floating-
     ///     point number.
     /// </summary>

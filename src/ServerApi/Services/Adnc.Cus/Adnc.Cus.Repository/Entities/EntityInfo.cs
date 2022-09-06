@@ -1,4 +1,6 @@
-﻿namespace Adnc.Cus.Entities;
+﻿using System.Reflection;
+
+namespace Adnc.Cus.Entities;
 
 public class EntityInfo : Shared.Entities.AbstracSharedEntityInfo
 {
@@ -8,4 +10,10 @@ public class EntityInfo : Shared.Entities.AbstracSharedEntityInfo
         var typeList = GetEntityTypes(assembly);
         return typeList.Select(x => new EntityTypeInfo() { Type = x, DataSeeding = default });
     }
+
+    public override IEnumerable<Assembly> GetConfigAssemblys()
+    {
+        var assembly = typeof(EntityInfo).Assembly;
+        return GetConfigAssemblys(assembly);
+    } 
 }

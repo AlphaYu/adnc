@@ -3,6 +3,8 @@
 public interface IEntityInfo
 {
     IEnumerable<EntityTypeInfo> GetEntitiesTypeInfo();
+
+    IEnumerable<Assembly> GetConfigAssemblys();
 }
 
 public class EntityTypeInfo

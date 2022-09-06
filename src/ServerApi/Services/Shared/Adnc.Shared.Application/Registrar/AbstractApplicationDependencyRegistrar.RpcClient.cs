@@ -11,7 +11,7 @@ using Refit;
 
 namespace Adnc.Shared.Application.Registrar;
 
-public abstract partial class AbstractApplicationDependencyRegistrar : IDependencyRegistrar
+public abstract partial class AbstractApplicationDependencyRegistrar
 {
     /// <summary>
     /// 注册Rest服务(跨微服务之间的同步通讯)
