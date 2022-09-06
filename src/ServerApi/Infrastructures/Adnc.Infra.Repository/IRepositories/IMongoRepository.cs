@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using Adnc.Infra.Entities;
+using MongoDB.Driver;
 
 namespace Adnc.Infra.IRepositories;
 

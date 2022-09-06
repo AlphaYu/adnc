@@ -12,26 +12,69 @@ namespace Adnc.Cus.WebApi.Controllers;
 [ApiController]
 public class RestAndGrpcClientDemoController : AdncControllerBase
 {
+    private readonly IAuthRestClient _authRestClient;
     private readonly IUsrRestClient _usrRestClient;
     private readonly IMaintRestClient _maintRestClient;
     private readonly IWhseRestClient _whseRestClient;
+    private readonly AuthGrpc.AuthGrpcClient _authGrpcClinet;
     private readonly UsrGrpc.UsrGrpcClient _usrGrpcClient;
     private readonly MaintGrpc.MaintGrpcClient _maintGrpcClient;
     private readonly WhseGrpc.WhseGrpcClient _whseGrpcClient;
 
-    public RestAndGrpcClientDemoController(IUsrRestClient usrRestClient
-    , IMaintRestClient maintRestClient
-    , IWhseRestClient whseRestClient
-    , UsrGrpc.UsrGrpcClient usrGrpcClient
-    , MaintGrpc.MaintGrpcClient maintGrpcClient
-    , WhseGrpc.WhseGrpcClient whseGrpcClient)
+    public RestAndGrpcClientDemoController(
+    IAuthRestClient authRestClient,
+     IUsrRestClient usrRestClient,
+     IMaintRestClient maintRestClient,
+     IWhseRestClient whseRestClient,
+     AuthGrpc.AuthGrpcClient authGrpcClinet,
+     UsrGrpc.UsrGrpcClient usrGrpcClient,
+     MaintGrpc.MaintGrpcClient maintGrpcClient,
+     WhseGrpc.WhseGrpcClient whseGrpcClient)
     {
+        _authRestClient = authRestClient;
         _usrRestClient = usrRestClient;
         _maintRestClient = maintRestClient;
         _whseRestClient = whseRestClient;
+        _authGrpcClinet = authGrpcClinet;
         _usrGrpcClient = usrGrpcClient;
         _maintGrpcClient = maintGrpcClient;
         _whseGrpcClient = whseGrpcClient;
+    }
+
+    /// <summary>
+    /// 测试后台管理员登录-REST
+    /// </summary>
+    /// <param name="input"></param>
+    /// <returns></returns>
+    [AllowAnonymous]
+    [HttpPost("restsession")]
+    public async Task<IActionResult> Login([FromBody] LoginInputRto input)
+    {
+        var result = await _authRestClient.LoginAsync(input);
+
+        if (result.IsSuccessStatusCode)
+            return Ok(result.Content);
+
+        return Problem(result.Error);
+    }
+
+    /// <summary>
+    /// 测试后台管理员登录-GRPC
+    /// </summary>
+    /// <param name="input"></param>
+    /// <returns></returns>
+    [AllowAnonymous]
+    [HttpPost("grpcsession")]
+    public async Task<IActionResult> LoginGrpcAsync([FromBody] LoginRequest input)
+    {
+        var result = await _authGrpcClinet.LoginAsync(input);
+
+        if (result.IsSuccessStatusCode && result.Content.Is(LoginReply.Descriptor))
+        {
+            var outputDto = result.Content.Unpack<LoginReply>();
+            return Ok(outputDto);
+        }
+        return BadRequest(result);
     }
 
     /// <summary>

@@ -4,9 +4,14 @@ public sealed class CacheService : AbstractCacheService, ICachePreheatable
 {
     private readonly Lazy<IOptions<JwtConfig>> _jwtConfig;
 
-    public CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IServiceProvider> serviceProvider, Lazy<IOptions<JwtConfig>> jwtConfig)
+    public CacheService(
+        Lazy<ICacheProvider> cacheProvider,
+        Lazy<IServiceProvider> serviceProvider,
+        Lazy<IOptions<JwtConfig>> jwtConfig)
         : base(cacheProvider, serviceProvider)
-        => _jwtConfig = jwtConfig;
+    {
+        _jwtConfig = jwtConfig;
+    }
 
     public override async Task PreheatAsync()
     {

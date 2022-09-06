@@ -1,6 +1,6 @@
 ﻿namespace Adnc.Maint.Entities.Config;
 
-public class NoticeConfig : EntityTypeConfiguration<SysNotice>
+public class NoticeConfig : AbstractEntityTypeConfiguration<SysNotice>
 {
     public override void Configure(EntityTypeBuilder<SysNotice> builder)
     {

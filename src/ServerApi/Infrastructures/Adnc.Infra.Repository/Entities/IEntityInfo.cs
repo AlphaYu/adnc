@@ -1,15 +1,10 @@
-﻿namespace Adnc.Infra.Entities;
+﻿using Adnc.Infra.IRepositories;
+
+namespace Adnc.Infra.Entities;
 
 public interface IEntityInfo
 {
-    IEnumerable<EntityTypeInfo> GetEntitiesTypeInfo();
+    Operater GetOperater();
 
-    IEnumerable<Assembly> GetConfigAssemblys();
-}
-
-public class EntityTypeInfo
-{
-    public Type Type { get; set; } = default!;
-
-    public IEnumerable<object>? DataSeeding { get; set; }
+    void OnModelCreating(dynamic modelBuilder);
 }

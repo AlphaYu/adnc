@@ -3,12 +3,12 @@
 public class LogAppService : AbstractAppService, ILogAppService
 {
     private readonly IMongoRepository<OperationLog> _opsLogRepository;
-    private readonly IMongoRepository<LoggingLog> _nlogLogRepository;
+    private readonly IMongoRepository<LoggerLog> _nlogLogRepository;
     private readonly IMongoRepository<LoginLog> _loginLogRepository;
 
     public LogAppService(IMongoRepository<OperationLog> opsLogRepository
         , IMongoRepository<LoginLog> loginLogRepository
-        , IMongoRepository<LoggingLog> nlogLogRepository)
+        , IMongoRepository<LoggerLog> nlogLogRepository)
     {
         _opsLogRepository = opsLogRepository;
         _loginLogRepository = loginLogRepository;
@@ -49,8 +49,8 @@ public class LogAppService : AbstractAppService, ILogAppService
 
     public async Task<PageModelDto<NlogLogDto>> GetNlogLogsPagedAsync(LogSearchPagedDto searchDto)
     {
-        var builder = Builders<LoggingLog>.Filter;
-        var filterList = new List<FilterDefinition<LoggingLog>>();
+        var builder = Builders<LoggerLog>.Filter;
+        var filterList = new List<FilterDefinition<LoggerLog>>();
         filterList.AddIf(x => searchDto.BeginTime.HasValue, builder.Gte(l => l.Date, searchDto.BeginTime));
         filterList.AddIf(x => searchDto.EndTime.HasValue, builder.Lte(l => l.Date, searchDto.EndTime));
         filterList.AddIf(x => searchDto.Method.IsNotNullOrWhiteSpace(), builder.Eq(l => l.Properties.Method, searchDto.Method));

@@ -2,13 +2,11 @@
 
 public abstract class AdncDbContext : DbContext
 {
-    private readonly Operater _operater;
     private readonly IEntityInfo _entityInfo;
 
-    protected AdncDbContext(DbContextOptions options, Operater operater, IEntityInfo entityInfo)
+    protected AdncDbContext(DbContextOptions options,IEntityInfo entityInfo)
         : base(options)
     {
-        _operater = operater;
         _entityInfo = entityInfo;
         Database.AutoTransactionsEnabled = false;
         //ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
@@ -35,62 +33,25 @@ public abstract class AdncDbContext : DbContext
         return result;
     }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        var entityInfos = _entityInfo.GetEntitiesTypeInfo();
-        entityInfos?.ForEach(info =>
-        {
-            if (info.DataSeeding is null)
-                modelBuilder.Entity(info.Type);
-            else
-                modelBuilder.Entity(info.Type).HasData(info.DataSeeding);
-        });
-
-        var assemblys = _entityInfo.GetConfigAssemblys();
-        assemblys?.ForEach(assembly => modelBuilder.ApplyConfigurationsFromAssembly(assembly));
-
-        SetComment(modelBuilder, entityInfos);
-    }
+    protected override void OnModelCreating(ModelBuilder modelBuilder) => _entityInfo.OnModelCreating(modelBuilder);
 
     protected virtual int SetAuditFields()
     {
-        var allBasicAuditEntities = ChangeTracker.Entries<IBasicAuditInfo>().Where(x => x.State == EntityState.Added).ToList();
+        var operater = _entityInfo.GetOperater();
+        var allBasicAuditEntities = ChangeTracker.Entries<IBasicAuditInfo>().Where(x => x.State == EntityState.Added);
         allBasicAuditEntities.ForEach(entry =>
         {
-            entry.Entity.CreateBy = _operater.Id;
+            entry.Entity.CreateBy = operater.Id;
             entry.Entity.CreateTime = DateTime.Now;
         });
 
-        var auditFullEntities = ChangeTracker.Entries<IFullAuditInfo>().Where(x => x.State == EntityState.Modified).ToList();
+        var auditFullEntities = ChangeTracker.Entries<IFullAuditInfo>().Where(x => x.State == EntityState.Modified || x.State == EntityState.Added);
         auditFullEntities.ForEach(entry =>
         {
-            entry.Entity.ModifyBy = _operater.Id;
+            entry.Entity.ModifyBy = operater.Id;
             entry.Entity.ModifyTime = DateTime.Now;
         });
 
         return ChangeTracker.Entries<Entity>().Count();
-    }
-
-    protected virtual void SetComment(ModelBuilder modelBuilder, IEnumerable<EntityTypeInfo>? entityInfos)
-    {
-        if (entityInfos is null)
-            return;
-        var types = entityInfos.Select(x => x.Type);
-        var entityTypes = modelBuilder.Model.GetEntityTypes().Where(x => types.Contains(x.ClrType));
-        entityTypes.ForEach(entityType =>
-        {
-            modelBuilder.Entity(entityType.Name, buider =>
-            {
-                var typeSummary = entityType.ClrType.GetSummary();
-                buider.HasComment(typeSummary);
-
-                entityType.GetProperties().ForEach(property =>
-                {
-                    string propertyName = property.Name;
-                    var memberSummary = entityType.ClrType?.GetMember(propertyName)?.FirstOrDefault()?.GetSummary();
-                    buider.Property(propertyName).HasComment(memberSummary);
-                });
-            });
-        });
     }
 }

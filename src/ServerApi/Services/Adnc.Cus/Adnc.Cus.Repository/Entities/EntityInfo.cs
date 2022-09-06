@@ -1,19 +1,12 @@
-﻿using System.Reflection;
+﻿using Adnc.Shared;
 
 namespace Adnc.Cus.Entities;
 
-public class EntityInfo : Shared.Entities.AbstracSharedEntityInfo
+public class EntityInfo : AbstracSharedEntityInfo
 {
-    public override IEnumerable<EntityTypeInfo> GetEntitiesTypeInfo()
+    public EntityInfo(UserContext userContext) : base(userContext)
     {
-        var assembly = typeof(EntityInfo).Assembly;
-        var typeList = GetEntityTypes(assembly);
-        return typeList.Select(x => new EntityTypeInfo() { Type = x, DataSeeding = default });
     }
 
-    public override IEnumerable<Assembly> GetConfigAssemblys()
-    {
-        var assembly = typeof(EntityInfo).Assembly;
-        return GetConfigAssemblys(assembly);
-    } 
+    protected override Assembly GetCurrentAssembly() => GetType().Assembly;
 }

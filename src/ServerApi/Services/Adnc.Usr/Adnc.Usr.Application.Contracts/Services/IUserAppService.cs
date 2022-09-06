@@ -70,7 +70,7 @@
         /// <param name="requestPermissions"></param>
         /// <param name="userBelongsRoleIds"></param>
         /// <returns></returns>
-        [OperateLog(LogName = "获取当前用户是否拥有指定权限")]
+        //[OperateLog(LogName = "获取当前用户是否拥有指定权限")]
         Task<List<string>> GetPermissionsAsync(long userId, IEnumerable<string> requestPermissions, string userBelongsRoleIds);
 
         /// <summary>

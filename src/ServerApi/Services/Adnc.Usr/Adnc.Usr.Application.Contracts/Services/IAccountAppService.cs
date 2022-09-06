@@ -28,7 +28,7 @@
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [OperateLog(LogName = "获取认证信息")]
+        //[OperateLog(LogName = "获取认证信息")]
         [CachingAble(CacheKeyPrefix = CachingConsts.UserValidatedInfoKeyPrefix)]
         Task<UserValidatedInfoDto> GetUserValidatedInfoAsync([CachingParam] long id) => Task.FromResult<UserValidatedInfoDto>(null);
 

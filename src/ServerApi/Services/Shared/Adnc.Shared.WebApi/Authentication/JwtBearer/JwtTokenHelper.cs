@@ -72,7 +72,7 @@ public static class JwtTokenHelper
         , string nameId
         , string name
         ,string roleIds
-        )
+        ,string loginerType)
     {
         if (jti.IsNullOrWhiteSpace())
             throw new ArgumentNullException(nameof(jti));
@@ -83,7 +83,8 @@ public static class JwtTokenHelper
             new Claim(JwtRegisteredClaimNames.UniqueName, uniqueName),
             new Claim(JwtRegisteredClaimNames.NameId, nameId),
             new Claim(JwtRegisteredClaimNames.Name, name),
-            new Claim("roleids", roleIds)
+            new Claim(JwtBearerDefaults.RoleIds, roleIds),
+            new Claim(JwtBearerDefaults.LoginerType,loginerType)
         };
         return WriteToken(jwtConfig, claims, Tokens.AccessToken);
     }

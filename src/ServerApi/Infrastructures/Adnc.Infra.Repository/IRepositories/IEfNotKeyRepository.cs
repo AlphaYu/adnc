@@ -1,4 +1,6 @@
-﻿namespace Adnc.Infra.IRepositories;
+﻿using Adnc.Infra.Entities;
+
+namespace Adnc.Infra.IRepositories;
 /// <summary>
 /// Ef默认的、全功能的仓储接口
 /// 适合传统三层模式开发，实体必须继承 EfEntity

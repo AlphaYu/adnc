@@ -1,16 +1,12 @@
-﻿using System.Reflection;
+﻿using Adnc.Shared;
 
 namespace Adnc.Whse.Domain.EntityConfig;
 
 public class EntityInfo : AbstractDomainEntityInfo
 {
-    public override IEnumerable<Assembly> GetConfigAssemblys()
+    public EntityInfo(UserContext userContext) : base(userContext)
     {
-        return GetConfigAssemblys(this.GetType().Assembly);
     }
 
-    public override IEnumerable<EntityTypeInfo> GetEntitiesTypeInfo()
-    {
-        return GetEntityTypes(this.GetType().Assembly).Select(x => new EntityTypeInfo() { Type = x, DataSeeding = default });
-    }
+    protected override Assembly GetCurrentAssembly()=> GetType().Assembly;
 }

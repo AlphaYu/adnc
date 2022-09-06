@@ -1,6 +1,8 @@
-﻿namespace Adnc.Whse.Domain.EntityConfig;
+﻿using Adnc.Whse.Domain.Aggregates.WarehouseAggregate;
 
-public class WarehouseConfig : EntityTypeConfiguration<Warehouse>
+namespace Adnc.Whse.Domain.EntityConfig;
+
+public class WarehouseConfig : AbstractEntityTypeConfiguration<Warehouse>
 {
     public override void Configure(EntityTypeBuilder<Warehouse> builder)
     {

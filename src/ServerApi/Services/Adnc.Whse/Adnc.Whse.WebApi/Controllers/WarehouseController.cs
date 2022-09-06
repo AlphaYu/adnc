@@ -23,7 +23,7 @@ public class WarehouseController : AdncControllerBase
     /// 分配货架给商品
     /// </summary>
     /// <returns></returns>
-    [HttpPatch("{id}/product")]
+    [HttpPut("{id}/product")]
     public async Task<ActionResult<WarehouseDto>> AllocateShelfToProductAsync([FromRoute] long id, [FromBody] WarehouseAllocateToProductDto input) => await _warehouseSrv.AllocateShelfToProductAsync(id, input);
 
     /// <summary>

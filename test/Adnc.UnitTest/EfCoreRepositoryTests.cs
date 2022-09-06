@@ -69,9 +69,9 @@ public class EfCoreRepositoryTests : IClassFixture<EfCoreDbcontextFixture>
         var id1 = IdGenerater.GetNextId();
         var logs = new List<CustomerTransactionLog>
         {
-            new CustomerTransactionLog{ Id=id0,Account=customer.Account,ChangedAmount=0,Amount=0,ChangingAmount=0,CustomerId=customer.Id,ExchangeType=ExchangeTypeEnum.Recharge,ExchageStatus=ExchageStatusEnum.Finished,Remark="test"}
+            new CustomerTransactionLog{ Id=id0,Account=customer.Account,ChangedAmount=0,Amount=0,ChangingAmount=0,CustomerId=customer.Id,ExchangeType=ExchangeBehavior.Recharge,ExchageStatus=ExchageStatus.Finished,Remark="test"}
             ,
-            new CustomerTransactionLog{ Id=id1,Account=customer.Account,ChangedAmount=0,Amount=0,ChangingAmount=0,CustomerId=customer.Id,ExchangeType=ExchangeTypeEnum.Recharge,ExchageStatus=ExchageStatusEnum.Finished,Remark="test"}
+            new CustomerTransactionLog{ Id=id1,Account=customer.Account,ChangedAmount=0,Amount=0,ChangingAmount=0,CustomerId=customer.Id,ExchangeType=ExchangeBehavior.Recharge,ExchageStatus=ExchageStatus.Finished,Remark="test"}
         };
 
         await _custLogsRsp.InsertRangeAsync(logs);

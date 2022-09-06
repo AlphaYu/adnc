@@ -48,7 +48,7 @@ public class BearerAuthenticationHandler : AuthenticationHandler<BearerSchemeOpt
                 return await Task.FromResult(authResult);
             }
 
-            Response.StatusCode = (int)HttpStatusCode.Forbidden;
+            Response.StatusCode = (int)HttpStatusCode.Unauthorized;
             authResult = AuthenticateResult.Fail("Invalid Authorization Token, claims is null");
             return await Task.FromResult(authResult);
         }

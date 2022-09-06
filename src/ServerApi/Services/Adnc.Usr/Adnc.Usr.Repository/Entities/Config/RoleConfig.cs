@@ -1,6 +1,6 @@
 ﻿namespace Adnc.Usr.Repository.Entities.Config;
 
-public class RoleConfig : EntityTypeConfiguration<SysRole>
+public class RoleConfig : AbstractEntityTypeConfiguration<SysRole>
 {
     public override void Configure(EntityTypeBuilder<SysRole> builder)
     {

@@ -1,6 +1,6 @@
 ﻿namespace Adnc.Usr.Repository.Entities.Config;
 
-public class UserConfig : EntityTypeConfiguration<SysUser>
+public class UserConfig : AbstractEntityTypeConfiguration<SysUser>
 {
     public override void Configure(EntityTypeBuilder<SysUser> builder)
     {

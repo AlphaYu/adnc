@@ -32,7 +32,7 @@ public class ProductController : AdncControllerBase
     /// <param name="id"></param>
     /// <param name="input"></param>
     /// <returns></returns>
-    [HttpPatch("{id}/price")]
+    [HttpPut("{id}/price")]
     public async Task<ActionResult<ProductDto>> ChangePriceAsync([FromRoute] long id, ProducChangePriceDto input) => await _productSrv.ChangePriceAsync(id, input);
 
     /// <summary>
@@ -41,7 +41,7 @@ public class ProductController : AdncControllerBase
     /// <param name="id"></param>
     /// <param name="input"></param>
     /// <returns></returns>
-    [HttpPatch("{id}/status/1001")]
+    [HttpPut("{id}/status/1001")]
     public async Task<ActionResult<ProductDto>> PutOnSaleAsync([FromRoute] long id, ProductPutOnSaleDto input) => await _productSrv.PutOnSaleAsync(id, input);
 
     /// <summary>
@@ -50,7 +50,7 @@ public class ProductController : AdncControllerBase
     /// <param name="id"></param>
     /// <param name="input"></param>
     /// <returns></returns>
-    [HttpPatch("{id}/status/1002")]
+    [HttpPut("{id}/status/1002")]
     public async Task<ActionResult<ProductDto>> PutOffSaleAsync([FromRoute] long id, ProductPutOffSaleDto input) => await _productSrv.PutOffSaleAsync(id, input);
 
     /// <summary>
@@ -66,6 +66,6 @@ public class ProductController : AdncControllerBase
     /// </summary>
     /// <param name="search"></param>
     /// <returns></returns>
-    [HttpGet("paged")]
+    [HttpGet("page")]
     public async Task<ActionResult<PageModelDto<ProductDto>>> GetPagedAsync([FromQuery] ProductSearchPagedDto search) => await _productSrv.GetPagedAsync(search);
 }
