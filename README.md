@@ -61,9 +61,9 @@
 
 ## 总体结构设计
 - 经典三层
-![.NET微服务开源框架-总体设计](https://aspdotnetcore.net/dotnet6/adnc-traditional/)
+![.NET微服务开源框架-总体设计](https://aspdotnetcore.net/wp-content/uploads/2021/11/adnc-traditional.png)
 - DDD三层
-![.NET微服务开源框架-总体设计](https://aspdotnetcore.net/adnc-ddd/)
+![.NET微服务开源框架-总体设计](https://aspdotnetcore.net/wp-content/uploads/2021/11/adnc-ddd.png)
 - 总体结构
 ![.NET微服务开源框架-总体设计](https://aspdotnetcore.net/adnc-rpc-eventbus/)
 
