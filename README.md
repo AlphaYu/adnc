@@ -149,7 +149,7 @@ internal static class Program
     ```
   - 界面
 ![.NET微服务开源框架-异常日志界面](https://aspdotnetcore.net/wp-content/uploads/2021/11/adnc-dashboard-nlog.png)
-![.NET微服务开源框架-角色管理界面](https://aspdotnetcore.net/wp-content/uploads/2021/11/adnc-homepage-dashborad-menu.png)
+![.NET微服务开源框架-角色管理界面](https://aspdotnetcore.net/wp-content/uploads/2021/11/adnc-dashboard-role.png)
 
 #### ServerApi
   - ServerApi基于`.NET 5.0`搭建。
