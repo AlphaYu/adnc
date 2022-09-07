@@ -186,7 +186,7 @@ internal static class Program
 - `Services` 微服务相关工程
 - `Tests` 框架测试相关工程
 
-![.NET微服务开源框架-整体架构图](https://aspdotnetcore.net/dotnet6/adnc_solution)
+![.NET微服务开源框架-整体架构图]([https://aspdotnetcore.net/dotnet6/adnc_solution](https://aspdotnetcore.net/wp-content/uploads/2021/11/adnc_solution.jpg))
 
 ### Gateways网关相关工程
 
