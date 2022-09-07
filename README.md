@@ -111,14 +111,12 @@ internal static class Program
 
 ## Jmeter测试
 
-- ECS服务器配置：4核8G，带宽1M。服务器上装了很多东西，剩余大约50%的CPU资源，50%的内存资源。
-- 由于带宽有限，吞吐率约200/s左右。
+- ECS服务器配置：4核8G，带宽8M。服务器上装了很多东西，剩余大约50%的CPU资源，50%的内存资源。
+- 因为服务器带宽限制，吞吐率约1000/s左右。
 - 模拟并发线程1200/s
 - 读写比率7:3
 
 > 6个测试用例覆盖了网关、服务发现、配置中心、服务间同步调用、数据库CURD、本地事务、分布式事务、缓存、布隆过滤器、SkyApm链路、Nlog日志记录、操作日志记录。
-
-![.NET微服务开源框架-Jmeter](https://aspdotnetcore.net/jmeter_result/)
 
 ## 演示
 - <a href="http://adnc.aspdotnetcore.net" target="_blank">http://adnc.aspdotnetcore.net</a>
