@@ -54,7 +54,7 @@
 #### 如何使用EFCore仓储
 >详细介绍EFCore仓储基础功能、工作单元、CodeFirst，执行原生SQL等提供了丰富的演示代码以及演示代码对应的Sql语句。
 1. [如何使用仓储(一)-基础功能](https://aspdotnetcore.net/docs/efcore-pemelo-grud/)<br/>
-1. [如何使用仓储(二)-工作单元](https://aspdotnetcore.net/docs/efcore-pemolo-unitofwork/)<br/>
+1. [如何使用仓储(二)-分布式事务/本地事务](https://aspdotnetcore.net/docs/efcore-pemolo-unitofwork/)<br/>
 1. [如何使用仓储(三)-CodeFirst](https://aspdotnetcore.net/docs/efcore-pemelo-codefirst/)<br/>
 1. [如何使用仓储(四)-撸SQL](https://aspdotnetcore.net/docs/efcore-pemelo-sql/)<br/>
 1. [ 如何使用仓储(五)-切换数据库类型](https://aspdotnetcore.net/docs/efcore-pemelo-sqlserver/)<br/>
