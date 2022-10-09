@@ -27,7 +27,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar
             else
             {
                 var tableNamePrefix = "cap";
-                var mysqlConfig = MysqlSection.Get<MysqlConfig>();
+                var mysqlConfig = MysqlSection.Get<MysqlOptions>();
                 option.UseMySql(config =>
                 {
                     config.ConnectionString = mysqlConfig.ConnectionString;

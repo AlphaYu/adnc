@@ -21,7 +21,7 @@ public abstract partial class AbstractWebApiDependencyRegistrar
         //await HttpContextUtility.GetCurrentHttpContext().GetTokenAsync("access_token");
         if (checkingMysql)
         {
-            var mysqlConfig = Configuration.GetSection(MysqlConfig.Name).Get<MysqlConfig>();
+            var mysqlConfig = Configuration.GetSection(MysqlOptions.Name).Get<MysqlOptions>();
             if (mysqlConfig is null)
                 throw new NullReferenceException("mysqlconfig is null");
             checksBuilder.AddMySql(mysqlConfig.ConnectionString);
@@ -37,7 +37,7 @@ public abstract partial class AbstractWebApiDependencyRegistrar
 
         if (checkingRedis)
         {
-            var redisConfig = Configuration.GetSection(RedisConfig.Name).Get<RedisConfig>();
+            var redisConfig = Configuration.GetSection(RedisOptions.Name).Get<RedisOptions>();
             if (redisConfig is null)
                 throw new NullReferenceException("redisConfig is null");
             checksBuilder.AddRedis(redisConfig.Dbconfig.ConnectionString);

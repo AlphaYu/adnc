@@ -14,6 +14,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar : IDependen
     protected IConfiguration Configuration { get; init; }
     protected IServiceInfo ServiceInfo { get; init; }
     protected IConfigurationSection RedisSection { get; init; }
+    protected IConfigurationSection CachingSection { get; init; }
     protected IConfigurationSection MysqlSection { get; init; }
     protected IConfigurationSection MongoDbSection { get; init; }
     protected IConfigurationSection ConsulSection { get; init; }
@@ -24,9 +25,10 @@ public abstract partial class AbstractApplicationDependencyRegistrar : IDependen
         Services = services ?? throw new ArgumentException("IServiceCollection is null.");
         Configuration = services.GetConfiguration() ?? throw new ArgumentException("Configuration is null.");
         ServiceInfo = services.GetServiceInfo() ?? throw new ArgumentException("ServiceInfo is null.");
-        RedisSection = Configuration.GetSection(RedisConfig.Name);
+        RedisSection = Configuration.GetSection(RedisOptions.Name);
+        CachingSection = Configuration.GetSection(CacheOptions.Name);
         MongoDbSection = Configuration.GetSection(MongoConfig.Name);
-        MysqlSection = Configuration.GetSection(MysqlConfig.Name);
+        MysqlSection = Configuration.GetSection(MysqlOptions.Name);
         ConsulSection = Configuration.GetSection(ConsulConfig.Name);
         RabbitMqSection = Configuration.GetSection(RabbitMqConfig.Name);
         SkyApm = Services.AddSkyApmExtensions();
@@ -55,7 +57,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar : IDependen
         AddApplicaitonHostedServices();
         AddEfCoreContextWithRepositories();
         AddMongoContextWithRepositries();
-        AddCaching();
+        AddRedisCaching();
         AddBloomFilters();
     }
 

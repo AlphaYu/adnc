@@ -25,7 +25,7 @@ namespace Adnc.Infra.Redis.Providers.StackExchange
         /// <returns>The connection multiplexer.</returns>
         private ConnectionMultiplexer CreateConnectionMultiplexer()
         {
-            var dbconfig = _options.Value.DBOptions;
+            var dbconfig = _options.Value.Dbconfig;
             if (string.IsNullOrWhiteSpace(dbconfig.ConnectionString))
             {
                 var configurationOptions = new ConfigurationOptions

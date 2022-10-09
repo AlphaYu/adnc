@@ -1,5 +1,4 @@
-﻿using Adnc.Infra.Caching;
-using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
+﻿using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
 
 namespace Adnc.Shared.WebApi.Middleware;
 

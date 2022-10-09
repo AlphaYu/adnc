@@ -1,5 +1,6 @@
-﻿global using Adnc.Infra.Caching;
-global using Adnc.Infra.Caching.Configurations;
+﻿global using Adnc.Infra.Redis;
+global using Adnc.Infra.Redis.Caching;
+global using Adnc.Infra.Redis.Caching.Configurations;
 global using Adnc.Infra.EventBus.RabbitMq;
 global using Adnc.Infra.IdGenerater.Yitter;
 global using Adnc.Infra.IRepositories;

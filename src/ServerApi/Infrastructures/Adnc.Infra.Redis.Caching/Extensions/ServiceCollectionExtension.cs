@@ -1,4 +1,6 @@
-﻿using Adnc.Infra.Redis.Caching.Configurations;
+﻿using Adnc.Infra.Redis.Caching;
+using Adnc.Infra.Redis.Caching.Caching.Provider;
+using Adnc.Infra.Redis.Caching.Configurations;
 using Adnc.Infra.Redis.Caching.Core.Interceptor;
 using Adnc.Infra.Redis.Caching.Interceptor.Castle;
 
@@ -14,6 +16,7 @@ public static class ServiceCollectionExtension
         return services
             .AddAdncInfraRedis(redisSection)
             .Configure<CacheOptions>(cachingSection)
+            .AddSingleton<ICacheProvider, DefaultCachingProvider>()
             .AddSingleton<ICachingKeyGenerator, DefaultCachingKeyGenerator>()
             .AddScoped<CachingInterceptor>()
             .AddScoped<CachingAsyncInterceptor>();

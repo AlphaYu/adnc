@@ -1,7 +1,7 @@
 ﻿namespace Adnc.Infra.Redis.Configurations;
 
 /// <summary>
-/// RedisConfig配置
+/// RedisConfig Configurations
 /// </summary>
 public class RedisOptions
 {
@@ -9,9 +9,5 @@ public class RedisOptions
     public string Provider { get; set; } = "StackExchange";
     public bool EnableBloomFilter { get; set; }
     public string SerializerName { get; set; }
-    public int MaxRdSecond { get; set; }
-    public bool EnableLogging { get; set; }
-    public int LockMs { get; set; }
-    public int SleepMs { get; set; }
-    public DBOptions DBOptions { get; set; } = default!;
+    public DBOptions Dbconfig { get; set; } = default!;
 }

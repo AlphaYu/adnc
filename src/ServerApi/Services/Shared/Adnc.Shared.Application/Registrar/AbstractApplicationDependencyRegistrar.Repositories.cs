@@ -27,7 +27,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar
     /// </summary>
     protected virtual void AddEfCoreContext()
     {
-        var mysqlConfig = MysqlSection.Get<MysqlConfig>();
+        var mysqlConfig = MysqlSection.Get<MysqlOptions>();
         var serverVersion = new MariaDbServerVersion(new Version(10, 5, 4));
         Services.AddAdncInfraEfCoreMySql(options =>
         {

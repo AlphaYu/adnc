@@ -1,4 +1,6 @@
-﻿global using Adnc.Infra.Core.Configuration;
+﻿global using Adnc.Infra.Redis.Configurations;
+global using Adnc.Infra.Redis.Caching;
+global using Adnc.Infra.Core.Configuration;
 global using Adnc.Infra.Core.DependencyInjection;
 global using Adnc.Infra.Core.Interfaces;
 global using Adnc.Infra.Core.Json;
