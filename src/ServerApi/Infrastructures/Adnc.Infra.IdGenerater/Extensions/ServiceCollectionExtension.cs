@@ -10,7 +10,7 @@ public static class ServiceCollectionExtension
             return services;
 
         return services
-            .AddAdncInfraCaching(redisSection)
+            .AddAdncInfraRedis(redisSection)
             .AddSingleton<WorkerNode>()
             .AddHostedService<WorkerNodeHostedService>();
     }
