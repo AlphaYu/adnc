@@ -16,14 +16,14 @@ public class Startup
     public void ConfigureServices(IServiceCollection services)
     {
         var authenticationProviderKey = "mgmt";
-        var threadPoolConfig = Configuration.GetSection(ThreadPoolSettings.Name);
+        var threadPoolConfig = Configuration.GetSection("ThreadPoolSettings");
 
         services
             .Configure<ThreadPoolSettings>(threadPoolConfig)
             .AddAuthentication()
             .AddJwtBearer(authenticationProviderKey, options =>
             {
-                var bearerConfig = Configuration.GetSection(JwtConfig.Name).Get<JwtConfig>();
+                var bearerConfig = Configuration.GetSection("JWT").Get<JWTOptions>();
                 options.TokenValidationParameters = JwtSecurityTokenHandlerExtension.GenarateTokenValidationParameters(bearerConfig);
             })
             ;
