@@ -1,9 +1,7 @@
-﻿namespace Adnc.Infra.Core.Configuration;
+﻿namespace Adnc.Infra.Consul.Configuration;
 
-public class ConsulConfig
+public class ConsulOptions
 {
-    public const string Name = "Consul";
-
     public string ConsulUrl { get; set; } = string.Empty;
     public string ServiceName { get; set; } = string.Empty;
     public string HealthCheckUrl { get; set; } = string.Empty;

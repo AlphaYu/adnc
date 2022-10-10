@@ -1,4 +1,5 @@
-﻿using Adnc.Infra.Repository.Mongo;
+﻿using Adnc.Infra.Repository.EfCore.MySql.Configurations;
+using Adnc.Infra.Repository.Mongo;
 using Adnc.Infra.Repository.Mongo.Configuration;
 using Adnc.Infra.Repository.Mongo.Extensions;
 using Microsoft.EntityFrameworkCore;
@@ -58,7 +59,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar
     {
         action?.Invoke(Services);
 
-        var mongoConfig = MongoDbSection.Get<MongoConfig>();
+        var mongoConfig = MongoDbSection.Get<MongoOptions>();
         Services.AddAdncInfraMongo<MongoContext>(options =>
         {
             options.ConnectionString = mongoConfig.ConnectionString;

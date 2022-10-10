@@ -5,7 +5,6 @@
 /// </summary>
 public class RedisOptions
 {
-    public const string Name = "Redis";
     public string Provider { get; set; } = "StackExchange";
     public bool EnableBloomFilter { get; set; }
     public string SerializerName { get; set; }

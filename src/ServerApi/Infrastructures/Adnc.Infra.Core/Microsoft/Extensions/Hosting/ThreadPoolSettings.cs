@@ -2,7 +2,6 @@
 {
     public class ThreadPoolSettings
     {
-        public const string Name = "ThreadPoolSettings";
         public int MinThreads { get; set; } = 300;
         public int MinCompletionPortThreads { get; set; } = 300;
         public int MaxThreads { get; set; } = 32767;

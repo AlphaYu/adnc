@@ -3,10 +3,8 @@
 /// <summary>
 /// JWT配置
 /// </summary>
-public class JwtConfig
+public class JWTOptions
 {
-    public const string Name = "JWT";
-
     public Encoding Encoding => Encoding.UTF8;
 
     /// <summary>

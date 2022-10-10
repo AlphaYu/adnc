@@ -1,4 +1,5 @@
-﻿using Adnc.Shared.WebApi.Middleware;
+﻿using Adnc.Infra.Consul.Configuration;
+using Adnc.Shared.WebApi.Middleware;
 
 namespace Adnc.Shared.WebApi.Registrar;
 
@@ -28,7 +29,7 @@ public abstract partial class AbstractWebApiDependencyRegistrar : IMiddlewareReg
         ServiceLocator.Provider = App.ApplicationServices;
         var environment = App.ApplicationServices.GetService<IHostEnvironment>();
         var serviceInfo = App.ApplicationServices.GetService<IServiceInfo>();
-        var consulOptions = App.ApplicationServices.GetService<IOptions<ConsulConfig>>();
+        var consulOptions = App.ApplicationServices.GetService<IOptions<ConsulOptions>>();
 
         var defaultFilesOptions = new DefaultFilesOptions();
         defaultFilesOptions.DefaultFileNames.Clear();

@@ -5,12 +5,6 @@
     /// </summary>
     public sealed class CacheOptions
     {
-        public CacheOptions()
-        {
-        }
-
-        public const string Name = "Caching";
-
         /// <summary>
         /// Gets or sets the max random second.
         /// </summary>

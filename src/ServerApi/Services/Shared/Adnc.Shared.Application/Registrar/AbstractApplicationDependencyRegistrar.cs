@@ -1,4 +1,5 @@
 ﻿using Adnc.Shared.Application.Services.Trackers;
+using Adnc.Shared.Consts.AppSettings;
 
 namespace Adnc.Shared.Application.Registrar;
 
@@ -25,14 +26,14 @@ public abstract partial class AbstractApplicationDependencyRegistrar : IDependen
         Services = services ?? throw new ArgumentException("IServiceCollection is null.");
         Configuration = services.GetConfiguration() ?? throw new ArgumentException("Configuration is null.");
         ServiceInfo = services.GetServiceInfo() ?? throw new ArgumentException("ServiceInfo is null.");
-        RedisSection = Configuration.GetSection(RedisOptions.Name);
-        CachingSection = Configuration.GetSection(CacheOptions.Name);
-        MongoDbSection = Configuration.GetSection(MongoConfig.Name);
-        MysqlSection = Configuration.GetSection(MysqlOptions.Name);
-        ConsulSection = Configuration.GetSection(ConsulConfig.Name);
-        RabbitMqSection = Configuration.GetSection(RabbitMqConfig.Name);
+        RedisSection = Configuration.GetSection(NodeConsts.Redis);
+        CachingSection = Configuration.GetSection(NodeConsts.Caching);
+        MongoDbSection = Configuration.GetSection(NodeConsts.MongoDb);
+        MysqlSection = Configuration.GetSection(NodeConsts.Mysql);
+        ConsulSection = Configuration.GetSection(NodeConsts.Consul);
+        RabbitMqSection = Configuration.GetSection(NodeConsts.RabbitMq);
         SkyApm = Services.AddSkyApmExtensions();
-        RpcAddressInfo = Configuration.GetSection(Rpc.AddressNode.Name).Get<List<Rpc.AddressNode>>();
+        RpcAddressInfo = Configuration.GetSection(NodeConsts.RpcAddressInfo).Get<List<Rpc.AddressNode>>();
     }
 
     /// <summary>

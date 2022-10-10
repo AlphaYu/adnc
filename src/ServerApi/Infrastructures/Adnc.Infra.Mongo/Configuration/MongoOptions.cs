@@ -3,10 +3,8 @@
 /// <summary>
 /// Mongodb配置
 /// </summary>
-public class MongoConfig
+public class MongoOptions
 {
-    public const string Name = "MongoDb";
-
     /// <summary>
     /// Gets or sets the MongoDB connection string.
     /// </summary>

@@ -1,11 +1,9 @@
-﻿namespace Adnc.Infra.Core.Configuration;
+﻿namespace Adnc.Infra.Repository.EfCore.MySql.Configurations;
 
 /// <summary>
 /// MysqlConfig配置
 /// </summary>
-public class MysqlConfig
+public class MysqlOptions
 {
-    public const string Name = "Mysql";
-
     public string ConnectionString { get; set; } = string.Empty;
 }

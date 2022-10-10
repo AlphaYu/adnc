@@ -1,8 +1,7 @@
-﻿namespace Adnc.Infra.Core.Configuration;
+﻿namespace Adnc.Infra.EventBus.Configurations;
 
-public class RabbitMqConfig
+public class RabbitMqOptions
 {
-    public const string Name = "RabbitMq";
     public string HostName { get; set; } = string.Empty;
     public string VirtualHost { get; set; } = string.Empty;
     public string UserName { get; set; } = string.Empty;

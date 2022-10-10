@@ -2,12 +2,12 @@
 
 public sealed class CacheService : AbstractCacheService, ICachePreheatable
 {
-    private readonly Lazy<IOptions<JwtConfig>> _jwtConfig;
+    private readonly Lazy<IOptions<JWTOptions>> _jwtConfig;
 
     public CacheService(
         Lazy<ICacheProvider> cacheProvider,
         Lazy<IServiceProvider> serviceProvider,
-        Lazy<IOptions<JwtConfig>> jwtConfig)
+        Lazy<IOptions<JWTOptions>> jwtConfig)
         : base(cacheProvider, serviceProvider)
     {
         _jwtConfig = jwtConfig;
