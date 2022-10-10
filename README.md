@@ -35,7 +35,7 @@
 - 详细介绍如何使用docker安装配置consul集群、Skywalking系列组件、相关项目的dockerfile文件编写与配置以及如何将多个服务部署到服务器。<br/>
   [请点击链接，查看详细介绍](https://aspdotnetcore.net/docs/deploy-docker/)
 
-#### 如何使用Jekenis+Shell脚本自动化部署
+#### 如何使用jenkins+shell脚本自动化部署
 - 文档尚未完成
 
 #### 如何部署到K8S
@@ -57,7 +57,7 @@
 - 详细介绍为什么要采用JwtBearer+Basic混合认证模式以及它们的实现逻辑，如何灵活配置与应用。  
 [请点击链接，查看详细介绍](https://aspdotnetcore.net/docs/claims-based-authentication/)
 #### 如何使用EFCore仓储
->详细介绍EFCore仓储基础功能、工作单元、CodeFirst，执行原生SQL等提供了丰富的演示代码以及演示代码对应的Sql语句。
+- 详细介绍EFCore仓储基础功能、工作单元、CodeFirst，执行原生SQL等提供了丰富的演示代码以及演示代码对应的Sql语句。
 1. [如何使用仓储(一)-基础功能](https://aspdotnetcore.net/docs/efcore-pemelo-grud/)<br/>
 1. [如何使用仓储(二)-分布式事务/本地事务](https://aspdotnetcore.net/docs/efcore-pemolo-unitofwork/)<br/>
 1. [如何使用仓储(三)-CodeFirst](https://aspdotnetcore.net/docs/efcore-pemelo-codefirst/)<br/>
