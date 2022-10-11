@@ -22,7 +22,7 @@
 
 ## 问题交流
 
-- 企&ensp;鹅&ensp;群：780634162
+- QQ群：780634162
 - 项目官网：<a target="_blank" href="https://aspdotnetcore.net">https://aspdotnetcore.net</a>
 - 博&ensp;&ensp;&ensp;&ensp;客：<a target="_blank" href="https://www.cnblogs.com/alphayu">https://www.cnblogs.com/alphayu</a></a>
 
@@ -33,8 +33,13 @@
 
 #### 如何手动部署到容器
 - 详细介绍如何使用docker安装配置consul集群、Skywalking系列组件、相关项目的dockerfile文件编写与配置以及如何将多个服务部署到服务器。<br/>
-[请点击链接，查看详细介绍](https://aspdotnetcore.net/docs/deploy-docker/)
+  [请点击链接，查看详细介绍](https://aspdotnetcore.net/docs/deploy-docker/)
 
+#### 如何使用jenkins+shell脚本自动化部署
+- 文档尚未完成
+
+#### 如何部署到K8S
+- 文档尚未完成
 
 #### 如何实现读写分离
 - 详细介绍为什么要通过中间件实现读写分离以及EFCore基于中间件如何写代码。<br/>
@@ -52,12 +57,30 @@
 - 详细介绍为什么要采用JwtBearer+Basic混合认证模式以及它们的实现逻辑，如何灵活配置与应用。  
 [请点击链接，查看详细介绍](https://aspdotnetcore.net/docs/claims-based-authentication/)
 #### 如何使用EFCore仓储
->详细介绍EFCore仓储基础功能、工作单元、CodeFirst，执行原生SQL等提供了丰富的演示代码以及演示代码对应的Sql语句。
+- 详细介绍EFCore仓储基础功能、工作单元、CodeFirst，执行原生SQL等提供了丰富的演示代码以及演示代码对应的Sql语句。
 1. [如何使用仓储(一)-基础功能](https://aspdotnetcore.net/docs/efcore-pemelo-grud/)<br/>
 1. [如何使用仓储(二)-分布式事务/本地事务](https://aspdotnetcore.net/docs/efcore-pemolo-unitofwork/)<br/>
 1. [如何使用仓储(三)-CodeFirst](https://aspdotnetcore.net/docs/efcore-pemelo-codefirst/)<br/>
 1. [如何使用仓储(四)-撸SQL](https://aspdotnetcore.net/docs/efcore-pemelo-sql/)<br/>
 1. [ 如何使用仓储(五)-切换数据库类型](https://aspdotnetcore.net/docs/efcore-pemelo-sqlserver/)<br/>
+
+#### 如何从零开发业务
+- 文档尚未完成
+
+#### 如何调用微服务
+- 文档尚未完成
+
+#### 如何配置网关
+- 文档尚未完成
+
+#### 如何使用注册/配置中心
+- 文档尚未完成
+
+#### 如何配置链路追踪
+- 文档尚未完成
+
+#### 如何配置健康检测
+- 文档尚未完成
 
 ## 总体结构设计
 - 经典三层

@@ -1,5 +1,5 @@
-﻿global using Adnc.Infra.Caching;
-global using Adnc.Infra.IRepositories;
+﻿global using Adnc.Infra.IRepositories;
+global using Adnc.Infra.Redis.Caching;
 global using Adnc.Shared.Application.Caching;
 global using Adnc.Shared.Application.Contracts.Dtos;
 global using Adnc.Shared.Application.Contracts.Interfaces;

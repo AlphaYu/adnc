@@ -1,4 +1,5 @@
-﻿using Adnc.Shared.Consts.RegistrationCenter;
+﻿using Adnc.Shared.Consts.AppSettings;
+using Adnc.Shared.Consts.RegistrationCenter;
 
 namespace Microsoft.Extensions.Hosting;
 
@@ -11,7 +12,7 @@ public static class HostExtension
     {
         var configuration = host.Services.GetService<IConfiguration>();
         var serviceInfo = host.Services.GetService<IServiceInfo>();
-        var registeredType = configuration.GetRegisteredType().ToLower();
+        var registeredType = configuration.GetValue(NodeConsts.RegisteredType, "direct");
         switch (registeredType)
         {
             case RegisteredTypeConsts.Consul:

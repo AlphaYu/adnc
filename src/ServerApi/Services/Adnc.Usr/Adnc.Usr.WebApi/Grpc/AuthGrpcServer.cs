@@ -8,12 +8,12 @@ namespace Adnc.Usr.WebApi.Grpc;
 
 public class AuthGrpcServer : AuthGrpc.AuthGrpcBase
 {
-    private readonly IOptions<JwtConfig> _jwtOptions;
+    private readonly IOptions<JWTOptions> _jwtOptions;
     private readonly IAccountAppService _accountService;
     private readonly IObjectMapper _mapper;
 
     public AuthGrpcServer(
-        IOptions<JwtConfig> jwtOptions
+        IOptions<JWTOptions> jwtOptions
         , IAccountAppService accountService
         , IObjectMapper mapper)
     {

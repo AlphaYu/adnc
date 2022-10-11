@@ -1,4 +1,6 @@
-﻿using Adnc.Shared.WebApi;
+﻿using Adnc.Infra.Consul.Configuration;
+using Adnc.Shared.Consts.AppSettings;
+using Adnc.Shared.WebApi;
 using NLog;
 using NLog.Web;
 
@@ -26,7 +28,7 @@ public static class WebApplicationBuilderExtension
         builder.Configuration.AddJsonFile($"{AppContext.BaseDirectory}/appsettings.{builder.Environment.EnvironmentName}.json", true, true);
         if (builder.Environment.IsProduction() || builder.Environment.IsStaging())
         {
-            var consulOption = builder.Configuration.GetSection(ConsulConfig.Name).Get<ConsulConfig>();
+            var consulOption = builder.Configuration.GetSection(NodeConsts.Consul).Get<ConsulOptions>();
             if(consulOption.ConsulKeyPath.IsNullOrWhiteSpace())
                 throw new NotImplementedException(nameof(consulOption.ConsulKeyPath));
 
@@ -42,7 +44,7 @@ public static class WebApplicationBuilderExtension
 
         //Logging
         builder.Logging.ClearProviders();
-        var logContainer = builder.Configuration.GetValue("Logging:LogContainer", "console");
+        var logContainer = builder.Configuration.GetValue(NodeConsts.Logging_LogContainer, "console");
         LogManager.LoadConfiguration($"{AppContext.BaseDirectory}/NLog/nlog-{logContainer}.config");
         builder.Host.UseNLog();
 

@@ -1,10 +1,10 @@
 ﻿global using Adnc.Cus.Entities;
-global using Adnc.Infra.Caching;
-global using Adnc.Infra.Caching.Configurations;
 global using Adnc.Infra.Entities;
 global using Adnc.Infra.EventBus.Cap;
 global using Adnc.Infra.IdGenerater.Yitter;
 global using Adnc.Infra.IRepositories;
+global using Adnc.Infra.Redis;
+global using Adnc.Infra.Redis.Caching;
 global using Adnc.UnitTest.Fixtures;
 global using DotNetCore.CAP;
 global using Microsoft.EntityFrameworkCore;

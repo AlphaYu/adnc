@@ -8,16 +8,16 @@ public abstract partial class AbstractApplicationDependencyRegistrar
     /// 注册Caching相关处理服务
     /// </summary>
     /// <param name="builder"></param>
-    protected virtual void AddCaching(Action<IServiceCollection> action = null)
+    protected virtual void AddRedisCaching(Action<IServiceCollection> action = null)
     {
         action?.Invoke(Services);
         if(this.IsEnableSkyApm())
         {
             SkyApm.AddCaching();
         }
-        Services.AddAdncInfraCaching(RedisSection);
+        Services.AddAdncInfraRedisCaching(RedisSection,CachingSection);
         var serviceType = typeof(ICachePreheatable);
-        var implTypes = ApplicationLayerAssembly.ExportedTypes.Where(type => type.IsAssignableTo(serviceType) && type.IsNotAbstractClass(true)).ToList();
+        var implTypes = ApplicationLayerAssembly.ExportedTypes.Where(type => type.IsAssignableTo(serviceType) && type.IsNotAbstractClass(true));
         if (implTypes.IsNotNullOrEmpty())
         {
             implTypes.ForEach(implType =>

@@ -5,7 +5,7 @@ namespace Adnc.Gateway.Ocelot.Identity;
 
 public static class JwtSecurityTokenHandlerExtension
 {
-    public static TokenValidationParameters GenarateTokenValidationParameters(JwtConfig tokenConfig) =>
+    public static TokenValidationParameters GenarateTokenValidationParameters(JWTOptions tokenConfig) =>
         new()
         {
             ValidateIssuer = tokenConfig.ValidateIssuer,

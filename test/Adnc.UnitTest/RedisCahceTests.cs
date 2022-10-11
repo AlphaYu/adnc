@@ -3,7 +3,7 @@
 public class RedisCahceTests : IClassFixture<RedisCacheFixture>
 {
     private readonly ITestOutputHelper _output;
-    private readonly ICacheProvider _cache;
+    private readonly ICacheProvider _cacheProvider;
     private readonly IRedisProvider _redisProvider;
     private readonly IDistributedLocker _distributedLocker;
     private readonly RedisCacheFixture _fixture;
@@ -12,7 +12,7 @@ public class RedisCahceTests : IClassFixture<RedisCacheFixture>
     {
         _fixture = fixture;
         _output = output;
-        _cache = _fixture.Container.GetRequiredService<ICacheProvider>();
+        _cacheProvider = _fixture.Container.GetRequiredService<ICacheProvider>();
         _redisProvider = _fixture.Container.GetRequiredService<IRedisProvider>();
         _distributedLocker = _fixture.Container.GetRequiredService<IDistributedLocker>();
     }
@@ -50,7 +50,7 @@ public class RedisCahceTests : IClassFixture<RedisCacheFixture>
         var parameters = new { key = cacheKey, start = 0, stop = 0, score = DateTime.Now.GetTotalMicroseconds() };
 
         var luaResult = (byte[])await _redisProvider.ScriptEvaluateAsync(scirpt, parameters);
-        var workerId = _cache.Serializer.Deserialize<long>(luaResult);
+        var workerId = _cacheProvider.Serializer.Deserialize<long>(luaResult);
         _output.WriteLine(workerId.ToString());
         Assert.True(workerId >= 0);
     }
@@ -125,21 +125,21 @@ public class RedisCahceTests : IClassFixture<RedisCacheFixture>
     [Fact]
     public void TestRemoveAll()
     {
-        _cache.CacheOptions.Value.PenetrationSetting.Disable = true;
+        _cacheProvider.CacheOptions.Value.PenetrationSetting.Disable = true;
 
         var key01 = "TestRemoveAll01".ToLower();
         var key02 = "TestRemoveAll02".ToLower();
         var value = DateTime.Now.Ticks;
 
-        _cache.Set(key01, value, TimeSpan.FromSeconds(100));
-        _cache.Set(key02, value, TimeSpan.FromSeconds(100));
+        _cacheProvider.Set(key01, value, TimeSpan.FromSeconds(100));
+        _cacheProvider.Set(key02, value, TimeSpan.FromSeconds(100));
 
-        var actual = _cache.Get<long>(key02);
+        var actual = _cacheProvider.Get<long>(key02);
         Assert.Equal(value, actual.Value);
 
         var keys = new List<string>() { key01, key02 };
-        _cache.RemoveAll(keys);
-        var cacheValue = _cache.Get<long>(key01);
+        _cacheProvider.RemoveAll(keys);
+        var cacheValue = _cacheProvider.Get<long>(key01);
         Assert.False(cacheValue.HasValue);
     }
 
@@ -170,21 +170,21 @@ public class RedisCahceTests : IClassFixture<RedisCacheFixture>
     [Fact]
     public async Task TestKeyExpire()
     {
-        _cache.CacheOptions.Value.PenetrationSetting.Disable = true;
+        _cacheProvider.CacheOptions.Value.PenetrationSetting.Disable = true;
 
         var cacheKey1 = nameof(TestKeyExpire).ToLower() + ":" + DateTime.Now.Ticks;
         var cacheKey2 = nameof(TestKeyExpire).ToLower() + ":" + DateTime.Now.Ticks;
         var cacheKey3 = nameof(TestKeyExpire).ToLower() + ":" + DateTime.Now.Ticks;
         var cacheKey4 = "cacheKey4";
 
-        await _cache.SetAsync(cacheKey1, nameof(cacheKey1), TimeSpan.FromSeconds(1000));
-        await _cache.SetAsync(cacheKey2, nameof(cacheKey2), TimeSpan.FromSeconds(1000));
-        await _cache.SetAsync(cacheKey3, nameof(cacheKey3), TimeSpan.FromSeconds(1000));
+        await _cacheProvider.SetAsync(cacheKey1, nameof(cacheKey1), TimeSpan.FromSeconds(1000));
+        await _cacheProvider.SetAsync(cacheKey2, nameof(cacheKey2), TimeSpan.FromSeconds(1000));
+        await _cacheProvider.SetAsync(cacheKey3, nameof(cacheKey3), TimeSpan.FromSeconds(1000));
 
         var seconds = await _redisProvider.TTLAsync(cacheKey1);
         Assert.True(seconds > 990);
 
-        await _cache.KeyExpireAsync(new string[] { cacheKey1, cacheKey2, cacheKey3, cacheKey4 }, 100);
+        await _cacheProvider.KeyExpireAsync(new string[] { cacheKey1, cacheKey2, cacheKey3, cacheKey4 }, 100);
         var seconds1 = await _redisProvider.TTLAsync(cacheKey1);
         var seconds2 = await _redisProvider.TTLAsync(cacheKey2);
         var seconds3 = await _redisProvider.TTLAsync(cacheKey3);
@@ -193,10 +193,10 @@ public class RedisCahceTests : IClassFixture<RedisCacheFixture>
         Assert.True(seconds2 <= 100 && seconds1 > 90);
         Assert.True(seconds3 <= 100 && seconds1 > 90);
 
-        var exists = await _cache.ExistsAsync(cacheKey4);
+        var exists = await _cacheProvider.ExistsAsync(cacheKey4);
         Assert.False(exists);
 
-        var value = await _cache.GetAsync<string>(cacheKey3);
+        var value = await _cacheProvider.GetAsync<string>(cacheKey3);
         Assert.Equal("cacheKey3", value.Value);
     }
 

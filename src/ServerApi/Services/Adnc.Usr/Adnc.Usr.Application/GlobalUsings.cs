@@ -1,9 +1,10 @@
-﻿global using Adnc.Infra.Caching;
-global using Adnc.Infra.Caching.Configurations;
-global using Adnc.Infra.Core.Configuration;
+﻿global using Adnc.Infra.Core.Configuration;
 global using Adnc.Infra.Helper;
 global using Adnc.Infra.IdGenerater.Yitter;
 global using Adnc.Infra.IRepositories;
+global using Adnc.Infra.Redis;
+global using Adnc.Infra.Redis.Caching;
+global using Adnc.Infra.Redis.Caching.Configurations;
 global using Adnc.Shared.Application.BloomFilter;
 global using Adnc.Shared.Application.Caching;
 global using Adnc.Shared.Application.Channels;

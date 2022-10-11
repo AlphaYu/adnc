@@ -6,7 +6,7 @@ public static class ApplicationBuilderConsulExtension
 {
     public static IHost RegisterToConsul(this IHost host, string? serviceId = null)
     {
-        var kestrelConfig = host.Services.GetRequiredService<IOptions<KestrelConfig>>().Value;
+        var kestrelConfig = host.Services.GetRequiredService<IOptions<KestrelOptions>>().Value;
         if (kestrelConfig is null)
             throw new NotImplementedException(nameof(kestrelConfig));
 

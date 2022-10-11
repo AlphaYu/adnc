@@ -7,13 +7,13 @@
 [ApiController]
 public class AccountController : AdncControllerBase
 {
-    private readonly IOptions<JwtConfig> _jwtOptions;
+    private readonly IOptions<JWTOptions> _jwtOptions;
     private readonly UserContext _userContext;
     private readonly IAccountAppService _accountService;
     private readonly ILogger<AccountController> _logger;
 
     public AccountController(
-        IOptions<JwtConfig> jwtOptions,
+        IOptions<JWTOptions> jwtOptions,
         UserContext userContext,
         IAccountAppService accountService,
         ILogger<AccountController> logger

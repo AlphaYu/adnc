@@ -1,4 +1,5 @@
-﻿using Adnc.Infra.Repository.Mongo;
+﻿using Adnc.Infra.Repository.EfCore.MySql.Configurations;
+using Adnc.Infra.Repository.Mongo;
 using Adnc.Infra.Repository.Mongo.Configuration;
 using Adnc.Infra.Repository.Mongo.Extensions;
 using Microsoft.EntityFrameworkCore;
@@ -27,7 +28,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar
     /// </summary>
     protected virtual void AddEfCoreContext()
     {
-        var mysqlConfig = MysqlSection.Get<MysqlConfig>();
+        var mysqlConfig = MysqlSection.Get<MysqlOptions>();
         var serverVersion = new MariaDbServerVersion(new Version(10, 5, 4));
         Services.AddAdncInfraEfCoreMySql(options =>
         {
@@ -58,7 +59,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar
     {
         action?.Invoke(Services);
 
-        var mongoConfig = MongoDbSection.Get<MongoConfig>();
+        var mongoConfig = MongoDbSection.Get<MongoOptions>();
         Services.AddAdncInfraMongo<MongoContext>(options =>
         {
             options.ConnectionString = mongoConfig.ConnectionString;

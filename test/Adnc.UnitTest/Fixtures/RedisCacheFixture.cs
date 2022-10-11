@@ -1,37 +1,23 @@
-﻿namespace Adnc.UnitTest.Fixtures;
+﻿using Adnc.Shared.Consts.AppSettings;
+using Microsoft.Extensions.Configuration;
+
+namespace Adnc.UnitTest.Fixtures;
 
 public class RedisCacheFixture
 {
-    public IServiceProvider Container { get; private set; }
+    public IServiceProvider Container { get; init; }
 
     public RedisCacheFixture()
     {
-        var services = new ServiceCollection();
-        var redisOptions = new RedisDBOptions() { Password = "football", ConnectionTimeout = 1000 * 20 };
-        redisOptions.Endpoints.Add(new ServerEndPoint() { Host = "114.132.157.167", Port = 13379 });
-        var cacheOptions = new CacheOptions()
-        {
-            EnableLogging = true
-           ,
-            DBConfig = redisOptions
-            ,
-            PenetrationSetting = new CacheOptions.PenetrationOptions
-            {
-                Disable = true
-                ,
-                BloomFilterSetting = new CacheOptions.BloomFilterSetting
-                {
-                    Capacity = 10000000
-                    ,
-                    Name = "adnc:bloomfilter"
-                    ,
-                    ErrorRate = 0.001
-                }
-            }
-        };
-        services.ConfigureOptions(cacheOptions);
-        //services.AddAdncInfraCaching(cacheOptions);
+        var configuration = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .Build();
 
+        var redisSection = configuration.GetSection(NodeConsts.Redis);
+        var cachingSection = configuration.GetSection(NodeConsts.Caching);
+
+        var services = new ServiceCollection().AddAdncInfraRedisCaching(redisSection, cachingSection);
         Container = services.BuildServiceProvider();
     }
 }

@@ -1,3 +1,4 @@
+using Adnc.Infra.Consul.Configuration;
 using Adnc.Infra.Core.Configuration;
 
 namespace Adnc.Gateway.Ocelot;
@@ -20,7 +21,7 @@ internal class Program
             if (env.IsProduction() || env.IsStaging())
             {
                 var configuration = config.Build();
-                var consulOption = configuration.GetSection(ConsulConfig.Name).Get<ConsulConfig>();
+                var consulOption = configuration.GetSection("Consul").Get<ConsulOptions>();
                 config.AddConsulConfiguration(consulOption, true);
             }
             else

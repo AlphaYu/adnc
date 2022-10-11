@@ -19,7 +19,6 @@
 
 public class AddressNode
 {
-    public const string Name = "RpcAddressInfo";
     public string Service { get; set; } = string.Empty;
     public string Direct { get; set; } = string.Empty;
     public string Consul { get; set; } = string.Empty;

@@ -7,7 +7,7 @@ public static class JwtTokenHelper
     /// </summary>
     /// <param name="tokenConfig"></param>
     /// <returns></returns>
-    public static TokenValidationParameters GenarateTokenValidationParameters(JwtConfig tokenConfig) =>
+    public static TokenValidationParameters GenarateTokenValidationParameters(JWTOptions tokenConfig) =>
         new()
         {
             ValidateIssuer = tokenConfig.ValidateIssuer,
@@ -66,7 +66,7 @@ public static class JwtTokenHelper
     /// <param name="user"></param>
     /// <returns></returns>
     public static JwtToken CreateAccessToken(
-        JwtConfig jwtConfig
+        JWTOptions jwtConfig
         , string jti
         , string uniqueName
         , string nameId
@@ -96,7 +96,7 @@ public static class JwtTokenHelper
     /// <param name="user"></param>
     /// <returns></returns>
     public static JwtToken CreateRefreshToken(
-        JwtConfig jwtConfig
+        JWTOptions jwtConfig
         , string jti
         , string nameId
         )
@@ -117,7 +117,7 @@ public static class JwtTokenHelper
     /// </summary>
     /// <param name="refreshToken"></param>
     /// <returns></returns>
-    public static Claim GetClaimFromRefeshToken(JwtConfig jwtConfig, string refreshToken, string claimName)
+    public static Claim GetClaimFromRefeshToken(JWTOptions jwtConfig, string refreshToken, string claimName)
     {
         var parameters = GenarateTokenValidationParameters(jwtConfig);
         var tokenHandler = new JwtSecurityTokenHandler();
@@ -134,7 +134,7 @@ public static class JwtTokenHelper
     /// <param name="claims"></param>
     /// <param name="tokenType"></param>
     /// <returns></returns>
-    private static JwtToken WriteToken(JwtConfig jwtConfig, Claim[] claims, Tokens tokenType)
+    private static JwtToken WriteToken(JWTOptions jwtConfig, Claim[] claims, Tokens tokenType)
     {
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtConfig.SymmetricSecurityKey));
 

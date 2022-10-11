@@ -7,7 +7,7 @@
 		<PackageReference Include="Yitter.IdGenerator" Version="1.0.14" />
 	</ItemGroup>
 	<ItemGroup>
-		<ProjectReference Include="..\Adnc.Infra.Caching\Adnc.Infra.Caching.csproj" />
+		<ProjectReference Include="..\Adnc.Infra.Redis\Adnc.Infra.Redis.csproj" />
 		<ProjectReference Include="..\Adnc.Infra.Core\Adnc.Infra.Core.csproj" />
 	</ItemGroup>
 </Project>

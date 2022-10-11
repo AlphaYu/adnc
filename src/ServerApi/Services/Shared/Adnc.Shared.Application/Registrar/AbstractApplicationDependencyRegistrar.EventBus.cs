@@ -1,4 +1,6 @@
-﻿using DotNetCore.CAP;
+﻿using Adnc.Infra.EventBus.Configurations;
+using Adnc.Infra.Repository.EfCore.MySql.Configurations;
+using DotNetCore.CAP;
 using Microsoft.EntityFrameworkCore;
 using SkyApm.Diagnostics.CAP;
 
@@ -27,7 +29,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar
             else
             {
                 var tableNamePrefix = "cap";
-                var mysqlConfig = MysqlSection.Get<MysqlConfig>();
+                var mysqlConfig = MysqlSection.Get<MysqlOptions>();
                 option.UseMySql(config =>
                 {
                     config.ConnectionString = mysqlConfig.ConnectionString;
@@ -42,7 +44,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar
             }
             else
             {
-                var rabbitMqConfig = RabbitMqSection.Get<RabbitMqConfig>();
+                var rabbitMqConfig = RabbitMqSection.Get<RabbitMqOptions>();
                 option.UseRabbitMQ(option =>
                 {
                     option.HostName = rabbitMqConfig.HostName;
