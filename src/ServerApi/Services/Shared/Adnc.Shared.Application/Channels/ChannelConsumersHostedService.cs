@@ -20,7 +20,7 @@ public class ChannelConsumersHostedService : BackgroundService
         {
             using var scope = _services.CreateScope();
             var repository = scope.ServiceProvider.GetRequiredService<IMongoRepository<LoginLog>>();
-            var channelLoginReader = ChannelHelper<LoginLog>.Instance.Reader;
+            var channelLoginReader = ChannelAccessor<LoginLog>.Instance.Reader;
             var entities = new List<LoginLog>();
             while (await channelLoginReader.WaitToReadAsync(stoppingToken))
             {
@@ -54,7 +54,7 @@ public class ChannelConsumersHostedService : BackgroundService
         {
             using var scope = _services.CreateScope();
             var repository = scope.ServiceProvider.GetRequiredService<IMongoRepository<OperationLog>>();
-            var channelOperationLogReader = ChannelHelper<OperationLog>.Instance.Reader;
+            var channelOperationLogReader = ChannelAccessor<OperationLog>.Instance.Reader;
             var entities = new List<OperationLog>();
             while (await channelOperationLogReader.WaitToReadAsync())
             {
