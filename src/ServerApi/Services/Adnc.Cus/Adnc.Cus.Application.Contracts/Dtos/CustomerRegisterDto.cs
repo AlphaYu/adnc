@@ -1,6 +1,6 @@
 ﻿namespace Adnc.Cus.Application.Contracts.Dtos;
 
-public class CustomerRegisterDto : IInputDto
+public class CustomerRegisterDto : InputDto
 {
     public string Account { get; set; }
 

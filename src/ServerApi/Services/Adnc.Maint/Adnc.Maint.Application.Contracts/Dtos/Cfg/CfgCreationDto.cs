@@ -3,7 +3,7 @@
 /// <summary>
 /// 系统配置
 /// </summary>
-public class CfgCreationDto : IInputDto
+public class CfgCreationDto : InputDto
 {
     /// <summary>
     /// 备注

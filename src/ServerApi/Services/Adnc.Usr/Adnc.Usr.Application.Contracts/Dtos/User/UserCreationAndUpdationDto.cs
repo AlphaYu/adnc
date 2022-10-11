@@ -1,6 +1,6 @@
 ﻿namespace Adnc.Usr.Application.Contracts.Dtos
 {
-    public abstract class UserCreationAndUpdationDto : IInputDto
+    public abstract class UserCreationAndUpdationDto : InputDto
     {
         /// <summary>
         /// 账户
