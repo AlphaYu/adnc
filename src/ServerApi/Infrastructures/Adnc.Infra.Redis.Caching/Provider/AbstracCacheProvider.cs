@@ -2,9 +2,8 @@
 using Adnc.Infra.Redis.Caching.Core;
 using Adnc.Infra.Redis.Caching.Core.Diagnostics;
 using Adnc.Infra.Redis.Core.Serialization;
-using System.Diagnostics;
 
-namespace Adnc.Infra.Redis.Caching.Caching.Provider;
+namespace Adnc.Infra.Redis.Caching.Provider;
 
 public abstract class AbstracCacheProvider : ICacheProvider
 {

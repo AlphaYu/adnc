@@ -1,8 +1,8 @@
 ﻿using Adnc.Infra.Redis.Caching;
-using Adnc.Infra.Redis.Caching.Caching.Provider;
 using Adnc.Infra.Redis.Caching.Configurations;
 using Adnc.Infra.Redis.Caching.Core.Interceptor;
 using Adnc.Infra.Redis.Caching.Interceptor.Castle;
+using Adnc.Infra.Redis.Caching.Provider;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
