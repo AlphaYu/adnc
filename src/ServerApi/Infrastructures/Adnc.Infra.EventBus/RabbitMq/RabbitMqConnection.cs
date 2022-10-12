@@ -1,4 +1,5 @@
-﻿using RabbitMQ.Client;
+﻿using Adnc.Infra.EventBus.Configurations;
+using RabbitMQ.Client;
 using RabbitMQ.Client.Exceptions;
 
 namespace Adnc.Infra.EventBus.RabbitMq
@@ -19,7 +20,7 @@ namespace Adnc.Infra.EventBus.RabbitMq
         {
         }
 
-        internal static RabbitMqConnection GetInstance(IOptions<RabbitMqConfig> options, string clientProvidedName, ILogger<dynamic> logger)
+        internal static RabbitMqConnection GetInstance(IOptions<RabbitMqOptions> options, string clientProvidedName, ILogger<dynamic> logger)
         {
             if (_uniqueInstance is null)
             {
@@ -34,7 +35,7 @@ namespace Adnc.Infra.EventBus.RabbitMq
             return _uniqueInstance;
         }
 
-        private RabbitMqConnection(IOptions<RabbitMqConfig> options, string clientProvidedName, ILogger<dynamic> logger)
+        private RabbitMqConnection(IOptions<RabbitMqOptions> options, string clientProvidedName, ILogger<dynamic> logger)
         {
             _logger = logger;
 

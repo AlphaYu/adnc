@@ -1,4 +1,6 @@
-﻿using Adnc.Infra.EventBus.RabbitMq;
+﻿using Adnc.Infra.EventBus.Configurations;
+using Adnc.Infra.EventBus.RabbitMq;
+using Adnc.Shared.Consts.AppSettings;
 using RabbitMQ.Client;
 
 namespace Adnc.Shared.WebApi.Registrar;
@@ -21,23 +23,23 @@ public abstract partial class AbstractWebApiDependencyRegistrar
         //await HttpContextUtility.GetCurrentHttpContext().GetTokenAsync("access_token");
         if (checkingMysql)
         {
-            var mysqlConfig = Configuration.GetSection(MysqlConfig.Name).Get<MysqlConfig>();
-            if (mysqlConfig is null)
+            var mysqlConnectionString = Configuration.GetValue(NodeConsts.Mysql_ConnectionString,string.Empty);
+            if (mysqlConnectionString.IsNullOrEmpty())
                 throw new NullReferenceException("mysqlconfig is null");
-            checksBuilder.AddMySql(mysqlConfig.ConnectionString);
+            checksBuilder.AddMySql(mysqlConnectionString);
         }
 
         if (checkingMongodb)
         {
-            var mongoConfig = Configuration.GetSection(MongoConfig.Name).Get<MongoConfig>();
-            if (mongoConfig is null)
+            var mongoConnectionString = Configuration.GetValue(NodeConsts.MongoDb_ConnectionString, string.Empty);
+            if (mongoConnectionString.IsNullOrEmpty())
                 throw new NullReferenceException("mongoConfig is null");
-            checksBuilder.AddMongoDb(mongoConfig.ConnectionString);
+            checksBuilder.AddMongoDb(mongoConnectionString);
         }
 
         if (checkingRedis)
         {
-            var redisConfig = Configuration.GetSection(RedisConfig.Name).Get<RedisConfig>();
+            var redisConfig = Configuration.GetSection(NodeConsts.Redis).Get<RedisOptions>();
             if (redisConfig is null)
                 throw new NullReferenceException("redisConfig is null");
             checksBuilder.AddRedis(redisConfig.Dbconfig.ConnectionString);
@@ -45,7 +47,7 @@ public abstract partial class AbstractWebApiDependencyRegistrar
 
         if (checkingRabitmq)
         {
-            var rabitmqConfig = Configuration.GetSection(RabbitMqConfig.Name).Get<RabbitMqConfig>();
+            var rabitmqConfig = Configuration.GetSection(NodeConsts.RabbitMq).Get<RabbitMqOptions>();
             if (rabitmqConfig is null)
                 throw new NullReferenceException("rabitmqConfig is null");
             checksBuilder.AddRabbitMQ(provider =>

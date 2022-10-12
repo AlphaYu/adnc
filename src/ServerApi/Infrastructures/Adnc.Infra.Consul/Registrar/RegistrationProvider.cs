@@ -1,15 +1,17 @@
-﻿namespace Adnc.Infra.Consul.Registrar;
+﻿using Adnc.Infra.Consul.Configuration;
+
+namespace Adnc.Infra.Consul.Registrar;
 
 public sealed class RegistrationProvider
 {
-    private readonly IOptions<ConsulConfig> _consulConfig;
+    private readonly IOptions<ConsulOptions> _consulConfig;
     private readonly IHostApplicationLifetime _hostApplicationLifetime;
     private readonly ILogger<RegistrationProvider> _logger;
     private readonly ConsulClient _consulClient;
     //private readonly IServerAddressesFeature _serverAddressesFeature;
 
     public RegistrationProvider(
-        IOptions<ConsulConfig> consulOption
+        IOptions<ConsulOptions> consulOption
         , ConsulClient consulClient
         , IHostApplicationLifetime hostApplicationLifetime
         , ILogger<RegistrationProvider> logger)

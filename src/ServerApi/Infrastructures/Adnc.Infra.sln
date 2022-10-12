@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Core", "Adnc.Inf
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Helper", "Adnc.Infra.Helper\Adnc.Infra.Helper.csproj", "{0B10CD96-6730-4891-9D1C-2A866515D599}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Caching", "Adnc.Infra.Caching\Adnc.Infra.Caching.csproj", "{FFAE8233-0F59-4500-BCA8-1F017C931CF0}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Consul", "Adnc.Infra.Consul\Adnc.Infra.Consul.csproj", "{BC6481A6-09B5-4B15-86AF-87D192DE36D6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Repository", "Adnc.Infra.Repository\Adnc.Infra.Repository.csproj", "{A559E53C-51BA-495D-BAD9-82920D38DD47}"
@@ -29,6 +27,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.IdGenerater", "A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Repository.EfCore", "Adnc.Infra.EfCore\Adnc.Infra.Repository.EfCore.csproj", "{93CB8D34-DEC6-493A-9D5E-6951380EC21C}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Redis", "Adnc.Infra.Redis\Adnc.Infra.Redis.csproj", "{E2861631-694D-40B6-9FE0-14A8610407EA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Redis.Caching", "Adnc.Infra.Redis.Caching\Adnc.Infra.Redis.Caching.csproj", "{3273F34B-C852-412E-BF3C-C1D2EE1BC635}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,10 +45,6 @@ Global
 		{0B10CD96-6730-4891-9D1C-2A866515D599}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0B10CD96-6730-4891-9D1C-2A866515D599}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0B10CD96-6730-4891-9D1C-2A866515D599}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FFAE8233-0F59-4500-BCA8-1F017C931CF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FFAE8233-0F59-4500-BCA8-1F017C931CF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FFAE8233-0F59-4500-BCA8-1F017C931CF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FFAE8233-0F59-4500-BCA8-1F017C931CF0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BC6481A6-09B5-4B15-86AF-87D192DE36D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BC6481A6-09B5-4B15-86AF-87D192DE36D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BC6481A6-09B5-4B15-86AF-87D192DE36D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -87,6 +85,14 @@ Global
 		{93CB8D34-DEC6-493A-9D5E-6951380EC21C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{93CB8D34-DEC6-493A-9D5E-6951380EC21C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{93CB8D34-DEC6-493A-9D5E-6951380EC21C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2861631-694D-40B6-9FE0-14A8610407EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2861631-694D-40B6-9FE0-14A8610407EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2861631-694D-40B6-9FE0-14A8610407EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2861631-694D-40B6-9FE0-14A8610407EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3273F34B-C852-412E-BF3C-C1D2EE1BC635}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3273F34B-C852-412E-BF3C-C1D2EE1BC635}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3273F34B-C852-412E-BF3C-C1D2EE1BC635}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3273F34B-C852-412E-BF3C-C1D2EE1BC635}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,4 +1,6 @@
-﻿namespace Adnc.Shared.WebApi.Registrar;
+﻿using Adnc.Shared.Consts.AppSettings;
+
+namespace Adnc.Shared.WebApi.Registrar;
 
 public abstract partial class AbstractWebApiDependencyRegistrar
 {
@@ -8,9 +10,9 @@ public abstract partial class AbstractWebApiDependencyRegistrar
     protected virtual void Configure()
     {
         Services
-            .Configure<JwtConfig>(Configuration.GetSection(JwtConfig.Name))
-            .Configure<ThreadPoolSettings>(Configuration.GetSection(ThreadPoolSettings.Name))
-            .Configure<KestrelConfig>(Configuration.GetSection(KestrelConfig.Name))
+            .Configure<JWTOptions>(Configuration.GetSection(NodeConsts.JWT))
+            .Configure<ThreadPoolSettings>(Configuration.GetSection(NodeConsts.ThreadPoolSettings))
+            .Configure<KestrelOptions>(Configuration.GetSection(NodeConsts.Kestrel))
             ;
     }
 }

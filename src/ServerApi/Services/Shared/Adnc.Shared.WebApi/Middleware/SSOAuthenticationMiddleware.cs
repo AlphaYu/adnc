@@ -1,17 +1,16 @@
-﻿using Adnc.Infra.Caching;
-using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
+﻿using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
 
 namespace Adnc.Shared.WebApi.Middleware;
 
 public class SsoAuthenticationMiddleware
 {
     private readonly RequestDelegate _next;
-    private readonly JwtConfig _jwtConfig;
+    private readonly JWTOptions _jwtConfig;
     private readonly string tokenPrefx = "accesstoken";
     private readonly ICacheProvider _cache;
 
     public SsoAuthenticationMiddleware(RequestDelegate next
-        , IOptions<JwtConfig> jwtConfig
+        , IOptions<JWTOptions> jwtConfig
         , ICacheProvider cache)
     {
         _next = next ?? throw new ArgumentNullException(nameof(next));

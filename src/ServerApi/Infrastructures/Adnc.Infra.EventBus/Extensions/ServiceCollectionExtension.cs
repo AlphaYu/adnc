@@ -1,6 +1,7 @@
 ﻿using Adnc.Infra.EventBus;
 using Adnc.Infra.EventBus.Cap;
 using Adnc.Infra.EventBus.Cap.Filters;
+using Adnc.Infra.EventBus.Configurations;
 using Adnc.Infra.EventBus.RabbitMq;
 using DotNetCore.CAP;
 
@@ -30,10 +31,10 @@ public static class ServiceCollectionExtension
             return services;
 
         return services
-             .Configure<RabbitMqConfig>(rabitmqSection)
+             .Configure<RabbitMqOptions>(rabitmqSection)
              .AddSingleton<IRabbitMqConnection>(provider =>
              {
-                 var options = provider.GetRequiredService<IOptions<RabbitMqConfig>>();
+                 var options = provider.GetRequiredService<IOptions<RabbitMqOptions>>();
                  var logger = provider.GetRequiredService<ILogger<RabbitMqConnection>>();
                  var serviceInfo = services.GetServiceInfo();
                  var clientProvidedName = serviceInfo?.Id ?? "unkonow";

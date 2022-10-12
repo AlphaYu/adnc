@@ -1,4 +1,5 @@
 ﻿using Adnc.Shared.Application.Services.Trackers;
+using Adnc.Shared.Consts.AppSettings;
 
 namespace Adnc.Shared.Application.Registrar;
 
@@ -14,6 +15,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar : IDependen
     protected IConfiguration Configuration { get; init; }
     protected IServiceInfo ServiceInfo { get; init; }
     protected IConfigurationSection RedisSection { get; init; }
+    protected IConfigurationSection CachingSection { get; init; }
     protected IConfigurationSection MysqlSection { get; init; }
     protected IConfigurationSection MongoDbSection { get; init; }
     protected IConfigurationSection ConsulSection { get; init; }
@@ -24,13 +26,14 @@ public abstract partial class AbstractApplicationDependencyRegistrar : IDependen
         Services = services ?? throw new ArgumentException("IServiceCollection is null.");
         Configuration = services.GetConfiguration() ?? throw new ArgumentException("Configuration is null.");
         ServiceInfo = services.GetServiceInfo() ?? throw new ArgumentException("ServiceInfo is null.");
-        RedisSection = Configuration.GetSection(RedisConfig.Name);
-        MongoDbSection = Configuration.GetSection(MongoConfig.Name);
-        MysqlSection = Configuration.GetSection(MysqlConfig.Name);
-        ConsulSection = Configuration.GetSection(ConsulConfig.Name);
-        RabbitMqSection = Configuration.GetSection(RabbitMqConfig.Name);
+        RedisSection = Configuration.GetSection(NodeConsts.Redis);
+        CachingSection = Configuration.GetSection(NodeConsts.Caching);
+        MongoDbSection = Configuration.GetSection(NodeConsts.MongoDb);
+        MysqlSection = Configuration.GetSection(NodeConsts.Mysql);
+        ConsulSection = Configuration.GetSection(NodeConsts.Consul);
+        RabbitMqSection = Configuration.GetSection(NodeConsts.RabbitMq);
         SkyApm = Services.AddSkyApmExtensions();
-        RpcAddressInfo = Configuration.GetSection(Rpc.AddressNode.Name).Get<List<Rpc.AddressNode>>();
+        RpcAddressInfo = Configuration.GetSection(NodeConsts.RpcAddressInfo).Get<List<Rpc.AddressNode>>();
     }
 
     /// <summary>
@@ -55,7 +58,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar : IDependen
         AddApplicaitonHostedServices();
         AddEfCoreContextWithRepositories();
         AddMongoContextWithRepositries();
-        AddCaching();
+        AddRedisCaching();
         AddBloomFilters();
     }
 

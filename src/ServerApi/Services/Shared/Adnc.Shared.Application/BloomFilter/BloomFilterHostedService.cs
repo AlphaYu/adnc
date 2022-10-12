@@ -6,12 +6,12 @@ public class BloomFilterHostedService : BackgroundService
 {
     private readonly ILogger<BloomFilterHostedService> _logger;
     private readonly IEnumerable<IBloomFilter> _bloomFilters;
-    private readonly IOptions<RedisConfig> _redisOptions;
+    private readonly IOptions<RedisOptions> _redisOptions;
 
     public BloomFilterHostedService(
         ILogger<BloomFilterHostedService> logger
        , IEnumerable<IBloomFilter> bloomFilters
-       , IOptions<RedisConfig> redisOptions)
+       , IOptions<RedisOptions> redisOptions)
     {
         _logger = logger;
         _bloomFilters = bloomFilters;

@@ -1,5 +1,6 @@
 ﻿using Adnc.Infra.Consul.Discover.GrpcResolver;
 using Adnc.Infra.Consul.Discover.Handler;
+using Adnc.Shared.Consts.AppSettings;
 using Adnc.Shared.Consts.RegistrationCenter;
 using Adnc.Shared.Rpc.Handlers;
 using Adnc.Shared.Rpc.Handlers.Token;
@@ -31,7 +32,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar
         Services.TryAddScoped<ConsulDiscoverDelegatingHandler>();
         Services.TryAddScoped<TokenFactory>();
 
-        var registeredType = Configuration.GetRegisteredType().ToLower();
+        var registeredType = Configuration.GetValue(NodeConsts.RegisteredType, "direct");
         //注册RefitClient,设置httpclient生命周期时间，默认也是2分钟。
         var contentSerializer = new SystemTextJsonContentSerializer(SystemTextJson.GetAdncDefaultOptions());
         var refitSettings = new RefitSettings(contentSerializer);
@@ -81,7 +82,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar
         Services.TryAddScoped<ConsulDiscoverDelegatingHandler>();
         Services.TryAddScoped<TokenFactory>();
 
-        var registeredType = Configuration.GetRegisteredType().ToLower();
+        var registeredType = Configuration.GetValue(NodeConsts.RegisteredType, "direct");
         var switchName = "System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport";
         var switchResult = AppContext.TryGetSwitch(switchName, out bool isEnabled);
         if (!switchResult || !isEnabled)

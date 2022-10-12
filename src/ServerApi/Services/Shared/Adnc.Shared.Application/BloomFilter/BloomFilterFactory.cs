@@ -5,11 +5,11 @@ namespace Adnc.Shared.Application.BloomFilter;
 public sealed class BloomFilterFactory
 {
     private readonly IEnumerable<IBloomFilter> _instances;
-    private readonly IOptions<RedisConfig> _redisOptions;
+    private readonly IOptions<RedisOptions> _redisOptions;
 
     public BloomFilterFactory(
         IEnumerable<IBloomFilter> instances
-        , IOptions<RedisConfig> redisOptions)
+        , IOptions<RedisOptions> redisOptions)
     {
         _instances = instances;
         _redisOptions = redisOptions;

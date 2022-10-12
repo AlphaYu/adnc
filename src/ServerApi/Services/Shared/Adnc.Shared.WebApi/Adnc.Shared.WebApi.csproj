@@ -59,10 +59,10 @@
 		<PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.3.1" />
 	</ItemGroup>
 	<ItemGroup>
-		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Caching\Adnc.Infra.Caching.csproj" />
 		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Consul\Adnc.Infra.Consul.csproj" />
 		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.EventBus\Adnc.Infra.EventBus.csproj" />
 		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Helper\Adnc.Infra.Helper.csproj" />
+		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Redis.Caching\Adnc.Infra.Redis.Caching.csproj" />
 		<ProjectReference Include="..\Adnc.Shared.Application.Contracts\Adnc.Shared.Application.Contracts.csproj" />
 		<ProjectReference Include="..\Adnc.Shared.Rpc\Adnc.Shared.Rpc.csproj" />
 		<ProjectReference Include="..\Adnc.Shared\Adnc.Shared.csproj" />
