@@ -25,15 +25,20 @@ public static class WebApplicationBuilderExtension
         var initialData = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("ServiceName", serviceInfo.ServiceName) };
         builder.Configuration.AddInMemoryCollection(initialData);
 
-        if (builder.Environment.IsDevelopment())//仅开发环境加载本地配置，其他环境走Consul配置中心 Modify by garfield 20221019
+        //builder.Configuration.AddJsonFile($"{AppContext.BaseDirectory}/appsettings.shared.{builder.Environment.EnvironmentName}.json", true, true);
+        if (builder.Environment.IsDevelopment())
         {
+            //仅开发环境加载本地配置，其他环境走Consul配置中心 Modify by garfield 20221019
             builder.Configuration.AddJsonFile($"{AppContext.BaseDirectory}/appsettings.shared.{builder.Environment.EnvironmentName}.json", true, true);
         }
+
         builder.Configuration.AddJsonFile($"{AppContext.BaseDirectory}/appsettings.{builder.Environment.EnvironmentName}.json", true, true);
-        if (builder.Environment.IsProduction() || builder.Environment.IsStaging())
+
+        //if (builder.Environment.IsProduction() || builder.Environment.IsStaging())
+        if (builder.Environment.IsProduction() || builder.Environment.IsStaging() || builder.Environment.IsEnvironment("Test"))
         {
             var consulOption = builder.Configuration.GetSection(NodeConsts.Consul).Get<ConsulOptions>();
-            if(consulOption.ConsulKeyPath.IsNullOrWhiteSpace())
+            if (consulOption.ConsulKeyPath.IsNullOrWhiteSpace())
                 throw new NotImplementedException(nameof(consulOption.ConsulKeyPath));
 
             consulOption.ConsulKeyPath = consulOption.ConsulKeyPath.Replace("$SHORTNAME", serviceInfo.ShortName);
@@ -42,9 +47,9 @@ public static class WebApplicationBuilderExtension
         OnSettingConfigurationChanged(builder.Configuration);
 
         //ServiceCollection
-        builder.Services.ReplaceConfiguration(builder.Configuration);
-        builder.Services.AddSingleton(typeof(IServiceInfo), serviceInfo);
-        builder.Services.AddAdnc(serviceInfo);
+        builder.Services.ReplaceConfiguration(builder.Configuration);//替换原有的IConfiguration单例
+        builder.Services.AddSingleton(typeof(IServiceInfo), serviceInfo);//当前服务实例，注入IOC
+        builder.Services.AddAdnc(serviceInfo);//添加Adnc相关服务至IOC by garfield 20221019
 
         //Logging
         builder.Logging.ClearProviders();
