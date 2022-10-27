@@ -3,7 +3,7 @@
 /// <summary>
 /// 查询条件基类
 /// </summary>
-public abstract class SearchPagedDto : ISearchPagedDto
+public abstract class SearchPagedDto : IDto
 {
     private int _pageIndex;
     private int _pageSize;

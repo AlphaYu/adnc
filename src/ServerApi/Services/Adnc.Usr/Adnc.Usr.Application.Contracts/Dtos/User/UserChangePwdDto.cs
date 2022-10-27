@@ -3,7 +3,7 @@
     /// <summary>
     /// 修改密码数据模型
     /// </summary>
-    public class UserChangePwdDto : IInputDto
+    public class UserChangePwdDto : InputDto
     {
         /// <summary>
         /// 旧密码

@@ -3,7 +3,7 @@
 /// <summary>
 /// 操作日志
 /// </summary>
-public class OpsLogCreationDto : IInputDto
+public class OpsLogCreationDto : InputDto
 {
     /// <summary>
     /// 控制器类名

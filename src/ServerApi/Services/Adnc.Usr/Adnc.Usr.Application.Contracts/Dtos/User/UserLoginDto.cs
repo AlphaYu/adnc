@@ -3,7 +3,7 @@
     /// <summary>
     /// 登录信息
     /// </summary>
-    public class UserLoginDto : IInputDto
+    public class UserLoginDto : InputDto
     {
         /// <summary>
         /// 账户

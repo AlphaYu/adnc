@@ -1,6 +1,6 @@
 ﻿namespace Adnc.Maint.Application.Contracts.Dtos;
 
-public class DictCreationDto : IInputDto
+public class DictCreationDto : InputDto
 {
     public string Name { get; set; }
 

@@ -9,7 +9,6 @@ global using Adnc.Infra.IRepositories;
 global using Adnc.Infra.Mapper;
 global using Adnc.Infra.Redis;
 global using Adnc.Infra.Redis.Caching;
-global using Adnc.Infra.Redis.Caching.Configurations;
 global using Adnc.Infra.Redis.Caching.Core;
 global using Adnc.Infra.Redis.Caching.Core.Diagnostics;
 global using Adnc.Infra.Redis.Caching.Interceptor.Castle;
