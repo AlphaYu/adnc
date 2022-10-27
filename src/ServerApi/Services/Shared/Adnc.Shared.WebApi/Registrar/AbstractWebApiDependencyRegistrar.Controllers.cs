@@ -62,7 +62,5 @@ public abstract partial class AbstractWebApiDependencyRegistrar
                     };
                 };
             });
-        //add skyamp
-        //_services.AddSkyApmExtensions().AddCaching();
     }
 }

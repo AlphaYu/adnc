@@ -1,13 +1,13 @@
 ﻿namespace Adnc.Shared.Rpc;
 
-public class RpcConsts
+public static class RpcConsts
 {
-    public static readonly long ProdunctStatusId = 1600000008500;
-    public static readonly long OrderStatusId = 1600000008600;
+    public static long ProdunctStatusId => 1600000008500;
+    public static long OrderStatusId => 1600000008600;
 
-    public readonly static string UsrService = "adnc-usr-webapi";
-    public readonly static string MaintService = "adnc-maint-webapi";
-    public readonly static string CusService = "adnc-cus-webapi";
-    public readonly static string OrdService = "adnc-ord-webapi";
-    public readonly static string WhseService = "adnc-whse-webapi";
+    public  static string UsrService => "adnc-usr-webapi";
+    public  static string MaintService => "adnc-maint-webapi";
+    public  static string CusService => "adnc-cus-webapi";
+    public  static string OrdService => "adnc-ord-webapi";
+    public  static string WhseService => "adnc-whse-webapi";
 }
