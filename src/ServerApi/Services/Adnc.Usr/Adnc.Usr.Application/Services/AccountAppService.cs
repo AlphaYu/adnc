@@ -61,7 +61,7 @@ public class AccountAppService : AbstractAppService, IAccountAppService
         }
 
         // TODO
-        var failLoginCount = 2;
+        var failLoginCount = await _cacheService.GetFailLoginCountByUserIdAsync(user.Id);// set fail count from cache
         if (failLoginCount >= 5)
         {
             var problem = Problem(HttpStatusCode.TooManyRequests, "连续登录失败次数超过5次，账号已锁定");
@@ -82,6 +82,7 @@ public class AccountAppService : AbstractAppService, IAccountAppService
             var problem = Problem(HttpStatusCode.BadRequest, "用户名或密码错误");
             log.Message = problem.Detail;
             log.StatusCode = problem.Status.Value;
+            await _cacheService.SetFailLoginCountToCacheAsync(user.Id, ++failLoginCount);// set fail count to cache
             await channelWriter.WriteAsync(log);
             return problem;
         }
@@ -91,6 +92,7 @@ public class AccountAppService : AbstractAppService, IAccountAppService
             var problem = Problem(HttpStatusCode.Forbidden, "未分配任务角色，请联系管理员");
             log.Message = problem.Detail;
             log.StatusCode = problem.Status.Value;
+            await _cacheService.SetFailLoginCountToCacheAsync(user.Id, ++failLoginCount);// set fail count to cache
             await channelWriter.WriteAsync(log);
             return problem;
         }
@@ -98,6 +100,7 @@ public class AccountAppService : AbstractAppService, IAccountAppService
         log.Message = "登录成功";
         log.StatusCode = (int)HttpStatusCode.Created;
         log.Succeed = true;
+        await _cacheService.SetFailLoginCountToCacheAsync(user.Id, 0);// rest fail count to cache
         await channelWriter.WriteAsync(log);
 
         var userValidtedInfo = new UserValidatedInfoDto(user.Id, user.Account, user.Name, user.RoleIds, user.Status);

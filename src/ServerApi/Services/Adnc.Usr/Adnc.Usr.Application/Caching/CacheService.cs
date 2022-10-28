@@ -1,4 +1,6 @@
-﻿namespace Adnc.Usr.Application.Caching;
+﻿using Google.Protobuf.WellKnownTypes;
+
+namespace Adnc.Usr.Application.Caching;
 
 public sealed class CacheService : AbstractCacheService, ICachePreheatable
 {
@@ -25,6 +27,12 @@ public sealed class CacheService : AbstractCacheService, ICachePreheatable
 
     internal int GetRefreshTokenExpires() =>
         _jwtConfig.Value.Value.RefreshTokenExpire * 60 + _jwtConfig.Value.Value.ClockSkew;
+
+    internal async Task SetFailLoginCountToCacheAsync(long id, int count)
+    {
+        var cacheKey = ConcatCacheKey(CachingConsts.UserValidatedInfoKeyPrefix, $"FailCount_{id}");
+        await CacheProvider.Value.SetAsync(cacheKey, count, TimeSpan.FromSeconds(GetRefreshTokenExpires()));
+    }
 
     internal async Task SetValidateInfoToCacheAsync(UserValidatedInfoDto value)
     {
@@ -161,5 +169,12 @@ public sealed class CacheService : AbstractCacheService, ICachePreheatable
         await CacheProvider.Value.SetAsync(CachingConsts.DetpSimpleTreeListCacheKey, result, TimeSpan.FromSeconds(CachingConsts.OneYear));
 
         return result;
+    }
+
+    internal async Task<int> GetFailLoginCountByUserIdAsync(long id)
+    {
+        var cacheKey = ConcatCacheKey(CachingConsts.UserValidatedInfoKeyPrefix, $"FailCount_{id}");
+        var cacheValue = await CacheProvider.Value.GetAsync<int>(cacheKey);
+        return cacheValue.Value;
     }
 }
