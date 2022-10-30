@@ -5,7 +5,7 @@
 /// </summary>
 /// <typeparam name="TKey"></typeparam>
 [Serializable]
-public abstract class OutputFullAuditInfoDto : OutputBaseAuditDto, IFullAuditInfo
+public abstract class OutputFullAuditInfoDto : OutputBaseAuditDto
 {
     /// <summary>
     /// 最后更新人

@@ -1,8 +1,8 @@
 ﻿namespace Adnc.Shared.Application.Caching.SkyApm;
 
-public class CacheTracingDiagnosticProcessor : ITracingDiagnosticProcessor
+public sealed class CacheTracingDiagnosticProcessor : ITracingDiagnosticProcessor
 {
-    public static readonly StringOrIntValue Caching = new StringOrIntValue(1000, "Adnc.Caching");
+    public static readonly StringOrIntValue Caching = new (nameof(Adnc.Infra.Redis.Caching));
     private readonly ITracingContext _tracingContext;
     private readonly IEntrySegmentContextAccessor _entrySegmentContextAccessor;
     private readonly IExitSegmentContextAccessor _exitSegmentContextAccessor;
@@ -11,11 +11,12 @@ public class CacheTracingDiagnosticProcessor : ITracingDiagnosticProcessor
 
     public string ListenerName => CachingDiagnosticListenerExtensions.DiagnosticListenerName;
 
-    public CacheTracingDiagnosticProcessor(ITracingContext tracingContext,
-        ILocalSegmentContextAccessor localSegmentContextAccessor
-        , IEntrySegmentContextAccessor entrySegmentContextAccessor
-        , IExitSegmentContextAccessor exitSegmentContextAccessor
-        , IConfigAccessor configAccessor)
+    public CacheTracingDiagnosticProcessor(
+        ITracingContext tracingContext,
+        ILocalSegmentContextAccessor localSegmentContextAccessor,
+        IEntrySegmentContextAccessor entrySegmentContextAccessor,
+        IExitSegmentContextAccessor exitSegmentContextAccessor,
+        IConfigAccessor configAccessor)
     {
         _tracingContext = tracingContext;
         _exitSegmentContextAccessor = exitSegmentContextAccessor;

@@ -13,7 +13,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar
         action?.Invoke(Services);
         if(this.IsEnableSkyApm())
         {
-            SkyApm.AddCaching();
+            SkyApm.AddRedisCaching();
         }
         Services.AddAdncInfraRedisCaching(RedisSection,CachingSection);
         var serviceType = typeof(ICachePreheatable);

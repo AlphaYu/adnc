@@ -1,7 +1,7 @@
 ﻿namespace Adnc.Shared.Application.Contracts.Dtos;
 
 [Serializable]
-public abstract class OutputBaseAuditDto : OutputDto, IBasicAuditInfo
+public abstract class OutputBaseAuditDto : OutputDto
 {
     /// <summary>
     /// 创建人

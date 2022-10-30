@@ -7,7 +7,7 @@ namespace Adnc.Shared.Application.Contracts.Dtos;
 /// </summary>
 /// <typeparam name="T"></typeparam>
 [Serializable]
-public class SimpleInputDto<T> : IDto
+public class InputSimpleDto<T> : IDto
 {
     /// <summary>
     /// 需要传递的值

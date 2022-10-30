@@ -4,9 +4,8 @@ using Adnc.Infra.Redis.Configurations;
 using Adnc.Infra.Redis.Core;
 using Adnc.Infra.Redis.Core.Serialization;
 using Adnc.Infra.Redis.Providers.StackExchange;
-using StackExchange.Redis;
 
-namespace Adnc.Infra.Redis.Caching.Caching.Provider;
+namespace Adnc.Infra.Redis.Caching.Provider;
 
 /// <summary>
 /// Default redis caching provider.

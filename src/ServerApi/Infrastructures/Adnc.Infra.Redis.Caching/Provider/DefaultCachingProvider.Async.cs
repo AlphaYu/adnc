@@ -1,8 +1,7 @@
 ﻿using Adnc.Infra.Redis.Caching.Core;
 using Adnc.Infra.Redis.Core;
-using StackExchange.Redis;
 
-namespace Adnc.Infra.Redis.Caching.Caching.Provider;
+namespace Adnc.Infra.Redis.Caching.Provider;
 
 /// <summary>
 /// Default redis caching provider.

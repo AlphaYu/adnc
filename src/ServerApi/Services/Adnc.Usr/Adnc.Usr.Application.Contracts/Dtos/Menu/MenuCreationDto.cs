@@ -3,7 +3,7 @@
 /// <summary>
 /// 菜单
 /// </summary>
-public class MenuCreationDto : IInputDto
+public class MenuCreationDto : InputDto
 {
     /// <summary>
     /// 编号

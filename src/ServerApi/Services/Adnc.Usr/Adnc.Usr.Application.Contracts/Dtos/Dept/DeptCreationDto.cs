@@ -3,7 +3,7 @@
 /// <summary>
 /// 部门
 /// </summary>
-public class DeptCreationDto : IInputDto
+public class DeptCreationDto : InputDto
 {
     /// <summary>
     /// 部门全称

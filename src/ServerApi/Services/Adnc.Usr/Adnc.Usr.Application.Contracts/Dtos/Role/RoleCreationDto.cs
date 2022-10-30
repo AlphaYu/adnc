@@ -1,6 +1,6 @@
 ﻿namespace Adnc.Usr.Application.Contracts.Dtos;
 
-public class RoleCreationDto : IInputDto
+public class RoleCreationDto : InputDto
 {
     /// <summary>
     /// 角色名

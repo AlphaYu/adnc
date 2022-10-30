@@ -1,6 +1,5 @@
 ﻿using Adnc.Infra.Mapper;
 using Adnc.Infra.Mapper.AutoMapper;
-using System.Reflection;
 
 namespace Microsoft.Extensions.DependencyInjection;
 

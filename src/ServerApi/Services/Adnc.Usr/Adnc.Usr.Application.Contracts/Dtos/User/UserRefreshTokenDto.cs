@@ -3,7 +3,7 @@
     /// <summary>
     /// 刷新Token实体
     /// </summary>
-    public class UserRefreshTokenDto : IInputDto
+    public class UserRefreshTokenDto : InputDto
     {
         /// <summary>
         /// RefreshToken

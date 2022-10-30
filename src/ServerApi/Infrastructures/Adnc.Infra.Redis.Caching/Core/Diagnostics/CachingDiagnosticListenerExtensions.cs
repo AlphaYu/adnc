@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-
-namespace Adnc.Infra.Redis.Caching.Core.Diagnostics
+﻿namespace Adnc.Infra.Redis.Caching.Core.Diagnostics
 {
     /// <summary>
     /// Extension methods on the DiagnosticListener class to log Adnc.Infra.Redis
@@ -9,7 +7,7 @@ namespace Adnc.Infra.Redis.Caching.Core.Diagnostics
     {
         public const string DiagnosticListenerName = "CachingDiagnosticListener";
 
-        private const string CachingPrefix = "Adnc.";
+        private const string CachingPrefix = nameof(Adnc.Infra.Redis.Caching);
 
         public const string CachingBeforeSetCache = CachingPrefix + nameof(WriteSetCacheBefore);
         public const string CachingAfterSetCache = CachingPrefix + nameof(WriteSetCacheAfter);

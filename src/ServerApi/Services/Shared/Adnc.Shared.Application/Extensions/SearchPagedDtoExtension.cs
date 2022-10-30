@@ -7,5 +7,5 @@ public static class SearchPagedDtoExtension
     /// </summary>
     /// <param name="dto"></param>
     /// <returns></returns>
-    public static int SkipRows(this ISearchPagedDto dto) => (dto.PageIndex - 1) * dto.PageSize;
+    public static int SkipRows(this SearchPagedDto dto) => (dto.PageIndex - 1) * dto.PageSize;
 }
