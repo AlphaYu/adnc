@@ -1,7 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	<Import Project="..\..\build\common.props" />
+	<Import Project="..\..\Props\common.props" />
+	<Import Project="..\..\Props\nuget.props" />
 	<PropertyGroup>
-		<Nullable>enable</Nullable>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<Description>该库是在`Adnc.Infra.Repository.EfCore`基础上Mysql的实现。</Description>
+		<PackageTags>adnc,adnc.infra,adnc.infra.efcore.mysql,efcore,pemole,mysql</PackageTags>
 	</PropertyGroup>
 	<ItemGroup>
 	  <Compile Remove="SqlGenerator\**" />
