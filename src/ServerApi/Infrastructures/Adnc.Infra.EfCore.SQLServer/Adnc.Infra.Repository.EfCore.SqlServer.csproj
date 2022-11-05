@@ -1,7 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	<Import Project="..\..\build\common.props" />
+	<Import Project="..\..\Props\common.props" />
+	<Import Project="..\..\Props\nuget.props" />
 	<PropertyGroup>
-		<Nullable>enable</Nullable>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<Description>该工程是在`Adnc.Infra.Repository.EfCore`基础上SqlServer的实现。</Description>
+		<PackageTags>adnc,adnc.infra,adnc.infra.efcore.sqlserver,efcore,sqlserver</PackageTags>
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="DotNetCore.CAP" Version="6.1.0" />

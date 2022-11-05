@@ -8,6 +8,7 @@ public class MySqlDbContext : AdncDbContext
         : base(options, entityInfo)
     {
     }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         //System.Diagnostics.Debugger.Launch();

@@ -1,7 +1,7 @@
 ﻿namespace Adnc.Infra.Helper;
 
 public interface IHashGenerater
-{ 
+{
     public HashConsistentGenerater ConsistentGenerater { get; }
 }
 
@@ -10,7 +10,7 @@ internal class HashGenerater : IHashGenerater
     public HashConsistentGenerater ConsistentGenerater => HashConsistentGenerater.Instance;
 
     internal HashGenerater()
-    { 
+    {
     }
 }
 

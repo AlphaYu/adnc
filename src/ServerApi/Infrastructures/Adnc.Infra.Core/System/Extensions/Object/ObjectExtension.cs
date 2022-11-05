@@ -12,6 +12,6 @@ public static class ObjectExtension
         if (source is null)
             return string.Empty;
 
-        return source.ToString()??string.Empty;
+        return source.ToString() ?? string.Empty;
     }
 }

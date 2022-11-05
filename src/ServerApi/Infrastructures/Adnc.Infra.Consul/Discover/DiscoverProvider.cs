@@ -6,11 +6,13 @@ namespace Adnc.Infra.Consul.Discover
     internal class DiscoverProvider : IDiscoverProvider
     {
         private static readonly SemaphoreSlim _slimlock = new(1, 1);
+
         private static readonly IMemoryCache _memoryCache = new MemoryCache(Options.Create(new MemoryCacheOptions
         {
             CompactionPercentage = 0.05,
-            ExpirationScanFrequency= new TimeSpan(0, 0, 1),
+            ExpirationScanFrequency = new TimeSpan(0, 0, 1),
         }));
+
         private readonly ConsulClient _consulClient = default!;
 
         internal DiscoverProvider(ConsulClient client)
@@ -21,7 +23,7 @@ namespace Adnc.Infra.Consul.Discover
         internal string ServiceName { get; set; } = string.Empty;
         internal ILoadBalancer LoadBalancer { get; set; } = default!;
         internal uint CacheSeconds { get; set; } = 5;
-        internal ILogger<dynamic> Logger { get; set; }= default!;
+        internal ILogger<dynamic> Logger { get; set; } = default!;
 
         public async Task<IList<string>> GetAllHealthServicesAsync()
         {

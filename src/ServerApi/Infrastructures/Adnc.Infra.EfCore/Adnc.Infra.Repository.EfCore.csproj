@@ -1,7 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	<Import Project="..\..\build\common.props" />
+	<Import Project="..\..\Props\common.props" />
+	<Import Project="..\..\Props\nuget.props" />
 	<PropertyGroup>
-		<Nullable>enable</Nullable>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<Description>该库是`Adnc.Infra.Repository`相关接口EfCore的实现，提供数据库CRUD操作,支持分布式事务。</Description>
+		<PackageTags>adnc,adnc.infra,adnc.infra.repository,efcore,efcore</PackageTags>
 	</PropertyGroup>
 	<ItemGroup>
 	  <Compile Remove="Extensions\DbContextExtension.cs" />

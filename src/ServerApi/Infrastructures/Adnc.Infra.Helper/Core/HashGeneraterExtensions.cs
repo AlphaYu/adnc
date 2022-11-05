@@ -76,7 +76,7 @@ public static partial class HashGeneraterExtensions
         }
         var hashedBytes = GetHashedBytes(_, type, source, key);
         var sbText = new StringBuilder();
-        if(hashedBytes is not null && hashedBytes.Any())
+        if (hashedBytes is not null && hashedBytes.Any())
         {
             if (isLower)
             {

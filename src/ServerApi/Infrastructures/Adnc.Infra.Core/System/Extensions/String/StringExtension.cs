@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 namespace System;
 
@@ -104,14 +103,13 @@ public static class StringExtension
     /// <returns>@this as a T.</returns>
     public static T ToEnum<T>([NotNull] this string @this) => (T)Enum.Parse(typeof(T), @this);
 
-
     /// <summary>
     /// EqualsIgnoreCase
     /// </summary>
     /// <param name="s1">string1</param>
     /// <param name="s2">string2</param>
     /// <returns></returns>
-    public static bool EqualsIgnoreCase(this string s1, string s2)   => string.Equals(s1, s2, StringComparison.OrdinalIgnoreCase);
+    public static bool EqualsIgnoreCase(this string s1, string s2) => string.Equals(s1, s2, StringComparison.OrdinalIgnoreCase);
 
     /// <summary>
     /// string=>long

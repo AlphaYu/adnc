@@ -2,7 +2,7 @@
 
 public class KestrelOptions
 {
-    public IDictionary<string, Endpoint> Endpoints { get; set; } 
+    public IDictionary<string, Endpoint> Endpoints { get; set; }
 
     public KestrelOptions() => Endpoints = new Dictionary<string, Endpoint>();
 

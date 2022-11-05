@@ -33,14 +33,14 @@ public static class TypeExtension
                (methodInfo.IsPublic || methodInfo.IsFamily || methodInfo.IsFamilyOrAssembly);
     }
 
-    public static bool IsVisible(this MethodBase methodBase)=> methodBase.IsPublic || methodBase.IsFamily || methodBase.IsFamilyOrAssembly;
+    public static bool IsVisible(this MethodBase methodBase) => methodBase.IsPublic || methodBase.IsFamily || methodBase.IsFamilyOrAssembly;
 
     public static Func<T, object> GetValueGetter<T>(this PropertyInfo propertyInfo)
     {
         return StrongTypedDictionary<T>.PropertyValueGetters.GetOrAdd(propertyInfo, prop =>
         {
             if (!prop.CanRead)
-                return (x)=>string.Empty;
+                return (x) => string.Empty;
 
             var instance = Expression.Parameter(typeof(T), "i");
             var property = Expression.Property(instance, prop);
@@ -59,7 +59,7 @@ public static class TypeExtension
             Debug.Assert(propertyInfo.DeclaringType != null);
 
             var method = prop.GetGetMethod();
-            if(method is null)
+            if (method is null)
                 return (x) => string.Empty;
 
             var instance = Expression.Parameter(typeof(object), "obj");

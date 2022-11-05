@@ -26,6 +26,7 @@ public class JWTOptions
     /// 签名
     /// </summary>
     public string SymmetricSecurityKey { get; set; } = string.Empty;
+
     public string IssuerSigningKey { get; set; } = string.Empty;
 
     /// <summary>
@@ -67,5 +68,4 @@ public class JWTOptions
     /// RefreshToken过期时间，单位分钟
     /// </summary>
     public int RefreshTokenExpire { get; set; } = default;
-
 }

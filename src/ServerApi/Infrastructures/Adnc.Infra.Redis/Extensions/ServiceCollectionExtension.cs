@@ -21,7 +21,7 @@ public static class ServiceCollectionExtension
             var scanedAssembly = typeof(ISerializer).Assembly;
             var serializers = scanedAssembly.ExportedTypes.Where(type => type.IsAssignableTo(serializerType) && type.IsNotAbstractClass(true));
             var serializerName = string.IsNullOrWhiteSpace(redisConfig.SerializerName) ? ConstValue.Serializer.DefaultBinarySerializerName : redisConfig.SerializerName;
-            var instanceType = serializers.Single(x=>x.Name.Contains(serializerName,StringComparison.CurrentCultureIgnoreCase));
+            var instanceType = serializers.Single(x => x.Name.Contains(serializerName, StringComparison.CurrentCultureIgnoreCase));
             return ActivatorUtilities.CreateInstance(provider, instanceType) as ISerializer;
         });
 
