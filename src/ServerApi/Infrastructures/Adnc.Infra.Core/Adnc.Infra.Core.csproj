@@ -1,8 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<Import Project="..\..\Props\common.props" />
+	<Import Project="..\..\Props\version.props" />
 	<Import Project="..\..\Props\nuget.props" />
 	<PropertyGroup>
-		<Description>该库最顶层工程，任何工程都会者直接或间接依赖该层。该工程提供了大量的C#基础类型的扩展方法与Configuration、DependencyInjection、ContainerBuilder的扩展方法。</Description>
+		<Description>该库是最顶层库，任何库都会者直接或间接依赖该库。该库提供了大量的C#基础类型的扩展方法与Configuration、DependencyInjection、ContainerBuilder的扩展方法。</Description>
 		<PackageTags>adnc,adnc.infra,adnc.infra.core</PackageTags>
 	</PropertyGroup>
 	<ItemGroup>
