@@ -18,9 +18,9 @@ jobs:
       with:
         dotnet-version: 6.0.x
     - name: Build with dotnet
-      run: dotnet build --configuration Release /home/runner/work/src/ServerApi/Infrastructures/Adnc.Infra.sln
+      run: dotnet build --configuration Release /home/runner/work/Adnc/Adnc/src/ServerApi/Infrastructures/Adnc.Infra.sln
     - name: Pack with dotnet
-      run: dotnet pack /home/runner/work/src/ServerApi/Infrastructures/Adnc.Infra.sln --version-suffix alpha`date +%Y%m%d%H%M%S` -o /home/runner/work/nugetpkgs -c Release --no-build
+      run: dotnet pack /home/runner/Adnc/Adnc/work/src/ServerApi/Infrastructures/Adnc.Infra.sln --version-suffix alpha`date +%Y%m%d%H%M%S` -o /home/runner/work/nugetpkgs -c Release --no-build
     - name: Upload artifact
       uses: actions/upload-artifact@v1
       with:
