@@ -17,11 +17,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Repository.Dappe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.EventBus", "Adnc.Infra.EventBus\Adnc.Infra.EventBus.csproj", "{D7942274-BF2B-4C63-B75C-262644983F35}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Repository.EfCore.MySql", "Adnc.Infra.EfCore.MySQL\Adnc.Infra.Repository.EfCore.MySql.csproj", "{5CBF2FCA-FCD4-4FCA-B99A-99F2AC792BB9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Repository.EfCore.MySql", "Adnc.Infra.EfCore.MySql\Adnc.Infra.Repository.EfCore.MySql.csproj", "{5CBF2FCA-FCD4-4FCA-B99A-99F2AC792BB9}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Repository.Mongo", "Adnc.Infra.Mongo\Adnc.Infra.Repository.Mongo.csproj", "{6893C528-01CB-4C4C-AFD6-8350749BEAE5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Repository.EfCore.SqlServer", "Adnc.Infra.EfCore.SQLServer\Adnc.Infra.Repository.EfCore.SqlServer.csproj", "{D880B5F5-B438-4AE7-9198-AEDB4A4CBD79}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Repository.EfCore.SqlServer", "Adnc.Infra.EfCore.SqlServer\Adnc.Infra.Repository.EfCore.SqlServer.csproj", "{D880B5F5-B438-4AE7-9198-AEDB4A4CBD79}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.IdGenerater", "Adnc.Infra.IdGenerater\Adnc.Infra.IdGenerater.csproj", "{E5EDD471-192A-4812-97F9-A129BF0D5DE7}"
 EndProject
