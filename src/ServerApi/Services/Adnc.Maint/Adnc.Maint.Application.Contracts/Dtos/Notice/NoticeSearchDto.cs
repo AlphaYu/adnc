@@ -2,5 +2,5 @@
 
 public class NoticeSearchDto : SearchDto
 {
-    public string Title { get; set; }
+    public string? Title { get; set; }
 }

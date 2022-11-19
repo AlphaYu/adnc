@@ -8,10 +8,10 @@ public class CfgSearchPagedDto : SearchPagedDto
     /// <summary>
     /// 参数名
     /// </summary>
-    public string Name { get; set; }
+    public string? Name { get; set; }
 
     /// <summary>
     /// 参数值
     /// </summary>
-    public string Value { get; set; }
+    public string? Value { get; set; }
 }

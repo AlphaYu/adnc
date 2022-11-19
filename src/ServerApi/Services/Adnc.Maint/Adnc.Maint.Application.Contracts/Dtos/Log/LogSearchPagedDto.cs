@@ -18,20 +18,20 @@ public class LogSearchPagedDto : SearchPagedDto
     /// <summary>
     /// 账号
     /// </summary>
-    public string Account { get; set; }
+    public string? Account { get; set; }
 
     /// <summary>
     /// 方法名
     /// </summary>
-    public string Method { get; set; }
+    public string? Method { get; set; }
 
     /// <summary>
     /// 设备
     /// </summary>
-    public string Device { get; set; }
+    public string? Device { get; set; }
 
     /// <summary>
     /// 日志级别
     /// </summary>
-    public string Level { get; set; }
+    public string? Level { get; set; }
 }
