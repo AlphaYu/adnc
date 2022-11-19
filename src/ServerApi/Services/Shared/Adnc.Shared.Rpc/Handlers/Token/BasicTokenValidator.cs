@@ -1,4 +1,6 @@
-﻿namespace Adnc.Shared.Rpc.Handlers.Token;
+﻿using Adnc.Infra.Helper;
+
+namespace Adnc.Shared.Rpc.Handlers.Token;
 
 public static class BasicTokenValidator
 {

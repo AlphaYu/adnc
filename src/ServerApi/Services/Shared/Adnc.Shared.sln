@@ -17,6 +17,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Shared.Repository", "A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Shared.Rpc", "Adnc.Shared.Rpc\Adnc.Shared.Rpc.csproj", "{32C0A77D-5C4D-468A-AE27-755B5A9B4019}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "解决方案项", "解决方案项", "{D7E6D2DE-BF7D-41F1-AFB3-ABE6382EB935}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\Props\common.props = ..\..\Props\common.props
+		..\..\Props\nuget.props = ..\..\Props\nuget.props
+		..\..\Props\version.props = ..\..\Props\version.props
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

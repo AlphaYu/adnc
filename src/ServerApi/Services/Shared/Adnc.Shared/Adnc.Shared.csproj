@@ -1,7 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<Import Project="..\..\..\Props\common.props" />
 	<Import Project="..\..\..\Props\version.props" />
-	<ItemGroup>
-		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Core\Adnc.Infra.Core.csproj" />
-	</ItemGroup>
+	<Import Project="..\..\..\Props\nuget.props"/>
 </Project>
