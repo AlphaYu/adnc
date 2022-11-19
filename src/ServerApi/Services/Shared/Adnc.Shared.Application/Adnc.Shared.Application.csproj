@@ -8,6 +8,7 @@
 		<PackageReference Include="DotNetCore.CAP.RabbitMQ" Version="$(DotNetCore_CAP_RabbitMQ_Version)" />
 		<PackageReference Include="DotNetCore.CAP.Dashboard" Version="$(DotNetCore_CAP_Dashboard_Version)" />
 		<PackageReference Include="SkyAPM.Diagnostics.CAP" Version="$(SkyAPM_Diagnostics_CAP_Version)" />
+		<PackageReference Include="EFCore.NamingConventions"  Version="$(EFCore_NamingConventions_Version)"/>
 	</ItemGroup>
 
 	<ItemGroup>

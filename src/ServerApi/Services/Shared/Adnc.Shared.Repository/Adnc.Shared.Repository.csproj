@@ -2,6 +2,9 @@
 	<Import Project="..\..\..\Props\common.props" />
 	<Import Project="..\..\..\Props\version.props" />
 	<Import Project="..\..\..\Props\nuget.props" />
+	<PropertyGroup>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+	</PropertyGroup>
 	
 	<ItemGroup>
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="$(Microsoft_EntityFrameworkCore_Version)" />
@@ -12,11 +15,13 @@
 		<ProjectReference Include="..\Adnc.Shared\Adnc.Shared.csproj" />
 	</ItemGroup>
 	
-	<ItemGroup  Condition="'$(SolutionName)'=='Adnc'">
-		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Repository\Adnc.Infra.Repository.csproj"/>
+	<ItemGroup Condition="'$(SolutionName)'=='Adnc'">
+		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Core\Adnc.Infra.Core.csproj" />
+		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Repository\Adnc.Infra.Repository.csproj" />
 	</ItemGroup>
 	
 	<ItemGroup Condition="'$(SolutionName)'=='Adnc.Shared'">
-		<PackageReference Include="Adnc.Infra.Repository" Version="$(Infra_Version)"/>
+		<PackageReference Include="Adnc.Infra.Core" Version="$(Infra_Version)" />
+		<PackageReference Include="Adnc.Infra.Repository" Version="$(Infra_Version)" />
 	</ItemGroup>
 </Project>
