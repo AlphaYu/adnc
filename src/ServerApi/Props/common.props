@@ -14,4 +14,41 @@
 		<NoWarn>$(NoWarn);1591;0436</NoWarn>
 		<ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
 	</PropertyGroup>
+
+	<PropertyGroup>
+		<System_ComponentModel_Annotations_Version>5.0.0</System_ComponentModel_Annotations_Version>
+		<System_Text_Json_Version>6.0.5</System_Text_Json_Version>
+		<System_Threading_Channels_Version>6.0.0</System_Threading_Channels_Version>
+		<Microsoft_Extensions_DependencyInjection_Abstractions_Version>6.0.0</Microsoft_Extensions_DependencyInjection_Abstractions_Version>
+		<Microsoft_Extensions_Hosting_Abstractions_Version>6.0.0</Microsoft_Extensions_Hosting_Abstractions_Version>
+		<Microsoft_AspNetCore_Hosting_Version>2.2.7</Microsoft_AspNetCore_Hosting_Version>
+		<Microsoft_AspNetCore_Http_Version>2.2.2</Microsoft_AspNetCore_Http_Version>
+		<Microsoft_Extensions_Caching_Abstractions_Version>6.0.0</Microsoft_Extensions_Caching_Abstractions_Version>
+		<Microsoft_Extensions_Caching_Memory_Version>6.0.1</Microsoft_Extensions_Caching_Memory_Version>
+		<Microsoft_Extensions_Configuration_Version>6.0.1</Microsoft_Extensions_Configuration_Version>
+		<Microsoft_Extensions_Configuration_Binder_Version>6.0.0</Microsoft_Extensions_Configuration_Binder_Version>
+		<Microsoft_Extensions_Options_ConfigurationExtensions_Version>6.0.0</Microsoft_Extensions_Options_ConfigurationExtensions_Version>
+		<Microsoft_Extensions_Options_Version>6.0.0</Microsoft_Extensions_Options_Version>
+		<Microsoft_Extensions_Logging_Abstractions_Version>6.0.1</Microsoft_Extensions_Logging_Abstractions_Version>
+		<AutoMapper_Extensions_Microsoft_DependencyInjection_Version>11.0.0</AutoMapper_Extensions_Microsoft_DependencyInjection_Version>
+		<Consul_Version>1.6.10.6</Consul_Version>
+		<Grpc_Net_Client_Version>2.47.0</Grpc_Net_Client_Version>
+		<Polly_Version>7.2.3</Polly_Version>
+		<RabbitMQ_Client_Version>6.4.0</RabbitMQ_Client_Version>
+		<DotNetCore_CAP_Version>6.1.0</DotNetCore_CAP_Version>
+		<DotNetCore_CAP_MySql_Version>6.1.0</DotNetCore_CAP_MySql_Version>
+		<DotNetCore_CAP_SqlServer_Version>6.1.0</DotNetCore_CAP_SqlServer_Version>
+		<Yitter_IdGenerator_Version>1.0.14</Yitter_IdGenerator_Version>
+		<Castle_Core_AsyncInterceptor_Version>2.1.0</Castle_Core_AsyncInterceptor_Version>
+		<StackExchange_Redis_Version>2.6.48</StackExchange_Redis_Version>
+		<protobuf-net_Version>3.1.17</protobuf-net_Version>
+		<MongoDB_Driver_Version>2.16.1</MongoDB_Driver_Version>
+		<Dapper_Version>2.0.123</Dapper_Version>
+		<MySqlConnector_Version>2.1.2</MySqlConnector_Version>
+		<Pomelo_EntityFrameworkCore_MySql_Version>6.0.1</Pomelo_EntityFrameworkCore_MySql_Version>
+		<Microsoft_EntityFrameworkCore_SqlServer_Version>6.0.6</Microsoft_EntityFrameworkCore_SqlServer_Version>
+		<EFCore_NamingConventions_Version>6.0.0</EFCore_NamingConventions_Version>
+		<Z_EntityFramework_Plus_EFCore_Version>6.14.2</Z_EntityFramework_Plus_EFCore_Version>
+		<Humanizer_Core_Version>2.14.1</Humanizer_Core_Version>
+	</PropertyGroup>
 </Project>
