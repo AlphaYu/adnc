@@ -37,6 +37,8 @@
 		<Microsoft_Extensions_Logging_Abstractions_Version>6.0.1</Microsoft_Extensions_Logging_Abstractions_Version>
 		<Microsoft_Extensions_Http_Polly_Version>6.0.6</Microsoft_Extensions_Http_Polly_Version>
 		<Microsoft_EntityFrameworkCore_Version>6.0.6</Microsoft_EntityFrameworkCore_Version>
+		<Microsoft_EntityFrameworkCore_Design_Version>6.0.6</Microsoft_EntityFrameworkCore_Design_Version>
+		<Microsoft_EntityFrameworkCore_Tools_Version>6.0.6</Microsoft_EntityFrameworkCore_Tools_Version>
 		<Microsoft_EntityFrameworkCore_Relational_Version>6.0.6</Microsoft_EntityFrameworkCore_Relational_Version>
 		<Microsoft_EntityFrameworkCore_SqlServer_Version>6.0.6</Microsoft_EntityFrameworkCore_SqlServer_Version>
 		<Pomelo_EntityFrameworkCore_MySql_Version>6.0.1</Pomelo_EntityFrameworkCore_MySql_Version>
@@ -49,6 +51,7 @@
 		<Consul_Version>1.6.10.6</Consul_Version>
 		<Grpc_Net_Client_Version>2.47.0</Grpc_Net_Client_Version>
 		<Grpc_Net_ClientFactory_Version>2.47.0</Grpc_Net_ClientFactory_Version>
+		<Grpc_AspNetCore_Version>2.47.0</Grpc_AspNetCore_Version>
 		<Google_Protobuf_Version>3.21.2</Google_Protobuf_Version>
 		<Grpc_Tools_Version>2.47.0</Grpc_Tools_Version>
 		<protobuf-net_Version>3.1.17</protobuf-net_Version>

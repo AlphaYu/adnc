@@ -16,12 +16,12 @@
 	  </EmbeddedResource>
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="6.0.2" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.6">
+		<PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="$(AspNetCore_HealthChecks_SqlServer_Version)" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="$(Microsoft_EntityFrameworkCore_Design_Version)">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.6">
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="$(Microsoft_EntityFrameworkCore_Tools_Version)">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
@@ -32,7 +32,7 @@
 		<ProjectReference Include="..\Adnc.Whse.Application\Adnc.Whse.Application.csproj" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="Grpc.AspNetCore" Version="2.47.0" />
+		<PackageReference Include="Grpc.AspNetCore" Version="$(Grpc_AspNetCore_Version)" />
 		<Protobuf Include="..\..\..\ServiceShared\Adnc.Shared.Rpc\Protos\Services\whsegrpc.proto" GrpcServices="Server" Link="Grpc\Protos\Services\whsegrpc.proto" ProtoRoot="..\..\..\ServiceShared\Adnc.Shared.Rpc\" />
 	</ItemGroup>
 	<ProjectExtensions>
