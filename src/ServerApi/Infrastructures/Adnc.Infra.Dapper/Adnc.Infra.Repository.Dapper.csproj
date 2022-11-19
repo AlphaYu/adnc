@@ -5,14 +5,15 @@
 	<PropertyGroup>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<Description>该库定义了Entity对象的基类、UnitOfWork接口、仓储接口。</Description>
-		<PackageTags>adnc,adnc.infra,adnc.infra.repository.dapper,dapper</PackageTags>
+		<PackageTags>adnc,repository,dapper</PackageTags>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="Dapper" Version="2.0.123" />
-		<PackageReference Include="MySqlConnector" Version="2.1.2" />
+		<PackageReference Include="Dapper" Version="$(Dapper_Version)" />
+		<PackageReference Include="MySqlConnector" Version="$(MySqlConnector_Version)" />
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\Adnc.Infra.Core\Adnc.Infra.Core.csproj" />
 		<ProjectReference Include="..\Adnc.Infra.Repository\Adnc.Infra.Repository.csproj" />
 	</ItemGroup>
 

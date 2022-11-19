@@ -5,7 +5,7 @@
 	<PropertyGroup>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<Description>该库是在`Adnc.Infra.Repository.EfCore`基础上Mysql的实现。</Description>
-		<PackageTags>adnc,adnc.infra,adnc.infra.efcore.mysql,efcore,pemole,mysql</PackageTags>
+		<PackageTags>adnc,efcore,pomelo</PackageTags>
 	</PropertyGroup>
 	<ItemGroup>
 	  <Compile Remove="SqlGenerator\**" />
@@ -18,9 +18,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="6.0.1" />
-		<PackageReference Include="DotNetCore.CAP" Version="6.1.0" />
-		<PackageReference Include="DotNetCore.CAP.MySql" Version="6.1.0" />
+		<PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="$(Pomelo_EntityFrameworkCore_MySql_Version)" />
+		<PackageReference Include="DotNetCore.CAP.MySql" Version="$(DotNetCore_CAP_MySql_Version)" />
 	</ItemGroup>
 
 	<ItemGroup>

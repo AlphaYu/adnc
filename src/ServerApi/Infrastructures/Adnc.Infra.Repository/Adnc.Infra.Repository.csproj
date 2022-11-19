@@ -5,7 +5,7 @@
 	<PropertyGroup>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<Description>该工程定义了Entity对象的基类、UnitOfWork接口、仓储接口。</Description>
-		<PackageTags>adnc,adnc.infra,adnc.infra.repository,repository</PackageTags>
+		<PackageTags>adnc,repository</PackageTags>
 	</PropertyGroup>
 	<ItemGroup>
 	  <Compile Remove="Entities\EfEnities\Extensions\**" />
@@ -13,10 +13,6 @@
 	  <None Remove="Entities\EfEnities\Extensions\**" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="MongoDB.Bson" Version="2.16.1" />
-		<PackageReference Include="MongoDB.Driver" Version="2.16.1" />
-	</ItemGroup>
-	<ItemGroup>
-		<ProjectReference Include="..\Adnc.Infra.Core\Adnc.Infra.Core.csproj" />
+		<PackageReference Include="MongoDB.Driver" Version="$(MongoDB_Driver_Version)" />
 	</ItemGroup>
 </Project>

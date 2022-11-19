@@ -1,7 +1,5 @@
 ﻿using Adnc.Infra.Repository.EfCore.SqlServer;
 using Adnc.Infra.Repository.EfCore.SqlServer.Transaction;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
