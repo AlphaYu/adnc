@@ -8,7 +8,7 @@
 		<Folder Include="Dtos\DtoValidators\" />
 	</ItemGroup>
 	<ItemGroup>
-	  <ProjectReference Include="..\..\Shared\Adnc.Shared.Application.Contracts\Adnc.Shared.Application.Contracts.csproj" />
-	  <ProjectReference Include="..\..\Shared\Adnc.Shared\Adnc.Shared.csproj" />
+	  <ProjectReference Include="..\..\..\ServiceShared\Adnc.Shared.Application.Contracts\Adnc.Shared.Application.Contracts.csproj" />
+	  <ProjectReference Include="..\..\..\ServiceShared\Adnc.Shared\Adnc.Shared.csproj" />
 	</ItemGroup>
 </Project>

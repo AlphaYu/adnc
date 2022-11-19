@@ -29,7 +29,7 @@
 
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Shared\Adnc.Shared.WebApi\Adnc.Shared.WebApi.csproj" />
+    <ProjectReference Include="..\..\..\ServiceShared\Adnc.Shared.WebApi\Adnc.Shared.WebApi.csproj" />
     <ProjectReference Include="..\Adnc.Cus.Application.Contracts\Adnc.Cus.Application.Contracts.csproj" />
     <ProjectReference Include="..\Adnc.Cus.Application\Adnc.Cus.Application.csproj" />
   </ItemGroup>

@@ -27,13 +27,13 @@
 		</PackageReference>
 	</ItemGroup>
 	<ItemGroup>
-		<ProjectReference Include="..\..\Shared\Adnc.Shared.WebApi\Adnc.Shared.WebApi.csproj" />
+		<ProjectReference Include="..\..\..\ServiceShared\Adnc.Shared.WebApi\Adnc.Shared.WebApi.csproj" />
 		<ProjectReference Include="..\Adnc.Whse.Application.Contracts\Adnc.Whse.Application.Contracts.csproj" />
 		<ProjectReference Include="..\Adnc.Whse.Application\Adnc.Whse.Application.csproj" />
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="Grpc.AspNetCore" Version="2.47.0" />
-		<Protobuf Include="..\..\Shared\Adnc.Shared.Rpc\Protos\Services\whsegrpc.proto" GrpcServices="Server" Link="Grpc\Protos\Services\whsegrpc.proto" ProtoRoot="..\..\Shared\Adnc.Shared.Rpc\" />
+		<Protobuf Include="..\..\..\ServiceShared\Adnc.Shared.Rpc\Protos\Services\whsegrpc.proto" GrpcServices="Server" Link="Grpc\Protos\Services\whsegrpc.proto" ProtoRoot="..\..\..\ServiceShared\Adnc.Shared.Rpc\" />
 	</ItemGroup>
 	<ProjectExtensions>
 		<VisualStudio>
