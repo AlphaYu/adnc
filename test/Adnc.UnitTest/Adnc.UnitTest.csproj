@@ -38,7 +38,7 @@
 		<ProjectReference Include="..\..\src\ServerApi\Infrastructures\Adnc.Infra.Helper\Adnc.Infra.Helper.csproj" />
 		<ProjectReference Include="..\..\src\ServerApi\Infrastructures\Adnc.Infra.IdGenerater\Adnc.Infra.IdGenerater.csproj" />
 		<ProjectReference Include="..\..\src\ServerApi\Services\Adnc.Cus\Adnc.Cus.Repository\Adnc.Cus.Repository.csproj" />
-		<ProjectReference Include="..\..\src\ServerApi\Services\Shared\Adnc.Shared.WebApi\Adnc.Shared.WebApi.csproj" />
+		<ProjectReference Include="..\..\src\ServerApi\ServiceShared\Adnc.Shared.WebApi\Adnc.Shared.WebApi.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
