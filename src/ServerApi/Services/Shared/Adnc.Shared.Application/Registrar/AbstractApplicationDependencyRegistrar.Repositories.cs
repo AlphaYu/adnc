@@ -35,18 +35,25 @@ public abstract partial class AbstractApplicationDependencyRegistrar
             options.UseLowerCaseNamingConvention();
             options.UseMySql(mysqlConfig.ConnectionString, serverVersion, optionsBuilder =>
             {
-                optionsBuilder.MinBatchSize(4)
-                                        .MigrationsAssembly(ServiceInfo.StartAssembly.GetName().Name.Replace("WebApi", "Migrations"))
-                                        .UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
+                var startAssemblyName = ServiceInfo.StartAssembly.GetName().Name;
+                if (startAssemblyName is null)
+                    throw new NullReferenceException("StartAssembly Name is null");
+                else
+                {
+                    var migrationsAssemblyName = startAssemblyName.Replace("WebApi", "Migrations");
+                    optionsBuilder.MinBatchSize(4)
+                                            .MigrationsAssembly(migrationsAssemblyName)
+                                            .UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
+                }
             });
 
-            if (this.IsDevelopment())
-            {
-                //options.AddInterceptors(new DefaultDbCommandInterceptor())
-                options.LogTo(Console.WriteLine, LogLevel.Information)
-                            .EnableSensitiveDataLogging()
-                            .EnableDetailedErrors();
-            }
+            //if (this.IsDevelopment())
+            //{
+            //    //options.AddInterceptors(new DefaultDbCommandInterceptor())
+            //    options.LogTo(Console.WriteLine, LogLevel.Information)
+            //                .EnableSensitiveDataLogging()
+            //                .EnableDetailedErrors();
+            //}
             //替换默认查询sql生成器,如果通过mycat中间件实现读写分离需要替换默认SQL工厂。
             //options.ReplaceService<IQuerySqlGeneratorFactory, AdncMySqlQuerySqlGeneratorFactory>();
         });
