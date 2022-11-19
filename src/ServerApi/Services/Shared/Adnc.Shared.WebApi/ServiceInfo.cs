@@ -2,16 +2,16 @@
 
 public class ServiceInfo : IServiceInfo
 {
-    private static ServiceInfo _instance = null;
+    private static ServiceInfo? _instance = null;
     private static readonly object _lockObj = new();
 
-    public string Id { get; private set; }
-    public string ServiceName { get; private set; }
-    public string CorsPolicy { get; set; }
-    public string ShortName { get; private set; }
-    public string Version { get; private set; }
-    public string Description { get; private set; }
-    public Assembly StartAssembly { get; private set; }
+    public string Id { get; private set; } = string.Empty;
+    public string ServiceName { get; private set; } = string.Empty;
+    public string CorsPolicy { get; set; } = string.Empty;
+    public string ShortName { get; private set; } = string.Empty;
+    public string Version { get; private set; } = string.Empty;
+    public string Description { get; private set; } = string.Empty;
+    public Assembly StartAssembly { get; private set; } = default!;
 
     private ServiceInfo()
     {
@@ -28,15 +28,16 @@ public class ServiceInfo : IServiceInfo
                 return _instance;
 
             if (startAssembly is null)
-                startAssembly = Assembly.GetEntryAssembly();
+                startAssembly = Assembly.GetEntryAssembly() ?? throw new NullReferenceException(nameof(startAssembly));
 
-            var description = startAssembly.GetCustomAttribute<AssemblyDescriptionAttribute>().Description;
+            var attribute = startAssembly.GetCustomAttribute<AssemblyDescriptionAttribute>();
+            var description = attribute is null ? string.Empty : attribute.Description;
             var assemblyName = startAssembly.GetName();
-            var version = assemblyName.Version;
-            var fullName = assemblyName.Name.ToLower();
+            var version = assemblyName.Version ?? throw new NullReferenceException(nameof(assemblyName.Version)); ;
+            var fullName = assemblyName is null ? string.Empty : assemblyName.Name?.ToLower() ?? string.Empty;
             var serviceName = fullName.Replace(".", "-");
             var ticks = DateTime.Now.GetTotalMilliseconds().ToLong();
-            var ticksHex = Convert.ToString(ticks,16);
+            var ticksHex = Convert.ToString(ticks, 16);
             var envName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")?.ToLower();
             var serviceId = envName switch
             {

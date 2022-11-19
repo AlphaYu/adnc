@@ -95,12 +95,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Shared.Domain", "Servi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Shared.Application", "Services\Shared\Adnc.Shared.Application\Adnc.Shared.Application.csproj", "{382E6BFE-F809-4E29-BEAB-57BA9C7FA69B}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Bulid", "Bulid", "{5F46F98A-6505-4767-82A7-95B0E12060AC}"
-	ProjectSection(SolutionItems) = preProject
-		build\common.props = build\common.props
-		build\version.props = build\version.props
-	EndProjectSection
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Shared.Application.Contracts", "Services\Shared\Adnc.Shared.Application.Contracts\Adnc.Shared.Application.Contracts.csproj", "{014411C4-C3BA-4AC7-8B26-6976897F1881}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Usr.Application", "Services\Adnc.Usr\Adnc.Usr.Application\Adnc.Usr.Application.csproj", "{ABA5BFEF-7D6A-4379-86FD-F34403FECF4F}"
@@ -128,6 +122,13 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Redis", "Infrastructures\Adnc.Infra.Redis\Adnc.Infra.Redis.csproj", "{70DC6E1E-8364-4F2E-B059-00D8EE6D5C27}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Redis.Caching", "Infrastructures\Adnc.Infra.Redis.Caching\Adnc.Infra.Redis.Caching.csproj", "{E0C1112A-4BE0-41FA-A3DD-784DB410899B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "解决方案项", "解决方案项", "{22E3C569-C1D2-4562-ADE0-4E51EE0976D8}"
+	ProjectSection(SolutionItems) = preProject
+		Props\common.props = Props\common.props
+		Props\nuget.props = Props\nuget.props
+		Props\version.props = Props\version.props
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
