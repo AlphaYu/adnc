@@ -78,6 +78,7 @@
 		<AspNetCore_HealthChecks_Rabbitmq_Version>6.0.2</AspNetCore_HealthChecks_Rabbitmq_Version>
 		<AspNetCore_HealthChecks_UI_Client_Version>6.0.4</AspNetCore_HealthChecks_UI_Client_Version>
 		<AspNetCore_HealthChecks_MySql_Version>6.0.2</AspNetCore_HealthChecks_MySql_Version>
+		<AspNetCore_HealthChecks_SqlServer_Version>6.0.2</AspNetCore_HealthChecks_SqlServer_Version>
 		<AspNetCore_HealthChecks_MongoDb_Version>6.0.2</AspNetCore_HealthChecks_MongoDb_Version>
 		<LiteX_HealthChecks_Redis_Version>3.0.0</LiteX_HealthChecks_Redis_Version>
 		<prometheus-net_AspNetCore_Version>6.0.0</prometheus-net_AspNetCore_Version>
