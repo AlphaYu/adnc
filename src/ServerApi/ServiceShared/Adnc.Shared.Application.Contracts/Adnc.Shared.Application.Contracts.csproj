@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="..\..\Props\common.props" />
+	<Import Project="..\..\Props\version.props" />
+	<Import Project="..\..\Props\nuget.props" />
+
+	<ItemGroup>
+		<PackageReference Include="FluentValidation" Version="$(FluentValidation_Version)" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(SolutionName)'=='Adnc'">
+		<ProjectReference Include="..\..\Infrastructures\Adnc.Infra.Core\Adnc.Infra.Core.csproj" />
+	</ItemGroup>
+	
+	<ItemGroup Condition="'$(SolutionName)'=='Adnc.Shared'">
+		<PackageReference Include="Adnc.Infra.Core" Version="$(Infra_Version)"/>
+	</ItemGroup>
+
+</Project>

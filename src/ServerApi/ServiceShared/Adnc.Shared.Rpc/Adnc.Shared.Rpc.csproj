@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	<Import Project="..\..\..\Props\common.props" />
-	<Import Project="..\..\..\Props\version.props" />
-	<Import Project="..\..\..\Props\nuget.props" />
+	<Import Project="..\..\Props\common.props" />
+	<Import Project="..\..\Props\version.props" />
+	<Import Project="..\..\Props\nuget.props" />
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="$(Microsoft_Extensions_Caching_Memory_Version)" />
 		<PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="$(Microsoft_AspNetCore_Http_Abstractions_Version)" />
@@ -17,8 +17,8 @@
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(SolutionName)'=='Adnc'">
-		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Core\Adnc.Infra.Core.csproj" />
-		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Helper\Adnc.Infra.Helper.csproj" />
+		<ProjectReference Include="..\..\Infrastructures\Adnc.Infra.Core\Adnc.Infra.Core.csproj" />
+		<ProjectReference Include="..\..\Infrastructures\Adnc.Infra.Helper\Adnc.Infra.Helper.csproj" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(SolutionName)'=='Adnc.Shared'">

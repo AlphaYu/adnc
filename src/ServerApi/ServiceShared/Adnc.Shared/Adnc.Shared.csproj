@@ -1,0 +1,5 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="..\..\Props\common.props" />
+	<Import Project="..\..\Props\version.props" />
+	<Import Project="..\..\Props\nuget.props"/>
+</Project>
