@@ -3,8 +3,7 @@ name: nuget_infra
 on:
     push:
       branches:
-      - master
-      - main
+      - dev
 
 jobs:
   build_artifact:    
