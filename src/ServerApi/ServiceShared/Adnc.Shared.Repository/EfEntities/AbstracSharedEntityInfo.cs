@@ -47,6 +47,10 @@ public abstract class AbstracSharedEntityInfo : IEntityInfo
         });
     }
 
+    protected virtual void SetTableName(dynamic modelBuilder)
+    {
+    }
+
     public Operater GetOperater()
     {
         return new Operater
@@ -67,9 +71,11 @@ public abstract class AbstracSharedEntityInfo : IEntityInfo
 
         var entityTypes = GetEntityTypes(entityAssembly);
         entityTypes?.ForEach(t => builder.Entity(t));
-        
+
         assemblies?.ForEach(assembly => builder.ApplyConfigurationsFromAssembly(assembly));
 
         SetComment(modelBuilder, entityTypes);
+
+        SetTableName(modelBuilder);
     }
 }
