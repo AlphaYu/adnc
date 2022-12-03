@@ -9,6 +9,7 @@ public static class Regulars
     public const string LOWER_LETTER = "^\\s{0}$|^[a-z]+$";
     public const string UPPER_LETTER = "^\\s{0}$|^[A-Z]+$";
     public const string LETTER_NUMBER = "^\\s{0}$|^[a-zA-Z0-9]+$";
+    public const string LETTER_NUMBER_UNDERSCODE = "^[a - zA - Z][a - zA - Z0 - 9_]$";
     public const string CHINESE_LETTER_NUMBER = "^\\s{0}$|^[\u4e00-\u9fa5_a-zA-Z0-9]+$";
     public const string CHINESE_LETTER = "^\\s{0}$|^[\u4e00-\u9fa5_a-zA-Z]+$";
     public const string IDCARD = "^\\s{0}$|(^\\d{15}$)|(^\\d{17}([0-9]|X|x)$)";

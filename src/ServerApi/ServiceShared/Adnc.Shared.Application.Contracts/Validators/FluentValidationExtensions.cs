@@ -39,6 +39,12 @@ public static class FluentValidationExtensions
         .Matches(Regulars.LETTER_NUMBER)
         .WithMessage("Can only input upper letter and number of {PropertyName}");
 
+    public static IRuleBuilderOptions<T, string> LetterNumberUnderscode<T>(this IRuleBuilder<T, string> ruleBuilder)
+        =>
+        ruleBuilder
+        .Matches(Regulars.LETTER_NUMBER_UNDERSCODE)
+        .WithMessage("Can only input letter and number or underscode of {PropertyName}");
+
     public static IRuleBuilderOptions<T, string> ChineseLetter<T>(this IRuleBuilder<T, string> ruleBuilder)
         =>
         ruleBuilder
