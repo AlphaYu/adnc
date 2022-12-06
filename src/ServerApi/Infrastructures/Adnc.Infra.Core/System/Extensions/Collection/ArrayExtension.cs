@@ -12,4 +12,22 @@ public static class ArrayExtension
     /// <param name="dstOffset">The zero-based byte offset into .</param>
     /// <param name="count">The number of bytes to copy.</param>
     public static void BlockCopy([NotNull] this Array src, int srcOffset, Array dst, int dstOffset, int count) => Buffer.BlockCopy(src, srcOffset, dst, dstOffset, count);
+
+    /// <summary>
+    /// sub datas from array 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="arr"></param>
+    /// <param name="start"></param>
+    /// <param name="count"></param>
+    /// <returns></returns>
+    public static T[] Sub<T>(this T[] arr, int start, int count)
+    {
+        T[] val = new T[count];
+        for (var i = 0; i < count; i++)
+        {
+            val[i] = arr[start + i];
+        }
+        return val;
+    }
 }
