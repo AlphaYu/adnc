@@ -6,9 +6,6 @@ public static class ObjectMapperExtension
         where TDestination : Entity
     {
         var destination = mapper.Map<TDestination>(source);
-        if (destination is null)
-            return destination;
-
         destination.Id = id;
         return destination;
     }

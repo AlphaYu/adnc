@@ -23,7 +23,7 @@ public static class BasicTokenValidator
         var partner = Partners[partnerAccount];
         var currentTotalSeconds = DateTime.Now.GetTotalSeconds();
         var plainString = $"{partner.AppId}-{partner.SecurityKey}-{currentTotalSeconds}";
-        var md5String = InfraHelper.Security.MD5(plainString, true);
+        var md5String = InfraHelper.Encrypt.Md5(plainString, true);
 
         var password = $"{partner.AppId}-{currentTotalSeconds}-{md5String}";
         var basicToken = $"{userName}:{password}";
@@ -56,7 +56,7 @@ public static class BasicTokenValidator
         if (differenceTotalSeconds > 120 || differenceTotalSeconds < -3)
             return new UnPackedResult(false, null, null);
 
-        var validationMd5String = InfraHelper.Security.MD5($"{partner.AppId}-{partner.SecurityKey}-{tokenTotalSeconds}", true);
+        var validationMd5String = InfraHelper.Encrypt.Md5($"{partner.AppId}-{partner.SecurityKey}-{tokenTotalSeconds}", true);
         var isSuccessful = validationMd5String.EqualsIgnoreCase(tokenMd5String);
         return new UnPackedResult(isSuccessful, userName, appId);
     }
