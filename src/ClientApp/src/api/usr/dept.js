@@ -3,7 +3,7 @@ import request from '@/utils/request'
 /*
 export function tree() {
   return request({
-    url: '/depts/tree',
+    url: '/organizations/tree',
     method: 'get'
   })
 }
@@ -11,14 +11,14 @@ export function tree() {
 
 export function list() {
   return request({
-    url: '/usr/depts',
+    url: '/usr/organizations',
     method: 'get'
   })
 }
 
 export function save(data) {
   let methodName = 'post'
-  let url = '/usr/depts'
+  let url = '/usr/organizations'
   if (data.id > 0) {
     methodName = 'put'
     url = url + '/' + data.id
@@ -32,7 +32,7 @@ export function save(data) {
 
 export function del(id) {
   return request({
-    url: `/usr/depts/${id}`,
+    url: `/usr/organizations/${id}`,
     method: 'delete'
   })
 }

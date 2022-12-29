@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function getList(params) {
   return request({
-    url: '/maint/cfgs',
+    url: '/maint/cfgs/page',
     method: 'get',
     params
   })

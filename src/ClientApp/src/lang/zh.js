@@ -11,7 +11,7 @@ export default {
     contacts:'邀约管理',
     channel:'栏目管理',
     menu: '菜单管理',
-    dept: '部门管理',
+    dept: '机构管理',
     user: '用户管理',
     role: '角色管理',
     task: '任务管理',
