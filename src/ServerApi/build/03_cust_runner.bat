@@ -1,3 +1,3 @@
 cd %cd%
-cd ..\Services\Adnc.Cus\Adnc.Cus.WebApi\bin\Debug\net6.0
-dotnet Adnc.Cus.WebApi.dll
+cd ..\Services\Adnc.Cust\Adnc.Cust.WebApi\bin\Debug\net6.0
+dotnet Adnc.Cust.WebApi.dll
