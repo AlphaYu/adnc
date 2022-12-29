@@ -5,6 +5,6 @@
 		<OutputPath>..\Adnc.Ord.WebApi\bin\$(Configuration)</OutputPath>
 	</PropertyGroup>
 	<ItemGroup>
-		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.EfCore.MySQL\Adnc.Infra.Repository.EfCore.MySql.csproj" />
+		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.EfCore.MySql\Adnc.Infra.Repository.EfCore.MySql.csproj" />
 	</ItemGroup>
 </Project>

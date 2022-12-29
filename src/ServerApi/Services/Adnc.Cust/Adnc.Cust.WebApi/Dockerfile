@@ -20,7 +20,7 @@ COPY ["Services/Adnc.Cus/Adnc.Cust.Application.Contracts/Adnc.Cust.Application.C
 COPY ["Services/Adnc.Cus/Adnc.Cust.Application/Adnc.Cust.Application.csproj", "Services/Adnc.Cus/Adnc.Cust.Application/"]
 COPY ["Services/Shared/Adnc.Shared.Application/Adnc.Shared.Application.csproj", "Services/Shared/Adnc.Shared.Application/"]
 COPY ["Infrastructures/Adnc.Infra.Mapper/Adnc.Infra.Mapper.csproj", "Infrastructures/Adnc.Infra.Mapper/"]
-COPY ["Infrastructures/Adnc.Infra.EfCore.MySQL/Adnc.Infra.EfCore.MySQL.csproj", "Infrastructures/Adnc.Infra.EfCore.MySQL/"]
+COPY ["Infrastructures/Adnc.Infra.EfCore.MySql/Adnc.Infra.EfCore.MySql.csproj", "Infrastructures/Adnc.Infra.EfCore.MySql/"]
 COPY ["Infrastructures/Adnc.Infra.Repository/Adnc.Infra.Repository.csproj", "Infrastructures/Adnc.Infra.Repository/"]
 COPY ["Infrastructures/Adnc.Infra.Dapper/Adnc.Infra.Dapper.csproj", "Infrastructures/Adnc.Infra.Dapper/"]
 COPY ["Infrastructures/Adnc.Infra.Mongo/Adnc.Infra.Mongo.csproj", "Infrastructures/Adnc.Infra.Mongo/"]

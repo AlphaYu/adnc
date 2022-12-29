@@ -29,7 +29,7 @@
 		<ProjectReference Include="..\..\Infrastructures\Adnc.Infra.Core\Adnc.Infra.Core.csproj" />
 		<ProjectReference Include="..\..\Infrastructures\Adnc.Infra.Consul\Adnc.Infra.Consul.csproj" />
 		<ProjectReference Include="..\..\Infrastructures\Adnc.Infra.Dapper\Adnc.Infra.Repository.Dapper.csproj" />
-		<ProjectReference Include="..\..\Infrastructures\Adnc.Infra.EfCore.MySQL\Adnc.Infra.Repository.EfCore.MySql.csproj" />
+		<ProjectReference Include="..\..\Infrastructures\Adnc.Infra.EfCore.MySql\Adnc.Infra.Repository.EfCore.MySql.csproj" />
 		<ProjectReference Include="..\..\Infrastructures\Adnc.Infra.EventBus\Adnc.Infra.EventBus.csproj" />
 		<ProjectReference Include="..\..\Infrastructures\Adnc.Infra.Helper\Adnc.Infra.Helper.csproj" />
 		<ProjectReference Include="..\..\Infrastructures\Adnc.Infra.IdGenerater\Adnc.Infra.IdGenerater.csproj" />
