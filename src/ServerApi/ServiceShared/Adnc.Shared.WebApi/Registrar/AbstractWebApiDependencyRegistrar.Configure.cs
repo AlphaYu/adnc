@@ -1,4 +1,4 @@
-﻿using Adnc.Shared.Consts.AppSettings;
+﻿using Adnc.Shared.Const.AppSettings;
 
 namespace Adnc.Shared.WebApi.Registrar;
 

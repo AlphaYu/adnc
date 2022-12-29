@@ -26,11 +26,11 @@ public class LoggerLog : MongoEntity
 
     public string ProcessName { get; set; } = default!;
 
-    public SysNloglogProperty Properties { get; set; } = default!;
+    public NloglogProperty Properties { get; set; } = default!;
 }
 
 [BsonIgnoreExtraElements]
-public class SysNloglogProperty
+public class NloglogProperty
 {
     public string TraceIdentifier { get; set; } = default!;
 

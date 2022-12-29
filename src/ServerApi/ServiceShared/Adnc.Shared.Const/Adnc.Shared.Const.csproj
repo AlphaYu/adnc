@@ -1,0 +1,7 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="..\..\Props\common.props" />
+	<Import Project="..\..\Props\version.props" />
+	<PropertyGroup>
+		<Description>该层用来定义Const常量，不需要发布的到Nuget。</Description>
+	</PropertyGroup>
+</Project>

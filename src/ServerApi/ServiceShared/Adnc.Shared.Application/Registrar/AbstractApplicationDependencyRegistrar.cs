@@ -1,5 +1,5 @@
 ﻿using Adnc.Shared.Application.Services.Trackers;
-using Adnc.Shared.Consts.AppSettings;
+using Adnc.Shared.Const.AppSettings;
 
 namespace Adnc.Shared.Application.Registrar;
 
@@ -10,7 +10,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar : IDependen
     public abstract Assembly ContractsLayerAssembly { get; }
     public abstract Assembly RepositoryOrDomainLayerAssembly { get; }
     protected SkyApmExtensions SkyApm { get; init; }
-    protected List<Rpc.AddressNode> RpcAddressInfo { get; init; }
+    protected List<AddressNode> RpcAddressInfo { get; init; }
     protected IServiceCollection Services { get; init; }
     protected IConfiguration Configuration { get; init; }
     protected IServiceInfo ServiceInfo { get; init; }
@@ -33,7 +33,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar : IDependen
         ConsulSection = Configuration.GetSection(NodeConsts.Consul);
         RabbitMqSection = Configuration.GetSection(NodeConsts.RabbitMq);
         SkyApm = Services.AddSkyApmExtensions();
-        RpcAddressInfo = Configuration.GetSection(NodeConsts.RpcAddressInfo).Get<List<Rpc.AddressNode>>();
+        RpcAddressInfo = Configuration.GetSection(NodeConsts.RpcAddressInfo).Get<List<AddressNode>>();
     }
 
     /// <summary>

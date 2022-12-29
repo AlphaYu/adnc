@@ -1,5 +1,5 @@
-﻿using Adnc.Shared.Consts.AppSettings;
-using Adnc.Shared.Consts.RegistrationCenter;
+﻿using Adnc.Shared.Const.AppSettings;
+using Adnc.Shared.Const.RegistrationCenter;
 
 namespace Microsoft.Extensions.Hosting;
 

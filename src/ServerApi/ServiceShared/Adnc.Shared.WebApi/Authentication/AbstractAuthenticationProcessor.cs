@@ -2,13 +2,13 @@
 
 public abstract class AbstractAuthenticationProcessor
 {
-    public async Task<Claim[]> ValidateAsync(string securityToken)
+    public async Task<Claim[]> ValidateAsync(ClaimsPrincipal claimsPrincipal)
     {
-        var token = new JwtSecurityTokenHandler().ReadJwtToken(securityToken);
-        if (token is null || token.Claims.IsNullOrEmpty())
-            return Array.Empty<Claim>();
+        //var token = new JwtSecurityTokenHandler().ReadJwtToken(securityToken);
+        //if (token is null || token.Claims.IsNullOrEmpty())
+        //    return Array.Empty<Claim>();
 
-        var claims = token.Claims.ToArray();
+        var claims = claimsPrincipal.Claims;
 
         var idClaim = claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.NameId);
         if (idClaim is null)
@@ -27,8 +27,8 @@ public abstract class AbstractAuthenticationProcessor
         if (ValidationVersion != jtiClaim.Value)
             return Array.Empty<Claim>();
 
-        return claims;
+        return claims.ToArray();
     }
 
-    protected abstract Task<(string ValidationVersion, int Status)> GetValidatedInfoAsync(long userId);
+    protected abstract Task<(string? ValidationVersion, int Status)> GetValidatedInfoAsync(long userId);
 }

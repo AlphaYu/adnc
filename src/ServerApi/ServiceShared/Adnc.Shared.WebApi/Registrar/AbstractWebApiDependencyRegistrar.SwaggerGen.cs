@@ -39,8 +39,8 @@ public abstract partial class AbstractWebApiDependencyRegistrar
                         Array.Empty<string>()
                     }
                 });
-                c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{ServiceInfo.StartAssembly.GetName().Name}.xml"));
-                c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{ServiceInfo.StartAssembly.GetName().Name.Replace("WebApi", "Application.Contracts")}.xml"));
+                c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{ServiceInfo.StartAssembly.GetName().Name}.xml"), true);
+                c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{ServiceInfo.StartAssembly.GetName().Name.Replace("WebApi", "Application.Contracts")}.xml"), true);
             })
             .AddFluentValidationRulesToSwagger();
     }

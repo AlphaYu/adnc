@@ -2,19 +2,26 @@
 	<Import Project="..\..\Props\common.props" />
 	<Import Project="..\..\Props\version.props" />
 	<Import Project="..\..\Props\nuget.props" />
+	<PropertyGroup>
+		<Description>该库是提供所有Apllication层的公共实现。</Description>
+		<PackageTags>Adnc.Shared.Application</PackageTags>
+	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Extensions.Http.Polly" Version="$(Microsoft_Extensions_Http_Polly_Version)" />
 		<PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="$(FluentValidation_DependencyInjectionExtensions_Version)" />
 		<PackageReference Include="DotNetCore.CAP.RabbitMQ" Version="$(DotNetCore_CAP_RabbitMQ_Version)" />
 		<PackageReference Include="DotNetCore.CAP.Dashboard" Version="$(DotNetCore_CAP_Dashboard_Version)" />
 		<PackageReference Include="SkyAPM.Diagnostics.CAP" Version="$(SkyAPM_Diagnostics_CAP_Version)" />
-		<PackageReference Include="EFCore.NamingConventions"  Version="$(EFCore_NamingConventions_Version)"/>
+		<PackageReference Include="EFCore.NamingConventions" Version="$(EFCore_NamingConventions_Version)" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\Adnc.Shared.Application.Contracts\Adnc.Shared.Application.Contracts.csproj" />
+		<ProjectReference Include="..\Adnc.Shared.Const\Adnc.Shared.Const.csproj" />
 		<ProjectReference Include="..\Adnc.Shared.Repository\Adnc.Shared.Repository.csproj" />
-		<ProjectReference Include="..\Adnc.Shared.Rpc\Adnc.Shared.Rpc.csproj" />
+		<ProjectReference Include="..\Adnc.Shared.Rpc.Event\Adnc.Shared.Rpc.Event.csproj" />
+		<ProjectReference Include="..\Adnc.Shared.Rpc.Http\Adnc.Shared.Rpc.Http.csproj" />
+		<ProjectReference Include="..\Adnc.Shared.Rpc.Grpc\Adnc.Shared.Rpc.Grpc.csproj" />
 		<ProjectReference Include="..\Adnc.Shared\Adnc.Shared.csproj" />
 	</ItemGroup>
 

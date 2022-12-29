@@ -1,6 +1,4 @@
-﻿using Adnc.Shared.Rpc.Handlers.Token;
-
-namespace Adnc.Shared.WebApi.Authentication.Basic;
+﻿namespace Adnc.Shared.WebApi.Authentication.Basic;
 
 public class BasicEvents
 {

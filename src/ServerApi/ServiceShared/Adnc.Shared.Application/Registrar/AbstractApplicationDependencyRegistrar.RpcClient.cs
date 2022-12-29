@@ -1,9 +1,9 @@
 ﻿using Adnc.Infra.Consul.Discover.GrpcResolver;
 using Adnc.Infra.Consul.Discover.Handler;
-using Adnc.Shared.Consts.AppSettings;
-using Adnc.Shared.Consts.RegistrationCenter;
-using Adnc.Shared.Rpc.Handlers;
-using Adnc.Shared.Rpc.Handlers.Token;
+using Adnc.Shared.Const.AppSettings;
+using Adnc.Shared.Const.RegistrationCenter;
+using Adnc.Shared.Rpc.Http.Handlers;
+using Adnc.Shared.Rpc.Http.Handlers.Token;
 using Grpc.Core;
 using Grpc.Net.Client.Balancer;
 using Grpc.Net.Client.Configuration;
@@ -120,4 +120,12 @@ public abstract partial class AbstractApplicationDependencyRegistrar
                      .AddPolicyHandlerICollection(policies);
     }
 
+}
+
+public class AddressNode
+{
+    public string Service { get; set; } = string.Empty;
+    public string Direct { get; set; } = string.Empty;
+    public string Consul { get; set; } = string.Empty;
+    public string CoreDns { get; set; } = string.Empty;
 }

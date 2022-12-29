@@ -3,6 +3,11 @@
 	<Import Project="..\..\Props\version.props" />
 	<Import Project="..\..\Props\nuget.props"/>
 
+	<PropertyGroup>
+		<Description>该库是提供所有Domain层的公共实现。</Description>
+		<PackageTags>Adnc.Shared.Domain</PackageTags>
+	</PropertyGroup>
+	
 	<ItemGroup>
 		<ProjectReference Include="..\Adnc.Shared.Repository\Adnc.Shared.Repository.csproj" />
 	</ItemGroup>

@@ -6,9 +6,11 @@
 public class BearerAuthenticationHandler : AuthenticationHandler<BearerSchemeOptions>
 {
     private AbstractAuthenticationProcessor _authenticationProcessor;
+    private IOptionsMonitor<JWTOptions> _jwtOptions;
 
     public BearerAuthenticationHandler(
         IOptionsMonitor<BearerSchemeOptions> options,
+        IOptionsMonitor<JWTOptions> jwtOptions,
         ILoggerFactory logger,
         UrlEncoder encoder,
         ISystemClock clock,
@@ -16,6 +18,7 @@ public class BearerAuthenticationHandler : AuthenticationHandler<BearerSchemeOpt
         ) : base(options, logger, encoder, clock)
     {
         _authenticationProcessor = authenticationProcessor;
+        _jwtOptions = jwtOptions;
     }
 
     protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
@@ -33,7 +36,27 @@ public class BearerAuthenticationHandler : AuthenticationHandler<BearerSchemeOpt
                 return await Task.FromResult(authResult);
             }
 
-            var claims = await _authenticationProcessor.ValidateAsync(token);
+            var jwtSecurityHandler = new JwtSecurityTokenHandler();
+            var parameters = _jwtOptions.CurrentValue.GenarateTokenValidationParameters();
+            ClaimsPrincipal principal;
+            try
+            {
+                principal = jwtSecurityHandler.ValidateToken(token, parameters, out SecurityToken securityToken);
+            }
+            catch (SecurityTokenExpiredException)
+            {
+                Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                authResult = AuthenticateResult.Fail("Invalid Authorization Token,'exp' claim is < DateTime.UtcNow.");
+                return await Task.FromResult(authResult);
+            }
+            catch (Exception)
+            {
+                Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                authResult = AuthenticateResult.Fail("Invalid Authorization Token");
+                return await Task.FromResult(authResult);
+            }
+
+            var claims = await _authenticationProcessor.ValidateAsync(principal);
 
             if (claims.IsNotNullOrEmpty())
             {
