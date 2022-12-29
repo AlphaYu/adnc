@@ -1,4 +1,4 @@
-﻿global using Adnc.Cus.Entities;
+﻿global using Adnc.Cust.Entities;
 global using Adnc.Infra.Entities;
 global using Adnc.Infra.EventBus.Cap;
 global using Adnc.Infra.IdGenerater.Yitter;
