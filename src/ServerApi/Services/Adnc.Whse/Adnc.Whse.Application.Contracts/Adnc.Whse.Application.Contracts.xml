@@ -24,7 +24,7 @@
             <param name="input"></param>
             <returns></returns>
         </member>
-        <member name="M:Adnc.Whse.Application.Contracts.Services.IWarehouseAppService.BlockQtyAsync(Adnc.Shared.Events.OrderCreatedEvent,Adnc.Shared.Application.Contracts.Interfaces.IMessageTracker)">
+        <member name="M:Adnc.Whse.Application.Contracts.Services.IWarehouseAppService.BlockQtyAsync(Adnc.Shared.Rpc.Event.OrderCreatedEvent,Adnc.Shared.Application.Contracts.Interfaces.IMessageTracker)">
             <summary>
             锁定商品库存
             </summary>

@@ -29,7 +29,7 @@ public class CacheKeyBloomFilter : AbstractBloomFilter
         {
             var values = new List<string>();
             using var scope = _serviceProvider.Value.CreateScope();
-            var dictRepository = scope.ServiceProvider.GetRequiredService<IEfRepository<SysDict>>();
+            var dictRepository = scope.ServiceProvider.GetRequiredService<IEfRepository<Dict>>();
             var dictIds = await dictRepository
                 .Where(x => x.Pid == 0)
                 .Select(x => x.Id)
@@ -37,7 +37,7 @@ public class CacheKeyBloomFilter : AbstractBloomFilter
             if (dictIds.IsNotNullOrEmpty())
                 values.AddRange(dictIds.Select(x => string.Concat(CachingConsts.DictSingleKeyPrefix, CachingConsts.LinkChar, x)));
 
-            var cfgRepository = scope.ServiceProvider.GetRequiredService<IEfRepository<SysDict>>();
+            var cfgRepository = scope.ServiceProvider.GetRequiredService<IEfRepository<Dict>>();
             var cfgIds = await dictRepository
                 .GetAll()
                 .Select(x => x.Id)

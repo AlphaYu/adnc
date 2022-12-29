@@ -1,5 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
-	<Import Project="..\..\..\build\common.props" />
+	<Import Project="..\..\..\Props\common.props" />
+	<Import Project="..\..\..\Props\version.props" />
 	<PropertyGroup>
 		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
 		<DockerfileContext>..\..\..</DockerfileContext>
@@ -15,21 +16,21 @@
 		</EmbeddedResource>
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.6">
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="$(Microsoft_EntityFrameworkCore_Design_Version)">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.6">
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="$(Microsoft_EntityFrameworkCore_Tools_Version)">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="Grpc.AspNetCore" Version="2.47.0" />
-		<Protobuf Include="..\..\Shared\Adnc.Shared.Rpc\Protos\Services\maintgrpc.proto" GrpcServices="Server" Link="Grpc\Protos\Services\maintgrpc.proto" ProtoRoot="..\..\Shared\Adnc.Shared.Rpc\" />
+		<PackageReference Include="Grpc.AspNetCore" Version="$(Grpc_AspNetCore_Version)" />
+		<Protobuf Include="..\..\..\protos\services\maintgrpc.proto" GrpcServices="Server" Link="Grpc\protos\maintgrpc.proto" ProtoRoot="..\..\..\protos\" />
 	</ItemGroup>
 	<ItemGroup>
-		<ProjectReference Include="..\..\Shared\Adnc.Shared.WebApi\Adnc.Shared.WebApi.csproj" />
+		<ProjectReference Include="..\..\..\ServiceShared\Adnc.Shared.WebApi\Adnc.Shared.WebApi.csproj" />
 		<ProjectReference Include="..\Adnc.Maint.Application.Contracts\Adnc.Maint.Application.Contracts.csproj" />
 		<ProjectReference Include="..\Adnc.Maint.Application\Adnc.Maint.Application.csproj" />
 	</ItemGroup>

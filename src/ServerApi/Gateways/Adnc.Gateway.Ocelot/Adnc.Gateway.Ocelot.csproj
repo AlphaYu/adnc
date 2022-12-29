@@ -1,6 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
-	<Import Project="..\..\build\common.props" />
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'" />
+	<Import Project="..\..\Props\common.props" />
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Identity.Web" Version="1.25.1" />
@@ -20,6 +19,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Content Update="Config\ocelot.directjwt.json">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
 		<Content Update="Config\ocelot.fabio.json">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</Content>

@@ -1,12 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	<Import Project="..\..\build\common.props" />
+	<Import Project="..\..\Props\common.props" />
+	<Import Project="..\..\Props\version.props" />
+	<Import Project="..\..\Props\nuget.props" />
 	<PropertyGroup>
-		<Nullable>enable</Nullable>
+		<Description>该库封装并扩展了CAP，同时集成了RabbitMq客户端，封装了发布者与订阅者等公共类，能让开发人员更加便捷的调用。</Description>
+		<PackageTags>adnc,adnc.infra,adnc.infra.eventbus,eventbus,rabbitmq,cap</PackageTags>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="Polly" Version="7.2.3" />
-		<PackageReference Include="RabbitMQ.Client" Version="6.4.0" />
-		<PackageReference Include="DotNetCore.CAP" Version="6.1.0" />
+		<PackageReference Include="Polly" Version="$(Polly_Version)" />
+		<PackageReference Include="RabbitMQ.Client" Version="$(RabbitMQ_Client_Version)" />
+		<PackageReference Include="DotNetCore.CAP" Version="$(DotNetCore_CAP_Version)" />
+		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="$(Microsoft_Extensions_Options_ConfigurationExtensions_Version)"/>
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Adnc.Infra.Core\Adnc.Infra.Core.csproj" />

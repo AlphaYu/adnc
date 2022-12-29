@@ -1,11 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	<Import Project="..\..\..\build\common.props" />
+	<Import Project="..\..\..\Props\common.props" />
+	<Import Project="..\..\..\Props\version.props" />
 	<PropertyGroup>
 	  <GenerateDocumentationFile>True</GenerateDocumentationFile>
 	</PropertyGroup>
 	<ItemGroup>
     <ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Repository\Adnc.Infra.Repository.csproj" />
-    <ProjectReference Include="..\..\Shared\Adnc.Shared.Repository\Adnc.Shared.Repository.csproj" />
-    <ProjectReference Include="..\..\Shared\Adnc.Shared\Adnc.Shared.csproj" />
+    <ProjectReference Include="..\..\..\ServiceShared\Adnc.Shared.Const\Adnc.Shared.Const.csproj" />
+    <ProjectReference Include="..\..\..\ServiceShared\Adnc.Shared.Repository\Adnc.Shared.Repository.csproj" />
+    <ProjectReference Include="..\..\..\ServiceShared\Adnc.Shared\Adnc.Shared.csproj" />
   </ItemGroup>
 </Project>

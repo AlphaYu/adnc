@@ -1,15 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	<Import Project="..\..\build\common.props" />
+	<Import Project="..\..\Props\common.props" />
+	<Import Project="..\..\Props\version.props" />
+	<Import Project="..\..\Props\nuget.props" />	
+	<PropertyGroup>
+		<Description>该工库是在`Adnc.Infra.Redis`基础上的进一步封装，负责缓存管理，除常用操作外还解决了缓存穿透，击穿，雪崩等问题。</Description>
+		<PackageTags>adnc,redis,distributed cache</PackageTags>
+	</PropertyGroup>
 	<ItemGroup>
 		<Compile Remove="Core\Interceptor\CachingPutAttribute.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Castle.Core.AsyncInterceptor" Version="2.1.0" />
-		<PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-		<PackageReference Include="Polly" Version="7.2.3" />
-		<PackageReference Include="StackExchange.Redis" Version="2.6.48" />
-		<PackageReference Include="protobuf-net" Version="3.1.17" />
+		<PackageReference Include="Polly" Version="$(Polly_Version)" />
+		<PackageReference Include="Castle.Core.AsyncInterceptor" Version="$(Castle_Core_AsyncInterceptor_Version)" />
 	</ItemGroup>
 
 	<ItemGroup>

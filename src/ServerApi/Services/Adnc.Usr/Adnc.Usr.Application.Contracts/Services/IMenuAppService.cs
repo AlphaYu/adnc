@@ -37,7 +37,7 @@
         /// 获取菜单列表
         /// </summary>
         /// <returns></returns>
-        [CachingAble(CacheKey = CachingConsts.MenuTreeListCacheKey, Expiration = CachingConsts.OneYear)]
+        //[CachingAble(CacheKey = CachingConsts.MenuTreeListCacheKey, Expiration = CachingConsts.OneYear)]
         Task<List<MenuNodeDto>> GetlistAsync();
 
         /// <summary>

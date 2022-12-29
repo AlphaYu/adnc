@@ -1,0 +1,9 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="..\..\Props\common.props" />
+	<Import Project="..\..\Props\version.props" />
+	<Import Project="..\..\Props\nuget.props" />
+	<PropertyGroup>
+		<Description>所有服务都需要依赖该工程</Description>
+		<PackageTags>adnc,adnc.shared</PackageTags>
+	</PropertyGroup>
+</Project>

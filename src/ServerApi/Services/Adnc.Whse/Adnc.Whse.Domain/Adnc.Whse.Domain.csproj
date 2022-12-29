@@ -1,5 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	<Import Project="..\..\..\build\common.props" />
+	<Import Project="..\..\..\Props\common.props" />
+	<Import Project="..\..\..\Props\version.props" />
 	<PropertyGroup>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 	</PropertyGroup>
@@ -7,7 +8,9 @@
 		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.EventBus\Adnc.Infra.EventBus.csproj" />
 		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Helper\Adnc.Infra.Helper.csproj" />
 		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.IdGenerater\Adnc.Infra.IdGenerater.csproj" />
-		<ProjectReference Include="..\..\Shared\Adnc.Shared.Domain\Adnc.Shared.Domain.csproj" />
-		<ProjectReference Include="..\..\Shared\Adnc.Shared\Adnc.Shared.csproj" />
+		<ProjectReference Include="..\..\..\ServiceShared\Adnc.Shared.Const\Adnc.Shared.Const.csproj" />
+		<ProjectReference Include="..\..\..\ServiceShared\Adnc.Shared.Domain\Adnc.Shared.Domain.csproj" />
+		<ProjectReference Include="..\..\..\ServiceShared\Adnc.Shared.Rpc.Event\Adnc.Shared.Rpc.Event.csproj" />
+		<ProjectReference Include="..\..\..\ServiceShared\Adnc.Shared\Adnc.Shared.csproj" />
 	</ItemGroup>
 </Project>

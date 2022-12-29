@@ -1,5 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	<Import Project="..\..\..\build\common.props" />
+	<Import Project="..\..\..\Props\common.props" />
+	<Import Project="..\..\..\Props\version.props" />
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
 		<DocumentationFile>.\Adnc.Whse.Application.Contracts.xml</DocumentationFile>
 	</PropertyGroup>
@@ -7,7 +8,8 @@
 		<Folder Include="Dtos\DtoValidators\" />
 	</ItemGroup>
 	<ItemGroup>
-	  <ProjectReference Include="..\..\Shared\Adnc.Shared.Application.Contracts\Adnc.Shared.Application.Contracts.csproj" />
-	  <ProjectReference Include="..\..\Shared\Adnc.Shared\Adnc.Shared.csproj" />
+	  <ProjectReference Include="..\..\..\ServiceShared\Adnc.Shared.Application.Contracts\Adnc.Shared.Application.Contracts.csproj" />
+	  <ProjectReference Include="..\..\..\ServiceShared\Adnc.Shared.Rpc.Event\Adnc.Shared.Rpc.Event.csproj" />
+	  <ProjectReference Include="..\..\..\ServiceShared\Adnc.Shared\Adnc.Shared.csproj" />
 	</ItemGroup>
 </Project>

@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="..\..\Props\common.props" />
+	<Import Project="..\..\Props\version.props" />
+	<Import Project="..\..\Props\nuget.props" />
+	<PropertyGroup>
+		<Description>该层定义了仓储层基类。</Description>
+		<PackageTags>Adnc.Shared.Repository</PackageTags>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="$(Microsoft_EntityFrameworkCore_Version)" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="$(Microsoft_EntityFrameworkCore_Relational_Version)" />
+	</ItemGroup>
+	
+	<ItemGroup Condition="'$(SolutionName)'=='Adnc.Shared'">
+		<PackageReference Include="Adnc.Infra.Core" Version="$(Infra_Version)" />
+		<PackageReference Include="Adnc.Infra.Repository" Version="$(Infra_Version)" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(SolutionName)'=='Adnc'">
+		<ProjectReference Include="..\..\Infrastructures\Adnc.Infra.Core\Adnc.Infra.Core.csproj" />
+		<ProjectReference Include="..\..\Infrastructures\Adnc.Infra.Repository\Adnc.Infra.Repository.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Adnc.Shared\Adnc.Shared.csproj" />
+	</ItemGroup>
+</Project>

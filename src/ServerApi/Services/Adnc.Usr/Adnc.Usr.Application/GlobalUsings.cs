@@ -10,18 +10,21 @@ global using Adnc.Shared.Application.Caching;
 global using Adnc.Shared.Application.Channels;
 global using Adnc.Shared.Application.Contracts.Dtos;
 global using Adnc.Shared.Application.Contracts.ResultModels;
+global using Adnc.Shared.Application.Registrar;
 global using Adnc.Shared.Application.Services;
-global using Adnc.Shared.Consts.Caching.Usr;
+global using Adnc.Shared.Const.Caching.Usr;
 global using Adnc.Shared.Repository.MongoEntities;
-global using Adnc.Usr.Application.Caching;
+global using Adnc.Shared.Rpc.Grpc.Messages;
 global using Adnc.Usr.Application.Contracts.Dtos;
 global using Adnc.Usr.Application.Contracts.Services;
 global using Adnc.Usr.Entities;
 global using Adnc.Usr.Repository.Extensions;
+global using AutoMapper;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Options;
 global using System.Linq.Expressions;
 global using System.Net;
 global using System.Reflection;
+
 

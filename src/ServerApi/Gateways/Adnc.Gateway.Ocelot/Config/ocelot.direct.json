@@ -35,22 +35,9 @@
     }
   },
   "Routes": [
-    //health-checker services
-    {
-      "DownstreamPathTemplate": "/{servicename}/health-{guid}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 50010
-        }
-      ],
-      "UpstreamPathTemplate": "/{servicename}/health-{guid}",
-      "UpstreamHttpMethod": [ "Get" ]
-    },
     //auth service
     {
-      "DownstreamPathTemplate": "/auth/session",
+      "DownstreamPathTemplate": "/auth{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -58,49 +45,19 @@
           "Port": 50010
         }
       ],
-      "UpstreamPathTemplate": "/auth/session",
-      "UpstreamHttpMethod": [ "Post", "Put" ]
-    },
-    {
-      "DownstreamPathTemplate": "/auth/session",
-      "DownstreamScheme": "http",
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "mgmt",
-        "AllowedScopes": []
-      },
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 50010
-        }
-      ],
-      "UpstreamPathTemplate": "/auth/session",
-      "UpstreamHttpMethod": [ "Get", "Delete" ]
-    },
-    {
-      "DownstreamPathTemplate": "/auth/session/password",
-      "DownstreamScheme": "http",
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "mgmt",
-        "AllowedScopes": []
-      },
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 50010
-        }
-      ],
-      "UpstreamPathTemplate": "/auth/session/password",
-      "UpstreamHttpMethod": [ "Put" ]
+      "UpstreamPathTemplate": "/auth{everything}",
+      "UpstreamHttpMethod": [
+        "Get",
+        "Put",
+        "Post",
+        "Delete",
+        "Options"
+      ]
     },
     //usr services
     {
       "DownstreamPathTemplate": "/usr{everything}",
       "DownstreamScheme": "http",
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "mgmt",
-        "AllowedScopes": []
-      },
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
@@ -112,17 +69,14 @@
         "Get",
         "Put",
         "Post",
-        "Delete"
+        "Delete",
+        "Options"
       ]
     },
     //maint services
     {
       "DownstreamPathTemplate": "/maint{everything}",
       "DownstreamScheme": "http",
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "mgmt",
-        "AllowedScopes": []
-      },
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
@@ -134,12 +88,13 @@
         "Get",
         "Put",
         "Post",
-        "Delete"
+        "Delete",
+        "Options"
       ]
     },
-    //cus services
+    //cust services
     {
-      "DownstreamPathTemplate": "/cus/cap/{everything}",
+      "DownstreamPathTemplate": "/cust{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -147,28 +102,13 @@
           "Port": 50030
         }
       ],
-      "UpstreamPathTemplate": "/cus/cap/{everything}",
-      "UpstreamHttpMethod": [ "Get"]
-    },
-    {
-      "DownstreamPathTemplate": "/cus{everything}",
-      "DownstreamScheme": "http",
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "mgmt",
-        "AllowedScopes": []
-      },
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 50030
-        }
-      ],
-      "UpstreamPathTemplate": "/cus{everything}",
+      "UpstreamPathTemplate": "/cust{everything}",
       "UpstreamHttpMethod": [
         "Get",
         "Put",
         "Post",
-        "Delete"
+        "Delete",
+        "Options"
       ]
     }
   ]

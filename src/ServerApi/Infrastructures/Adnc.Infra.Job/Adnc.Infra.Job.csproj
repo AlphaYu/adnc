@@ -1,17 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	<Import Project="..\..\build\common.props" />
+	<Import Project="..\..\Props\common.props" />
+	<Import Project="..\..\Props\version.props" />
+	<Import Project="..\..\Props\nuget.props" />
 	<PropertyGroup>
-		<Nullable>enable</Nullable>
+		<Description>未完成</Description>
+		<PackageTags>adnc,job</PackageTags>
 	</PropertyGroup>
-	<ItemGroup>
-	  <None Remove="Extensions\lixemov4.dai~" />
-	</ItemGroup>
 	<ItemGroup>
 		<!--
 		<PackageReference Include="Hangfire.AspNetCore" Version="1.7.30" />
 		<PackageReference Include="Hangfire.Redis.StackExchange" Version="1.8.5" />
 		-->
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="$(Microsoft_Extensions_DependencyInjection_Abstractions_Version)" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Adnc.Infra.Core\Adnc.Infra.Core.csproj" />

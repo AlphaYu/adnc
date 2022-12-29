@@ -13,6 +13,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="EFCore.NamingConventions"  Version="6.0.0"/>
 		<PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="6.0.0" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.2.0" />
@@ -36,8 +37,8 @@
 		<ProjectReference Include="..\..\src\ServerApi\Infrastructures\Adnc.Infra.EfCore.MySQL\Adnc.Infra.Repository.EfCore.MySql.csproj" />
 		<ProjectReference Include="..\..\src\ServerApi\Infrastructures\Adnc.Infra.Helper\Adnc.Infra.Helper.csproj" />
 		<ProjectReference Include="..\..\src\ServerApi\Infrastructures\Adnc.Infra.IdGenerater\Adnc.Infra.IdGenerater.csproj" />
-		<ProjectReference Include="..\..\src\ServerApi\Services\Adnc.Cus\Adnc.Cus.Repository\Adnc.Cus.Repository.csproj" />
-		<ProjectReference Include="..\..\src\ServerApi\Services\Shared\Adnc.Shared.WebApi\Adnc.Shared.WebApi.csproj" />
+		<ProjectReference Include="..\..\src\ServerApi\Services\Adnc.Cust\Adnc.Cust.Repository\Adnc.Cust.Repository.csproj" />
+		<ProjectReference Include="..\..\src\ServerApi\ServiceShared\Adnc.Shared.WebApi\Adnc.Shared.WebApi.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

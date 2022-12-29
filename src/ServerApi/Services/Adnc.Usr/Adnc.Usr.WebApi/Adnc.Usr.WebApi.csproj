@@ -1,5 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
-	<Import Project="..\..\..\build\common.props" />
+	<Import Project="..\..\..\Props\common.props" />
+	<Import Project="..\..\..\Props\version.props" />
 	<PropertyGroup>
 		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
 		<DockerfileContext>..\..\..</DockerfileContext>
@@ -15,27 +16,27 @@
 	  </EmbeddedResource>
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="Grpc.AspNetCore" Version="2.47.0" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.6">
+		<PackageReference Include="Grpc.AspNetCore" Version="$(Grpc_AspNetCore_Version)" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="$(Microsoft_EntityFrameworkCore_Design_Version)">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 			<TreatAsUsed>true</TreatAsUsed>
 		</PackageReference>
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.6">
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="$(Microsoft_EntityFrameworkCore_Tools_Version)">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 			<TreatAsUsed>true</TreatAsUsed>
 		</PackageReference>
 	</ItemGroup>
 	<ItemGroup>
-		<ProjectReference Include="..\..\Shared\Adnc.Shared.WebApi\Adnc.Shared.WebApi.csproj" />
+		<ProjectReference Include="..\..\..\ServiceShared\Adnc.Shared.WebApi\Adnc.Shared.WebApi.csproj" />
 		<ProjectReference Include="..\Adnc.Usr.Application.Contracts\Adnc.Usr.Application.Contracts.csproj" />
 		<ProjectReference Include="..\Adnc.Usr.Application\Adnc.Usr.Application.csproj" />
 	</ItemGroup>
 	<ItemGroup>
-		<!--<Protobuf Include="..\..\Shared\Adnc.Shared\Protos\Rtos\*.proto" GrpcServices="Server" Link="Grpc\Protos\Rtos\%(RecursiveDir)%(Filename)%(Extension)" ProtoRoot="..\..\Shared\Adnc.Shared\" />-->
-		<Protobuf Include="..\..\Shared\Adnc.Shared.Rpc\Protos\Services\authgrpc.proto" GrpcServices="Server" Link="Grpc\Protos\Services\authgrpc.proto" ProtoRoot="..\..\Shared\Adnc.Shared.Rpc\" />
-		<Protobuf Include="..\..\Shared\Adnc.Shared.Rpc\Protos\Services\usrgrpc.proto" GrpcServices="Server" Link="Grpc\Protos\Services\usrgrpc.proto" ProtoRoot="..\..\Shared\Adnc.Shared.Rpc\" />
+		<!--<Protobuf Include="..\..\..\ServiceShared\Adnc.Shared\Protos\Rtos\*.proto" GrpcServices="Server" Link="Grpc\Protos\Rtos\%(RecursiveDir)%(Filename)%(Extension)" ProtoRoot="..\..\..\ServiceShared\Adnc.Shared\" />-->
+		<Protobuf Include="..\..\..\protos\services\authgrpc.proto" GrpcServices="Server" Link="Grpc\protos\authgrpc.proto" ProtoRoot="..\..\..\protos\" />
+		<Protobuf Include="..\..\..\protos\services\usrgrpc.proto" GrpcServices="Server" Link="Grpc\protos\usrgrpc.proto" ProtoRoot="..\..\..\protos\" />
 	</ItemGroup>
 <!--<Target Name="BuildTheApplicationProject" BeforeTargets="BeforeBuild">
 			<MSBuild Projects="..\Adnc.Usr.Application\Adnc.Usr.Application.csproj" Targets="Build" Properties="Configuration=$(Configuration);Platform=$(Platform)" />

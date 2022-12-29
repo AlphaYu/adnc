@@ -2,7 +2,6 @@
 
 public static class ShortExtension
 {
-
     /// <summary>
     ///     An Int16 extension method that factor of.
     /// </summary>

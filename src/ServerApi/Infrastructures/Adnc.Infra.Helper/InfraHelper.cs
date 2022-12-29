@@ -1,17 +1,20 @@
-﻿namespace Adnc.Infra.Helper;
+﻿using Adnc.Infra.Helper.Internal;
+using Adnc.Infra.Helper.Internal.Encrypt;
 
-public sealed class InfraHelper
+namespace Adnc.Infra.Helper;
+
+public static class InfraHelper
 {
-    private InfraHelper()
-    {
-    }
     static InfraHelper()
-    { 
+    {
+        Encrypt = new EncryptProivder();
+        HashConsistent = new HashConsistentGenerater();
+        Accessor = new Accessor();
     }
 
-    public static ISecurity Security => new Security();
+    public static EncryptProivder Encrypt { get; private set; }
 
-    public static IHashGenerater Hash => new HashGenerater();
+    public static HashConsistentGenerater HashConsistent { get; private set; }
 
-    public static IAccessor Accessor => new Accessor();
+    public static Accessor Accessor { get; private set; }
 }

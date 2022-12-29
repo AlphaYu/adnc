@@ -1,7 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	<Import Project="..\..\build\common.props" />
+	<Import Project="..\..\Props\common.props" />
+	<Import Project="..\..\Props\version.props" />
+	<Import Project="..\..\Props\nuget.props" />
 	<PropertyGroup>
-		<Nullable>enable</Nullable>
+		<Description>该库是最顶层库，任何库都会者直接或间接依赖该库。该库提供了大量的C#基础类型的扩展方法与Configuration、DependencyInjection、ContainerBuilder的扩展方法。</Description>
+		<PackageTags>adnc,adnc.infra,adnc.infra.core</PackageTags>
 	</PropertyGroup>
 	<ItemGroup>
 	  <Compile Remove="Autofac\**" />
@@ -9,12 +12,10 @@
 	  <None Remove="Autofac\**" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
-		<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0" />
-		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="6.0.0" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.1" />
-		<PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
-		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="6.0.0" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="$(Microsoft_Extensions_DependencyInjection_Abstractions_Version)" />
+		<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="$(Microsoft_Extensions_Hosting_Abstractions_Version)" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="$(Microsoft_Extensions_Logging_Abstractions_Version)" />
+		<PackageReference Include="Microsoft.Extensions.Options" Version="$(Microsoft_Extensions_Options_Version)" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="System\Extensions\Char\" />

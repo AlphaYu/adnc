@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="..\..\Props\common.props" />
+	<Import Project="..\..\Props\version.props" />
+	<Import Project="..\..\Props\nuget.props" />
+	<PropertyGroup>
+		<Description>该层定义了DTO对象的基类、应用服务类基类、缓存相关服务基类以及操作日志拦截器、UnitOfWork拦截器。所有微服务Application层的共享层，并且都需要依赖该层。</Description>
+		<PackageTags>Adnc.Shared.Application.Contracts</PackageTags>
+	</PropertyGroup>
+	
+	<ItemGroup>
+		<PackageReference Include="FluentValidation" Version="$(FluentValidation_Version)" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(SolutionName)'=='Adnc'">
+		<ProjectReference Include="..\..\Infrastructures\Adnc.Infra.Core\Adnc.Infra.Core.csproj" />
+	</ItemGroup>
+	
+	<ItemGroup Condition="'$(SolutionName)'=='Adnc.Shared'">
+		<PackageReference Include="Adnc.Infra.Core" Version="$(Infra_Version)"/>
+	</ItemGroup>
+
+</Project>

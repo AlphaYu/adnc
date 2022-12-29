@@ -1,19 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	<Import Project="..\..\build\common.props" />
+	<Import Project="..\..\Props\common.props" />
+	<Import Project="..\..\Props\version.props" />
+	<Import Project="..\..\Props\nuget.props" />
 	<PropertyGroup>
-		<Nullable>enable</Nullable>
+		<Description>该库提供一些通用帮助类，如HashHelper,SecurityHelper等等。</Description>
+		<PackageTags>adnc,helper</PackageTags>
 	</PropertyGroup>
 	<ItemGroup>
-	  <Compile Remove="Core\IdGenerater\**" />
-	  <EmbeddedResource Remove="Core\IdGenerater\**" />
-	  <None Remove="Core\IdGenerater\**" />
+	  <Compile Remove="Internal\IdGenerater\**" />
+	  <EmbeddedResource Remove="Internal\IdGenerater\**" />
+	  <None Remove="Internal\IdGenerater\**" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
-		<PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.1" />
-		<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
-		<PackageReference Include="System.Text.Json" Version="6.0.5" />
-		<PackageReference Include="System.Threading.Channels" Version="6.0.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Http" Version="$(Microsoft_AspNetCore_Http_Version)" />
 	</ItemGroup>
 
 	<ItemGroup>

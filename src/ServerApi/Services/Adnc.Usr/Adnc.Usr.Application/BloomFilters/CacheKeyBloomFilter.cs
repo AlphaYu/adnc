@@ -40,7 +40,7 @@ public class CacheKeyBloomFilter : AbstractBloomFilter
             };
 
             using var scope = _serviceProvider.Value.CreateScope();
-            var repository = scope.ServiceProvider.GetRequiredService<IEfRepository<SysUser>>();
+            var repository = scope.ServiceProvider.GetRequiredService<IEfRepository<User>>();
             var ids = await repository
                                                     .GetAll()
                                                     .Select(x => x.Id)

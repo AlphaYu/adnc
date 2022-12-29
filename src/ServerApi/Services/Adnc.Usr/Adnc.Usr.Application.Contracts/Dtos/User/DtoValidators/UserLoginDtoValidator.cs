@@ -4,8 +4,8 @@
     {
         public UserLoginDtoValidator()
         {
-            RuleFor(x => x.Account).NotEmpty().Length(5, UserConsts.Account_MaxLength);
-            RuleFor(x => x.Password).NotEmpty().Length(5, UserConsts.Password_Maxlength);
+            RuleFor(x => x.Account).Required().Length(5, UserConsts.Account_MaxLength).LetterNumberUnderscode();
+            RuleFor(x => x.Password).Required().Length(5, UserConsts.Password_Maxlength);
         }
     }
 }

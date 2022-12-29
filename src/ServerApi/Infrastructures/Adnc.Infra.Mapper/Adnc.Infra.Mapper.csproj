@@ -1,10 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	<Import Project="..\..\build\common.props" />
+	<Import Project="..\..\Props\common.props" />
+	<Import Project="..\..\Props\version.props" />
+	<Import Project="..\..\Props\nuget.props" />
 	<PropertyGroup>
-		<Nullable>enable</Nullable>
+		<Description>该工程负责对象映射，并且提供了AutoMapper的实现。</Description>
+		<PackageTags>adnc,automapper,mapper</PackageTags>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="$(AutoMapper_Extensions_Microsoft_DependencyInjection_Version)" />
 	</ItemGroup>
 
 	<ItemGroup>

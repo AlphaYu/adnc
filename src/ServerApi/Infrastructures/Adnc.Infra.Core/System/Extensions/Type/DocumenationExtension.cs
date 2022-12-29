@@ -35,7 +35,7 @@ public static class DocumenationExtension
 
         //AL: 15.04.2008 ==> BUG-FIX remove “()” if parametersString is empty
 
-        if(methodInfo.DeclaringType is null)
+        if (methodInfo.DeclaringType is null)
         {
             return default;
         }

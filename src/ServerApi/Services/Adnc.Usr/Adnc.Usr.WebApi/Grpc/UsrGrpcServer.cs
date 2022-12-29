@@ -8,12 +8,12 @@ namespace Adnc.Usr.WebApi.Grpc;
 public class UsrGrpcServer : Adnc.Shared.Rpc.Grpc.Services.UsrGrpc.UsrGrpcBase
 {
     private readonly IUserAppService _userService;
-    private readonly IDeptAppService _deptAppService;
+    private readonly IOrganizationAppService _deptAppService;
     private readonly UserContext _userContext;
     private readonly IObjectMapper _mapper;
 
     public UsrGrpcServer(IUserAppService userService
-        , IDeptAppService deptAppService
+        , IOrganizationAppService deptAppService
         , UserContext userContext
         , IObjectMapper mapper)
     {

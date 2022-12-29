@@ -1,18 +1,25 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	<Import Project="..\..\build\common.props" />
+	<Import Project="..\..\Props\common.props" />
+	<Import Project="..\..\Props\version.props" />
+	<Import Project="..\..\Props\nuget.props" />
+	
 	<PropertyGroup>
-		<Nullable>enable</Nullable>
+		<Description>该库集成并扩展了Consul客户端，提供服务的自动注册、发现以及系统配置读写操作。</Description>
+		<PackageTags>adnc,consul</PackageTags>
 	</PropertyGroup>
+	
 	<ItemGroup>
-		<PackageReference Include="Consul" Version="1.6.10.6" />
-		<PackageReference Include="Grpc.Net.Client" Version="2.47.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.7" />
-		<PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="6.0.0" />
-		<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="6.0.1" />
-		<PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.1" />
+		<PackageReference Include="Consul" Version="$(Consul_Version)" />
+		<PackageReference Include="Grpc.Net.Client" Version="$(Grpc_Net_Client_Version)" />
+		<PackageReference Include="Microsoft.AspNetCore.Hosting" Version="$(Microsoft_AspNetCore_Hosting_Version)" />
+		<PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="$(Microsoft_Extensions_Caching_Abstractions_Version)" />
+		<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="$(Microsoft_Extensions_Caching_Memory_Version)" />
+		<PackageReference Include="Microsoft.Extensions.Configuration" Version="$(Microsoft_Extensions_Configuration_Version)" />
+		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="$(Microsoft_Extensions_Options_ConfigurationExtensions_Version)"/>
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\Adnc.Infra.Core\Adnc.Infra.Core.csproj" />
 	</ItemGroup>
+	
 </Project>

@@ -1,10 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	<Import Project="..\..\build\common.props" />
+	<Import Project="..\..\Props\common.props" />
+	<Import Project="..\..\Props\version.props" />
+	<Import Project="..\..\Props\nuget.props" />
 	<PropertyGroup>
-		<Nullable>enable</Nullable>
+		<Description>该库负责Id的生成，目前实现了雪花算法生成器，可以动态获取WorkerId。</Description>
+		<PackageTags>adnc,snowklake,yitter</PackageTags>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="Yitter.IdGenerator" Version="1.0.14" />
+		<PackageReference Include="Yitter.IdGenerator" Version="$(Yitter_IdGenerator_Version)" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Adnc.Infra.Redis\Adnc.Infra.Redis.csproj" />

@@ -6,12 +6,17 @@
 public class DictSearchDto : SearchDto
 {
     /// <summary>
+    /// 字典ids
+    /// </summary>
+    public long[] Ids { get; set; } = Array.Empty<long>();
+
+    /// <summary>
     /// 字典名
     /// </summary>
-    public string Name { get; set; }
+    public string? Name { get; set; }
 
     /// <summary>
     /// 字典值
     /// </summary>
-    public string Value { get; set; }
+    public string? Value { get; set; } = string.Empty;
 }

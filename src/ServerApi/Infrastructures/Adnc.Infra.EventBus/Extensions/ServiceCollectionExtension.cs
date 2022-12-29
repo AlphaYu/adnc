@@ -9,7 +9,6 @@ namespace Microsoft.Extensions.DependencyInjection;
 
 public static class ServiceCollectionExtension
 {
-
     public static IServiceCollection AddAdncInfraCap<TSubscriber>(this IServiceCollection services, Action<CapOptions> setupAction)
         where TSubscriber : class, ICapSubscribe
     {
@@ -23,7 +22,6 @@ public static class ServiceCollectionExtension
             ;
         return services;
     }
-
 
     public static IServiceCollection AddAdncInfraRabbitMq(this IServiceCollection services, IConfigurationSection rabitmqSection)
     {

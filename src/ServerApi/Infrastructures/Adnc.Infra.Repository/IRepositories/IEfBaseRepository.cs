@@ -28,7 +28,7 @@ public interface IEfBaseRepository<TEntity> : IRepository<TEntity>
     /// <summary>
     /// 更新单个实体
     /// </summary>
-    /// <param name="entity"><see cref="TEntity"/></param>
+    /// <param name="entity"><see cref="T:TEntity"/></param>
     /// <param name="cancellationToken"><see cref="CancellationToken"/></param>
     /// <returns></returns>
     Task<int> UpdateAsync(TEntity entity, CancellationToken cancellationToken = default);

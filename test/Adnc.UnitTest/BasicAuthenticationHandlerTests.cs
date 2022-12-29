@@ -1,4 +1,4 @@
-﻿using Adnc.Shared.Rpc.Handlers.Token;
+﻿using Adnc.Shared.Rpc.Http.Handlers.Token;
 
 namespace Adnc.UnitTest.BasicAuthentication;
 

@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	<Import Project="..\..\..\build\common.props" />
+	<Import Project="..\..\..\Props\common.props" />
+	<Import Project="..\..\..\Props\version.props" />
 	<ItemGroup>
-		<ProjectReference Include="..\..\Shared\Adnc.Shared.Rpc\Adnc.Shared.Rpc.csproj" />
-		<ProjectReference Include="..\..\Shared\Adnc.Shared.Application\Adnc.Shared.Application.csproj" />
+		<ProjectReference Include="..\..\..\ServiceShared\Adnc.Shared.Application\Adnc.Shared.Application.csproj" />
 		<ProjectReference Include="..\Adnc.Ord.Application.Contracts\Adnc.Ord.Application.Contracts.csproj" />
 		<ProjectReference Include="..\Adnc.Ord.Domain\Adnc.Ord.Domain.csproj" />
 	</ItemGroup>

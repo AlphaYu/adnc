@@ -65,7 +65,7 @@
                 query = query.Include(navigationPropertyPath);
 
             if (orderByExpression is null)
-                result = await query.OrderByDescending(x=>x.Id).FirstOrDefaultAsync(cancellationToken);
+                result = await query.OrderByDescending(x => x.Id).FirstOrDefaultAsync(cancellationToken);
             else
                 result = ascending
                           ? await query.OrderBy(orderByExpression).FirstOrDefaultAsync(cancellationToken)

@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="..\..\Props\common.props" />
+	<Import Project="..\..\Props\version.props" />
+	<Import Project="..\..\Props\nuget.props"/>
+
+	<PropertyGroup>
+		<Description>该库是提供所有Domain层的公共实现。</Description>
+		<PackageTags>Adnc.Shared.Domain</PackageTags>
+	</PropertyGroup>
+	
+	<ItemGroup>
+		<ProjectReference Include="..\Adnc.Shared.Repository\Adnc.Shared.Repository.csproj" />
+	</ItemGroup>
+
+	<ItemGroup  Condition="'$(SolutionName)'=='Adnc'">
+		<ProjectReference Include="..\..\Infrastructures\Adnc.Infra.EventBus\Adnc.Infra.EventBus.csproj"/>
+		<ProjectReference Include="..\..\Infrastructures\Adnc.Infra.Helper\Adnc.Infra.Helper.csproj"/>
+		<ProjectReference Include="..\..\Infrastructures\Adnc.Infra.Repository\Adnc.Infra.Repository.csproj"/>
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(SolutionName)'=='Adnc.Shared'">
+		<PackageReference Include="Adnc.Infra.EventBus" Version="$(Infra_Version)"/>
+		<PackageReference Include="Adnc.Infra.Helper" Version="$(Infra_Version)"/>
+		<PackageReference Include="Adnc.Infra.Repository" Version="$(Infra_Version)"/>
+	</ItemGroup>
+	
+</Project>

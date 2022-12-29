@@ -1,0 +1,87 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="..\..\Props\common.props" />
+	<Import Project="..\..\Props\version.props" />
+	<Import Project="..\..\Props\nuget.props" />
+	<PropertyGroup>
+		<Description>该层实现了认证、鉴权、异常捕获、服务组件注册等公共类和中间件。所有微服务WebApi层的共享层，并且都需要依赖该层。</Description>
+		<PackageTags>Adnc.Shared.WebApi</PackageTags>
+	</PropertyGroup>
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
+	<ItemGroup>
+		<Content Include="appsettings.shared.Development.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<Content Include="NLog\nlog-console.config">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<Content Include="NLog\nlog-loki.config">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<Content Include="NLog\nlog-mongodb.config">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="System.ValueTuple" Version="$(System_ValueTuple_Version)" />
+		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="$(Microsoft_VisualStudio_Azure_Containers_Tools_Targets_Version)" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="$(Microsoft_AspNetCore_Authentication_JwtBearer_Version)" />
+		<PackageReference Include="FluentValidation" Version="$(FluentValidation_Version)" />
+		<PackageReference Include="FluentValidation.AspNetCore" Version="$(FluentValidation_AspNetCore_Version)" />
+		<PackageReference Include="MicroElements.Swashbuckle.FluentValidation" Version="$(MicroElements_Swashbuckle_FluentValidation_Version)" />
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="$(Swashbuckle_AspNetCore_Version)" />
+		<PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="$(Swashbuckle_AspNetCore_SwaggerGen_Version)" />
+		<PackageReference Include="MiniProfiler.AspNetCore.Mvc" Version="$(MiniProfiler_AspNetCore_Mvc_Version)" />
+		<PackageReference Include="MiniProfiler.EntityFrameworkCore" Version="$(MiniProfiler_EntityFrameworkCore_Version)" />
+		<!--<PackageReference Include="SkyApm.Diagnostics.MongoDB" Version="1.0.0" />-->
+		<PackageReference Include="AspNetCore.HealthChecks.Rabbitmq" Version="$(AspNetCore_HealthChecks_Rabbitmq_Version)" />
+		<PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="$(AspNetCore_HealthChecks_UI_Client_Version)" />
+		<PackageReference Include="AspNetCore.HealthChecks.MySql" Version="$(AspNetCore_HealthChecks_MySql_Version)" />
+		<PackageReference Include="AspNetCore.HealthChecks.MongoDb" Version="$(AspNetCore_HealthChecks_MongoDb_Version)" />
+		<!--<PackageReference Include="AspNetCore.HealthChecks.Redis" Version="5.0.2" />-->
+		<PackageReference Include="LiteX.HealthChecks.Redis" Version="$(LiteX_HealthChecks_Redis_Version)" />
+		<PackageReference Include="prometheus-net.AspNetCore" Version="$(prometheus-net_AspNetCore_Version)" />
+		<PackageReference Include="prometheus-net.DotNetRuntime" Version="$(prometheus-net_DotNetRuntime_Version)" />
+		<PackageReference Include="NLog.Targets.Loki" Version="$(NLog_Targets_Loki_Version)" />
+		<PackageReference Include="NLog.Mongo" Version="$(NLog_Mongo_Version)">
+			<TreatAsUsed>true</TreatAsUsed>
+		</PackageReference>
+		<PackageReference Include="NLog.Web.AspNetCore" Version="$(NLog_Web_AspNetCore_Version)">
+			<TreatAsUsed>true</TreatAsUsed>
+		</PackageReference>
+		<PackageReference Include="SkyAPM.Agent.AspNetCore" Version="$(SkyAPM_Agent_AspNetCore_Version)">
+			<TreatAsUsed>true</TreatAsUsed>
+		</PackageReference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Adnc.Shared.Application.Contracts\Adnc.Shared.Application.Contracts.csproj" />
+		<ProjectReference Include="..\Adnc.Shared.Const\Adnc.Shared.Const.csproj" />
+		<ProjectReference Include="..\Adnc.Shared.Rpc.Http\Adnc.Shared.Rpc.Http.csproj" />
+		<ProjectReference Include="..\Adnc.Shared.Rpc.Grpc\Adnc.Shared.Rpc.Grpc.csproj" />
+		<ProjectReference Include="..\Adnc.Shared\Adnc.Shared.csproj" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(SolutionName)'=='Adnc'">
+		<ProjectReference Include="..\..\Infrastructures\Adnc.Infra.Consul\Adnc.Infra.Consul.csproj" />
+		<ProjectReference Include="..\..\Infrastructures\Adnc.Infra.EventBus\Adnc.Infra.EventBus.csproj" />
+		<ProjectReference Include="..\..\Infrastructures\Adnc.Infra.Helper\Adnc.Infra.Helper.csproj" />
+		<ProjectReference Include="..\..\Infrastructures\Adnc.Infra.Redis.Caching\Adnc.Infra.Redis.Caching.csproj" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(SolutionName)'=='Adnc.Shared'">
+		<PackageReference Include="Adnc.Infra.Consul" Version="$(Infra_Version)" />
+		<PackageReference Include="Adnc.Infra.EventBus" Version="$(Infra_Version)" />
+		<PackageReference Include="Adnc.Infra.Helper" Version="$(Infra_Version)" />
+		<PackageReference Include="Adnc.Infra.Redis.Caching" Version="$(Infra_Version)" />
+	</ItemGroup>
+</Project>
