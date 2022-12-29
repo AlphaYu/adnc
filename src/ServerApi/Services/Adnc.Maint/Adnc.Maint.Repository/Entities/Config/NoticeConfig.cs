@@ -1,12 +1,12 @@
 ﻿namespace Adnc.Maint.Entities.Config;
 
-public class NoticeConfig : AbstractEntityTypeConfiguration<SysNotice>
+public class NoticeConfig : AbstractEntityTypeConfiguration<Notice>
 {
-    public override void Configure(EntityTypeBuilder<SysNotice> builder)
+    public override void Configure(EntityTypeBuilder<Notice> builder)
     {
         base.Configure(builder);
 
-        builder.Property(x => x.Content).IsRequired().HasMaxLength(NoticeConsts.Content_MaxLength);
+        builder.Property(x => x.Content).HasMaxLength(NoticeConsts.Content_MaxLength);
         builder.Property(x => x.Title).HasMaxLength(NoticeConsts.Title_MaxLength);
     }
 }

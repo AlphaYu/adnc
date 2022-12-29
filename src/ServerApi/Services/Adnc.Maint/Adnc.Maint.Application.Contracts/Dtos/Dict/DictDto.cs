@@ -3,7 +3,7 @@
 [Serializable]
 public class DictDto : OutputDto
 {
-    public string Name { get; set; }
+    public string Name { get; set; } = string.Empty;
 
     public int Ordinal { get; set; }
 

@@ -1,11 +1,11 @@
 ﻿global using Adnc.Infra.Redis.Caching.Core.Interceptor;
 global using Adnc.Shared.Application.Contracts.Attributes;
 global using Adnc.Shared.Application.Contracts.Dtos;
-global using Adnc.Shared.Application.Contracts.DtoValidator;
 global using Adnc.Shared.Application.Contracts.Interfaces;
 global using Adnc.Shared.Application.Contracts.ResultModels;
-global using Adnc.Shared.Consts.Caching.Usr;
-global using Adnc.Shared.Consts.Entity.Usr;
+global using Adnc.Shared.Application.Contracts.Validators;
+global using Adnc.Shared.Const.Caching.Usr;
+global using Adnc.Shared.Const.Entity.Usr;
 global using Adnc.Usr.Application.Contracts.Dtos;
 global using FluentValidation;
 

@@ -9,6 +9,7 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\..\..\ServiceShared\Adnc.Shared.Application.Contracts\Adnc.Shared.Application.Contracts.csproj" />
+	  <ProjectReference Include="..\..\..\ServiceShared\Adnc.Shared.Rpc.Event\Adnc.Shared.Rpc.Event.csproj" />
 	  <ProjectReference Include="..\..\..\ServiceShared\Adnc.Shared\Adnc.Shared.csproj" />
 	</ItemGroup>
 </Project>

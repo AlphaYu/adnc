@@ -2,12 +2,12 @@
 
 public class DictAppService : AbstractAppService, IDictAppService
 {
-    private readonly IEfRepository<SysDict> _dictRepository;
+    private readonly IEfRepository<Dict> _dictRepository;
     private readonly BloomFilterFactory _bloomFilterFactory;
     private readonly CacheService _cacheService;
 
     public DictAppService(
-        IEfRepository<SysDict> dictRepository,
+        IEfRepository<Dict> dictRepository,
         BloomFilterFactory bloomFilterFactory,
         CacheService cacheService)
     {
@@ -22,14 +22,14 @@ public class DictAppService : AbstractAppService, IDictAppService
         if (exists)
             return Problem(HttpStatusCode.BadRequest, "字典名字已经存在");
 
-        var dists = new List<SysDict>();
+        var dists = new List<Dict>();
         long id = IdGenerater.GetNextId();
-        var dict = new SysDict { Id = id, Name = input.Name, Value = input.Value, Ordinal = input.Ordinal, Pid = 0 };
+        var dict = new Dict { Id = id, Name = input.Name, Value = input.Value, Ordinal = input.Ordinal, Pid = 0 };
 
         dists.Add(dict);
         input.Children?.ForEach(x =>
         {
-            dists.Add(new SysDict
+            dists.Add(new Dict
             {
                 Id = IdGenerater.GetNextId(),
                 Pid = id,
@@ -55,12 +55,12 @@ public class DictAppService : AbstractAppService, IDictAppService
         if (exists)
             return Problem(HttpStatusCode.BadRequest, "字典名字已经存在");
 
-        var dict = new SysDict { Name = input.Name, Value = input.Value, Id = id, Pid = 0, Ordinal = input.Ordinal };
+        var dict = new Dict { Name = input.Name, Value = input.Value, Id = id, Pid = 0, Ordinal = input.Ordinal };
 
-        var subDicts = new List<SysDict>();
+        var subDicts = new List<Dict>();
         input.Children?.ForEach(x =>
         {
-            subDicts.Add(new SysDict
+            subDicts.Add(new Dict
             {
                 Id = IdGenerater.GetNextId(),
                 Pid = id,
@@ -70,7 +70,7 @@ public class DictAppService : AbstractAppService, IDictAppService
             });
         });
 
-        await _dictRepository.UpdateAsync(dict, UpdatingProps<SysDict>(d => d.Name, d => d.Value, d => d.Ordinal));
+        await _dictRepository.UpdateAsync(dict, UpdatingProps<Dict>(d => d.Name, d => d.Value, d => d.Ordinal));
         await _dictRepository.DeleteRangeAsync(d => d.Pid == dict.Id);
         if (subDicts.IsNotNullOrEmpty())
             await _dictRepository.InsertRangeAsync(subDicts);
@@ -105,7 +105,7 @@ public class DictAppService : AbstractAppService, IDictAppService
         var result = new List<DictDto>();
 
         var whereCondition = ExpressionCreator
-            .New<SysDict>(x => x.Pid == 0)
+            .New<Dict>(x => x.Pid == 0)
             .AndIf(search.Name.IsNotNullOrWhiteSpace(), x => EF.Functions.Like(x.Name, $"{search.Name.Trim()}%"));
 
         var dictEntities = await _dictRepository
@@ -117,7 +117,7 @@ public class DictAppService : AbstractAppService, IDictAppService
             return new List<DictDto>();
 
         var subPids = dictEntities.Select(x => x.Id);
-        var allSubDictEntities =await _dictRepository.Where(x => subPids.Contains(x.Pid)).ToListAsync();
+        var allSubDictEntities = await _dictRepository.Where(x => subPids.Contains(x.Pid)).ToListAsync();
 
         var dictDtos = Mapper.Map<List<DictDto>>(dictEntities);
         var allSubDictDtos = Mapper.Map<List<DictDto>>(allSubDictEntities);

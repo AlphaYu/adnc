@@ -178,7 +178,7 @@ public class OrderAppService : AbstractAppService, IOrderAppService
         if (orderDtos.IsNotNullOrEmpty())
         {
             //调用maint微服务获取字典,组合订单状态信息
-            var restRpcResult = await _maintRestClient.GetDictAsync(RpcConsts.OrderStatusId);
+            var restRpcResult = await _maintRestClient.GetDictAsync(ServiceAddressConsts.OrderStatusId);
             if (restRpcResult.IsSuccessStatusCode)
             {
                 var dict = restRpcResult.Content;

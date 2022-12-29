@@ -5,9 +5,9 @@
 /// </summary>
 public class LoginLogDto : MongoDto
 {
-    public string Device { get; set; }
+    public string Device { get; set; } = string.Empty;
 
-    public string Message { get; set; }
+    public string Message { get; set; } = string.Empty;
 
     public bool Succeed { get; set; }
 
@@ -15,11 +15,11 @@ public class LoginLogDto : MongoDto
 
     public long? UserId { get; set; }
 
-    public string Account { get; set; }
+    public string Account { get; set; } = string.Empty;
 
-    public string UserName { get; set; }
+    public string UserName { get; set; } = string.Empty;
 
-    public string RemoteIpAddress { get; set; }
+    public string RemoteIpAddress { get; set; } = string.Empty;
 
-    public DateTime? CreateTime { get; set; }
+    public DateTime CreateTime { get; set; }
 }

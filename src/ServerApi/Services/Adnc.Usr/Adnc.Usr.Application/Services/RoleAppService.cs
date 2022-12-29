@@ -2,14 +2,14 @@
 
 public class RoleAppService : AbstractAppService, IRoleAppService
 {
-    private readonly IEfRepository<SysRole> _roleRepository;
-    private readonly IEfRepository<SysUser> _userRepository;
-    private readonly IEfRepository<SysRelation> _relationRepository;
+    private readonly IEfRepository<Role> _roleRepository;
+    private readonly IEfRepository<User> _userRepository;
+    private readonly IEfRepository<RoleRelation> _relationRepository;
     private readonly CacheService _cacheService;
 
-    public RoleAppService(IEfRepository<SysRole> roleRepository,
-        IEfRepository<SysUser> userRepository,
-        IEfRepository<SysRelation> relationRepository,
+    public RoleAppService(IEfRepository<Role> roleRepository,
+        IEfRepository<User> userRepository,
+        IEfRepository<RoleRelation> relationRepository,
         CacheService cacheService)
     {
         _roleRepository = roleRepository;
@@ -24,7 +24,7 @@ public class RoleAppService : AbstractAppService, IRoleAppService
         if (isExists)
             return Problem(HttpStatusCode.BadRequest, "该角色名称已经存在");
 
-        var role = Mapper.Map<SysRole>(input);
+        var role = Mapper.Map<Role>(input);
         role.Id = IdGenerater.GetNextId();
         await _roleRepository.InsertAsync(role);
 
@@ -37,9 +37,9 @@ public class RoleAppService : AbstractAppService, IRoleAppService
         if (isExists)
             return Problem(HttpStatusCode.BadRequest, "该角色名称已经存在");
 
-        var role = Mapper.Map<SysRole>(input);
+        var role = Mapper.Map<Role>(input);
         role.Id = id;
-        await _roleRepository.UpdateAsync(role, UpdatingProps<SysRole>(x => x.Name, x => x.Tips, x => x.Ordinal));
+        await _roleRepository.UpdateAsync(role, UpdatingProps<Role>(x => x.Name, x => x.Tips, x => x.Ordinal));
 
         return AppSrvResult();
     }
@@ -64,11 +64,11 @@ public class RoleAppService : AbstractAppService, IRoleAppService
 
         await _relationRepository.DeleteRangeAsync(x => x.RoleId == input.RoleId);
 
-        var relations = new List<SysRelation>();
+        var relations = new List<RoleRelation>();
         foreach (var permissionId in input.Permissions)
         {
             relations.Add(
-                new SysRelation
+                new RoleRelation
                 {
                     Id = IdGenerater.GetNextId(),
                     RoleId = input.RoleId,
@@ -122,7 +122,7 @@ public class RoleAppService : AbstractAppService, IRoleAppService
     public async Task<PageModelDto<RoleDto>> GetPagedAsync(RolePagedSearchDto search)
     {
         var whereExpression = ExpressionCreator
-                                              .New<SysRole>()
+                                              .New<Role>()
                                               .AndIf(search.RoleName.IsNotNullOrWhiteSpace(), x => x.Name.Contains(search.RoleName));
 
         var total = await _roleRepository.CountAsync(whereExpression);

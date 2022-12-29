@@ -27,7 +27,7 @@
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="Grpc.AspNetCore" Version="$(Grpc_AspNetCore_Version)" />
-		<Protobuf Include="..\..\..\ServiceShared\Adnc.Shared.Rpc\Protos\Services\maintgrpc.proto" GrpcServices="Server" Link="Grpc\Protos\Services\maintgrpc.proto" ProtoRoot="..\..\..\ServiceShared\Adnc.Shared.Rpc\" />
+		<Protobuf Include="..\..\..\protos\services\maintgrpc.proto" GrpcServices="Server" Link="Grpc\protos\maintgrpc.proto" ProtoRoot="..\..\..\protos\" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\ServiceShared\Adnc.Shared.WebApi\Adnc.Shared.WebApi.csproj" />

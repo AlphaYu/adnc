@@ -3,7 +3,7 @@
 namespace Adnc.Maint.WebApi.Controllers;
 
 /// <summary>
-/// 操作日志
+/// 日志管理
 /// </summary>
 [Route("maint")]
 public class LogController : AdncControllerBase

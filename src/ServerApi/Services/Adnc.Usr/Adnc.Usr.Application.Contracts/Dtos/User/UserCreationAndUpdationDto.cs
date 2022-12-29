@@ -5,7 +5,7 @@
         /// <summary>
         /// 账户
         /// </summary>
-        public string Account { get; set; }
+        public string Account { get; set; } = string.Empty;
 
         ///// <summary>
         ///// 头像
@@ -15,7 +15,7 @@
         /// <summary>
         /// 生日
         /// </summary>
-        public DateTime? Birthday { get; set; }
+        public DateTime Birthday { get; set; }
 
         /// <summary>
         /// 部门Id
@@ -25,17 +25,17 @@
         /// <summary>
         /// 邮件地址
         /// </summary>
-        public string Email { get; set; }
+        public string Email { get; set; } = string.Empty;
 
         /// <summary>
         /// 姓名
         /// </summary>
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         /// <summary>
         /// 手机号
         /// </summary>
-        public string Phone { get; set; }
+        public string Phone { get; set; } = string.Empty;
 
         ///// <summary>
         ///// 角色Id列表，以逗号分隔
@@ -45,16 +45,12 @@
         /// <summary>
         /// 性别
         /// </summary>
-        public int? Sex { get; set; }
+        public int Sex { get; set; }
 
         /// <summary>
         /// 账户状态
         /// </summary>
         public int Status { get; set; }
 
-        ///// <summary>
-        ///// 账户版本号
-        ///// </summary>
-        //public int? Version { get; set; }
     }
 }

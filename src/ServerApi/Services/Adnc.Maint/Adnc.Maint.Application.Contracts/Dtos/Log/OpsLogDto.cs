@@ -8,32 +8,32 @@ public class OpsLogDto : MongoDto
     /// <summary>
     /// 控制器类名
     /// </summary>
-    public string ClassName { get; set; }
+    public string ClassName { get; set; } = string.Empty;
 
     /// <summary>
     /// 日志业务名称
     /// </summary>
-    public string LogName { get; set; }
+    public string LogName { get; set; } = string.Empty;
 
     /// <summary>
     /// 日志类型
     /// </summary>
-    public string LogType { get; set; }
+    public string LogType { get; set; } = string.Empty;
 
     /// <summary>
     /// 详细信息
     /// </summary>
-    public string Message { get; set; }
+    public string Message { get; set; } = string.Empty;
 
     /// <summary>
     /// 控制器方法
     /// </summary>
-    public string Method { get; set; }
+    public string Method { get; set; } = string.Empty;
 
     /// <summary>
     /// 是否操作成功
     /// </summary>
-    public string Succeed { get; set; }
+    public string Succeed { get; set; } = string.Empty;
 
     /// <summary>
     /// 操作用户ID
@@ -43,20 +43,20 @@ public class OpsLogDto : MongoDto
     /// <summary>
     /// 账号
     /// </summary>
-    public string Account { get; set; }
+    public string Account { get; set; } = string.Empty;
 
     /// <summary>
     /// 操作用户名
     /// </summary>
-    public string UserName { get; set; }
+    public string UserName { get; set; } = string.Empty;
 
     /// <summary>
     /// Ip
     /// </summary>
-    public string RemoteIpAddress { get; set; }
+    public string RemoteIpAddress { get; set; } = string.Empty;
 
     /// <summary>
     /// 操作时间
     /// </summary>
-    public DateTime? CreateTime { get; set; }
+    public DateTime CreateTime { get; set; }
 }

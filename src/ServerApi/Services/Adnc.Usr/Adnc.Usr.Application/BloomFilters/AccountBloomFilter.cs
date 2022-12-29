@@ -22,7 +22,7 @@ public class AccountBloomFilter : AbstractBloomFilter
         if (!exists)
         {
             using var scope = _services.Value.CreateScope();
-            var repository = scope.ServiceProvider.GetRequiredService<IEfRepository<SysUser>>();
+            var repository = scope.ServiceProvider.GetRequiredService<IEfRepository<User>>();
             var values = await repository.GetAll()
                                          .Select(x => x.Account)
                                          .ToListAsync();

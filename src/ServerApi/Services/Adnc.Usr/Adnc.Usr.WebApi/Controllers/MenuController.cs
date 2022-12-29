@@ -10,15 +10,13 @@ namespace Adnc.Usr.WebApi.Controllers;
 public class MenuController : AdncControllerBase
 {
     private readonly IMenuAppService _menuService;
-    private readonly IAccountAppService _accountService;
     private readonly UserContext _userContext;
 
-    public MenuController(IMenuAppService menuService
-        , IAccountAppService accountService
+    public MenuController(
+        IMenuAppService menuService
         , UserContext userContext)
     {
         _menuService = menuService;
-        _accountService = accountService;
         _userContext = userContext;
     }
 

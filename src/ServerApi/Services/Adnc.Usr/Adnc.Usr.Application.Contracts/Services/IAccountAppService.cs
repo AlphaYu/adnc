@@ -10,7 +10,7 @@
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        [OperateLog(LogName = "登录")]
+        //[OperateLog(LogName = "登录")]
         Task<AppSrvResult<UserValidatedInfoDto>> LoginAsync(UserLoginDto input);
 
         /// <summary>

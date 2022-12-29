@@ -2,12 +2,12 @@
 
 public class CfgAppService : AbstractAppService, ICfgAppService
 {
-    private readonly IEfRepository<SysCfg> _cfgRepository;
+    private readonly IEfRepository<Cfg> _cfgRepository;
     private readonly BloomFilterFactory _bloomFilterFactory;
     private readonly CacheService _cacheService;
 
     public CfgAppService(
-        IEfRepository<SysCfg> cfgRepository,
+        IEfRepository<Cfg> cfgRepository,
         BloomFilterFactory bloomFilterFactory,
         CacheService cacheService)
     {
@@ -22,7 +22,7 @@ public class CfgAppService : AbstractAppService, ICfgAppService
         if (exists)
             return Problem(HttpStatusCode.BadRequest, "参数名称已经存在");
 
-        var cfg = Mapper.Map<SysCfg>(input);
+        var cfg = Mapper.Map<Cfg>(input);
         cfg.Id = IdGenerater.GetNextId();
 
         var cacheKey = _cacheService.ConcatCacheKey(CachingConsts.CfgSingleKeyPrefix, cfg.Id);
@@ -42,10 +42,10 @@ public class CfgAppService : AbstractAppService, ICfgAppService
         if (exists)
             return Problem(HttpStatusCode.BadRequest, "参数名称已经存在");
 
-        var entity = Mapper.Map<SysCfg>(input);
+        var entity = Mapper.Map<Cfg>(input);
 
         entity.Id = id;
-        var updatingProps = UpdatingProps<SysCfg>(x => x.Name, x => x.Value, x => x.Description);
+        var updatingProps = UpdatingProps<Cfg>(x => x.Name, x => x.Value, x => x.Description);
         await _cfgRepository.UpdateAsync(entity, updatingProps);
 
         return AppSrvResult();
@@ -66,7 +66,7 @@ public class CfgAppService : AbstractAppService, ICfgAppService
     public async Task<PageModelDto<CfgDto>> GetPagedAsync(CfgSearchPagedDto search)
     {
         var whereExpression = ExpressionCreator
-            .New<SysCfg>()
+            .New<Cfg>()
             .AndIf(search.Name.IsNotNullOrWhiteSpace(), x => EF.Functions.Like(x.Name, $"{search.Name}%"))
             .AndIf(search.Value.IsNotNullOrWhiteSpace(), x => EF.Functions.Like(x.Value, $"{search.Value}%"));
 

@@ -1,7 +1,7 @@
 ﻿global using Adnc.Infra.Core.Configuration;
 global using Adnc.Shared;
 global using Adnc.Shared.Application.Contracts.Dtos;
-global using Adnc.Shared.Consts.Permissions.Usr;
+global using Adnc.Shared.Const.Permissions.Usr;
 global using Adnc.Shared.WebApi.Authentication;
 global using Adnc.Shared.WebApi.Authentication.JwtBearer;
 global using Adnc.Shared.WebApi.Authorization;

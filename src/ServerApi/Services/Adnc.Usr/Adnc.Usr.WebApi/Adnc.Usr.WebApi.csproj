@@ -35,8 +35,8 @@
 	</ItemGroup>
 	<ItemGroup>
 		<!--<Protobuf Include="..\..\..\ServiceShared\Adnc.Shared\Protos\Rtos\*.proto" GrpcServices="Server" Link="Grpc\Protos\Rtos\%(RecursiveDir)%(Filename)%(Extension)" ProtoRoot="..\..\..\ServiceShared\Adnc.Shared\" />-->
-		<Protobuf Include="..\..\..\ServiceShared\Adnc.Shared.Rpc\Protos\Services\authgrpc.proto" GrpcServices="Server" Link="Grpc\Protos\Services\authgrpc.proto" ProtoRoot="..\..\..\ServiceShared\Adnc.Shared.Rpc\" />
-		<Protobuf Include="..\..\..\ServiceShared\Adnc.Shared.Rpc\Protos\Services\usrgrpc.proto" GrpcServices="Server" Link="Grpc\Protos\Services\usrgrpc.proto" ProtoRoot="..\..\..\ServiceShared\Adnc.Shared.Rpc\" />
+		<Protobuf Include="..\..\..\protos\services\authgrpc.proto" GrpcServices="Server" Link="Grpc\protos\authgrpc.proto" ProtoRoot="..\..\..\protos\" />
+		<Protobuf Include="..\..\..\protos\services\usrgrpc.proto" GrpcServices="Server" Link="Grpc\protos\usrgrpc.proto" ProtoRoot="..\..\..\protos\" />
 	</ItemGroup>
 <!--<Target Name="BuildTheApplicationProject" BeforeTargets="BeforeBuild">
 			<MSBuild Projects="..\Adnc.Usr.Application\Adnc.Usr.Application.csproj" Targets="Build" Properties="Configuration=$(Configuration);Platform=$(Platform)" />

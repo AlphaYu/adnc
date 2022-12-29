@@ -1,0 +1,11 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="..\..\..\Props\common.props" />
+	<Import Project="..\..\..\Props\version.props" />
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\ServiceShared\Adnc.Shared.Rpc.Http\Adnc.Shared.Rpc.Http.csproj" />
+		<ProjectReference Include="..\..\..\ServiceShared\Adnc.Shared.Rpc.Grpc\Adnc.Shared.Rpc.Grpc.csproj" />
+		<ProjectReference Include="..\..\..\ServiceShared\Adnc.Shared.Application\Adnc.Shared.Application.csproj" />
+		<ProjectReference Include="..\Adnc.Cust.Application.Contracts\Adnc.Cust.Application.Contracts.csproj" />
+		<ProjectReference Include="..\Adnc.Cust.Repository\Adnc.Cust.Repository.csproj" />
+	</ItemGroup>
+</Project>

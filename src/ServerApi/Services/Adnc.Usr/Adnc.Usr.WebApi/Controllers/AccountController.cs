@@ -1,7 +1,7 @@
 ﻿namespace Adnc.Usr.WebApi.Controllers;
 
 /// <summary>
-/// 认证服务
+/// 认证管理
 /// </summary>
 [Route("auth/session")]
 [ApiController]

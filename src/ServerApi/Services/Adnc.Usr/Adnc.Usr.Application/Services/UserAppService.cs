@@ -2,16 +2,16 @@
 
 public class UserAppService : AbstractAppService, IUserAppService
 {
-    private readonly IEfRepository<SysUser> _userRepository;
-    private readonly IEfRepository<SysRole> _roleRepository;
-    private readonly IEfRepository<SysMenu> _menuRepository;
+    private readonly IEfRepository<User> _userRepository;
+    private readonly IEfRepository<Role> _roleRepository;
+    private readonly IEfRepository<Menu> _menuRepository;
     private readonly CacheService _cacheService;
     private readonly BloomFilterFactory _bloomFilterFactory;
 
     public UserAppService(
-        IEfRepository<SysUser> userRepository
-        , IEfRepository<SysRole> roleRepository
-        , IEfRepository<SysMenu> menuRepository
+        IEfRepository<User> userRepository
+        , IEfRepository<Role> roleRepository
+        , IEfRepository<Menu> menuRepository
         , CacheService cacheService
        , BloomFilterFactory bloomFilterFactory)
     {
@@ -27,11 +27,11 @@ public class UserAppService : AbstractAppService, IUserAppService
         if (await _userRepository.AnyAsync(x => x.Account == input.Account))
             return Problem(HttpStatusCode.BadRequest, "账号已经存在");
 
-        var user = Mapper.Map<SysUser>(input);
+        var user = Mapper.Map<User>(input);
         user.Id = IdGenerater.GetNextId();
         user.Account = user.Account.ToLower();
         user.Salt = Random.Shared.Next(5, false);
-        user.Password = InfraHelper.Security.MD5(user.Password + user.Salt);
+        user.Password = InfraHelper.Encrypt.Md5(user.Password + user.Salt);
 
         var cacheKey = _cacheService.ConcatCacheKey(CachingConsts.UserValidatedInfoKeyPrefix, user.Id);
         var bloomFilterCacheKey = _bloomFilterFactory.Create(CachingConsts.BloomfilterOfCacheKey);
@@ -47,10 +47,10 @@ public class UserAppService : AbstractAppService, IUserAppService
 
     public async Task<AppSrvResult> UpdateAsync(long id, UserUpdationDto input)
     {
-        var user = Mapper.Map<SysUser>(input);
+        var user = Mapper.Map<User>(input);
 
         user.Id = id;
-        var updatingProps = UpdatingProps<SysUser>(x => x.Name, x => x.DeptId, x => x.Sex, x => x.Phone, x => x.Email, x => x.Birthday, x => x.Status);
+        var updatingProps = UpdatingProps<User>(x => x.Name, x => x.DeptId, x => x.Sex, x => x.Phone, x => x.Email, x => x.Birthday, x => x.Status);
         await _userRepository.UpdateAsync(user, updatingProps);
 
         return AppSrvResult();
@@ -59,7 +59,7 @@ public class UserAppService : AbstractAppService, IUserAppService
     public async Task<AppSrvResult> SetRoleAsync(long id, UserSetRoleDto input)
     {
         var roleIdStr = input.RoleIds.IsNullOrEmpty() ? string.Empty : string.Join(",", input.RoleIds);
-        await _userRepository.UpdateAsync(new SysUser() { Id = id, RoleIds = roleIdStr }, UpdatingProps<SysUser>(x => x.RoleIds));
+        await _userRepository.UpdateAsync(new User() { Id = id, RoleIds = roleIdStr }, UpdatingProps<User>(x => x.RoleIds));
 
         return AppSrvResult();
     }
@@ -72,13 +72,13 @@ public class UserAppService : AbstractAppService, IUserAppService
 
     public async Task<AppSrvResult> ChangeStatusAsync(long id, int status)
     {
-        await _userRepository.UpdateAsync(new SysUser { Id = id, Status = status }, UpdatingProps<SysUser>(x => x.Status));
+        await _userRepository.UpdateAsync(new User { Id = id, Status = status }, UpdatingProps<User>(x => x.Status));
         return AppSrvResult();
     }
 
     public async Task<AppSrvResult> ChangeStatusAsync(IEnumerable<long> ids, int status)
     {
-        await _userRepository.UpdateRangeAsync(u => ids.Contains(u.Id), u => new SysUser { Status = status });
+        await _userRepository.UpdateRangeAsync(u => ids.Contains(u.Id), u => new User { Status = status });
         return AppSrvResult();
     }
 
@@ -105,7 +105,7 @@ public class UserAppService : AbstractAppService, IUserAppService
     public async Task<PageModelDto<UserDto>> GetPagedAsync(UserSearchPagedDto search)
     {
         var whereExpression = ExpressionCreator
-                                            .New<SysUser>()
+                                            .New<User>()
                                             .AndIf(search.Account.IsNotNullOrWhiteSpace(), x => EF.Functions.Like(x.Account, $"%{search.Account.Trim()}%"))
                                             .AndIf(search.Name.IsNotNullOrWhiteSpace(), x => EF.Functions.Like(x.Name, $"%{search.Name.Trim()}%"));
 
@@ -124,7 +124,7 @@ public class UserAppService : AbstractAppService, IUserAppService
         if (userDtos.IsNotNullOrEmpty())
         {
             var deptIds = userDtos.Where(d => d.DeptId is not null).Select(d => d.DeptId).Distinct();
-            var depts = (await _cacheService.GetAllDeptsFromCacheAsync()).Where(x => deptIds.Contains(x.Id)).Select(d => new { d.Id, d.FullName });
+            var depts = (await _cacheService.GetAllOrganizationsFromCacheAsync()).Where(x => deptIds.Contains(x.Id)).Select(d => new { d.Id, d.FullName });
             var roles = (await _cacheService.GetAllRolesFromCacheAsync()).Select(r => new { r.Id, r.Name });
             foreach (var user in userDtos)
             {
@@ -138,7 +138,7 @@ public class UserAppService : AbstractAppService, IUserAppService
             }
         }
 
-        var xdata = await _cacheService.GetDeptSimpleTreeListAsync();
+        var xdata = await _cacheService.GetOrganizationsSimpleTreeListAsync();
         return new PageModelDto<UserDto>(search, userDtos, total, xdata);
     }
 
