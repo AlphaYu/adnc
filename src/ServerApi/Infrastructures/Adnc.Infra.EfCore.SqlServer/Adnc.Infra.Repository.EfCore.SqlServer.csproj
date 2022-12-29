@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="..\..\Props\common.props" />
+	<Import Project="..\..\Props\version.props" />
+	<Import Project="..\..\Props\nuget.props" />
+	<PropertyGroup>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<Description>该工程是在`Adnc.Infra.Repository.EfCore`基础上SqlServer的实现。</Description>
+		<PackageTags>adnc,efcore,sqlserver</PackageTags>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="DotNetCore.CAP" Version="$(DotNetCore_CAP_Version)" />
+		<PackageReference Include="DotNetCore.CAP.SqlServer" Version="$(DotNetCore_CAP_SqlServer_Version)" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="$(Microsoft_EntityFrameworkCore_SqlServer_Version)" />
+		<PackageReference Include="EFCore.NamingConventions" Version="$(EFCore_NamingConventions_Version)" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="$(Microsoft_Extensions_Configuration_Binder_Version)"/>
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Adnc.Infra.EfCore\Adnc.Infra.Repository.EfCore.csproj" />
+		<ProjectReference Include="..\Adnc.Infra.Repository\Adnc.Infra.Repository.csproj" />
+	</ItemGroup>
+</Project>
