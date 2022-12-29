@@ -1,19 +1,11 @@
-﻿namespace Adnc.Infra.Helper;
+﻿namespace Adnc.Infra.Helper.Internal;
 
 /// <summary>
 /// 一致性哈希算法
 /// </summary>
 public sealed class HashConsistentGenerater
 {
-    private static HashConsistentGenerater _instance = new();
-
-    public static HashConsistentGenerater Instance => _instance;
-
-    static HashConsistentGenerater()
-    {
-    }
-
-    private HashConsistentGenerater()
+    internal HashConsistentGenerater()
     {
     }
 
@@ -162,10 +154,10 @@ public sealed class HashConsistentGenerater
         using var algorithm = MD5.Create();
         var keyBytes = Encoding.UTF8.GetBytes(key);
         var digest = algorithm.ComputeHash(keyBytes);
-        long rv = ((long)(digest[3 + nTime * 4] & 0xFF) << 24)
-                        | ((long)(digest[2 + nTime * 4] & 0xFF) << 16)
-                        | ((long)(digest[1 + nTime * 4] & 0xFF) << 8)
-                        | ((long)digest[0 + nTime * 4] & 0xFF);
+        long rv = (long)(digest[3 + nTime * 4] & 0xFF) << 24
+                        | (long)(digest[2 + nTime * 4] & 0xFF) << 16
+                        | (long)(digest[1 + nTime * 4] & 0xFF) << 8
+                        | (long)digest[0 + nTime * 4] & 0xFF;
         return (int)(rv & 0xffffffffL);
     }
 }

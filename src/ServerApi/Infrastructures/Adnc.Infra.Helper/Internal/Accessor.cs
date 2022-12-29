@@ -1,16 +1,24 @@
-﻿namespace Adnc.Infra.Helper;
+﻿namespace Adnc.Infra.Helper.Internal;
 
 /// <summary>
-/// “传统”方式获取当前HttpContext
-/// https://www.cnblogs.com/artech/p/how-to-get-httpcontext.html
+///   HttpContext Accessor
+///   https://www.cnblogs.com/artech/p/how-to-get-httpcontext.html
 /// </summary>
-public static partial class AccessorExtentions
+public sealed class Accessor
 {
     private static Func<object>? _asyncLocalAccessor;
     private static Func<object, object>? _holderAccessor;
     private static Func<object, HttpContext>? _httpContextAccessor;
 
-    public static HttpContext? GetCurrentHttpContext(this IAccessor _)
+    internal Accessor()
+    {
+    }
+
+    /// <summary>
+    /// get current HttpContext
+    /// </summary>
+    /// <returns></returns>
+    public HttpContext? GetCurrentHttpContext()
     {
         var asyncLocal = (_asyncLocalAccessor ??= CreateAsyncLocalAccessor())?.Invoke();
         if (asyncLocal is null)

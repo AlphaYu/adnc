@@ -7,9 +7,9 @@
 		<PackageTags>adnc,helper</PackageTags>
 	</PropertyGroup>
 	<ItemGroup>
-	  <Compile Remove="Core\IdGenerater\**" />
-	  <EmbeddedResource Remove="Core\IdGenerater\**" />
-	  <None Remove="Core\IdGenerater\**" />
+	  <Compile Remove="Internal\IdGenerater\**" />
+	  <EmbeddedResource Remove="Internal\IdGenerater\**" />
+	  <None Remove="Internal\IdGenerater\**" />
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Http" Version="$(Microsoft_AspNetCore_Http_Version)" />
