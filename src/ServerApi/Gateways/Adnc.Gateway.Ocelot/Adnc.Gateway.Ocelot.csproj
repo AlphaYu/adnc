@@ -19,6 +19,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Content Update="Config\ocelot.directjwt.json">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
 		<Content Update="Config\ocelot.fabio.json">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</Content>
