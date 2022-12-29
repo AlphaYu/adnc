@@ -2,7 +2,7 @@
 	<Import Project="..\..\..\Props\common.props" />
 	<Import Project="..\..\..\Props\version.props" />
 	<ItemGroup>
-		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.EfCore.SQLServer\Adnc.Infra.Repository.EfCore.SqlServer.csproj" />
+		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.EfCore.SqlServer\Adnc.Infra.Repository.EfCore.SqlServer.csproj" />
 		<ProjectReference Include="..\..\..\ServiceShared\Adnc.Shared.Application\Adnc.Shared.Application.csproj" />
 		<ProjectReference Include="..\Adnc.Whse.Application.Contracts\Adnc.Whse.Application.Contracts.csproj" />
 		<ProjectReference Include="..\Adnc.Whse.Domain\Adnc.Whse.Domain.csproj" />

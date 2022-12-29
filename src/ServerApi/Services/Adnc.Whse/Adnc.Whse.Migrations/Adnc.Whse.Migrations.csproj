@@ -5,6 +5,6 @@
 		<OutputPath>..\Adnc.Whse.WebApi\bin\$(Configuration)</OutputPath>
 	</PropertyGroup>
 	<ItemGroup>
-	  <ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.EfCore.SQLServer\Adnc.Infra.Repository.EfCore.SqlServer.csproj" />
+	  <ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.EfCore.SqlServer\Adnc.Infra.Repository.EfCore.SqlServer.csproj" />
 	</ItemGroup>
 </Project>
