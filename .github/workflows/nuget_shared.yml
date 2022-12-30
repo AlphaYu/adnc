@@ -1,0 +1,46 @@
+name: nuget_shared
+
+on:
+    push:
+      branches:
+      - master
+
+jobs:
+  build_artifact:    
+    name: Build and upload artifact
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v1
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.x
+    - name: Build with dotnet
+      run: dotnet build --configuration Release /home/runner/work/Adnc/Adnc/src/ServerApi/ServiceShared/Adnc.Shared.sln
+    - name: Pack with dotnet
+      run: dotnet pack /home/runner/work/Adnc/Adnc/src/ServerApi/ServiceShared/Adnc.Shared.sln -o /home/runner/work/shared/nugetpkgs -c Release --no-build
+    - name: Upload artifact
+      uses: actions/upload-artifact@v1
+      with:
+        name: nugetpkgs
+        path: /home/runner/work/shared/nugetpkgs  
+
+  release_nuget:
+      name: Release to Nuget
+      needs: build_artifact
+      runs-on: ubuntu-latest
+  
+      steps:
+        - name: Download build artifacts
+          uses: actions/download-artifact@v1
+          with:
+            name: nugetpkgs
+        - name: list nugetpkgs
+          run: ls nugetpkgs
+        - name: Release
+          run: |
+            for file in nugetpkgs/*.nupkg
+            do
+              dotnet nuget push $file --api-key ${{ secrets.NUGET_API_KEY }} --skip-duplicate --source https://api.nuget.org/v3/index.json
+            done
