@@ -20,6 +20,30 @@
 - 订单中心：DDD开发模式demo
 - 仓储中心：DDD开发模式demo
 
+## ## Nuget Packages
+
+| Package Name         | Version                                                      | 
+| -------------------- | ------------------------------------------------------------ |
+| Adnc.Infra.Core     | ![](https://img.shields.io/nuget/v/Adnc.Infra.Core.svg)     | ![](https://img.shields.io/nuget/dt/Adnc.Infra.Core.svg)  |
+| Adnc.Infra.Consul  | ![](https://img.shields.io/nuget/v/Adnc.Infra.Consul.svg)     | ![](https://img.shields.io/nuget/dt/Adnc.Infra.Consul.svg)  |
+| Adnc.Infra.Mapper  | ![](https://img.shields.io/nuget/v/Adnc.Infra.Mapper.svg)     | ![](https://img.shields.io/nuget/dt/Adnc.Infra.Mapper.svg)  |
+| Adnc.Infra.Helper  | ![](https://img.shields.io/nuget/v/Adnc.Infra.Helper.svg)     | ![](https://img.shields.io/nuget/dt/Adnc.Infra.Helper.svg)  |
+| Adnc.Infra.Repository  | ![](https://img.shields.io/nuget/v/Adnc.Infra.Repository.svg)     | ![](https://img.shields.io/nuget/dt/Adnc.Infra.Repository.svg)  |
+| Adnc.Infra.Repository.Mongo  | ![](https://img.shields.io/nuget/v/Adnc.Infra.Repository.Mongo.svg)     | ![](https://img.shields.io/nuget/dt/Adnc.Infra.Repository.Mongo.svg)  |
+| Adnc.Infra.Repository.Dapper  | ![](https://img.shields.io/nuget/v/Adnc.Infra.Repository.Dapper.svg)     | ![](https://img.shields.io/nuget/dt/Adnc.Infra.Repository.Dapper.svg)  |
+| Adnc.Infra.Repository.EfCore  | ![](https://img.shields.io/nuget/v/Adnc.Infra.Repository.EfCore.svg)     | ![](https://img.shields.io/nuget/dt/Adnc.Infra.Repository.EfCore.svg)  |
+| Adnc.Infra.Repository.EfCore.MySql  | ![](https://img.shields.io/nuget/v/Adnc.Infra.Repository.EfCore.MySql.svg)     | ![](https://img.shields.io/nuget/dt/Adnc.Infra.Repository.EfCore.MySql.svg)  |
+| Adnc.Infra.Repository.EfCore.SqlServer  | ![](https://img.shields.io/nuget/v/Adnc.Infra.Repository.EfCore.SqlServer.svg)     | ![](https://img.shields.io/nuget/dt/Adnc.Infra.Repository.EfCore.SqlServer.svg)  |
+| Adnc.Infra.Redis  | ![](https://img.shields.io/nuget/v/Adnc.Infra.Redis.svg)     | ![](https://img.shields.io/nuget/dt/Adnc.Infra.Redis.svg)  |
+| Adnc.Infra.Redis.Caching  | ![](https://img.shields.io/nuget/v/Adnc.Infra.Redis.Caching.svg)     | ![](https://img.shields.io/nuget/dt/Adnc.Infra.Redis.Caching.svg)  |
+| Adnc.Infra.IdGenerater | ![](https://img.shields.io/nuget/v/Adnc.Infra.IdGenerater.svg)     | ![](https://img.shields.io/nuget/dt/Adnc.Infra.IdGenerater.svg)  |
+| Adnc.Infra.EventBus | ![](https://img.shields.io/nuget/v/Adnc.Infra.EventBus.svg)     | ![](https://img.shields.io/nuget/dt/Adnc.Infra.EventBus.svg)  |
+| Adnc.Shared | ![](https://img.shields.io/nuget/v/Adnc.Shared.svg)     | ![](https://img.shields.io/nuget/dt/Adnc.Shared.svg)  |
+| Adnc.Shared.Application.Contracts | ![](https://img.shields.io/nuget/v/Adnc.Shared.Application.Contracts.svg)     | ![](https://img.shields.io/nuget/dt/Adnc.Shared.Application.Contracts.svg)  |
+| Adnc.Shared.Application | ![](https://img.shields.io/nuget/v/Adnc.Shared.Application.svg)     | ![](https://img.shields.io/nuget/dt/Adnc.Shared.Application.svg)  |
+| Adnc.Shared.Domain | ![](https://img.shields.io/nuget/v/Adnc.Shared.Domain.svg)     | ![](https://img.shields.io/nuget/dt/Adnc.Shared.Domain.svg)  |
+| Adnc.Shared.WebApi | ![](https://img.shields.io/nuget/v/Adnc.Shared.WebApi.svg)     | ![](https://img.shields.io/nuget/dt/Adnc.Shared.WebApi.svg)  |
+
 ## 问题交流
 
 - QQ群：780634162
