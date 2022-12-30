@@ -20,10 +20,10 @@
 - 订单中心：DDD开发模式demo
 - 仓储中心：DDD开发模式demo
 
-## ## Nuget Packages
+## Nuget Packages
 
-| Package Name         | Version                                                      | 
-| -------------------- | ------------------------------------------------------------ |
+| Package Name         | Version                                       | 
+| -------------------- | --------------------------------------------- |
 | Adnc.Infra.Core     | ![](https://img.shields.io/nuget/v/Adnc.Infra.Core.svg)     | ![](https://img.shields.io/nuget/dt/Adnc.Infra.Core.svg)  |
 | Adnc.Infra.Consul  | ![](https://img.shields.io/nuget/v/Adnc.Infra.Consul.svg)     | ![](https://img.shields.io/nuget/dt/Adnc.Infra.Consul.svg)  |
 | Adnc.Infra.Mapper  | ![](https://img.shields.io/nuget/v/Adnc.Infra.Mapper.svg)     | ![](https://img.shields.io/nuget/dt/Adnc.Infra.Mapper.svg)  |
