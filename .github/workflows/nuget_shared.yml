@@ -18,8 +18,16 @@ jobs:
         dotnet-version: 6.0.x
     - name: Build with dotnet
       run: dotnet build --configuration Release /home/runner/work/Adnc/Adnc/src/ServerApi/ServiceShared/Adnc.Shared.sln
-    - name: Pack with dotnet
-      run: dotnet pack /home/runner/work/Adnc/Adnc/src/ServerApi/ServiceShared/Adnc.Shared.sln -o /home/runner/work/shared/nugetpkgs -c Release --no-build
+    - name: Pack-Adnc-Shared with dotnet
+      run: dotnet pack /home/runner/work/Adnc/Adnc/src/ServerApi/ServiceShared/Adnc.Shared/Adnc.Shared.csproj -o /home/runner/work/shared/nugetpkgs -c Release --no-build
+    - name: Pack-Adnc-Shared-Contracts with dotnet
+      run: dotnet pack /home/runner/work/Adnc/Adnc/src/ServerApi/ServiceShared/Adnc.Shared.Application.Contracts/Adnc.Shared.Application.Contracts.csproj -o /home/runner/work/shared/nugetpkgs -c Release --no-build
+    - name: Pack-Adnc-Shared-Application with dotnet
+      run: dotnet pack /home/runner/work/Adnc/Adnc/src/ServerApi/ServiceShared/Adnc.Shared.Application/Adnc.Shared.Application.csproj -o /home/runner/work/shared/nugetpkgs -c Release --no-build
+    - name: Pack-Adnc-Shared-Domain with dotnet
+      run: dotnet pack /home/runner/work/Adnc/Adnc/src/ServerApi/ServiceShared/Adnc.Shared.Domain/Adnc.Shared.Domain.csproj -o /home/runner/work/shared/nugetpkgs -c Release --no-build
+    - name: Pack-Adnc-Shared-WebApi with dotnet
+      run: dotnet pack /home/runner/work/Adnc/Adnc/src/ServerApi/ServiceShared/Adnc.Shared.WebApi/Adnc.Shared.WebApi.csproj -o /home/runner/work/shared/nugetpkgs -c Release --no-build
     - name: Upload artifact
       uses: actions/upload-artifact@v1
       with:
