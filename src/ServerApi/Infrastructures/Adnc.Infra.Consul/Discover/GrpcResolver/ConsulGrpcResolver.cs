@@ -8,6 +8,9 @@ public sealed class ConsulGrpcResolver : PollingResolver
     private readonly Uri _address;
     private readonly int _port;
     private readonly ConsulClient _client;
+    private Timer? _timer;
+    private readonly TimeSpan _refreshInterval;
+    private readonly ILogger _logger;
 
     public ConsulGrpcResolver(Uri address, int defaultPort, ConsulClient client, ILoggerFactory loggerFactory)
         : base(loggerFactory)
@@ -15,6 +18,8 @@ public sealed class ConsulGrpcResolver : PollingResolver
         _address = address;
         _port = defaultPort;
         _client = client;
+        _logger = loggerFactory.CreateLogger<ConsulGrpcResolver>();
+        _refreshInterval = TimeSpan.FromSeconds(30);
     }
 
     protected override async Task ResolveAsync(CancellationToken cancellationToken)
@@ -33,6 +38,37 @@ public sealed class ConsulGrpcResolver : PollingResolver
         // Pass the results back to the channel.
         Listener(ResolverResult.ForResult(balancerAddresses));
     }
+
+    protected override void OnStarted()
+    {
+        base.OnStarted();
+
+        if (_refreshInterval != Timeout.InfiniteTimeSpan)
+        {
+            _timer = new Timer(OnTimerCallback, null, Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
+            _timer.Change(_refreshInterval, _refreshInterval);
+        }
+    }
+
+    private void OnTimerCallback(object? state)
+    {
+        try
+        {
+            Refresh();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError("ConsulGrpcResolver.OnTimerCallback", ex);
+        }
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+        base.Dispose(disposing);
+
+        _timer?.Dispose();
+    }
+
 }
 
 public class ConsulGrpcResolverFactory : ResolverFactory
