@@ -8,12 +8,22 @@
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 	</PropertyGroup>
 	<ItemGroup>
+		<ProjectReference Include="..\..\..\ServiceShared\Adnc.Shared.Const\Adnc.Shared.Const.csproj" />
+		<ProjectReference Include="..\..\..\ServiceShared\Adnc.Shared\Adnc.Shared.csproj" />
+		<ProjectReference Include="..\Adnc.Ord.Application.Contracts\Adnc.Ord.Application.Contracts.csproj" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(SolutionName)'=='Adnc'">
 		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.EventBus\Adnc.Infra.EventBus.csproj" />
 		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Helper\Adnc.Infra.Helper.csproj" />
 		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.IdGenerater\Adnc.Infra.IdGenerater.csproj" />
-		<ProjectReference Include="..\..\..\ServiceShared\Adnc.Shared.Const\Adnc.Shared.Const.csproj" />
 		<ProjectReference Include="..\..\..\ServiceShared\Adnc.Shared.Domain\Adnc.Shared.Domain.csproj" />
-		<ProjectReference Include="..\..\..\ServiceShared\Adnc.Shared\Adnc.Shared.csproj" />
-		<ProjectReference Include="..\Adnc.Ord.Application.Contracts\Adnc.Ord.Application.Contracts.csproj" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(SolutionName)'=='Adnc.Services' ">
+		<PackageReference Include="Adnc.Infra.EventBus" Version="$(Infra_Version)" />
+		<PackageReference Include="Adnc.Infra.Helper" Version="$(Infra_Version)" />
+		<PackageReference Include="Adnc.Infra.IdGenerater" Version="$(Infra_Version)" />
+		<PackageReference Include="Adnc.Shared.Domain" Version="$(Infra_Version)" />
 	</ItemGroup>
 </Project>

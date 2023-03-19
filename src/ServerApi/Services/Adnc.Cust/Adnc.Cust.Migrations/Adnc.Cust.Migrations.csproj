@@ -4,7 +4,11 @@
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
 		<OutputPath>..\Adnc.Cust.WebApi\bin\$(Configuration)</OutputPath>
 	</PropertyGroup>
-	<ItemGroup>
+	<ItemGroup Condition="'$(SolutionName)'=='Adnc'">
 		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.EfCore.MySql\Adnc.Infra.Repository.EfCore.MySql.csproj" />
 	</ItemGroup>
+
+	<ItemGroup Condition="'$(SolutionName)'=='Adnc.Services' ">
+		<PackageReference Include="Adnc.Infra.Repository.EfCore.MySql" Version="$(Infra_Version)" />
+	</ItemGroup>	
 </Project>

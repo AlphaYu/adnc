@@ -7,6 +7,14 @@
 		<DockerfileContext>..\..\..</DockerfileContext>
 		<Description>仓储中心服务</Description>
 	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="..\..\..\ServiceShared\Config\**\*">
+			<Link>%(RecursiveDir)/%(FileName)%(Extension)</Link>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+	
 	<ItemGroup>
 	  <None Remove="swagger_miniprofiler.html" />
 	</ItemGroup>
@@ -27,10 +35,18 @@
 		</PackageReference>
 	</ItemGroup>
 	<ItemGroup>
-		<ProjectReference Include="..\..\..\ServiceShared\Adnc.Shared.WebApi\Adnc.Shared.WebApi.csproj" />
 		<ProjectReference Include="..\Adnc.Whse.Application.Contracts\Adnc.Whse.Application.Contracts.csproj" />
 		<ProjectReference Include="..\Adnc.Whse.Application\Adnc.Whse.Application.csproj" />
 	</ItemGroup>
+
+	<ItemGroup Condition="'$(SolutionName)'=='Adnc'">
+		<ProjectReference Include="..\..\..\ServiceShared\Adnc.Shared.WebApi\Adnc.Shared.WebApi.csproj" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(SolutionName)'=='Adnc.Services' ">
+		<PackageReference Include="Adnc.Shared.WebApi" Version="$(Infra_Version)" />
+	</ItemGroup>
+	
 	<ItemGroup>
 		<PackageReference Include="Grpc.AspNetCore" Version="$(Grpc_AspNetCore_Version)" />
 		<Protobuf Include="..\..\..\protos\services\whsegrpc.proto" GrpcServices="Server" Link="Grpc\protos\whsegrpc.proto" ProtoRoot="..\..\..\protos\" />

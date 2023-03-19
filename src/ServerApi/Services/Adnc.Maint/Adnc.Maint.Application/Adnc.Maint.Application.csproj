@@ -3,8 +3,15 @@
 	<Import Project="..\..\..\Props\version.props" />
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\ServiceShared\Adnc.Shared.Rpc.Http\Adnc.Shared.Rpc.Http.csproj" />
-		<ProjectReference Include="..\..\..\ServiceShared\Adnc.Shared.Application\Adnc.Shared.Application.csproj" />
 		<ProjectReference Include="..\Adnc.Maint.Application.Contracts\Adnc.Maint.Application.Contracts.csproj" />
 		<ProjectReference Include="..\Adnc.Maint.Repository\Adnc.Maint.Repository.csproj" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(SolutionName)'=='Adnc'">
+		<ProjectReference Include="..\..\..\ServiceShared\Adnc.Shared.Application\Adnc.Shared.Application.csproj" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(SolutionName)'=='Adnc.Services' ">
+		<PackageReference Include="Adnc.Shared.Application" Version="$(Infra_Version)" />
 	</ItemGroup>
 </Project>

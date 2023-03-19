@@ -5,8 +5,19 @@
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 	</PropertyGroup>
 	<ItemGroup>
-	  <ProjectReference Include="..\..\..\ServiceShared\Adnc.Shared.Application.Contracts\Adnc.Shared.Application.Contracts.csproj" />
 	  <ProjectReference Include="..\..\..\ServiceShared\Adnc.Shared.Rpc.Event\Adnc.Shared.Rpc.Event.csproj" />
 	  <ProjectReference Include="..\..\..\ServiceShared\Adnc.Shared\Adnc.Shared.csproj" />
 	</ItemGroup>
+
+	<ItemGroup Condition="'$(SolutionName)'=='Adnc'">
+		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Helper\Adnc.Infra.Helper.csproj" />
+		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Redis.Caching\Adnc.Infra.Redis.Caching.csproj" />
+		<ProjectReference Include="..\..\..\ServiceShared\Adnc.Shared.Application.Contracts\Adnc.Shared.Application.Contracts.csproj" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(SolutionName)'=='Adnc.Services' ">
+		<PackageReference Include="Adnc.Infra.Helper" Version="$(Infra_Version)" />
+		<PackageReference Include="Adnc.Infra.Redis.Caching" Version="$(Infra_Version)" />
+		<PackageReference Include="Adnc.Shared.Application.Contracts" Version="$(Infra_Version)" />
+	</ItemGroup>	
 </Project>

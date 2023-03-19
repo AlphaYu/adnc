@@ -156,6 +156,18 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Shared.Rpc.Event", "Se
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Shared.Const", "ServiceShared\Adnc.Shared.Const\Adnc.Shared.Const.csproj", "{E4DABBB7-33B3-40C0-A35C-17426E03BDA6}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{FDDCEFB0-2E05-43B9-8218-5C3F37846E03}"
+	ProjectSection(SolutionItems) = preProject
+		ServiceShared\Config\appsettings.shared.Development.json = ServiceShared\Config\appsettings.shared.Development.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NLog", "NLog", "{1ABBC8EF-0A8F-4BD6-940F-8D2347EB3D7B}"
+	ProjectSection(SolutionItems) = preProject
+		ServiceShared\Config\NLog\nlog-console.config = ServiceShared\Config\NLog\nlog-console.config
+		ServiceShared\Config\NLog\nlog-loki.config = ServiceShared\Config\NLog\nlog-loki.config
+		ServiceShared\Config\NLog\nlog-mongodb.config = ServiceShared\Config\NLog\nlog-mongodb.config
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -653,6 +665,8 @@ Global
 		{0993FDAE-A7E6-42CC-91C5-B09B328EF80F} = {59BC5307-F242-4DA0-8113-2200008A8A06}
 		{92D2CBA2-B54E-434B-95F3-C1004F95EA62} = {9697B6F8-6C64-4184-AB6C-8683D6F12B61}
 		{E4DABBB7-33B3-40C0-A35C-17426E03BDA6} = {9697B6F8-6C64-4184-AB6C-8683D6F12B61}
+		{FDDCEFB0-2E05-43B9-8218-5C3F37846E03} = {9697B6F8-6C64-4184-AB6C-8683D6F12B61}
+		{1ABBC8EF-0A8F-4BD6-940F-8D2347EB3D7B} = {FDDCEFB0-2E05-43B9-8218-5C3F37846E03}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3DED72E8-74C9-4A51-A9CE-62ECFEEA1921}

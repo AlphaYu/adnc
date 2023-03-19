@@ -7,6 +7,14 @@
 		<DockerfileContext>..\..\..</DockerfileContext>
 		<Description>订单中心服务</Description>
 	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="..\..\..\ServiceShared\Config\**\*">
+			<Link>%(RecursiveDir)/%(FileName)%(Extension)</Link>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+	
 	<ItemGroup>
 	  <None Remove="swagger_miniprofiler.html" />
 	</ItemGroup>
@@ -28,11 +36,18 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\..\ServiceShared\Adnc.Shared.WebApi\Adnc.Shared.WebApi.csproj" />
 		<ProjectReference Include="..\Adnc.Ord.Application.Contracts\Adnc.Ord.Application.Contracts.csproj" />
 		<ProjectReference Include="..\Adnc.Ord.Application\Adnc.Ord.Application.csproj" />
 	</ItemGroup>
 
+	<ItemGroup Condition="'$(SolutionName)'=='Adnc'">
+		<ProjectReference Include="..\..\..\ServiceShared\Adnc.Shared.WebApi\Adnc.Shared.WebApi.csproj" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(SolutionName)'=='Adnc.Services' ">
+		<PackageReference Include="Adnc.Shared.WebApi" Version="$(Infra_Version)" />
+	</ItemGroup>
+	
 	<ProjectExtensions>
 		<VisualStudio>
 			<UserProperties properties_4launchsettings_1json__JsonSchema="http://json.schemastore.org/launchsettings.json" />

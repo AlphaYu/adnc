@@ -8,13 +8,20 @@
 		<Description>用户中心服务</Description>
 	</PropertyGroup>
 	<ItemGroup>
-	  <None Remove="swagger_miniprofiler.html" />
+		<None Include="..\..\..\ServiceShared\Config\**\*">
+			<Link>%(RecursiveDir)/%(FileName)%(Extension)</Link>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
 	</ItemGroup>
 	<ItemGroup>
-	  <EmbeddedResource Include="swagger_miniprofiler.html">
-	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-	  </EmbeddedResource>
+		<None Remove="swagger_miniprofiler.html" />
 	</ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Include="swagger_miniprofiler.html">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</EmbeddedResource>
+	</ItemGroup>
+	
 	<ItemGroup>
 		<PackageReference Include="Grpc.AspNetCore" Version="$(Grpc_AspNetCore_Version)" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="$(Microsoft_EntityFrameworkCore_Design_Version)">
@@ -28,16 +35,26 @@
 			<TreatAsUsed>true</TreatAsUsed>
 		</PackageReference>
 	</ItemGroup>
+	
 	<ItemGroup>
-		<ProjectReference Include="..\..\..\ServiceShared\Adnc.Shared.WebApi\Adnc.Shared.WebApi.csproj" />
 		<ProjectReference Include="..\Adnc.Usr.Application.Contracts\Adnc.Usr.Application.Contracts.csproj" />
 		<ProjectReference Include="..\Adnc.Usr.Application\Adnc.Usr.Application.csproj" />
 	</ItemGroup>
+
+	<ItemGroup Condition="'$(SolutionName)'=='Adnc'">
+		<ProjectReference Include="..\..\..\ServiceShared\Adnc.Shared.WebApi\Adnc.Shared.WebApi.csproj" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(SolutionName)'=='Adnc.Services' ">
+		<PackageReference Include="Adnc.Shared.WebApi" Version="$(Infra_Version)" />
+	</ItemGroup>
+	
 	<ItemGroup>
 		<!--<Protobuf Include="..\..\..\ServiceShared\Adnc.Shared\Protos\Rtos\*.proto" GrpcServices="Server" Link="Grpc\Protos\Rtos\%(RecursiveDir)%(Filename)%(Extension)" ProtoRoot="..\..\..\ServiceShared\Adnc.Shared\" />-->
 		<Protobuf Include="..\..\..\protos\services\authgrpc.proto" GrpcServices="Server" Link="Grpc\protos\authgrpc.proto" ProtoRoot="..\..\..\protos\" />
 		<Protobuf Include="..\..\..\protos\services\usrgrpc.proto" GrpcServices="Server" Link="Grpc\protos\usrgrpc.proto" ProtoRoot="..\..\..\protos\" />
 	</ItemGroup>
+	
 <!--<Target Name="BuildTheApplicationProject" BeforeTargets="BeforeBuild">
 			<MSBuild Projects="..\Adnc.Usr.Application\Adnc.Usr.Application.csproj" Targets="Build" Properties="Configuration=$(Configuration);Platform=$(Platform)" />
 	</Target>
