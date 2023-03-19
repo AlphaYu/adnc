@@ -501,13 +501,15 @@ public partial class EncryptProivder
 
             string publicKey = rsa.ToJsonString(false);
             string privateKey = rsa.ToJsonString(true);
+            var exponent = rsa.ExportParameters(false).Exponent ?? throw new NullReferenceException("rsa.ExportParameters(false).Exponent is null");
+            var modulus = rsa.ExportParameters(false).Modulus ?? throw new NullReferenceException("rsa.ExportParameters(false).Modulus is null");
 
             return new RSAKey()
             {
                 PublicKey = publicKey,
                 PrivateKey = privateKey,
-                Exponent = rsa.ExportParameters(false).Exponent.ToHexString(),
-                Modulus = rsa.ExportParameters(false).Modulus.ToHexString()
+                Exponent = exponent.ToHexString(),
+                Modulus = modulus.ToHexString()
             };
         }
     }
@@ -523,13 +525,15 @@ public partial class EncryptProivder
         Checker.Argument.IsNotNull(rsa, nameof(rsa));
 
         string publicKey = rsa.ToJsonString(false);
+        var exponent = rsa.ExportParameters(false).Exponent ?? throw new NullReferenceException("rsa.ExportParameters(false).Exponent is null");
+        var modulus = rsa.ExportParameters(false).Modulus ?? throw new NullReferenceException("rsa.ExportParameters(false).Modulus is null");
 
         var rsaKey = new RSAKey()
         {
             PublicKey = publicKey,
 
-            Exponent = rsa.ExportParameters(false).Exponent.ToHexString(),
-            Modulus = rsa.ExportParameters(false).Modulus.ToHexString()
+            Exponent = exponent.ToHexString(),
+            Modulus = modulus.ToHexString()
         };
 
         if (includePrivate)

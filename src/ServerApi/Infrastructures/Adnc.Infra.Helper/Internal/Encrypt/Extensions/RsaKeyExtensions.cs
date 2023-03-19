@@ -1,4 +1,3 @@
-using Adnc.Infra.Core.Guard;
 using Adnc.Infra.Helper.Internal.Encrypt.Shared;
 
 namespace Adnc.Infra.Helper.Encrypt.Extensions;
@@ -15,12 +14,10 @@ internal static class RSAKeyExtensions
     /// <param name="jsonString">RSA Key serialization JSON string</param>
     internal static void FromJsonString(this RSA rsa, string jsonString)
     {
-        Checker.Argument.IsNotEmpty(jsonString, nameof(jsonString));
-
         RSAParameters parameters = new RSAParameters();
         try
         {
-            var paramsJson =  JsonSerializer.Deserialize<RSAParametersJson>(jsonString);
+            var paramsJson = JsonSerializer.Deserialize<RSAParametersJson>(jsonString) ?? throw new NullReferenceException($"JsonSerializer.Deserialize(jsonString) is null£¬jsonString={jsonString}");
 
             parameters.Modulus = paramsJson.Modulus != null ? Convert.FromBase64String(paramsJson.Modulus) : null;
             parameters.Exponent = paramsJson.Exponent != null ? Convert.FromBase64String(paramsJson.Exponent) : null;
@@ -50,14 +47,14 @@ internal static class RSAKeyExtensions
 
         var parasJson = new RSAParametersJson()
         {
-            Modulus = parameters.Modulus != null ? Convert.ToBase64String(parameters.Modulus) : null,
-            Exponent = parameters.Exponent != null ? Convert.ToBase64String(parameters.Exponent) : null,
-            P = parameters.P != null ? Convert.ToBase64String(parameters.P) : null,
-            Q = parameters.Q != null ? Convert.ToBase64String(parameters.Q) : null,
-            DP = parameters.DP != null ? Convert.ToBase64String(parameters.DP) : null,
-            DQ = parameters.DQ != null ? Convert.ToBase64String(parameters.DQ) : null,
-            InverseQ = parameters.InverseQ != null ? Convert.ToBase64String(parameters.InverseQ) : null,
-            D = parameters.D != null ? Convert.ToBase64String(parameters.D) : null
+            Modulus = parameters.Modulus != null ? Convert.ToBase64String(parameters.Modulus) : string.Empty,
+            Exponent = parameters.Exponent != null ? Convert.ToBase64String(parameters.Exponent) : string.Empty,
+            P = parameters.P != null ? Convert.ToBase64String(parameters.P) : string.Empty,
+            Q = parameters.Q != null ? Convert.ToBase64String(parameters.Q) : string.Empty,
+            DP = parameters.DP != null ? Convert.ToBase64String(parameters.DP) : string.Empty,
+            DQ = parameters.DQ != null ? Convert.ToBase64String(parameters.DQ) : string.Empty,
+            InverseQ = parameters.InverseQ != null ? Convert.ToBase64String(parameters.InverseQ) : string.Empty,
+            D = parameters.D != null ? Convert.ToBase64String(parameters.D) : string.Empty
         };
 
         return JsonSerializer.Serialize(parasJson);
@@ -75,7 +72,7 @@ internal static class RSAKeyExtensions
         XmlDocument xmlDoc = new XmlDocument();
         xmlDoc.LoadXml(xmlString);
 
-        if (xmlDoc.DocumentElement.Name.Equals("RSAKeyValue"))
+        if (xmlDoc.DocumentElement is not null && xmlDoc.DocumentElement.Name.Equals("RSAKeyValue"))
         {
             foreach (XmlNode node in xmlDoc.DocumentElement.ChildNodes)
             {

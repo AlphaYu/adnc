@@ -231,10 +231,10 @@ internal class RsaProvider
             var index3 = (int)ms.Length;
 
             //Write Modulus
-            writeBlock(param.Modulus);
+            writeBlock(param.Modulus ?? throw new NullReferenceException(nameof(param.Modulus)));
 
             //Write Exponent
-            writeBlock(param.Exponent);
+            writeBlock(param.Exponent ?? throw new NullReferenceException(nameof(param.Exponent)));
 
             var bytes = ms.ToArray();
 
@@ -273,14 +273,14 @@ internal class RsaProvider
             }
 
             //Write data
-            writeBlock(param.Modulus);
-            writeBlock(param.Exponent);
-            writeBlock(param.D);
-            writeBlock(param.P);
-            writeBlock(param.Q);
-            writeBlock(param.DP);
-            writeBlock(param.DQ);
-            writeBlock(param.InverseQ);
+            writeBlock(param.Modulus ?? throw new NullReferenceException(nameof(param.Modulus)));
+            writeBlock(param.Exponent ?? throw new NullReferenceException(nameof(param.Exponent)));
+            writeBlock(param.D ?? throw new NullReferenceException(nameof(param.D)));
+            writeBlock(param.P ?? throw new NullReferenceException(nameof(param.P)));
+            writeBlock(param.Q ?? throw new NullReferenceException(nameof(param.Q)));
+            writeBlock(param.DP ?? throw new NullReferenceException(nameof(param.DP)));
+            writeBlock(param.DQ ?? throw new NullReferenceException(nameof(param.DQ)));
+            writeBlock(param.InverseQ ?? throw new NullReferenceException(nameof(param.InverseQ)));
 
             var bytes = ms.ToArray();
 

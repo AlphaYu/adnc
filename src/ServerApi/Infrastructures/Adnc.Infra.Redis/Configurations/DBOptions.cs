@@ -8,7 +8,7 @@
         /// <value>
         /// The username.
         /// </value>
-        public string Username { get; set; } = null;
+        public string Username { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the password to be used to connect to the Redis server.
@@ -16,7 +16,7 @@
         /// <value>
         /// The password.
         /// </value>
-        public string Password { get; set; } = null;
+        public string Password { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets a value indicating whether to use SSL encryption.
@@ -33,7 +33,7 @@
         /// <value>
         /// The SSL host.
         /// </value>
-        public string SslHost { get; set; } = null;
+        public string SslHost { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the timeout for any connect operations.
@@ -62,7 +62,7 @@
         /// Gets or sets the string configuration.
         /// </summary>
         /// <value>The configuration.</value>
-        public string ConnectionString { get; set; } = "";
+        public string ConnectionString { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets a value indicating whether this <see cref="T:Adnc.Infra.Redis.Core.Internal.BaseRedisOptions"/>

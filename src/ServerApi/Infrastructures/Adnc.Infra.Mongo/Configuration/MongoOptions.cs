@@ -12,7 +12,7 @@ public class MongoOptions
 
     /// <summary>
     /// Gets or sets the collection naming convention.
-    /// Defaults to <see cref="NamingConvention.Snake"/>.
+    /// Defaults to NamingConvention.Snake/>.
     /// </summary>
     public int CollectionNamingConvention { get; set; } = (int)MongoNamingConvention.Snake;
 

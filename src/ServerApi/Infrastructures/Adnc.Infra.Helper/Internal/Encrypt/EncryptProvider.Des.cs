@@ -39,7 +39,7 @@ public partial class EncryptProivder
 
         if (encryptBytes == null)
         {
-            return null;
+            return string.Empty;
         }
         return Convert.ToBase64String(encryptBytes);
     }
@@ -122,7 +122,7 @@ public partial class EncryptProivder
                     }
                     catch (Exception ex)
                     {
-                        return null;
+                        throw new Exception("DESEncrypt", ex);
                     }
                 }
             }
@@ -146,7 +146,7 @@ public partial class EncryptProivder
 
         if (bytes == null)
         {
-            return null;
+            return string.Empty;
         }
         return Encoding.UTF8.GetString(bytes);
     }
@@ -227,9 +227,9 @@ public partial class EncryptProivder
                         Array.Copy(tmp, 0, ret, 0, len);
                         return ret;
                     }
-                    catch
+                    catch(Exception ex)
                     {
-                        return null;
+                        throw new Exception("DESDecrypt", ex);
                     }
                 }
             }

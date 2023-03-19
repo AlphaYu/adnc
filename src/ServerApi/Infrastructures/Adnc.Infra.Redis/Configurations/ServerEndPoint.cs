@@ -37,6 +37,6 @@ namespace Adnc.Infra.Redis.Configurations
         /// Gets or sets the host.
         /// </summary>
         /// <value>The host.</value>
-        public string Host { get; set; }
+        public string Host { get; set; } = string.Empty;
     }
 }

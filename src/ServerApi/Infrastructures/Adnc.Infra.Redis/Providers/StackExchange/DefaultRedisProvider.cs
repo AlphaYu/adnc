@@ -47,7 +47,7 @@ namespace Adnc.Infra.Redis.Providers.StackExchange
             DefaultDatabaseProvider dbProviders,
             IOptions<RedisOptions> redisOptions,
             ISerializer serializer,
-            ILoggerFactory loggerFactory = null)
+            ILoggerFactory? loggerFactory = null)
         {
             ArgumentCheck.NotNull(dbProviders, nameof(dbProviders));
             ArgumentCheck.NotNull(serializer, nameof(serializer));

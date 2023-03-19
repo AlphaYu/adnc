@@ -27,7 +27,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Redis", "Adnc.In
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Redis.Caching", "Adnc.Infra.Redis.Caching\Adnc.Infra.Redis.Caching.csproj", "{3273F34B-C852-412E-BF3C-C1D2EE1BC635}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "解决方案项", "解决方案项", "{B88A59EA-4485-4A3B-ADF5-DC5EEAFE6C64}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{B88A59EA-4485-4A3B-ADF5-DC5EEAFE6C64}"
 	ProjectSection(SolutionItems) = preProject
 		..\Props\common.props = ..\Props\common.props
 		..\Props\nuget.props = ..\Props\nuget.props

@@ -8,7 +8,8 @@ namespace Adnc.Infra.Redis.Providers.StackExchange
     /// </summary>
     public partial class DefaultRedisProvider : IRedisProvider
     {
-        public long ZAdd<T>(string cacheKey, Dictionary<T, double> cacheValues)
+        public long ZAdd<T>(string cacheKey, Dictionary<T, double> cacheValues) 
+            where T : notnull
         {
             ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
@@ -112,6 +113,7 @@ namespace Adnc.Infra.Redis.Providers.StackExchange
         }
 
         public async Task<long> ZAddAsync<T>(string cacheKey, Dictionary<T, double> cacheValues)
+            where T : notnull
         {
             ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 

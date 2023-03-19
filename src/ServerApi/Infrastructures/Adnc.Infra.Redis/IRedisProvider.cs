@@ -229,7 +229,7 @@ namespace Adnc.Infra.Redis
         /// <param name="cacheKey"></param>
         /// <param name="fields"></param>
         /// <returns></returns>
-        long HDel(string cacheKey, IList<string> fields = null);
+        long HDel(string cacheKey, IList<string>? fields = null);
 
         /// <summary>
         /// https://redis.io/commands/hget
@@ -316,7 +316,7 @@ namespace Adnc.Infra.Redis
         /// <param name="cacheKey"></param>
         /// <param name="fields"></param>
         /// <returns></returns>
-        Task<long> HDelAsync(string cacheKey, IList<string> fields = null);
+        Task<long> HDelAsync(string cacheKey, IList<string>? fields = null);
 
         /// <summary>
         /// https://redis.io/commands/hget
@@ -691,7 +691,7 @@ namespace Adnc.Infra.Redis
         /// <param name="cacheKey"></param>
         /// <param name="cacheValues"></param>
         /// <returns></returns>
-        long SRem<T>(string cacheKey, IList<T> cacheValues = null);
+        long SRem<T>(string cacheKey, IList<T>? cacheValues = null);
 
         /// <summary>
         /// https://redis.io/commands/sadd
@@ -751,7 +751,7 @@ namespace Adnc.Infra.Redis
         /// <param name="cacheKey"></param>
         /// <param name="cacheValues"></param>
         /// <returns></returns>
-        Task<long> SRemAsync<T>(string cacheKey, IList<T> cacheValues = null);
+        Task<long> SRemAsync<T>(string cacheKey, IList<T>? cacheValues = null);
 
         #endregion Set
 
@@ -764,7 +764,7 @@ namespace Adnc.Infra.Redis
         /// <param name="cacheKey"></param>
         /// <param name="cacheValues"></param>
         /// <returns></returns>
-        long ZAdd<T>(string cacheKey, Dictionary<T, double> cacheValues);
+        long ZAdd<T>(string cacheKey, Dictionary<T, double> cacheValues) where T : notnull;
 
         /// <summary>
         /// https://redis.io/commands/zcard
@@ -844,7 +844,7 @@ namespace Adnc.Infra.Redis
         /// <param name="cacheKey"></param>
         /// <param name="cacheValues"></param>
         /// <returns></returns>
-        Task<long> ZAddAsync<T>(string cacheKey, Dictionary<T, double> cacheValues);
+        Task<long> ZAddAsync<T>(string cacheKey, Dictionary<T, double> cacheValues) where T : notnull;
 
         /// <summary>
         /// https://redis.io/commands/zcard
@@ -1053,7 +1053,7 @@ namespace Adnc.Infra.Redis
         /// <param name="values"></param>
         /// <param name="flags"></param>
         /// <returns></returns>
-        Task<dynamic> ScriptEvaluateAsync(string script, RedisKey[] keys = null, RedisValue[] values = null, CommandFlags flags = CommandFlags.None);
+        Task<dynamic> ScriptEvaluateAsync(string script, RedisKey[]? keys = null, RedisValue[]? values = null, CommandFlags flags = CommandFlags.None);
 
         /// <summary>
         /// https://redis.io/commands/eval
@@ -1062,7 +1062,7 @@ namespace Adnc.Infra.Redis
         /// <param name="parameters"></param>
         /// <param name="flags"></param>
         /// <returns></returns>
-        Task<dynamic> ScriptEvaluateAsync(string script, object parameters = null, CommandFlags flags = CommandFlags.None);
+        Task<dynamic> ScriptEvaluateAsync(string script, object? parameters = null, CommandFlags flags = CommandFlags.None);
 
         #endregion ScriptEvaluate
 
