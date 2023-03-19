@@ -179,11 +179,11 @@ internal static class Program
   - src
     - serverApi 后端项目(`.NET6.0`)
     - test 单元测试工程
-    - clientApp 前端项目([Adnc.Vue2]([AlphaYu/Adnc.Vue2: ADNC's Vue2 front-end (github.com)](https://github.com/AlphaYu/Adnc.Vue2)))
+    - ~~clientApp~~ 前端项目 [Adnc.Vue2: ADNC's Vue2 front-end](https://github.com/AlphaYu/Adnc.Vue2)
   - doc 项目相关文档(sql脚本、docker脚本、docker-compose.yaml文件)
   - tools 工具软件  
   - test 测试工程
-#### ClientApp [Adnc.Vue2]([AlphaYu/Adnc.Vue2: ADNC's Vue2 front-end (github.com)](https://github.com/AlphaYu/Adnc.Vue2))
+#### ClientApp [Adnc.Vue2: ADNC's Vue2 front-end](https://github.com/AlphaYu/Adnc.Vue2)
   - clientApp基于<a target="_blank" href="https://github.com/PanJiaChen/vue-element-admin">Vue-Element-Admin</a>以及<a target="_blank" href="https://github.com/enilu/web-flash">Web-Flash</a>搭建，感谢两位作者。
   - 前端主要技术栈 Vue + Vue-Router + Vuex + Axios
   - 构建步骤
