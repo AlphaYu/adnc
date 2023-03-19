@@ -19,7 +19,9 @@ public static class ServiceCollectionExtension
         if (webApiRegistarType is null)
             throw new NullReferenceException(nameof(IDependencyRegistrar));
 
-        var webapiRegistar = Activator.CreateInstance(webApiRegistarType, services)  as IDependencyRegistrar;
+        if (Activator.CreateInstance(webApiRegistarType, services) is not IDependencyRegistrar webapiRegistar)
+            throw new NullReferenceException(nameof(webapiRegistar));
+
         webapiRegistar.AddAdnc();
 
         return services;

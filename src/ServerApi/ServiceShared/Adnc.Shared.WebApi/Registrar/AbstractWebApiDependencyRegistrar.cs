@@ -6,9 +6,9 @@ namespace Adnc.Shared.WebApi.Registrar;
 public abstract partial class AbstractWebApiDependencyRegistrar : IDependencyRegistrar
 {
     public string Name => "webapi";
-    protected IConfiguration Configuration { get; init; }
-    protected IServiceCollection Services { get; init; }
-    protected IServiceInfo ServiceInfo { get; init; }
+    protected IConfiguration Configuration { get; init; } = default!;
+    protected IServiceCollection Services { get; init; } = default!;
+    protected IServiceInfo ServiceInfo { get; init; } = default!;
 
     /// <summary>
     /// 服务注册与系统配置

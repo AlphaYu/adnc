@@ -26,7 +26,7 @@ public class CachingHostedService : BackgroundService
         {
             while (!stoppingToken.IsCancellationRequested)
             {
-                if (!LocalVariables.Instance.Queue.TryDequeue(out LocalVariables.Model model)
+                if (!LocalVariables.Instance.Queue.TryDequeue(out LocalVariables.Model? model)
                     || model.CacheKeys.IsNullOrEmpty()
                     || DateTime.Now > model.ExpireDt)
                 {

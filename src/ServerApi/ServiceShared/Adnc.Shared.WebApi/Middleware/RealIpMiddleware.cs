@@ -22,7 +22,7 @@ public class RealIpMiddleware
         }
 
         var ips = context.Request.Headers[_option.HeaderKey].FirstOrDefault()?.Trim();
-        if (ips.IsNullOrEmpty())
+        if (string.IsNullOrEmpty(ips))
         {
             await _next(context);
             return;
@@ -44,12 +44,12 @@ public class RealIpMiddleware
 
 public class FilterOption
 {
-    public string HeaderKey { get; set; }
+    public string HeaderKey { get; set; } = string.Empty;
 }
 
 public static class RealIpMiddlewareExtensions
 {
-    public static IApplicationBuilder UseRealIp(this IApplicationBuilder builder, Action<FilterOption> configureOption = null)
+    public static IApplicationBuilder UseRealIp(this IApplicationBuilder builder, Action<FilterOption>? configureOption = null)
     {
         var option = new FilterOption();
         configureOption?.Invoke(option);

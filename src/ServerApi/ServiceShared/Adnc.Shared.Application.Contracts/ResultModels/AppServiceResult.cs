@@ -7,13 +7,14 @@
 public sealed class AppSrvResult
 {
     public AppSrvResult()
-    { }
+    {
+    }
 
     public AppSrvResult(ProblemDetails problemDetails) => ProblemDetails = problemDetails;
 
     public bool IsSuccess => ProblemDetails == null;
 
-    public ProblemDetails ProblemDetails { get; set; }
+    public ProblemDetails ProblemDetails { get; set; } = default!;
 
     public static implicit operator AppSrvResult(ProblemDetails problemDetails)
     {
@@ -31,7 +32,8 @@ public sealed class AppSrvResult
 public sealed class AppSrvResult<TValue>
 {
     public AppSrvResult()
-    { }
+    { 
+    }
 
     public AppSrvResult(TValue value) => Content = value;
 
@@ -39,16 +41,14 @@ public sealed class AppSrvResult<TValue>
 
     public bool IsSuccess => ProblemDetails == null && Content != null;
 
-    public TValue Content { get; set; }
+    public TValue Content { get; set; } = default!;
 
-    public ProblemDetails ProblemDetails { get; set; }
+    public ProblemDetails ProblemDetails { get; set; } = default!;
 
     public static implicit operator AppSrvResult<TValue>(AppSrvResult result)
     {
         return new()
         {
-            Content = default
-            ,
             ProblemDetails = result.ProblemDetails
         };
     }
@@ -57,8 +57,6 @@ public sealed class AppSrvResult<TValue>
     {
         return new()
         {
-            Content = default
-            ,
             ProblemDetails = problemDetails
         };
     }

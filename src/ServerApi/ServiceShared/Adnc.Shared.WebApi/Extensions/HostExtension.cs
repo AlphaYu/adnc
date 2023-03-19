@@ -10,8 +10,8 @@ public static class HostExtension
     /// </summary>
     public static IHost UseRegistrationCenter(this IHost host)
     {
-        var configuration = host.Services.GetService<IConfiguration>();
-        var serviceInfo = host.Services.GetService<IServiceInfo>();
+        var configuration = host.Services.GetRequiredService<IConfiguration>();
+        var serviceInfo = host.Services.GetRequiredService<IServiceInfo>();
         var registeredType = configuration.GetValue(NodeConsts.RegisteredType, "direct");
         switch (registeredType)
         {

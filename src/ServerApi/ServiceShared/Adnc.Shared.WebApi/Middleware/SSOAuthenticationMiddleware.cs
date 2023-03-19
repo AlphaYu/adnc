@@ -196,6 +196,12 @@ public class SsoAuthenticationMiddleware
     private async Task RemoveToken(HttpContext context)
     {
         var tokenTxt = await context.GetTokenAsync("access_token");
+        if (string.IsNullOrWhiteSpace(tokenTxt))
+        {
+            await Task.CompletedTask;
+            return;
+        }
+
         var claimsInfo = GetClaimsInfo(tokenTxt);
         if (claimsInfo.Account.IsNotNullOrWhiteSpace())
         {
@@ -214,6 +220,9 @@ public class SsoAuthenticationMiddleware
     private async Task<bool> CheckToken(HttpContext context)
     {
         var tokenTxt = await context.GetTokenAsync("access_token");
+        if (string.IsNullOrWhiteSpace(tokenTxt))
+            return await Task.FromResult(false);
+
         var claimsInfo = GetClaimsInfo(tokenTxt);
         if (claimsInfo.Account.IsNotNullOrEmpty())
         {

@@ -32,11 +32,17 @@ public class BasicAuthenticationHandler : AuthenticationHandler<BasicSchemeOptio
             var validatedResult = BasicTokenValidator.UnPackFromBase64(token);
             if (validatedResult.IsSuccessful)
             {
+                if(string.IsNullOrWhiteSpace(validatedResult.UserName))
+                    throw new NullReferenceException(nameof(validatedResult.UserName));
+
                 var id =
                     BasicTokenValidator.IsInternalCaller(validatedResult.UserName)
                     ? validatedResult.UserName.Split('-')[1]
                     : validatedResult.AppId
                     ;
+
+                if (string.IsNullOrWhiteSpace(id))
+                    throw new NullReferenceException(nameof(id));
 
                 var claims = new[] {
                         new Claim(BasicDefaults.NameId, id)

@@ -17,14 +17,12 @@ public sealed class BloomFilterFactory
 
     public IBloomFilter Create(string name)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(name, nameof(name));
-
-        IBloomFilter bloomFilter;
+        IBloomFilter? bloomFilter;
         if (_redisOptions.Value.EnableBloomFilter)
             bloomFilter = _instances.FirstOrDefault(x => x.Name.EqualsIgnoreCase(name));
         else
             bloomFilter = _instances.FirstOrDefault(x => x.Name.EqualsIgnoreCase("null"));
 
-        return bloomFilter;
+        return bloomFilter ?? throw new NullReferenceException(nameof(bloomFilter));
     }
 }

@@ -8,7 +8,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar
     /// 注册Caching相关处理服务
     /// </summary>
     /// <param name="builder"></param>
-    protected virtual void AddRedisCaching(Action<IServiceCollection> action = null)
+    protected virtual void AddRedisCaching(Action<IServiceCollection>? action = null)
     {
         action?.Invoke(Services);
         if(this.IsEnableSkyApm())
@@ -23,7 +23,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar
             implTypes.ForEach(implType =>
             {
                 Services.AddSingleton(implType, implType);
-                Services.AddSingleton(x => x.GetRequiredService(implType) as ICachePreheatable);
+                Services.AddSingleton(x => (ICachePreheatable)x.GetRequiredService(implType));
             });
         }
     }
@@ -32,7 +32,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar
     /// 注册BloomFilter相关处理服务
     /// </summary>
     /// <param name="builder"></param>
-    protected virtual void AddBloomFilters(Action<IServiceCollection> action = null)
+    protected virtual void AddBloomFilters(Action<IServiceCollection>? action = null)
     {
         action?.Invoke(Services);
 

@@ -6,6 +6,7 @@
 /// <typeparam name="T"></typeparam>
 [Serializable]
 public class SimpleDto<T> : IDto
+    where T : notnull
 {
     public SimpleDto()
     {
@@ -19,5 +20,5 @@ public class SimpleDto<T> : IDto
     /// <summary>
     /// 需要传递的值
     /// </summary>
-    public T Value { get; set; }
+    public T Value { get; set; } = default!;
 }

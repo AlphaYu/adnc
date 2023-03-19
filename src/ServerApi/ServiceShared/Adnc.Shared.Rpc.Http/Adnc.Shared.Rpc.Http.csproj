@@ -12,17 +12,18 @@
 		<PackageReference Include="Refit.HttpClientFactory" Version="$(Refit_HttpClientFactory)" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<ProjectReference Include="..\Adnc.Shared\Adnc.Shared.csproj" />
+	</ItemGroup>
+	
 	<ItemGroup Condition="'$(SolutionName)'=='Adnc'">
 		<ProjectReference Include="..\..\Infrastructures\Adnc.Infra.Core\Adnc.Infra.Core.csproj" />
 		<ProjectReference Include="..\..\Infrastructures\Adnc.Infra.Helper\Adnc.Infra.Helper.csproj" />
 	</ItemGroup>
 
-	<ItemGroup Condition="'$(SolutionName)'=='Adnc.Shared'">
+	<ItemGroup Condition="'$(SolutionName)'=='Adnc.Shared' or '$(SolutionName)'=='Adnc.Services'">
 		<PackageReference Include="Adnc.Infra.Core" Version="$(Infra_Version)" />
 		<PackageReference Include="Adnc.Infra.Helper" Version="$(Infra_Version)" />
 	</ItemGroup>
-	
-	<ItemGroup>
-	  <ProjectReference Include="..\Adnc.Shared\Adnc.Shared.csproj" />
-	</ItemGroup>
+
 </Project>

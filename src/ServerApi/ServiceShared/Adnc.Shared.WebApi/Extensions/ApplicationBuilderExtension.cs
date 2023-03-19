@@ -16,7 +16,9 @@ public static class ApplicationBuilderExtension
         if (middlewareRegistarType is null)
             throw new NullReferenceException(nameof(IMiddlewareRegistrar));
 
-        var middlewareRegistar = Activator.CreateInstance(middlewareRegistarType, app) as IMiddlewareRegistrar;
+        if (Activator.CreateInstance(middlewareRegistarType, app) is not IMiddlewareRegistrar middlewareRegistar)
+            throw new NullReferenceException(nameof(middlewareRegistar));
+
         middlewareRegistar.UseAdnc();
 
         return app;

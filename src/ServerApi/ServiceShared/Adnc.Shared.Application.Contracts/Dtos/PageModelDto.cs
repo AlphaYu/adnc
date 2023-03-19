@@ -2,6 +2,7 @@
 
 [Serializable]
 public class PageModelDto<T> : IDto
+    where T : notnull
 {
     private IReadOnlyList<T> _data = Array.Empty<T>();
 
@@ -10,23 +11,23 @@ public class PageModelDto<T> : IDto
     }
 
     public PageModelDto(SearchPagedDto search)
-        : this(search, default, default)
+        : this(search, Array.Empty<T>(), default)
     {
     }
 
-    public PageModelDto(SearchPagedDto search, IReadOnlyList<T> data, int count, dynamic xData = null)
+    public PageModelDto(SearchPagedDto search, IReadOnlyList<T> data, int count, dynamic? xData = null)
         : this(search.PageIndex, search.PageSize, data, count)
     {
-        this.XData = xData;
+        this.XData = xData ?? new object();
     }
 
-    public PageModelDto(int pageIndex, int pageSize, IReadOnlyList<T> data, int count, dynamic xData = null)
+    public PageModelDto(int pageIndex, int pageSize, IReadOnlyList<T> data, int count, dynamic? xData = null)
     {
         this.PageIndex = pageIndex;
         this.PageSize = pageSize;
         this.TotalCount = count;
         this.Data = data;
-        this.XData = xData;
+        this.XData = xData ?? new object();
     }
 
     public IReadOnlyList<T> Data
@@ -45,5 +46,5 @@ public class PageModelDto<T> : IDto
 
     public int PageCount => (this.RowsCount + this.PageSize - 1) / this.PageSize;
 
-    public dynamic XData { get; set; }
+    public dynamic XData { get; set; } = new object();
 }

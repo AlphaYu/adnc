@@ -17,9 +17,12 @@ public class BearerAuthenticationRemoteProcessor : AbstractAuthenticationProcess
         _logger = logger;
     }
 
-    protected override async Task<(string ValidationVersion, int Status)> GetValidatedInfoAsync(long userId)
+    protected override async Task<(string? ValidationVersion, int Status)> GetValidatedInfoAsync(long userId)
     {
-        var userContext = _contextAccessor.HttpContext.RequestServices.GetService<UserContext>();
+        var userContext = _contextAccessor?.HttpContext?.RequestServices.GetService<UserContext>();
+        if (userContext is null)
+            throw new NullReferenceException(nameof(userContext));
+
         userContext.ExationId = userId;
 
         var apiReuslt = await _authRestClient.GetValidatedInfoAsync();

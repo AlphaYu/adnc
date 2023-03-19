@@ -9,7 +9,7 @@ public class BearerSchemeOptions : AuthenticationSchemeOptions
 
     public new BearerEvents Events
     {
-        get { return (BearerEvents)base.Events; }
+        get { return base.Events is null ? new BearerEvents() : (BearerEvents)base.Events; }
         set { base.Events = value; }
     }
 }

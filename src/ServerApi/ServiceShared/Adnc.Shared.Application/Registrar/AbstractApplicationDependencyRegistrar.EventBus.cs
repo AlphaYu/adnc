@@ -12,8 +12,8 @@ public abstract partial class AbstractApplicationDependencyRegistrar
     /// 注册CAP组件(实现事件总线及最终一致性（分布式事务）的一个开源的组件)
     /// </summary>
     protected virtual void AddCapEventBus<TSubscriber>(
-        Action<CapOptions> replaceDbAction = null,
-        Action<CapOptions> replaceMqAction = null)
+        Action<CapOptions>? replaceDbAction = null,
+        Action<CapOptions>? replaceMqAction = null)
         where TSubscriber : class, ICapSubscribe
     {
         if(this.IsEnableSkyApm())
@@ -90,7 +90,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar
     /// <summary>
     /// 注册RabbitMq-Client
     /// </summary>
-    protected virtual void AddRabbitMqClient(Action<IServiceCollection> action = null)
+    protected virtual void AddRabbitMqClient(Action<IServiceCollection>? action = null)
     {
         action?.Invoke(Services);
 

@@ -1,4 +1,6 @@
-﻿namespace Adnc.Shared.WebApi.Authentication.JwtBearer;
+﻿using NLog.LayoutRenderers;
+
+namespace Adnc.Shared.WebApi.Authentication.JwtBearer;
 
 public static class JwtTokenHelper
 {
@@ -35,12 +37,14 @@ public static class JwtTokenHelper
             //在Token验证通过后调用
             OnTokenValidated = context =>
             {
-                var userContext = context.HttpContext.RequestServices.GetService<UserContext>();
-                var claims = context.Principal.Claims;
+                var userContext = context.HttpContext.RequestServices.GetService<UserContext>() ?? throw new NullReferenceException(nameof(UserContext));
+                var principal = context.Principal ?? throw new NullReferenceException(nameof(context.Principal));
+                var claims = principal.Claims;
                 userContext.Id = long.Parse(claims.First(x => x.Type == JwtRegisteredClaimNames.NameId).Value);
                 userContext.Account = claims.First(x => x.Type == JwtRegisteredClaimNames.UniqueName).Value;
                 userContext.Name = claims.First(x => x.Type == JwtRegisteredClaimNames.Name).Value;
-                userContext.RemoteIpAddress = context.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
+                var remoteIpAddress = context.HttpContext.Connection.RemoteIpAddress;
+                userContext.RemoteIpAddress = remoteIpAddress is null ? string.Empty : remoteIpAddress.MapToIPv4().ToString();
                 return Task.CompletedTask;
             }
                  ,
@@ -117,12 +121,12 @@ public static class JwtTokenHelper
     /// </summary>
     /// <param name="refreshToken"></param>
     /// <returns></returns>
-    public static Claim GetClaimFromRefeshToken(JWTOptions jwtConfig, string refreshToken, string claimName)
+    public static Claim? GetClaimFromRefeshToken(JWTOptions jwtConfig, string refreshToken, string claimName)
     {
         var parameters = GenarateTokenValidationParameters(jwtConfig);
         var tokenHandler = new JwtSecurityTokenHandler();
         var result = tokenHandler.ValidateToken(refreshToken, parameters, out var securityToken);
-        if (!result.Identity.IsAuthenticated)
+        if (result.Identity is null || !result.Identity.IsAuthenticated)
             return null;
         return result.Claims.FirstOrDefault(x => x.Type == claimName);
     }

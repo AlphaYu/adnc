@@ -5,7 +5,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar
     /// <summary>
     /// 注册Domain服务
     /// </summary>
-    protected virtual void AddDomainSerivces<TDomainService>(Action<IServiceCollection> action = null)
+    protected virtual void AddDomainSerivces<TDomainService>(Action<IServiceCollection>? action = null)
         where TDomainService : class
     {
         action?.Invoke(Services);

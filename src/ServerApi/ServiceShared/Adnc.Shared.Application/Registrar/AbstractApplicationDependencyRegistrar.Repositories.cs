@@ -62,7 +62,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar
     /// <summary>
     /// 注册MongoContext与仓储
     /// </summary>
-    protected virtual void AddMongoContextWithRepositries(Action<IServiceCollection> action = null)
+    protected virtual void AddMongoContextWithRepositries(Action<IServiceCollection>? action = null)
     {
         action?.Invoke(Services);
 

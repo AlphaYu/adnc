@@ -1,12 +1,8 @@
-﻿using Adnc.Infra.Core.DependencyInjection;
-using Adnc.Infra.Helper;
-using Microsoft.Extensions.DependencyInjection;
-
-namespace Adnc.Shared.Domain.Entities;
+﻿namespace Adnc.Shared.Domain.Entities;
 
 public abstract class AggregateRoot : DomainEntity, IConcurrency, IEfEntity<long>
 {
-    public byte[] RowVersion { get; set; }
+    public byte[] RowVersion { get; set; } = Array.Empty <byte>();
 
     public Lazy<IEventPublisher> EventPublisher => new(() =>
     {

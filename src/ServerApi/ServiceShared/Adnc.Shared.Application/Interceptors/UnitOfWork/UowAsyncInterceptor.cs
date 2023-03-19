@@ -171,7 +171,7 @@ public class UowAsyncInterceptor : IAsyncInterceptor
     /// </summary>
     /// <param name="invocation"></param>
     /// <returns></returns>
-    private UnitOfWorkAttribute GetAttribute(IInvocation invocation)
+    private UnitOfWorkAttribute? GetAttribute(IInvocation invocation)
     {
         var methodInfo = invocation.Method ?? invocation.MethodInvocationTarget;
         var attribute = methodInfo.GetCustomAttribute<UnitOfWorkAttribute>();

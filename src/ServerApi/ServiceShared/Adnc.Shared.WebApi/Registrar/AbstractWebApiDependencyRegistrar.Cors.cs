@@ -1,4 +1,6 @@
-﻿namespace Adnc.Shared.WebApi.Registrar;
+﻿using Microsoft.AspNetCore.Cors.Infrastructure;
+
+namespace Adnc.Shared.WebApi.Registrar;
 
 public abstract partial class AbstractWebApiDependencyRegistrar
 {
@@ -7,17 +9,13 @@ public abstract partial class AbstractWebApiDependencyRegistrar
     /// </summary>
     protected virtual void AddCors()
     {
-        Services.AddCors(options =>
-        {
-            var corsHosts = Configuration.GetValue("CorsHosts", string.Empty).Split(",", StringSplitOptions.RemoveEmptyEntries);
-            options.AddPolicy(ServiceInfo.CorsPolicy, policy =>
-            {
-                policy
-                .WithOrigins(corsHosts)
-                .AllowAnyHeader()
-                .AllowAnyMethod()
-                .AllowCredentials();
-            });
-        });
+        var corsHosts = Configuration.GetValue("CorsHosts", string.Empty);
+        Action<CorsPolicyBuilder> corsPolicyAction = (corsPolicy) => corsPolicy.AllowAnyHeader().AllowAnyMethod().AllowCredentials();
+        if (corsHosts == "*")
+            corsPolicyAction += (corsPolicy) => corsPolicy.SetIsOriginAllowed(_ => true);
+        else
+            corsPolicyAction += (corsPolicy) => corsPolicy.WithOrigins(corsHosts.Split(','));
+
+        Services.AddCors(options => options.AddPolicy(ServiceInfo.CorsPolicy, corsPolicyAction));
     }
 }

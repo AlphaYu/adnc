@@ -4,16 +4,17 @@
 	<PropertyGroup>
 		<Description>该层用来定义Event，不需要发布的到Nuget。</Description>
 	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Adnc.Shared\Adnc.Shared.csproj" />
+	</ItemGroup>
 	
 	<ItemGroup Condition="'$(SolutionName)'=='Adnc'">
 		<ProjectReference Include="..\..\Infrastructures\Adnc.Infra.Core\Adnc.Infra.Core.csproj" />
 	</ItemGroup>
 
-	<ItemGroup Condition="'$(SolutionName)'=='Adnc.Shared'">
+	<ItemGroup Condition="'$(SolutionName)'=='Adnc.Shared'  or '$(SolutionName)'=='Adnc.Services' ">
 		<PackageReference Include="Adnc.Infra.Core" Version="$(Infra_Version)" />
 	</ItemGroup>
 
-	<ItemGroup>
-		<ProjectReference Include="..\Adnc.Shared\Adnc.Shared.csproj" />
-	</ItemGroup>
 </Project>

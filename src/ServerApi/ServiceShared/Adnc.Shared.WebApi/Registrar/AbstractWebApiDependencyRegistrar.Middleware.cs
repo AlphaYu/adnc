@@ -5,7 +5,7 @@ namespace Adnc.Shared.WebApi.Registrar;
 
 public abstract partial class AbstractWebApiDependencyRegistrar : IMiddlewareRegistrar
 {
-    protected readonly IApplicationBuilder App;
+    protected IApplicationBuilder App { get; init; } = default!;
     protected AbstractWebApiDependencyRegistrar(IApplicationBuilder app)
     {
         App = app;
@@ -21,15 +21,16 @@ public abstract partial class AbstractWebApiDependencyRegistrar : IMiddlewareReg
     /// 注册webapi通用中间件
     /// </summary>
     protected virtual void UseWebApiDefault(
-        Action<IApplicationBuilder> beforeAuthentication = null,
-        Action<IApplicationBuilder> afterAuthentication = null,
-        Action<IApplicationBuilder> afterAuthorization = null,
-        Action<IEndpointRouteBuilder> endpointRoute = null)
+        Action<IApplicationBuilder>? beforeAuthentication = null,
+        Action<IApplicationBuilder>? afterAuthentication = null,
+        Action<IApplicationBuilder>? afterAuthorization = null,
+        Action<IEndpointRouteBuilder>? endpointRoute = null)
     {
         ServiceLocator.Provider = App.ApplicationServices;
-        var environment = App.ApplicationServices.GetService<IHostEnvironment>();
-        var serviceInfo = App.ApplicationServices.GetService<IServiceInfo>();
+        var environment = App.ApplicationServices.GetService<IHostEnvironment>() ?? throw new NullReferenceException(nameof(IHostEnvironment)); ;
+        var serviceInfo = App.ApplicationServices.GetService<IServiceInfo>() ?? throw new NullReferenceException(nameof(IServiceInfo));
         var consulOptions = App.ApplicationServices.GetService<IOptions<ConsulOptions>>();
+        var healthCheckUrl = consulOptions?.Value?.HealthCheckUrl ?? $"{serviceInfo.ShortName}/health-24b01005-a76a-4b3b-8fb1-5e0f2e9564fb";
 
         var defaultFilesOptions = new DefaultFilesOptions();
         defaultFilesOptions.DefaultFileNames.Clear();
@@ -63,7 +64,7 @@ public abstract partial class AbstractWebApiDependencyRegistrar : IMiddlewareReg
                 c.SwaggerEndpoint($"/{serviceInfo.ShortName}/swagger/{serviceInfo.Version}/swagger.json", $"{serviceInfo.ServiceName}-{serviceInfo.Version}");
                 c.RoutePrefix = $"{serviceInfo.ShortName}";
             })
-            .UseHealthChecks($"/{consulOptions.Value.HealthCheckUrl}", new HealthCheckOptions()
+            .UseHealthChecks($"/{healthCheckUrl}", new HealthCheckOptions()
             {
                 Predicate = _ => true,
                 // 该响应输出是一个json，包含所有检查项的详细检查结果
@@ -71,6 +72,7 @@ public abstract partial class AbstractWebApiDependencyRegistrar : IMiddlewareReg
             })
             .UseRouting()
             .UseHttpMetrics();
+
         DotNetRuntimeStatsBuilder
         .Customize()
         .WithContentionStats()

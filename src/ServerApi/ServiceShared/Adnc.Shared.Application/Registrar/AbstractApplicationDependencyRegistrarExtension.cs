@@ -88,7 +88,7 @@ namespace Adnc.Shared.Application.Registrar
             GenerateDefaultRefitPolicies(registrar);
 
 
-        public static string ASPNETCORE_ENVIRONMENT => Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+        public static string ASPNETCORE_ENVIRONMENT => Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? throw new NullReferenceException("ASPNETCORE_ENVIRONMENT is null");
 
         public static bool IsDevelopment(this AbstractApplicationDependencyRegistrar _) => ASPNETCORE_ENVIRONMENT.EqualsIgnoreCase("Development");
 
@@ -107,7 +107,7 @@ namespace Adnc.Shared.Application.Registrar
         public static bool IsEnableSkyApm(this AbstractApplicationDependencyRegistrar _)
         {
             var env = Environment.GetEnvironmentVariable("ASPNETCORE_HOSTINGSTARTUPASSEMBLIES");
-            if (env.IsNullOrEmpty())
+            if (string.IsNullOrWhiteSpace(env))
                 return false;
             else
                 return env.Contains("SkyAPM.Agent.AspNetCore");

@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Shared.Domain", "Adnc.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Shared.Repository", "Adnc.Shared.Repository\Adnc.Shared.Repository.csproj", "{15809000-83FD-4AED-A7F5-4CB6E4640A52}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "解决方案项", "解决方案项", "{D7E6D2DE-BF7D-41F1-AFB3-ABE6382EB935}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{D7E6D2DE-BF7D-41F1-AFB3-ABE6382EB935}"
 	ProjectSection(SolutionItems) = preProject
 		..\Props\common.props = ..\Props\common.props
 		..\Props\nuget.props = ..\Props\nuget.props

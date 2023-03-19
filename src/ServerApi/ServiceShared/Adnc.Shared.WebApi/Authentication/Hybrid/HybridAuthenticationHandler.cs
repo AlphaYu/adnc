@@ -31,7 +31,7 @@ public sealed class HybridAuthenticationHandler : AuthenticationHandler<HybridSc
             return await Context.AuthenticateAsync(scheme);
         }
 
-        Response.StatusCode = (int)HttpStatusCode.Forbidden;
+        Response.StatusCode = (int)HttpStatusCode.Unauthorized;
         return await Task.FromResult(AuthenticateResult.Fail("Invalid Authorization Header"));
     }
 }

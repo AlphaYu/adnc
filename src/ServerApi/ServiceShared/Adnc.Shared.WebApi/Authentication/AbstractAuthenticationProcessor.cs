@@ -14,10 +14,13 @@ public abstract class AbstractAuthenticationProcessor
         if (idClaim is null)
             return Array.Empty<Claim>();
 
-        var userId = idClaim.Value.ToLong().Value;
+        var parseResult = long.TryParse(idClaim.Value, out long userId);
+        if (parseResult == false)
+            throw  new  InvalidCastException(nameof(idClaim.Value));
+
         var (ValidationVersion, Status) = await GetValidatedInfoAsync(userId);
 
-        if (ValidationVersion.IsNullOrWhiteSpace() || Status != 1)
+        if (string.IsNullOrWhiteSpace(ValidationVersion) || Status != 1)
             return Array.Empty<Claim>();
 
         var jtiClaim = claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Jti);

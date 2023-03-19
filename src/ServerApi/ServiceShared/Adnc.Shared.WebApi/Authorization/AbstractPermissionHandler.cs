@@ -4,7 +4,7 @@ public abstract class AbstractPermissionHandler : AuthorizationHandler<Permissio
 {
     protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, PermissionRequirement requirement)
     {
-        if (context.User.Identity.IsAuthenticated && context.Resource is HttpContext httpContext)
+        if (context.User.Identity is not null && context.User.Identity.IsAuthenticated && context.Resource is HttpContext httpContext)
         {
             var authHeader = httpContext.Request.Headers["Authorization"].ToString();
             if (authHeader != null && authHeader.StartsWith(Authentication.Basic.BasicDefaults.AuthenticationScheme, StringComparison.OrdinalIgnoreCase))
@@ -13,14 +13,14 @@ public abstract class AbstractPermissionHandler : AuthorizationHandler<Permissio
                 return;
             }
 
-            var userContext = httpContext.RequestServices.GetService<UserContext>();
-            var codes = httpContext.GetEndpoint().Metadata?.GetMetadata<AdncAuthorizeAttribute>()?.Codes;
-            if (codes.IsNullOrEmpty())
+            var codes = httpContext.GetEndpoint()?.Metadata?.GetMetadata<AdncAuthorizeAttribute>()?.Codes;
+            if (codes is null || codes.Length==0)
             {
                 context.Succeed(requirement);
                 return;
             }
 
+            var userContext = httpContext.RequestServices.GetService<UserContext>() ?? throw new NullReferenceException(nameof(UserContext));
             var result = await CheckUserPermissions(userContext.Id, codes, userContext.RoleIds);
             if (result)
             {

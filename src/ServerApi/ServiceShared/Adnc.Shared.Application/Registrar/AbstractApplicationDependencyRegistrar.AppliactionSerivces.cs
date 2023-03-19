@@ -9,7 +9,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar
     /// <summary>
     /// 注册Application服务
     /// </summary>
-    protected virtual void AddAppliactionSerivcesWithInterceptors(Action<IServiceCollection> action = null)
+    protected virtual void AddAppliactionSerivcesWithInterceptors(Action<IServiceCollection>? action = null)
     {
         action?.Invoke(Services);
 
@@ -28,7 +28,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar
                 var interfaceToProxy = serviceType;
                 var target = provider.GetService(implType);
                 var interceptors = DefaultInterceptorTypes.ConvertAll(interceptorType => provider.GetService(interceptorType) as IInterceptor).ToArray();
-                var proxyGenerator = provider.GetService<ProxyGenerator>();
+                var proxyGenerator = provider.GetRequiredService<ProxyGenerator>();
                 var proxy = proxyGenerator.CreateInterfaceProxyWithTargetInterface(interfaceToProxy, target, interceptors);
                 return proxy;
             });

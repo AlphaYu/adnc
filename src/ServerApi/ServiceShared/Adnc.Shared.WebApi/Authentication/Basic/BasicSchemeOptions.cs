@@ -9,7 +9,7 @@ public class BasicSchemeOptions : AuthenticationSchemeOptions
 
     public new BasicEvents Events
     {
-        get { return (BasicEvents)base.Events; }
+        get { return base.Events is null ? new BasicEvents() : (BasicEvents)base.Events; }
         set { base.Events = value; }
     }
 }

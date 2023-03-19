@@ -90,11 +90,13 @@ public static class WebApplicationBuilderExtension
     /// Register Cofiguration ChangeCallback
     /// </summary>
     /// <param name="state"></param>
-    private static IDisposable _callbackRegistration;
+    private static IDisposable? _callbackRegistration;
     private static void OnSettingConfigurationChanged(object state)
     {
         _callbackRegistration?.Dispose();
-        var configuration = state as IConfiguration;
+        if (state is not IConfiguration configuration)
+            throw new ArgumentException(nameof(state));
+
         var changedChildren = configuration.GetChildren();
         var reloadToken = configuration.GetReloadToken();
 

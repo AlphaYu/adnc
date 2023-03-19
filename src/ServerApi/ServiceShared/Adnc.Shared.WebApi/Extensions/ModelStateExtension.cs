@@ -7,7 +7,7 @@ public static class ModelStateExtensions
     /// </summary>
     public static string GetValidationSummary(this ModelStateDictionary modelState, string separator = "\r\n")
     {
-        if (modelState.IsValid) return null;
+        if (modelState.IsValid) return string.Empty;
 
         var error = new StringBuilder();
 
@@ -16,7 +16,7 @@ public static class ModelStateExtensions
             var state = item.Value;
             var message = state.Errors.FirstOrDefault(p => !string.IsNullOrWhiteSpace(p.ErrorMessage))?.ErrorMessage;
             if (string.IsNullOrWhiteSpace(message))
-                message = state.Errors.FirstOrDefault(o => o.Exception != null)?.Exception.Message;
+                message = state.Errors.FirstOrDefault(o => o.Exception != null)?.Exception?.Message;
 
             if (string.IsNullOrWhiteSpace(message)) continue;
 

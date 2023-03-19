@@ -2,7 +2,7 @@
 
 public class BasicEvents
 {
-    public Func<BasicTokenValidatedContext, Task> OnTokenValidated { get; set; }
+    public Func<BasicTokenValidatedContext, Task> OnTokenValidated { get; set; } = default!;
 
     //public virtual Task TokenValidated(BasicTokenValidatedContext context) => OnTokenValidated(context);
 }

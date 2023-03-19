@@ -8,10 +8,11 @@ namespace Adnc.Shared.Application.Contracts.Dtos;
 /// <typeparam name="T"></typeparam>
 [Serializable]
 public class InputSimpleDto<T> : IDto
+    where T : notnull
 {
     /// <summary>
     /// 需要传递的值
     /// </summary>
     [Required]
-    public T Value { get; set; }
+    public T Value { get; set; } = default!;
 }

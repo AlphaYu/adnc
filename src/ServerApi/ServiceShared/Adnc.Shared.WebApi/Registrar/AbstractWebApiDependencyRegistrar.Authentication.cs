@@ -21,23 +21,27 @@ public abstract partial class AbstractWebApiDependencyRegistrar
             .AddHybrid()
             .AddBasic(options => options.Events.OnTokenValidated = (context) =>
             {
-                var userContext = context.HttpContext.RequestServices.GetService<UserContext>();
-                var claims = context.Principal.Claims;
+                var userContext = context.HttpContext.RequestServices.GetService<UserContext>() ?? throw new NullReferenceException(nameof(UserContext));
+                var principal = context.Principal ?? throw new NullReferenceException(nameof(context.Principal));
+                var claims = principal.Claims;
                 userContext.Id = long.Parse(claims.First(x => x.Type == BasicDefaults.NameId).Value);
                 userContext.Account = claims.First(x => x.Type == BasicDefaults.UniqueName).Value;
                 userContext.Name = claims.First(x => x.Type == BasicDefaults.Name).Value;
-                userContext.RemoteIpAddress = context.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
+                var remoteIpAddress = context.HttpContext.Connection.RemoteIpAddress;
+                userContext.RemoteIpAddress = remoteIpAddress is null ? string.Empty : remoteIpAddress.MapToIPv4().ToString();
                 return Task.CompletedTask;
             })
             .AddBearer(options => options.Events.OnTokenValidated = (context) =>
             {
-                var userContext = context.HttpContext.RequestServices.GetService<UserContext>();
-                var claims = context.Principal.Claims;
+                var userContext = context.HttpContext.RequestServices.GetService<UserContext>() ?? throw new NullReferenceException(nameof(UserContext));
+                var principal = context.Principal ?? throw new NullReferenceException(nameof(context.Principal));
+                var claims = principal.Claims;
                 userContext.Id = long.Parse(claims.First(x => x.Type == JwtRegisteredClaimNames.NameId).Value);
                 userContext.Account = claims.First(x => x.Type == JwtRegisteredClaimNames.UniqueName).Value;
                 userContext.Name = claims.First(x => x.Type == JwtRegisteredClaimNames.Name).Value;
                 userContext.RoleIds = claims.First(x => x.Type == "roleids").Value;
-                userContext.RemoteIpAddress = context.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
+                var remoteIpAddress = context.HttpContext.Connection.RemoteIpAddress;
+                userContext.RemoteIpAddress = remoteIpAddress is null ? string.Empty : remoteIpAddress.MapToIPv4().ToString();
                 return Task.CompletedTask;
             })
             //.AddJwtBearer(options =>

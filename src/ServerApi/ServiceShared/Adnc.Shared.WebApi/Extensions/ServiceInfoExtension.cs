@@ -3,7 +3,7 @@
     public static class ServiceInfoExtension
     {
         private static readonly object lockObj = new();
-        private static Assembly appAssembly;
+        private static Assembly? appAssembly;
 
         /// <summary>
         /// 获取WebApiAssembly程序集
@@ -23,8 +23,10 @@
                 {
                     if (appAssembly is null)
                     {
-                        var appAssemblyName = serviceInfo.StartAssembly.FullName.Replace("WebApi", "Application");
-                        appAssembly = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(x => x.FullName.EqualsIgnoreCase(appAssemblyName));
+                        Assembly startAssembly = serviceInfo.StartAssembly ?? throw new NullReferenceException(nameof(serviceInfo.StartAssembly));
+                        string startAssemblyFullName = startAssembly.FullName ?? throw new NullReferenceException(nameof(startAssembly.FullName));
+                        var appAssemblyName = startAssemblyFullName.Replace("WebApi", "Application");
+                        appAssembly = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(x => x.FullName == appAssemblyName);
                         if (appAssembly is null)
                             appAssembly = Assembly.Load(appAssemblyName);
                         //var appAssemblyPath = serviceInfo.AssemblyLocation.Replace(".WebApi.dll", ".Application.dll");

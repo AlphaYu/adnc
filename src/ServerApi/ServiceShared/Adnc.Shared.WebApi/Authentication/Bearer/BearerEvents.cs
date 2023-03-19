@@ -2,5 +2,5 @@
 
 public class BearerEvents
 {
-    public Func<BearerTokenValidatedContext, Task> OnTokenValidated { get; set; }
+    public Func<BearerTokenValidatedContext, Task> OnTokenValidated { get; set; } = default!;
 }

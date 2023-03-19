@@ -60,7 +60,8 @@ public sealed class OperateLogAsyncInterceptor : IAsyncInterceptor
     private void InternalInterceptSynchronous(IInvocation invocation, OperateLogAttribute attribute)
     {
         var methodInfo = invocation.Method ?? invocation.MethodInvocationTarget;
-        var log = CreateOpsLog(methodInfo.DeclaringType.FullName, methodInfo.Name, attribute.LogName, invocation.Arguments, _userContext);
+        var fullName = methodInfo.DeclaringType?.FullName ?? string.Empty;
+        var log = CreateOpsLog(fullName, methodInfo.Name, attribute.LogName, invocation.Arguments, _userContext);
         try
         {
             invocation.Proceed();
@@ -79,7 +80,8 @@ public sealed class OperateLogAsyncInterceptor : IAsyncInterceptor
     private async Task InternalInterceptAsynchronous(IInvocation invocation, OperateLogAttribute attribute)
     {
         var methodInfo = invocation.Method ?? invocation.MethodInvocationTarget;
-        var log = CreateOpsLog(methodInfo.DeclaringType.FullName, methodInfo.Name, attribute.LogName, invocation.Arguments, _userContext);
+        var fullName = methodInfo.DeclaringType?.FullName ?? string.Empty;
+        var log = CreateOpsLog(fullName, methodInfo.Name, attribute.LogName, invocation.Arguments, _userContext);
 
         try
         {
@@ -110,7 +112,8 @@ public sealed class OperateLogAsyncInterceptor : IAsyncInterceptor
         TResult result;
 
         var methodInfo = invocation.Method ?? invocation.MethodInvocationTarget;
-        var log = CreateOpsLog(methodInfo.DeclaringType.FullName, methodInfo.Name, attribute.LogName, invocation.Arguments, _userContext);
+        var fullName = methodInfo.DeclaringType?.FullName ?? string.Empty;
+        var log = CreateOpsLog(fullName, methodInfo.Name, attribute.LogName, invocation.Arguments, _userContext);
 
         try
         {
@@ -181,7 +184,7 @@ public sealed class OperateLogAsyncInterceptor : IAsyncInterceptor
     /// </summary>
     /// <param name="invocation"></param>
     /// <returns></returns>
-    private OperateLogAttribute GetAttribute(IInvocation invocation)
+    private OperateLogAttribute? GetAttribute(IInvocation invocation)
     {
         var methodInfo = invocation.Method ?? invocation.MethodInvocationTarget;
         var attribute = methodInfo.GetCustomAttribute<OperateLogAttribute>();
