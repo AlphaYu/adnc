@@ -18,6 +18,6 @@
 	<ItemGroup Condition="'$(SolutionName)'=='Adnc.Services' ">
 		<PackageReference Include="Adnc.Infra.Helper" Version="$(Infra_Version)" />
 		<PackageReference Include="Adnc.Infra.Redis.Caching" Version="$(Infra_Version)" />
-		<PackageReference Include="Adnc.Shared.Application.Contracts" Version="$(Infra_Version)" />
+		<PackageReference Include="Adnc.Shared.Application.Contracts" Version="$(Shared_Version)" />
 	</ItemGroup>
 </Project>

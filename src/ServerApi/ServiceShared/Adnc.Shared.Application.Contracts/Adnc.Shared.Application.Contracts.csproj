@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<Import Project="..\..\Props\common.props" />
-	<Import Project="..\..\Props\version.props" />
+	<Import Project="..\..\Props\version_shared.props" />
 	<Import Project="..\..\Props\nuget.props" />
 	<PropertyGroup>
 		<Description>该层定义了DTO对象的基类、应用服务类基类、缓存相关服务基类以及操作日志拦截器、UnitOfWork拦截器。所有微服务Application层的共享层，并且都需要依赖该层。</Description>

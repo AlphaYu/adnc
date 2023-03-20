@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<Import Project="..\..\Props\common.props" />
-	<Import Project="..\..\Props\version.props" />
+	<Import Project="..\..\Props\version_shared.props" />
 	<Import Project="..\..\Props\nuget.props" />
 	<PropertyGroup>
 		<Description>该层实现了认证、鉴权、异常捕获、服务组件注册等公共类和中间件。所有微服务WebApi层的共享层，并且都需要依赖该层。</Description>

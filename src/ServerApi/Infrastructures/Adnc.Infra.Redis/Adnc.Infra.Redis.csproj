@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<Import Project="..\..\Props\common.props" />
-	<Import Project="..\..\Props\version.props" />
+	<Import Project="..\..\Props\version_infra.props" />
 	<Import Project="..\..\Props\nuget.props" />	
 	<PropertyGroup>
 		<Description>该库集成了`StackExchange.Redis`客户端，提供Redis常用类型操作、分布式锁、布隆过滤器。</Description>

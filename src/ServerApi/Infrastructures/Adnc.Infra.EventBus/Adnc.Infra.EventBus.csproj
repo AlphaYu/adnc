@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<Import Project="..\..\Props\common.props" />
-	<Import Project="..\..\Props\version.props" />
+	<Import Project="..\..\Props\version_infra.props" />
 	<Import Project="..\..\Props\nuget.props" />
 	<PropertyGroup>
 		<Description>该库封装并扩展了CAP，同时集成了RabbitMq客户端，封装了发布者与订阅者等公共类，能让开发人员更加便捷的调用。</Description>

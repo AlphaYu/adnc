@@ -24,6 +24,6 @@
 		<PackageReference Include="Adnc.Infra.EventBus" Version="$(Infra_Version)" />
 		<PackageReference Include="Adnc.Infra.Helper" Version="$(Infra_Version)" />
 		<PackageReference Include="Adnc.Infra.IdGenerater" Version="$(Infra_Version)" />
-		<PackageReference Include="Adnc.Shared.Domain" Version="$(Infra_Version)" />
+		<PackageReference Include="Adnc.Shared.Domain" Version="$(Shared_Version)" />
 	</ItemGroup>
 </Project>

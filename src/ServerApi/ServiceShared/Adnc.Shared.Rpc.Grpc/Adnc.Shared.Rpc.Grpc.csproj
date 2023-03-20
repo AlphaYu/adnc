@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<Import Project="..\..\Props\common.props" />
-	<Import Project="..\..\Props\version.props" />
+	<Import Project="..\..\Props\version_shared.props" />
 	<PropertyGroup>
 		<Description>该层用来定义Grpc客户端，不需要发布的到Nuget。</Description>
 	</PropertyGroup>

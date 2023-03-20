@@ -16,6 +16,6 @@
 
 	<ItemGroup Condition="'$(SolutionName)'=='Adnc.Services' ">
 		<PackageReference Include="Adnc.Infra.Repository" Version="$(Infra_Version)" />
-		<PackageReference Include="Adnc.Shared.Repository" Version="$(Infra_Version)" />
+		<PackageReference Include="Adnc.Shared.Repository" Version="$(Shared_Version)" />
 	</ItemGroup>
 </Project>

@@ -13,6 +13,6 @@
 
 	<ItemGroup Condition="'$(SolutionName)'=='Adnc.Services' ">
 		<PackageReference Include="Adnc.Infra.Repository.EfCore.SqlServer" Version="$(Infra_Version)" />
-		<PackageReference Include="Adnc.Shared.Application" Version="$(Infra_Version)" />
+		<PackageReference Include="Adnc.Shared.Application" Version="$(Shared_Version)" />
 	</ItemGroup>
 </Project>

@@ -97,7 +97,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01.SolutionItems", "01.Solu
 	ProjectSection(SolutionItems) = preProject
 		Props\common.props = Props\common.props
 		Props\nuget.props = Props\nuget.props
-		Props\version.props = Props\version.props
+		Props\version_infra.props = Props\version_infra.props
+		Props\version_shared.props = Props\version_shared.props
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "05.ServiceShared", "05.ServiceShared", "{9697B6F8-6C64-4184-AB6C-8683D6F12B61}"

@@ -45,7 +45,7 @@
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(SolutionName)'=='Adnc.Services' ">
-		<PackageReference Include="Adnc.Shared.WebApi" Version="$(Infra_Version)" />
+		<PackageReference Include="Adnc.Shared.WebApi" Version="$(Shared_Version)" />
 	</ItemGroup>
 	<ProjectExtensions>
 		<VisualStudio>

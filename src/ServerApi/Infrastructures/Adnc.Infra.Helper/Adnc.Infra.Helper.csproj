@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<Import Project="..\..\Props\common.props" />
-	<Import Project="..\..\Props\version.props" />
+	<Import Project="..\..\Props\version_infra.props" />
 	<Import Project="..\..\Props\nuget.props" />
 	<PropertyGroup>
 		<Description>该库提供一些通用帮助类，如HashHelper,SecurityHelper等等。</Description>
