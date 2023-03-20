@@ -17,11 +17,11 @@ public class BearerTokenGenerator : ITokenGenerator
 
     public string GeneratorName => Scheme;
 
-    public virtual string? Create()
+    public string Create()
     {
         var token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"].FirstOrDefault();
         var tokenTxt = token?.Remove(0, 7);
         _logger.LogDebug($"Accessor:{tokenTxt}");
-        return tokenTxt;
+        return tokenTxt ?? string.Empty;
     }
 }

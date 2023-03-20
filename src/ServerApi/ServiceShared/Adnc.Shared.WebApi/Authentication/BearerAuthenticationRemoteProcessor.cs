@@ -22,8 +22,8 @@ public class BearerAuthenticationRemoteProcessor : AbstractAuthenticationProcess
         var userContext = _contextAccessor?.HttpContext?.RequestServices.GetService<UserContext>();
         if (userContext is null)
             throw new NullReferenceException(nameof(userContext));
-
-        userContext.ExationId = userId;
+        else
+            userContext.Id = userId;
 
         var apiReuslt = await _authRestClient.GetValidatedInfoAsync();
         if (!apiReuslt.IsSuccessStatusCode)

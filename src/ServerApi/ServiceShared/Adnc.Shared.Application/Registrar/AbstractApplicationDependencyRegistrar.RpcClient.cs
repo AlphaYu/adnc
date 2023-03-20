@@ -31,6 +31,8 @@ public abstract partial class AbstractApplicationDependencyRegistrar
         Services.TryAddScoped<TokenDelegatingHandler>();
         Services.TryAddScoped<ConsulDiscoverDelegatingHandler>();
         Services.TryAddScoped<TokenFactory>();
+        Services.TryAddScoped<ITokenGenerator,BasicTokenGenerator>();
+        Services.TryAddScoped<ITokenGenerator,BearerTokenGenerator>();
 
         var registeredType = Configuration.GetValue(NodeConsts.RegisteredType, "direct");
         //注册RefitClient,设置httpclient生命周期时间，默认也是2分钟。
@@ -81,6 +83,8 @@ public abstract partial class AbstractApplicationDependencyRegistrar
         Services.TryAddScoped<TokenDelegatingHandler>();
         Services.TryAddScoped<ConsulDiscoverDelegatingHandler>();
         Services.TryAddScoped<TokenFactory>();
+        Services.TryAddScoped<ITokenGenerator, BasicTokenGenerator>();
+        Services.TryAddScoped<ITokenGenerator, BearerTokenGenerator>();
 
         var registeredType = Configuration.GetValue(NodeConsts.RegisteredType, "direct");
         var switchName = "System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport";

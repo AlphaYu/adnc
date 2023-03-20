@@ -10,5 +10,5 @@ public interface ITokenGenerator
     /// 创建/获取一个token
     /// </summary>
     /// <returns></returns>
-    public string? Create();
+    public string Create();
 }

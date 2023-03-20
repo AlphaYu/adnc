@@ -16,7 +16,7 @@ public sealed class DependencyRegistrar : AbstractApplicationDependencyRegistrar
     {
         AddApplicaitonDefault();
         //rpc-rest
-        var restPolicies = this.GenerateDefaultRefitPolicies();
+        var restPolicies = PollyStrategyEnable ? this.GenerateDefaultRefitPolicies() : new();
         AddRestClient<IAuthRestClient>(ServiceAddressConsts.UsrService, restPolicies);
         AddRestClient<IUsrRestClient>(ServiceAddressConsts.UsrService, restPolicies);
 

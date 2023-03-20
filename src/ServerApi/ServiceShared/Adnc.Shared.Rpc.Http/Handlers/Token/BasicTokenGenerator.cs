@@ -19,14 +19,7 @@ public class BasicTokenGenerator : ITokenGenerator
 
     public virtual string Create()
     {
-        long userId;
-        if (_userContext is null)
-            userId = 0;
-        else if (_userContext.Id == 0)
-            userId = _userContext.ExationId;
-        else
-            userId = _userContext.Id;
-
+        long userId = _userContext is null ? 0 : _userContext.Id;
         _logger.LogDebug($"UserContext:{userId}");
         var userName = $"{BasicTokenValidator.InternalCaller}-{userId}";
         var token = BasicTokenValidator.PackToBase64(userName);

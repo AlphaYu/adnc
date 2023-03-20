@@ -24,7 +24,7 @@ public class TokenDelegatingHandler : DelegatingHandler
         {
             var authorizationScheme = headers.Authorization.Scheme;
             var tokenGenerator = _tokenFactory.CreateGenerator(authorizationScheme);
-            var tokenTxt = tokenGenerator?.Create();
+            var tokenTxt = tokenGenerator.Create();
             headers.Authorization = new AuthenticationHeaderValue(authorizationScheme, tokenTxt);
         }
         return await base.SendAsync(request, cancellationToken);

@@ -25,7 +25,7 @@ public sealed class WhseApplicationDependencyRegistrar : AbstractApplicationDepe
         AddDomainSerivces<IDomainService>();
 
         //rpc-rest
-        var restPolicies = this.GenerateDefaultRefitPolicies();
+        var restPolicies = PollyStrategyEnable ? this.GenerateDefaultRefitPolicies() : new();
         AddRestClient<IAuthRestClient>(ServiceAddressConsts.UsrService, restPolicies);
         AddRestClient<IUsrRestClient>(ServiceAddressConsts.UsrService, restPolicies);
         AddRestClient<IMaintRestClient>(ServiceAddressConsts.MaintService, restPolicies);

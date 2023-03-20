@@ -17,13 +17,13 @@ public sealed class CustApplicationDependencyRegistrar : AbstractApplicationDepe
         AddApplicaitonDefault();
 
         //rpc-restclient
-        var restPolicies = this.GenerateDefaultRefitPolicies();
+        var restPolicies = PollyStrategyEnable ? this.GenerateDefaultRefitPolicies() : new();
         AddRestClient<IAuthRestClient>(ServiceAddressConsts.UsrService, restPolicies);
         AddRestClient<IUsrRestClient>(ServiceAddressConsts.UsrService, restPolicies);
         AddRestClient<IMaintRestClient>(ServiceAddressConsts.MaintService, restPolicies);
         AddRestClient<IWhseRestClient>(ServiceAddressConsts.WhseService, restPolicies);
         //rpc-grpcclient
-        var gprcPolicies = this.GenerateDefaultGrpcPolicies();
+        var gprcPolicies = PollyStrategyEnable ? this.GenerateDefaultRefitPolicies() : new();
         AddGrpcClient<AuthGrpc.AuthGrpcClient>(ServiceAddressConsts.UsrService, gprcPolicies);
         AddGrpcClient<UsrGrpc.UsrGrpcClient>(ServiceAddressConsts.UsrService, gprcPolicies);
         AddGrpcClient<MaintGrpc.MaintGrpcClient>(ServiceAddressConsts.MaintService, gprcPolicies);
