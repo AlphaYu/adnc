@@ -98,6 +98,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01.SolutionItems", "01.Solu
 		Props\common.props = Props\common.props
 		Props\nuget.props = Props\nuget.props
 		Props\version_infra.props = Props\version_infra.props
+		Props\version_service.props = Props\version_service.props
 		Props\version_shared.props = Props\version_shared.props
 	EndProjectSection
 EndProject

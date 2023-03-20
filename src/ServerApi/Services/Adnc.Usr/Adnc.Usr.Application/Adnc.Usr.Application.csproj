@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<Import Project="..\..\..\Props\common.props" />
-	<Import Project="..\..\..\Props\version.props" />
+	<Import Project="..\..\..\Props\version_service.props" />
 	
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\ServiceShared\Adnc.Shared.Rpc.Http\Adnc.Shared.Rpc.Http.csproj" />

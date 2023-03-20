@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<Import Project="..\..\..\Props\common.props" />
-	<Import Project="..\..\..\Props\version.props" />
+	<Import Project="..\..\..\Props\version_service.props" />
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
 		<OutputPath>..\Adnc.Cust.WebApi\bin\$(Configuration)</OutputPath>
 	</PropertyGroup>
