@@ -27,9 +27,10 @@ public abstract partial class AbstractWebApiDependencyRegistrar : IMiddlewareReg
         Action<IEndpointRouteBuilder>? endpointRoute = null)
     {
         ServiceLocator.Provider = App.ApplicationServices;
-        var environment = App.ApplicationServices.GetService<IHostEnvironment>() ?? throw new NullReferenceException(nameof(IHostEnvironment)); ;
-        var serviceInfo = App.ApplicationServices.GetService<IServiceInfo>() ?? throw new NullReferenceException(nameof(IServiceInfo));
-        var consulOptions = App.ApplicationServices.GetService<IOptions<ConsulOptions>>();
+        var environment = App.ApplicationServices.GetRequiredService<IHostEnvironment>();
+        var serviceInfo = App.ApplicationServices.GetRequiredService<IServiceInfo>();
+        var consulOptions = App.ApplicationServices.GetRequiredService<IOptions<ConsulOptions>>();
+        var configuration = App.ApplicationServices.GetRequiredService<IConfiguration>();
         var healthCheckUrl = consulOptions?.Value?.HealthCheckUrl ?? $"{serviceInfo.ShortName}/health-24b01005-a76a-4b3b-8fb1-5e0f2e9564fb";
 
         var defaultFilesOptions = new DefaultFilesOptions();
@@ -48,22 +49,31 @@ public abstract partial class AbstractWebApiDependencyRegistrar : IMiddlewareReg
             App.UseMiniProfiler();
         }
 
-        App
-            .UseSwagger(c =>
-            {
-                c.RouteTemplate = $"/{serviceInfo.ShortName}/swagger/{{documentName}}/swagger.json";
-                c.PreSerializeFilters.Add((swaggerDoc, httpReq) =>
+        var enableSwaggerUI = configuration.GetValue<bool>("SwaggerUI:Enable", true);
+        if(enableSwaggerUI)
+        {
+            App
+                .UseSwagger(c =>
                 {
-                    swaggerDoc.Servers = new List<OpenApiServer> { new OpenApiServer { Url = $"/", Description = serviceInfo.Description } };
+                    c.RouteTemplate = $"/{serviceInfo.ShortName}/swagger/{{documentName}}/swagger.json";
+                    c.PreSerializeFilters.Add((swaggerDoc, httpReq) =>
+                    {
+                        swaggerDoc.Servers = new List<OpenApiServer> { new OpenApiServer { Url = $"/", Description = serviceInfo.Description } };
+                    });
+                })
+                .UseSwaggerUI(c =>
+                {
+                    var assembly = serviceInfo.GetWebApiAssembly();
+                    c.IndexStream = () =>
+                    {  
+                        var stream = assembly.GetManifestResourceStream($"{assembly.GetName().Name}.swagger_miniprofiler.html");
+                        return stream;
+                    };
+                    c.SwaggerEndpoint($"/{serviceInfo.ShortName}/swagger/{serviceInfo.Version}/swagger.json", $"{serviceInfo.ServiceName}-{serviceInfo.Version}");
+                    c.RoutePrefix = $"{serviceInfo.ShortName}";
                 });
-            })
-            .UseSwaggerUI(c =>
-            {
-                var assembly = serviceInfo.GetWebApiAssembly();
-                c.IndexStream = () => assembly.GetManifestResourceStream($"{assembly.GetName().Name}.swagger_miniprofiler.html");
-                c.SwaggerEndpoint($"/{serviceInfo.ShortName}/swagger/{serviceInfo.Version}/swagger.json", $"{serviceInfo.ServiceName}-{serviceInfo.Version}");
-                c.RoutePrefix = $"{serviceInfo.ShortName}";
-            })
+        }
+        App
             .UseHealthChecks($"/{healthCheckUrl}", new HealthCheckOptions()
             {
                 Predicate = _ => true,
