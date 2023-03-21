@@ -3,8 +3,6 @@
 	<Import Project="..\..\..\Props\version_service.props" />
 	<PropertyGroup>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
-		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-		<DockerfileContext>..\..\..</DockerfileContext>
 		<Description>仓储中心服务</Description>
 	</PropertyGroup>
 

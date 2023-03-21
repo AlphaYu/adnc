@@ -2,8 +2,6 @@
 	<Import Project="..\..\..\Props\common.props" />
 	<Import Project="..\..\..\Props\version_service.props" />
 	<PropertyGroup>
-		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-		<DockerfileContext>..\..\..</DockerfileContext>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<Description>用户中心服务</Description>
 	</PropertyGroup>
