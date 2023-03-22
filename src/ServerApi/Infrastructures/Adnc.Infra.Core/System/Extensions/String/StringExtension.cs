@@ -9,28 +9,28 @@ public static class StringExtension
     /// </summary>
     /// <param name="this">The @this to act on.</param>
     /// <returns>true if null or empty, false if not.</returns>
-    public static bool IsNullOrEmpty(this string @this) => string.IsNullOrEmpty(@this);
+    public static bool IsNullOrEmpty(this string? @this) => string.IsNullOrEmpty(@this);
 
     /// <summary>
     ///     A string extension method that query if '@this' is not null and not empty.
     /// </summary>
     /// <param name="this">The @this to act on.</param>
     /// <returns>false if null or empty, true if not.</returns>
-    public static bool IsNotNullOrEmpty(this string @this) => !string.IsNullOrEmpty(@this);
+    public static bool IsNotNullOrEmpty(this string? @this) => !string.IsNullOrEmpty(@this);
 
     /// <summary>
     ///     A string extension method that query if '@this' is null or whiteSpace.
     /// </summary>
     /// <param name="this">The @this to act on.</param>
     /// <returns>true if null or whiteSpace, false if not.</returns>
-    public static bool IsNullOrWhiteSpace(this string @this) => string.IsNullOrWhiteSpace(@this);
+    public static bool IsNullOrWhiteSpace(this string? @this) => string.IsNullOrWhiteSpace(@this);
 
     /// <summary>
     ///     A string extension method that query if '@this' is not null and not whiteSpace.
     /// </summary>
     /// <param name="this">The @this to act on.</param>
     /// <returns>false if null or whiteSpace, true if not.</returns>
-    public static bool IsNotNullOrWhiteSpace(this string @this) => !string.IsNullOrWhiteSpace(@this);
+    public static bool IsNotNullOrWhiteSpace(this string? @this) => !string.IsNullOrWhiteSpace(@this);
 
     /// <summary>
     ///     A string extension method that query if '@this' satisfy the specified pattern.
