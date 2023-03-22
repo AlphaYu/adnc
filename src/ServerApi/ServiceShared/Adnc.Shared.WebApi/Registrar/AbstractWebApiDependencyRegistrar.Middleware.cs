@@ -33,26 +33,27 @@ public abstract partial class AbstractWebApiDependencyRegistrar : IMiddlewareReg
         var configuration = App.ApplicationServices.GetRequiredService<IConfiguration>();
         var healthCheckUrl = consulOptions?.Value?.HealthCheckUrl ?? $"{serviceInfo.ShortName}/health-24b01005-a76a-4b3b-8fb1-5e0f2e9564fb";
 
-        var defaultFilesOptions = new DefaultFilesOptions();
-        defaultFilesOptions.DefaultFileNames.Clear();
-        defaultFilesOptions.DefaultFileNames.Add("index.html");
+        //var defaultFilesOptions = new DefaultFilesOptions();
+        //defaultFilesOptions.DefaultFileNames.Clear();
+        //defaultFilesOptions.DefaultFileNames.Add("index.html");
+        //App
+        //    .UseDefaultFiles(defaultFilesOptions)
+        //    .UseStaticFiles();
         App
-            .UseDefaultFiles(defaultFilesOptions)
-            .UseStaticFiles()
-            .UseCustomExceptionHandler()
             .UseRealIp(x => x.HeaderKey = "X-Forwarded-For")
+            .UseCustomExceptionHandler()
             .UseCors(serviceInfo.CorsPolicy);
 
         if (environment.IsDevelopment())
         {
             IdentityModelEventSource.ShowPII = true;
-            App.UseMiniProfiler();
         }
 
-        var enableSwaggerUI = configuration.GetValue<bool>("SwaggerUI:Enable", true);
+        var enableSwaggerUI = configuration.GetValue("SwaggerUI:Enable", true);
         if(enableSwaggerUI)
         {
             App
+                .UseMiniProfiler()
                 .UseSwagger(c =>
                 {
                     c.RouteTemplate = $"/{serviceInfo.ShortName}/swagger/{{documentName}}/swagger.json";
@@ -65,8 +66,13 @@ public abstract partial class AbstractWebApiDependencyRegistrar : IMiddlewareReg
                 {
                     var assembly = serviceInfo.GetWebApiAssembly();
                     c.IndexStream = () =>
-                    {  
-                        var stream = assembly.GetManifestResourceStream($"{assembly.GetName().Name}.swagger_miniprofiler.html");
+                    {
+                        //var stream = assembly.GetManifestResourceStream($"{assembly.GetName().Name}.swagger_miniprofiler.html");
+                        //return stream;
+                        var miniProfiler = $"{AppContext.BaseDirectory}swagger_miniprofiler.html";
+                        var text = File.ReadAllText(miniProfiler).Replace("$SHORTNAME", serviceInfo.ShortName);
+                        var byteArray = Encoding.UTF8.GetBytes(text);
+                        var stream = new MemoryStream(byteArray);
                         return stream;
                     };
                     c.SwaggerEndpoint($"/{serviceInfo.ShortName}/swagger/{serviceInfo.Version}/swagger.json", $"{serviceInfo.ServiceName}-{serviceInfo.Version}");

@@ -1,4 +1,6 @@
-﻿namespace Adnc.Maint.Application.Subscribers;
+﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+
+namespace Adnc.Maint.Application.Subscribers;
 
 /// <summary>
 /// 登录日志消费者
@@ -85,7 +87,8 @@ public sealed class LoginLogMqConsumer : BaseRabbitMqConsumer
             using var scope = _services.CreateScope();
             var repository = scope.ServiceProvider.GetRequiredService<IMongoRepository<LoginLog>>();
             var entity = JsonSerializer.Deserialize<LoginLog>(message);
-            await repository.AddAsync(entity);
+            if (entity is not null)
+                await repository.AddAsync(entity);
             result = true;
         }
         catch (Exception ex)

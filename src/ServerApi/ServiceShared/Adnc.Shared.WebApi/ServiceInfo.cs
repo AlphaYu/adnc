@@ -48,11 +48,12 @@ public class ServiceInfo : IServiceInfo
                 _ => throw new NullReferenceException("ASPNETCORE_ENVIRONMENT")
             };
 
+            var names = fullName.Split(".");
             _instance = new ServiceInfo
             {
                 Id = serviceId,
                 ServiceName = serviceName,
-                ShortName = fullName.Split(".")[^2],
+                ShortName = $"{names[^2]}-{names[^1]}",
                 CorsPolicy = "default",
                 StartAssembly = startAssembly,
                 Description = description,

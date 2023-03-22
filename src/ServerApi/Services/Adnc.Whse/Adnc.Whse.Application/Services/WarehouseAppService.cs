@@ -35,6 +35,7 @@ public class WarehouseAppService : AbstractAppService, IWarehouseAppService
     /// <returns></returns>
     public async Task<WarehouseDto> CreateAsync(WarehouseCreationDto input)
     {
+        input.TrimStringFields();
         var warehouse = await _warehouseManager.CreateAsync(input.PositionCode, input.PositionDescription);
 
         await _warehouseRepo.InsertAsync(warehouse);
@@ -50,6 +51,7 @@ public class WarehouseAppService : AbstractAppService, IWarehouseAppService
     /// <returns></returns>
     public async Task<WarehouseDto> AllocateShelfToProductAsync(long warehouseId, WarehouseAllocateToProductDto input)
     {
+        input.TrimStringFields();
         var warehouse = await _warehouseRepo.GetAsync(warehouseId);
 
         await _warehouseManager.AllocateShelfToProductAsync(warehouse, input.ProductId);
@@ -66,6 +68,7 @@ public class WarehouseAppService : AbstractAppService, IWarehouseAppService
     /// <returns></returns>
     public async Task<PageModelDto<WarehouseDto>> GetPagedAsync(WarehouseSearchDto search)
     {
+        search.TrimStringFields();
         var total = await _warehouseRepo.CountAsync(x => true);
 
         if (total == 0)
@@ -103,6 +106,7 @@ public class WarehouseAppService : AbstractAppService, IWarehouseAppService
     /// <returns></returns>
     public async Task BlockQtyAsync(OrderCreatedEvent eventDto, IMessageTracker tracker)
     {
+        eventDto.TrimStringFields();
         var blockQtyProductsInfo = eventDto.Data.Products.ToDictionary(x => x.ProductId, x => x.Qty);
         var warehouses = await _warehouseRepo.Where(x => blockQtyProductsInfo.Keys.Contains(x.ProductId.Value), noTracking: false).ToListAsync();
         // var products = await _productRepo.Where(x => blockQtyProductsInfo.Keys.Contains(x.Id)).ToListAsync();

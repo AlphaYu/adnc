@@ -36,6 +36,7 @@ public class ProductAppService : AbstractAppService, IProductAppService
     /// <returns></returns>
     public async Task<ProductDto> CreateAsync(ProductCreationDto input)
     {
+        input.TrimStringFields();
         var product = await _productMgr.CreateAsync(input.Sku, input.Price, input.Name, input.Unit, input.Describe);
 
         await _productRepo.InsertAsync(product);
@@ -51,6 +52,7 @@ public class ProductAppService : AbstractAppService, IProductAppService
     /// <returns></returns>
     public async Task<ProductDto> UpdateAsync(long id, ProductUpdationDto input)
     {
+        input.TrimStringFields();
         var product = await _productRepo.GetAsync(id);
 
         product.Describe = input.Describe;
@@ -73,6 +75,7 @@ public class ProductAppService : AbstractAppService, IProductAppService
     /// <returns></returns>
     public async Task<ProductDto> ChangePriceAsync(long id, ProducChangePriceDto input)
     {
+        input.TrimStringFields();
         var product = await _productRepo.GetAsync(id);
 
         product.SetPrice(input.Price);
@@ -90,6 +93,7 @@ public class ProductAppService : AbstractAppService, IProductAppService
     /// <returns></returns>
     public async Task<ProductDto> PutOnSaleAsync(long id, ProductPutOnSaleDto input)
     {
+        input.TrimStringFields();
         var product = await _productRepo.GetAsync(id);
         //var warehouseInfo = await _warehouseInfoRepo.Where(x => x.ProductId == id).FirstOrDefaultAsync();
 
@@ -107,6 +111,7 @@ public class ProductAppService : AbstractAppService, IProductAppService
     /// <returns></returns>
     public async Task<ProductDto> PutOffSaleAsync(long id, ProductPutOffSaleDto input)
     {
+        input.TrimStringFields();
         var product = await _productRepo.GetAsync(id);
 
         product.PutOffSale(input.Reason);
@@ -123,6 +128,7 @@ public class ProductAppService : AbstractAppService, IProductAppService
     /// <returns></returns>
     public async Task<PageModelDto<ProductDto>> GetPagedAsync(ProductSearchPagedDto search)
     {
+        search.TrimStringFields();
         var whereCondition = ExpressionCreator
                                             .New<Product>()
                                             .AndIf(search.Id > 0, x => x.Id == search.Id);
@@ -166,6 +172,7 @@ public class ProductAppService : AbstractAppService, IProductAppService
     /// <returns></returns>
     public async Task<List<ProductDto>> GetListAsync(ProductSearchListDto search)
     {
+        search.TrimStringFields();
         var whereCondition = ExpressionCreator
                                             .New<Product>()
                                             .AndIf(search.Ids.IsNotNullOrEmpty(), x => (search.Ids.Select(x => x).Distinct()).Contains(x.Id))

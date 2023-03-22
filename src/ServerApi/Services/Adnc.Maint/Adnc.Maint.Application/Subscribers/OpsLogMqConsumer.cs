@@ -84,7 +84,8 @@ public sealed class OpsLogMqConsumer : BaseRabbitMqConsumer
             using var scope = _services.CreateScope();
             var repository = scope.ServiceProvider.GetRequiredService<IMongoRepository<OperationLog>>();
             var entity = JsonSerializer.Deserialize<OperationLog>(message);
-            await repository.AddAsync(entity);
+            if(entity is not null)
+                await repository.AddAsync(entity);
             result = true;
         }
         catch (Exception ex)

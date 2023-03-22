@@ -13,6 +13,7 @@ public class MenuAppService : AbstractAppService, IMenuAppService
 
     public async Task<AppSrvResult<long>> CreateAsync(MenuCreationDto input)
     {
+        input.TrimStringFields();
         var allMenus = await _cacheService.GetAllMenusFromCacheAsync();
 
         var isExistsCode = allMenus.Any(x => x.Code == input.Code);
@@ -34,6 +35,7 @@ public class MenuAppService : AbstractAppService, IMenuAppService
 
     public async Task<AppSrvResult> UpdateAsync(long id, MenuUpdationDto input)
     {
+        input.TrimStringFields();
         var allMenus = await _cacheService.GetAllMenusFromCacheAsync();
 
         var isExistsCode = allMenus.Any(x => x.Code == input.Code && x.Id != id);
@@ -51,21 +53,21 @@ public class MenuAppService : AbstractAppService, IMenuAppService
         menu.Id = id;
 
         var updatingProps = UpdatingProps<Menu>(
-                                                                                        x => x.Code
-                                                                                        , x => x.Component
-                                                                                        , x => x.Hidden
-                                                                                        , x => x.Icon
-                                                                                        , x => x.IsMenu
-                                                                                        , x => x.IsOpen
-                                                                                        , x => x.Levels
-                                                                                        , x => x.Name
-                                                                                        , x => x.Ordinal
-                                                                                        , x => x.PCode
-                                                                                        , x => x.PCodes
-                                                                                        , x => x.Status
-                                                                                        , x => x.Tips
-                                                                                        , x => x.Url
-                                                                                    );
+                                                x => x.Code
+                                                , x => x.Component
+                                                , x => x.Hidden
+                                                , x => x.Icon
+                                                , x => x.IsMenu
+                                                , x => x.IsOpen
+                                                , x => x.Levels
+                                                , x => x.Name
+                                                , x => x.Ordinal
+                                                , x => x.PCode
+                                                , x => x.PCodes
+                                                , x => x.Status
+                                                , x => x.Tips
+                                                , x => x.Url
+                                            );
 
         await _menuRepository.UpdateAsync(menu, updatingProps);
 

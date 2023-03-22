@@ -18,6 +18,7 @@ public class CfgAppService : AbstractAppService, ICfgAppService
 
     public async Task<AppSrvResult<long>> CreateAsync(CfgCreationDto input)
     {
+        input.TrimStringFields();
         var exists = await _cfgRepository.AnyAsync(x => x.Name.Equals(input.Name));
         if (exists)
             return Problem(HttpStatusCode.BadRequest, "参数名称已经存在");
@@ -38,7 +39,8 @@ public class CfgAppService : AbstractAppService, ICfgAppService
 
     public async Task<AppSrvResult> UpdateAsync(long id, CfgUpdationDto input)
     {
-        var exists = await _cfgRepository.AnyAsync(c => c.Name.Equals(input.Name.Trim()) && c.Id != id);
+        input.TrimStringFields();
+        var exists = await _cfgRepository.AnyAsync(c => c.Name.Equals(input.Name) && c.Id != id);
         if (exists)
             return Problem(HttpStatusCode.BadRequest, "参数名称已经存在");
 
@@ -65,6 +67,7 @@ public class CfgAppService : AbstractAppService, ICfgAppService
 
     public async Task<PageModelDto<CfgDto>> GetPagedAsync(CfgSearchPagedDto search)
     {
+        search.TrimStringFields();
         var whereExpression = ExpressionCreator
             .New<Cfg>()
             .AndIf(search.Name.IsNotNullOrWhiteSpace(), x => EF.Functions.Like(x.Name, $"{search.Name}%"))

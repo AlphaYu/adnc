@@ -7,19 +7,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<None Include="..\..\..\ServiceShared\Config\**\*">
+		<None Include="..\..\..\ServiceShared\Resources\**\*">
 			<Link>%(RecursiveDir)/%(FileName)%(Extension)</Link>
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-	</ItemGroup>
-	
-	<ItemGroup>
-	  <None Remove="swagger_miniprofiler.html" />
-	</ItemGroup>
-	<ItemGroup>
-	  <EmbeddedResource Include="swagger_miniprofiler.html">
-	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-	  </EmbeddedResource>
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="$(AspNetCore_HealthChecks_SqlServer_Version)" />

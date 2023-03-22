@@ -27,6 +27,7 @@ public class CustomerAppService : AbstractAppService, ICustomerAppService
 
     public async Task<AppSrvResult<CustomerDto>> RegisterAsync(CustomerRegisterDto input)
     {
+        input.TrimStringFields();
         var exists = await _customerRepo.AnyAsync(t => t.Account == input.Account);
         if (exists)
             return Problem(HttpStatusCode.Forbidden, "该账号已经存在");
@@ -49,6 +50,7 @@ public class CustomerAppService : AbstractAppService, ICustomerAppService
 
     public async Task<AppSrvResult<SimpleDto<string>>> RechargeAsync(long id, CustomerRechargeDto input)
     {
+        input.TrimStringFields();
         var customer = await _customerRepo.FindAsync(id);
         if (customer == null)
             return Problem(HttpStatusCode.NotFound, "不存在该账号");
@@ -76,6 +78,8 @@ public class CustomerAppService : AbstractAppService, ICustomerAppService
 
     public async Task<AppSrvResult> ProcessRechargingAsync(CustomerRechargedEvent eventDto, IMessageTracker tracker)
     {
+        eventDto.TrimStringFields();
+
         var customerId = eventDto.Data.CustomerId;
         var amount = eventDto.Data.Amount;
         var transactionLogId = eventDto.Data.TransactionLogId;
@@ -136,6 +140,8 @@ public class CustomerAppService : AbstractAppService, ICustomerAppService
 
     public async Task<AppSrvResult<PageModelDto<CustomerDto>>> GetPagedAsync(CustomerSearchPagedDto search)
     {
+        search.TrimStringFields();
+
         var whereCondition = ExpressionCreator
                                             .New<Customer>()
                                             .AndIf(search.Id > 0, x => x.Id == search.Id)

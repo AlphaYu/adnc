@@ -18,7 +18,8 @@ public class DictAppService : AbstractAppService, IDictAppService
 
     public async Task<AppSrvResult<long>> CreateAsync(DictCreationDto input)
     {
-        var exists = await _dictRepository.AnyAsync(x => x.Name.Equals(input.Name.Trim()));
+        input.TrimStringFields();
+        var exists = await _dictRepository.AnyAsync(x => x.Name.Equals(input.Name));
         if (exists)
             return Problem(HttpStatusCode.BadRequest, "字典名字已经存在");
 
@@ -51,7 +52,8 @@ public class DictAppService : AbstractAppService, IDictAppService
 
     public async Task<AppSrvResult> UpdateAsync(long id, DictUpdationDto input)
     {
-        var exists = await _dictRepository.AnyAsync(x => x.Name.Equals(input.Name.Trim()) && x.Id != id);
+        input.TrimStringFields();
+        var exists = await _dictRepository.AnyAsync(x => x.Name.Equals(input.Name) && x.Id != id);
         if (exists)
             return Problem(HttpStatusCode.BadRequest, "字典名字已经存在");
 
@@ -102,11 +104,13 @@ public class DictAppService : AbstractAppService, IDictAppService
 
     public async Task<List<DictDto>> GetListAsync(DictSearchDto search)
     {
+        search.TrimStringFields();
+
         var result = new List<DictDto>();
 
         var whereCondition = ExpressionCreator
             .New<Dict>(x => x.Pid == 0)
-            .AndIf(search.Name.IsNotNullOrWhiteSpace(), x => EF.Functions.Like(x.Name, $"{search.Name.Trim()}%"));
+            .AndIf(search.Name.IsNotNullOrWhiteSpace(), x => EF.Functions.Like(x.Name, $"{search.Name}%"));
 
         var dictEntities = await _dictRepository
             .Where(whereCondition)

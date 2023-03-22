@@ -36,6 +36,7 @@ public class OrderAppService : AbstractAppService, IOrderAppService
     /// <returns></returns>
     public async Task<OrderDto> CreateAsync(OrderCreationDto input)
     {
+        input.TrimStringFields();
         var productIds = input.Items.Select(x => x.ProductId).ToArray();
         //调用whse服务获取产品的价格,名字
         var restRpcResult = await _whseRestClient.GetProductsAsync(new ProductSearchListRto { Ids = productIds });
@@ -67,6 +68,7 @@ public class OrderAppService : AbstractAppService, IOrderAppService
     /// <returns></returns>
     public async Task MarkCreatedStatusAsync(WarehouseQtyBlockedEvent eventDto, IMessageTracker tracker)
     {
+        eventDto.TrimStringFields();
         var order = await _orderRepo.GetAsync(eventDto.Data.OrderId);
         order.MarkCreatedStatus(eventDto.Data.IsSuccess, eventDto.Data.Remark);
 
@@ -82,6 +84,8 @@ public class OrderAppService : AbstractAppService, IOrderAppService
     /// <returns></returns>
     public async Task<OrderDto> UpdateAsync(long id, OrderUpdationDto input)
     {
+        input.TrimStringFields();
+
         var order = await _orderRepo.GetAsync(id);
 
         order.ChangeReceiver(new OrderReceiver(
@@ -160,6 +164,7 @@ public class OrderAppService : AbstractAppService, IOrderAppService
     /// <returns></returns>
     public async Task<PageModelDto<OrderDto>> GetPagedAsync(OrderSearchPagedDto search)
     {
+        search.TrimStringFields();
         var whereCondition = ExpressionCreator
                                             .New<Order>()
                                             .AndIf(search.Id > 0, x => x.Id == search.Id);

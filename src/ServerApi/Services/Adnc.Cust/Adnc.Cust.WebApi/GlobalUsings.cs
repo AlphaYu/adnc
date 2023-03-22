@@ -1,6 +1,7 @@
 ﻿global using Adnc.Cust.Application.Contracts.Dtos;
 global using Adnc.Cust.Application.Contracts.Services;
 global using Adnc.Shared;
+global using Adnc.Shared.WebApi;
 global using Adnc.Shared.Application.Contracts.Dtos;
 global using Adnc.Shared.Rpc.Grpc;
 global using Adnc.Shared.Rpc.Grpc.Messages;

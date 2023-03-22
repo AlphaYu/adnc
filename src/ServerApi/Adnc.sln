@@ -154,19 +154,25 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Shared.Rpc.Event", "Se
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Shared.Const", "ServiceShared\Adnc.Shared.Const\Adnc.Shared.Const.csproj", "{E4DABBB7-33B3-40C0-A35C-17426E03BDA6}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{FDDCEFB0-2E05-43B9-8218-5C3F37846E03}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resources", "Resources", "{FDDCEFB0-2E05-43B9-8218-5C3F37846E03}"
 	ProjectSection(SolutionItems) = preProject
-		ServiceShared\Config\appsettings.shared.Development.json = ServiceShared\Config\appsettings.shared.Development.json
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NLog", "NLog", "{1ABBC8EF-0A8F-4BD6-940F-8D2347EB3D7B}"
-	ProjectSection(SolutionItems) = preProject
-		ServiceShared\Config\NLog\nlog-console.config = ServiceShared\Config\NLog\nlog-console.config
-		ServiceShared\Config\NLog\nlog-loki.config = ServiceShared\Config\NLog\nlog-loki.config
-		ServiceShared\Config\NLog\nlog-mongodb.config = ServiceShared\Config\NLog\nlog-mongodb.config
+		ServiceShared\Resources\appsettings.shared.Development.json = ServiceShared\Resources\appsettings.shared.Development.json
+		ServiceShared\Resources\swagger_miniprofiler.html = ServiceShared\Resources\swagger_miniprofiler.html
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.UnitTest", "..\Test\Adnc.UnitTest\Adnc.UnitTest.csproj", "{ECC6AD5D-4E80-44C0-8D48-7AB0FB18B4AE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nlog", "Nlog", "{3E0E3EB7-5BD1-4236-85E7-0DC669BE0366}"
+	ProjectSection(SolutionItems) = preProject
+		ServiceShared\Resources\NLog\nlog-console.config = ServiceShared\Resources\NLog\nlog-console.config
+		ServiceShared\Resources\NLog\nlog-loki.config = ServiceShared\Resources\NLog\nlog-loki.config
+		ServiceShared\Resources\NLog\nlog-mongodb.config = ServiceShared\Resources\NLog\nlog-mongodb.config
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "wwwroot", "wwwroot", "{FBBB3C8F-311C-49A2-B733-BE4EBA54F15C}"
+	ProjectSection(SolutionItems) = preProject
+		ServiceShared\Resources\wwwroot\favicon.ico = ServiceShared\Resources\wwwroot\favicon.ico
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -656,8 +662,9 @@ Global
 		{92D2CBA2-B54E-434B-95F3-C1004F95EA62} = {9697B6F8-6C64-4184-AB6C-8683D6F12B61}
 		{E4DABBB7-33B3-40C0-A35C-17426E03BDA6} = {9697B6F8-6C64-4184-AB6C-8683D6F12B61}
 		{FDDCEFB0-2E05-43B9-8218-5C3F37846E03} = {9697B6F8-6C64-4184-AB6C-8683D6F12B61}
-		{1ABBC8EF-0A8F-4BD6-940F-8D2347EB3D7B} = {FDDCEFB0-2E05-43B9-8218-5C3F37846E03}
 		{ECC6AD5D-4E80-44C0-8D48-7AB0FB18B4AE} = {23D3D93F-CE63-41DD-BE55-95EAFBB3280C}
+		{3E0E3EB7-5BD1-4236-85E7-0DC669BE0366} = {FDDCEFB0-2E05-43B9-8218-5C3F37846E03}
+		{FBBB3C8F-311C-49A2-B733-BE4EBA54F15C} = {FDDCEFB0-2E05-43B9-8218-5C3F37846E03}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3DED72E8-74C9-4A51-A9CE-62ECFEEA1921}

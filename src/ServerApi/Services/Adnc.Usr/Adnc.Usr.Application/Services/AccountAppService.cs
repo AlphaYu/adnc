@@ -18,6 +18,7 @@ public class AccountAppService : AbstractAppService, IAccountAppService
 
     public async Task<AppSrvResult<UserValidatedInfoDto>> LoginAsync(UserLoginDto input)
     {
+        input.TrimStringFields();
         var accountsFilter = _bloomFilterFactory.Create(CachingConsts.BloomfilterOfAccountsKey);
         var exists = await accountsFilter.ExistsAsync(input.Account.ToLower());
         if (!exists)
@@ -125,6 +126,7 @@ public class AccountAppService : AbstractAppService, IAccountAppService
 
     public async Task<AppSrvResult> UpdatePasswordAsync(long id, UserChangePwdDto input)
     {
+        input.TrimStringFields();
         var user = await _userRepository.FetchAsync(x => new
         {
             x.Id,

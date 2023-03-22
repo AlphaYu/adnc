@@ -1,4 +1,6 @@
-﻿namespace System.Reflection
+﻿using Adnc.Infra.Consul.Configuration;
+
+namespace Adnc.Shared.WebApi
 {
     public static class ServiceInfoExtension
     {
@@ -35,6 +37,23 @@
                 }
             }
             return appAssembly;
+        }
+
+        /// <summary>
+        /// 获取导航首页内容
+        /// </summary>
+        /// <param name="serviceInfo"></param>
+        /// <param name="app"></param>
+        /// <returns></returns>
+        public static string GetDefaultPageContent(this IServiceInfo serviceInfo, IServiceProvider serviceProvider)
+        {
+            var serviceName = serviceInfo.ServiceName;
+            var swaggerUrl = $"/{serviceInfo.ShortName}/index.html";
+            var consulOptions = serviceProvider.GetRequiredService<IOptions<ConsulOptions>>();
+            var healthCheckUrl = consulOptions?.Value?.HealthCheckUrl ?? $"/{serviceInfo.ShortName}/health-24b01005-a76a-4b3b-8fb1-5e0f2e9564fb";
+            var envName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            var content = $"hello {serviceName}<br> ASPNETCORE_ENVIRONMENT = {envName} <br> <a href='{swaggerUrl}'>swagger(api debug)</a> | <a href='{healthCheckUrl}'>healthy checking</a>";
+            return content;
         }
     }
 }

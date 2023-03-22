@@ -11,9 +11,11 @@ public class NoticeAppService : AbstractAppService, INoticeAppService
 
     public async Task<AppSrvResult<List<NoticeDto>>> GetListAsync(NoticeSearchDto search)
     {
+        search.TrimStringFields();
+
         var whereCondition = ExpressionCreator
                                             .New<Notice>()
-                                            .AndIf(search.Title.IsNotNullOrWhiteSpace(), x => x.Title == search.Title.Trim());
+                                            .AndIf(!string.IsNullOrWhiteSpace(search.Title), x => x.Title == search.Title);
 
         var notices = await _noticeRepository
                                         .Where(whereCondition)

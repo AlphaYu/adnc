@@ -17,6 +17,8 @@ public class LogAppService : AbstractAppService, ILogAppService
 
     public async Task<PageModelDto<LoginLogDto>> GetLoginLogsPagedAsync(LogSearchPagedDto searchDto)
     {
+        searchDto.TrimStringFields();
+
         var builder = Builders<LoginLog>.Filter;
         var filterList = new List<FilterDefinition<LoginLog>>();
         filterList.AddIf(x => searchDto.BeginTime.HasValue, builder.Gte(l => l.CreateTime, searchDto.BeginTime));
@@ -33,6 +35,8 @@ public class LogAppService : AbstractAppService, ILogAppService
 
     public async Task<PageModelDto<OpsLogDto>> GetOpsLogsPagedAsync(LogSearchPagedDto searchDto)
     {
+        searchDto.TrimStringFields();
+
         var builder = Builders<OperationLog>.Filter;
         var filterList = new List<FilterDefinition<OperationLog>>();
         filterList.AddIf(x => searchDto.BeginTime.HasValue, builder.Gte(l => l.CreateTime, searchDto.BeginTime));
@@ -49,6 +53,8 @@ public class LogAppService : AbstractAppService, ILogAppService
 
     public async Task<PageModelDto<NlogLogDto>> GetNlogLogsPagedAsync(LogSearchPagedDto searchDto)
     {
+        searchDto.TrimStringFields();
+
         var builder = Builders<LoggerLog>.Filter;
         var filterList = new List<FilterDefinition<LoggerLog>>();
         filterList.AddIf(x => searchDto.BeginTime.HasValue, builder.Gte(l => l.Date, searchDto.BeginTime));

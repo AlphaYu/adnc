@@ -28,7 +28,7 @@ public class Product : AggregateRootWithBasicAuditInfo
     /// <param name="name"></param>
     /// <param name="unit"></param>
     /// <param name="describe"></param>
-    internal Product(long id, string sku, decimal price, string name, string unit, string describe = null)
+    internal Product(long id, string sku, decimal price, string name, string unit, string? describe = null)
     {
         this.Id = id;
         SetSku(sku);

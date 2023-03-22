@@ -6,7 +6,7 @@ public class BearerAuthenticationLocalProcessor : AbstractAuthenticationProcesso
 
     public BearerAuthenticationLocalProcessor(IAccountAppService accountAppService) => _accountAppService = accountAppService;
 
-    protected override async Task<(string ValidationVersion, int Status)> GetValidatedInfoAsync(long userId)
+    protected override async Task<(string? ValidationVersion, int Status)> GetValidatedInfoAsync(long userId)
     {
         var validatedInfo = await _accountAppService.GetUserValidatedInfoAsync(userId);
         if (validatedInfo is null)

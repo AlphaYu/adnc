@@ -21,10 +21,17 @@ internal static class Program
 
             app.UseAdnc();
 
-            await app
-                .ChangeThreadPoolSettings()
-                .UseRegistrationCenter()
-                .RunAsync();
+            app.ChangeThreadPoolSettings()
+                .UseRegistrationCenter();
+
+            app.MapGet("/", async context =>
+            {
+                var content = serviceInfo.GetDefaultPageContent(app.Services);
+                context.Response.Headers.Add("Content-Type", "text/html");
+                await context.Response.WriteAsync(content);
+            });
+
+            await app.RunAsync();
         }
         catch (Exception ex)
         {

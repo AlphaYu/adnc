@@ -76,7 +76,7 @@ public class AccountController : AdncControllerBase
                 return Forbid();
 
             var jti = JwtTokenHelper.GetClaimFromRefeshToken(_jwtOptions.Value, input.RefreshToken, JwtRegisteredClaimNames.Jti);
-            if (jti.Value != validatedInfo.ValidationVersion)
+            if (jti is null || jti.Value != validatedInfo.ValidationVersion)
                 return Forbid();
 
             var accessToken = JwtTokenHelper.CreateAccessToken(_jwtOptions.Value, validatedInfo.ValidationVersion, validatedInfo.Account, validatedInfo.Id.ToString(), validatedInfo.Name, validatedInfo.RoleIds, JwtBearerDefaults.Manager);
