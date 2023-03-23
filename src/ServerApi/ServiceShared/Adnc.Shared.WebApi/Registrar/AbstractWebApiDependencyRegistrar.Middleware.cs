@@ -31,7 +31,7 @@ public abstract partial class AbstractWebApiDependencyRegistrar : IMiddlewareReg
         var serviceInfo = App.ApplicationServices.GetRequiredService<IServiceInfo>();
         var consulOptions = App.ApplicationServices.GetRequiredService<IOptions<ConsulOptions>>();
         var configuration = App.ApplicationServices.GetRequiredService<IConfiguration>();
-        var healthCheckUrl = consulOptions?.Value?.HealthCheckUrl ?? $"{serviceInfo.ShortName}/health-24b01005-a76a-4b3b-8fb1-5e0f2e9564fb";
+        var healthCheckUrl = consulOptions?.Value?.HealthCheckUrl ?? $"{serviceInfo.RelativeRootPath}/health-24b01005-a76a-4b3b-8fb1-5e0f2e9564fb";
 
         //var defaultFilesOptions = new DefaultFilesOptions();
         //defaultFilesOptions.DefaultFileNames.Clear();
@@ -40,6 +40,7 @@ public abstract partial class AbstractWebApiDependencyRegistrar : IMiddlewareReg
         //    .UseDefaultFiles(defaultFilesOptions)
         //    .UseStaticFiles();
         App
+            .UseStaticFiles()
             .UseRealIp(x => x.HeaderKey = "X-Forwarded-For")
             .UseCustomExceptionHandler()
             .UseCors(serviceInfo.CorsPolicy);
@@ -56,7 +57,7 @@ public abstract partial class AbstractWebApiDependencyRegistrar : IMiddlewareReg
                 .UseMiniProfiler()
                 .UseSwagger(c =>
                 {
-                    c.RouteTemplate = $"/{serviceInfo.ShortName}/swagger/{{documentName}}/swagger.json";
+                    c.RouteTemplate = $"/{serviceInfo.RelativeRootPath}/swagger/{{documentName}}/swagger.json";
                     c.PreSerializeFilters.Add((swaggerDoc, httpReq) =>
                     {
                         swaggerDoc.Servers = new List<OpenApiServer> { new OpenApiServer { Url = $"/", Description = serviceInfo.Description } };
@@ -70,13 +71,13 @@ public abstract partial class AbstractWebApiDependencyRegistrar : IMiddlewareReg
                         //var stream = assembly.GetManifestResourceStream($"{assembly.GetName().Name}.swagger_miniprofiler.html");
                         //return stream;
                         var miniProfiler = $"{AppContext.BaseDirectory}swagger_miniprofiler.html";
-                        var text = File.ReadAllText(miniProfiler).Replace("$SHORTNAME", serviceInfo.ShortName);
+                        var text = File.ReadAllText(miniProfiler).Replace("$RELATIVEROOTPATH", serviceInfo.RelativeRootPath);
                         var byteArray = Encoding.UTF8.GetBytes(text);
                         var stream = new MemoryStream(byteArray);
                         return stream;
                     };
-                    c.SwaggerEndpoint($"/{serviceInfo.ShortName}/swagger/{serviceInfo.Version}/swagger.json", $"{serviceInfo.ServiceName}-{serviceInfo.Version}");
-                    c.RoutePrefix = $"{serviceInfo.ShortName}";
+                    c.SwaggerEndpoint($"/{serviceInfo.RelativeRootPath}/swagger/{serviceInfo.Version}/swagger.json", $"{serviceInfo.ServiceName}-{serviceInfo.Version}");
+                    c.RoutePrefix = $"{serviceInfo.RelativeRootPath}";
                 });
         }
         App

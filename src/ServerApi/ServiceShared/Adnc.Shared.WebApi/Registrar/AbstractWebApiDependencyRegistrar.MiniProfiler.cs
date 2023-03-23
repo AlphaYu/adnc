@@ -7,6 +7,6 @@ public abstract partial class AbstractWebApiDependencyRegistrar
     /// </summary>
     protected virtual void AddMiniProfiler() =>
         Services
-        .AddMiniProfiler(options => options.RouteBasePath = $"/{ServiceInfo.ShortName}/profiler")
+        .AddMiniProfiler(options => options.RouteBasePath = $"/{ServiceInfo.RelativeRootPath}/profiler")
         .AddEntityFramework();
 }

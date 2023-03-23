@@ -18,9 +18,14 @@ public interface IServiceInfo
     public string CorsPolicy { get; set; }
 
     /// <summary>
-    ///  usr or maint or cus or xxx
+    ///  usr-webapi or maint-webapi or cus-webapi or xxx
     /// </summary>
     public string ShortName { get; }
+
+    /// <summary>
+    /// API relative root path
+    /// </summary>
+    public string RelativeRootPath { get; }
 
     /// <summary>
     /// 0.9.2.xx

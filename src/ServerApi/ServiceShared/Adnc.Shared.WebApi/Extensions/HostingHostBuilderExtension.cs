@@ -83,6 +83,9 @@ public static class WebApplicationBuilderExtension
 
             if (sectionValue.Contains("$SHORTNAME"))
                 section.Value = sectionValue.Replace("$SHORTNAME", serviceInfo.ShortName);
+
+            if (sectionValue.Contains("$RELATIVEROOTPATH"))
+                section.Value = sectionValue.Replace("$RELATIVEROOTPATH", serviceInfo.RelativeRootPath);
         }
     }
 

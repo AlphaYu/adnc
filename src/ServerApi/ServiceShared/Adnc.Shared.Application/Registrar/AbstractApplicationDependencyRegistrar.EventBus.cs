@@ -81,7 +81,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar
             //Dashboard
             option.UseDashboard(x =>
             {
-                x.PathMatch = $"/{ServiceInfo.ShortName}/cap";
+                x.PathMatch = $"/{ServiceInfo.RelativeRootPath}/cap";
                 x.UseAuth = false;
             });
         });
