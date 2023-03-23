@@ -19,7 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionIt
 	ProjectSection(SolutionItems) = preProject
 		..\Props\common.props = ..\Props\common.props
 		..\Props\nuget.props = ..\Props\nuget.props
-		..\Props\version.props = ..\Props\version.props
+		..\Props\version_shared.props = ..\Props\version_shared.props
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Shared.Rpc.Http", "Adnc.Shared.Rpc.Http\Adnc.Shared.Rpc.Http.csproj", "{A13CD26C-1AE9-4673-A4D6-D842D714F22D}"
