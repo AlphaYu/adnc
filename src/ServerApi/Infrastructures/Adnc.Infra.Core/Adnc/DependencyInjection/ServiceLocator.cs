@@ -1,5 +1,8 @@
 ﻿namespace Adnc.Infra.Core.DependencyInjection;
 
+/// <summary>
+/// Provides access to the root scope IServiceProvider instance
+/// </summary>
 public static class ServiceLocator
 {
     private static IServiceProvider? _provider;
@@ -9,17 +12,13 @@ public static class ServiceLocator
     }
 
     /// <summary>
-    /// 只能获取Singleton/Transient，获取Scoped周期的对象会存与构造函数获取的不是相同对象
+    /// Gets or sets the current IServiceProvider instance
     /// </summary>
+    /// <exception cref="InvalidOperationException">Thrown if Provider is already set.</exception>
+    /// <exception cref="ArgumentNullException">Thrown if value is null when setting Provider.</exception>
     public static IServiceProvider? Provider
     {
-        get { return _provider; }
-        set
-        {
-            if (_provider is not null)
-                throw new InvalidOperationException(nameof(_provider));
-            else
-                _provider = value ?? throw new ArgumentNullException(nameof(value));
-        }
+        get => _provider;
+        set => _provider = _provider is not null ? throw new InvalidOperationException($"{nameof(Provider)} is already set.") : value ?? throw new ArgumentNullException(nameof(value));
     }
 }
