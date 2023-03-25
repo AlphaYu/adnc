@@ -1,44 +1,47 @@
 ﻿namespace Adnc.Infra.Core.Interfaces;
 
+/// <summary>
+/// Interface for serviceinfo.
+/// </summary>
 public interface IServiceInfo
 {
     /// <summary>
-    /// adnc-xxx-webapi-188933
+    /// The ID associated with the service.
     /// </summary>
     public string Id { get; }
 
     /// <summary>
-    /// adnc-xxx-webapi
+    /// The name associated with the service.
     /// </summary>
     public string ServiceName { get; }
 
     /// <summary>
-    /// corsPolicy
+    /// The cross-origin resource sharing (CORS) policy associated with the service.
     /// </summary>
     public string CorsPolicy { get; set; }
 
     /// <summary>
-    ///  usr-webapi or maint-webapi or cus-webapi or xxx
+    /// The short name associated with the service.
     /// </summary>
     public string ShortName { get; }
 
     /// <summary>
-    /// API relative root path
+    /// The relative root path associated with the service.
     /// </summary>
     public string RelativeRootPath { get; }
 
     /// <summary>
-    /// 0.9.2.xx
+    /// The version associated with the service.
     /// </summary>
     public string Version { get; }
 
     /// <summary>
-    /// description
+    /// The description associated with the service.
     /// </summary>
     public string Description { get; }
 
     /// <summary>
-    /// assembly  of start's project
+    /// The assembly associated with the service startup.
     /// </summary>
     public Assembly StartAssembly { get; }
 }

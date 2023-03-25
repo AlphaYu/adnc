@@ -18,17 +18,17 @@ public class KestrelOptions
         private const string DefaultProtocols = "Http1AndHttp2";
 
         /// <summary>
-        /// Gets or sets the URL for the endpoint.
+        /// The URL associated with the endpoint.
         /// </summary>
         public string Url { get; set; } = string.Empty;
 
         /// <summary>
-        /// Gets or sets the supported protocols for the endpoint.
+        /// The protocols associated with the endpoint. Defaults to "Http1AndHttp2" if not specified.
         /// </summary>
         public string Protocols { get; set; } = DefaultProtocols;
 
         /// <summary>
-        /// Initializes a new instance of the Endpoint class.
+        /// Initializes a new instance of the <see cref="Endpoint"/> class.
         /// </summary>
         public Endpoint()
         {
