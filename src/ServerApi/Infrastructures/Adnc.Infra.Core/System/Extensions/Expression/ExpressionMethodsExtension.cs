@@ -116,18 +116,18 @@
 
         private static MemberExpression? ExtractMemberExpression(Expression expression)
         {
-            if (expression.NodeType == ExpressionType.MemberAccess)
+            switch (expression.NodeType)
             {
-                return (MemberExpression)expression;
-            }
+                case ExpressionType.MemberAccess:
+                    return (MemberExpression)expression;
 
-            if (expression.NodeType == ExpressionType.Convert)
-            {
-                var operand = ((UnaryExpression)expression).Operand;
-                return ExtractMemberExpression(operand);
-            }
+                case ExpressionType.Convert:
+                    var operand = ((UnaryExpression)expression).Operand;
+                    return ExtractMemberExpression(operand);
 
-            return default;
+                default:
+                    return null;
+            }
         }
     }
 }
