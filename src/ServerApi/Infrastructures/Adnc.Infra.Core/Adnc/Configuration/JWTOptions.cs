@@ -1,71 +1,77 @@
 ﻿namespace Adnc.Infra.Core.Configuration;
 
 /// <summary>
-/// JWT配置
+/// JWT configuration
 /// </summary>
 public class JWTOptions
 {
+    /// <summary>
+    /// Encoding for JWT
+    /// </summary>
     public Encoding Encoding => Encoding.UTF8;
 
     /// <summary>
-    /// 是否校验颁发者
+    /// Whether to validate the issuer
     /// </summary>
-    public bool ValidateIssuer { get; set; } = default!;
+    public bool ValidateIssuer { get; set; } = default;
 
     /// <summary>
-    /// 颁发者
+    /// The issuer of the JWT
     /// </summary>
     public string ValidIssuer { get; set; } = string.Empty;
 
     /// <summary>
-    /// 是否校验签名
+    /// Whether to validate the signature
     /// </summary>
-    public bool ValidateIssuerSigningKey { get; set; } = default!;
+    public bool ValidateIssuerSigningKey { get; set; } = default;
 
     /// <summary>
-    /// 签名
+    /// The symmetric security key used to sign the JWT
     /// </summary>
     public string SymmetricSecurityKey { get; set; } = string.Empty;
 
+    /// <summary>
+    /// The issuer signing key used to sign the JWT
+    /// </summary>
     public string IssuerSigningKey { get; set; } = string.Empty;
 
     /// <summary>
-    /// 是否校验受众
+    /// Whether to validate the audience
     /// </summary>
     public bool ValidateAudience { get; set; } = default!;
 
     /// <summary>
-    /// Accessoken受众
+    /// The audience for the access token
     /// </summary>
     public string ValidAudience { get; set; } = string.Empty;
 
     /// <summary>
-    /// RefreshToken受众
+    /// The audience for the refresh token
     /// </summary>
     public string RefreshTokenAudience { get; set; } = string.Empty;
 
     /// <summary>
-    /// 校验Lifetime
+    /// Whether to validate the lifetime
     /// </summary>
     public bool ValidateLifetime { get; set; } = default!;
 
     /// <summary>
-    ///  校验是否有Expire字段
+    /// Whether to require the expiration time
     /// </summary>
     public bool RequireExpirationTime { get; set; }
 
     /// <summary>
-    /// 时间歪斜，单位秒
+    /// Clock skew in seconds
     /// </summary>
     public int ClockSkew { get; set; } = default;
 
     /// <summary>
-    /// AccessToken过期时间，单位分钟
+    /// Expiration time for access token in minutes
     /// </summary>
     public int Expire { get; set; } = default;
 
     /// <summary>
-    /// RefreshToken过期时间，单位分钟
+    /// Expiration time for refresh token in minutes
     /// </summary>
     public int RefreshTokenExpire { get; set; } = default;
 }
