@@ -24,6 +24,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\Adnc.Shared\Adnc.Shared.csproj" />
+		<ProjectReference Include="..\Adnc.Shared.Rpc\Adnc.Shared.Rpc.csproj" />
 	</ItemGroup>
 	
 	<ItemGroup Condition="'$(SolutionName)'=='Adnc'">

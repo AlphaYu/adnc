@@ -30,6 +30,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Shared.Const", "Adnc.S
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Shared.Rpc.Event", "Adnc.Shared.Rpc.Event\Adnc.Shared.Rpc.Event.csproj", "{77E35580-0135-461E-BE89-E7616E9D3AC9}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Shared.Rpc", "Adnc.Shared.Rpc\Adnc.Shared.Rpc.csproj", "{C8488F55-0D9F-412F-B52E-9255C1E8264D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -76,6 +78,10 @@ Global
 		{77E35580-0135-461E-BE89-E7616E9D3AC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{77E35580-0135-461E-BE89-E7616E9D3AC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{77E35580-0135-461E-BE89-E7616E9D3AC9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8488F55-0D9F-412F-B52E-9255C1E8264D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8488F55-0D9F-412F-B52E-9255C1E8264D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8488F55-0D9F-412F-B52E-9255C1E8264D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8488F55-0D9F-412F-B52E-9255C1E8264D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

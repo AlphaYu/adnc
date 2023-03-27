@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Adnc.Shared.Rpc.Http.Handlers.Token;
+namespace Adnc.Shared.Rpc.Handlers.Token;
 
 public sealed class TokenFactory
 {

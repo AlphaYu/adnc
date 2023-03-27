@@ -174,6 +174,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "wwwroot", "wwwroot", "{FBBB
 		ServiceShared\Resources\wwwroot\favicon.ico = ServiceShared\Resources\wwwroot\favicon.ico
 	EndProjectSection
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Shared.Rpc", "ServiceShared\Adnc.Shared.Rpc\Adnc.Shared.Rpc.csproj", "{EE6D92B2-FE83-409B-8BE1-79B74D6784E1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -598,6 +600,14 @@ Global
 		{ECC6AD5D-4E80-44C0-8D48-7AB0FB18B4AE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{ECC6AD5D-4E80-44C0-8D48-7AB0FB18B4AE}.Release|x64.ActiveCfg = Release|Any CPU
 		{ECC6AD5D-4E80-44C0-8D48-7AB0FB18B4AE}.Release|x64.Build.0 = Release|Any CPU
+		{EE6D92B2-FE83-409B-8BE1-79B74D6784E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE6D92B2-FE83-409B-8BE1-79B74D6784E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE6D92B2-FE83-409B-8BE1-79B74D6784E1}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{EE6D92B2-FE83-409B-8BE1-79B74D6784E1}.Debug|x64.Build.0 = Debug|Any CPU
+		{EE6D92B2-FE83-409B-8BE1-79B74D6784E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE6D92B2-FE83-409B-8BE1-79B74D6784E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE6D92B2-FE83-409B-8BE1-79B74D6784E1}.Release|x64.ActiveCfg = Release|Any CPU
+		{EE6D92B2-FE83-409B-8BE1-79B74D6784E1}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -665,6 +675,7 @@ Global
 		{ECC6AD5D-4E80-44C0-8D48-7AB0FB18B4AE} = {23D3D93F-CE63-41DD-BE55-95EAFBB3280C}
 		{3E0E3EB7-5BD1-4236-85E7-0DC669BE0366} = {FDDCEFB0-2E05-43B9-8218-5C3F37846E03}
 		{FBBB3C8F-311C-49A2-B733-BE4EBA54F15C} = {FDDCEFB0-2E05-43B9-8218-5C3F37846E03}
+		{EE6D92B2-FE83-409B-8BE1-79B74D6784E1} = {9697B6F8-6C64-4184-AB6C-8683D6F12B61}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3DED72E8-74C9-4A51-A9CE-62ECFEEA1921}
