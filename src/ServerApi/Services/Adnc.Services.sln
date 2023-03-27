@@ -57,9 +57,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Usr.Application", "Adn
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01.SolutionItems", "01.SolutionItems", "{22E3C569-C1D2-4562-ADE0-4E51EE0976D8}"
 	ProjectSection(SolutionItems) = preProject
-		Props\common.props = Props\common.props
-		Props\nuget.props = Props\nuget.props
-		Props\version.props = Props\version.props
+		..\Props\common.props = ..\Props\common.props
+		..\Props\version_service.props = ..\Props\version_service.props
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03.ServiceShared", "03.ServiceShared", "{9697B6F8-6C64-4184-AB6C-8683D6F12B61}"
