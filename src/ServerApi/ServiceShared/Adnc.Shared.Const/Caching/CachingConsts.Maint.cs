@@ -1,6 +1,6 @@
 ﻿namespace Adnc.Shared.Const.Caching.Maint;
 
-public class CachingConsts : Common.CachingConsts
+public class CachingConsts 
 {
     public const string DictPreheatedKey = "adnc:maint:dicts:preheated";
     public const string CfgPreheatedKey = "adnc:maint:cfgs:preheated";

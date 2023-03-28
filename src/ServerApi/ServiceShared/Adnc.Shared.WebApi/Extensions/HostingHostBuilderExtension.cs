@@ -1,5 +1,4 @@
 ﻿using Adnc.Infra.Consul.Configuration;
-using Adnc.Shared.Const.AppSettings;
 using Adnc.Shared.WebApi;
 using NLog;
 using NLog.Web;

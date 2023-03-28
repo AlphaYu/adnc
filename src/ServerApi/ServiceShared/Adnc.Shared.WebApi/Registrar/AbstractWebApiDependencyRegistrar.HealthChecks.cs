@@ -1,6 +1,5 @@
 ﻿using Adnc.Infra.EventBus.Configurations;
 using Adnc.Infra.EventBus.RabbitMq;
-using Adnc.Shared.Const.AppSettings;
 using RabbitMQ.Client;
 
 namespace Adnc.Shared.WebApi.Registrar;

@@ -1,4 +1,4 @@
-﻿using Adnc.Shared.Const.AppSettings;
+﻿using Adnc.Shared;
 using Microsoft.Extensions.Configuration;
 
 namespace Adnc.UnitTest.Fixtures;

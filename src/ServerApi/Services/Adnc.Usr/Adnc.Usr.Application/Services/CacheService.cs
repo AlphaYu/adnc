@@ -1,4 +1,6 @@
-﻿namespace Adnc.Usr.Application.Services;
+﻿using Adnc.Shared;
+
+namespace Adnc.Usr.Application.Services;
 
 public sealed class CacheService : AbstractCacheService, ICachePreheatable
 {
@@ -65,7 +67,7 @@ public sealed class CacheService : AbstractCacheService, ICachePreheatable
             var orgRepository = scope.ServiceProvider.GetRequiredService<IEfRepository<Organization>>();
             var allOrganizations = await orgRepository.GetAll(writeDb: true).OrderBy(x => x.Ordinal).ToListAsync();
             return Mapper.Value.Map<List<OrganizationDto>>(allOrganizations);
-        }, TimeSpan.FromSeconds(CachingConsts.OneYear));
+        }, TimeSpan.FromSeconds(GeneralConsts.OneYear));
 
         return cahceValue.Value;
     }
@@ -78,7 +80,7 @@ public sealed class CacheService : AbstractCacheService, ICachePreheatable
             var relationRepository = scope.ServiceProvider.GetRequiredService<IEfRepository<RoleRelation>>();
             var allRelations = await relationRepository.GetAll(writeDb: true).ToListAsync();
             return Mapper.Value.Map<List<RelationDto>>(allRelations);
-        }, TimeSpan.FromSeconds(CachingConsts.OneYear));
+        }, TimeSpan.FromSeconds(GeneralConsts.OneYear));
 
         return cahceValue.Value;
     }
@@ -91,7 +93,7 @@ public sealed class CacheService : AbstractCacheService, ICachePreheatable
             var menuRepository = scope.ServiceProvider.GetRequiredService<IEfRepository<Menu>>();
             var allMenus = await menuRepository.GetAll(writeDb: true).OrderBy(x => x.Ordinal).ToListAsync();
             return Mapper.Value.Map<List<MenuDto>>(allMenus);
-        }, TimeSpan.FromSeconds(CachingConsts.OneYear));
+        }, TimeSpan.FromSeconds(GeneralConsts.OneYear));
 
         return cahceValue.Value;
     }
@@ -104,7 +106,7 @@ public sealed class CacheService : AbstractCacheService, ICachePreheatable
             var roleRepository = scope.ServiceProvider.GetRequiredService<IEfRepository<Role>>();
             var allRoles = await roleRepository.GetAll(writeDb: true).OrderBy(x => x.Ordinal).ToListAsync();
             return Mapper.Value.Map<List<RoleDto>>(allRoles);
-        }, TimeSpan.FromSeconds(CachingConsts.OneYear));
+        }, TimeSpan.FromSeconds(GeneralConsts.OneYear));
 
         return cahceValue.Value;
     }
@@ -120,7 +122,7 @@ public sealed class CacheService : AbstractCacheService, ICachePreheatable
                                                                             .Select(x => new RoleMenuCodesDto { RoleId = x.RoleId, Code = x.Menu.Code })
                                                                             .ToListAsync();
             return allMenus.Distinct().ToList();
-        }, TimeSpan.FromSeconds(CachingConsts.OneYear));
+        }, TimeSpan.FromSeconds(GeneralConsts.OneYear));
 
         return cahceValue.Value;
     }
@@ -164,7 +166,7 @@ public sealed class CacheService : AbstractCacheService, ICachePreheatable
             }
         }
 
-        await CacheProvider.Value.SetAsync(CachingConsts.DetpSimpleTreeListCacheKey, result, TimeSpan.FromSeconds(CachingConsts.OneYear));
+        await CacheProvider.Value.SetAsync(CachingConsts.DetpSimpleTreeListCacheKey, result, TimeSpan.FromSeconds(GeneralConsts.OneYear));
 
         return result;
     }

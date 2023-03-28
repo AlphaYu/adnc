@@ -1,4 +1,6 @@
-﻿namespace Adnc.Usr.Application.BloomFilters;
+﻿using Adnc.Shared;
+
+namespace Adnc.Usr.Application.BloomFilters;
 
 public class CacheKeyBloomFilter : AbstractBloomFilter
 {
@@ -46,7 +48,7 @@ public class CacheKeyBloomFilter : AbstractBloomFilter
                                                     .Select(x => x.Id)
                                                     .ToListAsync();
             if (ids.IsNotNullOrEmpty())
-                values.AddRange(ids.Select(x => string.Concat(CachingConsts.UserValidatedInfoKeyPrefix, CachingConsts.LinkChar, x)));
+                values.AddRange(ids.Select(x => string.Concat(CachingConsts.UserValidatedInfoKeyPrefix, GeneralConsts.LinkChar, x)));
 
             await InitAsync(values);
         }

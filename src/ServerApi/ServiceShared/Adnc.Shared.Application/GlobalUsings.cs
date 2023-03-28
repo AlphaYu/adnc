@@ -21,7 +21,6 @@ global using Adnc.Shared.Application.Contracts.Enums;
 global using Adnc.Shared.Application.Contracts.Interfaces;
 global using Adnc.Shared.Application.Contracts.ResultModels;
 global using Adnc.Shared.Application.Interceptors;
-global using Adnc.Shared.Const.Caching.Common;
 global using Adnc.Shared.Repository.EfEntities;
 global using Adnc.Shared.Repository.MongoEntities;
 global using Castle.DynamicProxy;

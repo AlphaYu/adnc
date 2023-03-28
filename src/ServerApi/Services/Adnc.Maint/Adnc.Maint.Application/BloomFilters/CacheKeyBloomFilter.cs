@@ -1,4 +1,6 @@
-﻿namespace Adnc.Maint.Application.BloomFilters;
+﻿using Adnc.Shared;
+
+namespace Adnc.Maint.Application.BloomFilters;
 
 public class CacheKeyBloomFilter : AbstractBloomFilter
 {
@@ -35,7 +37,7 @@ public class CacheKeyBloomFilter : AbstractBloomFilter
                 .Select(x => x.Id)
                 .ToListAsync();
             if (dictIds.IsNotNullOrEmpty())
-                values.AddRange(dictIds.Select(x => string.Concat(CachingConsts.DictSingleKeyPrefix, CachingConsts.LinkChar, x)));
+                values.AddRange(dictIds.Select(x => string.Concat(CachingConsts.DictSingleKeyPrefix, GeneralConsts.LinkChar, x)));
 
             var cfgRepository = scope.ServiceProvider.GetRequiredService<IEfRepository<Dict>>();
             var cfgIds = await dictRepository
@@ -43,7 +45,7 @@ public class CacheKeyBloomFilter : AbstractBloomFilter
                 .Select(x => x.Id)
                 .ToListAsync();
             if (cfgIds.IsNotNullOrEmpty())
-                values.AddRange(cfgIds.Select(x => string.Concat(CachingConsts.CfgSingleKeyPrefix, CachingConsts.LinkChar, x)));
+                values.AddRange(cfgIds.Select(x => string.Concat(CachingConsts.CfgSingleKeyPrefix, GeneralConsts.LinkChar, x)));
 
             await InitAsync(values);
         }

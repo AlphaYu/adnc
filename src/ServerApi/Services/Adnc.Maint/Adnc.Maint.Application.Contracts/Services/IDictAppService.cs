@@ -1,4 +1,6 @@
-﻿namespace Adnc.Maint.Application.Contracts.Services;
+﻿using Adnc.Shared;
+
+namespace Adnc.Maint.Application.Contracts.Services;
 
 /// <summary>
 /// 字典管理
@@ -45,6 +47,6 @@ public interface IDictAppService : IAppService
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    [CachingAble(CacheKeyPrefix = CachingConsts.DictSingleKeyPrefix,Expiration = CachingConsts.OneMonth)]
+    [CachingAble(CacheKeyPrefix = CachingConsts.DictSingleKeyPrefix,Expiration = GeneralConsts.OneMonth)]
     Task<DictDto> GetAsync([CachingParam] long id);
 }

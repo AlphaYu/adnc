@@ -1,4 +1,6 @@
-﻿namespace Adnc.Maint.Application.Contracts.Services;
+﻿using Adnc.Shared;
+
+namespace Adnc.Maint.Application.Contracts.Services;
 
 /// <summary>
 /// 配置管理
@@ -37,7 +39,7 @@ public interface ICfgAppService : IAppService
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    [CachingAble(CacheKeyPrefix = CachingConsts.CfgSingleKeyPrefix, Expiration = CachingConsts.OneMonth)]
+    [CachingAble(CacheKeyPrefix = CachingConsts.CfgSingleKeyPrefix, Expiration = GeneralConsts.OneMonth)]
     Task<CfgDto> GetAsync([CachingParam] long id);
 
     /// <summary>

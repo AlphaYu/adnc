@@ -1,7 +1,5 @@
 ﻿using Adnc.Infra.Consul.Discover.GrpcResolver;
 using Adnc.Infra.Consul.Discover.Handler;
-using Adnc.Shared.Const.AppSettings;
-using Adnc.Shared.Const.RegistrationCenter;
 using Adnc.Shared.Rpc.Handlers;
 using Adnc.Shared.Rpc.Handlers.Token;
 using Grpc.Core;

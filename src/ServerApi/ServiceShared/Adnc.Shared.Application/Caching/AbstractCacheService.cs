@@ -20,7 +20,7 @@ public abstract class AbstractCacheService : ICachePreheatable
         if (items.IsNullOrEmpty())
             throw new ArgumentNullException(nameof(items));
 
-        return string.Join(CachingConsts.LinkChar, items);
+        return string.Join(GeneralConsts.LinkChar, items);
     }
 
     public virtual async Task RemoveCachesAsync(Func<CancellationToken, Task> dataOperater, params string[] cacheKeys)

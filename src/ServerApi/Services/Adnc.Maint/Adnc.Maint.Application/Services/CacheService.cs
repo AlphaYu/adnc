@@ -1,4 +1,6 @@
-﻿namespace Adnc.Maint.Application.Services;
+﻿using Adnc.Shared;
+
+namespace Adnc.Maint.Application.Services;
 
 public sealed class CacheService : AbstractCacheService, ICachePreheatable
 {
@@ -61,13 +63,13 @@ public sealed class CacheService : AbstractCacheService, ICachePreheatable
             cahceDictionary.Add(cacheKey, dto);
             if (index % 50 == 0 || index == parentDtos.Count)
             {
-                await CacheProvider.Value.SetAllAsync(cahceDictionary, TimeSpan.FromSeconds(CachingConsts.OneMonth));
+                await CacheProvider.Value.SetAllAsync(cahceDictionary, TimeSpan.FromSeconds(GeneralConsts.OneMonth));
                 cahceDictionary.Clear();
             }
         }
 
         var serverInfo = ServiceProvider.Value.GetService<IServiceInfo>();
-        await CacheProvider.Value.SetAsync(CachingConsts.DictPreheatedKey, serverInfo.Version, TimeSpan.FromSeconds(CachingConsts.OneYear));
+        await CacheProvider.Value.SetAsync(CachingConsts.DictPreheatedKey, serverInfo.Version, TimeSpan.FromSeconds(GeneralConsts.OneYear));
         _logger.LogInformation($"finished({parentDtos.Count}) preheat {CachingConsts.DictSingleKeyPrefix}");
     }
 
@@ -100,13 +102,13 @@ public sealed class CacheService : AbstractCacheService, ICachePreheatable
             cahceDictionary.Add(cacheKey, dto);
             if (index % 50 == 0 || index == cfgDtos.Count)
             {
-                await CacheProvider.Value.SetAllAsync(cahceDictionary, TimeSpan.FromSeconds(CachingConsts.OneMonth));
+                await CacheProvider.Value.SetAllAsync(cahceDictionary, TimeSpan.FromSeconds(GeneralConsts.OneMonth));
                 cahceDictionary.Clear();
             }
         }
 
         var serverInfo = ServiceProvider.Value.GetService<IServiceInfo>();
-        await CacheProvider.Value.SetAsync(CachingConsts.CfgPreheatedKey, serverInfo.Version, TimeSpan.FromSeconds(CachingConsts.OneYear));
+        await CacheProvider.Value.SetAsync(CachingConsts.CfgPreheatedKey, serverInfo.Version, TimeSpan.FromSeconds(GeneralConsts.OneYear));
         _logger.LogInformation($"finished({cfgDtos.Count}) preheat {CachingConsts.CfgSingleKeyPrefix}");
     }
 }

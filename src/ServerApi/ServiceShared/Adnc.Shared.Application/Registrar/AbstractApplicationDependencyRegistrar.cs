@@ -1,5 +1,4 @@
 ﻿using Adnc.Shared.Application.Services.Trackers;
-using Adnc.Shared.Const.AppSettings;
 
 namespace Adnc.Shared.Application.Registrar;
 
