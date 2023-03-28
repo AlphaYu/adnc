@@ -28,9 +28,17 @@ public static class ServiceCollectionExtension
             options.UseLowerCaseNamingConvention();
             options.UseSqlServer(connectionString, optionsBuilder =>
             {
-                optionsBuilder.MinBatchSize(4)
-                                        .MigrationsAssembly(serviceInfo?.StartAssembly?.GetName()?.Name?.Replace("WebApi", "Migrations"))
-                                        .UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
+                var startAssemblyName = serviceInfo.StartAssembly.GetName().Name ?? string.Empty;
+                var lastName = startAssemblyName.Split(".").Last();
+                var migrationsAssemblyName = serviceInfo.IsFineGrainedService ? startAssemblyName.Replace(lastName, $"{lastName}Migrations") : startAssemblyName.Replace(lastName, "Migrations");
+                if (string.IsNullOrEmpty(migrationsAssemblyName))
+                    throw new NullReferenceException("MigrationsAssembly is null");
+                else
+                {
+                    optionsBuilder.MinBatchSize(4)
+                                            .MigrationsAssembly(migrationsAssemblyName)
+                                            .UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
+                }
             });
 
             var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");

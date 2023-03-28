@@ -44,4 +44,9 @@ public interface IServiceInfo
     /// The assembly associated with the service startup.
     /// </summary>
     public Assembly StartAssembly { get; }
+
+    /// <summary>
+    /// Fine-grained splitting
+    /// </summary>
+    public bool IsFineGrainedService { get; }
 }
