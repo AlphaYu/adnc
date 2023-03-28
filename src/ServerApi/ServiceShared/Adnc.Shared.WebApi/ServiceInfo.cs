@@ -13,12 +13,13 @@ public class ServiceInfo : IServiceInfo
     public string Version { get; private set; } = string.Empty;
     public string Description { get; private set; } = string.Empty;
     public Assembly StartAssembly { get; private set; } = default!;
+    public bool IsFineGrainedService { get; private set; }
 
     private ServiceInfo()
     {
     }
 
-    public static ServiceInfo CreateInstance(Assembly startAssembly)
+    public static ServiceInfo CreateInstance(Assembly startAssembly, bool isFineGrainedService = false)
     {
         if (_instance is not null)
             return _instance;
@@ -59,7 +60,8 @@ public class ServiceInfo : IServiceInfo
                 CorsPolicy = "default",
                 StartAssembly = startAssembly,
                 Description = description,
-                Version = $"{version.Major}.{version.Minor}.{version.Build}.{version.Revision}"
+                Version = $"{version.Major}.{version.Minor}.{version.Build}.{version.Revision}",
+                IsFineGrainedService = isFineGrainedService
             };
         }
         return _instance;

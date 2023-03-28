@@ -10,7 +10,7 @@ public abstract partial class AbstractWebApiDependencyRegistrar
         var appAssembly = ServiceInfo.GetApplicationAssembly();
         if (appAssembly is not null)
         {
-            var applicationRegistrarType = appAssembly.ExportedTypes.FirstOrDefault(m => m.IsAssignableTo(typeof(IDependencyRegistrar)) && m.IsNotAbstractClass(true));
+            var applicationRegistrarType = appAssembly.ExportedTypes.FirstOrDefault(m => m.IsAssignableTo(typeof(IDependencyRegistrar)) && !m.IsAssignableTo(typeof(AbstractWebApiDependencyRegistrar)) && m.IsNotAbstractClass(true));
             if (applicationRegistrarType is not null)
             {
                 var applicationRegistrar = Activator.CreateInstance(applicationRegistrarType, Services) as IDependencyRegistrar;

@@ -27,12 +27,21 @@ namespace Adnc.Shared.WebApi
                     {
                         Assembly startAssembly = serviceInfo.StartAssembly ?? throw new NullReferenceException(nameof(serviceInfo.StartAssembly));
                         string startAssemblyFullName = startAssembly.FullName ?? throw new NullReferenceException(nameof(startAssembly.FullName));
-                        var appAssemblyName = startAssemblyFullName.Replace("WebApi", "Application");
-                        appAssembly = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(x => x.FullName == appAssemblyName);
-                        if (appAssembly is null)
-                            appAssembly = Assembly.Load(appAssemblyName);
-                        //var appAssemblyPath = serviceInfo.AssemblyLocation.Replace(".WebApi.dll", ".Application.dll");
-                        ///appAssembly = Assembly.LoadFrom(appAssemblyPath);
+                        if (serviceInfo.IsFineGrainedService)
+                        {
+                            appAssembly = startAssembly;
+                        }
+                        else
+                        {
+                            var assemblyName = startAssembly.GetName().Name ?? string.Empty;
+                            var lastName = assemblyName.Split(".").Last();
+                            var appAssemblyName = startAssemblyFullName.Replace(lastName, "Application");
+                            appAssembly = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(x => x.FullName == appAssemblyName);
+                            if (appAssembly is null)
+                                appAssembly = Assembly.Load(appAssemblyName);
+                            //var appAssemblyPath = serviceInfo.AssemblyLocation.Replace(".WebApi.dll", ".Application.dll");
+                            ///appAssembly = Assembly.LoadFrom(appAssemblyPath);
+                        }
                     }
                 }
             }
