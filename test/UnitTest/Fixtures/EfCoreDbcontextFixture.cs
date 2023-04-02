@@ -1,5 +1,6 @@
 ﻿using Adnc.Infra.Entities;
 using Adnc.Infra.IRepositories;
+using Adnc.Shared;
 using Adnc.UnitTest.TestCases.Repositories.Entities;
 
 namespace Adnc.UnitTest.Fixtures;
@@ -12,10 +13,11 @@ public class EfCoreDbcontextFixture
     {
         var services = new ServiceCollection();
         var serverVersion = new MariaDbServerVersion(new Version(10, 5, 4));
-        services.AddSingleton<IEntityInfo, EntityInfo>();
+        var userContext =
+        services.AddScoped<IEntityInfo, EntityInfo>();
         services.AddScoped(provider =>
         {
-            return new Operater
+            return new UserContext
             {
                 Id = 1600000000000,
                 Account = "alpha2008",

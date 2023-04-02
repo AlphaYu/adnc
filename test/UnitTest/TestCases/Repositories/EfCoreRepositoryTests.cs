@@ -42,6 +42,8 @@ public class EfCoreRepositoryTests : IClassFixture<EfCoreDbcontextFixture>
         {
             Id = id
             ,
+            Password = "password"
+            ,
             Account = $"a{radmon}"
             ,
             Realname = $"r{radmon}"
@@ -169,7 +171,6 @@ public class EfCoreRepositoryTests : IClassFixture<EfCoreDbcontextFixture>
     [Fact]
     public async Task TestUpdateRange()
     {
-        //batch hand delete
         var cus1 = await InsertCustomer();
         var cus2 = await InsertCustomer();
         var total = await _customerRsp.CountAsync(c => c.Id == cus1.Id || c.Id == cus2.Id);
@@ -180,6 +181,40 @@ public class EfCoreRepositoryTests : IClassFixture<EfCoreDbcontextFixture>
         Assert.NotEmpty(result2);
         Assert.Equal("批量更新", result2.FirstOrDefault().Realname);
         Assert.Equal("批量更新", result2.LastOrDefault().Realname);
+    }
+
+    /// <summary>
+    /// 批量更新，带跟踪
+    /// </summary>
+    /// <returns></returns>
+    [Fact]
+    public async Task TestUpdateRangeWithTrack()
+    {
+        var customers = await _customerRsp.GetAll(noTracking: false).Skip(0).Take(2).ToListAsync();
+        foreach (var customer in customers)
+        {
+            customer.Realname = "RangeWithTrack";
+        }
+        await _customerRsp.UpdateRangeAsync(customers);
+        var result2 = await _customerRsp.AdoQuerier.QueryAsync<Customer>("SELECT * FROM Customer WHERE ID in @ids", new { ids = customers.Select(x=>x.Id) });
+        Assert.NotEmpty(result2);
+        Assert.Equal("RangeWithTrack", result2.FirstOrDefault().Realname);
+        Assert.Equal("RangeWithTrack", result2.LastOrDefault().Realname);
+
+        var customers2 = await _customerRsp.GetAll(noTracking: false).Skip(0).Take(2).ToListAsync();
+        foreach (var customer in customers2)
+        {
+            customer.Realname = "RangeWithNoTrack";
+        }
+        try
+        {
+            int rows = await _customerRsp.UpdateRangeAsync(customers2);
+            Assert.False(rows > 0);
+        }
+        catch
+        {
+            _output.WriteLine("不允许更新");
+        }
     }
 
     [Fact]
@@ -423,8 +458,8 @@ public class EfCoreRepositoryTests : IClassFixture<EfCoreDbcontextFixture>
         var id = IdGenerater.GetNextId();
         var id2 = IdGenerater.GetNextId();
         var account = "alpha008";
-        var customer = new Customer() { Id = id, Account = account, Nickname = "招财猫", Realname = "张发财" };
-        var customer2 = new Customer() { Id = id2, Account = account, Nickname = "招财猫02", Realname = "张发财02" };
+        var customer = new Customer() { Id = id, Password = "password", Account = account, Nickname = "招财猫", Realname = "张发财" };
+        var customer2 = new Customer() { Id = id2, Password = "password", Account = account, Nickname = "招财猫02", Realname = "张发财02" };
         var cusFinance = new CustomerFinance { Account = account, Id = id, Balance = 0 };
 
         var newNickName = "招财猫008";
@@ -552,14 +587,14 @@ public class EfCoreRepositoryTests : IClassFixture<EfCoreDbcontextFixture>
         await _customerRsp.DeleteRangeAsync(x => x.Id <= 10000);
 
         var id = IdGenerater.GetNextId();
-        var customer = new Customer() { Id = id, Account = account, Nickname = "招财猫", Realname = "张发财", FinanceInfo = new CustomerFinance { Id = id, Account = account, Balance = 0 } };
+        var customer = new Customer() { Id = id, Password = "password", Account = account, Nickname = "招财猫", Realname = "张发财", FinanceInfo = new CustomerFinance { Id = id, Account = account, Balance = 0 } };
 
         _dbContext.Add(customer);
 
         await _dbContext.SaveChangesAsync();
 
         var id2 = IdGenerater.GetNextId();
-        var customer2 = new Customer() { Id = id2, Account = account, Nickname = "招财猫02", Realname = "张发财02", FinanceInfo = new CustomerFinance { Id = id2, Account = account, Balance = 0 } };
+        var customer2 = new Customer() { Id = id2, Password = "password", Account = account, Nickname = "招财猫02", Realname = "张发财02", FinanceInfo = new CustomerFinance { Id = id2, Account = account, Balance = 0 } };
 
         _dbContext.Add(customer2);
 
@@ -586,6 +621,8 @@ public class EfCoreRepositoryTests : IClassFixture<EfCoreDbcontextFixture>
         var cusotmer = new Customer
         {
             Id = id
+            ,
+            Password = "password"
             ,
             Account = $"a{radmon}"
             ,
@@ -663,7 +700,7 @@ public class EfCoreRepositoryTests : IClassFixture<EfCoreDbcontextFixture>
     private async Task<Customer> InsertCustomer()
     {
         var id = IdGenerater.GetNextId();
-        var customer = new Customer() { Id = id, Account = "alpha2008", Nickname = IdGenerater.GetNextId().ToString(), Realname = IdGenerater.GetNextId().ToString() };
+        var customer = new Customer() { Id = id, Password = "password", Account = "alpha2008", Nickname = IdGenerater.GetNextId().ToString(), Realname = IdGenerater.GetNextId().ToString() };
         customer.FinanceInfo = new CustomerFinance { Id = customer.Id, Account = customer.Account, Balance = 0 };
         await _customerRsp.InsertAsync(customer);
         return customer;

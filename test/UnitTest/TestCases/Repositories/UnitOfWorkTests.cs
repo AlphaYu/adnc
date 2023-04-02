@@ -1,4 +1,8 @@
-﻿namespace Adnc.UnitTest.TestCases.Repositories;
+﻿using Adnc.Infra.IdGenerater.Yitter;
+using Adnc.Infra.IRepositories;
+using Adnc.UnitTest.TestCases.Repositories.Entities;
+
+namespace Adnc.UnitTest.TestCases.Repositories;
 
 public class UnitOfWorkTests : IClassFixture<CoreServiceFixture>
 {
