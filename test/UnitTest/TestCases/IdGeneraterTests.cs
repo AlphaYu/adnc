@@ -1,4 +1,6 @@
-﻿namespace Adnc.UnitTest.Helper;
+﻿using Adnc.Infra.IdGenerater.Yitter;
+
+namespace Adnc.UnitTest.TestCases;
 
 public class IdGeneraterTests
 {

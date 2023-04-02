@@ -1,4 +1,4 @@
-﻿namespace Adnc.UnitTest.CoreService;
+﻿namespace Adnc.UnitTest.TestCases.Repositories;
 
 public class UnitOfWorkTests : IClassFixture<CoreServiceFixture>
 {

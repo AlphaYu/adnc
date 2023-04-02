@@ -7,12 +7,18 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Compile Remove="ApplicationServicesTests.cs" />
-		<Compile Remove="MyDatabaseTests.cs" />
-		<Compile Remove="RemoteTests.cs" />
+	  <Compile Remove="TestCases\ApplicationServicesTests.cs" />
+	  <Compile Remove="TestCases\RemoteTests.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Adnc.Infra.Helper" Version="0.9.7.2" />
+		<PackageReference Include="Adnc.Infra.IdGenerater" Version="0.9.7.2" />
+		<PackageReference Include="Adnc.Infra.Repository.Dapper" Version="0.9.7.2" />
+		<PackageReference Include="Adnc.Infra.Repository.EfCore" Version="0.9.7.2" />
+		<PackageReference Include="Adnc.Infra.Repository.EfCore.MySql" Version="0.9.7.2" />
+		<PackageReference Include="Adnc.Shared.Repository" Version="0.9.7.2" />
+		<PackageReference Include="Adnc.Shared.WebApi" Version="0.9.7.2" />
 		<PackageReference Include="EFCore.NamingConventions" Version="6.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="6.0.0" />
@@ -30,15 +36,6 @@
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-	</ItemGroup>
-
-	<ItemGroup>
-		<ProjectReference Include="..\..\ServerApi\Services\Adnc.Cust\Adnc.Cust.Repository\Adnc.Cust.Repository.csproj" />
-		<ProjectReference Include="..\..\ServerApi\Infrastructures\Adnc.Infra.Dapper\Adnc.Infra.Repository.Dapper.csproj" />
-		<ProjectReference Include="..\..\ServerApi\Infrastructures\Adnc.Infra.EfCore.MySql\Adnc.Infra.Repository.EfCore.MySql.csproj" />
-		<ProjectReference Include="..\..\ServerApi\Infrastructures\Adnc.Infra.Helper\Adnc.Infra.Helper.csproj" />
-		<ProjectReference Include="..\..\ServerApi\Infrastructures\Adnc.Infra.IdGenerater\Adnc.Infra.IdGenerater.csproj" />
-		<ProjectReference Include="..\..\ServerApi\ServiceShared\Adnc.Shared.WebApi\Adnc.Shared.WebApi.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

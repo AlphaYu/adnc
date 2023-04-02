@@ -1,4 +1,4 @@
-﻿namespace Adnc.UnitTest.EFCore;
+﻿namespace Adnc.UnitTest.TestCases.Repositories;
 
 public class MaxscaleTests : IClassFixture<MaxscaleDbcontextFixture>
 {

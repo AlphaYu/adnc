@@ -1,4 +1,8 @@
-﻿namespace Adnc.UnitTest.EFCore;
+﻿using Adnc.Infra.IdGenerater.Yitter;
+using Adnc.Infra.IRepositories;
+using Adnc.UnitTest.TestCases.Repositories.Entities;
+
+namespace Adnc.UnitTest.TestCases.Repositories;
 
 public class EfCoreRepositoryTests : IClassFixture<EfCoreDbcontextFixture>
 {
@@ -23,7 +27,7 @@ public class EfCoreRepositoryTests : IClassFixture<EfCoreDbcontextFixture>
             IdGenerater.SetWorkerId(1);
     }
 
-    protected static Expression<Func<TEntity, object>>[] UpdatingProps<TEntity>(params Expression<Func<TEntity, object>>[] expressions) => expressions;
+    private static Expression<Func<TEntity, object>>[] UpdatingProps<TEntity>(params Expression<Func<TEntity, object>>[] expressions) => expressions;
 
     /// <summary>
     /// 插入
@@ -147,7 +151,7 @@ public class EfCoreRepositoryTests : IClassFixture<EfCoreDbcontextFixture>
         Assert.True(newCus2.Account.IsNotNullOrWhiteSpace());
 
         //实体没有被跟踪,dbcontext中有有同名实体
-        var customer3 = await this.InsertCustomer();
+        var customer3 = await InsertCustomer();
         customer3.Account = "adnc-3";
         customer3.Realname = "没被跟踪03";
         customer3.Nickname = "新昵称03";
@@ -166,8 +170,8 @@ public class EfCoreRepositoryTests : IClassFixture<EfCoreDbcontextFixture>
     public async Task TestUpdateRange()
     {
         //batch hand delete
-        var cus1 = await this.InsertCustomer();
-        var cus2 = await this.InsertCustomer();
+        var cus1 = await InsertCustomer();
+        var cus2 = await InsertCustomer();
         var total = await _customerRsp.CountAsync(c => c.Id == cus1.Id || c.Id == cus2.Id);
         Assert.Equal(2, total);
 
@@ -181,7 +185,7 @@ public class EfCoreRepositoryTests : IClassFixture<EfCoreDbcontextFixture>
     [Fact]
     public async Task TestUpdateRangeDifferentMembers()
     {
-        var cus1 = await this.InsertCustomer();
+        var cus1 = await InsertCustomer();
         var cus2 = await _customerRsp.FindAsync(x => x.Id < cus1.Id, navigationPropertyPath: null, x => x.Id, false, noTracking: false);
         cus2.Nickname = "string";
         var cus3 = await _customerRsp.FindAsync(x => x.Id < cus2.Id);
@@ -239,7 +243,7 @@ public class EfCoreRepositoryTests : IClassFixture<EfCoreDbcontextFixture>
     public async Task TestDelete()
     {
         //删除，无跟踪状态
-        var customer = await this.InsertCustomer();
+        var customer = await InsertCustomer();
         var customerFromDb = await _customerRsp.FindAsync(customer.Id);
         Assert.Equal(customer.Id, customerFromDb.Id);
 
@@ -248,7 +252,7 @@ public class EfCoreRepositoryTests : IClassFixture<EfCoreDbcontextFixture>
         Assert.Null(result);
 
         //删除，有跟踪状态
-        var customer2 = await this.InsertCustomer();
+        var customer2 = await InsertCustomer();
         await _customerRsp.DeleteAsync(customer2.Id);
         result = await _customerRsp.AdoQuerier.QueryAsync<Customer>("SELECT * FROM Customer WHERE ID=@Id", new { customer2.Id });
         Assert.Null(result);
@@ -267,7 +271,7 @@ public class EfCoreRepositoryTests : IClassFixture<EfCoreDbcontextFixture>
         }
         catch (Exception ex)
         {
-            Assert.True(ex is Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException);
+            Assert.True(ex is DbUpdateConcurrencyException);
         }
     }
 
@@ -279,8 +283,8 @@ public class EfCoreRepositoryTests : IClassFixture<EfCoreDbcontextFixture>
     public async Task TestDeleteRange()
     {
         //batch hand delete
-        var cus1 = await this.InsertCustomer();
-        var cus2 = await this.InsertCustomer();
+        var cus1 = await InsertCustomer();
+        var cus2 = await InsertCustomer();
         var total = await _customerRsp.CountAsync(c => c.Id == cus1.Id || c.Id == cus2.Id);
         Assert.Equal(2, total);
 
@@ -615,7 +619,7 @@ public class EfCoreRepositoryTests : IClassFixture<EfCoreDbcontextFixture>
 
             //raw sql find
             var sql = @"SELECT * FROM CustomerFinance WHERE Id=@Id";
-            var dbCusFinance = await _cusFinanceRsp.AdoQuerier.QueryFirstAsync(sql, new { Id = customer.Id }, _cusFinanceRsp.CurrentDbTransaction);
+            var dbCusFinance = await _cusFinanceRsp.AdoQuerier.QueryFirstAsync(sql, new { customer.Id }, _cusFinanceRsp.CurrentDbTransaction);
             Assert.NotNull(dbCusFinance);
 
             var sql2 = @"SELECT * FROM Customer ORDER BY Id ASC";

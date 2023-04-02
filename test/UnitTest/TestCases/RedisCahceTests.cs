@@ -1,4 +1,7 @@
-﻿namespace Adnc.UnitTest.Cache;
+﻿using Adnc.Infra.Redis;
+using Adnc.Infra.Redis.Caching;
+
+namespace Adnc.UnitTest.TestCases;
 
 public class RedisCahceTests : IClassFixture<RedisCacheFixture>
 {
