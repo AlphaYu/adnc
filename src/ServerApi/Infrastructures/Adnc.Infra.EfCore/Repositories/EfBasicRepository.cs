@@ -13,12 +13,6 @@
         {
         }
 
-        public virtual async Task<int> UpdateRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
-        {
-            this.DbContext.UpdateRange(entities);
-            return await this.DbContext.SaveChangesAsync(cancellationToken);
-        }
-
         public virtual async Task<int> RemoveAsync(TEntity entity, CancellationToken cancellationToken = default)
         {
             this.DbContext.Remove(entity);

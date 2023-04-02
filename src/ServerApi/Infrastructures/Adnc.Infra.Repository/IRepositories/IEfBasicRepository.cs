@@ -10,8 +10,6 @@ namespace Adnc.Infra.IRepositories;
 public interface IEfBasicRepository<TEntity> : IEfBaseRepository<TEntity>
            where TEntity : Entity, IEfEntity<long>
 {
-    Task<int> UpdateRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default);
-
     Task<int> RemoveAsync(TEntity entity, CancellationToken cancellationToken = default);
 
     Task<int> RemoveRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default);

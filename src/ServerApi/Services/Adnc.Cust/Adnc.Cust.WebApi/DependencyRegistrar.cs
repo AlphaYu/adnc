@@ -1,15 +1,15 @@
 ﻿using Adnc.Shared.WebApi.Registrar;
 
-namespace Adnc.Cust.WebApi.Registrar;
+namespace Adnc.Cust.WebApi;
 
-public sealed class CustWebApiDependencyRegistrar : AbstractWebApiDependencyRegistrar
+public sealed class DependencyRegistrar : AbstractWebApiDependencyRegistrar
 {
-    public CustWebApiDependencyRegistrar(IServiceCollection services)
+    public DependencyRegistrar(IServiceCollection services)
         : base(services)
     {
     }
 
-    public CustWebApiDependencyRegistrar(IApplicationBuilder app)
+    public DependencyRegistrar(IApplicationBuilder app)
        : base(app)
     {
     }
