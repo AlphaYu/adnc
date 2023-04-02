@@ -24,22 +24,21 @@ public class IdGeneraterTests
     }
 
     /// <summary>
-    /// 100W个ids,没有重复
+    /// 10w个ids,没有重复
     /// </summary>
     [Fact]
     public void TestNotContainsDuplicateIds()
     {
-        var set = new HashSet<long>();
-        for (int index = 0; index < 100000; index++)
+        var set = new long[100000];
+        Parallel.For(1, 100000, index =>
         {
-            long id01 = IdGenerater.GetNextId();
-            set.Add(id01);
-        }
-        Assert.Equal(100000, set.Count);
+            set[index - 1] = IdGenerater.GetNextId();
+        });
+        Assert.Equal(100000, set.Distinct().Count());
     }
 
     /// <summary>
-    /// 100W个ids,517毫秒
+    /// 10W个ids,517毫秒
     /// </summary>
     [Fact]
     public void TestSpeed()
