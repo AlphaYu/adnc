@@ -1,4 +1,4 @@
-﻿namespace Adnc.Cust.Application.BloomFilters;
+﻿namespace Adnc.Cust.Application.Cache;
 
 public class CacheKeyBloomFilter : AbstractBloomFilter
 {

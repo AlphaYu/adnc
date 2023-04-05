@@ -25,7 +25,6 @@
 
 
   <ItemGroup>
-    <ProjectReference Include="..\Adnc.Cust.Application.Contracts\Adnc.Cust.Application.Contracts.csproj" />
     <ProjectReference Include="..\Adnc.Cust.Application\Adnc.Cust.Application.csproj" />
   </ItemGroup>
 

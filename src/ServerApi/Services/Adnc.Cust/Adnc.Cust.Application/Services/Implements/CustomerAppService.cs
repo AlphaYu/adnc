@@ -1,4 +1,8 @@
-﻿namespace Adnc.Cust.Application.Services;
+﻿using Adnc.Cust.Application.Cache;
+using Adnc.Cust.Repository;
+using System.Text;
+
+namespace Adnc.Cust.Application.Services.Implements;
 
 /// <summary>
 /// 客户管理服务
@@ -169,5 +173,20 @@ public class CustomerAppService : AbstractAppService, ICustomerAppService
                                             .ToListAsync();
 
         return new PageModelDto<CustomerDto>(search, customers, count);
+    }
+
+    public async Task<AppSrvResult<PageModelDto<CustomerDto>>> GetPagedBySqlAsync(CustomerSearchPagedDto search)
+    {
+        search.TrimStringFields();
+        var where = new StringBuilder(100)
+            .AppendIf(search.Id > 0, " AND id=@id")
+            .AppendIf(!string.IsNullOrEmpty(search.Account), " AND account like @account")
+            .ToSqlWhereString();
+        var orderBy = " ORDER BY id Desc";
+
+        search.Account += "%";
+        var queryCondition = new QueryCondition(where, orderBy, null, search);
+        var queryResult = await _customerRepo.GetPagedCustmersBySqlAsync<CustomerDto>(queryCondition, search.SkipRows(), search.PageSize);
+        return new PageModelDto<CustomerDto>(search, queryResult.Content.ToArray(), queryResult.TotalCount);
     }
 }

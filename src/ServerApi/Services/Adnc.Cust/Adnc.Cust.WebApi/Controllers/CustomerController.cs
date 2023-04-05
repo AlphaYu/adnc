@@ -41,8 +41,19 @@ public class CustomerController : AdncControllerBase
     /// <param name="search"></param>
     /// <returns></returns>
     [HttpGet("page")]
-    [AdncAuthorize(PermissionConsts.Customer.GetList)]
+    //[AdncAuthorize(PermissionConsts.Customer.GetList)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<PageModelDto<CustomerDto>>> GetPagedAsync([FromQuery] CustomerSearchPagedDto search) =>
         Result(await _customerService.GetPagedAsync(search));
+
+    /// <summary>
+    /// 客户分页列表-通过Sql查询
+    /// </summary>
+    /// <param name="search"></param>
+    /// <returns></returns>
+    [HttpGet("page/rawsql")]
+    //[AdncAuthorize(PermissionConsts.Customer.GetList)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<ActionResult<PageModelDto<CustomerDto>>> GetPagedBySqlAsync([FromQuery] CustomerSearchPagedDto search) =>
+        Result(await _customerService.GetPagedBySqlAsync(search));
 }

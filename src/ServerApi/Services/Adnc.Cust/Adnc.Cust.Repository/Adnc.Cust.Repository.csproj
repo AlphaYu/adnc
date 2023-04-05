@@ -12,10 +12,12 @@
 	<ItemGroup Condition="'$(SolutionName)'=='Adnc'">
 		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Repository\Adnc.Infra.Repository.csproj" />
 		<ProjectReference Include="..\..\..\ServiceShared\Adnc.Shared.Repository\Adnc.Shared.Repository.csproj" />
+		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.EfCore.MySQL\Adnc.Infra.Repository.EfCore.MySql.csproj" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(SolutionName)'=='Adnc.Services' ">
 		<PackageReference Include="Adnc.Infra.Repository" Version="$(Infra_Version)" />
 		<PackageReference Include="Adnc.Shared.Repository" Version="$(Shared_Version)" />
+		<PackageReference Include="Adnc.Infra.Repository.EfCore.MySql" Version="$(Infra_Version)" />
 	</ItemGroup>
 </Project>

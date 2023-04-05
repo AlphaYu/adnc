@@ -1,4 +1,4 @@
-﻿namespace Adnc.Cust.Application.Services;
+﻿namespace Adnc.Cust.Application.Cache;
 
 public sealed class CacheService : AbstractCacheService, ICachePreheatable
 {

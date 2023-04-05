@@ -1,4 +1,4 @@
-﻿namespace Adnc.Cust.Application.Contracts.Services;
+﻿namespace Adnc.Cust.Application.Services;
 
 public interface ICustomerAppService : IAppService
 {
@@ -47,4 +47,11 @@ public interface ICustomerAppService : IAppService
     /// <param name="search"></param>
     /// <returns></returns>
     Task<AppSrvResult<PageModelDto<CustomerDto>>> GetPagedAsync(CustomerSearchPagedDto search);
+
+    /// <summary>
+    /// 分页列表(raw sql)
+    /// </summary>
+    /// <param name="search"></param>
+    /// <returns></returns>
+    Task<AppSrvResult<PageModelDto<CustomerDto>>> GetPagedBySqlAsync(CustomerSearchPagedDto search);
 }
