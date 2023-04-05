@@ -1,7 +1,4 @@
-﻿using Adnc.Usr.Application.Cache;
-using Adnc.Usr.Repository;
-
-namespace Adnc.Usr.Application.Services;
+﻿namespace Adnc.Usr.Application.Services;
 
 public class UserAppService : AbstractAppService, IUserAppService
 {

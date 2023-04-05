@@ -1,8 +1,4 @@
-﻿using Adnc.Cust.Application.Cache;
-using Adnc.Cust.Repository;
-using System.Text;
-
-namespace Adnc.Cust.Application.Services.Implements;
+﻿namespace Adnc.Cust.Application.Services.Implements;
 
 /// <summary>
 /// 客户管理服务

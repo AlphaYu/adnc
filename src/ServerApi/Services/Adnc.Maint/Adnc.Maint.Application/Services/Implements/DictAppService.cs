@@ -1,6 +1,4 @@
-﻿using Adnc.Maint.Application.Cache;
-
-namespace Adnc.Maint.Application.Services.Implements;
+﻿namespace Adnc.Maint.Application.Services.Implements;
 
 public class DictAppService : AbstractAppService, IDictAppService
 {

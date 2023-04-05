@@ -1,4 +1,4 @@
-﻿namespace Adnc.Cust.Entities;
+﻿namespace Adnc.Cust.Repository.Entities;
 
 /// <summary>
 /// 客户财务变动记录
@@ -7,7 +7,7 @@ public class CustomerTransactionLog : EfBasicAuditEntity
 {
     public long CustomerId { get; set; }
 
-    public string Account { get; set; }
+    public string Account { get; set; } = string.Empty;
 
     public ExchangeBehavior ExchangeType { get; set; }
 
@@ -19,7 +19,7 @@ public class CustomerTransactionLog : EfBasicAuditEntity
 
     public decimal ChangedAmount { get; set; }
 
-    public string Remark { get; set; }
+    public string Remark { get; set; } = string.Empty;
 }
 
 public enum ExchangeBehavior

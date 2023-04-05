@@ -1,7 +1,4 @@
-﻿using Adnc.Cust.Entities;
-using Adnc.Infra.IRepositories;
-
-namespace Adnc.Cust.Repository
+﻿namespace Adnc.Cust.Repository
 {
     public static class RepositoryExtension
     {

@@ -1,4 +1,4 @@
-﻿namespace Adnc.Usr.Entities;
+﻿namespace Adnc.Usr.Repository.Entities;
 
 /// <summary>
 /// 菜单角色关系

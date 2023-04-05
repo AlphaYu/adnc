@@ -1,4 +1,4 @@
-﻿namespace Adnc.Maint.Entities;
+﻿namespace Adnc.Maint.Repository.Entities;
 
 /// <summary>
 /// 通知

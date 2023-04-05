@@ -1,4 +1,4 @@
-﻿namespace Adnc.Usr.Entities.Config;
+﻿namespace Adnc.Usr.Repository.Entities.Config;
 
 public class DetpConfig : AbstractEntityTypeConfiguration<Organization>
 {

@@ -1,6 +1,4 @@
-﻿using Adnc.Usr.Application.Cache;
-
-namespace Adnc.Usr.Application.Services;
+﻿namespace Adnc.Usr.Application.Services;
 
 public class OrganizationAppService : AbstractAppService, IOrganizationAppService
 {

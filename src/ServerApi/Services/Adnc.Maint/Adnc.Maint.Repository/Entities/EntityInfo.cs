@@ -1,7 +1,4 @@
-﻿using Adnc.Shared;
-using Microsoft.EntityFrameworkCore;
-
-namespace Adnc.Maint.Entities;
+﻿namespace Adnc.Maint.Repository.Entities;
 
 public class EntityInfo : AbstracSharedEntityInfo
 {
