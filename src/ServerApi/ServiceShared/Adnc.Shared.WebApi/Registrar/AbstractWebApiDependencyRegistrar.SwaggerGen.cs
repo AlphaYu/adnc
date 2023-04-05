@@ -42,11 +42,19 @@ public abstract partial class AbstractWebApiDependencyRegistrar
                 var startAssemblyName = ServiceInfo.StartAssembly.GetName().Name;
                 if (string.IsNullOrEmpty(startAssemblyName))
                     throw new NullReferenceException(nameof(startAssemblyName));
+
                 var lastName = startAssemblyName.Split('.').Last();
-                c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{startAssemblyName}.xml"), true);
-                if (!ServiceInfo.IsFineGrainedService)
+                var apiLayerXmlFilePath = Path.Combine(AppContext.BaseDirectory, $"{startAssemblyName}.xml");
+                var applicationContractsLayerXmlFilePath = Path.Combine(AppContext.BaseDirectory, $"{startAssemblyName.Replace($".{lastName}", ".Application.Contracts")}.xml");
+                var applicationLayerXmlFilePath = Path.Combine(AppContext.BaseDirectory, $"{startAssemblyName.Replace($".{lastName}", ".Application")}.xml");
+                c.IncludeXmlComments(apiLayerXmlFilePath, true);
+                if (File.Exists(applicationContractsLayerXmlFilePath))
                 {
-                    c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{startAssemblyName.Replace(lastName, "Application.Contracts")}.xml"), true);
+                    c.IncludeXmlComments(applicationContractsLayerXmlFilePath, true);
+                }
+                else if (File.Exists(applicationLayerXmlFilePath))
+                {
+                    c.IncludeXmlComments(applicationLayerXmlFilePath, true);
                 }
             })
             .AddFluentValidationRulesToSwagger();
