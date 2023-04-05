@@ -63,7 +63,7 @@ namespace Adnc.Usr.Repository.Migrations
                     b.HasComment("事件跟踪/处理信息");
                 });
 
-            modelBuilder.Entity("Adnc.Usr.Entities.Menu", b =>
+            modelBuilder.Entity("Adnc.Usr.Repository.Entities.Menu", b =>
                 {
                     b.Property<long>("Id")
                         .HasColumnType("bigint")
@@ -182,7 +182,7 @@ namespace Adnc.Usr.Repository.Migrations
                     b.HasComment("菜单");
                 });
 
-            modelBuilder.Entity("Adnc.Usr.Entities.Organization", b =>
+            modelBuilder.Entity("Adnc.Usr.Repository.Entities.Organization", b =>
                 {
                     b.Property<long>("Id")
                         .HasColumnType("bigint")
@@ -255,7 +255,7 @@ namespace Adnc.Usr.Repository.Migrations
                     b.HasComment("部门");
                 });
 
-            modelBuilder.Entity("Adnc.Usr.Entities.Role", b =>
+            modelBuilder.Entity("Adnc.Usr.Repository.Entities.Role", b =>
                 {
                     b.Property<long>("Id")
                         .HasColumnType("bigint")
@@ -319,7 +319,7 @@ namespace Adnc.Usr.Repository.Migrations
                     b.HasComment("角色");
                 });
 
-            modelBuilder.Entity("Adnc.Usr.Entities.RoleRelation", b =>
+            modelBuilder.Entity("Adnc.Usr.Repository.Entities.RoleRelation", b =>
                 {
                     b.Property<long>("Id")
                         .HasColumnType("bigint")
@@ -348,7 +348,7 @@ namespace Adnc.Usr.Repository.Migrations
                     b.HasComment("菜单角色关系");
                 });
 
-            modelBuilder.Entity("Adnc.Usr.Entities.User", b =>
+            modelBuilder.Entity("Adnc.Usr.Repository.Entities.User", b =>
                 {
                     b.Property<long>("Id")
                         .HasColumnType("bigint")
@@ -471,9 +471,9 @@ namespace Adnc.Usr.Repository.Migrations
                     b.HasComment("管理员");
                 });
 
-            modelBuilder.Entity("Adnc.Usr.Entities.RoleRelation", b =>
+            modelBuilder.Entity("Adnc.Usr.Repository.Entities.RoleRelation", b =>
                 {
-                    b.HasOne("Adnc.Usr.Entities.Menu", "Menu")
+                    b.HasOne("Adnc.Usr.Repository.Entities.Menu", "Menu")
                         .WithMany()
                         .HasForeignKey("MenuId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -483,9 +483,9 @@ namespace Adnc.Usr.Repository.Migrations
                     b.Navigation("Menu");
                 });
 
-            modelBuilder.Entity("Adnc.Usr.Entities.User", b =>
+            modelBuilder.Entity("Adnc.Usr.Repository.Entities.User", b =>
                 {
-                    b.HasOne("Adnc.Usr.Entities.Organization", "Dept")
+                    b.HasOne("Adnc.Usr.Repository.Entities.Organization", "Dept")
                         .WithMany()
                         .HasForeignKey("DeptId")
                         .HasConstraintName("fk_sys_user_sys_organization_deptid");
