@@ -1,6 +1,4 @@
-﻿using Adnc.Infra.Core.Interfaces;
-
-namespace Adnc.Shared.WebApi;
+﻿namespace Adnc.Shared.WebApi;
 
 public class ServiceInfo : IServiceInfo
 {
@@ -37,8 +35,8 @@ public class ServiceInfo : IServiceInfo
             var attribute = startAssembly.GetCustomAttribute<AssemblyDescriptionAttribute>();
             var description = attribute is null ? string.Empty : attribute.Description;
             var version = startAssembly.GetName().Version ?? throw new NullReferenceException("startAssembly.GetName().Version");
-            var startAssemblyName = startAssembly.GetName().Name?.ToLower() ?? string.Empty;
-            var serviceName = startAssemblyName.Replace(".", "-");
+            var startAssemblyName = startAssembly.GetName().Name ?? string.Empty;
+            var serviceName = startAssemblyName.Replace(".", "-").ToLower();
             var ticks = DateTime.Now.GetTotalMilliseconds().ToLong();
             var ticksHex = Convert.ToString(ticks, 16);
             var envName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")?.ToLower();
@@ -57,8 +55,8 @@ public class ServiceInfo : IServiceInfo
             {
                 Id = serviceId,
                 ServiceName = serviceName,
-                ShortName = $"{names[^2]}-{names[^1]}",
-                RelativeRootPath = $"{names[^2]}/{names[^1]}",
+                ShortName = $"{names[^2]}-{names[^1]}".ToLower(),
+                RelativeRootPath = $"{names[^2]}/{names[^1]}".ToLower(),
                 CorsPolicy = "default",
                 StartAssembly = startAssembly,
                 Description = description,
