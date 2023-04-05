@@ -1,4 +1,6 @@
-﻿namespace Adnc.Usr.Application.Services;
+﻿using Adnc.Usr.Application.Cache;
+
+namespace Adnc.Usr.Application.Services;
 
 public class RoleAppService : AbstractAppService, IRoleAppService
 {

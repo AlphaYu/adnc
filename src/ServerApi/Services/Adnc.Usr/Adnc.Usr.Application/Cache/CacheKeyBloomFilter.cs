@@ -1,6 +1,6 @@
 ﻿using Adnc.Shared;
 
-namespace Adnc.Usr.Application.BloomFilters;
+namespace Adnc.Usr.Application.Cache;
 
 public class CacheKeyBloomFilter : AbstractBloomFilter
 {

@@ -1,6 +1,6 @@
 ﻿using Adnc.Shared;
 
-namespace Adnc.Usr.Application.Services;
+namespace Adnc.Usr.Application.Cache;
 
 public sealed class CacheService : AbstractCacheService, ICachePreheatable
 {

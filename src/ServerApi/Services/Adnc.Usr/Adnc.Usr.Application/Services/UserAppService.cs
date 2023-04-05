@@ -1,4 +1,5 @@
-﻿using Adnc.Usr.Repository;
+﻿using Adnc.Usr.Application.Cache;
+using Adnc.Usr.Repository;
 
 namespace Adnc.Usr.Application.Services;
 
