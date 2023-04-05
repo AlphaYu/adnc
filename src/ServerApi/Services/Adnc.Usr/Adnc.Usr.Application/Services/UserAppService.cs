@@ -1,4 +1,6 @@
-﻿namespace Adnc.Usr.Application.Services;
+﻿using Adnc.Usr.Repository;
+
+namespace Adnc.Usr.Application.Services;
 
 public class UserAppService : AbstractAppService, IUserAppService
 {

@@ -1,4 +1,4 @@
-﻿namespace Adnc.Usr.Repository.Extensions
+﻿namespace Adnc.Usr.Repository
 {
     public static class MenuRepositoryExtension
     {
