@@ -21,7 +21,7 @@ namespace Adnc.Maint.Repository.Migrations
 
             MySqlModelBuilderExtensions.HasCharSet(modelBuilder, "utf8mb4 ");
 
-            modelBuilder.Entity("Adnc.Maint.Entities.Cfg", b =>
+            modelBuilder.Entity("Adnc.Maint.Repository.Entities.Cfg", b =>
                 {
                     b.Property<long>("Id")
                         .HasColumnType("bigint")
@@ -86,7 +86,7 @@ namespace Adnc.Maint.Repository.Migrations
                     b.HasComment("系统参数");
                 });
 
-            modelBuilder.Entity("Adnc.Maint.Entities.Dict", b =>
+            modelBuilder.Entity("Adnc.Maint.Repository.Entities.Dict", b =>
                 {
                     b.Property<long>("Id")
                         .HasColumnType("bigint")
@@ -154,7 +154,7 @@ namespace Adnc.Maint.Repository.Migrations
                     b.HasComment("字典");
                 });
 
-            modelBuilder.Entity("Adnc.Maint.Entities.Notice", b =>
+            modelBuilder.Entity("Adnc.Maint.Repository.Entities.Notice", b =>
                 {
                     b.Property<long>("Id")
                         .HasColumnType("bigint")
