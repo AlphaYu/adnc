@@ -46,7 +46,7 @@ public interface IServiceInfo
     public Assembly StartAssembly { get; }
 
     /// <summary>
-    /// Fine-grained splitting
+    /// Migrations Assembly Name
     /// </summary>
-    public bool IsFineGrainedService { get; }
+    public string MigrationsAssemblyName { get; }
 }
