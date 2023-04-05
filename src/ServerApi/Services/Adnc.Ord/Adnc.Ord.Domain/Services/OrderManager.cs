@@ -1,4 +1,6 @@
-﻿namespace Adnc.Ord.Domain.Services;
+﻿using Adnc.Shared.Rpc.Event;
+
+namespace Adnc.Ord.Domain.Services;
 
 /// <summary>
 /// 订单领域服务

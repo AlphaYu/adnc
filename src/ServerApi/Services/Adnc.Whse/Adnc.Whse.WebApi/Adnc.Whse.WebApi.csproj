@@ -24,7 +24,6 @@
 		</PackageReference>
 	</ItemGroup>
 	<ItemGroup>
-		<ProjectReference Include="..\Adnc.Whse.Application.Contracts\Adnc.Whse.Application.Contracts.csproj" />
 		<ProjectReference Include="..\Adnc.Whse.Application\Adnc.Whse.Application.csproj" />
 	</ItemGroup>
 

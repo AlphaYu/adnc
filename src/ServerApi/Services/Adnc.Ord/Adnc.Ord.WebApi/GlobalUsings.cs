@@ -1,5 +1,5 @@
-﻿global using Adnc.Ord.Application.Contracts.Dtos;
-global using Adnc.Ord.Application.Contracts.Services;
+﻿global using Adnc.Ord.Application.Dtos;
+global using Adnc.Ord.Application.Services;
 global using Adnc.Shared.Application.Contracts.Dtos;
 global using Adnc.Shared.WebApi;
 global using Microsoft.AspNetCore.Builder;
