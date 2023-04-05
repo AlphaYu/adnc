@@ -1,4 +1,5 @@
 ﻿global using Adnc.Infra.Entities;
+global using Adnc.Maint.Repository.Entities;
 global using Adnc.Shared;
 global using Adnc.Shared.Const.Entity.Maint;
 global using Adnc.Shared.Repository.EfEntities;

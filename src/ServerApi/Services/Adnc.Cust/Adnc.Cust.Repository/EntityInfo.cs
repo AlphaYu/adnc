@@ -1,4 +1,4 @@
-﻿namespace Adnc.Maint.Repository.Entities;
+﻿namespace Adnc.Cust.Repository;
 
 public class EntityInfo : AbstracSharedEntityInfo
 {
@@ -13,9 +13,6 @@ public class EntityInfo : AbstracSharedEntityInfo
         if (modelBuilder is not ModelBuilder builder)
             throw new ArgumentNullException(nameof(modelBuilder));
 
-        builder.Entity<EventTracker>().ToTable("sys_eventtracker");
-        builder.Entity<Cfg>().ToTable("sys_config");
-        builder.Entity<Dict>().ToTable("sys_dictionary");
-        builder.Entity<Notice>().ToTable("sys_notice");
+        builder.Entity<EventTracker>().ToTable("cust_eventtracker");
     }
 }

@@ -1,6 +1,4 @@
-﻿using Adnc.Cust.Repository.Entities;
-
-namespace Adnc.Cust.Application;
+﻿namespace Adnc.Cust.Application;
 
 public sealed class CustApplicationDependencyRegistrar : AbstractApplicationDependencyRegistrar
 {

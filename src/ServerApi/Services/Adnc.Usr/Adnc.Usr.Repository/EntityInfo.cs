@@ -1,4 +1,4 @@
-﻿namespace Adnc.Usr.Repository.Entities;
+﻿namespace Adnc.Usr.Repository;
 
 public class EntityInfo : AbstracSharedEntityInfo
 {

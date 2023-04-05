@@ -1,4 +1,6 @@
-﻿namespace Adnc.Maint.Application;
+﻿using Adnc.Maint.Repository;
+
+namespace Adnc.Maint.Application;
 
 public sealed class DependencyRegistrar : AbstractApplicationDependencyRegistrar
 {
