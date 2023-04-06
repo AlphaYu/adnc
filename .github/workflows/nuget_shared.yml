@@ -1,8 +1,7 @@
-# 0.9.7.1
 name: nuget_shared
 
 on:
-    push:
+    workflow_dispatch:
       branches:
       - master
 
