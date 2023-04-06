@@ -102,16 +102,17 @@ public class WarehouseAppService : AbstractAppService, IWarehouseAppService
     /// <summary>
     /// 锁定库存
     /// </summary>
-    /// <param name="input"></param>
+    /// <param name="eventDto"></param>
+    /// <param name="tracker"></param>
     /// <returns></returns>
     public async Task BlockQtyAsync(OrderCreatedEvent eventDto, IMessageTracker tracker)
     {
         eventDto.TrimStringFields();
-        var blockQtyProductsInfo = eventDto.Data.Products.ToDictionary(x => x.ProductId, x => x.Qty);
+        var blockQtyProductsInfo = eventDto.Products.ToDictionary(x => x.ProductId, x => x.Qty);
         var warehouses = await _warehouseRepo.Where(x => blockQtyProductsInfo.Keys.Contains(x.ProductId.Value), noTracking: false).ToListAsync();
         // var products = await _productRepo.Where(x => blockQtyProductsInfo.Keys.Contains(x.Id)).ToListAsync();
 
-        var result = await _warehouseManager.BlockQtyAsync(eventDto.Data.OrderId, blockQtyProductsInfo, warehouses);
+        var result = await _warehouseManager.BlockQtyAsync(eventDto.OrderId, blockQtyProductsInfo, warehouses);
 
         //库存都符合锁定条件才能批量更新数据库
         if (result)

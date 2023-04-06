@@ -69,8 +69,8 @@ public class OrderAppService : AbstractAppService, IOrderAppService
     public async Task MarkCreatedStatusAsync(WarehouseQtyBlockedEvent eventDto, IMessageTracker tracker)
     {
         eventDto.TrimStringFields();
-        var order = await _orderRepo.GetAsync(eventDto.Data.OrderId);
-        order.MarkCreatedStatus(eventDto.Data.IsSuccess, eventDto.Data.Remark);
+        var order = await _orderRepo.GetAsync(eventDto.OrderId);
+        order.MarkCreatedStatus(eventDto.IsSuccess, eventDto.Remark);
 
         await _orderRepo.UpdateAsync(order);
         await tracker?.MarkAsProcessedAsync(eventDto);

@@ -65,77 +65,20 @@ public class CustomerAppService : AbstractAppService, ICustomerAppService
             Amount = input.Amount,
             ExchageStatus = ExchageStatus.Processing
         };
-
         await _cusTransactionLogRepo.InsertAsync(cusTransactionLog);
 
         //发布充值事件
-        var eventId = IdGenerater.GetNextId();
-        var eventData = new CustomerRechargedEvent.EventData() { CustomerId = cusTransactionLog.CustomerId, TransactionLogId = cusTransactionLog.Id, Amount = cusTransactionLog.Amount };
-        var eventSource = nameof(RechargeAsync);
-        await _eventPublisher.PublishAsync(new CustomerRechargedEvent(eventId, eventData, eventSource));
-        return new SimpleDto<string>(cusTransactionLog.Id.ToString());
-    }
-
-    public async Task<AppSrvResult> ProcessRechargingAsync(CustomerRechargedEvent eventDto, IMessageTracker tracker)
-    {
-        eventDto.TrimStringFields();
-
-        var customerId = eventDto.Data.CustomerId;
-        var amount = eventDto.Data.Amount;
-        var transactionLogId = eventDto.Data.TransactionLogId;
-
-        var transLog = await _cusTransactionLogRepo.FindAsync(transactionLogId, noTracking: false);
-        if (transLog is null)
-            return AppSrvResult();
-
-        var finance = await _cusFinaceRepo.FindAsync(customerId, noTracking: false);
-        var originalBalance = finance.Balance;
-        var newBalance = originalBalance + amount;
-
-        finance.Balance = newBalance;
-        await _cusFinaceRepo.UpdateAsync(finance);
-
-        transLog.ExchageStatus = ExchageStatus.Finished;
-        transLog.ChangingAmount = originalBalance;
-        transLog.ChangedAmount = newBalance;
-        await _cusTransactionLogRepo.UpdateAsync(transLog);
-
-        await tracker.MarkAsProcessedAsync(eventDto);
-        return AppSrvResult();
-    }
-
-    public async Task<AppSrvResult> ProcessPayingAsync(long transactionLogId, long customerId, decimal amount)
-    {
-        var transLog = await _cusTransactionLogRepo.FindAsync(transactionLogId);
-        if (transLog != null)
-            return AppSrvResult();
-
-        var account = await _customerRepo.FetchAsync(x => x.Account, x => x.Id == customerId);
-        var finance = await _cusFinaceRepo.FindAsync(customerId, noTracking: false);
-        var originalBalance = finance.Balance;
-        var newBalance = originalBalance - amount;
-
-        if (newBalance >= 0)
+        var customerRechargedEvent = new CustomerRechargedEvent
         {
-            finance.Balance = newBalance;
-            await _cusFinaceRepo.UpdateAsync(finance);
+            Id = IdGenerater.GetNextId(),
+            EventSource = MethodBase.GetCurrentMethod()?.DeclaringType?.Name ?? string.Empty,
+            CustomerId = cusTransactionLog.CustomerId,
+            TransactionLogId = cusTransactionLog.Id,
+            Amount = cusTransactionLog.Amount
+        };
+        await _eventPublisher.PublishAsync(customerRechargedEvent);
 
-            transLog = new CustomerTransactionLog
-            {
-                Id = transactionLogId,
-                CustomerId = customerId,
-                Account = account,
-                ChangingAmount = originalBalance,
-                Amount = 0 - amount,
-                ChangedAmount = newBalance,
-                ExchangeType = ExchangeBehavior.Order,
-                ExchageStatus = ExchageStatus.Finished
-            };
-
-            await _cusTransactionLogRepo.InsertAsync(transLog);
-        }
-
-        return AppSrvResult();
+        return new SimpleDto<string>(cusTransactionLog.Id.ToString());
     }
 
     public async Task<AppSrvResult<PageModelDto<CustomerDto>>> GetPagedAsync(CustomerSearchPagedDto search)
