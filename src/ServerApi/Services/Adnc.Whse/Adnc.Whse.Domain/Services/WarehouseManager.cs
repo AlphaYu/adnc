@@ -95,7 +95,7 @@ public class WarehouseManager : IDomainService
         var warehouseQtyBlockedEvent = new WarehouseQtyBlockedEvent
         {
             Id = IdGenerater.GetNextId(),
-            EventSource = nameof(BlockQtyAsync),
+            EventSource = MethodBase.GetCurrentMethod()?.GetMethodName() ?? string.Empty,
             OrderId = orderId,
             IsSuccess = isSuccess,
             Remark = remark 

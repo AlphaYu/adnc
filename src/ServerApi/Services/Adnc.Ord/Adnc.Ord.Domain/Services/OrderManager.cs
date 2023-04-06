@@ -43,7 +43,7 @@ public class OrderManager : IDomainService
         var orderCreatedEvent = new OrderCreatedEvent
         {
             Id = IdGenerater.GetNextId(),
-            EventSource = nameof(CreateAsync),
+            EventSource = MethodBase.GetCurrentMethod()?.GetMethodName() ?? string.Empty,
             OrderId = order.Id,
             Products = products
         };
@@ -65,7 +65,7 @@ public class OrderManager : IDomainService
         var orderCanceledEvent = new OrderCanceledEvent
         {
             Id = IdGenerater.GetNextId(),
-            EventSource = nameof(CancelAsync),
+            EventSource = MethodBase.GetCurrentMethod()?.GetMethodName() ?? string.Empty,
             OrderId = order.Id,
         };
         await order.EventPublisher.Value.PublishAsync(orderCanceledEvent);
@@ -85,7 +85,7 @@ public class OrderManager : IDomainService
         var orderPaidEvent = new OrderPaidEvent
         {
             Id = IdGenerater.GetNextId(),
-            EventSource = nameof(PayAsync),
+            EventSource = MethodBase.GetCurrentMethod()?.GetMethodName() ?? string.Empty,
             OrderId = order.Id,
             Amount = order.Amount,
             CustomerId = order.CustomerId

@@ -36,7 +36,7 @@ public sealed partial class CapEventSubscriber : ICapSubscribe
         eventDto.TrimStringFields();
 
         var eventId = eventDto.Id;
-        var eventHandler = MethodBase.GetCurrentMethod()?.DeclaringType?.Name ?? string.Empty;
+        var eventHandler = MethodBase.GetCurrentMethod()?.GetMethodName() ?? string.Empty;
         var hasProcessed = await _tracker.HasProcessedAsync(eventId, eventHandler);
         if (hasProcessed)
             return;
@@ -87,7 +87,7 @@ public sealed partial class CapEventSubscriber : ICapSubscribe
         eventDto.TrimStringFields();
 
         var eventId = eventDto.Id;
-        var eventHandler = MethodBase.GetCurrentMethod()?.DeclaringType?.Name ?? string.Empty;
+        var eventHandler = MethodBase.GetCurrentMethod()?.GetMethodName() ?? string.Empty;
         var hasProcessed = await _tracker.HasProcessedAsync(eventId, eventHandler);
         if (hasProcessed)
             return;

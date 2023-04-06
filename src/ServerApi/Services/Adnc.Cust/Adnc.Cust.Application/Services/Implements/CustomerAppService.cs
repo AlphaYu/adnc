@@ -71,7 +71,7 @@ public class CustomerAppService : AbstractAppService, ICustomerAppService
         var customerRechargedEvent = new CustomerRechargedEvent
         {
             Id = IdGenerater.GetNextId(),
-            EventSource = MethodBase.GetCurrentMethod()?.DeclaringType?.Name ?? string.Empty,
+            EventSource = MethodBase.GetCurrentMethod()?.GetMethodName() ?? string.Empty,
             CustomerId = cusTransactionLog.CustomerId,
             TransactionLogId = cusTransactionLog.Id,
             Amount = cusTransactionLog.Amount
