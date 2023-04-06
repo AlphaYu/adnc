@@ -1,10 +1,12 @@
-﻿namespace Adnc.Maint.Application;
+﻿using Adnc.Maint.Repository;
+
+namespace Adnc.Maint.Application;
 
 public sealed class DependencyRegistrar : AbstractApplicationDependencyRegistrar
 {
     public override Assembly ApplicationLayerAssembly => Assembly.GetExecutingAssembly();
 
-    public override Assembly ContractsLayerAssembly => typeof(IDictAppService).Assembly;
+    public override Assembly ContractsLayerAssembly => Assembly.GetExecutingAssembly();
 
     public override Assembly RepositoryOrDomainLayerAssembly => typeof(EntityInfo).Assembly;
 

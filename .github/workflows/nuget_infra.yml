@@ -1,8 +1,7 @@
-# 0.9.7.1 infra
 name: nuget_infra
 
 on:
-    push:
+    workflow_dispatch:
       branches:
       - master
 

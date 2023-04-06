@@ -1,49 +1,57 @@
 ﻿namespace Adnc.Shared.Rpc.Event
 {
     [Serializable]
-    public class EventEntity<TData> where TData : class
+    public class EventEntity
     {
         public EventEntity()
         {
-            this.Id = default;
-            this.Data = default!;
-            this.OccurredDate = DateTime.Now;
-            this.EventSource = string.Empty;
-            this.EventTarget = string.Empty;
         }
 
-        public EventEntity(long id, TData data, string source)
+        public EventEntity(long id, string source)
         {
             this.Id = id;
-            this.Data = data;
-            this.OccurredDate = DateTime.Now;
             this.EventSource = source;
-            this.EventTarget = string.Empty;
         }
 
         /// <summary>
         /// 事件Id
         /// </summary>
-        public virtual long Id { get; set; }
+        public long Id { get; set; } = default;
 
         /// <summary>
         /// 事件发生的时间
         /// </summary>
-        public virtual DateTime OccurredDate { get; set; }
+        public DateTime OccurredDate { get; set; } = DateTime.Now;
 
         /// <summary>
         /// 触发事件的方法
         /// </summary>
-        public virtual string EventSource { get; set; }
+        public string EventSource { get; set; } = string.Empty;
 
         /// <summary>
         /// 处理事件的方法
         /// </summary>
-        public virtual string EventTarget { get; set; }
+        public string EventTarget { get; set; } = string.Empty;
+    }
+
+    [Serializable]
+    public class EventEntity<TData> : EventEntity
+        where TData : class
+    {
+        public EventEntity()
+            : base()
+        {
+        }
+
+        public EventEntity(long id, TData data, string source)
+            : base(id, source)
+        {
+            this.Data = data;
+        }
 
         /// <summary>
         /// 事件数据
         /// </summary>
-        public TData Data { get; set; }
+        public TData Data { get; set; } = default!;
     }
 }

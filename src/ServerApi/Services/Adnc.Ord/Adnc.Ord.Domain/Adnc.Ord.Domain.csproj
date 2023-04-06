@@ -2,15 +2,12 @@
 	<Import Project="..\..\..\Props\common.props" />
 	<Import Project="..\..\..\Props\version_service.props" />
 	<PropertyGroup>
-		<Nullable>enable</Nullable>
-	</PropertyGroup>
-	<PropertyGroup>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 	</PropertyGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\ServiceShared\Adnc.Shared.Const\Adnc.Shared.Const.csproj" />
+		<ProjectReference Include="..\..\..\ServiceShared\Adnc.Shared.Rpc.Event\Adnc.Shared.Rpc.Event.csproj" />
 		<ProjectReference Include="..\..\..\ServiceShared\Adnc.Shared\Adnc.Shared.csproj" />
-		<ProjectReference Include="..\Adnc.Ord.Application.Contracts\Adnc.Ord.Application.Contracts.csproj" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(SolutionName)'=='Adnc'">

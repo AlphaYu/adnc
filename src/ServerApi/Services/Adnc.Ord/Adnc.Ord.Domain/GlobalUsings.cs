@@ -5,7 +5,6 @@ global using Adnc.Ord.Domain.Aggregates.OrderAggregate;
 global using Adnc.Shared.Const.Entity.Ord;
 global using Adnc.Shared.Domain;
 global using Adnc.Shared.Domain.Entities;
-global using Adnc.Shared.Rpc.Event;
 global using Adnc.Shared.Repository.EfEntities.Config;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.EntityFrameworkCore.Metadata.Builders;

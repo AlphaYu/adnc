@@ -11,8 +11,11 @@ internal static class Program
         logger.Debug($"init {nameof(Program.Main)}");
         try
         {
-            var webApiAssembly = System.Reflection.Assembly.GetExecutingAssembly();
-            var serviceInfo = Shared.WebApi.ServiceInfo.CreateInstance(webApiAssembly);
+            var startAssembly = System.Reflection.Assembly.GetExecutingAssembly();
+            var startAssemblyName = startAssembly.GetName().Name ?? string.Empty;
+            var lastName = startAssemblyName.Split('.').Last();
+            var migrationsAssemblyName = startAssemblyName.Replace($".{lastName}", ".Repository");
+            var serviceInfo = Shared.WebApi.ServiceInfo.CreateInstance(startAssembly, migrationsAssemblyName);
 
             var app = WebApplication
                 .CreateBuilder(args)

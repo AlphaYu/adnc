@@ -4,23 +4,23 @@
 /// 锁定库存事件
 /// </summary>
 [Serializable]
-public class WarehouseQtyBlockedEvent : EventEntity<WarehouseQtyBlockedEvent.EventData>
+public class WarehouseQtyBlockedEvent : EventEntity
 {
     public WarehouseQtyBlockedEvent()
     {
     }
 
-    public WarehouseQtyBlockedEvent(long id, EventData eventData, string eventSource)
-        : base(id, eventData, eventSource)
+    public WarehouseQtyBlockedEvent(long id, string eventSource, long orderId, bool isSuccess, string remark)
+        : base(id, eventSource)
     {
+        OrderId = orderId;
+        IsSuccess = isSuccess;
+        Remark = remark;
     }
 
-    public class EventData
-    {
-        public long OrderId { get; set; }
+    public long OrderId { get; set; }
 
-        public bool IsSuccess { get; set; }
+    public bool IsSuccess { get; set; }
 
-        public string Remark { get; set; } = string.Empty;
-    }
+    public string Remark { get; set; } = string.Empty;
 }

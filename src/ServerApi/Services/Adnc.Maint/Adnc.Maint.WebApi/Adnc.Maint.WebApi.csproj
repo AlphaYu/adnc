@@ -26,7 +26,6 @@
 		<Protobuf Include="..\..\..\protos\services\maintgrpc.proto" GrpcServices="Server" Link="Grpc\protos\maintgrpc.proto" ProtoRoot="..\..\..\protos\" />
 	</ItemGroup>
 	<ItemGroup>
-		<ProjectReference Include="..\Adnc.Maint.Application.Contracts\Adnc.Maint.Application.Contracts.csproj" />
 		<ProjectReference Include="..\Adnc.Maint.Application\Adnc.Maint.Application.csproj" />
 	</ItemGroup>
 

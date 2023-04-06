@@ -1,4 +1,4 @@
-﻿namespace Adnc.Maint.Entities.Config;
+﻿namespace Adnc.Maint.Repository.Entities.Config;
 
 public class CfgConfig : AbstractEntityTypeConfiguration<Cfg>
 {

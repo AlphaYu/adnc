@@ -92,10 +92,15 @@ public class WarehouseManager : IDomainService
         isSuccess = string.IsNullOrEmpty(remark);
 
         //发布冻结库存事件(不管是否冻结成功)
-        var eventId = IdGenerater.GetNextId();
-        var eventData = new WarehouseQtyBlockedEvent.EventData() { OrderId = orderId, IsSuccess = isSuccess, Remark = remark };
-        var eventSource = nameof(BlockQtyAsync);
-        await warehouses[0].EventPublisher.Value.PublishAsync(new WarehouseQtyBlockedEvent(eventId, eventData, eventSource));
+        var warehouseQtyBlockedEvent = new WarehouseQtyBlockedEvent
+        {
+            Id = IdGenerater.GetNextId(),
+            EventSource = MethodBase.GetCurrentMethod()?.GetMethodName() ?? string.Empty,
+            OrderId = orderId,
+            IsSuccess = isSuccess,
+            Remark = remark 
+        };
+        await warehouses[0].EventPublisher.Value.PublishAsync(warehouseQtyBlockedEvent);
 
         return isSuccess;
     }

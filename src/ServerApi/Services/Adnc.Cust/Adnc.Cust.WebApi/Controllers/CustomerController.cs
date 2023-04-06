@@ -6,7 +6,7 @@ namespace Adnc.Cust.WebApi.Controllers;
 /// <summary>
 /// 客户管理
 /// </summary>
-[Route("cus/customers")]
+[Route("cust/customers")]
 [ApiController]
 public class CustomerController : AdncControllerBase
 {
@@ -21,7 +21,7 @@ public class CustomerController : AdncControllerBase
     /// <returns></returns>
     [HttpPost]
     [AllowAnonymous]
-    [ProducesResponseType(StatusCodes.Status201Created)]
+    //[ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<ActionResult<CustomerDto>> RegisterAsync([FromBody] CustomerRegisterDto input) =>
         CreatedResult(await _customerService.RegisterAsync(input));
 
@@ -30,7 +30,7 @@ public class CustomerController : AdncControllerBase
     /// </summary>
     /// <returns></returns>
     [HttpPut("{id}/balance")]
-    [AdncAuthorize(PermissionConsts.Customer.Recharge)]
+    //[AdncAuthorize(PermissionConsts.Customer.Recharge)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<SimpleDto<string>>> RechargeAsync([FromRoute] long id, [FromBody] CustomerRechargeDto input) =>
         Result(await _customerService.RechargeAsync(id, input));
@@ -41,8 +41,19 @@ public class CustomerController : AdncControllerBase
     /// <param name="search"></param>
     /// <returns></returns>
     [HttpGet("page")]
-    [AdncAuthorize(PermissionConsts.Customer.GetList)]
+    //[AdncAuthorize(PermissionConsts.Customer.GetList)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<PageModelDto<CustomerDto>>> GetPagedAsync([FromQuery] CustomerSearchPagedDto search) =>
         Result(await _customerService.GetPagedAsync(search));
+
+    /// <summary>
+    /// 客户分页列表-通过Sql查询
+    /// </summary>
+    /// <param name="search"></param>
+    /// <returns></returns>
+    [HttpGet("page/rawsql")]
+    //[AdncAuthorize(PermissionConsts.Customer.GetList)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<ActionResult<PageModelDto<CustomerDto>>> GetPagedBySqlAsync([FromQuery] CustomerSearchPagedDto search) =>
+        Result(await _customerService.GetPagedBySqlAsync(search));
 }

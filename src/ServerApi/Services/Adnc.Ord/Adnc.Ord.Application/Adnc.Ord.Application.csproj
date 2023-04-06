@@ -1,8 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<Import Project="..\..\..\Props\common.props" />
 	<Import Project="..\..\..\Props\version_service.props" />
+	<PropertyGroup>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+	</PropertyGroup>
 	<ItemGroup>
-		<ProjectReference Include="..\Adnc.Ord.Application.Contracts\Adnc.Ord.Application.Contracts.csproj" />
 		<ProjectReference Include="..\Adnc.Ord.Domain\Adnc.Ord.Domain.csproj" />
 	</ItemGroup>
 

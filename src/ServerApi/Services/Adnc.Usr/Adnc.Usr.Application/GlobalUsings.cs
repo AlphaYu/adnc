@@ -5,6 +5,7 @@ global using Adnc.Infra.IRepositories;
 global using Adnc.Infra.Redis;
 global using Adnc.Infra.Redis.Caching;
 global using Adnc.Infra.Redis.Caching.Configurations;
+global using Adnc.Shared;
 global using Adnc.Shared.Application.BloomFilter;
 global using Adnc.Shared.Application.Caching;
 global using Adnc.Shared.Application.Channels;
@@ -15,10 +16,11 @@ global using Adnc.Shared.Application.Services;
 global using Adnc.Shared.Const.Caching.Usr;
 global using Adnc.Shared.Repository.MongoEntities;
 global using Adnc.Shared.Rpc.Grpc.Messages;
+global using Adnc.Usr.Application.Cache;
 global using Adnc.Usr.Application.Contracts.Dtos;
 global using Adnc.Usr.Application.Contracts.Services;
-global using Adnc.Usr.Entities;
-global using Adnc.Usr.Repository.Extensions;
+global using Adnc.Usr.Repository;
+global using Adnc.Usr.Repository.Entities;
 global using AutoMapper;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.Extensions.DependencyInjection;
@@ -26,5 +28,3 @@ global using Microsoft.Extensions.Options;
 global using System.Linq.Expressions;
 global using System.Net;
 global using System.Reflection;
-
-

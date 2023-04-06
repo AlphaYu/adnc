@@ -36,17 +36,9 @@ public abstract partial class AbstractApplicationDependencyRegistrar
             options.UseLowerCaseNamingConvention();
             options.UseMySql(mysqlConfig.ConnectionString, serverVersion, optionsBuilder =>
             {
-                var startAssemblyName = serviceInfo.StartAssembly.GetName().Name ?? string.Empty;
-                var lastName = startAssemblyName.Split(".").Last();
-                var migrationsAssemblyName = serviceInfo.IsFineGrainedService ? startAssemblyName.Replace(lastName, $"{lastName}Migrations") : startAssemblyName.Replace(lastName, "Migrations");
-                if (string.IsNullOrEmpty(migrationsAssemblyName))
-                    throw new NullReferenceException("MigrationsAssembly is null");
-                else
-                {
-                    optionsBuilder.MinBatchSize(4)
-                                            .MigrationsAssembly(migrationsAssemblyName)
-                                            .UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
-                }
+                optionsBuilder.MinBatchSize(4)
+                                        .MigrationsAssembly(serviceInfo.MigrationsAssemblyName)
+                                        .UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
             });
 
             //if (this.IsDevelopment())

@@ -1,4 +1,4 @@
-﻿namespace Adnc.Cust.Entities.Config;
+﻿namespace Adnc.Cust.Repository.Entities.Config;
 
 public class CustomerTransactionLogConfig : AbstractEntityTypeConfiguration<CustomerTransactionLog>
 {

@@ -13,13 +13,13 @@ public class ServiceInfo : IServiceInfo
     public string Version { get; private set; } = string.Empty;
     public string Description { get; private set; } = string.Empty;
     public Assembly StartAssembly { get; private set; } = default!;
-    public bool IsFineGrainedService { get; private set; }
+    public string MigrationsAssemblyName { get; private set; } = string.Empty;
 
     private ServiceInfo()
     {
     }
 
-    public static ServiceInfo CreateInstance(Assembly startAssembly, bool isFineGrainedService = false)
+    public static ServiceInfo CreateInstance(Assembly startAssembly, string? migrationsAssemblyName = null)
     {
         if (_instance is not null)
             return _instance;
@@ -34,10 +34,9 @@ public class ServiceInfo : IServiceInfo
 
             var attribute = startAssembly.GetCustomAttribute<AssemblyDescriptionAttribute>();
             var description = attribute is null ? string.Empty : attribute.Description;
-            var assemblyName = startAssembly.GetName();
-            var version = assemblyName.Version ?? throw new NullReferenceException(nameof(assemblyName.Version)); ;
-            var fullName = assemblyName is null ? string.Empty : assemblyName.Name?.ToLower() ?? string.Empty;
-            var serviceName = fullName.Replace(".", "-");
+            var version = startAssembly.GetName().Version ?? throw new NullReferenceException("startAssembly.GetName().Version");
+            var startAssemblyName = startAssembly.GetName().Name ?? string.Empty;
+            var serviceName = startAssemblyName.Replace(".", "-").ToLower();
             var ticks = DateTime.Now.GetTotalMilliseconds().ToLong();
             var ticksHex = Convert.ToString(ticks, 16);
             var envName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")?.ToLower();
@@ -50,18 +49,19 @@ public class ServiceInfo : IServiceInfo
                 _ => throw new NullReferenceException("ASPNETCORE_ENVIRONMENT")
             };
 
-            var names = fullName.Split(".");
+            var names = startAssemblyName.Split(".");
+            migrationsAssemblyName ??= startAssemblyName.Replace($".{names.Last()}", ".Migrations");
             _instance = new ServiceInfo
             {
                 Id = serviceId,
                 ServiceName = serviceName,
-                ShortName = $"{names[^2]}-{names[^1]}",
-                RelativeRootPath = $"{names[^2]}/{names[^1]}",
+                ShortName = $"{names[^2]}-{names[^1]}".ToLower(),
+                RelativeRootPath = $"{names[^2]}/{names[^1]}".ToLower(),
                 CorsPolicy = "default",
                 StartAssembly = startAssembly,
                 Description = description,
                 Version = $"{version.Major}.{version.Minor}.{version.Build}.{version.Revision}",
-                IsFineGrainedService = isFineGrainedService
+                MigrationsAssemblyName = migrationsAssemblyName
             };
         }
         return _instance;

@@ -1,10 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<Import Project="..\..\..\Props\common.props" />
 	<Import Project="..\..\..\Props\version_service.props" />
+	<PropertyGroup>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+	</PropertyGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\ServiceShared\Adnc.Shared.Rpc.Http\Adnc.Shared.Rpc.Http.csproj" />
 		<ProjectReference Include="..\..\..\ServiceShared\Adnc.Shared.Rpc.Grpc\Adnc.Shared.Rpc.Grpc.csproj" />
-		<ProjectReference Include="..\Adnc.Cust.Application.Contracts\Adnc.Cust.Application.Contracts.csproj" />
 		<ProjectReference Include="..\Adnc.Cust.Repository\Adnc.Cust.Repository.csproj" />
 	</ItemGroup>
 
@@ -14,5 +16,6 @@
 
 	<ItemGroup Condition="'$(SolutionName)'=='Adnc.Services' ">
 		<PackageReference Include="Adnc.Shared.Application" Version="$(Shared_Version)" />
+		<PackageReference Include="Adnc.Shared.Application.Contracts" Version="$(Shared_Version)" />
 	</ItemGroup>
 </Project>
