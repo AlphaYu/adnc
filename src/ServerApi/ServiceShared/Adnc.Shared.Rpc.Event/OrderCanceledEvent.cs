@@ -4,19 +4,17 @@
 /// 订单取消事件
 /// </summary>
 [Serializable]
-public sealed class OrderCanceledEvent : EventEntity<OrderCanceledEvent.EventData>
+public sealed class OrderCanceledEvent : EventEntity
 {
     public OrderCanceledEvent()
     {
     }
 
-    public OrderCanceledEvent(long id, EventData eventData, string eventSource)
-        : base(id, eventData, eventSource)
+    public OrderCanceledEvent(long id, string eventSource, long orderId)
+        : base(id, eventSource)
     {
+        OrderId = orderId;
     }
 
-    public class EventData
-    {
-        public long OrderId { get; set; }
-    }
+    public long OrderId { get; set; }
 }

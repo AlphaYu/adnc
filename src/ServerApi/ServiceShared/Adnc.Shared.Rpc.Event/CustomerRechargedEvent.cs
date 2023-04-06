@@ -1,26 +1,24 @@
 ﻿namespace Adnc.Shared.Rpc.Event;
 
 /// <summary>
-/// 客户充值
+/// 客户充值事件
 /// </summary>
 [Serializable]
-public class CustomerRechargedEvent : EventEntity<CustomerRechargedEvent.EventData>
+public class CustomerRechargedEvent : EventEntity
 {
     public CustomerRechargedEvent()
     {
     }
 
-    public CustomerRechargedEvent(long id, EventData eventData, string source)
-        : base(id, eventData, source)
+    public CustomerRechargedEvent(long id, string source, long custmerId, decimal amout, long transactionLogId)
+        : base(id, source)
     {
+        CustomerId = custmerId;
+        Amount = amout;
+        TransactionLogId = transactionLogId;
     }
 
-    public class EventData
-    {
-        public long CustomerId { get; set; }
-
-        public decimal Amount { get; set; }
-
-        public long TransactionLogId { get; set; }
-    }
+    public long CustomerId { get; init; }
+    public decimal Amount { get; init; }
+    public long TransactionLogId { get; init; }
 }

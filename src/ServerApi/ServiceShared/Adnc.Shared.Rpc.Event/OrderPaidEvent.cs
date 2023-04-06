@@ -4,23 +4,23 @@
 /// 订单支付事件
 /// </summary>
 [Serializable]
-public sealed class OrderPaidEvent : EventEntity<OrderPaidEvent.EventData>
+public sealed class OrderPaidEvent : EventEntity
 {
     public OrderPaidEvent()
     {
     }
 
-    public OrderPaidEvent(long id, EventData eventData, string eventSource)
-        : base(id, eventData, eventSource)
+    public OrderPaidEvent(long id, string eventSource, long orderId, long custmerId, decimal amout)
+        : base(id, eventSource)
     {
+        OrderId = orderId;
+        CustomerId = custmerId;
+        Amount = amout;
     }
 
-    public class EventData
-    {
-        public long OrderId { get; set; }
+    public long OrderId { get; init; }
 
-        public long CustomerId { get; set; }
+    public long CustomerId { get; init; }
 
-        public decimal Amount { get; set; }
-    }
+    public decimal Amount { get; init; }
 }

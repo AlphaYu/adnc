@@ -4,23 +4,21 @@
 /// 订单创建事件
 /// </summary>
 [Serializable]
-public class OrderCreatedEvent : EventEntity<OrderCreatedEvent.EventData>
+public class OrderCreatedEvent : EventEntity
 {
     public OrderCreatedEvent()
     {
     }
 
-    public OrderCreatedEvent(long id, EventData eventData, string eventSource)
-        : base(id, eventData, eventSource)
+    public OrderCreatedEvent(long id, string eventSource,long orderId, IEnumerable<OrderItem> orderItems)
+        : base(id, eventSource)
     {
+        OrderId = orderId;
+        Products = orderItems;
     }
 
-    public class EventData
-    {
-        public long OrderId { get; set; }
-
-        public IEnumerable<OrderItem> Products { get; set; } = new List<OrderItem>();
-    }
+    public long OrderId { get; set; }
+    public IEnumerable<OrderItem> Products { get; set; } = new List<OrderItem>();
 
     public class OrderItem
     {
