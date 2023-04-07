@@ -3,6 +3,7 @@
 	<Import Project="..\..\..\Props\version_service.props" />
 	
 	<ItemGroup>
+		<ProjectReference Include="..\..\..\ServiceShared\Adnc.Shared.Rpc.Grpc\Adnc.Shared.Rpc.Grpc.csproj" />
 		<ProjectReference Include="..\..\..\ServiceShared\Adnc.Shared.Rpc.Http\Adnc.Shared.Rpc.Http.csproj" />
 		<ProjectReference Include="..\Adnc.Usr.Application.Contracts\Adnc.Usr.Application.Contracts.csproj" />
 		<ProjectReference Include="..\Adnc.Usr.Repository\Adnc.Usr.Repository.csproj" />
