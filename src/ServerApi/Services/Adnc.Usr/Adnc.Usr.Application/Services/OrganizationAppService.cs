@@ -23,6 +23,7 @@ public class OrganizationAppService : AbstractAppService, IOrganizationAppServic
 
     public async Task<AppSrvResult<long>> CreateAsync(OrganizationCreationDto input)
     {
+        input.TrimStringFields();
         var isExists = (await _cacheService.GetAllOrganizationsFromCacheAsync()).Exists(x => x.FullName == input.FullName);
         if (isExists)
             return Problem(HttpStatusCode.BadRequest, "该机构全称已经存在");
@@ -37,6 +38,7 @@ public class OrganizationAppService : AbstractAppService, IOrganizationAppServic
 
     public async Task<AppSrvResult> UpdateAsync(long id, OrganizationUpdationDto input)
     {
+        input.TrimStringFields();
         var allorganizations = await _cacheService.GetAllOrganizationsFromCacheAsync();
 
         var oldorganizationDto = allorganizations.FirstOrDefault(x => x.Id == id);

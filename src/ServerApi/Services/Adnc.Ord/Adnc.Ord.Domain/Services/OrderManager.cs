@@ -1,4 +1,6 @@
-﻿namespace Adnc.Ord.Domain.Services;
+﻿using Adnc.Shared.Rpc.Event;
+
+namespace Adnc.Ord.Domain.Services;
 
 /// <summary>
 /// 订单领域服务
@@ -38,10 +40,14 @@ public class OrderManager : IDomainService
 
         //发送OrderCreatedEvent事件，通知仓储中心冻结库存
         var products = order.Items.Select(x => new OrderCreatedEvent.OrderItem { ProductId = x.Product.Id, Qty = x.Count });
-        var eventId = IdGenerater.GetNextId();
-        var eventData = new OrderCreatedEvent.EventData() { OrderId = order.Id, Products = products };
-        var eventSource = nameof(CreateAsync);
-        await order.EventPublisher.Value.PublishAsync(new OrderCreatedEvent(eventId, eventData, eventSource));
+        var orderCreatedEvent = new OrderCreatedEvent
+        {
+            Id = IdGenerater.GetNextId(),
+            EventSource = MethodBase.GetCurrentMethod()?.GetMethodName() ?? string.Empty,
+            OrderId = order.Id,
+            Products = products
+        };
+        await order.EventPublisher.Value.PublishAsync(orderCreatedEvent);
         return order;
     }
 
@@ -56,10 +62,13 @@ public class OrderManager : IDomainService
         order.ChangeStatus(OrderStatusCodes.Canceling, string.Empty);
 
         //发布领域事件，通知仓储中心解冻被冻结的库存
-        var eventId = IdGenerater.GetNextId();
-        var eventData = new OrderCanceledEvent.EventData() { OrderId = order.Id };
-        var eventSource = nameof(CancelAsync);
-        await order.EventPublisher.Value.PublishAsync(new OrderCanceledEvent(eventId, eventData, eventSource));
+        var orderCanceledEvent = new OrderCanceledEvent
+        {
+            Id = IdGenerater.GetNextId(),
+            EventSource = MethodBase.GetCurrentMethod()?.GetMethodName() ?? string.Empty,
+            OrderId = order.Id,
+        };
+        await order.EventPublisher.Value.PublishAsync(orderCanceledEvent);
     }
 
     /// <summary>
@@ -73,9 +82,14 @@ public class OrderManager : IDomainService
         order.ChangeStatus(OrderStatusCodes.Paying, string.Empty);
 
         //发布领域事件，通知客户中心扣款(Demo是从余额中扣款)
-        var eventId = IdGenerater.GetNextId();
-        var eventData = new OrderPaidEvent.EventData() { OrderId = order.Id, CustomerId = order.CustomerId, Amount = order.Amount };
-        var eventSource = nameof(PayAsync);
-        await order.EventPublisher.Value.PublishAsync(new OrderPaidEvent(eventId, eventData, eventSource));
+        var orderPaidEvent = new OrderPaidEvent
+        {
+            Id = IdGenerater.GetNextId(),
+            EventSource = MethodBase.GetCurrentMethod()?.GetMethodName() ?? string.Empty,
+            OrderId = order.Id,
+            Amount = order.Amount,
+            CustomerId = order.CustomerId
+        };
+        await order.EventPublisher.Value.PublishAsync(orderPaidEvent);
     }
 }

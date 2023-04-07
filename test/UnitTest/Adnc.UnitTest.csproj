@@ -1,0 +1,46 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<IsPackable>false</IsPackable>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <Compile Remove="TestCases\ApplicationServicesTests.cs" />
+	  <Compile Remove="TestCases\RemoteTests.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Adnc.Infra.Helper" Version="0.9.7.2" />
+		<PackageReference Include="Adnc.Infra.IdGenerater" Version="0.9.7.2" />
+		<PackageReference Include="Adnc.Infra.Repository.Dapper" Version="0.9.7.2" />
+		<PackageReference Include="Adnc.Infra.Repository.EfCore" Version="0.9.7.2" />
+		<PackageReference Include="Adnc.Infra.Repository.EfCore.MySql" Version="0.9.7.2" />
+		<PackageReference Include="Adnc.Shared.Repository" Version="0.9.7.2" />
+		<PackageReference Include="Adnc.Shared.WebApi" Version="0.9.7.2" />
+		<PackageReference Include="EFCore.NamingConventions" Version="6.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="6.0.0" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.2.0" />
+		<PackageReference Include="NLog.Mongo" Version="4.6.0.191" />
+		<PackageReference Include="RestSharp" Version="108.0.1" />
+		<PackageReference Include="RestSharp.Serializers.SystemTextJson" Version="106.15.0" />
+		<PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
+		<PackageReference Include="xunit" Version="2.4.1" />
+		<PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="coverlet.collector" Version="3.1.2">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="appsettings.json">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
+</Project>

@@ -56,6 +56,21 @@
             return await dbSet.CountAsync(whereExpression, cancellationToken);
         }
 
+        public virtual Task<int> UpdateRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
+        {
+            foreach (var entity in entities)
+            {
+                var entry = DbContext.Entry(entity);
+                if (entry.State == EntityState.Detached)
+                    throw new ArgumentException($"实体没有被跟踪，不能使用该批量更新方法");
+
+                if (entry.State == EntityState.Added || entry.State == EntityState.Deleted)
+                    throw new ArgumentException($"{nameof(entity)},实体状态为{nameof(entry.State)}");
+            }
+
+            return UpdateInternalAsync(cancellationToken);
+        }
+
         public virtual Task<int> UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
         {
             //获取实体状态
@@ -90,10 +105,10 @@
             if (entry.State == EntityState.Added || entry.State == EntityState.Deleted)
                 throw new ArgumentException($"{nameof(entity)},实体状态为{nameof(entry.State)}");
 
-            return this.UpdateInternalAsync(entity, cancellationToken);
+            return this.UpdateInternalAsync(cancellationToken);
         }
 
-        protected virtual async Task<int> UpdateInternalAsync(TEntity entity, CancellationToken cancellationToken = default)
-        => await DbContext.SaveChangesAsync(cancellationToken);
+        protected async Task<int> UpdateInternalAsync(CancellationToken cancellationToken = default) =>
+            await DbContext.SaveChangesAsync(cancellationToken);
     }
 }

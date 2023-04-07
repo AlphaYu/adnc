@@ -9,14 +9,14 @@ public static class GuardExtensions
     {
         var target = default(T);
         if (value.CompareTo(target) < 1)
-            throw new BusinessException(message ?? $"{nameof(parameterName)}不能小于0");
+            throw new BusinessException(message ?? $"{nameof(parameterName)} cannot be less than 0");
         return value;
     }
 
     public static string NotNullOrEmpty(this IGuard _, string value, string parameterName, string? message = null)
     {
         if (value.IsNullOrWhiteSpace())
-            throw new BusinessException(message ?? $"{nameof(parameterName)}不能是空");
+            throw new BusinessException(message ?? $"{nameof(parameterName)} cannot be null or empty");
         return value;
     }
 
@@ -24,7 +24,7 @@ public static class GuardExtensions
         where T : ICollection
     {
         if (value is null || value.Count < 1)
-            throw new BusinessException(message ?? $"{nameof(parameterName)}不能是空");
+            throw new BusinessException(message ?? $"{nameof(parameterName)} cannot be null or empty");
         return value;
     }
 
@@ -32,7 +32,7 @@ public static class GuardExtensions
         where T : class
     {
         if (value is null)
-            throw new BusinessException(message ?? $"{nameof(parameterName)}不能是空");
+            throw new BusinessException(message ?? $"{nameof(parameterName)} cannot be null");
 
         return value;
     }

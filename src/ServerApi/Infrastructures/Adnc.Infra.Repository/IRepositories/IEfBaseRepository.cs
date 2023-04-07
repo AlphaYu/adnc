@@ -34,6 +34,14 @@ public interface IEfBaseRepository<TEntity> : IRepository<TEntity>
     Task<int> UpdateAsync(TEntity entity, CancellationToken cancellationToken = default);
 
     /// <summary>
+    /// 批量更新实体
+    /// </summary>
+    /// <param name="entities"></param>
+    /// <param name="cancellationToken"><see cref="CancellationToken"/></param>
+    /// <returns></returns>
+    Task<int> UpdateRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default);
+
+    /// <summary>
     /// 根据条件查询实体是否存在
     /// </summary>
     /// <param name="whereExpression">查询条件</param>

@@ -4,7 +4,7 @@ public sealed class CustApplicationDependencyRegistrar : AbstractApplicationDepe
 {
     public override Assembly ApplicationLayerAssembly => Assembly.GetExecutingAssembly();
 
-    public override Assembly ContractsLayerAssembly => typeof(ICustomerAppService).Assembly;
+    public override Assembly ContractsLayerAssembly => Assembly.GetExecutingAssembly();
 
     public override Assembly RepositoryOrDomainLayerAssembly => typeof(EntityInfo).Assembly;
 

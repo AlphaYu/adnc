@@ -20,6 +20,7 @@ public class RoleAppService : AbstractAppService, IRoleAppService
 
     public async Task<AppSrvResult<long>> CreateAsync(RoleCreationDto input)
     {
+        input.TrimStringFields();
         var isExists = (await _cacheService.GetAllRolesFromCacheAsync()).Any(x => x.Name == input.Name);
         if (isExists)
             return Problem(HttpStatusCode.BadRequest, "该角色名称已经存在");
@@ -33,6 +34,7 @@ public class RoleAppService : AbstractAppService, IRoleAppService
 
     public async Task<AppSrvResult> UpdateAsync(long id, RoleUpdationDto input)
     {
+        input.TrimStringFields();
         var isExists = (await _cacheService.GetAllRolesFromCacheAsync()).Any(x => x.Name == input.Name && x.Id != id);
         if (isExists)
             return Problem(HttpStatusCode.BadRequest, "该角色名称已经存在");
@@ -121,6 +123,7 @@ public class RoleAppService : AbstractAppService, IRoleAppService
 
     public async Task<PageModelDto<RoleDto>> GetPagedAsync(RolePagedSearchDto search)
     {
+        search.TrimStringFields();
         var whereExpression = ExpressionCreator
                                               .New<Role>()
                                               .AndIf(search.RoleName.IsNotNullOrWhiteSpace(), x => x.Name.Contains(search.RoleName));

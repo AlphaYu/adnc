@@ -6,7 +6,7 @@ global using Adnc.Infra.Core.Interfaces;
 global using Adnc.Infra.Core.Json;
 global using Adnc.Shared;
 global using Adnc.Shared.Application.Contracts.ResultModels;
-global using Adnc.Shared.Rpc.Http.Handlers.Token;
+global using Adnc.Shared.Rpc.Handlers.Token;
 global using Adnc.Shared.Rpc.Http.Rtos;
 global using Adnc.Shared.Rpc.Http.Services;
 global using FluentValidation.AspNetCore;

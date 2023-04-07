@@ -2,24 +2,14 @@
 	<Import Project="..\..\..\Props\common.props" />
 	<Import Project="..\..\..\Props\version_service.props" />
 	<PropertyGroup>
-		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-		<DockerfileContext>..\..\..</DockerfileContext>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<Description>运维中心服务</Description>
 	</PropertyGroup>
 	<ItemGroup>
-		<None Include="..\..\..\ServiceShared\Config\**\*" Exclude="swagger_miniprofiler.html">
+		<None Include="..\..\..\ServiceShared\Resources\**\*">
 			<Link>%(RecursiveDir)/%(FileName)%(Extension)</Link>
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-	</ItemGroup>
-	<ItemGroup>
-		<None Remove="swagger_miniprofiler.html" />
-	</ItemGroup>
-	<ItemGroup>
-		<EmbeddedResource Include="swagger_miniprofiler.html">
-			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</EmbeddedResource>
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="$(Microsoft_EntityFrameworkCore_Design_Version)">
@@ -36,7 +26,6 @@
 		<Protobuf Include="..\..\..\protos\services\maintgrpc.proto" GrpcServices="Server" Link="Grpc\protos\maintgrpc.proto" ProtoRoot="..\..\..\protos\" />
 	</ItemGroup>
 	<ItemGroup>
-		<ProjectReference Include="..\Adnc.Maint.Application.Contracts\Adnc.Maint.Application.Contracts.csproj" />
 		<ProjectReference Include="..\Adnc.Maint.Application\Adnc.Maint.Application.csproj" />
 	</ItemGroup>
 

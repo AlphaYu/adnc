@@ -24,7 +24,7 @@ public sealed class CapEventSubscriber : ICapSubscribe
     [CapSubscribe(nameof(OrderCreatedEvent))]
     public async Task ProcessOrderCreatedEvent(OrderCreatedEvent eventDto)
     {
-        eventDto.EventTarget = nameof(ProcessOrderCreatedEvent);
+        eventDto.EventTarget = MethodBase.GetCurrentMethod()?.GetMethodName() ?? string.Empty;
         var hasProcessed = await _tracker.HasProcessedAsync(eventDto);
         if (!hasProcessed)
             await _wareHouserSrv.BlockQtyAsync(eventDto, _tracker);

@@ -1,7 +1,4 @@
-﻿using Adnc.Shared.Const.AppSettings;
-using Adnc.Shared.Const.RegistrationCenter;
-
-namespace Microsoft.Extensions.Hosting;
+﻿namespace Microsoft.Extensions.Hosting;
 
 public static class HostExtension
 {

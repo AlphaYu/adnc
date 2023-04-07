@@ -3,25 +3,14 @@
 	<Import Project="..\..\..\Props\version_service.props" />
 	<PropertyGroup>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
-		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-		<DockerfileContext>..\..\..</DockerfileContext>
 		<Description>订单中心服务</Description>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<None Include="..\..\..\ServiceShared\Config\**\*">
+		<None Include="..\..\..\ServiceShared\Resources\**\*">
 			<Link>%(RecursiveDir)/%(FileName)%(Extension)</Link>
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-	</ItemGroup>
-	
-	<ItemGroup>
-	  <None Remove="swagger_miniprofiler.html" />
-	</ItemGroup>
-	<ItemGroup>
-	  <EmbeddedResource Include="swagger_miniprofiler.html">
-	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-	  </EmbeddedResource>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -36,7 +25,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Adnc.Ord.Application.Contracts\Adnc.Ord.Application.Contracts.csproj" />
 		<ProjectReference Include="..\Adnc.Ord.Application\Adnc.Ord.Application.csproj" />
 	</ItemGroup>
 

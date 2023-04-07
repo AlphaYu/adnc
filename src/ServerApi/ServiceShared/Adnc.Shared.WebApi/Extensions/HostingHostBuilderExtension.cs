@@ -1,5 +1,4 @@
 ﻿using Adnc.Infra.Consul.Configuration;
-using Adnc.Shared.Const.AppSettings;
 using Adnc.Shared.WebApi;
 using NLog;
 using NLog.Web;
@@ -83,6 +82,9 @@ public static class WebApplicationBuilderExtension
 
             if (sectionValue.Contains("$SHORTNAME"))
                 section.Value = sectionValue.Replace("$SHORTNAME", serviceInfo.ShortName);
+
+            if (sectionValue.Contains("$RELATIVEROOTPATH"))
+                section.Value = sectionValue.Replace("$RELATIVEROOTPATH", serviceInfo.RelativeRootPath);
         }
     }
 

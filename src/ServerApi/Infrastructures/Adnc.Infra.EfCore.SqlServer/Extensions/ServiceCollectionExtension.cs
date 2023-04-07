@@ -31,7 +31,7 @@ public static class ServiceCollectionExtension
             options.UseSqlServer(connectionString, optionsBuilder =>
             {
                 optionsBuilder.MinBatchSize(4)
-                                        .MigrationsAssembly(serviceInfo?.StartAssembly?.GetName()?.Name?.Replace("WebApi", "Migrations"))
+                                        .MigrationsAssembly(serviceInfo.MigrationsAssemblyName)
                                         .UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
             });
 

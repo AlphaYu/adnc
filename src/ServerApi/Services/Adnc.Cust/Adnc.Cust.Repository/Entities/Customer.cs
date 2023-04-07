@@ -1,4 +1,4 @@
-﻿namespace Adnc.Cust.Entities;
+﻿namespace Adnc.Cust.Repository.Entities;
 
 /// <summary>
 /// 客户表

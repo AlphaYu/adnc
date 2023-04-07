@@ -28,6 +28,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar
     /// </summary>
     protected virtual void AddEfCoreContext()
     {
+        var serviceInfo = Services.GetServiceInfo();
         var mysqlConfig = MysqlSection.Get<MysqlOptions>();
         var serverVersion = new MariaDbServerVersion(new Version(10, 5, 4));
         Services.AddAdncInfraEfCoreMySql(options =>
@@ -35,16 +36,9 @@ public abstract partial class AbstractApplicationDependencyRegistrar
             options.UseLowerCaseNamingConvention();
             options.UseMySql(mysqlConfig.ConnectionString, serverVersion, optionsBuilder =>
             {
-                var startAssemblyName = ServiceInfo.StartAssembly.GetName().Name;
-                if (startAssemblyName is null)
-                    throw new NullReferenceException("StartAssembly Name is null");
-                else
-                {
-                    var migrationsAssemblyName = startAssemblyName.Replace("WebApi", "Migrations");
-                    optionsBuilder.MinBatchSize(4)
-                                            .MigrationsAssembly(migrationsAssemblyName)
-                                            .UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
-                }
+                optionsBuilder.MinBatchSize(4)
+                                        .MigrationsAssembly(serviceInfo.MigrationsAssemblyName)
+                                        .UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
             });
 
             //if (this.IsDevelopment())

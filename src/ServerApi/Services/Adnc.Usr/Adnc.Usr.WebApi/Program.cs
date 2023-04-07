@@ -11,8 +11,11 @@ internal static class Program
         logger.Debug($"init {nameof(Program.Main)}");
         try
         {
-            var webApiAssembly = System.Reflection.Assembly.GetExecutingAssembly();
-            var serviceInfo = Shared.WebApi.ServiceInfo.CreateInstance(webApiAssembly);
+            var startAssembly = System.Reflection.Assembly.GetExecutingAssembly();
+            var startAssemblyName = startAssembly.GetName().Name ?? string.Empty;
+            var lastName = startAssemblyName.Split('.').Last();
+            var migrationsAssemblyName = startAssemblyName.Replace($".{lastName}", ".Repository");
+            var serviceInfo = Shared.WebApi.ServiceInfo.CreateInstance(startAssembly, migrationsAssemblyName);
 
             //Configuration,ServiceCollection,Logging,WebHost(Kestrel)
             var app = WebApplication
@@ -24,10 +27,18 @@ internal static class Program
             app.UseAdnc();
 
             //Start
-            await app
-                .ChangeThreadPoolSettings()
-                .UseRegistrationCenter()
-                .RunAsync();
+            app.ChangeThreadPoolSettings()
+                .UseRegistrationCenter();
+
+            //Default page
+            app.MapGet("/", async context =>
+            {
+                var content = serviceInfo.GetDefaultPageContent(app.Services);
+                context.Response.Headers.Add("Content-Type", "text/html");
+                await context.Response.WriteAsync(content);
+            });
+
+            await app.RunAsync();
         }
         catch (Exception ex)
         {

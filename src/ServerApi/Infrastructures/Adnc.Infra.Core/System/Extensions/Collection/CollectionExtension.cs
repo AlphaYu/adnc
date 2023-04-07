@@ -1,80 +1,110 @@
-﻿namespace System.Collections.Generic;
-
-/// <summary>
-/// CollectionExtension
-/// </summary>
-public static class CollectionExtension
+﻿namespace System.Collections.Generic
 {
-    /// <summary>
-    ///     An ICollection&lt;T&gt; extension method that adds only if the value satisfies the predicate.
-    /// </summary>
-    /// <typeparam name="T">Generic type parameter.</typeparam>
-    /// <param name="this">The @this to act on.</param>
-    /// <param name="predicate">The predicate.</param>
-    /// <param name="value">The value.</param>
-    /// <returns>true if it succeeds, false if it fails.</returns>
-    public static void AddIf<T>([NotNull] this ICollection<T> @this, Func<T, bool> predicate, T value)
+    public static class CollectionExtension
     {
-        if (@this.IsReadOnly)
-            throw new InvalidOperationException($"{nameof(@this)} is readonly");
-
-        if (predicate(value))
-            @this.Add(value);
-    }
-
-    /// <summary>
-    ///     An ICollection&lt;T&gt; extension method that query if '@this' contains all values.
-    /// </summary>
-    /// <typeparam name="T">Generic type parameter.</typeparam>
-    /// <param name="this">The @this to act on.</param>
-    /// <param name="values">A variable-length parameters list containing values.</param>
-    /// <returns>true if it succeeds, false if it fails.</returns>
-    public static bool ContainsAll<T>([NotNull] this ICollection<T> @this, params T[] values)
-    {
-        foreach (var value in values)
+        /// <summary>
+        /// Adds the specified value to the collection if the given predicate is true.
+        /// </summary>
+        /// <typeparam name="T">The type of the items in the collection.</typeparam>
+        /// <param name="collection">The collection to add the value to.</param>
+        /// <param name="predicate">The predicate to evaluate.</param>
+        /// <param name="value">The value to add to the collection.</param>
+        /// <exception cref="ArgumentNullException">Thrown when the collection is null.</exception>
+        /// <exception cref="InvalidOperationException">Thrown when the collection is read-only.</exception>
+        public static void AddIf<T>(this ICollection<T> collection, Func<T, bool> predicate, T value)
         {
-            if (!@this.Contains(value))
+            if (collection == null)
             {
-                return false;
+                throw new ArgumentNullException(nameof(collection));
+            }
+
+            if (collection.IsReadOnly)
+            {
+                throw new InvalidOperationException($"{nameof(collection)} is readonly");
+            }
+
+            if (predicate(value))
+            {
+                collection.Add(value);
             }
         }
 
-        return true;
-    }
-
-    /// <summary>
-    ///     An ICollection&lt;T&gt; extension method that query if '@this' contains any value.
-    /// </summary>
-    /// <typeparam name="T">Generic type parameter.</typeparam>
-    /// <param name="this">The @this to act on.</param>
-    /// <param name="values">A variable-length parameters list containing values.</param>
-    /// <returns>true if it succeeds, false if it fails.</returns>
-    public static bool ContainsAny<T>([NotNull] this ICollection<T> @this, params T[] values)
-    {
-        foreach (var value in values)
+        /// <summary>
+        /// Determines whether the collection contains all the specified values.
+        /// </summary>
+        /// <typeparam name="T">The type of the items in the collection.</typeparam>
+        /// <param name="collection">The collection to check.</param>
+        /// <param name="values">The values to check for in the collection.</param>
+        /// <returns>True if the collection contains all the specified values; otherwise, false.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when the collection or the values parameter is null.</exception>
+        public static bool ContainsAll<T>(this ICollection<T> collection, params T[] values)
         {
-            if (@this.Contains(value))
+            if (collection == null)
             {
-                return true;
+                throw new ArgumentNullException(nameof(collection));
             }
+
+            if (values == null)
+            {
+                throw new ArgumentNullException(nameof(values));
+            }
+
+            foreach (var value in values)
+            {
+                if (!collection.Contains(value))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
-        return false;
+        /// <summary>
+        /// Determines whether the collection contains any of the specified values.
+        /// </summary>
+        /// <typeparam name="T">The type of the items in the collection.</typeparam>
+        /// <param name="collection">The collection to check.</param>
+        /// <param name="values">The values to check for in the collection.</param>
+        /// <returns>True if the collection contains any of the specified values; otherwise, false.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when the collection or the values parameter is null.</exception>
+        public static bool ContainsAny<T>(this ICollection<T> collection, params T[] values)
+        {
+            if (collection == null)
+            {
+                throw new ArgumentNullException(nameof(collection));
+            }
+
+            if (values == null)
+            {
+                throw new ArgumentNullException(nameof(values));
+            }
+
+            foreach (var value in values)
+            {
+                if (collection.Contains(value))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Determines whether the collection is null or empty.
+        /// </summary>
+        /// <typeparam name="T">The type of the items in the collection.</typeparam>
+        /// <param name="collection">The collection to check.</param>
+        /// <returns>True if the collection is null or empty; otherwise, false.</returns>
+        public static bool IsNullOrEmpty<T>(this ICollection<T> collection) => collection == null || !collection.Any();
+
+        /// <summary>
+        /// Determines whether the collection is not null or not empty.
+        /// </summary>
+        /// <typeparam name="T">The type of the items in the collection.</typeparam>
+        /// <param name="collection">The collection to check.</param>
+        /// <returns>True if the collection is not null and not empty; otherwise, false.</returns>
+        public static bool IsNotNullOrEmpty<T>(this ICollection<T> collection) => collection != null && collection.Any();
     }
-
-    /// <summary>
-    ///     An ICollection&lt;T&gt; extension method that queries if the collection is null or is empty.
-    /// </summary>
-    /// <typeparam name="T">Generic type parameter.</typeparam>
-    /// <param name="this">The @this to act on.</param>
-    /// <returns>true if null or empty&lt; t&gt;, false if not.</returns>
-    public static bool IsNullOrEmpty<T>(this ICollection<T> @this) => @this == null || !@this.Any();
-
-    /// <summary>
-    ///     An ICollection&lt;T&gt; extension method that queries if the collection is not (null or is empty).
-    /// </summary>
-    /// <typeparam name="T">Generic type parameter.</typeparam>
-    /// <param name="this">The @this to act on.</param>
-    /// <returns>true if the collection is not (null or empty), false if not.</returns>
-    public static bool IsNotNullOrEmpty<T>(this ICollection<T> @this) => @this != null && @this.Any();
 }

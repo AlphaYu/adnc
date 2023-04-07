@@ -24,6 +24,7 @@ public class UserAppService : AbstractAppService, IUserAppService
 
     public async Task<AppSrvResult<long>> CreateAsync(UserCreationDto input)
     {
+        input.TrimStringFields();
         if (await _userRepository.AnyAsync(x => x.Account == input.Account))
             return Problem(HttpStatusCode.BadRequest, "账号已经存在");
 
@@ -47,6 +48,7 @@ public class UserAppService : AbstractAppService, IUserAppService
 
     public async Task<AppSrvResult> UpdateAsync(long id, UserUpdationDto input)
     {
+        input.TrimStringFields();
         var user = Mapper.Map<User>(input);
 
         user.Id = id;
@@ -104,10 +106,11 @@ public class UserAppService : AbstractAppService, IUserAppService
 
     public async Task<PageModelDto<UserDto>> GetPagedAsync(UserSearchPagedDto search)
     {
+        search.TrimStringFields();
         var whereExpression = ExpressionCreator
                                             .New<User>()
-                                            .AndIf(search.Account.IsNotNullOrWhiteSpace(), x => EF.Functions.Like(x.Account, $"%{search.Account.Trim()}%"))
-                                            .AndIf(search.Name.IsNotNullOrWhiteSpace(), x => EF.Functions.Like(x.Name, $"%{search.Name.Trim()}%"));
+                                            .AndIf(search.Account.IsNotNullOrWhiteSpace(), x => EF.Functions.Like(x.Account, $"%{search.Account}%"))
+                                            .AndIf(search.Name.IsNotNullOrWhiteSpace(), x => EF.Functions.Like(x.Name, $"%{search.Name}%"));
 
         var total = await _userRepository.CountAsync(whereExpression);
         if (total == 0)

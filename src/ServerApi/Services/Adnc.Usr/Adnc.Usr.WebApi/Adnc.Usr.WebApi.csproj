@@ -2,26 +2,18 @@
 	<Import Project="..\..\..\Props\common.props" />
 	<Import Project="..\..\..\Props\version_service.props" />
 	<PropertyGroup>
-		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-		<DockerfileContext>..\..\..</DockerfileContext>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<Description>用户中心服务</Description>
 	</PropertyGroup>
 	<ItemGroup>
-		<None Include="..\..\..\ServiceShared\Config\**\*">
+		<None Include="..\..\..\ServiceShared\Resources\**\*">
 			<Link>%(RecursiveDir)/%(FileName)%(Extension)</Link>
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
+		</None>	
 	</ItemGroup>
 	<ItemGroup>
-		<None Remove="swagger_miniprofiler.html" />
+	  <None Remove="..\..\..\ServiceShared\Resources\wwwroot\index.html" />
 	</ItemGroup>
-	<ItemGroup>
-		<EmbeddedResource Include="swagger_miniprofiler.html">
-			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</EmbeddedResource>
-	</ItemGroup>
-	
 	<ItemGroup>
 		<PackageReference Include="Grpc.AspNetCore" Version="$(Grpc_AspNetCore_Version)" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="$(Microsoft_EntityFrameworkCore_Design_Version)">

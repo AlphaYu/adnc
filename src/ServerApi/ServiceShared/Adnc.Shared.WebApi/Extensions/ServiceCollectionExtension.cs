@@ -1,4 +1,6 @@
-﻿namespace Microsoft.Extensions.DependencyInjection;
+﻿using Adnc.Shared.WebApi.Registrar;
+
+namespace Microsoft.Extensions.DependencyInjection;
 
 public static class ServiceCollectionExtension
 {
@@ -14,8 +16,7 @@ public static class ServiceCollectionExtension
     {
         if (serviceInfo?.StartAssembly is null)
             throw new ArgumentNullException(nameof(serviceInfo));
-
-        var webApiRegistarType = serviceInfo.StartAssembly.ExportedTypes.FirstOrDefault(m => m.IsAssignableTo(typeof(IDependencyRegistrar)) && m.IsNotAbstractClass(true));
+        var webApiRegistarType = serviceInfo.StartAssembly.ExportedTypes.FirstOrDefault(m => m.IsAssignableTo(typeof(IDependencyRegistrar)) && m.IsAssignableTo(typeof(AbstractWebApiDependencyRegistrar)) && m.IsNotAbstractClass(true));
         if (webApiRegistarType is null)
             throw new NullReferenceException(nameof(IDependencyRegistrar));
 

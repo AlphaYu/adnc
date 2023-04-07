@@ -1,6 +1,4 @@
-﻿using Adnc.Shared.Const.AppSettings;
-
-namespace Adnc.Shared.WebApi.Registrar;
+﻿namespace Adnc.Shared.WebApi.Registrar;
 
 public abstract partial class AbstractWebApiDependencyRegistrar
 {

@@ -1,8 +1,7 @@
-# 0.9.5.1
 name: nuget_shared
 
 on:
-    push:
+    workflow_dispatch:
       branches:
       - master
 
@@ -18,9 +17,9 @@ jobs:
       with:
         dotnet-version: 6.0.x
     - name: Build with dotnet
-      run: dotnet build --configuration Release /home/runner/work/Adnc/Adnc/src/ServerApi/ServiceShared/Adnc.Shared.sln
+      run: dotnet build --configuration Release /home/runner/work/adnc/adnc/src/ServerApi/ServiceShared/Adnc.Shared.sln
     - name: Pack with dotnet
-      run: dotnet pack /home/runner/work/Adnc/Adnc/src/ServerApi/ServiceShared/Adnc.Shared.sln -o /home/runner/work/shared/nugetpkgs -c Release --no-build
+      run: dotnet pack /home/runner/work/adnc/adnc/src/ServerApi/ServiceShared/Adnc.Shared.sln -o /home/runner/work/shared/nugetpkgs -c Release --no-build
     - name: Upload artifact
       uses: actions/upload-artifact@v1
       with:

@@ -31,7 +31,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionIt
 	ProjectSection(SolutionItems) = preProject
 		..\Props\common.props = ..\Props\common.props
 		..\Props\nuget.props = ..\Props\nuget.props
-		..\Props\version.props = ..\Props\version.props
+		..\Props\version_infra.props = ..\Props\version_infra.props
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Repository.EfCore.MySql", "Adnc.Infra.EfCore.Mysql\Adnc.Infra.Repository.EfCore.MySql.csproj", "{0C64358C-A1AC-41B2-92CB-D9A1F99053D1}"
