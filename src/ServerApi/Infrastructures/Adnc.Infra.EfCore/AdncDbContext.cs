@@ -4,7 +4,7 @@ public abstract class AdncDbContext : DbContext
 {
     private readonly IEntityInfo _entityInfo;
 
-    protected AdncDbContext(DbContextOptions options,IEntityInfo entityInfo)
+    protected AdncDbContext(DbContextOptions options, IEntityInfo entityInfo)
         : base(options)
     {
         _entityInfo = entityInfo;

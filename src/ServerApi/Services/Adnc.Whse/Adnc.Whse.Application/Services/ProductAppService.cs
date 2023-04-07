@@ -142,7 +142,7 @@ public class ProductAppService : AbstractAppService, IProductAppService
         if (productDtos.IsNotNullOrEmpty())
         {
             //调用maint微服务获取字典,组合商品状态信息
-            var restRpcResult = await _maintRestClient.GetDictAsync(RpcConsts.ProdunctStatusId);
+            var restRpcResult = await _maintRestClient.GetDictAsync(ServiceAddressConsts.ProdunctStatusId);
             if (restRpcResult.IsSuccessStatusCode)
             {
                 var dict = restRpcResult.Content;

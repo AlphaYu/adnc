@@ -8,15 +8,15 @@ public class NoticeDto : OutputBaseAuditDto
     /// <summary>
     /// 内容
     /// </summary>
-    public string Content { get; set; }
+    public string Content { get; set; } = string.Empty;
 
     /// <summary>
     /// 标题
     /// </summary>
-    public string Title { get; set; }
+    public string Title { get; set; } = string.Empty;
 
     /// <summary>
     /// 类型
     /// </summary>
-    public int? Type { get; set; }
+    public int Type { get; set; }
 }

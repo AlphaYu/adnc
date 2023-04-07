@@ -12,14 +12,14 @@
             var rightVisitor = new ReplaceExpressionVisitor(expr.Parameters[0], parameter);
             var right = rightVisitor.Visit(expr.Body);
 
-            if(left is null || right is null)
+            if (left is null || right is null)
                 return firstExpr;
 
             return Expression.Lambda<Func<T, bool>>(
                 Expression.OrElse(left, right), parameter);
         }
 
-        public static Expression<Func<T, bool>> OrIf<T>(this Expression<Func<T, bool>> firstExpr, bool condition, Expression<Func<T, bool>> expr)=>
+        public static Expression<Func<T, bool>> OrIf<T>(this Expression<Func<T, bool>> firstExpr, bool condition, Expression<Func<T, bool>> expr) =>
            condition ? Or<T>(firstExpr, expr) : firstExpr;
 
         public static Expression<Func<T, bool>> And<T>(this Expression<Func<T, bool>> firstExpr, Expression<Func<T, bool>> expr)
@@ -38,7 +38,7 @@
                 Expression.AndAlso(left, right), parameter);
         }
 
-        public static Expression<Func<T, bool>> AndIf<T>([NotNull] this Expression<Func<T, bool>> firstExpr, bool condition, Expression<Func<T, bool>> expr)=>
+        public static Expression<Func<T, bool>> AndIf<T>([NotNull] this Expression<Func<T, bool>> firstExpr, bool condition, Expression<Func<T, bool>> expr) =>
             condition ? And<T>(firstExpr, expr) : firstExpr;
 
         private static MemberExpression? ExtractMemberExpression(Expression expression)

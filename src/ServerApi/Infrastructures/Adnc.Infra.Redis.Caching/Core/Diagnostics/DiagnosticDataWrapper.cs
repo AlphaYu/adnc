@@ -9,11 +9,12 @@
 
     public class DiagnosticExceptionWrapper : DiagnosticDataWrapper
     {
-        public Exception Exception { get; set; }
+        public Exception Exception { get; set; } = default!;
     }
 
     public class DiagnosticDataWrapper<T> : DiagnosticDataWrapper
+        where T : notnull
     {
-        public T EventData { get; set; }
+        public T EventData { get; set; } = default!;
     }
 }

@@ -1,7 +1,7 @@
 ﻿namespace Adnc.Usr.WebApi.Controllers;
 
 /// <summary>
-/// 角色
+/// 角色管理
 /// </summary>
 [Route("usr/roles")]
 [ApiController]
@@ -17,7 +17,7 @@ public class RoleController : AdncControllerBase
     /// </summary>
     /// <param name="input">角色查询条件</param>
     /// <returns></returns>
-    [HttpGet()]
+    [HttpGet("page")]
     [AdncAuthorize(PermissionConsts.Role.GetList)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<PageModelDto<RoleDto>>> GetPagedAsync([FromQuery] RolePagedSearchDto input)

@@ -22,7 +22,7 @@ namespace Adnc.Infra.Repository.Mongo.Extensions
             this MongoIndexContext<TEntity> context,
             string name,
             IndexKeysDefinition<TEntity> keys,
-            Action<CreateIndexOptions> optionsConfigurator = null)
+            Action<CreateIndexOptions>? optionsConfigurator = null)
             where TEntity : MongoEntity
         {
             var options = new CreateIndexOptions { Name = name };

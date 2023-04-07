@@ -29,7 +29,7 @@ public class MenuNodeDto : OutputDto
     /// <summary>
     /// 是否菜单
     /// </summary>
-    public string IsMenuName => this.IsMenu ? "是" : "否";
+    public string IsMenuName => IsMenu ? "是" : "否";
 
     /// <summary>
     /// 菜单状态
@@ -39,7 +39,7 @@ public class MenuNodeDto : OutputDto
     /// <summary>
     /// 菜单状态
     /// </summary>
-    public string StatusName => this.Status == 1 ? "启用" : "禁用";
+    public string StatusName => Status == 1 ? "启用" : "禁用";
 
     /// <summary>
     /// 序号

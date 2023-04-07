@@ -4,7 +4,7 @@ using MongoDB.Driver;
 namespace Adnc.Infra.IRepositories;
 
 /// <summary>
-/// A MongoDB based repository of <see cref="TEntity" />.
+/// A MongoDB based repository of <see cref="T:TEntity" />.
 /// </summary>
 /// <typeparam name="TEntity">The type of the entity.</typeparam>
 public interface IMongoRepository<TEntity> : IRepository<TEntity>
@@ -81,6 +81,5 @@ public interface IMongoRepository<TEntity> : IRepository<TEntity>
     /// <param name="orderByExpression"></param>
     /// <param name="ascending"></param>
     /// <param name="cancellationToken"></param>
-    /// <returns></returns>
     Task<PagedModel<TEntity>> PagedAsync(int pageNumber, int pageSize, FilterDefinition<TEntity> filter, Expression<Func<TEntity, object>> orderByExpression, bool ascending = false, CancellationToken cancellationToken = default);
 }

@@ -17,11 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Repository.Dappe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.EventBus", "Adnc.Infra.EventBus\Adnc.Infra.EventBus.csproj", "{D7942274-BF2B-4C63-B75C-262644983F35}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Repository.EfCore.MySql", "Adnc.Infra.EfCore.MySQL\Adnc.Infra.Repository.EfCore.MySql.csproj", "{5CBF2FCA-FCD4-4FCA-B99A-99F2AC792BB9}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Repository.Mongo", "Adnc.Infra.Mongo\Adnc.Infra.Repository.Mongo.csproj", "{6893C528-01CB-4C4C-AFD6-8350749BEAE5}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Repository.EfCore.SqlServer", "Adnc.Infra.EfCore.SQLServer\Adnc.Infra.Repository.EfCore.SqlServer.csproj", "{D880B5F5-B438-4AE7-9198-AEDB4A4CBD79}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.IdGenerater", "Adnc.Infra.IdGenerater\Adnc.Infra.IdGenerater.csproj", "{E5EDD471-192A-4812-97F9-A129BF0D5DE7}"
 EndProject
@@ -30,6 +26,17 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Redis", "Adnc.Infra.Redis\Adnc.Infra.Redis.csproj", "{E2861631-694D-40B6-9FE0-14A8610407EA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Redis.Caching", "Adnc.Infra.Redis.Caching\Adnc.Infra.Redis.Caching.csproj", "{3273F34B-C852-412E-BF3C-C1D2EE1BC635}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{B88A59EA-4485-4A3B-ADF5-DC5EEAFE6C64}"
+	ProjectSection(SolutionItems) = preProject
+		..\Props\common.props = ..\Props\common.props
+		..\Props\nuget.props = ..\Props\nuget.props
+		..\Props\version.props = ..\Props\version.props
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Repository.EfCore.MySql", "Adnc.Infra.EfCore.Mysql\Adnc.Infra.Repository.EfCore.MySql.csproj", "{0C64358C-A1AC-41B2-92CB-D9A1F99053D1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Repository.EfCore.SqlServer", "Adnc.Infra.EfCore.SqlServer\Adnc.Infra.Repository.EfCore.SqlServer.csproj", "{9FA0754C-4D5C-4640-8B39-F5C0D1289A7D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -65,18 +72,10 @@ Global
 		{D7942274-BF2B-4C63-B75C-262644983F35}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D7942274-BF2B-4C63-B75C-262644983F35}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D7942274-BF2B-4C63-B75C-262644983F35}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5CBF2FCA-FCD4-4FCA-B99A-99F2AC792BB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5CBF2FCA-FCD4-4FCA-B99A-99F2AC792BB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5CBF2FCA-FCD4-4FCA-B99A-99F2AC792BB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5CBF2FCA-FCD4-4FCA-B99A-99F2AC792BB9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6893C528-01CB-4C4C-AFD6-8350749BEAE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6893C528-01CB-4C4C-AFD6-8350749BEAE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6893C528-01CB-4C4C-AFD6-8350749BEAE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6893C528-01CB-4C4C-AFD6-8350749BEAE5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D880B5F5-B438-4AE7-9198-AEDB4A4CBD79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D880B5F5-B438-4AE7-9198-AEDB4A4CBD79}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D880B5F5-B438-4AE7-9198-AEDB4A4CBD79}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D880B5F5-B438-4AE7-9198-AEDB4A4CBD79}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E5EDD471-192A-4812-97F9-A129BF0D5DE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E5EDD471-192A-4812-97F9-A129BF0D5DE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E5EDD471-192A-4812-97F9-A129BF0D5DE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -93,6 +92,14 @@ Global
 		{3273F34B-C852-412E-BF3C-C1D2EE1BC635}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3273F34B-C852-412E-BF3C-C1D2EE1BC635}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3273F34B-C852-412E-BF3C-C1D2EE1BC635}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C64358C-A1AC-41B2-92CB-D9A1F99053D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C64358C-A1AC-41B2-92CB-D9A1F99053D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C64358C-A1AC-41B2-92CB-D9A1F99053D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C64358C-A1AC-41B2-92CB-D9A1F99053D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9FA0754C-4D5C-4640-8B39-F5C0D1289A7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FA0754C-4D5C-4640-8B39-F5C0D1289A7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FA0754C-4D5C-4640-8B39-F5C0D1289A7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FA0754C-4D5C-4640-8B39-F5C0D1289A7D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

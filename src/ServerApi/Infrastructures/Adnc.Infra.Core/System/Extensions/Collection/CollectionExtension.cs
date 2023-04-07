@@ -16,7 +16,7 @@ public static class CollectionExtension
     public static void AddIf<T>([NotNull] this ICollection<T> @this, Func<T, bool> predicate, T value)
     {
         if (@this.IsReadOnly)
-            throw new InvalidOperationException($"{ nameof(@this) } is readonly");
+            throw new InvalidOperationException($"{nameof(@this)} is readonly");
 
         if (predicate(value))
             @this.Add(value);

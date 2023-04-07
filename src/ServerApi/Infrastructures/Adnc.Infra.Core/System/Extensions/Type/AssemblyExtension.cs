@@ -5,7 +5,6 @@ public static class AssemblyExtension
     public static IEnumerable<Type> GetImplementationTypesWithOutAbstractClass<TServiceType>(this Assembly assembly)
         where TServiceType : class
     {
-
         var implTypes = GetImplementationTypes<TServiceType>(assembly).Where(type => type.IsNotAbstractClass(true));
         return implTypes ?? Array.Empty<Type>();
     }
@@ -18,4 +17,3 @@ public static class AssemblyExtension
         return implTypes ?? Array.Empty<Type>();
     }
 }
-

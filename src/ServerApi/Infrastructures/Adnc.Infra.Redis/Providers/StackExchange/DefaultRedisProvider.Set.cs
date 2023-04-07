@@ -89,7 +89,7 @@ namespace Adnc.Infra.Redis.Providers.StackExchange
             return list;
         }
 
-        public long SRem<T>(string cacheKey, IList<T> cacheValues = null)
+        public long SRem<T>(string cacheKey, IList<T>? cacheValues = null)
         {
             ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
@@ -196,7 +196,7 @@ namespace Adnc.Infra.Redis.Providers.StackExchange
             return list;
         }
 
-        public async Task<long> SRemAsync<T>(string cacheKey, IList<T> cacheValues = null)
+        public async Task<long> SRemAsync<T>(string cacheKey, IList<T>? cacheValues = null)
         {
             ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 

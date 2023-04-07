@@ -38,7 +38,7 @@
         /// <summary>
         ///Penetration setting
         /// </summary>
-        public PenetrationOptions PenetrationSetting { get; set; }
+        public PenetrationOptions PenetrationSetting { get; set; } = default!;
 
         /// <summary>
         /// polly timeout seconds
@@ -49,12 +49,12 @@
         {
             public bool Disable { get; set; }
 
-            public BloomFilterSetting BloomFilterSetting { get; set; }
+            public BloomFilterSetting BloomFilterSetting { get; set; } = default!;
         }
 
         public sealed class BloomFilterSetting
         {
-            public string Name { get; set; }
+            public string Name { get; set; } = string.Empty;
 
             public int Capacity { get; set; }
 

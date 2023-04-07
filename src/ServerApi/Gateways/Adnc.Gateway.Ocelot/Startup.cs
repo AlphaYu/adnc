@@ -1,5 +1,6 @@
 using Adnc.Gateway.Ocelot.Identity;
 using Adnc.Infra.Core.Configuration;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 using Ocelot.Provider.Consul;
@@ -9,6 +10,8 @@ namespace Adnc.Gateway.Ocelot;
 
 public class Startup
 {
+    private readonly string _corsPolicyName = "default";
+
     public IConfiguration Configuration { get; }
 
     public Startup(IConfiguration configuration) => Configuration = configuration;
@@ -25,21 +28,17 @@ public class Startup
             {
                 var bearerConfig = Configuration.GetSection("JWT").Get<JWTOptions>();
                 options.TokenValidationParameters = JwtSecurityTokenHandlerExtension.GenarateTokenValidationParameters(bearerConfig);
-            })
-            ;
+            });
+
+        var corsHosts = Configuration.GetValue("CorsHosts", string.Empty);
+        Action<CorsPolicyBuilder> corsPolicyAction = (corsPolicy) => corsPolicy.AllowAnyHeader().AllowAnyMethod().AllowCredentials();
+        if (corsHosts == "*")
+            corsPolicyAction += (corsPolicy) => corsPolicy.SetIsOriginAllowed(_ => true);
+        else
+            corsPolicyAction += (corsPolicy) => corsPolicy.WithOrigins(corsHosts.Split(','));
+
         services
-            .AddCors(options =>
-            {
-                options.AddPolicy("default", policy =>
-                {
-                    var corsHosts = Configuration.GetValue<string>("CorsHosts");
-                    var corsHostsArray = corsHosts.Split(',');
-                    policy.WithOrigins(corsHostsArray)
-                    .AllowAnyHeader()
-                    .AllowAnyMethod()
-                    .AllowCredentials();
-                });
-            })
+            .AddCors(option => option.AddPolicy(_corsPolicyName, corsPolicyAction))
             .AddHttpLogging(logging =>
             {
                 logging.LoggingFields = Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.All;
@@ -48,14 +47,13 @@ public class Startup
             })
             .AddOcelot(Configuration)
             .AddConsul()
-            .AddPolly()
-            ;
+            .AddPolly();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
         app
-            .UseCors("default")
+            .UseCors(_corsPolicyName)
             //.UseHttpLogging()
             .UseRouting()
             .UseEndpoints(endpoints =>

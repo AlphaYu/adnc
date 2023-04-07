@@ -8,5 +8,5 @@ public class RolePagedSearchDto : SearchPagedDto
     /// <summary>
     /// 角色名
     /// </summary>
-    public string RoleName { get; set; }
+    public string? RoleName { get; set; }
 }

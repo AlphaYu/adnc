@@ -2,10 +2,10 @@
 
 public class MenuAppService : AbstractAppService, IMenuAppService
 {
-    private readonly IEfRepository<SysMenu> _menuRepository;
+    private readonly IEfRepository<Menu> _menuRepository;
     private readonly CacheService _cacheService;
 
-    public MenuAppService(IEfRepository<SysMenu> menuRepository, CacheService cacheService)
+    public MenuAppService(IEfRepository<Menu> menuRepository, CacheService cacheService)
     {
         _menuRepository = menuRepository;
         _cacheService = cacheService;
@@ -25,7 +25,7 @@ public class MenuAppService : AbstractAppService, IMenuAppService
 
         var parentMenu = allMenus.FirstOrDefault(x => x.Code == input.PCode);
         var addDto = ProducePCodes(input, parentMenu);
-        var menu = Mapper.Map<SysMenu>(addDto);
+        var menu = Mapper.Map<Menu>(addDto);
         menu.Id = IdGenerater.GetNextId();
         await _menuRepository.InsertAsync(menu);
 
@@ -46,11 +46,11 @@ public class MenuAppService : AbstractAppService, IMenuAppService
 
         var parentMenu = allMenus.FirstOrDefault(x => x.Code == input.PCode);
         var updateDto = ProducePCodes(input, parentMenu);
-        var menu = Mapper.Map<SysMenu>(updateDto);
+        var menu = Mapper.Map<Menu>(updateDto);
 
         menu.Id = id;
 
-        var updatingProps = UpdatingProps<SysMenu>(
+        var updatingProps = UpdatingProps<Menu>(
                                                                                         x => x.Code
                                                                                         , x => x.Component
                                                                                         , x => x.Hidden

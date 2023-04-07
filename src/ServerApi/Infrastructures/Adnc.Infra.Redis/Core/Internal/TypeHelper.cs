@@ -18,6 +18,9 @@ namespace Adnc.Infra.Redis.Core.Internal
         /// <param name="type">Type.</param>
         public static string BuildTypeName(Type type)
         {
+            if (type.AssemblyQualifiedName is null)
+                return string.Empty;
+
             return SubtractFullNameRegex.Replace(type.AssemblyQualifiedName, "");
         }
     }

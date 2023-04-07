@@ -35,9 +35,4 @@ public class RoleDto : OutputDto
     /// 权限集合
     /// </summary>
     public string Permissions { get; set; }
-
-    ///// <summary>
-    ///// 角色版本号
-    ///// </summary>
-    ////public int? Version { get; set; }
 }

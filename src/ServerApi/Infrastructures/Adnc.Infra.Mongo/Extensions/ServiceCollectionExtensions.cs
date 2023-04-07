@@ -23,7 +23,7 @@ namespace Adnc.Infra.Repository.Mongo.Extensions
             where TContext : IMongoContext
         {
             if (services.HasRegistered(nameof(AddAdncInfraMongo)))
-                return default;
+                return new MongoConfigurationBuilder(services);
 
             services.Configure(configurator);
             services.AddSingleton(typeof(IMongoContext), typeof(TContext));

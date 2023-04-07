@@ -8,7 +8,7 @@ using System.Linq.Expressions;
 namespace Adnc.Infra.Repository.Mongo
 {
     /// <summary>
-    /// A MongoDB based repository of <see cref="TEntity"/>.
+    /// A MongoDB based repository of <see cref="T:TEntity"/>.
     /// </summary>
     /// <typeparam name="TEntity">The type of the entity.</typeparam>
     public class MongoRepository<TEntity> : IMongoRepository<TEntity>
@@ -161,7 +161,7 @@ namespace Adnc.Infra.Repository.Mongo
         /// <param name="options">The options.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns></returns>
-        protected async Task<TEntity> UpdateAsync(string id, UpdateDefinition<TEntity> updateDefinition, FindOneAndUpdateOptions<TEntity> options = null, CancellationToken cancellationToken = default)
+        protected async Task<TEntity> UpdateAsync(string id, UpdateDefinition<TEntity> updateDefinition, FindOneAndUpdateOptions<TEntity>? options = null, CancellationToken cancellationToken = default)
         {
             var collection = await GetCollectionAsync(cancellationToken);
             return await collection.FindOneAndUpdateAsync(Filter.IdEq(id), updateDefinition, options, cancellationToken);
@@ -174,7 +174,7 @@ namespace Adnc.Infra.Repository.Mongo
         /// <param name="options">The options.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns></returns>
-        protected async Task<TEntity> FindOneAsync(FilterDefinition<TEntity> filter, FindOptions<TEntity> options = null, CancellationToken cancellationToken = default)
+        protected async Task<TEntity> FindOneAsync(FilterDefinition<TEntity> filter, FindOptions<TEntity>? options = null, CancellationToken cancellationToken = default)
         {
             var collection = await GetCollectionAsync(cancellationToken);
             var cursor = await collection.FindAsync(filter, options, cancellationToken);
@@ -188,7 +188,7 @@ namespace Adnc.Infra.Repository.Mongo
         /// <param name="options">The options.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns></returns>
-        protected async Task<ICollection<TEntity>> FindAsync(FilterDefinition<TEntity> filter, FindOptions<TEntity> options = null, CancellationToken cancellationToken = default)
+        protected async Task<ICollection<TEntity>> FindAsync(FilterDefinition<TEntity> filter, FindOptions<TEntity>? options = null, CancellationToken cancellationToken = default)
         {
             var collection = await GetCollectionAsync(cancellationToken);
             var cursor = await collection.FindAsync(filter, options, cancellationToken);

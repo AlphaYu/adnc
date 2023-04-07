@@ -58,7 +58,7 @@ namespace Adnc.Infra.Redis.Providers.StackExchange
             return _redisDb.HashExists(cacheKey, field);
         }
 
-        public long HDel(string cacheKey, IList<string> fields = null)
+        public long HDel(string cacheKey, IList<string>? fields = null)
         {
             ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
@@ -195,7 +195,7 @@ namespace Adnc.Infra.Redis.Providers.StackExchange
             return await _redisDb.HashExistsAsync(cacheKey, field);
         }
 
-        public async Task<long> HDelAsync(string cacheKey, IList<string> fields)
+        public async Task<long> HDelAsync(string cacheKey, IList<string>? fields)
         {
             ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 

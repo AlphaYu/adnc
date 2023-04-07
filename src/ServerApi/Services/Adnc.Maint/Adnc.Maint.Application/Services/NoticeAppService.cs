@@ -2,9 +2,9 @@
 
 public class NoticeAppService : AbstractAppService, INoticeAppService
 {
-    private readonly IEfRepository<SysNotice> _noticeRepository;
+    private readonly IEfRepository<Notice> _noticeRepository;
 
-    public NoticeAppService(IEfRepository<SysNotice> noticeRepository)
+    public NoticeAppService(IEfRepository<Notice> noticeRepository)
     {
         _noticeRepository = noticeRepository;
     }
@@ -12,7 +12,7 @@ public class NoticeAppService : AbstractAppService, INoticeAppService
     public async Task<AppSrvResult<List<NoticeDto>>> GetListAsync(NoticeSearchDto search)
     {
         var whereCondition = ExpressionCreator
-                                            .New<SysNotice>()
+                                            .New<Notice>()
                                             .AndIf(search.Title.IsNotNullOrWhiteSpace(), x => x.Title == search.Title.Trim());
 
         var notices = await _noticeRepository

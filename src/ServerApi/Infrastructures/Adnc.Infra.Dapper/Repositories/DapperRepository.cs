@@ -13,7 +13,7 @@ public sealed class DapperRepository : IAdoExecuterWithQuerierRepository
 
     public void ChangeOrSetDbConnection(string connectionString, DbTypes dbType)
     {
-        if (connectionString.IsNullOrWhiteSpace())
+        if (string.IsNullOrWhiteSpace(connectionString))
             throw new ArgumentNullException(nameof(connectionString));
 
         DbConnection = dbType switch

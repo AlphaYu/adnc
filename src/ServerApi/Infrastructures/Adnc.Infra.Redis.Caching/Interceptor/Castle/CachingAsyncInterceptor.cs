@@ -22,7 +22,7 @@ namespace Adnc.Infra.Redis.Caching.Interceptor.Castle
         /// <summary>
         /// logger
         /// </summary>
-        private readonly ILogger<CachingAsyncInterceptor> _logger;
+        private readonly ILogger<CachingAsyncInterceptor>? _logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="T:Adnc.Infa.Caching.CachingAsyncInterceptor"/> class.
@@ -35,7 +35,7 @@ namespace Adnc.Infra.Redis.Caching.Interceptor.Castle
         public CachingAsyncInterceptor(
             ICacheProvider cacheProvider
             , ICachingKeyGenerator keyGenerator
-            , ILogger<CachingAsyncInterceptor> logger = null)
+            , ILogger<CachingAsyncInterceptor>? logger = null)
         {
             _cacheProvider = cacheProvider;
             _keyGenerator = keyGenerator;

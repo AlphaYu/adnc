@@ -68,7 +68,20 @@ namespace Adnc.Infra.Redis.Providers.StackExchange
                     //Cluster
                     if (server.ServerType == ServerType.Cluster)
                     {
-                        masters.AddRange(server.ClusterConfiguration.Nodes.Where(n => !n.IsReplica).Select(n => n.EndPoint));
+                        var clusterConfiguration = server.ClusterConfiguration;
+                        if (clusterConfiguration is null)
+                            throw new NullReferenceException(nameof(server.ClusterConfiguration));
+
+                        var nodes = clusterConfiguration.Nodes.Where(n => !n.IsReplica);
+                        if (nodes is null)
+                            throw new NullReferenceException(nameof(server.ClusterConfiguration.Nodes));
+
+                        var endpoints = nodes.Select(n => n.EndPoint);
+                        if (endpoints is null)
+                            throw new NullReferenceException(nameof(endpoints));
+
+                        masters.AddRange((IEnumerable<EndPoint>)endpoints);
+
                         break;
                     }
                     // Single , Master-Slave

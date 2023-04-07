@@ -8,6 +8,7 @@ namespace Adnc.Infra.EventBus.Cap.Filters;
 public sealed class DefaultCapFilter : SubscribeFilter
 {
     private readonly ILogger<DefaultCapFilter> _logger;
+
     public DefaultCapFilter(ILogger<DefaultCapFilter> logger)
     {
         _logger = logger;

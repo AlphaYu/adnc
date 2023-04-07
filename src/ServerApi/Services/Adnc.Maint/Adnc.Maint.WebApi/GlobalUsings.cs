@@ -2,7 +2,7 @@
 global using Adnc.Maint.Application.Contracts.Services;
 global using Adnc.Shared;
 global using Adnc.Shared.Application.Contracts.Dtos;
-global using Adnc.Shared.Consts.Permissions.Maint;
+global using Adnc.Shared.Const.Permissions.Maint;
 global using Adnc.Shared.WebApi.Authorization;
 global using Microsoft.AspNetCore.Authorization;
 global using Microsoft.AspNetCore.Builder;

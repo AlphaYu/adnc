@@ -62,7 +62,7 @@ public class CfgController : AdncControllerBase
     /// </summary>
     /// <param name="search"><see cref="CfgSearchPagedDto"/></param>
     /// <returns><see cref="PageModelDto{CfgDto}"/></returns>
-    [HttpGet()]
+    [HttpGet("page")]
     [AdncAuthorize(PermissionConsts.Cfg.GetList)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<PageModelDto<CfgDto>>> GetPagedAsync([FromQuery] CfgSearchPagedDto search) =>

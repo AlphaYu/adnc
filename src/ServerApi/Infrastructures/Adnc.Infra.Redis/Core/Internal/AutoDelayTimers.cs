@@ -3,7 +3,7 @@
     public class AutoDelayTimers
     {
         private static readonly Lazy<AutoDelayTimers> lazy = new Lazy<AutoDelayTimers>(() => new AutoDelayTimers());
-        private static ConcurrentDictionary<string, Timer> _timers;
+        private static ConcurrentDictionary<string, Timer> _timers = new ConcurrentDictionary<string, Timer>();
 
         static AutoDelayTimers()
         {
@@ -11,7 +11,6 @@
 
         private AutoDelayTimers()
         {
-            _timers = new ConcurrentDictionary<string, Timer>();
         }
 
         public static AutoDelayTimers Instance
@@ -31,7 +30,7 @@
         {
             if (_timers.ContainsKey(key))
             {
-                if (_timers.TryRemove(key, out Timer timer))
+                if (_timers.TryRemove(key, out Timer? timer))
                 {
                     timer?.Dispose();
                 }

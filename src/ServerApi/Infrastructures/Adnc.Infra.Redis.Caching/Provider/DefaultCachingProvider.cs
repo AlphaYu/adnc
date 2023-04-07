@@ -35,7 +35,7 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
     /// <summary>
     /// The logger.
     /// </summary>
-    private readonly ILogger _logger;
+    private readonly ILogger? _logger;
 
     /// <summary>
     /// The redis options.
@@ -75,7 +75,7 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
         ISerializer serializer,
         IOptions<RedisOptions> redisOptions,
         IOptions<CacheOptions> cacheOptions,
-        ILoggerFactory loggerFactory = null)
+        ILoggerFactory? loggerFactory = null)
     {
         ArgumentCheck.NotNull(dbProviders, nameof(dbProviders));
 

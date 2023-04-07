@@ -111,11 +111,11 @@ public class UserController : AdncControllerBase
     }
 
     /// <summary>
-    /// 获取用户列表
+    /// 获取用户分页列表
     /// </summary>
     /// <param name="search">查询条件</param>
     /// <returns></returns>
-    [HttpGet()]
+    [HttpGet("page")]
     [AdncAuthorize(PermissionConsts.User.GetList)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<PageModelDto<UserDto>>> GetPagedAsync([FromQuery] UserSearchPagedDto search)

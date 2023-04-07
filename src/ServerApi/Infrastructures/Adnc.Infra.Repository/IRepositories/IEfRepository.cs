@@ -31,7 +31,7 @@ public interface IEfRepository<TEntity> : IEfBaseRepository<TEntity>
     IDbTransaction? CurrentDbTransaction { get; }
 
     /// <summary>
-    /// 返回IQueryable<TEntity>
+    /// 返回IQueryable{TEntity}
     /// </summary>
     /// <param name="writeDb">是否读写库，默认false,可选参数</param>
     /// <param name="noTracking">是否开启跟踪，默认false,可选参数</param>
@@ -48,7 +48,7 @@ public interface IEfRepository<TEntity> : IEfBaseRepository<TEntity>
     /// <param name="writeDb">是否读写库,默认false，可选参数</param>
     /// <param name="noTracking">是否开启跟踪，默认不开启，可选参数</param>
     /// <param name="cancellationToken"><see cref="CancellationToken"/></param>
-    /// <returns><see cref="TEntity"/></returns>
+    /// <returns><see cref="T:TEntity"/></returns>
     Task<TEntity?> FindAsync(long keyValue, Expression<Func<TEntity, dynamic>>? navigationPropertyPath = null, bool writeDb = false, bool noTracking = true, CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -81,7 +81,7 @@ public interface IEfRepository<TEntity> : IEfBaseRepository<TEntity>
     /// <summary>
     /// 更新单个实体
     /// </summary>
-    /// <param name="entity"><see cref="entity"/></param>
+    /// <param name="entity"><see cref="T:TEntity"/></param>
     /// <param name="updatingExpressions">需要更新列的表达式树数组</param>
     /// <param name="cancellationToken"><see cref="CancellationToken"/></param>
     /// <returns></returns>

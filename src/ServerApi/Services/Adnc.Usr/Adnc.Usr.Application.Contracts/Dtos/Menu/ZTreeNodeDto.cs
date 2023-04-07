@@ -42,10 +42,10 @@ public class ZTreeNodeDto<TKey, TData> : IDto
         ZTreeNodeDto<TKey, TData> node = new ZTreeNodeDto<TKey, TData>
         {
             Checked = true,
-            Id = default(TKey),
+            Id = default,
             Name = "顶级",
             Open = true,
-            PID = default(TKey)
+            PID = default
         };
 
         return node;

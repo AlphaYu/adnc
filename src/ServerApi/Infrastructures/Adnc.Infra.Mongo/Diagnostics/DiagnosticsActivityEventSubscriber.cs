@@ -9,8 +9,8 @@ namespace Adnc.Infra.Repository.Mongo.Diagnostics
     {
         public static readonly DiagnosticSource diagnosticSource = new DiagnosticListener("MongoSourceListener");
         internal static readonly AssemblyName AssemblyName = typeof(DiagnosticsActivityEventSubscriber).Assembly.GetName();
-        internal static readonly string ActivitySourceName = AssemblyName.Name;
-        internal static readonly Version Version = AssemblyName.Version;
+        internal static readonly string ActivitySourceName = AssemblyName.Name ?? throw new NullReferenceException(nameof(ActivitySourceName));
+        internal static readonly Version Version = AssemblyName.Version ?? throw new NullReferenceException(nameof(AssemblyName.Version));
 
         private readonly ReflectionEventSubscriber _subscriber;
         private readonly ConcurrentDictionary<int, Activity> _activityMap = new ConcurrentDictionary<int, Activity>();
@@ -103,7 +103,7 @@ namespace Adnc.Infra.Repository.Mongo.Diagnostics
                 }
             }
 
-            return null;
+            return string.Empty;
         }
 
         private static void WithReplacedActivityCurrent(Activity activity, Action action)

@@ -1,0 +1,16 @@
+﻿global using Adnc.Cust.Application.Contracts.Dtos;
+global using Adnc.Cust.Application.Contracts.Services;
+global using Adnc.Shared;
+global using Adnc.Shared.Application.Contracts.Dtos;
+global using Adnc.Shared.Rpc.Grpc;
+global using Adnc.Shared.Rpc.Grpc.Messages;
+global using Adnc.Shared.Rpc.Grpc.Services;
+global using Adnc.Shared.Rpc.Http.Rtos;
+global using Adnc.Shared.Rpc.Http.Services;
+global using Microsoft.AspNetCore.Authorization;
+global using Microsoft.AspNetCore.Builder;
+global using Microsoft.AspNetCore.Hosting;
+global using Microsoft.AspNetCore.Http;
+global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.Extensions.DependencyInjection;
+global using Microsoft.Extensions.Hosting;
