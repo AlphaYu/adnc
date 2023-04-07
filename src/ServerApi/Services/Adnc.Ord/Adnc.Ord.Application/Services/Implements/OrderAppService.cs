@@ -1,4 +1,6 @@
-﻿namespace Adnc.Ord.Application.Services.Implements;
+﻿using Adnc.Shared.Rpc.Http.Services;
+
+namespace Adnc.Ord.Application.Services.Implements;
 
 /// <summary>
 /// 订单管理

@@ -5,6 +5,7 @@
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 	</PropertyGroup>
 	<ItemGroup>
+		<ProjectReference Include="..\..\..\ServiceShared\Adnc.Shared.Rpc.Http\Adnc.Shared.Rpc.Http.csproj" />
 		<ProjectReference Include="..\Adnc.Ord.Domain\Adnc.Ord.Domain.csproj" />
 	</ItemGroup>
 

@@ -1,4 +1,6 @@
-﻿namespace Adnc.Whse.Application.Services.Implements;
+﻿using Adnc.Shared.Rpc.Http.Services;
+
+namespace Adnc.Whse.Application.Services.Implements;
 
 /// <summary>
 /// 商品管理
