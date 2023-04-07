@@ -13,15 +13,13 @@
 		<PackageReference Include="DotNetCore.CAP.Dashboard" Version="$(DotNetCore_CAP_Dashboard_Version)" />
 		<PackageReference Include="SkyAPM.Diagnostics.CAP" Version="$(SkyAPM_Diagnostics_CAP_Version)" />
 		<PackageReference Include="EFCore.NamingConventions" Version="$(EFCore_NamingConventions_Version)" />
+		<PackageReference Include="Grpc.Net.ClientFactory" Version="$(Grpc_Net_ClientFactory_Version)" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\Adnc.Shared.Application.Contracts\Adnc.Shared.Application.Contracts.csproj" />
-		<ProjectReference Include="..\Adnc.Shared.Const\Adnc.Shared.Const.csproj" />
 		<ProjectReference Include="..\Adnc.Shared.Repository\Adnc.Shared.Repository.csproj" />
-		<ProjectReference Include="..\Adnc.Shared.Rpc.Event\Adnc.Shared.Rpc.Event.csproj" />
-		<ProjectReference Include="..\Adnc.Shared.Rpc.Http\Adnc.Shared.Rpc.Http.csproj" />
-		<ProjectReference Include="..\Adnc.Shared.Rpc.Grpc\Adnc.Shared.Rpc.Grpc.csproj" />
+		<ProjectReference Include="..\Adnc.Shared.Rpc\Adnc.Shared.Rpc.csproj" />
 		<ProjectReference Include="..\Adnc.Shared\Adnc.Shared.csproj" />
 	</ItemGroup>
 
