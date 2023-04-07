@@ -46,7 +46,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\Adnc.Shared.Application.Contracts\Adnc.Shared.Application.Contracts.csproj" />
-		<ProjectReference Include="..\Adnc.Shared.Const\Adnc.Shared.Const.csproj" />
 		<ProjectReference Include="..\Adnc.Shared.Rpc.Http\Adnc.Shared.Rpc.Http.csproj" />
 		<ProjectReference Include="..\Adnc.Shared.Rpc.Grpc\Adnc.Shared.Rpc.Grpc.csproj" />
 		<ProjectReference Include="..\Adnc.Shared\Adnc.Shared.csproj" />
