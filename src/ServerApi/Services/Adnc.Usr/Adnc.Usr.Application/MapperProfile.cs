@@ -1,4 +1,6 @@
-﻿namespace Adnc.Usr.Application;
+﻿using Adnc.Shared.Rpc.Grpc.Messages;
+
+namespace Adnc.Usr.Application;
 
 public sealed class MapperProfile : Profile
 {
