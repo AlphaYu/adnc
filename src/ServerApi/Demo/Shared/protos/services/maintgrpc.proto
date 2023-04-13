@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+import "messages/common.proto";
+import "messages/maintgrpc_getdict.proto";
+
+option csharp_namespace = "Adnc.Demo.Shared.Rpc.Grpc.Services";
+
+package services;
+
+service  MaintGrpc {
+  rpc GetDict(messages.DictRequest) returns (messages.GrpcResponse);
+}

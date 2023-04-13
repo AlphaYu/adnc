@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+option csharp_namespace = "Adnc.Demo.Shared.Rpc.Grpc.Messages";
+
+package messages;
+
+message UserPermissionsReply{
+  repeated string Permissions= 1;
+}
+
+message UserPermissionsRequest {
+ int64 UserId = 1;
+ repeated  string RequestPermissions = 2;
+ string UserBelongsRoleIds =3;
+}

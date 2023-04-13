@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+import "google/protobuf/wrappers.proto";
+
+option csharp_namespace = "Adnc.Demo.Shared.Rpc.Grpc.Messages";
+
+package messages;
+
+message DeptReply{
+ int64 Id = 1;
+ string FullName =2;
+ int32 Ordinal =3;
+ google.protobuf.Int64Value Pid =4;
+ string Pids =5;
+ string SimpleName =6;
+ string Tips =7;
+  google.protobuf.Int32Value Version =8;
+  repeated DeptReply Children =9;
+}
+
+message DeptListReply{
+	repeated DeptReply List =1;
+}

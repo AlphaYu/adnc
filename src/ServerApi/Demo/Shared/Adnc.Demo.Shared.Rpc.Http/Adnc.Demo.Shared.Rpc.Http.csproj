@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="..\..\..\common.props" />
+	<Import Project="..\..\..\version_shared.props" />
+	<PropertyGroup>
+		<Description>该层用来定义Refit客户端(接口)，不需要发布的到Nuget。</Description>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="$(Microsoft_Extensions_Caching_Memory_Version)" />
+		<PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="$(Microsoft_AspNetCore_Http_Abstractions_Version)" />
+		<PackageReference Include="Microsoft.Extensions.Configuration" Version="$(Microsoft_Extensions_Configuration_Version)" />
+		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="$(Microsoft_Extensions_Options_ConfigurationExtensions_Version)" />
+		<PackageReference Include="Refit.HttpClientFactory" Version="$(Refit_HttpClientFactory)" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(SolutionName)'=='Adnc'">
+		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Core\Adnc.Infra.Core.csproj" />
+		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Helper\Adnc.Infra.Helper.csproj" />
+		<ProjectReference Include="..\..\..\ServiceShared\Adnc.Shared\Adnc.Shared.csproj" />
+		<ProjectReference Include="..\..\..\ServiceShared\Adnc.Shared.Rpc\Adnc.Shared.Rpc.csproj" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(SolutionName)'=='Adnc.Demo'">
+		<PackageReference Include="Adnc.Infra.Core" Version="$(Infra_Version)" />
+		<PackageReference Include="Adnc.Infra.Helper" Version="$(Infra_Version)" />
+		<PackageReference Include="Adnc.Shared" Version="$(Shared_Version)" />
+		<PackageReference Include="Adnc.Shared.Rpc" Version="$(Shared_Version)" />
+	</ItemGroup>
+
+</Project>

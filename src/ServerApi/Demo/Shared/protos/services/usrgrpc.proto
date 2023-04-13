@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+import "messages/common.proto";
+import "messages/usrgrpc_getcurrenuserpermissions.proto";
+
+option csharp_namespace = "Adnc.Demo.Shared.Rpc.Grpc.Services";
+
+package services;
+
+service  UsrGrpc {
+  rpc GetCurrenUserPermissions(messages.UserPermissionsRequest) returns (messages.GrpcResponse);
+  rpc GetDepts(google.protobuf.Empty) returns (messages.GrpcResponse);
+}

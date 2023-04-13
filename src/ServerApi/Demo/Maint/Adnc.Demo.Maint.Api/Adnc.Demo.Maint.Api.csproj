@@ -1,0 +1,44 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+	<Import Project="..\..\..\common.props" />
+	<Import Project="..\..\..\version_service.props" />
+	<PropertyGroup>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<Description>运维中心服务</Description>
+	</PropertyGroup>
+	<ItemGroup>
+		<None Include="..\..\Shared\resources\**\*">
+			<Link>%(RecursiveDir)/%(FileName)%(Extension)</Link>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="$(Microsoft_EntityFrameworkCore_Design_Version)">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="$(Microsoft_EntityFrameworkCore_Tools_Version)">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Grpc.AspNetCore" Version="$(Grpc_AspNetCore_Version)" />
+		<Protobuf Include="..\..\Shared\protos\services\maintgrpc.proto" GrpcServices="Server" Link="Grpc\protos\maintgrpc.proto" ProtoRoot="..\..\Shared\protos\" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Adnc.Demo.Maint.Application\Adnc.Demo.Maint.Application.csproj" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(SolutionName)'=='Adnc'">
+		<ProjectReference Include="..\..\..\ServiceShared\Adnc.Shared.WebApi\Adnc.Shared.WebApi.csproj" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(SolutionName)'=='Adnc.Demo' ">
+		<PackageReference Include="Adnc.Shared.WebApi" Version="$(Shared_Version)" />
+	</ItemGroup>
+	<ProjectExtensions>
+		<VisualStudio>
+			<UserProperties properties_4launchsettings_1json__JsonSchema="" />
+		</VisualStudio>
+	</ProjectExtensions>
+</Project>
