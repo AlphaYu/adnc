@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	<Import Project="..\..\Props\common.props" />
-	<Import Project="..\..\Props\version_shared.props" />
-	<Import Project="..\..\Props\nuget.props"/>
+	<Import Project="..\..\common.props" />
+	<Import Project="..\..\version_shared.props" />
+	<Import Project="..\..\nuget.props"/>
 
 	<PropertyGroup>
 		<Description>该库是提供所有Domain层的公共实现。</Description>
