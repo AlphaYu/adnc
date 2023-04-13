@@ -1,0 +1,25 @@
+﻿<Project>
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<PackageIcon>logo.png</PackageIcon>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<Copyright>ADNC</Copyright>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>	
+	</PropertyGroup>
+	<ItemGroup  Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.SourceLink.GitLab" Version="1.1.1">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<None Include="$(SolutionDir)\logo.png">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
+</Project>
