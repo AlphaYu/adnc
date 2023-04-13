@@ -4,7 +4,7 @@ using Adnc.Demo.Shared.Rpc.Grpc.Services;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 
-namespace Adnc.Demo.Usr.WebApi.Grpc;
+namespace Adnc.Demo.Usr.Api.Grpc;
 
 public class AuthGrpcServer : AuthGrpc.AuthGrpcBase
 {

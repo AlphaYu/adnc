@@ -1,8 +1,8 @@
-﻿using Adnc.Shared.WebApi.Registrar;
-using Adnc.Demo.Usr.WebApi.Authentication;
-using Adnc.Demo.Usr.WebApi.Authorization;
+﻿using Adnc.Demo.Usr.Api.Authentication;
+using Adnc.Demo.Usr.Api.Authorization;
+using Adnc.Shared.WebApi.Registrar;
 
-namespace Adnc.Demo.Usr.WebApi.Registrar;
+namespace Adnc.Demo.Usr.Api;
 
 public sealed class UsrWebApiDependencyRegistrar : AbstractWebApiDependencyRegistrar
 {

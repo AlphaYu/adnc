@@ -1,7 +1,7 @@
 using NLog;
 using NLog.Web;
 
-namespace Adnc.Demo.Maint.WebApi;
+namespace Adnc.Demo.Maint.Api;
 
 internal static class Program
 {

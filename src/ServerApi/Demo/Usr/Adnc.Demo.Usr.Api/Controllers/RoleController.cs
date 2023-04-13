@@ -1,4 +1,4 @@
-﻿namespace Adnc.Demo.Usr.WebApi.Controllers;
+﻿namespace Adnc.Demo.Usr.Api.Controllers;
 
 /// <summary>
 /// 角色管理

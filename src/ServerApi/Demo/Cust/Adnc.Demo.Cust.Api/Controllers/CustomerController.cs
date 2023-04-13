@@ -1,7 +1,7 @@
-﻿using Adnc.Demo.Shared.Const.Permissions.Cust;
-using Adnc.Shared.WebApi.Authorization;
+﻿using Adnc.Demo.Cust.Api.Application.Dtos;
+using Adnc.Demo.Cust.Api.Application.Services;
 
-namespace Adnc.Demo.Cust.WebApi.Controllers;
+namespace Adnc.Demo.Cust.Api.Controllers;
 
 /// <summary>
 /// 客户管理

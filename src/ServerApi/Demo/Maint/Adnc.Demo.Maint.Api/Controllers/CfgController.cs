@@ -1,4 +1,4 @@
-﻿namespace Adnc.Demo.Maint.WebApi.Controllers;
+﻿namespace Adnc.Demo.Maint.Api.Controllers;
 
 /// <summary>
 /// 配置管理

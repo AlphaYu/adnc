@@ -1,13 +1,11 @@
-﻿using Adnc.Demo.Shared.Const;
-using Adnc.Shared.Rpc.Http.Rtos;
-using Adnc.Shared.Rpc.Http.Services;
+﻿using Adnc.Demo.Cust.Api;
 
-namespace Adnc.Demo.Cust.WebApi.Controllers;
+namespace Adnc.Demo.Cust.Api.Controllers;
 
 /// <summary>
 /// REST and gRPC demo
 /// </summary>
-[Route("cus/restandgrpcdemo")]
+[Route("cust/restandgrpcdemo")]
 [ApiController]
 public class RestAndGrpcClientDemoController : AdncControllerBase
 {
@@ -115,7 +113,7 @@ public class RestAndGrpcClientDemoController : AdncControllerBase
     [Route("restdict")]
     public async Task<IActionResult> GetDictAsync()
     {
-        var restResult = await _maintRestClient.GetDictAsync(ServiceAddressConsts.OrderStatusId);
+        var restResult = await _maintRestClient.GetDictAsync(ServiceConsts.OrderStatusId);
         if (restResult.IsSuccessStatusCode && restResult.Content is not null)
             return Ok(restResult.Content);
         return NoContent();
@@ -129,7 +127,7 @@ public class RestAndGrpcClientDemoController : AdncControllerBase
     [Route("grpcdict")]
     public async Task<IActionResult> GetDictGrpcAsync()
     {
-        var request = new DictRequest() { Id = ServiceAddressConsts.OrderStatusId };
+        var request = new DictRequest() { Id = ServiceConsts.OrderStatusId };
         var grpcResult = await _maintGrpcClient.GetDictAsync(request, GrpcClientConsts.BasicHeader);
         if (grpcResult.IsSuccessStatusCode && grpcResult.Content.Is(DictReply.Descriptor))
         {

@@ -1,4 +1,4 @@
-﻿namespace Adnc.Demo.Usr.WebApi.Authorization;
+﻿namespace Adnc.Demo.Usr.Api.Authorization;
 
 public sealed class PermissionLocalHandler : AbstractPermissionHandler
 {

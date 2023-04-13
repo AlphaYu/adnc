@@ -3,7 +3,7 @@ using Adnc.Demo.Shared.Rpc.Grpc.Messages;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 
-namespace Adnc.Demo.Maint.WebApi.Grpc;
+namespace Adnc.Demo.Maint.Api.Grpc;
 
 public class MaintGrpcServer : Adnc.Demo.Shared.Rpc.Grpc.Services.MaintGrpc.MaintGrpcBase
 {

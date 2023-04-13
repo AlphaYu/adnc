@@ -1,6 +1,6 @@
 ﻿using Adnc.Shared.WebApi.Registrar;
 
-namespace Adnc.Demo.Whse.WebApi;
+namespace Adnc.Demo.Whse.Api;
 
 public sealed class WhseWebApiDependencyRegistrar : AbstractWebApiDependencyRegistrar
 {

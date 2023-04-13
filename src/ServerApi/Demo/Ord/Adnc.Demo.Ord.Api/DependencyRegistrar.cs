@@ -1,6 +1,6 @@
 ﻿using Adnc.Shared.WebApi.Registrar;
 
-namespace Adnc.Demo.Ord.WebApi;
+namespace Adnc.Demo.Ord.Api;
 
 public sealed class OrdWebApiDependencyRegistrar : AbstractWebApiDependencyRegistrar
 {

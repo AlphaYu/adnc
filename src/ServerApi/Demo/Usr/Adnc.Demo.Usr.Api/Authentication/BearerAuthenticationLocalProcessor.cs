@@ -1,4 +1,4 @@
-﻿namespace Adnc.Demo.Usr.WebApi.Authentication;
+﻿namespace Adnc.Demo.Usr.Api.Authentication;
 
 public class BearerAuthenticationLocalProcessor : AbstractAuthenticationProcessor
 {

@@ -1,6 +1,6 @@
 ﻿using Adnc.Shared.Application.Contracts;
 
-namespace Adnc.Demo.Usr.WebApi.Controllers;
+namespace Adnc.Demo.Usr.Api.Controllers;
 
 /// <summary>
 /// 菜单管理
