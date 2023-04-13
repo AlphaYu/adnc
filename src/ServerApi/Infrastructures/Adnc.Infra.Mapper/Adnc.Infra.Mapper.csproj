@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	<Import Project="..\..\Props\common.props" />
-	<Import Project="..\..\Props\version_infra.props" />
-	<Import Project="..\..\Props\nuget.props" />
+	<Import Project="..\..\common.props" />
+	<Import Project="..\..\version_infra.props" />
+	<Import Project="..\..\nuget.props" />
 	<PropertyGroup>
 		<Description>该工程负责对象映射，并且提供了AutoMapper的实现。</Description>
 		<PackageTags>adnc,automapper,mapper</PackageTags>

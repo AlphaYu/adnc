@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	<Import Project="..\..\Props\common.props" />
-	<Import Project="..\..\Props\version_infra.props" />
-	<Import Project="..\..\Props\nuget.props" />
+	<Import Project="..\..\common.props" />
+	<Import Project="..\..\version_infra.props" />
+	<Import Project="..\..\nuget.props" />
 	
 	<PropertyGroup>
 		<Description>该库集成并扩展了Consul客户端，提供服务的自动注册、发现以及系统配置读写操作。</Description>
