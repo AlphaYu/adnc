@@ -10,8 +10,8 @@
 </a>
 </div>
 
-# <div align="center"><img src="https://aspdotnetcore.net/wp-content/uploads/2023/04/adnc-github.png" alt="ADNC-基于.NET平台的微服务开源框架" style="zoom:67%;" /></div>
-## <div align="center">*代码改变世界，开源推动社区*</div>
+# <div align="center"><img src="https://aspdotnetcore.net/wp-content/uploads/2023/04/adnc-github.png" alt="ADNC-基于.NET平台的微服务开源框架" style="zoom:60%;" /></div>
+### <div align="center">*代码改变世界，开源推动社区*</div>
 &ensp;&ensp;&ensp;&ensp;`ADNC` 是一个基于 .NET 平台的分布式/微服务开源框架。微服务是一种分布式架构模式，通过将应用程序拆分成一组小型、松耦合的服务，可以提高应用程序的可伸缩性、可靠性和灵活性。`ADNC` 提供了一系列的工具和库，帮助开发人员快速构建和部署微服务应用程序。`ADNC`  采用现代化的架构设计和最佳实践，包括服务注册/发现、配置中心、链路跟踪、负载均衡、熔断、容错、分布式事务、分布式缓存、消息队列、RPC调用(http/grpc)、认证授权、读写分离、日志记录等，同时也提供了完善的文档和示例代码，方便开发人员使用和学习。如果您正在考虑使用微服务架构开发应用程序，`ADNC`  框架是一个值得尝试的开源框架。
 
 具有以下优点：
