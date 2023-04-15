@@ -10,55 +10,30 @@
 <img alt="GitHub forks" src="https://img.shields.io/github/forks/AlphaYu/Adnc"/>
 </a>
 </div>
-
 #### <div align="center">代码改变世界，开源推动社区</div>
-&ensp;&ensp;&ensp;&ensp;`ADNC` 是一个基于 .NET 平台的分布式/微服务开源框架。微服务是一种分布式架构模式，通过将应用程序拆分成一组小型、松耦合的服务，可以提高应用程序的可伸缩性、可靠性和灵活性。`ADNC` 提供了一系列的工具和库，帮助开发人员快速构建和部署微服务应用程序。`ADNC`  采用现代化的架构设计和最佳实践，包括服务注册/发现、配置中心、链路跟踪、负载均衡、熔断、容错、分布式事务、分布式缓存、消息队列、RPC调用(http/grpc)、认证授权、读写分离、日志记录等，同时也提供了完善的文档和示例代码，方便开发人员使用和学习。如果您正在考虑使用微服务架构开发应用程序，`ADNC`  框架是一个值得尝试的开源框架。
 
-具有以下优点：
+### 微服务是什么？
 
-- 灵活性：框架采用现代化的架构设计，支持经典三层和DDD架构开发模式，同时也适用于单体架构系统的开发。
+微服务是一种分布式架构模式，通过将应用程序拆分成一组小型、松耦合的服务，可以提高应用程序的可伸缩性、可靠性和灵活性。
+
+### ADNC是什么？
+
+`ADNC` 是一个基于 `.NET` 平台的分布式/微服务开源框架，采用现代化的架构设计和最佳实践。它提供了一系列的工具和库，帮助开发人员快速构建和部署微服务应用程序，包括服务注册/发现、配置中心、链路跟踪、负载均衡、熔断、容错、分布式事务、分布式缓存、消息队列、`RPC`调用(`http`/`grpc`)、认证授权、读写分离、日志记录等，同时也提供了完善的文档和示例代码，方便开发人员使用和学习。如果您正在考虑使用微服务架构开发应用程序，`ADNC`  框架是一个值得尝试的开源框架。
+
+### ADNC有什么优点?
+
+- 灵活性：框架采用现代化的架构设计，支持经典三层和`DDD`架构开发模式，同时也适用于单体架构系统的开发。
 - 易用性：框架提供了完善的文档和示例代码，同时也集成了一系列主流的微服务技术栈，使用起来比较容易上手。
 - 高可靠性：框架采用容器化部署、负载均衡、服务发现等技术，可以提高应用程序的可靠性和可伸缩性。
-- 开放性：框架是一个开源项目，采用 MIT 许可证发布，用户可以自由地使用、修改和分享该框架的源代码。
+- 开放性：框架是一个开源项目，采用 `MIT` 许可证发布，用户可以自由地使用、修改和分享该框架的源代码。
 - 生态圈：框架的社区生态圈正在逐渐壮大，有越来越多的开发人员在使用和贡献该框架，用户可以从社区中获取到更多的资源和支持。
 
-示例代码功能：
-
-- 用户中心：系统支撑服务，实现了用户管理、角色管理、权限管理、菜单管理、组织架构管理
-- 运维中心：系统支撑服务，实现了登录日志、审计日志、异常日志、字典管理、配置参数管理
-- 客户中心：经典三层开发模式demo
-- 订单中心：DDD开发模式demo
-- 仓储中心：DDD开发模式demo
-
 ## Nuget Packages
-
-| Package Name         | Version                                       | 
-| -------------------- | --------------------------------------------- |
-| Adnc.Infra.Core     | ![](https://img.shields.io/nuget/v/Adnc.Infra.Core.svg)     | ![](https://img.shields.io/nuget/dt/Adnc.Infra.Core.svg)  |
-| Adnc.Infra.Consul  | ![](https://img.shields.io/nuget/v/Adnc.Infra.Consul.svg)     | ![](https://img.shields.io/nuget/dt/Adnc.Infra.Consul.svg)  |
-| Adnc.Infra.Mapper  | ![](https://img.shields.io/nuget/v/Adnc.Infra.Mapper.svg)     | ![](https://img.shields.io/nuget/dt/Adnc.Infra.Mapper.svg)  |
-| Adnc.Infra.Helper  | ![](https://img.shields.io/nuget/v/Adnc.Infra.Helper.svg)     | ![](https://img.shields.io/nuget/dt/Adnc.Infra.Helper.svg)  |
-| Adnc.Infra.Repository  | ![](https://img.shields.io/nuget/v/Adnc.Infra.Repository.svg)     | ![](https://img.shields.io/nuget/dt/Adnc.Infra.Repository.svg)  |
-| Adnc.Infra.Repository.Mongo  | ![](https://img.shields.io/nuget/v/Adnc.Infra.Repository.Mongo.svg)     | ![](https://img.shields.io/nuget/dt/Adnc.Infra.Repository.Mongo.svg)  |
-| Adnc.Infra.Repository.Dapper  | ![](https://img.shields.io/nuget/v/Adnc.Infra.Repository.Dapper.svg)     | ![](https://img.shields.io/nuget/dt/Adnc.Infra.Repository.Dapper.svg)  |
-| Adnc.Infra.Repository.EfCore  | ![](https://img.shields.io/nuget/v/Adnc.Infra.Repository.EfCore.svg)     | ![](https://img.shields.io/nuget/dt/Adnc.Infra.Repository.EfCore.svg)  |
-| Adnc.Infra.Repository.EfCore.MySql  | ![](https://img.shields.io/nuget/v/Adnc.Infra.Repository.EfCore.MySql.svg)     | ![](https://img.shields.io/nuget/dt/Adnc.Infra.Repository.EfCore.MySql.svg)  |
-| Adnc.Infra.Repository.EfCore.SqlServer  | ![](https://img.shields.io/nuget/v/Adnc.Infra.Repository.EfCore.SqlServer.svg)     | ![](https://img.shields.io/nuget/dt/Adnc.Infra.Repository.EfCore.SqlServer.svg)  |
-| Adnc.Infra.Redis  | ![](https://img.shields.io/nuget/v/Adnc.Infra.Redis.svg)     | ![](https://img.shields.io/nuget/dt/Adnc.Infra.Redis.svg)  |
-| Adnc.Infra.Redis.Caching  | ![](https://img.shields.io/nuget/v/Adnc.Infra.Redis.Caching.svg)     | ![](https://img.shields.io/nuget/dt/Adnc.Infra.Redis.Caching.svg)  |
-| Adnc.Infra.IdGenerater | ![](https://img.shields.io/nuget/v/Adnc.Infra.IdGenerater.svg)     | ![](https://img.shields.io/nuget/dt/Adnc.Infra.IdGenerater.svg)  |
-| Adnc.Infra.EventBus | ![](https://img.shields.io/nuget/v/Adnc.Infra.EventBus.svg)     | ![](https://img.shields.io/nuget/dt/Adnc.Infra.EventBus.svg)  |
-| Adnc.Shared | ![](https://img.shields.io/nuget/v/Adnc.Shared.svg)     | ![](https://img.shields.io/nuget/dt/Adnc.Shared.svg)  |
-| Adnc.Shared.Application.Contracts | ![](https://img.shields.io/nuget/v/Adnc.Shared.Application.Contracts.svg)     | ![](https://img.shields.io/nuget/dt/Adnc.Shared.Application.Contracts.svg)  |
-| Adnc.Shared.Application | ![](https://img.shields.io/nuget/v/Adnc.Shared.Application.svg)     | ![](https://img.shields.io/nuget/dt/Adnc.Shared.Application.svg)  |
-| Adnc.Shared.Domain | ![](https://img.shields.io/nuget/v/Adnc.Shared.Domain.svg)     | ![](https://img.shields.io/nuget/dt/Adnc.Shared.Domain.svg)  |
-| Adnc.Shared.WebApi | ![](https://img.shields.io/nuget/v/Adnc.Shared.WebApi.svg)     | ![](https://img.shields.io/nuget/dt/Adnc.Shared.WebApi.svg)  |
+[Nuget](https://www.nuget.org/packages?q=adnc)
 
 ## 问题交流
 
 - QQ群：780634162
-- 项目官网：<a target="_blank" href="https://aspdotnetcore.net">https://aspdotnetcore.net</a>
-- 博&ensp;&ensp;&ensp;&ensp;客：<a target="_blank" href="https://www.cnblogs.com/alphayu">https://www.cnblogs.com/alphayu</a></a>
 
 ## 文档
 #### 如何快速跑起来
@@ -135,23 +110,30 @@ internal static class Program
         logger.Debug($"init {nameof(Program.Main)}");
         try
         {
-            var webApiAssembly = System.Reflection.Assembly.GetExecutingAssembly();
-            var serviceInfo = Shared.WebApi.ServiceInfo.CreateInstance(webApiAssembly);
-            
+            var serviceInfo = ServiceInfo.CreateInstance(startAssembly, migrationsAssemblyName);
+
+            //Configuration,ServiceCollection,Logging,WebHost(Kestrel)
             var app = WebApplication
                 .CreateBuilder(args)
-                .ConfigureAdncDefault(args, serviceInfo)
+                .ConfigureAdncDefault(serviceInfo)
                 .Build();
 
-            app.UseAdncDefault(endpointRoute: endpoint =>
+            //Middlewares
+            app.UseAdnc();
+
+            //Start
+            app.ChangeThreadPoolSettings()
+               .UseRegistrationCenter();
+
+            //Default page
+            app.MapGet("/", async context =>
             {
-                endpoint.MapGrpcService<Grpc.MaintGrpcServer>();
+                var content = serviceInfo.GetDefaultPageContent(app.Services);
+                context.Response.Headers.Add("Content-Type", "text/html");
+                await context.Response.WriteAsync(content);
             });
 
-            await app
-                .ChangeThreadPoolSettings()
-                .UseRegistrationCenter()
-                .RunAsync();
+            await app.RunAsync();
         }
         catch (Exception ex)
         {
@@ -160,6 +142,7 @@ internal static class Program
         }
         finally
         {
+            // Ensure to flush and stop internal timers/threads before application-exit
             LogManager.Shutdown();
         }
     }
@@ -210,7 +193,7 @@ internal static class Program
 ![.NET微服务开源框架-角色管理界面](https://aspdotnetcore.net/wp-content/uploads/2021/11/adnc-dashboard-role.png)
 
 #### ServerApi
-  - ServerApi基于`.NET 5.0`搭建。
+  - ServerApi基于`.NET 6.0`搭建。
   - 后端主要技术栈
 
 | 名称 | 描述 |
