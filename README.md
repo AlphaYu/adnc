@@ -1,4 +1,4 @@
-# <div align="center"><img src="https://aspdotnetcore.net/wp-content/uploads/2023/04/adnc-github.png" alt="ADNC-基于.NET平台的微服务开源框架" style="zoom:60%;" /></div>
+# <div align="center"><img src="https://aspdotnetcore.net/wp-content/uploads/2023/04/adnc-github.png" alt="ADNC-基于.NET平台的微服务开源框架" style="zoom:50%;" /></div>
 <div align='center'>
 <a href="https://github.com/AlphaYu/Adnc/blob/master/LICENSE">
 <img alt="GitHub license" src="https://img.shields.io/github/license/AlphaYu/Adnc"/>
@@ -10,8 +10,8 @@
 <img alt="GitHub forks" src="https://img.shields.io/github/forks/AlphaYu/Adnc"/>
 </a>
 </div>
-#### <div align="center">代码改变世界，开源推动社区</div>
 
+#### <div align="center">代码改变世界，开源推动社区</div>
 ### 微服务是什么？
 
 微服务是一种分布式架构模式，通过将应用程序拆分成一组小型、松耦合的服务，可以提高应用程序的可伸缩性、可靠性和灵活性。
