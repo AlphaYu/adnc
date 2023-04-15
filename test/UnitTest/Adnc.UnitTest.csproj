@@ -14,6 +14,7 @@
 	<ItemGroup>
 		<PackageReference Include="Adnc.Infra.Helper" Version="0.9.7.2" />
 		<PackageReference Include="Adnc.Infra.IdGenerater" Version="0.9.7.2" />
+		<PackageReference Include="Adnc.Infra.Mapper" Version="0.9.9" />
 		<PackageReference Include="Adnc.Infra.Repository.Dapper" Version="0.9.7.2" />
 		<PackageReference Include="Adnc.Infra.Repository.EfCore" Version="0.9.7.2" />
 		<PackageReference Include="Adnc.Infra.Repository.EfCore.MySql" Version="0.9.7.2" />

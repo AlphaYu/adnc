@@ -1,6 +1,7 @@
 ﻿using Adnc.Infra.Entities;
 using Adnc.Infra.IRepositories;
 using Adnc.Shared;
+using Adnc.UnitTest.TestCases.Repositories.Dtos;
 using Adnc.UnitTest.TestCases.Repositories.Entities;
 
 namespace Adnc.UnitTest.Fixtures;
@@ -24,6 +25,7 @@ public class EfCoreDbcontextFixture
                 Name = "余小猫"
             };
         });
+        services.AddAdncInfraAutoMapper(typeof(MapperProfile));
         services.AddAdncInfraDapper();
         services.AddAdncInfraEfCoreMySql(options =>
         {
