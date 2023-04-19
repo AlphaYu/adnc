@@ -36,17 +36,17 @@
 
 [NuGet Gallery | Packages matching adnc.infra](https://www.nuget.org/packages?q=adnc.infra)
 
-![adnc-framework-2](C:\personal\images\adnc\adnc-framework-2.png)
+![adnc-framework-2](https://aspdotnetcore.net/wp-content/uploads/2023/04/adnc-framework-2.png)
 
 ### Adnc.Shared.*
 
 [NuGet Gallery | Packages matching adnc.shared](https://www.nuget.org/packages?q=adnc.shared)
 
-<img src="C:\personal\images\adnc\adnc-framework-3.png" alt="adnc-framework-3" style="zoom:80%;" />
+<img src="https://aspdotnetcore.net/wp-content/uploads/2023/04/adnc-framework-3.png" alt="adnc-framework-3" style="zoom:80%;" />
 
 ## 解决方案截图
 
-![adnc-solution](C:\personal\images\adnc\adnc-solution.png)
+![adnc-solution](https://aspdotnetcore.net/wp-content/uploads/2023/04/adnc-solution.png)
 
 ## 技术栈
 
@@ -199,7 +199,7 @@
 - 演示地址：<a href="http://adnc.aspdotnetcore.net" target="_blank">http://adnc.aspdotnetcore.net</a>
 - 路线图：[计划完善与新增的模块](https://docs.qq.com/doc/DY2hrYkFYVEl5YW9Y)
 - 问题交流：780634162(QQ群号)
-<img src="C:\personal\images\adnc\adnc-qq.png" alt="adnc-qq" style="zoom:50%;" />
+<img src="https://aspdotnetcore.net/wp-content/uploads/2023/04/adnc-qq.png" alt="adnc-qq" style="zoom:50%;" />
 
 ## 贡献者
 
