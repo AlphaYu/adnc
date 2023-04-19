@@ -198,14 +198,7 @@
 - 项目官网：<a href="https://aspdotnetcore.net" target="_blank">https://aspdotnetcore.net</a>
 - 演示地址：<a href="http://adnc.aspdotnetcore.net" target="_blank">http://adnc.aspdotnetcore.net</a>
 - 路线图：[计划完善与新增的模块](https://docs.qq.com/doc/DY2hrYkFYVEl5YW9Y)
-- 问题交流：780634162(QQ群号)
-<img src="https://aspdotnetcore.net/wp-content/uploads/2023/04/adnc-qq.png" alt="adnc-qq" style="zoom:30%;" />
-
-## 贡献者
-
-<a href="https://github.com/alphayu/adnc/graphs/contributors">
-  <img src="https://contributors-img.web.app/image?repo=alphayu/adnc" />
-</a>
+- 问题交流：QQ群号 - 780634162
 
 ## License
 
