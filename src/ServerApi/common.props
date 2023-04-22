@@ -17,7 +17,7 @@
 
 	<PropertyGroup>
 		<Infra_Version>0.9.9.0</Infra_Version>
-		<Shared_Version>0.9.9.0</Shared_Version>
+		<Shared_Version>0.9.9.1</Shared_Version>
 		<System_ComponentModel_Annotations_Version>5.0.0</System_ComponentModel_Annotations_Version>
 		<System_Text_Json_Version>6.0.5</System_Text_Json_Version>
 		<System_Threading_Channels_Version>6.0.0</System_Threading_Channels_Version>
