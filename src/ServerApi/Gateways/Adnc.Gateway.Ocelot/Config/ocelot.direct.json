@@ -37,7 +37,7 @@
   "Routes": [
     //auth service
     {
-      "DownstreamPathTemplate": "/auth{everything}",
+      "DownstreamPathTemplate": "/auth/api{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -45,7 +45,7 @@
           "Port": 50010
         }
       ],
-      "UpstreamPathTemplate": "/auth{everything}",
+      "UpstreamPathTemplate": "/auth/api{everything}",
       "UpstreamHttpMethod": [
         "Get",
         "Put",
@@ -56,7 +56,7 @@
     },
     //usr services
     {
-      "DownstreamPathTemplate": "/usr{everything}",
+      "DownstreamPathTemplate": "/usr/api{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -64,7 +64,7 @@
           "Port": 50010
         }
       ],
-      "UpstreamPathTemplate": "/usr{everything}",
+      "UpstreamPathTemplate": "/usr/api{everything}",
       "UpstreamHttpMethod": [
         "Get",
         "Put",
@@ -75,7 +75,7 @@
     },
     //maint services
     {
-      "DownstreamPathTemplate": "/maint{everything}",
+      "DownstreamPathTemplate": "/maint/api{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -83,7 +83,7 @@
           "Port": 50020
         }
       ],
-      "UpstreamPathTemplate": "/maint{everything}",
+      "UpstreamPathTemplate": "/maint/api{everything}",
       "UpstreamHttpMethod": [
         "Get",
         "Put",
@@ -94,7 +94,7 @@
     },
     //cust services
     {
-      "DownstreamPathTemplate": "/cust{everything}",
+      "DownstreamPathTemplate": "/cust/api{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -102,7 +102,7 @@
           "Port": 50030
         }
       ],
-      "UpstreamPathTemplate": "/cust{everything}",
+      "UpstreamPathTemplate": "/cust/api{everything}",
       "UpstreamHttpMethod": [
         "Get",
         "Put",
