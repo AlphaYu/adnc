@@ -27,9 +27,9 @@ public sealed class WhseApplicationDependencyRegistrar : AbstractApplicationDepe
 
         //rpc-rest
         var restPolicies = PollyStrategyEnable ? this.GenerateDefaultRefitPolicies() : new();
-        AddRestClient<IAuthRestClient>(ServiceAddressConsts.UsrService, restPolicies);
-        AddRestClient<IUsrRestClient>(ServiceAddressConsts.UsrService, restPolicies);
-        AddRestClient<IMaintRestClient>(ServiceAddressConsts.MaintService, restPolicies);
+        AddRestClient<IAuthRestClient>(ServiceAddressConsts.AdncDemoUsrService, restPolicies);
+        AddRestClient<IUsrRestClient>(ServiceAddressConsts.AdncDemoUsrService, restPolicies);
+        AddRestClient<IMaintRestClient>(ServiceAddressConsts.AdncDemoMaintService, restPolicies);
         //rpc-event
         AddCapEventBus<CapEventSubscriber>(replaceDbAction: capOption =>
         {

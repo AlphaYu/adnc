@@ -2,12 +2,12 @@
 
 public static class ServiceAddressConsts
 {
-    public static long ProdunctStatusId => 1600000008500;
-    public static long OrderStatusId => 1600000008600;
+    public const long ProdunctStatusId = 1600000008500;
+    public const long OrderStatusId = 1600000008600;
 
-    public  static string UsrService => "adnc-usr-webapi";
-    public  static string MaintService => "adnc-maint-webapi";
-    public  static string CustService => "adnc-cust-webapi";
-    public  static string OrdService => "adnc-ord-webapi";
-    public  static string WhseService => "adnc-whse-webapi";
+    public const string AdncDemoUsrService = "adnc-demo-usr-api";
+    public const string AdncDemoMaintService = "adnc-demo-maint-api";
+    public const string AdncDemoCustService = "adnc-demo-cust-api";
+    public const string AdncDemoOrdService = "adnc-demo-ord-api";
+    public const string AdncDemoWhseService = "adnc-demo-whse-api";
 }

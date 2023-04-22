@@ -21,8 +21,8 @@ public sealed class DependencyRegistrar : AbstractApplicationDependencyRegistrar
         AddApplicaitonDefault();
         //rpc-rest
         var restPolicies = PollyStrategyEnable ? this.GenerateDefaultRefitPolicies() : new();
-        AddRestClient<IAuthRestClient>(ServiceAddressConsts.UsrService, restPolicies);
-        AddRestClient<IUsrRestClient>(ServiceAddressConsts.UsrService, restPolicies);
+        AddRestClient<IAuthRestClient>(ServiceAddressConsts.AdncDemoUsrService, restPolicies);
+        AddRestClient<IUsrRestClient>(ServiceAddressConsts.AdncDemoUsrService, restPolicies);
 
         AddRabbitMqClient();
     }
