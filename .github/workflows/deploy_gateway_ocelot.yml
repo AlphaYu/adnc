@@ -1,0 +1,69 @@
+name: deploy_gateway_ocelot
+
+on: workflow_dispatch
+
+env:
+  REPOSITORY: "adnc"
+  RUNNER_DEMO_SOURCE_ROOT: /home/runner/work/adnc/adnc/src/ServerApi/Gateways/Adnc.Gateway.Ocelot
+  PUBLISH_PATH: bin/Release/net6.0/linux-x64/publish
+  IMAGE_NAME: adnc-gateway-ocelot
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 6.0.x
+        
+    - name: Publish Solution
+      run: dotnet publish ${RUNNER_DEMO_SOURCE_ROOT}/Adnc.Gateway.Ocelot.csproj --configuration Release  --runtime linux-x64 --self-contained false
+      
+    - name: Build && Push images
+      run: |
+        cd ${RUNNER_DEMO_SOURCE_ROOT}/${PUBLISH_PATH}
+        touch Dockerfile
+        echo '' > Dockerfile
+        echo "FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base" >> Dockerfile
+        echo "WORKDIR /app" >> Dockerfile
+        echo "COPY . /app" >> Dockerfile
+        echo "ENTRYPOINT [ \"dotnet\",\"Adnc.Gateway.Ocelot.dll\" ]" >> Dockerfile
+        echo "build image"
+        docker build . --file Dockerfile --tag $IMAGE_NAME
+        echo "Login to registry"
+        echo "${{ secrets.DOCKER_API_KEY }}" | docker login -u ${REPOSITORY} --password-stdin     
+        IMAGE_ID=${REPOSITORY}/${IMAGE_NAME}
+        IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+        VERSION=$(date +%s)
+        docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
+        docker tag $IMAGE_NAME $IMAGE_ID:latest
+        docker push $IMAGE_ID:$VERSION
+        docker push $IMAGE_ID:latest
+
+    - name: Deploy all
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.DEPLOY_HOST }}
+        username: ${{ secrets.DEPLOY_USERNAME }}
+        password: ${{ secrets.DEPLOY_PASSWORD }}
+        port: ${{ secrets.DEPLOY_PORT }}
+        script: | 
+          REPOSITORY="adnc"
+          IMAGE_NAME="${REPOSITORY}-gateway-ocelot" 
+          IMAGE_ID="${REPOSITORY}/${IMAGE_NAME}"
+          docker stop $(docker ps -a | grep "${IMAGE_ID}" | awk '{print $1 }')
+          docker rm $(docker ps -a | grep "${IMAGE_ID}" | awk '{print $1 }')
+          docker rmi $(docker images | grep "${IMAGE_ID}" | awk '{print $3}')
+          docker pull $IMAGE_ID
+          docker run \
+                -d \
+                --name=${IMAGE_NAME}-${RANDOM} \
+                -e ASPNETCORE_ENVIRONMENT=Production \
+                -e TZ=Asia/Shanghai \
+                -e ASPNETCORE_HOSTINGSTARTUPASSEMBLIES=SkyAPM.Agent.AspNetCore \
+                -e SKYWALKING__SERVICENAME=${IMAGE_NAME} \
+                $IMAGE_ID
