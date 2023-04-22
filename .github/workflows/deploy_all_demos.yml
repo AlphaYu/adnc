@@ -119,8 +119,6 @@ jobs:
                 --name=${IMAGE_NAME}-${RANDOM} \
                 -e ASPNETCORE_ENVIRONMENT=Production \
                 -e TZ=Asia/Shanghai \
-                -e ASPNETCORE_HOSTINGSTARTUPASSEMBLIES=SkyAPM.Agent.AspNetCore \
-                -e SKYWALKING__SERVICENAME=${IMAGE_NAME} \
                 $IMAGE_ID
 
           IMAGE_NAME="${REPOSITORY}-demo-maint" 
@@ -134,8 +132,6 @@ jobs:
                 --name=${IMAGE_NAME}-${RANDOM} \
                 -e ASPNETCORE_ENVIRONMENT=Production \
                 -e TZ=Asia/Shanghai \
-                -e ASPNETCORE_HOSTINGSTARTUPASSEMBLIES=SkyAPM.Agent.AspNetCore \
-                -e SKYWALKING__SERVICENAME=${IMAGE_NAME} \           
                 $IMAGE_ID
 
           IMAGE_NAME="${REPOSITORY}-demo-cust" 
@@ -149,6 +145,4 @@ jobs:
                 --name=${IMAGE_NAME}-${RANDOM} \
                 -e ASPNETCORE_ENVIRONMENT=Production \
                 -e TZ=Asia/Shanghai \
-                -e ASPNETCORE_HOSTINGSTARTUPASSEMBLIES=SkyAPM.Agent.AspNetCore \
-                -e SKYWALKING__SERVICENAME=${IMAGE_NAME} \          
                 $IMAGE_ID
