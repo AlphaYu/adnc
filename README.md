@@ -18,7 +18,7 @@
 
 ### ADNC是什么？
 
-`ADNC` 是一个基于 `.NET` 平台的分布式/微服务开源框架，采用现代化的架构设计和最佳实践。它提供了一系列的工具和库，帮助开发人员快速构建和部署微服务应用程序，包括服务注册/发现、配置中心、链路跟踪、负载均衡、熔断、容错、分布式事务、分布式缓存、消息队列、`RPC`调用(`http`/`grpc`)、认证授权、读写分离、日志记录等，同时也提供了完善的文档和示例代码，方便开发人员使用和学习。如果您正在考虑使用微服务架构开发应用程序，`ADNC`  框架是一个值得尝试的开源框架。
+`ADNC` 是一个基于 `.NET` 平台的分布式/微服务开源框架，采用现代化的架构设计和最佳实践，同时也适用于单体架构系统的开发。它提供了一系列的工具和库，帮助开发人员快速构建和部署微服务应用程序，包括服务注册/发现、配置中心、链路跟踪、负载均衡、熔断、容错、分布式事务、分布式缓存、消息队列、`RPC`调用(`http`/`grpc`)、认证授权、读写分离、日志记录等，同时也提供了完善的文档和示例代码，方便开发人员使用和学习。如果您正在考虑使用微服务架构开发应用程序，`ADNC`  框架是一个值得尝试的开源框架。
 
 ### ADNC有什么优点?
 
@@ -30,7 +30,7 @@
 
 ## 总体架构设计
 
-<img src="https://aspdotnetcore.net/wp-content/uploads/2023/04/adnc_framework.png" alt="adnc_framework" style="zoom:78%;" />
+<img src="https://aspdotnetcore.net/wp-content/uploads/2023/04/adnc_framework.png" alt="adnc_framework" style="zoom:65%;" />
 
 ### Adnc.Infra.*
 
@@ -195,10 +195,17 @@
 
 ## 其他
 
-- 项目官网：<a href="https://aspdotnetcore.net" target="_blank">https://aspdotnetcore.net</a>
-- 演示地址：<a href="http://adnc.aspdotnetcore.net" target="_blank">http://adnc.aspdotnetcore.net</a>
-- 路线图：[计划完善与新增的模块](https://docs.qq.com/doc/DY2hrYkFYVEl5YW9Y)
-- 问题交流：QQ群号 - 780634162
+### 项目官网
+- [https://aspdotnetcore.net](https://aspdotnetcore.net)
+
+### 演示地址
+- [http://adnc.aspdotnetcore.net](http://adnc.aspdotnetcore.net)
+### 问题交流
+- QQ群号：780634162
+
+  <img src="https://aspdotnetcore.net/wp-content/uploads/2023/04/adnc-qq.png" style="zoom:35%;" />
+
+- 都看到这里了，那就点个`star`吧！
 
 ## License
 
