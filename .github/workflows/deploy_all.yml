@@ -41,7 +41,7 @@ jobs:
         echo "build image"
         docker build . --file Dockerfile --tag $USR_IMAGE_NAME
 
-        echo "Log into registry"
+        echo "Login to registry"
         echo "${{ secrets.DOCKER_API_KEY }}" | docker login -u adnc --password-stdin
         
         echo "Push"
