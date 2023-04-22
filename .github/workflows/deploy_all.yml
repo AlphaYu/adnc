@@ -3,11 +3,11 @@ name: deploy_all
 on: workflow_dispatch
 
 env:
-  RUNNER_SOURCE_ROOT: /home/runner/work/adnc/adnc/src/ServerApi
+  RUNNER_DEMO_SOURCE_ROOT: /home/runner/work/adnc/adnc/src/ServerApi/Demo
   PUBLISH_PATH: bin/Release/net6.0/linux-x64/publish
   USR_IMAGE_NAME: adnc-demo-usr
   USR_START_FILE: "Adnc.Demo.Usr.Api.dll"
-  USR_PROJECT_PATH: Demo/Usr/Adnc.Demo.Usr.Api
+  USR_PROJECT_PATH: Usr/Adnc.Demo.Usr.Api
 
 jobs:
   build:
@@ -22,7 +22,7 @@ jobs:
         dotnet-version: 6.0.x
         
     - name: Buid Solution
-      run: dotnet build --configuration Release  ${RUNNER_SOURCE_ROOT}/Adnc.sln
+      run: dotnet build --configuration Release  ${RUNNER_DEMO_SOURCE_ROOT}/Adnc.Demo.sln
       
     - name: Deploy-USR
       run: |
