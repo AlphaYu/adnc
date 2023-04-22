@@ -30,7 +30,7 @@
 
 ## 总体架构设计
 
-<img src="https://aspdotnetcore.net/wp-content/uploads/2023/04/adnc_framework.png" alt="adnc_framework" style="zoom:65%;" />
+<img src="https://aspdotnetcore.net/wp-content/uploads/2023/04/adnc_framework.png" alt="adnc_framework" style="zoom:60%;" />
 
 ### Adnc.Infra.*
 
@@ -203,7 +203,7 @@
 ### 问题交流
 - QQ群号：780634162
 
-  <img src="https://aspdotnetcore.net/wp-content/uploads/2023/04/adnc-qq.png" style="zoom:35%;" />
+  <img src="https://aspdotnetcore.net/wp-content/uploads/2023/04/adnc-qq.png" style="zoom:25%;" />
 
 - 都看到这里了，那就点个`star`吧！
 
