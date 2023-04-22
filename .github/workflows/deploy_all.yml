@@ -22,7 +22,7 @@ jobs:
         dotnet-version: 6.0.x
         
     - name: Publish Solution
-      run: dotnet publish {RUNNER_DEMO_SOURCE_ROOT}/Adnc.Demo.sln --configuration Release  --runtime linux-x64 --self-contained false
+      run: dotnet publish ${RUNNER_DEMO_SOURCE_ROOT}/Adnc.Demo.sln --configuration Release  --runtime linux-x64 --self-contained false
       
     - name: Deploy-USR
       run: |
