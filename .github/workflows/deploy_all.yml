@@ -26,7 +26,10 @@ jobs:
       
     - name: Deploy-USR
       run: |
-        cd ${RUNNER_DEMO_SOURCE_ROOT}/${USR_PROJECT_PATH}/${PUBLISH_PATH}
+        IMAGE_NAME=$USR_IMAGE_NAME
+        PROJECT_PATH=$USR_PROJECT_PATH
+        
+        cd ${RUNNER_DEMO_SOURCE_ROOT}/${PROJECT_PATH}/${PUBLISH_PATH}
 
         echo "create dockerfile"
         touch Dockerfile
@@ -38,7 +41,7 @@ jobs:
         echo "ENTRYPOINT [ \"dotnet\",\"${USR_START_FILE}\" ]" >> Dockerfile
 
         echo "build image"
-        docker build . --file Dockerfile --tag $USR_IMAGE_NAME
+        docker build . --file Dockerfile --tag $IMAGE_NAME
 
         echo "Login to registry"
         echo "${{ secrets.DOCKER_API_KEY }}" | docker login -u adnc --password-stdin
