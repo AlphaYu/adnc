@@ -9,6 +9,12 @@ env:
   USR_IMAGE_NAME: adnc-demo-usr
   USR_PROJECT_PATH: Usr/Adnc.Demo.Usr.Api
   USR_START_FILE: "Adnc.Demo.Usr.Api.dll"
+  MAINT_IMAGE_NAME: adnc-demo-maint
+  MAINT_PROJECT_PATH: Maint/Adnc.Demo.Maint.Api
+  MAINT_START_FILE: "Adnc.Demo.Maint.Api.dll"
+  CUST_IMAGE_NAME: adnc-demo-cust
+  CUST_PROJECT_PATH: Cust/Adnc.Demo.Cust.Api
+  CUST_START_FILE: "Adnc.Demo.Cust.Api.dll"
 
 jobs:
   build:
@@ -25,29 +31,22 @@ jobs:
     - name: Publish Solution
       run: dotnet publish ${RUNNER_DEMO_SOURCE_ROOT}/Adnc.Demo.sln --configuration Release  --runtime linux-x64 --self-contained false
       
-    - name: Deploy-USR
+    - name: Build && Push images
       run: |
+        echo "---demo-usr---"
         IMAGE_NAME=$USR_IMAGE_NAME
         PROJECT_PATH=$USR_PROJECT_PATH
-
         cd ${RUNNER_DEMO_SOURCE_ROOT}/${PROJECT_PATH}/${PUBLISH_PATH}
-
-        echo "create dockerfile"
         touch Dockerfile
         echo '' > Dockerfile
-        pwd
         echo "FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base" >> Dockerfile
         echo "WORKDIR /app" >> Dockerfile
         echo "COPY . /app" >> Dockerfile
         echo "ENTRYPOINT [ \"dotnet\",\"${USR_START_FILE}\" ]" >> Dockerfile
-
         echo "build image"
         docker build . --file Dockerfile --tag $IMAGE_NAME
-
         echo "Login to registry"
-        echo "${{ secrets.DOCKER_API_KEY }}" | docker login -u ${REPOSITORY} --password-stdin
-        
-        echo "Push"
+        echo "${{ secrets.DOCKER_API_KEY }}" | docker login -u ${REPOSITORY} --password-stdin     
         IMAGE_ID=${REPOSITORY}/${IMAGE_NAME}
         IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
         VERSION=$(date +%s)
@@ -55,3 +54,80 @@ jobs:
         docker tag $IMAGE_NAME $IMAGE_ID:latest
         docker push $IMAGE_ID:$VERSION
         docker push $IMAGE_ID:latest
+
+        echo "---demo-maint---"
+        IMAGE_NAME=$MAINT_IMAGE_NAME
+        PROJECT_PATH=$MAINT_PROJECT_PATH
+        cd ${RUNNER_DEMO_SOURCE_ROOT}/${PROJECT_PATH}/${PUBLISH_PATH}
+        touch Dockerfile
+        echo '' > Dockerfile
+        echo "FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base" >> Dockerfile
+        echo "WORKDIR /app" >> Dockerfile
+        echo "COPY . /app" >> Dockerfile
+        echo "ENTRYPOINT [ \"dotnet\",\"${MAINT_START_FILE}\" ]" >> Dockerfile
+        echo "build image"
+        docker build . --file Dockerfile --tag $IMAGE_NAME
+        echo "Login to registry"
+        echo "${{ secrets.DOCKER_API_KEY }}" | docker login -u ${REPOSITORY} --password-stdin     
+        IMAGE_ID=${REPOSITORY}/${IMAGE_NAME}
+        IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+        VERSION=$(date +%s)
+        docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
+        docker tag $IMAGE_NAME $IMAGE_ID:latest
+        docker push $IMAGE_ID:$VERSION
+        docker push $IMAGE_ID:latest
+
+        echo "---demo-cust---"
+        IMAGE_NAME=$CUST_IMAGE_NAME
+        PROJECT_PATH=$CUST_PROJECT_PATH
+        cd ${RUNNER_DEMO_SOURCE_ROOT}/${PROJECT_PATH}/${PUBLISH_PATH}
+        touch Dockerfile
+        echo '' > Dockerfile
+        echo "FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base" >> Dockerfile
+        echo "WORKDIR /app" >> Dockerfile
+        echo "COPY . /app" >> Dockerfile
+        echo "ENTRYPOINT [ \"dotnet\",\"${CUST_START_FILE}\" ]" >> Dockerfile
+        echo "build image"
+        docker build . --file Dockerfile --tag $IMAGE_NAME
+        echo "Login to registry"
+        echo "${{ secrets.DOCKER_API_KEY }}" | docker login -u ${REPOSITORY} --password-stdin     
+        IMAGE_ID=${REPOSITORY}/${IMAGE_NAME}
+        IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+        VERSION=$(date +%s)
+        docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
+        docker tag $IMAGE_NAME $IMAGE_ID:latest
+        docker push $IMAGE_ID:$VERSION
+        docker push $IMAGE_ID:latest
+
+    - name: Deploy all
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.DEPLOY_HOST }}
+        username: ${{ secrets.DEPLOY_USERNAME }}
+        password: ${{ secrets.DEPLOY_PASSWORD }}
+        port: ${{ secrets.DEPLOY_PORT }}
+        script: | 
+          REPOSITORY="adnc"
+          IMAGE_NAME="${REPOSITORY}-demo-usr" 
+          IMAGE_ID="${REPOSITORY}/${IMAGE_NAME}"
+          docker stop $(docker ps -a | grep "${IMAGE_ID}" | awk '{print $1 }')
+          docker rm $(docker ps -a | grep "${IMAGE_ID}" | awk '{print $1 }')
+          docker rmi $(docker images | grep "${IMAGE_ID}" | awk '{print $3}')
+          docker pull $IMAGE_ID
+          docker run --name ${IMAGE_NAME}-${RANDOM} -d ${IMAGE_ID}
+
+          IMAGE_NAME="${REPOSITORY}-demo-maint" 
+          IMAGE_ID="${REPOSITORY}/${IMAGE_NAME}"
+          docker stop $(docker ps -a | grep "${IMAGE_ID}" | awk '{print $1 }')
+          docker rm $(docker ps -a | grep "${IMAGE_ID}" | awk '{print $1 }')
+          docker rmi $(docker images | grep "${IMAGE_ID}" | awk '{print $3}')
+          docker pull $IMAGE_ID
+          docker run --name ${IMAGE_NAME}-${RANDOM} -d ${IMAGE_ID}
+
+          IMAGE_NAME="${REPOSITORY}-demo-cust" 
+          IMAGE_ID="${REPOSITORY}/${IMAGE_NAME}"
+          docker stop $(docker ps -a | grep "${IMAGE_ID}" | awk '{print $1 }')
+          docker rm $(docker ps -a | grep "${IMAGE_ID}" | awk '{print $1 }')
+          docker rmi $(docker images | grep "${IMAGE_ID}" | awk '{print $3}')
+          docker pull $IMAGE_ID
+          docker run --name ${IMAGE_NAME}-${RANDOM} -d ${IMAGE_ID}
