@@ -1,4 +1,5 @@
 ﻿using Adnc.Demo.Cust.Api.Application.Subscribers;
+using Adnc.Demo.Shared.Const;
 using Adnc.Shared.Application.Registrar;
 using Adnc.Shared.WebApi.Registrar;
 
@@ -47,9 +48,9 @@ public sealed class ApplicationLayerRegistrar : AbstractApplicationDependencyReg
         AddApplicaitonDefault();
         //register rpc-http services
         var restPolicies = PollyStrategyEnable ? this.GenerateDefaultRefitPolicies() : new();
-        AddRestClient<IAuthRestClient>(ServiceConsts.AuthService, restPolicies);
-        AddRestClient<IUsrRestClient>(ServiceConsts.UsrService, restPolicies);
-        AddRestClient<IMaintRestClient>(ServiceConsts.MaintService, restPolicies);
+        AddRestClient<IAuthRestClient>(ServiceAddressConsts.AdncDemoAuthService, restPolicies);
+        AddRestClient<IUsrRestClient>(ServiceAddressConsts.AdncDemoUsrService, restPolicies);
+        AddRestClient<IMaintRestClient>(ServiceAddressConsts.AdncDemoMaintService, restPolicies);
         //register rpc-event service
         AddCapEventBus<CapEventSubscriber>();
         //register others services

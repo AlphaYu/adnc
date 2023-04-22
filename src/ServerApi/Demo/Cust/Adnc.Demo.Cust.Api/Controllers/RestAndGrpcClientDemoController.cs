@@ -1,4 +1,5 @@
 ﻿using Adnc.Demo.Cust.Api;
+using Adnc.Demo.Shared.Const;
 
 namespace Adnc.Demo.Cust.Api.Controllers;
 
@@ -113,7 +114,7 @@ public class RestAndGrpcClientDemoController : AdncControllerBase
     [Route("restdict")]
     public async Task<IActionResult> GetDictAsync()
     {
-        var restResult = await _maintRestClient.GetDictAsync(ServiceConsts.OrderStatusId);
+        var restResult = await _maintRestClient.GetDictAsync(ServiceAddressConsts.OrderStatusId);
         if (restResult.IsSuccessStatusCode && restResult.Content is not null)
             return Ok(restResult.Content);
         return NoContent();
@@ -127,7 +128,7 @@ public class RestAndGrpcClientDemoController : AdncControllerBase
     [Route("grpcdict")]
     public async Task<IActionResult> GetDictGrpcAsync()
     {
-        var request = new DictRequest() { Id = ServiceConsts.OrderStatusId };
+        var request = new DictRequest() { Id = ServiceAddressConsts.OrderStatusId };
         var grpcResult = await _maintGrpcClient.GetDictAsync(request, GrpcClientConsts.BasicHeader);
         if (grpcResult.IsSuccessStatusCode && grpcResult.Content.Is(DictReply.Descriptor))
         {

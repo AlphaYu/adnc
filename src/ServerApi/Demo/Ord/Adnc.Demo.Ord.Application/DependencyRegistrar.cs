@@ -22,7 +22,7 @@ public sealed class OrdApplicationDependencyRegistrar : AbstractApplicationDepen
 
         //rpc-rest
         var restPolicies = PollyStrategyEnable ? this.GenerateDefaultRefitPolicies() : new();
-        AddRestClient<IAuthRestClient>(ServiceAddressConsts.AdncDemoUsrService, restPolicies);
+        AddRestClient<IAuthRestClient>(ServiceAddressConsts.AdncDemoAuthService, restPolicies);
         AddRestClient<IUsrRestClient>(ServiceAddressConsts.AdncDemoUsrService, restPolicies);
         AddRestClient<IMaintRestClient>(ServiceAddressConsts.AdncDemoMaintService, restPolicies);
         AddRestClient<IWhseRestClient>(ServiceAddressConsts.AdncDemoWhseService, restPolicies);

@@ -24,6 +24,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\Shared\Adnc.Demo.Shared.Const\Adnc.Demo.Shared.Const.csproj" />
 		<ProjectReference Include="..\..\Shared\Adnc.Demo.Shared.Rpc.Event\Adnc.Demo.Shared.Rpc.Event.csproj" />
 		<ProjectReference Include="..\..\Shared\Adnc.Demo.Shared.Rpc.Http\Adnc.Demo.Shared.Rpc.Http.csproj" />
 		<ProjectReference Include="..\..\Shared\Adnc.Demo.Shared.Rpc.Grpc\Adnc.Demo.Shared.Rpc.Grpc.csproj" />

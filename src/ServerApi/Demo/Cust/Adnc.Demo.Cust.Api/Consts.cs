@@ -51,16 +51,4 @@
     {
         //public const string Root = $"{SharedConsts.ShortSolutionName}/productapi";
     }
-
-    public static class ServiceConsts
-    {
-        public const long ProdunctStatusId = 1600000008500;
-        public const long OrderStatusId = 1600000008600;
-
-        public const string AuthService = "adnc-usr-webapi";
-        public const string UsrService = "adnc-usr-webapi";
-        public const string MaintService = "adnc-maint-webapi";
-        public const string CustService = "adnc-cust-webapi";      
-        public const string OrdService = "adnc-ord-webapi";
-        public const string WhseService = "adnc-whse-webapi";   }
 }
