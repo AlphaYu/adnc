@@ -4,10 +4,10 @@ on: workflow_dispatch
 
 env:
   RUNNER_ROOT: /home/runner/work/adnc/adnc
-  PUBLISH_PATH: /bin/Release/net6.0/linux-x64/publish
+  PUBLISH_PATH: bin/Release/net6.0/linux-x64/publish
   USR_IMAGE_NAME: adnc-demo-usr
   USR_START_FILE: "Adnc.Demo.Usr.Api.dll"
-  USR_PROJECT_PATH: ./src/ServerApi/Demo/Usr/Adnc.Demo.Usr.Api
+  USR_PROJECT_PATH: src/ServerApi/Demo/Usr/Adnc.Demo.Usr.Api
 
 jobs:
   build:
@@ -25,7 +25,7 @@ jobs:
       run: |
         echo "build"
         cd ${RUNNER_ROOT}/${USR_PROJECT_PATH}
-        dotnet restore
+
         dotnet publish --configuration Release --runtime linux-x64 --self-contained false
         
         cd ${RUNNER_ROOT}/${USR_PROJECT_PATH}/${PUBLISH_PATH}
