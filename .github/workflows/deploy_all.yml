@@ -3,11 +3,11 @@ name: deploy_all
 on: workflow_dispatch
 
 env:
-  RUNNER_ROOT: /home/runner/work/adnc/adnc
-  PUBLISH_PATH: /bin/Release/net6.0/linux-x64/publish
+  RUNNER_SOURCE_ROOT: /home/runner/work/adnc/adnc/src/ServerApi
+  PUBLISH_PATH: bin/Release/net6.0/linux-x64/publish
   USR_IMAGE_NAME: adnc-demo-usr
   USR_START_FILE: "Adnc.Demo.Usr.Api.dll"
-  USR_PROJECT_PATH: ./src/ServerApi/Demo/Usr/Adnc.Demo.Usr.Api
+  USR_PROJECT_PATH: Demo/Usr/Adnc.Demo.Usr.Api
 
 jobs:
   build:
@@ -20,15 +20,18 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 6.0.x
-    
-    - name: Deploy-Usr
+        
+    - name: Buid Solution
+      run: dotnet build --configuration Release  ${RUNNER_SOURCE_ROOT}/Adnc.sln
+      
+    - name: Deploy-USR
       run: |
         echo "build"
-        cd ${RUNNER_ROOT}/${USR_PROJECT_PATH}
-        dotnet restore
+        cd ${RUNNER_SOURCE_ROOT}/${USR_PROJECT_PATH}
+
         dotnet publish --configuration Release --runtime linux-x64 --self-contained false
         
-        cd ${RUNNER_ROOT}/${USR_PROJECT_PATH}/${PUBLISH_PATH}
+        cd ${RUNNER_SOURCE_ROOT}/${USR_PROJECT_PATH}/${PUBLISH_PATH}
 
         echo "create dockerfile"
         touch Dockerfile
