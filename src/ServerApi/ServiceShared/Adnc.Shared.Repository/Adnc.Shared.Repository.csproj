@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	<Import Project="..\..\Props\common.props" />
-	<Import Project="..\..\Props\version_shared.props" />
-	<Import Project="..\..\Props\nuget.props" />
+	<Import Project="..\..\common.props" />
+	<Import Project="..\..\version_shared.props" />
+	<Import Project="..\..\nuget.props" />
 	<PropertyGroup>
 		<Description>该层定义了仓储层基类。</Description>
 		<PackageTags>Adnc.Shared.Repository</PackageTags>

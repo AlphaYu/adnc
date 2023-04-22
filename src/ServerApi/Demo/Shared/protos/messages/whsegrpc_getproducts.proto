@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+import "messages/common.proto";
+
+option csharp_namespace = "Adnc.Demo.Shared.Rpc.Grpc.Messages";
+
+package messages;
+
+message ProductSearchRequest{
+  repeated int64 Ids=1;
+  int32 StatusCode =2;
+}
+
+message ProductReply{
+  int64 Id= 1;
+  string Name=2;
+  messages.DecimalValue Price =3;
+}
+
+message ProductListReply{
+	repeated ProductReply List =1;
+}

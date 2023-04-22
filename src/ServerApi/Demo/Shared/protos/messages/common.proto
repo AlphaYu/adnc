@@ -1,0 +1,17 @@
+syntax = "proto3";
+import "google/protobuf/any.proto";
+
+option csharp_namespace = "Adnc.Demo.Shared.Rpc.Grpc.Messages";
+
+package messages;
+
+message GrpcResponse {
+  bool IsSuccessStatusCode = 1;
+  google.protobuf.Any Content =2; 
+  string Error = 3;
+}
+
+message DecimalValue {
+  int64 units = 1;
+  sfixed32 nanos = 2;
+}

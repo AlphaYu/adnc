@@ -2,15 +2,15 @@
 
 public sealed class PermissionRemoteHandler : AbstractPermissionHandler
 {
-    private readonly IUsrRestClient _usrRestClient;
+    private readonly IAuthRestClient _authRestClient;
 
-    public PermissionRemoteHandler(IUsrRestClient usrRestClient) => _usrRestClient = usrRestClient;
+    public PermissionRemoteHandler(IAuthRestClient authRestClient) => _authRestClient = authRestClient;
 
     protected override async Task<bool> CheckUserPermissions(long userId, IEnumerable<string> requestPermissions, string userBelongsRoleIds)
     {
         //var jwtToken = await _contextAccessor.HttpContext.GetTokenAsync("access_token");
         //var refitResult = await _authRpcService.GetCurrenUserPermissions($"Bearer {jwtToken}", userId, codes);
-        var restResult = await _usrRestClient.GetCurrenUserPermissionsAsync(userId, requestPermissions, userBelongsRoleIds);
+        var restResult = await _authRestClient.GetCurrenUserPermissionsAsync(userId, requestPermissions, userBelongsRoleIds);
         if (!restResult.IsSuccessStatusCode)
             return false;
 

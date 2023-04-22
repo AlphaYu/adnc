@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+option csharp_namespace = "Adnc.Demo.Shared.Rpc.Grpc.Messages";
+
+package messages;
+
+message LoginReply{
+  string Token = 1;
+  string RefreshToken =2;
+}
+
+message LoginRequest {
+  string Account = 1;
+  string Password = 2;
+}

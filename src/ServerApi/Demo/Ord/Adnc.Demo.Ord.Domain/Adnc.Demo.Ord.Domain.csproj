@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="..\..\..\common.props" />
+	<Import Project="..\..\..\version_service.props" />
+	<PropertyGroup>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+	</PropertyGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\Shared\Adnc.Demo.Shared.Const\Adnc.Demo.Shared.Const.csproj" />
+		<ProjectReference Include="..\..\Shared\Adnc.Demo.Shared.Rpc.Event\Adnc.Demo.Shared.Rpc.Event.csproj" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(SolutionName)'=='Adnc'">
+		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.EventBus\Adnc.Infra.EventBus.csproj" />
+		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Helper\Adnc.Infra.Helper.csproj" />
+		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.IdGenerater\Adnc.Infra.IdGenerater.csproj" />
+		<ProjectReference Include="..\..\..\ServiceShared\Adnc.Shared\Adnc.Shared.csproj" />
+		<ProjectReference Include="..\..\..\ServiceShared\Adnc.Shared.Domain\Adnc.Shared.Domain.csproj" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(SolutionName)'=='Adnc.Demo' ">
+		<PackageReference Include="Adnc.Infra.EventBus" Version="$(Infra_Version)" />
+		<PackageReference Include="Adnc.Infra.Helper" Version="$(Infra_Version)" />
+		<PackageReference Include="Adnc.Infra.IdGenerater" Version="$(Infra_Version)" />
+		<PackageReference Include="Adnc.Shared" Version="$(Shared_Version)" />
+		<PackageReference Include="Adnc.Shared.Domain" Version="$(Shared_Version)" />
+	</ItemGroup>
+</Project>

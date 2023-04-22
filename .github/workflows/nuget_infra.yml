@@ -4,6 +4,7 @@ on:
     workflow_dispatch:
       branches:
       - master
+      - dev 
 
 jobs:
   build_artifact:    
