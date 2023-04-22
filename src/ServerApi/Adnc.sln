@@ -49,7 +49,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Core", "Infrastr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Demo.Usr.Repository", "Demo\Usr\Adnc.Demo.Usr.Repository\Adnc.Demo.Usr.Repository.csproj", "{0F3C6418-FF43-45F5-A543-BFF6390C68CE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Repository.EfCore.MySql", "Infrastructures\Adnc.Infra.EfCore.MySQL\Adnc.Infra.Repository.EfCore.MySql.csproj", "{4996AD8D-3CB3-4C18-9E5E-DD58F01757C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Repository.EfCore.MySql", "Infrastructures\Adnc.Infra.EfCore.MySql\Adnc.Infra.Repository.EfCore.MySql.csproj", "{4996AD8D-3CB3-4C18-9E5E-DD58F01757C6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Demo.Maint.Repository", "Demo\Maint\Adnc.Demo.Maint.Repository\Adnc.Demo.Maint.Repository.csproj", "{DBA375C1-A4A7-4D7B-A342-EA1D4C6F8B16}"
 EndProject
@@ -73,7 +73,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Gateway.Ocelot", "Gate
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Repository.EfCore", "Infrastructures\Adnc.Infra.EfCore\Adnc.Infra.Repository.EfCore.csproj", "{2E1E570D-529F-4FDF-A05F-EC8735AE80F3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Repository.EfCore.SqlServer", "Infrastructures\Adnc.Infra.EfCore.SQLServer\Adnc.Infra.Repository.EfCore.SqlServer.csproj", "{37533E90-9599-4A36-8A47-85379A7004D5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Repository.EfCore.SqlServer", "Infrastructures\Adnc.Infra.EfCore.SqlServer\Adnc.Infra.Repository.EfCore.SqlServer.csproj", "{37533E90-9599-4A36-8A47-85379A7004D5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Redis", "Infrastructures\Adnc.Infra.Redis\Adnc.Infra.Redis.csproj", "{70DC6E1E-8364-4F2E-B059-00D8EE6D5C27}"
 EndProject
