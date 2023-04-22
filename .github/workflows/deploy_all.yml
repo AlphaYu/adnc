@@ -114,7 +114,12 @@ jobs:
           docker rm $(docker ps -a | grep "${IMAGE_ID}" | awk '{print $1 }')
           docker rmi $(docker images | grep "${IMAGE_ID}" | awk '{print $3}')
           docker pull $IMAGE_ID
-          docker run --name ${IMAGE_NAME}-${RANDOM} -d ${IMAGE_ID}
+          docker run \
+                -d \
+                --name=${IMAGE_NAME}-${RANDOM} \
+                -e ASPNETCORE_ENVIRONMENT=Production \
+                -e TZ=Asia/Shanghai \
+                $IMAGE_ID
 
           IMAGE_NAME="${REPOSITORY}-demo-maint" 
           IMAGE_ID="${REPOSITORY}/${IMAGE_NAME}"
@@ -122,7 +127,12 @@ jobs:
           docker rm $(docker ps -a | grep "${IMAGE_ID}" | awk '{print $1 }')
           docker rmi $(docker images | grep "${IMAGE_ID}" | awk '{print $3}')
           docker pull $IMAGE_ID
-          docker run --name ${IMAGE_NAME}-${RANDOM} -d ${IMAGE_ID}
+          docker run \
+                -d \
+                --name=${IMAGE_NAME}-${RANDOM} \
+                -e ASPNETCORE_ENVIRONMENT=Production \
+                -e TZ=Asia/Shanghai \
+                $IMAGE_ID
 
           IMAGE_NAME="${REPOSITORY}-demo-cust" 
           IMAGE_ID="${REPOSITORY}/${IMAGE_NAME}"
@@ -130,4 +140,9 @@ jobs:
           docker rm $(docker ps -a | grep "${IMAGE_ID}" | awk '{print $1 }')
           docker rmi $(docker images | grep "${IMAGE_ID}" | awk '{print $3}')
           docker pull $IMAGE_ID
-          docker run --name ${IMAGE_NAME}-${RANDOM} -d ${IMAGE_ID}
+          docker run \
+                -d \
+                --name=${IMAGE_NAME}-${RANDOM} \
+                -e ASPNETCORE_ENVIRONMENT=Production \
+                -e TZ=Asia/Shanghai \
+                $IMAGE_ID
