@@ -9,14 +9,14 @@ public interface IAuthRestClient : IRestClient
     ///  登录
     /// </summary>
     /// <returns></returns>
-    [Post("/auth/session")]
+    [Post("/auth/api/session")]
     Task<ApiResponse<LoginRto>> LoginAsync(LoginInputRto loginRequest);
 
     /// <summary>
     ///  获取认证信息
     /// </summary>
     /// <returns></returns>
-    [Get("/auth/session")]
+    [Get("/auth/api/session")]
     [Headers("Authorization: Basic", "Cache: 10000")]
     Task<ApiResponse<UserValidatedInfoRto>> GetValidatedInfoAsync();
     
@@ -25,7 +25,7 @@ public interface IAuthRestClient : IRestClient
     /// </summary>
     /// <returns></returns>
     [Headers("Authorization: Basic", "Cache: 2000")]
-    [Get("/auth/session/{userId}/permissions")]
+    [Get("/auth/api/session/{userId}/permissions")]
     //Task<ApiResponse<List<string>>> GetCurrenUserPermissions([Header("Authorization")] string jwtToken, long userId, [Query(CollectionFormat.Multi)] string[] permissions);
     Task<ApiResponse<List<string>>> GetCurrenUserPermissionsAsync(long userId, [Query(CollectionFormat.Multi)] IEnumerable<string> requestPermissions, [Query]string userBelongsRoleIds);
 }
