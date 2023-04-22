@@ -3,6 +3,7 @@ name: deploy_all
 on: workflow_dispatch
 
 env:
+  REPOSITORY: "adnc"
   RUNNER_DEMO_SOURCE_ROOT: /home/runner/work/adnc/adnc/src/ServerApi/Demo
   PUBLISH_PATH: bin/Release/net6.0/linux-x64/publish
   USR_IMAGE_NAME: adnc-demo-usr
@@ -28,7 +29,7 @@ jobs:
       run: |
         IMAGE_NAME=$USR_IMAGE_NAME
         PROJECT_PATH=$USR_PROJECT_PATH
-        
+
         cd ${RUNNER_DEMO_SOURCE_ROOT}/${PROJECT_PATH}/${PUBLISH_PATH}
 
         echo "create dockerfile"
@@ -44,7 +45,7 @@ jobs:
         docker build . --file Dockerfile --tag $IMAGE_NAME
 
         echo "Login to registry"
-        echo "${{ secrets.DOCKER_API_KEY }}" | docker login -u adnc --password-stdin
+        echo "${{ secrets.DOCKER_API_KEY }}" | docker login -u ${REPOSITORY} --password-stdin
         
         echo "Push"
         IMAGE_ID=${REPOSITORY}/${IMAGE_NAME}
