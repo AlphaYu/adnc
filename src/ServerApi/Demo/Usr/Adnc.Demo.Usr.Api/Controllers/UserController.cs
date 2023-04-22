@@ -3,7 +3,7 @@
 /// <summary>
 /// 用户管理
 /// </summary>
-[Route("usr/users")]
+[Route($"{RouteConsts.UsrRoot}/users")]
 [ApiController]
 public class UserController : AdncControllerBase
 {

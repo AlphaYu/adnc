@@ -1,11 +1,9 @@
-﻿using Adnc.Shared.Application.Contracts;
-
-namespace Adnc.Demo.Usr.Api.Controllers;
+﻿namespace Adnc.Demo.Usr.Api.Controllers;
 
 /// <summary>
 /// 菜单管理
 /// </summary>
-[Route("usr/menus")]
+[Route($"{RouteConsts.UsrRoot}/menus")]
 [ApiController]
 public class MenuController : AdncControllerBase
 {

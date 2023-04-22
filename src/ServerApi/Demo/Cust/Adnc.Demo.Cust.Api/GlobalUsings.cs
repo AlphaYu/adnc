@@ -1,4 +1,5 @@
-﻿global using Adnc.Demo.Shared.Rpc.Grpc;
+﻿global using Adnc.Demo.Shared.Const;
+global using Adnc.Demo.Shared.Rpc.Grpc;
 global using Adnc.Demo.Shared.Rpc.Grpc.Messages;
 global using Adnc.Demo.Shared.Rpc.Grpc.Services;
 global using Adnc.Demo.Shared.Rpc.Http.Rtos;

@@ -3,7 +3,7 @@
 /// <summary>
 /// 角色管理
 /// </summary>
-[Route("usr/roles")]
+[Route($"{RouteConsts.UsrRoot}/roles")]
 [ApiController]
 public class RoleController : AdncControllerBase
 {

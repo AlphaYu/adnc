@@ -3,7 +3,7 @@
 /// <summary>
 /// 组织机构管理
 /// </summary>
-[Route("usr/organizations")]
+[Route($"{RouteConsts.UsrRoot}/organizations")]
 [ApiController]
 public class OrganizationController : AdncControllerBase
 {

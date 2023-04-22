@@ -1,12 +1,9 @@
-﻿using Adnc.Demo.Cust.Api;
-using Adnc.Demo.Shared.Const;
-
-namespace Adnc.Demo.Cust.Api.Controllers;
+﻿namespace Adnc.Demo.Cust.Api.Controllers;
 
 /// <summary>
 /// REST and gRPC demo
 /// </summary>
-[Route("cust/restandgrpcdemo")]
+[Route($"{RouteConsts.CustRoot}/restandgrpcdemo")]
 [ApiController]
 public class RestAndGrpcClientDemoController : AdncControllerBase
 {

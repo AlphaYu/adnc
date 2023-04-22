@@ -8,7 +8,7 @@ public interface IUsrRestClient : IRestClient
     /// 获取部门列表
     /// </summary>
     /// <returns></returns>
-    [Get("/usr/organizations")]
+    [Get("/usr/api/organizations")]
     [Headers("Authorization: Basic", "Cache: 2000")]
     Task<ApiResponse<List<DeptRto>>> GetOrganizationsAsync();
 }

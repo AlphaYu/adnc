@@ -1,5 +1,4 @@
-﻿using Adnc.Demo.Cust.Api.Repository.Entities;
-using static Adnc.Demo.Cust.Api.EntityConsts;
+﻿using Adnc.Demo.Shared.Const.Entity.Cust;
 
 namespace Adnc.Demo.Cust.Api.Repository.Entities.Config;
 

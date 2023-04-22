@@ -3,7 +3,7 @@
 /// <summary>
 /// 认证管理
 /// </summary>
-[Route("auth/session")]
+[Route($"{RouteConsts.AuthRoot}/session")]
 [ApiController]
 public class AccountController : AdncControllerBase
 {

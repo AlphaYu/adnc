@@ -6,7 +6,7 @@ namespace Adnc.Demo.Cust.Api.Controllers;
 /// <summary>
 /// 客户管理
 /// </summary>
-[Route("cust/customers")]
+[Route($"{RouteConsts.CustRoot}/customers")]
 [ApiController]
 public class CustomerController : AdncControllerBase
 {

@@ -5,7 +5,7 @@ namespace Adnc.Demo.Maint.WebApi.Controllers;
 /// <summary>
 /// 日志管理
 /// </summary>
-[Route("maint")]
+[Route($"{RouteConsts.MaintRoot}")]
 public class LogController : AdncControllerBase
 {
     private readonly ILogAppService _logService;

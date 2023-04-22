@@ -3,7 +3,7 @@
 /// <summary>
 /// 配置管理
 /// </summary>
-[Route("maint/cfgs")]
+[Route($"{RouteConsts.MaintRoot}/cfgs")]
 [ApiController]
 public class CfgController : AdncControllerBase
 {

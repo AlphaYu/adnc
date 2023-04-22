@@ -3,7 +3,7 @@
 /// <summary>
 /// 通知管理
 /// </summary>
-[Route("maint/notices")]
+[Route($"{RouteConsts.MaintRoot}/notices")]
 [ApiController]
 public class NoticeController : AdncControllerBase
 {

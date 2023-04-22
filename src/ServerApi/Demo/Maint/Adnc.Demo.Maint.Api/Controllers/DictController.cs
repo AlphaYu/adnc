@@ -3,7 +3,7 @@
 /// <summary>
 /// 字典管理
 /// </summary>
-[Route("maint/dicts")]
+[Route($"{RouteConsts.MaintRoot}/dicts")]
 [ApiController]
 public class DictController : AdncControllerBase
 {
