@@ -62,6 +62,7 @@ jobs:
           docker run \
                 -d \
                 --name=${IMAGE_NAME}-${RANDOM} \
+                -p 8888:80 \
                 -e ASPNETCORE_ENVIRONMENT=Production \
                 -e TZ=Asia/Shanghai \
                 -e ASPNETCORE_HOSTINGSTARTUPASSEMBLIES=SkyAPM.Agent.AspNetCore \
