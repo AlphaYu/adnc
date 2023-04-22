@@ -6,8 +6,8 @@ env:
   RUNNER_DEMO_SOURCE_ROOT: /home/runner/work/adnc/adnc/src/ServerApi/Demo
   PUBLISH_PATH: bin/Release/net6.0/linux-x64/publish
   USR_IMAGE_NAME: adnc-demo-usr
-  USR_START_FILE: "Adnc.Demo.Usr.Api.dll"
   USR_PROJECT_PATH: Usr/Adnc.Demo.Usr.Api
+  USR_START_FILE: "Adnc.Demo.Usr.Api.dll"
 
 jobs:
   build:
@@ -27,11 +27,11 @@ jobs:
     - name: Deploy-USR
       run: |
         echo "build"
-        cd ${RUNNER_SOURCE_ROOT}/${USR_PROJECT_PATH}
+        cd ${RUNNER_DEMO_SOURCE_ROOT}/${USR_PROJECT_PATH}
 
         dotnet publish --configuration Release --runtime linux-x64 --self-contained false
         
-        cd ${RUNNER_SOURCE_ROOT}/${USR_PROJECT_PATH}/${PUBLISH_PATH}
+        cd ${RUNNER_DEMO_SOURCE_ROOT}/${USR_PROJECT_PATH}/${PUBLISH_PATH}
 
         echo "create dockerfile"
         touch Dockerfile
