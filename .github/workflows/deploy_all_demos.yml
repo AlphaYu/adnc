@@ -15,6 +15,12 @@ env:
   CUST_IMAGE_NAME: adnc-demo-cust
   CUST_PROJECT_PATH: Cust/Adnc.Demo.Cust.Api
   CUST_START_FILE: "Adnc.Demo.Cust.Api.dll"
+  ORD_IMAGE_NAME: adnc-demo-ord
+  ORD_PROJECT_PATH: Ord/Adnc.Demo.Ord.Api
+  ORD_START_FILE: "Adnc.Demo.Ord.Api.dll"
+  WHSE_IMAGE_NAME: adnc-demo-whse
+  WHSE_PROJECT_PATH: WHSE/Adnc.Demo.Whse.Api
+  WHSE_START_FILE: "Adnc.Demo.Whse.Api.dll"
 
 jobs:
   build:
@@ -99,6 +105,50 @@ jobs:
         docker push $IMAGE_ID:$VERSION
         docker push $IMAGE_ID:latest
 
+        echo "---demo-ord---"
+        IMAGE_NAME=$ORD_IMAGE_NAME
+        PROJECT_PATH=$ORD_PROJECT_PATH
+        cd ${RUNNER_DEMO_SOURCE_ROOT}/${PROJECT_PATH}/${PUBLISH_PATH}
+        touch Dockerfile
+        echo '' > Dockerfile
+        echo "FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base" >> Dockerfile
+        echo "WORKDIR /app" >> Dockerfile
+        echo "COPY . /app" >> Dockerfile
+        echo "ENTRYPOINT [ \"dotnet\",\"${ORD_START_FILE}\" ]" >> Dockerfile
+        echo "build image"
+        docker build . --file Dockerfile --tag $IMAGE_NAME
+        echo "Login to registry"
+        echo "${{ secrets.DOCKER_API_KEY }}" | docker login -u ${REPOSITORY} --password-stdin     
+        IMAGE_ID=${REPOSITORY}/${IMAGE_NAME}
+        IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+        VERSION=$(date +%s)
+        docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
+        docker tag $IMAGE_NAME $IMAGE_ID:latest
+        docker push $IMAGE_ID:$VERSION
+        docker push $IMAGE_ID:latest
+
+        echo "---demo-whse---"
+        IMAGE_NAME=$WHSE_IMAGE_NAME
+        PROJECT_PATH=$WHSE_PROJECT_PATH
+        cd ${RUNNER_DEMO_SOURCE_ROOT}/${PROJECT_PATH}/${PUBLISH_PATH}
+        touch Dockerfile
+        echo '' > Dockerfile
+        echo "FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base" >> Dockerfile
+        echo "WORKDIR /app" >> Dockerfile
+        echo "COPY . /app" >> Dockerfile
+        echo "ENTRYPOINT [ \"dotnet\",\"${WHSE_START_FILE}\" ]" >> Dockerfile
+        echo "build image"
+        docker build . --file Dockerfile --tag $IMAGE_NAME
+        echo "Login to registry"
+        echo "${{ secrets.DOCKER_API_KEY }}" | docker login -u ${REPOSITORY} --password-stdin     
+        IMAGE_ID=${REPOSITORY}/${IMAGE_NAME}
+        IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+        VERSION=$(date +%s)
+        docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
+        docker tag $IMAGE_NAME $IMAGE_ID:latest
+        docker push $IMAGE_ID:$VERSION
+        docker push $IMAGE_ID:latest
+
     - name: Deploy all
       uses: appleboy/ssh-action@master
       with:
@@ -146,3 +196,29 @@ jobs:
                 -e ASPNETCORE_ENVIRONMENT=Production \
                 -e TZ=Asia/Shanghai \
                 $IMAGE_ID
+
+          IMAGE_NAME="${REPOSITORY}-demo-ord" 
+          IMAGE_ID="${REPOSITORY}/${IMAGE_NAME}"
+          docker stop $(docker ps -a | grep "${IMAGE_ID}" | awk '{print $1 }')
+          docker rm $(docker ps -a | grep "${IMAGE_ID}" | awk '{print $1 }')
+          docker rmi $(docker images | grep "${IMAGE_ID}" | awk '{print $3}')
+          docker pull $IMAGE_ID
+          docker run \
+                -d \
+                --name=${IMAGE_NAME}-${RANDOM} \
+                -e ASPNETCORE_ENVIRONMENT=Production \
+                -e TZ=Asia/Shanghai \
+                $IMAGE_ID   
+
+          IMAGE_NAME="${REPOSITORY}-demo-whse" 
+          IMAGE_ID="${REPOSITORY}/${IMAGE_NAME}"
+          docker stop $(docker ps -a | grep "${IMAGE_ID}" | awk '{print $1 }')
+          docker rm $(docker ps -a | grep "${IMAGE_ID}" | awk '{print $1 }')
+          docker rmi $(docker images | grep "${IMAGE_ID}" | awk '{print $3}')
+          docker pull $IMAGE_ID
+          docker run \
+                -d \
+                --name=${IMAGE_NAME}-${RANDOM} \
+                -e ASPNETCORE_ENVIRONMENT=Production \
+                -e TZ=Asia/Shanghai \
+                $IMAGE_ID                            
