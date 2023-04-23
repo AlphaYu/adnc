@@ -19,7 +19,7 @@ env:
   ORD_PROJECT_PATH: Ord/Adnc.Demo.Ord.Api
   ORD_START_FILE: "Adnc.Demo.Ord.Api.dll"
   WHSE_IMAGE_NAME: adnc-demo-whse
-  WHSE_PROJECT_PATH: WHSE/Adnc.Demo.Whse.Api
+  WHSE_PROJECT_PATH: Whse/Adnc.Demo.Whse.Api
   WHSE_START_FILE: "Adnc.Demo.Whse.Api.dll"
 
 jobs:
