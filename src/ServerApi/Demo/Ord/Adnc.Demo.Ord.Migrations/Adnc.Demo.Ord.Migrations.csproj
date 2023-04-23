@@ -2,7 +2,7 @@
 	<Import Project="..\..\..\common.props" />
 	<Import Project="..\..\..\version_service.props" />
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-		<OutputPath>..\Adnc.Demo.Ord.WebApi\bin\$(Configuration)</OutputPath>
+		<OutputPath>..\Adnc.Demo.Ord.Api\bin\$(Configuration)</OutputPath>
 	</PropertyGroup>
 	<ItemGroup Condition="'$(SolutionName)'=='Adnc'">
 		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.EfCore.MySql\Adnc.Infra.Repository.EfCore.MySql.csproj" />
