@@ -9,9 +9,14 @@
 <a href="https://github.com/AlphaYu/Adnc/network">
 <img alt="GitHub forks" src="https://img.shields.io/github/forks/AlphaYu/Adnc"/>
 </a>
+<a href="">
+<img alt="Visitors" src="https://komarev.com/ghpvc/?username=alphayu&color=red&label=Visitors"/>
+</a>
 </div>
 
-#### <div align="center">代码改变世界，开源推动社区</div>
+###### <div align="center">代码改变世界，开源推动社区</div>
+
+## 概述
 ### 什么是微服务？
 
 微服务是一种分布式架构模式，通过将应用程序拆分成一组小型、松耦合的服务，可以提高应用程序的可伸缩性、可靠性和灵活性。
@@ -28,27 +33,59 @@
 - 开放性：框架是一个开源项目，采用 `MIT` 许可证发布，用户可以自由地使用、修改和分享该框架的源代码。
 - 生态圈：框架的社区生态圈正在逐渐壮大，有越来越多的开发人员在使用和贡献该框架，用户可以从社区中获取到更多的资源和支持。
 
-## 总体架构设计
+## 架构设计
+
+### 目录结构
+
+```
+adnc 
+├── .github
+│   └── workflows CICD脚本目录(github-action)
+├── doc 技术文档目录
+├── src 源代码目录
+│   ├── ServerApi 后端代码目录
+│   │   ├── Infrastructures 基础架构层代码目录
+│   │   ├── ServiceShared 服务通用层代码目录
+│   │   ├── Gateways ocelot网关代码目录
+│   │   └── Demo 示例代码目录
+│   └── ClientApp 前端代码目录
+├── test 测试相关目录
+├── .gitignore
+├── README.MD
+└── LICENSE
+```
+### 重要文件
+| 路径                                           | 描述                               |
+| ---------------------------------------------- | ---------------------------------- |
+| `src/ServerApi/Adnc.sln`                       | 该解决方案包含`adnc`所有工程       |
+| `src/ServerApi/Infrastructures/Adnc.Infra.sln` | 该解决方案仅包含基础架构层相关工程 |
+| `src/ServerApi/ServiceShared/Adnc.Shared.sln`  | 该解决方案仅包含服务通用层相关工程 |
+| `src/ServerApi/Demo/Adnc.Demo.sln`             | 该解决方案仅包含`demo`相关工程     |
+| `scr/ServerApi/common.props`                   | 工程文件`*.csproj`公用配置         |
+| `scr/ServerApi/version_infra.props`            | 基础架构层版本号                   |
+| `scr/ServerApi/version_shared.props`           | 服务通用层版本号                   |
+| `scr/ServerApi/nuget.props`                    | `Nuget`发布信息配置                |
+### 总体架构图
 
 <img src="https://aspdotnetcore.net/wp-content/uploads/2023/04/adnc_framework-e1682145003197.png" alt="adnc_framework"/>
 
-### Adnc.Infra.*
+#### Adnc.Infra.*
 
 [NuGet Gallery | Packages matching adnc.infra](https://www.nuget.org/packages?q=adnc.infra)
 
 ![adnc-framework-2](https://aspdotnetcore.net/wp-content/uploads/2023/04/adnc-framework-2.png)
 
-### Adnc.Shared.*
+#### Adnc.Shared.*
 
 [NuGet Gallery | Packages matching adnc.shared](https://www.nuget.org/packages?q=adnc.shared)
 
 <img src="https://aspdotnetcore.net/wp-content/uploads/2023/04/adnc-framework-3.png" alt="adnc-framework-3" style="zoom:80%;" />
 
-## 解决方案截图
+### 解决方案截图
 
 ![adnc-solution](https://aspdotnetcore.net/wp-content/uploads/2023/04/adnc-solution.png)
 
-## 技术栈
+### 技术栈
 
 | 名称                                                         | 描述                                                         |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
