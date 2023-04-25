@@ -31,6 +31,12 @@
 		</Content>
 	</ItemGroup>
 
+	<ItemGroup>
+	  <None Include="wwwroot\favicon.ico">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
+
 
 	<ProjectExtensions>
 		<VisualStudio>
