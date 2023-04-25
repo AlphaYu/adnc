@@ -60,7 +60,9 @@ public class Startup
             {
                 endpoints.MapGet("/", async context =>
                 {
-                    await context.Response.WriteAsync($"Hello Ocelot,{env.EnvironmentName}!");
+                    var content = app.GetDefaultPageContent();
+                    context.Response.Headers.Add("Content-Type", "text/html");
+                    await context.Response.WriteAsync(content);
                 });
             })
             .UseOcelot()
