@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32319.34
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "04.Infrastructures", "04.Infrastructures", "{3B899133-BEAC-4438-977F-B28FDFF3AE27}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02.Infrastructures", "02.Infrastructures", "{3B899133-BEAC-4438-977F-B28FDFF3AE27}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "06.Demo", "06.Demo", "{0CDC8FFF-393C-4C44-A2D8-996C24C51024}"
 EndProject
@@ -67,7 +67,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Repository.Dappe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.IdGenerater", "Infrastructures\Adnc.Infra.IdGenerater\Adnc.Infra.IdGenerater.csproj", "{33F58CA4-F76D-4326-AAA5-447662AE8A30}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03.Gateways", "03.Gateways", "{A142E6FE-FDCF-48BD-AEE8-0C8A45993594}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "04.Gateways", "04.Gateways", "{A142E6FE-FDCF-48BD-AEE8-0C8A45993594}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Gateway.Ocelot", "Gateways\Adnc.Gateway.Ocelot\Adnc.Gateway.Ocelot.csproj", "{3959A019-D8B6-4D90-96BC-A60CE91700E2}"
 EndProject
@@ -88,7 +88,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01.Solution Items", "01.Sol
 		version_shared.props = version_shared.props
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "05.ServiceShared", "05.ServiceShared", "{9697B6F8-6C64-4184-AB6C-8683D6F12B61}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03.ServiceShared", "03.ServiceShared", "{9697B6F8-6C64-4184-AB6C-8683D6F12B61}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Shared", "ServiceShared\Adnc.Shared\Adnc.Shared.csproj", "{392F5810-E2FD-477E-AD37-A24691000222}"
 EndProject
