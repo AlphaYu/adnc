@@ -37,7 +37,6 @@
   "Routes": [
     //auth service
     {
-      "ServiceName": "adnc-demo-usr-api",
       "DownstreamPathTemplate": "/auth/api{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -57,7 +56,6 @@
     },
     //usr services
     {
-      "ServiceName": "adnc-demo-usr-api",
       "DownstreamPathTemplate": "/usr/api{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -77,7 +75,6 @@
     },
     //maint services
     {
-      "ServiceName": "adnc-demo-maint-api",
       "DownstreamPathTemplate": "/maint/api{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -97,7 +94,6 @@
     },
     //cust services
     {
-      "ServiceName": "adnc-demo-cust-api",
       "DownstreamPathTemplate": "/cust/api{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
