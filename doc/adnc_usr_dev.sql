@@ -1,8 +1,8 @@
 -- --------------------------------------------------------
--- Ö÷»ú:                           114.132.157.167
--- ·şÎñÆ÷°æ±¾:                        10.5.8-MariaDB-1:10.5.8+maria~focal - mariadb.org binary distribution
--- ·şÎñÆ÷²Ù×÷ÏµÍ³:                      debian-linux-gnu
--- HeidiSQL °æ±¾:                  12.1.0.6537
+-- ä¸»æœº:                           114.132.157.167
+-- æœåŠ¡å™¨ç‰ˆæœ¬:                        10.5.8-MariaDB-1:10.5.8+maria~focal - mariadb.org binary distribution
+-- æœåŠ¡å™¨æ“ä½œç³»ç»Ÿ:                      debian-linux-gnu
+-- HeidiSQL ç‰ˆæœ¬:                  12.1.0.6537
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -14,91 +14,91 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
--- µ¼³ö  ±í adnc_usr_dev.sys_eventtracker ½á¹¹
+-- å¯¼å‡º  è¡¨ adnc_usr_dev.sys_eventtracker ç»“æ„
 CREATE TABLE IF NOT EXISTS `sys_eventtracker` (
   `id` bigint(20) NOT NULL,
   `eventid` bigint(20) NOT NULL,
   `trackername` varchar(50) NOT NULL,
-  `createby` bigint(20) NOT NULL COMMENT '´´½¨ÈË',
-  `createtime` datetime(6) NOT NULL COMMENT '´´½¨Ê±¼ä/×¢²áÊ±¼ä',
+  `createby` bigint(20) NOT NULL COMMENT 'åˆ›å»ºäºº',
+  `createtime` datetime(6) NOT NULL COMMENT 'åˆ›å»ºæ—¶é—´/æ³¨å†Œæ—¶é—´',
   PRIMARY KEY (`id`),
   UNIQUE KEY `ix_sys_eventtracker_eventid_trackername` (`eventid`,`trackername`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='ÊÂ¼ş¸ú×Ù/´¦ÀíĞÅÏ¢';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='äº‹ä»¶è·Ÿè¸ª/å¤„ç†ä¿¡æ¯';
 
--- ÕıÔÚµ¼³ö±í  adnc_usr_dev.sys_eventtracker µÄÊı¾İ£º~0 rows (´óÔ¼)
+-- æ­£åœ¨å¯¼å‡ºè¡¨  adnc_usr_dev.sys_eventtracker çš„æ•°æ®ï¼š~0 rows (å¤§çº¦)
 
--- µ¼³ö  ±í adnc_usr_dev.sys_menu ½á¹¹
+-- å¯¼å‡º  è¡¨ adnc_usr_dev.sys_menu ç»“æ„
 CREATE TABLE IF NOT EXISTS `sys_menu` (
   `id` bigint(20) NOT NULL,
-  `code` varchar(16) NOT NULL COMMENT '±àºÅ',
-  `component` varchar(64) DEFAULT NULL COMMENT '½M¼şÅäÖÃ',
-  `hidden` tinyint(1) NOT NULL COMMENT 'ÊÇ·ñÒş²Ø',
-  `icon` varchar(16) DEFAULT NULL COMMENT 'Í¼±ê',
-  `ismenu` tinyint(1) NOT NULL COMMENT 'ÊÇ·ñÊÇ²Ëµ¥1:²Ëµ¥,0:°´Å¥',
-  `isopen` tinyint(1) NOT NULL COMMENT 'ÊÇ·ñÄ¬ÈÏ´ò¿ª1:ÊÇ,0:·ñ',
-  `levels` int(11) NOT NULL COMMENT '¼¶±ğ',
-  `name` varchar(16) NOT NULL COMMENT 'Ãû³Æ',
-  `ordinal` int(11) NOT NULL COMMENT 'ĞòºÅ',
-  `pcode` varchar(16) NOT NULL COMMENT '¸¸²Ëµ¥±àºÅ',
-  `pcodes` varchar(128) NOT NULL COMMENT 'µİ¹é¸¸¼¶²Ëµ¥±àºÅ',
-  `status` tinyint(1) NOT NULL COMMENT '×´Ì¬1:ÆôÓÃ,0:½ûÓÃ',
-  `tips` varchar(32) DEFAULT NULL COMMENT 'Êó±êĞüÍ£ÌáÊ¾ĞÅÏ¢',
-  `url` varchar(64) NOT NULL COMMENT 'Á´½Ó',
-  `createby` bigint(20) NOT NULL COMMENT '´´½¨ÈË',
-  `createtime` datetime(6) NOT NULL COMMENT '´´½¨Ê±¼ä/×¢²áÊ±¼ä',
-  `modifyby` bigint(20) DEFAULT NULL COMMENT '×îºó¸üĞÂÈË',
-  `modifytime` datetime(6) DEFAULT NULL COMMENT '×îºó¸üĞÂÊ±¼ä',
+  `code` varchar(16) NOT NULL COMMENT 'ç¼–å·',
+  `component` varchar(64) DEFAULT NULL COMMENT 'çµ„ä»¶é…ç½®',
+  `hidden` tinyint(1) NOT NULL COMMENT 'æ˜¯å¦éšè—',
+  `icon` varchar(16) DEFAULT NULL COMMENT 'å›¾æ ‡',
+  `ismenu` tinyint(1) NOT NULL COMMENT 'æ˜¯å¦æ˜¯èœå•1:èœå•,0:æŒ‰é’®',
+  `isopen` tinyint(1) NOT NULL COMMENT 'æ˜¯å¦é»˜è®¤æ‰“å¼€1:æ˜¯,0:å¦',
+  `levels` int(11) NOT NULL COMMENT 'çº§åˆ«',
+  `name` varchar(16) NOT NULL COMMENT 'åç§°',
+  `ordinal` int(11) NOT NULL COMMENT 'åºå·',
+  `pcode` varchar(16) NOT NULL COMMENT 'çˆ¶èœå•ç¼–å·',
+  `pcodes` varchar(128) NOT NULL COMMENT 'é€’å½’çˆ¶çº§èœå•ç¼–å·',
+  `status` tinyint(1) NOT NULL COMMENT 'çŠ¶æ€1:å¯ç”¨,0:ç¦ç”¨',
+  `tips` varchar(32) DEFAULT NULL COMMENT 'é¼ æ ‡æ‚¬åœæç¤ºä¿¡æ¯',
+  `url` varchar(64) NOT NULL COMMENT 'é“¾æ¥',
+  `createby` bigint(20) NOT NULL COMMENT 'åˆ›å»ºäºº',
+  `createtime` datetime(6) NOT NULL COMMENT 'åˆ›å»ºæ—¶é—´/æ³¨å†Œæ—¶é—´',
+  `modifyby` bigint(20) DEFAULT NULL COMMENT 'æœ€åæ›´æ–°äºº',
+  `modifytime` datetime(6) DEFAULT NULL COMMENT 'æœ€åæ›´æ–°æ—¶é—´',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='²Ëµ¥';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='èœå•';
 
--- ÕıÔÚµ¼³ö±í  adnc_usr_dev.sys_menu µÄÊı¾İ£º~44 rows (´óÔ¼)
+-- æ­£åœ¨å¯¼å‡ºè¡¨  adnc_usr_dev.sys_menu çš„æ•°æ®ï¼š~44 rows (å¤§çº¦)
 INSERT INTO `sys_menu` (`id`, `code`, `component`, `hidden`, `icon`, `ismenu`, `isopen`, `levels`, `name`, `ordinal`, `pcode`, `pcodes`, `status`, `tips`, `url`, `createby`, `createtime`, `modifyby`, `modifytime`) VALUES
-	(1600000000001, 'usr', 'layout', 0, 'peoples', 1, 0, 1, 'ÓÃ»§ÖĞĞÄ', 0, '0', '[0],', 1, '', '/usr', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2022-12-29 18:25:00.626499'),
-	(1600000000003, 'maintain', 'layout', 0, 'operation', 1, 0, 1, 'ÔËÎ¬ÖĞĞÄ', 1, '0', '[0],', 1, '', '/maintain', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2022-11-04 15:00:36.204374'),
-	(1600000000004, 'user', 'views/usr/user/index', 0, 'user', 1, 0, 2, 'ÓÃ»§¹ÜÀí', 0, 'usr', '[0],[usr]', 1, NULL, '/user', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2020-11-25 00:21:11.459114'),
-	(1600000000005, 'userAdd', NULL, 0, '', 0, 0, 3, 'Ìí¼ÓÓÃ»§', 0, 'user', '[0],[usr][user]', 1, NULL, '/user/add', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2020-11-25 00:21:23.738379'),
-	(1600000000006, 'userEdit', NULL, 0, '', 0, 0, 3, 'ĞŞ¸ÄÓÃ»§', 0, 'user', '[0],[usr][user]', 1, NULL, '/user/edit', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2020-11-25 00:21:44.038549'),
-	(1600000000007, 'userDelete', NULL, 0, NULL, 0, 0, 3, 'É¾³ıÓÃ»§', 0, 'user', '[0],[usr],[user],', 1, NULL, '/user/delete', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2020-08-08 08:08:08.888888'),
-	(1600000000008, 'userReset', NULL, 0, NULL, 0, 0, 3, 'ÖØÖÃÃÜÂë', 0, 'user', '[0],[usr],[user],', 1, NULL, '/user/reset', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2020-08-08 08:08:08.888888'),
-	(1600000000009, 'userFreeze', NULL, 0, '', 0, 0, 3, '¶³½áÓÃ»§', 0, 'user', '[0],[usr][user]', 1, NULL, '/user/freeze', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2020-11-25 00:21:48.244064'),
-	(1600000000010, 'userUnfreeze', NULL, 0, NULL, 0, 0, 3, '½â³ı¶³½áÓÃ»§', 0, 'user', '[0],[usr],[user],', 1, NULL, '/user/unfreeze', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2020-08-08 08:08:08.888888'),
-	(1600000000011, 'userSetRole', NULL, 0, NULL, 0, 0, 3, '·ÖÅä½ÇÉ«', 0, 'user', '[0],[usr],[user],', 1, NULL, '/user/setRole', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2020-08-08 08:08:08.888888'),
-	(1600000000012, 'role', 'views/usr/role/index', 0, 'people', 1, 0, 2, '½ÇÉ«¹ÜÀí', 0, 'usr', '[0],[usr]', 1, NULL, '/role', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2020-08-08 08:08:08.888888'),
-	(1600000000013, 'roleAdd', NULL, 0, NULL, 0, 0, 3, 'Ìí¼Ó½ÇÉ«', 0, 'role', '[0],[usr],[role],', 1, NULL, '/role/add', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2020-08-08 08:08:08.888888'),
-	(1600000000014, 'roleEdit', NULL, 0, NULL, 0, 0, 3, 'ĞŞ¸Ä½ÇÉ«', 0, 'role', '[0],[usr],[role],', 1, NULL, '/role/edit', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2020-08-08 08:08:08.888888'),
-	(1600000000015, 'roleDelete', NULL, 0, NULL, 0, 0, 3, 'É¾³ı½ÇÉ«', 0, 'role', '[0],[usr],[role]', 1, NULL, '/role/delete', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2020-08-08 08:08:08.888888'),
-	(1600000000016, 'roleSetAuthority', NULL, 0, NULL, 0, 0, 3, 'ÅäÖÃÈ¨ÏŞ', 0, 'role', '[0],[usr],[role],', 1, NULL, '/role/setAuthority', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2020-08-08 08:08:08.888888'),
-	(1600000000017, 'menu', 'views/usr/menu/index', 0, 'menu', 1, 0, 2, '²Ëµ¥¹ÜÀí', 0, 'usr', '[0],[usr]', 1, NULL, '/menu', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2020-08-08 08:08:08.888888'),
-	(1600000000018, 'menuAdd', NULL, 0, NULL, 0, 0, 3, 'Ìí¼Ó²Ëµ¥', 0, 'menu', '[0],[usr],[menu],', 1, NULL, '/menu/add', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2020-08-08 08:08:08.888888'),
-	(1600000000019, 'menuEdit', NULL, 0, NULL, 0, 0, 3, 'ĞŞ¸Ä²Ëµ¥', 0, 'menu', '[0],[usr],[menu],', 1, NULL, '/menu/edit', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2020-08-08 08:08:08.888888'),
-	(1600000000020, 'menuDelete', NULL, 0, NULL, 0, 0, 3, 'É¾³ı²Ëµ¥', 0, 'menu', '[0],[usr],[menu],', 1, NULL, '/menu/remove', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2020-08-08 08:08:08.888888'),
-	(1600000000021, 'dept', 'views/usr/dept/index', 0, 'dept', 1, 0, 2, '²¿ÃÅ¹ÜÀí', 0, 'usr', '[0],[usr],', 1, NULL, '/dept', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2020-08-08 08:08:08.888888'),
-	(1600000000022, 'dict', 'views/maintain/dict/index', 0, 'dict', 1, 0, 2, '×Öµä¹ÜÀí', 0, 'maintain', '[0],[maintain]', 1, '', '/dict', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2022-12-29 18:25:15.231079'),
-	(1600000000023, 'deptEdit', NULL, 0, NULL, 0, 0, 3, 'ĞŞ¸Ä²¿ÃÅ', 0, 'dept', '[0],[usr],[dept],', 1, NULL, '/dept/update', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2020-08-08 08:08:08.888888'),
-	(1600000000024, 'deptDelete', NULL, 0, NULL, 0, 0, 3, 'É¾³ı²¿ÃÅ', 0, 'dept', '[0],[usr],[dept],', 1, NULL, '/dept/delete', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2020-08-08 08:08:08.888888'),
-	(1600000000025, 'dictAdd', NULL, 0, '', 0, 0, 3, 'Ìí¼Ó×Öµä', 0, 'dict', '[0],[maintain],[dict]', 1, NULL, '/dict/add', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2022-08-15 11:03:42.351551'),
-	(1600000000026, 'dictEdit', NULL, 0, NULL, 0, 0, 3, 'ĞŞ¸Ä×Öµä', 0, 'dict', '[0],[maintain],[dict],', 1, NULL, '/dict/update', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2020-08-08 08:08:08.888888'),
-	(1600000000027, 'dictDelete', NULL, 0, NULL, 0, 0, 3, 'É¾³ı×Öµä', 0, 'dict', '[0],[maintain],[dict],', 1, NULL, '/dict/delete', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2020-08-08 08:08:08.888888'),
-	(1600000000028, 'deptList', NULL, 0, NULL, 0, 0, 3, '²¿ÃÅÁĞ±í', 0, 'dept', '[0],[usr],[dept],', 1, NULL, '/dept/list', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2020-08-08 08:08:08.888888'),
-	(1600000000030, 'dictList', NULL, 0, NULL, 0, 0, 3, '×ÖµäÁĞ±í', 0, 'dict', '[0],[maintain],[dict],', 1, NULL, '/dict/list', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2020-08-08 08:08:08.888888'),
-	(1600000000032, 'deptAdd', NULL, 0, NULL, 0, 0, 3, 'Ìí¼Ó²¿ÃÅ', 0, 'dept', '[0],[usr],[dept],', 1, NULL, '/dept/add', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2020-08-08 08:08:08.888888'),
-	(1600000000033, 'cfg', 'views/maintain/cfg/index', 0, 'cfg', 1, 0, 2, '²ÎÊı¹ÜÀí', 0, 'maintain', '[0],[maintain]', 1, '', '/cfg', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2022-12-29 18:25:21.399448'),
-	(1600000000034, 'cfgAdd', NULL, 0, NULL, 0, 0, 3, 'Ìí¼ÓÏµÍ³²ÎÊı', 0, 'cfg', '[0],[maintain],[cfg],', 1, NULL, '/cfg/add', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2020-08-08 08:08:08.888888'),
-	(1600000000035, 'cfgEdit', NULL, 0, NULL, 0, 0, 3, 'ĞŞ¸ÄÏµÍ³²ÎÊı', 0, 'cfg', '[0],[maintain],[cfg],', 1, NULL, '/cfg/update', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2020-08-08 08:08:08.888888'),
-	(1600000000036, 'cfgDelete', NULL, 0, NULL, 0, 0, 3, 'É¾³ıÏµÍ³²ÎÊı', 0, 'cfg', '[0],[maintain],[cfg],', 1, NULL, '/cfg/delete', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2020-08-08 08:08:08.888888'),
-	(1600000000048, 'opsLog', 'views/maintain/opslog/index', 0, 'log', 1, 0, 2, '²Ù×÷ÈÕÖ¾', 0, 'maintain', '[0],[maintain]', 1, '', '/opslog', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2022-12-29 18:25:37.792634'),
-	(1600000000049, 'loginLog', 'views/maintain/loginlog/index', 0, 'logininfor', 1, 0, 2, 'µÇÂ¼ÈÕÖ¾', 0, 'maintain', '[0],[maintain]', 1, '', '/loginlog', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2022-12-29 18:25:43.303822'),
-	(1600000000054, 'druid', 'layout', 0, 'link', 1, 0, 2, 'ĞÔÄÜ¼ì²â', 0, 'maintain', '[0],[maintain]', 1, NULL, 'http://skywalking.aspdotnetcore.net', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2022-08-15 11:07:15.272200'),
-	(1600000000055, 'swagger', 'views/maintain/swagger/index', 0, 'swagger', 1, 0, 2, '½Ó¿ÚÎÄµµ', 0, 'maintain', '[0],[maintain]', 1, NULL, '/swagger', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2020-11-25 19:30:04.982175'),
-	(1600000000071, 'nlogLog', 'layout', 0, 'logininfor', 1, 0, 2, 'NlogÈÕÖ¾', 0, 'maintain', '[0],[maintain]', 1, NULL, 'http://loki.aspdotnetcore.net', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2022-08-15 11:07:03.454784'),
-	(1600000000072, 'health', 'layout', 0, 'monitor', 1, 0, 2, '½¡¿µ¼ì²â', 0, 'maintain', '[0],[maintain]', 1, '', 'http://prometheus.aspdotnetcore.net', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2022-12-29 18:23:10.485071'),
-	(1600000000073, 'menuList', NULL, 0, '', 0, 0, 3, '²Ëµ¥ÁĞ±í', 0, 'menu', '[0],[usr][menu]', 1, NULL, '/menu/list', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2020-08-08 08:08:08.888888'),
-	(1600000000074, 'roleList', NULL, 0, '', 0, 0, 3, '½ÇÉ«ÁĞ±í', 1, 'role', '[0],[usr][role]', 1, NULL, '/role/list', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2021-02-08 23:29:43.628024'),
-	(1600000000075, 'userList', NULL, 0, '', 0, 0, 3, 'ÓÃ»§ÁĞ±í', 0, 'user', '[0],[usr][user]', 1, NULL, 'user/list', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2020-08-08 08:08:08.888888'),
-	(1600000000076, 'cfgList', NULL, 0, '', 0, 0, 3, 'ÏµÍ³²ÎÊıÁĞ±í', 0, 'cfg', '[0],[maintain][cfg]', 1, NULL, '/cfg/list', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2020-08-08 08:08:08.888888'),
+	(1600000000001, 'usr', 'layout', 0, 'peoples', 1, 0, 1, 'ç”¨æˆ·ä¸­å¿ƒ', 0, '0', '[0],', 1, '', '/usr', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2022-12-29 18:25:00.626499'),
+	(1600000000003, 'maintain', 'layout', 0, 'operation', 1, 0, 1, 'è¿ç»´ä¸­å¿ƒ', 1, '0', '[0],', 1, '', '/maintain', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2022-11-04 15:00:36.204374'),
+	(1600000000004, 'user', 'views/usr/user/index', 0, 'user', 1, 0, 2, 'ç”¨æˆ·ç®¡ç†', 0, 'usr', '[0],[usr]', 1, NULL, '/user', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2020-11-25 00:21:11.459114'),
+	(1600000000005, 'userAdd', NULL, 0, '', 0, 0, 3, 'æ·»åŠ ç”¨æˆ·', 0, 'user', '[0],[usr][user]', 1, NULL, '/user/add', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2020-11-25 00:21:23.738379'),
+	(1600000000006, 'userEdit', NULL, 0, '', 0, 0, 3, 'ä¿®æ”¹ç”¨æˆ·', 0, 'user', '[0],[usr][user]', 1, NULL, '/user/edit', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2020-11-25 00:21:44.038549'),
+	(1600000000007, 'userDelete', NULL, 0, NULL, 0, 0, 3, 'åˆ é™¤ç”¨æˆ·', 0, 'user', '[0],[usr],[user],', 1, NULL, '/user/delete', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2020-08-08 08:08:08.888888'),
+	(1600000000008, 'userReset', NULL, 0, NULL, 0, 0, 3, 'é‡ç½®å¯†ç ', 0, 'user', '[0],[usr],[user],', 1, NULL, '/user/reset', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2020-08-08 08:08:08.888888'),
+	(1600000000009, 'userFreeze', NULL, 0, '', 0, 0, 3, 'å†»ç»“ç”¨æˆ·', 0, 'user', '[0],[usr][user]', 1, NULL, '/user/freeze', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2020-11-25 00:21:48.244064'),
+	(1600000000010, 'userUnfreeze', NULL, 0, NULL, 0, 0, 3, 'è§£é™¤å†»ç»“ç”¨æˆ·', 0, 'user', '[0],[usr],[user],', 1, NULL, '/user/unfreeze', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2020-08-08 08:08:08.888888'),
+	(1600000000011, 'userSetRole', NULL, 0, NULL, 0, 0, 3, 'åˆ†é…è§’è‰²', 0, 'user', '[0],[usr],[user],', 1, NULL, '/user/setRole', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2020-08-08 08:08:08.888888'),
+	(1600000000012, 'role', 'views/usr/role/index', 0, 'people', 1, 0, 2, 'è§’è‰²ç®¡ç†', 0, 'usr', '[0],[usr]', 1, NULL, '/role', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2020-08-08 08:08:08.888888'),
+	(1600000000013, 'roleAdd', NULL, 0, NULL, 0, 0, 3, 'æ·»åŠ è§’è‰²', 0, 'role', '[0],[usr],[role],', 1, NULL, '/role/add', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2020-08-08 08:08:08.888888'),
+	(1600000000014, 'roleEdit', NULL, 0, NULL, 0, 0, 3, 'ä¿®æ”¹è§’è‰²', 0, 'role', '[0],[usr],[role],', 1, NULL, '/role/edit', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2020-08-08 08:08:08.888888'),
+	(1600000000015, 'roleDelete', NULL, 0, NULL, 0, 0, 3, 'åˆ é™¤è§’è‰²', 0, 'role', '[0],[usr],[role]', 1, NULL, '/role/delete', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2020-08-08 08:08:08.888888'),
+	(1600000000016, 'roleSetAuthority', NULL, 0, NULL, 0, 0, 3, 'é…ç½®æƒé™', 0, 'role', '[0],[usr],[role],', 1, NULL, '/role/setAuthority', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2020-08-08 08:08:08.888888'),
+	(1600000000017, 'menu', 'views/usr/menu/index', 0, 'menu', 1, 0, 2, 'èœå•ç®¡ç†', 0, 'usr', '[0],[usr]', 1, NULL, '/menu', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2020-08-08 08:08:08.888888'),
+	(1600000000018, 'menuAdd', NULL, 0, NULL, 0, 0, 3, 'æ·»åŠ èœå•', 0, 'menu', '[0],[usr],[menu],', 1, NULL, '/menu/add', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2020-08-08 08:08:08.888888'),
+	(1600000000019, 'menuEdit', NULL, 0, NULL, 0, 0, 3, 'ä¿®æ”¹èœå•', 0, 'menu', '[0],[usr],[menu],', 1, NULL, '/menu/edit', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2020-08-08 08:08:08.888888'),
+	(1600000000020, 'menuDelete', NULL, 0, NULL, 0, 0, 3, 'åˆ é™¤èœå•', 0, 'menu', '[0],[usr],[menu],', 1, NULL, '/menu/remove', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2020-08-08 08:08:08.888888'),
+	(1600000000021, 'dept', 'views/usr/dept/index', 0, 'dept', 1, 0, 2, 'éƒ¨é—¨ç®¡ç†', 0, 'usr', '[0],[usr],', 1, NULL, '/dept', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2020-08-08 08:08:08.888888'),
+	(1600000000022, 'dict', 'views/maintain/dict/index', 0, 'dict', 1, 0, 2, 'å­—å…¸ç®¡ç†', 0, 'maintain', '[0],[maintain]', 1, '', '/dict', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2022-12-29 18:25:15.231079'),
+	(1600000000023, 'deptEdit', NULL, 0, NULL, 0, 0, 3, 'ä¿®æ”¹éƒ¨é—¨', 0, 'dept', '[0],[usr],[dept],', 1, NULL, '/dept/update', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2020-08-08 08:08:08.888888'),
+	(1600000000024, 'deptDelete', NULL, 0, NULL, 0, 0, 3, 'åˆ é™¤éƒ¨é—¨', 0, 'dept', '[0],[usr],[dept],', 1, NULL, '/dept/delete', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2020-08-08 08:08:08.888888'),
+	(1600000000025, 'dictAdd', NULL, 0, '', 0, 0, 3, 'æ·»åŠ å­—å…¸', 0, 'dict', '[0],[maintain],[dict]', 1, NULL, '/dict/add', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2022-08-15 11:03:42.351551'),
+	(1600000000026, 'dictEdit', NULL, 0, NULL, 0, 0, 3, 'ä¿®æ”¹å­—å…¸', 0, 'dict', '[0],[maintain],[dict],', 1, NULL, '/dict/update', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2020-08-08 08:08:08.888888'),
+	(1600000000027, 'dictDelete', NULL, 0, NULL, 0, 0, 3, 'åˆ é™¤å­—å…¸', 0, 'dict', '[0],[maintain],[dict],', 1, NULL, '/dict/delete', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2020-08-08 08:08:08.888888'),
+	(1600000000028, 'deptList', NULL, 0, NULL, 0, 0, 3, 'éƒ¨é—¨åˆ—è¡¨', 0, 'dept', '[0],[usr],[dept],', 1, NULL, '/dept/list', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2020-08-08 08:08:08.888888'),
+	(1600000000030, 'dictList', NULL, 0, NULL, 0, 0, 3, 'å­—å…¸åˆ—è¡¨', 0, 'dict', '[0],[maintain],[dict],', 1, NULL, '/dict/list', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2020-08-08 08:08:08.888888'),
+	(1600000000032, 'deptAdd', NULL, 0, NULL, 0, 0, 3, 'æ·»åŠ éƒ¨é—¨', 0, 'dept', '[0],[usr],[dept],', 1, NULL, '/dept/add', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2020-08-08 08:08:08.888888'),
+	(1600000000033, 'cfg', 'views/maintain/cfg/index', 0, 'cfg', 1, 0, 2, 'å‚æ•°ç®¡ç†', 0, 'maintain', '[0],[maintain]', 1, '', '/cfg', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2022-12-29 18:25:21.399448'),
+	(1600000000034, 'cfgAdd', NULL, 0, NULL, 0, 0, 3, 'æ·»åŠ ç³»ç»Ÿå‚æ•°', 0, 'cfg', '[0],[maintain],[cfg],', 1, NULL, '/cfg/add', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2020-08-08 08:08:08.888888'),
+	(1600000000035, 'cfgEdit', NULL, 0, NULL, 0, 0, 3, 'ä¿®æ”¹ç³»ç»Ÿå‚æ•°', 0, 'cfg', '[0],[maintain],[cfg],', 1, NULL, '/cfg/update', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2020-08-08 08:08:08.888888'),
+	(1600000000036, 'cfgDelete', NULL, 0, NULL, 0, 0, 3, 'åˆ é™¤ç³»ç»Ÿå‚æ•°', 0, 'cfg', '[0],[maintain],[cfg],', 1, NULL, '/cfg/delete', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2020-08-08 08:08:08.888888'),
+	(1600000000048, 'opsLog', 'views/maintain/opslog/index', 0, 'log', 1, 0, 2, 'æ“ä½œæ—¥å¿—', 0, 'maintain', '[0],[maintain]', 1, '', '/opslog', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2022-12-29 18:25:37.792634'),
+	(1600000000049, 'loginLog', 'views/maintain/loginlog/index', 0, 'logininfor', 1, 0, 2, 'ç™»å½•æ—¥å¿—', 0, 'maintain', '[0],[maintain]', 1, '', '/loginlog', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2022-12-29 18:25:43.303822'),
+	(1600000000054, 'druid', 'layout', 0, 'link', 1, 0, 2, 'æ€§èƒ½æ£€æµ‹', 0, 'maintain', '[0],[maintain]', 1, NULL, 'http://skywalking.aspdotnetcore.net', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2022-08-15 11:07:15.272200'),
+	(1600000000055, 'swagger', 'views/maintain/swagger/index', 0, 'swagger', 1, 0, 2, 'æ¥å£æ–‡æ¡£', 0, 'maintain', '[0],[maintain]', 1, NULL, '/swagger', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2020-11-25 19:30:04.982175'),
+	(1600000000071, 'nlogLog', 'layout', 0, 'logininfor', 1, 0, 2, 'Nlogæ—¥å¿—', 0, 'maintain', '[0],[maintain]', 1, NULL, 'http://loki.aspdotnetcore.net', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2022-08-15 11:07:03.454784'),
+	(1600000000072, 'health', 'layout', 0, 'monitor', 1, 0, 2, 'å¥åº·æ£€æµ‹', 0, 'maintain', '[0],[maintain]', 1, '', 'http://prometheus.aspdotnetcore.net', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2022-12-29 18:23:10.485071'),
+	(1600000000073, 'menuList', NULL, 0, '', 0, 0, 3, 'èœå•åˆ—è¡¨', 0, 'menu', '[0],[usr][menu]', 1, NULL, '/menu/list', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2020-08-08 08:08:08.888888'),
+	(1600000000074, 'roleList', NULL, 0, '', 0, 0, 3, 'è§’è‰²åˆ—è¡¨', 1, 'role', '[0],[usr][role]', 1, NULL, '/role/list', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2021-02-08 23:29:43.628024'),
+	(1600000000075, 'userList', NULL, 0, '', 0, 0, 3, 'ç”¨æˆ·åˆ—è¡¨', 0, 'user', '[0],[usr][user]', 1, NULL, 'user/list', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2020-08-08 08:08:08.888888'),
+	(1600000000076, 'cfgList', NULL, 0, '', 0, 0, 3, 'ç³»ç»Ÿå‚æ•°åˆ—è¡¨', 0, 'cfg', '[0],[maintain][cfg]', 1, NULL, '/cfg/list', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2020-08-08 08:08:08.888888'),
 	(1600000000078, 'eventBus', 'layout', 0, 'server', 1, 0, 2, 'EventBus', 0, 'maintain', '[0],[maintain]', 1, NULL, 'http://114.132.157.167:8888/cus/cap/', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2022-08-15 11:05:57.235325');
 
--- µ¼³ö  ±í adnc_usr_dev.sys_organization ½á¹¹
+-- å¯¼å‡º  è¡¨ adnc_usr_dev.sys_organization ç»“æ„
 CREATE TABLE IF NOT EXISTS `sys_organization` (
   `id` bigint(20) NOT NULL,
   `fullname` varchar(32) NOT NULL,
@@ -107,23 +107,23 @@ CREATE TABLE IF NOT EXISTS `sys_organization` (
   `pids` varchar(80) NOT NULL,
   `simplename` varchar(16) NOT NULL,
   `tips` varchar(64) DEFAULT NULL,
-  `createby` bigint(20) NOT NULL COMMENT '´´½¨ÈË',
-  `createtime` datetime(6) NOT NULL COMMENT '´´½¨Ê±¼ä/×¢²áÊ±¼ä',
-  `modifyby` bigint(20) DEFAULT NULL COMMENT '×îºó¸üĞÂÈË',
-  `modifytime` datetime(6) DEFAULT NULL COMMENT '×îºó¸üĞÂÊ±¼ä',
+  `createby` bigint(20) NOT NULL COMMENT 'åˆ›å»ºäºº',
+  `createtime` datetime(6) NOT NULL COMMENT 'åˆ›å»ºæ—¶é—´/æ³¨å†Œæ—¶é—´',
+  `modifyby` bigint(20) DEFAULT NULL COMMENT 'æœ€åæ›´æ–°äºº',
+  `modifytime` datetime(6) DEFAULT NULL COMMENT 'æœ€åæ›´æ–°æ—¶é—´',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='²¿ÃÅ';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='éƒ¨é—¨';
 
--- ÕıÔÚµ¼³ö±í  adnc_usr_dev.sys_organization µÄÊı¾İ£º~6 rows (´óÔ¼)
+-- æ­£åœ¨å¯¼å‡ºè¡¨  adnc_usr_dev.sys_organization çš„æ•°æ®ï¼š~6 rows (å¤§çº¦)
 INSERT INTO `sys_organization` (`id`, `fullname`, `ordinal`, `pid`, `pids`, `simplename`, `tips`, `createby`, `createtime`, `modifyby`, `modifytime`) VALUES
-	(1600000001000, '×Ü¹«Ë¾', 0, 0, '[0],', '×Ü¹«Ë¾', NULL, 1600000000000, '2020-11-24 01:22:27.000000', 1600000000000, '2020-11-25 18:30:11.883723'),
-	(1606155294001, '²ÆÎñ²¿', 2, 1600000001000, '[0],[1600000001000],', '²ÆÎñ²¿', '', 1600000000000, '2020-11-24 02:14:54.675010', 1600000000000, '2022-12-29 18:23:16.913566'),
-	(1606155335002, 'ÑĞ·¢²¿', 1, 1600000001000, '[0],[1600000001000],', 'ÑĞ·¢²¿', NULL, 1600000000000, '2020-11-24 02:15:35.476720', 1600000000000, '2021-02-08 22:46:38.866773'),
-	(1606155393003, 'csharp×é', 6, 1606155335002, '[0],[1600000001000],[1606155335002],', 'csharp×é', NULL, 1600000000000, '2020-11-24 02:16:33.336059', 1600000000000, '2021-02-08 23:40:42.477252'),
-	(1606155436004, 'go×é', 3, 1606155335002, '[0],[1600000001000],[1606155335002],', 'go×é', NULL, 1600000000000, '2021-02-02 12:45:35.079665', 1600000000000, '2021-02-08 23:19:00.342879'),
-	(1612797557001, 'java×é', 1, 1606155335002, '[0],[1600000001000],[1606155335002],', 'java×é', NULL, 1600000000000, '2021-02-08 23:19:17.938562', NULL, NULL);
+	(1600000001000, 'æ€»å…¬å¸', 0, 0, '[0],', 'æ€»å…¬å¸', NULL, 1600000000000, '2020-11-24 01:22:27.000000', 1600000000000, '2020-11-25 18:30:11.883723'),
+	(1606155294001, 'è´¢åŠ¡éƒ¨', 2, 1600000001000, '[0],[1600000001000],', 'è´¢åŠ¡éƒ¨', '', 1600000000000, '2020-11-24 02:14:54.675010', 1600000000000, '2022-12-29 18:23:16.913566'),
+	(1606155335002, 'ç ”å‘éƒ¨', 1, 1600000001000, '[0],[1600000001000],', 'ç ”å‘éƒ¨', NULL, 1600000000000, '2020-11-24 02:15:35.476720', 1600000000000, '2021-02-08 22:46:38.866773'),
+	(1606155393003, 'csharpç»„', 6, 1606155335002, '[0],[1600000001000],[1606155335002],', 'csharpç»„', NULL, 1600000000000, '2020-11-24 02:16:33.336059', 1600000000000, '2021-02-08 23:40:42.477252'),
+	(1606155436004, 'goç»„', 3, 1606155335002, '[0],[1600000001000],[1606155335002],', 'goç»„', NULL, 1600000000000, '2021-02-02 12:45:35.079665', 1600000000000, '2021-02-08 23:19:00.342879'),
+	(1612797557001, 'javaç»„', 1, 1606155335002, '[0],[1600000001000],[1606155335002],', 'javaç»„', NULL, 1600000000000, '2021-02-08 23:19:17.938562', NULL, NULL);
 
--- µ¼³ö  ±í adnc_usr_dev.sys_role ½á¹¹
+-- å¯¼å‡º  è¡¨ adnc_usr_dev.sys_role ç»“æ„
 CREATE TABLE IF NOT EXISTS `sys_role` (
   `id` bigint(20) NOT NULL,
   `deptid` bigint(20) DEFAULT NULL,
@@ -131,19 +131,19 @@ CREATE TABLE IF NOT EXISTS `sys_role` (
   `ordinal` int(11) NOT NULL,
   `pid` bigint(20) DEFAULT NULL,
   `tips` varchar(64) DEFAULT NULL,
-  `createby` bigint(20) NOT NULL COMMENT '´´½¨ÈË',
-  `createtime` datetime(6) NOT NULL COMMENT '´´½¨Ê±¼ä/×¢²áÊ±¼ä',
-  `modifyby` bigint(20) DEFAULT NULL COMMENT '×îºó¸üĞÂÈË',
-  `modifytime` datetime(6) DEFAULT NULL COMMENT '×îºó¸üĞÂÊ±¼ä',
+  `createby` bigint(20) NOT NULL COMMENT 'åˆ›å»ºäºº',
+  `createtime` datetime(6) NOT NULL COMMENT 'åˆ›å»ºæ—¶é—´/æ³¨å†Œæ—¶é—´',
+  `modifyby` bigint(20) DEFAULT NULL COMMENT 'æœ€åæ›´æ–°äºº',
+  `modifytime` datetime(6) DEFAULT NULL COMMENT 'æœ€åæ›´æ–°æ—¶é—´',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='½ÇÉ«';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='è§’è‰²';
 
--- ÕıÔÚµ¼³ö±í  adnc_usr_dev.sys_role µÄÊı¾İ£º~2 rows (´óÔ¼)
+-- æ­£åœ¨å¯¼å‡ºè¡¨  adnc_usr_dev.sys_role çš„æ•°æ®ï¼š~2 rows (å¤§çº¦)
 INSERT INTO `sys_role` (`id`, `deptid`, `name`, `ordinal`, `pid`, `tips`, `createby`, `createtime`, `modifyby`, `modifytime`) VALUES
-	(1600000000010, NULL, 'ÏµÍ³¹ÜÀíÔ±', 0, NULL, 'administrator', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2021-02-08 23:39:16.907337'),
-	(1606156061057, NULL, 'Ö»¶ÁÓÃ»§', 1, NULL, 'readonly', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2022-11-04 14:33:16.159422');
+	(1600000000010, NULL, 'ç³»ç»Ÿç®¡ç†å‘˜', 0, NULL, 'administrator', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2021-02-08 23:39:16.907337'),
+	(1606156061057, NULL, 'åªè¯»ç”¨æˆ·', 1, NULL, 'readonly', 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2022-11-04 14:33:16.159422');
 
--- µ¼³ö  ±í adnc_usr_dev.sys_rolerelation ½á¹¹
+-- å¯¼å‡º  è¡¨ adnc_usr_dev.sys_rolerelation ç»“æ„
 CREATE TABLE IF NOT EXISTS `sys_rolerelation` (
   `id` bigint(20) NOT NULL,
   `menuid` bigint(20) NOT NULL,
@@ -151,9 +151,9 @@ CREATE TABLE IF NOT EXISTS `sys_rolerelation` (
   PRIMARY KEY (`id`),
   KEY `ix_sys_rolerelation_menuid` (`menuid`),
   CONSTRAINT `fk_sys_rolerelation_sys_menu_menuid` FOREIGN KEY (`menuid`) REFERENCES `sys_menu` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='²Ëµ¥½ÇÉ«¹ØÏµ';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='èœå•è§’è‰²å…³ç³»';
 
--- ÕıÔÚµ¼³ö±í  adnc_usr_dev.sys_rolerelation µÄÊı¾İ£º~62 rows (´óÔ¼)
+-- æ­£åœ¨å¯¼å‡ºè¡¨  adnc_usr_dev.sys_rolerelation çš„æ•°æ®ï¼š~62 rows (å¤§çº¦)
 INSERT INTO `sys_rolerelation` (`id`, `menuid`, `roleid`) VALUES
 	(1606193510001, 1600000000001, 1600000000010),
 	(1606193510002, 1600000000004, 1600000000010),
@@ -218,45 +218,45 @@ INSERT INTO `sys_rolerelation` (`id`, `menuid`, `roleid`) VALUES
 	(1610294626113, 1600000000072, 1606156061057),
 	(1610294626114, 1600000000078, 1606156061057);
 
--- µ¼³ö  ±í adnc_usr_dev.sys_user ½á¹¹
+-- å¯¼å‡º  è¡¨ adnc_usr_dev.sys_user ç»“æ„
 CREATE TABLE IF NOT EXISTS `sys_user` (
   `id` bigint(20) NOT NULL,
   `isdeleted` tinyint(1) NOT NULL DEFAULT 0,
-  `account` varchar(16) NOT NULL COMMENT 'ÕËºÅ',
-  `avatar` varchar(64) NOT NULL COMMENT 'Í·ÏñÂ·¾¶',
-  `birthday` datetime(6) DEFAULT NULL COMMENT 'ÉúÈÕ',
-  `deptid` bigint(20) DEFAULT NULL COMMENT '²¿ÃÅId',
+  `account` varchar(16) NOT NULL COMMENT 'è´¦å·',
+  `avatar` varchar(64) NOT NULL COMMENT 'å¤´åƒè·¯å¾„',
+  `birthday` datetime(6) DEFAULT NULL COMMENT 'ç”Ÿæ—¥',
+  `deptid` bigint(20) DEFAULT NULL COMMENT 'éƒ¨é—¨Id',
   `email` varchar(32) NOT NULL COMMENT 'email',
-  `name` varchar(16) NOT NULL COMMENT 'ĞÕÃû',
-  `password` varchar(32) NOT NULL COMMENT 'ÃÜÂë',
-  `phone` varchar(11) NOT NULL COMMENT 'ÊÖ»úºÅ',
-  `roleids` varchar(72) NOT NULL COMMENT '½ÇÉ«idÁĞ±í£¬ÒÔ¶ººÅ·Ö¸ô',
-  `salt` varchar(6) NOT NULL COMMENT 'ÃÜÂëÑÎ',
-  `sex` int(11) NOT NULL COMMENT 'ĞÔ±ğ',
-  `status` int(11) NOT NULL COMMENT '×´Ì¬',
-  `createby` bigint(20) NOT NULL COMMENT '´´½¨ÈË',
-  `createtime` datetime(6) NOT NULL COMMENT '´´½¨Ê±¼ä/×¢²áÊ±¼ä',
-  `modifyby` bigint(20) DEFAULT NULL COMMENT '×îºó¸üĞÂÈË',
-  `modifytime` datetime(6) DEFAULT NULL COMMENT '×îºó¸üĞÂÊ±¼ä',
+  `name` varchar(16) NOT NULL COMMENT 'å§“å',
+  `password` varchar(32) NOT NULL COMMENT 'å¯†ç ',
+  `phone` varchar(11) NOT NULL COMMENT 'æ‰‹æœºå·',
+  `roleids` varchar(72) NOT NULL COMMENT 'è§’è‰²idåˆ—è¡¨ï¼Œä»¥é€—å·åˆ†éš”',
+  `salt` varchar(6) NOT NULL COMMENT 'å¯†ç ç›',
+  `sex` int(11) NOT NULL COMMENT 'æ€§åˆ«',
+  `status` int(11) NOT NULL COMMENT 'çŠ¶æ€',
+  `createby` bigint(20) NOT NULL COMMENT 'åˆ›å»ºäºº',
+  `createtime` datetime(6) NOT NULL COMMENT 'åˆ›å»ºæ—¶é—´/æ³¨å†Œæ—¶é—´',
+  `modifyby` bigint(20) DEFAULT NULL COMMENT 'æœ€åæ›´æ–°äºº',
+  `modifytime` datetime(6) DEFAULT NULL COMMENT 'æœ€åæ›´æ–°æ—¶é—´',
   PRIMARY KEY (`id`),
   KEY `ix_sys_user_deptid` (`deptid`),
   CONSTRAINT `fk_sys_user_sys_organization_deptid` FOREIGN KEY (`deptid`) REFERENCES `sys_organization` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='¹ÜÀíÔ±';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='ç®¡ç†å‘˜';
 
--- ÕıÔÚµ¼³ö±í  adnc_usr_dev.sys_user µÄÊı¾İ£º~3 rows (´óÔ¼)
+-- æ­£åœ¨å¯¼å‡ºè¡¨  adnc_usr_dev.sys_user çš„æ•°æ®ï¼š~3 rows (å¤§çº¦)
 INSERT INTO `sys_user` (`id`, `isdeleted`, `account`, `avatar`, `birthday`, `deptid`, `email`, `name`, `password`, `phone`, `roleids`, `salt`, `sex`, `status`, `createby`, `createtime`, `modifyby`, `modifytime`) VALUES
-	(1600000000000, 0, 'alpha2008', '', '2020-11-04 00:00:00.000000', 1600000001000, 'alpha2008@tom.com', 'ÓàĞ¡Ã¨', 'E2CD3261D6C9C4BCBBCC807CFF64417A', '18898658888', '1600000000010,1606156061057', '2mh6e', 2, 1, 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2022-11-04 20:11:49.766338'),
-	(1606291099001, 0, 'adncgo2', '', '2020-11-25 00:00:00.000000', 1606155393003, 'beta2009@tom.com', 'Óà¶şÃ¨', 'A9B7CDA2D9001025FC02C40AF6A80D4E', '18987656789', '1606156061057', '880qx', 2, 1, 1600000000000, '2020-11-25 15:58:20.255014', 1600000000000, '2021-02-08 23:41:01.034853'),
-	(1606293242002, 0, 'adncgo3', '', '2020-11-25 00:00:00.000000', 1606155436004, 'beta2009@tom.com', 'ÓàÈıÃ¨', 'B273093C82A8E58C4E6E9673A8062092', '18898737334', '1600000000010,1606156061057', 'p110y', 1, 1, 1600000000000, '2020-11-25 16:34:03.074970', 1600000000000, '2021-02-08 23:20:03.098985');
+	(1600000000000, 0, 'alpha2008', '', '2020-11-04 00:00:00.000000', 1600000001000, 'alpha2008@tom.com', 'ä½™å°çŒ«', 'E2CD3261D6C9C4BCBBCC807CFF64417A', '18898658888', '1600000000010,1606156061057', '2mh6e', 2, 1, 1600000000000, '2020-08-08 08:08:08.888888', 1600000000000, '2022-11-04 20:11:49.766338'),
+	(1606291099001, 0, 'adncgo2', '', '2020-11-25 00:00:00.000000', 1606155393003, 'beta2009@tom.com', 'ä½™äºŒçŒ«', 'A9B7CDA2D9001025FC02C40AF6A80D4E', '18987656789', '1606156061057', '880qx', 2, 1, 1600000000000, '2020-11-25 15:58:20.255014', 1600000000000, '2021-02-08 23:41:01.034853'),
+	(1606293242002, 0, 'adncgo3', '', '2020-11-25 00:00:00.000000', 1606155436004, 'beta2009@tom.com', 'ä½™ä¸‰çŒ«', 'B273093C82A8E58C4E6E9673A8062092', '18898737334', '1600000000010,1606156061057', 'p110y', 1, 1, 1600000000000, '2020-11-25 16:34:03.074970', 1600000000000, '2021-02-08 23:20:03.098985');
 
--- µ¼³ö  ±í adnc_usr_dev.__efmigrationshistory ½á¹¹
+-- å¯¼å‡º  è¡¨ adnc_usr_dev.__efmigrationshistory ç»“æ„
 CREATE TABLE IF NOT EXISTS `__efmigrationshistory` (
   `migrationid` varchar(150) NOT NULL,
   `productversion` varchar(32) NOT NULL,
   PRIMARY KEY (`migrationid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- ÕıÔÚµ¼³ö±í  adnc_usr_dev.__efmigrationshistory µÄÊı¾İ£º~1 rows (´óÔ¼)
+-- æ­£åœ¨å¯¼å‡ºè¡¨  adnc_usr_dev.__efmigrationshistory çš„æ•°æ®ï¼š~1 rows (å¤§çº¦)
 INSERT INTO `__efmigrationshistory` (`migrationid`, `productversion`) VALUES
 	('20221220080247_Init2022122001', '6.0.6');
 
