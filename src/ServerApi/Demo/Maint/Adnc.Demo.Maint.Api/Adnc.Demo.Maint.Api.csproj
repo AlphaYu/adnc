@@ -4,6 +4,10 @@
 	<PropertyGroup>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<Description>运维中心服务</Description>
+		<!--https://blog.markvincze.com/troubleshooting-high-memory-usage-with-asp-net-core-on-kubernetes/-->
+		<!--https://www.cnblogs.com/eastpig/p/7822892.html-->
+		<ServerGarbageCollection>false</ServerGarbageCollection>
+		<ConcurrentGarbageCollection>true</ConcurrentGarbageCollection>
 	</PropertyGroup>
 	<ItemGroup>
 		<None Include="..\..\Shared\resources\**\*">
