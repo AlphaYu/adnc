@@ -1,0 +1,174 @@
+{
+    "Logging": {
+        "LogLevel": {
+            "Default": "Error",
+            "Adnc": "Information",
+            "Microsoft": "Error",
+            "Microsoft.AspNetCore.HttpLogging.HttpLoggingMiddleware": "Error"
+        }
+    },
+    "ThreadPoolSettings": {
+        "MinThreads": 2000,
+        "MinCompletionPortThreads": 1000,
+        "MaxThreads": 32767,
+        "MaxCompletionPortThreads": 1000
+    },
+    "AllowedHosts": "*",
+    "CorsHosts": "*",
+    "JWT": {
+        "ValidateIssuer": true,
+        "ValidIssuer": "adnc",
+        "ValidateIssuerSigningKey": true,
+        "SymmetricSecurityKey": "alphadotnetcoresecurity2020",
+        "ValidateAudience": true,
+        "ValidAudience": "manager",
+        "ValidateLifetime": true,
+        "RequireExpirationTime": true,
+        "ClockSkew": 1,
+        "RefreshTokenAudience": "manager",
+        "Expire": 6000,
+        "RefreshTokenExpire": 10080
+    },
+    "SkyWalking": {
+        "ServiceName": "adnc-gateway-ocelot",
+        "Namespace": "adnc",
+        "HeaderVersions": [
+            "sw8"
+        ],
+        "Sampling": {
+            "SamplePer3Secs": -1,
+            "Percentage": -1.0,
+            "IgnorePaths": ["/*/health-24b01005-a76a-4b3b-8fb1-5e0f2e9564fb", "http://**/appsettings", "/**/swagger.json"]
+        },
+        "Logging": {
+            "Level": "Error",
+            "FilePath": "logs\\skyapm-{Date}.log"
+        },
+        "Transport": {
+            "Interval": 3000,
+            "ProtocolVersion": "v8",
+            "QueueSize": 30000,
+            "BatchSize": 3000,
+            "gRPC": {
+                "Servers": "10.0.8.15:11800",
+                "Timeout": 10000,
+                "ConnectTimeout": 10000,
+                "ReportTimeout": 600000,
+                "Authentication": ""
+            }
+        }
+    },
+    "GlobalConfiguration": {
+        "ServiceDiscoveryProvider": {
+            "Scheme": "http",
+            "Host": "10.0.8.15",
+            "Port": 8500,
+            "Type": "Consul"
+        },
+        "RequestIdKey": "RequestId",
+        "RateLimitOptions": {
+            "ClientWhitelist": [],
+            "EnableRateLimiting": true,
+            "Period": "1s",
+            "Limit": 3000,
+            "PeriodTimespan": 10
+        },
+        "QoSOptions": {
+            "ExceptionsAllowedBeforeBreaking": 5,
+            "DurationOfBreak": 3000,
+            "TimeoutValue": 3000
+        }
+    },
+    "Routes": [
+    {
+            "UpstreamPathTemplate": "/auth/api{everything}",
+            "UpstreamHttpMethod": [
+                "Get",
+                "Put",
+                "Post",
+                "Delete"
+            ],
+            "DownstreamScheme": "http",
+            "DownstreamPathTemplate": "/auth/api{everything}",
+            "ServiceName": "adnc-demo-usr-api",
+            "LoadBalancerOptions": {
+                "Type": "RoundRobin"
+            }
+        },
+        {
+            "UpstreamPathTemplate": "/usr/api{everything}",
+            "UpstreamHttpMethod": [
+                "Get",
+                "Put",
+                "Post",
+                "Delete"
+            ],
+            "DownstreamScheme": "http",
+            "DownstreamPathTemplate": "/usr/api{everything}",
+            "ServiceName": "adnc-demo-usr-api",
+            "LoadBalancerOptions": {
+                "Type": "RoundRobin"
+            }
+        },
+        {
+            "UpstreamPathTemplate": "/maint/api{everything}",
+            "UpstreamHttpMethod": [
+                "Get",
+                "Put",
+                "Post",
+                "Delete"
+            ],
+            "DownstreamScheme": "http",
+            "DownstreamPathTemplate": "/maint/api{everything}",
+            "ServiceName": "adnc-demo-maint-api",
+            "LoadBalancerOptions": {
+                "Type": "RoundRobin"
+            }
+        },
+        {
+            "UpstreamPathTemplate": "/cust/api{everything}",
+            "UpstreamHttpMethod": [
+                "Get",
+                "Put",
+                "Post",
+                "Delete"
+            ],
+            "DownstreamScheme": "http",
+            "DownstreamPathTemplate": "/cust/api{everything}",
+            "ServiceName": "adnc-demo-cust-api",
+            "LoadBalancerOptions": {
+                "Type": "RoundRobin"
+            }
+        },
+        {
+            "UpstreamPathTemplate": "/ord/api{everything}",
+            "UpstreamHttpMethod": [
+                "Get",
+                "Put",
+                "Post",
+                "Delete"
+            ],
+            "DownstreamScheme": "http",
+            "DownstreamPathTemplate": "/ord/api{everything}",
+            "ServiceName": "adnc-demo-ord-api",
+            "LoadBalancerOptions": {
+                "Type": "RoundRobin"
+            }
+        },
+        {
+            "UpstreamPathTemplate": "/whse/api{everything}",
+            "UpstreamHttpMethod": [
+                "Get",
+                "Put",
+                "Post",
+                "Delete"
+            ],
+            "DownstreamScheme": "http",
+            "DownstreamPathTemplate": "/whse/api{everything}",
+            "ServiceName": "adnc-demo-whse-api",
+            "LoadBalancerOptions": {
+                "Type": "RoundRobin"
+            }
+        }
+    ]
+}

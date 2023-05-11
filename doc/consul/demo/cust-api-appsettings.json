@@ -1,0 +1,14 @@
+{
+  "Mysql": {
+    "ConnectionString": "Server=10.0.8.15;Port=13308;database=adnc_cust;uid=root;pwd=alpha.netcore;connection timeout=30;"
+  },
+  "Redis": {
+    "Provider": "StackExchange",
+    "EnableBloomFilter": false,
+    "EnableLogging": true,
+    "SerializerName": "binary",
+    "Dbconfig": {
+      "ConnectionString": "10.0.8.15:13379,password=football,defaultDatabase=9,ssl=false,sslHost=null,connectTimeout=4000,allowAdmin=true"
+    }
+  }
+}

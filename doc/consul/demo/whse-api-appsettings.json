@@ -1,0 +1,14 @@
+{
+	"SqlServer": {
+    "ConnectionString": "Data Source=10.0.8.15;Initial Catalog=adnc_whse;User Id=sa;Password=Adnc_6666;  "
+  },
+  "Redis": {
+    "Provider": "StackExchange",
+    "EnableBloomFilter": false,
+    "EnableLogging": true,
+    "SerializerName": "binary",
+    "Dbconfig": {
+      "ConnectionString": "10.0.8.15:13379,password=football,defaultDatabase=11,ssl=false,sslHost=null,connectTimeout=4000,allowAdmin=true"
+    }
+  }
+}
