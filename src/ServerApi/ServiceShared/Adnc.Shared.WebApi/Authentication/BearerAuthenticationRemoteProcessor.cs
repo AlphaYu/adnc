@@ -4,7 +4,7 @@ public class BearerAuthenticationRemoteProcessor : AbstractAuthenticationProcess
 {
     private IHttpContextAccessor _contextAccessor;
     private IAuthRestClient _authRestClient;
-    private ILogger<BearerAuthenticationRemoteProcessor> _logger; 
+    private ILogger<BearerAuthenticationRemoteProcessor> _logger;
 
     public BearerAuthenticationRemoteProcessor(
         IHttpContextAccessor contextAccessor,
@@ -22,7 +22,7 @@ public class BearerAuthenticationRemoteProcessor : AbstractAuthenticationProcess
         var userContext = _contextAccessor?.HttpContext?.RequestServices.GetService<UserContext>();
         if (userContext is null)
             throw new NullReferenceException(nameof(userContext));
-        else
+        else if (userContext.Id == 0)
             userContext.Id = userId;
 
         var apiReuslt = await _authRestClient.GetValidatedInfoAsync();

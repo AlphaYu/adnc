@@ -2,14 +2,14 @@
 
 public class BasicTokenGenerator : ITokenGenerator
 {
-    private readonly UserContext? _userContext;
+    private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly ILogger<BasicTokenGenerator> _logger;
 
     public BasicTokenGenerator(
         IHttpContextAccessor httpContextAccessor,
         ILogger<BasicTokenGenerator> logger)
     {
-        _userContext = httpContextAccessor.HttpContext.RequestServices.GetService<UserContext>();
+        _httpContextAccessor = httpContextAccessor;
         _logger = logger;
     }
 
@@ -19,7 +19,8 @@ public class BasicTokenGenerator : ITokenGenerator
 
     public virtual string Create()
     {
-        long userId = _userContext is null ? 0 : _userContext.Id;
+        var userContext = _httpContextAccessor.HttpContext.RequestServices.GetService<UserContext>();
+        long userId = userContext is null ? 0 : userContext.Id;
         _logger.LogDebug($"UserContext:{userId}");
         var userName = $"{BasicTokenValidator.InternalCaller}-{userId}";
         var token = BasicTokenValidator.PackToBase64(userName);
