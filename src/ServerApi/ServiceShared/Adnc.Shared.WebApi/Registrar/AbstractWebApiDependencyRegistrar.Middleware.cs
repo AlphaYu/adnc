@@ -53,8 +53,10 @@ public abstract partial class AbstractWebApiDependencyRegistrar : IMiddlewareReg
         var enableSwaggerUI = configuration.GetValue("SwaggerUI:Enable", true);
         if(enableSwaggerUI)
         {
+#if DEBUG
+            App.UseMiniProfiler();
+#endif
             App
-                .UseMiniProfiler()
                 .UseSwagger(c =>
                 {
                     c.RouteTemplate = $"/{serviceInfo.RelativeRootPath}/swagger/{{documentName}}/swagger.json";
@@ -65,6 +67,7 @@ public abstract partial class AbstractWebApiDependencyRegistrar : IMiddlewareReg
                 })
                 .UseSwaggerUI(c =>
                 {
+#if DEBUG
                     var assembly = serviceInfo.GetWebApiAssembly();
                     c.IndexStream = () =>
                     {
@@ -76,6 +79,7 @@ public abstract partial class AbstractWebApiDependencyRegistrar : IMiddlewareReg
                         var stream = new MemoryStream(byteArray);
                         return stream;
                     };
+#endif
                     c.SwaggerEndpoint($"/{serviceInfo.RelativeRootPath}/swagger/{serviceInfo.Version}/swagger.json", $"{serviceInfo.ServiceName}-{serviceInfo.Version}");
                     c.RoutePrefix = $"{serviceInfo.RelativeRootPath}";
                 });
