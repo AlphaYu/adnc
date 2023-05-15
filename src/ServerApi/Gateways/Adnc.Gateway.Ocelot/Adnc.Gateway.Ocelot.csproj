@@ -2,7 +2,7 @@
 	<Import Project="..\..\common.props" />
 
 	<ItemGroup>
-		<PackageReference Include="Adnc.Infra.Consul" Version="0.9.4" />
+		<PackageReference Include="Adnc.Infra.Consul" Version="0.9.9.1" />
 		<PackageReference Include="Microsoft.Identity.Web" Version="1.25.1" />
 		<PackageReference Include="Ocelot.Provider.Consul" Version="18.0.0" />
 		<PackageReference Include="Ocelot.Provider.Polly" Version="18.0.0" />
