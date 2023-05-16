@@ -1,5 +1,6 @@
 ﻿using Adnc.Infra.EventBus.Configurations;
 using Adnc.Infra.EventBus.RabbitMq;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using RabbitMQ.Client;
 
 namespace Adnc.Shared.WebApi.Registrar;
@@ -22,7 +23,7 @@ public abstract partial class AbstractWebApiDependencyRegistrar
         //await HttpContextUtility.GetCurrentHttpContext().GetTokenAsync("access_token");
         if (checkingMysql)
         {
-            var mysqlConnectionString = Configuration.GetValue(NodeConsts.Mysql_ConnectionString,string.Empty);
+            var mysqlConnectionString = Configuration.GetValue(NodeConsts.Mysql_ConnectionString, string.Empty);
             if (mysqlConnectionString.IsNullOrEmpty())
                 throw new NullReferenceException("mysqlconfig is null");
             checksBuilder.AddMySql(mysqlConnectionString);
@@ -74,6 +75,16 @@ public abstract partial class AbstractWebApiDependencyRegistrar
             });
         }
 
+        return checksBuilder;
+    }
+
+    /// <summary>
+    /// 注册健康监测组件
+    /// </summary>
+    protected IHealthChecksBuilder AddHealthChecks()
+    {
+        var checksBuilder = Services.AddHealthChecks();
+        checksBuilder.AddCheck("instance", () => HealthCheckResult.Healthy("instance is ok"));
         return checksBuilder;
     }
 }

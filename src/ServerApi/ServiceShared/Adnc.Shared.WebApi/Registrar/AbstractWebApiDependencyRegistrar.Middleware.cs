@@ -91,15 +91,21 @@ public abstract partial class AbstractWebApiDependencyRegistrar : IMiddlewareReg
                 // 该响应输出是一个json，包含所有检查项的详细检查结果
                 ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
             })
-            .UseRouting()
-            .UseHttpMetrics();
+            .UseRouting();
 
-        DotNetRuntimeStatsBuilder
-        .Customize()
-        .WithContentionStats()
-        .WithGcStats()
-        .WithThreadPoolStats()
-        .StartCollecting();
+        var enableMetrics = configuration.GetValue("Metrics:Enable", true);
+        if (enableMetrics)
+        {
+            App
+                .UseHttpMetrics();
+
+            DotNetRuntimeStatsBuilder
+            .Customize()
+            .WithContentionStats()
+            .WithGcStats()
+            .WithThreadPoolStats()
+            .StartCollecting();
+        }
 
         beforeAuthentication?.Invoke(App);
         App.UseAuthentication();
@@ -111,7 +117,10 @@ public abstract partial class AbstractWebApiDependencyRegistrar : IMiddlewareReg
             .UseEndpoints(endpoints =>
             {
                 endpointRoute?.Invoke(endpoints);
-                endpoints.MapMetrics();
+                if(enableMetrics)
+                {
+                    endpoints.MapMetrics();
+                }
                 endpoints.MapControllers().RequireAuthorization();
             });
     }
