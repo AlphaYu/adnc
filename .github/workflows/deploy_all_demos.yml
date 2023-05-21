@@ -169,6 +169,7 @@ jobs:
                 --name=${IMAGE_NAME}-${RANDOM} \
                 -e ASPNETCORE_ENVIRONMENT=Production \
                 -e TZ=Asia/Shanghai \
+                -m 200M \
                 $IMAGE_ID
 
           IMAGE_NAME="${REPOSITORY}-demo-maint" 
@@ -182,6 +183,7 @@ jobs:
                 --name=${IMAGE_NAME}-${RANDOM} \
                 -e ASPNETCORE_ENVIRONMENT=Production \
                 -e TZ=Asia/Shanghai \
+                -m 200M \
                 $IMAGE_ID
 
           IMAGE_NAME="${REPOSITORY}-demo-cust" 
@@ -195,6 +197,7 @@ jobs:
                 --name=${IMAGE_NAME}-${RANDOM} \
                 -e ASPNETCORE_ENVIRONMENT=Production \
                 -e TZ=Asia/Shanghai \
+                -m 200M \
                 $IMAGE_ID
 
           IMAGE_NAME="${REPOSITORY}-demo-ord" 
@@ -208,6 +211,7 @@ jobs:
                 --name=${IMAGE_NAME}-${RANDOM} \
                 -e ASPNETCORE_ENVIRONMENT=Production \
                 -e TZ=Asia/Shanghai \
+                -m 200M \
                 $IMAGE_ID   
 
           IMAGE_NAME="${REPOSITORY}-demo-whse" 
@@ -221,4 +225,5 @@ jobs:
                 --name=${IMAGE_NAME}-${RANDOM} \
                 -e ASPNETCORE_ENVIRONMENT=Production \
                 -e TZ=Asia/Shanghai \
+                -m 200M \
                 $IMAGE_ID                            
