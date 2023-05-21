@@ -21,10 +21,10 @@ public class ChannelConsumersHostedService : BackgroundService
             using var scope = _services.CreateScope();
             var repository = scope.ServiceProvider.GetRequiredService<IMongoRepository<LoginLog>>();
             var channelLoginReader = ChannelAccessor<LoginLog>.Instance.Reader;
+            var maxAllowInsert = 100;
             var entities = new List<LoginLog>();
             while (await channelLoginReader.WaitToReadAsync(stoppingToken))
             {
-                var maxAllowInsert = 100;
                 var currentExistsCount = channelLoginReader.Count;
                 for (int index = 1; index <= currentExistsCount; index++)
                 {
@@ -35,12 +35,15 @@ public class ChannelConsumersHostedService : BackgroundService
                         try
                         {
                             await repository.AddManyAsync(entities);
-                            entities.Clear();
                         }
                         catch (Exception ex)
                         {
                             var message = $"{nameof(ExecuteAsync)}:{nameof(channelLoginReader)}";
                             _logger.LogError(ex, message);
+                        }
+                        finally
+                        {
+                            entities.Clear();
                         }
                     }
                 }
@@ -55,10 +58,10 @@ public class ChannelConsumersHostedService : BackgroundService
             using var scope = _services.CreateScope();
             var repository = scope.ServiceProvider.GetRequiredService<IMongoRepository<OperationLog>>();
             var channelOperationLogReader = ChannelAccessor<OperationLog>.Instance.Reader;
+            var maxAllowInsert = 100;
             var entities = new List<OperationLog>();
             while (await channelOperationLogReader.WaitToReadAsync())
             {
-                var maxAllowInsert = 100;
                 var currentExistsCount = channelOperationLogReader.Count;
                 for (int index = 1; index <= currentExistsCount; index++)
                 {
@@ -69,12 +72,15 @@ public class ChannelConsumersHostedService : BackgroundService
                         try
                         {
                             await repository.AddManyAsync(entities);
-                            entities.Clear();
                         }
                         catch (Exception ex)
                         {
                             var message = $"{nameof(ExecuteAsync)}:{nameof(channelOperationLogReader)}";
                             _logger.LogError(ex, message);
+                        }
+                        finally
+                        {
+                            entities.Clear();
                         }
                     }
                 }

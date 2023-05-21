@@ -2,7 +2,7 @@
 
 namespace Adnc.Shared.Application.Channels
 {
-    public class ChannelAccessor<TModel>
+    public sealed class ChannelAccessor<TModel>
     {
         private static readonly Lazy<ChannelAccessor<TModel>> lazy = new(() => new ChannelAccessor<TModel>());
 

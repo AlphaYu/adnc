@@ -37,6 +37,7 @@ public class CachingHostedService : BackgroundService
                 while (!stoppingToken.IsCancellationRequested)
                 {
                     if (DateTime.Now > model.ExpireDt) break;
+
                     try
                     {
                         await _cacheProvider.RemoveAllAsync(model.CacheKeys);

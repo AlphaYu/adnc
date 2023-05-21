@@ -8,9 +8,9 @@ public abstract class AbstractAppService : IAppService
     {
         get
         {
-            var httpContext = InfraHelper.Accessor.GetCurrentHttpContext();
-            if (httpContext is not null)
-                return httpContext.RequestServices.GetRequiredService<IObjectMapper>();
+            //var httpContext = InfraHelper.Accessor.GetCurrentHttpContext();
+            //if (httpContext is not null)
+            //    return httpContext.RequestServices.GetRequiredService<IObjectMapper>();
             if (ServiceLocator.Provider is not null)
             {
                 var mapper = ServiceLocator.Provider.GetService<IObjectMapper>();

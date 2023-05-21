@@ -1,4 +1,6 @@
-﻿namespace Adnc.Demo.Usr.Application.Services;
+﻿using Microsoft.AspNetCore.Http;
+
+namespace Adnc.Demo.Usr.Application.Services;
 
 public class UserAppService : AbstractAppService, IUserAppService
 {
@@ -7,19 +9,22 @@ public class UserAppService : AbstractAppService, IUserAppService
     private readonly IEfRepository<Menu> _menuRepository;
     private readonly CacheService _cacheService;
     private readonly BloomFilterFactory _bloomFilterFactory;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
     public UserAppService(
         IEfRepository<User> userRepository
         , IEfRepository<Role> roleRepository
         , IEfRepository<Menu> menuRepository
         , CacheService cacheService
-       , BloomFilterFactory bloomFilterFactory)
+        , BloomFilterFactory bloomFilterFactory
+        , IHttpContextAccessor httpContextAccessor)
     {
         _userRepository = userRepository;
         _roleRepository = roleRepository;
         _menuRepository = menuRepository;
         _cacheService = cacheService;
         _bloomFilterFactory = bloomFilterFactory;
+        _httpContextAccessor = httpContextAccessor;
     }
 
     public async Task<AppSrvResult<long>> CreateAsync(UserCreationDto input)
@@ -211,7 +216,7 @@ public class UserAppService : AbstractAppService, IUserAppService
         if (user is null)
             return Problem(HttpStatusCode.BadRequest, "用户名或密码错误");
 
-        var httpContext = InfraHelper.Accessor.GetCurrentHttpContext();
+        var httpContext = _httpContextAccessor.HttpContext;
 
         var device = string.Empty;
         var ipAddress = string.Empty;

@@ -5,16 +5,17 @@ namespace Adnc.Infra.Helper;
 
 public static class InfraHelper
 {
+    private readonly static EncryptProivder _encypt = new();
+    private readonly static HashConsistentGenerater _hashConsistentGenerater = new();
+    private readonly static Accessor _accessor = new();
+
     static InfraHelper()
     {
-        Encrypt = new EncryptProivder();
-        HashConsistent = new HashConsistentGenerater();
-        Accessor = new Accessor();
     }
 
-    public static EncryptProivder Encrypt { get; private set; }
+    public static EncryptProivder Encrypt => _encypt;
 
-    public static HashConsistentGenerater HashConsistent { get; private set; }
+    public static HashConsistentGenerater HashConsistent => _hashConsistentGenerater;
 
-    public static Accessor Accessor { get; private set; }
+    public static Accessor Accessor => _accessor;
 }
