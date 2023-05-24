@@ -50,7 +50,7 @@ public abstract partial class AbstractWebApiDependencyRegistrar : IMiddlewareReg
             IdentityModelEventSource.ShowPII = true;
         }
 
-        var enableSwaggerUI = configuration.GetValue("SwaggerUI:Enable", true);
+        var enableSwaggerUI = configuration.GetValue(NodeConsts.SwaggerUI_Enable, true);
         if(enableSwaggerUI)
         {
 #if DEBUG
@@ -93,7 +93,7 @@ public abstract partial class AbstractWebApiDependencyRegistrar : IMiddlewareReg
             })
             .UseRouting();
 
-        var enableMetrics = configuration.GetValue("Metrics:Enable", true);
+        var enableMetrics = configuration.GetValue(NodeConsts.Metrics_Enable, true);
         if (enableMetrics)
         {
             App

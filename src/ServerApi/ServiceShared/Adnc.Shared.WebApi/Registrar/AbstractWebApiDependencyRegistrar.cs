@@ -45,13 +45,20 @@ public abstract partial class AbstractWebApiDependencyRegistrar : IDependencyReg
         Services
             .AddHttpContextAccessor()
             .AddMemoryCache();
+
         Configure();
         AddControllers();
         AddAuthentication<TAuthenticationProcessor>();
         AddAuthorization<TAuthorizationHandler>();
         AddCors();
-        AddSwaggerGen();
-        AddMiniProfiler();
+
+        var enableSwaggerUI = Configuration.GetValue(NodeConsts.SwaggerUI_Enable, true);
+        if(enableSwaggerUI)
+        {
+            AddSwaggerGen();
+            AddMiniProfiler();
+        }
+
         AddApplicationServices();
     }
 }

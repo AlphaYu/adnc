@@ -30,6 +30,10 @@
         public const string JWT = "JWT";
         public const string Logging = "Logging";
         public const string Logging_LogContainer = "Logging:LogContainer";
+        public const string SwaggerUI = "SwaggerUI";
+        public const string SwaggerUI_Enable = "SwaggerUI:Enable:";
+        public const string Metrics = "Metrics";
+        public const string Metrics_Enable = "Metrics:Enable";
     }
 
     public static class RegisteredTypeConsts

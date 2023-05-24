@@ -29,8 +29,8 @@ public abstract partial class AbstractApplicationDependencyRegistrar
         Services.TryAddScoped<TokenDelegatingHandler>();
         Services.TryAddScoped<ConsulDiscoverDelegatingHandler>();
         Services.TryAddSingleton<TokenFactory>();
-        Services.TryAddSingleton<ITokenGenerator,BasicTokenGenerator>();
-        Services.TryAddSingleton<ITokenGenerator,BearerTokenGenerator>();
+        Services.TryAddSingleton<ITokenGenerator, BasicTokenGenerator>();
+        Services.TryAddSingleton<ITokenGenerator, BearerTokenGenerator>();
 
         var registeredType = Configuration.GetValue(NodeConsts.RegisteredType, "direct");
         //注册RefitClient,设置httpclient生命周期时间，默认也是2分钟。
@@ -60,6 +60,8 @@ public abstract partial class AbstractApplicationDependencyRegistrar
                                         .AddHttpMessageHandler<ConsulDiscoverDelegatingHandler>();
                     break;
                 }
+            default: 
+                throw new NotImplementedException(registeredType);
         }
     }
 
