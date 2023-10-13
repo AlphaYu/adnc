@@ -1,0 +1,64 @@
+auth_enabled: false
+
+server:
+  http_listen_port: 3100
+
+ingester:
+  lifecycler:
+    address: 127.0.0.1
+    ring:
+      kvstore:
+        store: inmemory
+      replication_factor: 1
+    final_sleep: 0s
+  chunk_idle_period: 1h # 此时没有接收到新日志的任何块都将被刷新
+  max_chunk_age: 1h # 所有的块将刷新时，他们达到这个年龄，默认是1h
+  chunk_target_size: 1048576 # Loki将尝试构建最大为1.5MB的块，如果先达到chunk_idle_period或max_chunk_age，则首先刷新
+  chunk_retain_period: 30s # 如果使用索引缓存，必须大于索引读缓存TTL(默认索引读缓存TTL为5m)
+  max_transfer_retries: 0  # 块传输禁用
+
+schema_config:
+  configs:
+    - from: 2023-5-8
+      store: boltdb-shipper
+      object_store: filesystem
+      schema: v11
+      index:
+        prefix: index_
+        period: 24h
+
+storage_config:
+  boltdb_shipper:
+    active_index_directory: /loki/boltdb-shipper-active
+    cache_location: /loki/boltdb-shipper-cache
+    cache_ttl: 24h # 可以在更长的查询周期内提高更快的性能，使用更多的磁盘空间
+    shared_store: filesystem
+  filesystem:
+    directory: /loki/chunks
+  
+compactor:
+  working_directory: /loki/boltdb-shipper-compactor
+  shared_store: filesystem
+
+limits_config:
+  reject_old_samples: true
+  reject_old_samples_max_age: 168h
+
+chunk_store_config:
+  max_look_back_period: 0s
+
+table_manager:
+  retention_deletes_enabled: false
+  retention_period: 0s
+
+ruler:
+  storage:
+    type: local
+    local:
+      directory: /loki/rules
+  rule_path: /loki/rules-temp
+  alertmanager_url: http://localhost:9093
+  ring:
+    kvstore:
+      store: inmemory
+  enable_api: true
