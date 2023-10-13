@@ -28,7 +28,7 @@ public class DictAppService : AbstractAppService, IDictAppService
         var dict = new Dict { Id = id, Name = input.Name, Value = input.Value, Ordinal = input.Ordinal, Pid = 0 };
 
         dists.Add(dict);
-        input.Children?.ForEach(x =>
+        input.Children.ForEach(x =>
         {
             dists.Add(new Dict
             {
@@ -60,7 +60,7 @@ public class DictAppService : AbstractAppService, IDictAppService
         var dict = new Dict { Name = input.Name, Value = input.Value, Id = id, Pid = 0, Ordinal = input.Ordinal };
 
         var subDicts = new List<Dict>();
-        input.Children?.ForEach(x =>
+        input.Children.ForEach(x =>
         {
             subDicts.Add(new Dict
             {

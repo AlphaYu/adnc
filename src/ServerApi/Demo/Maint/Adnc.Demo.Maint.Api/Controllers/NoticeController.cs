@@ -27,9 +27,6 @@ public class NoticeController : AdncControllerBase
     [HttpGet()]
     public async Task<ActionResult<List<NoticeDto>>> GetList([FromQuery] NoticeSearchDto search)
     {
-        if (_userContext is null || _userContext.Id == 0)
-            return await Task.FromResult(new List<NoticeDto>());
-        else
             return Result(await _noticeService.GetListAsync(search));
     }
 }
