@@ -12,6 +12,8 @@ namespace Adnc.Shared.Application.Registrar;
 
 public abstract partial class AbstractApplicationDependencyRegistrar
 {
+    private static bool _theFirstCalled = true; 
+
     /// <summary>
     /// 注册Rest服务(跨微服务之间的同步通讯)
     /// </summary>
@@ -25,12 +27,16 @@ public abstract partial class AbstractApplicationDependencyRegistrar
         if (addressNode is null)
             throw new NullReferenceException(nameof(addressNode));
 
-        Services.TryAddScoped<CacheDelegatingHandler>();
-        Services.TryAddScoped<TokenDelegatingHandler>();
-        Services.TryAddScoped<ConsulDiscoverDelegatingHandler>();
-        Services.TryAddSingleton<TokenFactory>();
-        Services.TryAddSingleton<ITokenGenerator, BasicTokenGenerator>();
-        Services.TryAddSingleton<ITokenGenerator, BearerTokenGenerator>();
+        if(_theFirstCalled)
+        {
+            _theFirstCalled = false;
+            Services.AddScoped<CacheDelegatingHandler>();
+            Services.AddScoped<TokenDelegatingHandler>();
+            Services.AddScoped<ConsulDiscoverDelegatingHandler>();
+            Services.AddSingleton<TokenFactory>();
+            Services.AddSingleton<ITokenGenerator, BasicTokenGenerator>();
+            Services.AddSingleton<ITokenGenerator, BearerTokenGenerator>();
+        }
 
         var registeredType = Configuration.GetValue(NodeConsts.RegisteredType, "direct");
         //注册RefitClient,设置httpclient生命周期时间，默认也是2分钟。
@@ -79,12 +85,16 @@ public abstract partial class AbstractApplicationDependencyRegistrar
         if (addressNode is null)
             throw new NullReferenceException(nameof(addressNode));
 
-        Services.TryAddScoped<CacheDelegatingHandler>();
-        Services.TryAddScoped<TokenDelegatingHandler>();
-        Services.TryAddScoped<ConsulDiscoverDelegatingHandler>();
-        Services.TryAddScoped<TokenFactory>();
-        Services.TryAddScoped<ITokenGenerator, BasicTokenGenerator>();
-        Services.TryAddScoped<ITokenGenerator, BearerTokenGenerator>();
+        if(_theFirstCalled)
+        {
+            _theFirstCalled = false;
+            Services.AddScoped<CacheDelegatingHandler>();
+            Services.AddScoped<TokenDelegatingHandler>();
+            Services.AddScoped<ConsulDiscoverDelegatingHandler>();
+            Services.AddSingleton<TokenFactory>();
+            Services.AddSingleton<ITokenGenerator, BasicTokenGenerator>();
+            Services.AddSingleton<ITokenGenerator, BearerTokenGenerator>();
+        }
 
         var registeredType = Configuration.GetValue(NodeConsts.RegisteredType, "direct");
         var switchName = "System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport";
