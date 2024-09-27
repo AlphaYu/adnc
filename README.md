@@ -221,7 +221,7 @@ adnc
 ### 项目地址
 
 - [adnc-vue2: ADNC's Vue2 front-end](https://github.com/alphayu/adnc-vue2)
-- [adnc-vue3: ADNC's Vue3 front-end](https://github.com/alphayu/adnc-vue3)
+- adnc-vue3: 尚未完成
 
 ### 界面截图
 
