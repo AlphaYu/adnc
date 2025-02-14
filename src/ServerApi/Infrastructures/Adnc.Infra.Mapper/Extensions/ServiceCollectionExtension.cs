@@ -1,5 +1,5 @@
-﻿using Adnc.Infra.Mapper;
-using Adnc.Infra.Mapper.AutoMapper;
+﻿using Adnc.Infra.Mapper.AutoMapper;
+using IObjectMapper = Adnc.Infra.Mapper.IObjectMapper;
 
 namespace Microsoft.Extensions.DependencyInjection;
 

@@ -62,7 +62,7 @@ namespace Adnc.Infra.EventBus.RabbitMq
                   })
                   .Execute(() =>
                   {
-                      Connection = factory.CreateConnection();
+                      Connection = factory.CreateConnectionAsync().Result;
                   });
         }
     }

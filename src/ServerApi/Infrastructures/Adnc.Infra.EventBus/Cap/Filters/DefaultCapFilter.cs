@@ -14,16 +14,19 @@ public sealed class DefaultCapFilter : SubscribeFilter
         _logger = logger;
     }
 
-    public override void OnSubscribeExecuting(ExecutingContext context)
+    public override Task OnSubscribeExecutingAsync(ExecutingContext context)
     {
+        return Task.CompletedTask;
     }
 
-    public override void OnSubscribeExecuted(ExecutedContext context)
+    public override Task OnSubscribeExecutedAsync(ExecutedContext context)
     {
+        return Task.CompletedTask;
     }
 
-    public override void OnSubscribeException(ExceptionContext context)
+    public override Task OnSubscribeExceptionAsync(ExceptionContext context)
     {
         _logger.LogError(context.Exception, context.Exception.Message);
+        return Task.CompletedTask;
     }
 }

@@ -1,16 +1,16 @@
 ﻿using RabbitMQ.Client;
+using System.Threading.Channels;
 
 namespace Adnc.Infra.EventBus.RabbitMq
 {
-    public class RabbitMqProducer : IDisposable
+    public class RabbitMqProducer 
     {
-        private readonly IModel _channel;
         private readonly ILogger<RabbitMqProducer> _logger;
+        private readonly IRabbitMqConnection _rabbitMqConnection;
 
         public RabbitMqProducer(IRabbitMqConnection rabbitMqConnection, ILogger<RabbitMqProducer> logger)
         {
             _logger = logger;
-            _channel = rabbitMqConnection.Connection.CreateModel();
         }
 
         /// <summary>
@@ -38,11 +38,12 @@ namespace Adnc.Infra.EventBus.RabbitMq
         //                          body: body);
         //}
 
-        public virtual void BasicPublish<TMessage>(string exchange
+        public virtual Task BasicPublishAsync<TMessage>(string exchange
             , string routingKey
             , TMessage message
-            , IBasicProperties? properties = null
+            , BasicProperties? basicProperties = null
             , bool mandatory = false
+            , CancellationToken cancellationToken = default
         )
         {
             Policy.Handle<Exception>()
@@ -50,7 +51,7 @@ namespace Adnc.Infra.EventBus.RabbitMq
                   {
                       _logger.LogError(ex, string.Format("{0}:{1}", retryCount, ex.Message));
                   })
-                  .Execute(() =>
+                  .Execute(async () =>
                   {
                       var content = message as string;
                       if (content == null)
@@ -61,33 +62,31 @@ namespace Adnc.Infra.EventBus.RabbitMq
                       //那么broker会调用basic.return方法将消息返还给生产者;
                       //当mandatory设置为false时，出现上述情况broker会直接将消息丢弃
 
-                      _channel.BasicPublish(exchange, routingKey, mandatory, basicProperties: properties, body);
-
+                      using var channel = await _rabbitMqConnection.Connection.CreateChannelAsync();
+                      await channel.BasicPublishAsync(exchange, routingKey, mandatory, basicProperties ?? new BasicProperties(), body, cancellationToken);
                       //开启发布消息确认模式
                       //_channel.ConfirmSelect();
                       //消息是否到达服务器
                       //bool publishStatus = _channel.WaitForConfirms();
                   });
+                 return Task.CompletedTask;  
         }
 
-        public virtual IBasicProperties CreateBasicProperties()
-        {
-            return _channel.CreateBasicProperties();
-        }
+        public virtual BasicProperties CreateBasicProperties() => new();
 
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
+        //public void Dispose()
+        //{
+        //    Dispose(true);
+        //    GC.SuppressFinalize(this);
+        //}
 
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                if (_channel != null)
-                    _channel.Dispose();
-            }
-        }
+        //protected virtual void Dispose(bool disposing)
+        //{
+        //    if (disposing)
+        //    {
+        //        if (_channel != null)
+        //            _channel.Dispose();
+        //    }
+        //}
     }
 }
