@@ -50,29 +50,15 @@ public abstract partial class AbstractWebApiDependencyRegistrar
             var rabitmqConfig = Configuration.GetSection(NodeConsts.RabbitMq).Get<RabbitMqOptions>();
             if (rabitmqConfig is null)
                 throw new NullReferenceException("rabitmqConfig is null");
-            checksBuilder.AddRabbitMQ(provider =>
-            {
-                var mqConnection = provider.GetService<IRabbitMqConnection>()?.Connection;
-                if (mqConnection is null)
-                {
-                    var serviceInfo = provider.GetService<IServiceInfo>();
-                    if (serviceInfo is null)
-                        throw new NullReferenceException($"{nameof(IServiceInfo)} is null");
-                    var factory = new ConnectionFactory
-                    {
-                        HostName = rabitmqConfig.HostName,
-                        Port = rabitmqConfig.Port,
-                        UserName = rabitmqConfig.UserName,
-                        Password = rabitmqConfig.Password,
-                        VirtualHost = rabitmqConfig.VirtualHost,
-                        ClientProvidedName = serviceInfo.Id,
-                        //Uri = new Uri($"amqps://{user}:{pass}@{host}/{vhost}"),
-                        AutomaticRecoveryEnabled = true
-                    };
-                    mqConnection = factory.CreateConnection();
-                }
-                return mqConnection;
-            });
+
+            var myServer = $"{rabitmqConfig.HostName}:{rabitmqConfig.Port}";
+            var myVirtualHost = rabitmqConfig.VirtualHost;
+            var userName = rabitmqConfig.UserName;
+            var password = rabitmqConfig.Password;
+            //ClientProvidedName = serviceInfo.Id,
+            //AutomaticRecoveryEnabled = true
+            var connectionstring = $"amqp://host={myServer};virtualHost={myVirtualHost};username={userName};password={password}";
+            checksBuilder.AddRabbitMQ(connectionstring, name: "basket-rabbitmqbus-check", tags: ["rabbitmqbus"]);
         }
 
         return checksBuilder;

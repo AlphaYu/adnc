@@ -9,7 +9,7 @@ public static class HostExtension
     {
         var configuration = host.Services.GetRequiredService<IConfiguration>();
         var serviceInfo = host.Services.GetRequiredService<IServiceInfo>();
-        var registeredType = configuration.GetValue(NodeConsts.RegisteredType, "direct");
+        var registeredType = configuration.GetValue<string>(NodeConsts.RegisteredType) ?? "direct";
         switch (registeredType)
         {
             case RegisteredTypeConsts.Consul:

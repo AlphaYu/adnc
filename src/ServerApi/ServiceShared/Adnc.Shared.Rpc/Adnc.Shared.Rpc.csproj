@@ -11,6 +11,7 @@
 		<PackageReference Include="Microsoft.Extensions.Configuration" Version="$(Microsoft_Extensions_Configuration_Version)" />
 		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="$(Microsoft_Extensions_Options_ConfigurationExtensions_Version)" />
 		<PackageReference Include="Refit.HttpClientFactory" Version="$(Refit_HttpClientFactory)" />
+		<PackageReference Include="DotNetCore.CAP" Version="$(DotNetCore_CAP_Version)" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -82,7 +82,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar
             option.UseDashboard(x =>
             {
                 x.PathMatch = $"/{ServiceInfo.RelativeRootPath}/cap";
-                x.UseAuth = false;
+                //x.UseAuth = false;
             });
         });
     }
