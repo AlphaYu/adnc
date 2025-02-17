@@ -1,6 +1,4 @@
-﻿using NLog.LayoutRenderers;
-
-namespace Adnc.Shared.WebApi.Authentication.JwtBearer;
+﻿namespace Adnc.Shared.WebApi.Authentication.Bearer;
 
 public static class JwtTokenHelper
 {
@@ -75,8 +73,8 @@ public static class JwtTokenHelper
         , string uniqueName
         , string nameId
         , string name
-        ,string roleIds
-        ,string loginerType)
+        , string roleIds
+        , string loginerType)
     {
         if (jti.IsNullOrWhiteSpace())
             throw new ArgumentNullException(nameof(jti));
@@ -87,8 +85,8 @@ public static class JwtTokenHelper
             new Claim(JwtRegisteredClaimNames.UniqueName, uniqueName),
             new Claim(JwtRegisteredClaimNames.NameId, nameId),
             new Claim(JwtRegisteredClaimNames.Name, name),
-            new Claim(JwtBearerDefaults.RoleIds, roleIds),
-            new Claim(JwtBearerDefaults.LoginerType,loginerType)
+            new Claim(BearerDefaults.RoleIds, roleIds),
+            new Claim(BearerDefaults.LoginerType,loginerType)
         };
         return WriteToken(jwtConfig, claims, Tokens.AccessToken);
     }

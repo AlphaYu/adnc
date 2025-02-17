@@ -3,24 +3,24 @@ using Adnc.Shared.WebApi.Middleware;
 
 namespace Adnc.Shared.WebApi.Registrar;
 
-public abstract partial class AbstractWebApiDependencyRegistrar : IMiddlewareRegistrar
+//public abstract partial class AbstractWebApiMiddlewareRegistrar : IMiddlewareRegistrar
+public abstract partial class AbstractWebApiMiddlewareRegistrar
 {
     protected IApplicationBuilder App { get; init; } = default!;
-    protected AbstractWebApiDependencyRegistrar(IApplicationBuilder app)
+    public AbstractWebApiMiddlewareRegistrar(IApplicationBuilder app)
     {
         App = app;
     }
 
     /// <summary>
-    /// 注册中间件入口方法
+    /// 注册中间件
     /// </summary>
-    /// <param name="app"></param>
     public abstract void UseAdnc();
 
     /// <summary>
     /// 注册webapi通用中间件
     /// </summary>
-    protected virtual void UseWebApiDefault(
+    protected void UseWebApiDefault(
         Action<IApplicationBuilder>? beforeAuthentication = null,
         Action<IApplicationBuilder>? afterAuthentication = null,
         Action<IApplicationBuilder>? afterAuthorization = null,
@@ -68,7 +68,7 @@ public abstract partial class AbstractWebApiDependencyRegistrar : IMiddlewareReg
                 .UseSwaggerUI(c =>
                 {
 #if DEBUG
-                    var assembly = serviceInfo.GetWebApiAssembly();
+                    var assembly = serviceInfo.StartAssembly;
                     c.IndexStream = () =>
                     {
                         //var stream = assembly.GetManifestResourceStream($"{assembly.GetName().Name}.swagger_miniprofiler.html");

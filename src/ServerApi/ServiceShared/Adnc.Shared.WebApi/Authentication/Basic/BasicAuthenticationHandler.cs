@@ -6,11 +6,10 @@
 public class BasicAuthenticationHandler : AuthenticationHandler<BasicSchemeOptions>
 {
     public BasicAuthenticationHandler(
-        IOptionsMonitor<BasicSchemeOptions> options,
-        ILoggerFactory logger,
-        UrlEncoder encoder,
-        ISystemClock clock
-        ) : base(options, logger, encoder, clock)
+        IOptionsMonitor<BasicSchemeOptions> options
+        ,ILoggerFactory logger,
+        UrlEncoder encoder
+        ) : base(options, logger, encoder)
     {
     }
 

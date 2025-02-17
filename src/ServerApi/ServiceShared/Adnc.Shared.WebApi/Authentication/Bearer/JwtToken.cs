@@ -1,4 +1,4 @@
-﻿namespace Adnc.Shared.WebApi.Authentication.JwtBearer;
+﻿namespace Adnc.Shared.WebApi.Authentication.Bearer;
 
 public record JwtToken
 {

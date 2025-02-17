@@ -1,7 +1,8 @@
 ﻿using Adnc.Infra.EventBus.Configurations;
 using Adnc.Infra.EventBus.RabbitMq;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
-using RabbitMQ.Client;
+using ProtoBuf.Meta;
 
 namespace Adnc.Shared.WebApi.Registrar;
 
@@ -34,7 +35,10 @@ public abstract partial class AbstractWebApiDependencyRegistrar
             var mongoConnectionString = Configuration.GetValue(NodeConsts.MongoDb_ConnectionString, string.Empty);
             if (mongoConnectionString.IsNullOrEmpty())
                 throw new NullReferenceException("mongoConfig is null");
-            checksBuilder.AddMongoDb(mongoConnectionString);
+
+            var mongoUrl = new MongoUrl(mongoConnectionString);
+            Services.AddSingleton<IMongoClient>(new MongoClient(mongoUrl));
+            checksBuilder.AddMongoDb(provider => provider.GetRequiredService<IMongoClient>());
         }
 
         if (checkingRedis)
@@ -51,14 +55,20 @@ public abstract partial class AbstractWebApiDependencyRegistrar
             if (rabitmqConfig is null)
                 throw new NullReferenceException("rabitmqConfig is null");
 
-            var myServer = $"{rabitmqConfig.HostName}:{rabitmqConfig.Port}";
-            var myVirtualHost = rabitmqConfig.VirtualHost;
-            var userName = rabitmqConfig.UserName;
-            var password = rabitmqConfig.Password;
+            //var myServer = $"{rabitmqConfig.HostName}:{rabitmqConfig.Port}";
+            //var myVirtualHost = rabitmqConfig.VirtualHost;
+            //var userName = rabitmqConfig.UserName;
+            //var password = rabitmqConfig.Password;
             //ClientProvidedName = serviceInfo.Id,
             //AutomaticRecoveryEnabled = true
-            var connectionstring = $"amqp://host={myServer};virtualHost={myVirtualHost};username={userName};password={password}";
-            checksBuilder.AddRabbitMQ(connectionstring, name: "basket-rabbitmqbus-check", tags: ["rabbitmqbus"]);
+            //var connectionstring = $"amqp://host={myServer};virtualHost={myVirtualHost};username={userName};password={password}";
+            checksBuilder.AddRabbitMQ(provider =>
+            {
+                var logger = provider.GetRequiredService<ILogger<dynamic>>();
+                var serviceInfo = provider.GetRequiredService<IServiceInfo>();
+                var clientProvidedName = serviceInfo.Id ?? "unkonow";
+                return RabbitMqConnection.GetInstance(rabitmqConfig, clientProvidedName, logger).Connection;
+            });
         }
 
         return checksBuilder;

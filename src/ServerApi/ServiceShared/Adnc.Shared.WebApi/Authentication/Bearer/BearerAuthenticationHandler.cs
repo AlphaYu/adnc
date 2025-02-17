@@ -13,9 +13,8 @@ public class BearerAuthenticationHandler : AuthenticationHandler<BearerSchemeOpt
         IOptionsMonitor<JWTOptions> jwtOptions,
         ILoggerFactory logger,
         UrlEncoder encoder,
-        ISystemClock clock,
         AbstractAuthenticationProcessor authenticationProcessor
-        ) : base(options, logger, encoder, clock)
+        ) : base(options, logger, encoder)
     {
         _authenticationProcessor = authenticationProcessor;
         _jwtOptions = jwtOptions;
@@ -25,9 +24,9 @@ public class BearerAuthenticationHandler : AuthenticationHandler<BearerSchemeOpt
     {
         AuthenticateResult authResult;
         var authHeader = Request.Headers["Authorization"].ToString();
-        if (authHeader is not null && authHeader.StartsWith(BearerDefaults.AuthenticationScheme))
+        if (authHeader is not null && authHeader.StartsWith(JwtBearerDefaults.AuthenticationScheme))
         {
-            var startIndex = BearerDefaults.AuthenticationScheme.Length + 1;
+            var startIndex = JwtBearerDefaults.AuthenticationScheme.Length + 1;
             var token = authHeader[startIndex..].Trim();
             if (token.IsNullOrWhiteSpace())
             {
@@ -60,9 +59,9 @@ public class BearerAuthenticationHandler : AuthenticationHandler<BearerSchemeOpt
 
             if (claims.IsNotNullOrEmpty())
             {
-                var identity = new ClaimsIdentity(claims, BearerDefaults.AuthenticationScheme);
+                var identity = new ClaimsIdentity(claims, JwtBearerDefaults.AuthenticationScheme);
                 var claimsPrincipal = new ClaimsPrincipal(identity);
-                authResult = AuthenticateResult.Success(new AuthenticationTicket(claimsPrincipal, BearerDefaults.AuthenticationScheme));
+                authResult = AuthenticateResult.Success(new AuthenticationTicket(claimsPrincipal, JwtBearerDefaults.AuthenticationScheme));
                 var validatedContext = new BearerTokenValidatedContext(Context, Scheme, Options)
                 {
                     Principal = claimsPrincipal

@@ -1,6 +1,7 @@
 ﻿using Adnc.Shared.WebApi.Authentication;
 using Adnc.Shared.WebApi.Authentication.Basic;
 using Adnc.Shared.WebApi.Authentication.Hybrid;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Adnc.Shared.WebApi.Registrar;
 
@@ -31,7 +32,7 @@ public abstract partial class AbstractWebApiDependencyRegistrar
                 userContext.RemoteIpAddress = remoteIpAddress is null ? string.Empty : remoteIpAddress.MapToIPv4().ToString();
                 return Task.CompletedTask;
             })
-            .AddBearer(options => options.Events.OnTokenValidated = (context) =>
+            .AddCustomJwtBearer(options => options.Events.OnTokenValidated = (context) =>
             {
                 var userContext = context.HttpContext.RequestServices.GetService<UserContext>() ?? throw new NullReferenceException(nameof(UserContext));
                 var principal = context.Principal ?? throw new NullReferenceException(nameof(context.Principal));
@@ -43,13 +44,6 @@ public abstract partial class AbstractWebApiDependencyRegistrar
                 var remoteIpAddress = context.HttpContext.Connection.RemoteIpAddress;
                 userContext.RemoteIpAddress = remoteIpAddress is null ? string.Empty : remoteIpAddress.MapToIPv4().ToString();
                 return Task.CompletedTask;
-            })
-            //.AddJwtBearer(options =>
-            //{
-            //    var jwtConfig = Configuration.GetJWTSection().Get<JwtConfig>();
-            //    options.TokenValidationParameters = JwtSecurityTokenHandlerExtension.GenarateTokenValidationParameters(jwtConfig);
-            //    options.Events = JwtSecurityTokenHandlerExtension.GenarateJwtBearerEvents();
-            //})
-            ;
+            });
     }
 }

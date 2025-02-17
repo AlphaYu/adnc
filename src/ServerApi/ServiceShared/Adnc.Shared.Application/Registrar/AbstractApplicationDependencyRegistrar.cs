@@ -2,7 +2,8 @@
 
 namespace Adnc.Shared.Application.Registrar;
 
-public abstract partial class AbstractApplicationDependencyRegistrar : IDependencyRegistrar
+//public abstract partial class AbstractApplicationDependencyRegistrar : IDependencyRegistrar
+public abstract partial class AbstractApplicationDependencyRegistrar
 {
     public string Name => "application";
     public abstract Assembly ApplicationLayerAssembly { get; }
@@ -21,11 +22,11 @@ public abstract partial class AbstractApplicationDependencyRegistrar : IDependen
     protected IConfigurationSection RabbitMqSection { get; init; }
     protected bool PollyStrategyEnable { get; init; }
 
-    protected AbstractApplicationDependencyRegistrar(IServiceCollection services)
+    public AbstractApplicationDependencyRegistrar(IServiceCollection services, IServiceInfo serviceInfo)
     {
         Services = services ?? throw new ArgumentException("IServiceCollection is null.");
+        ServiceInfo = serviceInfo ?? throw new ArgumentException("ServiceInfo is null.");
         Configuration = services.GetConfiguration() ?? throw new ArgumentException("Configuration is null.");
-        ServiceInfo = services.GetServiceInfo() ?? throw new ArgumentException("ServiceInfo is null.");
         RedisSection = Configuration.GetSection(NodeConsts.Redis);
         CachingSection = Configuration.GetSection(NodeConsts.Caching);
         MongoDbSection = Configuration.GetSection(NodeConsts.MongoDb);
@@ -40,7 +41,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar : IDependen
     /// <summary>
     /// 注册所有服务
     /// </summary>
-    public abstract void AddAdnc();
+    public abstract void AddApplicationServices();
 
     /// <summary>
     /// 注册adnc.application通用服务

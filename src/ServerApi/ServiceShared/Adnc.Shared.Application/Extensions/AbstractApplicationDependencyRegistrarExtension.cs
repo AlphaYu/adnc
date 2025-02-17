@@ -1,6 +1,7 @@
-﻿using Polly.Timeout;
+﻿using Adnc.Shared.Application.Registrar;
+using Polly.Timeout;
 
-namespace Adnc.Shared.Application.Registrar
+namespace Adnc.Shared.Application.Extensions
 {
     public static class AbstractApplicationDependencyRegistrarExtension
     {
@@ -35,7 +36,7 @@ namespace Adnc.Shared.Application.Registrar
                                     TimeSpan.FromSeconds(5),
                                     });
             //超时策略
-            var timeoutPolicy = Policy.TimeoutAsync<HttpResponseMessage>(IsDevelopment(_) ? 10 : 9);
+            var timeoutPolicy = Policy.TimeoutAsync<HttpResponseMessage>(_.IsDevelopment() ? 10 : 9);
 
             //熔断策略
             //如下，如果我们的业务代码连续失败50次，就触发熔断(onBreak),就不会再调用我们的业务代码，而是直接抛出BrokenCircuitException异常。
@@ -84,8 +85,8 @@ namespace Adnc.Shared.Application.Registrar
         /// </summary>
         /// <param name="registrar"></param>
         /// <returns></returns>
-        public static List<IAsyncPolicy<HttpResponseMessage>> GenerateDefaultGrpcPolicies(this AbstractApplicationDependencyRegistrar registrar) => 
-            GenerateDefaultRefitPolicies(registrar);
+        public static List<IAsyncPolicy<HttpResponseMessage>> GenerateDefaultGrpcPolicies(this AbstractApplicationDependencyRegistrar registrar) =>
+            registrar.GenerateDefaultRefitPolicies();
 
 
         public static string ASPNETCORE_ENVIRONMENT => Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? throw new NullReferenceException("ASPNETCORE_ENVIRONMENT is null");

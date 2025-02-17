@@ -13,7 +13,7 @@ public static class WebApplicationBuilderExtension
     /// <param name="serviceInfo"></param>
     /// <returns></returns>
     /// <exception cref="ArgumentNullException"></exception>
-    public static WebApplicationBuilder ConfigureAdncDefault(this WebApplicationBuilder builder, IServiceInfo serviceInfo)
+    public static WebApplicationBuilder AddConfiguration(this WebApplicationBuilder builder, IServiceInfo serviceInfo)
     {
         if (builder is null)
             throw new ArgumentNullException(nameof(builder));
@@ -21,35 +21,35 @@ public static class WebApplicationBuilderExtension
             throw new ArgumentNullException(nameof(serviceInfo));
 
         // Configuration
-        var initialData = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("ServiceName", serviceInfo.ServiceName) };
+        var initialData = new List<KeyValuePair<string, string?>> { new(nameof(serviceInfo.ServiceName), serviceInfo.ServiceName) };
         builder.Configuration.AddInMemoryCollection(initialData);
 
-        //builder.Configuration.AddJsonFile($"{AppContext.BaseDirectory}/appsettings.shared.{builder.Environment.EnvironmentName}.json", true, true);
-
-        if (builder.Environment.IsDevelopment())//仅开发环境加载本地配置，其他环境走Consul配置中心 Modify by garfield 20221019
+        if (builder.Environment.IsDevelopment())
         {
             builder.Configuration.AddJsonFile($"{AppContext.BaseDirectory}/appsettings.shared.{builder.Environment.EnvironmentName}.json", true, true);
         }
 
-        builder.Configuration.AddJsonFile($"{AppContext.BaseDirectory}/appsettings.{builder.Environment.EnvironmentName}.json", true, true);
+        var configurationType = builder.Configuration.GetValue<string>(NodeConsts.ConfigurationType) ?? "file";
 
-        //if (builder.Environment.IsProduction() || builder.Environment.IsStaging())
-
-        if (builder.Environment.IsProduction() || builder.Environment.IsStaging() || builder.Environment.IsEnvironment("Test"))//测试、预发和生产环境走Consul配置中心 Modify by garfield 20221019
+        if (string.Equals(configurationType, NodeConsts.Consul, StringComparison.OrdinalIgnoreCase))
         {
             var consulOption = builder.Configuration.GetSection(NodeConsts.Consul).Get<ConsulOptions>();
-            if (consulOption.ConsulKeyPath.IsNullOrWhiteSpace())
-                throw new NotImplementedException(nameof(consulOption.ConsulKeyPath));
+            if (consulOption is null || consulOption.ConsulKeyPath.IsNullOrWhiteSpace())
+                throw new NotImplementedException(NodeConsts.Consul);
 
             consulOption.ConsulKeyPath = consulOption.ConsulKeyPath.Replace("$SHORTNAME", serviceInfo.ShortName);
             builder.Configuration.AddConsulConfiguration(consulOption, true);
         }
+
+        if (string.Equals(configurationType, NodeConsts.Nacos, StringComparison.OrdinalIgnoreCase))
+        {
+            //todo
+            throw new NotImplementedException(nameof(NodeConsts.Nacos));
+        }
+
         OnSettingConfigurationChanged(builder.Configuration);
 
-        //ServiceCollection
         builder.Services.ReplaceConfiguration(builder.Configuration);
-        builder.Services.AddSingleton(typeof(IServiceInfo), serviceInfo);
-        builder.Services.AddAdnc(serviceInfo);
 
         //Logging
         builder.Logging.ClearProviders();

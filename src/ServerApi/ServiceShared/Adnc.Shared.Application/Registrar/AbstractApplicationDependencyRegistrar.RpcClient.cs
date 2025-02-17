@@ -38,7 +38,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar
             Services.AddSingleton<ITokenGenerator, BearerTokenGenerator>();
         }
 
-        var registeredType = Configuration.GetValue(NodeConsts.RegisteredType, "direct");
+        var registeredType = Configuration.GetValue<string>(NodeConsts.RegisteredType) ?? "direct";
         //注册RefitClient,设置httpclient生命周期时间，默认也是2分钟。
         var contentSerializer = new SystemTextJsonContentSerializer(SystemTextJson.GetAdncDefaultOptions());
         var refitSettings = new RefitSettings(contentSerializer);
@@ -64,6 +64,11 @@ public abstract partial class AbstractApplicationDependencyRegistrar
                 {
                     clientbuilder.ConfigureHttpClient(httpClient => httpClient.BaseAddress = new Uri(addressNode.Consul))
                                         .AddHttpMessageHandler<ConsulDiscoverDelegatingHandler>();
+                    break;
+                }
+            case RegisteredTypeConsts.Nacos:
+                {
+                    //todo
                     break;
                 }
             default: 

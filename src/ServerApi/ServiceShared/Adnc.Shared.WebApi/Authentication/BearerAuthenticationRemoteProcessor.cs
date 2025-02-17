@@ -33,6 +33,6 @@ public class BearerAuthenticationRemoteProcessor : AbstractAuthenticationProcess
             return (null, 0);
         }
 
-        return (apiReuslt.Content.ValidationVersion, apiReuslt.Content.Status);
+        return (apiReuslt?.Content?.ValidationVersion, apiReuslt.Content.Status);
     }
 }

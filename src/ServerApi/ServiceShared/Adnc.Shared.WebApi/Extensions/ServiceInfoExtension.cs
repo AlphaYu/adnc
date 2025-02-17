@@ -8,43 +8,6 @@ namespace Adnc.Shared.WebApi
         private static Assembly? appAssembly;
 
         /// <summary>
-        /// 获取WebApiAssembly程序集
-        /// </summary>
-        /// <returns></returns>
-        public static Assembly GetWebApiAssembly(this IServiceInfo serviceInfo) => serviceInfo.StartAssembly;
-
-        /// <summary>
-        /// 获取Application程序集
-        /// </summary>
-        /// <returns></returns>
-        public static Assembly GetApplicationAssembly(this IServiceInfo serviceInfo)
-        {
-            if (appAssembly is null)
-            {
-                lock (lockObj)
-                {
-                    if (appAssembly is null)
-                    {
-                        Assembly startAssembly = serviceInfo.StartAssembly ?? throw new NullReferenceException(nameof(serviceInfo.StartAssembly));
-                        string startAssemblyFullName = startAssembly.FullName ?? throw new NullReferenceException(nameof(startAssembly.FullName));
-                        string startAssemblyName = startAssembly.GetName().Name ?? string.Empty;
-                        string lastName = startAssemblyName.Split(".").Last();
-                        string appAssemblyFullName = startAssemblyFullName.Replace($".{lastName}", ".Application");
-                        appAssembly = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(x => x.FullName == appAssemblyFullName);
-                        if (appAssembly is null)
-                        {
-                            appAssembly = startAssembly;
-                            //appAssembly = Assembly.Load(appAssemblyName);
-                            //var appAssemblyPath = serviceInfo.AssemblyLocation.Replace(".WebApi.dll", ".Application.dll");
-                            ///appAssembly = Assembly.LoadFrom(appAssemblyPath);
-                        }
-                    }
-                }
-            }
-            return appAssembly;
-        }
-
-        /// <summary>
         /// 获取导航首页内容
         /// </summary>
         /// <param name="serviceInfo"></param>
@@ -66,5 +29,43 @@ namespace Adnc.Shared.WebApi
                 $"<br>{DateTime.Now}</div>";
             return content;
         }
+
+        /// <summary>
+        /// 获取WebApiAssembly程序集
+        /// </summary>
+        /// <returns></returns>
+        //public static Assembly GetWebApiAssembly(this IServiceInfo serviceInfo) => serviceInfo.StartAssembly;
+
+        /// <summary>
+        /// 获取Application程序集
+        /// </summary>
+        /// <returns></returns>
+        //[Obsolete(".NET8版本作废，.NET8版本AppDomain.CurrentDomain.GetAssemblies()仅能获取到当前程序集直接引用的程序集与.NET6返回的结果集不不一样")]
+        //public static Assembly GetApplicationAssembly(this IServiceInfo serviceInfo)
+        //{
+        //    if (appAssembly is null)
+        //    {
+        //        lock (lockObj)
+        //        {
+        //            if (appAssembly is null)
+        //            {
+        //                Assembly startAssembly = serviceInfo.StartAssembly ?? throw new NullReferenceException(nameof(serviceInfo.StartAssembly));
+        //                string startAssemblyFullName = startAssembly.FullName ?? throw new NullReferenceException(nameof(startAssembly.FullName));
+        //                string startAssemblyName = startAssembly.GetName().Name ?? string.Empty;
+        //                string lastName = startAssemblyName.Split(".").Last();
+        //                string appAssemblyFullName = startAssemblyFullName.Replace($".{lastName}", ".Application");
+        //                appAssembly = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(x => x.FullName == appAssemblyFullName);
+        //                if (appAssembly is null)
+        //                {
+        //                    appAssembly = startAssembly;
+        //                    //appAssembly = Assembly.Load(appAssemblyName);
+        //                    //var appAssemblyPath = serviceInfo.AssemblyLocation.Replace(".WebApi.dll", ".Application.dll");
+        //                    ///appAssembly = Assembly.LoadFrom(appAssemblyPath);
+        //                }
+        //            }
+        //        }
+        //    }
+        //    return appAssembly;
+        //}
     }
 }

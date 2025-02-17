@@ -15,6 +15,7 @@
     public static class NodeConsts
     {
         public const string RegisteredType = "RegisteredType";
+        public const string ConfigurationType = "ConfigurationType";
         public const string Kestrel = "Kestrel";
         public const string ThreadPoolSettings = "ThreadPoolSettings";
         public const string Redis = "Redis";
@@ -22,6 +23,7 @@
         public const string Mysql_ConnectionString = "Mysql:ConnectionString";
         public const string Caching = "Caching";
         public const string Consul = "Consul";
+        public const string Nacos = "nacos";
         public const string RabbitMq = "RabbitMq";
         public const string MongoDb = "MongoDb";
         public const string MongoDb_ConnectionString = "MongoDb:ConnectionString";

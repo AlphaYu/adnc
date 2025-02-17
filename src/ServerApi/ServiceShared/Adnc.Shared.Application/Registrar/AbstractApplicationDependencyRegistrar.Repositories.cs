@@ -28,7 +28,6 @@ public abstract partial class AbstractApplicationDependencyRegistrar
     /// </summary>
     protected virtual void AddEfCoreContext()
     {
-        var serviceInfo = Services.GetServiceInfo();
         var mysqlConfig = MysqlSection.Get<MysqlOptions>();
         var serverVersion = new MariaDbServerVersion(new Version(10, 5, 4));
         Services.AddAdncInfraEfCoreMySql(options =>
@@ -37,7 +36,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar
             options.UseMySql(mysqlConfig.ConnectionString, serverVersion, optionsBuilder =>
             {
                 optionsBuilder.MinBatchSize(4)
-                                        .MigrationsAssembly(serviceInfo.MigrationsAssemblyName)
+                                        .MigrationsAssembly(ServiceInfo.MigrationsAssemblyName)
                                         .UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
             });
 

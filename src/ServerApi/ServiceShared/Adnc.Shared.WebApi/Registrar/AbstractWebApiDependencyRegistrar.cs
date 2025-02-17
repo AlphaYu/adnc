@@ -3,7 +3,8 @@ using Adnc.Shared.WebApi.Authorization;
 
 namespace Adnc.Shared.WebApi.Registrar;
 
-public abstract partial class AbstractWebApiDependencyRegistrar : IDependencyRegistrar
+//public abstract partial class AbstractWebApiDependencyRegistrar : IDependencyRegistrar
+public abstract partial class AbstractWebApiDependencyRegistrar
 {
     public string Name => "webapi";
     protected IConfiguration Configuration { get; init; } = default!;
@@ -14,39 +15,40 @@ public abstract partial class AbstractWebApiDependencyRegistrar : IDependencyReg
     /// 服务注册与系统配置
     /// </summary>
     /// <param name="services"><see cref="IServiceInfo"/></param>
-    protected AbstractWebApiDependencyRegistrar(IServiceCollection services)
+    public AbstractWebApiDependencyRegistrar(IServiceCollection services, IServiceInfo serviceInfo)
     {
         Services = services;
         Configuration = services.GetConfiguration();
-        ServiceInfo = services.GetServiceInfo();
+        ServiceInfo = serviceInfo;
     }
 
-    /// <summary>
-    /// 注册服务入口方法
-    /// </summary>
-    public abstract void AddAdnc();
+    public abstract void AddAdncServices();
 
     /// <summary>
     /// 注册Webapi通用的服务
     /// </summary>
     /// <typeparam name="THandler"></typeparam>
-    protected virtual void AddWebApiDefault() =>
-        AddWebApiDefault<BearerAuthenticationRemoteProcessor, PermissionRemoteHandler>();
+    public virtual void AddWebApiDefaultServices() =>
+        AddWebApiDefaultServices<BearerAuthenticationCacheProcessor, PermissionCacheHandler>();
 
     /// <summary>
     /// 注册Webapi通用的服务
     /// </summary>
     /// <typeparam name="TAuthenticationProcessor"><see cref="AbstractAuthenticationProcessor"/></typeparam>
     /// <typeparam name="TAuthorizationHandler"><see cref="AbstractPermissionHandler"/></typeparam>
-    protected virtual void AddWebApiDefault<TAuthenticationProcessor, TAuthorizationHandler>()
+    public virtual void AddWebApiDefaultServices<TAuthenticationProcessor, TAuthorizationHandler>()
         where TAuthenticationProcessor : AbstractAuthenticationProcessor
         where TAuthorizationHandler : AbstractPermissionHandler
     {
         Services
+            .Configure<JWTOptions>(Configuration.GetSection(NodeConsts.JWT))
+            .Configure<ThreadPoolSettings>(Configuration.GetSection(NodeConsts.ThreadPoolSettings))
+            .Configure<KestrelOptions>(Configuration.GetSection(NodeConsts.Kestrel));
+
+        Services
             .AddHttpContextAccessor()
             .AddMemoryCache();
 
-        Configure();
         AddControllers();
         AddAuthentication<TAuthenticationProcessor>();
         AddAuthorization<TAuthorizationHandler>();
@@ -58,7 +60,5 @@ public abstract partial class AbstractWebApiDependencyRegistrar : IDependencyReg
             AddSwaggerGen();
             AddMiniProfiler();
         }
-
-        AddApplicationServices();
     }
 }

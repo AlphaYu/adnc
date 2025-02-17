@@ -1,4 +1,5 @@
 ﻿using Adnc.Shared.Application.Caching.SkyApm;
+using Adnc.Shared.Application.Extensions;
 
 namespace Adnc.Shared.Application.Registrar;
 

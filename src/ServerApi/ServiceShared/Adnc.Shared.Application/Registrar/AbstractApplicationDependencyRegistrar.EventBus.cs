@@ -1,5 +1,6 @@
 ﻿using Adnc.Infra.EventBus.Configurations;
 using Adnc.Infra.Repository.EfCore.MySql.Configurations;
+using Adnc.Shared.Application.Extensions;
 using DotNetCore.CAP;
 using Microsoft.EntityFrameworkCore;
 using SkyApm.Diagnostics.CAP;

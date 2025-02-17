@@ -28,8 +28,10 @@ public abstract partial class AbstractWebApiDependencyRegistrar
                 options.JsonSerializerOptions.DictionaryKeyPolicy = JsonNamingPolicy.CamelCase;
                 //匿名类型
                 options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
-            })
-            .AddFluentValidation(cfg =>
+            });
+
+        Services
+            .AddFluentValidationAutoValidation(cfg =>
             {
                 //Continue 验证失败，继续验证其他项
                 ValidatorOptions.Global.DefaultClassLevelCascadeMode = CascadeMode.Continue;
