@@ -1,9 +1,11 @@
-﻿using Adnc.Shared.Application.Registrar;
+﻿using Adnc.Infra.Core.Interfaces;
+using Adnc.Shared.Application.Extensions;
+using Adnc.Shared.Application.Registrar;
 using Adnc.Shared.Rpc.Http.Services;
 
 namespace Adnc.Demo.Ord.Application;
 
-public sealed class OrdApplicationDependencyRegistrar : AbstractApplicationDependencyRegistrar
+public sealed class DependencyRegistrar : AbstractApplicationDependencyRegistrar
 {
     public override Assembly ApplicationLayerAssembly => Assembly.GetExecutingAssembly();
 
@@ -11,11 +13,11 @@ public sealed class OrdApplicationDependencyRegistrar : AbstractApplicationDepen
 
     public override Assembly RepositoryOrDomainLayerAssembly => typeof(EntityInfo).Assembly;
 
-    public OrdApplicationDependencyRegistrar(IServiceCollection services) : base(services)
+    public DependencyRegistrar(IServiceCollection services,IServiceInfo serviceInfo) : base(services, serviceInfo)
     {
     }
 
-    public override void AddAdnc()
+    public override void AddApplicationServices()
     {
         AddApplicaitonDefault();
         AddDomainSerivces<IDomainService>();
