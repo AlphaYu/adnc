@@ -1,34 +1,29 @@
-﻿using Adnc.Demo.Usr.Api.Authentication;
-using Adnc.Demo.Usr.Api.Authorization;
+﻿using Adnc.Infra.Core.Interfaces;
 using Adnc.Shared.WebApi.Registrar;
 
 namespace Adnc.Demo.Usr.Api;
 
-public sealed class UsrWebApiDependencyRegistrar : AbstractWebApiDependencyRegistrar
+public sealed class DependencyRegistrar(IServiceCollection services, IServiceInfo serviceInfo) : AbstractWebApiDependencyRegistrar(services, serviceInfo)
 {
-    public UsrWebApiDependencyRegistrar(IServiceCollection services)
-        : base(services)
+    public override void AddAdncServices()
     {
-    }
+        Services.AddSingleton(typeof(IServiceInfo),ServiceInfo);
 
-    public UsrWebApiDependencyRegistrar(IApplicationBuilder app)
-        : base(app)
-    {
-    }
+        var registrar = new Application.DependencyRegistrar(Services, ServiceInfo);
+        registrar.AddApplicationServices();
 
-    public override void AddAdnc()
-    {
-        AddWebApiDefault<BearerAuthenticationLocalProcessor, PermissionLocalHandler>();
+        AddWebApiDefaultServices();
         AddHealthChecks(true, true, true, false);
         Services.AddGrpc();
     }
+}
 
-    public override void UseAdnc()
+public static class ServiceCollectionExtensions
+{
+    public static IServiceCollection AddAdnc(this IServiceCollection services, IServiceInfo serviceInfo)
     {
-        UseWebApiDefault(endpointRoute: endpoint =>
-        {
-            endpoint.MapGrpcService<Grpc.AuthGrpcServer>();
-            endpoint.MapGrpcService<Grpc.UsrGrpcServer>();
-        });
+        var registrar = new DependencyRegistrar(services, serviceInfo);
+        registrar.AddAdncServices();
+        return services;
     }
 }

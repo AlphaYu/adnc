@@ -91,11 +91,11 @@ public class UserAppService : AbstractAppService, IUserAppService
 
     public async Task<List<string>> GetPermissionsAsync(long userId, IEnumerable<string> requestPermissions, string userBelongsRoleIds)
     {
-        if (userBelongsRoleIds.IsNullOrWhiteSpace())
-            return default;
-
         if (requestPermissions.IsNullOrEmpty())
             return new List<string> { "allow" };
+
+        if (userBelongsRoleIds.IsNullOrWhiteSpace())
+            return default;
 
         var roleIds = userBelongsRoleIds.Split(",", StringSplitOptions.RemoveEmptyEntries).Select(x => long.Parse(x.Trim()));
 

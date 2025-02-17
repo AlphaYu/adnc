@@ -17,20 +17,23 @@ internal static class Program
             var migrationsAssemblyName = startAssemblyName.Replace($".{lastName}", ".Repository");
             var serviceInfo = ServiceInfo.CreateInstance(startAssembly, migrationsAssemblyName);
 
-            //Configuration,ServiceCollection,Logging,WebHost(Kestrel)
-            var app = WebApplication
-                .CreateBuilder(args)
-                .ConfigureAdncDefault(serviceInfo)
-                .Build();
+            //configuration,logging,webHost(kestrel)
+            var builder = WebApplication.CreateBuilder(args).AddConfiguration(serviceInfo);
 
-            //Middlewares
+            //register services
+            builder.Services.AddAdnc(serviceInfo);
+
+            //create webHost
+            var app = builder.Build();
+
+            //register middlewares
             app.UseAdnc();
 
-            //Start
+            //other settings
             app.ChangeThreadPoolSettings()
                 .UseRegistrationCenter();
 
-            //Default page
+            //default page
             app.MapGet("/", async context =>
             {
                 var content = serviceInfo.GetDefaultPageContent(app.Services);
@@ -38,6 +41,7 @@ internal static class Program
                 await context.Response.WriteAsync(content);
             });
 
+            //start
             await app.RunAsync();
         }
         catch (Exception ex)

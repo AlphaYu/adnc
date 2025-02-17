@@ -1,4 +1,6 @@
-﻿namespace Adnc.Demo.Usr.Api.Controllers;
+﻿using Adnc.Shared.WebApi.Authentication.Bearer;
+
+namespace Adnc.Demo.Usr.Api.Controllers;
 
 /// <summary>
 /// 认证管理
@@ -39,7 +41,7 @@ public class AccountController : AdncControllerBase
         if (result.IsSuccess)
         {
             var validatedInfo = result.Content;
-            var accessToken = JwtTokenHelper.CreateAccessToken(_jwtOptions.Value, validatedInfo.ValidationVersion, validatedInfo.Account, validatedInfo.Id.ToString(), validatedInfo.Name, validatedInfo.RoleIds, JwtBearerDefaults.Manager);
+            var accessToken = JwtTokenHelper.CreateAccessToken(_jwtOptions.Value, validatedInfo.ValidationVersion, validatedInfo.Account, validatedInfo.Id.ToString(), validatedInfo.Name, validatedInfo.RoleIds, BearerDefaults.Manager);
             var refreshToken = JwtTokenHelper.CreateRefreshToken(_jwtOptions.Value, validatedInfo.ValidationVersion, validatedInfo.Id.ToString());
             var tokenInfo = new UserTokenInfoDto(accessToken.Token, accessToken.Expire, refreshToken.Token, refreshToken.Expire);
             return Created($"/auth/session", tokenInfo);
@@ -79,7 +81,7 @@ public class AccountController : AdncControllerBase
             if (jti is null || jti.Value != validatedInfo.ValidationVersion)
                 return Forbid();
 
-            var accessToken = JwtTokenHelper.CreateAccessToken(_jwtOptions.Value, validatedInfo.ValidationVersion, validatedInfo.Account, validatedInfo.Id.ToString(), validatedInfo.Name, validatedInfo.RoleIds, JwtBearerDefaults.Manager);
+            var accessToken = JwtTokenHelper.CreateAccessToken(_jwtOptions.Value, validatedInfo.ValidationVersion, validatedInfo.Account, validatedInfo.Id.ToString(), validatedInfo.Name, validatedInfo.RoleIds, BearerDefaults.Manager);
             var refreshToken = JwtTokenHelper.CreateRefreshToken(_jwtOptions.Value, validatedInfo.ValidationVersion, validatedInfo.Id.ToString());
 
             await _userService.ChangeUserValidateInfoExpiresDtAsync(id.Value);

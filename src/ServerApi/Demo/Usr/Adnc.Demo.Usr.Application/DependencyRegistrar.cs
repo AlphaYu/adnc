@@ -1,4 +1,6 @@
-﻿namespace Adnc.Demo.Usr.Application;
+﻿using Adnc.Infra.Core.Interfaces;
+
+namespace Adnc.Demo.Usr.Application;
 
 public sealed class DependencyRegistrar : AbstractApplicationDependencyRegistrar
 {
@@ -8,9 +10,16 @@ public sealed class DependencyRegistrar : AbstractApplicationDependencyRegistrar
 
     public override Assembly RepositoryOrDomainLayerAssembly => typeof(EntityInfo).Assembly;
 
-    public DependencyRegistrar(IServiceCollection services) : base(services)
+    public DependencyRegistrar(IServiceCollection services, IServiceInfo serviceInfo) : base(services, serviceInfo)
     {
     }
 
-    public override void AddAdnc() => AddApplicaitonDefault();
+    public override void AddApplicationServices()
+    {
+        AddApplicaitonDefault();
+        //add other services
+        //Services.Addxxxxx();
+    }
 }
+
+

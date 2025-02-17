@@ -3,6 +3,7 @@ using Adnc.Demo.Shared.Rpc.Grpc.Messages;
 using Adnc.Demo.Shared.Rpc.Grpc.Services;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
+using Adnc.Shared.WebApi.Authentication.Bearer;
 
 namespace Adnc.Demo.Usr.Api.Grpc;
 
@@ -37,7 +38,7 @@ public class AuthGrpcServer : AuthGrpc.AuthGrpcBase
         var validatedInfo = loginResult.Content;
         var loginReply = new LoginReply
         {
-            Token = JwtTokenHelper.CreateAccessToken(_jwtOptions.Value, validatedInfo.ValidationVersion, validatedInfo.Account, validatedInfo.Id.ToString(), validatedInfo.Name, validatedInfo.RoleIds, JwtBearerDefaults.Manager).Token,
+            Token = JwtTokenHelper.CreateAccessToken(_jwtOptions.Value, validatedInfo.ValidationVersion, validatedInfo.Account, validatedInfo.Id.ToString(), validatedInfo.Name, validatedInfo.RoleIds, BearerDefaults.Manager).Token,
             RefreshToken = JwtTokenHelper.CreateRefreshToken(_jwtOptions.Value, validatedInfo.ValidationVersion, validatedInfo.Id.ToString()).Token
         };
         grpcResponse.Content = Any.Pack(loginReply);

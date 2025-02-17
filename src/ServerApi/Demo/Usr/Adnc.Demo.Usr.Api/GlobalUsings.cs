@@ -7,7 +7,7 @@ global using Adnc.Shared;
 global using Adnc.Shared.Application.Contracts.Dtos;
 global using Adnc.Shared.WebApi;
 global using Adnc.Shared.WebApi.Authentication;
-global using Adnc.Shared.WebApi.Authentication.JwtBearer;
+global using Adnc.Shared.WebApi.Authentication.Bearer;
 global using Adnc.Shared.WebApi.Authorization;
 global using Microsoft.AspNetCore.Authorization;
 global using Microsoft.AspNetCore.Builder;
