@@ -1,34 +1,31 @@
-﻿using Adnc.Shared.WebApi.Registrar;
+﻿using Adnc.Infra.Core.Interfaces;
+using Adnc.Shared.WebApi.Registrar;
 
 namespace Adnc.Demo.Whse.Api;
 
-public sealed class WhseWebApiDependencyRegistrar : AbstractWebApiDependencyRegistrar
+public sealed class DependencyRegistrar(IServiceCollection services, IServiceInfo serviceInfo) : AbstractWebApiDependencyRegistrar(services, serviceInfo)
 {
-    public WhseWebApiDependencyRegistrar(IServiceCollection services)
-        : base(services)
+    public override void AddAdncServices()
     {
-    }
+        Services.AddSingleton(typeof(IServiceInfo), ServiceInfo);
 
-    public WhseWebApiDependencyRegistrar(IApplicationBuilder app)
-        : base(app)
-    {
-    }
+        var registrar = new Application.DependencyRegistrar(Services, ServiceInfo);
+        registrar.AddApplicationServices();
 
-    public override void AddAdnc()
-    {
-        AddWebApiDefault();
-
+        AddWebApiDefaultServices();
         var connectionString = Configuration.GetValue<string>("SqlServer:ConnectionString");
         AddHealthChecks(false, true, true, true).AddSqlServer(connectionString);
 
         Services.AddGrpc();
     }
+}
 
-    public override void UseAdnc()
+public static class ServiceCollectionExtensions
+{
+    public static IServiceCollection AddAdnc(this IServiceCollection services, IServiceInfo serviceInfo)
     {
-        UseWebApiDefault(endpointRoute: endpoint =>
-        {
-            endpoint.MapGrpcService<Grpc.WhseGrpcServer>();
-        });
+        var registrar = new DependencyRegistrar(services, serviceInfo);
+        registrar.AddAdncServices();
+        return services;
     }
 }

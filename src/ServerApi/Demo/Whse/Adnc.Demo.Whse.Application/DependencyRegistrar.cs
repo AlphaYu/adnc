@@ -1,10 +1,12 @@
-﻿using Adnc.Shared.Application.Registrar;
+﻿using Adnc.Infra.Core.Interfaces;
+using Adnc.Shared.Application.Extensions;
+using Adnc.Shared.Application.Registrar;
 using Adnc.Shared.Rpc.Http.Services;
 using Microsoft.Extensions.Configuration;
 
-namespace Adnc.Demo.Whse.Application.Registrar;
+namespace Adnc.Demo.Whse.Application;
 
-public sealed class WhseApplicationDependencyRegistrar : AbstractApplicationDependencyRegistrar
+public sealed class DependencyRegistrar : AbstractApplicationDependencyRegistrar
 {
     public override Assembly ApplicationLayerAssembly => Assembly.GetExecutingAssembly();
 
@@ -14,13 +16,13 @@ public sealed class WhseApplicationDependencyRegistrar : AbstractApplicationDepe
 
     private readonly IConfigurationSection _sqlSection;
 
-    public WhseApplicationDependencyRegistrar(IServiceCollection services)
-        : base(services)
+    public DependencyRegistrar(IServiceCollection services, IServiceInfo serviceInfo)
+        : base(services, serviceInfo)
     {
         _sqlSection = Configuration.GetSection("SqlServer");
     }
 
-    public override void AddAdnc()
+    public override void AddApplicationServices()
     {
         AddApplicaitonDefault();
         AddDomainSerivces<IDomainService>();
