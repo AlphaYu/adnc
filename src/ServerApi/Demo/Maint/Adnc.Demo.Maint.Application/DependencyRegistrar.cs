@@ -1,4 +1,5 @@
 ﻿using Adnc.Demo.Maint.Repository;
+using Adnc.Shared.Application.Extensions;
 using Adnc.Shared.Rpc.Http.Services;
 using IUsrRestClient = Adnc.Demo.Shared.Rpc.Http.Services.IUsrRestClient;
 
@@ -12,11 +13,11 @@ public sealed class DependencyRegistrar : AbstractApplicationDependencyRegistrar
 
     public override Assembly RepositoryOrDomainLayerAssembly => typeof(EntityInfo).Assembly;
 
-    public DependencyRegistrar(IServiceCollection services) : base(services)
+    public DependencyRegistrar(IServiceCollection services, IServiceInfo serviceInfo) : base(services, serviceInfo)
     {
     }
 
-    public override void AddAdnc()
+    public override void AddApplicationServices()
     {
         AddApplicaitonDefault();
         //rpc-rest

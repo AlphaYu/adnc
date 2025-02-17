@@ -17,13 +17,19 @@ internal static class Program
             var migrationsAssemblyName = startAssemblyName.Replace($".{lastName}", ".Repository");
             var serviceInfo = ServiceInfo.CreateInstance(startAssembly, migrationsAssemblyName);
 
-            var app = WebApplication
-                .CreateBuilder(args)
-                .ConfigureAdncDefault(serviceInfo)
-                .Build();
+            //configuration,logging,webHost(kestrel)
+            var builder = WebApplication.CreateBuilder(args).AddConfiguration(serviceInfo);
 
+            //register services
+            builder.Services.AddAdnc(serviceInfo);
+
+            //create webHost
+            var app = builder.Build();
+
+            //register middlewares
             app.UseAdnc();
 
+            //other settings
             app.ChangeThreadPoolSettings()
                 .UseRegistrationCenter();
 
