@@ -13,7 +13,7 @@ public static class ServiceCollectionExtension
         if (services.HasRegistered(nameof(AddAdncInfraRedis)))
             return services;
 
-        var redisConfig = redisSection.Get<RedisOptions>();
+        var redisConfig = redisSection.Get<RedisOptions>() ?? throw new ArgumentNullException("RedisOptions is null");
         services.Configure<RedisOptions>(redisSection);
         services.AddSingleton(provider =>
         {

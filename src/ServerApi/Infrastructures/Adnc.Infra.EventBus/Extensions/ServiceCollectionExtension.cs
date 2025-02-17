@@ -1,4 +1,5 @@
-﻿using Adnc.Infra.EventBus;
+﻿using Adnc.Infra.Core.Interfaces;
+using Adnc.Infra.EventBus;
 using Adnc.Infra.EventBus.Cap;
 using Adnc.Infra.EventBus.Cap.Filters;
 using Adnc.Infra.EventBus.Configurations;
@@ -42,8 +43,8 @@ public static class ServiceCollectionExtension
              {
                  var options = provider.GetRequiredService<IOptions<RabbitMqOptions>>();
                  var logger = provider.GetRequiredService<ILogger<RabbitMqConnection>>();
-                 var serviceInfo = services.GetServiceInfo();
-                 var clientProvidedName = serviceInfo?.Id ?? "unkonow";
+                 var serviceInfo = provider.GetRequiredService<IServiceInfo>();
+                 var clientProvidedName = serviceInfo.Id ?? "unkonow";
                  return RabbitMqConnection.GetInstance(options, clientProvidedName, logger);
              })
              .AddSingleton<RabbitMqProducer>()

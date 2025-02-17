@@ -9,7 +9,7 @@ namespace Adnc.Infra.EventBus.RabbitMq
         IConnection Connection { get; }
     }
 
-    internal sealed class RabbitMqConnection : IRabbitMqConnection
+    public sealed class RabbitMqConnection : IRabbitMqConnection
     {
         private static volatile RabbitMqConnection? _uniqueInstance;
         private static readonly object _lockObject = new();
@@ -20,7 +20,22 @@ namespace Adnc.Infra.EventBus.RabbitMq
         {
         }
 
-        internal static RabbitMqConnection GetInstance(IOptions<RabbitMqOptions> options, string clientProvidedName, ILogger<dynamic> logger)
+        public static RabbitMqConnection GetInstance(IOptions<RabbitMqOptions> options, string clientProvidedName, ILogger<dynamic> logger)
+        {
+            if (_uniqueInstance is null)
+            {
+                lock (_lockObject)
+                {
+                    if (_uniqueInstance is null)
+                    {
+                        _uniqueInstance = new RabbitMqConnection(options.Value, clientProvidedName, logger);
+                    }
+                }
+            }
+            return _uniqueInstance;
+        }
+
+        public static RabbitMqConnection GetInstance(RabbitMqOptions options, string clientProvidedName, ILogger<dynamic> logger)
         {
             if (_uniqueInstance is null)
             {
@@ -35,18 +50,18 @@ namespace Adnc.Infra.EventBus.RabbitMq
             return _uniqueInstance;
         }
 
-        private RabbitMqConnection(IOptions<RabbitMqOptions> options, string clientProvidedName, ILogger<dynamic> logger)
+        private RabbitMqConnection(RabbitMqOptions options, string clientProvidedName, ILogger<dynamic> logger)
         {
             _logger = logger;
 
             var factory = new ConnectionFactory()
             {
                 ClientProvidedName = clientProvidedName,
-                HostName = options.Value.HostName,
-                VirtualHost = options.Value.VirtualHost,
-                UserName = options.Value.UserName,
-                Password = options.Value.Password,
-                Port = options.Value.Port,
+                HostName = options.HostName,
+                VirtualHost = options.VirtualHost,
+                UserName = options.UserName,
+                Password = options.Password,
+                Port = options.Port,
                 //Rabbitmq集群必需加这两个参数
                 AutomaticRecoveryEnabled = true,
                 //TopologyRecoveryEnabled=true
