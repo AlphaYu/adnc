@@ -1,27 +1,29 @@
-﻿using Adnc.Shared.WebApi.Registrar;
+﻿using Adnc.Infra.Core.Interfaces;
+using Adnc.Shared.WebApi.Registrar;
 
 namespace Adnc.Demo.Ord.Api;
 
-public sealed class OrdWebApiDependencyRegistrar : AbstractWebApiDependencyRegistrar
+public sealed class DependencyRegistrar(IServiceCollection services, IServiceInfo serviceInfo) : AbstractWebApiDependencyRegistrar(services, serviceInfo)
 {
-    public OrdWebApiDependencyRegistrar(IServiceCollection services)
-        : base(services)
-    {
-    }
 
-    public OrdWebApiDependencyRegistrar(IApplicationBuilder app)
-    : base(app)
+    public override void AddAdncServices()
     {
-    }
+        Services.AddSingleton(typeof(IServiceInfo), ServiceInfo);
 
-    public override void AddAdnc()
-    {
-        AddWebApiDefault();
+        var registrar = new Application.DependencyRegistrar(Services, ServiceInfo);
+        registrar.AddApplicationServices();
+
+        AddWebApiDefaultServices();
         AddHealthChecks(true, true, true, true);
     }
+}
 
-    public override void UseAdnc()
+public static class ServiceCollectionExtensions
+{
+    public static IServiceCollection AddAdnc(this IServiceCollection services, IServiceInfo serviceInfo)
     {
-        UseWebApiDefault();
+        var registrar = new DependencyRegistrar(services, serviceInfo);
+        registrar.AddAdncServices();
+        return services;
     }
 }
