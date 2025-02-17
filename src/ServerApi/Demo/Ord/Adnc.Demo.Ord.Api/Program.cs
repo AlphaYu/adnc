@@ -14,7 +14,7 @@ internal static class Program
             var startAssembly = System.Reflection.Assembly.GetExecutingAssembly();
             var startAssemblyName = startAssembly.GetName().Name ?? string.Empty;
             var lastName = startAssemblyName.Split('.').Last();
-            var migrationsAssemblyName = startAssemblyName.Replace($".{lastName}", ".Domain");
+            var migrationsAssemblyName = startAssemblyName.Replace($".{lastName}", ".Migrations");
             var serviceInfo = ServiceInfo.CreateInstance(startAssembly, migrationsAssemblyName);
 
             //configuration,logging,webHost(kestrel)

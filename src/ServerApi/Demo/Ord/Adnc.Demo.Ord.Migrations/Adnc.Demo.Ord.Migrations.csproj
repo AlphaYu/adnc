@@ -10,5 +10,13 @@
 
 	<ItemGroup Condition="'$(SolutionName)'=='Adnc.Demo' ">
 		<PackageReference Include="Adnc.Infra.Repository.EfCore.MySql" Version="$(Infra_Version)" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Adnc.Demo.Ord.Domain\Adnc.Demo.Ord.Domain.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Migrations\" />
 	</ItemGroup>	
 </Project>
