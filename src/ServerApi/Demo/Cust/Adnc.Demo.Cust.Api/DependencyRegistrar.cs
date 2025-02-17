@@ -1,48 +1,34 @@
 ﻿using Adnc.Demo.Cust.Api.Application.Subscribers;
-using Adnc.Demo.Shared.Const;
+using Adnc.Infra.Core.Interfaces;
+using Adnc.Shared.Application.Extensions;
 using Adnc.Shared.Application.Registrar;
 using Adnc.Shared.WebApi.Registrar;
 
 namespace Adnc.Demo.Cust.Api;
 
-public sealed class ApiLayerRegistrar : AbstractWebApiDependencyRegistrar
+public sealed class ApiLayerRegistrar(IServiceCollection services, IServiceInfo serviceInfo) : AbstractWebApiDependencyRegistrar(services, serviceInfo)
 {
-    public ApiLayerRegistrar(IServiceCollection services) : base(services)
+    public override void AddAdncServices()
     {
-    }
+        Services.AddSingleton(typeof(IServiceInfo), ServiceInfo);
 
-    public ApiLayerRegistrar(IApplicationBuilder appBuilder) : base(appBuilder)
-    {
-    }
+        var registrar = new ApplicationLayerRegistrar(Services, ServiceInfo);
+        registrar.AddApplicationServices();
 
-    public override void AddAdnc()
-    {
-        AddWebApiDefault();
-        AddHealthChecks(true, true, true, false);
-        //register others services
-        //Services.AddScoped<xxxx>
-    }
-
-    public override void UseAdnc()
-    {
-        UseWebApiDefault();
+        AddWebApiDefaultServices();
+        AddHealthChecks(true, true, true, true);
     }
 }
 
-public sealed class ApplicationLayerRegistrar : AbstractApplicationDependencyRegistrar
+public sealed class ApplicationLayerRegistrar(IServiceCollection services, IServiceInfo serviceInfo) : AbstractApplicationDependencyRegistrar(services,serviceInfo)
 {
-    private readonly Assembly _assembly;
-
-    public ApplicationLayerRegistrar(IServiceCollection services) : base(services)
-    {
-        _assembly = Assembly.GetExecutingAssembly();
-    }
+    private readonly Assembly _assembly = Assembly.GetExecutingAssembly();
 
     public override Assembly ApplicationLayerAssembly => _assembly;
     public override Assembly ContractsLayerAssembly => _assembly;
     public override Assembly RepositoryOrDomainLayerAssembly => _assembly;
 
-    public override void AddAdnc()
+    public override void AddApplicationServices()
     {
         //register base services
         AddApplicaitonDefault();
@@ -62,5 +48,15 @@ public sealed class ApplicationLayerRegistrar : AbstractApplicationDependencyReg
         AddCapEventBus<CapEventSubscriber>();
         //register others services
         //Services.AddScoped<xxxx>
+    }
+}
+
+public static class ServiceCollectionExtensions
+{
+    public static IServiceCollection AddAdnc(this IServiceCollection services, IServiceInfo serviceInfo)
+    {
+        var registrar = new ApiLayerRegistrar(services, serviceInfo);
+        registrar.AddAdncServices();
+        return services;
     }
 }

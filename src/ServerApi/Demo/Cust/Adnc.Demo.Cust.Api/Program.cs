@@ -16,13 +16,16 @@ internal static class Program
             var lastName = startAssemblyName.Split('.').Last();
             var serviceInfo = ServiceInfo.CreateInstance(startAssembly, migrationsAssemblyName: startAssemblyName);
 
-            var app = WebApplication
-                .CreateBuilder(args)
-                .ConfigureAdncDefault(serviceInfo)
-                .Build();
+            //Configuration,ServiceCollection,Logging,WebHost(Kestrel)
+            var builder = WebApplication.CreateBuilder(args).AddConfiguration(serviceInfo);
+            builder.Services.AddAdnc(serviceInfo);
 
+            var app = builder.Build();
+
+            //register middlewares
             app.UseAdnc();
 
+            //other settings
             app.ChangeThreadPoolSettings()
                 .UseRegistrationCenter();
 
