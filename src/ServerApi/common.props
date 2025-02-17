@@ -49,7 +49,7 @@
 		<EFCore_NamingConventions_Version>8.0.3</EFCore_NamingConventions_Version>
 		<MySqlConnector_Version>2.3.7</MySqlConnector_Version>
 		<Dapper_Version>2.1.35</Dapper_Version>
-		<MongoDB_Driver_Version>3.2.0</MongoDB_Driver_Version>
+		<MongoDB_Driver_Version>3.0.0</MongoDB_Driver_Version>
 		<AutoMapper_Version>13.0.1</AutoMapper_Version>
 		<Consul_Version>1.7.14.7</Consul_Version>
 		<Grpc_Net_Client_Version>2.67.0</Grpc_Net_Client_Version>
@@ -61,11 +61,11 @@
 		<Refit_HttpClientFactory>8.0.0</Refit_HttpClientFactory>
 		<Polly_Version>8.5.2</Polly_Version>
 		<RabbitMQ_Client_Version>7.0.0</RabbitMQ_Client_Version>
-		<DotNetCore_CAP_Version>8.3.2</DotNetCore_CAP_Version>
-		<DotNetCore_CAP_Dashboard_Version>8.3.2</DotNetCore_CAP_Dashboard_Version>
-		<DotNetCore_CAP_RabbitMQ_Version>8.3.2</DotNetCore_CAP_RabbitMQ_Version>
-		<DotNetCore_CAP_MySql_Version>8.3.2</DotNetCore_CAP_MySql_Version>
-		<DotNetCore_CAP_SqlServer_Version>8.3.2</DotNetCore_CAP_SqlServer_Version>
+		<DotNetCore_CAP_Version>8.3.3-preview-255432523</DotNetCore_CAP_Version>
+		<DotNetCore_CAP_Dashboard_Version>8.3.3-preview-255432523</DotNetCore_CAP_Dashboard_Version>
+		<DotNetCore_CAP_RabbitMQ_Version>8.3.3-preview-255432523</DotNetCore_CAP_RabbitMQ_Version>
+		<DotNetCore_CAP_MySql_Version>8.3.3-preview-255432523</DotNetCore_CAP_MySql_Version>
+		<DotNetCore_CAP_SqlServer_Version>8.3.3-preview-255432523</DotNetCore_CAP_SqlServer_Version>
 		<Yitter_IdGenerator_Version>1.0.14</Yitter_IdGenerator_Version>
 		<Castle_Core_AsyncInterceptor_Version>2.1.0</Castle_Core_AsyncInterceptor_Version>
 		<StackExchange_Redis_Version>2.8.24</StackExchange_Redis_Version>
@@ -78,11 +78,11 @@
 		<Swashbuckle_AspNetCore_SwaggerGen_Version>7.2.0</Swashbuckle_AspNetCore_SwaggerGen_Version>
 		<MiniProfiler_AspNetCore_Mvc_Version>4.5.4</MiniProfiler_AspNetCore_Mvc_Version>
 		<MiniProfiler_EntityFrameworkCore_Version>4.5.4</MiniProfiler_EntityFrameworkCore_Version>
-		<AspNetCore_HealthChecks_Rabbitmq_Version>6.0.2</AspNetCore_HealthChecks_Rabbitmq_Version>
-		<AspNetCore_HealthChecks_UI_Client_Version>6.0.4</AspNetCore_HealthChecks_UI_Client_Version>
-		<AspNetCore_HealthChecks_MySql_Version>8.0.1</AspNetCore_HealthChecks_MySql_Version>
-		<AspNetCore_HealthChecks_SqlServer_Version>8.0.1</AspNetCore_HealthChecks_SqlServer_Version>
-		<AspNetCore_HealthChecks_MongoDb_Version>8.0.1</AspNetCore_HealthChecks_MongoDb_Version>
+		<AspNetCore_HealthChecks_Rabbitmq_Version>9.0.0</AspNetCore_HealthChecks_Rabbitmq_Version>
+		<AspNetCore_HealthChecks_UI_Client_Version>9.0.0</AspNetCore_HealthChecks_UI_Client_Version>
+		<AspNetCore_HealthChecks_MySql_Version>9.0.0</AspNetCore_HealthChecks_MySql_Version>
+		<AspNetCore_HealthChecks_SqlServer_Version>9.0.0</AspNetCore_HealthChecks_SqlServer_Version>
+		<AspNetCore_HealthChecks_MongoDb_Version>9.0.0</AspNetCore_HealthChecks_MongoDb_Version>
 		<LiteX_HealthChecks_Redis_Version>3.0.0</LiteX_HealthChecks_Redis_Version>
 		<prometheus-net_AspNetCore_Version>8.2.1</prometheus-net_AspNetCore_Version>
 		<prometheus-net_DotNetRuntime_Version>4.4.1</prometheus-net_DotNetRuntime_Version>
