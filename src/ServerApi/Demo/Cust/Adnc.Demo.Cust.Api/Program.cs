@@ -16,10 +16,13 @@ internal static class Program
             var lastName = startAssemblyName.Split('.').Last();
             var serviceInfo = ServiceInfo.CreateInstance(startAssembly, migrationsAssemblyName: startAssemblyName);
 
-            //Configuration,ServiceCollection,Logging,WebHost(Kestrel)
+            //configuration,logging,webHost(kestrel)
             var builder = WebApplication.CreateBuilder(args).AddConfiguration(serviceInfo);
+
+            //register services
             builder.Services.AddAdnc(serviceInfo);
 
+            //create webHost
             var app = builder.Build();
 
             //register middlewares
