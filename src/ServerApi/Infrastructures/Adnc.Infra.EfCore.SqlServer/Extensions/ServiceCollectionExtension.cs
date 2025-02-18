@@ -18,10 +18,9 @@ public static class ServiceCollectionExtension
         return services;
     }
 
-    public static IServiceCollection AddAdncInfraEfCoreSQLServer(this IServiceCollection services, IConfigurationSection sqlServerSection)
+    public static IServiceCollection AddAdncInfraEfCoreSQLServer(this IServiceCollection services, IConfigurationSection sqlServerSection, string migrationsAssemblyName)
     {
         var connectionString = sqlServerSection.GetValue<string>("ConnectionString");
-        var serviceInfo = services.GetServiceInfo();
 
         return AddAdncInfraEfCoreSQLServer(services, options =>
         {
@@ -29,7 +28,7 @@ public static class ServiceCollectionExtension
             options.UseSqlServer(connectionString, optionsBuilder =>
             {
                 optionsBuilder.MinBatchSize(4)
-                                        .MigrationsAssembly(serviceInfo.MigrationsAssemblyName)
+                                        .MigrationsAssembly(migrationsAssemblyName)
                                         .UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
             });
 

@@ -34,7 +34,7 @@ public static class EntityEntryExtension
 
     public static string? GetColumnName(this PropertyEntry entry)
     {
-        var storeObjectId = StoreObjectIdentifier.Create(entry.Metadata.DeclaringEntityType, StoreObjectType.Table);
+        var storeObjectId = StoreObjectIdentifier.Create(entry.Metadata.DeclaringType, StoreObjectType.Table);
         return entry.Metadata.GetColumnName(storeObjectId.GetValueOrDefault());
     }
 }
