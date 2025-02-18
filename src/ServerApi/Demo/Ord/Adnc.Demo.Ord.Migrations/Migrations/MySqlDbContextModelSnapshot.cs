@@ -3,6 +3,7 @@ using System;
 using Adnc.Infra.Repository.EfCore.MySql;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -16,10 +17,11 @@ namespace Adnc.Demo.Ord.Migrations.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.6")
+                .HasAnnotation("ProductVersion", "8.0.13")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             MySqlModelBuilderExtensions.HasCharSet(modelBuilder, "utf8mb4 ");
+            MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
             modelBuilder.Entity("Adnc.Demo.Ord.Domain.Aggregates.OrderAggregate.Order", b =>
                 {
@@ -65,9 +67,10 @@ namespace Adnc.Demo.Ord.Migrations.Migrations
                     b.HasKey("Id")
                         .HasName("pk_order");
 
-                    b.ToTable("order", (string)null);
-
-                    b.HasComment("订单");
+                    b.ToTable("order", null, t =>
+                        {
+                            t.HasComment("订单");
+                        });
                 });
 
             modelBuilder.Entity("Adnc.Demo.Ord.Domain.Aggregates.OrderAggregate.OrderItem", b =>
@@ -94,18 +97,21 @@ namespace Adnc.Demo.Ord.Migrations.Migrations
                     b.HasIndex("OrderId")
                         .HasDatabaseName("ix_orderitem_orderid");
 
-                    b.ToTable("orderitem", (string)null);
-
-                    b.HasComment("订单条目");
+                    b.ToTable("orderitem", null, t =>
+                        {
+                            t.HasComment("订单条目");
+                        });
                 });
 
             modelBuilder.Entity("Adnc.Shared.Repository.EfEntities.EventTracker", b =>
                 {
                     b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
                         .HasColumnName("id")
-                        .HasColumnOrder(1)
                         .HasComment("");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<long>("CreateBy")
                         .HasColumnType("bigint")
@@ -130,15 +136,16 @@ namespace Adnc.Demo.Ord.Migrations.Migrations
                         .HasComment("");
 
                     b.HasKey("Id")
-                        .HasName("pk_eventtracker");
+                        .HasName("pk_ord_eventtracker");
 
                     b.HasIndex(new[] { "EventId", "TrackerName" }, "uk_eventid_trackername")
                         .IsUnique()
-                        .HasDatabaseName("ix_eventtracker_eventid_trackername");
+                        .HasDatabaseName("ix_ord_eventtracker_eventid_trackername");
 
-                    b.ToTable("eventtracker", (string)null);
-
-                    b.HasComment("事件跟踪/处理信息");
+                    b.ToTable("ord_eventtracker", null, t =>
+                        {
+                            t.HasComment("事件跟踪/处理信息");
+                        });
                 });
 
             modelBuilder.Entity("Adnc.Demo.Ord.Domain.Aggregates.OrderAggregate.Order", b =>
