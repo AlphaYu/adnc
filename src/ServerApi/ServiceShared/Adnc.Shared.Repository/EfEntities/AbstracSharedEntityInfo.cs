@@ -1,15 +1,7 @@
-﻿using Adnc.Infra.IRepositories;
-
-namespace Adnc.Shared.Repository.EfEntities;
+﻿namespace Adnc.Shared.Repository.EfEntities;
 
 public abstract class AbstracSharedEntityInfo : IEntityInfo
 {
-    private readonly UserContext _userContext;
-    protected AbstracSharedEntityInfo(UserContext userContext)
-    {
-        _userContext = userContext;
-    }
-
     protected abstract Assembly GetCurrentAssembly();
 
     protected virtual IEnumerable<Type> GetEntityTypes(Assembly assembly)
@@ -24,7 +16,7 @@ public abstract class AbstracSharedEntityInfo : IEntityInfo
         return typeList.Append(typeof(EventTracker));
     }
 
-    protected void SetComment(ModelBuilder modelBuilder, IEnumerable<Type>? types)
+    protected virtual void SetComment(ModelBuilder modelBuilder, IEnumerable<Type>? types)
     {
         if (types is null)
             return;
@@ -35,7 +27,8 @@ public abstract class AbstracSharedEntityInfo : IEntityInfo
             modelBuilder.Entity(entityType.Name, buider =>
             {
                 var typeSummary = entityType.ClrType.GetSummary();
-                buider.HasComment(typeSummary);
+                buider.ToTable(t => t.HasComment(typeSummary));
+                //buider.HasComment(typeSummary);
 
                 entityType.GetProperties().ForEach(property =>
                 {
@@ -49,16 +42,6 @@ public abstract class AbstracSharedEntityInfo : IEntityInfo
 
     protected virtual void SetTableName(dynamic modelBuilder)
     {
-    }
-
-    public Operater GetOperater()
-    {
-        return new Operater
-        {
-            Id = _userContext.Id == 0 ? 1600000000000 : _userContext.Id,
-            Account = _userContext.Account.IsNullOrEmpty() ? "system" : _userContext.Account,
-            Name = _userContext.Name.IsNullOrEmpty() ? "system" : _userContext.Name
-        };
     }
 
     public virtual void OnModelCreating(dynamic modelBuilder)
