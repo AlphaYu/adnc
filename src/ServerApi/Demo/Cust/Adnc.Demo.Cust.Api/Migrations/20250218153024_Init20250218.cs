@@ -6,8 +6,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Adnc.Demo.Cust.Api.Migrations
 {
-    public partial class Init2022122001 : Migration
+    /// <inheritdoc />
+    public partial class Init20250218 : Migration
     {
+        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterDatabase()
@@ -42,7 +44,8 @@ namespace Adnc.Demo.Cust.Api.Migrations
                 name: "eventtracker",
                 columns: table => new
                 {
-                    id = table.Column<long>(type: "bigint", nullable: false, comment: ""),
+                    id = table.Column<long>(type: "bigint", nullable: false, comment: "")
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     eventid = table.Column<long>(type: "bigint", nullable: false, comment: ""),
                     trackername = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false, comment: "")
                         .Annotation("MySql:CharSet", "utf8mb4 "),
@@ -64,8 +67,7 @@ namespace Adnc.Demo.Cust.Api.Migrations
                     account = table.Column<string>(type: "varchar(16)", maxLength: 16, nullable: false, comment: "")
                         .Annotation("MySql:CharSet", "utf8mb4 "),
                     balance = table.Column<decimal>(type: "decimal(18,4)", nullable: false, comment: ""),
-                    rowversion = table.Column<DateTime>(type: "timestamp(6)", rowVersion: true, nullable: false, comment: "")
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.ComputedColumn),
+                    rowversion = table.Column<DateTime>(type: "timestamp(6)", rowVersion: true, nullable: false, comment: ""),
                     createby = table.Column<long>(type: "bigint", nullable: false, comment: "创建人"),
                     createtime = table.Column<DateTime>(type: "datetime(6)", nullable: false, comment: "创建时间/注册时间"),
                     modifyby = table.Column<long>(type: "bigint", nullable: true, comment: "最后更新人"),
@@ -127,6 +129,7 @@ namespace Adnc.Demo.Cust.Api.Migrations
                 unique: true);
         }
 
+        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(

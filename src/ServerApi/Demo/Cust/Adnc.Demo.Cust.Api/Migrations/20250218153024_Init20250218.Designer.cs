@@ -3,6 +3,7 @@ using System;
 using Adnc.Infra.Repository.EfCore.MySql;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
@@ -11,19 +12,21 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Adnc.Demo.Cust.Api.Migrations
 {
     [DbContext(typeof(MySqlDbContext))]
-    [Migration("20230405154847_EventTraker")]
-    partial class EventTraker
+    [Migration("20250218153024_Init20250218")]
+    partial class Init20250218
     {
+        /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.6")
+                .HasAnnotation("ProductVersion", "8.0.13")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             MySqlModelBuilderExtensions.HasCharSet(modelBuilder, "utf8mb4 ");
+            MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
-            modelBuilder.Entity("Adnc.Demo.Cust.Api.Objects.Entities.Customer", b =>
+            modelBuilder.Entity("Adnc.Demo.Cust.Api.Repository.Entities.Customer", b =>
                 {
                     b.Property<long>("Id")
                         .HasColumnType("bigint")
@@ -82,12 +85,13 @@ namespace Adnc.Demo.Cust.Api.Migrations
                     b.HasKey("Id")
                         .HasName("pk_customer");
 
-                    b.ToTable("customer", (string)null);
-
-                    b.HasComment("客户表");
+                    b.ToTable("customer", null, t =>
+                        {
+                            t.HasComment("客户表");
+                        });
                 });
 
-            modelBuilder.Entity("Adnc.Demo.Cust.Api.Objects.Entities.CustomerFinance", b =>
+            modelBuilder.Entity("Adnc.Demo.Cust.Api.Repository.Entities.CustomerFinance", b =>
                 {
                     b.Property<long>("Id")
                         .HasColumnType("bigint")
@@ -137,12 +141,13 @@ namespace Adnc.Demo.Cust.Api.Migrations
                     b.HasKey("Id")
                         .HasName("pk_customerfinance");
 
-                    b.ToTable("customerfinance", (string)null);
-
-                    b.HasComment("客户财务表");
+                    b.ToTable("customerfinance", null, t =>
+                        {
+                            t.HasComment("客户财务表");
+                        });
                 });
 
-            modelBuilder.Entity("Adnc.Demo.Cust.Api.Objects.Entities.CustomerTransactionLog", b =>
+            modelBuilder.Entity("Adnc.Demo.Cust.Api.Repository.Entities.CustomerTransactionLog", b =>
                 {
                     b.Property<long>("Id")
                         .HasColumnType("bigint")
@@ -210,18 +215,21 @@ namespace Adnc.Demo.Cust.Api.Migrations
                     b.HasIndex("CustomerId")
                         .HasDatabaseName("ix_customertransactionlog_customerid");
 
-                    b.ToTable("customertransactionlog", (string)null);
-
-                    b.HasComment("客户财务变动记录");
+                    b.ToTable("customertransactionlog", null, t =>
+                        {
+                            t.HasComment("客户财务变动记录");
+                        });
                 });
 
             modelBuilder.Entity("Adnc.Shared.Repository.EfEntities.EventTracker", b =>
                 {
                     b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
                         .HasColumnName("id")
-                        .HasColumnOrder(1)
                         .HasComment("");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<long>("CreateBy")
                         .HasColumnType("bigint")
@@ -246,22 +254,23 @@ namespace Adnc.Demo.Cust.Api.Migrations
                         .HasComment("");
 
                     b.HasKey("Id")
-                        .HasName("pk_cust_eventtracker");
+                        .HasName("pk_eventtracker");
 
                     b.HasIndex(new[] { "EventId", "TrackerName" }, "uk_eventid_trackername")
                         .IsUnique()
-                        .HasDatabaseName("ix_cust_eventtracker_eventid_trackername");
+                        .HasDatabaseName("ix_eventtracker_eventid_trackername");
 
-                    b.ToTable("cust_eventtracker", (string)null);
-
-                    b.HasComment("事件跟踪/处理信息");
+                    b.ToTable("eventtracker", null, t =>
+                        {
+                            t.HasComment("事件跟踪/处理信息");
+                        });
                 });
 
-            modelBuilder.Entity("Adnc.Demo.Cust.Api.Objects.Entities.CustomerFinance", b =>
+            modelBuilder.Entity("Adnc.Demo.Cust.Api.Repository.Entities.CustomerFinance", b =>
                 {
-                    b.HasOne("Adnc.Demo.Cust.Api.Objects.Entities.Customer", "Customer")
+                    b.HasOne("Adnc.Demo.Cust.Api.Repository.Entities.Customer", "Customer")
                         .WithOne("FinanceInfo")
-                        .HasForeignKey("Adnc.Demo.Cust.Api.Objects.Entities.CustomerFinance", "Id")
+                        .HasForeignKey("Adnc.Demo.Cust.Api.Repository.Entities.CustomerFinance", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_customerfinance_customer_id");
@@ -269,9 +278,9 @@ namespace Adnc.Demo.Cust.Api.Migrations
                     b.Navigation("Customer");
                 });
 
-            modelBuilder.Entity("Adnc.Demo.Cust.Api.Objects.Entities.CustomerTransactionLog", b =>
+            modelBuilder.Entity("Adnc.Demo.Cust.Api.Repository.Entities.CustomerTransactionLog", b =>
                 {
-                    b.HasOne("Adnc.Demo.Cust.Api.Objects.Entities.Customer", null)
+                    b.HasOne("Adnc.Demo.Cust.Api.Repository.Entities.Customer", null)
                         .WithMany("TransactionLogs")
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -279,7 +288,7 @@ namespace Adnc.Demo.Cust.Api.Migrations
                         .HasConstraintName("fk_customertransactionlog_customer_customerid");
                 });
 
-            modelBuilder.Entity("Adnc.Demo.Cust.Api.Objects.Entities.Customer", b =>
+            modelBuilder.Entity("Adnc.Demo.Cust.Api.Repository.Entities.Customer", b =>
                 {
                     b.Navigation("FinanceInfo")
                         .IsRequired();

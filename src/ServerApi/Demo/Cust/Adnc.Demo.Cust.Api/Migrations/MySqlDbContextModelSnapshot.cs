@@ -251,13 +251,13 @@ namespace Adnc.Demo.Cust.Api.Migrations
                         .HasComment("");
 
                     b.HasKey("Id")
-                        .HasName("pk_cust_eventtracker");
+                        .HasName("pk_eventtracker");
 
                     b.HasIndex(new[] { "EventId", "TrackerName" }, "uk_eventid_trackername")
                         .IsUnique()
-                        .HasDatabaseName("ix_cust_eventtracker_eventid_trackername");
+                        .HasDatabaseName("ix_eventtracker_eventid_trackername");
 
-                    b.ToTable("cust_eventtracker", null, t =>
+                    b.ToTable("eventtracker", null, t =>
                         {
                             t.HasComment("事件跟踪/处理信息");
                         });
