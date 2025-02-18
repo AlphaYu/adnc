@@ -51,7 +51,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar
         Services
             .AddValidatorsFromAssembly(ContractsLayerAssembly, ServiceLifetime.Scoped)
             .AddAdncInfraAutoMapper(ApplicationLayerAssembly)
-            .AddAdncInfraYitterIdGenerater(RedisSection)
+            .AddAdncInfraYitterIdGenerater(RedisSection, ServiceInfo.ShortName.Split('-')[0])
             .AddAdncInfraConsul(ConsulSection)
             .AddAdncInfraDapper();
 
