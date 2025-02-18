@@ -1,6 +1,6 @@
 ﻿namespace Adnc.Shared.Domain.Entities;
 
-public abstract class AbstractDomainEntityInfo : AbstracEntityInfo, IEntityInfo
+public abstract class AbstractDomainEntityInfo : AbstractEntityInfo, IEntityInfo
 {
     protected override List<Type> GetEntityTypes(IEnumerable<Assembly> assemblies)
     {

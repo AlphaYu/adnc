@@ -1,6 +1,6 @@
 ﻿namespace Adnc.Demo.Usr.Repository;
 
-public class EntityInfo : AbstracEntityInfo
+public class EntityInfo : AbstractEntityInfo
 {
     protected override List<Assembly> GetCurrentAssemblies() => [GetType().Assembly, typeof(EventTracker).Assembly];
 

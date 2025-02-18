@@ -2,7 +2,7 @@
 
 namespace Adnc.Infra.Repository.EfCore;
 
-public abstract class AbstracEntityInfo : IEntityInfo
+public abstract class AbstractEntityInfo : IEntityInfo
 {
     public virtual void OnModelCreating(dynamic modelBuilder)
     {
