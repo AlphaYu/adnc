@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.Entities
+﻿namespace Adnc.Infra.Repository
 {
     public abstract class EfBasicAuditEntity : EfEntity, IBasicAuditInfo
     {

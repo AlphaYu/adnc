@@ -1,4 +1,4 @@
-﻿using Adnc.Infra.Entities;
+﻿using Adnc.Infra.Repository;
 using Adnc.Infra.Repository.Mongo.Configuration;
 
 namespace Adnc.Infra.Repository.Mongo.Interfaces

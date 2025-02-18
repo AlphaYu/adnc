@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.Repository.EfCore.Repositories
+﻿namespace Adnc.Infra.Repository.EfCore
 {
     /// <summary>
     /// Ef仓储的基类实现,抽象类

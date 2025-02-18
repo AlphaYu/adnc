@@ -2,7 +2,7 @@
 global using Adnc.Demo.Shared.Const.Entity.Ord;
 global using Adnc.Infra.Core.Guard;
 global using Adnc.Infra.IdGenerater.Yitter;
-global using Adnc.Infra.IRepositories;
+global using Adnc.Infra.Repository;
 global using Adnc.Infra.Repository.EfCore;
 global using Adnc.Shared.Domain;
 global using Adnc.Shared.Domain.Entities;

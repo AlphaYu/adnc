@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.IRepositories;
+﻿namespace Adnc.Infra.Repository;
 
 [Serializable]
 public class PagedModel<T> where T : class

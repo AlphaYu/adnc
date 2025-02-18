@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.IRepositories;
+﻿namespace Adnc.Infra.Repository;
 
 /// <summary>
 /// 仓储基类接口

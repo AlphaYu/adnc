@@ -1,7 +1,7 @@
 ﻿global using Adnc.Shared;
 global using Adnc.Infra.Core.Guard;
 global using Adnc.Infra.IdGenerater.Yitter;
-global using Adnc.Infra.IRepositories;
+global using Adnc.Infra.Repository;
 global using Adnc.Infra.Redis.Caching;
 global using Adnc.Demo.Ord.Application.Dtos;
 global using Adnc.Demo.Ord.Application.EventSubscribers;

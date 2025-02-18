@@ -1,9 +1,9 @@
 ﻿global using Adnc.Infra.Core.Configuration;
 global using Adnc.Infra.Core.DependencyInjection;
 global using Adnc.Infra.Core.Json;
-global using Adnc.Infra.Entities;
+global using Adnc.Infra.Repository;
 global using Adnc.Infra.IdGenerater.Yitter;
-global using Adnc.Infra.IRepositories;
+global using Adnc.Infra.Repository;
 global using Adnc.Infra.Mapper;
 global using Adnc.Infra.Redis;
 global using Adnc.Infra.Redis.Caching;

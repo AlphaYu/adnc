@@ -7,7 +7,7 @@ global using Adnc.Demo.Shared.Const.Entity.Maint;
 global using Adnc.Demo.Shared.Const.Mq;
 global using Adnc.Infra.EventBus.RabbitMq;
 global using Adnc.Infra.IdGenerater.Yitter;
-global using Adnc.Infra.IRepositories;
+global using Adnc.Infra.Repository;
 global using Adnc.Infra.Redis;
 global using Adnc.Infra.Redis.Caching;
 global using Adnc.Infra.Redis.Caching.Configurations;

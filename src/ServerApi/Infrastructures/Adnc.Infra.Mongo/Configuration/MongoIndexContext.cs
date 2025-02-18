@@ -1,4 +1,4 @@
-﻿using Adnc.Infra.Entities;
+﻿using Adnc.Infra.Repository;
 using MongoDB.Driver;
 using System.Collections;
 

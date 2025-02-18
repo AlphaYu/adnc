@@ -1,6 +1,6 @@
-﻿global using Adnc.Infra.Entities;
-global using Adnc.Infra.IRepositories;
-global using Adnc.Infra.Repository.EfCore.Repositories;
+﻿global using Adnc.Infra.Repository;
+global using Adnc.Infra.Repository;
+global using Adnc.Infra.Repository.EfCore;
 global using Adnc.Infra.Repository.EfCore.Transaction;
 global using DotNetCore.CAP;
 global using Microsoft.EntityFrameworkCore;

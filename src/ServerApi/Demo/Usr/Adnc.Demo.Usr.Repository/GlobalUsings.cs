@@ -1,7 +1,7 @@
 ﻿global using Adnc.Demo.Shared.Const.Entity.Usr;
 global using Adnc.Demo.Usr.Repository.Entities;
-global using Adnc.Infra.Entities;
-global using Adnc.Infra.IRepositories;
+global using Adnc.Infra.Repository;
+global using Adnc.Infra.Repository;
 global using Adnc.Infra.Repository.EfCore;
 global using Adnc.Shared.Repository.EfEntities;
 global using Microsoft.EntityFrameworkCore;

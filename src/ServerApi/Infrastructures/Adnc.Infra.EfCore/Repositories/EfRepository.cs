@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Query;
 
-namespace Adnc.Infra.Repository.EfCore.Repositories
+namespace Adnc.Infra.Repository.EfCore
 {
     /// <summary>
     /// Ef默认的、全功能的仓储实现

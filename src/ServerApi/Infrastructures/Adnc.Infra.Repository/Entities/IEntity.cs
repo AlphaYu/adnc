@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.Entities
+﻿namespace Adnc.Infra.Repository
 {
     public interface IEntity<TKey>
     {

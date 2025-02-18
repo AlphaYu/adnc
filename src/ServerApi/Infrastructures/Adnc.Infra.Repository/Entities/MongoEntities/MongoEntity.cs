@@ -2,7 +2,7 @@
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson.Serialization.IdGenerators;
 
-namespace Adnc.Infra.Entities
+namespace Adnc.Infra.Repository
 {
     /// <summary>
     /// An entity in a MongoDB repository.

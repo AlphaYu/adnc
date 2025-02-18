@@ -1,6 +1,6 @@
-﻿using Adnc.Infra.Entities;
+﻿using Adnc.Infra.Repository;
 
-namespace Adnc.Infra.IRepositories;
+namespace Adnc.Infra.Repository;
 
 /// <summary>
 /// Ef默认的、全功能的仓储接口

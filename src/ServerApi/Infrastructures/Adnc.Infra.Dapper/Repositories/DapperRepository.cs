@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.Dapper.Repositories;
+﻿namespace Adnc.Infra.Repository.Dapper;
 
 public sealed class DapperRepository : IAdoExecuterWithQuerierRepository
 {

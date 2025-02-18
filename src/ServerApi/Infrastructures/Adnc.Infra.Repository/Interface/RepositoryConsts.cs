@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.IRepositories;
+﻿namespace Adnc.Infra.Repository;
 
 public static class RepositoryConsts
 {

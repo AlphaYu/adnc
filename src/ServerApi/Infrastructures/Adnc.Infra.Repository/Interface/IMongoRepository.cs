@@ -1,7 +1,7 @@
-﻿using Adnc.Infra.Entities;
+﻿using Adnc.Infra.Repository;
 using MongoDB.Driver;
 
-namespace Adnc.Infra.IRepositories;
+namespace Adnc.Infra.Repository;
 
 /// <summary>
 /// A MongoDB based repository of <see cref="T:TEntity" />.
