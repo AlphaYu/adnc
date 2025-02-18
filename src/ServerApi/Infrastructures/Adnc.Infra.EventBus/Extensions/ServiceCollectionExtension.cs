@@ -1,5 +1,4 @@
-﻿using Adnc.Infra.Core.Interfaces;
-using Adnc.Infra.EventBus;
+﻿using Adnc.Infra.EventBus;
 using Adnc.Infra.EventBus.Cap;
 using Adnc.Infra.EventBus.Cap.Filters;
 using Adnc.Infra.EventBus.Configurations;
@@ -32,7 +31,7 @@ public static class ServiceCollectionExtension
         return services;
     }
 
-    public static IServiceCollection AddAdncInfraRabbitMq(this IServiceCollection services, IConfigurationSection rabitmqSection)
+    public static IServiceCollection AddAdncInfraRabbitMq(this IServiceCollection services, IConfigurationSection rabitmqSection, string clientProvidedName)
     {
         if (services.HasRegistered(nameof(AddAdncInfraRabbitMq)))
             return services;
@@ -43,9 +42,8 @@ public static class ServiceCollectionExtension
              {
                  var options = provider.GetRequiredService<IOptions<RabbitMqOptions>>();
                  var logger = provider.GetRequiredService<ILogger<RabbitMqConnection>>();
-                 var serviceInfo = provider.GetRequiredService<IServiceInfo>();
-                 var clientProvidedName = serviceInfo.Id ?? "unkonow";
-                 return RabbitMqConnection.GetInstance(options, clientProvidedName, logger);
+                 var clientName = clientProvidedName.IsNullOrWhiteSpace() ? clientProvidedName : "unknow";
+                 return RabbitMqConnection.GetInstance(options, clientName, logger);
              })
              .AddSingleton<RabbitMqProducer>()
              ;

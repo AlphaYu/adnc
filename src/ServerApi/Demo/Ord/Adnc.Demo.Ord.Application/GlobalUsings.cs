@@ -1,4 +1,5 @@
-﻿global using Adnc.Infra.Core.Guard;
+﻿global using Adnc.Shared;
+global using Adnc.Infra.Core.Guard;
 global using Adnc.Infra.IdGenerater.Yitter;
 global using Adnc.Infra.IRepositories;
 global using Adnc.Infra.Redis.Caching;

@@ -1,4 +1,4 @@
-﻿using Adnc.Infra.Core.Interfaces;
+﻿using Adnc.Shared;
 using Adnc.Shared.Application.Extensions;
 using Adnc.Shared.Application.Registrar;
 using Adnc.Shared.Rpc.Http.Services;
@@ -44,5 +44,5 @@ public sealed class DependencyRegistrar : AbstractApplicationDependencyRegistrar
         });
     }
 
-    protected override void AddEfCoreContext() => Services.AddAdncInfraEfCoreSQLServer(_sqlSection);
+    protected override void AddEfCoreContext() => Services.AddAdncInfraEfCoreSQLServer(_sqlSection, ServiceInfo.MigrationsAssemblyName);
 }

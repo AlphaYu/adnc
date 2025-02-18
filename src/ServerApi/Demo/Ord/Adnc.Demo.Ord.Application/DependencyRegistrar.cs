@@ -1,5 +1,4 @@
-﻿using Adnc.Infra.Core.Interfaces;
-using Adnc.Shared.Application.Extensions;
+﻿using Adnc.Shared.Application.Extensions;
 using Adnc.Shared.Application.Registrar;
 using Adnc.Shared.Rpc.Http.Services;
 

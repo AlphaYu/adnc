@@ -1,5 +1,4 @@
-﻿using Adnc.Infra.Core.Interfaces;
-using Adnc.Shared.WebApi.Registrar;
+﻿using Adnc.Shared.WebApi.Registrar;
 
 namespace Adnc.Demo.Usr.Api;
 

@@ -1,9 +1,7 @@
 ﻿global using Adnc.Infra.Core.Configuration;
 global using Adnc.Infra.Core.DependencyInjection;
-global using Adnc.Infra.Core.Interfaces;
 global using Adnc.Infra.Core.Json;
 global using Adnc.Infra.Entities;
-global using Adnc.Infra.Helper;
 global using Adnc.Infra.IdGenerater.Yitter;
 global using Adnc.Infra.IRepositories;
 global using Adnc.Infra.Mapper;
@@ -13,7 +11,6 @@ global using Adnc.Infra.Redis.Caching.Core;
 global using Adnc.Infra.Redis.Caching.Core.Diagnostics;
 global using Adnc.Infra.Redis.Caching.Interceptor.Castle;
 global using Adnc.Infra.Redis.Configurations;
-global using Adnc.Infra.Redis.Core;
 global using Adnc.Shared.Application.BloomFilter;
 global using Adnc.Shared.Application.Caching;
 global using Adnc.Shared.Application.Contracts.Attributes;

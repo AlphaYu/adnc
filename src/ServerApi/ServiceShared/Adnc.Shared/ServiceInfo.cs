@@ -1,6 +1,56 @@
-﻿namespace Adnc.Shared.WebApi;
+﻿using System.Reflection;
 
-public class ServiceInfo : IServiceInfo
+namespace Adnc.Shared;
+
+public interface IServiceInfo
+{
+    /// <summary>
+    /// The ID associated with the service.
+    /// </summary>
+    public string Id { get; }
+
+    /// <summary>
+    /// The name associated with the service.
+    /// </summary>
+    public string ServiceName { get; }
+
+    /// <summary>
+    /// The cross-origin resource sharing (CORS) policy associated with the service.
+    /// </summary>
+    public string CorsPolicy { get; set; }
+
+    /// <summary>
+    /// The short name associated with the service.
+    /// </summary>
+    public string ShortName { get; }
+
+    /// <summary>
+    /// The relative root path associated with the service.
+    /// </summary>
+    public string RelativeRootPath { get; }
+
+    /// <summary>
+    /// The version associated with the service.
+    /// </summary>
+    public string Version { get; }
+
+    /// <summary>
+    /// The description associated with the service.
+    /// </summary>
+    public string Description { get; }
+
+    /// <summary>
+    /// The assembly associated with the service startup.
+    /// </summary>
+    public Assembly StartAssembly { get; }
+
+    /// <summary>
+    /// Migrations Assembly Name
+    /// </summary>
+    public string MigrationsAssemblyName { get; }
+}
+
+public sealed class ServiceInfo : IServiceInfo
 {
     private static ServiceInfo? _instance = null;
     private static readonly object _lockObj = new();
@@ -37,7 +87,7 @@ public class ServiceInfo : IServiceInfo
             var version = startAssembly.GetName().Version ?? throw new NullReferenceException("startAssembly.GetName().Version");
             var startAssemblyName = startAssembly.GetName().Name ?? string.Empty;
             var serviceName = startAssemblyName.Replace(".", "-").ToLower();
-            var ticks = DateTime.Now.GetTotalMilliseconds().ToLong();
+            var ticks = new DateTimeOffset(DateTime.Now).ToUnixTimeMilliseconds();
             var ticksHex = Convert.ToString(ticks, 16);
             var envName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")?.ToLower();
             var serviceId = envName switch

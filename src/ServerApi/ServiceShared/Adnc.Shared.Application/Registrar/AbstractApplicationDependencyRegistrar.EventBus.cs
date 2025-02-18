@@ -17,7 +17,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar
         Action<CapOptions>? replaceMqAction = null)
         where TSubscriber : class, ICapSubscribe
     {
-        if(this.IsEnableSkyApm())
+        if (this.IsEnableSkyApm())
         {
             SkyApm.AddCap();
         }
@@ -96,7 +96,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar
         action?.Invoke(Services);
 
         if (RabbitMqSection is not null)
-            Services.AddAdncInfraRabbitMq(RabbitMqSection);
+            Services.AddAdncInfraRabbitMq(RabbitMqSection, ServiceInfo.Id);
     }
 
 }

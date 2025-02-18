@@ -1,6 +1,4 @@
-﻿using Adnc.Infra.Core.Interfaces;
-
-namespace Adnc.Demo.Usr.Application;
+﻿namespace Adnc.Demo.Usr.Application;
 
 public sealed class DependencyRegistrar : AbstractApplicationDependencyRegistrar
 {
