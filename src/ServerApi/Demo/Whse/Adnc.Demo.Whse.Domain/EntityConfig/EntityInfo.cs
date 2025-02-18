@@ -1,12 +1,14 @@
-﻿using Adnc.Shared;
-
-namespace Adnc.Demo.Whse.Domain.EntityConfig;
+﻿namespace Adnc.Demo.Whse.Domain.EntityConfig;
 
 public class EntityInfo : AbstractDomainEntityInfo
 {
-    public EntityInfo(UserContext userContext) : base(userContext)
-    {
-    }
+    protected override List<Assembly> GetCurrentAssemblies() => [GetType().Assembly, typeof(EventTracker).Assembly];
 
-    protected override Assembly GetCurrentAssembly()=> GetType().Assembly;
+    protected override void SetTableName(dynamic modelBuilder)
+    {
+        if (modelBuilder is not ModelBuilder builder)
+            throw new ArgumentNullException(nameof(modelBuilder));
+
+        builder.Entity<EventTracker>().ToTable("whse_eventtracker");
+    }
 }

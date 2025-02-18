@@ -5,13 +5,11 @@
     /// </summary>
     /// <typeparam name="TDbContext"></typeparam>
     /// <typeparam name="TEntity"></typeparam>
-    public abstract class AbstractEfBaseRepository<TDbContext, TEntity> : IEfBaseRepository<TEntity>
+    public abstract class AbstractEfBaseRepository<TDbContext, TEntity>(TDbContext dbContext) : IEfBaseRepository<TEntity>
        where TDbContext : DbContext
        where TEntity : Entity, IEfEntity<long>
     {
-        protected virtual TDbContext DbContext { get; }
-
-        protected AbstractEfBaseRepository(TDbContext dbContext) => DbContext = dbContext;
+        protected virtual TDbContext DbContext { get; } = dbContext;
 
         protected virtual IQueryable<TEntity> GetDbSet(bool writeDb, bool noTracking)
         {

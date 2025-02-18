@@ -1,12 +1,8 @@
 ﻿namespace Adnc.Demo.Usr.Repository;
 
-public class EntityInfo : AbstracSharedEntityInfo
+public class EntityInfo : AbstracEntityInfo
 {
-    public EntityInfo(UserContext userContext) : base(userContext)
-    {
-    }
-
-    protected override Assembly GetCurrentAssembly() => GetType().Assembly;
+    protected override List<Assembly> GetCurrentAssemblies() => [GetType().Assembly, typeof(EventTracker).Assembly];
 
     protected override void SetTableName(dynamic modelBuilder)
     {

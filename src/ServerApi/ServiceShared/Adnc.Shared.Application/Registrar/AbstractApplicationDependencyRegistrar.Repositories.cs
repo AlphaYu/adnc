@@ -13,6 +13,17 @@ public abstract partial class AbstractApplicationDependencyRegistrar
     /// </summary>
     protected virtual void AddEfCoreContextWithRepositories()
     {
+        Services.AddScoped(provider =>
+        {
+            var userContext = provider.GetRequiredService<UserContext>();
+            return new Operater
+            {
+                Id = userContext.Id == 0 ? 1000000000000 : userContext.Id,
+                Account = userContext.Account.IsNullOrEmpty() ? "system" : userContext.Account,
+                Name = userContext.Name.IsNullOrEmpty() ? "system" : userContext.Name
+            };
+        });
+
         var serviceType = typeof(IEntityInfo);
         var implType = RepositoryOrDomainLayerAssembly.ExportedTypes.FirstOrDefault(type => type.IsAssignableTo(serviceType) && type.IsNotAbstractClass(true));
         if (implType is null)

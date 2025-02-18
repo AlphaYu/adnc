@@ -1,17 +1,15 @@
-﻿namespace Adnc.Infra.Repository.EfCore.Repositories
+﻿using Microsoft.EntityFrameworkCore.Query;
+
+namespace Adnc.Infra.Repository.EfCore.Repositories
 {
     /// <summary>
     /// Ef默认的、全功能的仓储实现
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
-    public class EfRepository<TEntity> : AbstractEfBaseRepository<DbContext, TEntity>, IEfRepository<TEntity>
+    public class EfRepository<TEntity>(DbContext dbContext, IAdoQuerierRepository? adoQuerier = null) : AbstractEfBaseRepository<DbContext, TEntity>(dbContext), IEfRepository<TEntity>
       where TEntity : EfEntity, new()
     {
-        private readonly IAdoQuerierRepository? _adoQuerier;
-
-        public EfRepository(DbContext dbContext, IAdoQuerierRepository? adoQuerier = null)
-            : base(dbContext)
-            => _adoQuerier = adoQuerier;
+        private readonly IAdoQuerierRepository? _adoQuerier = adoQuerier;
 
         public IAdoQuerierRepository? AdoQuerier
         {
@@ -112,52 +110,25 @@
                 rows = 0;
             }
             return rows;
-
-            #region old code
-
-#pragma warning disable S125 // Sections of code should not be commented out
-            /*
-                        //如果实体被跟踪，调用Ef原生方法删除
-                        if (entity != null)
-                        {
-                            DbContext.Remove(entity);
-                            return await DbContext.SaveChangesAsync();
-                        }
-
-                        var mapping = DbContext.Model.FindEntityType(typeof(TEntity)); //3.0
-                        var properties = mapping.GetProperties();
-                        var schema = mapping.GetSchema() ?? "dbo";
-                        var tableName = mapping.GetTableName();
-                        var keyName = properties.Where(p => p.IsPrimaryKey()).Select(p => p.PropertyInfo.Name).First();
-                        var isSoftDelete = properties.Any(p => p.Name == "IsDeleted");
-
-                        var sql = isSoftDelete
-                                  ? $"update {tableName} set IsDeleted=true "
-                                  : $"delete from {tableName} "
-                                  ;
-                        var where = $" where {keyName}={keyValue};";
-
-                        return await DbContext.Database.ExecuteSqlRawAsync(string.Concat(sql, where), cancellationToken);
-                        */
-#pragma warning restore S125 // Sections of code should not be commented outs
-
-            #endregion old code
         }
 
         public virtual async Task<int> DeleteRangeAsync(Expression<Func<TEntity, bool>> whereExpression, CancellationToken cancellationToken = default)
         {
-            var enityType = typeof(TEntity);
-            var hasSoftDeleteMember = typeof(ISoftDelete).IsAssignableFrom(enityType);
-            if (hasSoftDeleteMember)
-            {
-                var newExpression = Expression.New(enityType);
-                var paramExpression = Expression.Parameter(enityType, "e");
-                var binding = Expression.Bind(enityType.GetMember("IsDeleted")[0], Expression.Constant(true));
-                var memberInitExpression = Expression.MemberInit(newExpression, new List<MemberBinding>() { binding });
-                var lambdaExpression = Expression.Lambda<Func<TEntity, TEntity>>(memberInitExpression, paramExpression);
-                return await DbContext.Set<TEntity>().Where(whereExpression).UpdateAsync(lambdaExpression, cancellationToken);
-            }
-            return await DbContext.Set<TEntity>().Where(whereExpression).DeleteAsync(cancellationToken);
+            //var enityType = typeof(TEntity);
+            //var hasSoftDeleteMember = typeof(ISoftDelete).IsAssignableFrom(enityType);
+            //if (hasSoftDeleteMember)
+            //{
+            //    var newExpression = Expression.New(enityType);
+            //    var paramExpression = Expression.Parameter(enityType, "e");
+            //    var binding = Expression.Bind(enityType.GetMember("IsDeleted")[0], Expression.Constant(true));
+            //    var memberInitExpression = Expression.MemberInit(newExpression, new List<MemberBinding>() { binding });
+            //    var lambdaExpression = Expression.Lambda<Func<TEntity, TEntity>>(memberInitExpression, paramExpression);
+            //    return await DbContext.Set<TEntity>().Where(whereExpression).UpdateAsync(lambdaExpression, cancellationToken);
+            //}
+            //return await DbContext.Set<TEntity>().Where(whereExpression).DeleteAsync(cancellationToken);
+
+            //efcore>=7.0.0
+           return await DbContext.Set<TEntity>().Where(whereExpression).ExecuteDeleteAsync(cancellationToken);
         }
 
         public virtual async Task<int> UpdateAsync(TEntity entity, Expression<Func<TEntity, object>>[] updatingExpressions, CancellationToken cancellationToken = default)
@@ -191,34 +162,6 @@
                     entry.Property(expression).IsModified = true;
                 });
             }
-
-            #region removed code
-
-#pragma warning disable S125 // Sections of code should not be commented out
-            /*
-                            var originalEntity = DbContext.Set<TEntity>().Local.FirstOrDefault(x => x.Id == entity.Id);
-                            if (originalEntity == null)
-                            {
-                                entry.State = EntityState.Unchanged;
-                                updatingExpressions.ForEach(expression =>
-                                {
-                                    entry.Property(expression).IsModified = true;
-                                });
-                            }
-                            else
-                            {
-                                entry.CurrentValues.SetValues(entity);
-                                var propNames = updatingExpressions.Select(x => x.GetMemberName()).ToArray();
-                                entry.Properties.ForEach(propEntry =>
-                                {
-                                    if (!propNames.Contains(propEntry.Metadata.Name))
-                                        propEntry.IsModified = false;
-                                });
-                            }
-                            */
-#pragma warning restore S125 // Sections of code should not be commented out
-
-            #endregion removed code
 
             return await DbContext.SaveChangesAsync(cancellationToken);
         }
@@ -257,6 +200,18 @@
             }
 
             return await DbContext.SaveChangesAsync(cancellationToken);
+        }
+
+        public virtual async Task<int> UpdateRangeAsync(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<SetPropertyCalls<TEntity>, SetPropertyCalls<TEntity>>> setPropertyCalls, CancellationToken cancellationToken = default)
+        {
+            var enityType = typeof(TEntity);
+            var hasConcurrencyMember = typeof(IConcurrency).IsAssignableFrom(enityType);
+
+            if (hasConcurrencyMember)
+                throw new ArgumentException("该实体有RowVersion列，不能使用批量更新");
+
+            //efcore>=7.0.0
+            return await DbContext.Set<TEntity>().Where(whereExpression).ExecuteUpdateAsync(setPropertyCalls, cancellationToken);
         }
 
         protected virtual async Task<int> UpdateRangeInternalAsync(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, TEntity>> updatingExpression, CancellationToken cancellationToken = default)

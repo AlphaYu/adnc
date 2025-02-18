@@ -3,12 +3,14 @@
 public abstract class AdncDbContext : DbContext
 {
     private readonly IEntityInfo _entityInfo;
+    private readonly Operater _operater;
 
-    protected AdncDbContext(DbContextOptions options, IEntityInfo entityInfo)
+    protected AdncDbContext(DbContextOptions options, IEntityInfo entityInfo, Operater operater)
         : base(options)
     {
         _entityInfo = entityInfo;
         Database.AutoTransactionsEnabled = false;
+        _operater = operater;
         //ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
     }
 
@@ -37,18 +39,17 @@ public abstract class AdncDbContext : DbContext
 
     protected virtual int SetAuditFields()
     {
-        var operater = _entityInfo.GetOperater();
         var allBasicAuditEntities = ChangeTracker.Entries<IBasicAuditInfo>().Where(x => x.State == EntityState.Added);
         allBasicAuditEntities.ForEach(entry =>
         {
-            entry.Entity.CreateBy = operater.Id;
+            entry.Entity.CreateBy = _operater.Id;
             entry.Entity.CreateTime = DateTime.Now;
         });
 
         var auditFullEntities = ChangeTracker.Entries<IFullAuditInfo>().Where(x => x.State == EntityState.Modified || x.State == EntityState.Added);
         auditFullEntities.ForEach(entry =>
         {
-            entry.Entity.ModifyBy = operater.Id;
+            entry.Entity.ModifyBy = _operater.Id;
             entry.Entity.ModifyTime = DateTime.Now;
         });
 

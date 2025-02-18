@@ -5,14 +5,9 @@
     /// 适合DDD开发模式,实体必须继承AggregateRoot
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
-    public class EfBasicRepository<TEntity> : AbstractEfBaseRepository<DbContext, TEntity>, IEfBasicRepository<TEntity>
+    public class EfBasicRepository<TEntity>(DbContext dbContext) : AbstractEfBaseRepository<DbContext, TEntity>(dbContext), IEfBasicRepository<TEntity>
             where TEntity : Entity, IEfEntity<long>
     {
-        public EfBasicRepository(DbContext dbContext)
-            : base(dbContext)
-        {
-        }
-
         public virtual async Task<int> RemoveAsync(TEntity entity, CancellationToken cancellationToken = default)
         {
             this.DbContext.Remove(entity);

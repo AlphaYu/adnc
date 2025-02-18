@@ -1,6 +1,6 @@
 ﻿namespace Adnc.Infra.Repository.EfCore.MySql;
 
-public class MySqlDbContext(DbContextOptions options, IEntityInfo entityInfo) : AdncDbContext(options, entityInfo)
+public class MySqlDbContext(DbContextOptions options, IEntityInfo entityInfo, Operater operater) : AdncDbContext(options, entityInfo, operater)
 {
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

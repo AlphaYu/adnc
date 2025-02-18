@@ -1,18 +1,14 @@
 ﻿namespace Adnc.Demo.Cust.Api.Repository.Entities;
 
-public class EntityInfo : AbstracSharedEntityInfo
+public class EntityInfo : AbstracEntityInfo
 {
-    public EntityInfo(UserContext userContext) : base(userContext)
-    {
-    }
-
-    protected override Assembly GetCurrentAssembly() => GetType().Assembly;
+    protected override List<Assembly> GetCurrentAssemblies() => [GetType().Assembly, typeof(EventTracker).Assembly];
 
     protected override void SetTableName(dynamic modelBuilder)
     {
         if (modelBuilder is not ModelBuilder builder)
             throw new ArgumentNullException(nameof(modelBuilder));
 
-        builder.Entity<EventTracker>().ToTable("cust_eventtracker");
+        builder.Entity<EventTracker>().ToTable("eventtracker");
     }
 }
