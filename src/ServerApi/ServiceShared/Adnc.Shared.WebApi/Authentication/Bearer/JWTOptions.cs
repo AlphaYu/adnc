@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.Core.Configuration;
+﻿namespace Adnc.Shared.WebApi.Authentication.Bearer;
 
 /// <summary>
 /// JWT configuration

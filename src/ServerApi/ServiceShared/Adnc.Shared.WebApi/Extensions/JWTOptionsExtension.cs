@@ -1,4 +1,6 @@
-﻿namespace Adnc.Shared.WebApi;
+﻿using Adnc.Shared.WebApi.Authentication.Bearer;
+
+namespace Adnc.Shared.WebApi;
 
 public static class JWTOptionsExtension
 {

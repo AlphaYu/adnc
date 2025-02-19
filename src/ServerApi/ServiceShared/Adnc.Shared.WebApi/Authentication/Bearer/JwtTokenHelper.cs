@@ -142,8 +142,8 @@ public static class JwtTokenHelper
 
         string issuer = jwtConfig.ValidIssuer;
         string audience = tokenType.Equals(Tokens.AccessToken) ? jwtConfig.ValidAudience : jwtConfig.RefreshTokenAudience;
-        int expiresMinutes = tokenType.Equals(Tokens.AccessToken) ? jwtConfig.Expire : jwtConfig.RefreshTokenExpire;
-        var expires = DateTime.Now.AddMinutes(expiresMinutes);
+        int seconds = tokenType.Equals(Tokens.AccessToken) ? jwtConfig.Expire : jwtConfig.RefreshTokenExpire;
+        var expires = DateTime.Now.AddSeconds(seconds);
         var token = new JwtSecurityToken(
             issuer: issuer,
             audience: audience,

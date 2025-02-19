@@ -1,17 +1,11 @@
-﻿namespace Adnc.Demo.Usr.Application.Cache;
+﻿using Microsoft.Extensions.Configuration;
 
-public sealed class CacheService : AbstractCacheService, ICachePreheatable
+namespace Adnc.Demo.Usr.Application.Cache;
+
+public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IServiceProvider> serviceProvider, Lazy<IConfiguration> configuration)
+    : AbstractCacheService(cacheProvider, serviceProvider), ICachePreheatable
 {
-    private readonly Lazy<IOptions<JWTOptions>> _jwtConfig;
-
-    public CacheService(
-        Lazy<ICacheProvider> cacheProvider,
-        Lazy<IServiceProvider> serviceProvider,
-        Lazy<IOptions<JWTOptions>> jwtConfig)
-        : base(cacheProvider, serviceProvider)
-    {
-        _jwtConfig = jwtConfig;
-    }
+    private readonly Lazy<IConfiguration> _configuration = configuration;
 
     public override async Task PreheatAsync()
     {
@@ -23,8 +17,12 @@ public sealed class CacheService : AbstractCacheService, ICachePreheatable
         await GetOrganizationsSimpleTreeListAsync();
     }
 
-    internal int GetRefreshTokenExpires() =>
-        _jwtConfig.Value.Value.RefreshTokenExpire * 60 + _jwtConfig.Value.Value.ClockSkew;
+    internal int GetRefreshTokenExpires()
+    {
+        var refreshTokenExpire = _configuration.Value.GetValue<int>($"{NodeConsts.JWT}:RefreshTokenExpire");
+        var clockSkew = _configuration.Value.GetValue<int>($"{NodeConsts.JWT}:ClockSkew");
+        return refreshTokenExpire + clockSkew;
+    }
 
     internal async Task SetFailLoginCountToCacheAsync(long id, int count)
     {
