@@ -4,7 +4,6 @@ using Adnc.Shared.WebApi.Authorization;
 
 namespace Adnc.Shared.WebApi.Registrar;
 
-//public abstract partial class AbstractWebApiDependencyRegistrar : IDependencyRegistrar
 public abstract partial class AbstractWebApiDependencyRegistrar
 {
     public string Name => "webapi";
@@ -43,8 +42,7 @@ public abstract partial class AbstractWebApiDependencyRegistrar
     {
         Services
             .Configure<JWTOptions>(Configuration.GetSection(NodeConsts.JWT))
-            .Configure<ThreadPoolSettings>(Configuration.GetSection(NodeConsts.ThreadPoolSettings))
-            .Configure<KestrelOptions>(Configuration.GetSection(NodeConsts.Kestrel));
+            .Configure<ThreadPoolSettings>(Configuration.GetSection(NodeConsts.ThreadPoolSettings));
 
         Services
             .AddHttpContextAccessor()

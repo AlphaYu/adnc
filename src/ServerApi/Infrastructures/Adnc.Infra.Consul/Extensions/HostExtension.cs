@@ -4,20 +4,20 @@ namespace Microsoft.Extensions.Hosting;
 
 public static class ApplicationBuilderConsulExtension
 {
-    public static IHost RegisterToConsul(this IHost host, string? serviceId = null)
+    public static IHost RegisterToConsul(this IHost host, string? serviceId, IConfigurationSection configurationSection)
     {
-        var kestrelConfig = host.Services.GetRequiredService<IOptions<KestrelOptions>>().Value;
-        if (kestrelConfig is null)
-            throw new NotImplementedException(nameof(kestrelConfig));
+        Checker.Argument.NotNull(configurationSection, nameof(IConfigurationSection));
+
+        var kestrelOptions = configurationSection.Get<KestrelOptions>();
 
         var registration = ActivatorUtilities.CreateInstance<RegistrationProvider>(host.Services);
         var ipAddresses = registration.GetLocalIpAddress("InterNetwork");
         if (ipAddresses.IsNullOrEmpty())
-            throw new NotImplementedException(nameof(kestrelConfig));
+            throw new NotImplementedException(nameof(KestrelOptions));
 
-        var defaultEnpoint = kestrelConfig.Endpoints.FirstOrDefault(x => x.Key.EqualsIgnoreCase("default")).Value;
+        var defaultEnpoint = kestrelOptions?.Endpoints.FirstOrDefault(x => x.Key.EqualsIgnoreCase("default")).Value;
         if (defaultEnpoint is null || defaultEnpoint.Url.IsNullOrWhiteSpace())
-            throw new NotImplementedException(nameof(kestrelConfig));
+            throw new NotImplementedException(nameof(KestrelOptions));
 
         var serviceAddress = new Uri(defaultEnpoint.Url);
         if (serviceAddress.Host == "0.0.0.0")

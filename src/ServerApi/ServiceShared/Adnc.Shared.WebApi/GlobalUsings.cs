@@ -1,12 +1,10 @@
-﻿global using Adnc.Infra.Redis.Configurations;
-global using Adnc.Infra.Redis.Caching;
-global using Adnc.Infra.Core.Configuration;
-global using Adnc.Infra.Core.DependencyInjection;
+﻿global using Adnc.Infra.Core.DependencyInjection;
 global using Adnc.Infra.Core.Json;
+global using Adnc.Infra.Redis.Caching;
+global using Adnc.Infra.Redis.Configurations;
 global using Adnc.Shared;
 global using Adnc.Shared.Application.Contracts.ResultModels;
 global using Adnc.Shared.Rpc.Handlers.Token;
-global using Adnc.Shared.Rpc.Http.Rtos;
 global using Adnc.Shared.Rpc.Http.Services;
 global using FluentValidation.AspNetCore;
 global using HealthChecks.UI.Client;

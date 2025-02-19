@@ -15,7 +15,8 @@ public static class HostExtension
         switch (registeredType)
         {
             case RegisteredTypeConsts.Consul:
-                host.RegisterToConsul(serviceInfo.Id);
+                var kestrelSection = configuration.GetSection(NodeConsts.Kestrel);
+                host.RegisterToConsul(serviceInfo.Id, kestrelSection);
                 break;
             case RegisteredTypeConsts.Nacos:
                 // TODO
