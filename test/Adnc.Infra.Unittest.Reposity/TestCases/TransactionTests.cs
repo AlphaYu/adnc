@@ -70,6 +70,8 @@ public class TransactionTests : IClassFixture<EfCoreDbcontextFixture>
 
             await _custLogsRsp.DeleteAsync(1000);
 
+            await _custLogsRsp.DeleteRangeAsync(x => x.Id == 888888);
+
             var cusTotal = await _customerRsp.CountAsync(x => x.Id == id || x.Id == id2);
             Assert.Equal(1, cusTotal);
 
@@ -78,6 +80,7 @@ public class TransactionTests : IClassFixture<EfCoreDbcontextFixture>
         catch (Exception ex)
         {
             _unitOfWork.Rollback();
+            Assert.True(false);
             throw new Exception(ex.Message, ex);
         }
         finally
@@ -133,6 +136,7 @@ public class TransactionTests : IClassFixture<EfCoreDbcontextFixture>
         catch (Exception)
         {
             _unitOfWork.Rollback();
+            Assert.True(true);
         }
         finally
         {
@@ -188,9 +192,7 @@ public class TransactionTests : IClassFixture<EfCoreDbcontextFixture>
     [Fact]
     public async Task TestAutoTransactions()
     {
-        var defaultAutoTransaction = _dbContext.Database.AutoTransactionsEnabled;
-        if (!defaultAutoTransaction)
-            _dbContext.Database.AutoTransactionsEnabled = true;
+        _dbContext.Database.AutoTransactionBehavior = AutoTransactionBehavior.WhenNeeded;
 
         var id = UnittestHelper.GetNextId();
         var radmon = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
@@ -209,14 +211,13 @@ public class TransactionTests : IClassFixture<EfCoreDbcontextFixture>
 
         await _customerRsp.InsertAsync(cusotmer);
 
-        //受自动事务控制
+        //不会开启事物
         await _customerRsp.DeleteAsync(id);
 
-        //不受自动事务控制
+        //不会开启事物
         await _customerRsp.DeleteRangeAsync(x => x.Id == 10000);
 
         _dbContext.SaveChanges();
-        _dbContext.Database.AutoTransactionsEnabled = false;
         Assert.True(true);
     }
 
@@ -251,9 +252,13 @@ public class TransactionTests : IClassFixture<EfCoreDbcontextFixture>
             rows = await _customerRsp.ExecuteSqlInterpolatedAsync(formatSql2);
             Assert.True(rows > 0);
 
+            await _customerRsp.DeleteAsync(1);
+
+            await _customerRsp.DeleteRangeAsync(x => x.Id <=10000);
+
             //ef search
             var dbCustomer2 = await _customerRsp.FindAsync(dbCustomer.Id, x => x.FinanceInfo);
-            Assert.NotNull(dbCustomer2?.FinanceInfo);
+            Assert.NotNull(dbCustomer2);
             Assert.Equal("test8888", dbCustomer2.Nickname);
 
             _unitOfWork.Commit();
@@ -261,6 +266,7 @@ public class TransactionTests : IClassFixture<EfCoreDbcontextFixture>
         catch (Exception ex)
         {
             _unitOfWork.Rollback();
+            Assert.True(false); 
             throw new Exception(ex.Message, ex);
         }
         finally

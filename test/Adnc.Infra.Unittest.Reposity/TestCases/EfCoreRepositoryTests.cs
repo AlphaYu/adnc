@@ -474,4 +474,20 @@ public class EfCoreRepositoryTests : IClassFixture<EfCoreDbcontextFixture>
         dynamic dapperResult2 = await _customerRsp.AdoQuerier.QueryAsync("select * from Customer where id=999");
         Assert.Null(dapperResult2);
     }
+
+    private async Task<Customer> InsertCustomer()
+    {
+        var id = UnittestHelper.GetNextId();
+        var customer = new Customer() { Id = id, Password = "password", Account = "alpha2008", Nickname = UnittestHelper.GetNextId().ToString(), Realname = UnittestHelper.GetNextId().ToString() };
+        customer.FinanceInfo = new CustomerFinance { Id = customer.Id, Account = customer.Account, Balance = 0 };
+        await _customerRsp.InsertAsync(customer);
+        return customer;
+    }
+
+    private Task<Customer> GenerateCustomer()
+    {
+        var id = UnittestHelper.GetNextId();
+        var customer = new Customer() { Id = id, Password = "password", Account = "alpha2008", Nickname = UnittestHelper.GetNextId().ToString(), Realname = UnittestHelper.GetNextId().ToString()};
+        return Task.FromResult(customer);
+    }
 }
