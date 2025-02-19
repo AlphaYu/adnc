@@ -177,39 +177,33 @@ namespace Adnc.Infra.Repository.EfCore
             return UpdateRangeInternalAsync(whereExpression, updatingExpression, cancellationToken);
         }
 
-        public virtual async Task<int> UpdateRangeAsync(Dictionary<long, List<(string propertyName, dynamic propertyValue)>> propertyNameAndValues, CancellationToken cancellationToken = default)
-        {
-            var existsEntities = DbContext.Set<TEntity>().Local.Where(x => propertyNameAndValues.ContainsKey(x.Id));
+        //public virtual async Task<int> UpdateRangeAsync(Dictionary<long, List<(string propertyName, dynamic propertyValue)>> propertyNameAndValues, CancellationToken cancellationToken = default)
+        //{
+        //    var existsEntities = DbContext.Set<TEntity>().Local.Where(x => propertyNameAndValues.ContainsKey(x.Id));
 
-            foreach (var item in propertyNameAndValues)
-            {
-                var enity = existsEntities?.FirstOrDefault(x => x.Id == item.Key) ?? new TEntity { Id = item.Key };
-                var entry = DbContext.Entry(enity);
-                if (entry.State == EntityState.Detached)
-                    entry.State = EntityState.Unchanged;
+        //    foreach (var item in propertyNameAndValues)
+        //    {
+        //        var enity = existsEntities?.FirstOrDefault(x => x.Id == item.Key) ?? new TEntity { Id = item.Key };
+        //        var entry = DbContext.Entry(enity);
+        //        if (entry.State == EntityState.Detached)
+        //            entry.State = EntityState.Unchanged;
 
-                if (entry.State == EntityState.Unchanged)
-                {
-                    var info = propertyNameAndValues.FirstOrDefault(x => x.Key == item.Key).Value;
-                    info.ForEach(x =>
-                    {
-                        entry.Property(x.propertyName).CurrentValue = x.propertyValue;
-                        entry.Property(x.propertyName).IsModified = true;
-                    });
-                }
-            }
+        //        if (entry.State == EntityState.Unchanged)
+        //        {
+        //            var info = propertyNameAndValues.FirstOrDefault(x => x.Key == item.Key).Value;
+        //            info.ForEach(x =>
+        //            {
+        //                entry.Property(x.propertyName).CurrentValue = x.propertyValue;
+        //                entry.Property(x.propertyName).IsModified = true;
+        //            });
+        //        }
+        //    }
 
-            return await DbContext.SaveChangesAsync(cancellationToken);
-        }
+        //    return await DbContext.SaveChangesAsync(cancellationToken);
+        //}
 
         public virtual async Task<int> UpdateRangeAsync(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<SetPropertyCalls<TEntity>, SetPropertyCalls<TEntity>>> setPropertyCalls, CancellationToken cancellationToken = default)
         {
-            var enityType = typeof(TEntity);
-            var hasConcurrencyMember = typeof(IConcurrency).IsAssignableFrom(enityType);
-
-            if (hasConcurrencyMember)
-                throw new ArgumentException("该实体有RowVersion列，不能使用批量更新");
-
             //efcore>=7.0.0
             return await DbContext.Set<TEntity>().Where(whereExpression).ExecuteUpdateAsync(setPropertyCalls, cancellationToken);
         }
