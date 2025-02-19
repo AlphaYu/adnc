@@ -1,4 +1,7 @@
-﻿namespace Adnc.Infra.Core.Internal
+﻿using System.Collections.Concurrent;
+using System.Reflection;
+
+namespace Adnc.Infra.Repository.EfCore.Internal;
 {
     internal static class ReflectionDictionary
     {
