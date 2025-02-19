@@ -10,7 +10,7 @@ public partial class EncryptProivder
     /// <returns></returns>
     public string CreateDesKey()
     {
-        return GetRandomStr(24);
+        return RandomInstance.Next(24, false);
     }
 
     /// <summary>
@@ -19,7 +19,7 @@ public partial class EncryptProivder
     /// <returns></returns>
     public string CreateDesIv()
     {
-        return GetRandomStr(8);
+        return RandomInstance.Next(8, false);
     }
 
     /// <summary>
@@ -227,7 +227,7 @@ public partial class EncryptProivder
                         Array.Copy(tmp, 0, ret, 0, len);
                         return ret;
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         throw new Exception("DESDecrypt", ex);
                     }

@@ -16,8 +16,8 @@ public partial class EncryptProivder
     {
         return new AESKey()
         {
-            Key = GetRandomStr(32),
-            IV = GetRandomStr(16)
+            Key = RandomInstance.Next(32, false),
+            IV = RandomInstance.Next(16, false)
         };
     }
 
