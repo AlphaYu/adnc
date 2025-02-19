@@ -1,6 +1,4 @@
-﻿using Adnc.Shared.WebApi.Authentication.Bearer;
-
-namespace Adnc.Demo.Usr.Api.Controllers;
+﻿namespace Adnc.Demo.Usr.Api.Controllers;
 
 /// <summary>
 /// 认证管理
