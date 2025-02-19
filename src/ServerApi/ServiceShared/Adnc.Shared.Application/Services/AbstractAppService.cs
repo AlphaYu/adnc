@@ -23,8 +23,8 @@ public abstract class AbstractAppService : IAppService
     protected AppSrvResult AppSrvResult() => new();
 
     protected AppSrvResult<TValue> AppSrvResult<TValue>(TValue value)
+        where TValue : notnull
     {
-        Checker.Argument.IsNotNull(value, nameof(value));
         return new AppSrvResult<TValue>(value);
     }
 
