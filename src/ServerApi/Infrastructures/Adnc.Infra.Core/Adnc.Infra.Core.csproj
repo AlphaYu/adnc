@@ -12,7 +12,4 @@
 		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="$(Microsoft_Extensions_Logging_Abstractions_Version)" />
 		<PackageReference Include="Microsoft.Extensions.Options" Version="$(Microsoft_Extensions_Options_Version)" />
 	</ItemGroup>
-	<ItemGroup>
-	  <Folder Include="System\Extensions\Char\" />
-	</ItemGroup>
 </Project>

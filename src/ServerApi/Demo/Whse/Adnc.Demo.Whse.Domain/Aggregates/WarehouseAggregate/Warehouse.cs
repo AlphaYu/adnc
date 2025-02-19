@@ -22,7 +22,7 @@ public class Warehouse : AggregateRootWithBasicAuditInfo
         this.Id = id;
         this.Qty = 0;
         this.BlockedQty = 0;
-        this.Position = Guard.Checker.NotNull(position, nameof(position));
+        this.Position = Checker.NotNull(position, nameof(position));
     }
 
     /// <summary>
@@ -34,7 +34,7 @@ public class Warehouse : AggregateRootWithBasicAuditInfo
         if (this.Qty < needBlockedQty)
             throw new BusinessException("Qty<needFreezedQty");
 
-        Guard.Checker.GTZero(ProductId.Value, nameof(ProductId));
+        Checker.GTZero(ProductId.Value, nameof(ProductId));
 
         this.BlockedQty += needBlockedQty;
         this.Qty -= needBlockedQty;
@@ -49,7 +49,7 @@ public class Warehouse : AggregateRootWithBasicAuditInfo
         if (this.BlockedQty < needRemoveQty)
             throw new BusinessException("FreezedQty<needUnfreezeQty");
 
-        Guard.Checker.GTZero(ProductId.Value, nameof(ProductId));
+        Checker.GTZero(ProductId.Value, nameof(ProductId));
 
         this.BlockedQty -= needRemoveQty;
         this.Qty += needRemoveQty;
@@ -64,7 +64,7 @@ public class Warehouse : AggregateRootWithBasicAuditInfo
         if (this.BlockedQty < qty)
             throw new BusinessException("FreezedQty<qty");
 
-        Guard.Checker.GTZero(ProductId.Value, nameof(ProductId));
+        Checker.GTZero(ProductId.Value, nameof(ProductId));
 
         this.BlockedQty -= qty;
     }
@@ -75,8 +75,8 @@ public class Warehouse : AggregateRootWithBasicAuditInfo
     /// <param name="qty"></param>
     internal void Entry(int qty)
     {
-        Guard.Checker.GTZero(qty, nameof(qty));
-        Guard.Checker.GTZero(ProductId.Value, nameof(ProductId));
+        Checker.GTZero(qty, nameof(qty));
+        Checker.GTZero(ProductId.Value, nameof(ProductId));
         this.Qty += qty;
     }
 
@@ -89,7 +89,7 @@ public class Warehouse : AggregateRootWithBasicAuditInfo
         //if (this.ProductId.HasValue && this.ProductId == productId)
         //    throw new ArgumentException("ProductId");
 
-        Guard.Checker.GTZero(productId, nameof(productId));
+        Checker.GTZero(productId, nameof(productId));
 
         this.ProductId = productId;
     }

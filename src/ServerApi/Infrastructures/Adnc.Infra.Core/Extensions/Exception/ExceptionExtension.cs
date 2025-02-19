@@ -1,4 +1,6 @@
-﻿namespace System;
+﻿using Adnc.Infra.Core.Exceptions;
+
+namespace System;
 
 public static class ExceptionExtension
 {
@@ -16,5 +18,12 @@ public static class ExceptionExtension
         detail.Append(@"***************************************");
 
         return detail.ToString();
+    }
+
+    public static void ThrowIf(this Exception exception, Func<bool> predicate, string message)
+    {
+        var result = predicate.Invoke();
+        if (result)
+            throw new BusinessException(message);
     }
 }

@@ -12,7 +12,7 @@ public record WarehousePosition : ValueObject
 
     internal WarehousePosition(string code, string description)
     {
-        this.Code = Guard.Checker.NotNullOrEmpty(code, nameof(code));
+        this.Code = Checker.NotNullOrEmpty(code, nameof(code));
         this.Description = description is null ? string.Empty : description.Trim();
     }
 }

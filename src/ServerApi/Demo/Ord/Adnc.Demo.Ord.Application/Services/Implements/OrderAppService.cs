@@ -1,6 +1,4 @@
-﻿using Adnc.Demo.Shared.Rpc.Http.Services;
-
-namespace Adnc.Demo.Ord.Application.Services.Implements;
+﻿namespace Adnc.Demo.Ord.Application.Services.Implements;
 
 /// <summary>
 /// 订单管理
@@ -42,7 +40,7 @@ public class OrderAppService : AbstractAppService, IOrderAppService
         var productIds = input.Items.Select(x => x.ProductId).ToArray();
         //调用whse服务获取产品的价格,名字
         var restRpcResult = await _whseRestClient.GetProductsAsync(new ProductSearchListRto { Ids = productIds });
-        Guard.Checker.ThrowIf(() => !restRpcResult.IsSuccessStatusCode || restRpcResult.Content.IsNullOrEmpty(), "product is not extists");
+        Checker.ThrowIf(() => !restRpcResult.IsSuccessStatusCode || restRpcResult.Content.IsNullOrEmpty(), "product is not extists");
         var products = restRpcResult.Content;
         var orderId = IdGenerater.GetNextId();
         var items = from o in input.Items

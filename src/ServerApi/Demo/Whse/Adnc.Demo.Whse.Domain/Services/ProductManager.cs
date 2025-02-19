@@ -46,7 +46,7 @@ public class ProductManager : IDomainService
     /// <returns></returns>
     public virtual async Task ChangeSkuAsync(Product product, string newSku)
     {
-        Guard.Checker.NotNull(product, nameof(product));
+        Checker.NotNull(product, nameof(product));
 
         if (product.Sku.EqualsIgnoreCase(newSku))
             return;
@@ -66,7 +66,7 @@ public class ProductManager : IDomainService
     /// <returns></returns>
     public virtual async Task ChangeNameAsync(Product product, string newName)
     {
-        Guard.Checker.NotNull(product, nameof(product));
+        Checker.NotNull(product, nameof(product));
 
         if (product.Name.EqualsIgnoreCase(newName))
             return;
@@ -86,7 +86,7 @@ public class ProductManager : IDomainService
     /// <returns></returns>
     public virtual void PutOnSale(Product product, string reason)
     {
-        Guard.Checker.NotNull(product, nameof(product));
+        Checker.NotNull(product, nameof(product));
         product.SetStatus(new ProductStatus(ProductStatusCodes.SaleOn, reason));
         //if (warehouseInfo.Qty > 0 && warehouseInfo.ProductId == product.Id)
         //    product.SetStatus(new ProductStatus(ProductStatusCodes.SaleOn, reason));

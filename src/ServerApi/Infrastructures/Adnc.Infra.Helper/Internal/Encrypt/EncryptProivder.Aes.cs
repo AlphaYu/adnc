@@ -30,13 +30,13 @@ public partial class EncryptProivder
     /// <returns>Encrypted string</returns>
     public string? AESEncrypt(string data, string key, string vector)
     {
-        Checker.Argument.IsNotEmpty(data, nameof(data));
+        Checker.Argument.NotNullOrEmpty(data, nameof(data));
 
-        Checker.Argument.IsNotEmpty(key, nameof(key));
-        Checker.Argument.IsEqualLength(key.Length, 32, nameof(key));
+        Checker.Argument.NotNullOrEmpty(key, nameof(key));
+        Checker.Argument.EqualLength(key.Length, 32, nameof(key));
 
-        Checker.Argument.IsNotEmpty(vector, nameof(vector));
-        Checker.Argument.IsEqualLength(vector.Length, 16, nameof(vector));
+        Checker.Argument.NotNullOrEmpty(vector, nameof(vector));
+        Checker.Argument.EqualLength(vector.Length, 16, nameof(vector));
 
         byte[] plainBytes = Encoding.UTF8.GetBytes(data);
 
@@ -57,13 +57,13 @@ public partial class EncryptProivder
     /// <returns>Encrypted byte array</returns>
     public byte[]? AESEncrypt(byte[] data, string key, string vector)
     {
-        Checker.Argument.IsNotEmpty(data, nameof(data));
+        Checker.Argument.NotEmpty(data, nameof(data));
 
-        Checker.Argument.IsNotEmpty(key, nameof(key));
-        Checker.Argument.IsEqualLength(key.Length, 32, nameof(key));
+        Checker.Argument.NotNullOrEmpty(key, nameof(key));
+        Checker.Argument.EqualLength(key.Length, 32, nameof(key));
 
-        Checker.Argument.IsNotEmpty(vector, nameof(vector));
-        Checker.Argument.IsEqualLength(vector.Length, 16, nameof(vector));
+        Checker.Argument.NotNullOrEmpty(vector, nameof(vector));
+        Checker.Argument.EqualLength(vector.Length, 16, nameof(vector));
 
         byte[] plainBytes = data;
         byte[] bKey = new byte[32];
@@ -99,9 +99,9 @@ public partial class EncryptProivder
     /// <returns>Encrypted string</returns>
     public string AESEncrypt(string data, string key)
     {
-        Checker.Argument.IsNotEmpty(data, nameof(data));
-        Checker.Argument.IsNotEmpty(key, nameof(key));
-        Checker.Argument.IsEqualLength(key.Length, 32, nameof(key));
+        Checker.Argument.NotNullOrEmpty(data, nameof(data));
+        Checker.Argument.NotNullOrEmpty(key, nameof(key));
+        Checker.Argument.EqualLength(key.Length, 32, nameof(key));
 
         using MemoryStream memory = new MemoryStream();
         using Aes aes = Aes.Create();
@@ -136,13 +136,13 @@ public partial class EncryptProivder
     /// <returns>Decrypted string</returns>
     public string? AESDecrypt(string data, string key, string vector)
     {
-        Checker.Argument.IsNotEmpty(data, nameof(data));
+        Checker.Argument.NotNullOrEmpty(data, nameof(data));
 
-        Checker.Argument.IsNotEmpty(key, nameof(key));
-        Checker.Argument.IsEqualLength(key.Length, 32, nameof(key));
+        Checker.Argument.NotNullOrEmpty(key, nameof(key));
+        Checker.Argument.EqualLength(key.Length, 32, nameof(key));
 
-        Checker.Argument.IsNotEmpty(vector, nameof(vector));
-        Checker.Argument.IsEqualLength(vector.Length, 16, nameof(vector));
+        Checker.Argument.NotNullOrEmpty(vector, nameof(vector));
+        Checker.Argument.EqualLength(vector.Length, 16, nameof(vector));
 
         byte[] encryptedBytes = Convert.FromBase64String(data);
 
@@ -165,13 +165,13 @@ public partial class EncryptProivder
 
     public byte[]? AESDecrypt(byte[] data, string key, string vector)
     {
-        Checker.Argument.IsNotEmpty(data, nameof(data));
+        Checker.Argument.NotEmpty(data, nameof(data));
 
-        Checker.Argument.IsNotEmpty(key, nameof(key));
-        Checker.Argument.IsEqualLength(key.Length, 32, nameof(key));
+        Checker.Argument.NotNullOrEmpty(key, nameof(key));
+        Checker.Argument.EqualLength(key.Length, 32, nameof(key));
 
-        Checker.Argument.IsNotEmpty(vector, nameof(vector));
-        Checker.Argument.IsEqualLength(vector.Length, 16, nameof(vector));
+        Checker.Argument.NotNullOrEmpty(vector, nameof(vector));
+        Checker.Argument.EqualLength(vector.Length, 16, nameof(vector));
 
         byte[] encryptedBytes = data;
         byte[] bKey = new byte[32];
@@ -212,9 +212,9 @@ public partial class EncryptProivder
     /// <returns>Decrypted string</returns>
     public string AESDecrypt(string data, string key)
     {
-        Checker.Argument.IsNotEmpty(data, nameof(data));
-        Checker.Argument.IsNotEmpty(key, nameof(key));
-        Checker.Argument.IsEqualLength(key.Length, 32, nameof(key));
+        Checker.Argument.NotNullOrEmpty(data, nameof(data));
+        Checker.Argument.NotNullOrEmpty(key, nameof(key));
+        Checker.Argument.EqualLength(key.Length, 32, nameof(key));
 
         byte[] encryptedBytes = Convert.FromBase64String(data);
         byte[] bKey = new byte[32];

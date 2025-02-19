@@ -28,14 +28,14 @@ public class OrderItem : DomainEntity
     internal OrderItem(long id, long orderId, OrderItemProduct product, int count)
     {
         this.Id = id;
-        this.OrderId = Guard.Checker.GTZero(orderId, nameof(orderId));
-        this.Product = Guard.Checker.NotNull(product, nameof(product));
-        this.Count = Guard.Checker.GTZero(count, nameof(count));
+        this.OrderId = Checker.GTZero(orderId, nameof(orderId));
+        this.Product = Checker.NotNull(product, nameof(product));
+        this.Count = Checker.GTZero(count, nameof(count));
     }
 
     internal void ChangeCount(int count)
     {
-        Guard.Checker.GTZero(count, nameof(count));
+        Checker.GTZero(count, nameof(count));
         this.Count += count;
     }
 }

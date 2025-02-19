@@ -1,11 +1,7 @@
-namespace Adnc.Infra.Core.Guard;
+﻿namespace Adnc.Infra.Core.Guard;
 
-public class Checker
+public partial class Checker
 {
-    internal Checker()
-    {
-
-    }
 
     public class Argument
     {
@@ -13,7 +9,7 @@ public class Checker
         {
         }
 
-        public static void IsNotEmpty(Guid argument, string argumentName)
+        public static void NotEmpty(Guid argument, string argumentName)
         {
             if (argument == Guid.Empty)
             {
@@ -21,7 +17,7 @@ public class Checker
             }
         }
 
-        public static void IsNotEmpty(string argument, string argumentName)
+        public static void NotNullOrEmpty(string argument, string argumentName)
         {
             if (string.IsNullOrEmpty((argument ?? string.Empty).Trim()))
             {
@@ -29,7 +25,7 @@ public class Checker
             }
         }
 
-        public static void IsNotOutOfLength(string argument, int length, string argumentName)
+        public static void NotOutOfLength(string argument, int length, string argumentName)
         {
             if (argument.Trim().Length > length)
             {
@@ -37,7 +33,7 @@ public class Checker
             }
         }
 
-        public static void IsNotNull(object? argument, string argumentName, string message = "")
+        public static void NotNull(object? argument, string argumentName, string message = "")
         {
             if (argument == null)
             {
@@ -45,7 +41,7 @@ public class Checker
             }
         }
 
-        public static void IsNotNegative(int argument, string argumentName)
+        public static void NotNegative(int argument, string argumentName)
         {
             if (argument < 0)
             {
@@ -53,7 +49,7 @@ public class Checker
             }
         }
 
-        public static void IsNotNegativeOrZero(int argument, string argumentName)
+        public static void NotNegativeOrZero(int argument, string argumentName)
         {
             if (argument <= 0)
             {
@@ -61,7 +57,7 @@ public class Checker
             }
         }
 
-        public static void IsNotNegative(long argument, string argumentName)
+        public static void NotNegative(long argument, string argumentName)
         {
             if (argument < 0)
             {
@@ -69,7 +65,7 @@ public class Checker
             }
         }
 
-        public static void IsNotNegativeOrZero(long argument, string argumentName)
+        public static void NotNegativeOrZero(long argument, string argumentName)
         {
             if (argument <= 0)
             {
@@ -77,7 +73,7 @@ public class Checker
             }
         }
 
-        public static void IsNotNegative(float argument, string argumentName)
+        public static void NotNegative(float argument, string argumentName)
         {
             if (argument < 0)
             {
@@ -85,7 +81,7 @@ public class Checker
             }
         }
 
-        public static void IsNotNegativeOrZero(float argument, string argumentName)
+        public static void NotNegativeOrZero(float argument, string argumentName)
         {
             if (argument <= 0)
             {
@@ -93,7 +89,7 @@ public class Checker
             }
         }
 
-        public static void IsNotNegative(decimal argument, string argumentName)
+        public static void NotNegative(decimal argument, string argumentName)
         {
             if (argument < 0)
             {
@@ -101,7 +97,7 @@ public class Checker
             }
         }
 
-        public static void IsNotNegativeOrZero(decimal argument, string argumentName)
+        public static void NotNegativeOrZero(decimal argument, string argumentName)
         {
             if (argument <= 0)
             {
@@ -109,7 +105,7 @@ public class Checker
             }
         }
 
-        public static void IsNotInvalidDate(DateTime argument, string argumentName)
+        public static void NotInvalidDate(DateTime argument, string argumentName)
         {
             DateTime MinDate = new DateTime(1900, 1, 1);
             DateTime MaxDate = new DateTime(9999, 12, 31, 23, 59, 59, 999);
@@ -120,7 +116,7 @@ public class Checker
             }
         }
 
-        public static void IsNotInPast(DateTime argument, string argumentName)
+        public static void NotInPast(DateTime argument, string argumentName)
         {
             if (argument < DateTime.Now)
             {
@@ -128,7 +124,7 @@ public class Checker
             }
         }
 
-        public static void IsNotInFuture(DateTime argument, string argumentName)
+        public static void NotInFuture(DateTime argument, string argumentName)
         {
             if (argument > DateTime.Now)
             {
@@ -136,7 +132,7 @@ public class Checker
             }
         }
 
-        public static void IsNotNegative(TimeSpan argument, string argumentName)
+        public static void NotNegative(TimeSpan argument, string argumentName)
         {
             if (argument < TimeSpan.Zero)
             {
@@ -144,7 +140,7 @@ public class Checker
             }
         }
 
-        public static void IsNotNegativeOrZero(TimeSpan argument, string argumentName)
+        public static void NotNegativeOrZero(TimeSpan argument, string argumentName)
         {
             if (argument <= TimeSpan.Zero)
             {
@@ -152,9 +148,9 @@ public class Checker
             }
         }
 
-        public static void IsNotEmpty<T>(ICollection<T> argument, string argumentName)
+        public static void NotEmpty<T>(ICollection<T> argument, string argumentName)
         {
-            IsNotNull(argument, argumentName, "The collection can't be null");
+            NotNull(argument, argumentName, "The collection can't be null");
 
             if (argument.Count == 0)
             {
@@ -162,7 +158,7 @@ public class Checker
             }
         }
 
-        public static void IsNotOutOfRange(int argument, int min, int max, string argumentName)
+        public static void NotOutOfRange(int argument, int min, int max, string argumentName)
         {
             if ((argument < min) || (argument > max))
             {
@@ -176,7 +172,7 @@ public class Checker
         /// <param name="sourceLength"></param>
         /// <param name="limitLength"></param>
         /// <param name="argumentName"></param>
-        public static void IsEqualLength(int sourceLength, int limitLength, string argumentName)
+        public static void EqualLength(int sourceLength, int limitLength, string argumentName)
         {
             if (limitLength != sourceLength)
             {
@@ -184,9 +180,9 @@ public class Checker
             }
         }
 
-        public static void IsNotExistsFile(string argument, string argumentName)
+        public static void NotExistsFile(string argument, string argumentName)
         {
-            IsNotEmpty(argument, argumentName);
+            NotNullOrEmpty(argument, argumentName);
 
             if (!File.Exists(argument))
             {
@@ -194,9 +190,9 @@ public class Checker
             }
         }
 
-        public static void IsNotExistsDirectory(string argument, string argumentName)
+        public static void NotExistsDirectory(string argument, string argumentName)
         {
-            IsNotEmpty(argument, argumentName);
+            NotNullOrEmpty(argument, argumentName);
 
             if (!Directory.Exists(argument))
             {

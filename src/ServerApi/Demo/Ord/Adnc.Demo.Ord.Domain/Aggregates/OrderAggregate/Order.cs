@@ -44,10 +44,10 @@ public class Order : AggregateRootWithBasicAuditInfo
 
     internal Order(long id, long customerId, OrderReceiver orderReceiver, string? remark = null)
     {
-        Id = Guard.Checker.GTZero(id, nameof(id));
-        CustomerId = Guard.Checker.GTZero(customerId, nameof(customerId));
+        Id = Checker.GTZero(id, nameof(id));
+        CustomerId = Checker.GTZero(customerId, nameof(customerId));
         Items = new List<OrderItem>();
-        Receiver = Guard.Checker.NotNull(orderReceiver, nameof(orderReceiver));
+        Receiver = Checker.NotNull(orderReceiver, nameof(orderReceiver));
         Status = new OrderStatus(OrderStatusCodes.Creating);
         Remark = remark;
         Amount = 0;
@@ -61,8 +61,8 @@ public class Order : AggregateRootWithBasicAuditInfo
     /// <param name="count"></param>
     public void AddProduct(long itemId, OrderItemProduct product, int count)
     {
-        Guard.Checker.NotNull(product, nameof(product));
-        Guard.Checker.GTZero(count, nameof(count));
+        Checker.NotNull(product, nameof(product));
+        Checker.GTZero(count, nameof(count));
 
         var existProduct = Items.FirstOrDefault(x => x.Product.Id == product.Id);
         if (existProduct is null)
@@ -79,7 +79,7 @@ public class Order : AggregateRootWithBasicAuditInfo
     /// <param name="orderReceiver"></param>
     public void ChangeReceiver(OrderReceiver orderReceiver)
     {
-        Guard.Checker.NotNull(orderReceiver, nameof(orderReceiver));
+        Checker.NotNull(orderReceiver, nameof(orderReceiver));
         Receiver = orderReceiver;
     }
 

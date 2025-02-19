@@ -1,35 +1,31 @@
-﻿using Adnc.Infra.Core.Guard;
-using AutoMapper;
+﻿using AutoMapper;
+using Adnc.Infra.Core.Guard;
 
 namespace Adnc.Infra.Mapper.AutoMapper
 {
-    public sealed class AutoMapperObject : IObjectMapper
+    public sealed class AutoMapperObject(IMapper mapper) : IObjectMapper
     {
-        private readonly IMapper _mapper;
-
-        public AutoMapperObject(IMapper mapper) => _mapper = mapper;
-
         public TDestination Map<TDestination>(object source)
         {
-            Checker.Argument.IsNotNull(source, nameof(source));
-            return _mapper.Map<TDestination>(source);
+            Checker.Argument.NotNull(source, nameof(source));
+            return mapper.Map<TDestination>(source);
         }
 
         public TDestination Map<TSource, TDestination>(TSource source)
             where TSource : class
             where TDestination : class
         {
-            Checker.Argument.IsNotNull(source, nameof(source));
-            return _mapper.Map<TSource, TDestination>(source);
+            Checker.Argument.NotNull(source, nameof(source));
+            return mapper.Map<TSource, TDestination>(source);
         }
 
         public TDestination Map<TSource, TDestination>(TSource source, TDestination destination)
           where TSource : class
           where TDestination : class
         {
-            Checker.Argument.IsNotNull(source, nameof(source));
-            Checker.Argument.IsNotNull(destination, nameof(destination));
-            return _mapper.Map(source, destination);
+            Checker.Argument.NotNull(source, nameof(source));
+            Checker.Argument.NotNull(destination, nameof(destination));
+            return mapper.Map(source, destination);
         }
     }
 }

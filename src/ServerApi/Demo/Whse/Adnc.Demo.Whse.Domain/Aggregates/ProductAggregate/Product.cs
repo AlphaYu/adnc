@@ -45,7 +45,7 @@ public class Product : AggregateRootWithBasicAuditInfo
     /// <param name="sku"></param>
     internal void SetSku(string sku)
     {
-        this.Sku = Guard.Checker.NotNullOrEmpty(sku.Trim(), nameof(sku));
+        this.Sku = Checker.NotNullOrEmpty(sku.Trim(), nameof(sku));
     }
 
     /// <summary>
@@ -54,7 +54,7 @@ public class Product : AggregateRootWithBasicAuditInfo
     /// <param name="name"></param>
     internal void SetName(string name)
     {
-        this.Name = Guard.Checker.NotNullOrEmpty(name.Trim(), nameof(name));
+        this.Name = Checker.NotNullOrEmpty(name.Trim(), nameof(name));
     }
 
     /// <summary>
@@ -63,7 +63,7 @@ public class Product : AggregateRootWithBasicAuditInfo
     /// <param name="status"></param>
     internal void SetStatus(ProductStatus status)
     {
-        this.Status = Guard.Checker.NotNull(status, nameof(status));
+        this.Status = Checker.NotNull(status, nameof(status));
     }
 
     /// <summary>
@@ -72,7 +72,7 @@ public class Product : AggregateRootWithBasicAuditInfo
     /// <param name="unit"></param>
     public void SetUnit(string unit)
     {
-        this.Unit = Guard.Checker.NotNullOrEmpty(unit, nameof(unit));
+        this.Unit = Checker.NotNullOrEmpty(unit, nameof(unit));
     }
 
     /// <summary>
@@ -81,7 +81,7 @@ public class Product : AggregateRootWithBasicAuditInfo
     /// <param name="price"></param>
     public void SetPrice(decimal price)
     {
-        Guard.Checker.GTZero(price, nameof(price));
+        Checker.GTZero(price, nameof(price));
         this.Price = price;
     }
 

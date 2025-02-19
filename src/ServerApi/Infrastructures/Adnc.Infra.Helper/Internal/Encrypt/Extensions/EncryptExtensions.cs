@@ -11,7 +11,7 @@ public static class EncryptExtensions
     ///// <returns></returns>
     //public static string MD5(this string srcString)
     //{
-    //    Checker.Argument.IsNotEmpty(srcString, nameof(srcString));
+    //    Checker.Argument.NotEmpty(srcString, nameof(srcString));
     //    return EncryptProvider.Md5(srcString);
     //}
 
@@ -22,7 +22,7 @@ public static class EncryptExtensions
     ///// <returns></returns>
     //public static string SHA1(this string srcString)
     //{
-    //    Checker.Argument.IsNotEmpty(srcString, nameof(srcString));
+    //    Checker.Argument.NotEmpty(srcString, nameof(srcString));
     //    return EncryptProvider.Sha1(srcString);
     //}
 
@@ -33,7 +33,7 @@ public static class EncryptExtensions
     ///// <returns></returns>
     //public static string SHA256(this string srcString)
     //{
-    //    Checker.Argument.IsNotEmpty(srcString, nameof(srcString));
+    //    Checker.Argument.NotEmpty(srcString, nameof(srcString));
     //    return EncryptProvider.Sha256(srcString);
     //}
 
@@ -44,7 +44,7 @@ public static class EncryptExtensions
     ///// <returns></returns>
     //public static string SHA384(this string srcString)
     //{
-    //    Checker.Argument.IsNotEmpty(srcString, nameof(srcString));
+    //    Checker.Argument.NotEmpty(srcString, nameof(srcString));
     //    return EncryptProvider.Sha384(srcString);
     //}
 
@@ -55,7 +55,7 @@ public static class EncryptExtensions
     ///// <returns></returns>
     //public static string SHA512(this string srcString)
     //{
-    //    Checker.Argument.IsNotEmpty(srcString, nameof(srcString));
+    //    Checker.Argument.NotEmpty(srcString, nameof(srcString));
     //    return EncryptProvider.Sha512(srcString);
     //}
 
@@ -66,7 +66,7 @@ public static class EncryptExtensions
     ///// <returns></returns>
     //public static string HMACMD5(this string srcString, string key)
     //{
-    //    Checker.Argument.IsNotEmpty(srcString, nameof(srcString));
+    //    Checker.Argument.NotEmpty(srcString, nameof(srcString));
     //    return EncryptProvider.HMACMD5(srcString, key);
     //}
 
@@ -77,7 +77,7 @@ public static class EncryptExtensions
     ///// <returns></returns>
     //public static string HMACSHA1(this string srcString, string key)
     //{
-    //    Checker.Argument.IsNotEmpty(srcString, nameof(srcString));
+    //    Checker.Argument.NotEmpty(srcString, nameof(srcString));
     //    return EncryptProvider.HMACSHA1(srcString, key);
     //}
 
@@ -88,7 +88,7 @@ public static class EncryptExtensions
     ///// <returns></returns>
     //public static string HMACSHA256(this string srcString, string key)
     //{
-    //    Checker.Argument.IsNotEmpty(srcString, nameof(srcString));
+    //    Checker.Argument.NotEmpty(srcString, nameof(srcString));
     //    return EncryptProvider.HMACSHA256(srcString, key);
     //}
 
@@ -99,7 +99,7 @@ public static class EncryptExtensions
     ///// <returns></returns>
     //public static string HMACSHA384(this string srcString, string key)
     //{
-    //    Checker.Argument.IsNotEmpty(srcString, nameof(srcString));
+    //    Checker.Argument.NotEmpty(srcString, nameof(srcString));
     //    return EncryptProvider.HMACSHA384(srcString, key);
     //}
 
@@ -110,7 +110,7 @@ public static class EncryptExtensions
     ///// <returns></returns>
     //public static string HMACSHA512(this string srcString, string key)
     //{
-    //    Checker.Argument.IsNotEmpty(srcString, nameof(srcString));
+    //    Checker.Argument.NotEmpty(srcString, nameof(srcString));
     //    return EncryptProvider.HMACSHA512(srcString, key);
     //}
 }

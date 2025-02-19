@@ -37,7 +37,7 @@ public partial class EncryptProivder
     /// <returns></returns>
     public RSA RSAFromPem(string pem)
     {
-        Checker.Argument.IsNotEmpty(pem, nameof(pem));
+        Checker.Argument.NotNullOrEmpty(pem, nameof(pem));
         return RsaProvider.FromPem(pem);
     }
 
@@ -125,7 +125,7 @@ public partial class EncryptProivder
     /// <returns></returns>
     public RSA RSAFromPkcs(string pkcsKey, bool isPrivateKey, bool isPKCS8 = false)
     {
-        Checker.Argument.IsNotEmpty(pkcsKey, nameof(pkcsKey));
+        Checker.Argument.NotNullOrEmpty(pkcsKey, nameof(pkcsKey));
 
         RSA rsa = RSA.Create();
 
@@ -180,9 +180,9 @@ public partial class EncryptProivder
     /// <returns></returns>
     public string RSASign(string content, string privateKey, HashAlgorithmName hashAlgorithmName, RSASignaturePadding rSASignaturePadding, Encoding encoding)
     {
-        Checker.Argument.IsNotEmpty(content, nameof(content));
-        Checker.Argument.IsNotEmpty(privateKey, nameof(privateKey));
-        Checker.Argument.IsNotNull(rSASignaturePadding, nameof(rSASignaturePadding));
+        Checker.Argument.NotNullOrEmpty(content, nameof(content));
+        Checker.Argument.NotNullOrEmpty(privateKey, nameof(privateKey));
+        Checker.Argument.NotNull(rSASignaturePadding, nameof(rSASignaturePadding));
 
         byte[] dataBytes = encoding.GetBytes(content);
 
@@ -219,8 +219,8 @@ public partial class EncryptProivder
     /// <returns></returns>
     public bool RSAVerify(string content, string signStr, string publickKey, HashAlgorithmName hashAlgorithmName, RSASignaturePadding rSASignaturePadding, Encoding encoding)
     {
-        Checker.Argument.IsNotEmpty(content, nameof(content));
-        Checker.Argument.IsNotEmpty(signStr, nameof(signStr));
+        Checker.Argument.NotNullOrEmpty(content, nameof(content));
+        Checker.Argument.NotNullOrEmpty(signStr, nameof(signStr));
 
         byte[] dataBytes = encoding.GetBytes(content);
         byte[] signBytes = Convert.FromBase64String(signStr);
@@ -266,9 +266,9 @@ public partial class EncryptProivder
     /// <returns>encrypted string</returns>
     public string RSAEncrypt(string publicKey, string srcString, RSAEncryptionPadding padding, bool isPemKey = false)
     {
-        Checker.Argument.IsNotEmpty(publicKey, nameof(publicKey));
-        Checker.Argument.IsNotEmpty(srcString, nameof(srcString));
-        Checker.Argument.IsNotNull(padding, nameof(padding));
+        Checker.Argument.NotNullOrEmpty(publicKey, nameof(publicKey));
+        Checker.Argument.NotNullOrEmpty(srcString, nameof(srcString));
+        Checker.Argument.NotNull(padding, nameof(padding));
 
         RSA rsa;
         if (isPemKey)
@@ -330,9 +330,9 @@ public partial class EncryptProivder
     /// <returns>encrypted byte[]</returns>
     public byte[] RSAEncrypt(string publicKey, byte[] data, RSAEncryptionPadding padding, bool isPemKey = false)
     {
-        Checker.Argument.IsNotEmpty(publicKey, nameof(publicKey));
-        Checker.Argument.IsNotNull(data, nameof(data));
-        Checker.Argument.IsNotNull(padding, nameof(padding));
+        Checker.Argument.NotNullOrEmpty(publicKey, nameof(publicKey));
+        Checker.Argument.NotNull(data, nameof(data));
+        Checker.Argument.NotNull(padding, nameof(padding));
 
         RSA rsa;
         if (isPemKey)
@@ -394,9 +394,9 @@ public partial class EncryptProivder
     /// <returns>encrypted string</returns>
     public string RSADecrypt(string privateKey, string srcString, RSAEncryptionPadding padding, bool isPemKey = false)
     {
-        Checker.Argument.IsNotEmpty(privateKey, nameof(privateKey));
-        Checker.Argument.IsNotEmpty(srcString, nameof(srcString));
-        Checker.Argument.IsNotNull(padding, nameof(padding));
+        Checker.Argument.NotNullOrEmpty(privateKey, nameof(privateKey));
+        Checker.Argument.NotNullOrEmpty(srcString, nameof(srcString));
+        Checker.Argument.NotNull(padding, nameof(padding));
 
         RSA rsa;
         if (isPemKey)
@@ -451,9 +451,9 @@ public partial class EncryptProivder
     /// <returns>encrypted string</returns>
     public byte[] RSADecrypt(string privateKey, byte[] data, RSAEncryptionPadding padding, bool isPemKey = false)
     {
-        Checker.Argument.IsNotEmpty(privateKey, nameof(privateKey));
-        Checker.Argument.IsNotNull(data, nameof(data));
-        Checker.Argument.IsNotNull(padding, nameof(padding));
+        Checker.Argument.NotNullOrEmpty(privateKey, nameof(privateKey));
+        Checker.Argument.NotNull(data, nameof(data));
+        Checker.Argument.NotNull(padding, nameof(padding));
 
         RSA rsa;
         if (isPemKey)
@@ -481,7 +481,7 @@ public partial class EncryptProivder
     /// <returns></returns>
     public RSA RSAFromJson(string rsaKey)
     {
-        Checker.Argument.IsNotEmpty(rsaKey, nameof(rsaKey));
+        Checker.Argument.NotNullOrEmpty(rsaKey, nameof(rsaKey));
         RSA rsa = RSA.Create();
 
         rsa.FromJsonString(rsaKey);
@@ -522,7 +522,7 @@ public partial class EncryptProivder
     /// <returns></returns>
     public RSAKey CreateRsaKey(RSA rsa, bool includePrivate = true)
     {
-        Checker.Argument.IsNotNull(rsa, nameof(rsa));
+        Checker.Argument.NotNull(rsa, nameof(rsa));
 
         string publicKey = rsa.ToJsonString(false);
         var exponent = rsa.ExportParameters(false).Exponent ?? throw new NullReferenceException("rsa.ExportParameters(false).Exponent is null");
