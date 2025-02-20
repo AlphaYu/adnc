@@ -13,11 +13,6 @@
 	  <None Remove="SqlGenerator\**" />
 	</ItemGroup>
 	<ItemGroup>
-		<Compile Remove="AdncInfraEfCoreModule.cs" />
-		<Compile Remove="DbContextFactory.cs" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="$(Pomelo_EntityFrameworkCore_MySql_Version)" />
 		<PackageReference Include="DotNetCore.CAP.MySql" Version="$(DotNetCore_CAP_MySql_Version)" />
 	</ItemGroup>
