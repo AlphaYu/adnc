@@ -37,7 +37,7 @@ public interface IAdoExecuterRepository : IAdoRepository
     /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
     /// <param name="commandType">Is it a stored proc or a batch?</param>
     /// <returns>The first cell returned, as <see cref="object"/>.</returns>
-    Task<object> ExecuteScalarAsync(string sql, object? param = null, IDbTransaction? transaction = null, int? commandTimeout = null, CommandType? commandType = null);
+    Task<object?> ExecuteScalarAsync(string sql, object? param = null, IDbTransaction? transaction = null, int? commandTimeout = null, CommandType? commandType = null);
 
     /// <summary>
     /// Execute parameterized SQL that selects a single value.
@@ -49,7 +49,7 @@ public interface IAdoExecuterRepository : IAdoRepository
     /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
     /// <param name="commandType">Is it a stored proc or a batch?</param>
     /// <returns>The first cell returned, as <typeparamref name="T"/>.</returns>
-    Task<T> ExecuteScalarAsync<T>(string sql, object? param = null, IDbTransaction? transaction = null, int? commandTimeout = null, CommandType? commandType = null);
+    Task<T?> ExecuteScalarAsync<T>(string sql, object? param = null, IDbTransaction? transaction = null, int? commandTimeout = null, CommandType? commandType = null);
 
     /// <summary>
     /// Execute a command asynchronously using Task.

@@ -12,7 +12,7 @@ public interface IAdoQuerierRepository : IAdoRepository
     /// <param name="commandType">The type of command to execute.</param>
     /// <param name="writeDb">if true writedb else readdb</param>
     /// <remarks>Note: each row can be accessed via "dynamic", or by casting to an IDictionary&lt;string,object&gt;</remarks>
-    Task<IEnumerable<dynamic>?> QueryAsync(string sql, object? param = null, IDbTransaction? transaction = null, int? commandTimeout = null, CommandType? commandType = null, bool writeDb = false);
+    Task<IEnumerable<dynamic>> QueryAsync(string sql, object? param = null, IDbTransaction? transaction = null, int? commandTimeout = null, CommandType? commandType = null, bool writeDb = false);
 
     /// <summary>
     /// Execute a query asynchronously using Task.
@@ -28,7 +28,7 @@ public interface IAdoQuerierRepository : IAdoRepository
     /// A sequence of data of <typeparamref name="T"/>; if a basic type (int, string, etc) is queried then the data from the first column in assumed, otherwise an instance is
     /// created per row, and a direct column-name===member-name mapping is assumed (case insensitive).
     /// </returns>
-    Task<IEnumerable<T>?> QueryAsync<T>(string sql, object? param = null, IDbTransaction? transaction = null, int? commandTimeout = null, CommandType? commandType = null, bool writeDb = false);
+    Task<IEnumerable<T>> QueryAsync<T>(string sql, object? param = null, IDbTransaction? transaction = null, int? commandTimeout = null, CommandType? commandType = null, bool writeDb = false);
 
     /// <summary>
     /// Execute a single-row query asynchronously using Task.
@@ -53,7 +53,7 @@ public interface IAdoQuerierRepository : IAdoRepository
     /// <param name="commandTimeout">The command timeout (in seconds).</param>
     /// <param name="commandType">The type of command to execute.</param>
     /// <param name="writeDb">if true writedb else readdb</param>
-    Task<T> QueryFirstOrDefaultAsync<T>(string sql, object? param = null, IDbTransaction? transaction = null, int? commandTimeout = null, CommandType? commandType = null, bool writeDb = false);
+    Task<T?> QueryFirstOrDefaultAsync<T>(string sql, object? param = null, IDbTransaction? transaction = null, int? commandTimeout = null, CommandType? commandType = null, bool writeDb = false);
 
     /// <summary>
     /// Execute a single-row query asynchronously using Task.
@@ -77,7 +77,7 @@ public interface IAdoQuerierRepository : IAdoRepository
     /// <param name="commandTimeout">The command timeout (in seconds).</param>
     /// <param name="commandType">The type of command to execute.</param>
     /// <param name="writeDb">if true writedb else readdb</param>
-    Task<T> QuerySingleOrDefaultAsync<T>(string sql, object? param = null, IDbTransaction? transaction = null, int? commandTimeout = null, CommandType? commandType = null, bool writeDb = false);
+    Task<T?> QuerySingleOrDefaultAsync<T>(string sql, object? param = null, IDbTransaction? transaction = null, int? commandTimeout = null, CommandType? commandType = null, bool writeDb = false);
 
     /// <summary>
     /// Execute a single-row query asynchronously using Task.
@@ -99,7 +99,7 @@ public interface IAdoQuerierRepository : IAdoRepository
     /// <param name="commandTimeout">The command timeout (in seconds).</param>
     /// <param name="commandType">The type of command to execute.</param>
     /// <param name="writeDb">if true writedb else readdb</param>
-    Task<dynamic> QueryFirstOrDefaultAsync(string sql, object? param = null, IDbTransaction? transaction = null, int? commandTimeout = null, CommandType? commandType = null, bool writeDb = false);
+    Task<dynamic?> QueryFirstOrDefaultAsync(string sql, object? param = null, IDbTransaction? transaction = null, int? commandTimeout = null, CommandType? commandType = null, bool writeDb = false);
 
     /// <summary>
     /// Execute a single-row query asynchronously using Task.
@@ -121,7 +121,7 @@ public interface IAdoQuerierRepository : IAdoRepository
     /// <param name="commandTimeout">The command timeout (in seconds).</param>
     /// <param name="commandType">The type of command to execute.</param>
     /// <param name="writeDb">if true writedb else readdb</param>
-    Task<dynamic> QuerySingleOrDefaultAsync(string sql, object? param = null, IDbTransaction? transaction = null, int? commandTimeout = null, CommandType? commandType = null, bool writeDb = false);
+    Task<dynamic?> QuerySingleOrDefaultAsync(string sql, object? param = null, IDbTransaction? transaction = null, int? commandTimeout = null, CommandType? commandType = null, bool writeDb = false);
 
     /// <summary>
     /// Execute a query asynchronously using Task.
@@ -134,7 +134,7 @@ public interface IAdoQuerierRepository : IAdoRepository
     /// <param name="commandType">The type of command to execute.</param>
     /// <exception cref="ArgumentNullException"><paramref name="type"/> is <c>null</c>.</exception>
     /// <param name="writeDb">if true writedb else readdb</param>
-    Task<IEnumerable<object>?> QueryAsync(Type type, string sql, object? param = null, IDbTransaction? transaction = null, int? commandTimeout = null, CommandType? commandType = null, bool writeDb = false);
+    Task<IEnumerable<object>> QueryAsync(Type type, string sql, object? param = null, IDbTransaction? transaction = null, int? commandTimeout = null, CommandType? commandType = null, bool writeDb = false);
 
     /// <summary>
     /// Execute a single-row query asynchronously using Task.
@@ -160,7 +160,7 @@ public interface IAdoQuerierRepository : IAdoRepository
     /// <param name="commandType">The type of command to execute.</param>
     /// <exception cref="ArgumentNullException"><paramref name="type"/> is <c>null</c>.</exception>
     /// <param name="writeDb">if true writedb else readdb</param>
-    Task<object> QueryFirstOrDefaultAsync(Type type, string sql, object? param = null, IDbTransaction? transaction = null, int? commandTimeout = null, CommandType? commandType = null, bool writeDb = false);
+    Task<object?> QueryFirstOrDefaultAsync(Type type, string sql, object? param = null, IDbTransaction? transaction = null, int? commandTimeout = null, CommandType? commandType = null, bool writeDb = false);
 
     /// <summary>
     /// Execute a single-row query asynchronously using Task.
@@ -186,7 +186,7 @@ public interface IAdoQuerierRepository : IAdoRepository
     /// <param name="commandType">The type of command to execute.</param>
     /// <exception cref="ArgumentNullException"><paramref name="type"/> is <c>null</c>.</exception>
     /// <param name="writeDb">if true writedb else readdb</param>
-    Task<object> QuerySingleOrDefaultAsync(Type type, string sql, object? param = null, IDbTransaction? transaction = null, int? commandTimeout = null, CommandType? commandType = null, bool writeDb = false);
+    Task<object?> QuerySingleOrDefaultAsync(Type type, string sql, object? param = null, IDbTransaction? transaction = null, int? commandTimeout = null, CommandType? commandType = null, bool writeDb = false);
 
     /// <summary>
     /// Perform an asynchronous multi-mapping query with 2 input types.
@@ -205,7 +205,7 @@ public interface IAdoQuerierRepository : IAdoRepository
     /// <param name="writeDb">if true writedb else readdb</param>
     /// <param name="commandType">Is it a stored proc or a batch?</param>
     /// <returns>An enumerable of <typeparamref name="TReturn"/>.</returns>
-    Task<IEnumerable<TReturn>?> QueryAsync<TFirst, TSecond, TReturn>(string sql, Func<TFirst, TSecond, TReturn> map, object? param = null, IDbTransaction? transaction = null, bool buffered = true, string splitOn = "Id", int? commandTimeout = null, CommandType? commandType = null, bool writeDb = false);
+    Task<IEnumerable<TReturn>> QueryAsync<TFirst, TSecond, TReturn>(string sql, Func<TFirst, TSecond, TReturn> map, object? param = null, IDbTransaction? transaction = null, bool buffered = true, string splitOn = "Id", int? commandTimeout = null, CommandType? commandType = null, bool writeDb = false);
 
     /// <summary>
     /// Perform an asynchronous multi-mapping query with 3 input types.
@@ -225,7 +225,7 @@ public interface IAdoQuerierRepository : IAdoRepository
     /// <param name="writeDb">if true writedb else readdb</param>
     /// <param name="commandType">Is it a stored proc or a batch?</param>
     /// <returns>An enumerable of <typeparamref name="TReturn"/>.</returns>
-    Task<IEnumerable<TReturn>?> QueryAsync<TFirst, TSecond, TThird, TReturn>(string sql, Func<TFirst, TSecond, TThird, TReturn> map, object? param = null, IDbTransaction? transaction = null, bool buffered = true, string splitOn = "Id", int? commandTimeout = null, CommandType? commandType = null, bool writeDb = false);
+    Task<IEnumerable<TReturn>> QueryAsync<TFirst, TSecond, TThird, TReturn>(string sql, Func<TFirst, TSecond, TThird, TReturn> map, object? param = null, IDbTransaction? transaction = null, bool buffered = true, string splitOn = "Id", int? commandTimeout = null, CommandType? commandType = null, bool writeDb = false);
 
     /// <summary>
     /// Perform an asynchronous multi-mapping query with 4 input types.
@@ -246,7 +246,7 @@ public interface IAdoQuerierRepository : IAdoRepository
     /// <param name="commandType">Is it a stored proc or a batch?</param>
     /// <param name="writeDb">if true writedb else readdb</param>
     /// <returns>An enumerable of <typeparamref name="TReturn"/>.</returns>
-    Task<IEnumerable<TReturn>?> QueryAsync<TFirst, TSecond, TThird, TFourth, TReturn>(string sql, Func<TFirst, TSecond, TThird, TFourth, TReturn> map, object? param = null, IDbTransaction? transaction = null, bool buffered = true, string splitOn = "Id", int? commandTimeout = null, CommandType? commandType = null, bool writeDb = false);
+    Task<IEnumerable<TReturn>> QueryAsync<TFirst, TSecond, TThird, TFourth, TReturn>(string sql, Func<TFirst, TSecond, TThird, TFourth, TReturn> map, object? param = null, IDbTransaction? transaction = null, bool buffered = true, string splitOn = "Id", int? commandTimeout = null, CommandType? commandType = null, bool writeDb = false);
 
     /// <summary>
     /// Perform an asynchronous multi-mapping query with 5 input types.
@@ -268,7 +268,7 @@ public interface IAdoQuerierRepository : IAdoRepository
     /// <param name="commandType">Is it a stored proc or a batch?</param>
     /// <param name="writeDb">if true writedb else readdb</param>
     /// <returns>An enumerable of <typeparamref name="TReturn"/>.</returns>
-    Task<IEnumerable<TReturn>?> QueryAsync<TFirst, TSecond, TThird, TFourth, TFifth, TReturn>(string sql, Func<TFirst, TSecond, TThird, TFourth, TFifth, TReturn> map, object? param = null, IDbTransaction? transaction = null, bool buffered = true, string splitOn = "Id", int? commandTimeout = null, CommandType? commandType = null, bool writeDb = false);
+    Task<IEnumerable<TReturn>> QueryAsync<TFirst, TSecond, TThird, TFourth, TFifth, TReturn>(string sql, Func<TFirst, TSecond, TThird, TFourth, TFifth, TReturn> map, object? param = null, IDbTransaction? transaction = null, bool buffered = true, string splitOn = "Id", int? commandTimeout = null, CommandType? commandType = null, bool writeDb = false);
 
     /// <summary>
     /// Perform an asynchronous multi-mapping query with 6 input types.
@@ -291,7 +291,7 @@ public interface IAdoQuerierRepository : IAdoRepository
     /// <param name="commandType">Is it a stored proc or a batch?</param>
     /// <param name="writeDb">if true writedb else readdb</param>
     /// <returns>An enumerable of <typeparamref name="TReturn"/>.</returns>
-    Task<IEnumerable<TReturn>?> QueryAsync<TFirst, TSecond, TThird, TFourth, TFifth, TSixth, TReturn>(string sql, Func<TFirst, TSecond, TThird, TFourth, TFifth, TSixth, TReturn> map, object? param = null, IDbTransaction? transaction = null, bool buffered = true, string splitOn = "Id", int? commandTimeout = null, CommandType? commandType = null, bool writeDb = false);
+    Task<IEnumerable<TReturn>> QueryAsync<TFirst, TSecond, TThird, TFourth, TFifth, TSixth, TReturn>(string sql, Func<TFirst, TSecond, TThird, TFourth, TFifth, TSixth, TReturn> map, object? param = null, IDbTransaction? transaction = null, bool buffered = true, string splitOn = "Id", int? commandTimeout = null, CommandType? commandType = null, bool writeDb = false);
 
     /// <summary>
     /// Perform an asynchronous multi-mapping query with 7 input types.
@@ -315,7 +315,7 @@ public interface IAdoQuerierRepository : IAdoRepository
     /// <param name="commandType">Is it a stored proc or a batch?</param>
     /// <param name="writeDb">if true writedb else readdb</param>
     /// <returns>An enumerable of <typeparamref name="TReturn"/>.</returns>
-    Task<IEnumerable<TReturn>?> QueryAsync<TFirst, TSecond, TThird, TFourth, TFifth, TSixth, TSeventh, TReturn>(string sql, Func<TFirst, TSecond, TThird, TFourth, TFifth, TSixth, TSeventh, TReturn> map, object? param = null, IDbTransaction? transaction = null, bool buffered = true, string splitOn = "Id", int? commandTimeout = null, CommandType? commandType = null, bool writeDb = false);
+    Task<IEnumerable<TReturn>> QueryAsync<TFirst, TSecond, TThird, TFourth, TFifth, TSixth, TSeventh, TReturn>(string sql, Func<TFirst, TSecond, TThird, TFourth, TFifth, TSixth, TSeventh, TReturn> map, object? param = null, IDbTransaction? transaction = null, bool buffered = true, string splitOn = "Id", int? commandTimeout = null, CommandType? commandType = null, bool writeDb = false);
 
     /// <summary>
     /// Perform an asynchronous multi-mapping query with an arbitrary number of input types.
@@ -333,5 +333,5 @@ public interface IAdoQuerierRepository : IAdoRepository
     /// <param name="commandType">Is it a stored proc or a batch?</param>
     /// <param name="writeDb">if true writedb else readdb</param>
     /// <returns>An enumerable of <typeparamref name="TReturn"/>.</returns>
-    Task<IEnumerable<TReturn>?> QueryAsync<TReturn>(string sql, Type[] types, Func<object[], TReturn> map, object? param = null, IDbTransaction? transaction = null, bool buffered = true, string splitOn = "Id", int? commandTimeout = null, CommandType? commandType = null, bool writeDb = false);
+    Task<IEnumerable<TReturn>> QueryAsync<TReturn>(string sql, Type[] types, Func<object[], TReturn> map, object? param = null, IDbTransaction? transaction = null, bool buffered = true, string splitOn = "Id", int? commandTimeout = null, CommandType? commandType = null, bool writeDb = false);
 }
