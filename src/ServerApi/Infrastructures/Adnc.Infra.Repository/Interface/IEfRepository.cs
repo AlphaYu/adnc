@@ -1,4 +1,5 @@
 ﻿using Adnc.Infra.Repository;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace Adnc.Infra.Repository;
 
@@ -95,6 +96,15 @@ public interface IEfRepository<TEntity> : IEfBaseRepository<TEntity>
     /// <param name="cancellationToken"><see cref="CancellationToken"/></param>
     /// <returns></returns>
     Task<int> UpdateRangeAsync(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, TEntity>> updatingExpression, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// 批量更新
+    /// </summary>
+    /// <param name="whereExpression">查询条件</param>
+    /// <param name="setPropertyCalls">需要更新的字段</param>
+    /// <param name="cancellationToken"><see cref="CancellationToken"/></param>
+    /// <returns></returns>
+    Task<int> UpdateRangeAsync(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<SetPropertyCalls<TEntity>, SetPropertyCalls<TEntity>>> setPropertyCalls, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// 批量更新
