@@ -7,7 +7,7 @@ public class Customer : EfFullAuditEntity
 {
     public string Account { get; set; }
 
-    public string Password { get; set; }
+    public string Password { get; set; } = string.Empty;
 
     public string Nickname { get; set; }
 

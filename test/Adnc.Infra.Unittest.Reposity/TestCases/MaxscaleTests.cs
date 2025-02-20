@@ -1,19 +1,15 @@
-﻿using Adnc.Infra.IdGenerater.Yitter;
-using Adnc.Infra.IRepositories;
-using Adnc.UnitTest.TestCases.Repositories.Entities;
+﻿namespace Adnc.Infra.Unittest.Reposity.TestCases;
 
-namespace Adnc.UnitTest.TestCases.Repositories;
-
-public class MaxscaleTests : IClassFixture<MaxscaleDbcontextFixture>
+public class MaxscaleTests : IClassFixture<EfCoreDbcontextFixture>
 {
     private readonly ITestOutputHelper _output;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IEfRepository<Customer> _cusRsp;
     private readonly IEfRepository<CustomerFinance> _cusFinanceRsp;
     private readonly IEfRepository<CustomerTransactionLog> _cusLogsRsp;
-    private readonly MaxscaleDbcontextFixture _fixture;
+    private readonly EfCoreDbcontextFixture _fixture;
 
-    public MaxscaleTests(MaxscaleDbcontextFixture fixture, ITestOutputHelper output)
+    public MaxscaleTests(EfCoreDbcontextFixture fixture, ITestOutputHelper output)
     {
         _fixture = fixture;
         _output = output;
@@ -21,8 +17,6 @@ public class MaxscaleTests : IClassFixture<MaxscaleDbcontextFixture>
         _cusRsp = _fixture.Container.GetRequiredService<IEfRepository<Customer>>();
         _cusFinanceRsp = _fixture.Container.GetRequiredService<IEfRepository<CustomerFinance>>();
         _cusLogsRsp = _fixture.Container.GetRequiredService<IEfRepository<CustomerTransactionLog>>();
-        if (IdGenerater.CurrentWorkerId < 0)
-            IdGenerater.SetWorkerId(1);
     }
 
     protected Expression<Func<TEntity, object>>[] UpdatingProps<TEntity>(params Expression<Func<TEntity, object>>[] expressions) => expressions;
@@ -164,8 +158,8 @@ public class MaxscaleTests : IClassFixture<MaxscaleDbcontextFixture>
         var list = new List<Customer>();
         for (int i = 0; i < rows; i++)
         {
-            var id = IdGenerater.GetNextId();
-            var customer = new Customer() { Id = id, Account = "alpha2008", Nickname = IdGenerater.GetNextId().ToString(), Realname = IdGenerater.GetNextId().ToString() };
+            var id = UnittestHelper.GetNextId();
+            var customer = new Customer() { Id = id, Account = "alpha2008", Nickname = UnittestHelper.GetNextId().ToString(), Realname = UnittestHelper.GetNextId().ToString() };
             customer.FinanceInfo = new CustomerFinance { Account = "alpha2008", Id = id, Balance = 0 };
             list.Add(customer);
         }
@@ -180,8 +174,8 @@ public class MaxscaleTests : IClassFixture<MaxscaleDbcontextFixture>
     /// <returns></returns>
     private async Task<Customer> InsertCustomer()
     {
-        var id = IdGenerater.GetNextId();
-        var customer = new Customer() { Id = id, Account = "alpha2008", Nickname = IdGenerater.GetNextId().ToString(), Realname = IdGenerater.GetNextId().ToString() };
+        var id = UnittestHelper.GetNextId();
+        var customer = new Customer() { Id = id, Account = "alpha2008", Password = "password", Nickname = UnittestHelper.GetNextId().ToString(), Realname = UnittestHelper.GetNextId().ToString() };
         await _cusRsp.InsertAsync(customer);
         return customer;
     }
