@@ -127,8 +127,13 @@ namespace Adnc.Infra.Repository.EfCore
             //}
             //return await DbContext.Set<TEntity>().Where(whereExpression).DeleteAsync(cancellationToken);
 
-            //efcore>=7.0.0
-           return await DbContext.Set<TEntity>().Where(whereExpression).ExecuteDeleteAsync(cancellationToken);
+            //efcore>=7.0.0, don't support soft delete
+            var enityType = typeof(TEntity);
+            var hasSoftDeleteMember = typeof(ISoftDelete).IsAssignableFrom(enityType);
+            if (!hasSoftDeleteMember)
+                return await DbContext.Set<TEntity>().Where(whereExpression).ExecuteDeleteAsync(cancellationToken);
+            else
+                return await DbContext.Set<TEntity>().Where(whereExpression).ExecuteUpdateAsync(setters => setters.SetProperty(b => (b as ISoftDelete).IsDeleted, true), cancellationToken);
         }
 
         public virtual async Task<int> UpdateAsync(TEntity entity, Expression<Func<TEntity, object>>[] updatingExpressions, CancellationToken cancellationToken = default)
