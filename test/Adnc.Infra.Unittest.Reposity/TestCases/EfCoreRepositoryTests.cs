@@ -7,6 +7,7 @@ public class EfCoreRepositoryTests : IClassFixture<EfCoreDbcontextFixture>
     private readonly IEfRepository<Customer> _customerRsp;
     private readonly IEfRepository<CustomerFinance> _cusFinanceRsp;
     private readonly IEfRepository<CustomerTransactionLog> _custLogsRsp;
+    private readonly IEfRepository<Project> _custProject;
     private readonly DbContext _dbContext;
     private readonly EfCoreDbcontextFixture _fixture;
 
@@ -18,6 +19,7 @@ public class EfCoreRepositoryTests : IClassFixture<EfCoreDbcontextFixture>
         _customerRsp = _fixture.Container.GetRequiredService<IEfRepository<Customer>>();
         _cusFinanceRsp = _fixture.Container.GetRequiredService<IEfRepository<CustomerFinance>>();
         _custLogsRsp = _fixture.Container.GetRequiredService<IEfRepository<CustomerTransactionLog>>();
+        _custProject = fixture.Container.GetRequiredService<IEfRepository<Project>>();
         _dbContext = _fixture.Container.GetRequiredService<DbContext>();
 
     }
@@ -475,6 +477,31 @@ public class EfCoreRepositoryTests : IClassFixture<EfCoreDbcontextFixture>
         Assert.Null(dapperResult2);
     }
 
+    /// <summary>
+    ///  测试EFCore8 ExcuteDelete是否支持软删除
+    /// </summary>
+    /// <returns></returns>
+    [Fact]
+    public async Task TestEfcoreExcuteDeleteForSoftDelete()
+    {
+        //var aa = await _custProject.GetAll().SingleOrDefaultAsync();
+        //var bb = await _custProject.GetAll().FirstOrDefaultAsync(x => x.Id == 999);
+        var project = new Project { Id = UnittestHelper.GetNextId(), Name = $"{UnittestHelper.GetNextId()}" };
+        await _custProject.InsertAsync(project);
+
+        var newProject = await _custProject.FetchAsync(x => x, x => x.Id == project.Id);
+
+        //DELETE `p`
+        //FROM `project` AS `p`
+        //WHERE NOT(`p`.`isdeleted`) AND(`p`.`id` = 1740035750473)
+        //EFCore8 ExcuteDelete不支持软删除
+        await _custProject.DeleteRangeAsync(x => x.Id == project.Id);
+        var result = await _custProject.AdoQuerier.QueryFirstOrDefaultAsync<Project>("SELECT * FROM Project WHERE ID=@Id", new { Id = project.Id });
+
+        Assert.NotNull(result);
+        Assert.True(result.IsDeleted);
+    }
+
     private async Task<Customer> InsertCustomer()
     {
         var id = UnittestHelper.GetNextId();
@@ -487,7 +514,7 @@ public class EfCoreRepositoryTests : IClassFixture<EfCoreDbcontextFixture>
     private Task<Customer> GenerateCustomer()
     {
         var id = UnittestHelper.GetNextId();
-        var customer = new Customer() { Id = id, Password = "password", Account = "alpha2008", Nickname = UnittestHelper.GetNextId().ToString(), Realname = UnittestHelper.GetNextId().ToString()};
+        var customer = new Customer() { Id = id, Password = "password", Account = "alpha2008", Nickname = UnittestHelper.GetNextId().ToString(), Realname = UnittestHelper.GetNextId().ToString() };
         return Task.FromResult(customer);
     }
 }

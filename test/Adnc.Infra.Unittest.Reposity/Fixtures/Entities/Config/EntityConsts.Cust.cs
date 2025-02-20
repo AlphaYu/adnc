@@ -26,3 +26,11 @@ public static class CustomerTransactionLogConsts
     public const int Account_MaxLength = 16;
     public const int Remark_MaxLength = 64;
 }
+
+/// <summary>
+/// 工程表
+/// </summary>
+public static class ProjectConsts
+{
+    public const int Name_MaxLength = 50;
+}
