@@ -48,7 +48,9 @@
 		<Z_EntityFramework_Plus_EFCore_Version>8.103.7.1</Z_EntityFramework_Plus_EFCore_Version>
 		<EFCore_NamingConventions_Version>8.0.3</EFCore_NamingConventions_Version>
 		<MySqlConnector_Version>2.3.7</MySqlConnector_Version>
-		<Dapper_Version>2.1.35</Dapper_Version>
+		<Microsoft_Data_SqlClient>5.2.2</Microsoft_Data_SqlClient>
+		<Oracle_ManagedDataAccess_Core>23.7.0</Oracle_ManagedDataAccess_Core>
+		<Dapper_Version>2.1.66</Dapper_Version>
 		<MongoDB_Driver_Version>3.0.0</MongoDB_Driver_Version>
 		<AutoMapper_Version>13.0.1</AutoMapper_Version>
 		<Consul_Version>1.7.14.7</Consul_Version>
