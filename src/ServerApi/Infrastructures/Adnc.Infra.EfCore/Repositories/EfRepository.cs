@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Query;
+﻿using Adnc.Infra.Repository.EfCore.Extensions;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace Adnc.Infra.Repository.EfCore
 {
@@ -6,7 +7,7 @@ namespace Adnc.Infra.Repository.EfCore
     /// Ef默认的、全功能的仓储实现
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
-    public class EfRepository<TEntity>(DbContext dbContext, IAdoQuerierRepository? adoQuerier = null) : AbstractEfBaseRepository<DbContext, TEntity>(dbContext), IEfRepository<TEntity>
+    public class EfRepository<TEntity>(DbContext dbContext, Operater operater, IAdoQuerierRepository? adoQuerier = null) : AbstractEfBaseRepository<DbContext, TEntity>(dbContext), IEfRepository<TEntity>
       where TEntity : EfEntity, new()
     {
         private readonly IAdoQuerierRepository? _adoQuerier = adoQuerier;
@@ -128,12 +129,22 @@ namespace Adnc.Infra.Repository.EfCore
             //return await DbContext.Set<TEntity>().Where(whereExpression).DeleteAsync(cancellationToken);
 
             //efcore>=7.0.0, don't support soft delete
+            var queryAble = DbContext.Set<TEntity>().Where(whereExpression);
             var enityType = typeof(TEntity);
             var hasSoftDeleteMember = typeof(ISoftDelete).IsAssignableFrom(enityType);
             if (!hasSoftDeleteMember)
-                return await DbContext.Set<TEntity>().Where(whereExpression).ExecuteDeleteAsync(cancellationToken);
+                return await queryAble.ExecuteDeleteAsync(cancellationToken);
             else
-                return await DbContext.Set<TEntity>().Where(whereExpression).ExecuteUpdateAsync(setters => setters.SetProperty(b => (b as ISoftDelete).IsDeleted, true), cancellationToken);
+            {
+                var hasfullAuditInfoMember = typeof(IFullAuditInfo).IsAssignableFrom(enityType);
+                if (!hasfullAuditInfoMember)
+                    return await queryAble.ExecuteUpdateAsync(setters => setters.SetProperty(setter => ((ISoftDelete)setter).IsDeleted, true), cancellationToken);
+                else
+                    return await queryAble.ExecuteUpdateAsync(setters => setters
+                    .SetProperty(setter => ((ISoftDelete)setter).IsDeleted, true)
+                    .SetProperty(setter => ((IFullAuditInfo)setter).ModifyBy, operater.Id)
+                    .SetProperty(setter => ((IFullAuditInfo)setter).ModifyTime, DateTime.Now), cancellationToken);
+            }
         }
 
         public virtual async Task<int> UpdateAsync(TEntity entity, Expression<Func<TEntity, object>>[] updatingExpressions, CancellationToken cancellationToken = default)
@@ -171,15 +182,10 @@ namespace Adnc.Infra.Repository.EfCore
             return await DbContext.SaveChangesAsync(cancellationToken);
         }
 
-        public virtual Task<int> UpdateRangeAsync(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, TEntity>> updatingExpression, CancellationToken cancellationToken = default)
+        public virtual async Task<int> UpdateRangeAsync(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, TEntity>> updatingExpression, CancellationToken cancellationToken = default)
         {
-            var enityType = typeof(TEntity);
-            var hasConcurrencyMember = typeof(IConcurrency).IsAssignableFrom(enityType);
-
-            if (hasConcurrencyMember)
-                throw new ArgumentException("该实体有RowVersion列，不能使用批量更新");
-
-            return UpdateRangeInternalAsync(whereExpression, updatingExpression, cancellationToken);
+            //Expression<Func<SetPropertyCalls<TEntity>, SetPropertyCalls<TEntity>>> setPropertyCalls;
+            return await DbContext.Set<TEntity>().Where(whereExpression).UpdateAsync(updatingExpression, cancellationToken);
         }
 
         //public virtual async Task<int> UpdateRangeAsync(Dictionary<long, List<(string propertyName, dynamic propertyValue)>> propertyNameAndValues, CancellationToken cancellationToken = default)
@@ -210,12 +216,17 @@ namespace Adnc.Infra.Repository.EfCore
         public virtual async Task<int> UpdateRangeAsync(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<SetPropertyCalls<TEntity>, SetPropertyCalls<TEntity>>> setPropertyCalls, CancellationToken cancellationToken = default)
         {
             //efcore>=7.0.0
-            return await DbContext.Set<TEntity>().Where(whereExpression).ExecuteUpdateAsync(setPropertyCalls, cancellationToken);
-        }
+            Expression<Func<SetPropertyCalls<TEntity>, SetPropertyCalls<TEntity>>> newSetPropertyCalls;
+            var enityType = typeof(TEntity);
+            var hasfullAuditInfoMember = typeof(IFullAuditInfo).IsAssignableFrom(enityType);
+            if (!hasfullAuditInfoMember)
+                newSetPropertyCalls = setPropertyCalls;
+            else
+                newSetPropertyCalls = setPropertyCalls
+                    .Append(setter => setter.SetProperty(setter => ((IFullAuditInfo)setter).ModifyBy, operater.Id))
+                    .Append(setter => setter.SetProperty(setter => ((IFullAuditInfo)setter).ModifyTime, DateTime.Now));
 
-        protected virtual async Task<int> UpdateRangeInternalAsync(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, TEntity>> updatingExpression, CancellationToken cancellationToken = default)
-        {
-            return await DbContext.Set<TEntity>().Where(whereExpression).UpdateAsync(updatingExpression, cancellationToken);
+            return await DbContext.Set<TEntity>().Where(whereExpression).ExecuteUpdateAsync(newSetPropertyCalls, cancellationToken);
         }
     }
 }

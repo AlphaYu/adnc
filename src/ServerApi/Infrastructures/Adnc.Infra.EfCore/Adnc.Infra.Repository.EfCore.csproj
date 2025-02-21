@@ -19,7 +19,4 @@
 	  <ProjectReference Include="..\Adnc.Infra.Core\Adnc.Infra.Core.csproj" />
 	  <ProjectReference Include="..\Adnc.Infra.Repository\Adnc.Infra.Repository.csproj" />
 	</ItemGroup>
-	<ItemGroup>
-	  <Folder Include="Extensions\" />
-	</ItemGroup>
 </Project>
