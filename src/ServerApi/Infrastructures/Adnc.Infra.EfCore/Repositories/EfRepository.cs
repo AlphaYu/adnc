@@ -184,8 +184,8 @@ namespace Adnc.Infra.Repository.EfCore
 
         public virtual async Task<int> UpdateRangeAsync(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, TEntity>> updatingExpression, CancellationToken cancellationToken = default)
         {
-            //Expression<Func<SetPropertyCalls<TEntity>, SetPropertyCalls<TEntity>>> setPropertyCalls;
-            return await DbContext.Set<TEntity>().Where(whereExpression).UpdateAsync(updatingExpression, cancellationToken);
+            var setPropertyCalls = ExpressionHelper.ConvertToSetPropertyCalls(updatingExpression);
+            return await UpdateRangeAsync(whereExpression, setPropertyCalls, cancellationToken);
         }
 
         //public virtual async Task<int> UpdateRangeAsync(Dictionary<long, List<(string propertyName, dynamic propertyValue)>> propertyNameAndValues, CancellationToken cancellationToken = default)

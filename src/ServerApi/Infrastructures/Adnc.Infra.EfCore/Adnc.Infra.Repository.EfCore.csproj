@@ -12,9 +12,9 @@
 	  <Compile Remove="Extensions\MutableEntityTypeExtension.cs" />
 	  <Compile Remove="Internal\EFCoreUtil.cs" />
 	</ItemGroup>
-	<ItemGroup>
+	<!--<ItemGroup>
 		<PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="$(Z_EntityFramework_Plus_EFCore_Version)" />
-	</ItemGroup>
+	</ItemGroup>-->
 	<ItemGroup>
 	  <ProjectReference Include="..\Adnc.Infra.Core\Adnc.Infra.Core.csproj" />
 	  <ProjectReference Include="..\Adnc.Infra.Repository\Adnc.Infra.Repository.csproj" />
