@@ -1,55 +1,58 @@
-﻿using Adnc.Infra.Repository.EfCore.Extensions;
-using Microsoft.EntityFrameworkCore.Query;
+﻿using Microsoft.EntityFrameworkCore.Query;
+using System.Reflection;
 
 namespace Adnc.Infra.Repository.EfCore.Internal;
 
 //internal class ExpressionHelper
-public class ExpressionHelper
+public static class ExpressionHelper
 {
-    public static Expression<Func<SetPropertyCalls<TEntity>, SetPropertyCalls<TEntity>>> Transform<TEntity>(Expression<Func<TEntity, TEntity>> source)
+    public static Expression<Func<SetPropertyCalls<TEntity>, SetPropertyCalls<TEntity>>> ConvertToSetPropertyCalls<TEntity>(Expression<Func<TEntity, TEntity>> expression)
     {
-        if (source == null)
+        var parameterName = "a";
+        ParameterExpression param = Expression.Parameter(typeof(SetPropertyCalls<TEntity>), parameterName);
+        Expression constructorExpressions = null;
+        if (expression.Body is MemberInitExpression memberInitExpression)
         {
-            throw new ArgumentNullException(nameof(source));
-
-            // 创建一个参数表达式，类型为 SetPropertyCalls<TEntity>
-            var parameter = Expression.Parameter(typeof(SetPropertyCalls<TEntity>), "x");
-
-            // 获取源表达式的Body部分
-            var body = source.Body;
-
-            // 检查源表达式类型是否是 MemberInitExpression 类型
-            if (body is MemberInitExpression memberInit)
+            foreach (var item in memberInitExpression.Bindings)
             {
-                // 初始化 SetPropertyCalls<TEntity> 的更新表达式
-                Expression<Func<SetPropertyCalls<TEntity>, SetPropertyCalls<TEntity>>> setPropertyCalls = setter => setter;
-
-                // 收集表达式绑定
-                foreach (var binding in memberInit.Bindings.OfType<MemberAssignment>())
+                if (item is MemberAssignment assignment)
                 {
-                    // 获取 SetPropertyCalls<TEntity> 中的 Entity 属性
-                    var entityAccess = Expression.Property(parameter, "Entity");  // 获取 Entity 属性
+                    PropertyInfo propertyInfo = (PropertyInfo)assignment.Member;
+                    string propertyName = assignment.Member.Name;
+                    var properrtyType = propertyInfo.PropertyType;
 
-                    // 使用 Expression.Property 来访问实体对象的属性
-                    var property = Expression.Property(entityAccess, binding.Member.Name);
+                    var parameter = Expression.Parameter(typeof(TEntity), parameterName);
+                    var propertyAccess = Expression.Property(parameter, propertyName);
+                    var propertyExpression = Expression.Lambda(propertyAccess, parameter);
 
-                    //// 通过 SetProperty 方法来设置实体的属性
-                    //var setPropertyCall = Expression.Call(
-                    //    setter,
-                    //    typeof(SetPropertyCalls<TEntity>).GetMethod("SetProperty"),
-                    //    Expression.Lambda(property, parameter),  // 将属性作为表达式传递
-                    //    binding.Expression   // 对应的值
-                    //);
+                    var valueExpression = assignment.Expression;
 
-                    //// 合并所有的 SetProperty 调用
-                    //setPropertyCalls = setPropertyCalls.Append(setter => setPropertyCall);
+                    var valueParameter = Expression.Parameter(typeof(TEntity), parameterName);
+                    var valueExpressionFunc = Expression.Lambda(valueExpression, valueParameter);
+
+                    var setPropertyMethod = typeof(SetPropertyCalls<>)
+                            .MakeGenericType(typeof(TEntity))
+                            .GetMethods()
+                            .Where(m => m.Name == "SetProperty"
+                            && m.GetParameters()
+                                .Where(p =>
+                                p.ParameterType.IsGenericType &&
+                                p.ParameterType.GetGenericTypeDefinition() == typeof(Func<,>)).Count() == 2)
+                             .FirstOrDefault();
+
+                    setPropertyMethod = setPropertyMethod.MakeGenericMethod(properrtyType);
+                    var setPropertyCall = Expression.Call(
+                        constructorExpressions ?? param,
+                        setPropertyMethod,
+                        propertyExpression,
+                        valueExpressionFunc
+                    );
+                    constructorExpressions = setPropertyCall;
                 }
-
-                return setPropertyCalls;
             }
         }
-        throw new InvalidOperationException("Unsupported expression type");
+        return Expression.Lambda<Func<SetPropertyCalls<TEntity>, SetPropertyCalls<TEntity>>>(constructorExpressions ?? param, param);
     }
- }
 
+}
 
