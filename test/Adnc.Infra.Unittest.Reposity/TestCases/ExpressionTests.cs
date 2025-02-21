@@ -1,47 +1,43 @@
 ﻿using Adnc.Infra.Repository.EfCore.Internal;
-using Microsoft.EntityFrameworkCore.Query;
 
 namespace Adnc.Infra.Unittest.Reposity.TestCases;
 
 
 public class ExpressionConverterTests
 {
-    private class MyEntity
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public int Age { get; set; }
-        public bool IsActive { get; set; }
-        public double Salary { get; set; }
-        public decimal Bonus { get; set; }
-        public float TaxRate { get; set; }
-    }
-
 
     [Fact]
-    public void TransformExpression_ShouldCallApplyMethod()
+    public void TransformExpression_ShouldConvertExpressionCorrectly()
     {
         // Arrange
-        Expression<Func<MyEntity, MyEntity>> expr = x => new MyEntity
+        Expression<Func<MyEntity, MyEntity>> source = entity => new MyEntity
         {
-            Name = x.Name + " Updated",
-            Age = x.Age + 1
+            Name = entity.Name + " Updated",
+            Age = entity.Age + 1
         };
 
         // Act
-        var transformedExpr = ExpressionHelper.Transform(expr);
+        var transformedExpr = ExpressionHelper.ConvertToSetPropertyCalls<MyEntity>(source);
 
         // Assert
-        Assert.NotNull(transformedExpr);
+        Assert.NotNull(transformedExpr);  // The transformed expression should not be null
 
-        // 获取表达式树，检查是否调用了 Apply 方法
+        // Check that the body of the transformed expression is a method call to SetProperty
         var body = transformedExpr.Body as MethodCallExpression;
-        Assert.NotNull(body);
-        Assert.Equal("Apply", body.Method.Name);
+        Assert.NotNull(body);  // The body should be a method call
 
-        // 获取 Apply 方法的参数，应该是 SetProperty 调用的链式表达式
-        var firstCall = body.Arguments[0] as MethodCallExpression;
-        Assert.NotNull(firstCall);
-        Assert.Equal("SetProperty", firstCall.Method.Name);
+        // Verify that SetProperty method is called
+        Assert.Equal("SetProperty", body.Method.Name);
     }
 }
+
+public class MyEntity : IFullAuditInfo
+{
+    public string Name { get; set; }
+    public int Age { get; set; }
+    public long ModifyBy { get; set; }
+    public DateTime ModifyTime { get; set; }
+    public long CreateBy { get; set; }
+    public DateTime CreateTime { get; set; }
+}
+

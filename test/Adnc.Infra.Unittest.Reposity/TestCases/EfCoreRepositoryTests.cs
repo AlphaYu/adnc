@@ -517,6 +517,20 @@ public class EfCoreRepositoryTests : IClassFixture<EfCoreDbcontextFixture>
         Assert.Equal("TestEfcore8UpdateRangeAsync", newProject.Name);
     }
 
+    [Fact]
+    public async Task TestUpdateRangeAsync()
+    {
+        var project = new Project { Id = UnittestHelper.GetNextId(), Name = $"{UnittestHelper.GetNextId()}" };
+        await _custProject.InsertAsync(project);
+
+        var result = await _custProject.UpdateRangeAsync(x => x.Id == project.Id, x => new Project { Name = "abcdef" });
+        Assert.True(result > 0);
+
+        var newProject = await _custProject.FindAsync(project.Id);
+        Assert.Equal(1000000000001, newProject.ModifyBy);
+        Assert.Equal("abcdef", newProject.Name);
+    }
+
     private async Task<Customer> InsertCustomer()
     {
         var id = UnittestHelper.GetNextId();
