@@ -502,6 +502,21 @@ public class EfCoreRepositoryTests : IClassFixture<EfCoreDbcontextFixture>
         Assert.True(result.IsDeleted);
     }
 
+    [Fact]
+    public async Task TestEfcore8UpdateRangeAsync()
+    {
+        var project = new Project { Id = UnittestHelper.GetNextId(), Name = $"{UnittestHelper.GetNextId()}" };
+        await _custProject.InsertAsync(project);
+
+        var result = await _custProject.UpdateRangeAsync(x => x.Id == project.Id, setter 
+            => setter.SetProperty(x => x.Name, "TestEfcore8UpdateRangeAsync"));
+        Assert.True(result > 0);
+
+        var newProject = await _custProject.FindAsync(project.Id);
+        Assert.Equal(1000000000001, newProject.ModifyBy);
+        Assert.Equal("TestEfcore8UpdateRangeAsync", newProject.Name);
+    }
+
     private async Task<Customer> InsertCustomer()
     {
         var id = UnittestHelper.GetNextId();
