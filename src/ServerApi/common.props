@@ -45,7 +45,7 @@
 		<Microsoft_EntityFrameworkCore_Relational_Version>8.0.13</Microsoft_EntityFrameworkCore_Relational_Version>
 		<Microsoft_EntityFrameworkCore_SqlServer_Version>8.0.13</Microsoft_EntityFrameworkCore_SqlServer_Version>
 		<Pomelo_EntityFrameworkCore_MySql_Version>8.0.2</Pomelo_EntityFrameworkCore_MySql_Version>
-		<Z_EntityFramework_Plus_EFCore_Version>8.103.7.1</Z_EntityFramework_Plus_EFCore_Version>
+		<!--<Z_EntityFramework_Plus_EFCore_Version>8.103.7.1</Z_EntityFramework_Plus_EFCore_Version>-->
 		<EFCore_NamingConventions_Version>8.0.3</EFCore_NamingConventions_Version>
 		<MySqlConnector_Version>2.3.7</MySqlConnector_Version>
 		<Microsoft_Data_SqlClient>5.2.2</Microsoft_Data_SqlClient>
