@@ -11,20 +11,24 @@
     {
         protected virtual TDbContext DbContext { get; } = dbContext;
 
-        protected virtual IQueryable<TEntity> GetDbSet(bool writeDb, bool noTracking)
+        protected virtual IQueryable<TEntity> GetDbSet(bool writeDb, bool noTracking) 
+            => GetDbSet<TEntity>(writeDb, noTracking);
+
+        protected virtual IQueryable<TSource> GetDbSet<TSource>(bool writeDb, bool noTracking)
+            where TSource : Entity, IEfEntity<long>
         {
             if (noTracking && writeDb)
-                return DbContext.Set<TEntity>().AsNoTracking().TagWith(RepositoryConsts.MAXSCALE_ROUTE_TO_MASTER);
+                return DbContext.Set<TSource>().AsNoTracking().TagWith(RepositoryConsts.MAXSCALE_ROUTE_TO_MASTER);
             else if (noTracking)
-                return DbContext.Set<TEntity>().AsNoTracking();
+                return DbContext.Set<TSource>().AsNoTracking();
             else if (writeDb)
-                return DbContext.Set<TEntity>().TagWith(RepositoryConsts.MAXSCALE_ROUTE_TO_MASTER);
+                return DbContext.Set<TSource>().TagWith(RepositoryConsts.MAXSCALE_ROUTE_TO_MASTER);
             else
-                return DbContext.Set<TEntity>();
+                return DbContext.Set<TSource>();
         }
 
-        public virtual IQueryable<TEntity> Where(Expression<Func<TEntity, bool>> expression, bool writeDb = false, bool noTracking = true) =>
-            GetDbSet(writeDb, noTracking).Where(expression);
+        public virtual IQueryable<TEntity> Where(Expression<Func<TEntity, bool>> expression, bool writeDb = false, bool noTracking = true)
+            => GetDbSet(writeDb, noTracking).Where(expression);
 
         public virtual async Task<int> InsertAsync(TEntity entity, CancellationToken cancellationToken = default)
         {

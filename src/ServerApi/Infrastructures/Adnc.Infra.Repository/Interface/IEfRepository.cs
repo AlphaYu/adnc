@@ -1,5 +1,4 @@
-﻿using Adnc.Infra.Repository;
-using Microsoft.EntityFrameworkCore.Query;
+﻿using Microsoft.EntityFrameworkCore.Query;
 
 namespace Adnc.Infra.Repository;
 
@@ -50,6 +49,7 @@ public interface IEfRepository<TEntity> : IEfBaseRepository<TEntity>
     /// <param name="noTracking">是否开启跟踪，默认不开启，可选参数</param>
     /// <param name="cancellationToken"><see cref="CancellationToken"/></param>
     /// <returns><see cref="T:TEntity"/></returns>
+    [Obsolete($"use {nameof(FetchAsync)} instead")]
     Task<TEntity?> FindAsync(long keyValue, Expression<Func<TEntity, dynamic>>? navigationPropertyPath = null, bool writeDb = false, bool noTracking = true, CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -63,7 +63,21 @@ public interface IEfRepository<TEntity> : IEfBaseRepository<TEntity>
     /// <param name="noTracking">是否开启跟踪，默认不开启，可选参数</param>
     /// <param name="cancellationToken"><see cref="CancellationToken"/></param>
     /// <returns></returns>
+    [Obsolete($"use {nameof(FetchAsync)} instead")]
     Task<TEntity?> FindAsync(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, dynamic>>? navigationPropertyPath = null, Expression<Func<TEntity, object>>? orderByExpression = null, bool ascending = false, bool writeDb = false, bool noTracking = true, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// 根据条件查询,返回单个实体
+    /// </summary>
+    /// <param name="whereExpression">查询条件</param>
+    /// <param name="navigationPropertyPath">导航属性,可选参数</param>
+    /// <param name="orderByExpression">排序字段，默认主键，可选参数</param>
+    /// <param name="ascending">排序方式，默认逆序，可选参数</param>
+    /// <param name="writeDb">是否读写库,默认false，可选参数</param>
+    /// <param name="noTracking">是否开启跟踪，默认不开启，可选参数</param>
+    /// <param name="cancellationToken"><see cref="CancellationToken"/></param>
+    /// <returns></returns>
+    Task<TEntity?> FetchAsync(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, dynamic>>? navigationPropertyPath = null, Expression<Func<TEntity, object>>? orderByExpression = null, bool ascending = false, bool writeDb = false, bool noTracking = true, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// 根据条件查询,返回单个实体或对象
@@ -77,7 +91,7 @@ public interface IEfRepository<TEntity> : IEfBaseRepository<TEntity>
     /// <param name="noTracking">是否开启跟踪，默认不开启，可选参数</param>
     /// <param name="cancellationToken"><see cref="CancellationToken"/></param>
     /// <returns></returns>
-    Task<TResult?> FetchAsync<TResult>(Expression<Func<TEntity, TResult>> selector, Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, object>>? orderByExpression = null, bool ascending = false, bool writeDb = false, bool noTracking = true, CancellationToken cancellationToken = default);
+    Task<TResult?> FetchAsync<TResult>(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, TResult>> selector, Expression<Func<TEntity, object>>? orderByExpression = null, bool ascending = false, bool writeDb = false, bool noTracking = true, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// 更新单个实体
@@ -95,6 +109,7 @@ public interface IEfRepository<TEntity> : IEfBaseRepository<TEntity>
     /// <param name="updatingExpression">需要更新的字段</param>
     /// <param name="cancellationToken"><see cref="CancellationToken"/></param>
     /// <returns></returns>
+    [Obsolete($"use {nameof(ExecuteUpdateAsync)} instead")]
     Task<int> UpdateRangeAsync(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, TEntity>> updatingExpression, CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -104,7 +119,7 @@ public interface IEfRepository<TEntity> : IEfBaseRepository<TEntity>
     /// <param name="setPropertyCalls">需要更新的字段</param>
     /// <param name="cancellationToken"><see cref="CancellationToken"/></param>
     /// <returns></returns>
-    Task<int> UpdateRangeAsync(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<SetPropertyCalls<TEntity>, SetPropertyCalls<TEntity>>> setPropertyCalls, CancellationToken cancellationToken = default);
+    Task<int> ExecuteUpdateAsync(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<SetPropertyCalls<TEntity>, SetPropertyCalls<TEntity>>> setPropertyCalls, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// 批量更新
@@ -112,7 +127,7 @@ public interface IEfRepository<TEntity> : IEfBaseRepository<TEntity>
     /// <param name="propertyNameAndValues">需要更新的字段与值</param>
     /// <param name="cancellationToken"><see cref="CancellationToken"/></param>
     /// <returns></returns>
-    //Task<int> UpdateRangeAsync(Dictionary<long, List<(string propertyName, dynamic propertyValue)>> propertyNameAndValues, CancellationToken cancellationToken = default);
+    Task<int> UpdateRangeAsync(Dictionary<long, List<(string propertyName, dynamic propertyValue)>> propertyNameAndValues, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// 删除实体
@@ -128,5 +143,14 @@ public interface IEfRepository<TEntity> : IEfBaseRepository<TEntity>
     /// <param name="whereExpression">查询条件</param>
     /// <param name="cancellationToken"><see cref="CancellationToken"/></param>
     /// <returns></returns>
+    [Obsolete($"use {nameof(ExecuteDeleteAsync)} instead")]
     Task<int> DeleteRangeAsync(Expression<Func<TEntity, bool>> whereExpression, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// 批量删除实体
+    /// </summary>
+    /// <param name="whereExpression">查询条件</param>
+    /// <param name="cancellationToken"><see cref="CancellationToken"/></param>
+    /// <returns></returns>
+    Task<int> ExecuteDeleteAsync(Expression<Func<TEntity, bool>> whereExpression, CancellationToken cancellationToken = default);
 }

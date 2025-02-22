@@ -24,37 +24,27 @@ namespace Adnc.Infra.Repository.EfCore
             }
         }
 
-        public async Task<int> ExecuteSqlInterpolatedAsync(FormattableString sql, CancellationToken cancellationToken = default) =>
-           await DbContext.Database.ExecuteSqlInterpolatedAsync(sql, cancellationToken);
+        public async Task<int> ExecuteSqlInterpolatedAsync(FormattableString sql, CancellationToken cancellationToken = default)
+           =>  await DbContext.Database.ExecuteSqlInterpolatedAsync(sql, cancellationToken);
 
-        public async Task<int> ExecuteSqlRawAsync(string sql, CancellationToken cancellationToken = default) =>
-           await DbContext.Database.ExecuteSqlRawAsync(sql, cancellationToken);
+        public async Task<int> ExecuteSqlRawAsync(string sql, CancellationToken cancellationToken = default)
+           =>  await DbContext.Database.ExecuteSqlRawAsync(sql, cancellationToken);
 
         public IDbTransaction? CurrentDbTransaction => DbContext.Database.CurrentTransaction?.GetDbTransaction();
 
-        public virtual IQueryable<TEntity> GetAll(bool writeDb = false, bool noTracking = true) => this.GetDbSet(writeDb, noTracking);
+        public virtual IQueryable<TEntity> GetAll(bool writeDb = false, bool noTracking = true) 
+            => this.GetDbSet(writeDb, noTracking);
 
-        public virtual IQueryable<TrdEntity> GetAll<TrdEntity>(bool writeDb = false, bool noTracking = true)
-               where TrdEntity : EfEntity
-        {
-            var queryAble = DbContext.Set<TrdEntity>().AsQueryable();
-            if (writeDb)
-                queryAble = queryAble.TagWith(RepositoryConsts.MAXSCALE_ROUTE_TO_MASTER);
-            if (noTracking)
-                queryAble = queryAble.AsNoTracking();
-            return queryAble;
-        }
+        public virtual IQueryable<TrdEntity> GetAll<TrdEntity>(bool writeDb = false, bool noTracking = true) where TrdEntity : EfEntity
+            => this.GetDbSet<TrdEntity>(writeDb, noTracking);
 
         public virtual async Task<TEntity?> FindAsync(long keyValue, Expression<Func<TEntity, dynamic>>? navigationPropertyPath = null, bool writeDb = false, bool noTracking = true, CancellationToken cancellationToken = default)
-        {
-            var query = GetDbSet(writeDb, noTracking).Where(t => t.Id == keyValue);
-            if (navigationPropertyPath is not null)
-                return await query.Include(navigationPropertyPath).FirstOrDefaultAsync(cancellationToken);
-            else
-                return await query.FirstOrDefaultAsync(cancellationToken);
-        }
+            => await FetchAsync(x => x.Id == keyValue, navigationPropertyPath, null, false, writeDb, noTracking, cancellationToken);
 
         public virtual async Task<TEntity?> FindAsync(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, dynamic>>? navigationPropertyPath = null, Expression<Func<TEntity, object>>? orderByExpression = null, bool ascending = false, bool writeDb = false, bool noTracking = true, CancellationToken cancellationToken = default)
+            =>await FetchAsync(whereExpression, navigationPropertyPath, orderByExpression, ascending, writeDb, noTracking, cancellationToken);  
+
+        public virtual async Task<TEntity?> FetchAsync(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, dynamic>>? navigationPropertyPath = null, Expression<Func<TEntity, object>>? orderByExpression = null, bool ascending = false, bool writeDb = false, bool noTracking = true, CancellationToken cancellationToken = default)
         {
             TEntity? result;
 
@@ -74,7 +64,7 @@ namespace Adnc.Infra.Repository.EfCore
             return result;
         }
 
-        public virtual async Task<TResult?> FetchAsync<TResult>(Expression<Func<TEntity, TResult>> selector, Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, object>>? orderByExpression = null, bool ascending = false, bool writeDb = false, bool noTracking = true, CancellationToken cancellationToken = default)
+        public virtual async Task<TResult?> FetchAsync<TResult>(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, TResult>> selector, Expression<Func<TEntity, object>>? orderByExpression = null, bool ascending = false, bool writeDb = false, bool noTracking = true, CancellationToken cancellationToken = default)
         {
             TResult? result;
 
@@ -114,6 +104,9 @@ namespace Adnc.Infra.Repository.EfCore
         }
 
         public virtual async Task<int> DeleteRangeAsync(Expression<Func<TEntity, bool>> whereExpression, CancellationToken cancellationToken = default)
+            => await ExecuteDeleteAsync(whereExpression, cancellationToken);
+
+        public virtual async Task<int> ExecuteDeleteAsync(Expression<Func<TEntity, bool>> whereExpression, CancellationToken cancellationToken = default)
         {
             //var enityType = typeof(TEntity);
             //var hasSoftDeleteMember = typeof(ISoftDelete).IsAssignableFrom(enityType);
@@ -185,35 +178,35 @@ namespace Adnc.Infra.Repository.EfCore
         public virtual async Task<int> UpdateRangeAsync(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, TEntity>> updatingExpression, CancellationToken cancellationToken = default)
         {
             var setPropertyCalls = ExpressionHelper.ConvertToSetPropertyCalls(updatingExpression);
-            return await UpdateRangeAsync(whereExpression, setPropertyCalls, cancellationToken);
+            return await ExecuteUpdateAsync(whereExpression, setPropertyCalls, cancellationToken);
         }
 
-        //public virtual async Task<int> UpdateRangeAsync(Dictionary<long, List<(string propertyName, dynamic propertyValue)>> propertyNameAndValues, CancellationToken cancellationToken = default)
-        //{
-        //    var existsEntities = DbContext.Set<TEntity>().Local.Where(x => propertyNameAndValues.ContainsKey(x.Id));
+        public virtual async Task<int> UpdateRangeAsync(Dictionary<long, List<(string propertyName, dynamic propertyValue)>> propertyNameAndValues, CancellationToken cancellationToken = default)
+        {
+            var existsEntities = DbContext.Set<TEntity>().Local.Where(x => propertyNameAndValues.ContainsKey(x.Id));
 
-        //    foreach (var item in propertyNameAndValues)
-        //    {
-        //        var enity = existsEntities?.FirstOrDefault(x => x.Id == item.Key) ?? new TEntity { Id = item.Key };
-        //        var entry = DbContext.Entry(enity);
-        //        if (entry.State == EntityState.Detached)
-        //            entry.State = EntityState.Unchanged;
+            foreach (var item in propertyNameAndValues)
+            {
+                var enity = existsEntities?.FirstOrDefault(x => x.Id == item.Key) ?? new TEntity { Id = item.Key };
+                var entry = DbContext.Entry(enity);
+                if (entry.State == EntityState.Detached)
+                    entry.State = EntityState.Unchanged;
 
-        //        if (entry.State == EntityState.Unchanged)
-        //        {
-        //            var info = propertyNameAndValues.FirstOrDefault(x => x.Key == item.Key).Value;
-        //            info.ForEach(x =>
-        //            {
-        //                entry.Property(x.propertyName).CurrentValue = x.propertyValue;
-        //                entry.Property(x.propertyName).IsModified = true;
-        //            });
-        //        }
-        //    }
+                if (entry.State == EntityState.Unchanged)
+                {
+                    var info = propertyNameAndValues.FirstOrDefault(x => x.Key == item.Key).Value;
+                    info.ForEach(x =>
+                    {
+                        entry.Property(x.propertyName).CurrentValue = x.propertyValue;
+                        entry.Property(x.propertyName).IsModified = true;
+                    });
+                }
+            }
 
-        //    return await DbContext.SaveChangesAsync(cancellationToken);
-        //}
+            return await DbContext.SaveChangesAsync(cancellationToken);
+        }
 
-        public virtual async Task<int> UpdateRangeAsync(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<SetPropertyCalls<TEntity>, SetPropertyCalls<TEntity>>> setPropertyCalls, CancellationToken cancellationToken = default)
+        public virtual async Task<int> ExecuteUpdateAsync(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<SetPropertyCalls<TEntity>, SetPropertyCalls<TEntity>>> setPropertyCalls, CancellationToken cancellationToken = default)
         {
             //efcore>=7.0.0
             Expression<Func<SetPropertyCalls<TEntity>, SetPropertyCalls<TEntity>>> newSetPropertyCalls;
