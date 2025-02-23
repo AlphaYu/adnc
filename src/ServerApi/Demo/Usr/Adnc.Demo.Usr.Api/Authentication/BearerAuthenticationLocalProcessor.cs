@@ -1,6 +1,6 @@
 ﻿namespace Adnc.Demo.Usr.Api.Authentication;
 
-[Obsolete("BearerAuthenticationLocalProcessor no longer used. please use BearerAuthenticationCacheProcessor 2025-02-17")]
+[Obsolete($"use {nameof(BearerAuthenticationCacheProcessor)} instead 2025-02-17")]
 public class BearerAuthenticationLocalProcessor : AbstractAuthenticationProcessor
 {
     private readonly IUserAppService _userAppService;

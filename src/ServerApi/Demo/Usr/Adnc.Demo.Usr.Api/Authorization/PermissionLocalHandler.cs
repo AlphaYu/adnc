@@ -1,6 +1,6 @@
 ﻿namespace Adnc.Demo.Usr.Api.Authorization;
 
-[Obsolete("PermissionLocalHandler no longer used. please use PermissionCacheHandler 2025-02-17")]
+[Obsolete($"use {nameof(PermissionCacheHandler)} instead 2025 -02-17")]
 public sealed class PermissionLocalHandler : AbstractPermissionHandler
 {
     private readonly IUserAppService _userAppService;
