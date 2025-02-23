@@ -5,9 +5,6 @@
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 	</PropertyGroup>
 	<ItemGroup>
-	  <Compile Remove="Entities\LoggerLog.cs" />
-	</ItemGroup>
-	<ItemGroup>
 	  <ProjectReference Include="..\..\Shared\Adnc.Demo.Shared.Const\Adnc.Demo.Shared.Const.csproj" />
 	</ItemGroup>
 
