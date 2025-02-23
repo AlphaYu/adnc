@@ -13,7 +13,14 @@ public sealed class DependencyRegistrar(IServiceCollection services, IServiceInf
         registrar.AddApplicationServices();
 
         AddWebApiDefaultServices();
-        AddHealthChecks(true, true, true, true);
+
+        Services.AddHealthChecks(checksBuilder =>
+        {
+            checksBuilder
+                    .AddMySql(Configuration)
+                    .AddRedis(Configuration)
+                    .AddRabbitMQ(Configuration, ServiceInfo.Id);
+        });
     }
 }
 

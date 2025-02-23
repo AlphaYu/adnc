@@ -6,13 +6,21 @@ public sealed class DependencyRegistrar(IServiceCollection services, IServiceInf
 {
     public override void AddAdncServices()
     {
-        Services.AddSingleton(typeof(IServiceInfo),ServiceInfo);
+        Services.AddSingleton(typeof(IServiceInfo), ServiceInfo);
 
         var registrar = new Application.DependencyRegistrar(Services, ServiceInfo);
         registrar.AddApplicationServices();
 
         AddWebApiDefaultServices();
-        AddHealthChecks(true, true, true, false);
+
+        Services.AddHealthChecks(checksBuilder =>
+        {
+            checksBuilder
+                    .AddMySql(Configuration)
+                    .AddRedis(Configuration)
+                    .AddRabbitMQ(Configuration, ServiceInfo.Id);
+        });
+
         Services.AddGrpc();
     }
 }

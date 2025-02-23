@@ -15,7 +15,14 @@ public sealed class ApiLayerRegistrar(IServiceCollection services, IServiceInfo 
         registrar.AddApplicationServices();
 
         AddWebApiDefaultServices();
-        AddHealthChecks(true, true, true, true);
+
+        Services.AddHealthChecks(checksBuilder =>
+        {
+            checksBuilder
+                    .AddMySql(Configuration)
+                    .AddRedis(Configuration)
+                    .AddRabbitMQ(Configuration, ServiceInfo.Id);
+        });
     }
 }
 

@@ -12,8 +12,15 @@ public sealed class DependencyRegistrar(IServiceCollection services, IServiceInf
         registrar.AddApplicationServices();
 
         AddWebApiDefaultServices();
-        var connectionString = Configuration.GetValue<string>("SqlServer:ConnectionString");
-        AddHealthChecks(false, true, true, true).AddSqlServer(connectionString);
+
+        Services.AddHealthChecks(checksBuilder =>
+        {
+            var sqlServerConnectionString = Configuration.GetValue<string>(NodeConsts.SqlServer_ConnectionString);
+            checksBuilder
+                    .AddSqlServer(sqlServerConnectionString)
+                    .AddRedis(Configuration)
+                    .AddRabbitMQ(Configuration, ServiceInfo.Id);
+        });
 
         Services.AddGrpc();
     }
