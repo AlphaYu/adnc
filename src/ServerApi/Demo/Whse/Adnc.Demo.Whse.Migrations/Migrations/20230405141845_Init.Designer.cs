@@ -24,7 +24,7 @@ namespace Adnc.Demo.Whse.Migrations.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("Adnc.Shared.Repository.EfEntities.EventTracker", b =>
+            modelBuilder.Entity("Adnc.Shared.Repository.EfCoreEntities.EventTracker", b =>
                 {
                     b.Property<long>("Id")
                         .HasColumnType("bigint")

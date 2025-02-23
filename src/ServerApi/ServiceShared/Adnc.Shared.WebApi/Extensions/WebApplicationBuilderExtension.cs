@@ -1,5 +1,4 @@
 ﻿using Adnc.Infra.Consul.Configuration;
-using Adnc.Infra.Core.Guard;
 using NLog;
 using NLog.Web;
 

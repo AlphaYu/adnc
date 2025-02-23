@@ -23,7 +23,11 @@ public abstract class AdncDbContext : DbContext
         return result;
     }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder) => _entityInfo.OnModelCreating(modelBuilder);
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+        _entityInfo.OnModelCreating(modelBuilder);
+    }
 
     protected virtual int SetAuditFields()
     {

@@ -218,7 +218,7 @@ namespace Adnc.Demo.Cust.Api.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Adnc.Shared.Repository.EfEntities.EventTracker", b =>
+            modelBuilder.Entity("Adnc.Shared.Repository.EfCoreEntities.EventTracker", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()

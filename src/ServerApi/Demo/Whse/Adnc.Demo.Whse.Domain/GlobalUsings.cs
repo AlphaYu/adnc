@@ -6,7 +6,7 @@ global using Adnc.Infra.Repository;
 global using Adnc.Infra.Repository.EfCore;
 global using Adnc.Shared.Domain;
 global using Adnc.Shared.Domain.Entities;
-global using Adnc.Shared.Repository.EfEntities;
+global using Adnc.Shared.Repository.EfCoreEntities;
 global using Adnc.Shared.Rpc.Event;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.EntityFrameworkCore.Metadata.Builders;

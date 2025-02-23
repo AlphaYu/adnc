@@ -191,7 +191,7 @@ public class OrderAppService : AbstractAppService, IOrderAppService
                 {
                     orderDtos.ForEach(x =>
                     {
-                        x.StatusChangesReason = dict.Children.FirstOrDefault(d => d.Name == x.StatusCode.ToSafeString())?.Name;
+                        x.StatusChangesReason = dict.Children.FirstOrDefault(d => d.Name == x.StatusCode.ToString())?.Name;
                     });
                 }
             }

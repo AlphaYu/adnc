@@ -45,13 +45,14 @@
 		<Microsoft_EntityFrameworkCore_Relational_Version>8.0.13</Microsoft_EntityFrameworkCore_Relational_Version>
 		<Microsoft_EntityFrameworkCore_SqlServer_Version>8.0.13</Microsoft_EntityFrameworkCore_SqlServer_Version>
 		<Pomelo_EntityFrameworkCore_MySql_Version>8.0.2</Pomelo_EntityFrameworkCore_MySql_Version>
+		<MongoDB_EntityFrameworkCore_Version>8.2.3</MongoDB_EntityFrameworkCore_Version>
 		<!--<Z_EntityFramework_Plus_EFCore_Version>8.103.7.1</Z_EntityFramework_Plus_EFCore_Version>-->
 		<EFCore_NamingConventions_Version>8.0.3</EFCore_NamingConventions_Version>
 		<MySqlConnector_Version>2.3.7</MySqlConnector_Version>
 		<Microsoft_Data_SqlClient>5.2.2</Microsoft_Data_SqlClient>
 		<Oracle_ManagedDataAccess_Core>23.7.0</Oracle_ManagedDataAccess_Core>
 		<Dapper_Version>2.1.66</Dapper_Version>
-		<MongoDB_Driver_Version>3.0.0</MongoDB_Driver_Version>
+		<MongoDB_Driver_Version>3.1.0</MongoDB_Driver_Version>
 		<AutoMapper_Version>13.0.1</AutoMapper_Version>
 		<Consul_Version>1.7.14.7</Consul_Version>
 		<Grpc_Net_Client_Version>2.67.0</Grpc_Net_Client_Version>

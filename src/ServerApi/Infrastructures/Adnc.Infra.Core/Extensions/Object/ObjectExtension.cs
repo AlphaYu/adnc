@@ -7,7 +7,7 @@ public static class ObjectExtension
     /// </summary>
     /// <param name="obj">The @this to act on.</param>
     /// <returns>@this as a string or empty if the value is null.</returns>
-    public static string ToSafeString(this object? obj)
+    public static string ToSafeString<T>(this T? obj) where T : struct
     {
         if (obj is null)
             return string.Empty;
@@ -20,7 +20,7 @@ public static class ObjectExtension
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="obj"></param>
-    public static void TrimStringFields<T>(this T obj) where T : class
+    public static void TrimStringFields<T>(this T obj) where T : class, new()
     {
         if (obj is null) return;
         var stringProperties = typeof(T).GetProperties(BindingFlags.Instance | BindingFlags.Public)

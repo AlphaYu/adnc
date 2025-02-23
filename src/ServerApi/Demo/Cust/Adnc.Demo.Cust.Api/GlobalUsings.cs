@@ -23,7 +23,7 @@ global using Adnc.Shared.Application.Contracts.Interfaces;
 global using Adnc.Shared.Application.Contracts.ResultModels;
 global using Adnc.Shared.Application.Services;
 global using Adnc.Shared.Application.Services.Trackers;
-global using Adnc.Shared.Repository.EfEntities;
+global using Adnc.Shared.Repository.EfCoreEntities;
 global using Adnc.Shared.Rpc.Event;
 global using Adnc.Shared.Rpc.Http.Rtos;
 global using Adnc.Shared.Rpc.Http.Services;

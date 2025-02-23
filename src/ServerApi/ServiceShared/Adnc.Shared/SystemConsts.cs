@@ -21,6 +21,9 @@
         public const string Redis = "Redis";
         public const string Mysql = "Mysql";
         public const string Mysql_ConnectionString = "Mysql:ConnectionString";
+        public const string SysLogDb = "SysLogDb";
+        public const string SysLogDb_DbType = "SysLogDb:DbType";
+        public const string SysLogDb_ConnectionString = "SysLogDb:ConnectionString";
         public const string Caching = "Caching";
         public const string Consul = "Consul";
         public const string Nacos = "Nacos";
