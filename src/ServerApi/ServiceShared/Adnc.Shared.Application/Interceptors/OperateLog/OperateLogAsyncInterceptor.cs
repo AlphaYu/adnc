@@ -65,7 +65,7 @@ public sealed class OperateLogAsyncInterceptor : IAsyncInterceptor
         try
         {
             invocation.Proceed();
-            log.Succeed = "true";
+            log.Succeed = true;
         }
         catch (Exception ex)
         {
@@ -88,7 +88,7 @@ public sealed class OperateLogAsyncInterceptor : IAsyncInterceptor
             invocation.Proceed();
             var task = (Task)invocation.ReturnValue;
             await task;
-            log.Succeed = "true";
+            log.Succeed = true;
         }
         catch (Exception ex)
         {
@@ -120,7 +120,7 @@ public sealed class OperateLogAsyncInterceptor : IAsyncInterceptor
             invocation.Proceed();
             var task = (Task<TResult>)invocation.ReturnValue;
             result = await task;
-            log.Succeed = "true";
+            log.Succeed = true;
         }
         catch (Exception ex)
         {
@@ -147,13 +147,14 @@ public sealed class OperateLogAsyncInterceptor : IAsyncInterceptor
     {
         var log = new OperationLog
         {
+            Id = IdGenerater.GetNextId(),
             ClassName = className,
             CreateTime = DateTime.Now,
             LogName = logName,
             LogType = "操作日志",
             Message = JsonSerializer.Serialize(arguments, SystemTextJson.GetAdncDefaultOptions()),
             Method = methodName,
-            Succeed = "false",
+            Succeed = false,
             UserId = userContext.Id,
             UserName = userContext.Name,
             Account = userContext.Account,
@@ -170,7 +171,7 @@ public sealed class OperateLogAsyncInterceptor : IAsyncInterceptor
             ////设置消息持久化
             //properties.Persistent = true;
             //_mqProducer.BasicPublish(MqExchanges.Logs, MqRoutingKeys.OpsLog, logInfo, properties);
-            var operationLogWriter = Channels.ChannelAccessor<OperationLog>.Instance.Writer;
+            var operationLogWriter = Channels.Accessor<OperationLog>.Instance.Writer;
             operationLogWriter.WriteAsync(logInfo).GetAwaiter().GetResult();
         }
         catch (Exception ex)

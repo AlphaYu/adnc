@@ -59,7 +59,6 @@ public abstract partial class AbstractApplicationDependencyRegistrar
         AddAppliactionSerivcesWithInterceptors();
         AddApplicaitonHostedServices();
         AddEfCoreContextWithRepositories();
-        AddMongoContextWithRepositries();
         AddRedisCaching();
         AddBloomFilters();
     }
@@ -79,7 +78,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar
         Services.AddSingleton<BloomFilterFactory>();
         Services.AddHostedService<CachingHostedService>();
         Services.AddHostedService<BloomFilterHostedService>();
-        Services.AddHostedService<Channels.ChannelConsumersHostedService>();
+        Services.AddHostedService<Channels.LogConsumersHostedService>();
         Services.AddScoped<IMessageTracker, DbMessageTrackerService>();
         Services.AddScoped<IMessageTracker, RedisMessageTrackerService>();
         Services.AddScoped<MessageTrackerFactory>();

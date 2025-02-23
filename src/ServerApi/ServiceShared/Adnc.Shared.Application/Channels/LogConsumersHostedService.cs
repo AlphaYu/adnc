@@ -1,12 +1,12 @@
 ﻿namespace Adnc.Shared.Application.Channels;
 
-public class ChannelConsumersHostedService : BackgroundService
+public class LogConsumersHostedService : BackgroundService
 {
     private readonly IServiceProvider _services;
-    private readonly ILogger<ChannelConsumersHostedService> _logger;
+    private readonly ILogger<LogConsumersHostedService> _logger;
 
-    public ChannelConsumersHostedService(
-       ILogger<ChannelConsumersHostedService> logger,
+    public LogConsumersHostedService(
+       ILogger<LogConsumersHostedService> logger,
        IServiceProvider services)
     {
         _services = services;
@@ -15,12 +15,19 @@ public class ChannelConsumersHostedService : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
+        var configuration = _services.GetRequiredService<IConfiguration>();
+        var dbTypeString = configuration.GetValue<string>(NodeConsts.SysLogDb_DbType);
+        var connectionString = configuration.GetValue<string>(NodeConsts.SysLogDb_ConnectionString);
+        Checker.ThrowIf(() => dbTypeString.IsNullOrWhiteSpace() || connectionString.IsNullOrWhiteSpace(), "SysLogDb configuration is missing");
+
+        var dbType = dbTypeString.ToUpper().ToEnum<DbTypes>();
+
         //save loginlogs
         _ = Task.Factory.StartNew(async () =>
         {
-            using var scope = _services.CreateScope();
-            var repository = scope.ServiceProvider.GetRequiredService<IMongoRepository<LoginLog>>();
-            var channelLoginReader = ChannelAccessor<LoginLog>.Instance.Reader;
+            //using var scope = _services.CreateScope();
+            //var repository = scope.ServiceProvider.GetRequiredService<IMongoRepository<LoginLog>>();
+            var channelLoginReader = Accessor<LoginLog>.Instance.Reader;
             var maxAllowInsert = 100;
             var entities = new List<LoginLog>();
             while (await channelLoginReader.WaitToReadAsync(stoppingToken))
@@ -34,7 +41,11 @@ public class ChannelConsumersHostedService : BackgroundService
                     {
                         try
                         {
-                            await repository.AddManyAsync(entities);
+                            //await repository.AddManyAsync(entities);
+                            using var scope = _services.CreateScope();
+                            var repository = scope.ServiceProvider.GetRequiredService<IAdoExecuterRepository>();
+                            repository.ChangeOrSetDbConnection(connectionString, dbType);
+                            await repository.ExecuteAsync("INSERT INTO login_log (Id, Device, Message, Succeed, StatusCode, UserId, Account, UserName, RemoteIpAddress, CreateTime) VALUES (@Id, @Device, @Message, @Succeed, @StatusCode, @UserId, @Account, @UserName, @RemoteIpAddress, @CreateTime)", entities);
                         }
                         catch (Exception ex)
                         {
@@ -55,9 +66,9 @@ public class ChannelConsumersHostedService : BackgroundService
         //save operationlogs
         _ = Task.Factory.StartNew(async () =>
         {
-            using var scope = _services.CreateScope();
-            var repository = scope.ServiceProvider.GetRequiredService<IMongoRepository<OperationLog>>();
-            var channelOperationLogReader = ChannelAccessor<OperationLog>.Instance.Reader;
+            //using var scope = _services.CreateScope();
+            //var repository = scope.ServiceProvider.GetRequiredService<IMongoRepository<OperationLog>>();
+            var channelOperationLogReader = Accessor<OperationLog>.Instance.Reader;
             var maxAllowInsert = 100;
             var entities = new List<OperationLog>();
             while (await channelOperationLogReader.WaitToReadAsync())
@@ -71,7 +82,11 @@ public class ChannelConsumersHostedService : BackgroundService
                     {
                         try
                         {
-                            await repository.AddManyAsync(entities);
+                            //await repository.AddManyAsync(entities);
+                            using var scope = _services.CreateScope();
+                            var repository = scope.ServiceProvider.GetRequiredService<IAdoExecuterRepository>();
+                            repository.ChangeOrSetDbConnection(connectionString, dbType);
+                            await repository.ExecuteAsync("INSERT INTO operation_log (Id, ClassName, CreateTime, LogName, LogType, Message, Method, Succeed, UserId, Account, UserName, RemoteIpAddress) VALUES (@Id, @ClassName, @CreateTime, @LogName, @LogType, @Message, @Method, @Succeed, @UserId, @Account, @UserName, @RemoteIpAddress)", entities);
                         }
                         catch (Exception ex)
                         {
