@@ -225,9 +225,10 @@ public class UserAppService : AbstractAppService, IUserAppService
             device = httpContext.Request.Headers["device"].FirstOrDefault() ?? "web";
             ipAddress = httpContext.Connection.RemoteIpAddress?.MapToIPv4().ToString();
         }
-        var channelWriter = ChannelAccessor<LoginLog>.Instance.Writer;
+        var channelWriter = Accessor<LoginLog>.Instance.Writer;
         var log = new LoginLog
         {
+            Id = IdGenerater.GetNextId(),
             Account = input.Account,
             Succeed = false,
             UserId = user.Id,

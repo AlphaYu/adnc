@@ -23,7 +23,7 @@ namespace Adnc.Demo.Usr.Repository.Migrations
 
             MySqlModelBuilderExtensions.HasCharSet(modelBuilder, "utf8mb4 ");
 
-            modelBuilder.Entity("Adnc.Shared.Repository.EfEntities.EventTracker", b =>
+            modelBuilder.Entity("Adnc.Shared.Repository.EfCoreEntities.EventTracker", b =>
                 {
                     b.Property<long>("Id")
                         .HasColumnType("bigint")
