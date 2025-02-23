@@ -7,10 +7,6 @@
 		<PackageTags>Adnc.Shared.Repository</PackageTags>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 	</PropertyGroup>
-	<ItemGroup>
-		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="$(Microsoft_EntityFrameworkCore_Version)" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="$(Microsoft_EntityFrameworkCore_Relational_Version)" />
-	</ItemGroup>
 	
 	<ItemGroup Condition="'$(SolutionName)'=='Adnc.Shared'">
 		<PackageReference Include="Adnc.Infra.Core" Version="$(Infra_Version)" />
