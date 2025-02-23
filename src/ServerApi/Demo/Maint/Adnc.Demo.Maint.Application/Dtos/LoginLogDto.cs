@@ -3,7 +3,7 @@
 /// <summary>
 /// 登录日志
 /// </summary>
-public class LoginLogDto : MongoDto
+public class LoginLogDto : OutputDto
 {
     public string Device { get; set; } = string.Empty;
 
@@ -13,7 +13,7 @@ public class LoginLogDto : MongoDto
 
     public int StatusCode { get; set; }
 
-    public long? UserId { get; set; }
+    public long UserId { get; set; }
 
     public string Account { get; set; } = string.Empty;
 

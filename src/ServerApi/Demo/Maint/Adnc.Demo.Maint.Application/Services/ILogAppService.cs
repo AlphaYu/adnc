@@ -24,5 +24,5 @@ public interface ILogAppService : IAppService
     /// </summary>
     /// <param name="searchDto"></param>
     /// <returns></returns>
-    Task<PageModelDto<NlogLogDto>> GetNlogLogsPagedAsync(LogSearchPagedDto searchDto);
+    //Task<PageModelDto<NlogLogDto>> GetNlogLogsPagedAsync(LogSearchPagedDto searchDto);
 }

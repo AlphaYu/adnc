@@ -3,7 +3,7 @@
 /// <summary>
 /// 操作日志
 /// </summary>
-public class OpsLogDto : MongoDto
+public class OpsLogDto : OutputDto
 {
     /// <summary>
     /// 控制器类名
@@ -33,7 +33,7 @@ public class OpsLogDto : MongoDto
     /// <summary>
     /// 是否操作成功
     /// </summary>
-    public string Succeed { get; set; } = string.Empty;
+    public bool Succeed { get; set; }
 
     /// <summary>
     /// 操作用户ID

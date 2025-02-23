@@ -1,11 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-
-namespace Adnc.Demo.Maint.Application.Subscribers;
+﻿namespace Adnc.Demo.Maint.Application.Subscribers;
 
 /// <summary>
 /// 登录日志消费者
 /// </summary>
-[Obsolete("目前使用channel处理日志")]
+[Obsolete("use channel instead")]
 public sealed class LoginLogMqConsumer : BaseRabbitMqConsumer
 {
     // 因为Process函数是委托回调,直接将其他Service注入的话两者不在一个scope,
@@ -84,11 +82,11 @@ public sealed class LoginLogMqConsumer : BaseRabbitMqConsumer
         bool result = false;
         try
         {
-            using var scope = _services.CreateScope();
-            var repository = scope.ServiceProvider.GetRequiredService<IMongoRepository<LoginLog>>();
-            var entity = JsonSerializer.Deserialize<LoginLog>(message);
-            if (entity is not null)
-                await repository.AddAsync(entity);
+            //using var scope = _services.CreateScope();
+            //var repository = scope.ServiceProvider.GetRequiredService<IMongoRepository<LoginLog>>();
+            //var entity = JsonSerializer.Deserialize<LoginLog>(message);
+            //if (entity is not null)
+            //    await repository.AddAsync(entity);
             result = true;
         }
         catch (Exception ex)

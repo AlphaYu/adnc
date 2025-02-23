@@ -209,7 +209,7 @@ namespace Adnc.Demo.Maint.Repository.Migrations
                     b.HasComment("通知");
                 });
 
-            modelBuilder.Entity("Adnc.Shared.Repository.EfEntities.EventTracker", b =>
+            modelBuilder.Entity("Adnc.Shared.Repository.EfCoreEntities.EventTracker", b =>
                 {
                     b.Property<long>("Id")
                         .HasColumnType("bigint")

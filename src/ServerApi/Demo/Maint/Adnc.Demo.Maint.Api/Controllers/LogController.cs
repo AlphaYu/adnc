@@ -1,6 +1,4 @@
-﻿using Adnc.Shared.Application.Contracts;
-
-namespace Adnc.Demo.Maint.WebApi.Controllers;
+﻿namespace Adnc.Demo.Maint.WebApi.Controllers;
 
 /// <summary>
 /// 日志管理
@@ -60,8 +58,8 @@ public class LogController : AdncControllerBase
     /// </summary>
     /// <param name="searchDto">查询条件</param>
     /// <returns></returns>
-    [HttpGet("nloglogs")]
-    [AdncAuthorize(PermissionConsts.Log.GetListForNLog)]
-    public async Task<ActionResult<PageModelDto<NlogLogDto>>> GetNlogLogsPagedAsync([FromQuery] LogSearchPagedDto searchDto)
-        => await _logService.GetNlogLogsPagedAsync(searchDto);
+    //[HttpGet("nloglogs")]
+    //[AdncAuthorize(PermissionConsts.Log.GetListForNLog)]
+    //public async Task<ActionResult<PageModelDto<NlogLogDto>>> GetNlogLogsPagedAsync([FromQuery] LogSearchPagedDto searchDto)
+    //    => await _logService.GetNlogLogsPagedAsync(searchDto);
 }

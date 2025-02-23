@@ -3,7 +3,7 @@
 /// <summary>
 /// 操作日志消费者
 /// </summary>
-[Obsolete("目前使用channel处理日志")]
+[Obsolete("use channel instead")]
 public sealed class OpsLogMqConsumer : BaseRabbitMqConsumer
 {
     // 因为Process函数是委托回调,直接将其他Service注入的话两者不在一个scope,
@@ -82,10 +82,10 @@ public sealed class OpsLogMqConsumer : BaseRabbitMqConsumer
         try
         {
             using var scope = _services.CreateScope();
-            var repository = scope.ServiceProvider.GetRequiredService<IMongoRepository<OperationLog>>();
-            var entity = JsonSerializer.Deserialize<OperationLog>(message);
-            if(entity is not null)
-                await repository.AddAsync(entity);
+            //var repository = scope.ServiceProvider.GetRequiredService<IMongoRepository<OperationLog>>();
+            //var entity = JsonSerializer.Deserialize<OperationLog>(message);
+            //if(entity is not null)
+            //    await repository.AddAsync(entity);
             result = true;
         }
         catch (Exception ex)
