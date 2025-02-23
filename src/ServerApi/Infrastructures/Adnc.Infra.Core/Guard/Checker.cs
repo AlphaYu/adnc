@@ -75,7 +75,7 @@ public partial class Checker
             throw new NullReferenceException(message ?? $"{variableName ?? nameof(value)} cannot be null");
     }
 
-    public static void ThrowIfNullOrWhiteSpace(string value, string? variableName = null, string? message = null)
+    public static void ThrowIfNullOrWhiteSpace(string? value, string? variableName = null, string? message = null)
     {
         if (value.IsNullOrWhiteSpace())
             throw new NullReferenceException(message ?? $"{variableName ?? nameof(value)} cannot be null or empty and ' '");
