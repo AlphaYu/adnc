@@ -11,11 +11,10 @@
 	<ItemGroup>
 		<PackageReference Include="Consul" Version="$(Consul_Version)" />
 		<PackageReference Include="Grpc.Net.Client" Version="$(Grpc_Net_Client_Version)" />
-		<PackageReference Include="Microsoft.AspNetCore.Hosting" Version="$(Microsoft_AspNetCore_Hosting_Version)" />
 		<PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="$(Microsoft_Extensions_Caching_Abstractions_Version)" />
 		<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="$(Microsoft_Extensions_Caching_Memory_Version)" />
 		<PackageReference Include="Microsoft.Extensions.Configuration" Version="$(Microsoft_Extensions_Configuration_Version)" />
-		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="$(Microsoft_Extensions_Options_ConfigurationExtensions_Version)"/>
+		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="$(Microsoft_Extensions_Options_ConfigurationExtensions_Version)" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -9,7 +9,6 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="MongoDB.EntityFrameworkCore" Version="$(MongoDB_EntityFrameworkCore_Version)" />
-		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="$(Microsoft_Extensions_Configuration_Binder_Version)" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -13,8 +13,6 @@
 	<ItemGroup>
 		<PackageReference Include="Polly" Version="$(Polly_Version)" />
 		<PackageReference Include="Castle.Core.AsyncInterceptor" Version="$(Castle_Core_AsyncInterceptor_Version)" />
-		<PackageReference Include="System.Net.Http" Version="$(System_Net_Http_Version)" />
-		<PackageReference Include="System.Text.RegularExpressions" Version="$(System_Text_RegularExpressions_Version)" />
 	</ItemGroup>
 
 	<ItemGroup>
