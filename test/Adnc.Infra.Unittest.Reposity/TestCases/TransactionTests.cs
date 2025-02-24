@@ -59,7 +59,7 @@ public class TransactionTests : IClassFixture<EfCoreDbcontextFixture>
 
             cusFinance.Balance = newBalance;
             await _cusFinanceRsp.UpdateAsync(cusFinance, UpdatingProps<CustomerFinance>(c => c.Balance));
-            var financeFromDb = await _customerRsp.FetchAsync(c => c, x => x.Id == cusFinance.Id);
+            var financeFromDb = await _customerRsp.FetchAsync(x => x.Id == cusFinance.Id);
             Assert.Equal(newBalance, cusFinance.Balance);
 
             //update batchs
@@ -70,7 +70,7 @@ public class TransactionTests : IClassFixture<EfCoreDbcontextFixture>
 
             await _custLogsRsp.DeleteAsync(1000);
 
-            await _custLogsRsp.DeleteRangeAsync(x => x.Id == 888888);
+            await _custLogsRsp.ExecuteDeleteAsync(x => x.Id == 888888);
 
             var cusTotal = await _customerRsp.CountAsync(x => x.Id == id || x.Id == id2);
             Assert.Equal(1, cusTotal);
@@ -147,7 +147,7 @@ public class TransactionTests : IClassFixture<EfCoreDbcontextFixture>
         Assert.Equal(0, cusTotal);
 
         var customerFromDb = await _customerRsp.FindAsync(id);
-        var financeFromDb = await _customerRsp.FetchAsync(c => c, x => x.Id == id);
+        var financeFromDb = await _customerRsp.FetchAsync(x => x.Id == id, c => c);
 
         Assert.Null(customerFromDb);
         Assert.Null(financeFromDb);
@@ -164,7 +164,7 @@ public class TransactionTests : IClassFixture<EfCoreDbcontextFixture>
 
         using var db = await _dbContext.Database.BeginTransactionAsync();
 
-        await _customerRsp.DeleteRangeAsync(x => x.Id <= 10000);
+        await _customerRsp.ExecuteDeleteAsync(x => x.Id <= 10000);
 
         var id = UnittestHelper.GetNextId();
         var customer = new Customer() { Id = id, Password = "password", Account = account, Nickname = "招财猫", Realname = "张发财", FinanceInfo = new CustomerFinance { Id = id, Account = account, Balance = 0 } };
@@ -215,7 +215,7 @@ public class TransactionTests : IClassFixture<EfCoreDbcontextFixture>
         await _customerRsp.DeleteAsync(id);
 
         //不会开启事物
-        await _customerRsp.DeleteRangeAsync(x => x.Id == 10000);
+        await _customerRsp.ExecuteDeleteAsync(x => x.Id == 10000);
 
         _dbContext.SaveChanges();
         Assert.True(true);
@@ -254,7 +254,7 @@ public class TransactionTests : IClassFixture<EfCoreDbcontextFixture>
 
             await _customerRsp.DeleteAsync(1);
 
-            await _customerRsp.DeleteRangeAsync(x => x.Id <=10000);
+            await _customerRsp.ExecuteDeleteAsync(x => x.Id <=10000);
 
             //ef search
             var dbCustomer2 = await _customerRsp.FindAsync(dbCustomer.Id, x => x.FinanceInfo);

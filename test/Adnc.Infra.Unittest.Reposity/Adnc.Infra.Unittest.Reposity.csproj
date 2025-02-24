@@ -23,6 +23,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\ServerApi\Infrastructures\Adnc.Infra.Core\Adnc.Infra.Core.csproj" />
     <ProjectReference Include="..\..\src\ServerApi\Infrastructures\Adnc.Infra.Dapper\Adnc.Infra.Repository.Dapper.csproj" />
+    <ProjectReference Include="..\..\src\ServerApi\Infrastructures\Adnc.Infra.EfCore.MongoDB\Adnc.Infra.Repository.EfCore.MongoDB.csproj" />
     <ProjectReference Include="..\..\src\ServerApi\Infrastructures\Adnc.Infra.EfCore.Mysql\Adnc.Infra.Repository.EfCore.MySql.csproj" />
     <ProjectReference Include="..\..\src\ServerApi\Infrastructures\Adnc.Infra.EfCore\Adnc.Infra.Repository.EfCore.csproj" />
     <ProjectReference Include="..\..\src\ServerApi\Infrastructures\Adnc.Infra.Mapper\Adnc.Infra.Mapper.csproj" />

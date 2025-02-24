@@ -27,7 +27,7 @@ public class MaxscaleTests : IClassFixture<EfCoreDbcontextFixture>
         var result = await InsertCustomer();
         var cusFinance = await InsertCusFinance(result.Id);
 
-        var cus = await _cusRsp.FetchAsync(c => c, c => c.Id == result.Id, writeDb: true);
+        var cus = await _cusRsp.FetchAsync(c => c.Id == result.Id, writeDb: true);
         Assert.NotNull(cus);
 
         await _cusFinanceRsp.DeleteAsync(result.Id);
@@ -58,8 +58,8 @@ public class MaxscaleTests : IClassFixture<EfCoreDbcontextFixture>
         Assert.Equal(10, cusCount);
         Assert.Equal(10, cusFinanceCount);
 
-        await _cusFinanceRsp.DeleteRangeAsync(c => ids.Contains(c.Id));
-        await _cusRsp.DeleteRangeAsync(c => ids.Contains(c.Id));
+        await _cusFinanceRsp.ExecuteDeleteAsync(c => ids.Contains(c.Id));
+        await _cusRsp.ExecuteDeleteAsync(c => ids.Contains(c.Id));
     }
 
     [Fact]
@@ -145,8 +145,8 @@ public class MaxscaleTests : IClassFixture<EfCoreDbcontextFixture>
         Assert.Equal(newRealName, newCus.Realname);
         Assert.Equal(newNickname, newCus.Nickname);
 
-        await _cusFinanceRsp.DeleteRangeAsync(c => ids.Contains(c.Id));
-        await _cusRsp.DeleteRangeAsync(c => ids.Contains(c.Id));
+        await _cusFinanceRsp.ExecuteDeleteAsync(c => ids.Contains(c.Id));
+        await _cusRsp.ExecuteDeleteAsync(c => ids.Contains(c.Id));
     }
 
     /// <summary>

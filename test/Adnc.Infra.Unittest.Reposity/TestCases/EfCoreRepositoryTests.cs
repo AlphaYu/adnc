@@ -96,7 +96,7 @@ public class EfCoreRepositoryTests : IClassFixture<EfCoreDbcontextFixture>
     [Fact]
     public async Task TestInsertRange()
     {
-        var customer = await _customerRsp.FetchAsync(x => x, x => x.Id > 1);
+        var customer = await _customerRsp.FetchAsync(x => x.Id > 1);
 
         var id0 = UnittestHelper.GetNextId();
         var id1 = UnittestHelper.GetNextId();
@@ -290,7 +290,7 @@ public class EfCoreRepositoryTests : IClassFixture<EfCoreDbcontextFixture>
         //    }
         //};
 
-        //var total = await _customerRsp.UpdateRangeAsync(propertyNameAndValues);
+        //var total = await _customerRsp.ExecuteUpdateAsync(propertyNameAndValues);
 
         //_output.WriteLine(total.ToString());
 
@@ -344,7 +344,7 @@ public class EfCoreRepositoryTests : IClassFixture<EfCoreDbcontextFixture>
         var total = await _customerRsp.CountAsync(c => c.Id == cus1.Id || c.Id == cus2.Id);
         Assert.Equal(2, total);
 
-        await _customerRsp.DeleteRangeAsync(c => c.Id == cus1.Id || c.Id == cus2.Id);
+        await _customerRsp.ExecuteDeleteAsync(c => c.Id == cus1.Id || c.Id == cus2.Id);
         var result2 = await _customerRsp.AdoQuerier.QueryAsync<Customer>("SELECT * FROM Customer WHERE ID in @ids", new { ids = new[] { cus1.Id, cus2.Id } });
         Assert.Null(result2);
     }
@@ -357,11 +357,11 @@ public class EfCoreRepositoryTests : IClassFixture<EfCoreDbcontextFixture>
     public async Task TestFetch()
     {
         //指定列查询
-        var customer = await _customerRsp.FetchAsync(x => new { x.Id, x.Account }, x => x.Id > 1);
+        var customer = await _customerRsp.FetchAsync( x => x.Id > 1, x => new { x.Id, x.Account });
         Assert.NotNull(customer);
 
         //指定列查询，指定列包含导航属性
-        var customer2 = await _customerRsp.FetchAsync(x => new { x.Id, x.Account, x.FinanceInfo }, x => x.Id > 1);
+        var customer2 = await _customerRsp.FetchAsync( x => x.Id > 1, x => new { x.Id, x.Account, x.FinanceInfo });
         Assert.NotNull(customer2);
 
         //不指定列查询
@@ -489,13 +489,13 @@ public class EfCoreRepositoryTests : IClassFixture<EfCoreDbcontextFixture>
         var project = new Project { Id = UnittestHelper.GetNextId(), Name = $"{UnittestHelper.GetNextId()}" };
         await _custProject.InsertAsync(project);
 
-        var newProject = await _custProject.FetchAsync(x => x, x => x.Id == project.Id);
+        var newProject = await _custProject.FetchAsync(x => x.Id == project.Id);
 
         //DELETE `p`
         //FROM `project` AS `p`
         //WHERE NOT(`p`.`isdeleted`) AND(`p`.`id` = 1740035750473)
         //EFCore8 ExcuteDelete不支持软删除
-        await _custProject.DeleteRangeAsync(x => x.Id == project.Id);
+        await _custProject.ExecuteDeleteAsync(x => x.Id == project.Id);
         var result = await _custProject.AdoQuerier.QueryFirstOrDefaultAsync<Project>("SELECT * FROM Project WHERE ID=@Id", new { Id = project.Id });
 
         Assert.NotNull(result);
@@ -508,7 +508,7 @@ public class EfCoreRepositoryTests : IClassFixture<EfCoreDbcontextFixture>
         var project = new Project { Id = UnittestHelper.GetNextId(), Name = $"{UnittestHelper.GetNextId()}" };
         await _custProject.InsertAsync(project);
 
-        var result = await _custProject.UpdateRangeAsync(x => x.Id == project.Id, setter 
+        var result = await _custProject.ExecuteUpdateAsync(x => x.Id == project.Id, setter 
             => setter.SetProperty(x => x.Name, "TestEfcore8UpdateRangeAsync"));
         Assert.True(result > 0);
 
