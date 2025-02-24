@@ -16,7 +16,9 @@
 		<PackageReference Include="System.ValueTuple" Version="$(System_ValueTuple_Version)" />
 		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="$(Microsoft_VisualStudio_Azure_Containers_Tools_Targets_Version)" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="$(Microsoft_AspNetCore_Authentication_JwtBearer_Version)" />
-		<PackageReference Include="FluentValidation" Version="$(FluentValidation_Version)" />
+		<PackageReference Include="FluentValidation" Version="$(FluentValidation_Version)">
+		  <TreatAsUsed>true</TreatAsUsed>
+		</PackageReference>
 		<PackageReference Include="FluentValidation.AspNetCore" Version="$(FluentValidation_AspNetCore_Version)" />
 		<PackageReference Include="MicroElements.Swashbuckle.FluentValidation" Version="$(MicroElements_Swashbuckle_FluentValidation_Version)" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="$(Swashbuckle_AspNetCore_Version)" />
@@ -27,12 +29,13 @@
 		<PackageReference Include="AspNetCore.HealthChecks.Rabbitmq" Version="$(AspNetCore_HealthChecks_Rabbitmq_Version)" />
 		<PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="$(AspNetCore_HealthChecks_UI_Client_Version)" />
 		<PackageReference Include="AspNetCore.HealthChecks.MySql" Version="$(AspNetCore_HealthChecks_MySql_Version)" />
-		<PackageReference Include="AspNetCore.HealthChecks.MongoDb" Version="$(AspNetCore_HealthChecks_MongoDb_Version)" />
 		<!--<PackageReference Include="AspNetCore.HealthChecks.Redis" Version="5.0.2" />-->
 		<PackageReference Include="LiteX.HealthChecks.Redis" Version="$(LiteX_HealthChecks_Redis_Version)" />
 		<PackageReference Include="prometheus-net.AspNetCore" Version="$(prometheus-net_AspNetCore_Version)" />
 		<PackageReference Include="prometheus-net.DotNetRuntime" Version="$(prometheus-net_DotNetRuntime_Version)" />
-		<PackageReference Include="NLog.Targets.Loki" Version="$(NLog_Targets_Loki_Version)" />
+		<PackageReference Include="NLog.Targets.Loki" Version="$(NLog_Targets_Loki_Version)">
+		  <TreatAsUsed>true</TreatAsUsed>
+		</PackageReference>
 		<PackageReference Include="NLog.Mongo" Version="$(NLog_Mongo_Version)">
 			<TreatAsUsed>true</TreatAsUsed>
 		</PackageReference>

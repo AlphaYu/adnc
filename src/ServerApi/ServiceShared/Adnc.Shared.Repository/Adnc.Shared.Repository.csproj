@@ -9,16 +9,10 @@
 	</PropertyGroup>
 	
 	<ItemGroup Condition="'$(SolutionName)'=='Adnc.Shared'">
-		<PackageReference Include="Adnc.Infra.Core" Version="$(Infra_Version)" />
 		<PackageReference Include="Adnc.Infra.Repository" Version="$(Infra_Version)" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(SolutionName)'=='Adnc'">
-		<ProjectReference Include="..\..\Infrastructures\Adnc.Infra.Core\Adnc.Infra.Core.csproj" />
 		<ProjectReference Include="..\..\Infrastructures\Adnc.Infra.Repository\Adnc.Infra.Repository.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <ProjectReference Include="..\Adnc.Shared\Adnc.Shared.csproj" />
 	</ItemGroup>
 </Project>
