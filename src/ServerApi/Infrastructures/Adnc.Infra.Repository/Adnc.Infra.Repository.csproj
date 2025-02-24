@@ -13,7 +13,6 @@
 	  <None Remove="Entities\EfEnities\Extensions\**" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="MongoDB.Driver" Version="$(MongoDB_Driver_Version)" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="$(Microsoft_EntityFrameworkCore_Relational_Version)" />
 	</ItemGroup>
 </Project>
