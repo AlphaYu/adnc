@@ -3,16 +3,12 @@
 
 	<ItemGroup>
 		<PackageReference Include="Adnc.Infra.Consul" Version="0.9.9.1" />
-		<PackageReference Include="Microsoft.Identity.Web" Version="1.25.1" />
 		<PackageReference Include="Ocelot.Provider.Consul" Version="18.0.0" />
 		<PackageReference Include="Ocelot.Provider.Polly" Version="18.0.0" />
-		<PackageReference Include="System.Threading" Version="4.3.0" />
-		<PackageReference Include="System.Text.Encoding.Extensions" Version="4.3.0" />
-		<PackageReference Include="System.Runtime.Handles" Version="4.3.0" />
-		<PackageReference Include="System.IO.FileSystem.Primitives" Version="4.3.0" />
-		<PackageReference Include="System.Runtime.InteropServices" Version="4.3.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.6" />
-		<PackageReference Include="SkyAPM.Agent.AspNetCore" Version="2.0.0" />
+		<PackageReference Include="SkyAPM.Agent.AspNetCore" Version="2.0.0">
+		  <TreatAsUsed>true</TreatAsUsed>
+		</PackageReference>
 		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.21.0" />
 	</ItemGroup>
 
