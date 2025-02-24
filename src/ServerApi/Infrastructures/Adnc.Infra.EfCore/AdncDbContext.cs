@@ -1,18 +1,9 @@
 ﻿namespace Adnc.Infra.Repository.EfCore;
 
-public abstract class AdncDbContext : DbContext
+public abstract class AdncDbContext(DbContextOptions options, IEntityInfo entityInfo, Operater operater) : DbContext(options)
 {
-    private readonly IEntityInfo _entityInfo;
-    private readonly Operater _operater;
-
-    protected AdncDbContext(DbContextOptions options, IEntityInfo entityInfo, Operater operater)
-        : base(options)
-    {
-        _entityInfo = entityInfo;
-        _operater = operater;
-        Database.AutoTransactionBehavior = AutoTransactionBehavior.WhenNeeded;
-        //ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
-    }
+    private readonly IEntityInfo _entityInfo = entityInfo;
+    private readonly Operater _operater = operater;
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
@@ -23,9 +14,14 @@ public abstract class AdncDbContext : DbContext
         return result;
     }
 
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        Database.AutoTransactionBehavior = AutoTransactionBehavior.WhenNeeded;
+        //ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+    }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        base.OnModelCreating(modelBuilder);
         _entityInfo.OnModelCreating(modelBuilder);
     }
 
