@@ -48,16 +48,16 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Adnc.Shared.Application.Contracts\Adnc.Shared.Application.Contracts.csproj" />
-		<ProjectReference Include="..\Adnc.Shared.Rpc\Adnc.Shared.Rpc.csproj" />
-		<ProjectReference Include="..\Adnc.Shared\Adnc.Shared.csproj" />
+		<ProjectReference Include="..\Application.Contracts\Adnc.Shared.Application.Contracts.csproj" />
+		<ProjectReference Include="..\Remote\Adnc.Shared.Remote.csproj" />
+		<ProjectReference Include="..\Shared\Adnc.Shared.csproj" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(SolutionName)'=='Adnc'">
-		<ProjectReference Include="..\..\Infrastructures\Adnc.Infra.Consul\Adnc.Infra.Consul.csproj" />
-		<ProjectReference Include="..\..\Infrastructures\Adnc.Infra.EventBus\Adnc.Infra.EventBus.csproj" />
-		<ProjectReference Include="..\..\Infrastructures\Adnc.Infra.Helper\Adnc.Infra.Helper.csproj" />
-		<ProjectReference Include="..\..\Infrastructures\Adnc.Infra.Redis.Caching\Adnc.Infra.Redis.Caching.csproj" />
+		<ProjectReference Include="..\..\Infrastructures\Consul\Adnc.Infra.Consul.csproj" />
+		<ProjectReference Include="..\..\Infrastructures\EventBus\Adnc.Infra.EventBus.csproj" />
+		<ProjectReference Include="..\..\Infrastructures\Helper\Adnc.Infra.Helper.csproj" />
+		<ProjectReference Include="..\..\Infrastructures\Redis.Caching\Adnc.Infra.Redis.Caching.csproj" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(SolutionName)'=='Adnc.Shared'">

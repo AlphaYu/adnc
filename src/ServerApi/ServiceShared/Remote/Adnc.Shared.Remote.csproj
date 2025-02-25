@@ -19,8 +19,8 @@
 	</ItemGroup>
 	
 	<ItemGroup Condition="'$(SolutionName)'=='Adnc'">
-		<ProjectReference Include="..\..\Infrastructures\Adnc.Infra.Core\Adnc.Infra.Core.csproj" />
-		<ProjectReference Include="..\..\Infrastructures\Adnc.Infra.Helper\Adnc.Infra.Helper.csproj" />
+		<ProjectReference Include="..\..\Infrastructures\Core\Adnc.Infra.Core.csproj" />
+		<ProjectReference Include="..\..\Infrastructures\Helper\Adnc.Infra.Helper.csproj" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(SolutionName)'=='Adnc.Shared' or '$(SolutionName)'=='Adnc.Services'">

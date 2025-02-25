@@ -17,20 +17,20 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Adnc.Shared.Application.Contracts\Adnc.Shared.Application.Contracts.csproj" />
-		<ProjectReference Include="..\Adnc.Shared.Repository\Adnc.Shared.Repository.csproj" />
-		<ProjectReference Include="..\Adnc.Shared.Rpc\Adnc.Shared.Rpc.csproj" />
-		<ProjectReference Include="..\Adnc.Shared\Adnc.Shared.csproj" />
+		<ProjectReference Include="..\Application.Contracts\Adnc.Shared.Application.Contracts.csproj" />
+		<ProjectReference Include="..\Repository\Adnc.Shared.Repository.csproj" />
+		<ProjectReference Include="..\Remote\Adnc.Shared.Remote.csproj" />
+		<ProjectReference Include="..\Shared\Adnc.Shared.csproj" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(SolutionName)'=='Adnc'">
-		<ProjectReference Include="..\..\Infrastructures\Adnc.Infra.Consul\Adnc.Infra.Consul.csproj" />
-		<ProjectReference Include="..\..\Infrastructures\Adnc.Infra.Dapper\Adnc.Infra.Repository.Dapper.csproj" />
-		<ProjectReference Include="..\..\Infrastructures\Adnc.Infra.EfCore.MySql\Adnc.Infra.Repository.EfCore.MySql.csproj" />
-		<ProjectReference Include="..\..\Infrastructures\Adnc.Infra.EventBus\Adnc.Infra.EventBus.csproj" />
-		<ProjectReference Include="..\..\Infrastructures\Adnc.Infra.IdGenerater\Adnc.Infra.IdGenerater.csproj" />
-		<ProjectReference Include="..\..\Infrastructures\Adnc.Infra.Mapper\Adnc.Infra.Mapper.csproj" />
-		<ProjectReference Include="..\..\Infrastructures\Adnc.Infra.Redis.Caching\Adnc.Infra.Redis.Caching.csproj" />
+		<ProjectReference Include="..\..\Infrastructures\Consul\Adnc.Infra.Consul.csproj" />
+		<ProjectReference Include="..\..\Infrastructures\Repository.Dapper\Adnc.Infra.Repository.Dapper.csproj" />
+		<ProjectReference Include="..\..\Infrastructures\Repository.EfCore.MySql\Adnc.Infra.Repository.EfCore.MySql.csproj" />
+		<ProjectReference Include="..\..\Infrastructures\EventBus\Adnc.Infra.EventBus.csproj" />
+		<ProjectReference Include="..\..\Infrastructures\IdGenerater\Adnc.Infra.IdGenerater.csproj" />
+		<ProjectReference Include="..\..\Infrastructures\Mapper\Adnc.Infra.Mapper.csproj" />
+		<ProjectReference Include="..\..\Infrastructures\Redis.Caching\Adnc.Infra.Redis.Caching.csproj" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(SolutionName)'=='Adnc.Shared'">
