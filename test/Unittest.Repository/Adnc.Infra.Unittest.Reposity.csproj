@@ -21,13 +21,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\ServerApi\Infrastructures\Adnc.Infra.Core\Adnc.Infra.Core.csproj" />
-    <ProjectReference Include="..\..\src\ServerApi\Infrastructures\Adnc.Infra.Dapper\Adnc.Infra.Repository.Dapper.csproj" />
-    <ProjectReference Include="..\..\src\ServerApi\Infrastructures\Adnc.Infra.EfCore.MongoDB\Adnc.Infra.Repository.EfCore.MongoDB.csproj" />
-    <ProjectReference Include="..\..\src\ServerApi\Infrastructures\Adnc.Infra.EfCore.Mysql\Adnc.Infra.Repository.EfCore.MySql.csproj" />
-    <ProjectReference Include="..\..\src\ServerApi\Infrastructures\Adnc.Infra.EfCore\Adnc.Infra.Repository.EfCore.csproj" />
-    <ProjectReference Include="..\..\src\ServerApi\Infrastructures\Adnc.Infra.Mapper\Adnc.Infra.Mapper.csproj" />
-    <ProjectReference Include="..\..\src\ServerApi\Infrastructures\Adnc.Infra.Repository\Adnc.Infra.Repository.csproj" />
+    <ProjectReference Include="..\..\src\ServerApi\Infrastructures\Core\Adnc.Infra.Core.csproj" />
+    <ProjectReference Include="..\..\src\ServerApi\Infrastructures\Repository.Dapper\Adnc.Infra.Repository.Dapper.csproj" />
+    <ProjectReference Include="..\..\src\ServerApi\Infrastructures\Repository.EfCore.MongoDB\Adnc.Infra.Repository.EfCore.MongoDB.csproj" />
+    <ProjectReference Include="..\..\src\ServerApi\Infrastructures\Repository.EfCore.Mysql\Adnc.Infra.Repository.EfCore.MySql.csproj" />
+    <ProjectReference Include="..\..\src\ServerApi\Infrastructures\Repository.EfCore\Adnc.Infra.Repository.EfCore.csproj" />
+    <ProjectReference Include="..\..\src\ServerApi\Infrastructures\Mapper\Adnc.Infra.Mapper.csproj" />
+    <ProjectReference Include="..\..\src\ServerApi\Infrastructures\Repository\Adnc.Infra.Repository.csproj" />
   </ItemGroup>
 
   <ItemGroup>
