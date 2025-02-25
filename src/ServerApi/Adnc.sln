@@ -143,8 +143,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nlog", "Nlog", "{4110A68D-7F73-4824-BFBD-30E5B06324CF}"
 	ProjectSection(SolutionItems) = preProject
 		Demo\Shared\resources\NLog\nlog-console.config = Demo\Shared\resources\NLog\nlog-console.config
+		Demo\Shared\resources\NLog\nlog-file.config = Demo\Shared\resources\NLog\nlog-file.config
 		Demo\Shared\resources\NLog\nlog-loki.config = Demo\Shared\resources\NLog\nlog-loki.config
-		Demo\Shared\resources\NLog\nlog-mongodb.config = Demo\Shared\resources\NLog\nlog-mongodb.config
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "wwwroot", "wwwroot", "{99FBF3BA-2535-43D7-8099-1028D83D5B30}"
