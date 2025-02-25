@@ -3,27 +3,27 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32526.322
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Core", "Adnc.Infra.Core\Adnc.Infra.Core.csproj", "{6324C421-1F64-49DD-8750-8397ABB18C53}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Core", "Core\Adnc.Infra.Core.csproj", "{6324C421-1F64-49DD-8750-8397ABB18C53}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Helper", "Adnc.Infra.Helper\Adnc.Infra.Helper.csproj", "{0B10CD96-6730-4891-9D1C-2A866515D599}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Helper", "Helper\Adnc.Infra.Helper.csproj", "{0B10CD96-6730-4891-9D1C-2A866515D599}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Consul", "Adnc.Infra.Consul\Adnc.Infra.Consul.csproj", "{BC6481A6-09B5-4B15-86AF-87D192DE36D6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Consul", "Consul\Adnc.Infra.Consul.csproj", "{BC6481A6-09B5-4B15-86AF-87D192DE36D6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Repository", "Adnc.Infra.Repository\Adnc.Infra.Repository.csproj", "{A559E53C-51BA-495D-BAD9-82920D38DD47}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Repository", "Repository\Adnc.Infra.Repository.csproj", "{A559E53C-51BA-495D-BAD9-82920D38DD47}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Mapper", "Adnc.Infra.Mapper\Adnc.Infra.Mapper.csproj", "{28342DDE-0AC6-4088-B4FF-9BBC3D7860DF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Mapper", "Mapper\Adnc.Infra.Mapper.csproj", "{28342DDE-0AC6-4088-B4FF-9BBC3D7860DF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Repository.Dapper", "Adnc.Infra.Dapper\Adnc.Infra.Repository.Dapper.csproj", "{6CFA4455-51FA-43D1-ADB4-9C0011DEC647}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Repository.Dapper", "Repository.Dapper\Adnc.Infra.Repository.Dapper.csproj", "{6CFA4455-51FA-43D1-ADB4-9C0011DEC647}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.EventBus", "Adnc.Infra.EventBus\Adnc.Infra.EventBus.csproj", "{D7942274-BF2B-4C63-B75C-262644983F35}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.EventBus", "EventBus\Adnc.Infra.EventBus.csproj", "{D7942274-BF2B-4C63-B75C-262644983F35}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.IdGenerater", "Adnc.Infra.IdGenerater\Adnc.Infra.IdGenerater.csproj", "{E5EDD471-192A-4812-97F9-A129BF0D5DE7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.IdGenerater", "IdGenerater\Adnc.Infra.IdGenerater.csproj", "{E5EDD471-192A-4812-97F9-A129BF0D5DE7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Repository.EfCore", "Adnc.Infra.EfCore\Adnc.Infra.Repository.EfCore.csproj", "{93CB8D34-DEC6-493A-9D5E-6951380EC21C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Repository.EfCore", "Repository.EfCore\Adnc.Infra.Repository.EfCore.csproj", "{93CB8D34-DEC6-493A-9D5E-6951380EC21C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Redis", "Adnc.Infra.Redis\Adnc.Infra.Redis.csproj", "{E2861631-694D-40B6-9FE0-14A8610407EA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Redis", "Redis\Adnc.Infra.Redis.csproj", "{E2861631-694D-40B6-9FE0-14A8610407EA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Redis.Caching", "Adnc.Infra.Redis.Caching\Adnc.Infra.Redis.Caching.csproj", "{3273F34B-C852-412E-BF3C-C1D2EE1BC635}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Redis.Caching", "Redis.Caching\Adnc.Infra.Redis.Caching.csproj", "{3273F34B-C852-412E-BF3C-C1D2EE1BC635}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{B88A59EA-4485-4A3B-ADF5-DC5EEAFE6C64}"
 	ProjectSection(SolutionItems) = preProject
@@ -32,11 +32,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionIt
 		..\version_infra.props = ..\version_infra.props
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Repository.EfCore.MySql", "Adnc.Infra.EfCore.Mysql\Adnc.Infra.Repository.EfCore.MySql.csproj", "{0C64358C-A1AC-41B2-92CB-D9A1F99053D1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Repository.EfCore.MySql", "Repository.EfCore.Mysql\Adnc.Infra.Repository.EfCore.MySql.csproj", "{0C64358C-A1AC-41B2-92CB-D9A1F99053D1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Repository.EfCore.SqlServer", "Adnc.Infra.EfCore.SqlServer\Adnc.Infra.Repository.EfCore.SqlServer.csproj", "{9FA0754C-4D5C-4640-8B39-F5C0D1289A7D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Repository.EfCore.SqlServer", "Repository.EfCore.SqlServer\Adnc.Infra.Repository.EfCore.SqlServer.csproj", "{9FA0754C-4D5C-4640-8B39-F5C0D1289A7D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adnc.Infra.Repository.EfCore.MongoDB", "Adnc.Infra.EfCore.MongoDB\Adnc.Infra.Repository.EfCore.MongoDB.csproj", "{AAD52F82-399D-4CDD-8F14-376B3EA8AC5E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adnc.Infra.Repository.EfCore.MongoDB", "Repository.EfCore.MongoDB\Adnc.Infra.Repository.EfCore.MongoDB.csproj", "{AAD52F82-399D-4CDD-8F14-376B3EA8AC5E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

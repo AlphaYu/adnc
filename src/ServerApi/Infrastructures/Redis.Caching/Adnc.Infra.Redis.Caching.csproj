@@ -16,8 +16,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\Adnc.Infra.Core\Adnc.Infra.Core.csproj" />
-	  <ProjectReference Include="..\Adnc.Infra.Redis\Adnc.Infra.Redis.csproj" />
+	  <ProjectReference Include="..\Core\Adnc.Infra.Core.csproj" />
+	  <ProjectReference Include="..\Redis\Adnc.Infra.Redis.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

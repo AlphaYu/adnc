@@ -18,7 +18,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Adnc.Infra.EfCore\Adnc.Infra.Repository.EfCore.csproj" />
-		<ProjectReference Include="..\Adnc.Infra.Repository\Adnc.Infra.Repository.csproj" />
+		<ProjectReference Include="..\Repository.EfCore\Adnc.Infra.Repository.EfCore.csproj" />
+		<ProjectReference Include="..\Repository\Adnc.Infra.Repository.csproj" />
 	</ItemGroup>
 </Project>

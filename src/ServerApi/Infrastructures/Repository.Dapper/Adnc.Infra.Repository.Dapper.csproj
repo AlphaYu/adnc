@@ -15,8 +15,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Adnc.Infra.Core\Adnc.Infra.Core.csproj" />
-		<ProjectReference Include="..\Adnc.Infra.Repository\Adnc.Infra.Repository.csproj" />
+		<ProjectReference Include="..\Core\Adnc.Infra.Core.csproj" />
+		<ProjectReference Include="..\Repository\Adnc.Infra.Repository.csproj" />
 	</ItemGroup>
 
 </Project>

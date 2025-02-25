@@ -13,6 +13,6 @@
 		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="$(Microsoft_Extensions_Options_ConfigurationExtensions_Version)"/>
 	</ItemGroup>
 	<ItemGroup>
-		<ProjectReference Include="..\Adnc.Infra.Core\Adnc.Infra.Core.csproj" />
+		<ProjectReference Include="..\Core\Adnc.Infra.Core.csproj" />
 	</ItemGroup>
 </Project>
