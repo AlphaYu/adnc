@@ -1,5 +1,4 @@
 using Adnc.Gateway.Ocelot.Identity;
-using Adnc.Infra.Core.Configuration;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
@@ -26,11 +25,12 @@ public class Startup
             .AddAuthentication()
             .AddJwtBearer(authenticationProviderKey, options =>
             {
-                var bearerConfig = Configuration.GetSection("JWT").Get<JWTOptions>();
-                options.TokenValidationParameters = JwtSecurityTokenHandlerExtension.GenarateTokenValidationParameters(bearerConfig);
+                var jwtOptions = Configuration.GetSection("JWT").Get<JWTOptions>();
+                if (jwtOptions is not null)
+                    options.TokenValidationParameters = JwtSecurityTokenHandlerExtension.GenarateTokenValidationParameters(jwtOptions);
             });
 
-        var corsHosts = Configuration.GetValue("CorsHosts", string.Empty);
+        var corsHosts = Configuration.GetValue<string>("CorsHosts") ?? string.Empty;
         Action<CorsPolicyBuilder> corsPolicyAction = (corsPolicy) => corsPolicy.AllowAnyHeader().AllowAnyMethod().AllowCredentials();
         if (corsHosts == "*")
             corsPolicyAction += (corsPolicy) => corsPolicy.SetIsOriginAllowed(_ => true);
@@ -62,7 +62,7 @@ public class Startup
                 endpoints.MapGet("/", async context =>
                 {
                     var content = app.GetDefaultPageContent();
-                    context.Response.Headers.Add("Content-Type", "text/html");
+                    context.Response.Headers?.TryAdd("Content-Type", "text/html");
                     await context.Response.WriteAsync(content);
                 });
             })
