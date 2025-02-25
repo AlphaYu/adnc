@@ -7,7 +7,7 @@ global using Adnc.Infra.Repository.EfCore;
 global using Adnc.Shared.Domain;
 global using Adnc.Shared.Domain.Entities;
 global using Adnc.Shared.Repository.EfCoreEntities;
-global using Adnc.Shared.Rpc.Event;
+global using Adnc.Shared.Remote.Event;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.EntityFrameworkCore.Metadata.Builders;
 global using System.Reflection;

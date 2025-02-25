@@ -1,6 +1,6 @@
 ﻿using Adnc.Shared.Application.Extensions;
 using Adnc.Shared.Application.Registrar;
-using Adnc.Shared.Rpc.Http.Services;
+using Adnc.Shared.Remote.Http.Services;
 
 namespace Adnc.Demo.Ord.Application;
 

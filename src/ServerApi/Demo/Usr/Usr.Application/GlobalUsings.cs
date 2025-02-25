@@ -1,5 +1,5 @@
 ﻿global using Adnc.Demo.Shared.Const.Caching.Usr;
-global using Adnc.Demo.Shared.Rpc.Grpc.Messages;
+global using Adnc.Demo.Shared.Remote.Grpc.Messages;
 global using Adnc.Demo.Usr.Application.Cache;
 global using Adnc.Demo.Usr.Application.Contracts.Dtos;
 global using Adnc.Demo.Usr.Application.Contracts.Services;

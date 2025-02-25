@@ -5,16 +5,16 @@
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 	</PropertyGroup>
 	<ItemGroup>
-		<ProjectReference Include="..\..\Shared\Adnc.Demo.Shared.Const\Adnc.Demo.Shared.Const.csproj" />
-		<ProjectReference Include="..\..\Shared\Adnc.Demo.Shared.Rpc.Event\Adnc.Demo.Shared.Rpc.Event.csproj" />
+		<ProjectReference Include="..\..\Shared\Const\Adnc.Demo.Shared.Const.csproj" />
+		<ProjectReference Include="..\..\Shared\Remote.Event\Adnc.Demo.Shared.Remote.Event.csproj" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(SolutionName)'=='Adnc'">
-		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.EventBus\Adnc.Infra.EventBus.csproj" />
-		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Helper\Adnc.Infra.Helper.csproj" />
-		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.IdGenerater\Adnc.Infra.IdGenerater.csproj" />
-		<ProjectReference Include="..\..\..\ServiceShared\Adnc.Shared\Adnc.Shared.csproj" />
-		<ProjectReference Include="..\..\..\ServiceShared\Adnc.Shared.Domain\Adnc.Shared.Domain.csproj" />
+		<ProjectReference Include="..\..\..\Infrastructures\EventBus\Adnc.Infra.EventBus.csproj" />
+		<ProjectReference Include="..\..\..\Infrastructures\Helper\Adnc.Infra.Helper.csproj" />
+		<ProjectReference Include="..\..\..\Infrastructures\IdGenerater\Adnc.Infra.IdGenerater.csproj" />
+		<ProjectReference Include="..\..\..\ServiceShared\Shared\Adnc.Shared.csproj" />
+		<ProjectReference Include="..\..\..\ServiceShared\Domain\Adnc.Shared.Domain.csproj" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(SolutionName)'=='Adnc.Demo' ">

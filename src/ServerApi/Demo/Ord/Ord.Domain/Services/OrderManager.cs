@@ -1,4 +1,4 @@
-﻿using Adnc.Shared.Rpc.Event;
+﻿using Adnc.Shared.Remote.Event;
 
 namespace Adnc.Demo.Ord.Domain.Services;
 

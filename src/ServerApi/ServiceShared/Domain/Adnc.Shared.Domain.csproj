@@ -9,7 +9,7 @@
 	</PropertyGroup>
 	
 	<ItemGroup>
-		<ProjectReference Include="..\Adnc.Shared.Repository\Adnc.Shared.Repository.csproj" />
+		<ProjectReference Include="..\Repository\Adnc.Shared.Repository.csproj" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(SolutionName)'=='Adnc'">

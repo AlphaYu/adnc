@@ -1,4 +1,4 @@
-﻿using Adnc.Demo.Shared.Rpc.Http.Services;
+﻿using Adnc.Demo.Shared.Remote.Http.Services;
 
 namespace Adnc.Demo.Whse.Application.Services.Implements;
 

@@ -4,7 +4,7 @@ import "google/protobuf/empty.proto";
 import "messages/common.proto";
 import "messages/usrgrpc_getcurrenuserpermissions.proto";
 
-option csharp_namespace = "Adnc.Demo.Shared.Rpc.Grpc.Services";
+option csharp_namespace = "Adnc.Demo.Shared.Remote.Grpc.Services";
 
 package services;
 

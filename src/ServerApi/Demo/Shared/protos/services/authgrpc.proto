@@ -3,7 +3,7 @@ syntax = "proto3";
 import "messages/common.proto";
 import "messages/authgrpc_login.proto";
 
-option csharp_namespace = "Adnc.Demo.Shared.Rpc.Grpc.Services";
+option csharp_namespace = "Adnc.Demo.Shared.Remote.Grpc.Services";
 
 package services;
 

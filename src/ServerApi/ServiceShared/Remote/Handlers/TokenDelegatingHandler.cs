@@ -1,6 +1,6 @@
-﻿using Adnc.Shared.Rpc.Handlers.Token;
+﻿using Adnc.Shared.Remote.Handlers.Token;
 
-namespace Adnc.Shared.Rpc.Handlers;
+namespace Adnc.Shared.Remote.Handlers;
 
 /// <summary>
 /// https://www.siakabaro.com/use-http-2-with-httpclient-in-net-6-0/

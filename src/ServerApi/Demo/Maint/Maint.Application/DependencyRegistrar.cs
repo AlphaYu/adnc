@@ -1,7 +1,7 @@
 ﻿using Adnc.Demo.Maint.Repository;
 using Adnc.Shared.Application.Extensions;
-using Adnc.Shared.Rpc.Http.Services;
-using IUsrRestClient = Adnc.Demo.Shared.Rpc.Http.Services.IUsrRestClient;
+using Adnc.Shared.Remote.Http.Services;
+using IUsrRestClient = Adnc.Demo.Shared.Remote.Http.Services.IUsrRestClient;
 
 namespace Adnc.Demo.Maint.Application;
 

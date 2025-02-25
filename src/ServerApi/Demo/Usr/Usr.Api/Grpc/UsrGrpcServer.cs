@@ -1,11 +1,11 @@
 ﻿using Adnc.Infra.Mapper;
-using Adnc.Demo.Shared.Rpc.Grpc.Messages;
+using Adnc.Demo.Shared.Remote.Grpc.Messages;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 
 namespace Adnc.Demo.Usr.Api.Grpc;
 
-public class UsrGrpcServer : Adnc.Demo.Shared.Rpc.Grpc.Services.UsrGrpc.UsrGrpcBase
+public class UsrGrpcServer : Adnc.Demo.Shared.Remote.Grpc.Services.UsrGrpc.UsrGrpcBase
 {
     private readonly IUserAppService _userService;
     private readonly IOrganizationAppService _deptAppService;

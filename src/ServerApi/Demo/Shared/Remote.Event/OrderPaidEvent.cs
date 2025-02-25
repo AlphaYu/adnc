@@ -1,4 +1,4 @@
-﻿namespace Adnc.Shared.Rpc.Event;
+﻿namespace Adnc.Shared.Remote.Event;
 
 /// <summary>
 /// 订单支付事件

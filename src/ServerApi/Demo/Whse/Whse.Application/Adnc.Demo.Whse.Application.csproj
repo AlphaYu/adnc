@@ -5,15 +5,15 @@
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 	</PropertyGroup>
 	<ItemGroup>
-		<ProjectReference Include="..\..\Shared\Adnc.Demo.Shared.Rpc.Event\Adnc.Demo.Shared.Rpc.Event.csproj" />
-		<ProjectReference Include="..\..\Shared\Adnc.Demo.Shared.Rpc.Grpc\Adnc.Demo.Shared.Rpc.Grpc.csproj" />
-		<ProjectReference Include="..\..\Shared\Adnc.Demo.Shared.Rpc.Http\Adnc.Demo.Shared.Rpc.Http.csproj" />
-		<ProjectReference Include="..\Adnc.Demo.Whse.Domain\Adnc.Demo.Whse.Domain.csproj" />
+		<ProjectReference Include="..\..\Shared\Remote.Event\Adnc.Demo.Shared.Remote.Event.csproj" />
+		<ProjectReference Include="..\..\Shared\Remote.Grpc\Adnc.Demo.Shared.Remote.Grpc.csproj" />
+		<ProjectReference Include="..\..\Shared\Remote.Http\Adnc.Demo.Shared.Remote.Http.csproj" />
+		<ProjectReference Include="..\Whse.Domain\Adnc.Demo.Whse.Domain.csproj" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(SolutionName)'=='Adnc'">
-		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.EfCore.SqlServer\Adnc.Infra.Repository.EfCore.SqlServer.csproj" />		
-		<ProjectReference Include="..\..\..\ServiceShared\Adnc.Shared.Application\Adnc.Shared.Application.csproj" />
+		<ProjectReference Include="..\..\..\Infrastructures\Repository.EfCore.SqlServer\Adnc.Infra.Repository.EfCore.SqlServer.csproj" />		
+		<ProjectReference Include="..\..\..\ServiceShared\Application\Adnc.Shared.Application.csproj" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(SolutionName)'=='Adnc.Demo' ">

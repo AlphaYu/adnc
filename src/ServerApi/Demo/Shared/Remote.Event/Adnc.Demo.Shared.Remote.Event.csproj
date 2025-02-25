@@ -14,7 +14,7 @@
 	<ItemGroup Condition="'$(SolutionName)'=='Adnc.Demo' ">
 		<PackageReference Include="Adnc.Infra.Core" Version="$(Infra_Version)" />
 		<PackageReference Include="Adnc.Shared" Version="$(Shared_Version)" />
-		<PackageReference Include="Adnc.Shared.Rpc" Version="$(Shared_Version)" />
+		<PackageReference Include="Adnc.Shared.Remote" Version="$(Shared_Version)" />
 	</ItemGroup>
 
 </Project>

@@ -2,10 +2,10 @@
 	<Import Project="..\..\..\common.props" />
 	<Import Project="..\..\..\version_service.props" />
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-		<OutputPath>..\Adnc.Demo.Whse.Api\bin\$(Configuration)</OutputPath>
+		<OutputPath>..\Whse.Api\bin\$(Configuration)</OutputPath>
 	</PropertyGroup>
 	<ItemGroup Condition="'$(SolutionName)'=='Adnc'">
-		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.EfCore.SqlServer\Adnc.Infra.Repository.EfCore.SqlServer.csproj" />
+		<ProjectReference Include="..\..\..\Infrastructures\Repository.EfCore.SqlServer\Adnc.Infra.Repository.EfCore.SqlServer.csproj" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(SolutionName)'=='Adnc.Demo' ">
@@ -13,7 +13,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Adnc.Demo.Whse.Domain\Adnc.Demo.Whse.Domain.csproj" />
+		<ProjectReference Include="..\Whse.Domain\Adnc.Demo.Whse.Domain.csproj" />
 	</ItemGroup>
 	
 </Project>

@@ -1,5 +1,5 @@
 ﻿global using Adnc.Demo.Shared.Const;
-global using Adnc.Demo.Shared.Rpc.Http.Services;
+global using Adnc.Demo.Shared.Remote.Http.Services;
 global using Adnc.Demo.Whse.Application.Dtos;
 global using Adnc.Demo.Whse.Application.Services;
 global using Adnc.Demo.Whse.Application.Subscribers;
@@ -16,7 +16,7 @@ global using Adnc.Shared.Application.Contracts.Interfaces;
 global using Adnc.Shared.Application.Services;
 global using Adnc.Shared.Application.Services.Trackers;
 global using Adnc.Shared.Domain;
-global using Adnc.Shared.Rpc.Event;
+global using Adnc.Shared.Remote.Event;
 global using AutoMapper;
 global using DotNetCore.CAP;
 global using Microsoft.EntityFrameworkCore;

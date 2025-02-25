@@ -1,6 +1,6 @@
-﻿using Adnc.Shared.Rpc.Http;
+﻿using Adnc.Shared.Remote.Http;
 
-namespace Adnc.Demo.Shared.Rpc.Http.Services;
+namespace Adnc.Demo.Shared.Remote.Http.Services;
 
 public interface IWhseRestClient : IRestClient
 {

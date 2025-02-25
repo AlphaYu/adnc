@@ -1,4 +1,4 @@
-﻿namespace Adnc.Shared.Rpc.Http.Rtos;
+﻿namespace Adnc.Shared.Remote.Http.Rtos;
 
 public record UserValidatedInfoRto
 {

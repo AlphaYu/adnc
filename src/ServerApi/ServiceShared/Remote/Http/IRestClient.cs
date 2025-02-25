@@ -1,4 +1,4 @@
-﻿namespace Adnc.Shared.Rpc.Http;
+﻿namespace Adnc.Shared.Remote.Http;
 
 public interface IRestClient
 { 

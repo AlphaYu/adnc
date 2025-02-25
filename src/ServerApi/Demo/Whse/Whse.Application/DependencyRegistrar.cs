@@ -1,7 +1,7 @@
 ﻿using Adnc.Shared;
 using Adnc.Shared.Application.Extensions;
 using Adnc.Shared.Application.Registrar;
-using Adnc.Shared.Rpc.Http.Services;
+using Adnc.Shared.Remote.Http.Services;
 using Microsoft.Extensions.Configuration;
 
 namespace Adnc.Demo.Whse.Application;

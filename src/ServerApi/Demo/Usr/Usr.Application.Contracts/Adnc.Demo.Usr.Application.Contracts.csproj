@@ -6,14 +6,14 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\Shared\Adnc.Demo.Shared.Const\Adnc.Demo.Shared.Const.csproj" />
+		<ProjectReference Include="..\..\Shared\Const\Adnc.Demo.Shared.Const.csproj" />
 	</ItemGroup>
 	
 	<ItemGroup Condition="'$(SolutionName)'=='Adnc'">
-		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Helper\Adnc.Infra.Helper.csproj" />
-		<ProjectReference Include="..\..\..\Infrastructures\Adnc.Infra.Redis.Caching\Adnc.Infra.Redis.Caching.csproj" />
-		<ProjectReference Include="..\..\..\ServiceShared\Adnc.Shared\Adnc.Shared.csproj" />
-		<ProjectReference Include="..\..\..\ServiceShared\Adnc.Shared.Application.Contracts\Adnc.Shared.Application.Contracts.csproj" />
+		<ProjectReference Include="..\..\..\Infrastructures\Helper\Adnc.Infra.Helper.csproj" />
+		<ProjectReference Include="..\..\..\Infrastructures\Redis.Caching\Adnc.Infra.Redis.Caching.csproj" />
+		<ProjectReference Include="..\..\..\ServiceShared\Shared\Adnc.Shared.csproj" />
+		<ProjectReference Include="..\..\..\ServiceShared\Application.Contracts\Adnc.Shared.Application.Contracts.csproj" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(SolutionName)'=='Adnc.Demo' ">

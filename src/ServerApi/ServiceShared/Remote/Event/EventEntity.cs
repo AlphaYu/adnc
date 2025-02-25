@@ -1,4 +1,4 @@
-﻿namespace Adnc.Shared.Rpc.Event
+﻿namespace Adnc.Shared.Remote.Event
 {
     [Serializable]
     public class EventEntity

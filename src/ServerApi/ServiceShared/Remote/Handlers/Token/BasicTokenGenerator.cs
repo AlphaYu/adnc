@@ -1,4 +1,4 @@
-﻿namespace Adnc.Shared.Rpc.Handlers.Token;
+﻿namespace Adnc.Shared.Remote.Handlers.Token;
 
 public class BasicTokenGenerator : ITokenGenerator
 {

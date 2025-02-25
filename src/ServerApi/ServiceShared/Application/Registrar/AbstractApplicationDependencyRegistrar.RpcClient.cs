@@ -1,7 +1,7 @@
 ﻿using Adnc.Infra.Consul.Discover.GrpcResolver;
 using Adnc.Infra.Consul.Discover.Handler;
-using Adnc.Shared.Rpc.Handlers;
-using Adnc.Shared.Rpc.Handlers.Token;
+using Adnc.Shared.Remote.Handlers;
+using Adnc.Shared.Remote.Handlers.Token;
 using Grpc.Core;
 using Grpc.Net.Client.Balancer;
 using Grpc.Net.Client.Configuration;

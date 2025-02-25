@@ -5,12 +5,12 @@
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 	</PropertyGroup>
 	<ItemGroup>
-		<ProjectReference Include="..\..\Shared\Adnc.Demo.Shared.Rpc.Http\Adnc.Demo.Shared.Rpc.Http.csproj" />
-		<ProjectReference Include="..\Adnc.Demo.Ord.Domain\Adnc.Demo.Ord.Domain.csproj" />
+		<ProjectReference Include="..\..\Shared\Remote.Http\Adnc.Demo.Shared.Remote.Http.csproj" />
+		<ProjectReference Include="..\Ord.Domain\Adnc.Demo.Ord.Domain.csproj" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(SolutionName)'=='Adnc'">
-		<ProjectReference Include="..\..\..\ServiceShared\Adnc.Shared.Application\Adnc.Shared.Application.csproj" />
+		<ProjectReference Include="..\..\..\ServiceShared\Application\Adnc.Shared.Application.csproj" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(SolutionName)'=='Adnc.Demo' ">

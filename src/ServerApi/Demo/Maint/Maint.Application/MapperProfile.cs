@@ -1,4 +1,4 @@
-﻿using Adnc.Demo.Shared.Rpc.Grpc.Messages;
+﻿using Adnc.Demo.Shared.Remote.Grpc.Messages;
 
 namespace Adnc.Demo.Maint.Application;
 

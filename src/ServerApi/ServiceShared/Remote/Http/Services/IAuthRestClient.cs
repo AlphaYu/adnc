@@ -1,7 +1,7 @@
 ﻿using Refit;
-using Adnc.Shared.Rpc.Http.Rtos;
+using Adnc.Shared.Remote.Http.Rtos;
 
-namespace Adnc.Shared.Rpc.Http.Services;
+namespace Adnc.Shared.Remote.Http.Services;
 
 public interface IAuthRestClient : IRestClient
 {

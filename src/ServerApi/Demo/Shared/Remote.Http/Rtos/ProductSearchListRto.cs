@@ -1,4 +1,4 @@
-﻿namespace Adnc.Demo.Shared.Rpc.Http.Rtos;
+﻿namespace Adnc.Demo.Shared.Remote.Http.Rtos;
 
 public class ProductSearchListRto
 {

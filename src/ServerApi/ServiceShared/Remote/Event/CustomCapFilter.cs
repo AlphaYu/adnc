@@ -1,6 +1,6 @@
 ﻿using DotNetCore.CAP.Filter;
 
-namespace Adnc.Shared.Rpc.Event;
+namespace Adnc.Shared.Remote.Event;
 
 /// <summary>
 /// https://cap.dotnetcore.xyz/user-guide/zh/cap/filter/

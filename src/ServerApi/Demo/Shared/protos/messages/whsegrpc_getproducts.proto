@@ -2,7 +2,7 @@ syntax = "proto3";
 
 import "messages/common.proto";
 
-option csharp_namespace = "Adnc.Demo.Shared.Rpc.Grpc.Messages";
+option csharp_namespace = "Adnc.Demo.Shared.Remote.Grpc.Messages";
 
 package messages;
 

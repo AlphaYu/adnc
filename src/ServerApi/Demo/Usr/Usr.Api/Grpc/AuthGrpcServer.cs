@@ -1,6 +1,6 @@
 ﻿using Adnc.Infra.Mapper;
-using Adnc.Demo.Shared.Rpc.Grpc.Messages;
-using Adnc.Demo.Shared.Rpc.Grpc.Services;
+using Adnc.Demo.Shared.Remote.Grpc.Messages;
+using Adnc.Demo.Shared.Remote.Grpc.Services;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using Adnc.Shared.WebApi.Authentication.Bearer;
