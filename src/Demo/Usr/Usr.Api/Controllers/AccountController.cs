@@ -41,7 +41,7 @@ public class AccountController : AdncControllerBase
             var validatedInfo = result.Content;
             var accessToken = JwtTokenHelper.CreateAccessToken(_jwtOptions.Value, validatedInfo.ValidationVersion, validatedInfo.Account, validatedInfo.Id.ToString(), validatedInfo.Name, validatedInfo.RoleIds, BearerDefaults.Manager);
             var refreshToken = JwtTokenHelper.CreateRefreshToken(_jwtOptions.Value, validatedInfo.ValidationVersion, validatedInfo.Id.ToString());
-            var tokenInfo = new UserTokenInfoDto(accessToken.Token, accessToken.Expire, refreshToken.Token, refreshToken.Expire);
+            var tokenInfo = new UserTokenInfoDto(validatedInfo.Name, accessToken.Token, accessToken.Expire, refreshToken.Token, refreshToken.Expire);
             return Created($"/auth/session", tokenInfo);
         }
         return Problem(result.ProblemDetails);
@@ -84,7 +84,7 @@ public class AccountController : AdncControllerBase
 
             await _userService.ChangeUserValidateInfoExpiresDtAsync(id.Value);
 
-            var tokenInfo = new UserTokenInfoDto(accessToken.Token, accessToken.Expire, refreshToken.Token, refreshToken.Expire);
+            var tokenInfo = new UserTokenInfoDto(validatedInfo.Name, accessToken.Token, accessToken.Expire, refreshToken.Token, refreshToken.Expire);
             return Ok(tokenInfo);
         }
         return Forbid();
