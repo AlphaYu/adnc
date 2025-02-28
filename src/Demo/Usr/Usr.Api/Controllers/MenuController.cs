@@ -1,4 +1,6 @@
-﻿namespace Adnc.Demo.Usr.Api.Controllers;
+﻿using Adnc.Demo.Usr.Application.Contracts.Dtos.Menu;
+
+namespace Adnc.Demo.Usr.Api.Controllers;
 
 /// <summary>
 /// 菜单管理
@@ -72,6 +74,18 @@ public class MenuController : AdncControllerBase
     {
         var roleIds = _userContext.RoleIds.Split(",", StringSplitOptions.RemoveEmptyEntries).ToList();
         return await _menuService.GetMenusForRouterAsync(roleIds.Select(x => long.Parse(x)));
+    }
+
+    /// <summary>
+    /// 获取tdesign侧边栏路由菜单
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet("tdesignrouters")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<ActionResult<TDesignRouterAndPermissionsDto>> GetMenusForTDesignRouterAsync()
+    {
+        var roleIds = _userContext.RoleIds.Split(",", StringSplitOptions.RemoveEmptyEntries).ToList();
+        return await _menuService.GetMenusForTDesignRouterAsync(roleIds.Select(x => long.Parse(x)));
     }
 
     /// <summary>

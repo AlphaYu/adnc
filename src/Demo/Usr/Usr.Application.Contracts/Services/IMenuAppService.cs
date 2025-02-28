@@ -1,4 +1,6 @@
-﻿namespace Adnc.Demo.Usr.Application.Contracts.Services
+﻿using Adnc.Demo.Usr.Application.Contracts.Dtos.Menu;
+
+namespace Adnc.Demo.Usr.Application.Contracts.Services
 {
     /// <summary>
     /// 菜单/权限服务
@@ -46,6 +48,12 @@
         /// <param name="roleIds"></param>
         /// <returns></returns>
         Task<List<MenuRouterDto>> GetMenusForRouterAsync(IEnumerable<long> roleIds);
+
+        /// <summary>
+        /// 获取tdesign侧边栏路由菜单
+        /// </summary>
+        /// <returns></returns>
+        Task<TDesignRouterAndPermissionsDto> GetMenusForTDesignRouterAsync(IEnumerable<long> roleIds);
 
         /// <summary>
         /// 获取指定角色的菜单

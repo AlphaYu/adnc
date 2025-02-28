@@ -1,4 +1,6 @@
-﻿namespace Adnc.Demo.Usr.Application.Services;
+﻿using Adnc.Demo.Usr.Application.Contracts.Dtos.Menu;
+
+namespace Adnc.Demo.Usr.Application.Services;
 
 public class MenuAppService : AbstractAppService, IMenuAppService
 {
@@ -157,6 +159,61 @@ public class MenuAppService : AbstractAppService, IMenuAppService
         }
 
         return result;
+    }
+
+    public async Task<TDesignRouterAndPermissionsDto> GetMenusForTDesignRouterAsync(IEnumerable<long> roleIds)
+    {
+        //所有菜单
+        var allMenus = await _cacheService.GetAllMenusFromCacheAsync();
+        //所有菜单角色关系
+        var allRelations = await _cacheService.GetAllRelationsFromCacheAsync();
+        //角色拥有的菜单Ids
+        var menusIds = allRelations.Where(x => roleIds.Contains(x.RoleId.Value)).Select(x => x.MenuId).Distinct();
+        //更加菜单Id获取菜单实体
+        var menus = allMenus.Where(x => menusIds.Contains(x.Id));
+        var realMemus = menus.Where(x => x.IsMenu && x.Status == true);
+        if (realMemus.IsNullOrEmpty())
+            return new TDesignRouterAndPermissionsDto() ;
+
+        List<TDesignRouterDto>  GetChildren(string code)
+        {
+            var children = new List<TDesignRouterDto>();
+            var pMenus = realMemus.Where(x => x.PCode == code);
+            foreach (var menu in pMenus)
+            {
+                var router = new TDesignRouterDto
+                {
+                    PCode = menu.PCode ?? string.Empty,
+                    Code = menu.Code,
+                    Name = menu.Code,
+                    Path = menu.Url.StartsWith("http") ? string.Empty : menu.Url,
+                    Component = menu.Component,
+                    Redirect = string.Empty,
+                    Meta = new TDesignRouterDto.RouteMeta
+                    {
+                        Icon = menu.Icon,
+                        Title = menu.Name,
+                        OrderNo = menu.Ordinal,
+                        Hidden = menu.Hidden,
+                        Expanded = menu.IsOpen,
+                        HiddenBreadcrumb = true,
+                        Single = false,
+                        KeepAlive = true,
+                        FrameSrc = menu.Url.StartsWith("http") ? menu.Url : string.Empty,
+                        FrameBlank = false
+                    },
+                    Children = GetChildren(menu.Code)
+                };
+                children.Add(router);
+            }
+            return children;
+        }
+
+        return new TDesignRouterAndPermissionsDto
+        {
+            Routers = GetChildren("0"),
+            Permissions = menus.Where(x => x.Status == true).OrderBy(x => x.Code).Select(x => x.Code).ToList()
+        };
     }
 
     public async Task<MenuTreeDto> GetMenuTreeListByRoleIdAsync(long roleId)
