@@ -106,7 +106,7 @@ public sealed class ServiceInfo : IServiceInfo
                 Id = serviceId,
                 ServiceName = serviceName,
                 ShortName = $"{names[^2]}-{names[^1]}".ToLower(),
-                RelativeRootPath = $"{names[^2]}/{names[^1]}".ToLower(),
+                RelativeRootPath = $"{names[^1]}/{names[^2]}".ToLower(),
                 CorsPolicy = "default",
                 StartAssembly = startAssembly,
                 Description = description,

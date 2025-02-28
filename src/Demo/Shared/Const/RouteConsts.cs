@@ -2,11 +2,11 @@
 {
     public static class RouteConsts
     {
-        public const string AuthRoot = "auth/api";
-        public const string UsrRoot = "usr/api";
-        public const string MaintRoot = "maint/api";
-        public const string CustRoot = "cust/api";
-        public const string OrdRoot = "ord/api";
-        public const string WhseRoot = "whse/api";
+        public const string AuthRoot = "api/auth";
+        public const string UsrRoot = "api/usr";
+        public const string MaintRoot = "api/maint";
+        public const string CustRoot = "api/cust";
+        public const string OrdRoot = "api/ord";
+        public const string WhseRoot = "api/whse";
     }
 }
