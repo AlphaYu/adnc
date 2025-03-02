@@ -20,10 +20,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\src\ServerApi\Infrastructures\Core\Adnc.Infra.Core.csproj" />
-	  <ProjectReference Include="..\..\src\ServerApi\Infrastructures\IdGenerater\Adnc.Infra.IdGenerater.csproj" />
-	  <ProjectReference Include="..\..\src\ServerApi\Infrastructures\Redis.Caching\Adnc.Infra.Redis.Caching.csproj" />
-	  <ProjectReference Include="..\..\src\ServerApi\Infrastructures\Redis\Adnc.Infra.Redis.csproj" />
+	  <ProjectReference Include="..\..\src\Infrastructures\Core\Adnc.Infra.Core.csproj" />
+	  <ProjectReference Include="..\..\src\Infrastructures\IdGenerater\Adnc.Infra.IdGenerater.csproj" />
+	  <ProjectReference Include="..\..\src\Infrastructures\Redis.Caching\Adnc.Infra.Redis.Caching.csproj" />
+	  <ProjectReference Include="..\..\src\Infrastructures\Redis\Adnc.Infra.Redis.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -38,11 +38,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Repository.EfCor
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Projects", "Projects", "{5EE2FAD3-DFA0-4DFF-A79E-61E8D0AB1B3D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adnc.Infra.Unittest.Redis", "..\..\..\test\Unittest.Redis\Adnc.Infra.Unittest.Redis.csproj", "{29EE3600-0391-4A10-AD33-CD243EB4AF00}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adnc.Infra.Unittest.Redis", "..\..\test\Unittest.Redis\Adnc.Infra.Unittest.Redis.csproj", "{29EE3600-0391-4A10-AD33-CD243EB4AF00}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adnc.Infra.Repository.EfCore.MongoDB", "Repository.EfCore.MongoDB\Adnc.Infra.Repository.EfCore.MongoDB.csproj", "{50843DF1-FD6A-4044-9720-3FD170A57F3E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adnc.Infra.Unittest.Reposity", "..\..\..\test\Unittest.Repository\Adnc.Infra.Unittest.Reposity.csproj", "{72BF3438-0A88-4476-ACF9-91535DE04159}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adnc.Infra.Unittest.Reposity", "..\..\test\Unittest.Repository\Adnc.Infra.Unittest.Reposity.csproj", "{72BF3438-0A88-4476-ACF9-91535DE04159}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
