@@ -40,8 +40,7 @@
         /// <param name="input"></param>
         /// <returns></returns>
         [OperateLog(LogName = "设置用户角色")]
-        [CachingEvict(CacheKeys = new[] { CachingConsts.MenuRelationCacheKey, CachingConsts.MenuCodesCacheKey }
-                             , CacheKeyPrefix = CachingConsts.UserValidatedInfoKeyPrefix)]
+        [CachingEvict(CacheKeyPrefix = CachingConsts.UserValidatedInfoKeyPrefix)]
         [UnitOfWork]
         Task<AppSrvResult> SetRoleAsync([CachingParam] long id, UserSetRoleDto input);
 

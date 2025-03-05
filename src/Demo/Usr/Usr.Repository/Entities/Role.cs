@@ -11,7 +11,7 @@ public class Role : EfFullAuditEntity
 
     public int Ordinal { get; set; }
 
-    public long? Pid { get; set; }
+    public long Pid { get; set; } = 0;
 
     public string? Tips { get; set; }
 }

@@ -31,6 +31,7 @@
         /// <returns></returns>
         [OperateLog(LogName = "删除角色")]
         [CachingEvict(CacheKeys = new[] { CachingConsts.MenuRelationCacheKey, CachingConsts.MenuCodesCacheKey, CachingConsts.RoleListCacheKey })]
+        [UnitOfWork]
         Task<AppSrvResult> DeleteAsync(long id);
 
         /// <summary>

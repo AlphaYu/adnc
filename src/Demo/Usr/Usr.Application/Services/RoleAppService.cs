@@ -1,33 +1,22 @@
-﻿namespace Adnc.Demo.Usr.Application.Services;
+﻿using Castle.Core.Internal;
 
-public class RoleAppService : AbstractAppService, IRoleAppService
+namespace Adnc.Demo.Usr.Application.Services;
+
+public class RoleAppService(
+    IEfRepository<Role> roleRepo,
+    IEfRepository<RoleUserRelation> roleUserRelationRepo,
+    IEfRepository<RoleMenuRelation> roleMenuRelationRepo,
+    CacheService cacheService) : AbstractAppService, IRoleAppService
 {
-    private readonly IEfRepository<Role> _roleRepository;
-    private readonly IEfRepository<User> _userRepository;
-    private readonly IEfRepository<RoleRelation> _relationRepository;
-    private readonly CacheService _cacheService;
-
-    public RoleAppService(IEfRepository<Role> roleRepository,
-        IEfRepository<User> userRepository,
-        IEfRepository<RoleRelation> relationRepository,
-        CacheService cacheService)
-    {
-        _roleRepository = roleRepository;
-        _userRepository = userRepository;
-        _relationRepository = relationRepository;
-        _cacheService = cacheService;
-    }
-
     public async Task<AppSrvResult<long>> CreateAsync(RoleCreationDto input)
     {
         input.TrimStringFields();
-        var isExists = (await _cacheService.GetAllRolesFromCacheAsync()).Any(x => x.Name == input.Name);
-        if (isExists)
+        var exists = (await cacheService.GetAllRolesFromCacheAsync()).Any(x => x.Name == input.Name);
+        if (exists)
             return Problem(HttpStatusCode.BadRequest, "该角色名称已经存在");
 
-        var role = Mapper.Map<Role>(input);
-        role.Id = IdGenerater.GetNextId();
-        await _roleRepository.InsertAsync(role);
+        var role = Mapper.Map<Role>(input, IdGenerater.GetNextId());
+        await roleRepo.InsertAsync(role);
 
         return role.Id;
     }
@@ -35,14 +24,16 @@ public class RoleAppService : AbstractAppService, IRoleAppService
     public async Task<AppSrvResult> UpdateAsync(long id, RoleUpdationDto input)
     {
         input.TrimStringFields();
-        var isExists = (await _cacheService.GetAllRolesFromCacheAsync()).Any(x => x.Name == input.Name && x.Id != id);
-        if (isExists)
+        var exists = (await cacheService.GetAllRolesFromCacheAsync()).Any(x => x.Name == input.Name && x.Id != id);
+        if (exists)
             return Problem(HttpStatusCode.BadRequest, "该角色名称已经存在");
 
-        var role = Mapper.Map<Role>(input);
-        role.Id = id;
-        await _roleRepository.UpdateAsync(role, UpdatingProps<Role>(x => x.Name, x => x.Tips, x => x.Ordinal));
+        var role = await roleRepo.FetchAsync(x => x.Id == id);
+        if (role is null)
+            return Problem(HttpStatusCode.BadRequest, "该角色Id不存在");
 
+        Mapper.Map(input, role);
+        await roleRepo.UpdateAsync(role);
         return AppSrvResult();
     }
 
@@ -51,10 +42,8 @@ public class RoleAppService : AbstractAppService, IRoleAppService
         if (id == 1600000000010)
             return Problem(HttpStatusCode.Forbidden, "禁止删除初始角色");
 
-        if (await _userRepository.AnyAsync(x => x.RoleIds == id.ToString()))
-            return Problem(HttpStatusCode.Forbidden, "有用户使用该角色，禁止删除");
-
-        await _roleRepository.DeleteAsync(id);
+        await roleRepo.ExecuteDeleteAsync(x => x.Id == id);
+        await roleUserRelationRepo.ExecuteDeleteAsync(x => x.RoleId == id);
 
         return AppSrvResult();
     }
@@ -64,59 +53,47 @@ public class RoleAppService : AbstractAppService, IRoleAppService
         if (input.RoleId == 1600000000010)
             return Problem(HttpStatusCode.Forbidden, "禁止设置初始角色");
 
-        await _relationRepository.DeleteRangeAsync(x => x.RoleId == input.RoleId);
+        await roleMenuRelationRepo.ExecuteDeleteAsync(x => x.RoleId == input.RoleId);
 
-        var relations = new List<RoleRelation>();
-        foreach (var permissionId in input.Permissions)
+        if (input.Permissions.IsNotNullOrEmpty())
         {
-            relations.Add(
-                new RoleRelation
-                {
-                    Id = IdGenerater.GetNextId(),
-                    RoleId = input.RoleId,
-                    MenuId = permissionId
-                }
-            );
+            var relations = input.Permissions.Select(x => new RoleMenuRelation { Id = IdGenerater.GetNextId(), RoleId = input.RoleId, MenuId = x });
+            await roleMenuRelationRepo.InsertRangeAsync(relations);
         }
-        await _relationRepository.InsertRangeAsync(relations);
 
         return AppSrvResult();
     }
 
     public async Task<RoleTreeDto> GetRoleTreeListByUserIdAsync(long userId)
     {
-        RoleTreeDto result = null;
-        IEnumerable<ZTreeNodeDto<long, dynamic>> treeNodes = null;
+        var roleIds = await roleUserRelationRepo.Where(x => x.UserId == userId).Select(y => y.RoleId).ToListAsync();
+        if (roleIds.IsNullOrEmpty())
+            return new RoleTreeDto { TreeData = [], CheckedIds = [] };
 
-        var user = await _userRepository.FetchAsync(x => new { x.RoleIds }, x => x.Id == userId);
-        if (user is null)
-            return null;
+        var rolesCache = await cacheService.GetAllRolesFromCacheAsync();
+        if (rolesCache.IsNullOrEmpty())
+            return new RoleTreeDto { TreeData = [], CheckedIds = [] };
 
-        var roles = await _cacheService.GetAllRolesFromCacheAsync();
-        var roleIds = user.RoleIds?.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(x => long.Parse(x)) ?? new List<long>();
-        if (roles.Any())
+        IEnumerable<ZTreeNodeDto<long, dynamic>> treeNodes = rolesCache.Select(x => new ZTreeNodeDto<long, dynamic>
         {
-            treeNodes = roles.Select(x => new ZTreeNodeDto<long, dynamic>
+            Id = x.Id,
+            PID = x.Pid ?? 0,
+            Name = x.Name,
+            Open = !(x.Pid.HasValue && x.Pid.Value > 0),
+            Checked = roleIds.Contains(x.Id)
+        });
+
+        var result = new RoleTreeDto
+        {
+            TreeData = treeNodes.Select(x => new Node<long>
             {
                 Id = x.Id,
-                PID = x.Pid ?? 0,
+                PID = x.PID,
                 Name = x.Name,
-                Open = !(x.Pid.HasValue && x.Pid.Value > 0),
-                Checked = roleIds.Contains(x.Id)
-            });
-
-            result = new RoleTreeDto
-            {
-                TreeData = treeNodes.Select(x => new Node<long>
-                {
-                    Id = x.Id,
-                    PID = x.PID,
-                    Name = x.Name,
-                    Checked = x.Checked
-                }),
-                CheckedIds = treeNodes.Where(x => x.Checked).Select(x => x.Id)
-            };
-        }
+                Checked = x.Checked
+            }),
+            CheckedIds = treeNodes.Where(x => x.Checked).Select(x => x.Id)
+        };
 
         return result;
     }
@@ -128,11 +105,11 @@ public class RoleAppService : AbstractAppService, IRoleAppService
                                               .New<Role>()
                                               .AndIf(search.RoleName.IsNotNullOrWhiteSpace(), x => x.Name.Contains(search.RoleName));
 
-        var total = await _roleRepository.CountAsync(whereExpression);
+        var total = await roleRepo.CountAsync(whereExpression);
         if (total == 0)
             return new PageModelDto<RoleDto>(search);
 
-        var entities = await _roleRepository
+        var entities = await roleRepo
                             .Where(whereExpression)
                             .OrderByDescending(x => x.Id)
                             .Skip(search.SkipRows())
