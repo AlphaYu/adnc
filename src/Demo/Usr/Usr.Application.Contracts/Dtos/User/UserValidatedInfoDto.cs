@@ -21,8 +21,6 @@ namespace Adnc.Demo.Usr.Application.Contracts.Dtos
 
         public string Name { get; init; }
 
-        //public string Email { get; set; }
-
         public string RoleIds { get; init; }
 
         public int Status { get; init; }

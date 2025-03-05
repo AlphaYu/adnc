@@ -2,11 +2,6 @@
 {
     public abstract class UserCreationAndUpdationDto : InputDto
     {
-        /// <summary>
-        /// 账户
-        /// </summary>
-        public string Account { get; set; } = string.Empty;
-
         ///// <summary>
         ///// 头像
         ///// </summary>

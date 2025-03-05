@@ -54,12 +54,12 @@
         /// <summary>
         /// 角色Id列表，以逗号分隔
         /// </summary>
-        public string RoleIds { get; set; } = string.Empty;
+        // public long[] RoleIds { get; set; } = [];
 
         /// <summary>
         /// 角色名称
         /// </summary>
-        public string RoleNames { get; set; } = string.Empty;
+        public string[] RoleNames { get; set; } = [];
 
         /// <summary>
         /// 性别

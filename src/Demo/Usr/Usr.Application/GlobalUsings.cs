@@ -7,6 +7,7 @@ global using Adnc.Demo.Usr.Repository;
 global using Adnc.Demo.Usr.Repository.Entities;
 global using Adnc.Infra.Helper;
 global using Adnc.Infra.IdGenerater.Yitter;
+global using Adnc.Infra.Mapper;
 global using Adnc.Infra.Redis;
 global using Adnc.Infra.Redis.Caching;
 global using Adnc.Infra.Redis.Caching.Configurations;

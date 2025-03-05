@@ -30,6 +30,7 @@
         /// <returns></returns>
         [OperateLog(LogName = "删除用户")]
         [CachingEvict(CacheKeyPrefix = CachingConsts.UserValidatedInfoKeyPrefix)]
+        [UnitOfWork]
         Task<AppSrvResult> DeleteAsync([CachingParam] long id);
 
         /// <summary>
@@ -41,6 +42,7 @@
         [OperateLog(LogName = "设置用户角色")]
         [CachingEvict(CacheKeys = new[] { CachingConsts.MenuRelationCacheKey, CachingConsts.MenuCodesCacheKey }
                              , CacheKeyPrefix = CachingConsts.UserValidatedInfoKeyPrefix)]
+        [UnitOfWork]
         Task<AppSrvResult> SetRoleAsync([CachingParam] long id, UserSetRoleDto input);
 
         /// <summary>
@@ -61,7 +63,7 @@
         /// <returns></returns>
         [OperateLog(LogName = "批量修改用户状态")]
         [CachingEvict(CacheKeyPrefix = CachingConsts.UserValidatedInfoKeyPrefix)]
-        Task<AppSrvResult> ChangeStatusAsync([CachingParam] IEnumerable<long> ids, int status);
+        Task<AppSrvResult> ChangeStatusAsync([CachingParam] long[] ids, int status);
 
         /// <summary>
         /// 获取用户是否拥有指定权限
@@ -85,7 +87,7 @@
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        Task<UserInfoDto> GetUserInfoAsync(long id);
+        Task<UserProfileDto?> GetUserProfileAsync(long id);
 
         /// <summary>
         /// 登录

@@ -1,52 +1,35 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Castle.Core.Internal;
+using Microsoft.AspNetCore.Http;
 
 namespace Adnc.Demo.Usr.Application.Services;
 
-public class UserAppService : AbstractAppService, IUserAppService
-{
-    private readonly IEfRepository<User> _userRepository;
-    private readonly IEfRepository<Role> _roleRepository;
-    private readonly IEfRepository<Menu> _menuRepository;
-    private readonly CacheService _cacheService;
-    private readonly BloomFilterFactory _bloomFilterFactory;
-    private readonly IHttpContextAccessor _httpContextAccessor;
-
-    public UserAppService(
-        IEfRepository<User> userRepository
-        , IEfRepository<Role> roleRepository
-        , IEfRepository<Menu> menuRepository
+public class UserAppService(
+    IEfRepository<User> userRepository
+        , IEfRepository<RoleUserRelation> roleUserRelationRepository
         , CacheService cacheService
-        , BloomFilterFactory bloomFilterFactory
-        , IHttpContextAccessor httpContextAccessor)
-    {
-        _userRepository = userRepository;
-        _roleRepository = roleRepository;
-        _menuRepository = menuRepository;
-        _cacheService = cacheService;
-        _bloomFilterFactory = bloomFilterFactory;
-        _httpContextAccessor = httpContextAccessor;
-    }
-
+        //, BloomFilterFactory bloomFilterFactory
+        , IHttpContextAccessor httpContextAccessor) : AbstractAppService, IUserAppService
+{
     public async Task<AppSrvResult<long>> CreateAsync(UserCreationDto input)
     {
         input.TrimStringFields();
-        if (await _userRepository.AnyAsync(x => x.Account == input.Account))
+        var exists = await userRepository.AnyAsync(x => x.Account == input.Account);
+        if (exists)
             return Problem(HttpStatusCode.BadRequest, "账号已经存在");
 
-        var user = Mapper.Map<User>(input);
-        user.Id = IdGenerater.GetNextId();
+        var user = Mapper.Map<User>(input, IdGenerater.GetNextId());
         user.Account = user.Account.ToLower();
         user.Salt = Random.Shared.Next(5, false);
         user.Password = InfraHelper.Encrypt.Md5(user.Password + user.Salt);
 
-        var cacheKey = _cacheService.ConcatCacheKey(CachingConsts.UserValidatedInfoKeyPrefix, user.Id);
-        var bloomFilterCacheKey = _bloomFilterFactory.Create(CachingConsts.BloomfilterOfCacheKey);
-        await bloomFilterCacheKey.AddAsync(cacheKey);
+        //var cacheKey = _cacheService.ConcatCacheKey(CachingConsts.UserValidatedInfoKeyPrefix, user.Id);
+        //var bloomFilterCacheKey = _bloomFilterFactory.Create(CachingConsts.BloomfilterOfCacheKey);
+        //await bloomFilterCacheKey.AddAsync(cacheKey);
 
-        var bloomFilterAccount = _bloomFilterFactory.Create(CachingConsts.BloomfilterOfAccountsKey);
-        await bloomFilterAccount.AddAsync(user.Account);
+        //var bloomFilterAccount = _bloomFilterFactory.Create(CachingConsts.BloomfilterOfAccountsKey);
+        //await bloomFilterAccount.AddAsync(user.Account);
 
-        await _userRepository.InsertAsync(user);
+        await userRepository.InsertAsync(user);
 
         return user.Id;
     }
@@ -54,56 +37,72 @@ public class UserAppService : AbstractAppService, IUserAppService
     public async Task<AppSrvResult> UpdateAsync(long id, UserUpdationDto input)
     {
         input.TrimStringFields();
-        var user = Mapper.Map<User>(input);
-
-        user.Id = id;
-        var updatingProps = UpdatingProps<User>(x => x.Name, x => x.DeptId, x => x.Sex, x => x.Phone, x => x.Email, x => x.Birthday, x => x.Status);
-        await _userRepository.UpdateAsync(user, updatingProps);
+        //var user = Mapper.Map<User>(input, id);
+        //var updatingProps = UpdatingProps<User>(x => x.Name, x => x.DeptId, x => x.Gender, x => x.Phone, x => x.Email, x => x.Birthday, x => x.Status);
+        //await userRepository.UpdateAsync(user, updatingProps);
+        await userRepository.ExecuteUpdateAsync(x => x.Id == id, setters => setters
+            .SetProperty(x => x.Name, input.Name)
+            .SetProperty(x => x.DeptId, input.DeptId)
+            .SetProperty(x => x.Gender, input.Sex)
+            .SetProperty(x => x.Phone, input.Phone)
+            .SetProperty(x => x.Email, input.Email)
+            .SetProperty(x => x.Birthday, input.Birthday)
+            .SetProperty(x => x.Status, input.Status));
 
         return AppSrvResult();
     }
 
     public async Task<AppSrvResult> SetRoleAsync(long id, UserSetRoleDto input)
     {
-        var roleIdStr = input.RoleIds.IsNullOrEmpty() ? string.Empty : string.Join(",", input.RoleIds);
-        await _userRepository.UpdateAsync(new User() { Id = id, RoleIds = roleIdStr }, UpdatingProps<User>(x => x.RoleIds));
+        var exists = await userRepository.AnyAsync(x => x.Id == id);
+        if (!exists)
+            return AppSrvResult();
+
+        await roleUserRelationRepository.ExecuteDeleteAsync(x => x.UserId == id);
+
+        if (input.RoleIds.IsNotNullOrEmpty())
+        {
+            var roleUserRelations = input.RoleIds.Select(x => new RoleUserRelation { RoleId = x, UserId = id });
+            await roleUserRelationRepository.InsertRangeAsync(roleUserRelations);
+        }
 
         return AppSrvResult();
     }
 
     public async Task<AppSrvResult> DeleteAsync(long id)
     {
-        await _userRepository.DeleteAsync(id);
+        await userRepository.DeleteAsync(id);
+        await roleUserRelationRepository.ExecuteDeleteAsync(x => x.UserId == id);
         return AppSrvResult();
     }
 
     public async Task<AppSrvResult> ChangeStatusAsync(long id, int status)
     {
-        await _userRepository.UpdateAsync(new User { Id = id, Status = status }, UpdatingProps<User>(x => x.Status));
+        await userRepository.ExecuteUpdateAsync(x => x.Id == id, setters => setters.SetProperty(x => x.Status, status));
         return AppSrvResult();
     }
 
-    public async Task<AppSrvResult> ChangeStatusAsync(IEnumerable<long> ids, int status)
+    public async Task<AppSrvResult> ChangeStatusAsync(long[] ids, int status)
     {
-        await _userRepository.UpdateRangeAsync(u => ids.Contains(u.Id), u => new User { Status = status });
+        await userRepository.ExecuteUpdateAsync(u => ids.Contains(u.Id), setters => setters.SetProperty(x => x.Status, status));
         return AppSrvResult();
     }
 
     public async Task<List<string>> GetPermissionsAsync(long userId, IEnumerable<string> requestPermissions, string userBelongsRoleIds)
     {
         if (requestPermissions.IsNullOrEmpty())
-            return new List<string> { "allow" };
+            return ["allow"];
 
         if (userBelongsRoleIds.IsNullOrWhiteSpace())
-            return default;
+            return [];
 
         var roleIds = userBelongsRoleIds.Split(",", StringSplitOptions.RemoveEmptyEntries).Select(x => long.Parse(x.Trim()));
 
-        var allMenuCodes = await _cacheService.GetAllMenuCodesFromCacheAsync();
+        var allMenuCodes = await cacheService.GetAllMenuCodesFromCacheAsync();
 
-        var upperCodes = allMenuCodes?.Where(x => roleIds.Contains(x.RoleId)).Select(x => x.Code.ToUpper());
+        var upperCodes = allMenuCodes?.Where(x => roleIds.Contains(x.RoleId)).Select(x => x.Code.ToUpper()) ?? [];
         if (upperCodes.IsNullOrEmpty())
-            return default;
+            return [];
 
         var result = upperCodes.Intersect(requestPermissions.Select(x => x.ToUpper()));
         return result.ToList();
@@ -117,114 +116,68 @@ public class UserAppService : AbstractAppService, IUserAppService
                                             .AndIf(search.Account.IsNotNullOrWhiteSpace(), x => EF.Functions.Like(x.Account, $"%{search.Account}%"))
                                             .AndIf(search.Name.IsNotNullOrWhiteSpace(), x => EF.Functions.Like(x.Name, $"%{search.Name}%"));
 
-        var total = await _userRepository.CountAsync(whereExpression);
+        var total = await userRepository.CountAsync(whereExpression);
         if (total == 0)
             return new PageModelDto<UserDto>(search);
 
-        var entities = await _userRepository
+        var userEntities = await userRepository
                                         .Where(whereExpression)
                                         .OrderByDescending(x => x.Id)
                                         .Skip(search.SkipRows())
                                         .Take(search.PageSize)
                                         .ToListAsync();
 
-        var userDtos = Mapper.Map<List<UserDto>>(entities);
-        if (userDtos.IsNotNullOrEmpty())
-        {
-            var deptIds = userDtos.Where(d => d.DeptId is not null).Select(d => d.DeptId).Distinct();
-            var depts = (await _cacheService.GetAllOrganizationsFromCacheAsync()).Where(x => deptIds.Contains(x.Id)).Select(d => new { d.Id, d.FullName });
-            var roles = (await _cacheService.GetAllRolesFromCacheAsync()).Select(r => new { r.Id, r.Name });
-            foreach (var user in userDtos)
-            {
-                user.DeptName = depts.FirstOrDefault(x => x.Id == user.DeptId)?.FullName;
+        var roleUserEntities = await roleUserRelationRepository
+                                            .Where(x => userEntities.Select(u => u.Id).Contains(x.UserId))
+                                            .ToListAsync();
 
-                var roleIds = user.RoleIds.IsNullOrWhiteSpace()
-                                        ? new List<long>()
-                                        : user.RoleIds.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(x => long.Parse(x))
-                                        ;
-                user.RoleNames = roles.Where(x => roleIds.Contains(x.Id)).Select(x => x.Name).ToString(",");
-            }
+        var deptsCahce = await cacheService.GetAllOrganizationsFromCacheAsync();
+        var rolesCache = await cacheService.GetAllRolesFromCacheAsync();
+
+        var userDtos = Mapper.Map<List<UserDto>>(userEntities);
+        foreach (var user in userDtos)
+        {
+            user.DeptName = deptsCahce.FirstOrDefault(x => x.Id == user.DeptId)?.FullName ?? string.Empty;
+            var belongRoleIds = roleUserEntities.Where(x => x.UserId == user.Id).Select(x => x.RoleId).ToList();
+            user.RoleNames = rolesCache.Where(x => belongRoleIds.Contains(x.Id)).Select(x => x.Name).ToArray();
         }
 
-        var xdata = await _cacheService.GetOrganizationsSimpleTreeListAsync();
-        return new PageModelDto<UserDto>(search, userDtos, total, xdata);
+        return new PageModelDto<UserDto>(search, userDtos, total, deptsCahce);
     }
 
-    public async Task<UserInfoDto> GetUserInfoAsync(long id)
+    public async Task<UserProfileDto?> GetUserProfileAsync(long id)
     {
-        var userProfile = await _userRepository.FetchAsync(u => new UserProfileDto
-        {
-            Account = u.Account,
-            Avatar = u.Avatar,
-            Birthday = u.Birthday,
-            DeptId = u.DeptId,
-            DeptFullName = u.Dept.FullName,
-            Email = u.Email,
-            Name = u.Name,
-            Phone = u.Phone,
-            RoleIds = u.RoleIds,
-            Sex = u.Sex,
-            Status = u.Status
-        }, x => x.Id == id);
 
-        if (userProfile == null)
+        var userEntity = await userRepository.FetchAsync(x => x.Id == id);
+        if (userEntity is null)
             return null;
 
-        var userInfoDto = new UserInfoDto { Id = id, Profile = userProfile };
+        var roleIds = await roleUserRelationRepository.Where(x => x.UserId == id).Select(x => x.RoleId).ToListAsync();
+        var deptsCahce = await cacheService.GetAllOrganizationsFromCacheAsync();
+        var rolesCache = await cacheService.GetAllRolesFromCacheAsync();
 
-        if (userProfile.RoleIds.IsNotNullOrEmpty())
-        {
-            var roleIds = userProfile.RoleIds.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(x => long.Parse(x));
-            var roles = await _roleRepository
-                                            .Where(x => roleIds.Contains(x.Id))
-                                            .Select(r => new { r.Id, r.Tips, r.Name })
-                                            .ToListAsync();
-            foreach (var role in roles)
-            {
-                userInfoDto.Roles.Add(role.Tips);
-                userInfoDto.Profile.Roles.Add(role.Name);
-            }
 
-            var roleMenus = await _menuRepository.GetMenusByRoleIdsAsync(roleIds.ToArray(), true);
-            if (roleMenus.IsNotNullOrEmpty())
-                userInfoDto.Permissions.AddRange(roleMenus.Select(x => x.Url).Distinct());
-        }
+        var userProfileDto = Mapper.Map<UserProfileDto>(userEntity);
+        userProfileDto.DeptFullName = deptsCahce.FirstOrDefault(x => x.Id == userEntity.DeptId)?.FullName ?? string.Empty;
+        userProfileDto.RoleNames = rolesCache.Where(x => roleIds.Contains(x.Id)).Select(x => x.Name).ToString(",");
 
-        return userInfoDto;
+        return userProfileDto;
     }
 
     public async Task<AppSrvResult<UserValidatedInfoDto>> LoginAsync(UserLoginDto input)
     {
         input.TrimStringFields();
-        var accountsFilter = _bloomFilterFactory.Create(CachingConsts.BloomfilterOfAccountsKey);
-        var exists = await accountsFilter.ExistsAsync(input.Account.ToLower());
-        if (!exists)
-            return Problem(HttpStatusCode.BadRequest, "用户名或密码错误");
+        //var accountsFilter = _bloomFilterFactory.Create(CachingConsts.BloomfilterOfAccountsKey);
+        //var exists = await accountsFilter.ExistsAsync(input.Account.ToLower());
+        //if (!exists)
+        //    return Problem(HttpStatusCode.BadRequest, "用户名或密码错误");
 
-        var user = await _userRepository.FetchAsync(x => new
-        {
-            x.Id,
-            x.Account,
-            x.Password,
-            x.Salt,
-            x.Status,
-            x.Email,
-            x.Name,
-            x.RoleIds
-        }, x => x.Account == input.Account);
-
+        var user = await userRepository.FetchAsync(x => x.Account == input.Account);
         if (user is null)
             return Problem(HttpStatusCode.BadRequest, "用户名或密码错误");
 
-        var httpContext = _httpContextAccessor.HttpContext;
-
-        var device = string.Empty;
-        var ipAddress = string.Empty;
-        if (httpContext is not null)
-        {
-            device = httpContext.Request.Headers["device"].FirstOrDefault() ?? "web";
-            ipAddress = httpContext.Connection.RemoteIpAddress?.MapToIPv4().ToString();
-        }
+        var device = httpContextAccessor.HttpContext?.Request.Headers["device"].FirstOrDefault() ?? "web";
+        var ipAddress = httpContextAccessor.HttpContext?.Connection.RemoteIpAddress?.MapToIPv4().ToString() ?? "0.0.0.0";
         var channelWriter = Accessor<LoginLog>.Instance.Writer;
         var log = new LoginLog
         {
@@ -235,7 +188,7 @@ public class UserAppService : AbstractAppService, IUserAppService
             UserName = user.Name,
             CreateTime = DateTime.Now,
             Device = device,
-            RemoteIpAddress = ipAddress ?? string.Empty
+            RemoteIpAddress = ipAddress
         };
 
         if (user.Status != 1)
@@ -248,7 +201,7 @@ public class UserAppService : AbstractAppService, IUserAppService
         }
 
         // TODO
-        var failLoginCount = await _cacheService.GetFailLoginCountByUserIdAsync(user.Id);// set fail count from cache
+        var failLoginCount = await cacheService.GetFailLoginCountByUserIdAsync(user.Id);// set fail count from cache
         if (failLoginCount >= 5)
         {
             var problem = Problem(HttpStatusCode.TooManyRequests, "连续登录失败次数超过5次，账号已锁定");
@@ -256,10 +209,10 @@ public class UserAppService : AbstractAppService, IUserAppService
             log.StatusCode = problem.Status;
             await channelWriter.WriteAsync(log);
 
-            await _cacheService.RemoveCachesAsync(async (cancellToken) =>
+            await cacheService.RemoveCachesAsync(async (cancellToken) =>
             {
-                await _userRepository.UpdateAsync(new User() { Id = user.Id, Status = 0 }, UpdatingProps<User>(x => x.Status), cancellToken);
-            }, _cacheService.ConcatCacheKey(CachingConsts.UserValidatedInfoKeyPrefix, user.Id));
+                await userRepository.ExecuteUpdateAsync(x => x.Id == user.Id, setters => setters.SetProperty(y => y.Status, 0), cancellToken);
+            }, cacheService.ConcatCacheKey(CachingConsts.UserValidatedInfoKeyPrefix, user.Id));
 
             return problem;
         }
@@ -269,17 +222,18 @@ public class UserAppService : AbstractAppService, IUserAppService
             var problem = Problem(HttpStatusCode.BadRequest, "用户名或密码错误");
             log.Message = problem.Detail;
             log.StatusCode = problem.Status;
-            await _cacheService.SetFailLoginCountToCacheAsync(user.Id, ++failLoginCount);// set fail count to cache
+            await cacheService.SetFailLoginCountToCacheAsync(user.Id, ++failLoginCount);// set fail count to cache
             await channelWriter.WriteAsync(log);
             return problem;
         }
 
-        if (user.RoleIds.IsNullOrEmpty())
+        var roleIds = await roleUserRelationRepository.Where(x => x.UserId == user.Id).Select(x => x.RoleId).ToListAsync();
+        if (roleIds.IsNullOrEmpty())
         {
             var problem = Problem(HttpStatusCode.Forbidden, "未分配任务角色，请联系管理员");
             log.Message = problem.Detail;
             log.StatusCode = problem.Status;
-            await _cacheService.SetFailLoginCountToCacheAsync(user.Id, ++failLoginCount);// set fail count to cache
+            await cacheService.SetFailLoginCountToCacheAsync(user.Id, ++failLoginCount);// set fail count to cache
             await channelWriter.WriteAsync(log);
             return problem;
         }
@@ -287,25 +241,25 @@ public class UserAppService : AbstractAppService, IUserAppService
         log.Message = "登录成功";
         log.StatusCode = (int)HttpStatusCode.Created;
         log.Succeed = true;
-        await _cacheService.SetFailLoginCountToCacheAsync(user.Id, 0);// rest fail count to cache
+        await cacheService.SetFailLoginCountToCacheAsync(user.Id, 0);// rest fail count to cache
         await channelWriter.WriteAsync(log);
 
-        var userValidtedInfo = new UserValidatedInfoDto(user.Id, user.Account, user.Name, user.RoleIds, user.Status);
-        await _cacheService.SetValidateInfoToCacheAsync(userValidtedInfo);
+        var userValidtedInfo = new UserValidatedInfoDto(user.Id, user.Account, user.Name, roleIds.ToString(","), user.Status);
+        await cacheService.SetValidateInfoToCacheAsync(userValidtedInfo);
 
         return userValidtedInfo;
     }
 
     public async Task<AppSrvResult> ChangeUserValidateInfoExpiresDtAsync(long id)
     {
-        await _cacheService.ChangeUserValidateInfoCacheExpiresDtAsync(id);
+        await cacheService.ChangeUserValidateInfoCacheExpiresDtAsync(id);
         return AppSrvResult();
     }
 
     public async Task<AppSrvResult> UpdatePasswordAsync(long id, UserChangePwdDto input)
     {
         input.TrimStringFields();
-        var user = await _userRepository.FetchAsync(x => new
+        var user = await userRepository.FetchAsync(x => new
         {
             x.Id,
             x.Salt,
@@ -321,7 +275,7 @@ public class UserAppService : AbstractAppService, IUserAppService
 
         var newPwdString = InfraHelper.Encrypt.Md5(input.Password + user.Salt);
 
-        await _userRepository.UpdateAsync(new User { Id = user.Id, Password = newPwdString }, UpdatingProps<User>(x => x.Password));
+        await userRepository.ExecuteUpdateAsync(x => x.Id == id, setters => setters.SetProperty(y => y.Password, newPwdString));
 
         return AppSrvResult();
     }

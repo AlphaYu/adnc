@@ -58,11 +58,6 @@ public class User : EfFullAuditEntity, ISoftDelete
     public string Phone { get; set; } = string.Empty;
 
     /// <summary>
-    /// 角色id列表，以逗号分隔
-    /// </summary>
-    public string RoleIds { get; set; } = string.Empty;
-
-    /// <summary>
     /// 密码盐
     /// </summary>
     public string Salt { get; set; } = string.Empty;
@@ -70,7 +65,7 @@ public class User : EfFullAuditEntity, ISoftDelete
     /// <summary>
     /// 性别
     /// </summary>
-    public int Sex { get; set; }
+    public int Gender { get; set; }
 
     /// <summary>
     /// 状态
@@ -80,4 +75,6 @@ public class User : EfFullAuditEntity, ISoftDelete
     public bool IsDeleted { get; set; }
 
     public virtual Organization? Dept { get; set; }
+
+    public virtual List<RoleUserRelation>? RoleUserRelations { get; set; } = [];
 }

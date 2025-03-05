@@ -2,6 +2,6 @@
 {
     public class UserSetRoleDto : InputDto
     {
-        public long[] RoleIds { get; set; }
+        public long[] RoleIds { get; set; } = [];
     }
 }

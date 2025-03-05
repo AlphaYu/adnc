@@ -452,7 +452,7 @@ namespace Adnc.Demo.Usr.Repository.Migrations
                         .HasColumnName("salt")
                         .HasComment("密码盐");
 
-                    b.Property<int>("Sex")
+                    b.Property<int>("Gender")
                         .HasColumnType("int")
                         .HasColumnName("sex")
                         .HasComment("性别");

@@ -21,11 +21,6 @@
         public DateTime? Birthday { get; set; }
 
         /// <summary>
-        /// 部门Id
-        /// </summary>
-        public long? DeptId { get; set; }
-
-        /// <summary>
         /// 部门名称
         /// </summary>
         public string DeptFullName { get; set; }
@@ -48,21 +43,11 @@
         /// <summary>
         /// 角色Id
         /// </summary>
-        public string RoleIds { get; set; }
-
-        /// <summary>
-        /// 角色集合
-        /// </summary>
-        public List<string> Roles { get; set; } = new List<string>();
+        public string RoleNames { get; set; }
 
         /// <summary>
         /// 性别
         /// </summary>
-        public int? Sex { get; set; }
-
-        /// <summary>
-        /// 状态
-        /// </summary>
-        public int Status { get; set; }
+        public int Gender { get; set; }
     }
 }

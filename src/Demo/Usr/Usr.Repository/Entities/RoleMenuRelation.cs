@@ -3,11 +3,11 @@
 /// <summary>
 /// 菜单角色关系
 /// </summary>
-public class RoleRelation : EfEntity
+public class RoleMenuRelation : EfEntity
 {
     public long MenuId { get; set; }
 
     public long RoleId { get; set; }
 
-    public virtual Menu Menu { get; set; } = default!;
+    // public virtual Menu Menu { get; set; } = default!;
 }

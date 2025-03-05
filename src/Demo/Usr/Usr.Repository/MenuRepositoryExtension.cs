@@ -1,17 +1,18 @@
-﻿namespace Adnc.Demo.Usr.Repository
+﻿namespace Adnc.Demo.Usr.Repository;
+
+public static class MenuRepositoryExtension
 {
-    public static class MenuRepositoryExtension
+    public static async Task<List<Menu>> GetMenusByRoleIdsAsync(this IEfRepository<Menu> repo, long[] roleIds, bool? status)
     {
-        public static async Task<List<Menu>> GetMenusByRoleIdsAsync(this IEfRepository<Menu> repo, long[] roleIds, bool enabledOnly)
-        {
-            var query = repo.GetAll<RoleRelation>().Where(r => roleIds.Contains(r.RoleId))
-                                       .Select(u => new { u.Menu });
-            if (enabledOnly)
-                query = query.Where(r => r.Menu.Status);
+        var roleMenus = repo.GetAll<RoleMenuRelation>().Where(r => roleIds.Contains(r.RoleId)).DistinctBy(x => x.MenuId);
 
-            var relations = await query.ToListAsync();
+        var menuWhere = ExpressionCreator.New<Menu>().AndIf(status is not null, x => x.Status == status);
+        var menus = repo.GetAll<Menu>().Where(menuWhere);
 
-            return relations.Select(d => d.Menu).Distinct().ToList();
-        }
+        var result = await (from m in menus
+                            join rm in roleMenus on m.Id equals rm.MenuId
+                            select m).ToListAsync();
+
+        return result ?? [];
     }
 }

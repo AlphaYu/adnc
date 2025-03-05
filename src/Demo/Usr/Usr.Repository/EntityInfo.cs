@@ -13,7 +13,8 @@ public class EntityInfo : AbstractEntityInfo
         builder.Entity<Organization>().ToTable("sys_organization");
         builder.Entity<Menu>().ToTable("sys_menu");
         builder.Entity<Role>().ToTable("sys_role");
-        builder.Entity<RoleRelation>().ToTable("sys_rolerelation");
+        builder.Entity<RoleMenuRelation>().ToTable("sys_role_menu_relation");
+        builder.Entity<RoleUserRelation>().ToTable("sys_role_user_relation");
         builder.Entity<User>().ToTable("sys_user");
     }
 }
