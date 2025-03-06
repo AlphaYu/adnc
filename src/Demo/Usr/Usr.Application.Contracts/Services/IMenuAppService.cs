@@ -47,7 +47,7 @@ namespace Adnc.Demo.Usr.Application.Contracts.Services
         /// </summary>
         /// <param name="roleIds"></param>
         /// <returns></returns>
-        Task<List<TDesignRouterDto>> GetMenusForRouterAsync(IEnumerable<long> roleIds);
+        Task<List<RouterDto>> GetMenusForRouterAsync(IEnumerable<long> roleIds);
 
         /// <summary>
         /// 获取指定角色的菜单

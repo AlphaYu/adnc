@@ -70,7 +70,7 @@ public class MenuController : AdncControllerBase
     /// <returns></returns>
     [HttpGet("routers")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<List<TDesignRouterDto>>> GetMenusForRouterAsync()
+    public async Task<ActionResult<List<RouterDto>>> GetMenusForRouterAsync()
     {
         string[] roleIds = _userContext.RoleIds.Split(",", StringSplitOptions.RemoveEmptyEntries) ?? [];
         return await _menuService.GetMenusForRouterAsync(roleIds.Select(x=>long.Parse(x)));

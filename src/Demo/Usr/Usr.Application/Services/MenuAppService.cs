@@ -86,7 +86,7 @@ public class MenuAppService(IEfRepository<Menu> menuRepo, UserContext userContex
         return result;
     }
 
-    public async Task<List<TDesignRouterDto>> GetMenusForRouterAsync(IEnumerable<long> roleIds)
+    public async Task<List<RouterDto>> GetMenusForRouterAsync(IEnumerable<long> roleIds)
     {
 
         //所有菜单
@@ -100,32 +100,24 @@ public class MenuAppService(IEfRepository<Menu> menuRepo, UserContext userContex
         if (menus.IsNullOrEmpty())
             return [];
 
-        List<TDesignRouterDto>  GetChildren(string code)
+        List<RouterDto>  GetChildren(string code)
         {
-            var children = new List<TDesignRouterDto>();
+            var children = new List<RouterDto>();
             var pMenus = menus.Where(x => x.PCode == code);
             foreach (var menu in pMenus)
             {
-                var router = new TDesignRouterDto
+                var router = new RouterDto
                 {
-                    PCode = menu.PCode ?? string.Empty,
-                    Code = menu.Code,
                     Name = menu.Code,
                     Path = menu.Url.StartsWith("http") ? string.Empty : menu.Url,
                     Component = menu.Component,
                     Redirect = string.Empty,
-                    Meta = new TDesignRouterDto.RouteMeta
+                    Meta = new RouterDto.RouteMeta
                     {
                         Icon = menu.Icon,
                         Title = menu.Name,
-                        OrderNo = menu.Ordinal,
                         Hidden = menu.Hidden,
-                        Expanded = menu.IsOpen,
-                        HiddenBreadcrumb = true,
-                        Single = false,
                         KeepAlive = true,
-                        FrameSrc = menu.Url.StartsWith("http") ? menu.Url : string.Empty,
-                        FrameBlank = false
                     },
                     Children = GetChildren(menu.Code)
                 };
