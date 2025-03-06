@@ -21,7 +21,7 @@ public class UserAppService(
         user.Salt = Random.Shared.Next(5, false);
         user.Password = InfraHelper.Encrypt.Md5(user.Password + user.Salt);
 
-        //var cacheKey = _cacheService.ConcatCacheKey(CachingConsts.UserValidatedInfoKeyPrefix, user.Id);
+        //var cacheKey = cacheService.ConcatCacheKey(CachingConsts.UserValidatedInfoKeyPrefix, user.Id);
         //var bloomFilterCacheKey = _bloomFilterFactory.Create(CachingConsts.BloomfilterOfCacheKey);
         //await bloomFilterCacheKey.AddAsync(cacheKey);
 
@@ -97,7 +97,7 @@ public class UserAppService(
 
         var roleIds = userBelongsRoleIds.Split(",", StringSplitOptions.RemoveEmptyEntries).Select(x => long.Parse(x.Trim()));
 
-        var allMenuCodes = await cacheService.GetAllMenuCodesFromCacheAsync();
+        var allMenuCodes = await cacheService.GetAllRoleMenuCodesFromCacheAsync();
 
         var upperCodes = allMenuCodes?.Where(x => roleIds.Contains(x.RoleId)).Select(x => x.Code.ToUpper()) ?? [];
         if (upperCodes.IsNullOrEmpty())

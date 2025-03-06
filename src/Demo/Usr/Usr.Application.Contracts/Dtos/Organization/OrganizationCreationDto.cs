@@ -18,7 +18,7 @@ public class OrganizationCreationDto : InputDto
     /// <summary>
     /// 父级Id
     /// </summary>
-    public long? Pid { get; set; }
+    public long Pid { get; set; } = 0;
 
     ///// <summary>
     ///// 父级Id集合

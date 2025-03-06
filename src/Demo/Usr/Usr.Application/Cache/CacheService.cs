@@ -1,26 +1,22 @@
-﻿using Microsoft.Extensions.Configuration;
-
-namespace Adnc.Demo.Usr.Application.Cache;
+﻿namespace Adnc.Demo.Usr.Application.Cache;
 
 public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IServiceProvider> serviceProvider, Lazy<IConfiguration> configuration)
     : AbstractCacheService(cacheProvider, serviceProvider), ICachePreheatable
 {
-    private readonly Lazy<IConfiguration> _configuration = configuration;
-
     public override async Task PreheatAsync()
     {
         await GetAllOrganizationsFromCacheAsync();
-        await GetAllRelationsFromCacheAsync();
+        await GetAllRoleUserRelationsFromCacheAsync();
         await GetAllMenusFromCacheAsync();
         await GetAllRolesFromCacheAsync();
-        await GetAllMenuCodesFromCacheAsync();
+        await GetAllRoleMenuCodesFromCacheAsync();
         await GetOrganizationsSimpleTreeListAsync();
     }
 
     internal int GetRefreshTokenExpires()
     {
-        var refreshTokenExpire = _configuration.Value.GetValue<int>($"{NodeConsts.JWT}:RefreshTokenExpire");
-        var clockSkew = _configuration.Value.GetValue<int>($"{NodeConsts.JWT}:ClockSkew");
+        var refreshTokenExpire = configuration.Value.GetValue<int>($"{NodeConsts.JWT}:RefreshTokenExpire");
+        var clockSkew = configuration.Value.GetValue<int>($"{NodeConsts.JWT}:ClockSkew");
         return refreshTokenExpire + clockSkew;
     }
 
@@ -39,12 +35,6 @@ public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IServi
     internal async Task<UserValidatedInfoDto> GetUserValidateInfoFromCacheAsync(long id)
     {
         var cacheKey = ConcatCacheKey(CachingConsts.UserValidatedInfoKeyPrefix, id.ToString());
-        //var cacheValue = await CacheProvider.Value.GetAsync(cacheKey, async () =>
-        //{
-        //    using var scope = ServiceProvider.Value.CreateScope();
-        //    var userRepository = scope.ServiceProvider.GetRequiredService<IEfRepository<SysUser>>();
-        //    return await userRepository.FetchAsync(x => new UserValidatedInfoDto(x.Id, x.Account, x.Name, x.RoleIds, x.Status, x.Password), x => x.Id == Id && x.Status == 1);
-        //}, GetRefreshTokenExpires());
         var cacheValue = await CacheProvider.Value.GetAsync<UserValidatedInfoDto>(cacheKey);
         return cacheValue.Value;
     }
@@ -60,22 +50,22 @@ public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IServi
         var cahceValue = await CacheProvider.Value.GetAsync(CachingConsts.DetpListCacheKey, async () =>
         {
             using var scope = ServiceProvider.Value.CreateScope();
-            var orgRepository = scope.ServiceProvider.GetRequiredService<IEfRepository<Organization>>();
-            var allOrganizations = await orgRepository.GetAll(writeDb: true).OrderBy(x => x.Ordinal).ToListAsync();
+            var orgRepo = scope.ServiceProvider.GetRequiredService<IEfRepository<Organization>>();
+            var allOrganizations = await orgRepo.GetAll(writeDb: true).OrderBy(x => x.Ordinal).ToListAsync();
             return Mapper.Value.Map<List<OrganizationDto>>(allOrganizations);
         }, TimeSpan.FromSeconds(GeneralConsts.OneYear));
 
         return cahceValue.Value;
     }
 
-    internal async Task<List<RelationDto>> GetAllRelationsFromCacheAsync()
+    internal async Task<List<RoleMenuRelationDto>> GetAllRoleUserRelationsFromCacheAsync()
     {
         var cahceValue = await CacheProvider.Value.GetAsync(CachingConsts.MenuRelationCacheKey, async () =>
         {
             using var scope = ServiceProvider.Value.CreateScope();
-            var relationRepository = scope.ServiceProvider.GetRequiredService<IEfRepository<RoleRelation>>();
-            var allRelations = await relationRepository.GetAll(writeDb: true).ToListAsync();
-            return Mapper.Value.Map<List<RelationDto>>(allRelations);
+            var roleMenuRepo = scope.ServiceProvider.GetRequiredService<IEfRepository<RoleMenuRelation>>();
+            var allRelations = await roleMenuRepo.GetAll(writeDb: true).ToListAsync();
+            return Mapper.Value.Map<List<RoleMenuRelationDto>>(allRelations);
         }, TimeSpan.FromSeconds(GeneralConsts.OneYear));
 
         return cahceValue.Value;
@@ -86,8 +76,8 @@ public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IServi
         var cahceValue = await CacheProvider.Value.GetAsync(CachingConsts.MenuListCacheKey, async () =>
         {
             using var scope = ServiceProvider.Value.CreateScope();
-            var menuRepository = scope.ServiceProvider.GetRequiredService<IEfRepository<Menu>>();
-            var allMenus = await menuRepository.GetAll(writeDb: true).OrderBy(x => x.Ordinal).ToListAsync();
+            var menuRepo = scope.ServiceProvider.GetRequiredService<IEfRepository<Menu>>();
+            var allMenus = await menuRepo.GetAll(writeDb: true).OrderBy(x => x.Ordinal).ToListAsync();
             return Mapper.Value.Map<List<MenuDto>>(allMenus);
         }, TimeSpan.FromSeconds(GeneralConsts.OneYear));
 
@@ -99,25 +89,31 @@ public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IServi
         var cahceValue = await CacheProvider.Value.GetAsync(CachingConsts.RoleListCacheKey, async () =>
         {
             using var scope = ServiceProvider.Value.CreateScope();
-            var roleRepository = scope.ServiceProvider.GetRequiredService<IEfRepository<Role>>();
-            var allRoles = await roleRepository.GetAll(writeDb: true).OrderBy(x => x.Ordinal).ToListAsync();
+            var roleRepo = scope.ServiceProvider.GetRequiredService<IEfRepository<Role>>();
+            var allRoles = await roleRepo.GetAll(writeDb: true).OrderBy(x => x.Ordinal).ToListAsync();
             return Mapper.Value.Map<List<RoleDto>>(allRoles);
         }, TimeSpan.FromSeconds(GeneralConsts.OneYear));
 
         return cahceValue.Value;
     }
 
-    internal async Task<List<RoleMenuCodesDto>> GetAllMenuCodesFromCacheAsync()
+    internal async Task<List<RoleMenuCodesDto>> GetAllRoleMenuCodesFromCacheAsync()
     {
         var cahceValue = await CacheProvider.Value.GetAsync(CachingConsts.MenuCodesCacheKey, async () =>
         {
             using var scope = ServiceProvider.Value.CreateScope();
-            var relationRepository = scope.ServiceProvider.GetRequiredService<IEfRepository<RoleRelation>>();
-            var allMenus = await relationRepository.GetAll(writeDb: true)
-                                                                            .Where(x => x.Menu.Status)
-                                                                            .Select(x => new RoleMenuCodesDto { RoleId = x.RoleId, Code = x.Menu.Code })
-                                                                            .ToListAsync();
-            return allMenus.Distinct().ToList();
+            var menuRepo = scope.ServiceProvider.GetRequiredService<IEfRepository<Menu>>();
+            var roleMenuRepo = scope.ServiceProvider.GetRequiredService<IEfRepository<RoleMenuRelation>>();
+
+            var menuQueryAble = menuRepo.GetAll().Where(x => x.Status);
+            var roleMenuQueryAble = roleMenuRepo.GetAll();
+
+            var roleMenus = await (from r in roleMenuQueryAble
+                                   join m in menuQueryAble on r.MenuId equals m.Id
+                                   select new RoleMenuCodesDto { RoleId = r.RoleId, Code = m.Code }
+                                ).ToListAsync();
+
+            return roleMenus;
         }, TimeSpan.FromSeconds(GeneralConsts.OneYear));
 
         return cahceValue.Value;
@@ -136,10 +132,7 @@ public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IServi
         if (Organizations.IsNullOrEmpty())
             return result;
 
-        var roots = Organizations.Where(d => d.Pid == 0)
-                                    .OrderBy(d => d.Ordinal)
-                                    .Select(x => new OrganizationSimpleTreeDto { Id = x.Id, Label = x.SimpleName })
-                                    .ToList();
+        var roots = Organizations.Where(d => d.Pid == 0).OrderBy(d => d.Ordinal).Select(x => new OrganizationSimpleTreeDto { Id = x.Id, Label = x.SimpleName }).ToList();
         foreach (var node in roots)
         {
             GetChildren(node, Organizations);
@@ -148,10 +141,7 @@ public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IServi
 
         void GetChildren(OrganizationSimpleTreeDto currentNode, List<OrganizationDto> Organizations)
         {
-            var childrenNodes = Organizations.Where(d => d.Pid == currentNode.Id)
-                                                       .OrderBy(d => d.Ordinal)
-                                                       .Select(x => new OrganizationSimpleTreeDto() { Id = x.Id, Label = x.SimpleName })
-                                                       .ToList();
+            var childrenNodes = Organizations.Where(d => d.Pid == currentNode.Id).OrderBy(d => d.Ordinal).Select(x => new OrganizationSimpleTreeDto() { Id = x.Id, Label = x.SimpleName }).ToList();
             if (childrenNodes.IsNotNullOrEmpty())
             {
                 currentNode.Children.AddRange(childrenNodes);

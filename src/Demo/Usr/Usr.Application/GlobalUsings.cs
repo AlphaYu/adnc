@@ -23,6 +23,7 @@ global using Adnc.Shared.Application.Services;
 global using Adnc.Shared.Repository.DapperEntities;
 global using AutoMapper;
 global using Microsoft.EntityFrameworkCore;
+global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Options;
 global using System.Linq.Expressions;

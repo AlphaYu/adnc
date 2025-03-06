@@ -117,7 +117,7 @@ public class MenuAppService : AbstractAppService, IMenuAppService
         //所有菜单
         var allMenus = await _cacheService.GetAllMenusFromCacheAsync();
         //所有菜单角色关系
-        var allRelations = await _cacheService.GetAllRelationsFromCacheAsync();
+        var allRelations = await _cacheService.GetAllRoleUserRelationsFromCacheAsync();
         //角色拥有的菜单Ids
         var menusIds = allRelations.Where(x => roleIds.Contains(x.RoleId.Value)).Select(x => x.MenuId).Distinct();
         //更加菜单Id获取菜单实体
@@ -166,7 +166,7 @@ public class MenuAppService : AbstractAppService, IMenuAppService
         //所有菜单
         var allMenus = await _cacheService.GetAllMenusFromCacheAsync();
         //所有菜单角色关系
-        var allRelations = await _cacheService.GetAllRelationsFromCacheAsync();
+        var allRelations = await _cacheService.GetAllRoleUserRelationsFromCacheAsync();
         //角色拥有的菜单Ids
         var menusIds = allRelations.Where(x => roleIds.Contains(x.RoleId.Value)).Select(x => x.MenuId).Distinct();
         //更加菜单Id获取菜单实体
@@ -218,7 +218,7 @@ public class MenuAppService : AbstractAppService, IMenuAppService
 
     public async Task<MenuTreeDto> GetMenuTreeListByRoleIdAsync(long roleId)
     {
-        var menuIds = (await _cacheService.GetAllRelationsFromCacheAsync()).Where(x => x.RoleId.Value == roleId).Select(r => r.MenuId.Value) ?? new List<long>();
+        var menuIds = (await _cacheService.GetAllRoleUserRelationsFromCacheAsync()).Where(x => x.RoleId.Value == roleId).Select(r => r.MenuId.Value) ?? new List<long>();
         var roleTreeList = new List<ZTreeNodeDto<long, dynamic>>();
 
         var menus = (await _cacheService.GetAllMenusFromCacheAsync()).Where(w => true).OrderBy(x => x.Ordinal);

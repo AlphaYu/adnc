@@ -9,7 +9,7 @@ public class Organization : EfFullAuditEntity
 
     public int Ordinal { get; set; }
 
-    public long? Pid { get; set; }
+    public long Pid { get; set; } = 0;
 
     public string Pids { get; set; } = string.Empty;
 

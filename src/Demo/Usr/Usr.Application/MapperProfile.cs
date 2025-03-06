@@ -13,7 +13,6 @@ public sealed class MapperProfile : Profile
         CreateMap<Menu, MenuRouterDto>();
         CreateMap<Menu, MenuNodeDto>();
         CreateMap<MenuDto, MenuNodeDto>();
-        CreateMap<RoleRelation, RelationDto>();
         CreateMap<RoleCreationDto, Role>();
         CreateMap<RoleUpdationDto, Role>();
         CreateMap<Role, RoleDto>().ReverseMap();
