@@ -2,7 +2,7 @@
 
 namespace Adnc.Demo.Usr.Application.Services;
 
-public class MenuAppService(IEfRepository<Menu> menuRepo, UserContext userContext, CacheService cacheService) : AbstractAppService, IMenuAppService
+public class MenuAppService(IEfRepository<Menu> menuRepo, CacheService cacheService) : AbstractAppService, IMenuAppService
 {
     public async Task<AppSrvResult<long>> CreateAsync(MenuCreationDto input)
     {

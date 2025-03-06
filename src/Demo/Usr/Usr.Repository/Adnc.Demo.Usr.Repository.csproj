@@ -19,4 +19,8 @@
 		<PackageReference Include="Adnc.Shared.Repository" Version="$(Shared_Version)" />
 		<PackageReference Include="Adnc.Infra.Repository.EfCore.MySql" Version="$(Infra_Version)" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Migrations\" />
+	</ItemGroup>
 </Project>

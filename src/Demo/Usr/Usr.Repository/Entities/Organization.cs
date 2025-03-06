@@ -15,5 +15,5 @@ public class Organization : EfFullAuditEntity
 
     public string SimpleName { get; set; } = string.Empty;
 
-    public string? Tips { get; set; } = string.Empty;
+    public string Tips { get; set; } = string.Empty;
 }

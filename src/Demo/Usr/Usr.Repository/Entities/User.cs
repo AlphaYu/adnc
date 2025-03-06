@@ -35,7 +35,7 @@ public class User : EfFullAuditEntity, ISoftDelete
     /// <summary>
     /// 部门Id
     /// </summary>
-    public long? DeptId { get; set; }
+    public long DeptId { get; set; }
 
     /// <summary>
     /// email
@@ -73,8 +73,4 @@ public class User : EfFullAuditEntity, ISoftDelete
     public int Status { get; set; }
 
     public bool IsDeleted { get; set; }
-
-    public virtual Organization? Dept { get; set; }
-
-    public virtual List<RoleUserRelation>? RoleUserRelations { get; set; } = [];
 }

@@ -3,6 +3,7 @@ using System;
 using Adnc.Infra.Repository.EfCore.MySql;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
@@ -11,61 +12,21 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Adnc.Demo.Usr.Repository.Migrations
 {
     [DbContext(typeof(MySqlDbContext))]
-    [Migration("20230405133415_Init")]
-    partial class Init
+    [Migration("20250306105016_Init20250306")]
+    partial class Init20250306
     {
+        /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.6")
+                .HasAnnotation("ProductVersion", "8.0.13")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             MySqlModelBuilderExtensions.HasCharSet(modelBuilder, "utf8mb4 ");
+            MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
-            modelBuilder.Entity("Adnc.Shared.Repository.EfCoreEntities.EventTracker", b =>
-                {
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint")
-                        .HasColumnName("id")
-                        .HasColumnOrder(1)
-                        .HasComment("");
-
-                    b.Property<long>("CreateBy")
-                        .HasColumnType("bigint")
-                        .HasColumnName("createby")
-                        .HasComment("创建人");
-
-                    b.Property<DateTime>("CreateTime")
-                        .HasColumnType("datetime(6)")
-                        .HasColumnName("createtime")
-                        .HasComment("创建时间/注册时间");
-
-                    b.Property<long>("EventId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("eventid")
-                        .HasComment("");
-
-                    b.Property<string>("TrackerName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)")
-                        .HasColumnName("trackername")
-                        .HasComment("");
-
-                    b.HasKey("Id")
-                        .HasName("pk_sys_eventtracker");
-
-                    b.HasIndex(new[] { "EventId", "TrackerName" }, "uk_eventid_trackername")
-                        .IsUnique()
-                        .HasDatabaseName("ix_sys_eventtracker_eventid_trackername");
-
-                    b.ToTable("sys_eventtracker", (string)null);
-
-                    b.HasComment("事件跟踪/处理信息");
-                });
-
-            modelBuilder.Entity("Adnc.Demo.Usr.Entities.Menu", b =>
+            modelBuilder.Entity("Adnc.Demo.Usr.Repository.Entities.Menu", b =>
                 {
                     b.Property<long>("Id")
                         .HasColumnType("bigint")
@@ -122,12 +83,12 @@ namespace Adnc.Demo.Usr.Repository.Migrations
                         .HasColumnName("levels")
                         .HasComment("级别");
 
-                    b.Property<long?>("ModifyBy")
+                    b.Property<long>("ModifyBy")
                         .HasColumnType("bigint")
                         .HasColumnName("modifyby")
                         .HasComment("最后更新人");
 
-                    b.Property<DateTime?>("ModifyTime")
+                    b.Property<DateTime>("ModifyTime")
                         .HasColumnType("datetime(6)")
                         .HasColumnName("modifytime")
                         .HasComment("最后更新时间");
@@ -179,12 +140,13 @@ namespace Adnc.Demo.Usr.Repository.Migrations
                     b.HasKey("Id")
                         .HasName("pk_sys_menu");
 
-                    b.ToTable("sys_menu", (string)null);
-
-                    b.HasComment("菜单");
+                    b.ToTable("sys_menu", null, t =>
+                        {
+                            t.HasComment("菜单");
+                        });
                 });
 
-            modelBuilder.Entity("Adnc.Demo.Usr.Entities.Organization", b =>
+            modelBuilder.Entity("Adnc.Demo.Usr.Repository.Entities.Organization", b =>
                 {
                     b.Property<long>("Id")
                         .HasColumnType("bigint")
@@ -209,12 +171,12 @@ namespace Adnc.Demo.Usr.Repository.Migrations
                         .HasColumnName("fullname")
                         .HasComment("");
 
-                    b.Property<long?>("ModifyBy")
+                    b.Property<long>("ModifyBy")
                         .HasColumnType("bigint")
                         .HasColumnName("modifyby")
                         .HasComment("最后更新人");
 
-                    b.Property<DateTime?>("ModifyTime")
+                    b.Property<DateTime>("ModifyTime")
                         .HasColumnType("datetime(6)")
                         .HasColumnName("modifytime")
                         .HasComment("最后更新时间");
@@ -224,7 +186,7 @@ namespace Adnc.Demo.Usr.Repository.Migrations
                         .HasColumnName("ordinal")
                         .HasComment("");
 
-                    b.Property<long?>("Pid")
+                    b.Property<long>("Pid")
                         .HasColumnType("bigint")
                         .HasColumnName("pid")
                         .HasComment("");
@@ -252,17 +214,25 @@ namespace Adnc.Demo.Usr.Repository.Migrations
                     b.HasKey("Id")
                         .HasName("pk_sys_organization");
 
-                    b.ToTable("sys_organization", (string)null);
-
-                    b.HasComment("部门");
+                    b.ToTable("sys_organization", null, t =>
+                        {
+                            t.HasComment("部门");
+                        });
                 });
 
-            modelBuilder.Entity("Adnc.Demo.Usr.Entities.Role", b =>
+            modelBuilder.Entity("Adnc.Demo.Usr.Repository.Entities.Role", b =>
                 {
                     b.Property<long>("Id")
                         .HasColumnType("bigint")
                         .HasColumnName("id")
                         .HasColumnOrder(1)
+                        .HasComment("");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("varchar(32)")
+                        .HasColumnName("code")
                         .HasComment("");
 
                     b.Property<long>("CreateBy")
@@ -275,17 +245,17 @@ namespace Adnc.Demo.Usr.Repository.Migrations
                         .HasColumnName("createtime")
                         .HasComment("创建时间/注册时间");
 
-                    b.Property<long?>("DeptId")
+                    b.Property<long>("DeptId")
                         .HasColumnType("bigint")
                         .HasColumnName("deptid")
                         .HasComment("");
 
-                    b.Property<long?>("ModifyBy")
+                    b.Property<long>("ModifyBy")
                         .HasColumnType("bigint")
                         .HasColumnName("modifyby")
                         .HasComment("最后更新人");
 
-                    b.Property<DateTime?>("ModifyTime")
+                    b.Property<DateTime>("ModifyTime")
                         .HasColumnType("datetime(6)")
                         .HasColumnName("modifytime")
                         .HasComment("最后更新时间");
@@ -302,26 +272,21 @@ namespace Adnc.Demo.Usr.Repository.Migrations
                         .HasColumnName("ordinal")
                         .HasComment("");
 
-                    b.Property<long?>("Pid")
+                    b.Property<long>("Pid")
                         .HasColumnType("bigint")
                         .HasColumnName("pid")
-                        .HasComment("");
-
-                    b.Property<string>("Tips")
-                        .HasMaxLength(64)
-                        .HasColumnType("varchar(64)")
-                        .HasColumnName("tips")
                         .HasComment("");
 
                     b.HasKey("Id")
                         .HasName("pk_sys_role");
 
-                    b.ToTable("sys_role", (string)null);
-
-                    b.HasComment("角色");
+                    b.ToTable("sys_role", null, t =>
+                        {
+                            t.HasComment("角色");
+                        });
                 });
 
-            modelBuilder.Entity("Adnc.Demo.Usr.Entities.RoleRelation", b =>
+            modelBuilder.Entity("Adnc.Demo.Usr.Repository.Entities.RoleMenuRelation", b =>
                 {
                     b.Property<long>("Id")
                         .HasColumnType("bigint")
@@ -340,17 +305,42 @@ namespace Adnc.Demo.Usr.Repository.Migrations
                         .HasComment("");
 
                     b.HasKey("Id")
-                        .HasName("pk_sys_rolerelation");
+                        .HasName("pk_sys_role_menu_relation");
 
-                    b.HasIndex("MenuId")
-                        .HasDatabaseName("ix_sys_rolerelation_menuid");
-
-                    b.ToTable("sys_rolerelation", (string)null);
-
-                    b.HasComment("菜单角色关系");
+                    b.ToTable("sys_role_menu_relation", null, t =>
+                        {
+                            t.HasComment("菜单角色关系");
+                        });
                 });
 
-            modelBuilder.Entity("Adnc.Demo.Usr.Entities.User", b =>
+            modelBuilder.Entity("Adnc.Demo.Usr.Repository.Entities.RoleUserRelation", b =>
+                {
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint")
+                        .HasColumnName("id")
+                        .HasColumnOrder(1)
+                        .HasComment("");
+
+                    b.Property<long>("RoleId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("roleid")
+                        .HasComment("");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("userid")
+                        .HasComment("");
+
+                    b.HasKey("Id")
+                        .HasName("pk_sys_role_user_relation");
+
+                    b.ToTable("sys_role_user_relation", null, t =>
+                        {
+                            t.HasComment("用户角色关系");
+                        });
+                });
+
+            modelBuilder.Entity("Adnc.Demo.Usr.Repository.Entities.User", b =>
                 {
                     b.Property<long>("Id")
                         .HasColumnType("bigint")
@@ -387,7 +377,7 @@ namespace Adnc.Demo.Usr.Repository.Migrations
                         .HasColumnName("createtime")
                         .HasComment("创建时间/注册时间");
 
-                    b.Property<long?>("DeptId")
+                    b.Property<long>("DeptId")
                         .HasColumnType("bigint")
                         .HasColumnName("deptid")
                         .HasComment("部门Id");
@@ -399,6 +389,11 @@ namespace Adnc.Demo.Usr.Repository.Migrations
                         .HasColumnName("email")
                         .HasComment("email");
 
+                    b.Property<int>("Gender")
+                        .HasColumnType("int")
+                        .HasColumnName("gender")
+                        .HasComment("性别");
+
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("tinyint(1)")
@@ -407,12 +402,12 @@ namespace Adnc.Demo.Usr.Repository.Migrations
                         .HasColumnOrder(2)
                         .HasComment("");
 
-                    b.Property<long?>("ModifyBy")
+                    b.Property<long>("ModifyBy")
                         .HasColumnType("bigint")
                         .HasColumnName("modifyby")
                         .HasComment("最后更新人");
 
-                    b.Property<DateTime?>("ModifyTime")
+                    b.Property<DateTime>("ModifyTime")
                         .HasColumnType("datetime(6)")
                         .HasColumnName("modifytime")
                         .HasComment("最后更新时间");
@@ -438,24 +433,12 @@ namespace Adnc.Demo.Usr.Repository.Migrations
                         .HasColumnName("phone")
                         .HasComment("手机号");
 
-                    b.Property<string>("RoleIds")
-                        .IsRequired()
-                        .HasMaxLength(72)
-                        .HasColumnType("varchar(72)")
-                        .HasColumnName("roleids")
-                        .HasComment("角色id列表，以逗号分隔");
-
                     b.Property<string>("Salt")
                         .IsRequired()
                         .HasMaxLength(6)
                         .HasColumnType("varchar(6)")
                         .HasColumnName("salt")
                         .HasComment("密码盐");
-
-                    b.Property<int>("Gender")
-                        .HasColumnType("int")
-                        .HasColumnName("sex")
-                        .HasComment("性别");
 
                     b.Property<int>("Status")
                         .HasColumnType("int")
@@ -465,34 +448,55 @@ namespace Adnc.Demo.Usr.Repository.Migrations
                     b.HasKey("Id")
                         .HasName("pk_sys_user");
 
-                    b.HasIndex("DeptId")
-                        .HasDatabaseName("ix_sys_user_deptid");
-
-                    b.ToTable("sys_user", (string)null);
-
-                    b.HasComment("管理员");
+                    b.ToTable("sys_user", null, t =>
+                        {
+                            t.HasComment("管理员");
+                        });
                 });
 
-            modelBuilder.Entity("Adnc.Demo.Usr.Entities.RoleRelation", b =>
+            modelBuilder.Entity("Adnc.Shared.Repository.EfCoreEntities.EventTracker", b =>
                 {
-                    b.HasOne("Adnc.Demo.Usr.Entities.Menu", "Menu")
-                        .WithMany()
-                        .HasForeignKey("MenuId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id")
+                        .HasComment("");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<long>("CreateBy")
+                        .HasColumnType("bigint")
+                        .HasColumnName("createby")
+                        .HasComment("创建人");
+
+                    b.Property<DateTime>("CreateTime")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("createtime")
+                        .HasComment("创建时间/注册时间");
+
+                    b.Property<long>("EventId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("eventid")
+                        .HasComment("");
+
+                    b.Property<string>("TrackerName")
                         .IsRequired()
-                        .HasConstraintName("fk_sys_rolerelation_sys_menu_menuid");
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("trackername")
+                        .HasComment("");
 
-                    b.Navigation("Menu");
-                });
+                    b.HasKey("Id")
+                        .HasName("pk_sys_eventtracker");
 
-            modelBuilder.Entity("Adnc.Demo.Usr.Entities.User", b =>
-                {
-                    b.HasOne("Adnc.Demo.Usr.Entities.Organization", "Dept")
-                        .WithMany()
-                        .HasForeignKey("DeptId")
-                        .HasConstraintName("fk_sys_user_sys_organization_deptid");
+                    b.HasIndex(new[] { "EventId", "TrackerName" }, "uk_eventid_trackername")
+                        .IsUnique()
+                        .HasDatabaseName("ix_sys_eventtracker_eventid_trackername");
 
-                    b.Navigation("Dept");
+                    b.ToTable("sys_eventtracker", null, t =>
+                        {
+                            t.HasComment("事件跟踪/处理信息");
+                        });
                 });
 #pragma warning restore 612, 618
         }

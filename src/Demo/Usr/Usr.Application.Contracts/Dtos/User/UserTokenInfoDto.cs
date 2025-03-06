@@ -2,19 +2,13 @@
 {
     public record UserTokenInfoDto : IDto
     {
-        public UserTokenInfoDto(string name, string token, DateTime exprie, string refreshToken, DateTime refreshExprie)
+        public UserTokenInfoDto(string token, DateTime exprie, string refreshToken, DateTime refreshExprie)
         {
-            Name = name;
             Token = token;
             Expire = exprie;
             RefreshToken = refreshToken;
             RefreshExpire = refreshExprie;
         }
-
-        /// <summary>
-        /// username
-        /// </summary>
-        public string Name { get; set; }
 
         /// <summary>
         /// accesstoken
