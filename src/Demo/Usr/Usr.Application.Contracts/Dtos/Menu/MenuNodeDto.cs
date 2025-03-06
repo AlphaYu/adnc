@@ -9,7 +9,7 @@ public class MenuNodeDto : OutputDto
     /// <summary>
     /// 父菜单Id
     /// </summary>
-    public long? ParentId { get; set; }
+    public long ParentId { get; set; }
 
     /// <summary>
     /// 菜单名称
@@ -54,7 +54,7 @@ public class MenuNodeDto : OutputDto
     /// <summary>
     /// 菜单路径
     /// </summary>
-    public string Path { get; set; }
+    public string Path { get; set; } = string.Empty;
 
     /// <summary>
     /// 菜单图标

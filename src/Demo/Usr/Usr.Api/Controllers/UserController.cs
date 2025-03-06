@@ -5,22 +5,8 @@
 /// </summary>
 [Route($"{RouteConsts.UsrRoot}/users")]
 [ApiController]
-public class UserController : AdncControllerBase
+public class UserController(IUserAppService userService, UserContext userContext) : AdncControllerBase
 {
-    private readonly IUserAppService _userService;
-    private readonly UserContext _userContext;
-    private readonly ILogger<UserController> _logger;
-
-    public UserController(
-        IUserAppService userService, 
-        UserContext userContext,
-        ILogger<UserController> logger)
-    {
-        _userService = userService;
-        _userContext = userContext;
-        _logger = logger;
-    }
-
     /// <summary>
     /// 新增用户
     /// </summary>
@@ -30,7 +16,7 @@ public class UserController : AdncControllerBase
     [AdncAuthorize(PermissionConsts.User.Create)]
     [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<ActionResult<long>> CreateAsync([FromBody] UserCreationDto input)
-        => CreatedResult(await _userService.CreateAsync(input));
+        => CreatedResult(await userService.CreateAsync(input));
 
     /// <summary>
     /// 修改用户
@@ -42,7 +28,7 @@ public class UserController : AdncControllerBase
     [AdncAuthorize(PermissionConsts.User.Update)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult> UpdateAsync([FromRoute] long id, [FromBody] UserUpdationDto input)
-        => Result(await _userService.UpdateAsync(id, input));
+        => Result(await userService.UpdateAsync(id, input));
 
     /// <summary>
     /// 删除用户
@@ -53,7 +39,7 @@ public class UserController : AdncControllerBase
     [AdncAuthorize(PermissionConsts.User.Delete)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult> DeleteAsync([FromRoute] long id)
-        => Result(await _userService.DeleteAsync(id));
+        => Result(await userService.DeleteAsync(id));
 
     /// <summary>
     /// 设置用户角色
@@ -65,7 +51,7 @@ public class UserController : AdncControllerBase
     [AdncAuthorize(PermissionConsts.User.SetRole)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult> SetRoleAsync([FromRoute] long id, [FromBody] long[] roleIds)
-        => Result(await _userService.SetRoleAsync(id, new UserSetRoleDto { RoleIds = roleIds }));
+        => Result(await userService.SetRoleAsync(id, new UserSetRoleDto { RoleIds = roleIds }));
 
     /// <summary>
     /// 变更用户状态
@@ -77,7 +63,7 @@ public class UserController : AdncControllerBase
     [AdncAuthorize(PermissionConsts.User.ChangeStatus)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult> ChangeStatus([FromRoute] long id, [FromBody] SimpleDto<int> status)
-        => Result(await _userService.ChangeStatusAsync(id, status.Value));
+        => Result(await userService.ChangeStatusAsync(id, status.Value));
 
     /// <summary>
     /// 批量变更用户状态
@@ -88,7 +74,7 @@ public class UserController : AdncControllerBase
     [AdncAuthorize(PermissionConsts.User.ChangeStatus)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult> ChangeStatus([FromBody] UserChangeStatusDto input)
-        => Result(await _userService.ChangeStatusAsync(input.UserIds, input.Status));
+        => Result(await userService.ChangeStatusAsync(input.UserIds, input.Status));
 
     /// <summary>
     /// 获取用户分页列表
@@ -99,13 +85,25 @@ public class UserController : AdncControllerBase
     [AdncAuthorize(PermissionConsts.User.GetList)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<PageModelDto<UserDto>>> GetPagedAsync([FromQuery] UserSearchPagedDto search)
-        => await _userService.GetPagedAsync(search);
+        => await userService.GetPagedAsync(search);
+
+    /// <summary>
+    /// 获取用户与权限信息
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet("userinfo")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<UserInfoDto> GetUserInfoAsync()
+    {
+        var result = await userService.GetUserInfoAsync(userContext);
+        return result;
+    }
 
     /// <summary>
     /// 获取登录用户个人信息
     /// </summary>
     /// <returns></returns>
-    [HttpGet("current")]
+    [HttpGet("profile")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<UserProfileDto>> GetCurrentUserInfoAsync() => await _userService.GetUserProfileAsync(_userContext.Id);
+    public async Task<ActionResult<UserProfileDto>> GetUserProfileAsync() => await userService.GetUserProfileAsync(userContext.Id);
 }

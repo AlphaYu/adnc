@@ -118,12 +118,4 @@ public class AccountController(IOptions<JWTOptions> jwtOptions, UserContext user
         var result = await userService.GetPermissionsAsync(id, requestPermissions, userBelongsRoleIds);
         return result ?? new List<string>();
     }
-
-    [HttpGet("{id}/userinfo")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<UserInfoDto> GetUserInfoAsync()
-    {
-        var result = await userService.GetUserInfoAsync(userContext);
-        return result;
-    }
 }

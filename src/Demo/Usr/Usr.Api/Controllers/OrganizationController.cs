@@ -5,13 +5,8 @@
 /// </summary>
 [Route($"{RouteConsts.UsrRoot}/organizations")]
 [ApiController]
-public class OrganizationController : AdncControllerBase
+public class OrganizationController(IOrganizationAppService organizationService) : AdncControllerBase
 {
-    private readonly IOrganizationAppService _organizationService;
-
-    public OrganizationController(IOrganizationAppService organizationService)
-       => _organizationService = organizationService;
-
     /// <summary>
     /// 删除组织机构
     /// </summary>
@@ -21,7 +16,7 @@ public class OrganizationController : AdncControllerBase
     [AdncAuthorize(PermissionConsts.Dept.Delete)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult> Delete([FromRoute] long id)
-        => Result(await _organizationService.DeleteAsync(id));
+        => Result(await organizationService.DeleteAsync(id));
 
     /// <summary>
     /// 新增组织机构
@@ -32,7 +27,7 @@ public class OrganizationController : AdncControllerBase
     [AdncAuthorize(PermissionConsts.Dept.Create)]
     [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<ActionResult<long>> CreateAsync([FromBody] OrganizationCreationDto input)
-        => CreatedResult(await _organizationService.CreateAsync(input));
+        => CreatedResult(await organizationService.CreateAsync(input));
 
     /// <summary>
     /// 修改组织机构
@@ -44,7 +39,7 @@ public class OrganizationController : AdncControllerBase
     [AdncAuthorize(PermissionConsts.Dept.Update)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult<long>> UpdateAsync([FromRoute] long id, [FromBody] OrganizationUpdationDto input)
-        => Result(await _organizationService.UpdateAsync(id, input));
+        => Result(await organizationService.UpdateAsync(id, input));
 
     /// <summary>
     /// 获取组织机构列表
@@ -54,5 +49,5 @@ public class OrganizationController : AdncControllerBase
     [AdncAuthorize(PermissionConsts.Dept.GetList, AdncAuthorizeAttribute.JwtWithBasicSchemes)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<List<OrganizationTreeDto>>> GetListAsync()
-        => await _organizationService.GetTreeListAsync();
+        => await organizationService.GetTreeListAsync();
 }

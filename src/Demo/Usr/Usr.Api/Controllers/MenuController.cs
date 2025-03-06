@@ -7,19 +7,8 @@ namespace Adnc.Demo.Usr.Api.Controllers;
 /// </summary>
 [Route($"{RouteConsts.UsrRoot}/menus")]
 [ApiController]
-public class MenuController : AdncControllerBase
+public class MenuController(IMenuAppService menuService, UserContext userContext) : AdncControllerBase
 {
-    private readonly IMenuAppService _menuService;
-    private readonly UserContext _userContext;
-
-    public MenuController(
-        IMenuAppService menuService
-        , UserContext userContext)
-    {
-        _menuService = menuService;
-        _userContext = userContext;
-    }
-
     /// <summary>
     /// 新增菜单
     /// </summary>
@@ -29,7 +18,7 @@ public class MenuController : AdncControllerBase
     [AdncAuthorize(PermissionConsts.Menu.Create)]
     [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<ActionResult<long>> CreateAsync([FromBody] MenuCreationDto menuDto)
-        => CreatedResult(await _menuService.CreateAsync(menuDto));
+        => CreatedResult(await menuService.CreateAsync(menuDto));
 
     /// <summary>
     /// 修改菜单
@@ -41,7 +30,7 @@ public class MenuController : AdncControllerBase
     [AdncAuthorize(PermissionConsts.Menu.Update)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult> UpdateAsync([FromRoute] long id, [FromBody] MenuUpdationDto input)
-        => Result(await _menuService.UpdateAsync(id, input));
+        => Result(await menuService.UpdateAsync(id, input));
 
     /// <summary>
     /// 删除菜单
@@ -52,7 +41,7 @@ public class MenuController : AdncControllerBase
     [AdncAuthorize(PermissionConsts.Menu.Delete)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult> DeleteAsync([FromRoute] long id)
-        => Result(await _menuService.DeleteAsync(id));
+        => Result(await menuService.DeleteAsync(id));
 
     /// <summary>
     /// 获取菜单树
@@ -62,7 +51,7 @@ public class MenuController : AdncControllerBase
     [AdncAuthorize(PermissionConsts.Menu.GetList)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<List<MenuNodeDto>>> GetlistAsync()
-        => await _menuService.GetlistAsync();
+        => await menuService.GetlistAsync();
 
     /// <summary>
     /// 获取侧边栏路由菜单
@@ -72,8 +61,8 @@ public class MenuController : AdncControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<List<RouterDto>>> GetMenusForRouterAsync()
     {
-        string[] roleIds = _userContext.RoleIds.Split(",", StringSplitOptions.RemoveEmptyEntries) ?? [];
-        return await _menuService.GetMenusForRouterAsync(roleIds.Select(x=>long.Parse(x)));
+        string[] roleIds = userContext.RoleIds.Split(",", StringSplitOptions.RemoveEmptyEntries) ?? [];
+        return await menuService.GetMenusForRouterAsync(roleIds.Select(x=>long.Parse(x)));
     }
 
     /// <summary>
@@ -84,5 +73,5 @@ public class MenuController : AdncControllerBase
     [HttpGet("{roleId}/menutree")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<MenuTreeDto>> GetMenuTreeListByRoleIdAsync([FromRoute] long roleId)
-        => await _menuService.GetMenuTreeListByRoleIdAsync(roleId);
+        => await menuService.GetMenuTreeListByRoleIdAsync(roleId);
 }

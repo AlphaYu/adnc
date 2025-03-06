@@ -5,13 +5,8 @@
 /// </summary>
 [Route($"{RouteConsts.UsrRoot}/roles")]
 [ApiController]
-public class RoleController : AdncControllerBase
+public class RoleController(IRoleAppService roleService) : AdncControllerBase
 {
-    private readonly IRoleAppService _roleService;
-
-    public RoleController(IRoleAppService roleService)
-       => _roleService = roleService;
-
     /// <summary>
     /// 查询角色
     /// </summary>
@@ -21,7 +16,7 @@ public class RoleController : AdncControllerBase
     [AdncAuthorize(PermissionConsts.Role.GetList)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<PageModelDto<RoleDto>>> GetPagedAsync([FromQuery] RolePagedSearchDto input)
-        => await _roleService.GetPagedAsync(input);
+        => await roleService.GetPagedAsync(input);
 
     /// <summary>
     /// 根据用户ID获取角色树
@@ -31,7 +26,7 @@ public class RoleController : AdncControllerBase
     [HttpGet("{userId}/rolestree")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<RoleTreeDto>> GetRoleTreeListByUserIdAsync([FromRoute] long userId)
-        => await _roleService.GetRoleTreeListByUserIdAsync(userId);
+        => await roleService.GetRoleTreeListByUserIdAsync(userId);
 
     /// <summary>
     /// 删除角色
@@ -42,7 +37,7 @@ public class RoleController : AdncControllerBase
     [AdncAuthorize(PermissionConsts.Role.Delete)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult> DeleteAsync([FromRoute] long id)
-        => Result(await _roleService.DeleteAsync(id));
+        => Result(await roleService.DeleteAsync(id));
 
     /// <summary>
     /// 保存角色权限
@@ -54,7 +49,7 @@ public class RoleController : AdncControllerBase
     [AdncAuthorize(PermissionConsts.Role.SetPermissons)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult> SetPermissonsAsync([FromRoute] long id, [FromBody] long[] permissions)
-        => Result(await _roleService.SetPermissonsAsync(new RoleSetPermissonsDto() { RoleId = id, Permissions = permissions }));
+        => Result(await roleService.SetPermissonsAsync(new RoleSetPermissonsDto() { RoleId = id, Permissions = permissions }));
 
     /// <summary>
     /// 新增角色
@@ -65,7 +60,7 @@ public class RoleController : AdncControllerBase
     [AdncAuthorize(PermissionConsts.Role.Create)]
     [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<ActionResult<long>> CreateAsync([FromBody] RoleCreationDto input)
-        => CreatedResult(await _roleService.CreateAsync(input));
+        => CreatedResult(await roleService.CreateAsync(input));
 
     /// <summary>
     /// 修改角色
@@ -77,5 +72,5 @@ public class RoleController : AdncControllerBase
     [AdncAuthorize(PermissionConsts.Role.Update)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult> UpdateAsync([FromRoute] long id, [FromBody] RoleUpdationDto input)
-        => Result(await _roleService.UpdateAsync(id, input));
+        => Result(await roleService.UpdateAsync(id, input));
 }

@@ -77,8 +77,8 @@ public class MenuAppService(IEfRepository<Menu> menuRepo, CacheService cacheServ
         foreach (var pair in dictNodes)
         {
             var currentNode = pair.Value;
-            if (currentNode.ParentId.HasValue && dictNodes.ContainsKey(currentNode.ParentId.Value))
-                dictNodes[currentNode.ParentId.Value].Children.Add(currentNode);
+            if (dictNodes.ContainsKey(currentNode.ParentId))
+                dictNodes[currentNode.ParentId].Children.Add(currentNode);
             else
                 result.Add(currentNode);
         }

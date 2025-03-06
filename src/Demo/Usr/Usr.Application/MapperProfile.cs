@@ -23,6 +23,8 @@ public sealed class MapperProfile : Profile
         CreateMap<OrganizationUpdationDto, Organization>();
         CreateMap<Organization, OrganizationDto>();
         CreateMap<Organization, OrganizationTreeDto>();
+        CreateMap<RoleMenuRelation, RoleMenuRelationDto>();
+        CreateMap<User, UserProfileDto>();
 
         CreateMap<LoginRequest, UserLoginDto>();
         CreateMap<OrganizationTreeDto, DeptReply>();
