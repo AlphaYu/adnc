@@ -2,12 +2,6 @@
 
 namespace Adnc.Demo.Usr.Application.Contracts.Dtos.Menu;
 
-public sealed class TDesignRouterAndPermissionsDto
-{
-    public List<TDesignRouterDto> Routers { get; set; } = [];
-    public List<string> Permissions { get; set; } = [];
-}
-
 public sealed class TDesignRouterDto
 {
     [JsonIgnore]

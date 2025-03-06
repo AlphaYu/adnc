@@ -1,4 +1,6 @@
-﻿namespace Adnc.Demo.Usr.Application.Contracts.Services
+﻿using Adnc.Shared;
+
+namespace Adnc.Demo.Usr.Application.Contracts.Services
 {
     /// <summary>
     /// 用户管理
@@ -86,7 +88,7 @@
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        Task<UserProfileDto?> GetUserProfileAsync(long id);
+        Task<UserProfileDto> GetUserProfileAsync(long id);
 
         /// <summary>
         /// 登录
@@ -131,5 +133,11 @@
         /// <returns></returns>
         [OperateLog(LogName = "调整认证信息过期时间")]
         Task<AppSrvResult> ChangeUserValidateInfoExpiresDtAsync(long id);
+
+        /// <summary>
+        /// 获取用户与权限信息
+        /// </summary>
+        /// <returns></returns>
+        Task<UserInfoDto> GetUserInfoAsync(UserContext userContext);
     }
 }

@@ -70,22 +70,10 @@ public class MenuController : AdncControllerBase
     /// <returns></returns>
     [HttpGet("routers")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<List<MenuRouterDto>>> GetMenusForRouterAsync()
+    public async Task<ActionResult<List<TDesignRouterDto>>> GetMenusForRouterAsync()
     {
-        var roleIds = _userContext.RoleIds.Split(",", StringSplitOptions.RemoveEmptyEntries).ToList();
-        return await _menuService.GetMenusForRouterAsync(roleIds.Select(x => long.Parse(x)));
-    }
-
-    /// <summary>
-    /// 获取tdesign侧边栏路由菜单
-    /// </summary>
-    /// <returns></returns>
-    [HttpGet("tdesignrouters")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<TDesignRouterAndPermissionsDto>> GetMenusForTDesignRouterAsync()
-    {
-        var roleIds = _userContext.RoleIds.Split(",", StringSplitOptions.RemoveEmptyEntries).ToList();
-        return await _menuService.GetMenusForTDesignRouterAsync(roleIds.Select(x => long.Parse(x)));
+        string[] roleIds = _userContext.RoleIds.Split(",", StringSplitOptions.RemoveEmptyEntries) ?? [];
+        return await _menuService.GetMenusForRouterAsync(roleIds.Select(x=>long.Parse(x)));
     }
 
     /// <summary>

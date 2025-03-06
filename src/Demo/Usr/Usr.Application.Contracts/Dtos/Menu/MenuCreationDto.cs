@@ -58,7 +58,7 @@ public class MenuCreationDto : InputDto
     /// <summary>
     /// 递归父级菜单编号
     /// </summary>
-    public string PCodes { get; set; } = "[0],";
+    public string PCodes { get; set; } = "[0]";
 
     /// <summary>
     /// 状态1:启用,0:禁用

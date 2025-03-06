@@ -5,12 +5,12 @@ public class RoleCreationDto : InputDto
     /// <summary>
     /// 角色名
     /// </summary>
-    public string Name { get; set; }
+    public string Name { get; set; } = string.Empty;
 
     /// <summary>
-    /// 角色描述
+    /// 角色代码
     /// </summary>
-    public string Tips { get; set; }
+    public string Code { get; set; } = string.Empty;
 
     /// <summary>
     /// 序号

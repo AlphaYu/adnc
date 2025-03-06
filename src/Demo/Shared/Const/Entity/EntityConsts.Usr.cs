@@ -15,7 +15,7 @@ public static class UserConsts
 public static class RoleConsts
 {
     public const int Name_MaxLength = 32;
-    public const int Tips_MaxLength = 64;
+    public const int Code_MaxLength = 32;
 }
 
 public static class DeptConsts

@@ -149,7 +149,7 @@ public class UserAppService(
 
         var userEntity = await userRepository.FetchAsync(x => x.Id == id);
         if (userEntity is null)
-            return null;
+            return new UserProfileDto();
 
         var roleIds = await roleUserRelationRepository.Where(x => x.UserId == id).Select(x => x.RoleId).ToListAsync();
         var deptsCahce = await cacheService.GetAllOrganizationsFromCacheAsync();
@@ -277,5 +277,32 @@ public class UserAppService(
         await userRepository.ExecuteUpdateAsync(x => x.Id == id, setters => setters.SetProperty(y => y.Password, newPwdString));
 
         return AppSrvResult();
+    }
+
+    public async Task<UserInfoDto> GetUserInfoAsync(UserContext userContext)
+    {
+        //所有菜单
+        var allMenus = await cacheService.GetAllMenusFromCacheAsync();
+        //所以角色
+        var allRoles = await cacheService.GetAllRolesFromCacheAsync();
+        //所有菜单角色关系
+        var allRelations = await cacheService.GetAllRoleUserRelationsFromCacheAsync();
+        //角色拥有的菜单Ids
+        var roleIds = userContext.RoleIds.Split(",", StringSplitOptions.RemoveEmptyEntries).Select(x => x.ToLong());
+        var menusIds = allRelations.Where(x => roleIds.Contains(x.RoleId)).Select(x => x.MenuId).Distinct();
+        //根据菜单Id获取菜单实体
+        var menus = allMenus.Where(x => menusIds.Contains(x.Id) && x.Status == true);
+
+        var userInfo = new UserInfoDto
+        {
+            UserId = userContext.Id,
+            UserName = userContext.Name,
+            NickName = userContext.Name,
+            Avatar = string.Empty,
+            Roles = allRoles.Where(x => roleIds.Contains(x.Id)).Select(x => x.Code).ToArray(),
+            Perms = menus.Select(x => x.Code).ToArray()
+        };
+
+        return userInfo;
     }
 }

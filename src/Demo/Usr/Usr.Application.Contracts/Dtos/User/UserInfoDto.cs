@@ -8,21 +8,31 @@
         /// <summary>
         /// 用户Id
         /// </summary>
-        public long Id { get; set; }
+        public long UserId { get; set; }
 
         /// <summary>
-        /// 基本信息
+        ///  用户名
         /// </summary>
-        public UserProfileDto Profile { get; set; }
+        public string UserName { get; set; } = string.Empty;
 
         /// <summary>
-        /// 角色集合
+        ///  昵称
         /// </summary>
-        public List<string> Roles { get; private set; } = new List<string>();
+        public string NickName { get; set; } = string.Empty;
+
+        /// <summary>
+        ///  头像
+        /// </summary>
+        public string Avatar { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 角色代码集合
+        /// </summary>
+        public string[] Roles { get; set; } = [];
 
         /// <summary>
         /// 权限集合
         /// </summary>
-        public List<string> Permissions { get; private set; } = new List<string>();
+        public string[] Perms { get; set; } = [];
     }
 }

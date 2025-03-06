@@ -7,6 +7,6 @@ public class RoleConfig : AbstractEntityTypeConfiguration<Role>
         base.Configure(builder);
 
         builder.Property(x => x.Name).HasMaxLength(RoleConsts.Name_MaxLength);
-        builder.Property(x => x.Tips).HasMaxLength(RoleConsts.Tips_MaxLength);
+        builder.Property(x => x.Code).HasMaxLength(RoleConsts.Code_MaxLength);
     }
 }

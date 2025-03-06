@@ -107,5 +107,5 @@ public class UserController : AdncControllerBase
     /// <returns></returns>
     [HttpGet("current")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<UserProfileDto>> GetCurrentUserInfoAsync() => await _userService.GetUserInfoAsync(_userContext.Id);
+    public async Task<ActionResult<UserProfileDto>> GetCurrentUserInfoAsync() => await _userService.GetUserProfileAsync(_userContext.Id);
 }

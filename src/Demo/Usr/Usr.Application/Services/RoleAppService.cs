@@ -1,18 +1,17 @@
-﻿using Castle.Core.Internal;
+﻿namespace Adnc.Demo.Usr.Application.Services;
 
-namespace Adnc.Demo.Usr.Application.Services;
-
-public class RoleAppService(
-    IEfRepository<Role> roleRepo,
-    IEfRepository<RoleUserRelation> roleUserRelationRepo,
-    IEfRepository<RoleMenuRelation> roleMenuRelationRepo,
-    CacheService cacheService) : AbstractAppService, IRoleAppService
+public class RoleAppService(IEfRepository<Role> roleRepo, IEfRepository<RoleUserRelation> roleUserRelationRepo, IEfRepository<RoleMenuRelation> roleMenuRelationRepo, CacheService cacheService)
+    : AbstractAppService, IRoleAppService
 {
     public async Task<AppSrvResult<long>> CreateAsync(RoleCreationDto input)
     {
         input.TrimStringFields();
-        var exists = (await cacheService.GetAllRolesFromCacheAsync()).Any(x => x.Name == input.Name);
-        if (exists)
+        var existsCode = await roleRepo.AnyAsync(x => x.Code == input.Code);
+        if (existsCode)
+            return Problem(HttpStatusCode.BadRequest, "该角色代码已经存在");
+
+        var existsName = await roleRepo.AnyAsync(x => x.Name == input.Name);
+        if (existsName)
             return Problem(HttpStatusCode.BadRequest, "该角色名称已经存在");
 
         var role = Mapper.Map<Role>(input, IdGenerater.GetNextId());
@@ -24,13 +23,18 @@ public class RoleAppService(
     public async Task<AppSrvResult> UpdateAsync(long id, RoleUpdationDto input)
     {
         input.TrimStringFields();
-        var exists = (await cacheService.GetAllRolesFromCacheAsync()).Any(x => x.Name == input.Name && x.Id != id);
-        if (exists)
-            return Problem(HttpStatusCode.BadRequest, "该角色名称已经存在");
 
         var role = await roleRepo.FetchAsync(x => x.Id == id);
         if (role is null)
             return Problem(HttpStatusCode.BadRequest, "该角色Id不存在");
+
+        var existsCode = await roleRepo.AnyAsync(x => x.Code == input.Code && x.Id != id);
+        if (existsCode)
+            return Problem(HttpStatusCode.BadRequest, "该角色代码已经存在");
+
+        var existsName = await roleRepo.AnyAsync(x => x.Code == input.Code && x.Id != id);
+        if (existsName)
+            return Problem(HttpStatusCode.BadRequest, "该角色名称已经存在");
 
         Mapper.Map(input, role);
         await roleRepo.UpdateAsync(role);
@@ -77,9 +81,9 @@ public class RoleAppService(
         IEnumerable<ZTreeNodeDto<long, dynamic>> treeNodes = rolesCache.Select(x => new ZTreeNodeDto<long, dynamic>
         {
             Id = x.Id,
-            PID = x.Pid ?? 0,
+            PID = x.Pid,
             Name = x.Name,
-            Open = !(x.Pid.HasValue && x.Pid.Value > 0),
+            Open = !(x.Pid > 0),
             Checked = roleIds.Contains(x.Id)
         });
 

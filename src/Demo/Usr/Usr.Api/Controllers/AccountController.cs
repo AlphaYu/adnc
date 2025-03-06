@@ -5,26 +5,8 @@
 /// </summary>
 [Route($"{RouteConsts.AuthRoot}/session")]
 [ApiController]
-public class AccountController : AdncControllerBase
+public class AccountController(IOptions<JWTOptions> jwtOptions, UserContext userContext, IUserAppService userService, ILogger<AccountController> logger) : AdncControllerBase
 {
-    private readonly IOptions<JWTOptions> _jwtOptions;
-    private readonly UserContext _userContext;
-    private readonly IUserAppService _userService;
-    private readonly ILogger<AccountController> _logger;
-
-    public AccountController(
-        IOptions<JWTOptions> jwtOptions,
-        UserContext userContext,
-        IUserAppService userService,
-        ILogger<AccountController> logger
-        )
-    {
-        _jwtOptions = jwtOptions;
-        _userContext = userContext;
-        _userService = userService;
-        _logger = logger;
-    }
-
     /// <summary>
     /// 登录
     /// </summary>
@@ -35,12 +17,12 @@ public class AccountController : AdncControllerBase
     [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<ActionResult<UserTokenInfoDto>> LoginAsync([FromBody] UserLoginDto input)
     {
-        var result = await _userService.LoginAsync(input);
+        var result = await userService.LoginAsync(input);
         if (result.IsSuccess)
         {
             var validatedInfo = result.Content;
-            var accessToken = JwtTokenHelper.CreateAccessToken(_jwtOptions.Value, validatedInfo.ValidationVersion, validatedInfo.Account, validatedInfo.Id.ToString(), validatedInfo.Name, validatedInfo.RoleIds, BearerDefaults.Manager);
-            var refreshToken = JwtTokenHelper.CreateRefreshToken(_jwtOptions.Value, validatedInfo.ValidationVersion, validatedInfo.Id.ToString());
+            var accessToken = JwtTokenHelper.CreateAccessToken(jwtOptions.Value, validatedInfo.ValidationVersion, validatedInfo.Account, validatedInfo.Id.ToString(), validatedInfo.Name, validatedInfo.RoleIds, BearerDefaults.Manager);
+            var refreshToken = JwtTokenHelper.CreateRefreshToken(jwtOptions.Value, validatedInfo.ValidationVersion, validatedInfo.Id.ToString());
             var tokenInfo = new UserTokenInfoDto(validatedInfo.Name, accessToken.Token, accessToken.Expire, refreshToken.Token, refreshToken.Expire);
             return Created($"/auth/session", tokenInfo);
         }
@@ -53,7 +35,7 @@ public class AccountController : AdncControllerBase
     /// <returns></returns>
     [HttpDelete()]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<ActionResult> LogoutAsync() => Result(await _userService.DeleteUserValidateInfoAsync(_userContext.Id));
+    public async Task<ActionResult> LogoutAsync() => Result(await userService.DeleteUserValidateInfoAsync(userContext.Id));
 
     /// <summary>
     /// 刷新Token
@@ -64,25 +46,25 @@ public class AccountController : AdncControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<UserTokenInfoDto>> RefreshAccessTokenAsync([FromBody] UserRefreshTokenDto input)
     {
-        var claimOfId = JwtTokenHelper.GetClaimFromRefeshToken(_jwtOptions.Value, input.RefreshToken, JwtRegisteredClaimNames.NameId);
+        var claimOfId = JwtTokenHelper.GetClaimFromRefeshToken(jwtOptions.Value, input.RefreshToken, JwtRegisteredClaimNames.NameId);
         if (claimOfId is not null)
         {
             var id = claimOfId.Value.ToLong();
             if (id is null)
                 return Forbid();
 
-            var validatedInfo = await _userService.GetUserValidatedInfoAsync(id.Value);
+            var validatedInfo = await userService.GetUserValidatedInfoAsync(id.Value);
             if (validatedInfo is null)
                 return Forbid();
 
-            var jti = JwtTokenHelper.GetClaimFromRefeshToken(_jwtOptions.Value, input.RefreshToken, JwtRegisteredClaimNames.Jti);
+            var jti = JwtTokenHelper.GetClaimFromRefeshToken(jwtOptions.Value, input.RefreshToken, JwtRegisteredClaimNames.Jti);
             if (jti is null || jti.Value != validatedInfo.ValidationVersion)
                 return Forbid();
 
-            var accessToken = JwtTokenHelper.CreateAccessToken(_jwtOptions.Value, validatedInfo.ValidationVersion, validatedInfo.Account, validatedInfo.Id.ToString(), validatedInfo.Name, validatedInfo.RoleIds, BearerDefaults.Manager);
-            var refreshToken = JwtTokenHelper.CreateRefreshToken(_jwtOptions.Value, validatedInfo.ValidationVersion, validatedInfo.Id.ToString());
+            var accessToken = JwtTokenHelper.CreateAccessToken(jwtOptions.Value, validatedInfo.ValidationVersion, validatedInfo.Account, validatedInfo.Id.ToString(), validatedInfo.Name, validatedInfo.RoleIds, BearerDefaults.Manager);
+            var refreshToken = JwtTokenHelper.CreateRefreshToken(jwtOptions.Value, validatedInfo.ValidationVersion, validatedInfo.Id.ToString());
 
-            await _userService.ChangeUserValidateInfoExpiresDtAsync(id.Value);
+            await userService.ChangeUserValidateInfoExpiresDtAsync(id.Value);
 
             var tokenInfo = new UserTokenInfoDto(validatedInfo.Name, accessToken.Token, accessToken.Expire, refreshToken.Token, refreshToken.Expire);
             return Ok(tokenInfo);
@@ -97,7 +79,7 @@ public class AccountController : AdncControllerBase
     /// <returns></returns>
     [HttpPut("password")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<ActionResult> ChangePassword([FromBody] UserChangePwdDto input) => Result(await _userService.UpdatePasswordAsync(_userContext.Id, input));
+    public async Task<ActionResult> ChangePassword([FromBody] UserChangePwdDto input) => Result(await userService.UpdatePasswordAsync(userContext.Id, input));
 
     /// <summary>
     ///  获取认证信息
@@ -109,8 +91,8 @@ public class AccountController : AdncControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<UserValidatedInfoDto>> GetUserValidatedInfoAsync()
     {
-        var result = await _userService.GetUserValidatedInfoAsync(_userContext.Id);
-        _logger.LogDebug($"UserContext:{_userContext.Id}");
+        var result = await userService.GetUserValidatedInfoAsync(userContext.Id);
+        logger.LogDebug($"UserContext:{userContext.Id}");
         if (result is null)
             return NotFound();
 
@@ -128,12 +110,20 @@ public class AccountController : AdncControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<List<string>>> GetCurrenUserPermissions([FromRoute] long id, [FromQuery] IEnumerable<string> requestPermissions, [FromQuery] string userBelongsRoleIds)
     {
-        if (id != _userContext.Id)
+        if (id != userContext.Id)
         {
-            _logger.LogDebug($"id={id},usercontextid={_userContext.Id}");
+            logger.LogDebug($"id={id},usercontextid={userContext.Id}");
             return Forbid();
         }
-        var result = await _userService.GetPermissionsAsync(id, requestPermissions, userBelongsRoleIds);
+        var result = await userService.GetPermissionsAsync(id, requestPermissions, userBelongsRoleIds);
         return result ?? new List<string>();
+    }
+
+    [HttpGet("{id}/userinfo")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<UserInfoDto> GetUserInfoAsync()
+    {
+        var result = await userService.GetUserInfoAsync(userContext);
+        return result;
     }
 }

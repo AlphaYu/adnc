@@ -29,7 +29,7 @@ public class UsrGrpcServer : Adnc.Demo.Shared.Remote.Grpc.Services.UsrGrpc.UsrGr
         if (request.UserId != _userContext.Id)
         {
             grpcResponse.IsSuccessStatusCode = false;
-            grpcResponse.Error = @"request.UserId != _userContext.Id";
+            grpcResponse.Error = @"request.UserId != userContext.Id";
             return grpcResponse;
         }
         var result = await _userService.GetPermissionsAsync(_userContext.Id, request.RequestPermissions, request.UserBelongsRoleIds);

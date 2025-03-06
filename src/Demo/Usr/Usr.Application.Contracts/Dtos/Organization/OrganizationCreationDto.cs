@@ -33,7 +33,7 @@ public class OrganizationCreationDto : InputDto
     ///// <summary>
     ///// 部门描述
     ///// </summary>
-    ////public string Tips { get; set; }
+    ////public string Code { get; set; }
 
     ///// <summary>
     ///// 版本号
