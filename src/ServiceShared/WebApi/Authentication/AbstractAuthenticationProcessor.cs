@@ -20,7 +20,7 @@ public abstract class AbstractAuthenticationProcessor
 
         var (ValidationVersion, Status) = await GetValidatedInfoAsync(userId);
 
-        if (string.IsNullOrWhiteSpace(ValidationVersion) || Status != 1)
+        if (string.IsNullOrWhiteSpace(ValidationVersion) || Status == false)
             return Array.Empty<Claim>();
 
         var jtiClaim = claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Jti);
@@ -33,5 +33,5 @@ public abstract class AbstractAuthenticationProcessor
         return claims.ToArray();
     }
 
-    protected abstract Task<(string? ValidationVersion, int Status)> GetValidatedInfoAsync(long userId);
+    protected abstract Task<(string? ValidationVersion, bool Status)> GetValidatedInfoAsync(long userId);
 }

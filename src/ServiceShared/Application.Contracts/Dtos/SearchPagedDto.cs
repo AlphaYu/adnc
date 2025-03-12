@@ -30,4 +30,9 @@ public abstract class SearchPagedDto : IDto
         }
         set => _pageSize = value;
     }
+
+    /// <summary>
+    /// 创建时间
+    /// </summary>
+    public DateTime[]? CreateTime { get; set; }
 }

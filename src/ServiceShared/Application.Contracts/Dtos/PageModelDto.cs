@@ -25,12 +25,12 @@ public class PageModelDto<T> : IDto
     {
         this.PageIndex = pageIndex;
         this.PageSize = pageSize;
-        this.TotalCount = count;
-        this.Data = data;
+        this.Total = count;
+        this.List = data;
         this.XData = xData ?? new object();
     }
 
-    public IReadOnlyList<T> Data
+    public IReadOnlyList<T> List
     {
         get => _data;
         set => _data = value ?? Array.Empty<T>();
@@ -42,7 +42,7 @@ public class PageModelDto<T> : IDto
 
     public int PageSize { get; set; }
 
-    public int TotalCount { get; set; }
+    public int Total { get; set; }
 
     public int PageCount => (this.RowsCount + this.PageSize - 1) / this.PageSize;
 

@@ -4,7 +4,7 @@ public class ValidationInfo
 {
     public long Id { get; set; } 
     public string? ValidationVersion { get; set; }
-    public int Status { get; set; } 
+    public bool Status { get; set; } 
 }
 
 public class BearerAuthenticationCacheProcessor : AbstractAuthenticationProcessor
@@ -24,7 +24,7 @@ public class BearerAuthenticationCacheProcessor : AbstractAuthenticationProcesso
         _logger = logger;
     }
 
-    protected override async Task<(string? ValidationVersion, int Status)> GetValidatedInfoAsync(long userId)
+    protected override async Task<(string? ValidationVersion, bool Status)> GetValidatedInfoAsync(long userId)
     {
         var userContext = _contextAccessor?.HttpContext?.RequestServices.GetService<UserContext>();
 
@@ -39,7 +39,7 @@ public class BearerAuthenticationCacheProcessor : AbstractAuthenticationProcesso
         if (validationInfo == null || validationInfo.Value == null)
         {
             _logger.LogDebug($"cacheValue [{cacheKey}] is null");
-            return (null, 0);
+            return (null, false);
         }
 
         return (validationInfo.Value.ValidationVersion, validationInfo.Value.Status);

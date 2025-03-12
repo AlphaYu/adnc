@@ -12,7 +12,7 @@ public record UserValidatedInfoRto
 
     public string RoleIds { get; set; } = string.Empty;
 
-    public int Status { get; set; } = default;
+    public bool Status { get; set; } = default;
 
     public string ValidationVersion { get; set; } = string.Empty;
 }
