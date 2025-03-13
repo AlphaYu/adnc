@@ -7,9 +7,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02.Infrastructures", "02.In
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "06.Demo", "06.Demo", "{0CDC8FFF-393C-4C44-A2D8-996C24C51024}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "61.Adnc.Demo.Usr", "61.Adnc.Demo.Usr", "{EB4CD5BA-9A74-4261-8CF3-28B8C7AE8D89}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "61.Adnc.Demo.Admin", "61.Adnc.Demo.Admin", "{EB4CD5BA-9A74-4261-8CF3-28B8C7AE8D89}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Demo.Usr.Api", "Demo\Usr\Usr.Api\Adnc.Demo.Usr.Api.csproj", "{1A612204-5F59-4940-B0F1-5F1098FDEF2A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Demo.Admin.Api", "Demo\Admin\Admin.Api\Adnc.Demo.Admin.Api.csproj", "{1A612204-5F59-4940-B0F1-5F1098FDEF2A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "62.Adnc.Demo.Maint", "62.Adnc.Demo.Maint", "{4362083A-615A-4EA5-9C7F-4A3F9C3AD7EB}"
 EndProject
@@ -37,7 +37,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Consul", "Infras
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.EventBus", "Infrastructures\EventBus\Adnc.Infra.EventBus.csproj", "{13A88A12-58E6-403D-9BC0-66A04C36BABA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Demo.Usr.Application.Contracts", "Demo\Usr\Usr.Application.Contracts\Adnc.Demo.Usr.Application.Contracts.csproj", "{71520BFB-26D6-4931-BAED-91AEA9A40DDE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Demo.Admin.Application.Contracts", "Demo\Admin\Admin.Application.Contracts\Adnc.Demo.Admin.Application.Contracts.csproj", "{71520BFB-26D6-4931-BAED-91AEA9A40DDE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Demo.Whse.Api", "Demo\Whse\Whse.Api\Adnc.Demo.Whse.Api.csproj", "{FD7D70F9-1FCA-4287-9FF8-18A333862FF0}"
 EndProject
@@ -45,7 +45,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Mapper", "Infras
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Core", "Infrastructures\Core\Adnc.Infra.Core.csproj", "{D54CDC48-F5C6-48DC-AB63-EFEC67E44E8C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Demo.Usr.Repository", "Demo\Usr\Usr.Repository\Adnc.Demo.Usr.Repository.csproj", "{0F3C6418-FF43-45F5-A543-BFF6390C68CE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Demo.Admin.Repository", "Demo\Admin\Admin.Repository\Adnc.Demo.Admin.Repository.csproj", "{0F3C6418-FF43-45F5-A543-BFF6390C68CE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Repository.EfCore.MySql", "Infrastructures\Repository.EfCore.MySql\Adnc.Infra.Repository.EfCore.MySql.csproj", "{4996AD8D-3CB3-4C18-9E5E-DD58F01757C6}"
 EndProject
@@ -59,7 +59,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Repository", "In
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Helper", "Infrastructures\Helper\Adnc.Infra.Helper.csproj", "{538DC339-CEBD-46D4-9241-39EC28D8B8EB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Demo.Usr.Application", "Demo\Usr\Usr.Application\Adnc.Demo.Usr.Application.csproj", "{ABA5BFEF-7D6A-4379-86FD-F34403FECF4F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Demo.Admin.Application", "Demo\Admin\Admin.Application\Adnc.Demo.Admin.Application.csproj", "{ABA5BFEF-7D6A-4379-86FD-F34403FECF4F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Repository.Dapper", "Infrastructures\Repository.Dapper\Adnc.Infra.Repository.Dapper.csproj", "{71AE9D65-18B4-47AD-9003-2AE399949971}"
 EndProject
@@ -102,17 +102,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Shared.Domain", "Servi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Demo.Cust.Api", "Demo\Cust\Cust.Api\Adnc.Demo.Cust.Api.csproj", "{0993FDAE-A7E6-42CC-91C5-B09B328EF80F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Shared.Rpc", "ServiceShared\Remote\Adnc.Shared.Remote.csproj", "{EE6D92B2-FE83-409B-8BE1-79B74D6784E1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Shared.Remote", "ServiceShared\Remote\Adnc.Shared.Remote.csproj", "{EE6D92B2-FE83-409B-8BE1-79B74D6784E1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "00.Shared", "00.Shared", "{8217BCCE-1B19-4784-A07E-9928C355B64C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Demo.Shared.Const", "Demo\Shared\Const\Adnc.Demo.Shared.Const.csproj", "{5742C67F-92D4-445F-8B09-3B934788FFCE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Demo.Shared.Rpc.Event", "Demo\Shared\Remote.Event\Adnc.Demo.Shared.Remote.Event.csproj", "{84A5E07D-7214-40B8-9966-B0179EE5326F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Demo.Shared.Remote.Event", "Demo\Shared\Remote.Event\Adnc.Demo.Shared.Remote.Event.csproj", "{84A5E07D-7214-40B8-9966-B0179EE5326F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Demo.Shared.Rpc.Grpc", "Demo\Shared\Remote.Grpc\Adnc.Demo.Shared.Remote.Grpc.csproj", "{9D6C47EB-1868-49A8-B000-CAE70DE2C063}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Demo.Shared.Remote.Grpc", "Demo\Shared\Remote.Grpc\Adnc.Demo.Shared.Remote.Grpc.csproj", "{9D6C47EB-1868-49A8-B000-CAE70DE2C063}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Demo.Shared.Rpc.Http", "Demo\Shared\Remote.Http\Adnc.Demo.Shared.Remote.Http.csproj", "{A1F61FE7-6308-4930-88DD-73CCAAFE591A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Demo.Shared.Remote.Http", "Demo\Shared\Remote.Http\Adnc.Demo.Shared.Remote.Http.csproj", "{A1F61FE7-6308-4930-88DD-73CCAAFE591A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "protos", "protos", "{6C293138-0A24-42C3-B3FA-A3ECAA419AF0}"
 EndProject

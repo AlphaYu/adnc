@@ -1,6 +1,4 @@
-﻿using Adnc.Infra.Core.Guard;
-
-namespace Adnc.Shared.Application.Services;
+﻿namespace Adnc.Shared.Application.Services;
 
 public abstract class AbstractAppService : IAppService
 {
@@ -20,12 +18,22 @@ public abstract class AbstractAppService : IAppService
         }
     }
 
-    protected AppSrvResult AppSrvResult() => new();
+    [Obsolete($"use {nameof(ServiceResult)} instead")]
+    protected ServiceResult AppSrvResult() => new();
 
-    protected AppSrvResult<TValue> AppSrvResult<TValue>(TValue value)
+    [Obsolete($"use {nameof(ServiceResult)} instead")]
+    protected ServiceResult<TValue> AppSrvResult<TValue>(TValue value)
         where TValue : notnull
     {
-        return new AppSrvResult<TValue>(value);
+        return new ServiceResult<TValue>(value);
+    }
+
+    protected ServiceResult ServiceResult() => new();
+
+    protected ServiceResult<TValue> ServiceResult<TValue>(TValue value)
+        where TValue : notnull
+    {
+        return new ServiceResult<TValue>(value);
     }
 
     protected ProblemDetails Problem(HttpStatusCode? statusCode = null, string? detail = null, string? title = null, string? instance = null, string? type = null) => new(statusCode, detail, title, instance, type);
