@@ -4,7 +4,7 @@ public static class PermissionConsts
 {
     public static class Customer
     {
-        public const string GetList = "customerList";
-        public const string Recharge = "customerRecharge";
+        public const string GetList = "customer-list";
+        public const string Recharge = "customer-recharge";
     }
 }

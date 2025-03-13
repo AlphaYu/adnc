@@ -4,36 +4,36 @@ public static class PermissionConsts
 {
     public static class User
     {
-        public const string Create = "userAdd";
-        public const string Update = "userEdit";
-        public const string Delete = "userDelete";
-        public const string SetRole = "userSetRole";
-        public const string GetList = "userList";
-        public const string ChangeStatus = "userFreeze";
+        public const string Create = "user-create";
+        public const string Update = "user-update";
+        public const string Delete = "user-delete";
+        public const string SetRole = "user-setrole";
+        public const string GetList = "user-list";
+        public const string ResetPassword = "user-reset-password";
     }
 
-    public static class Dept
+    public static class Org
     {
-        public const string Create = "deptAdd";
-        public const string Update = "deptEdit";
-        public const string Delete = "deptDelete";
-        public const string GetList = "deptList";
+        public const string Create = "org-create";
+        public const string Update = "org-update";
+        public const string Delete = "org-delete";
+        public const string GetList = "org-list";
     }
 
     public static class Menu
     {
-        public const string Create = "menuAdd";
-        public const string Update = "menuEdit";
-        public const string Delete = "menuDelete";
-        public const string GetList = "menuList";
+        public const string Create = "menu-create";
+        public const string Update = "menu-update";
+        public const string Delete = "menu-delete";
+        public const string GetList = "menu-list";
     }
 
     public static class Role
     {
-        public const string Create = "roleAdd";
-        public const string Update = "roleEdit";
-        public const string Delete = "roleDelete";
-        public const string GetList = "roleList";
-        public const string SetPermissons = "roleSetAuthority";
+        public const string Create = "role-create";
+        public const string Update = "role-update";
+        public const string Delete = "role-delete";
+        public const string GetList = "role-list";
+        public const string SetPermissons = "role-setperms";
     }
 }
