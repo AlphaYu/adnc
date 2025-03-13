@@ -1,4 +1,6 @@
-﻿namespace Adnc.Demo.Usr.Api.Controllers;
+﻿using Adnc.Shared.Application.Contracts.ResultModels;
+
+namespace Adnc.Demo.Usr.Api.Controllers;
 
 /// <summary>
 /// 用户管理
@@ -33,48 +35,38 @@ public class UserController(IUserAppService userService, UserContext userContext
     /// <summary>
     /// 删除用户
     /// </summary>
-    /// <param name="id">用户ID</param>
+    /// <param name="ids">用户ID</param>
     /// <returns></returns>
-    [HttpDelete("{id}")]
+    [HttpDelete("{ids}")]
     [AdncAuthorize(PermissionConsts.User.Delete)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<ActionResult> DeleteAsync([FromRoute] long id)
-        => Result(await userService.DeleteAsync(id));
+    public async Task<ActionResult> DeleteAsync([FromRoute] string ids)
+    {
+        var idArr = ids.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(x => long.Parse(x)).ToArray();
+        return Result(await userService.DeleteAsync(idArr));
+    }
 
     /// <summary>
-    /// 设置用户角色
+    /// 重置密码
     /// </summary>
-    /// <param name="id">用户Id</param>
-    /// <param name="roleIds">角色</param>
+    /// <param name="id"></param>
+    /// <param name="password"></param>
     /// <returns></returns>
-    [HttpPut("{id}/roles")]
-    [AdncAuthorize(PermissionConsts.User.SetRole)]
+    [HttpPut("{id}/password")]
+    [AdncAuthorize(PermissionConsts.User.ResetPassword)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<ActionResult> SetRoleAsync([FromRoute] long id, [FromBody] long[] roleIds)
-        => Result(await userService.SetRoleAsync(id, new UserSetRoleDto { RoleIds = roleIds }));
+    public async Task<ActionResult> ResetPasswordAsync([FromRoute] long id, string password)
+        => Result(await userService.ResetPasswordAsync(id, password));
 
     /// <summary>
-    /// 变更用户状态
+    /// 获取用户信息
     /// </summary>
     /// <param name="id">用户ID</param>
-    /// <param name="status">状态</param>
     /// <returns></returns>
-    [HttpPut("{id}/status")]
-    [AdncAuthorize(PermissionConsts.User.ChangeStatus)]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<ActionResult> ChangeStatus([FromRoute] long id, [FromBody] SimpleDto<int> status)
-        => Result(await userService.ChangeStatusAsync(id, status.Value));
-
-    /// <summary>
-    /// 批量变更用户状态
-    /// </summary>
-    /// <param name="input">用户Ids与状态</param>
-    /// <returns></returns>
-    [HttpPut("batch/status")]
-    [AdncAuthorize(PermissionConsts.User.ChangeStatus)]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<ActionResult> ChangeStatus([FromBody] UserChangeStatusDto input)
-        => Result(await userService.ChangeStatusAsync(input.UserIds, input.Status));
+    [HttpGet("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<ActionResult<UserDto>> GetAsync([FromRoute] long id)
+        => await userService.GetAsync(id);
 
     /// <summary>
     /// 获取用户分页列表
@@ -98,12 +90,4 @@ public class UserController(IUserAppService userService, UserContext userContext
         var result = await userService.GetUserInfoAsync(userContext);
         return result;
     }
-
-    /// <summary>
-    /// 获取登录用户个人信息
-    /// </summary>
-    /// <returns></returns>
-    [HttpGet("profile")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<UserProfileDto>> GetUserProfileAsync() => await userService.GetUserProfileAsync(userContext.Id);
 }

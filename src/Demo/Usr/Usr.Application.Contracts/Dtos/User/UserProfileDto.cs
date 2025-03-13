@@ -3,51 +3,59 @@
     /// <summary>
     /// 用户个人信息
     /// </summary>
-    public class UserProfileDto : IDto
+    public class UserProfileDto : UserDto
     {
         /// <summary>
-        /// 账户
+        /// 多个角色名称
         /// </summary>
-        public string Account { get; set; }
+        public string RoleNames { get; set; } = string.Empty;
 
         /// <summary>
         /// 头像
         /// </summary>
-        public string Avatar { get; set; }
+        private string avatar = string.Empty;
+        public string Avatar
+        {
+            set { avatar = value; }
+            get
+            {
+                if (avatar.IsNullOrEmpty())
+                {
+                    avatar = "https://foruda.gitee.com/images/1723603502796844527/03cdca2a_716974.gif";
+                }
+                return avatar;
+            }
+        }
+    }
 
-        /// <summary>
-        /// 生日
-        /// </summary>
-        public DateTime? Birthday { get; set; }
-
-        /// <summary>
-        /// 部门名称
-        /// </summary>
-        public string DeptFullName { get; set; }
-
-        /// <summary>
-        /// 电邮
-        /// </summary>
-        public string Email { get; set; }
-
-        /// <summary>
-        /// 姓名
-        /// </summary>
-        public string Name { get; set; }
-
-        /// <summary>
-        /// 手机号
-        /// </summary>
-        public string Phone { get; set; }
-
-        /// <summary>
-        /// 角色Id
-        /// </summary>
-        public string RoleNames { get; set; }
-
+    public class UserProfileUpdationDto : InputDto
+    {
         /// <summary>
         /// 性别
         /// </summary>
         public int Gender { get; set; }
+
+        /// <summary>
+        /// 姓名/昵称
+        /// </summary>
+        public string Name { get; set; } = string.Empty;
+    }
+
+    public class UserProfileChangePwdDto : InputDto
+    {
+        /// <summary>
+        /// 旧密码
+        /// </summary>
+        public string OldPassword { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 当前密码
+        /// </summary>
+        public string NewPassword { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 确认密码
+        /// </summary>
+        public string ConfirmPassword { get; set; } = string.Empty;
     }
 }

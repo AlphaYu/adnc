@@ -13,6 +13,7 @@ namespace Adnc.Demo.Usr.Application.Contracts.Services
         /// <param name="input"></param>
         /// <returns></returns>
         [OperateLog(LogName = "新增用户")]
+        [UnitOfWork]
         Task<AppSrvResult<long>> CreateAsync(UserCreationDto input);
 
         /// <summary>
@@ -23,48 +24,18 @@ namespace Adnc.Demo.Usr.Application.Contracts.Services
         /// <returns></returns>
         [OperateLog(LogName = "修改用户")]
         [CachingEvict(CacheKeyPrefix = CachingConsts.UserValidatedInfoKeyPrefix)]
+        [UnitOfWork]
         Task<AppSrvResult> UpdateAsync([CachingParam] long id, UserUpdationDto input);
 
         /// <summary>
         /// 删除用户
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="ids"></param>
         /// <returns></returns>
         [OperateLog(LogName = "删除用户")]
         [CachingEvict(CacheKeyPrefix = CachingConsts.UserValidatedInfoKeyPrefix)]
         [UnitOfWork]
-        Task<AppSrvResult> DeleteAsync([CachingParam] long id);
-
-        /// <summary>
-        /// 设置用户角色
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="input"></param>
-        /// <returns></returns>
-        [OperateLog(LogName = "设置用户角色")]
-        [CachingEvict(CacheKeyPrefix = CachingConsts.UserValidatedInfoKeyPrefix)]
-        [UnitOfWork]
-        Task<AppSrvResult> SetRoleAsync([CachingParam] long id, UserSetRoleDto input);
-
-        /// <summary>
-        /// 修改用户状态
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="status"></param>
-        /// <returns></returns>
-        [OperateLog(LogName = "修改用户状态")]
-        [CachingEvict(CacheKeyPrefix = CachingConsts.UserValidatedInfoKeyPrefix)]
-        Task<AppSrvResult> ChangeStatusAsync([CachingParam] long id, int status);
-
-        /// <summary>
-        /// 批量修改用户状态
-        /// </summary>
-        /// <param name="ids"></param>
-        /// <param name="status"></param>
-        /// <returns></returns>
-        [OperateLog(LogName = "批量修改用户状态")]
-        [CachingEvict(CacheKeyPrefix = CachingConsts.UserValidatedInfoKeyPrefix)]
-        Task<AppSrvResult> ChangeStatusAsync([CachingParam] long[] ids, int status);
+        Task<AppSrvResult> DeleteAsync([CachingParam] long[] ids);
 
         /// <summary>
         /// 获取用户是否拥有指定权限
@@ -77,6 +48,13 @@ namespace Adnc.Demo.Usr.Application.Contracts.Services
         Task<List<string>> GetPermissionsAsync(long userId, IEnumerable<string> requestPermissions, string userBelongsRoleIds);
 
         /// <summary>
+        /// 获取用户信息
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task<UserDto> GetAsync(long id);
+
+        /// <summary>
         /// 获取用户列表
         /// </summary>
         /// <param name="search"></param>
@@ -84,11 +62,19 @@ namespace Adnc.Demo.Usr.Application.Contracts.Services
         Task<PageModelDto<UserDto>> GetPagedAsync(UserSearchPagedDto search);
 
         /// <summary>
-        /// 获取用户信息
+        /// 获取当前用户信息
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        Task<UserProfileDto> GetUserProfileAsync(long id);
+        Task<UserProfileDto?> GetProfileAsync(long id);
+
+        /// <summary>
+        /// 修改当前用户信息
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        Task<AppSrvResult> ChangeProfileAsync(long id, UserProfileUpdationDto input);
 
         /// <summary>
         /// 登录
@@ -106,7 +92,17 @@ namespace Adnc.Demo.Usr.Application.Contracts.Services
         /// <returns></returns>
         [OperateLog(LogName = "修改密码")]
         [CachingEvict(CacheKeyPrefix = CachingConsts.UserValidatedInfoKeyPrefix)]
-        Task<AppSrvResult> UpdatePasswordAsync([CachingParam] long id, UserChangePwdDto input);
+        Task<AppSrvResult> UpdatePasswordAsync([CachingParam] long id, UserProfileChangePwdDto input);
+
+        /// <summary>
+        /// 重置密码
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        [OperateLog(LogName = "重置密码")]
+        [CachingEvict(CacheKeyPrefix = CachingConsts.UserValidatedInfoKeyPrefix)]
+        Task<AppSrvResult> ResetPasswordAsync([CachingParam] long id, string password);
 
         /// <summary>
         /// 获取认证信息

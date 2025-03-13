@@ -8,22 +8,34 @@
         /// <summary>
         /// 用户Id
         /// </summary>
-        public long UserId { get; set; }
+        public long Id { get; set; }
 
         /// <summary>
         ///  用户名
         /// </summary>
-        public string UserName { get; set; } = string.Empty;
+        public string Account { get; set; } = string.Empty;
 
         /// <summary>
-        ///  昵称
+        ///  姓名/昵称
         /// </summary>
-        public string NickName { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
 
         /// <summary>
-        ///  头像
+        /// 头像
         /// </summary>
-        public string Avatar { get; set; } = string.Empty;
+        private string avatar = string.Empty;
+        public string Avatar
+        {
+            set { avatar = value; }
+            get
+            {
+                if (avatar.IsNullOrEmpty())
+                {
+                    avatar = "https://foruda.gitee.com/images/1723603502796844527/03cdca2a_716974.gif";
+                }
+                return avatar;
+            }
+        }
 
         /// <summary>
         /// 角色代码集合

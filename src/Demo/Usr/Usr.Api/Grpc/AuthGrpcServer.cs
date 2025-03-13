@@ -38,7 +38,7 @@ public class AuthGrpcServer : AuthGrpc.AuthGrpcBase
         var validatedInfo = loginResult.Content;
         var loginReply = new LoginReply
         {
-            Token = JwtTokenHelper.CreateAccessToken(_jwtOptions.Value, validatedInfo.ValidationVersion, validatedInfo.Account, validatedInfo.Id.ToString(), validatedInfo.Name, validatedInfo.RoleIds, BearerDefaults.Manager).Token,
+            Token = JwtTokenHelper.CreateAccessToken(_jwtOptions.Value, validatedInfo.ValidationVersion, validatedInfo.Account, validatedInfo.Id.ToString(), validatedInfo.Name, validatedInfo.GetRoleIdsString(), BearerDefaults.Manager).Token,
             RefreshToken = JwtTokenHelper.CreateRefreshToken(_jwtOptions.Value, validatedInfo.ValidationVersion, validatedInfo.Id.ToString()).Token
         };
         grpcResponse.Content = Any.Pack(loginReply);

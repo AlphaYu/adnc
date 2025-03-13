@@ -24,7 +24,7 @@ public class RoleAppService(IEfRepository<Role> roleRepo, IEfRepository<RoleUser
     {
         input.TrimStringFields();
 
-        var role = await roleRepo.FetchAsync(x => x.Id == id);
+        var role = await roleRepo.FetchAsync(x => x.Id == id, noTracking: false);
         if (role is null)
             return Problem(HttpStatusCode.BadRequest, "该角色Id不存在");
 
@@ -41,15 +41,21 @@ public class RoleAppService(IEfRepository<Role> roleRepo, IEfRepository<RoleUser
         return AppSrvResult();
     }
 
-    public async Task<AppSrvResult> DeleteAsync(long id)
+    public async Task<AppSrvResult> DeleteAsync(long[] ids)
     {
-        if (id == 1600000000010)
+        if (ids.Contains(1600000000010))
             return Problem(HttpStatusCode.Forbidden, "禁止删除初始角色");
 
-        await roleRepo.ExecuteDeleteAsync(x => x.Id == id);
-        await roleUserRelationRepo.ExecuteDeleteAsync(x => x.RoleId == id);
+        await roleRepo.ExecuteDeleteAsync(x => ids.Contains(x.Id));
+        await roleUserRelationRepo.ExecuteDeleteAsync(x => ids.Contains(x.RoleId));
 
         return AppSrvResult();
+    }
+
+    public async Task<RoleDto?> GetAsync(long id)
+    {
+        var role = await roleRepo.FetchAsync(x => x.Id == id);
+        return role is null ? null : Mapper.Map<RoleDto>(role);
     }
 
     public async Task<AppSrvResult> SetPermissonsAsync(RoleSetPermissonsDto input)
@@ -68,38 +74,20 @@ public class RoleAppService(IEfRepository<Role> roleRepo, IEfRepository<RoleUser
         return AppSrvResult();
     }
 
-    public async Task<RoleTreeDto> GetRoleTreeListByUserIdAsync(long userId)
+    public async Task<string[]> GetPermissionsAsync(long id)
     {
-        var roleIds = await roleUserRelationRepo.Where(x => x.UserId == userId).Select(y => y.RoleId).ToListAsync();
-        if (roleIds.IsNullOrEmpty())
-            return new RoleTreeDto { TreeData = [], CheckedIds = [] };
+        var menuIds = (await cacheService.GetAllRoleMenusFromCacheAsync()).Where(x => x.RoleId == id).Select(x => x.MenuId.ToString()).ToArray();
+        return menuIds ?? [];
+    }
 
-        var rolesCache = await cacheService.GetAllRolesFromCacheAsync();
-        if (rolesCache.IsNullOrEmpty())
-            return new RoleTreeDto { TreeData = [], CheckedIds = [] };
+    public async Task<List<OptionTreeDto>> GetOptionsAsync(bool? status = null)
+    {
+        var whereExpr = ExpressionCreator
+                                      .New<Role>()
+                                      .AndIf(status is not null, x => x.Status);
+        var options = await roleRepo.Where(whereExpr).Select(x => new OptionTreeDto { Label = x.Name, Value = x.Id }).ToListAsync();
 
-        IEnumerable<ZTreeNodeDto<long, dynamic>> treeNodes = rolesCache.Select(x => new ZTreeNodeDto<long, dynamic>
-        {
-            Id = x.Id,
-            PID = x.Pid,
-            Name = x.Name,
-            Open = !(x.Pid > 0),
-            Checked = roleIds.Contains(x.Id)
-        });
-
-        var result = new RoleTreeDto
-        {
-            TreeData = treeNodes.Select(x => new Node<long>
-            {
-                Id = x.Id,
-                PID = x.PID,
-                Name = x.Name,
-                Checked = x.Checked
-            }),
-            CheckedIds = treeNodes.Where(x => x.Checked).Select(x => x.Id)
-        };
-
-        return result;
+        return options ?? [];
     }
 
     public async Task<PageModelDto<RoleDto>> GetPagedAsync(RolePagedSearchDto search)
@@ -107,7 +95,7 @@ public class RoleAppService(IEfRepository<Role> roleRepo, IEfRepository<RoleUser
         search.TrimStringFields();
         var whereExpression = ExpressionCreator
                                               .New<Role>()
-                                              .AndIf(search.RoleName.IsNotNullOrWhiteSpace(), x => x.Name.Contains(search.RoleName));
+                                              .AndIf(search.Keywords.IsNotNullOrWhiteSpace(), x => x.Name.Contains(search.Keywords));
 
         var total = await roleRepo.CountAsync(whereExpression);
         if (total == 0)

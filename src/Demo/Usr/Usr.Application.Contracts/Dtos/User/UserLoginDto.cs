@@ -8,11 +8,11 @@
         /// <summary>
         /// 账户
         /// </summary>
-        public string Account { get; set; }
+        public string Account { get; set; } = string.Empty;
 
         /// <summary>
         /// 密码
         /// </summary>
-        public string Password { get; set; }
+        public string Password { get; set; } = string.Empty;
     }
 }

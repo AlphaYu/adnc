@@ -5,13 +5,13 @@
 /// </summary>
 public class Role : EfFullAuditEntity
 {
-    public long DeptId { get; set; }
-
     public string Name { get; set; } = string.Empty;
 
-    public int Ordinal { get; set; }
-
-    public long Pid { get; set; } = 0;
-
     public string Code { get; set; } = string.Empty;
+
+    public int DataScope { get; set; }
+
+    public bool Status { get; set; }
+
+    public int Ordinal { get; set; }
 }

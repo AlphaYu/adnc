@@ -2,6 +2,7 @@
 
 public static class MenuRepositoryExtension
 {
+    /*
     public static async Task<List<Menu>> GetMenusByRoleIdsAsync(this IEfRepository<Menu> repo, long[] roleIds, bool? status)
     {
         var roleMenus = repo.GetAll<RoleMenuRelation>().Where(r => roleIds.Contains(r.RoleId)).DistinctBy(x => x.MenuId);
@@ -15,4 +16,5 @@ public static class MenuRepositoryExtension
 
         return result ?? [];
     }
+    */
 }

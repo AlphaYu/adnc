@@ -11,7 +11,7 @@ public class User : EfFullAuditEntity, ISoftDelete
     //{
     //	LazyLoader = lazyLoader;
     //}
-    //public virtual SysDept Dept
+    //public virtual SysDept Org
     //{
     //   get => LazyLoader.Load(this, ref _dept);
     //   set => _dept = value;
@@ -55,7 +55,7 @@ public class User : EfFullAuditEntity, ISoftDelete
     /// <summary>
     /// 手机号
     /// </summary>
-    public string Phone { get; set; } = string.Empty;
+    public string Mobile { get; set; } = string.Empty;
 
     /// <summary>
     /// 密码盐
@@ -70,7 +70,11 @@ public class User : EfFullAuditEntity, ISoftDelete
     /// <summary>
     /// 状态
     /// </summary>
-    public int Status { get; set; }
+    public bool Status { get; set; }
+
+    /// <summary>
+    /// 删除标识
+    /// </summary>
 
     public bool IsDeleted { get; set; }
 }

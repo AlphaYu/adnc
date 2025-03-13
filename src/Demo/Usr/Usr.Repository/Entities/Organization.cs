@@ -5,15 +5,15 @@
 /// </summary>
 public class Organization : EfFullAuditEntity
 {
-    public string FullName { get; set; } = string.Empty;
+    public long ParentId { get; set; } = 0;
+
+    public string ParentIds { get; set; } = string.Empty;
+
+    public string Code { get; set; } = string.Empty;
+
+    public string Name { get; set; } = string.Empty;
+
+    public bool Status { get; set; }
 
     public int Ordinal { get; set; }
-
-    public long Pid { get; set; } = 0;
-
-    public string Pids { get; set; } = string.Empty;
-
-    public string SimpleName { get; set; } = string.Empty;
-
-    public string Tips { get; set; } = string.Empty;
 }

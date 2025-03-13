@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Adnc.Demo.Usr.Repository.Migrations
 {
     [DbContext(typeof(MySqlDbContext))]
-    [Migration("20250306105016_Init20250306")]
-    partial class Init20250306
+    [Migration("20250312140312_Update-2025031203")]
+    partial class Update2025031203
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -34,14 +34,13 @@ namespace Adnc.Demo.Usr.Repository.Migrations
                         .HasColumnOrder(1)
                         .HasComment("");
 
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasMaxLength(16)
-                        .HasColumnType("varchar(16)")
-                        .HasColumnName("code")
-                        .HasComment("编号");
+                    b.Property<bool>("AlwaysShow")
+                        .HasColumnType("tinyint(1)")
+                        .HasColumnName("alwaysshow")
+                        .HasComment("只有一个子路由是否始终显示");
 
                     b.Property<string>("Component")
+                        .IsRequired()
                         .HasMaxLength(64)
                         .HasColumnType("varchar(64)")
                         .HasColumnName("component")
@@ -50,53 +49,43 @@ namespace Adnc.Demo.Usr.Repository.Migrations
                     b.Property<long>("CreateBy")
                         .HasColumnType("bigint")
                         .HasColumnName("createby")
+                        .HasColumnOrder(100)
                         .HasComment("创建人");
 
                     b.Property<DateTime>("CreateTime")
                         .HasColumnType("datetime(6)")
                         .HasColumnName("createtime")
+                        .HasColumnOrder(101)
                         .HasComment("创建时间/注册时间");
 
-                    b.Property<bool>("Hidden")
-                        .HasColumnType("tinyint(1)")
-                        .HasColumnName("hidden")
-                        .HasComment("是否隐藏");
-
                     b.Property<string>("Icon")
-                        .HasMaxLength(16)
-                        .HasColumnType("varchar(16)")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("varchar(32)")
                         .HasColumnName("icon")
                         .HasComment("图标");
 
-                    b.Property<bool>("IsMenu")
+                    b.Property<bool>("KeepAlive")
                         .HasColumnType("tinyint(1)")
-                        .HasColumnName("ismenu")
-                        .HasComment("是否是菜单1:菜单,0:按钮");
-
-                    b.Property<bool>("IsOpen")
-                        .HasColumnType("tinyint(1)")
-                        .HasColumnName("isopen")
-                        .HasComment("是否默认打开1:是,0:否");
-
-                    b.Property<int>("Levels")
-                        .HasColumnType("int")
-                        .HasColumnName("levels")
-                        .HasComment("级别");
+                        .HasColumnName("keepalive")
+                        .HasComment("是否开启页面缓存");
 
                     b.Property<long>("ModifyBy")
                         .HasColumnType("bigint")
                         .HasColumnName("modifyby")
+                        .HasColumnOrder(102)
                         .HasComment("最后更新人");
 
                     b.Property<DateTime>("ModifyTime")
                         .HasColumnType("datetime(6)")
                         .HasColumnName("modifytime")
+                        .HasColumnOrder(103)
                         .HasComment("最后更新时间");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(16)
-                        .HasColumnType("varchar(16)")
+                        .HasMaxLength(32)
+                        .HasColumnType("varchar(32)")
                         .HasColumnName("name")
                         .HasComment("名称");
 
@@ -105,37 +94,64 @@ namespace Adnc.Demo.Usr.Repository.Migrations
                         .HasColumnName("ordinal")
                         .HasComment("序号");
 
-                    b.Property<string>("PCode")
-                        .IsRequired()
-                        .HasMaxLength(16)
-                        .HasColumnType("varchar(16)")
-                        .HasColumnName("pcode")
-                        .HasComment("父菜单编号");
-
-                    b.Property<string>("PCodes")
+                    b.Property<string>("Params")
                         .IsRequired()
                         .HasMaxLength(128)
                         .HasColumnType("varchar(128)")
-                        .HasColumnName("pcodes")
-                        .HasComment("递归父级菜单编号");
+                        .HasColumnName("params")
+                        .HasComment("路由参数");
 
-                    b.Property<bool>("Status")
-                        .HasColumnType("tinyint(1)")
-                        .HasColumnName("status")
-                        .HasComment("状态1:启用,0:禁用");
+                    b.Property<long>("ParentId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("parentid")
+                        .HasComment("父菜单Id");
 
-                    b.Property<string>("Tips")
+                    b.Property<string>("ParentIds")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("varchar(128)")
+                        .HasColumnName("parentids")
+                        .HasComment("父菜单Id组合");
+
+                    b.Property<string>("Perm")
+                        .IsRequired()
                         .HasMaxLength(32)
                         .HasColumnType("varchar(32)")
-                        .HasColumnName("tips")
-                        .HasComment("鼠标悬停提示信息");
+                        .HasColumnName("perm")
+                        .HasComment("权限编码");
 
-                    b.Property<string>("Url")
+                    b.Property<string>("Redirect")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("varchar(128)")
+                        .HasColumnName("redirect")
+                        .HasComment("跳转路由路径");
+
+                    b.Property<string>("RouteName")
                         .IsRequired()
                         .HasMaxLength(64)
                         .HasColumnType("varchar(64)")
-                        .HasColumnName("url")
-                        .HasComment("链接");
+                        .HasColumnName("routename")
+                        .HasComment("路由名称");
+
+                    b.Property<string>("RoutePath")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("varchar(64)")
+                        .HasColumnName("routepath")
+                        .HasComment("路由路径");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasMaxLength(16)
+                        .HasColumnType("varchar(16)")
+                        .HasColumnName("type")
+                        .HasComment("菜单类型");
+
+                    b.Property<bool>("Visible")
+                        .HasColumnType("tinyint(1)")
+                        .HasColumnName("visible")
+                        .HasComment("是否显示");
 
                     b.HasKey("Id")
                         .HasName("pk_sys_menu");
@@ -154,61 +170,64 @@ namespace Adnc.Demo.Usr.Repository.Migrations
                         .HasColumnOrder(1)
                         .HasComment("");
 
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(16)
+                        .HasColumnType("varchar(16)")
+                        .HasColumnName("code")
+                        .HasComment("");
+
                     b.Property<long>("CreateBy")
                         .HasColumnType("bigint")
                         .HasColumnName("createby")
+                        .HasColumnOrder(100)
                         .HasComment("创建人");
 
                     b.Property<DateTime>("CreateTime")
                         .HasColumnType("datetime(6)")
                         .HasColumnName("createtime")
+                        .HasColumnOrder(101)
                         .HasComment("创建时间/注册时间");
-
-                    b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("varchar(32)")
-                        .HasColumnName("fullname")
-                        .HasComment("");
 
                     b.Property<long>("ModifyBy")
                         .HasColumnType("bigint")
                         .HasColumnName("modifyby")
+                        .HasColumnOrder(102)
                         .HasComment("最后更新人");
 
                     b.Property<DateTime>("ModifyTime")
                         .HasColumnType("datetime(6)")
                         .HasColumnName("modifytime")
+                        .HasColumnOrder(103)
                         .HasComment("最后更新时间");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("varchar(32)")
+                        .HasColumnName("name")
+                        .HasComment("");
 
                     b.Property<int>("Ordinal")
                         .HasColumnType("int")
                         .HasColumnName("ordinal")
                         .HasComment("");
 
-                    b.Property<long>("Pid")
+                    b.Property<long>("ParentId")
                         .HasColumnType("bigint")
-                        .HasColumnName("pid")
+                        .HasColumnName("parentid")
                         .HasComment("");
 
-                    b.Property<string>("Pids")
+                    b.Property<string>("ParentIds")
                         .IsRequired()
-                        .HasMaxLength(80)
-                        .HasColumnType("varchar(80)")
-                        .HasColumnName("pids")
+                        .HasMaxLength(128)
+                        .HasColumnType("varchar(128)")
+                        .HasColumnName("parentids")
                         .HasComment("");
 
-                    b.Property<string>("SimpleName")
-                        .IsRequired()
-                        .HasMaxLength(16)
-                        .HasColumnType("varchar(16)")
-                        .HasColumnName("simplename")
-                        .HasComment("");
-
-                    b.Property<string>("Tips")
-                        .HasMaxLength(64)
-                        .HasColumnType("varchar(64)")
-                        .HasColumnName("tips")
+                    b.Property<bool>("Status")
+                        .HasColumnType("tinyint(1)")
+                        .HasColumnName("status")
                         .HasComment("");
 
                     b.HasKey("Id")
@@ -238,26 +257,30 @@ namespace Adnc.Demo.Usr.Repository.Migrations
                     b.Property<long>("CreateBy")
                         .HasColumnType("bigint")
                         .HasColumnName("createby")
+                        .HasColumnOrder(100)
                         .HasComment("创建人");
 
                     b.Property<DateTime>("CreateTime")
                         .HasColumnType("datetime(6)")
                         .HasColumnName("createtime")
+                        .HasColumnOrder(101)
                         .HasComment("创建时间/注册时间");
 
-                    b.Property<long>("DeptId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("deptid")
+                    b.Property<int>("DataScope")
+                        .HasColumnType("int")
+                        .HasColumnName("datascope")
                         .HasComment("");
 
                     b.Property<long>("ModifyBy")
                         .HasColumnType("bigint")
                         .HasColumnName("modifyby")
+                        .HasColumnOrder(102)
                         .HasComment("最后更新人");
 
                     b.Property<DateTime>("ModifyTime")
                         .HasColumnType("datetime(6)")
                         .HasColumnName("modifytime")
+                        .HasColumnOrder(103)
                         .HasComment("最后更新时间");
 
                     b.Property<string>("Name")
@@ -272,9 +295,9 @@ namespace Adnc.Demo.Usr.Repository.Migrations
                         .HasColumnName("ordinal")
                         .HasComment("");
 
-                    b.Property<long>("Pid")
-                        .HasColumnType("bigint")
-                        .HasColumnName("pid")
+                    b.Property<bool>("Status")
+                        .HasColumnType("tinyint(1)")
+                        .HasColumnName("status")
                         .HasComment("");
 
                     b.HasKey("Id")
@@ -370,11 +393,13 @@ namespace Adnc.Demo.Usr.Repository.Migrations
                     b.Property<long>("CreateBy")
                         .HasColumnType("bigint")
                         .HasColumnName("createby")
+                        .HasColumnOrder(100)
                         .HasComment("创建人");
 
                     b.Property<DateTime>("CreateTime")
                         .HasColumnType("datetime(6)")
                         .HasColumnName("createtime")
+                        .HasColumnOrder(101)
                         .HasComment("创建时间/注册时间");
 
                     b.Property<long>("DeptId")
@@ -399,17 +424,26 @@ namespace Adnc.Demo.Usr.Repository.Migrations
                         .HasColumnType("tinyint(1)")
                         .HasDefaultValue(false)
                         .HasColumnName("isdeleted")
-                        .HasColumnOrder(2)
-                        .HasComment("");
+                        .HasColumnOrder(99)
+                        .HasComment("删除标识");
+
+                    b.Property<string>("Mobile")
+                        .IsRequired()
+                        .HasMaxLength(11)
+                        .HasColumnType("varchar(11)")
+                        .HasColumnName("mobile")
+                        .HasComment("手机号");
 
                     b.Property<long>("ModifyBy")
                         .HasColumnType("bigint")
                         .HasColumnName("modifyby")
+                        .HasColumnOrder(102)
                         .HasComment("最后更新人");
 
                     b.Property<DateTime>("ModifyTime")
                         .HasColumnType("datetime(6)")
                         .HasColumnName("modifytime")
+                        .HasColumnOrder(103)
                         .HasComment("最后更新时间");
 
                     b.Property<string>("Name")
@@ -426,13 +460,6 @@ namespace Adnc.Demo.Usr.Repository.Migrations
                         .HasColumnName("password")
                         .HasComment("密码");
 
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasMaxLength(11)
-                        .HasColumnType("varchar(11)")
-                        .HasColumnName("phone")
-                        .HasComment("手机号");
-
                     b.Property<string>("Salt")
                         .IsRequired()
                         .HasMaxLength(6)
@@ -440,8 +467,8 @@ namespace Adnc.Demo.Usr.Repository.Migrations
                         .HasColumnName("salt")
                         .HasComment("密码盐");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("int")
+                    b.Property<bool>("Status")
+                        .HasColumnType("tinyint(1)")
                         .HasColumnName("status")
                         .HasComment("状态");
 

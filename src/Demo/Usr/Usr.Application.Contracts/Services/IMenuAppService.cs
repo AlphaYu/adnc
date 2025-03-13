@@ -13,7 +13,7 @@ namespace Adnc.Demo.Usr.Application.Contracts.Services
         /// <param name="input"></param>
         /// <returns></returns>
         [OperateLog(LogName = "新增菜单")]
-        [CachingEvict(CacheKeys = new[] { CachingConsts.MenuListCacheKey, CachingConsts.MenuTreeListCacheKey, CachingConsts.MenuRelationCacheKey, CachingConsts.MenuCodesCacheKey })]
+        [CachingEvict(CacheKeys = new[] { CachingConsts.MenuListCacheKey })]
         Task<AppSrvResult<long>> CreateAsync(MenuCreationDto input);
 
         /// <summary>
@@ -23,7 +23,7 @@ namespace Adnc.Demo.Usr.Application.Contracts.Services
         /// <param name="input"></param>
         /// <returns></returns>
         [OperateLog(LogName = "修改菜单")]
-        [CachingEvict(CacheKeys = new[] { CachingConsts.MenuListCacheKey, CachingConsts.MenuTreeListCacheKey, CachingConsts.MenuRelationCacheKey, CachingConsts.MenuCodesCacheKey })]
+        [CachingEvict(CacheKeys = new[] { CachingConsts.MenuListCacheKey, CachingConsts.RoleMenuCodesCacheKey })]
         Task<AppSrvResult> UpdateAsync(long id, MenuUpdationDto input);
 
         /// <summary>
@@ -32,7 +32,7 @@ namespace Adnc.Demo.Usr.Application.Contracts.Services
         /// <param name="id"></param>
         /// <returns></returns>
         [OperateLog(LogName = "删除菜单")]
-        [CachingEvict(CacheKeys = new[] { CachingConsts.MenuListCacheKey, CachingConsts.MenuTreeListCacheKey, CachingConsts.MenuRelationCacheKey, CachingConsts.MenuCodesCacheKey })]
+        [CachingEvict(CacheKeys = new[] { CachingConsts.MenuListCacheKey, CachingConsts.RoleMenuCodesCacheKey })]
         Task<AppSrvResult> DeleteAsync(long id);
 
         /// <summary>
@@ -40,20 +40,27 @@ namespace Adnc.Demo.Usr.Application.Contracts.Services
         /// </summary>
         /// <returns></returns>
         //[CachingAble(CacheKey = CachingConsts.MenuTreeListCacheKey, Expiration = CachingConsts.OneYear)]
-        Task<List<MenuNodeDto>> GetlistAsync();
+        Task<List<MenuTreeDto>> GetTreelistAsync(string? keywords = null);
+
+        /// <summary>
+        /// 获取菜单信息
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task<MenuDto> GetAsync(long id);
 
         /// <summary>
         /// 获取左侧路由菜单
         /// </summary>
         /// <param name="roleIds"></param>
         /// <returns></returns>
-        Task<List<RouterDto>> GetMenusForRouterAsync(IEnumerable<long> roleIds);
+        Task<List<RouterTreeDto>> GetMenusForRouterAsync(IEnumerable<long> roleIds);
 
         /// <summary>
-        /// 获取指定角色的菜单
+        /// 获取菜单选项
         /// </summary>
-        /// <param name="roleId"></param>
+        /// <param name="onlyParent"></param>
         /// <returns></returns>
-        Task<MenuTreeDto> GetMenuTreeListByRoleIdAsync(long roleId);
+        Task<List<OptionTreeDto>> GetMenuOptionsAsync(bool? onlyParent);
     }
 }

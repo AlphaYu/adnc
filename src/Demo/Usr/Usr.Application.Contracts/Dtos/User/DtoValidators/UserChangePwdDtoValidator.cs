@@ -1,14 +1,15 @@
 ﻿namespace Adnc.Demo.Usr.Application.Contracts.DtoValidators
 {
-    public class UserChangePwdDtoValidator : AbstractValidator<UserChangePwdDto>
+    public class UserChangePwdDtoValidator : AbstractValidator<UserProfileChangePwdDto>
     {
         public UserChangePwdDtoValidator()
         {
-            RuleFor(x => x.Password).NotEmpty().Length(5, UserConsts.Password_Maxlength);
-            RuleFor(x => x.RePassword).NotEmpty().Length(5, UserConsts.Password_Maxlength)
+            RuleFor(x => x.OldPassword).NotEmpty();
+            RuleFor(x => x.NewPassword).NotEmpty().Length(5, UserConsts.Password_Maxlength);
+            RuleFor(x => x.ConfirmPassword).NotEmpty().Length(5, UserConsts.Password_Maxlength)
                                       .Must((dto, rePassword) =>
                                       {
-                                          return dto.Password == rePassword;
+                                          return dto.NewPassword == rePassword;
                                       })
                                       .WithMessage("重复密码必须跟新密码一样");
         }

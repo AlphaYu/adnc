@@ -6,37 +6,27 @@
 public class OrganizationCreationDto : InputDto
 {
     /// <summary>
+    /// 父级Id
+    /// </summary>
+    public long ParentId { get; set; } = 0;
+
+    /// <summary>
+    /// 部门编号
+    /// </summary>
+    public string Code { get; set; } = string.Empty;
+
+    /// <summary>
     /// 部门全称
     /// </summary>
-    public string FullName { get; set; } = default!;
+    public string Name { get; set; } = string.Empty;
+
+    /// <summary>
+    /// 部门状态
+    /// </summary>
+    public bool Status { get; set; }
 
     /// <summary>
     /// 序号
     /// </summary>
     public int Ordinal { get; set; }
-
-    /// <summary>
-    /// 父级Id
-    /// </summary>
-    public long Pid { get; set; } = 0;
-
-    ///// <summary>
-    ///// 父级Id集合
-    ///// </summary>
-    ////public string Pids { get; set; }
-
-    /// <summary>
-    /// 部门简称
-    /// </summary>
-    public string SimpleName { get; set; } = default!;
-
-    ///// <summary>
-    ///// 部门描述
-    ///// </summary>
-    ////public string Code { get; set; }
-
-    ///// <summary>
-    ///// 版本号
-    ///// </summary>
-    ////public int? Version { get; set; }
 }

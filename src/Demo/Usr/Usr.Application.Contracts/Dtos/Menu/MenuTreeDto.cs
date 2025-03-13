@@ -1,8 +1,16 @@
-﻿namespace Adnc.Demo.Usr.Application.Contracts.Dtos;
+﻿using System.Text.Json.Serialization;
 
+namespace Adnc.Demo.Usr.Application.Contracts.Dtos;
+
+/// <summary>
+/// 菜单
+/// </summary>
 [Serializable]
-public class MenuTreeDto : IDto
+public class MenuTreeDto : MenuDto
 {
-    public IEnumerable<Node<long>> TreeData { get; set; }
-    public IEnumerable<long> CheckedIds { get; set; }
+    /// <summary>
+    /// 子菜单
+    /// </summary>
+    [JsonPropertyOrder(100)]
+    public List<MenuTreeDto> Children { get; set; } = [];
 }

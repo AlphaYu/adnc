@@ -10,12 +10,12 @@
         /// <summary>
         /// 生日
         /// </summary>
-        public DateTime Birthday { get; set; }
+        public DateTime? Birthday { get; set; }
 
         /// <summary>
         /// 部门Id
         /// </summary>
-        public long? DeptId { get; set; }
+        public long DeptId { get; set; }
 
         /// <summary>
         /// 邮件地址
@@ -30,22 +30,22 @@
         /// <summary>
         /// 手机号
         /// </summary>
-        public string Phone { get; set; } = string.Empty;
+        public string Mobile { get; set; } = string.Empty;
 
-        ///// <summary>
-        ///// 角色Id列表，以逗号分隔
-        ///// </summary>
-        ////public string RoleId { get; set; }
+        // <summary>
+        // 角色Id
+        // </summary>
+        public long[] RoleIds { get; set; } = [];
 
         /// <summary>
         /// 性别
         /// </summary>
-        public int Sex { get; set; }
+        public int Gender { get; set; }
 
         /// <summary>
         /// 账户状态
         /// </summary>
-        public int Status { get; set; }
+        public bool Status { get; set; }
 
     }
 }

@@ -4,6 +4,7 @@ using Adnc.Infra.Repository.EfCore.MySql;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Adnc.Demo.Usr.Repository.Migrations
 {
     [DbContext(typeof(MySqlDbContext))]
-    partial class MySqlDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250311045441_Init20250311")]
+    partial class Init20250311
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -57,8 +60,8 @@ namespace Adnc.Demo.Usr.Repository.Migrations
 
                     b.Property<string>("Icon")
                         .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("varchar(32)")
+                        .HasMaxLength(16)
+                        .HasColumnType("varchar(16)")
                         .HasColumnName("icon")
                         .HasComment("图标");
 
@@ -93,8 +96,8 @@ namespace Adnc.Demo.Usr.Repository.Migrations
 
                     b.Property<string>("Params")
                         .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("varchar(128)")
+                        .HasMaxLength(64)
+                        .HasColumnType("varchar(64)")
                         .HasColumnName("params")
                         .HasComment("路由参数");
 
@@ -292,8 +295,8 @@ namespace Adnc.Demo.Usr.Repository.Migrations
                         .HasColumnName("ordinal")
                         .HasComment("");
 
-                    b.Property<bool>("Status")
-                        .HasColumnType("tinyint(1)")
+                    b.Property<int>("Status")
+                        .HasColumnType("int")
                         .HasColumnName("status")
                         .HasComment("");
 
@@ -422,7 +425,7 @@ namespace Adnc.Demo.Usr.Repository.Migrations
                         .HasDefaultValue(false)
                         .HasColumnName("isdeleted")
                         .HasColumnOrder(99)
-                        .HasComment("删除标识");
+                        .HasComment("");
 
                     b.Property<string>("Mobile")
                         .IsRequired()
@@ -464,8 +467,8 @@ namespace Adnc.Demo.Usr.Repository.Migrations
                         .HasColumnName("salt")
                         .HasComment("密码盐");
 
-                    b.Property<bool>("Status")
-                        .HasColumnType("tinyint(1)")
+                    b.Property<int>("Status")
+                        .HasColumnType("int")
                         .HasColumnName("status")
                         .HasComment("状态");
 

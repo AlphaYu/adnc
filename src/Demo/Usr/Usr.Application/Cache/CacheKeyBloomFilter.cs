@@ -30,13 +30,8 @@ public class CacheKeyBloomFilter : AbstractBloomFilter
             var values = new List<string>()
             {
                 CachingConsts.MenuListCacheKey,
-                CachingConsts.MenuTreeListCacheKey,
-                CachingConsts.MenuRelationCacheKey,
-                CachingConsts.MenuCodesCacheKey,
-                CachingConsts.DetpListCacheKey,
-                CachingConsts.DetpTreeListCacheKey,
-                CachingConsts.DetpSimpleTreeListCacheKey,
-                CachingConsts.RoleListCacheKey
+                CachingConsts.RoleMenuCodesCacheKey,
+                CachingConsts.DetpListCacheKey
             };
 
             using var scope = _serviceProvider.Value.CreateScope();

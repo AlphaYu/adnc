@@ -5,7 +5,8 @@
 /// </summary>
 [Route($"{RouteConsts.AuthRoot}/session")]
 [ApiController]
-public class AccountController(IOptions<JWTOptions> jwtOptions, UserContext userContext, IUserAppService userService, ILogger<AccountController> logger) : AdncControllerBase
+public class AccountController(IOptions<JWTOptions> jwtOptions, UserContext userContext, IUserAppService userService, ILogger<AccountController> logger) 
+    : AdncControllerBase
 {
     /// <summary>
     /// 登录
@@ -21,7 +22,7 @@ public class AccountController(IOptions<JWTOptions> jwtOptions, UserContext user
         if (result.IsSuccess)
         {
             var validatedInfo = result.Content;
-            var accessToken = JwtTokenHelper.CreateAccessToken(jwtOptions.Value, validatedInfo.ValidationVersion, validatedInfo.Account, validatedInfo.Id.ToString(), validatedInfo.Name, validatedInfo.RoleIds, BearerDefaults.Manager);
+            var accessToken = JwtTokenHelper.CreateAccessToken(jwtOptions.Value, validatedInfo.ValidationVersion, validatedInfo.Account, validatedInfo.Id.ToString(), validatedInfo.Name, validatedInfo.GetRoleIdsString(), BearerDefaults.Manager);
             var refreshToken = JwtTokenHelper.CreateRefreshToken(jwtOptions.Value, validatedInfo.ValidationVersion, validatedInfo.Id.ToString());
             var tokenInfo = new UserTokenInfoDto(accessToken.Token, accessToken.Expire, refreshToken.Token, refreshToken.Expire);
             return Created($"/auth/session", tokenInfo);
@@ -61,7 +62,7 @@ public class AccountController(IOptions<JWTOptions> jwtOptions, UserContext user
             if (jti is null || jti.Value != validatedInfo.ValidationVersion)
                 return Forbid();
 
-            var accessToken = JwtTokenHelper.CreateAccessToken(jwtOptions.Value, validatedInfo.ValidationVersion, validatedInfo.Account, validatedInfo.Id.ToString(), validatedInfo.Name, validatedInfo.RoleIds, BearerDefaults.Manager);
+            var accessToken = JwtTokenHelper.CreateAccessToken(jwtOptions.Value, validatedInfo.ValidationVersion, validatedInfo.Account, validatedInfo.Id.ToString(), validatedInfo.Name, validatedInfo.GetRoleIdsString(), BearerDefaults.Manager);
             var refreshToken = JwtTokenHelper.CreateRefreshToken(jwtOptions.Value, validatedInfo.ValidationVersion, validatedInfo.Id.ToString());
 
             await userService.ChangeUserValidateInfoExpiresDtAsync(id.Value);
@@ -79,7 +80,7 @@ public class AccountController(IOptions<JWTOptions> jwtOptions, UserContext user
     /// <returns></returns>
     [HttpPut("password")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<ActionResult> ChangePassword([FromBody] UserChangePwdDto input) => Result(await userService.UpdatePasswordAsync(userContext.Id, input));
+    public async Task<ActionResult> ChangePassword([FromBody] UserProfileChangePwdDto input) => Result(await userService.UpdatePasswordAsync(userContext.Id, input));
 
     /// <summary>
     ///  获取认证信息
@@ -118,4 +119,20 @@ public class AccountController(IOptions<JWTOptions> jwtOptions, UserContext user
         var result = await userService.GetPermissionsAsync(id, requestPermissions, userBelongsRoleIds);
         return result ?? new List<string>();
     }
+
+    /// <summary>
+    /// 获取登录用户个人中心信息
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet("profile")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<ActionResult<UserProfileDto?>> GetUserProfileAsync() => await userService.GetProfileAsync(userContext.Id);
+
+    /// <summary>
+    /// 修改当前账户信息
+    /// </summary>
+    /// <returns></returns>
+    [HttpPut("profile")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<ActionResult> ChangeUserProfileAsync([FromBody]UserProfileUpdationDto input) => Result(await userService.ChangeProfileAsync(userContext.Id, input));
 }

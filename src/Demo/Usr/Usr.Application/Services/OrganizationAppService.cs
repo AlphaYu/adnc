@@ -1,16 +1,17 @@
 ﻿namespace Adnc.Demo.Usr.Application.Services;
 
-public class OrganizationAppService(IEfRepository<Organization> organizationRepo, CacheService cacheService) : AbstractAppService, IOrganizationAppService
+public class OrganizationAppService(IEfRepository<Organization> organizationRepo, CacheService cacheService) 
+    : AbstractAppService, IOrganizationAppService
 {
     public async Task<AppSrvResult<long>> CreateAsync(OrganizationCreationDto input)
     {
         input.TrimStringFields();
-        var exists = await organizationRepo.AnyAsync(x => x.FullName == input.FullName);
+        var exists = await organizationRepo.AnyAsync(x => x.Name == input.Name);
         if (exists)
             return Problem(HttpStatusCode.BadRequest, "该机构全称已经存在");
 
         var organization = Mapper.Map<Organization>(input, IdGenerater.GetNextId());
-        organization.Pids = await GetPids(organization.Pid);
+        organization.ParentIds = await GetParentIdsAsync(organization.ParentId);
         await organizationRepo.InsertAsync(organization);
 
         return organization.Id;
@@ -24,88 +25,88 @@ public class OrganizationAppService(IEfRepository<Organization> organizationRepo
         if (organization is null)
             return Problem(HttpStatusCode.NotFound, "该机构不存在");
 
-        var exists = await organizationRepo.AnyAsync(x => x.FullName == input.FullName && x.Id != id);
+        var exists = await organizationRepo.AnyAsync(x => x.Name == input.Name && x.Id != id);
         if (exists)
             return Problem(HttpStatusCode.BadRequest, "该机构全称已经存在");
 
-        if (organization.Pid == 0 && input.Pid > 0)
+        if (organization.ParentId == 0 && input.ParentId > 0)
             return Problem(HttpStatusCode.BadRequest, "一级单位不能修改等级");
 
-        organization.FullName = input.FullName;
-        organization.SimpleName = input.SimpleName;
-        organization.Ordinal = input.Ordinal;
-        if (organization.Pid != input.Pid)
+        var oldParentId = organization.ParentId;
+
+         var newOrganization = Mapper.Map(input, organization);
+        if (oldParentId != input.ParentId)
         {
-            var oldPids = $"{organization.Pids}";
-            var newPids = await GetPids(input.Pid);
-            organization.Pid = input.Pid;
-            organization.Pids = newPids;
-            var oldSubOrgPids = $"{oldPids}[{organization.Id}]";
-            var newSubOrgPids = $"{newPids}[{organization.Id}]";
-            await organizationRepo.ExecuteUpdateAsync(x => x.Pids.StartsWith(oldSubOrgPids), setters => setters.SetProperty(x => x.Pids, y => y.Pids.Replace(oldSubOrgPids, newSubOrgPids)));
+            var oldPids = $"{organization.ParentIds}";
+            var newPids = await GetParentIdsAsync(input.ParentId);
+            newOrganization.ParentId = input.ParentId;
+            newOrganization.ParentIds = newPids;
+            var oldSubOrgPids = $"{oldPids}[{id}]";
+            var newSubOrgPids = $"{newPids}[{id}]";
+            await organizationRepo.ExecuteUpdateAsync(x => x.ParentIds.StartsWith(oldSubOrgPids), setters => setters.SetProperty(x => x.ParentIds, y => y.ParentIds.Replace(oldSubOrgPids, newSubOrgPids)));
         }
-        await organizationRepo.UpdateAsync(organization);
+        await organizationRepo.UpdateAsync(newOrganization);
 
         return AppSrvResult();
     }
 
-    public async Task<AppSrvResult> DeleteAsync(long Id)
+    public async Task<AppSrvResult> DeleteAsync(long[] ids)
     {
-        var organization = await organizationRepo.FetchAsync(x => new { x.Id, x.Pids }, x => x.Id == Id);
-        if (organization is null)
-            return AppSrvResult();
-
-        var needDeletedPids = $"{organization.Pids}[{Id}]";
-        await organizationRepo.ExecuteDeleteAsync(d => d.Pids.StartsWith(needDeletedPids) || d.Id == organization.Id);
-
-        return AppSrvResult();
-    }
-
-    public async Task<List<OrganizationTreeDto>> GetTreeListAsync()
-    {
-        var result = new List<OrganizationTreeDto>();
-        var organizations = await cacheService.GetAllOrganizationsFromCacheAsync();
-        if (organizations.IsNullOrEmpty())
-            return result;
-
-        Func<OrganizationDto, OrganizationTreeDto> selector = x => new OrganizationTreeDto
+        foreach( var id in ids)
         {
-            Id = x.Id,
-            SimpleName = x.SimpleName,
-            FullName = x.FullName,
-            Ordinal = x.Ordinal,
-            Pid = x.Pid,
-            Pids = x.Pids,
-            Tips = x.Tips
-        };
-
-        var roots = organizations.Where(d => d.Pid == 0).OrderBy(d => d.Ordinal).Select(selector).ToList();
-        roots.ForEach(node =>
-        {
-            GetChildren(node, organizations);
-            result.Add(node);
-        });
-
-        void GetChildren(OrganizationTreeDto currentNode, List<OrganizationDto> allorganizationNodes)
-        {
-            var childrenNodes = organizations.Where(d => d.Pid == currentNode.Id) .OrderBy(d => d.Ordinal).Select(selector).ToList();
-            if (childrenNodes.IsNotNullOrEmpty())
+            var organization = await organizationRepo.FetchAsync(x => new { x.Id, x.ParentIds }, x => x.Id == id);
+            if (organization is not null)
             {
-                currentNode.Children.AddRange(childrenNodes);
-                foreach (var node in childrenNodes)
-                {
-                    GetChildren(node, allorganizationNodes);
-                }
+                var needDeletedPids = $"{organization.ParentIds}[{id}]";
+                await organizationRepo.ExecuteDeleteAsync(d => d.ParentIds.StartsWith(needDeletedPids) || d.Id == organization.Id);
             }
         }
-
-        return result;
+        return AppSrvResult();
     }
 
-    private async Task<string> GetPids(long pid)
+    public async Task<OrganizationDto?> GetAsync(long Id)
+    {
+        var org = (await cacheService.GetAllOrganizationsFromCacheAsync()).FirstOrDefault(x => x.Id == Id);
+        return org;
+    }
+
+    public async Task<List<OrganizationTreeDto>> GetTreeListAsync(string? name = null, bool? status = null)
+    {
+        var whereExpr = ExpressionCreator
+            .New<OrganizationDto>()
+            .AndIf(name.IsNotNullOrEmpty(), x => x.Name == name)
+            .AndIf(status is not null, x => x.Status == status);
+        var orgs = (await cacheService.GetAllOrganizationsFromCacheAsync()).Where(whereExpr.Compile()).OrderBy(x => x.ParentId).ThenBy(x => x.Ordinal);
+        if (orgs.IsNullOrEmpty())
+            return [];
+
+        List<OrganizationTreeDto> GetChildren(long id)
+        {
+            var orgTree = new List<OrganizationTreeDto>();
+            var parentOrgDtos = orgs.Where(x => x.ParentId == id);
+            foreach (var orgDto in parentOrgDtos)
+            {
+                var orgNode = Mapper.Map<OrganizationTreeDto>(orgDto);
+                orgNode.Children = GetChildren(orgDto.Id);
+                orgTree.Add(orgNode);
+            }
+            return orgTree;
+        }
+
+        var rootId = orgs.First().ParentId;
+        return GetChildren(rootId);
+    }
+
+    public async Task<List<OptionTreeDto>> GetOrgOptionsAsync(bool? status = null)
+    {
+        var orgTree = await GetTreeListAsync(null, status);
+        return Mapper.Map<List<OptionTreeDto>>(orgTree);
+    }
+
+    private async Task<string> GetParentIdsAsync(long pid)
     {
         var rootPids = "[0]";
-        var superiorPids = await organizationRepo.FetchAsync(x => x.Pids, x => x.Id == pid) ?? rootPids;
+        var superiorPids = await organizationRepo.FetchAsync(x => x.ParentIds, x => x.Id == pid) ?? rootPids;
         if (superiorPids == rootPids)
             return rootPids;
         else

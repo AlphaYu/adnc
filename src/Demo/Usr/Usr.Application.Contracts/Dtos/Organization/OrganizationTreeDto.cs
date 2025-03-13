@@ -1,10 +1,10 @@
 ﻿namespace Adnc.Demo.Usr.Application.Contracts.Dtos;
 
 /// <summary>
-/// 部门节点
+/// 部门树
 /// </summary>
 [Serializable]
 public class OrganizationTreeDto : OrganizationDto
 {
-    public List<OrganizationTreeDto> Children { get; set; } = new List<OrganizationTreeDto>();
+    public List<OrganizationTreeDto> Children { get; set; } = [];
 }

@@ -7,17 +7,19 @@ public class MenuAppService(IEfRepository<Menu> menuRepo, CacheService cacheServ
     public async Task<AppSrvResult<long>> CreateAsync(MenuCreationDto input)
     {
         input.TrimStringFields();
-
-        var existsCode = await menuRepo.AnyAsync(x => x.Code == input.Code);
-        if (existsCode)
-            return Problem(HttpStatusCode.BadRequest, "该菜单编码已经存在");
+        if (input.Perm.IsNotNullOrEmpty())
+        {
+            var existsCode = await menuRepo.AnyAsync(x => x.Perm == input.Perm);
+            if (existsCode)
+                return Problem(HttpStatusCode.BadRequest, "该菜单编码已经存在");
+        }
 
         var existsName = await menuRepo.AnyAsync(x => x.Name == input.Name);
         if (existsName)
             return Problem(HttpStatusCode.BadRequest, "该菜单名称已经存在");
 
-        var menuDto = ProducePCodes(input);
-        var menuEntity = Mapper.Map<Menu>(menuDto, IdGenerater.GetNextId());
+        var menuEntity = Mapper.Map<Menu>(input, IdGenerater.GetNextId());
+        menuEntity.ParentIds = await GetParentIds(menuEntity.ParentId);
 
         await menuRepo.InsertAsync(menuEntity);
 
@@ -27,21 +29,23 @@ public class MenuAppService(IEfRepository<Menu> menuRepo, CacheService cacheServ
     public async Task<AppSrvResult> UpdateAsync(long id, MenuUpdationDto input)
     {
         input.TrimStringFields();
-
-        var existsCode = await menuRepo.AnyAsync(x => x.Code == input.Code && x.Id != id);
-        if (existsCode)
-            return Problem(HttpStatusCode.BadRequest, "该菜单编码已经存在");
+        if (input.Perm.IsNotNullOrEmpty())
+        {
+            var existsCode = await menuRepo.AnyAsync(x => x.Perm == input.Perm && x.Id != id);
+            if (existsCode)
+                return Problem(HttpStatusCode.BadRequest, "该菜单编码已经存在");
+        }
 
         var existsName = await menuRepo.AnyAsync(x => x.Name == input.Name && x.Id != id);
         if (existsName)
             return Problem(HttpStatusCode.BadRequest, "该菜单名称已经存在");
 
-        var menuEntity = await menuRepo.FetchAsync(x => x.Id == id);
+        var menuEntity = await menuRepo.FetchAsync(x => x.Id == id, noTracking: false);
         if (menuEntity is null)
             return Problem(HttpStatusCode.NotFound, "该菜单不存在");
 
-        var menuDto = ProducePCodes(input);
-        Mapper.Map(menuDto,menuEntity);
+        Mapper.Map(input, menuEntity);
+        menuEntity.ParentIds = await GetParentIds(menuEntity.ParentId);
 
         await menuRepo.UpdateAsync(menuEntity);
 
@@ -50,143 +54,121 @@ public class MenuAppService(IEfRepository<Menu> menuRepo, CacheService cacheServ
 
     public async Task<AppSrvResult> DeleteAsync(long id)
     {
-        var menuEnity = await menuRepo.FetchAsync(x => new { x.Code, x.PCodes }, x => x.Id == id);
+        var menuEnity = await menuRepo.FetchAsync(x => new { x.Id, x.ParentIds }, x => x.Id == id);
         if (menuEnity is null)
             return AppSrvResult();
 
-        var needDeletedPCodes = $"{menuEnity.PCodes}[{menuEnity.Code}]";
-        await menuRepo.ExecuteDeleteAsync(x => x.PCodes.Contains(needDeletedPCodes) || x.Id == id);
+        var needDeletedParentIds = $"{menuEnity.ParentIds}[{menuEnity.Id}]";
+        await menuRepo.ExecuteDeleteAsync(x => x.ParentIds.Contains(needDeletedParentIds) || x.Id == id);
         return AppSrvResult();
     }
 
-    public async Task<List<MenuNodeDto>> GetlistAsync()
+    public async Task<List<MenuTreeDto>> GetTreelistAsync(string? keywords = null)
     {
-        var result = new List<MenuNodeDto>();
+        var whereExpr = ExpressionCreator.New<MenuDto>().AndIf(keywords is not null, x => x.Name == keywords);
+        var menus = (await cacheService.GetAllMenusFromCacheAsync()).Where(whereExpr.Compile()).OrderBy(x => x.ParentId).ThenBy(x => x.Ordinal).ToArray();
 
-        var menus = (await cacheService.GetAllMenusFromCacheAsync()).OrderBy(o => o.Levels).ThenBy(x => x.Ordinal).ToArray();
-
-        var menuNodes = Mapper.Map<List<MenuNodeDto>>(menus);
-        foreach (var node in menuNodes)
+        List<MenuTreeDto> GetChildren(long id)
         {
-            var parentNode = menuNodes.FirstOrDefault(x => x.Code == node.PCode);
-            if (parentNode != null)
-                node.ParentId = parentNode.Id;
+            var menuTree = new List<MenuTreeDto>();
+            var parentMenuDtos = menus.Where(x => x.ParentId == id);
+            foreach (var menuDto in parentMenuDtos)
+            {
+                var menuNode = Mapper.Map<MenuTreeDto>(menuDto);
+                menuNode.Children = GetChildren(menuDto.Id);
+                menuTree.Add(menuNode);
+            }
+            return menuTree;
         }
 
-        var dictNodes = menuNodes.ToDictionary(x => x.Id);
-        foreach (var pair in dictNodes)
-        {
-            var currentNode = pair.Value;
-            if (dictNodes.ContainsKey(currentNode.ParentId))
-                dictNodes[currentNode.ParentId].Children.Add(currentNode);
-            else
-                result.Add(currentNode);
-        }
-
-        return result;
+        var rootId = menus.First().ParentId;
+        return GetChildren(rootId);
     }
 
-    public async Task<List<RouterDto>> GetMenusForRouterAsync(IEnumerable<long> roleIds)
+    public async Task<MenuDto> GetAsync(long id)
     {
+        var allMenus = await cacheService.GetAllMenusFromCacheAsync();
+        var menuDto = allMenus.FirstOrDefault(x => x.Id == id);
+        return menuDto ?? new MenuDto();
+    }
 
+    public async Task<List<RouterTreeDto>> GetMenusForRouterAsync(IEnumerable<long> roleIds)
+    {
         //所有菜单
         var allMenus = await cacheService.GetAllMenusFromCacheAsync();
         //所有菜单角色关系
-        var allRelations = await cacheService.GetAllRoleUserRelationsFromCacheAsync();
+        var allRoleMenus = await cacheService.GetAllRoleMenusFromCacheAsync();
         //角色拥有的菜单Ids
-        var menusIds = allRelations.Where(x => roleIds.Contains(x.RoleId)).Select(x => x.MenuId).Distinct();
+        var menusIds = allRoleMenus.Where(x => roleIds.Contains(x.RoleId)).Select(x => x.MenuId).Distinct();
         //根据菜单Id获取菜单实体
-        var menus = allMenus.Where(x => menusIds.Contains(x.Id) && x.IsMenu && x.Status == true);
+        var menus = allMenus.Where(x => menusIds.Contains(x.Id) && x.Type != MenuType.BUTTON.ToString() && x.Visible);
         if (menus.IsNullOrEmpty())
             return [];
 
-        List<RouterDto>  GetChildren(string code)
+        List<RouterTreeDto>? GetChildren(long id)
         {
-            var children = new List<RouterDto>();
-            var pMenus = menus.Where(x => x.PCode == code);
-            foreach (var menu in pMenus)
+            var routerTree = new List<RouterTreeDto>();
+            var parentMenuDtos = menus.Where(x => x.ParentId == id);
+            foreach (var menuDto in parentMenuDtos)
             {
-                var router = new RouterDto
+                var router = new RouterTreeDto
                 {
-                    Name = menu.Code,
-                    Path = menu.Url.StartsWith("http") ? string.Empty : menu.Url,
-                    Component = menu.Component,
-                    Redirect = string.Empty,
-                    Meta = new RouterDto.RouteMeta
+                    Name = menuDto.RouteName,
+                    Path = menuDto.RoutePath,
+                    Component = menuDto.Component,
+                    Redirect = menuDto.Redirect,
+                    Meta = new RouterTreeDto.RouteMeta
                     {
-                        Icon = menu.Icon,
-                        Title = menu.Name,
-                        Hidden = menu.Hidden,
-                        KeepAlive = true,
+                        Icon = menuDto.Icon,
+                        Title = menuDto.Name,
+                        Hidden = !menuDto.Visible,
+                        KeepAlive = menuDto.KeepAlive,
+                        AlwaysShow = menuDto.AlwaysShow
                     },
-                    Children = GetChildren(menu.Code)
+                    Children = GetChildren(menuDto.Id)
                 };
-                children.Add(router);
+                routerTree.Add(router);
             }
-            return children;
+            return routerTree;
         }
 
-        return GetChildren("0");
+        return GetChildren(0);
     }
 
-    public async Task<MenuTreeDto> GetMenuTreeListByRoleIdAsync(long roleId)
+    public async Task<List<OptionTreeDto>> GetMenuOptionsAsync(bool? onlyParent)
     {
-        var menuIds = (await cacheService.GetAllRoleUserRelationsFromCacheAsync()).Where(x => x.RoleId == roleId).Select(r => r.MenuId) ?? new List<long>();
-        var roleTreeList = new List<ZTreeNodeDto<long, dynamic>>();
+        var whereExpression = ExpressionCreator.New<MenuDto>().AndIf(onlyParent is not null, x => x.Type != MenuType.BUTTON.ToString());
 
-        var menus = (await cacheService.GetAllMenusFromCacheAsync()).Where(w => true).OrderBy(x => x.Ordinal);
+        var menus = (await cacheService.GetAllMenusFromCacheAsync()).Where(whereExpression.Compile()).ToArray();
 
-        foreach (var menu in menus)
+        List<OptionTreeDto> GetChildren(long id)
         {
-            var parentMenu = menus.FirstOrDefault(x => x.Code == menu.PCode);
-            var node = new ZTreeNodeDto<long, dynamic>
+            var optionTree = new List<OptionTreeDto>();
+            var parentMenuDtos = menus.Where(x => x.ParentId == id);
+            foreach (var menuDto in parentMenuDtos)
             {
-                Id = menu.Id,
-                PID = parentMenu != null ? parentMenu.Id : 0,
-                Name = menu.Name,
-                Open = parentMenu != null,
-                Checked = menuIds.Contains(menu.Id)
-            };
-            roleTreeList.Add(node);
-        }
-
-        var nodes = Mapper.Map<List<Node<long>>>(roleTreeList);
-        foreach (var node in nodes)
-        {
-            foreach (var child in nodes)
-            {
-                if (child.PID == node.Id)
-                    node.Children.Add(child);
+                var optionNode = new OptionTreeDto
+                {
+                    Label = menuDto.Name,
+                    Value = menuDto.Id,
+                    Children = GetChildren(menuDto.Id)
+                };
+                optionTree.Add(optionNode);
             }
+            return optionTree;
         }
 
-        var groups = roleTreeList.GroupBy(x => x.PID).Where(x => x.Key > 1);
-        foreach (var group in groups)
-        {
-            roleTreeList.RemoveAll(x => x.Id == group.Key);
-        }
-
-        return new MenuTreeDto
-        {
-            TreeData = nodes.Where(x => x.PID == 0),
-            CheckedIds = roleTreeList.Where(x => x.Checked && x.PID != 0).Select(x => x.Id)
-        };
+        return GetChildren(0);
     }
 
-    private async Task<MenuCreationDto> ProducePCodes(MenuCreationDto menuCreationDto)
+    private async Task<string> GetParentIds(long parentId)
     {
-        var parentMenuEntity = await menuRepo.FetchAsync(x => new { x.Code, x.PCodes, x.Levels }, y => y.Code == menuCreationDto.PCode);
-        if (parentMenuEntity is null || menuCreationDto.PCode.Equals("0"))
+        var parentIds = "[0]";
+        var parentMenuEntity = await menuRepo.FetchAsync(x => new { x.Id, x.ParentIds }, y => y.Id == parentId);
+        if (parentMenuEntity is not null)
         {
-            menuCreationDto.PCode = "0";
-            menuCreationDto.PCodes = "[0]";
-            menuCreationDto.Levels = 1;
+            parentIds = $"{parentMenuEntity.ParentIds}[{parentMenuEntity.Id}]";
         }
-        else
-        {
-            menuCreationDto.Levels = parentMenuEntity.Levels + 1;
-            menuCreationDto.PCodes = $"{parentMenuEntity.PCodes}[{parentMenuEntity.Code}]";
-        }
-        return menuCreationDto;
+        return parentIds;
     }
 }

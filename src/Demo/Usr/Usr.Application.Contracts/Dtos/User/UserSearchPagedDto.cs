@@ -6,12 +6,17 @@
 public class UserSearchPagedDto : SearchPagedDto
 {
     /// <summary>
-    /// 用户姓名
+    /// 用户姓名/账号/手机号
     /// </summary>
-    public string? Name { get; set; }
+    public string? Keywords { get; set; }
 
     /// <summary>
-    /// 用户账户
+    /// 用户状态
     /// </summary>
-    public string? Account { get; set; }
+    public bool? Status { get; set; }
+
+    /// <summary>
+    /// 部门编号
+    /// </summary>
+    public long? DeptId { get; set; }
 }

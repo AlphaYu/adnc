@@ -1,16 +1,16 @@
-﻿using Adnc.Infra.Helper;
-
-namespace Adnc.Demo.Usr.Application.Contracts.Dtos
+﻿namespace Adnc.Demo.Usr.Application.Contracts.Dtos
 {
     [Serializable]
     public record UserValidatedInfoDto : IDto
     {
-        public UserValidatedInfoDto(long id, string account, string name, string roleids, int status)
+        public UserValidatedInfoDto(long id, string account, string name, long[] roleids, string[] roleCodes, string[] roleNames, bool status)
         {
             Id = id;
             Account = account;
             Name = name;
             RoleIds = roleids;
+            RoleCodes = roleCodes;
+            RoleNames = roleNames;
             Status = status;
             ValidationVersion = Guid.NewGuid().ToString("N");
         }
@@ -21,10 +21,16 @@ namespace Adnc.Demo.Usr.Application.Contracts.Dtos
 
         public string Name { get; init; }
 
-        public string RoleIds { get; init; }
+        public long[] RoleIds { get; init; }
 
-        public int Status { get; init; }
+        public string[] RoleCodes { get; init; }
+
+        public string[] RoleNames { get; init; }
+
+        public bool Status { get; init; }
 
         public string ValidationVersion { get; init; }
+
+        public string GetRoleIdsString() => string.Join(',', RoleIds);
     }
 }
