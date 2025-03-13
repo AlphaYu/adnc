@@ -10,7 +10,7 @@ public sealed class DependencyRegistrar : AbstractApplicationDependencyRegistrar
 {
     public override Assembly ApplicationLayerAssembly => Assembly.GetExecutingAssembly();
 
-    public override Assembly ContractsLayerAssembly => typeof(IWarehouseAppService).Assembly;
+    public override Assembly ContractsLayerAssembly => typeof(IWarehouseService).Assembly;
 
     public override Assembly RepositoryOrDomainLayerAssembly => typeof(EntityInfo).Assembly;
 

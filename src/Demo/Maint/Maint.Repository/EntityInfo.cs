@@ -10,8 +10,5 @@ public class EntityInfo: AbstractEntityInfo
             throw new ArgumentNullException(nameof(modelBuilder));
 
         builder.Entity<EventTracker>().ToTable("sys_eventtracker");
-        builder.Entity<Cfg>().ToTable("sys_config");
-        builder.Entity<Dict>().ToTable("sys_dictionary");
-        builder.Entity<Notice>().ToTable("sys_notice");
     }
 }

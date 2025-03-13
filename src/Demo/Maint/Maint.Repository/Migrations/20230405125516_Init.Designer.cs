@@ -23,7 +23,7 @@ namespace Adnc.Demo.Maint.Repository.Migrations
 
             MySqlModelBuilderExtensions.HasCharSet(modelBuilder, "utf8mb4 ");
 
-            modelBuilder.Entity("Adnc.Demo.Maint.Entities.Cfg", b =>
+            modelBuilder.Entity("Adnc.Demo.Maint.Entities.SysConfig", b =>
                 {
                     b.Property<long>("Id")
                         .HasColumnType("bigint")

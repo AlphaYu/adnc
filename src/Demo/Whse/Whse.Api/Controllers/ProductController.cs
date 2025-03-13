@@ -7,9 +7,9 @@
 [ApiController]
 public class ProductController : AdncControllerBase
 {
-    private readonly IProductAppService _productSrv;
+    private readonly IProductService _productSrv;
 
-    public ProductController(IProductAppService productSrv) => _productSrv = productSrv;
+    public ProductController(IProductService productSrv) => _productSrv = productSrv;
 
     /// <summary>
     /// 新建商品

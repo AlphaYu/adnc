@@ -10,9 +10,9 @@ namespace Adnc.Demo.Cust.Api.Controllers;
 [ApiController]
 public class CustomerController : AdncControllerBase
 {
-    private readonly ICustomerAppService _customerService;
+    private readonly ICustomerService _customerService;
 
-    public CustomerController(ICustomerAppService customerService) => _customerService = customerService;
+    public CustomerController(ICustomerService customerService) => _customerService = customerService;
 
     /// <summary>
     /// 注册

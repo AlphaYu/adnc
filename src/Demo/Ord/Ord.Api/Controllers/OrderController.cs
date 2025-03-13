@@ -7,9 +7,9 @@
 [ApiController]
 public class OrderController : AdncControllerBase
 {
-    private readonly IOrderAppService _orderSrv;
+    private readonly IOrderService _orderSrv;
 
-    public OrderController(IOrderAppService orderSrv) => _orderSrv = orderSrv;
+    public OrderController(IOrderService orderSrv) => _orderSrv = orderSrv;
 
     /// <summary>
     /// 新建订单

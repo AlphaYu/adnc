@@ -7,9 +7,9 @@
 [ApiController]
 public class WarehouseController : AdncControllerBase
 {
-    private readonly IWarehouseAppService _warehouseSrv;
+    private readonly IWarehouseService _warehouseSrv;
 
-    public WarehouseController(IWarehouseAppService warehouseSrv) => _warehouseSrv = warehouseSrv;
+    public WarehouseController(IWarehouseService warehouseSrv) => _warehouseSrv = warehouseSrv;
 
     /// <summary>
     /// 新建货架

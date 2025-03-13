@@ -7,10 +7,10 @@ namespace Adnc.Demo.Whse.Api.Grpc;
 
 public class WhseGrpcServer : Adnc.Demo.Shared.Remote.Grpc.Services.WhseGrpc.WhseGrpcBase
 {
-    private readonly IProductAppService _productAppService;
+    private readonly IProductService _productAppService;
     private readonly IObjectMapper _mapper;
 
-    public WhseGrpcServer(IProductAppService productAppService
+    public WhseGrpcServer(IProductService productAppService
         , IObjectMapper mapper)
     {
         _productAppService = productAppService;

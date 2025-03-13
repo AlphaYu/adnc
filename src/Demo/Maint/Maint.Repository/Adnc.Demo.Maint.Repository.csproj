@@ -21,4 +21,8 @@
 		<PackageReference Include="Adnc.Shared" Version="$(Shared_Version)" />
 		<PackageReference Include="Adnc.Shared.Repository" Version="$(Shared_Version)" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Entities\Config\" />
+	</ItemGroup>
 </Project>

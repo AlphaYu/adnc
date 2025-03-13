@@ -6,10 +6,10 @@
 [Route($"{RouteConsts.MaintRoot}")]
 public class LogController : AdncControllerBase
 {
-    private readonly ILogAppService _logService;
+    private readonly ILogService _logService;
     private readonly UserContext _userContext;
 
-    public LogController(ILogAppService logService
+    public LogController(ILogService logService
         , UserContext userContext)
     {
         _logService = logService;

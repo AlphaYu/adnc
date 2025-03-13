@@ -2,9 +2,4 @@
 
 public class CachingConsts
 {
-    //cache key
-
-    //cache prefix
-
-    //bloomfilter
 }

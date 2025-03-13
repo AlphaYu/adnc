@@ -12,14 +12,5 @@ public class MaintProfile : Profile
         CreateMap<LoginLog, LoginLogDto>();
         //CreateMap<LoggerLog, NlogLogDto>();
         //CreateMap<NloglogProperty, NlogLogPropertyDto>();
-        CreateMap<CfgCreationDto, Cfg>();
-        CreateMap<Cfg, CfgDto>();
-
-        CreateMap<DictCreationDto, Dict>();
-        CreateMap<Dict, DictDto>();
-        CreateMap<Notice, NoticeDto>().ReverseMap();
-
-        CreateMap<DictDto, DictReply>();
-
     }
 }
