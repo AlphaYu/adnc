@@ -44,9 +44,9 @@ public interface IDictService : IAppService
     /// <summary>
     /// 获取字典列表
     /// </summary>
-    /// <param name="search"></param>
+    /// <param name="input"></param>
     /// <returns></returns>
-    Task<PageModelDto<DictDto>> GetPagedAsync(DictSearchPagedDto search);
+    Task<PageModelDto<DictDto>> GetPagedAsync(SearchPagedDto input);
 
     /// <summary>
     /// 获取字典选项

@@ -35,6 +35,7 @@ public class AccountController(IOptions<JWTOptions> jwtOptions, UserContext user
     /// </summary>
     /// <returns></returns>
     [HttpDelete()]
+    [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult> LogoutAsync()
         => Result(await userService.DeleteUserValidateInfoAsync(userContext.Id));

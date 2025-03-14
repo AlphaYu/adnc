@@ -43,7 +43,7 @@ public interface ISysConfigService : IAppService
     /// <summary>
     /// 配置列表
     /// </summary>
-    /// <param name="search"></param>
+    /// <param name="input"></param>
     /// <returns></returns>
-    Task<PageModelDto<SysConfigDto>> GetPagedAsync(SysConfigSearchPagedDto search);
+    Task<PageModelDto<SysConfigDto>> GetPagedAsync(SearchPagedDto input);
 }

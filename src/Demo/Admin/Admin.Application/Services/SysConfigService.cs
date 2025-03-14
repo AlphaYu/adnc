@@ -64,25 +64,25 @@ public class SysConfigService(IEfRepository<SysConfig> sysConfigRepo, BloomFilte
         return entity is null ? null : Mapper.Map<SysConfigDto>(entity);
     }
 
-    public async Task<PageModelDto<SysConfigDto>> GetPagedAsync(SysConfigSearchPagedDto search)
+    public async Task<PageModelDto<SysConfigDto>> GetPagedAsync(SearchPagedDto input)
     {
-        search.TrimStringFields();
+        input.TrimStringFields();
         var whereExpr = ExpressionCreator
             .New<SysConfig>()
-            .AndIf(search.Keywords.IsNotNullOrWhiteSpace(), x => EF.Functions.Like(x.Name, $"{search.Keywords}%") || EF.Functions.Like(x.Key, $"{search.Keywords}%"));
+            .AndIf(input.Keywords.IsNotNullOrWhiteSpace(), x => EF.Functions.Like(x.Name, $"{input.Keywords}%") || EF.Functions.Like(x.Key, $"{input.Keywords}%"));
 
         var total = await sysConfigRepo.CountAsync(whereExpr);
         if (total == 0)
-            return new PageModelDto<SysConfigDto>(search);
+            return new PageModelDto<SysConfigDto>(input);
 
         var entities = await sysConfigRepo
                                         .Where(whereExpr)
                                         .OrderByDescending(x => x.Id)
-                                        .Skip(search.SkipRows())
-                                        .Take(search.PageSize)
+                                        .Skip(input.SkipRows())
+                                        .Take(input.PageSize)
                                         .ToListAsync();
         var cfgDtos = Mapper.Map<List<SysConfigDto>>(entities);
 
-        return new PageModelDto<SysConfigDto>(search, cfgDtos, total);
+        return new PageModelDto<SysConfigDto>(input, cfgDtos, total);
     }
 }

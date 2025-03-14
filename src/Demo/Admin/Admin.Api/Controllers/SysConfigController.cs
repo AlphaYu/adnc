@@ -62,11 +62,11 @@ public class SysConfigController(ISysConfigService sysConfigService) : AdncContr
     /// <summary>
     /// 获取配置列表
     /// </summary>
-    /// <param name="search"><see cref="SysConfigSearchPagedDto"/></param>
+    /// <param name="input"><see cref="SearchPagedDto"/></param>
     /// <returns><see cref="PageModelDto{CfgDto}"/></returns>
     [HttpGet("page")]
     [AdncAuthorize(PermissionConsts.SysConfig.GetList)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<PageModelDto<SysConfigDto>>> GetPagedAsync([FromQuery] SysConfigSearchPagedDto search)
-      => await sysConfigService.GetPagedAsync(search);
+    public async Task<ActionResult<PageModelDto<SysConfigDto>>> GetPagedAsync([FromQuery] SearchPagedDto input)
+      => await sysConfigService.GetPagedAsync(input);
 }

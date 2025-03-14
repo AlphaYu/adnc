@@ -55,9 +55,9 @@
         /// <summary>
         /// 获取用户列表
         /// </summary>
-        /// <param name="search"></param>
+        /// <param name="input"></param>
         /// <returns></returns>
-        Task<PageModelDto<UserDto>> GetPagedAsync(UserSearchPagedDto search);
+        Task<PageModelDto<UserDto>> GetPagedAsync(UserSearchPagedDto input);
 
         /// <summary>
         /// 获取当前用户信息

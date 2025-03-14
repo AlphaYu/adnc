@@ -43,7 +43,7 @@ public interface IDictDataService : IAppService
     /// <summary>
     /// 获取字典数据列表
     /// </summary>
-    /// <param name="search"></param>
+    /// <param name="input"></param>
     /// <returns></returns>
-    Task<PageModelDto<DictDataDto>> GetPagedAsync(DictDataSearchPagedDto search);
+    Task<PageModelDto<DictDataDto>> GetPagedAsync(DictDataSearchPagedDto input);
 }

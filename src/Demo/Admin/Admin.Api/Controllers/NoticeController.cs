@@ -64,14 +64,14 @@ public class NoticeController() : AdncControllerBase
     /// <summary>
     /// 获取通知分页列表
     /// </summary>
-    /// <param name="search"><see cref="SysConfigSearchPagedDto"/></param>
+    /// <param name="input"><see cref="NoticeSearchPagedDto"/></param>
     /// <returns><see cref="PageModelDto{CfgDto}"/></returns>
     [HttpGet("mine")]
     //[AdncAuthorize(PermissionConsts.SysConfig.GetList)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<PageModelDto<NoticeDto>>> GetMinePagedAsync([FromQuery] NoticeSearchPagedDto search)
+    public async Task<ActionResult<PageModelDto<NoticeDto>>> GetMinePagedAsync([FromQuery] NoticeSearchPagedDto input)
     {
         await Task.CompletedTask;
-        return new PageModelDto<NoticeDto>(search);
+        return new PageModelDto<NoticeDto>(input);
     }
 }

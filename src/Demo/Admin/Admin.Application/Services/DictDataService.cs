@@ -56,26 +56,26 @@ public class DictDataService(IEfRepository<DictData> dictDataRepo)
         return dictDataDto;
     }
 
-    public async Task<PageModelDto<DictDataDto>> GetPagedAsync(DictDataSearchPagedDto search)
+    public async Task<PageModelDto<DictDataDto>> GetPagedAsync(DictDataSearchPagedDto input)
     {
-        search.TrimStringFields();
+        input.TrimStringFields();
         var whereExpr = ExpressionCreator
             .New<DictData>()
-            .AndIf(search.DictCode.IsNotNullOrWhiteSpace(), x => x.DictCode == search.DictCode)
-            .AndIf(search.Keywords.IsNotNullOrWhiteSpace(), x => x.Label == search.Keywords || x.Value == search.Keywords);
+            .AndIf(input.DictCode.IsNotNullOrWhiteSpace(), x => x.DictCode == input.DictCode)
+            .AndIf(input.Keywords.IsNotNullOrWhiteSpace(), x => x.Label == input.Keywords || x.Value == input.Keywords);
 
         var total = await dictDataRepo.CountAsync(whereExpr);
         if (total == 0)
-            return new PageModelDto<DictDataDto>(search);
+            return new PageModelDto<DictDataDto>(input);
 
         var entities = await dictDataRepo
                                         .Where(whereExpr)
                                         .OrderBy(x => x.Ordinal)
-                                        .Skip(search.SkipRows())
-                                        .Take(search.PageSize)
+                                        .Skip(input.SkipRows())
+                                        .Take(input.PageSize)
                                         .ToListAsync();
         var dictDataDtos = Mapper.Map<List<DictDataDto>>(entities);
 
-        return new PageModelDto<DictDataDto>(search, dictDataDtos, total);
+        return new PageModelDto<DictDataDto>(input, dictDataDtos, total);
     }
 }

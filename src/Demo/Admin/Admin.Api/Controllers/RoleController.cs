@@ -96,6 +96,6 @@ public class RoleController(IRoleService roleService) : AdncControllerBase
     [HttpGet("page")]
     //[AdncAuthorize(PermissionConsts.Role.GetList)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<PageModelDto<RoleDto>>> GetPagedAsync([FromQuery] RolePagedSearchDto input)
+    public async Task<ActionResult<PageModelDto<RoleDto>>> GetPagedAsync([FromQuery] SearchPagedDto input)
         => await roleService.GetPagedAsync(input);
 }

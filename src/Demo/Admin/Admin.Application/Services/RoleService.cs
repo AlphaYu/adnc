@@ -90,25 +90,25 @@ public class RoleService(IEfRepository<Role> roleRepo, IEfRepository<RoleUserRel
         return options ?? [];
     }
 
-    public async Task<PageModelDto<RoleDto>> GetPagedAsync(RolePagedSearchDto search)
+    public async Task<PageModelDto<RoleDto>> GetPagedAsync(SearchPagedDto input)
     {
-        search.TrimStringFields();
+        input.TrimStringFields();
         var whereExpression = ExpressionCreator
                                               .New<Role>()
-                                              .AndIf(search.Keywords.IsNotNullOrWhiteSpace(), x => x.Name.Contains(search.Keywords));
+                                              .AndIf(input.Keywords.IsNotNullOrWhiteSpace(), x => x.Name.Contains(input.Keywords));
 
         var total = await roleRepo.CountAsync(whereExpression);
         if (total == 0)
-            return new PageModelDto<RoleDto>(search);
+            return new PageModelDto<RoleDto>(input);
 
         var entities = await roleRepo
                             .Where(whereExpression)
                             .OrderByDescending(x => x.Id)
-                            .Skip(search.SkipRows())
-                            .Take(search.PageSize)
+                            .Skip(input.SkipRows())
+                            .Take(input.PageSize)
                             .ToListAsync();
         var dtos = Mapper.Map<List<RoleDto>>(entities);
 
-        return new PageModelDto<RoleDto>(search, dtos, total);
+        return new PageModelDto<RoleDto>(input, dtos, total);
     }
 }

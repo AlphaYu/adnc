@@ -1,15 +1,8 @@
 ﻿namespace Adnc.Demo.Admin.Application.Cache;
 
-public class AccountBloomFilter : AbstractBloomFilter
+public class AccountBloomFilter(Lazy<IRedisProvider> redisProvider, Lazy<IDistributedLocker> distributedLocker , Lazy<IServiceProvider> serviceProvider) 
+    : AbstractBloomFilter(redisProvider, distributedLocker)
 {
-    private readonly Lazy<IServiceProvider> _services;
-
-    public AccountBloomFilter(Lazy<IRedisProvider> redisProvider
-        , Lazy<IDistributedLocker> distributedLocker
-        , Lazy<IServiceProvider> services)
-        : base(redisProvider, distributedLocker)
-       => _services = services;
-
     public override string Name => CachingConsts.BloomfilterOfAccountsKey;
 
     public override double ErrorRate => 0.001;
@@ -21,7 +14,7 @@ public class AccountBloomFilter : AbstractBloomFilter
         var exists = await ExistsBloomFilterAsync();
         if (!exists)
         {
-            using var scope = _services.Value.CreateScope();
+            using var scope = serviceProvider.Value.CreateScope();
             var repository = scope.ServiceProvider.GetRequiredService<IEfRepository<User>>();
             var values = await repository.GetAll()
                                          .Select(x => x.Account)

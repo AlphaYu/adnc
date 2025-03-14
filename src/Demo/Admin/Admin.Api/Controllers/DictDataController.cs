@@ -52,8 +52,8 @@ public class DictDataController(IDictDataService dictDataService)
     [HttpGet("page")]
     [AdncAuthorize(PermissionConsts.Dict.GetList)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<PageModelDto<DictDataDto>>> GetPagedAsync([FromQuery] DictDataSearchPagedDto search)
-        => await dictDataService.GetPagedAsync(search);
+    public async Task<ActionResult<PageModelDto<DictDataDto>>> GetPagedAsync([FromQuery] DictDataSearchPagedDto input)
+        => await dictDataService.GetPagedAsync(input);
 
     /// <summary>
     /// 获取单个字典数据

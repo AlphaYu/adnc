@@ -23,13 +23,13 @@ public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IDistr
 
     internal async Task SetFailLoginCountToCacheAsync(long id, int count)
     {
-        var cacheKey = ConcatCacheKey(CachingConsts.UserValidatedInfoKeyPrefix, $"FailCount_{id}");
+        var cacheKey = ConcatCacheKey(CachingConsts.UserFailCountKeyPrefix, id);
         await CacheProvider.Value.SetAsync(cacheKey, count, TimeSpan.FromSeconds(GetRefreshTokenExpires()));
     }
 
     internal async Task<int> GetFailLoginCountByUserIdAsync(long id)
     {
-        var cacheKey = ConcatCacheKey(CachingConsts.UserValidatedInfoKeyPrefix, $"FailCount_{id}");
+        var cacheKey = ConcatCacheKey(CachingConsts.UserFailCountKeyPrefix, id);
         var cacheValue = await CacheProvider.Value.GetAsync<int>(cacheKey);
         return cacheValue.Value;
     }

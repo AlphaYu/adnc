@@ -19,6 +19,10 @@ public class MenuService(IEfRepository<Menu> menuRepo, CacheService cacheService
             return Problem(HttpStatusCode.BadRequest, "该菜单名称已经存在");
 
         var menuEntity = Mapper.Map<Menu>(input, IdGenerater.GetNextId());
+        if (input.Type == MenuType.CATALOG.ToString())
+        {
+            menuEntity.Component = "Layout";
+        }
         menuEntity.ParentIds = await GetParentIds(menuEntity.ParentId);
 
         await menuRepo.InsertAsync(menuEntity);
@@ -67,6 +71,12 @@ public class MenuService(IEfRepository<Menu> menuRepo, CacheService cacheService
     {
         var whereExpr = ExpressionCreator.New<MenuDto>().AndIf(keywords is not null, x => x.Name == keywords);
         var menus = (await cacheService.GetAllMenusFromCacheAsync()).Where(whereExpr.Compile()).OrderBy(x => x.ParentId).ThenBy(x => x.Ordinal).ToArray();
+
+        var exists = await cacheService.CacheProvider.Value.ExistsAsync(CachingConsts.RoleMenuCodesCacheKey);
+        if (!exists)
+        {
+            _ = await cacheService.GetAllRoleMenusFromCacheAsync();
+        }
 
         List<MenuTreeDto> GetChildren(long id)
         {

@@ -15,7 +15,7 @@ public sealed class DependencyRegistrar : AbstractApplicationDependencyRegistrar
     public override void AddApplicationServices()
     {
         AddApplicaitonDefault();
-        //add other services
+        //add other serviceProvider
         //Services.Addxxxxx();
     }
 }

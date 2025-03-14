@@ -68,6 +68,6 @@
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        Task<PageModelDto<RoleDto>> GetPagedAsync(RolePagedSearchDto input);
+        Task<PageModelDto<RoleDto>> GetPagedAsync(SearchPagedDto input);
     }
 }

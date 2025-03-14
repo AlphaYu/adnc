@@ -72,11 +72,11 @@ public class UserController(IUserService userService) : AdncControllerBase
     /// <summary>
     /// 获取用户分页列表
     /// </summary>
-    /// <param name="search">查询条件</param>
+    /// <param name="input">查询条件</param>
     /// <returns></returns>
     [HttpGet("page")]
     [AdncAuthorize(PermissionConsts.User.GetList)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<PageModelDto<UserDto>>> GetPagedAsync([FromQuery] UserSearchPagedDto search)
-        => await userService.GetPagedAsync(search);
+    public async Task<ActionResult<PageModelDto<UserDto>>> GetPagedAsync([FromQuery] UserSearchPagedDto input)
+        => await userService.GetPagedAsync(input);
 }
