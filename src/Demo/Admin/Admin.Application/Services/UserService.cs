@@ -2,13 +2,9 @@
 
 namespace Adnc.Demo.Admin.Application.Services;
 
-public class UserService(
-        IEfRepository<User> userRepository
-        , IEfRepository<Role> roleRepository
-        , IEfRepository<RoleUserRelation> roleUserRelationRepository
-        , CacheService cacheService
-        //, BloomFilterFactory bloomFilterFactory
-        , IHttpContextAccessor httpContextAccessor) : AbstractAppService, IUserService
+public class UserService(IEfRepository<User> userRepository , IEfRepository<Role> roleRepository, IEfRepository<RoleUserRelation> roleUserRelationRepository
+    , CacheService cacheService, /*BloomFilterFactory bloomFilterFactory,*/ IHttpContextAccessor httpContextAccessor) 
+    : AbstractAppService, IUserService
 {
     public async Task<ServiceResult<long>> CreateAsync(UserCreationDto input)
     {
@@ -28,6 +24,7 @@ public class UserService(
 
         //var bloomFilterAccount = bloomFilterFactory.Create(CachingConsts.BloomfilterOfAccountsKey);
         //await bloomFilterAccount.AddAsync(user.Account);
+
         if (input.RoleIds.IsNotNullOrEmpty())
         {
             var roleUsers = input.RoleIds.Select(x => new RoleUserRelation { Id = IdGenerater.GetNextId(), RoleId = x, UserId = user.Id });
@@ -42,22 +39,19 @@ public class UserService(
     public async Task<ServiceResult> UpdateAsync(long id, UserUpdationDto input)
     {
         input.TrimStringFields();
-        await roleUserRelationRepository.ExecuteDeleteAsync(x => x.UserId == id);
 
+        var user =await userRepository.FetchAsync(x => x.Id == id, noTracking: false);
+        if (user is null)
+            return Problem(HttpStatusCode.BadRequest, "账号不存在");
+
+        await roleUserRelationRepository.ExecuteDeleteAsync(x => x.UserId == id);
         if (input.RoleIds.IsNotNullOrEmpty())
         {
             var roleUsers = input.RoleIds.Select(x => new RoleUserRelation { Id = IdGenerater.GetNextId(), RoleId = x, UserId = id });
             await roleUserRelationRepository.InsertRangeAsync(roleUsers);
         }
-
-        await userRepository.ExecuteUpdateAsync(x => x.Id == id, setters => setters
-            .SetProperty(x => x.Name, input.Name)
-            .SetProperty(x => x.DeptId, input.DeptId)
-            .SetProperty(x => x.Gender, input.Gender)
-            .SetProperty(x => x.Mobile, input.Mobile)
-            .SetProperty(x => x.Email, input.Email)
-            .SetProperty(x => x.Birthday, input.Birthday)
-            .SetProperty(x => x.Status, input.Status));
+        var newUser = Mapper.Map(input, user);
+        await userRepository.UpdateAsync(newUser);
 
         return ServiceResult();
     }
