@@ -160,24 +160,24 @@ public class OrderService : AbstractAppService, IOrderService
     /// <summary>
     /// 订单分页列表
     /// </summary>
-    /// <param name="search"></param>
+    /// <param name="input"></param>
     /// <returns></returns>
-    public async Task<PageModelDto<OrderDto>> GetPagedAsync(OrderSearchPagedDto search)
+    public async Task<PageModelDto<OrderDto>> GetPagedAsync(OrderSearchPagedDto input)
     {
-        search.TrimStringFields();
+        input.TrimStringFields();
         var whereCondition = ExpressionCreator
                                             .New<Order>()
-                                            .AndIf(search.Id > 0, x => x.Id == search.Id);
+                                            .AndIf(input.Id > 0, x => x.Id == input.Id);
 
         var total = await _orderRepo.CountAsync(whereCondition);
         if (total == 0)
-            return new PageModelDto<OrderDto>(search);
+            return new PageModelDto<OrderDto>(input);
 
         var entities = _orderRepo
                                 .Where(whereCondition)
                                 .OrderByDescending(x => x.Id)
-                                .Skip(search.SkipRows())
-                                .Take(search.PageSize)
+                                .Skip(input.SkipRows())
+                                .Take(input.PageSize)
                                 .ToListAsync();
         var orderDtos = Mapper.Map<List<OrderDto>>(entities);
         if (orderDtos.IsNotNullOrEmpty())
@@ -197,6 +197,6 @@ public class OrderService : AbstractAppService, IOrderService
             }
         }
 
-        return new PageModelDto<OrderDto>(search, orderDtos, total);
+        return new PageModelDto<OrderDto>(input, orderDtos, total);
     }
 }

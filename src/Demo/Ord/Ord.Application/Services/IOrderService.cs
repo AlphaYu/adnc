@@ -28,7 +28,7 @@ public interface IOrderService : IAppService
     Task DeleteAsync(long id);
 
     [OperateLog(LogName = "订单搜索")]
-    Task<PageModelDto<OrderDto>> GetPagedAsync(OrderSearchPagedDto search);
+    Task<PageModelDto<OrderDto>> GetPagedAsync(OrderSearchPagedDto input);
 
     [OperateLog(LogName = "订单详情")]
     Task<OrderDto> GetAsync(long id);
