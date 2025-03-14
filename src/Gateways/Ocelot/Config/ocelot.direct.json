@@ -54,9 +54,9 @@
         "Options"
       ]
     },
-    //usr services
+    //admin services
     {
-      "DownstreamPathTemplate": "/api/usr{everything}",
+      "DownstreamPathTemplate": "/api/admin{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -64,7 +64,7 @@
           "Port": 50010
         }
       ],
-      "UpstreamPathTemplate": "/api/usr{everything}",
+      "UpstreamPathTemplate": "/api/admin{everything}",
       "UpstreamHttpMethod": [
         "Get",
         "Put",
