@@ -34,7 +34,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar
         ConsulSection = Configuration.GetSection(NodeConsts.Consul);
         RabbitMqSection = Configuration.GetSection(NodeConsts.RabbitMq);
         SkyApm = Services.AddSkyApmExtensions();
-        RpcAddressInfo = Configuration.GetSection(NodeConsts.RpcAddressInfo).Get<List<AddressNode>>();
+        RpcAddressInfo = Configuration.GetSection(NodeConsts.RpcAddressInfo).Get<List<AddressNode>>() ?? [];
         PollyStrategyEnable = Configuration.GetValue("Polly:Enable", false);
     }
 
@@ -49,38 +49,21 @@ public abstract partial class AbstractApplicationDependencyRegistrar
     protected virtual void AddApplicaitonDefault()
     {
         Services
+            .AddSingleton(typeof(Lazy<>))
+            .AddScoped<UserContext>()
+            .AddScoped<IMessageTracker, DbMessageTrackerService>()
+            .AddScoped<IMessageTracker, RedisMessageTrackerService>()
+            .AddScoped<MessageTrackerFactory>()
+            .AddHostedService<Channels.LogConsumersHostedService>()
             .AddValidatorsFromAssembly(ContractsLayerAssembly, ServiceLifetime.Scoped)
             .AddAdncInfraAutoMapper(ApplicationLayerAssembly)
             .AddAdncInfraYitterIdGenerater(RedisSection, ServiceInfo.ShortName.Split('-')[0])
             .AddAdncInfraConsul(ConsulSection)
             .AddAdncInfraDapper();
 
-        AddApplicationSharedServices();
         AddAppliactionSerivcesWithInterceptors();
-        AddApplicaitonHostedServices();
         AddEfCoreContextWithRepositories();
         AddRedisCaching();
         AddBloomFilters();
-    }
-
-    /// <summary>
-    /// 注册application.shared层服务
-    /// </summary>
-    protected void AddApplicationSharedServices()
-    {
-        Services.AddSingleton(typeof(Lazy<>));
-        Services.AddScoped<UserContext>();
-        Services.AddScoped<OperateLogInterceptor>();
-        Services.AddScoped<OperateLogAsyncInterceptor>();
-        Services.AddScoped<UowInterceptor>();
-        Services.AddScoped<UowAsyncInterceptor>();
-        Services.AddSingleton<IBloomFilter, NullBloomFilter>();
-        Services.AddSingleton<BloomFilterFactory>();
-        Services.AddHostedService<CachingHostedService>();
-        Services.AddHostedService<BloomFilterHostedService>();
-        Services.AddHostedService<Channels.LogConsumersHostedService>();
-        Services.AddScoped<IMessageTracker, DbMessageTrackerService>();
-        Services.AddScoped<IMessageTracker, RedisMessageTrackerService>();
-        Services.AddScoped<MessageTrackerFactory>();
     }
 }

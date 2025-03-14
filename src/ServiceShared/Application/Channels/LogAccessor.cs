@@ -2,18 +2,18 @@
 
 namespace Adnc.Shared.Application.Channels
 {
-    public sealed class Accessor<TModel>
+    public sealed class LogAccessor<TModel>
     {
-        private static readonly Lazy<Accessor<TModel>> lazy = new(() => new Accessor<TModel>());
+        private static readonly Lazy<LogAccessor<TModel>> lazy = new(() => new LogAccessor<TModel>());
 
         private readonly ChannelWriter<TModel> _writer;
         private readonly ChannelReader<TModel> _reader;
 
-        static Accessor()
+        static LogAccessor()
         {
         }
 
-        private Accessor()
+        private LogAccessor()
         {
             var channelOptions = new BoundedChannelOptions(1000)
             {
@@ -24,7 +24,7 @@ namespace Adnc.Shared.Application.Channels
             _reader = channel.Reader;
         }
 
-        public static Accessor<TModel> Instance => lazy.Value;
+        public static LogAccessor<TModel> Instance => lazy.Value;
 
         public ChannelWriter<TModel> Writer => _writer;
 

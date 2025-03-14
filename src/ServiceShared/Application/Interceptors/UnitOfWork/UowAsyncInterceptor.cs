@@ -3,12 +3,8 @@
 /// <summary>
 /// 工作单元拦截器
 /// </summary>
-public class UowAsyncInterceptor : IAsyncInterceptor
+public class UowAsyncInterceptor(IUnitOfWork unitOfWork) : IAsyncInterceptor
 {
-    private readonly IUnitOfWork _unitOfWork;
-
-    public UowAsyncInterceptor(IUnitOfWork unitOfWork) => _unitOfWork = unitOfWork;
-
     /// <summary>
     /// 同步拦截器
     /// </summary>
@@ -61,18 +57,18 @@ public class UowAsyncInterceptor : IAsyncInterceptor
     {
         try
         {
-            _unitOfWork.BeginTransaction(distributed: attribute.SharedToCap);
+            unitOfWork.BeginTransaction(distributed: attribute.SharedToCap);
             invocation.Proceed();
-            _unitOfWork.Commit();
+            unitOfWork.Commit();
         }
         catch (Exception)
         {
-            _unitOfWork.Rollback();
+            unitOfWork.Rollback();
             throw;
         }
         finally
         {
-            _unitOfWork.Dispose();
+            unitOfWork.Dispose();
         }
     }
 
@@ -86,22 +82,22 @@ public class UowAsyncInterceptor : IAsyncInterceptor
     {
         try
         {
-            _unitOfWork.BeginTransaction(distributed: attribute.SharedToCap);
+            unitOfWork.BeginTransaction(distributed: attribute.SharedToCap);
 
             invocation.Proceed();
             var task = (Task)invocation.ReturnValue;
             await task;
 
-            await _unitOfWork.CommitAsync();
+            await unitOfWork.CommitAsync();
         }
         catch (Exception)
         {
-            await _unitOfWork.RollbackAsync();
+            await unitOfWork.RollbackAsync();
             throw;
         }
         finally
         {
-            _unitOfWork.Dispose();
+            unitOfWork.Dispose();
         }
     }
 
@@ -118,22 +114,22 @@ public class UowAsyncInterceptor : IAsyncInterceptor
 
         try
         {
-            _unitOfWork.BeginTransaction(distributed: attribute.SharedToCap);
+            unitOfWork.BeginTransaction(distributed: attribute.SharedToCap);
 
             invocation.Proceed();
             var task = (Task<TResult>)invocation.ReturnValue;
             result = await task;
 
-            await _unitOfWork.CommitAsync();
+            await unitOfWork.CommitAsync();
         }
         catch (Exception)
         {
-            await _unitOfWork.RollbackAsync();
+            await unitOfWork.RollbackAsync();
             throw;
         }
         finally
         {
-            _unitOfWork.Dispose();
+            unitOfWork.Dispose();
         }
 
         return result;

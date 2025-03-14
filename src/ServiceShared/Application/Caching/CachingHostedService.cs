@@ -7,7 +7,7 @@ public class CachingHostedService : BackgroundService
     private readonly ICachePreheatable _cachePreheatService;
 
     public CachingHostedService(
-        ILogger<CachingHostedService> logger,
+       ILogger<CachingHostedService> logger,
        ICacheProvider cacheProvider,
        ICachePreheatable cachePreheatService)
     {

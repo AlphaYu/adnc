@@ -15,6 +15,14 @@ public abstract partial class AbstractApplicationDependencyRegistrar
 
         var appServiceType = typeof(IAppService);
         var serviceTypes = ContractsLayerAssembly.GetExportedTypes().Where(type => type.IsInterface && type.IsAssignableTo(appServiceType)).ToList();
+        if (serviceTypes is null)
+            return;
+
+        //注册拦截器
+        Services.AddScoped<OperateLogInterceptor>();
+        Services.AddScoped<OperateLogAsyncInterceptor>();
+        Services.AddScoped<UowInterceptor>();
+        Services.AddScoped<UowAsyncInterceptor>();
         serviceTypes.ForEach(serviceType =>
         {
             var implType = ApplicationLayerAssembly.ExportedTypes.FirstOrDefault(type => type.IsAssignableTo(serviceType) && type.IsNotAbstractClass(true));
@@ -33,13 +41,8 @@ public abstract partial class AbstractApplicationDependencyRegistrar
                 return proxy;
             });
         });
-    }
 
-    /// <summary>
-    /// 注册Application的IHostedService服务
-    /// </summary>
-    protected virtual void AddApplicaitonHostedServices()
-    {
+        //注册Application的IHostedService服务
         var serviceType = typeof(IHostedService);
         var implTypes = ApplicationLayerAssembly.ExportedTypes.Where(type => type.IsAssignableTo(serviceType) && type.IsNotAbstractClass(true)).ToList();
         implTypes.ForEach(implType =>

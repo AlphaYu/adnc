@@ -2,9 +2,9 @@
 
 public abstract class AbstractCacheService : ICachePreheatable
 {
-    protected virtual Lazy<ICacheProvider> CacheProvider { get; private set; }
-    protected virtual Lazy<IServiceProvider> ServiceProvider { get; private set; }
-    protected virtual Lazy<IObjectMapper> Mapper { get; private set; }
+    public Lazy<ICacheProvider> CacheProvider { get; private set; }
+    protected Lazy<IServiceProvider> ServiceProvider { get; private set; }
+    protected Lazy<IObjectMapper> Mapper { get; private set; }
 
     protected AbstractCacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IServiceProvider> serviceProvider)
     {
