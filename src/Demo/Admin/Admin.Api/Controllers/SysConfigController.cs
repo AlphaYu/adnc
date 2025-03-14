@@ -56,9 +56,7 @@ public class SysConfigController(ISysConfigService sysConfigService) : AdncContr
     public async Task<ActionResult<SysConfigDto>> GetAsync([FromRoute] long id)
     {
         var cfg = await sysConfigService.GetAsync(id);
-        if (cfg == null)
-            return NotFound();
-        return cfg;
+        return cfg is null ? NotFound() : cfg;
     }
 
     /// <summary>

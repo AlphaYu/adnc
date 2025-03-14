@@ -1,11 +1,11 @@
 ﻿namespace Adnc.Demo.Admin.Api.Controllers;
 
 /// <summary>
-/// 认证管理
+/// 登录用户管理
 /// </summary>
 [Route($"{RouteConsts.AuthRoot}/session")]
 [ApiController]
-public class AccountController(IOptions<JWTOptions> jwtOptions, UserContext userContext, IUserService userService, ILogger<AccountController> logger) 
+public class AccountController(IOptions<JWTOptions> jwtOptions, UserContext userContext, IUserService userService, ILogger<AccountController> logger)
     : AdncControllerBase
 {
     /// <summary>
@@ -36,7 +36,8 @@ public class AccountController(IOptions<JWTOptions> jwtOptions, UserContext user
     /// <returns></returns>
     [HttpDelete()]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<ActionResult> LogoutAsync() => Result(await userService.DeleteUserValidateInfoAsync(userContext.Id));
+    public async Task<ActionResult> LogoutAsync()
+        => Result(await userService.DeleteUserValidateInfoAsync(userContext.Id));
 
     /// <summary>
     /// 刷新Token
@@ -74,34 +75,31 @@ public class AccountController(IOptions<JWTOptions> jwtOptions, UserContext user
     }
 
     /// <summary>
-    /// 修改密码
+    /// 登录用户修改密码
     /// </summary>
     /// <param name="input"><see cref="UserProfileChangePwdDto"/></param>
     /// <returns></returns>
     [HttpPut("password")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<ActionResult> ChangePassword([FromBody] UserProfileChangePwdDto input) => Result(await userService.UpdatePasswordAsync(userContext.Id, input));
+    public async Task<ActionResult> ChangePassword([FromBody] UserProfileChangePwdDto input)
+        => Result(await userService.UpdatePasswordAsync(userContext.Id, input));
 
     /// <summary>
-    ///  获取认证信息
+    ///  获取登录用户认证信息
     /// </summary>
     /// <returns></returns>
     [HttpGet()]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<UserValidatedInfoDto>> GetUserValidatedInfoAsync()
     {
-        var result = await userService.GetUserValidatedInfoAsync(userContext.Id);
+        var validatedInfo = await userService.GetUserValidatedInfoAsync(userContext.Id);
         logger.LogDebug($"UserContext:{userContext.Id}");
-        if (result is null)
-            return NotFound();
-
-        return Ok(result);
+        return validatedInfo is null ? NotFound() : validatedInfo;
     }
 
     /// <summary>
-    /// 获取当前用户是否拥有指定权限
+    /// 获取登录用户是否拥有指定权限
     /// </summary>
     /// <param name="id">用户id</param>
     /// <param name="requestPermissions"></param>
@@ -121,18 +119,37 @@ public class AccountController(IOptions<JWTOptions> jwtOptions, UserContext user
     }
 
     /// <summary>
+    /// 获取登录用户权限信息
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet("userinfo")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<UserInfoDto>> GetUserInfoAsync()
+    {
+        var userInfo = await userService.GetUserInfoAsync(userContext);
+        return userInfo is null ? NotFound() : userInfo;
+    }
+
+    /// <summary>
     /// 获取登录用户个人中心信息
     /// </summary>
     /// <returns></returns>
     [HttpGet("profile")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<UserProfileDto?>> GetUserProfileAsync() => await userService.GetProfileAsync(userContext.Id);
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<UserProfileDto>> GetUserProfileAsync()
+    {
+        var profile = await userService.GetProfileAsync(userContext.Id);
+        return profile is null ? NotFound() : profile;
+    }
 
     /// <summary>
-    /// 修改当前账户信息
+    /// 修改登录用户账户信息
     /// </summary>
     /// <returns></returns>
     [HttpPut("profile")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult> ChangeUserProfileAsync([FromBody]UserProfileUpdationDto input) => Result(await userService.ChangeProfileAsync(userContext.Id, input));
+    public async Task<ActionResult> ChangeUserProfileAsync([FromBody] UserProfileUpdationDto input)
+        => Result(await userService.ChangeProfileAsync(userContext.Id, input));
 }

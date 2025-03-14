@@ -132,6 +132,6 @@
         /// 获取用户与权限信息
         /// </summary>
         /// <returns></returns>
-        Task<UserInfoDto> GetUserInfoAsync(UserContext userContext);
+        Task<UserInfoDto?> GetUserInfoAsync(UserContext userContext);
     }
 }

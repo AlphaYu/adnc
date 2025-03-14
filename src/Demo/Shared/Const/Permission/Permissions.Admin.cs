@@ -39,10 +39,10 @@ public static class PermissionConsts
 
     public static class SysConfig
     {
-        public const string Create = "cfg-create";
-        public const string Update = "cfg-update";
-        public const string Delete = "cfg-delete";
-        public const string GetList = "cfg-list";
+        public const string Create = "sysconfig-create";
+        public const string Update = "sysconfig-update";
+        public const string Delete = "sysconfig-delete";
+        public const string GetList = "sysconfig-list";
     }
 
     public static class Dict

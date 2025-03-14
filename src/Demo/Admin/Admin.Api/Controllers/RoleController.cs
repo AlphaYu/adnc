@@ -51,8 +51,11 @@ public class RoleController(IRoleService roleService) : AdncControllerBase
     /// <returns></returns>
     [HttpGet("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<RoleDto?>> GetAsync([FromRoute] long id)
-        => await roleService.GetAsync(id);
+    public async Task<ActionResult<RoleDto>> GetAsync([FromRoute] long id)
+    {
+        var role = await roleService.GetAsync(id);
+        return role is null ? NotFound() : role;
+    }
 
     /// <summary>
     /// 保存角色权限

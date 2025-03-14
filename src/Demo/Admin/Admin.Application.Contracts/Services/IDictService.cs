@@ -11,7 +11,7 @@ public interface IDictService : IAppService
     /// <param name="input"></param>
     /// <returns></returns>
     [OperateLog(LogName = "新增字典")]
-    [CachingEvict(CacheKeyPrefix = CachingConsts.DictOptionsListKey)]
+    [CachingEvict(CacheKey = CachingConsts.DictOptionsListKey)]
     Task<ServiceResult<long>> CreateAsync(DictCreationDto input);
 
     /// <summary>
@@ -21,7 +21,7 @@ public interface IDictService : IAppService
     /// <param name="input"></param>
     /// <returns></returns>
     [OperateLog(LogName = "修改字典")]
-    [CachingEvict(CacheKeyPrefix = CachingConsts.DictOptionsListKey)]
+    [CachingEvict(CacheKey = CachingConsts.DictOptionsListKey)]
     [UnitOfWork]
     Task<ServiceResult> UpdateAsync(long id, DictUpdationDto input);
 
@@ -31,7 +31,7 @@ public interface IDictService : IAppService
     /// <param name="ids"></param>
     /// <returns></returns>
     [OperateLog(LogName = "删除字典")]
-    [CachingEvict(CacheKeyPrefix = CachingConsts.DictOptionsListKey)]
+    [CachingEvict(CacheKey = CachingConsts.DictOptionsListKey)]
     Task<ServiceResult> DeleteAsync(long[] ids);
 
     /// <summary>

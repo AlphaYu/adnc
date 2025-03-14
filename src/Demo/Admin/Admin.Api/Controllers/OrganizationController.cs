@@ -52,8 +52,11 @@ public class OrganizationController(IOrganizationService organizationService) : 
     [HttpGet("{id}")]
     // [AdncAuthorize(PermissionConsts.Org.Delete)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<ActionResult<OrganizationDto?>> GetAsync([FromRoute] long id)
-        => await organizationService.GetAsync(id);
+    public async Task<ActionResult<OrganizationDto>> GetAsync([FromRoute] long id)
+    {
+        var org = await organizationService.GetAsync(id);
+        return org is null ? NotFound() : org;
+    }
 
     /// <summary>
     /// 获取组织机构列表

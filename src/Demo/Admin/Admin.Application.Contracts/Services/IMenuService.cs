@@ -47,7 +47,7 @@ namespace Adnc.Demo.Admin.Application.Contracts.Services
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        Task<MenuDto> GetAsync(long id);
+        Task<MenuDto?> GetAsync(long id);
 
         /// <summary>
         /// 获取左侧路由菜单

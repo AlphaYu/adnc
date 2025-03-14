@@ -85,11 +85,11 @@ public class MenuService(IEfRepository<Menu> menuRepo, CacheService cacheService
         return GetChildren(rootId);
     }
 
-    public async Task<MenuDto> GetAsync(long id)
+    public async Task<MenuDto?> GetAsync(long id)
     {
         var allMenus = await cacheService.GetAllMenusFromCacheAsync();
         var menuDto = allMenus.FirstOrDefault(x => x.Id == id);
-        return menuDto ?? new MenuDto();
+        return menuDto;
     }
 
     public async Task<List<RouterTreeDto>> GetMenusForRouterAsync(IEnumerable<long> roleIds)

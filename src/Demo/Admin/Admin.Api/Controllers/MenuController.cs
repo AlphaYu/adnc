@@ -51,7 +51,10 @@ public class MenuController(IMenuService menuService, UserContext userContext) :
     // ss[AdncAuthorize(PermissionConsts.Menu.GetList)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<MenuDto>> GetAsync([FromRoute] long id)
-        => await menuService.GetAsync(id);
+    {
+        var menu = await menuService.GetAsync(id);
+        return menu is null ? NotFound() : menu;
+    }
 
     /// <summary>
     /// 获取菜单树

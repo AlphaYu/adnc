@@ -297,7 +297,7 @@ public class UserService(
         return ServiceResult();
     }
 
-    public async Task<UserInfoDto> GetUserInfoAsync(UserContext userContext)
+    public async Task<UserInfoDto?> GetUserInfoAsync(UserContext userContext)
     {
         //所有菜单角色关系
         var allRoleMenus = await cacheService.GetAllRoleMenusFromCacheAsync();

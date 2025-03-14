@@ -1,13 +1,11 @@
-﻿using Adnc.Shared.Application.Contracts.ResultModels;
-
-namespace Adnc.Demo.Admin.Api.Controllers;
+﻿namespace Adnc.Demo.Admin.Api.Controllers;
 
 /// <summary>
 /// 用户管理
 /// </summary>
 [Route($"{RouteConsts.AdminRoot}/users")]
 [ApiController]
-public class UserController(IUserService userService, UserContext userContext) : AdncControllerBase
+public class UserController(IUserService userService) : AdncControllerBase
 {
     /// <summary>
     /// 新增用户
@@ -65,8 +63,11 @@ public class UserController(IUserService userService, UserContext userContext) :
     /// <returns></returns>
     [HttpGet("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<UserDto?>> GetAsync([FromRoute] long id)
-        => await userService.GetAsync(id);
+    public async Task<ActionResult<UserDto>> GetAsync([FromRoute] long id)
+    {
+        var user = await userService.GetAsync(id);
+        return user is null ? NotFound() : user;
+    }
 
     /// <summary>
     /// 获取用户分页列表
@@ -78,16 +79,4 @@ public class UserController(IUserService userService, UserContext userContext) :
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<PageModelDto<UserDto>>> GetPagedAsync([FromQuery] UserSearchPagedDto search)
         => await userService.GetPagedAsync(search);
-
-    /// <summary>
-    /// 获取用户与权限信息
-    /// </summary>
-    /// <returns></returns>
-    [HttpGet("userinfo")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<UserInfoDto> GetUserInfoAsync()
-    {
-        var result = await userService.GetUserInfoAsync(userContext);
-        return result;
-    }
 }
