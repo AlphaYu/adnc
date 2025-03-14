@@ -8,7 +8,7 @@ namespace Adnc.Demo.Cust.Api.Application.Services.Implements;
 /// <summary>
 /// 客户管理服务
 /// </summary>
-public class CustomerService : AbstractAppService, ICustomerService
+public class CustomerAppService : AbstractAppService, ICustomerService
 {
     private readonly IEfRepository<Customer> _customerRepo;
     private readonly IEfRepository<CustomerFinance> _cusFinaceRepo;
@@ -16,7 +16,7 @@ public class CustomerService : AbstractAppService, ICustomerService
     private readonly CacheService _cacheService;
     private readonly IEventPublisher _eventPublisher;
 
-    public CustomerService(
+    public CustomerAppService(
         IEfRepository<Customer> customerRepo,
         IEfRepository<CustomerFinance> cusFinaceRepo,
         IEfRepository<CustomerTransactionLog> cusTransactionLogRepo,
@@ -86,18 +86,18 @@ public class CustomerService : AbstractAppService, ICustomerService
         return new SimpleDto<string>(cusTransactionLog.Id.ToString());
     }
 
-    public async Task<ServiceResult<PageModelDto<CustomerDto>>> GetPagedAsync(CustomerSearchPagedDto search)
+    public async Task<ServiceResult<PageModelDto<CustomerDto>>> GetPagedAsync(CustomerSearchPagedDto input)
     {
-        search.TrimStringFields();
+        input.TrimStringFields();
 
         var whereCondition = ExpressionCreator
                                             .New<Customer>()
-                                            .AndIf(search.Id > 0, x => x.Id == search.Id)
-                                            .AndIf(search.Account.IsNotNullOrEmpty(), x => x.Account == search.Account);
+                                            .AndIf(input.Id > 0, x => x.Id == input.Id)
+                                            .AndIf(input.Account.IsNotNullOrEmpty(), x => x.Account == input.Account);
 
         var count = await _customerRepo.CountAsync(whereCondition);
         if (count == 0)
-            return new PageModelDto<CustomerDto>(search);
+            return new PageModelDto<CustomerDto>(input);
 
         var customers = await _customerRepo
                                             .Where(whereCondition)
@@ -111,26 +111,26 @@ public class CustomerService : AbstractAppService, ICustomerService
                                                 CreateTime = x.CreateTime,
                                                 FinanceInfoBalance = x.FinanceInfo == null ? 0 : x.FinanceInfo.Balance
                                             })
-                                            .Skip(search.SkipRows())
-                                            .Take(search.PageSize)
+                                            .Skip(input.SkipRows())
+                                            .Take(input.PageSize)
                                             .OrderByDescending(x => x.Id)
                                             .ToListAsync();
 
-        return new PageModelDto<CustomerDto>(search, customers, count);
+        return new PageModelDto<CustomerDto>(input, customers, count);
     }
 
-    public async Task<ServiceResult<PageModelDto<CustomerDto>>> GetPagedBySqlAsync(CustomerSearchPagedDto search)
+    public async Task<ServiceResult<PageModelDto<CustomerDto>>> GetPagedBySqlAsync(CustomerSearchPagedDto input)
     {
-        search.TrimStringFields();
+        input.TrimStringFields();
         var where = new StringBuilder(100)
-            .AppendIf(search.Id > 0, " AND id=@id")
-            .AppendIf(!string.IsNullOrEmpty(search.Account), " AND account like @account")
+            .AppendIf(input.Id > 0, " AND id=@id")
+            .AppendIf(!string.IsNullOrEmpty(input.Account), " AND account like @account")
             .ToSqlWhereString();
         var orderBy = " ORDER BY id Desc";
 
-        search.Account += "%";
-        var queryCondition = new QueryCondition(where, orderBy, null, search);
-        var queryResult = await _customerRepo.GetPagedCustmersBySqlAsync<CustomerDto>(queryCondition, search.SkipRows(), search.PageSize);
-        return new PageModelDto<CustomerDto>(search, queryResult.Content.ToArray(), queryResult.TotalCount);
+        input.Account += "%";
+        var queryCondition = new QueryCondition(where, orderBy, null, input);
+        var queryResult = await _customerRepo.GetPagedCustmersBySqlAsync<CustomerDto>(queryCondition, input.SkipRows(), input.PageSize);
+        return new PageModelDto<CustomerDto>(input, queryResult.Content.ToArray(), queryResult.TotalCount);
     }
 }

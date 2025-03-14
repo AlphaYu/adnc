@@ -25,14 +25,14 @@ public interface ICustomerService : IAppService
     /// <summary>
     /// 分页列表
     /// </summary>
-    /// <param name="search"></param>
+    /// <param name="input"></param>
     /// <returns></returns>
-    Task<ServiceResult<PageModelDto<CustomerDto>>> GetPagedAsync(CustomerSearchPagedDto search);
+    Task<ServiceResult<PageModelDto<CustomerDto>>> GetPagedAsync(CustomerSearchPagedDto input);
 
     /// <summary>
     /// 分页列表(raw sql)
     /// </summary>
-    /// <param name="search"></param>
+    /// <param name="input"></param>
     /// <returns></returns>
-    Task<ServiceResult<PageModelDto<CustomerDto>>> GetPagedBySqlAsync(CustomerSearchPagedDto search);
+    Task<ServiceResult<PageModelDto<CustomerDto>>> GetPagedBySqlAsync(CustomerSearchPagedDto input);
 }
