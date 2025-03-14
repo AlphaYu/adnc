@@ -56,16 +56,16 @@ public class ProductController : AdncControllerBase
     /// <summary>
     /// 商品列表
     /// </summary>
-    /// <param name="search"></param>
+    /// <param name="input"></param>
     /// <returns></returns>
     [HttpGet]
-    public async Task<ActionResult<List<ProductDto>>> GetListAsync([FromQuery] ProductSearchListDto search) => await _productSrv.GetListAsync(search);
+    public async Task<ActionResult<List<ProductDto>>> GetListAsync([FromQuery] ProductSearchListDto input) => await _productSrv.GetListAsync(input);
 
     /// <summary>
     /// 商品分页列表
     /// </summary>
-    /// <param name="search"></param>
+    /// <param name="input"></param>
     /// <returns></returns>
     [HttpGet("page")]
-    public async Task<ActionResult<PageModelDto<ProductDto>>> GetPagedAsync([FromQuery] ProductSearchPagedDto search) => await _productSrv.GetPagedAsync(search);
+    public async Task<ActionResult<PageModelDto<ProductDto>>> GetPagedAsync([FromQuery] ProductSearchPagedDto input) => await _productSrv.GetPagedAsync(input);
 }

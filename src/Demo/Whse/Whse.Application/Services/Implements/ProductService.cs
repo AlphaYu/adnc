@@ -124,24 +124,24 @@ public class ProductService : AbstractAppService, IProductService
     /// <summary>
     /// 商品分页列表
     /// </summary>
-    /// <param name="search"></param>
+    /// <param name="input"></param>
     /// <returns></returns>
-    public async Task<PageModelDto<ProductDto>> GetPagedAsync(ProductSearchPagedDto search)
+    public async Task<PageModelDto<ProductDto>> GetPagedAsync(ProductSearchPagedDto input)
     {
-        search.TrimStringFields();
+        input.TrimStringFields();
         var whereCondition = ExpressionCreator
                                             .New<Product>()
-                                            .AndIf(search.Id > 0, x => x.Id == search.Id);
+                                            .AndIf(input.Id > 0, x => x.Id == input.Id);
 
         var total = await _productRepo.CountAsync(whereCondition);
         if (total == 0)
-            return new PageModelDto<ProductDto>(search);
+            return new PageModelDto<ProductDto>(input);
 
         var entities = await _productRepo
                             .Where(whereCondition)
                             .OrderByDescending(x => x.Id)
-                            .Skip(search.SkipRows())
-                            .Take(search.PageSize)
+                            .Skip(input.SkipRows())
+                            .Take(input.PageSize)
                             .ToListAsync();
 
         var productDtos = Mapper.Map<List<ProductDto>>(entities);
@@ -162,7 +162,7 @@ public class ProductService : AbstractAppService, IProductService
             }
         }
 
-        return new PageModelDto<ProductDto>(search, productDtos, total);
+        return new PageModelDto<ProductDto>(input, productDtos, total);
     }
 
     /// <summary>

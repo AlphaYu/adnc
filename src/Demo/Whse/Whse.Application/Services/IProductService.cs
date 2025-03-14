@@ -17,7 +17,7 @@ public interface IProductService : IAppService
     [OperateLog(LogName = "下架商品")]
     Task<ProductDto> PutOffSaleAsync(long id, ProductPutOffSaleDto input);
 
-    Task<PageModelDto<ProductDto>> GetPagedAsync(ProductSearchPagedDto search);
+    Task<PageModelDto<ProductDto>> GetPagedAsync(ProductSearchPagedDto input);
 
-    Task<List<ProductDto>> GetListAsync(ProductSearchListDto search);
+    Task<List<ProductDto>> GetListAsync(ProductSearchListDto input);
 }

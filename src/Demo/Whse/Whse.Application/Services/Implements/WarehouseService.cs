@@ -64,15 +64,15 @@ public class WarehouseService : AbstractAppService, IWarehouseService
     /// <summary>
     /// 分页列表
     /// </summary>
-    /// <param name="search"></param>
+    /// <param name="input"></param>
     /// <returns></returns>
-    public async Task<PageModelDto<WarehouseDto>> GetPagedAsync(WarehouseSearchDto search)
+    public async Task<PageModelDto<WarehouseDto>> GetPagedAsync(WarehouseSearchDto input)
     {
-        search.TrimStringFields();
+        input.TrimStringFields();
         var total = await _warehouseRepo.CountAsync(x => true);
 
         if (total == 0)
-            return new PageModelDto<WarehouseDto>(search);
+            return new PageModelDto<WarehouseDto>(input);
 
         var products = _productRepo.Where(x => true);
         var warehouses = _warehouseRepo.Where(x => true);
@@ -91,12 +91,12 @@ public class WarehouseService : AbstractAppService, IWarehouseService
                               ProductSku = x.Sku,
                               Qty = s.Qty
                           })
-                       .Skip(search.SkipRows())
-                       .Take(search.PageSize)
+                       .Skip(input.SkipRows())
+                       .Take(input.PageSize)
                        .OrderByDescending(x => x.Id)
                        .ToListAsync();
 
-        return new PageModelDto<WarehouseDto>(search, data, total);
+        return new PageModelDto<WarehouseDto>(input, data, total);
     }
 
     /// <summary>

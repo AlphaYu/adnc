@@ -36,7 +36,7 @@ public interface IWarehouseService : IAppService
     /// <summary>
     /// 分页列表
     /// </summary>
-    /// <param name="search"></param>
+    /// <param name="input"></param>
     /// <returns></returns>
-    Task<PageModelDto<WarehouseDto>> GetPagedAsync(WarehouseSearchDto search);
+    Task<PageModelDto<WarehouseDto>> GetPagedAsync(WarehouseSearchDto input);
 }
