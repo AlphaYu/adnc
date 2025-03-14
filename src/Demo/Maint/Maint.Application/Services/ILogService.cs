@@ -8,21 +8,21 @@ public interface ILogService : IAppService
     /// <summary>
     /// 登录日志
     /// </summary>
-    /// <param name="searchDto"></param>
+    /// <param name="input"></param>
     /// <returns></returns>
-    Task<PageModelDto<LoginLogDto>> GetLoginLogsPagedAsync(LogSearchPagedDto searchDto);
+    Task<PageModelDto<LoginLogDto>> GetLoginLogsPagedAsync(SearchPagedDto input);
 
     /// <summary>
     /// 操作日志
     /// </summary>
-    /// <param name="searchDto"></param>
+    /// <param name="input"></param>
     /// <returns></returns>
-    Task<PageModelDto<OpsLogDto>> GetOpsLogsPagedAsync(LogSearchPagedDto searchDto);
+    Task<PageModelDto<OperationLogDto>> GetOpsLogsPagedAsync(SearchPagedDto input);
 
     /// <summary>
     /// 异常日志
     /// </summary>
     /// <param name="searchDto"></param>
     /// <returns></returns>
-    //Task<PageModelDto<NlogLogDto>> GetNlogLogsPagedAsync(LogSearchPagedDto searchDto);
+    //Task<PageModelDto<NlogLogDto>> GetNlogLogsPagedAsync(SearchPagedDto input);
 }

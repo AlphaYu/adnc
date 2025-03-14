@@ -2,34 +2,48 @@
 
 public class LogService(IAdoQuerierRepository adoRepository) : AbstractAppService, ILogService
 {
-    public async Task<PageModelDto<LoginLogDto>> GetLoginLogsPagedAsync(LogSearchPagedDto search)
+    public async Task<PageModelDto<LoginLogDto>> GetLoginLogsPagedAsync(SearchPagedDto input)
     {
-        search.TrimStringFields();
+        input.TrimStringFields();
+
+        if (input.CreateTime is null || input.CreateTime.Length < 1)
+        {
+            DateTime startTime = DateTime.Now.AddDays(-7);
+            DateTime endTime = DateTime.Now;
+            input.CreateTime = [startTime, endTime];
+        }
+
         var where = new StringBuilder(100)
-            .AppendIf(search.Account.IsNotNullOrWhiteSpace(), " AND account = @account")
-            .AppendIf(search.Device.IsNotNullOrWhiteSpace(), " AND device = @device")
+            .Append("AND CreateTime BETWEEN  '@CreateTime[0]' AND '@CreateTime[1]'")
+            .AppendIf(input.Keywords.IsNotNullOrWhiteSpace(), " AND Account = @Keywords")
             .ToSqlWhereString();
         var orderBy = " ORDER BY id Desc";
 
-        var queryCondition = new QueryCondition(where, orderBy, null, search);
-        var queryResult = await adoRepository.GetPagedLoginLogsBySqlAsync<LoginLogDto>(queryCondition, search.SkipRows(), search.PageSize);
-        return new PageModelDto<LoginLogDto>(search, queryResult.Content.ToArray(), queryResult.TotalCount);
+        var queryCondition = new QueryCondition(where, orderBy, null, input);
+        var queryResult = await adoRepository.GetPagedLoginLogsBySqlAsync<LoginLogDto>(queryCondition, input.SkipRows(), input.PageSize);
+        return new PageModelDto<LoginLogDto>(input, queryResult.Content.ToArray(), queryResult.TotalCount);
     }
 
-    public async Task<PageModelDto<OpsLogDto>> GetOpsLogsPagedAsync(LogSearchPagedDto search)
+    public async Task<PageModelDto<OperationLogDto>> GetOpsLogsPagedAsync(SearchPagedDto input)
     {
-        search.TrimStringFields();
+        input.TrimStringFields();
+
+        if (input.CreateTime is null || input.CreateTime.Length < 1)
+        {
+            DateTime startTime = DateTime.Now.AddDays(-7);
+            DateTime endTime = DateTime.Now;
+            input.CreateTime = [startTime, endTime];
+        }
+
         var where = new StringBuilder(100)
-            .AppendIf(search.Account.IsNotNullOrWhiteSpace(), " AND account = @account")
-            .AppendIf(search.Device.IsNotNullOrWhiteSpace(), " AND device = @device")
-            .AppendIf(search.Device.IsNotNullOrWhiteSpace(), " AND method = @method")
-            .AppendIf(search.Level.IsNotNullOrWhiteSpace(), " AND level = @level")
+            .Append("AND CreateTime>=@CreateTime1 AND CreateTime<=@CreateTime2")
+            .AppendIf(input.Keywords.IsNotNullOrWhiteSpace(), " AND LogName = @Keywords")
             .ToSqlWhereString();
         var orderBy = " ORDER BY id Desc";
 
-        var queryCondition = new QueryCondition(where, orderBy, null, search);
-        var queryResult = await adoRepository.GetPagedOperationLogsBySqlAsync<OpsLogDto>(queryCondition, search.SkipRows(), search.PageSize);
-        return new PageModelDto<OpsLogDto>(search, queryResult.Content.ToArray(), queryResult.TotalCount);
+        var queryCondition = new QueryCondition(where, orderBy, null, input);
+        var queryResult = await adoRepository.GetPagedOperationLogsBySqlAsync<OperationLogDto>(queryCondition, input.SkipRows(), input.PageSize);
+        return new PageModelDto<OperationLogDto>(input, queryResult.Content.ToArray(), queryResult.TotalCount);
     }
 
     //public async Task<PageModelDto<NlogLogDto>> GetNlogLogsPagedAsync(LogSearchPagedDto searchDto)

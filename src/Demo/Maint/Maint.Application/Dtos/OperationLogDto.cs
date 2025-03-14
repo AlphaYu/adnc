@@ -1,8 +1,9 @@
 ﻿namespace Adnc.Demo.Maint.Application.Dtos;
 
 /// <summary>
-/// 登录日志
+/// 操作日志
 /// </summary>
-public class LoginLogDto : LoginLog
+public class OperationLogDto : OperationLog
 {
+ 
 }
