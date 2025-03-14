@@ -13,6 +13,7 @@ public class CachingConsts
 
     //cache prefix
     public const string UserValidatedInfoKeyPrefix = "admin:users:validatedinfo";
+    public const string UserFailCountKeyPrefix = "admin:users:validatedinfo:failcount";
     public const string DictOptionSingleKeyPrefix = "admin:dictoptions:single";
     public const string SysConfigSingleKeyPrefix = "admin:cfgs:single";
 

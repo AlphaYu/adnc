@@ -4,7 +4,7 @@ public static class PermissionConsts
 {
     public static class Log
     {
-        public const string GetListForOperationLog = "ops-log";
-        public const string GetListForLogingLog = "login-log";
+        public const string GetListForOperationLog = "operationlog-list";
+        public const string GetListForLogingLog = "loginlog-list";
     }
 }
