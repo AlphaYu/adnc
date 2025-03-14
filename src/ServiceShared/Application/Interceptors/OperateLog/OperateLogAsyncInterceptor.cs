@@ -52,7 +52,7 @@ public sealed class OperateLogAsyncInterceptor(UserContext userContext, ILogger<
         var methodInfo = invocation.Method ?? invocation.MethodInvocationTarget;
         var fullName = methodInfo.DeclaringType?.FullName ?? string.Empty;
         var startTime = DateTime.Now;
-        var log = CreateOpsLog(fullName, methodInfo.Name, attribute.LogName, invocation.Arguments, userContext, startTime);
+        var log = CreateOpsLog(fullName, methodInfo.Name, attribute.LogName, invocation.Arguments, userContext);
         try
         {
             invocation.Proceed();
@@ -64,6 +64,7 @@ public sealed class OperateLogAsyncInterceptor(UserContext userContext, ILogger<
         }
         finally
         {
+            log.ExecutionTime = (int)(DateTime.Now - startTime).TotalMilliseconds;
             WriteOpsLog(log);
         }
     }
@@ -73,7 +74,7 @@ public sealed class OperateLogAsyncInterceptor(UserContext userContext, ILogger<
         var methodInfo = invocation.Method ?? invocation.MethodInvocationTarget;
         var fullName = methodInfo.DeclaringType?.FullName ?? string.Empty;
         var startTime = DateTime.Now;
-        var log = CreateOpsLog(fullName, methodInfo.Name, attribute.LogName, invocation.Arguments, userContext, startTime);
+        var log = CreateOpsLog(fullName, methodInfo.Name, attribute.LogName, invocation.Arguments, userContext);
 
         try
         {
@@ -88,6 +89,7 @@ public sealed class OperateLogAsyncInterceptor(UserContext userContext, ILogger<
         }
         finally
         {
+            log.ExecutionTime = (int)(DateTime.Now - startTime).TotalMilliseconds;
             WriteOpsLog(log);
         }
     }
@@ -106,7 +108,7 @@ public sealed class OperateLogAsyncInterceptor(UserContext userContext, ILogger<
         var methodInfo = invocation.Method ?? invocation.MethodInvocationTarget;
         var fullName = methodInfo.DeclaringType?.FullName ?? string.Empty;
         var startTime = DateTime.Now;
-        var log = CreateOpsLog(fullName, methodInfo.Name, attribute.LogName, invocation.Arguments, userContext, startTime);
+        var log = CreateOpsLog(fullName, methodInfo.Name, attribute.LogName, invocation.Arguments, userContext);
 
         try
         {
@@ -121,6 +123,7 @@ public sealed class OperateLogAsyncInterceptor(UserContext userContext, ILogger<
         }
         finally
         {
+            log.ExecutionTime = (int)(DateTime.Now - startTime).TotalMilliseconds;
             WriteOpsLog(log);
         }
         return result;
@@ -136,7 +139,7 @@ public sealed class OperateLogAsyncInterceptor(UserContext userContext, ILogger<
         return result;
     }
 
-    private OperationLog CreateOpsLog(string className, string methodName, string logName, object[] arguments, UserContext userContext, DateTime startTime)
+    private OperationLog CreateOpsLog(string className, string methodName, string logName, object[] arguments, UserContext userContext)
     {
         var message = string.Empty;
         if (arguments is not null)
@@ -161,8 +164,7 @@ public sealed class OperateLogAsyncInterceptor(UserContext userContext, ILogger<
             UserId = userContext.Id,
             Name = userContext.Name,
             Account = userContext.Account,
-            RemoteIpAddress = userContext.RemoteIpAddress,
-            ExecutionTime = (int)(DateTime.Now - startTime).TotalMilliseconds
+            RemoteIpAddress = userContext.RemoteIpAddress
         };
         return log;
     }
