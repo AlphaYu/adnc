@@ -17,7 +17,7 @@ public interface ILogService : IAppService
     /// </summary>
     /// <param name="input"></param>
     /// <returns></returns>
-    Task<PageModelDto<OperationLogDto>> GetOpsLogsPagedAsync(SearchPagedDto input);
+    Task<PageModelDto<OperationLogDto>> GetOperationLogsPagedAsync(SearchPagedDto input);
 
     /// <summary>
     /// 异常日志

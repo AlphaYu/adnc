@@ -14,7 +14,7 @@ public class OperationLogController(ILogService logService, UserContext userCont
     [HttpGet("page")]
     [AdncAuthorize(PermissionConsts.Log.GetListForOperationLog)]
     public async Task<ActionResult<PageModelDto<OperationLogDto>>> GetOpsLogsPaged([FromQuery] SearchPagedDto input)
-        => await logService.GetOpsLogsPagedAsync(input);
+        => await logService.GetOperationLogsPagedAsync(input);
 
     /// <summary>
     /// 查询登录用户操作日志
@@ -25,6 +25,6 @@ public class OperationLogController(ILogService logService, UserContext userCont
     public async Task<ActionResult<PageModelDto<OperationLogDto>>> GetUserOpsLogsPagedAsync([FromQuery] SearchPagedDto input)
     {
         input.Keywords = userContext.Account;
-        return await logService.GetOpsLogsPagedAsync(input);
+        return await logService.GetOperationLogsPagedAsync(input);
     }
 }
