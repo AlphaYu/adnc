@@ -3,7 +3,7 @@
 public class PermissionInfo
 {
     public long RoleId { get; set; }
-    public string MenuPerm { get; set; } = string.Empty;
+    public string[] Perms { get; set; } = [];
 }
 
 public sealed class PermissionCacheHandler(ICacheProvider cacheProvider) : AbstractPermissionHandler
@@ -25,7 +25,7 @@ public sealed class PermissionCacheHandler(ICacheProvider cacheProvider) : Abstr
         if (cache == null || cache.IsNull)
             return await Task.FromResult(false);
 
-        var upperCodes = cache.Value.Where(x => roleIds.Contains(x.RoleId)).Select(x => x.MenuPerm.ToUpper());
+        var upperCodes = cache.Value.Where(x => roleIds.Contains(x.RoleId)).SelectMany(x => x.Perms.Select(y => y.ToUpper())).Distinct();
         if (upperCodes == null || !upperCodes.Any())
             return await Task.FromResult(false);
 
