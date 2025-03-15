@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using System;
 
 namespace Adnc.Demo.Admin.Application.Cache;
 
@@ -89,31 +90,18 @@ public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IDistr
     {
         var cahceValue = await CacheProvider.Value.GetAsync(CachingConsts.RoleMenuCodesCacheKey, async () =>
         {
-            using var scope = ServiceProvider.Value.CreateScope();
-            var menuRepo = scope.ServiceProvider.GetRequiredService<IEfRepository<Menu>>();
-            var roleRepo = scope.ServiceProvider.GetRequiredService<IEfRepository<Role>>();
-            var roleMenuRepo = scope.ServiceProvider.GetRequiredService<IEfRepository<RoleMenuRelation>>();
-
-            var menuQueryAble = menuRepo.GetAll();
-            var roleMenuQueryAble = roleMenuRepo.GetAll();
-
-            var roleCodes = await (from r in roleMenuQueryAble
-                                   join m in menuQueryAble on r.MenuId equals m.Id
-                                   select new { r.RoleId, m.Perm }
-                                    ).ToListAsync();
-
-            var result = new List<RoleMenuCodeDto>();
-            var roleIds = roleCodes.Select(x => x.RoleId).Distinct();
-            foreach (var roleId in roleIds)
-            {
-                var perms = roleCodes.Where(x => x.RoleId == roleId && x.Perm.IsNotNullOrWhiteSpace()).Select(x => x.Perm).ToArray() ?? [];
-                result.Add(new RoleMenuCodeDto { RoleId = roleId, Perms = perms });
-            }
+            var result = await GetAllRoleMenuCodes();
             return result;
 
         }, TimeSpan.FromSeconds(GeneralConsts.OneYear));
 
         return cahceValue.Value;
+    }
+
+    internal async Task SetAllRoleMenuCodesToCacheAsync()
+    {
+        var cacheValue = await GetAllRoleMenuCodes();
+        await CacheProvider.Value.SetAsync(CachingConsts.RoleMenuCodesCacheKey, cacheValue, TimeSpan.FromSeconds(GeneralConsts.OneYear));
     }
 
     [Obsolete($"use {nameof(GetAllDictOptionsFromCacheAsync)} instead")]
@@ -205,5 +193,30 @@ public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IDistr
         }, TimeSpan.FromSeconds(GeneralConsts.OneYear));
 
         return cahceValue.Value;
+    }
+
+    private async Task<List<RoleMenuCodeDto>> GetAllRoleMenuCodes()
+    {
+        using var scope = ServiceProvider.Value.CreateScope();
+        var menuRepo = scope.ServiceProvider.GetRequiredService<IEfRepository<Menu>>();
+        var roleRepo = scope.ServiceProvider.GetRequiredService<IEfRepository<Role>>();
+        var roleMenuRepo = scope.ServiceProvider.GetRequiredService<IEfRepository<RoleMenuRelation>>();
+
+        var menuQueryAble = menuRepo.GetAll();
+        var roleMenuQueryAble = roleMenuRepo.GetAll();
+
+        var roleCodes = await (from r in roleMenuQueryAble
+                               join m in menuQueryAble on r.MenuId equals m.Id
+                               select new { r.RoleId, m.Perm }
+                                ).ToListAsync();
+
+        var result = new List<RoleMenuCodeDto>();
+        var roleIds = roleCodes.Select(x => x.RoleId).Distinct();
+        foreach (var roleId in roleIds)
+        {
+            var perms = roleCodes.Where(x => x.RoleId == roleId && x.Perm.IsNotNullOrWhiteSpace()).Select(x => x.Perm).ToArray() ?? [];
+            result.Add(new RoleMenuCodeDto { RoleId = roleId, Perms = perms });
+        }
+        return result;
     }
 }
