@@ -1,15 +1,11 @@
 ﻿namespace Adnc.Demo.Admin.Api.Authentication;
 
 [Obsolete($"use {nameof(BearerAuthenticationCacheProcessor)} instead 2025-02-17")]
-public class BearerAuthenticationLocalProcessor : AbstractAuthenticationProcessor
+public class BearerAuthenticationLocalProcessor(IUserService userAppService) : AbstractAuthenticationProcessor
 {
-    private readonly IUserService _userAppService;
-
-    public BearerAuthenticationLocalProcessor(IUserService userAppService) => _userAppService = userAppService;
-
     protected override async Task<(string? ValidationVersion, bool Status)> GetValidatedInfoAsync(long userId)
     {
-        var validatedInfo = await _userAppService.GetUserValidatedInfoAsync(userId);
+        var validatedInfo = await userAppService.GetUserValidatedInfoAsync(userId);
         if (validatedInfo is null)
             return (null, false);
 
