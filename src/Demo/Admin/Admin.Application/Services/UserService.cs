@@ -66,7 +66,7 @@ public class UserService(IEfRepository<User> userRepository, IEfRepository<Role>
     public async Task<List<string>> GetPermissionsAsync(long userId, IEnumerable<string> requestPermissions, string userBelongsRoleIds)
     {
         if (requestPermissions.IsNullOrEmpty())
-            return ["allow"];
+            return [];
 
         if (userBelongsRoleIds.IsNullOrWhiteSpace())
             return [];

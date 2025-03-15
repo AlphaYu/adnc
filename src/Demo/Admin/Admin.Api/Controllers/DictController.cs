@@ -74,6 +74,7 @@ public class DictController(IDictService dictService) : AdncControllerBase
     /// </summary>
     /// <returns><see cref="List{DictOption}"/></returns>
     [HttpGet("options")]
+    [AdncAuthorize("", AdncAuthorizeAttribute.JwtWithBasicSchemes)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<List<DictOption>>> GetOptionsAsync()
     => await dictService.GetOptionsAsync();

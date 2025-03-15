@@ -115,7 +115,7 @@ public class AccountController(IOptions<JWTOptions> jwtOptions, UserContext user
             return Forbid();
         }
         var result = await userService.GetPermissionsAsync(id, requestPermissions, userBelongsRoleIds);
-        return result ?? new List<string>();
+        return result ?? [];
     }
 
     /// <summary>

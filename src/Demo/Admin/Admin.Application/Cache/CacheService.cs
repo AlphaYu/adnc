@@ -12,6 +12,7 @@ public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IDistr
         await GetAllMenusFromCacheAsync();
         await GetAllRoleMenuCodesFromCacheAsync();
         await GetAllDictOptionsFromCacheAsync();
+        await GetAllSysConfigsFromCacheAsync();
     }
 
     internal int GetRefreshTokenExpires()
@@ -194,11 +195,23 @@ public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IDistr
         return cahceValue.Value;
     }
 
+    internal async Task<List<SysConfigSimpleDto>> GetAllSysConfigsFromCacheAsync()
+    {
+        var cahceValue = await CacheProvider.Value.GetAsync(CachingConsts.SysConfigListCacheKey, async () =>
+        {
+            using var scope = ServiceProvider.Value.CreateScope();
+            var sysConfigRepo = scope.ServiceProvider.GetRequiredService<IEfRepository<SysConfig>>();
+            var simpleConfigs = await sysConfigRepo.GetAll(writeDb: true).Select(x => new SysConfigSimpleDto { Key = x.Key, Name = x.Name, Value = x.Value }).ToListAsync();
+            return simpleConfigs;
+        }, TimeSpan.FromSeconds(GeneralConsts.OneYear));
+
+        return cahceValue.Value;
+    }
+
     private async Task<List<RoleMenuCodeDto>> GetAllRoleMenuCodes()
     {
         using var scope = ServiceProvider.Value.CreateScope();
         var menuRepo = scope.ServiceProvider.GetRequiredService<IEfRepository<Menu>>();
-        var roleRepo = scope.ServiceProvider.GetRequiredService<IEfRepository<Role>>();
         var roleMenuRepo = scope.ServiceProvider.GetRequiredService<IEfRepository<RoleMenuRelation>>();
 
         var menuQueryAble = menuRepo.GetAll();

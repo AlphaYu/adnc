@@ -1,4 +1,6 @@
-﻿namespace Adnc.Demo.Admin.Application.Services;
+﻿using Castle.Core.Internal;
+
+namespace Adnc.Demo.Admin.Application.Services;
 
 public class SysConfigService(IEfRepository<SysConfig> sysConfigRepo, BloomFilterFactory bloomFilterFactory,CacheService cacheService) 
     : AbstractAppService, ISysConfigService
@@ -84,5 +86,16 @@ public class SysConfigService(IEfRepository<SysConfig> sysConfigRepo, BloomFilte
         var cfgDtos = Mapper.Map<List<SysConfigDto>>(entities);
 
         return new PageModelDto<SysConfigDto>(input, cfgDtos, total);
+    }
+
+    public async Task<List<SysConfigSimpleDto>> GetListAsync(params string[] keys)
+    {
+        if (keys.IsNullOrEmpty())
+            return [];
+
+        var allConfigs = await cacheService.GetAllSysConfigsFromCacheAsync();
+        var result = allConfigs.Where(x => keys.Contains(x.Key)).ToList();
+
+        return result ?? [];
     }
 }

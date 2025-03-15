@@ -16,7 +16,7 @@ public class SysConfigController(ISysConfigService sysConfigService) : AdncContr
     [AdncAuthorize(PermissionConsts.SysConfig.Create)]
     [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<ActionResult<long>> CreateAsync([FromBody] SysConfigCreationDto input)
-        =>  CreatedResult(await sysConfigService.CreateAsync(input));
+        => CreatedResult(await sysConfigService.CreateAsync(input));
 
     /// <summary>
     /// 更新配置
@@ -50,7 +50,7 @@ public class SysConfigController(ISysConfigService sysConfigService) : AdncContr
     /// <param name="id">节点id</param>
     /// <returns></returns>
     [HttpGet("{id}")]
-    [AdncAuthorize([PermissionConsts.SysConfig.Get, PermissionConsts.SysConfig.Update], AdncAuthorizeAttribute.JwtWithBasicSchemes)]
+    [AdncAuthorize([PermissionConsts.SysConfig.Get, PermissionConsts.SysConfig.Update])]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<SysConfigDto>> GetAsync([FromRoute] long id)
@@ -69,4 +69,18 @@ public class SysConfigController(ISysConfigService sysConfigService) : AdncContr
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<PageModelDto<SysConfigDto>>> GetPagedAsync([FromQuery] SearchPagedDto input)
       => await sysConfigService.GetPagedAsync(input);
+
+    /// <summary>
+    /// 根据keys获取配置列表
+    /// </summary>
+    /// <param name="keys"></param>
+    /// <returns><see cref="List{SysConfigSimpleDto}"/></returns>
+    [HttpGet()]
+    [AdncAuthorize(PermissionConsts.SysConfig.Search, AdncAuthorizeAttribute.JwtWithBasicSchemes)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<ActionResult<List<SysConfigSimpleDto>>> GetListAsync([FromQuery] string keys)
+    {
+        var keyArr = keys.Split(',', StringSplitOptions.RemoveEmptyEntries);
+        return await sysConfigService.GetListAsync(keyArr);
+    }
 }

@@ -7,15 +7,15 @@ public class CachingConsts
     public const string RoleMenuCodesCacheKey = "admin:role:menus:codes";
     public const string DetpListCacheKey = "admin:depts:list";
     public const string DictOptionsListKey = "admin:dictoptions:list";
+    public const string SysConfigListCacheKey = "admin:sysconfigs:list";
 
     public const string DictOptionsPreheatedKey = "admin:dictoptions:preheated";
-    public const string SysConfigPreheatedKey = "admin:cfgs:preheated";
+    public const string SysConfigPreheatedKey = "admin:sysconfigs:preheated";
 
     //cache prefix
     public const string UserValidatedInfoKeyPrefix = "admin:users:validatedinfo";
     public const string UserFailCountKeyPrefix = "admin:users:validatedinfo:failcount";
     public const string DictOptionSingleKeyPrefix = "admin:dictoptions:single";
-    public const string SysConfigSingleKeyPrefix = "admin:cfgs:single";
 
     //bloomfilter
     public const string BloomfilterOfAccountsKey = "admin:bloomfilter:accouts";
