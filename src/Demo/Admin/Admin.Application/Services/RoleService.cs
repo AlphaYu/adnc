@@ -58,6 +58,28 @@ public class RoleService(IEfRepository<Role> roleRepo, IEfRepository<RoleUserRel
         return role is null ? null : Mapper.Map<RoleDto>(role);
     }
 
+    public async Task<PageModelDto<RoleDto>> GetPagedAsync(SearchPagedDto input)
+    {
+        input.TrimStringFields();
+        var whereExpression = ExpressionCreator
+                                              .New<Role>()
+                                              .AndIf(input.Keywords.IsNotNullOrWhiteSpace(), x => EF.Functions.Like(x.Name, $"{input.Keywords}%"));
+
+        var total = await roleRepo.CountAsync(whereExpression);
+        if (total == 0)
+            return new PageModelDto<RoleDto>(input);
+
+        var entities = await roleRepo
+                            .Where(whereExpression)
+                            .OrderByDescending(x => x.Id)
+                            .Skip(input.SkipRows())
+                            .Take(input.PageSize)
+                            .ToListAsync();
+        var dtos = Mapper.Map<List<RoleDto>>(entities);
+
+        return new PageModelDto<RoleDto>(input, dtos, total);
+    }
+
     public async Task<ServiceResult> SetPermissonsAsync(RoleSetPermissonsDto input)
     {
         if (input.RoleId == 1600000000010)
@@ -74,9 +96,9 @@ public class RoleService(IEfRepository<Role> roleRepo, IEfRepository<RoleUserRel
         return ServiceResult();
     }
 
-    public async Task<string[]> GetPermissionsAsync(long id)
+    public async Task<long[]> GetMenuIdsAsync(long id)
     {
-        var menuIds = (await cacheService.GetAllRoleMenusFromCacheAsync()).Where(x => x.RoleId == id).Select(x => x.MenuId.ToString()).ToArray();
+        var menuIds = await roleMenuRelationRepo.Where(x => x.RoleId == id).Select(x => x.MenuId).ToArrayAsync();
         return menuIds ?? [];
     }
 
@@ -88,27 +110,5 @@ public class RoleService(IEfRepository<Role> roleRepo, IEfRepository<RoleUserRel
         var options = await roleRepo.Where(whereExpr).Select(x => new OptionTreeDto { Label = x.Name, Value = x.Id }).ToListAsync();
 
         return options ?? [];
-    }
-
-    public async Task<PageModelDto<RoleDto>> GetPagedAsync(SearchPagedDto input)
-    {
-        input.TrimStringFields();
-        var whereExpression = ExpressionCreator
-                                              .New<Role>()
-                                              .AndIf(input.Keywords.IsNotNullOrWhiteSpace(), x => x.Name.Contains(input.Keywords));
-
-        var total = await roleRepo.CountAsync(whereExpression);
-        if (total == 0)
-            return new PageModelDto<RoleDto>(input);
-
-        var entities = await roleRepo
-                            .Where(whereExpression)
-                            .OrderByDescending(x => x.Id)
-                            .Skip(input.SkipRows())
-                            .Take(input.PageSize)
-                            .ToListAsync();
-        var dtos = Mapper.Map<List<RoleDto>>(entities);
-
-        return new PageModelDto<RoleDto>(input, dtos, total);
     }
 }

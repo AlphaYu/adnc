@@ -52,7 +52,7 @@ public class NoticeController() : AdncControllerBase
     /// <param name="id">节点id</param>
     /// <returns></returns>
     //[HttpGet("{id}")]
-    //// [AdncAuthorize(PermissionConsts.SysConfig.GetList, AdncAuthorizeAttribute.JwtWithBasicSchemes)]
+    //// [AdncAuthorize(PermissionConsts.SysConfig.Search, AdncAuthorizeAttribute.JwtWithBasicSchemes)]
     //[ProducesResponseType(StatusCodes.Status200OK)]
     //[ProducesResponseType(StatusCodes.Status404NotFound)]
     //public async Task<ActionResult<SysConfigDto>> GetAsync([FromRoute] long id)
@@ -67,7 +67,7 @@ public class NoticeController() : AdncControllerBase
     /// <param name="input"><see cref="NoticeSearchPagedDto"/></param>
     /// <returns><see cref="PageModelDto{CfgDto}"/></returns>
     [HttpGet("mine")]
-    //[AdncAuthorize(PermissionConsts.SysConfig.GetList)]
+    //[AdncAuthorize(PermissionConsts.SysConfig.Search)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<PageModelDto<NoticeDto>>> GetMinePagedAsync([FromQuery] NoticeSearchPagedDto input)
     {

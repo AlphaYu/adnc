@@ -10,7 +10,7 @@ public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IDistr
     {
         await GetAllOrganizationsFromCacheAsync();
         await GetAllMenusFromCacheAsync();
-        await GetAllRoleMenusFromCacheAsync();
+        await GetAllRoleMenuCodesFromCacheAsync();
         await GetAllDictOptionsFromCacheAsync();
     }
 
@@ -25,6 +25,12 @@ public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IDistr
     {
         var cacheKey = ConcatCacheKey(CachingConsts.UserFailCountKeyPrefix, id);
         await CacheProvider.Value.SetAsync(cacheKey, count, TimeSpan.FromSeconds(GetRefreshTokenExpires()));
+    }
+
+    internal async Task RemoveFailLoginCountToCacheAsync(long id)
+    {
+        var cacheKey = ConcatCacheKey(CachingConsts.UserFailCountKeyPrefix, id);
+        await CacheProvider.Value.RemoveAsync(cacheKey);
     }
 
     internal async Task<int> GetFailLoginCountByUserIdAsync(long id)
@@ -79,7 +85,7 @@ public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IDistr
         return cahceValue.Value;
     }
 
-    internal async Task<List<RoleMenuCodesDto>> GetAllRoleMenusFromCacheAsync()
+    internal async Task<List<RoleMenuCodeDto>> GetAllRoleMenuCodesFromCacheAsync()
     {
         var cahceValue = await CacheProvider.Value.GetAsync(CachingConsts.RoleMenuCodesCacheKey, async () =>
         {
@@ -91,12 +97,20 @@ public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IDistr
             var menuQueryAble = menuRepo.GetAll();
             var roleMenuQueryAble = roleMenuRepo.GetAll();
 
-            var roleMenus = await (from r in roleMenuQueryAble
+            var roleCodes = await (from r in roleMenuQueryAble
                                    join m in menuQueryAble on r.MenuId equals m.Id
-                                   select new RoleMenuCodesDto { RoleId = r.RoleId, MenuId = m.Id, MenuPerm = m.Perm, MenuName = m.Name }
-                                ).ToListAsync();
+                                   select new { r.RoleId, m.Perm }
+                                    ).ToListAsync();
 
-            return roleMenus;
+            var result = new List<RoleMenuCodeDto>();
+            var roleIds = roleCodes.Select(x => x.RoleId).Distinct();
+            foreach (var roleId in roleIds)
+            {
+                var perms = roleCodes.Where(x => x.RoleId == roleId && x.Perm.IsNotNullOrWhiteSpace()).Select(x => x.Perm).ToArray() ?? [];
+                result.Add(new RoleMenuCodeDto { RoleId = roleId, Perms = perms });
+            }
+            return result;
+
         }, TimeSpan.FromSeconds(GeneralConsts.OneYear));
 
         return cahceValue.Value;
@@ -172,17 +186,17 @@ public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IDistr
                                    join dd in dictDatas on d.Code equals dd.DictCode
                                    where dd.Status == true
                                    orderby dd.Ordinal ascending
-                                   select new { dd.DictCode, d.Name, dd.Label, dd.Value, dd.TagType }).ToListAsync();
+                                   select new { d.Code, d.Name, dd.Label, dd.Value, dd.TagType }).ToListAsync();
 
             var dictOptions = new List<DictOption>();
-            var codes = queryList.Select(x => x.DictCode).Distinct();
+            var codes = queryList.Select(x => x.Code).Distinct();
             foreach (var code in codes)
             {
                 var option = new DictOption
                 {
                     Code = code,
-                    Name = queryList.First(x => x.DictCode == code).Name,
-                    DictDataList = queryList.Where(x => x.DictCode == code).Select(x => new DictDataOption { Label = x.Label, Value = x.Value, TagType = x.TagType }).ToArray()
+                    Name = queryList.First(x => x.Code == code).Name,
+                    DictDataList = queryList.Where(x => x.Code == code).Select(x => new DictDataOption { Label = x.Label, Value = x.Value, TagType = x.TagType }).ToArray()
                 };
                 dictOptions.Add(option);
             }

@@ -50,7 +50,7 @@ public class SysConfigController(ISysConfigService sysConfigService) : AdncContr
     /// <param name="id">节点id</param>
     /// <returns></returns>
     [HttpGet("{id}")]
-    // [AdncAuthorize(PermissionConsts.SysConfig.GetList, AdncAuthorizeAttribute.JwtWithBasicSchemes)]
+    [AdncAuthorize([PermissionConsts.SysConfig.Get, PermissionConsts.SysConfig.Update], AdncAuthorizeAttribute.JwtWithBasicSchemes)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<SysConfigDto>> GetAsync([FromRoute] long id)
@@ -63,9 +63,9 @@ public class SysConfigController(ISysConfigService sysConfigService) : AdncContr
     /// 获取配置列表
     /// </summary>
     /// <param name="input"><see cref="SearchPagedDto"/></param>
-    /// <returns><see cref="PageModelDto{CfgDto}"/></returns>
+    /// <returns><see cref="PageModelDto{SysConfigDto}"/></returns>
     [HttpGet("page")]
-    [AdncAuthorize(PermissionConsts.SysConfig.GetList)]
+    [AdncAuthorize(PermissionConsts.SysConfig.Search)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<PageModelDto<SysConfigDto>>> GetPagedAsync([FromQuery] SearchPagedDto input)
       => await sysConfigService.GetPagedAsync(input);

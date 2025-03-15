@@ -1,7 +1,7 @@
 ﻿namespace Adnc.Demo.Admin.Application.Services;
 
 public class DictDataService(IEfRepository<DictData> dictDataRepo)
-    : AbstractAppService, IDictDataService
+ : AbstractAppService, IDictDataService
 {
     public async Task<ServiceResult<long>> CreateAsync(DictDataCreationDto input)
     {

@@ -1,6 +1,4 @@
-﻿using Adnc.Demo.Admin.Application.Contracts.Dtos.Menu;
-
-namespace Adnc.Demo.Admin.Application.Contracts.Services
+﻿namespace Adnc.Demo.Admin.Application.Contracts.Services
 {
     /// <summary>
     /// 菜单/权限服务

@@ -1,8 +1,6 @@
-﻿using Adnc.Demo.Admin.Application.Contracts.Dtos.Menu;
+﻿namespace Adnc.Demo.Admin.Application.Services;
 
-namespace Adnc.Demo.Admin.Application.Services;
-
-public class MenuService(IEfRepository<Menu> menuRepo, CacheService cacheService) : AbstractAppService, IMenuService
+public class MenuService(IEfRepository<Menu> menuRepo, IEfRepository<RoleMenuRelation> roleMenuRepo, CacheService cacheService) : AbstractAppService, IMenuService
 {
     public async Task<ServiceResult<long>> CreateAsync(MenuCreationDto input)
     {
@@ -75,7 +73,7 @@ public class MenuService(IEfRepository<Menu> menuRepo, CacheService cacheService
         var exists = await cacheService.CacheProvider.Value.ExistsAsync(CachingConsts.RoleMenuCodesCacheKey);
         if (!exists)
         {
-            _ = await cacheService.GetAllRoleMenusFromCacheAsync();
+            _ = await cacheService.GetAllRoleMenuCodesFromCacheAsync();
         }
 
         List<MenuTreeDto> GetChildren(long id)
@@ -106,10 +104,8 @@ public class MenuService(IEfRepository<Menu> menuRepo, CacheService cacheService
     {
         //所有菜单
         var allMenus = await cacheService.GetAllMenusFromCacheAsync();
-        //所有菜单角色关系
-        var allRoleMenus = await cacheService.GetAllRoleMenusFromCacheAsync();
         //角色拥有的菜单Ids
-        var menusIds = allRoleMenus.Where(x => roleIds.Contains(x.RoleId)).Select(x => x.MenuId).Distinct();
+        var menusIds = await roleMenuRepo.Where(x => roleIds.Contains(x.RoleId)).Select(x => x.MenuId).Distinct().ToArrayAsync();
         //根据菜单Id获取菜单实体
         var menus = allMenus.Where(x => menusIds.Contains(x.Id) && x.Type != MenuType.BUTTON.ToString());
         if (menus.IsNullOrEmpty())

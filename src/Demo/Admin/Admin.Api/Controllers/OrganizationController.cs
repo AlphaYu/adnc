@@ -50,8 +50,9 @@ public class OrganizationController(IOrganizationService organizationService) : 
     /// <param name="id">组织机构ID</param>
     /// <returns></returns>
     [HttpGet("{id}")]
-    // [AdncAuthorize(PermissionConsts.Org.Delete)]
+    [AdncAuthorize([PermissionConsts.Org.Get, PermissionConsts.Org.Update])]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<OrganizationDto>> GetAsync([FromRoute] long id)
     {
         var org = await organizationService.GetAsync(id);
@@ -63,7 +64,7 @@ public class OrganizationController(IOrganizationService organizationService) : 
     /// </summary>
     /// <returns></returns>
     [HttpGet()]
-    [AdncAuthorize(PermissionConsts.Org.GetList, AdncAuthorizeAttribute.JwtWithBasicSchemes)]
+    [AdncAuthorize(PermissionConsts.Org.Search, AdncAuthorizeAttribute.JwtWithBasicSchemes)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<List<OrganizationTreeDto>>> GetTreeListAsync(string? keywords = null, bool? status = null)
         => await organizationService.GetTreeListAsync(keywords, status);

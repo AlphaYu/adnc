@@ -63,6 +63,8 @@ public class UserController(IUserService userService) : AdncControllerBase
     /// <returns></returns>
     [HttpGet("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [AdncAuthorize([PermissionConsts.User.Get , PermissionConsts.User.Update])]
     public async Task<ActionResult<UserDto>> GetAsync([FromRoute] long id)
     {
         var user = await userService.GetAsync(id);
@@ -75,7 +77,7 @@ public class UserController(IUserService userService) : AdncControllerBase
     /// <param name="input">查询条件</param>
     /// <returns></returns>
     [HttpGet("page")]
-    [AdncAuthorize(PermissionConsts.User.GetList)]
+    [AdncAuthorize(PermissionConsts.User.Search)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<PageModelDto<UserDto>>> GetPagedAsync([FromQuery] UserSearchPagedDto input)
         => await userService.GetPagedAsync(input);

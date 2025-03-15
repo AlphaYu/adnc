@@ -28,7 +28,7 @@
         /// <param name="ids"></param>
         /// <returns></returns>
         [OperateLog(LogName = "删除角色")]
-        [CachingEvict(CacheKeys = new[] { CachingConsts.RoleMenuCodesCacheKey })]
+        [CachingEvict(CacheKey = CachingConsts.RoleMenuCodesCacheKey)]
         [UnitOfWork]
         Task<ServiceResult> DeleteAsync(long[] ids);
 
@@ -40,12 +40,19 @@
         Task<RoleDto?> GetAsync(long id);
 
         /// <summary>
+        /// 获取角色列表
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        Task<PageModelDto<RoleDto>> GetPagedAsync(SearchPagedDto input);
+
+        /// <summary>
         /// 设置角色权限
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
         [OperateLog(LogName = "设置角色权限")]
-        [CachingEvict(CacheKeys = new[] { CachingConsts.RoleMenuCodesCacheKey })]
+        [CachingEvict(CacheKey = CachingConsts.RoleMenuCodesCacheKey)]
         [UnitOfWork]
         Task<ServiceResult> SetPermissonsAsync(RoleSetPermissonsDto input);
 
@@ -54,7 +61,7 @@
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        Task<string[]> GetPermissionsAsync(long id);
+        Task<long[]> GetMenuIdsAsync(long id);
 
         /// <summary>
         /// 获取角色
@@ -62,12 +69,5 @@
         /// <param name="status"></param>
         /// <returns></returns>
         Task<List<OptionTreeDto>> GetOptionsAsync(bool? status = null);
-
-        /// <summary>
-        /// 获取角色列表
-        /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
-        Task<PageModelDto<RoleDto>> GetPagedAsync(SearchPagedDto input);
     }
 }

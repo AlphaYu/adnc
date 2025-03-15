@@ -2,8 +2,8 @@
 
 namespace Adnc.Demo.Admin.Application.Services;
 
-public class UserService(IEfRepository<User> userRepository , IEfRepository<Role> roleRepository, IEfRepository<RoleUserRelation> roleUserRelationRepository
-    , CacheService cacheService, /*BloomFilterFactory bloomFilterFactory,*/ IHttpContextAccessor httpContextAccessor) 
+public class UserService(IEfRepository<User> userRepository, IEfRepository<Role> roleRepository, IEfRepository<RoleUserRelation> roleUserRelationRepository
+    , CacheService cacheService, /*BloomFilterFactory bloomFilterFactory,*/ IHttpContextAccessor httpContextAccessor)
     : AbstractAppService, IUserService
 {
     public async Task<ServiceResult<long>> CreateAsync(UserCreationDto input)
@@ -40,7 +40,7 @@ public class UserService(IEfRepository<User> userRepository , IEfRepository<Role
     {
         input.TrimStringFields();
 
-        var user =await userRepository.FetchAsync(x => x.Id == id, noTracking: false);
+        var user = await userRepository.FetchAsync(x => x.Id == id, noTracking: false);
         if (user is null)
             return Problem(HttpStatusCode.BadRequest, "账号不存在");
 
@@ -58,7 +58,7 @@ public class UserService(IEfRepository<User> userRepository , IEfRepository<Role
 
     public async Task<ServiceResult> DeleteAsync(long[] ids)
     {
-        await userRepository.ExecuteDeleteAsync(x=>ids.Contains(x.Id));
+        await userRepository.ExecuteDeleteAsync(x => ids.Contains(x.Id));
         await roleUserRelationRepository.ExecuteDeleteAsync(x => ids.Contains(x.UserId));
         return ServiceResult();
     }
@@ -73,9 +73,9 @@ public class UserService(IEfRepository<User> userRepository , IEfRepository<Role
 
         var roleIds = userBelongsRoleIds.Split(",", StringSplitOptions.RemoveEmptyEntries).Select(x => long.Parse(x.Trim()));
 
-        var allMenuCodes = await cacheService.GetAllRoleMenusFromCacheAsync();
+        var allMenuCodes = await cacheService.GetAllRoleMenuCodesFromCacheAsync();
 
-        var upperCodes = allMenuCodes?.Where(x => roleIds.Contains(x.RoleId)).Select(x => x.MenuPerm.ToUpper()) ?? [];
+        var upperCodes = allMenuCodes.Where(x => roleIds.Contains(x.RoleId)).SelectMany(x => x.Perms.Select(y => y.ToUpper())).Distinct();
         if (upperCodes.IsNullOrEmpty())
             return [];
 
@@ -85,7 +85,7 @@ public class UserService(IEfRepository<User> userRepository , IEfRepository<Role
 
     public async Task<UserDto?> GetAsync(long id)
     {
-        var userEntity =await userRepository.FetchAsync(x=>x.Id == id);
+        var userEntity = await userRepository.FetchAsync(x => x.Id == id);
         if (userEntity is null)
             return null;
 
@@ -203,7 +203,7 @@ public class UserService(IEfRepository<User> userRepository , IEfRepository<Role
             log.Name = user.Name;
         }
 
-        if (user.Status==false)
+        if (user.Status == false)
         {
             var problem = Problem(HttpStatusCode.TooManyRequests, "账号已锁定");
             log.Message = problem.Detail;
@@ -263,7 +263,7 @@ public class UserService(IEfRepository<User> userRepository , IEfRepository<Role
         log.StatusCode = (int)HttpStatusCode.Created;
         log.ExecutionTime = (int)(DateTime.Now - startTime).TotalMilliseconds;
         log.Succeed = true;
-        await cacheService.SetFailLoginCountToCacheAsync(user.Id, 0);// rest fail count to cache
+        await cacheService.RemoveFailLoginCountToCacheAsync(user.Id);// remove fail count to cache
         await channelWriter.WriteAsync(log);
 
         var roleIds = roleInfos.Select(x => x.RoleId).ToArray();
@@ -312,12 +312,10 @@ public class UserService(IEfRepository<User> userRepository , IEfRepository<Role
 
     public async Task<UserInfoDto?> GetUserInfoAsync(UserContext userContext)
     {
-        //所有菜单角色关系
-        var allRoleMenus = await cacheService.GetAllRoleMenusFromCacheAsync();
-        //角色拥有的菜单Ids
-        var roleIds = userContext.RoleIds.Split(",", StringSplitOptions.RemoveEmptyEntries).Select(x => x.ToLong());
-        var perms = allRoleMenus.Where(x => roleIds.Contains(x.RoleId) && x.MenuPerm.IsNotNullOrEmpty()).Select(x => x.MenuPerm).Distinct();
+        var allRoleCodes = await cacheService.GetAllRoleMenuCodesFromCacheAsync();
         var userValidateInfo = await cacheService.GetUserValidateInfoFromCacheAsync(userContext.Id);
+        var roleIds = userContext.RoleIds.Split(",", StringSplitOptions.RemoveEmptyEntries).Select(x => x.ToLong());
+        var perms = allRoleCodes.Where(x => roleIds.Contains(x.RoleId) && x.Perms.IsNotNullOrEmpty()).SelectMany(x => x.Perms).Distinct();
 
         var userInfo = new UserInfoDto
         {

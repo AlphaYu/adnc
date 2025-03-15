@@ -5,8 +5,7 @@
 /// </summary>
 [Route($"{RouteConsts.AdminRoot}/dicts")]
 [ApiController]
-public class DictController(IDictService dictService)
-    : AdncControllerBase
+public class DictController(IDictService dictService) : AdncControllerBase
 {
     /// <summary>
     /// 新增字典
@@ -48,9 +47,10 @@ public class DictController(IDictService dictService)
     /// <summary>
     /// 获取字典列表
     /// </summary>
-    /// <returns></returns>
+    /// <param name="input"></param>
+    /// <returns><see cref="PageModelDto{DictDto}"/></returns>
     [HttpGet("page")]
-    [AdncAuthorize(PermissionConsts.Dict.GetList)]
+    [AdncAuthorize(PermissionConsts.Dict.Search)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<PageModelDto<DictDto>>> GetPagedAsync([FromQuery] SearchPagedDto input)
         => await dictService.GetPagedAsync(input);
@@ -60,7 +60,9 @@ public class DictController(IDictService dictService)
     /// </summary>
     /// <returns></returns>
     [HttpGet("{id}")]
+    [AdncAuthorize([PermissionConsts.Dict.Get, PermissionConsts.Dict.Update])]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<DictDto>> GetAsync([FromRoute] long id)
     {
         var dict = await dictService.GetAsync(id);
@@ -70,10 +72,9 @@ public class DictController(IDictService dictService)
     /// <summary>
     /// 获取字典数据
     /// </summary>
-    /// <returns></returns>
+    /// <returns><see cref="List{DictOption}"/></returns>
     [HttpGet("options")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    //[AdncAuthorize(PermissionConsts.Dict.GetList, AdncAuthorizeAttribute.JwtWithBasicSchemes)]
     public async Task<ActionResult<List<DictOption>>> GetOptionsAsync()
     => await dictService.GetOptionsAsync();
 
