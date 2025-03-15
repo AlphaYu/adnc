@@ -28,7 +28,6 @@
         /// <param name="ids"></param>
         /// <returns></returns>
         [OperateLog(LogName = "删除角色")]
-        [CachingEvict(CacheKey = CachingConsts.RoleMenuCodesCacheKey)]
         [UnitOfWork]
         Task<ServiceResult> DeleteAsync(long[] ids);
 
@@ -52,7 +51,6 @@
         /// <param name="input"></param>
         /// <returns></returns>
         [OperateLog(LogName = "设置角色权限")]
-        [CachingEvict(CacheKey = CachingConsts.RoleMenuCodesCacheKey)]
         [UnitOfWork]
         Task<ServiceResult> SetPermissonsAsync(RoleSetPermissonsDto input);
 

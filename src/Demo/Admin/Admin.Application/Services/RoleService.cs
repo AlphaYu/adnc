@@ -48,6 +48,7 @@ public class RoleService(IEfRepository<Role> roleRepo, IEfRepository<RoleUserRel
 
         await roleRepo.ExecuteDeleteAsync(x => ids.Contains(x.Id));
         await roleUserRelationRepo.ExecuteDeleteAsync(x => ids.Contains(x.RoleId));
+        await cacheService.SetAllRoleMenuCodesToCacheAsync();
 
         return ServiceResult();
     }
@@ -92,6 +93,7 @@ public class RoleService(IEfRepository<Role> roleRepo, IEfRepository<RoleUserRel
             var relations = input.Permissions.Select(x => new RoleMenuRelation { Id = IdGenerater.GetNextId(), RoleId = input.RoleId, MenuId = x });
             await roleMenuRelationRepo.InsertRangeAsync(relations);
         }
+        await cacheService.SetAllRoleMenuCodesToCacheAsync();
 
         return ServiceResult();
     }
