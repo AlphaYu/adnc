@@ -8,8 +8,6 @@ public class PermissionInfo
 
 public sealed class PermissionCacheHandler(ICacheProvider cacheProvider) : AbstractPermissionHandler
 {
-    private readonly ICacheProvider _cacheProvider = cacheProvider;
-
     protected override async Task<bool> CheckUserPermissions(long userId, IEnumerable<string> requestPermissions, string userBelongsRoleIds)
     {
         if (requestPermissions == null || !requestPermissions.Any())
@@ -20,7 +18,7 @@ public sealed class PermissionCacheHandler(ICacheProvider cacheProvider) : Abstr
 
         var roleIds = userBelongsRoleIds.Split(",", StringSplitOptions.RemoveEmptyEntries).Select(x => long.Parse(x.Trim()));
 
-        var cache = await _cacheProvider.GetAsync<List<PermissionInfo>>(CacheConsts.MenuCodesCacheKey);
+        var cache = await cacheProvider.GetAsync<List<PermissionInfo>>(CacheConsts.MenuCodesCacheKey);
 
         if (cache == null || cache.IsNull)
             return await Task.FromResult(false);
