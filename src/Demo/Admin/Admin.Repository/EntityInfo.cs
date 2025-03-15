@@ -18,6 +18,7 @@ public class EntityInfo : AbstractEntityInfo
         builder.Entity<User>().ToTable("sys_user");
         builder.Entity<SysConfig>().ToTable("sys_config");
         builder.Entity<Dict>().ToTable("sys_dictionary");
+        builder.Entity<DictData>().ToTable("sys_dictionary_data");
         //builder.Entity<Notice>().ToTable("sys_notice");
     }
 }

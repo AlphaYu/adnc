@@ -60,7 +60,7 @@ public class UserController(IUserService userService) : AdncControllerBase
     /// 获取用户信息
     /// </summary>
     /// <param name="id">用户ID</param>
-    /// <returns></returns>
+    /// <returns><see cref="UserDto"/></returns>
     [HttpGet("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -75,7 +75,7 @@ public class UserController(IUserService userService) : AdncControllerBase
     /// 获取用户分页列表
     /// </summary>
     /// <param name="input">查询条件</param>
-    /// <returns></returns>
+    /// <returns><see cref="PageModelDto{UserDto}"/></returns>
     [HttpGet("page")]
     [AdncAuthorize(PermissionConsts.User.Search)]
     [ProducesResponseType(StatusCodes.Status200OK)]

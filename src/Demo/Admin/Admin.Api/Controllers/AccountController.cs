@@ -150,6 +150,6 @@ public class AccountController(IOptions<JWTOptions> jwtOptions, UserContext user
     /// <returns></returns>
     [HttpPut("profile")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<ActionResult> ChangeUserProfileAsync([FromBody] UserProfileUpdationDto input)
+    public async Task<ActionResult> ChangeProfileAsync([FromBody] UserProfileUpdationDto input)
         => Result(await userService.ChangeProfileAsync(userContext.Id, input));
 }
