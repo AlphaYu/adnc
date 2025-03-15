@@ -12,7 +12,7 @@ public class LoginLogController(ILogService logService) : AdncControllerBase
     /// <param name="searchDto">查询条件</param>
     /// <returns></returns>
     [HttpGet("page")]
-    [AdncAuthorize(PermissionConsts.Log.GetListForLogingLog)]
+    [AdncAuthorize(PermissionConsts.Log.SearchForLogingLog)]
     public async Task<ActionResult<PageModelDto<LoginLogDto>>> GetLoginLogsPagedAsync([FromQuery] SearchPagedDto searchDto)
         => await logService.GetLoginLogsPagedAsync(searchDto);
 

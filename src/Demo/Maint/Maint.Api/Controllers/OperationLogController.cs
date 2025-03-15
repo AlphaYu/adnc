@@ -12,7 +12,7 @@ public class OperationLogController(ILogService logService, UserContext userCont
     /// <param name="input">查询条件</param>
     /// <returns></returns>
     [HttpGet("page")]
-    [AdncAuthorize(PermissionConsts.Log.GetListForOperationLog)]
+    [AdncAuthorize(PermissionConsts.Log.SearchForOperationLog)]
     public async Task<ActionResult<PageModelDto<OperationLogDto>>> GetOpsLogsPaged([FromQuery] SearchPagedDto input)
         => await logService.GetOperationLogsPagedAsync(input);
 
