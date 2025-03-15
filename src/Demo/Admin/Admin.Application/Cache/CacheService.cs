@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using System;
 
 namespace Adnc.Demo.Admin.Application.Cache;
 
