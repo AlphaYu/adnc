@@ -13,6 +13,10 @@ public sealed class PermissionCacheHandler(ICacheProvider cacheProvider) : Abstr
         if (requestPermissions == null || !requestPermissions.Any())
             return await Task.FromResult(true);
 
+        var permStr = string.Join("", requestPermissions);
+        if (permStr.IsNullOrWhiteSpace())
+            return await Task.FromResult(true);
+
         if (userBelongsRoleIds.IsNullOrWhiteSpace())
             return await Task.FromResult(false);
 
