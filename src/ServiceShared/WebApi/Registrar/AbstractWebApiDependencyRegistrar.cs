@@ -21,8 +21,8 @@ public abstract partial class AbstractWebApiDependencyRegistrar(IServiceCollecti
     /// 注册Webapi通用的服务
     /// </summary>
     /// <typeparam name="THandler"></typeparam>
-    public virtual void AddWebApiDefaultServices() =>
-        AddWebApiDefaultServices<BearerAuthenticationCacheProcessor, PermissionCacheHandler>();
+    public virtual void AddWebApiDefaultServices()
+        => AddWebApiDefaultServices<BearerAuthenticationCacheProcessor, PermissionCacheHandler>();
 
     /// <summary>
     /// 注册Webapi通用的服务
@@ -34,10 +34,7 @@ public abstract partial class AbstractWebApiDependencyRegistrar(IServiceCollecti
         where TAuthorizationHandler : AbstractPermissionHandler
     {
         Services
-            .Configure<JWTOptions>(Configuration.GetSection(NodeConsts.JWT))
-            .Configure<ThreadPoolSettings>(Configuration.GetSection(NodeConsts.ThreadPoolSettings));
-
-        Services
+            .Configure<ThreadPoolSettings>(Configuration.GetSection(NodeConsts.ThreadPoolSettings))
             .AddHttpContextAccessor()
             .AddMemoryCache();
 

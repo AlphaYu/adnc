@@ -32,7 +32,6 @@ global using Microsoft.Extensions.Options;
 global using Microsoft.IdentityModel.Logging;
 global using Microsoft.IdentityModel.Tokens;
 global using Microsoft.OpenApi.Models;
-global using MongoDB.Driver;
 global using Prometheus;
 global using Prometheus.DotNetRuntime;
 global using System.IdentityModel.Tokens.Jwt;

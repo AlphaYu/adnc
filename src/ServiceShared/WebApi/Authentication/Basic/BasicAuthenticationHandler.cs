@@ -3,16 +3,9 @@
 /// <summary>
 /// Basic验证(认证)服务
 /// </summary>
-public class BasicAuthenticationHandler : AuthenticationHandler<BasicSchemeOptions>
+public class BasicAuthenticationHandler(IOptionsMonitor<BasicSchemeOptions> options, IOptions<BasicOptions> basicOptions, ILoggerFactory logger, UrlEncoder encoder)
+    : AuthenticationHandler<BasicSchemeOptions>(options, logger, encoder)
 {
-    public BasicAuthenticationHandler(
-        IOptionsMonitor<BasicSchemeOptions> options
-        ,ILoggerFactory logger,
-        UrlEncoder encoder
-        ) : base(options, logger, encoder)
-    {
-    }
-
     protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
     {
         AuthenticateResult authResult;
@@ -28,23 +21,18 @@ public class BasicAuthenticationHandler : AuthenticationHandler<BasicSchemeOptio
                 return await Task.FromResult(authResult);
             }
 
-            var validatedResult = BasicTokenValidator.UnPackFromBase64(token);
-            if (validatedResult.IsSuccessful)
+            var validatedResult = BasicTokenValidator.UnPackFromBase64(token, basicOptions.Value);
+            if (validatedResult is not null && validatedResult.IsSuccessful)
             {
-                if(string.IsNullOrWhiteSpace(validatedResult.UserName))
+                if (string.IsNullOrWhiteSpace(validatedResult.UserName))
                     throw new NullReferenceException(nameof(validatedResult.UserName));
 
-                var id =
-                    BasicTokenValidator.IsInternalCaller(validatedResult.UserName)
-                    ? validatedResult.UserName.Split('-')[1]
-                    : validatedResult.AppId
-                    ;
+                if (validatedResult.UserId is null)
+                    throw new NullReferenceException(nameof(validatedResult.UserId));
 
-                if (string.IsNullOrWhiteSpace(id))
-                    throw new NullReferenceException(nameof(id));
-
+                var userId = validatedResult.UserId.ToString() ?? "0";
                 var claims = new[] {
-                        new Claim(BasicDefaults.NameId, id)
+                        new Claim(BasicDefaults.NameId, userId)
                         , new Claim(BasicDefaults.UniqueName, validatedResult.UserName)
                         , new Claim(BasicDefaults.Name, validatedResult.UserName)
                 };
@@ -63,9 +51,12 @@ public class BasicAuthenticationHandler : AuthenticationHandler<BasicSchemeOptio
             authResult = AuthenticateResult.Fail("Invalid Authorization Token");
             return await Task.FromResult(authResult);
         }
-        Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-        //Response.Headers.Add("WWW-Authenticate", "Basic realm=\"aspdotnetcore.net\"");
-        authResult = AuthenticateResult.Fail("Invalid Authorization Header");
-        return await Task.FromResult(authResult);
+        else
+        {
+            Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+            //Response.Headers.Add("WWW-Authenticate", "Basic realm=\"aspdotnetcore.net\"");
+            authResult = AuthenticateResult.Fail("Invalid Authorization Header");
+            return await Task.FromResult(authResult);
+        }
     }
 }
