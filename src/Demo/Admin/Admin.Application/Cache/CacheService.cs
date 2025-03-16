@@ -143,7 +143,7 @@ public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IDistr
                 {
                     Code = code,
                     Name = queryList.First(x => x.DictCode == code).Name,
-                    DictDataList = queryList.Where(x => x.DictCode == code).Select(x => new DictDataOption { Label = x.Label, Value = x.Value, TagType = x.TagType }).ToArray()
+                    DictDataList = queryList.Where(x => x.DictCode == code).Select(x => new DictOption.DictDataOption { Label = x.Label, Value = x.Value, TagType = x.TagType }).ToArray()
                 };
                 cahceDictionary.Add(cacheKey, dictOptions);
             }
@@ -184,7 +184,7 @@ public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IDistr
                 {
                     Code = code,
                     Name = queryList.First(x => x.Code == code).Name,
-                    DictDataList = queryList.Where(x => x.Code == code).Select(x => new DictDataOption { Label = x.Label, Value = x.Value, TagType = x.TagType }).ToArray()
+                    DictDataList = queryList.Where(x => x.Code == code).Select(x => new DictOption.DictDataOption { Label = x.Label, Value = x.Value, TagType = x.TagType }).ToArray()
                 };
                 dictOptions.Add(option);
             }

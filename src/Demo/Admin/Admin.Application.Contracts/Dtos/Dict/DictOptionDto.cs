@@ -8,14 +8,15 @@ public class DictOption
     public string Code { get; set; } = string.Empty;
 
     public DictDataOption[] DictDataList { get; set; } = [];
+
+    [Serializable]
+    public class DictDataOption
+    {
+        public string Label { get; set; } = string.Empty;
+
+        public string Value { get; set; } = string.Empty;
+
+        public string TagType { get; set; } = string.Empty;
+    }
 }
 
-[Serializable]
-public class DictDataOption
-{
-    public string Label { get; set; } = string.Empty;
-
-    public string Value { get; set; } = string.Empty;
-
-    public string TagType { get; set; } = string.Empty;
-}

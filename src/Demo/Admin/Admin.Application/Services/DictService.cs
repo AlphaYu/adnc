@@ -1,4 +1,6 @@
-﻿namespace Adnc.Demo.Admin.Application.Services;
+﻿using System.Linq;
+
+namespace Adnc.Demo.Admin.Application.Services;
 
 public class DictService(IEfRepository<Dict> dictRepo, IEfRepository<DictData> dictDataRepo, BloomFilterFactory bloomFilterFactory, CacheService cacheService)
     : AbstractAppService, IDictService
@@ -96,9 +98,14 @@ public class DictService(IEfRepository<Dict> dictRepo, IEfRepository<DictData> d
         return new PageModelDto<DictDto>(input, cfgDtos, total);
     }
 
-    public async Task<List<DictOption>> GetOptionsAsync()
+    public async Task<List<DictOption>> GetOptionsAsync(string[]? codes = null)
     {
-        var options = await cacheService.GetAllDictOptionsFromCacheAsync();
-        return options ?? [];
+        var whereExpr = ExpressionCreator
+            .New<DictOption>()
+            .AndIf(codes is not null, x => codes.Contains(x.Code));
+
+        var result = (await cacheService.GetAllDictOptionsFromCacheAsync()).Where(whereExpr.Compile()).ToList();
+
+        return result ?? [];
     }
 }

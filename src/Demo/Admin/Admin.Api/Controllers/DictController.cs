@@ -45,7 +45,7 @@ public class DictController(IDictService dictService) : AdncControllerBase
     }
 
     /// <summary>
-    /// 获取字典列表
+    /// 获取字典分页列表
     /// </summary>
     /// <param name="input"></param>
     /// <returns><see cref="PageModelDto{DictDto}"/></returns>
@@ -70,13 +70,20 @@ public class DictController(IDictService dictService) : AdncControllerBase
     }
 
     /// <summary>
-    /// 获取字典数据
+    /// 获取字典数据选项列表
     /// </summary>
+    /// <param name="codes">字典编码</param>
     /// <returns><see cref="List{DictOption}"/></returns>
     [HttpGet("options")]
-    [AdncAuthorize("", AdncAuthorizeAttribute.JwtWithBasicSchemes)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<List<DictOption>>> GetOptionsAsync()
-    => await dictService.GetOptionsAsync();
-
+    public async Task<ActionResult<List<DictOption>>> GetOptionsAsync([FromQuery] string? codes = null)
+    {
+        if (string.IsNullOrWhiteSpace(codes))
+            return await dictService.GetOptionsAsync();
+        else
+        {
+            var codeArr = codes.Split(',', StringSplitOptions.RemoveEmptyEntries);
+            return await dictService.GetOptionsAsync(codeArr);
+        }
+    }
 }

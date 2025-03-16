@@ -1,4 +1,5 @@
 ﻿using Castle.Core.Internal;
+using System.Linq;
 
 namespace Adnc.Demo.Admin.Application.Services;
 
@@ -88,14 +89,13 @@ public class SysConfigService(IEfRepository<SysConfig> sysConfigRepo, BloomFilte
         return new PageModelDto<SysConfigDto>(input, cfgDtos, total);
     }
 
-    public async Task<List<SysConfigSimpleDto>> GetListAsync(params string[] keys)
+    public async Task<List<SysConfigSimpleDto>> GetListAsync(string[]? keys = null)
     {
-        if (keys.IsNullOrEmpty())
-            return [];
+        var whereExpr = ExpressionCreator
+           .New<SysConfigSimpleDto>()
+           .AndIf(keys is not null, x => keys.Contains(x.Key));
 
-        var allConfigs = await cacheService.GetAllSysConfigsFromCacheAsync();
-        var result = allConfigs.Where(x => keys.Contains(x.Key)).ToList();
-
+        var result = (await cacheService.GetAllSysConfigsFromCacheAsync()).Where(whereExpr.Compile()).ToList();
         return result ?? [];
     }
 }

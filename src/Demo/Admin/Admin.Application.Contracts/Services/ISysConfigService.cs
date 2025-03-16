@@ -52,5 +52,5 @@ public interface ISysConfigService : IAppService
     /// </summary>
     /// <param name="keys"></param>
     /// <returns></returns>
-    Task<List<SysConfigSimpleDto>> GetListAsync(params string[] keys);
+    Task<List<SysConfigSimpleDto>> GetListAsync(string[]? keys = null);
 }

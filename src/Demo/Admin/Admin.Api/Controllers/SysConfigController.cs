@@ -78,9 +78,14 @@ public class SysConfigController(ISysConfigService sysConfigService) : AdncContr
     [HttpGet()]
     [AdncAuthorize(PermissionConsts.SysConfig.Search, AdncAuthorizeAttribute.JwtWithBasicSchemes)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<List<SysConfigSimpleDto>>> GetListAsync([FromQuery] string keys)
+    public async Task<ActionResult<List<SysConfigSimpleDto>>> GetListAsync([FromQuery] string? keys = null)
     {
-        var keyArr = keys.Split(',', StringSplitOptions.RemoveEmptyEntries);
-        return await sysConfigService.GetListAsync(keyArr);
+        if (string.IsNullOrWhiteSpace(keys))
+            return await sysConfigService.GetListAsync();
+        else
+        {
+            var keyArr = keys.Split(',', StringSplitOptions.RemoveEmptyEntries);
+            return await sysConfigService.GetListAsync(keyArr);
+        }
     }
 }
