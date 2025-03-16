@@ -1,4 +1,4 @@
-﻿global using Adnc.Demo.Shared.Const.Entity.Usr;
+﻿global using Adnc.Demo.Const.Entity.Admin;
 global using Adnc.Demo.Admin.Repository.Entities;
 global using Adnc.Infra.Repository;
 global using Adnc.Infra.Repository.EfCore;
