@@ -1,4 +1,5 @@
 ﻿using Adnc.Shared.Application.Services.Trackers;
+using Adnc.Shared.Remote;
 
 namespace Adnc.Shared.Application.Registrar;
 
@@ -10,7 +11,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar
     public abstract Assembly ContractsLayerAssembly { get; }
     public abstract Assembly RepositoryOrDomainLayerAssembly { get; }
     protected SkyApmExtensions SkyApm { get; init; }
-    protected List<AddressNode> RpcAddressInfo { get; init; }
+    protected RpcInfo? RpcInfoOption { get; init; }
     protected IServiceCollection Services { get; init; }
     protected IConfiguration Configuration { get; init; }
     protected IServiceInfo ServiceInfo { get; init; }
@@ -34,7 +35,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar
         ConsulSection = Configuration.GetSection(NodeConsts.Consul);
         RabbitMqSection = Configuration.GetSection(NodeConsts.RabbitMq);
         SkyApm = Services.AddSkyApmExtensions();
-        RpcAddressInfo = Configuration.GetSection(NodeConsts.RpcAddressInfo).Get<List<AddressNode>>() ?? [];
+        RpcInfoOption = Configuration.GetSection(NodeConsts.RpcInfo).Get<RpcInfo>();
         PollyStrategyEnable = Configuration.GetValue("Polly:Enable", false);
     }
 
