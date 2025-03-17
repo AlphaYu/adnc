@@ -8,7 +8,7 @@ public class AdncAuthorizeAttribute : AuthorizeAttribute
     public string[] Codes { get; set; }
 
     public AdncAuthorizeAttribute(string code, string schemes = JwtBearerDefaults.AuthenticationScheme)
-        : this(new string[] { code }, schemes)
+        : this([code], schemes)
     {
     }
 
@@ -16,9 +16,6 @@ public class AdncAuthorizeAttribute : AuthorizeAttribute
     {
         Codes = codes;
         Policy = AuthorizePolicy.Default;
-        if (schemes.IsNullOrWhiteSpace())
-            throw new ArgumentNullException(nameof(schemes));
-        else
-            AuthenticationSchemes = schemes;
+        AuthenticationSchemes = schemes ?? throw new ArgumentNullException(nameof(schemes)); ;
     }
 }
