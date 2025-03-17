@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Adnc.Demo.Cust.Api.Migrations
 {
     [DbContext(typeof(MySqlDbContext))]
-    [Migration("20250218153024_Init20250218")]
-    partial class Init20250218
+    [Migration("20250317152707_Init20250317")]
+    partial class Init20250317
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -44,21 +44,25 @@ namespace Adnc.Demo.Cust.Api.Migrations
                     b.Property<long>("CreateBy")
                         .HasColumnType("bigint")
                         .HasColumnName("createby")
+                        .HasColumnOrder(100)
                         .HasComment("创建人");
 
                     b.Property<DateTime>("CreateTime")
                         .HasColumnType("datetime(6)")
                         .HasColumnName("createtime")
+                        .HasColumnOrder(101)
                         .HasComment("创建时间/注册时间");
 
-                    b.Property<long?>("ModifyBy")
+                    b.Property<long>("ModifyBy")
                         .HasColumnType("bigint")
                         .HasColumnName("modifyby")
+                        .HasColumnOrder(102)
                         .HasComment("最后更新人");
 
-                    b.Property<DateTime?>("ModifyTime")
+                    b.Property<DateTime>("ModifyTime")
                         .HasColumnType("datetime(6)")
                         .HasColumnName("modifytime")
+                        .HasColumnOrder(103)
                         .HasComment("最后更新时间");
 
                     b.Property<string>("Nickname")
@@ -83,15 +87,15 @@ namespace Adnc.Demo.Cust.Api.Migrations
                         .HasComment("");
 
                     b.HasKey("Id")
-                        .HasName("pk_customer");
+                        .HasName("pk_cust_customer");
 
-                    b.ToTable("customer", null, t =>
+                    b.ToTable("cust_customer", null, t =>
                         {
                             t.HasComment("客户表");
                         });
                 });
 
-            modelBuilder.Entity("Adnc.Demo.Cust.Api.Repository.Entities.CustomerFinance", b =>
+            modelBuilder.Entity("Adnc.Demo.Cust.Api.Repository.Entities.Finance", b =>
                 {
                     b.Property<long>("Id")
                         .HasColumnType("bigint")
@@ -114,21 +118,25 @@ namespace Adnc.Demo.Cust.Api.Migrations
                     b.Property<long>("CreateBy")
                         .HasColumnType("bigint")
                         .HasColumnName("createby")
+                        .HasColumnOrder(100)
                         .HasComment("创建人");
 
                     b.Property<DateTime>("CreateTime")
                         .HasColumnType("datetime(6)")
                         .HasColumnName("createtime")
+                        .HasColumnOrder(101)
                         .HasComment("创建时间/注册时间");
 
-                    b.Property<long?>("ModifyBy")
+                    b.Property<long>("ModifyBy")
                         .HasColumnType("bigint")
                         .HasColumnName("modifyby")
+                        .HasColumnOrder(102)
                         .HasComment("最后更新人");
 
-                    b.Property<DateTime?>("ModifyTime")
+                    b.Property<DateTime>("ModifyTime")
                         .HasColumnType("datetime(6)")
                         .HasColumnName("modifytime")
+                        .HasColumnOrder(103)
                         .HasComment("最后更新时间");
 
                     b.Property<DateTime>("RowVersion")
@@ -136,18 +144,19 @@ namespace Adnc.Demo.Cust.Api.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("timestamp(6)")
                         .HasColumnName("rowversion")
+                        .HasColumnOrder(98)
                         .HasComment("");
 
                     b.HasKey("Id")
-                        .HasName("pk_customerfinance");
+                        .HasName("pk_cust_finance");
 
-                    b.ToTable("customerfinance", null, t =>
+                    b.ToTable("cust_finance", null, t =>
                         {
                             t.HasComment("客户财务表");
                         });
                 });
 
-            modelBuilder.Entity("Adnc.Demo.Cust.Api.Repository.Entities.CustomerTransactionLog", b =>
+            modelBuilder.Entity("Adnc.Demo.Cust.Api.Repository.Entities.TransactionLog", b =>
                 {
                     b.Property<long>("Id")
                         .HasColumnType("bigint")
@@ -180,11 +189,13 @@ namespace Adnc.Demo.Cust.Api.Migrations
                     b.Property<long>("CreateBy")
                         .HasColumnType("bigint")
                         .HasColumnName("createby")
+                        .HasColumnOrder(100)
                         .HasComment("创建人");
 
                     b.Property<DateTime>("CreateTime")
                         .HasColumnType("datetime(6)")
                         .HasColumnName("createtime")
+                        .HasColumnOrder(101)
                         .HasComment("创建时间/注册时间");
 
                     b.Property<long>("CustomerId")
@@ -210,12 +221,12 @@ namespace Adnc.Demo.Cust.Api.Migrations
                         .HasComment("");
 
                     b.HasKey("Id")
-                        .HasName("pk_customertransactionlog");
+                        .HasName("pk_cust_transactionlog");
 
                     b.HasIndex("CustomerId")
-                        .HasDatabaseName("ix_customertransactionlog_customerid");
+                        .HasDatabaseName("ix_cust_transactionlog_customerid");
 
-                    b.ToTable("customertransactionlog", null, t =>
+                    b.ToTable("cust_transactionlog", null, t =>
                         {
                             t.HasComment("客户财务变动记录");
                         });
@@ -254,38 +265,36 @@ namespace Adnc.Demo.Cust.Api.Migrations
                         .HasComment("");
 
                     b.HasKey("Id")
-                        .HasName("pk_eventtracker");
+                        .HasName("pk_cust_eventtracker");
 
                     b.HasIndex(new[] { "EventId", "TrackerName" }, "uk_eventid_trackername")
                         .IsUnique()
-                        .HasDatabaseName("ix_eventtracker_eventid_trackername");
+                        .HasDatabaseName("ix_cust_eventtracker_eventid_trackername");
 
-                    b.ToTable("eventtracker", null, t =>
+                    b.ToTable("cust_eventtracker", null, t =>
                         {
                             t.HasComment("事件跟踪/处理信息");
                         });
                 });
 
-            modelBuilder.Entity("Adnc.Demo.Cust.Api.Repository.Entities.CustomerFinance", b =>
+            modelBuilder.Entity("Adnc.Demo.Cust.Api.Repository.Entities.Finance", b =>
                 {
-                    b.HasOne("Adnc.Demo.Cust.Api.Repository.Entities.Customer", "Customer")
+                    b.HasOne("Adnc.Demo.Cust.Api.Repository.Entities.Customer", null)
                         .WithOne("FinanceInfo")
-                        .HasForeignKey("Adnc.Demo.Cust.Api.Repository.Entities.CustomerFinance", "Id")
+                        .HasForeignKey("Adnc.Demo.Cust.Api.Repository.Entities.Finance", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_customerfinance_customer_id");
-
-                    b.Navigation("Customer");
+                        .HasConstraintName("fk_cust_finance_cust_customer_id");
                 });
 
-            modelBuilder.Entity("Adnc.Demo.Cust.Api.Repository.Entities.CustomerTransactionLog", b =>
+            modelBuilder.Entity("Adnc.Demo.Cust.Api.Repository.Entities.TransactionLog", b =>
                 {
                     b.HasOne("Adnc.Demo.Cust.Api.Repository.Entities.Customer", null)
                         .WithMany("TransactionLogs")
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_customertransactionlog_customer_customerid");
+                        .HasConstraintName("fk_cust_transactionlog_cust_customer_customerid");
                 });
 
             modelBuilder.Entity("Adnc.Demo.Cust.Api.Repository.Entities.Customer", b =>

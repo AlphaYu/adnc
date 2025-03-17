@@ -43,6 +43,10 @@
 		<PackageReference Include="Adnc.Shared.Application" Version="$(Shared_Version)" />
 		<PackageReference Include="Adnc.Shared.WebApi" Version="$(Shared_Version)" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Migrations\" />
+	</ItemGroup>
 	
   <ProjectExtensions>
     <VisualStudio>
