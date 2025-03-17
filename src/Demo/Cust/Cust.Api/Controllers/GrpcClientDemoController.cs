@@ -24,7 +24,7 @@ public class GrpcClientDemoController(AdminGrpc.AdminGrpcClient adminGrpcClient)
         var grpcResult = await adminGrpcClient.GetDictOptionsAsync(request, GrpcClientConsts.BasicHeader);
         if (grpcResult is not null)
             return grpcResult.List.ToList();
-        return NoContent();
+        return NotFound();
     }
 
     /// <summary>
@@ -40,6 +40,6 @@ public class GrpcClientDemoController(AdminGrpc.AdminGrpcClient adminGrpcClient)
         var grpcResult =await adminGrpcClient.GetSysConfigListAsync(request, GrpcClientConsts.BasicHeader);
         if (grpcResult is not null)
             return grpcResult.List.ToList();
-        return NoContent();
+        return NotFound();
     }
 }

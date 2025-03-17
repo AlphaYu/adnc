@@ -22,7 +22,7 @@ public class RestClientDemoController(IAdminRestClient adminRestClient) : AdncCo
         var restResult = await adminRestClient.GetDictOptionsAsync(codes);
         if (restResult.IsSuccessStatusCode && restResult.Content is not null)
             return restResult.Content;
-        return NoContent();
+        return Problem(restResult.Error, restResult.Error.StatusCode);
     }
 
     /// <summary>
@@ -37,6 +37,6 @@ public class RestClientDemoController(IAdminRestClient adminRestClient) : AdncCo
         var restResult = await adminRestClient.GetSysConfigListAsync(keys);
         if (restResult.IsSuccessStatusCode && restResult.Content is not null)
             return restResult.Content;
-        return NoContent();
+        return Problem(restResult.Error, restResult.Error.StatusCode);
     }
 }
