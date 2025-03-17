@@ -2,7 +2,7 @@ version: '3'
 services:
   mongodb:
     image: mongo:latest
-    container_name: andc-mongodb
+    container_name: adnc-mongodb
     environment:
       # 时区上海
       TZ: Asia/Shanghai
@@ -13,7 +13,7 @@ services:
       MONGO_PASSWORD: football
     restart: always
     volumes:
-        - ../andc/mongo/data:/data/db
+        - ../adnc/mongo/data:/data/db
         - ./mongo-init.sh:/docker-entrypoint-initdb.d/mongo-init.sh
     ports:
       - 13017:27017

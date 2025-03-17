@@ -1,8 +1,8 @@
-version: '3.1'
+version: '3.7'
 services:
-  mysql:
+  mariadb:
     image: mariadb:latest
-    container_name: "andc-mariadb"
+    container_name: "adnc-mariadb"
     restart: always
     environment:
       MYSQL_USER: "root"
@@ -12,5 +12,7 @@ services:
     ports:
       - "13308:3306"
     volumes:
-      - ../andc/mysql/data:/var/lib/mysql
-      - ../andc/mysql/log:/var/log/mysql
+      - ../adnc/mysql/data:/var/lib/mysql
+      - ../adnc/mysql/log:/var/log/mysql
+      - ./db_backups:/docker-entrypoint-initdb.d
+    command: --init-file /docker-entrypoint-initdb.d/bootstrap.sql
