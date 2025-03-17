@@ -1,7 +1,8 @@
-﻿global using Adnc.Demo.Shared.Const;
-global using Adnc.Demo.Shared.Const.Permissions.Admin;
-global using Adnc.Demo.Admin.Application.Contracts.Dtos;
+﻿global using Adnc.Demo.Admin.Application.Contracts.Dtos;
 global using Adnc.Demo.Admin.Application.Contracts.Services;
+global using Adnc.Demo.Const;
+global using Adnc.Demo.Const.Permissions.Admin;
+global using Adnc.Infra.Mapper;
 global using Adnc.Shared;
 global using Adnc.Shared.Application.Contracts.Dtos;
 global using Adnc.Shared.WebApi;

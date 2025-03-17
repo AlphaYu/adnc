@@ -1,32 +1,18 @@
-﻿using Adnc.Demo.Shared.Remote.Grpc.Messages;
-using Adnc.Demo.Shared.Remote.Grpc.Services;
-using Adnc.Infra.Mapper;
+﻿using Adnc.Demo.Remote.Grpc.Messages;
+using Adnc.Demo.Remote.Grpc.Services;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 
 namespace Adnc.Demo.Admin.Api.Grpc;
 
-public class AuthGrpcServer : AuthGrpc.AuthGrpcBase
+public class AuthGrpcServer( IOptions<JWTOptions> jwtOptions, IUserService userService, IObjectMapper mapper) : AuthGrpc.AuthGrpcBase
 {
-    private readonly IOptions<JWTOptions> _jwtOptions;
-    private readonly IUserService _userService;
-    private readonly IObjectMapper _mapper;
-
-    public AuthGrpcServer(
-        IOptions<JWTOptions> jwtOptions
-        , IUserService userService
-        , IObjectMapper mapper)
-    {
-        _jwtOptions = jwtOptions;
-        _userService = userService;
-        _mapper = mapper;
-    }
 
     [AllowAnonymous]
     public override async Task<GrpcResponse> Login(LoginRequest request, ServerCallContext context)
     {
-        var loginDto = _mapper.Map<UserLoginDto>(request);
-        var loginResult = await _userService.LoginAsync(loginDto);
+        var loginDto = mapper.Map<UserLoginDto>(request);
+        var loginResult = await userService.LoginAsync(loginDto);
         var grpcResponse = new GrpcResponse() { IsSuccessStatusCode = loginResult.IsSuccess };
         if (!grpcResponse.IsSuccessStatusCode)
         {
@@ -37,8 +23,8 @@ public class AuthGrpcServer : AuthGrpc.AuthGrpcBase
         var validatedInfo = loginResult.Content;
         var loginReply = new LoginReply
         {
-            Token = JwtTokenHelper.CreateAccessToken(_jwtOptions.Value, validatedInfo.ValidationVersion, validatedInfo.Account, validatedInfo.Id.ToString(), validatedInfo.Name, validatedInfo.GetRoleIdsString(), BearerDefaults.Manager).Token,
-            RefreshToken = JwtTokenHelper.CreateRefreshToken(_jwtOptions.Value, validatedInfo.ValidationVersion, validatedInfo.Id.ToString()).Token
+            Token = JwtTokenHelper.CreateAccessToken(jwtOptions.Value, validatedInfo.ValidationVersion, validatedInfo.Account, validatedInfo.Id.ToString(), validatedInfo.Name, validatedInfo.GetRoleIdsString(), BearerDefaults.Manager).Token,
+            RefreshToken = JwtTokenHelper.CreateRefreshToken(jwtOptions.Value, validatedInfo.ValidationVersion, validatedInfo.Id.ToString()).Token
         };
         grpcResponse.Content = Any.Pack(loginReply);
         return grpcResponse;

@@ -1,6 +1,6 @@
 ﻿using Adnc.Shared.Remote.Http;
 
-namespace Adnc.Demo.Shared.Remote.Http.Services;
+namespace Adnc.Demo.Remote.Http.Services;
 
 public interface IWhseRestClient : IRestClient
 {
@@ -10,5 +10,5 @@ public interface IWhseRestClient : IRestClient
     /// <returns></returns>
     [Headers("Authorization: Basic", "Cache: 1000")]
     [Get("/whse/api/products")]
-    Task<ApiResponse<List<ProductRto>>> GetProductsAsync(ProductSearchListRto search, CancellationToken cancellationToken = default);
+    Task<ApiResponse<List<ProductResponse>>> GetProductsAsync(ProductSearchRequest input, CancellationToken cancellationToken = default);
 }

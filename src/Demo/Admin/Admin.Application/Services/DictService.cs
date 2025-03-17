@@ -98,11 +98,14 @@ public class DictService(IEfRepository<Dict> dictRepo, IEfRepository<DictData> d
         return new PageModelDto<DictDto>(input, cfgDtos, total);
     }
 
-    public async Task<List<DictOption>> GetOptionsAsync(string[]? codes = null)
+    public async Task<List<DictOptionDto>> GetOptionsAsync(string codes)
     {
+        if (codes.IsNullOrWhiteSpace())
+            return [];
+
         var whereExpr = ExpressionCreator
-            .New<DictOption>()
-            .AndIf(codes is not null, x => codes.Contains(x.Code));
+            .New<DictOptionDto>()
+            .AndIf(codes != "all", x => codes.Split(",", StringSplitOptions.RemoveEmptyEntries).Contains(x.Code));
 
         var result = (await cacheService.GetAllDictOptionsFromCacheAsync()).Where(whereExpr.Compile()).ToList();
 

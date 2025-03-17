@@ -1,4 +1,6 @@
-﻿namespace Adnc.Demo.Admin.Application;
+﻿using System.Collections.Generic;
+
+namespace Adnc.Demo.Admin.Application;
 
 public sealed class MapperProfile : Profile
 {
@@ -34,8 +36,8 @@ public sealed class MapperProfile : Profile
         CreateMap<SysConfigUpdationDto, SysConfig>();
         CreateMap<SysConfig, SysConfigDto>();
 
-        CreateMap<LoginRequest, UserLoginDto>();
-        CreateMap<OrganizationTreeDto, DeptReply>();
+        CreateMap<SysConfigSimpleDto, SysConfigSimpleReply>();
+        CreateMap<DictOptionDto,DictOptionReply>();
 
     }
 }

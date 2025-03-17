@@ -89,11 +89,14 @@ public class SysConfigService(IEfRepository<SysConfig> sysConfigRepo, BloomFilte
         return new PageModelDto<SysConfigDto>(input, cfgDtos, total);
     }
 
-    public async Task<List<SysConfigSimpleDto>> GetListAsync(string[]? keys = null)
+    public async Task<List<SysConfigSimpleDto>> GetListAsync(string keys)
     {
+        if (keys.IsNullOrWhiteSpace())
+            return [];
+
         var whereExpr = ExpressionCreator
            .New<SysConfigSimpleDto>()
-           .AndIf(keys is not null, x => keys.Contains(x.Key));
+           .AndIf(keys != "all", x => keys.Split(",", StringSplitOptions.RemoveEmptyEntries).Contains(x.Key));
 
         var result = (await cacheService.GetAllSysConfigsFromCacheAsync()).Where(whereExpr.Compile()).ToList();
         return result ?? [];

@@ -16,6 +16,9 @@
 		</None>	
 	</ItemGroup>
 	<ItemGroup>
+	  <Compile Remove="Grpc\AuthGrpcServer.cs" />
+	</ItemGroup>
+	<ItemGroup>
 		<PackageReference Include="Grpc.AspNetCore" Version="$(Grpc_AspNetCore_Version)" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="$(Microsoft_EntityFrameworkCore_Design_Version)">
 			<PrivateAssets>all</PrivateAssets>
@@ -43,8 +46,9 @@
 	
 	<ItemGroup>
 		<!--<Protobuf Include="..\..\..\ServiceShared\Adnc.Shared\Protos\Rtos\*.proto" GrpcServices="Server" Link="Grpc\Protos\Rtos\%(RecursiveDir)%(Filename)%(Extension)" ProtoRoot="..\..\..\ServiceShared\Adnc.Shared\" />-->
-		<Protobuf Include="..\..\Shared\protos\services\authgrpc.proto" GrpcServices="Server" Link="Grpc\protos\authgrpc.proto" ProtoRoot="..\..\Shared\protos\" />
-		<Protobuf Include="..\..\Shared\protos\services\usrgrpc.proto" GrpcServices="Server" Link="Grpc\protos\usrgrpc.proto" ProtoRoot="..\..\Shared\protos\" />
+		<Protobuf Include="..\..\Shared\protos\messages\sys_dictoption.proto" GrpcServices="Server" Link="Grpc\protos\messages\sys_dictoption.proto" ProtoRoot="..\..\Shared\protos\" />
+		<Protobuf Include="..\..\Shared\protos\messages\sys_config.proto" GrpcServices="Server" Link="Grpc\protos\messages\sys_config.proto" ProtoRoot="..\..\Shared\protos\" />
+		<Protobuf Include="..\..\Shared\protos\services\admingrpc.proto" GrpcServices="Server" Link="Grpc\protos\services\admingrpc.proto" ProtoRoot="..\..\Shared\protos\" />
 	</ItemGroup>
 	
 <!--<Target Name="BuildTheApplicationProject" BeforeTargets="BeforeBuild">

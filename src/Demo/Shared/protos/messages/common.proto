@@ -1,7 +1,7 @@
 syntax = "proto3";
 import "google/protobuf/any.proto";
 
-option csharp_namespace = "Adnc.Demo.Shared.Remote.Grpc.Messages";
+option csharp_namespace = "Adnc.Demo.Remote.Grpc.Messages";
 
 package messages;
 

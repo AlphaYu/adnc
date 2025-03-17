@@ -1,7 +1,6 @@
-﻿namespace Adnc.Demo.Admin.Application.Contracts.Dtos;
+﻿namespace Adnc.Demo.Remote.Http.Messages;
 
-[Serializable]
-public class DictOptionDto
+public class DictOptionResponse
 {
     public string Name { get; set; } = string.Empty;
 
@@ -9,13 +8,10 @@ public class DictOptionDto
 
     public DictDataOption[] DictDataList { get; set; } = [];
 
-    [Serializable]
     public class DictDataOption
     {
         public string Label { get; set; } = string.Empty;
-
         public string Value { get; set; } = string.Empty;
-
         public string TagType { get; set; } = string.Empty;
     }
 }

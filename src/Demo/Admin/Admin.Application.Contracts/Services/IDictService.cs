@@ -52,5 +52,5 @@ public interface IDictService : IAppService
     /// 获取字典选项
     /// </summary>
     /// <returns></returns>
-    Task<List<DictOption>> GetOptionsAsync(string[]? codes = null);
+    Task<List<DictOptionDto>> GetOptionsAsync(string codes);
 }

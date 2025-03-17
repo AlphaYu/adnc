@@ -1,4 +1,5 @@
-﻿using Adnc.Shared.WebApi.Registrar;
+﻿using Adnc.Demo.Admin.Api.Grpc;
+using Adnc.Shared.WebApi.Registrar;
 
 namespace Adnc.Demo.Admin.Api
 {
@@ -8,8 +9,7 @@ namespace Adnc.Demo.Admin.Api
         {
             UseWebApiDefault(endpointRoute: endpoint =>
             {
-                endpoint.MapGrpcService<Grpc.AuthGrpcServer>();
-                endpoint.MapGrpcService<Grpc.UsrGrpcServer>();
+                endpoint.MapGrpcService<AdminGrpcServer>();
             });
         }
     }

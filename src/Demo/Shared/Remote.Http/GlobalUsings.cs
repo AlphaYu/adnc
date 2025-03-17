@@ -1,2 +1,2 @@
-﻿global using Adnc.Demo.Shared.Remote.Http.Rtos;
+﻿global using Adnc.Demo.Remote.Http.Messages;
 global using Refit;

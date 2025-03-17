@@ -1,4 +1,4 @@
-﻿namespace Adnc.Demo.Shared.Remote.Grpc;
+﻿namespace Adnc.Demo.Remote.Grpc;
 
 public static class GrpcClientConsts
 {

@@ -12,10 +12,14 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 	</ItemGroup>
-	
+
 	<ItemGroup>
-		<Protobuf Include="..\protos\messages\*.proto" GrpcServices="Client" ProtoRoot="..\protos\" />
-		<Protobuf Include="..\protos\services\*.proto" GrpcServices="Client" ProtoRoot="..\protos\" />
+		
+		<Protobuf Include="..\protos\messages\*.proto" GrpcServices="Client" ProtoRoot="..\protos\"/>
+		<Protobuf Include="..\protos\services\*.proto" GrpcServices="Client" ProtoRoot="..\protos\"/>
+		<!--
+		<Protobuf Include="..\protos\services\*.proto" GrpcServices="Client" Link="Grpc\protos\services\%(Filename)%(Extension)" ProtoRoot="..\protos\services\" />
+		<Protobuf Include="..\protos\messages\*.proto" GrpcServices="Client" Link="Grpc\protos\messages\%(Filename)%(Extension)" ProtoRoot="..\protos\messages\" />		-->
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(SolutionName)'=='Adnc.Demo'">

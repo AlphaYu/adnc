@@ -76,14 +76,6 @@ public class DictController(IDictService dictService) : AdncControllerBase
     /// <returns><see cref="List{DictOption}"/></returns>
     [HttpGet("options")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<List<DictOption>>> GetOptionsAsync([FromQuery] string? codes = null)
-    {
-        if (string.IsNullOrWhiteSpace(codes))
-            return await dictService.GetOptionsAsync();
-        else
-        {
-            var codeArr = codes.Split(',', StringSplitOptions.RemoveEmptyEntries);
-            return await dictService.GetOptionsAsync(codeArr);
-        }
-    }
+    public async Task<ActionResult<List<DictOptionDto>>> GetOptionsAsync([FromQuery] string codes)
+        => await dictService.GetOptionsAsync(codes);
 }

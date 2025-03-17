@@ -134,16 +134,16 @@ public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IDistr
             if (queryList.IsNullOrEmpty())
                 return;
 
-            var cahceDictionary = new Dictionary<string, DictOption>();
+            var cahceDictionary = new Dictionary<string, DictOptionDto>();
             var codes = queryList.Select(x => x.DictCode).Distinct();
             foreach (var code in codes)
             {
                 var cacheKey = ConcatCacheKey(CachingConsts.DictOptionSingleKeyPrefix, code);
-                var dictOptions = new DictOption
+                var dictOptions = new DictOptionDto
                 {
                     Code = code,
                     Name = queryList.First(x => x.DictCode == code).Name,
-                    DictDataList = queryList.Where(x => x.DictCode == code).Select(x => new DictOption.DictDataOption { Label = x.Label, Value = x.Value, TagType = x.TagType }).ToArray()
+                    DictDataList = queryList.Where(x => x.DictCode == code).Select(x => new DictOptionDto.DictDataOption { Label = x.Label, Value = x.Value, TagType = x.TagType }).ToArray()
                 };
                 cahceDictionary.Add(cacheKey, dictOptions);
             }
@@ -160,7 +160,7 @@ public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IDistr
         await CacheProvider.Value.SetAsync(CachingConsts.DictOptionsPreheatedKey, serverInfo.Version, TimeSpan.FromSeconds(GeneralConsts.OneYear));
     }
 
-    internal async Task<List<DictOption>> GetAllDictOptionsFromCacheAsync()
+    internal async Task<List<DictOptionDto>> GetAllDictOptionsFromCacheAsync()
     {
         var cahceValue = await CacheProvider.Value.GetAsync(CachingConsts.DictOptionsListKey, async () =>
         {
@@ -176,15 +176,15 @@ public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IDistr
                                    orderby dd.Ordinal ascending
                                    select new { d.Code, d.Name, dd.Label, dd.Value, dd.TagType }).ToListAsync();
 
-            var dictOptions = new List<DictOption>();
+            var dictOptions = new List<DictOptionDto>();
             var codes = queryList.Select(x => x.Code).Distinct();
             foreach (var code in codes)
             {
-                var option = new DictOption
+                var option = new DictOptionDto
                 {
                     Code = code,
                     Name = queryList.First(x => x.Code == code).Name,
-                    DictDataList = queryList.Where(x => x.Code == code).Select(x => new DictOption.DictDataOption { Label = x.Label, Value = x.Value, TagType = x.TagType }).ToArray()
+                    DictDataList = queryList.Where(x => x.Code == code).Select(x => new DictOptionDto.DictDataOption { Label = x.Label, Value = x.Value, TagType = x.TagType }).ToArray()
                 };
                 dictOptions.Add(option);
             }
