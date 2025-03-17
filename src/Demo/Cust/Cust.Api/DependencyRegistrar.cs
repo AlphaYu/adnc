@@ -1,9 +1,17 @@
-﻿using Adnc.Demo.Cust.Api.Application.Subscribers;
-using Adnc.Shared.Application.Extensions;
-using Adnc.Shared.Application.Registrar;
-using Adnc.Shared.WebApi.Registrar;
+﻿using Adnc.Demo.Remote.Grpc.Services;
+using Adnc.Demo.Remote.Http.Services;
 
 namespace Adnc.Demo.Cust.Api;
+
+public static class ServiceCollectionExtensions
+{
+    public static IServiceCollection AddAdnc(this IServiceCollection services, IServiceInfo serviceInfo)
+    {
+        var registrar = new ApiLayerRegistrar(services, serviceInfo);
+        registrar.AddAdncServices();
+        return services;
+    }
+}
 
 public sealed class ApiLayerRegistrar(IServiceCollection services, IServiceInfo serviceInfo) : AbstractWebApiDependencyRegistrar(services, serviceInfo)
 {
@@ -23,10 +31,13 @@ public sealed class ApiLayerRegistrar(IServiceCollection services, IServiceInfo 
                     .AddRedis(Configuration)
                     .AddRabbitMQ(Configuration, ServiceInfo.Id);
         });
+
+        //register others services
+        //Services.AddScoped<xxxx>
     }
 }
 
-public sealed class ApplicationLayerRegistrar(IServiceCollection services, IServiceInfo serviceInfo) : AbstractApplicationDependencyRegistrar(services,serviceInfo)
+public sealed class ApplicationLayerRegistrar(IServiceCollection services, IServiceInfo serviceInfo) : AbstractApplicationDependencyRegistrar(services, serviceInfo)
 {
     private readonly Assembly _assembly = Assembly.GetExecutingAssembly();
 
@@ -36,33 +47,15 @@ public sealed class ApplicationLayerRegistrar(IServiceCollection services, IServ
 
     public override void AddApplicationServices()
     {
-        //register base services
+        //register default services
         AddApplicaitonDefault();
-        //register rpc-http services
-        var restPolicies = PollyStrategyEnable ? this.GenerateDefaultRefitPolicies() : new();
-        AddRestClient<IAuthRestClient>(ServiceAddressConsts.AdncDemoAuthService, restPolicies);
-        AddRestClient<IUsrRestClient>(ServiceAddressConsts.AdncDemoUsrService, restPolicies);
-        AddRestClient<IMaintRestClient>(ServiceAddressConsts.AdncDemoMaintService, restPolicies);
-        AddRestClient<IWhseRestClient>(ServiceAddressConsts.AdncDemoWhseService, restPolicies);
-
+        //register http services
+        var restPolicies = PollyStrategyEnable ? this.GenerateDefaultRefitPolicies() : [];
+        AddRestClient<IAdminRestClient>(ServiceAddressConsts.AdminDemoService, restPolicies);
+        //register grpc services
         var gprcPolicies = this.GenerateDefaultGrpcPolicies();
-        AddGrpcClient<AuthGrpc.AuthGrpcClient>(ServiceAddressConsts.AdncDemoAuthService, gprcPolicies);
-        AddGrpcClient<UsrGrpc.UsrGrpcClient>(ServiceAddressConsts.AdncDemoUsrService, gprcPolicies);
-        AddGrpcClient<MaintGrpc.MaintGrpcClient>(ServiceAddressConsts.AdncDemoMaintService, gprcPolicies);
-        AddGrpcClient<WhseGrpc.WhseGrpcClient>(ServiceAddressConsts.AdncDemoWhseService, gprcPolicies);
-        //register rpc-event service
+        AddGrpcClient<AdminGrpc.AdminGrpcClient>(ServiceAddressConsts.AdminDemoService, gprcPolicies);
+        //register event service
         AddCapEventBus<CapEventSubscriber>();
-        //register others services
-        //Services.AddScoped<xxxx>
-    }
-}
-
-public static class ServiceCollectionExtensions
-{
-    public static IServiceCollection AddAdnc(this IServiceCollection services, IServiceInfo serviceInfo)
-    {
-        var registrar = new ApiLayerRegistrar(services, serviceInfo);
-        registrar.AddAdncServices();
-        return services;
     }
 }
