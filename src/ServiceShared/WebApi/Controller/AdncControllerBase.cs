@@ -19,20 +19,16 @@ public abstract class AdncControllerBase : ControllerBase
     }
 
     /// <summary>
-    ///Refit.ProblemDetails => Problem
+    ///exception => Problem
     /// </summary>
     /// <param name="problemDetails"></param>
     /// <returns></returns>
     [NonAction]
-    protected virtual ObjectResult Problem(dynamic exception)
+    protected virtual ObjectResult Problem(Exception exception, HttpStatusCode statusCode = HttpStatusCode.InternalServerError)
     {
-        var problemDetails = exception.Content;
-
-        return Problem(problemDetails.Detail
-                , problemDetails.Instance
-                , problemDetails.Status
-                , problemDetails.Title
-                , problemDetails.Type);
+        var status = (int)statusCode;
+        var type = string.Concat("https://httpstatuses.com/", status);
+        return Problem(exception.GetExceptionDetail(), this.Request.Path.ToString(), status, exception.Message, type);
     }
 
     /// <summary>
