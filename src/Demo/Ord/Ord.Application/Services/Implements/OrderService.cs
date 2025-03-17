@@ -1,34 +1,15 @@
 ﻿namespace Adnc.Demo.Ord.Application.Services.Implements;
 
 /// <summary>
-/// 订单管理
+///  订单管理
 /// </summary>
-public class OrderService : AbstractAppService, IOrderService
+/// <param name="orderRepo"></param>
+/// <param name="orderMgr"></param>
+/// <param name="whseClient"></param>
+/// <param name="adminClient"></param>
+public class OrderService( IEfBasicRepository<Order> orderRepo , OrderManager orderMgr, IWhseRestClient whseClient, IAdminRestClient adminClient)
+    : AbstractAppService, IOrderService
 {
-    private readonly OrderManager _orderMgr;
-    private readonly IEfBasicRepository<Order> _orderRepo;
-    private readonly IWhseRestClient _whseRestClient;
-    private readonly IMaintRestClient _maintRestClient;
-
-    /// <summary>
-    /// 构造函数
-    /// </summary>
-    /// <param name="orderRepo"></param>
-    /// <param name="orderMgr"></param>
-    /// <param name="whseRestClient"></param>
-    /// <param name="maintRestClient"></param>
-    public OrderService(
-         IEfBasicRepository<Order> orderRepo
-        , OrderManager orderMgr
-        , IWhseRestClient whseRestClient
-        , IMaintRestClient maintRestClient)
-    {
-        _orderRepo = orderRepo;
-        _orderMgr = orderMgr;
-        _whseRestClient = whseRestClient;
-        _maintRestClient = maintRestClient;
-    }
-
     /// <summary>
     /// 创建订单
     /// </summary>
@@ -39,7 +20,7 @@ public class OrderService : AbstractAppService, IOrderService
         input.TrimStringFields();
         var productIds = input.Items.Select(x => x.ProductId).ToArray();
         //调用whse服务获取产品的价格,名字
-        var restRpcResult = await _whseRestClient.GetProductsAsync(new ProductSearchListRto { Ids = productIds });
+        var restRpcResult = await whseClient.GetProductsAsync(new ProductSearchRequest { Ids = productIds });
         Checker.ThrowIf(() => !restRpcResult.IsSuccessStatusCode || restRpcResult.Content.IsNullOrEmpty(), "product is not extists");
         var products = restRpcResult.Content;
         var orderId = IdGenerater.GetNextId();
@@ -48,14 +29,14 @@ public class OrderService : AbstractAppService, IOrderService
                     select (new OrderItemProduct(p.Id, p.Name, p.Price), o.Count);
 
         //需要发布领域事件,通知仓储中心冻结库存
-        var order = await _orderMgr.CreateAsync
+        var order = await orderMgr.CreateAsync
                                     (orderId
                                     , input.CustomerId
                                     , items
                                     , new OrderReceiver(input.DeliveryInfomaton?.Name, input.DeliveryInfomaton?.Phone, input.DeliveryInfomaton?.Address)
                                     );
         // 保存到数据库
-        await _orderRepo.InsertAsync(order);
+        await orderRepo.InsertAsync(order);
 
         return Mapper.Map<OrderDto>(order);
     }
@@ -69,10 +50,10 @@ public class OrderService : AbstractAppService, IOrderService
     public async Task MarkCreatedStatusAsync(WarehouseQtyBlockedEvent eventDto, IMessageTracker tracker)
     {
         eventDto.TrimStringFields();
-        var order = await _orderRepo.GetAsync(eventDto.OrderId);
+        var order = await orderRepo.GetAsync(eventDto.OrderId);
         order.MarkCreatedStatus(eventDto.IsSuccess, eventDto.Remark);
 
-        await _orderRepo.UpdateAsync(order);
+        await orderRepo.UpdateAsync(order);
         await tracker?.MarkAsProcessedAsync(eventDto);
     }
 
@@ -86,7 +67,7 @@ public class OrderService : AbstractAppService, IOrderService
     {
         input.TrimStringFields();
 
-        var order = await _orderRepo.GetAsync(id);
+        var order = await orderRepo.GetAsync(id);
 
         order.ChangeReceiver(new OrderReceiver(
             input.DeliveryInfomaton.Name
@@ -94,7 +75,7 @@ public class OrderService : AbstractAppService, IOrderService
             , input.DeliveryInfomaton.Address)
         );
 
-        await _orderRepo.UpdateAsync(order);
+        await orderRepo.UpdateAsync(order);
 
         return Mapper.Map<OrderDto>(order);
     }
@@ -106,10 +87,10 @@ public class OrderService : AbstractAppService, IOrderService
     /// <returns></returns>
     public async Task DeleteAsync(long id)
     {
-        var order = await _orderRepo.GetAsync(id);
+        var order = await orderRepo.GetAsync(id);
         order.MarkDeletedStatus(string.Empty);
 
-        await _orderRepo.UpdateAsync(order);
+        await orderRepo.UpdateAsync(order);
     }
 
     /// <summary>
@@ -119,12 +100,12 @@ public class OrderService : AbstractAppService, IOrderService
     /// <returns></returns>
     public async Task<OrderDto> PayAsync(long id)
     {
-        var order = await _orderRepo.GetAsync(id);
+        var order = await orderRepo.GetAsync(id);
 
         //需要发布领域事件，客户中心订阅该事件
-        await _orderMgr.PayAsync(order);
+        await orderMgr.PayAsync(order);
 
-        await _orderRepo.UpdateAsync(order);
+        await orderRepo.UpdateAsync(order);
 
         return Mapper.Map<OrderDto>(order);
     }
@@ -136,12 +117,12 @@ public class OrderService : AbstractAppService, IOrderService
     /// <returns></returns>
     public async Task<OrderDto> CancelAsync(long id)
     {
-        var order = await _orderRepo.GetAsync(id);
+        var order = await orderRepo.GetAsync(id);
 
         //需要发布领域事件，仓储中心订阅该事件
-        await _orderMgr.CancelAsync(order);
+        await orderMgr.CancelAsync(order);
 
-        await _orderRepo.UpdateAsync(order);
+        await orderRepo.UpdateAsync(order);
 
         return Mapper.Map<OrderDto>(order);
     }
@@ -153,7 +134,7 @@ public class OrderService : AbstractAppService, IOrderService
     /// <returns></returns>
     public async Task<OrderDto> GetAsync(long id)
     {
-        var order = await _orderRepo.GetAsync(id, x => x.Items);
+        var order = await orderRepo.GetAsync(id, x => x.Items);
         return Mapper.Map<OrderDto>(order);
     }
 
@@ -169,11 +150,11 @@ public class OrderService : AbstractAppService, IOrderService
                                             .New<Order>()
                                             .AndIf(input.Id > 0, x => x.Id == input.Id);
 
-        var total = await _orderRepo.CountAsync(whereCondition);
+        var total = await orderRepo.CountAsync(whereCondition);
         if (total == 0)
             return new PageModelDto<OrderDto>(input);
 
-        var entities = _orderRepo
+        var entities = orderRepo
                                 .Where(whereCondition)
                                 .OrderByDescending(x => x.Id)
                                 .Skip(input.SkipRows())
@@ -182,16 +163,16 @@ public class OrderService : AbstractAppService, IOrderService
         var orderDtos = Mapper.Map<List<OrderDto>>(entities);
         if (orderDtos.IsNotNullOrEmpty())
         {
-            //调用maint微服务获取字典,组合订单状态信息
-            var restRpcResult = await _maintRestClient.GetDictAsync(ServiceAddressConsts.OrderStatusId);
-            if (restRpcResult.IsSuccessStatusCode)
+            //调用admin微服务获取字典,组合订单状态信息
+            var rpcResult = await adminClient.GetDictOptionsAsync("order_status");
+            if (rpcResult.IsSuccessStatusCode)
             {
-                var dict = restRpcResult.Content;
-                if (dict is not null && dict.Children.IsNotNullOrEmpty())
+                var dict= rpcResult.Content?.FirstOrDefault();
+                if (dict is not null)
                 {
                     orderDtos.ForEach(x =>
                     {
-                        x.StatusChangesReason = dict.Children.FirstOrDefault(d => d.Name == x.StatusCode.ToString())?.Name;
+                        x.StatusChangesReason = dict.DictDataList.FirstOrDefault(d => d.Value == x.StatusCode.ToString())?.Label ?? string.Empty; ;
                     });
                 }
             }
