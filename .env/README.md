@@ -1,4 +1,4 @@
-# 🚀 ANDC 项目 Docker Compose 部署指南
+# 🚀 adnc 项目 Docker Compose 部署指南
 
 ## 📦 环境准备
 
@@ -33,6 +33,6 @@ docker-compose down -v
 
 ## 🎯 结语
 
-通过以上步骤，你已经成功使用 Docker Compose 部署了 andc 项目！如果有任何问题，欢迎提 Issue 或查阅官方文档。
+通过以上步骤，你已经成功使用 Docker Compose 部署了 adnc 项目！如果有任何问题，欢迎提 Issue 或查阅官方文档。
 
 祝你使用愉快！🚀

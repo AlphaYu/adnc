@@ -8,15 +8,15 @@ services:
     restart: always
     environment:
       - CONSUL_BIND_INTERFACE=eth0
-      - CONSUL_DATACENTER=andc_dc
+      - CONSUL_DATACENTER=adnc_dc
     networks:
-      andc_network_consul:
+      adnc_network_consul:
         ipv4_address: 172.25.0.1
     ports:
       - "8590:8500"
     volumes:
-      - ./andc/consul/server1/data:/consul/data
-      - ./andc/consul/server1/config:/consul/config
+      - ./adnc/consul/server1/data:/consul/data
+      - ./adnc/consul/server1/config:/consul/config
     privileged: true
     command: >
       agent
@@ -28,7 +28,7 @@ services:
       -bind='172.25.0.1'
       -data-dir /consul/data
       -config-dir /consul/config
-      -datacenter=andc_dc
+      -datacenter=adnc_dc
 
   consul_server_2:
     image: hashicorp/consul:latest
@@ -36,15 +36,15 @@ services:
     restart: always
     environment:
       - CONSUL_BIND_INTERFACE=eth0
-      - CONSUL_DATACENTER=andc_dc
+      - CONSUL_DATACENTER=adnc_dc
     networks:
-      andc_network_consul:
+      adnc_network_consul:
         ipv4_address: 172.25.0.2
     ports:
       - "8520:8500"
     volumes:
-      - ./andc/consul/server2/data:/consul/data
-      - ./andc/consul/server2/config:/consul/config
+      - ./adnc/consul/server2/data:/consul/data
+      - ./adnc/consul/server2/config:/consul/config
     privileged: true
     depends_on:
       - consul_server_1
@@ -55,7 +55,7 @@ services:
       -node=consul_server_2
       -client='0.0.0.0'
       -bind='172.25.0.2'
-      -datacenter=andc_dc
+      -datacenter=adnc_dc
       -data-dir /consul/data
       -config-dir /consul/config
       -join=172.25.0.1
@@ -66,15 +66,15 @@ services:
     restart: always
     environment:
       - CONSUL_BIND_INTERFACE=eth0
-      - CONSUL_DATACENTER=andc_dc
+      - CONSUL_DATACENTER=adnc_dc
     networks:
-      andc_network_consul:
+      adnc_network_consul:
         ipv4_address: 172.25.0.3
     ports:
       - "8530:8500"
     volumes:
-      - ./andc/consul/server3/data:/consul/data
-      - ./andc/consul/server3/config:/consul/config
+      - ./adnc/consul/server3/data:/consul/data
+      - ./adnc/consul/server3/config:/consul/config
     privileged: true
     depends_on:
       - consul_server_1
@@ -85,7 +85,7 @@ services:
       -node=consul_server_3
       -client='0.0.0.0'
       -bind='172.25.0.3'
-      -datacenter=andc_dc
+      -datacenter=adnc_dc
       -data-dir /consul/data
       -config-dir /consul/config
       -join=172.25.0.1
@@ -96,14 +96,14 @@ services:
     restart: always
     environment:
       - CONSUL_BIND_INTERFACE=eth0
-      - CONSUL_DATACENTER=andc_dc
+      - CONSUL_DATACENTER=adnc_dc
     networks:
-      andc_network_consul:
+      adnc_network_consul:
         ipv4_address: 172.25.0.4
     ports:
       - "8500:8500"
     volumes:
-      - ./andc/consul/client1/config:/consul/config
+      - ./adnc/consul/client1/config:/consul/config
       - ./adnc-consul/consul-init.sh:/consul/consul-init.sh
       - ./adnc-consul/kv.json:/consul/kv.json
     privileged: true
@@ -115,24 +115,26 @@ services:
 # mariadb
   mariadb:
     image: mariadb:latest
-    container_name: "andc-mariadb"
+    container_name: "adnc-mariadb"
     restart: always
     environment:
       MYSQL_USER: "root"
-      MYSQL_PASSWORD: "andc@123456"
-      MYSQL_ROOT_PASSWORD: "andc@123456"
+      MYSQL_PASSWORD: "alpha.netcore"
+      MYSQL_ROOT_PASSWORD: "alpha.netcore"
       TZ: "Asia/Shanghai"
     ports:
-      - "9076:3306"
+      - "13308:3306"
     volumes:
-      - ./andc/mysql/data:/var/lib/mysql
-      - ./andc/mysql/log:/var/log/mysql
+      - ./adnc/mysql/data:/var/lib/mysql
+      - ./adnc/mysql/log:/var/log/mysql
+      - ./adnc-mysql/db_backups:/docker-entrypoint-initdb.d
+    command: --init-file /docker-entrypoint-initdb.d/bootstrap.sql
 # mariadb end
 
 # mongodb
   mongodb:
     image: mongo:latest
-    container_name: andc-mongodb
+    container_name: adnc-mongodb
     environment:
       # 时区上海
       TZ: Asia/Shanghai
@@ -143,10 +145,10 @@ services:
       MONGO_PASSWORD: football
     restart: always
     volumes:
-        - ./andc/mongo/data:/data/db
+        - ./adnc/mongo/data:/data/db
         - ./adnc-mongodb/mongo-init.sh:/docker-entrypoint-initdb.d/mongo-init.sh
     ports:
-      - 9075:27017
+      - 13017:27017
     cpus: 2
     mem_reservation: "400M"
     mem_limit: "500M"
@@ -158,50 +160,50 @@ services:
 
 # redis
   redis:
-    container_name: andc-redis-rebloom
+    container_name: adnc-redis-rebloom
     image: redislabs/rebloom:latest
     ports:
       - "13379:6379"
     volumes:
-      - ./andc-redis/redis.conf:/etc/redis/redis.conf
-      - ./andc/redis/data:/data
+      - ./adnc-redis/redis.conf:/etc/redis/redis.conf
+      - ./adnc/redis/data:/data
     restart: always
     command: redis-server /etc/redis/redis.conf
 # redis end
 
 # loki
   loki:
-    container_name: andc-loki
+    container_name: adnc-loki
     image: grafana/loki:latest
     ports:
-      - "9011:3100"
+      - "3100:3100"
     command: -config.file=/etc/loki/local-config.yaml
     networks:
-      - andc_loki
+      - adnc_loki
     restart: always
   promtail:
-    container_name: andc-promtail
+    container_name: adnc-promtail
     image: grafana/promtail:latest
     volumes:
-      - ./andc/promtail/local/logs/:/var/log/
+      - ./adnc/promtail/local/logs/:/var/log/
       - ./adnc-loki/promtail.yaml:/etc/promtail/docker-config.yaml
     command: -config.file=/etc/promtail/docker-config.yaml
     networks:
-      - andc_loki
+      - adnc_loki
     restart: always
   grafana:
-    container_name: andc-grafana
+    container_name: adnc-grafana
     image: grafana/grafana:latest
     restart: always
     ports:
       - "9010:3000"
     networks:
-      - andc_loki
+      - adnc_loki
 # loki end
 
 # rabbitmq
   rabbitmq:
-    container_name: andc-rabbitmq
+    container_name: adnc-rabbitmq
     image: rabbitmq:4.0.7-management
     ports:
       - "5672:13572"
@@ -215,7 +217,7 @@ services:
 # nginx
 #   nginx:
 #     image: nginx:latest
-#     container_name: andc-nginx
+#     container_name: adnc-nginx
 #     ports:
 #       - "80:80"
 #       - "443:443"
@@ -226,16 +228,16 @@ services:
 #       - ./conf/nginx.conf:/etc/nginx/nginx.conf
 #     restart: always
 #     networks:
-#       - andc_nginx
+#       - adnc_nginx
 # nginx end
 
 #自定义网络，自定义网络可以指定容器IP
 networks:
-  andc_network_consul:
+  adnc_network_consul:
     driver: bridge
     ipam:
       config:
         - subnet: "172.25.0.0/16"
           gateway: "172.25.0.16"
-  andc_loki: #loki网络
-  andc_nginx: #nginx网络
+  adnc_loki: #loki网络
+  adnc_nginx: #nginx网络

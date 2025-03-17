@@ -10,6 +10,7 @@ sleep 2
 # 检查 KV 文件是否存在
 if [ -f "/consul/kv.json" ]; then
   # consul kv import @/consul/kv.json
+  # consul kv export > /consul/kv.json
   consul kv import -http-addr=http://172.25.0.1:8500 @/consul/kv.json
   echo "✅ Consul K/V 数据导入完成"
 else
