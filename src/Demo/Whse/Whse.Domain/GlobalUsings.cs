@@ -1,4 +1,4 @@
-﻿global using Adnc.Demo.Shared.Const.Entity.Whse;
+﻿global using Adnc.Demo.Const.Entity.Whse;
 global using Adnc.Infra.Core.Exceptions;
 global using Adnc.Infra.Core.Guard;
 global using Adnc.Infra.IdGenerater.Yitter;

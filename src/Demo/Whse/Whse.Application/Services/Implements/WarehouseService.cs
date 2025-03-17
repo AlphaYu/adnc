@@ -110,7 +110,7 @@ public class WarehouseService : AbstractAppService, IWarehouseService
         eventDto.TrimStringFields();
         var blockQtyProductsInfo = eventDto.Products.ToDictionary(x => x.ProductId, x => x.Qty);
         var warehouses = await _warehouseRepo.Where(x => blockQtyProductsInfo.Keys.Contains(x.ProductId.Value), noTracking: false).ToListAsync();
-        // var products = await _productRepo.Where(x => blockQtyProductsInfo.Keys.Contains(x.Id)).ToListAsync();
+        // var products = await productRepo.Where(x => blockQtyProductsInfo.Keys.Contains(x.Id)).ToListAsync();
 
         var result = await _warehouseManager.BlockQtyAsync(eventDto.OrderId, blockQtyProductsInfo, warehouses);
 

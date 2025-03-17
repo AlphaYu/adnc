@@ -1,33 +1,18 @@
 ﻿namespace Adnc.Demo.Whse.Application.Services.Implements;
 
 /// <summary>
-/// 商品管理
+///  商品管理
 /// </summary>
-public class ProductService : AbstractAppService, IProductService
+/// <remarks>
+/// 商品管理构造函数
+/// </remarks>
+/// <param name="productRepo"></param>
+/// <param name="warehouseRepo"></param>
+/// <param name="adminClient"></param>
+/// <param name="productMgr"></param>
+public class ProductService(IEfBasicRepository<Product> productRepo, IEfBasicRepository<Warehouse> warehouseRepo, IAdminRestClient adminClient, ProductManager productMgr)
+    : AbstractAppService, IProductService
 {
-    private readonly ProductManager _productMgr;
-    private readonly IEfBasicRepository<Product> _productRepo;
-    private readonly IEfBasicRepository<Warehouse> _warehouseInfoRepo;
-    private readonly IMaintRestClient _maintRestClient;
-
-    /// <summary>
-    /// 商品管理构造函数
-    /// </summary>
-    /// <param name="productRepo"></param>
-    /// <param name="warehouseInfoRepo"></param>
-    /// <param name="maintRestClient"></param>
-    /// <param name="productMgr"></param>
-    public ProductService(
-         IEfBasicRepository<Product> productRepo
-        , IEfBasicRepository<Warehouse> warehouseInfoRepo
-        , IMaintRestClient maintRestClient
-        , ProductManager productMgr)
-    {
-        _productMgr = productMgr;
-        _productRepo = productRepo;
-        _warehouseInfoRepo = warehouseInfoRepo;
-        _maintRestClient = maintRestClient;
-    }
 
     /// <summary>
     /// 创建商品
@@ -37,9 +22,9 @@ public class ProductService : AbstractAppService, IProductService
     public async Task<ProductDto> CreateAsync(ProductCreationDto input)
     {
         input.TrimStringFields();
-        var product = await _productMgr.CreateAsync(input.Sku, input.Price, input.Name, input.Unit, input.Describe);
+        var product = await productMgr.CreateAsync(input.Sku, input.Price, input.Name, input.Unit, input.Describe);
 
-        await _productRepo.InsertAsync(product);
+        await productRepo.InsertAsync(product);
 
         return Mapper.Map<ProductDto>(product);
     }
@@ -53,16 +38,16 @@ public class ProductService : AbstractAppService, IProductService
     public async Task<ProductDto> UpdateAsync(long id, ProductUpdationDto input)
     {
         input.TrimStringFields();
-        var product = await _productRepo.GetAsync(id);
+        var product = await productRepo.GetAsync(id);
 
         product.Describe = input.Describe;
         product.SetUnit(input.Unit);
         product.SetPrice(input.Price);
 
-        await _productMgr.ChangeSkuAsync(product, input.Sku);
-        await _productMgr.ChangeNameAsync(product, input.Name);
+        await productMgr.ChangeSkuAsync(product, input.Sku);
+        await productMgr.ChangeNameAsync(product, input.Name);
 
-        await _productRepo.UpdateAsync(product);
+        await productRepo.UpdateAsync(product);
 
         return Mapper.Map<ProductDto>(product);
     }
@@ -76,11 +61,11 @@ public class ProductService : AbstractAppService, IProductService
     public async Task<ProductDto> ChangePriceAsync(long id, ProducChangePriceDto input)
     {
         input.TrimStringFields();
-        var product = await _productRepo.GetAsync(id);
+        var product = await productRepo.GetAsync(id);
 
         product.SetPrice(input.Price);
 
-        await _productRepo.UpdateAsync(product);
+        await productRepo.UpdateAsync(product);
 
         return Mapper.Map<ProductDto>(product);
     }
@@ -94,12 +79,12 @@ public class ProductService : AbstractAppService, IProductService
     public async Task<ProductDto> PutOnSaleAsync(long id, ProductPutOnSaleDto input)
     {
         input.TrimStringFields();
-        var product = await _productRepo.GetAsync(id);
-        //var warehouseInfo = await _warehouseInfoRepo.Where(x => x.ProductId == id).FirstOrDefaultAsync();
+        var product = await productRepo.GetAsync(id);
+        //var warehouseInfo = await warehouseRepo.Where(x => x.ProductId == id).FirstOrDefaultAsync();
 
-        _productMgr.PutOnSale(product, input.Reason);
+        productMgr.PutOnSale(product, input.Reason);
 
-        await _productRepo.UpdateAsync(product);
+        await productRepo.UpdateAsync(product);
 
         return Mapper.Map<ProductDto>(product);
     }
@@ -112,11 +97,11 @@ public class ProductService : AbstractAppService, IProductService
     public async Task<ProductDto> PutOffSaleAsync(long id, ProductPutOffSaleDto input)
     {
         input.TrimStringFields();
-        var product = await _productRepo.GetAsync(id);
+        var product = await productRepo.GetAsync(id);
 
         product.PutOffSale(input.Reason);
 
-        await _productRepo.UpdateAsync(product);
+        await productRepo.UpdateAsync(product);
 
         return Mapper.Map<ProductDto>(product);
     }
@@ -133,11 +118,11 @@ public class ProductService : AbstractAppService, IProductService
                                             .New<Product>()
                                             .AndIf(input.Id > 0, x => x.Id == input.Id);
 
-        var total = await _productRepo.CountAsync(whereCondition);
+        var total = await productRepo.CountAsync(whereCondition);
         if (total == 0)
             return new PageModelDto<ProductDto>(input);
 
-        var entities = await _productRepo
+        var entities = await productRepo
                             .Where(whereCondition)
                             .OrderByDescending(x => x.Id)
                             .Skip(input.SkipRows())
@@ -148,15 +133,15 @@ public class ProductService : AbstractAppService, IProductService
         if (productDtos.IsNotNullOrEmpty())
         {
             //调用maint微服务获取字典,组合商品状态信息
-            var restRpcResult = await _maintRestClient.GetDictAsync(ServiceAddressConsts.ProdunctStatusId);
+            var restRpcResult = await adminClient.GetDictOptionsAsync("product_status");
             if (restRpcResult.IsSuccessStatusCode)
             {
-                var dict = restRpcResult.Content;
-                if (dict is not null && dict.Children.IsNotNullOrEmpty())
+                var dict = restRpcResult.Content?.FirstOrDefault();
+                if (dict is not null)
                 {
                     productDtos.ForEach(x =>
                     {
-                        x.StatusDescription = dict.Children.FirstOrDefault(d => d.Value == x.StatusCode.ToString())?.Name;
+                        x.StatusDescription = dict.DictDataList.FirstOrDefault(d => d.Value == x.StatusCode.ToString())?.Label ?? string.Empty;
                     });
                 }
             }
@@ -178,7 +163,7 @@ public class ProductService : AbstractAppService, IProductService
                                             .AndIf(search.Ids.IsNotNullOrEmpty(), x => search.Ids.Select(x => x).Distinct().Contains(x.Id))
                                             .AndIf(search.StatusCode > 0, x => (int)x.Status.Code == search.StatusCode);
 
-        var products = await _productRepo.Where(whereCondition).ToListAsync();
+        var products = await productRepo.Where(whereCondition).ToListAsync();
         var productsDto = Mapper.Map<List<ProductDto>>(products);
 
         return productsDto;

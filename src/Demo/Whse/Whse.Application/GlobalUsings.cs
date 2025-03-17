@@ -1,5 +1,5 @@
-﻿global using Adnc.Demo.Shared.Const;
-global using Adnc.Demo.Shared.Remote.Http.Services;
+﻿global using Adnc.Demo.Const;
+global using Adnc.Demo.Remote.Http.Services;
 global using Adnc.Demo.Whse.Application.Dtos;
 global using Adnc.Demo.Whse.Application.Services;
 global using Adnc.Demo.Whse.Application.Subscribers;

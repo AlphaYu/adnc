@@ -6,10 +6,7 @@ namespace Adnc.Demo.Whse.Api
     {
         public override  void  UseAdnc()
         {
-            UseWebApiDefault(endpointRoute: endpoint =>
-            {
-                endpoint.MapGrpcService<Grpc.WhseGrpcServer>();
-            });
+            UseWebApiDefault();
         }
     }
 

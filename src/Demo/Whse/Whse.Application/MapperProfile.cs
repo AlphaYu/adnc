@@ -1,4 +1,4 @@
-﻿using Adnc.Demo.Shared.Remote.Grpc.Messages;
+﻿using Adnc.Demo.Remote.Grpc.Messages;
 
 namespace Adnc.Demo.Whse.Application;
 
@@ -9,8 +9,5 @@ public class WhseProfile : Profile
         CreateMap(typeof(PagedModel<>), typeof(PageModelDto<>)).ForMember("XData", opt => opt.Ignore());
         CreateMap<Product, ProductDto>();
         CreateMap<Warehouse, WarehouseDto>();
-
-        CreateMap<ProductSearchRequest, ProductSearchListDto>();
-        CreateMap<ProductDto, ProductReply>();
     }
 }
