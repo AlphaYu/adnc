@@ -1,0 +1,12 @@
+version: "3"
+services:
+  rabbitmq:
+    container_name: adnc-rabbitmq
+    image: rabbitmq:4.0.7-management
+    ports:
+      - "5672:13572"
+      - "15672:18578"
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin 
+      - RABBITMQ_DEFAULT_PASS=football
+    restart: always

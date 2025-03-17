@@ -1,0 +1,119 @@
+version: '3.1'
+
+services:
+  consul_server_1:
+    image: hashicorp/consul:latest
+    container_name: "consul_server_1"
+    restart: always
+    environment:
+      - CONSUL_BIND_INTERFACE=eth0
+      - CONSUL_DATACENTER=adnc_dc
+    networks:
+      adnc_network_consul:
+        ipv4_address: 172.25.0.1
+    ports:
+      - "8590:8500"
+    volumes:
+      - ../adnc/consul/server1/data:/consul/data
+      - ../adnc/consul/server1/config:/consul/config
+    privileged: true
+    command: >
+      agent
+      -server
+      -bootstrap-expect=3
+      -ui
+      -node=consul_server_1
+      -client='0.0.0.0'
+      -bind='172.25.0.1'
+      -data-dir /consul/data
+      -config-dir /consul/config
+      -datacenter=adnc_dc
+
+  consul_server_2:
+    image: hashicorp/consul:latest
+    container_name: "consul_server_2"
+    restart: always
+    environment:
+      - CONSUL_BIND_INTERFACE=eth0
+      - CONSUL_DATACENTER=adnc_dc
+    networks:
+      adnc_network_consul:
+        ipv4_address: 172.25.0.2
+    ports:
+      - "8520:8500"
+    volumes:
+      - ../adnc/consul/server2/data:/consul/data
+      - ../adnc/consul/server2/config:/consul/config
+    privileged: true
+    depends_on:
+      - consul_server_1
+    command: >
+      agent
+      -server
+      -ui
+      -node=consul_server_2
+      -client='0.0.0.0'
+      -bind='172.25.0.2'
+      -datacenter=adnc_dc
+      -data-dir /consul/data
+      -config-dir /consul/config
+      -join=172.25.0.1
+
+  consul_server_3:
+    image: hashicorp/consul:latest
+    container_name: "consul_server_3"
+    restart: always
+    environment:
+      - CONSUL_BIND_INTERFACE=eth0
+      - CONSUL_DATACENTER=adnc_dc
+    networks:
+      adnc_network_consul:
+        ipv4_address: 172.25.0.3
+    ports:
+      - "8530:8500"
+    volumes:
+      - ../adnc/consul/server3/data:/consul/data
+      - ../adnc/consul/server3/config:/consul/config
+    privileged: true
+    depends_on:
+      - consul_server_1
+    command: >
+      agent
+      -server
+      -ui
+      -node=consul_server_3
+      -client='0.0.0.0'
+      -bind='172.25.0.3'
+      -datacenter=adnc_dc
+      -data-dir /consul/data
+      -config-dir /consul/config
+      -join=172.25.0.1
+
+  consul_client_1:
+    image: hashicorp/consul:latest
+    container_name: "consul_client_1"
+    restart: always
+    environment:
+      - CONSUL_BIND_INTERFACE=eth0
+      - CONSUL_DATACENTER=adnc_dc
+    networks:
+      adnc_network_consul:
+        ipv4_address: 172.25.0.4
+    ports:
+      - "8500:8500"
+    volumes:
+      - ../adnc/consul/client1/config:/consul/config
+      - ./consul-init.sh:/consul/consul-init.sh
+      - ./kv.json:/consul/kv.json
+    privileged: true
+    depends_on:
+      - consul_server_1
+    command: "/bin/sh /consul/consul-init.sh"
+#自定义网络，自定义网络可以指定容器IP，这样服务器重启consul集群也可以正常运行。
+networks:
+  adnc_network_consul:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: "172.25.0.0/16"
+          gateway: "172.25.0.16"
