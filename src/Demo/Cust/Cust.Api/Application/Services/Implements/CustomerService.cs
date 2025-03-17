@@ -1,66 +1,40 @@
-﻿using Adnc.Demo.Cust.Api.Application.Cache;
-using Adnc.Demo.Cust.Api.Application.Dtos;
-using Adnc.Demo.Cust.Api.Repository;
-using Adnc.Demo.Cust.Api.Repository.Entities;
-
-namespace Adnc.Demo.Cust.Api.Application.Services.Implements;
+﻿namespace Adnc.Demo.Cust.Api.Application.Services.Implements;
 
 /// <summary>
 /// 客户管理服务
 /// </summary>
-public class CustomerAppService : AbstractAppService, ICustomerService
+public class CustomerAppService(IEfRepository<Customer> customerRepo, IEfRepository<TransactionLog> transactionLogRepo, IEventPublisher eventPublisher)
+    : AbstractAppService, ICustomerService
 {
-    private readonly IEfRepository<Customer> _customerRepo;
-    private readonly IEfRepository<CustomerFinance> _cusFinaceRepo;
-    private readonly IEfRepository<CustomerTransactionLog> _cusTransactionLogRepo;
-    private readonly CacheService _cacheService;
-    private readonly IEventPublisher _eventPublisher;
-
-    public CustomerAppService(
-        IEfRepository<Customer> customerRepo,
-        IEfRepository<CustomerFinance> cusFinaceRepo,
-        IEfRepository<CustomerTransactionLog> cusTransactionLogRepo,
-        CacheService cacheService,
-        IEventPublisher eventPublisher)
-    {
-        _customerRepo = customerRepo;
-        _cusFinaceRepo = cusFinaceRepo;
-        _cusTransactionLogRepo = cusTransactionLogRepo;
-        _cacheService = cacheService;
-        _eventPublisher = eventPublisher;
-    }
-
-    public async Task<ServiceResult<CustomerDto>> RegisterAsync(CustomerRegisterDto input)
+    public async Task<ServiceResult<IdDto>> CreateAsync(CustomerCreationDto input)
     {
         input.TrimStringFields();
-        var exists = await _customerRepo.AnyAsync(t => t.Account == input.Account);
+        var exists = await customerRepo.AnyAsync(t => t.Account == input.Account);
         if (exists)
             return Problem(HttpStatusCode.Forbidden, "该账号已经存在");
 
         var customer = Mapper.Map<Customer>(input, IdGenerater.GetNextId());
         customer.Password = InfraHelper.Encrypt.Md5(customer.Password);
 
-        customer.FinanceInfo = new CustomerFinance()
+        customer.FinanceInfo = new Finance()
         {
             Account = customer.Account,
             Balance = 0,
             Id = customer.Id
         };
 
-        await _customerRepo.InsertAsync(customer);
-
-        var dto = Mapper.Map<CustomerDto>(customer);
-        return dto;
+        await customerRepo.InsertAsync(customer);
+        return new IdDto(customer.Id);
     }
 
-    public async Task<ServiceResult<SimpleDto<string>>> RechargeAsync(long id, CustomerRechargeDto input)
+    public async Task<ServiceResult<IdDto>> RechargeAsync(long id, CustomerRechargeDto input)
     {
         input.TrimStringFields();
-        var customer = await _customerRepo.FindAsync(id);
-        if (customer == null)
+        var customer = await customerRepo.FetchAsync(x => x.Id == id);
+        if (customer is null)
             return Problem(HttpStatusCode.NotFound, "不存在该账号");
 
-        var cusTransactionLog = new CustomerTransactionLog()
+        var transactionLog = new TransactionLog()
         {
             Id = IdGenerater.GetNextId(),
             CustomerId = customer.Id,
@@ -70,36 +44,35 @@ public class CustomerAppService : AbstractAppService, ICustomerService
             Amount = input.Amount,
             ExchageStatus = ExchageStatus.Processing
         };
-        await _cusTransactionLogRepo.InsertAsync(cusTransactionLog);
+        await transactionLogRepo.InsertAsync(transactionLog);
 
         //发布充值事件
         var customerRechargedEvent = new CustomerRechargedEvent
         {
             Id = IdGenerater.GetNextId(),
-            EventSource = MethodBase.GetCurrentMethod()?.GetMethodName() ?? string.Empty,
-            CustomerId = cusTransactionLog.CustomerId,
-            TransactionLogId = cusTransactionLog.Id,
-            Amount = cusTransactionLog.Amount
+            EventSource = nameof(RechargeAsync),
+            CustomerId = transactionLog.CustomerId,
+            TransactionLogId = transactionLog.Id,
+            Amount = transactionLog.Amount
         };
-        await _eventPublisher.PublishAsync(customerRechargedEvent);
+        await eventPublisher.PublishAsync(customerRechargedEvent);
 
-        return new SimpleDto<string>(cusTransactionLog.Id.ToString());
+        return new IdDto(transactionLog.Id);
     }
 
-    public async Task<ServiceResult<PageModelDto<CustomerDto>>> GetPagedAsync(CustomerSearchPagedDto input)
+    public async Task<ServiceResult<PageModelDto<CustomerDto>>> GetPagedAsync(SearchPagedDto input)
     {
         input.TrimStringFields();
 
         var whereCondition = ExpressionCreator
                                             .New<Customer>()
-                                            .AndIf(input.Id > 0, x => x.Id == input.Id)
-                                            .AndIf(input.Account.IsNotNullOrEmpty(), x => x.Account == input.Account);
+                                            .AndIf(input.Keywords.IsNotNullOrEmpty(), x => x.Account == input.Keywords);
 
-        var count = await _customerRepo.CountAsync(whereCondition);
+        var count = await customerRepo.CountAsync(whereCondition);
         if (count == 0)
             return new PageModelDto<CustomerDto>(input);
 
-        var customers = await _customerRepo
+        var customerDtos = await customerRepo
                                             .Where(whereCondition)
                                             .Select(x => new CustomerDto
                                             {
@@ -111,26 +84,24 @@ public class CustomerAppService : AbstractAppService, ICustomerService
                                                 CreateTime = x.CreateTime,
                                                 FinanceInfoBalance = x.FinanceInfo == null ? 0 : x.FinanceInfo.Balance
                                             })
+                                            .OrderByDescending(x => x.Id)
                                             .Skip(input.SkipRows())
                                             .Take(input.PageSize)
-                                            .OrderByDescending(x => x.Id)
                                             .ToListAsync();
 
-        return new PageModelDto<CustomerDto>(input, customers, count);
+        return new PageModelDto<CustomerDto>(input, customerDtos, count);
     }
 
-    public async Task<ServiceResult<PageModelDto<CustomerDto>>> GetPagedBySqlAsync(CustomerSearchPagedDto input)
+    public async Task<ServiceResult<PageModelDto<CustomerDto>>> GetPagedBySqlAsync(SearchPagedDto input)
     {
         input.TrimStringFields();
         var where = new StringBuilder(100)
-            .AppendIf(input.Id > 0, " AND id=@id")
-            .AppendIf(!string.IsNullOrEmpty(input.Account), " AND account like @account")
+            .AppendIf(!string.IsNullOrEmpty(input.Keywords), " AND account = @Keywords")
             .ToSqlWhereString();
         var orderBy = " ORDER BY id Desc";
 
-        input.Account += "%";
         var queryCondition = new QueryCondition(where, orderBy, null, input);
-        var queryResult = await _customerRepo.GetPagedCustmersBySqlAsync<CustomerDto>(queryCondition, input.SkipRows(), input.PageSize);
-        return new PageModelDto<CustomerDto>(input, queryResult.Content.ToArray(), queryResult.TotalCount);
+        var queryResult = await customerRepo.GetPagedCustmersBySqlAsync<CustomerDto>(queryCondition, input.SkipRows(), input.PageSize);
+        return new PageModelDto<CustomerDto>(input, Enumerable.ToArray<CustomerDto>(queryResult.Content), (int)queryResult.TotalCount);
     }
 }

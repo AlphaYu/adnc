@@ -1,31 +1,9 @@
-﻿using Adnc.Demo.Cust.Api.Repository.Entities;
+﻿namespace Adnc.Demo.Cust.Api.Application.Subscribers;
 
-namespace Adnc.Demo.Cust.Api.Application.Subscribers;
-
-public sealed partial class CapEventSubscriber : ICapSubscribe
+public sealed partial class CapEventSubscriber(IUnitOfWork unitOfWork, IEfRepository<Finance> finaceRepo, IEfRepository<TransactionLog> transactionLogRepo
+    ,ILogger<CapEventSubscriber> logger, MessageTrackerFactory trackerFactory) : ICapSubscribe
 {
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly IEfRepository<Customer> _customerRepo;
-    private readonly IEfRepository<CustomerFinance> _custFinaceRepo;
-    private readonly IEfRepository<CustomerTransactionLog> _custTransactionLogRepo;
-    private readonly ILogger<CapEventSubscriber> _logger;
-    private readonly IMessageTracker _tracker;
-
-    public CapEventSubscriber(
-        IUnitOfWork unitOfWork,
-        IEfRepository<Customer> customerRepo,
-        IEfRepository<CustomerFinance> custFinaceRepo,
-        IEfRepository<CustomerTransactionLog> custTransactionLogRepo,
-        ILogger<CapEventSubscriber> logger,
-        MessageTrackerFactory trackerFactory)
-    {
-        _unitOfWork = unitOfWork;
-        _customerRepo = customerRepo;
-        _custFinaceRepo = custFinaceRepo;
-        _custTransactionLogRepo = custTransactionLogRepo;
-        _logger = logger;
-        _tracker = trackerFactory.Create();
-    }
+    private readonly IMessageTracker tracker = trackerFactory.Create();
 
     /// <summary>
     /// 订阅充值事件
@@ -38,43 +16,46 @@ public sealed partial class CapEventSubscriber : ICapSubscribe
         eventDto.TrimStringFields();
 
         var eventId = eventDto.Id;
-        var eventHandler = MethodBase.GetCurrentMethod()?.GetMethodName() ?? string.Empty;
-        var hasProcessed = await _tracker.HasProcessedAsync(eventId, eventHandler);
+        var eventHandler = nameof(HandleCustomerRechargedEvent);
+        var hasProcessed = await tracker.HasProcessedAsync(eventId, eventHandler);
         if (hasProcessed)
             return;
 
-        var transLog = await _custTransactionLogRepo.FindAsync(eventDto.TransactionLogId, noTracking: false);
+        var transLog = await transactionLogRepo.FetchAsync(x => x.Id == eventDto.TransactionLogId, noTracking: false);
         if (transLog is null)
             return;
 
-        var finance = await _custFinaceRepo.FindAsync(eventDto.CustomerId, noTracking: false);
+        var finance = await finaceRepo.FetchAsync(x => x.Id == eventDto.CustomerId, noTracking: false);
         if (finance is null)
             return;
 
-        _unitOfWork.BeginTransaction();
 
         try
         {
+            unitOfWork.BeginTransaction();
+
             var originalBalance = finance.Balance;
             var changedBalance = originalBalance + eventDto.Amount;
             finance.Balance = changedBalance;
-            await _custFinaceRepo.UpdateAsync(finance);
+            await finaceRepo.UpdateAsync(finance);
 
             transLog.ExchageStatus = ExchageStatus.Finished;
             transLog.ChangingAmount = originalBalance;
             transLog.ChangedAmount = changedBalance;
-            await _custTransactionLogRepo.UpdateAsync(transLog);
+            await transactionLogRepo.UpdateAsync(transLog);
 
-            await _tracker.MarkAsProcessedAsync(eventId, eventHandler);
+            await tracker.MarkAsProcessedAsync(eventId, eventHandler);
+
+            unitOfWork.Commit();
         }
         catch (Exception ex)
         {
-            await _unitOfWork.RollbackAsync();
+            await unitOfWork.RollbackAsync();
             throw new Exception($"{eventHandler}-{eventId}", ex);
         }
         finally
         {
-            _unitOfWork.Dispose();
+            unitOfWork.Dispose();
         }
     }
 
@@ -89,28 +70,34 @@ public sealed partial class CapEventSubscriber : ICapSubscribe
         eventDto.TrimStringFields();
 
         var eventId = eventDto.Id;
-        var eventHandler = MethodBase.GetCurrentMethod()?.GetMethodName() ?? string.Empty;
-        var hasProcessed = await _tracker.HasProcessedAsync(eventId, eventHandler);
+        var eventHandler = nameof(HandleOrderPaidEvent);
+        var hasProcessed = await tracker.HasProcessedAsync(eventId, eventHandler);
         if (hasProcessed)
             return;
 
-        _unitOfWork.BeginTransaction();
 
         try
         {
+            unitOfWork.BeginTransaction();
+
+            logger.LogInformation($"------开始处理[{eventId}]------");
             //TODO
             //
             //
-            await _tracker.MarkAsProcessedAsync(eventId, eventHandler);
+            logger.LogInformation($"------完成处理[{eventId}]------");
+
+            await tracker.MarkAsProcessedAsync(eventId, eventHandler);
+
+            unitOfWork.Commit();
         }
         catch (Exception ex)
         {
-            await _unitOfWork.RollbackAsync();
+            await unitOfWork.RollbackAsync();
             throw new Exception($"{eventHandler}-{eventId}", ex);
         }
         finally
         {
-            _unitOfWork.Dispose();
+            unitOfWork.Dispose();
         }
     }
 }

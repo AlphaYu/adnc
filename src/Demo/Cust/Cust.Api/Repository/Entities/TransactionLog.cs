@@ -3,7 +3,7 @@
 /// <summary>
 /// 客户财务变动记录
 /// </summary>
-public class CustomerTransactionLog : EfBasicAuditEntity
+public class TransactionLog : EfBasicAuditEntity
 {
     public long CustomerId { get; set; }
 

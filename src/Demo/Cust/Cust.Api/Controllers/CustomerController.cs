@@ -1,5 +1,4 @@
-﻿using Adnc.Demo.Cust.Api.Application.Dtos;
-using Adnc.Demo.Cust.Api.Application.Services;
+﻿using Adnc.Demo.Cust.Api.Application.Services;
 
 namespace Adnc.Demo.Cust.Api.Controllers;
 
@@ -8,22 +7,18 @@ namespace Adnc.Demo.Cust.Api.Controllers;
 /// </summary>
 [Route($"{RouteConsts.CustRoot}/customers")]
 [ApiController]
-public class CustomerController : AdncControllerBase
+public class CustomerController(ICustomerService customerService) : AdncControllerBase
 {
-    private readonly ICustomerService _customerService;
-
-    public CustomerController(ICustomerService customerService) => _customerService = customerService;
-
     /// <summary>
-    /// 注册
+    /// 创建客户
     /// </summary>
-    /// <param name="input"><see cref="CustomerRegisterDto"/></param>
-    /// <returns></returns>
+    /// <param name="input"><see cref="CustomerCreationDto"/></param>
+    /// <returns><see cref="CustomerDto"/></returns>
     [HttpPost]
     [AllowAnonymous]
-    //[ProducesResponseType(StatusCodes.Status201Created)]
-    public async Task<ActionResult<CustomerDto>> RegisterAsync([FromBody] CustomerRegisterDto input) =>
-        CreatedResult(await _customerService.RegisterAsync(input));
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    public async Task<ActionResult<IdDto>> CreateAsync([FromBody] CustomerCreationDto input)
+        => CreatedResult(await customerService.CreateAsync(input));
 
     /// <summary>
     /// 后台管理员给客户充值
@@ -32,28 +27,28 @@ public class CustomerController : AdncControllerBase
     [HttpPut("{id}/balance")]
     //[AdncAuthorize(PermissionConsts.Customer.Recharge)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<SimpleDto<string>>> RechargeAsync([FromRoute] long id, [FromBody] CustomerRechargeDto input) =>
-        Result(await _customerService.RechargeAsync(id, input));
+    public async Task<ActionResult<IdDto>> RechargeAsync([FromRoute] long id, [FromBody] CustomerRechargeDto input)
+        => Result(await customerService.RechargeAsync(id, input));
 
     /// <summary>
     /// 客户分页列表
     /// </summary>
-    /// <param name="search"></param>
-    /// <returns></returns>
+    /// <param name="input"></param>
+    /// <returns><see cref="PageModelDto{CustomerDto}"/></returns>
     [HttpGet("page")]
     //[AdncAuthorize(PermissionConsts.Customer.Search)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<PageModelDto<CustomerDto>>> GetPagedAsync([FromQuery] CustomerSearchPagedDto search) =>
-        Result(await _customerService.GetPagedAsync(search));
+    public async Task<ActionResult<PageModelDto<CustomerDto>>> GetPagedAsync([FromQuery] SearchPagedDto input)
+        => Result(await customerService.GetPagedAsync(input));
 
     /// <summary>
     /// 客户分页列表-通过Sql查询
     /// </summary>
-    /// <param name="search"></param>
-    /// <returns></returns>
+    /// <param name="input"></param>
+    /// <returns><see cref="PageModelDto{CustomerDto}"/></returns>
     [HttpGet("page/rawsql")]
     //[AdncAuthorize(PermissionConsts.Customer.Search)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<PageModelDto<CustomerDto>>> GetPagedBySqlAsync([FromQuery] CustomerSearchPagedDto search) =>
-        Result(await _customerService.GetPagedBySqlAsync(search));
+    public async Task<ActionResult<PageModelDto<CustomerDto>>> GetPagedBySqlAsync([FromQuery] SearchPagedDto input)
+      => Result(await customerService.GetPagedBySqlAsync(input));
 }
