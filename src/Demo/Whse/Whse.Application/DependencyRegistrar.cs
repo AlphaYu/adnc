@@ -1,7 +1,6 @@
 ﻿using Adnc.Shared;
 using Adnc.Shared.Application.Extensions;
 using Adnc.Shared.Application.Registrar;
-using Adnc.Shared.Remote.Http.Services;
 using Microsoft.Extensions.Configuration;
 
 namespace Adnc.Demo.Whse.Application;
@@ -28,10 +27,8 @@ public sealed class DependencyRegistrar : AbstractApplicationDependencyRegistrar
         AddDomainSerivces<IDomainService>();
 
         //rpc-rest
-        var restPolicies = PollyStrategyEnable ? this.GenerateDefaultRefitPolicies() : new();
-        AddRestClient<IAuthRestClient>(ServiceAddressConsts.AdncDemoAuthService, restPolicies);
-        AddRestClient<IUsrRestClient>(ServiceAddressConsts.AdncDemoUsrService, restPolicies);
-        AddRestClient<IMaintRestClient>(ServiceAddressConsts.AdncDemoMaintService, restPolicies);
+        var restPolicies = this.GenerateDefaultRefitPolicies();
+        AddRestClient<IAdminRestClient>(ServiceAddressConsts.AdminDemoService, restPolicies);
         //rpc-event
         AddCapEventBus<CapEventSubscriber>(replaceDbAction: capOption =>
         {

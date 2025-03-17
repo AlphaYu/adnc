@@ -50,7 +50,7 @@ public sealed class ApplicationLayerRegistrar(IServiceCollection services, IServ
         //register default services
         AddApplicaitonDefault();
         //register http services
-        var restPolicies = PollyStrategyEnable ? this.GenerateDefaultRefitPolicies() : [];
+        var restPolicies = this.GenerateDefaultRefitPolicies();
         AddRestClient<IAdminRestClient>(ServiceAddressConsts.AdminDemoService, restPolicies);
         //register grpc services
         var gprcPolicies = this.GenerateDefaultGrpcPolicies();

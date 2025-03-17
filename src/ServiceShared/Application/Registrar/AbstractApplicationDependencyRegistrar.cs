@@ -21,7 +21,6 @@ public abstract partial class AbstractApplicationDependencyRegistrar
     protected IConfigurationSection MongoDbSection { get; init; }
     protected IConfigurationSection ConsulSection { get; init; }
     protected IConfigurationSection RabbitMqSection { get; init; }
-    protected bool PollyStrategyEnable { get; init; }
 
     public AbstractApplicationDependencyRegistrar(IServiceCollection services, IServiceInfo serviceInfo)
     {
@@ -36,7 +35,6 @@ public abstract partial class AbstractApplicationDependencyRegistrar
         RabbitMqSection = Configuration.GetSection(NodeConsts.RabbitMq);
         SkyApm = Services.AddSkyApmExtensions();
         RpcInfoOption = Configuration.GetSection(NodeConsts.RpcInfo).Get<RpcInfo>();
-        PollyStrategyEnable = Configuration.GetValue("Polly:Enable", false);
     }
 
     /// <summary>

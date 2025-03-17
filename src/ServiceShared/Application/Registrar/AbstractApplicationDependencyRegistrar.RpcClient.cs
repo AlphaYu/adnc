@@ -33,12 +33,13 @@ public abstract partial class AbstractApplicationDependencyRegistrar
         else
             AddRpcClientCommonServices(Services, RpcInfoOption);
 
+        var enablePolly = RpcInfoOption.Polly.Enable;
         //注册RefitClient,设置httpclient生命周期时间，默认也是2分钟。
         var contentSerializer = new SystemTextJsonContentSerializer(SystemTextJson.GetAdncDefaultOptions());
         var refitSettings = new RefitSettings(contentSerializer);
         var clientbuilder = Services.AddRefitClient<TRestClient>(refitSettings)
                                                     .SetHandlerLifetime(TimeSpan.FromMinutes(2))
-                                                    .AddPolicyHandlerICollection(policies)
+                                                    .AddPolicyHandlerICollection(enablePolly ? policies : [])
                                                     //.UseHttpClientMetrics()
                                                     .AddHttpMessageHandler<CacheDelegatingHandler>()
                                                     .AddHttpMessageHandler<TokenDelegatingHandler>();
@@ -124,6 +125,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar
                 throw new NotImplementedException(RpcInfoOption.Type);
         }
 
+        var enablePolly = RpcInfoOption.Polly.Enable;
         Services.AddGrpcClient<TGrpcClient>(options => options.Address = new Uri(baseAddress))
                      .ConfigureChannel(options =>
                      {
@@ -131,7 +133,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar
                          options.ServiceConfig = new ServiceConfig { LoadBalancingConfigs = { new RoundRobinConfig() } };
                      })
                      .AddHttpMessageHandler<TokenDelegatingHandler>()
-                     .AddPolicyHandlerICollection(policies);
+                     .AddPolicyHandlerICollection(enablePolly ? policies : []);
     }
 
     /// <summary>
