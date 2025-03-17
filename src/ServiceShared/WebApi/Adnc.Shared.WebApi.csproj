@@ -36,9 +36,9 @@
 		<PackageReference Include="NLog.Targets.Loki" Version="$(NLog_Targets_Loki_Version)">
 		  <TreatAsUsed>true</TreatAsUsed>
 		</PackageReference>
-		<PackageReference Include="NLog.Mongo" Version="$(NLog_Mongo_Version)">
+		<!--<PackageReference Include="NLog.Mongo" Version="$(NLog_Mongo_Version)">
 			<TreatAsUsed>true</TreatAsUsed>
-		</PackageReference>
+		</PackageReference>-->
 		<PackageReference Include="NLog.Web.AspNetCore" Version="$(NLog_Web_AspNetCore_Version)">
 			<TreatAsUsed>true</TreatAsUsed>
 		</PackageReference>
