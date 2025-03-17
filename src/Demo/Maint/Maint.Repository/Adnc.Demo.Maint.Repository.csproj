@@ -5,7 +5,7 @@
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 	</PropertyGroup>
 	<ItemGroup>
-	  <ProjectReference Include="..\..\Shared\Const\Adnc.Demo.Shared.Const.csproj" />
+	  <ProjectReference Include="..\..\Shared\Const\Adnc.Demo.Const.csproj" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(SolutionName)'=='Adnc'">

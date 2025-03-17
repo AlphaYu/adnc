@@ -1,7 +1,7 @@
 ﻿global using Adnc.Demo.Maint.Application.Dtos;
 global using Adnc.Demo.Maint.Application.Services;
-global using Adnc.Demo.Shared.Const;
-global using Adnc.Demo.Shared.Const.Permissions.Maint;
+global using Adnc.Demo.Const;
+global using Adnc.Demo.Const.Permissions.Maint;
 global using Adnc.Shared;
 global using Adnc.Shared.Application.Contracts.Dtos;
 global using Adnc.Shared.WebApi;

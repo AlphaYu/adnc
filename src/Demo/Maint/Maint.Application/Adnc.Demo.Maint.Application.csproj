@@ -5,8 +5,8 @@
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 	</PropertyGroup>
 	<ItemGroup>
-		<ProjectReference Include="..\..\Shared\Remote.Grpc\Adnc.Demo.Shared.Remote.Grpc.csproj" />
-		<ProjectReference Include="..\..\Shared\Remote.Http\Adnc.Demo.Shared.Remote.Http.csproj" />
+		<ProjectReference Include="..\..\Shared\Remote.Grpc\Adnc.Demo.Remote.Grpc.csproj" />
+		<ProjectReference Include="..\..\Shared\Remote.Http\Adnc.Demo.Remote.Http.csproj" />
 		<ProjectReference Include="..\Maint.Repository\Adnc.Demo.Maint.Repository.csproj" />
 	</ItemGroup>
 

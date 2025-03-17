@@ -1,7 +1,7 @@
 ﻿global using Adnc.Demo.Maint.Application.Dtos;
 global using Adnc.Demo.Maint.Repository;
-global using Adnc.Demo.Shared.Const;
-global using Adnc.Demo.Shared.Const.Mq;
+global using Adnc.Demo.Const;
+global using Adnc.Demo.Const.Mq;
 global using Adnc.Infra.EventBus.RabbitMq;
 global using Adnc.Infra.Repository;
 global using Adnc.Shared;
