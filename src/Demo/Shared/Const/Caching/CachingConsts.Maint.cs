@@ -1,4 +1,4 @@
-﻿namespace Adnc.Demo.Shared.Const.Caching.Maint;
+﻿namespace Adnc.Demo.Const.Caching.Maint;
 
 public class CachingConsts 
 {

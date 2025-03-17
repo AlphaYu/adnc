@@ -1,4 +1,4 @@
-﻿namespace Adnc.Demo.Shared.Const.Entity.Cust;
+﻿namespace Adnc.Demo.Const.Entity.Cust;
 
 /// <summary>
 /// 客户

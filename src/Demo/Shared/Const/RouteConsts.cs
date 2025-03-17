@@ -1,4 +1,4 @@
-﻿namespace Adnc.Demo.Shared.Const
+﻿namespace Adnc.Demo.Const
 {
     public static class RouteConsts
     {
