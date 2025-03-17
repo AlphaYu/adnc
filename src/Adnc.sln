@@ -106,33 +106,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Shared.Remote", "Servi
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "00.Shared", "00.Shared", "{8217BCCE-1B19-4784-A07E-9928C355B64C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Demo.Shared.Const", "Demo\Shared\Const\Adnc.Demo.Shared.Const.csproj", "{5742C67F-92D4-445F-8B09-3B934788FFCE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Demo.Const", "Demo\Shared\Const\Adnc.Demo.Const.csproj", "{5742C67F-92D4-445F-8B09-3B934788FFCE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Demo.Shared.Remote.Event", "Demo\Shared\Remote.Event\Adnc.Demo.Shared.Remote.Event.csproj", "{84A5E07D-7214-40B8-9966-B0179EE5326F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Demo.Remote.Event", "Demo\Shared\Remote.Event\Adnc.Demo.Remote.Event.csproj", "{84A5E07D-7214-40B8-9966-B0179EE5326F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Demo.Shared.Remote.Grpc", "Demo\Shared\Remote.Grpc\Adnc.Demo.Shared.Remote.Grpc.csproj", "{9D6C47EB-1868-49A8-B000-CAE70DE2C063}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Demo.Remote.Grpc", "Demo\Shared\Remote.Grpc\Adnc.Demo.Remote.Grpc.csproj", "{9D6C47EB-1868-49A8-B000-CAE70DE2C063}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Demo.Shared.Remote.Http", "Demo\Shared\Remote.Http\Adnc.Demo.Shared.Remote.Http.csproj", "{A1F61FE7-6308-4930-88DD-73CCAAFE591A}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "protos", "protos", "{6C293138-0A24-42C3-B3FA-A3ECAA419AF0}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "messages", "messages", "{9BB40D21-45EE-4C77-A572-42D166E79E8E}"
-	ProjectSection(SolutionItems) = preProject
-		Demo\Shared\protos\messages\authgrpc_login.proto = Demo\Shared\protos\messages\authgrpc_login.proto
-		Demo\Shared\protos\messages\common.proto = Demo\Shared\protos\messages\common.proto
-		Demo\Shared\protos\messages\maintgrpc_getdict.proto = Demo\Shared\protos\messages\maintgrpc_getdict.proto
-		Demo\Shared\protos\messages\usrgrpc_getcurrenuserpermissions.proto = Demo\Shared\protos\messages\usrgrpc_getcurrenuserpermissions.proto
-		Demo\Shared\protos\messages\usrgrpc_getdepts.proto = Demo\Shared\protos\messages\usrgrpc_getdepts.proto
-		Demo\Shared\protos\messages\whsegrpc_getproducts.proto = Demo\Shared\protos\messages\whsegrpc_getproducts.proto
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "services", "services", "{61F62491-D25F-4DB2-919B-6977A5FBA0D1}"
-	ProjectSection(SolutionItems) = preProject
-		Demo\Shared\protos\services\authgrpc.proto = Demo\Shared\protos\services\authgrpc.proto
-		Demo\Shared\protos\services\maintgrpc.proto = Demo\Shared\protos\services\maintgrpc.proto
-		Demo\Shared\protos\services\usrgrpc.proto = Demo\Shared\protos\services\usrgrpc.proto
-		Demo\Shared\protos\services\whsegrpc.proto = Demo\Shared\protos\services\whsegrpc.proto
-	EndProjectSection
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Demo.Remote.Http", "Demo\Shared\Remote.Http\Adnc.Demo.Remote.Http.csproj", "{A1F61FE7-6308-4930-88DD-73CCAAFE591A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "resources", "resources", "{37DC69C6-7EC1-4F12-9DE9-9CDDC977619F}"
 	ProjectSection(SolutionItems) = preProject
@@ -550,9 +530,6 @@ Global
 		{84A5E07D-7214-40B8-9966-B0179EE5326F} = {8217BCCE-1B19-4784-A07E-9928C355B64C}
 		{9D6C47EB-1868-49A8-B000-CAE70DE2C063} = {8217BCCE-1B19-4784-A07E-9928C355B64C}
 		{A1F61FE7-6308-4930-88DD-73CCAAFE591A} = {8217BCCE-1B19-4784-A07E-9928C355B64C}
-		{6C293138-0A24-42C3-B3FA-A3ECAA419AF0} = {8217BCCE-1B19-4784-A07E-9928C355B64C}
-		{9BB40D21-45EE-4C77-A572-42D166E79E8E} = {6C293138-0A24-42C3-B3FA-A3ECAA419AF0}
-		{61F62491-D25F-4DB2-919B-6977A5FBA0D1} = {6C293138-0A24-42C3-B3FA-A3ECAA419AF0}
 		{37DC69C6-7EC1-4F12-9DE9-9CDDC977619F} = {8217BCCE-1B19-4784-A07E-9928C355B64C}
 		{4110A68D-7F73-4824-BFBD-30E5B06324CF} = {37DC69C6-7EC1-4F12-9DE9-9CDDC977619F}
 		{99FBF3BA-2535-43D7-8099-1028D83D5B30} = {37DC69C6-7EC1-4F12-9DE9-9CDDC977619F}
