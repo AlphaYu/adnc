@@ -15,7 +15,7 @@ public class MenuController(IMenuService menuService, UserContext userContext) :
     [HttpPost]
     [AdncAuthorize(PermissionConsts.Menu.Create)]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    public async Task<ActionResult<long>> CreateAsync([FromBody] MenuCreationDto input)
+    public async Task<ActionResult<IdDto>> CreateAsync([FromBody] MenuCreationDto input)
         => CreatedResult(await menuService.CreateAsync(input));
 
     /// <summary>

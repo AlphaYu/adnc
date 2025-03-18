@@ -5,7 +5,7 @@ namespace Adnc.Demo.Admin.Application.Services;
 public class DictService(IEfRepository<Dict> dictRepo, IEfRepository<DictData> dictDataRepo, BloomFilterFactory bloomFilterFactory, CacheService cacheService)
     : AbstractAppService, IDictService
 {
-    public async Task<ServiceResult<long>> CreateAsync(DictCreationDto input)
+    public async Task<ServiceResult<IdDto>> CreateAsync(DictCreationDto input)
     {
         input.TrimStringFields();
 
@@ -28,7 +28,7 @@ public class DictService(IEfRepository<Dict> dictRepo, IEfRepository<DictData> d
         //    await dictRepo.InsertRangeAsync(dists);
 
         await dictRepo.InsertAsync(entity);
-        return entity.Id;
+        return new IdDto(entity.Id);
     }
 
     public async Task<ServiceResult> UpdateAsync(long id, DictUpdationDto input)

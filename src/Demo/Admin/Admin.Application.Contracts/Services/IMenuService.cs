@@ -12,7 +12,7 @@
         /// <returns></returns>
         [OperateLog(LogName = "新增菜单")]
         [CachingEvict(CacheKeys = new[] { CachingConsts.MenuListCacheKey })]
-        Task<ServiceResult<long>> CreateAsync(MenuCreationDto input);
+        Task<ServiceResult<IdDto>> CreateAsync(MenuCreationDto input);
 
         /// <summary>
         /// 修改菜单

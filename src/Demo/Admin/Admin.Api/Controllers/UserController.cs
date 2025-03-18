@@ -15,7 +15,7 @@ public class UserController(IUserService userService) : AdncControllerBase
     [HttpPost]
     [AdncAuthorize(PermissionConsts.User.Create)]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    public async Task<ActionResult<long>> CreateAsync([FromBody] UserCreationDto input)
+    public async Task<ActionResult<IdDto>> CreateAsync([FromBody] UserCreationDto input)
         => CreatedResult(await userService.CreateAsync(input));
 
     /// <summary>

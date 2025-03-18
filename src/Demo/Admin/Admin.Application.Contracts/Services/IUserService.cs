@@ -12,7 +12,7 @@
         /// <returns></returns>
         [OperateLog(LogName = "新增用户")]
         [UnitOfWork]
-        Task<ServiceResult<long>> CreateAsync(UserCreationDto input);
+        Task<ServiceResult<IdDto>> CreateAsync(UserCreationDto input);
 
         /// <summary>
         /// 修改用户

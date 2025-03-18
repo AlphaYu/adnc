@@ -7,7 +7,7 @@ public class SysConfigService(IEfRepository<SysConfig> sysConfigRepo, BloomFilte
     : AbstractAppService, ISysConfigService
 {
 
-    public async Task<ServiceResult<long>> CreateAsync(SysConfigCreationDto input)
+    public async Task<ServiceResult<IdDto>> CreateAsync(SysConfigCreationDto input)
     {
         input.TrimStringFields();
         var keyExists = await sysConfigRepo.AnyAsync(x => x.Key == input.Key);
@@ -30,7 +30,7 @@ public class SysConfigService(IEfRepository<SysConfig> sysConfigRepo, BloomFilte
 
         await sysConfigRepo.InsertAsync(entity);
 
-        return entity.Id;
+        return new IdDto(entity.Id);
     }
 
     public async Task<ServiceResult> UpdateAsync(long id, SysConfigUpdationDto input)

@@ -12,7 +12,7 @@ public interface ISysConfigService : IAppService
     /// <returns></returns>
     [OperateLog(LogName = "新增配置")]
     [CachingEvict(CacheKey = CachingConsts.SysConfigListCacheKey)]
-    Task<ServiceResult<long>> CreateAsync(SysConfigCreationDto input);
+    Task<ServiceResult<IdDto>> CreateAsync(SysConfigCreationDto input);
 
     /// <summary>
     /// 修改配置

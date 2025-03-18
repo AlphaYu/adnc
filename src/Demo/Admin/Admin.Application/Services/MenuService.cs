@@ -2,7 +2,7 @@
 
 public class MenuService(IEfRepository<Menu> menuRepo, IEfRepository<RoleMenuRelation> roleMenuRepo, CacheService cacheService) : AbstractAppService, IMenuService
 {
-    public async Task<ServiceResult<long>> CreateAsync(MenuCreationDto input)
+    public async Task<ServiceResult<IdDto>> CreateAsync(MenuCreationDto input)
     {
         input.TrimStringFields();
         if (input.Perm.IsNotNullOrEmpty())
@@ -25,7 +25,7 @@ public class MenuService(IEfRepository<Menu> menuRepo, IEfRepository<RoleMenuRel
 
         await menuRepo.InsertAsync(menuEntity);
 
-        return menuEntity.Id;
+        return new IdDto(menuEntity.Id);
     }
 
     public async Task<ServiceResult> UpdateAsync(long id, MenuUpdationDto input)

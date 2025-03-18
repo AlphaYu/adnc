@@ -15,7 +15,7 @@ public class RoleController(IRoleService roleService) : AdncControllerBase
     [HttpPost]
     [AdncAuthorize(PermissionConsts.Role.Create)]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    public async Task<ActionResult<long>> CreateAsync([FromBody] RoleCreationDto input)
+    public async Task<ActionResult<IdDto>> CreateAsync([FromBody] RoleCreationDto input)
         => CreatedResult(await roleService.CreateAsync(input));
 
     /// <summary>

@@ -15,7 +15,7 @@ public class DictDataController(IDictDataService dictDataService) : AdncControll
     [HttpPost]
     [AdncAuthorize(PermissionConsts.DictData.Create)]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    public async Task<ActionResult<long>> CreateAsync([FromBody] DictDataCreationDto input)
+    public async Task<ActionResult<IdDto>> CreateAsync([FromBody] DictDataCreationDto input)
         => CreatedResult(await dictDataService.CreateAsync(input));
 
     /// <summary>

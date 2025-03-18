@@ -6,7 +6,7 @@ public class UserService(IEfRepository<User> userRepository, IEfRepository<Role>
     , CacheService cacheService, /*BloomFilterFactory bloomFilterFactory,*/ IHttpContextAccessor httpContextAccessor)
     : AbstractAppService, IUserService
 {
-    public async Task<ServiceResult<long>> CreateAsync(UserCreationDto input)
+    public async Task<ServiceResult<IdDto>> CreateAsync(UserCreationDto input)
     {
         input.TrimStringFields();
         var exists = await userRepository.AnyAsync(x => x.Account == input.Account);
@@ -33,7 +33,7 @@ public class UserService(IEfRepository<User> userRepository, IEfRepository<Role>
 
         await userRepository.InsertAsync(user);
 
-        return user.Id;
+        return new IdDto(user.Id);
     }
 
     public async Task<ServiceResult> UpdateAsync(long id, UserUpdationDto input)

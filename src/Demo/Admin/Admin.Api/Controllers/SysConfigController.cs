@@ -15,7 +15,7 @@ public class SysConfigController(ISysConfigService sysConfigService) : AdncContr
     [HttpPost]
     [AdncAuthorize(PermissionConsts.SysConfig.Create)]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    public async Task<ActionResult<long>> CreateAsync([FromBody] SysConfigCreationDto input)
+    public async Task<ActionResult<IdDto>> CreateAsync([FromBody] SysConfigCreationDto input)
         => CreatedResult(await sysConfigService.CreateAsync(input));
 
     /// <summary>

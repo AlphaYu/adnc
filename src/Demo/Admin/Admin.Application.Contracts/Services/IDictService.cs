@@ -12,7 +12,7 @@ public interface IDictService : IAppService
     /// <returns></returns>
     [OperateLog(LogName = "新增字典")]
     [CachingEvict(CacheKey = CachingConsts.DictOptionsListKey)]
-    Task<ServiceResult<long>> CreateAsync(DictCreationDto input);
+    Task<ServiceResult<IdDto>> CreateAsync(DictCreationDto input);
 
     /// <summary>
     /// 修改字典

@@ -12,7 +12,7 @@
         /// <returns></returns>
         [OperateLog(LogName = "新增机构")]
         [CachingEvict(CacheKeys = new string[] { CachingConsts.DetpListCacheKey})]
-        Task<ServiceResult<long>> CreateAsync(OrganizationCreationDto input);
+        Task<ServiceResult<IdDto>> CreateAsync(OrganizationCreationDto input);
 
         /// <summary>
         /// 修改机构
