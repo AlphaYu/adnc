@@ -314,15 +314,14 @@ public class UserService(IEfRepository<User> userRepository, IEfRepository<Role>
     {
         var allRoleCodes = await cacheService.GetAllRoleMenuCodesFromCacheAsync();
         var userValidateInfo = await cacheService.GetUserValidateInfoFromCacheAsync(userContext.Id);
-        var roleIds = userContext.RoleIds.Split(",", StringSplitOptions.RemoveEmptyEntries).Select(x => x.ToLong());
-        var perms = allRoleCodes.Where(x => roleIds.Contains(x.RoleId) && x.Perms.IsNotNullOrEmpty()).SelectMany(x => x.Perms).Distinct();
+        var perms = allRoleCodes.Where(x => userValidateInfo.RoleIds.Contains(x.RoleId) && x.Perms.IsNotNullOrEmpty()).SelectMany(x => x.Perms).Distinct();
 
         var userInfo = new UserInfoDto
         {
             Id = userContext.Id,
             Account = userContext.Account,
             Name = userContext.Name,
-            Avatar = string.Empty,
+            // Avatar = string.Empty,
             Roles = userValidateInfo.RoleCodes,
             Perms = perms.ToArray()
         };

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Adnc.Demo.Admin.Application;
+﻿namespace Adnc.Demo.Admin.Application;
 
 public sealed class MapperProfile : Profile
 {
