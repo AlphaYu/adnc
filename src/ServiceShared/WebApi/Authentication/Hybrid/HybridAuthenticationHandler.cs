@@ -3,13 +3,10 @@
 /// <summary>
 /// Hybrid验证(认证)服务
 /// </summary>
-public sealed class HybridAuthenticationHandler : AuthenticationHandler<HybridSchemeOptions>
+public sealed class HybridAuthenticationHandler(IOptionsMonitor<HybridSchemeOptions> options, ILoggerFactory loggerFactory, UrlEncoder encoder)
+    : AuthenticationHandler<HybridSchemeOptions>(options, loggerFactory, encoder)
 {
-    private ILogger<HybridAuthenticationHandler> _logeer;
-    public HybridAuthenticationHandler(IOptionsMonitor<HybridSchemeOptions> options, ILoggerFactory logger, UrlEncoder encoder) : base(options, logger, encoder)
-    {
-        _logeer = logger.CreateLogger<HybridAuthenticationHandler>();
-    }
+    private ILogger<HybridAuthenticationHandler> logeer = loggerFactory.CreateLogger<HybridAuthenticationHandler>();
 
     protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
     {
@@ -23,11 +20,21 @@ public sealed class HybridAuthenticationHandler : AuthenticationHandler<HybridSc
         if (endpoint.Metadata.GetMetadata<IAllowAnonymous>() is not null)
             return await Task.FromResult(AuthenticateResult.NoResult());
 
-        var authHeader = Request.Headers["Authorization"].ToString();
-        _logeer.LogDebug($"Authorization: {authHeader}");
+        var authHeader = Request.Headers.Authorization.ToString();
+
+        logeer.LogDebug($"{nameof(Request.Headers.Authorization)}: {authHeader}");
+
         if (authHeader.IsNotNullOrWhiteSpace())
         {
             var scheme = authHeader.Split(" ")[0];
+            return await Context.AuthenticateAsync(scheme);
+        }
+
+        var accessToken = Context.Request.Query["access_token"];
+        if (accessToken.IsNotNullOrEmpty())
+        {
+            var scheme = JwtBearerDefaults.AuthenticationScheme;
+            Request.Headers.Authorization = new Microsoft.Extensions.Primitives.StringValues($"{scheme} {accessToken}");
             return await Context.AuthenticateAsync(scheme);
         }
 
