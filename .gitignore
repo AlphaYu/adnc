@@ -10,4 +10,6 @@ txtlogs
 .idea
 /src/.idea
 /src/ServiceShared/.idea
+/src/ServerApi/.idea
+/src/ServerApi/ServiceShared/.idea
 /.env/adnc
