@@ -24,7 +24,7 @@ consul agent \
   -node=consul-client-1 \
   -client=0.0.0.0 \
   -bind=172.25.0.4 \
-  -datacenter=andc_dc \
+  -datacenter=adnc_dc \
   -config-dir=/consul/config \
   -data-dir=/consul/data \
   -retry-join=172.25.0.1
