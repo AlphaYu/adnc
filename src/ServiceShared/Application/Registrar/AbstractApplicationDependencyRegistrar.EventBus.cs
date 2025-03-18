@@ -2,6 +2,7 @@
 using Adnc.Infra.Repository.EfCore.MySql.Configurations;
 using Adnc.Shared.Application.Extensions;
 using DotNetCore.CAP;
+using DotNetCore.CAP.Messages;
 using Microsoft.EntityFrameworkCore;
 using SkyApm.Diagnostics.CAP;
 
@@ -12,15 +13,14 @@ public abstract partial class AbstractApplicationDependencyRegistrar
     /// <summary>
     /// 注册CAP组件(实现事件总线及最终一致性（分布式事务）的一个开源的组件)
     /// </summary>
-    protected virtual void AddCapEventBus<TSubscriber>(
-        Action<CapOptions>? replaceDbAction = null,
-        Action<CapOptions>? replaceMqAction = null)
+    protected virtual void AddCapEventBus<TSubscriber>(Action<CapOptions>? replaceDbAction = null, Action<CapOptions>? replaceMqAction = null, Action<FailedInfo>? failedThresholdCallback = null)
         where TSubscriber : class, ICapSubscribe
     {
         if (this.IsEnableSkyApm())
         {
             SkyApm.AddCap();
         }
+
         Services.AddAdncInfraCap<TSubscriber>(option =>
         {
             if (replaceDbAction is not null)
@@ -30,7 +30,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar
             else
             {
                 var tableNamePrefix = "cap";
-                var mysqlConfig = MysqlSection.Get<MysqlOptions>();
+                var mysqlConfig = MysqlSection.Get<MysqlOptions>() ?? throw new NullReferenceException(nameof(MysqlOptions));
                 option.UseMySql(config =>
                 {
                     config.ConnectionString = mysqlConfig.ConnectionString;
@@ -45,7 +45,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar
             }
             else
             {
-                var rabbitMqConfig = RabbitMqSection.Get<RabbitMqOptions>();
+                var rabbitMqConfig = RabbitMqSection.Get<RabbitMqOptions>() ?? throw new NullReferenceException(nameof(RabbitMqOptions));
                 option.UseRabbitMQ(option =>
                 {
                     option.HostName = rabbitMqConfig.HostName;
@@ -70,21 +70,12 @@ public abstract partial class AbstractApplicationDependencyRegistrar
             option.FailedRetryCount = 50;
             //默认值：NULL,重试阈值的失败回调。当重试达到 FailedRetryCount 设置的值的时候，将调用此 Action 回调
             //，你可以通过指定此回调来接收失败达到最大的通知，以做出人工介入。例如发送邮件或者短信。
-            option.FailedThresholdCallback = (failed) =>
-            {
-                //todo
-            };
+            option.FailedThresholdCallback = failedThresholdCallback;
             //默认值：24*3600 秒（1天后),成功消息的过期时间（秒）。
             //当消息发送或者消费成功时候，在时间达到 SucceedMessageExpiredAfter 秒时候将会从 Persistent 中删除，你可以通过指定此值来设置过期的时间。
             option.SucceedMessageExpiredAfter = 24 * 3600;
             //默认值：1,消费者线程并行处理消息的线程数，当这个值大于1时，将不能保证消息执行的顺序。
             option.ConsumerThreadCount = 1;
-            //Dashboard
-            option.UseDashboard(x =>
-            {
-                x.PathMatch = $"/{ServiceInfo.RelativeRootPath}/cap";
-                //x.UseAuth = false;
-            });
         });
     }
 
