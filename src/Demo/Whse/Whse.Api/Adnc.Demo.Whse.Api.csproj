@@ -39,10 +39,6 @@
 		<PackageReference Include="Adnc.Shared.WebApi" Version="$(Shared_Version)" />
 	</ItemGroup>
 	
-	<ItemGroup>
-		<PackageReference Include="Grpc.AspNetCore" Version="$(Grpc_AspNetCore_Version)" />
-		<Protobuf Include="..\..\Shared\protos\services\whsegrpc.proto" GrpcServices="Server" Link="Grpc\protos\whsegrpc.proto" ProtoRoot="..\..\Shared\protos\" />
-	</ItemGroup>	
 	<ProjectExtensions>
 		<VisualStudio>
 			<UserProperties properties_4launchsettings_1json__JsonSchema="http://json.schemastore.org/launchsettings.json" />

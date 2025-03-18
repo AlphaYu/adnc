@@ -100,6 +100,7 @@ public interface IEfRepository<TEntity> : IEfBaseRepository<TEntity>
     /// <param name="updatingExpressions">需要更新列的表达式树数组</param>
     /// <param name="cancellationToken"><see cref="CancellationToken"/></param>
     /// <returns></returns>
+    [Obsolete($"use {nameof(ExecuteUpdateAsync)} instead")]
     Task<int> UpdateAsync(TEntity entity, Expression<Func<TEntity, object>>[] updatingExpressions, CancellationToken cancellationToken = default);
 
     /// <summary>

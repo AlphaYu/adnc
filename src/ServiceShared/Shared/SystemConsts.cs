@@ -32,9 +32,9 @@
         public const string RabbitMq = "RabbitMq";
         public const string MongoDb = "MongoDb";
         public const string MongoDb_ConnectionString = "MongoDb:ConnectionString";
-        public const string RpcAddressInfo = "RpcAddressInfo";
-        public const string RpcPartners = "RpcPartners";
+        public const string RpcInfo = "RpcInfo";
         public const string JWT = "JWT";
+        public const string Basic = "Basic";
         public const string Logging = "Logging";
         public const string Logging_LogContainer = "Logging:LogContainer";
         public const string SwaggerUI = "SwaggerUI";
@@ -48,6 +48,6 @@
         public const string Direct = "direct";
         public const string Consul = "consul";
         public const string Nacos = "nacos";
-        public const string ClusterIP = "clusterip";
+        public const string CoreDns = "coredns";
     }
 }

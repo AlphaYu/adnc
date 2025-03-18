@@ -3,6 +3,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="Adnc.Infra.Consul" Version="0.9.9.1" />
+		<PackageReference Include="Ocelot" Version="23.4.3" />
 		<PackageReference Include="Ocelot.Provider.Consul" Version="23.4.3" />
 		<PackageReference Include="Ocelot.Provider.Polly" Version="23.4.3" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="$(Microsoft_AspNetCore_Authentication_JwtBearer_Version)" />

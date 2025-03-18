@@ -19,7 +19,7 @@ namespace Adnc.Gateway.Ocelot
                 outputHtml.Append($"<br>--------------------------------------------------------------------------------------------<br>");
                 foreach (var  router in serviceRoters)
                 {
-                    if (router.Name.StartsWith("auth-")) 
+                    if (router.Name.Contains("auth")) 
                         continue;
 
                     outputHtml.Append($"<a href='{router.Path}' target='_blank'>{router.Name}</a>&nbsp;&nbsp;<b>");

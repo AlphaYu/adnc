@@ -12,20 +12,19 @@ public abstract partial class AbstractApplicationDependencyRegistrar
     protected virtual void AddRedisCaching(Action<IServiceCollection>? action = null)
     {
         action?.Invoke(Services);
-        if(this.IsEnableSkyApm())
+        if (this.IsEnableSkyApm())
         {
             SkyApm.AddRedisCaching();
         }
-        Services.AddAdncInfraRedisCaching(RedisSection,CachingSection);
+        Services.AddAdncInfraRedisCaching(RedisSection, CachingSection);
+
         var serviceType = typeof(ICachePreheatable);
-        var implTypes = ApplicationLayerAssembly.ExportedTypes.Where(type => type.IsAssignableTo(serviceType) && type.IsNotAbstractClass(true));
-        if (implTypes.IsNotNullOrEmpty())
+        var implType = ApplicationLayerAssembly.ExportedTypes.SingleOrDefault(type => type.IsAssignableTo(serviceType) && type.IsNotAbstractClass(true));
+        if (implType is not null)
         {
-            implTypes.ForEach(implType =>
-            {
-                Services.AddSingleton(implType, implType);
-                Services.AddSingleton(x => (ICachePreheatable)x.GetRequiredService(implType));
-            });
+            Services.AddSingleton(implType);
+            Services.AddSingleton(x => (ICachePreheatable)x.GetRequiredService(implType));
+            Services.AddHostedService<CachingHostedService>();
         }
     }
 
@@ -40,6 +39,12 @@ public abstract partial class AbstractApplicationDependencyRegistrar
         var serviceType = typeof(IBloomFilter);
         var implTypes = ApplicationLayerAssembly.ExportedTypes.Where(type => type.IsAssignableTo(serviceType) && type.IsNotAbstractClass(true)).ToList();
         if (implTypes.IsNotNullOrEmpty())
+        {
+            Services.AddSingleton<IBloomFilter, NullBloomFilter>();
+            Services.AddSingleton<BloomFilterFactory>();
+            Services.AddHostedService<BloomFilterHostedService>();
+
             implTypes.ForEach(implType => Services.AddSingleton(serviceType, implType));
+        }
     }
 }

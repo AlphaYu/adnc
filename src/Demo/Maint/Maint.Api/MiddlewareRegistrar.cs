@@ -6,10 +6,7 @@ namespace Adnc.Demo.Maint.Api
     {
         public override  void  UseAdnc()
         {
-            UseWebApiDefault(endpointRoute: endpoint =>
-            {
-                endpoint.MapGrpcService<Grpc.MaintGrpcServer>();
-            });
+            UseWebApiDefault();
         }
     }
 

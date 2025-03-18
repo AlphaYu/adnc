@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+import "google/protobuf/wrappers.proto";
+
+option csharp_namespace = "Adnc.Demo.Remote.Grpc.Messages";
+
+package messages;
+
+message SysConfigSimpleListReply{
+	repeated SysConfigSimpleReply  List = 1;
+}
+
+message SysConfigSimpleReply{
+	string Key = 1;
+	string Name= 2;
+	string Value =3;
+}
+
+message SysConfigSimpleRequest{
+	string Keys = 1;
+}

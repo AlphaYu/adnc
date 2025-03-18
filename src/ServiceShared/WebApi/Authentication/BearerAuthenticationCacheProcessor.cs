@@ -4,29 +4,15 @@ public class ValidationInfo
 {
     public long Id { get; set; } 
     public string? ValidationVersion { get; set; }
-    public int Status { get; set; } 
+    public bool Status { get; set; } 
 }
 
-public class BearerAuthenticationCacheProcessor : AbstractAuthenticationProcessor
+public class BearerAuthenticationCacheProcessor( IHttpContextAccessor contextAccessor, ICacheProvider cacheProvider,ILogger<BearerAuthenticationCacheProcessor> logger)
+    : AbstractAuthenticationProcessor
 {
-    private IHttpContextAccessor _contextAccessor;
-    private ICacheProvider _cacheProvider;
-    private ILogger<BearerAuthenticationCacheProcessor> _logger;
-
-    public BearerAuthenticationCacheProcessor(
-        IHttpContextAccessor contextAccessor,
-        ICacheProvider cacheProvider,
-        ILogger<BearerAuthenticationCacheProcessor> logger
-        )
+    protected override async Task<(string? ValidationVersion, bool Status)> GetValidatedInfoAsync(long userId)
     {
-        _contextAccessor = contextAccessor;
-        _cacheProvider = cacheProvider;
-        _logger = logger;
-    }
-
-    protected override async Task<(string? ValidationVersion, int Status)> GetValidatedInfoAsync(long userId)
-    {
-        var userContext = _contextAccessor?.HttpContext?.RequestServices.GetService<UserContext>();
+        var userContext = contextAccessor?.HttpContext?.RequestServices.GetService<UserContext>();
 
         if (userContext is null)
             throw new NullReferenceException(nameof(userContext));
@@ -34,12 +20,12 @@ public class BearerAuthenticationCacheProcessor : AbstractAuthenticationProcesso
             userContext.Id = userId;
 
         var cacheKey = $"{CacheConsts.UserValidatedInfoKeyPrefix}:{userId}";
-        var validationInfo = await _cacheProvider.GetAsync<ValidationInfo>(cacheKey);
+        var validationInfo = await cacheProvider.GetAsync<ValidationInfo>(cacheKey);
 
         if (validationInfo == null || validationInfo.Value == null)
         {
-            _logger.LogDebug($"cacheValue [{cacheKey}] is null");
-            return (null, 0);
+            logger.LogDebug($"cacheValue [{cacheKey}] is null");
+            return (null, false);
         }
 
         return (validationInfo.Value.ValidationVersion, validationInfo.Value.Status);

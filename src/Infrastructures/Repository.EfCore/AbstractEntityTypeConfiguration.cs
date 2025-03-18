@@ -8,7 +8,8 @@ public abstract class AbstractEntityTypeConfiguration<TEntity> : IEntityTypeConf
         var entityType = typeof(TEntity);
         ConfigureKey(builder, entityType);
         ConfigureConcurrency(builder, entityType);
-        ConfigureQueryFilter(builder, entityType);
+        ConfigureSoftDelete(builder, entityType);
+        ConfigureAuditInfo(builder, entityType);
     }
 
     protected virtual void ConfigureKey(EntityTypeBuilder<TEntity> builder, Type entityType)
@@ -20,17 +21,33 @@ public abstract class AbstractEntityTypeConfiguration<TEntity> : IEntityTypeConf
     protected virtual void ConfigureConcurrency(EntityTypeBuilder<TEntity> builder, Type entityType)
     {
         if (typeof(IConcurrency).IsAssignableFrom(entityType))
-            builder.Property("RowVersion").IsRequired().IsRowVersion().ValueGeneratedOnAddOrUpdate();
+            builder.Property($"{nameof(IConcurrency.RowVersion)}").IsRequired().IsRowVersion().ValueGeneratedOnAddOrUpdate().HasColumnOrder(98);
     }
 
-    protected virtual void ConfigureQueryFilter(EntityTypeBuilder<TEntity> builder, Type entityType)
+    protected virtual void ConfigureSoftDelete(EntityTypeBuilder<TEntity> builder, Type entityType)
     {
+        var filedName = nameof(ISoftDelete.IsDeleted);
         if (typeof(ISoftDelete).IsAssignableFrom(entityType))
         {
-            builder.Property("IsDeleted")
+            builder.Property(filedName)
                        .HasDefaultValue(false)
-                       .HasColumnOrder(2);
-            builder.HasQueryFilter(d => !EF.Property<bool>(d, "IsDeleted"));
+                       .HasColumnOrder(99);
+            builder.HasQueryFilter(d => !EF.Property<bool>(d, filedName));
+        }
+    }
+
+    protected virtual void ConfigureAuditInfo(EntityTypeBuilder<TEntity> builder, Type entityType)
+    {
+        if (typeof(IBasicAuditInfo).IsAssignableFrom(entityType))
+        {
+            builder.Property($"{nameof(IFullAuditInfo.CreateBy)}").HasColumnOrder(100);
+            builder.Property($"{nameof(IFullAuditInfo.CreateTime)}").HasColumnOrder(101);
+        }
+
+        if (typeof(IFullAuditInfo).IsAssignableFrom(entityType))
+        {
+            builder.Property($"{nameof(IFullAuditInfo.ModifyBy)}").HasColumnOrder(102);
+            builder.Property($"{nameof(IFullAuditInfo.ModifyTime)}").HasColumnOrder(103);
         }
     }
 }

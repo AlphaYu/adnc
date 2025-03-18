@@ -10,12 +10,10 @@ public abstract partial class AbstractWebApiDependencyRegistrar
     /// PermissionHandlerLocal  本地授权,adnc.usr走本地授权，其他服务走Rpc授权
     /// </summary>
     /// <typeparam name="THandler"></typeparam>
-    protected virtual void AddAuthorization<TAuthorizationHandler>()
-        where TAuthorizationHandler : AbstractPermissionHandler
+    protected virtual void AddAuthorization<TAuthorizationHandler>() where TAuthorizationHandler : AbstractPermissionHandler
     {
         Services
-            .AddScoped<IAuthorizationHandler, TAuthorizationHandler>();
-        Services
+            .AddScoped<IAuthorizationHandler, TAuthorizationHandler>()
             .AddAuthorization(options =>
             {
                 options.AddPolicy(AuthorizePolicy.Default, policy =>

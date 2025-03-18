@@ -7,9 +7,9 @@
 [ApiController]
 public class WarehouseController : AdncControllerBase
 {
-    private readonly IWarehouseAppService _warehouseSrv;
+    private readonly IWarehouseService _warehouseSrv;
 
-    public WarehouseController(IWarehouseAppService warehouseSrv) => _warehouseSrv = warehouseSrv;
+    public WarehouseController(IWarehouseService warehouseSrv) => _warehouseSrv = warehouseSrv;
 
     /// <summary>
     /// 新建货架
@@ -29,8 +29,8 @@ public class WarehouseController : AdncControllerBase
     /// <summary>
     /// 分页列表
     /// </summary>
-    /// <param name="search"></param>
+    /// <param name="input"></param>
     /// <returns></returns>
     [HttpGet]
-    public async Task<PageModelDto<WarehouseDto>> GetPagedAsync([FromQuery] WarehouseSearchDto search) => await _warehouseSrv.GetPagedAsync(search);
+    public async Task<PageModelDto<WarehouseDto>> GetPagedAsync([FromQuery] WarehouseSearchDto input) => await _warehouseSrv.GetPagedAsync(input);
 }

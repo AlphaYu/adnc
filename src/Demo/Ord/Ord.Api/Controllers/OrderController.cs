@@ -7,9 +7,9 @@
 [ApiController]
 public class OrderController : AdncControllerBase
 {
-    private readonly IOrderAppService _orderSrv;
+    private readonly IOrderService _orderSrv;
 
-    public OrderController(IOrderAppService orderSrv) => _orderSrv = orderSrv;
+    public OrderController(IOrderService orderSrv) => _orderSrv = orderSrv;
 
     /// <summary>
     /// 新建订单
@@ -66,8 +66,8 @@ public class OrderController : AdncControllerBase
     /// <summary>
     /// 订单分页列表
     /// </summary>
-    /// <param name="search"></param>
+    /// <param name="input"></param>
     /// <returns></returns>
     [HttpGet("page")]
-    public async Task<ActionResult<PageModelDto<OrderDto>>> GetPagedAsync([FromQuery] OrderSearchPagedDto search) => await _orderSrv.GetPagedAsync(search);
+    public async Task<ActionResult<PageModelDto<OrderDto>>> GetPagedAsync([FromQuery] OrderSearchPagedDto input) => await _orderSrv.GetPagedAsync(input);
 }

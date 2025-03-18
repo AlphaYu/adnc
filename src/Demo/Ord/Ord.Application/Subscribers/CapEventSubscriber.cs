@@ -2,12 +2,12 @@
 
 public sealed class CapEventSubscriber : ICapSubscribe
 {
-    private readonly IOrderAppService _orderSrv;
+    private readonly IOrderService _orderSrv;
     private readonly ILogger<CapEventSubscriber> _logger;
     private readonly IMessageTracker _tracker;
 
     public CapEventSubscriber(
-        IOrderAppService orderSrv,
+        IOrderService orderSrv,
         ILogger<CapEventSubscriber> logger,
         MessageTrackerFactory trackerFactory)
     {

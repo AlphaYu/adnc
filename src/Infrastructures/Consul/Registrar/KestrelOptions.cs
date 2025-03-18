@@ -3,34 +3,34 @@
 /// <summary>
 /// Represents options for Kestrel server.
 /// </summary>
-internal class KestrelOptions
+public class KestrelOptions
 {
     /// <summary>
     /// Gets or sets the endpoints for the Kestrel server.
     /// </summary>
-    internal IDictionary<string, Endpoint> Endpoints { get; init; } = new Dictionary<string, Endpoint>();
+    public IDictionary<string, Endpoint> Endpoints { get; init; } = new Dictionary<string, Endpoint>();
 
     /// <summary>
     /// Represents an endpoint for the Kestrel server.
     /// </summary>
-    internal class Endpoint
+    public class Endpoint
     {
         private const string DefaultProtocols = "Http1AndHttp2";
 
         /// <summary>
         /// The URL associated with the endpoint.
         /// </summary>
-        internal string Url { get; set; } = string.Empty;
+        public string Url { get; set; } = string.Empty;
 
         /// <summary>
         /// The protocols associated with the endpoint. Defaults to "Http1AndHttp2" if not specified.
         /// </summary>
-        internal string Protocols { get; set; } = DefaultProtocols;
+        public string Protocols { get; set; } = DefaultProtocols;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Endpoint"/> class.
         /// </summary>
-        internal Endpoint()
+        public Endpoint()
         {
         }
     }

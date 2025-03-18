@@ -7,7 +7,7 @@ public class CachingHostedService : BackgroundService
     private readonly ICachePreheatable _cachePreheatService;
 
     public CachingHostedService(
-        ILogger<CachingHostedService> logger,
+       ILogger<CachingHostedService> logger,
        ICacheProvider cacheProvider,
        ICachePreheatable cachePreheatService)
     {
@@ -27,6 +27,7 @@ public class CachingHostedService : BackgroundService
             while (!stoppingToken.IsCancellationRequested)
             {
                 if (!LocalVariables.Instance.Queue.TryDequeue(out LocalVariables.Model? model)
+                    || model is null
                     || model.CacheKeys.IsNullOrEmpty()
                     || DateTime.Now > model.ExpireDt)
                 {

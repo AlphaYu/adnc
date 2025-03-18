@@ -1,10 +1,5 @@
-﻿namespace Adnc.Demo.Shared.Const.Caching.Cust;
+﻿namespace Adnc.Demo.Const.Caching.Cust;
 
 public class CachingConsts
 {
-    //cache key
-
-    //cache prefix
-
-    //bloomfilter
 }

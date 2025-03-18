@@ -2,12 +2,12 @@
 
 public sealed class CapEventSubscriber : ICapSubscribe
 {
-    private readonly IWarehouseAppService _wareHouserSrv;
+    private readonly IWarehouseService _wareHouserSrv;
     private readonly ILogger<CapEventSubscriber> _logger;
     private readonly IMessageTracker _tracker;
 
     public CapEventSubscriber(
-        IWarehouseAppService wareHouserSrv,
+        IWarehouseService wareHouserSrv,
         ILogger<CapEventSubscriber> logger,
         MessageTrackerFactory trackerFactory)
     {

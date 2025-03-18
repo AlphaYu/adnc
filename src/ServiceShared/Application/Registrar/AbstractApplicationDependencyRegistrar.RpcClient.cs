@@ -1,7 +1,9 @@
 ﻿using Adnc.Infra.Consul.Discover.GrpcResolver;
 using Adnc.Infra.Consul.Discover.Handler;
+using Adnc.Shared.Remote;
 using Adnc.Shared.Remote.Handlers;
 using Adnc.Shared.Remote.Handlers.Token;
+using Adnc.Shared.Remote.Http;
 using Grpc.Core;
 using Grpc.Net.Client.Balancer;
 using Grpc.Net.Client.Configuration;
@@ -21,41 +23,36 @@ public abstract partial class AbstractApplicationDependencyRegistrar
     /// <param name="serviceName">在注册中心注册的服务名称，或者服务的Url</param>
     /// <param name="policies">Polly策略</param>
     protected virtual void AddRestClient<TRestClient>(string serviceName, List<IAsyncPolicy<HttpResponseMessage>> policies)
-     where TRestClient : class
+     where TRestClient : class,IRestClient
     {
-        var addressNode = RpcAddressInfo.FirstOrDefault(x => x.Service.EqualsIgnoreCase(serviceName));
-        if (addressNode is null)
-            throw new NullReferenceException(nameof(addressNode));
+        if(string.IsNullOrWhiteSpace(serviceName))
+            throw new ArgumentNullException(nameof(serviceName));
 
-        if(_theFirstCalled)
-        {
-            _theFirstCalled = false;
-            Services.AddScoped<CacheDelegatingHandler>();
-            Services.AddScoped<TokenDelegatingHandler>();
-            Services.AddScoped<ConsulDiscoverDelegatingHandler>();
-            Services.AddSingleton<TokenFactory>();
-            Services.AddSingleton<ITokenGenerator, BasicTokenGenerator>();
-            Services.AddSingleton<ITokenGenerator, BearerTokenGenerator>();
-        }
+        if (RpcInfoOption is null)
+            throw new NullReferenceException(nameof(RpcInfoOption));
+        else
+            AddRpcClientCommonServices(Services, RpcInfoOption);
 
-        var registeredType = Configuration.GetValue<string>(NodeConsts.RegisteredType) ?? "direct";
+        var enablePolly = RpcInfoOption.Polly.Enable;
         //注册RefitClient,设置httpclient生命周期时间，默认也是2分钟。
         var contentSerializer = new SystemTextJsonContentSerializer(SystemTextJson.GetAdncDefaultOptions());
         var refitSettings = new RefitSettings(contentSerializer);
         var clientbuilder = Services.AddRefitClient<TRestClient>(refitSettings)
                                                     .SetHandlerLifetime(TimeSpan.FromMinutes(2))
-                                                    .AddPolicyHandlerICollection(policies)
+                                                    .AddPolicyHandlerICollection(enablePolly ? policies : [])
                                                     //.UseHttpClientMetrics()
                                                     .AddHttpMessageHandler<CacheDelegatingHandler>()
                                                     .AddHttpMessageHandler<TokenDelegatingHandler>();
-        switch (registeredType)
+
+        var addressNode = RpcInfoOption.Address.First(x => x.Service.EqualsIgnoreCase(serviceName));
+        switch (RpcInfoOption.Type.ToLower())
         {
             case RegisteredTypeConsts.Direct:
                 {
                     clientbuilder.ConfigureHttpClient(httpClient => httpClient.BaseAddress = new Uri(addressNode.Direct));
                     break;
                 }
-            case RegisteredTypeConsts.ClusterIP:
+            case RegisteredTypeConsts.CoreDns:
                 {
                     clientbuilder.ConfigureHttpClient(httpClient => httpClient.BaseAddress = new Uri(addressNode.CoreDns));
                     break;
@@ -72,10 +69,9 @@ public abstract partial class AbstractApplicationDependencyRegistrar
                     break;
                 }
             default: 
-                throw new NotImplementedException(registeredType);
+                throw new NotImplementedException(RpcInfoOption.Type);
         }
     }
-
 
     /// <summary>
     /// 注册Grpc服务(跨微服务之间的同步通讯)
@@ -84,31 +80,24 @@ public abstract partial class AbstractApplicationDependencyRegistrar
     /// <param name="serviceName">在注册中心注册的服务名称，或者服务的Url</param>
     /// <param name="policies">Polly策略</param>
     protected virtual void AddGrpcClient<TGrpcClient>(string serviceName, List<IAsyncPolicy<HttpResponseMessage>> policies)
-     where TGrpcClient : class
+     where TGrpcClient : ClientBase<TGrpcClient>
     {
-        var addressNode = RpcAddressInfo.FirstOrDefault(x => x.Service.EqualsIgnoreCase(serviceName));
-        if (addressNode is null)
-            throw new NullReferenceException(nameof(addressNode));
+        if (string.IsNullOrWhiteSpace(serviceName))
+            throw new ArgumentNullException(nameof(serviceName));
 
-        if(_theFirstCalled)
-        {
-            _theFirstCalled = false;
-            Services.AddScoped<CacheDelegatingHandler>();
-            Services.AddScoped<TokenDelegatingHandler>();
-            Services.AddScoped<ConsulDiscoverDelegatingHandler>();
-            Services.AddSingleton<TokenFactory>();
-            Services.AddSingleton<ITokenGenerator, BasicTokenGenerator>();
-            Services.AddSingleton<ITokenGenerator, BearerTokenGenerator>();
-        }
+        if (RpcInfoOption is null)
+            throw new NullReferenceException(nameof(RpcInfoOption));
+        else
+            AddRpcClientCommonServices(Services, RpcInfoOption);
 
-        var registeredType = Configuration.GetValue(NodeConsts.RegisteredType, "direct");
         var switchName = "System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport";
         var switchResult = AppContext.TryGetSwitch(switchName, out bool isEnabled);
         if (!switchResult || !isEnabled)
             AppContext.SetSwitch(switchName, true);
 
         var baseAddress = string.Empty;
-        switch (registeredType)
+        var addressNode = RpcInfoOption.Address.First(x => x.Service.EqualsIgnoreCase(serviceName));
+        switch (RpcInfoOption.Type.ToLower())
         {
             case RegisteredTypeConsts.Direct:
                 {
@@ -116,7 +105,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar
                     baseAddress = $"{restBaseAddress.Scheme}://{restBaseAddress.Host}:{restBaseAddress.Port + 1}";
                     break;
                 }
-            case RegisteredTypeConsts.ClusterIP:
+            case RegisteredTypeConsts.CoreDns:
                 {
                     baseAddress = addressNode.CoreDns.Replace("http://", "dns://").Replace("https://", "dns://");
                     break;
@@ -127,8 +116,16 @@ public abstract partial class AbstractApplicationDependencyRegistrar
                     Services.TryAddSingleton<ResolverFactory, ConsulGrpcResolverFactory>();
                     break;
                 }
+            case RegisteredTypeConsts.Nacos:
+                {
+                    //todo
+                    break;
+                }
+            default:
+                throw new NotImplementedException(RpcInfoOption.Type);
         }
 
+        var enablePolly = RpcInfoOption.Polly.Enable;
         Services.AddGrpcClient<TGrpcClient>(options => options.Address = new Uri(baseAddress))
                      .ConfigureChannel(options =>
                      {
@@ -136,15 +133,26 @@ public abstract partial class AbstractApplicationDependencyRegistrar
                          options.ServiceConfig = new ServiceConfig { LoadBalancingConfigs = { new RoundRobinConfig() } };
                      })
                      .AddHttpMessageHandler<TokenDelegatingHandler>()
-                     .AddPolicyHandlerICollection(policies);
+                     .AddPolicyHandlerICollection(enablePolly ? policies : []);
     }
 
-}
-
-public class AddressNode
-{
-    public string Service { get; set; } = string.Empty;
-    public string Direct { get; set; } = string.Empty;
-    public string Consul { get; set; } = string.Empty;
-    public string CoreDns { get; set; } = string.Empty;
+    /// <summary>
+    /// 注册RpcClient通用服务
+    /// </summary>
+    /// <param name="services"></param>
+    /// <param name="rpcInfo"></param>
+    private static void AddRpcClientCommonServices(IServiceCollection services, RpcInfo rpcInfo)
+    {
+        if (_theFirstCalled)
+        {
+            _theFirstCalled = false;
+            services.AddSingleton(rpcInfo);
+            services.AddScoped<CacheDelegatingHandler>();
+            services.AddScoped<TokenDelegatingHandler>();
+            services.AddScoped<ConsulDiscoverDelegatingHandler>();
+            services.AddSingleton<TokenFactory>();
+            services.AddSingleton<ITokenGenerator, BasicTokenGenerator>();
+            services.AddSingleton<ITokenGenerator, BearerTokenGenerator>();
+        }
+    }
 }

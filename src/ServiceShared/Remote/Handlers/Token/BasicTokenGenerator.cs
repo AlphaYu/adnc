@@ -1,29 +1,19 @@
-﻿namespace Adnc.Shared.Remote.Handlers.Token;
+﻿using Microsoft.Extensions.Options;
 
-public class BasicTokenGenerator : ITokenGenerator
+namespace Adnc.Shared.Remote.Handlers.Token;
+
+public class BasicTokenGenerator(IHttpContextAccessor httpContextAccessor, IOptions<BasicOptions> basicOptions, ILogger<BasicTokenGenerator> logger) : ITokenGenerator
 {
-    private readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly ILogger<BasicTokenGenerator> _logger;
-
-    public BasicTokenGenerator(
-        IHttpContextAccessor httpContextAccessor,
-        ILogger<BasicTokenGenerator> logger)
-    {
-        _httpContextAccessor = httpContextAccessor;
-        _logger = logger;
-    }
-
     public static string Scheme => "Basic";
 
     public string GeneratorName => Scheme;
 
     public virtual string Create()
     {
-        var userContext = _httpContextAccessor.HttpContext.RequestServices.GetService<UserContext>();
+        var userContext = httpContextAccessor.HttpContext.RequestServices.GetService<UserContext>();
         long userId = userContext is null ? 0 : userContext.Id;
-        _logger.LogDebug($"UserContext:{userId}");
-        var userName = $"{BasicTokenValidator.InternalCaller}-{userId}";
-        var token = BasicTokenValidator.PackToBase64(userName);
+        logger.LogDebug($"UserContext:{userId}");
+        var token = BasicTokenValidator.PackToBase64(userId, basicOptions.Value);
         return token;
     }
 }

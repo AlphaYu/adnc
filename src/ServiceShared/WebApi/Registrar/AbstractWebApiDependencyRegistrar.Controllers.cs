@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using System.Text.Json.Serialization;
 using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
 
 namespace Adnc.Shared.WebApi.Registrar;
@@ -17,8 +18,8 @@ public abstract partial class AbstractWebApiDependencyRegistrar
             .AddControllers(options => options.Filters.Add(typeof(CustomExceptionFilterAttribute)))
             .AddJsonOptions(options =>
             {
-                options.JsonSerializerOptions.Converters.Add(new DateTimeConverter());
-                options.JsonSerializerOptions.Converters.Add(new DateTimeNullableConverter());
+                //options.JsonSerializerOptions.Converters.Add(new DateTimeConverter());
+                //options.JsonSerializerOptions.Converters.Add(new DateTimeNullableConverter());
                 options.JsonSerializerOptions.Encoder = SystemTextJson.GetAdncDefaultEncoder();
                 //该值指示是否允许、不允许或跳过注释。
                 options.JsonSerializerOptions.ReadCommentHandling = JsonCommentHandling.Skip;

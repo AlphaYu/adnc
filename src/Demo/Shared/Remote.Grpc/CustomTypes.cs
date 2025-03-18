@@ -1,4 +1,4 @@
-﻿namespace Adnc.Demo.Shared.Remote.Grpc.Messages;
+﻿namespace Adnc.Demo.Remote.Grpc.Messages;
 
 public partial class DecimalValue
 {

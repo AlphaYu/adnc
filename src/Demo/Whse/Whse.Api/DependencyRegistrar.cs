@@ -21,8 +21,6 @@ public sealed class DependencyRegistrar(IServiceCollection services, IServiceInf
                     .AddRedis(Configuration)
                     .AddRabbitMQ(Configuration, ServiceInfo.Id);
         });
-
-        Services.AddGrpc();
     }
 }
 

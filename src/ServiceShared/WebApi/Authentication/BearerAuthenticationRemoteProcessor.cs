@@ -17,7 +17,7 @@ public class BearerAuthenticationRemoteProcessor : AbstractAuthenticationProcess
         _logger = logger;
     }
 
-    protected override async Task<(string? ValidationVersion, int Status)> GetValidatedInfoAsync(long userId)
+    protected override async Task<(string? ValidationVersion, bool Status)> GetValidatedInfoAsync(long userId)
     {
         var userContext = _contextAccessor?.HttpContext?.RequestServices.GetService<UserContext>();
         if (userContext is null)
@@ -30,7 +30,7 @@ public class BearerAuthenticationRemoteProcessor : AbstractAuthenticationProcess
         {
             var message = $"{apiReuslt.StatusCode}:{apiReuslt.Error?.Message}";
             _logger.LogDebug(message);
-            return (null, 0);
+            return (null, false);
         }
 
         return (apiReuslt?.Content?.ValidationVersion, apiReuslt.Content.Status);

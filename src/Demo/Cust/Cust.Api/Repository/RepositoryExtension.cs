@@ -1,6 +1,4 @@
-﻿using Adnc.Demo.Cust.Api.Repository.Entities;
-
-namespace Adnc.Demo.Cust.Api.Repository
+﻿namespace Adnc.Demo.Cust.Api.Repository
 {
     public static class RepositoryExtension
     {
@@ -18,12 +16,12 @@ namespace Adnc.Demo.Cust.Api.Repository
             where TResult : notnull
         {
             var adoQuerier = repository.AdoQuerier ?? throw new NullReferenceException("AdoQuerier is null");
-            string countSql = $"select count(*) from customer {condition.Where}";
+            string countSql = $"select count(*) from cust_customer {condition.Where}";
             var total = await adoQuerier.QuerySingleAsync<int>(countSql, condition.Param);
             if (total == 0)
                 return new QueryPageResult<TResult>(total);
 
-            string sql = $"select * from customer  {condition.Where} {condition.OrderBy} limit {offset},{rows}";
+            string sql = $"select * from cust_customer  {condition.Where} {condition.OrderBy} limit {offset},{rows}";
             var result = await adoQuerier.QueryAsync<TResult>(sql, condition.Param);
             return new QueryPageResult<TResult>(total, result);
         }

@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+import "google/protobuf/wrappers.proto";
+
+option csharp_namespace = "Adnc.Demo.Remote.Grpc.Messages";
+
+package messages;
+
+message DictOptionRequest{
+	string Codes = 1;
+}
+
+message DictOptionListReply{
+    repeated DictOptionReply List = 1;
+}
+
+message DictOptionReply {
+    string name = 1;
+    string code = 2;
+    repeated DataOption dictDataList = 3;
+
+    message DataOption {
+        string label = 1;
+        string value = 2;
+        string tagType = 3;
+    }
+}

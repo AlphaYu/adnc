@@ -1,5 +1,6 @@
 ﻿using Adnc.Shared.WebApi.Authentication;
 using Adnc.Shared.WebApi.Authentication.Basic;
+using Adnc.Shared.WebApi.Authentication.Bearer;
 using Adnc.Shared.WebApi.Authentication.Hybrid;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -11,13 +12,13 @@ public abstract partial class AbstractWebApiDependencyRegistrar
     /// <summary>
     /// 注册身份认证组件
     /// </summary>
-    protected virtual void AddAuthentication<TAuthenticationHandler>()
-        where TAuthenticationHandler : AbstractAuthenticationProcessor
+    protected virtual void AddAuthentication<TAuthenticationHandler>() where TAuthenticationHandler : AbstractAuthenticationProcessor
     {
         JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
         Services
-            .AddScoped<AbstractAuthenticationProcessor, TAuthenticationHandler>();
-        Services
+            .Configure<JWTOptions>(Configuration.GetSection(NodeConsts.JWT))
+            .Configure<BasicOptions>(Configuration.GetSection(NodeConsts.Basic))
+            .AddScoped<AbstractAuthenticationProcessor, TAuthenticationHandler>()
             .AddAuthentication(HybridDefaults.AuthenticationScheme)
             .AddHybrid()
             .AddBasic(options => options.Events.OnTokenValidated = (context) =>

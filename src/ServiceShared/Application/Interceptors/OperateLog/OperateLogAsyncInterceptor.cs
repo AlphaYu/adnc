@@ -3,18 +3,8 @@
 /// <summary>
 /// 操作日志拦截器
 /// </summary>
-public sealed class OperateLogAsyncInterceptor : IAsyncInterceptor
+public sealed class OperateLogAsyncInterceptor(UserContext userContext, ILogger<OperateLogAsyncInterceptor> logger) : IAsyncInterceptor
 {
-    private readonly UserContext _userContext;
-    private readonly ILogger<OperateLogAsyncInterceptor> _logger;
-
-    public OperateLogAsyncInterceptor(UserContext userContext
-        , ILogger<OperateLogAsyncInterceptor> logger)
-    {
-        _userContext = userContext;
-        _logger = logger;
-    }
-
     /// <summary>
     /// 同步拦截器
     /// </summary>
@@ -61,7 +51,8 @@ public sealed class OperateLogAsyncInterceptor : IAsyncInterceptor
     {
         var methodInfo = invocation.Method ?? invocation.MethodInvocationTarget;
         var fullName = methodInfo.DeclaringType?.FullName ?? string.Empty;
-        var log = CreateOpsLog(fullName, methodInfo.Name, attribute.LogName, invocation.Arguments, _userContext);
+        var startTime = DateTime.Now;
+        var log = CreateOpsLog(fullName, methodInfo.Name, attribute.LogName, invocation.Arguments, userContext);
         try
         {
             invocation.Proceed();
@@ -73,6 +64,7 @@ public sealed class OperateLogAsyncInterceptor : IAsyncInterceptor
         }
         finally
         {
+            log.ExecutionTime = (int)(DateTime.Now - startTime).TotalMilliseconds;
             WriteOpsLog(log);
         }
     }
@@ -81,7 +73,8 @@ public sealed class OperateLogAsyncInterceptor : IAsyncInterceptor
     {
         var methodInfo = invocation.Method ?? invocation.MethodInvocationTarget;
         var fullName = methodInfo.DeclaringType?.FullName ?? string.Empty;
-        var log = CreateOpsLog(fullName, methodInfo.Name, attribute.LogName, invocation.Arguments, _userContext);
+        var startTime = DateTime.Now;
+        var log = CreateOpsLog(fullName, methodInfo.Name, attribute.LogName, invocation.Arguments, userContext);
 
         try
         {
@@ -96,6 +89,7 @@ public sealed class OperateLogAsyncInterceptor : IAsyncInterceptor
         }
         finally
         {
+            log.ExecutionTime = (int)(DateTime.Now - startTime).TotalMilliseconds;
             WriteOpsLog(log);
         }
     }
@@ -113,7 +107,8 @@ public sealed class OperateLogAsyncInterceptor : IAsyncInterceptor
 
         var methodInfo = invocation.Method ?? invocation.MethodInvocationTarget;
         var fullName = methodInfo.DeclaringType?.FullName ?? string.Empty;
-        var log = CreateOpsLog(fullName, methodInfo.Name, attribute.LogName, invocation.Arguments, _userContext);
+        var startTime = DateTime.Now;
+        var log = CreateOpsLog(fullName, methodInfo.Name, attribute.LogName, invocation.Arguments, userContext);
 
         try
         {
@@ -128,6 +123,7 @@ public sealed class OperateLogAsyncInterceptor : IAsyncInterceptor
         }
         finally
         {
+            log.ExecutionTime = (int)(DateTime.Now - startTime).TotalMilliseconds;
             WriteOpsLog(log);
         }
         return result;
@@ -145,6 +141,16 @@ public sealed class OperateLogAsyncInterceptor : IAsyncInterceptor
 
     private OperationLog CreateOpsLog(string className, string methodName, string logName, object[] arguments, UserContext userContext)
     {
+        var message = string.Empty;
+        if (arguments is not null)
+        {
+            message = JsonSerializer.Serialize(arguments, SystemTextJson.GetAdncDefaultOptions());
+            if (message.Length > 1000)
+            {
+                message = message.Substring(0, 1000);
+            }
+        }
+
         var log = new OperationLog
         {
             Id = IdGenerater.GetNextId(),
@@ -152,11 +158,11 @@ public sealed class OperateLogAsyncInterceptor : IAsyncInterceptor
             CreateTime = DateTime.Now,
             LogName = logName,
             LogType = "操作日志",
-            Message = JsonSerializer.Serialize(arguments, SystemTextJson.GetAdncDefaultOptions()),
+            Message = message,
             Method = methodName,
             Succeed = false,
             UserId = userContext.Id,
-            UserName = userContext.Name,
+            Name = userContext.Name,
             Account = userContext.Account,
             RemoteIpAddress = userContext.RemoteIpAddress
         };
@@ -171,12 +177,12 @@ public sealed class OperateLogAsyncInterceptor : IAsyncInterceptor
             ////设置消息持久化
             //properties.Persistent = true;
             //_mqProducer.BasicPublish(MqExchanges.Logs, MqRoutingKeys.OpsLog, logInfo, properties);
-            var operationLogWriter = Channels.Accessor<OperationLog>.Instance.Writer;
+            var operationLogWriter = Channels.LogAccessor<OperationLog>.Instance.Writer;
             operationLogWriter.WriteAsync(logInfo).GetAwaiter().GetResult();
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex.Message, ex);
+            logger.LogError(ex.Message, ex);
         }
     }
 

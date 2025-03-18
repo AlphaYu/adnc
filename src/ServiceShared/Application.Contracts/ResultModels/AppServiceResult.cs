@@ -3,6 +3,7 @@
 /// <summary>
 /// Application返回结果包装类,无返回类型(void,task)
 /// </summary>
+[Obsolete($"use {nameof(ServiceResult)} instead")]
 [Serializable]
 public sealed class AppSrvResult
 {
@@ -28,6 +29,7 @@ public sealed class AppSrvResult
 /// <summary>
 /// Application返回结果包装类,有返回类型
 /// </summary>
+[Obsolete($"use {nameof(ServiceResult)} instead")]
 [Serializable]
 public sealed class AppSrvResult<TValue>
 {

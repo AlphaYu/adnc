@@ -3,6 +3,7 @@ using System;
 using Adnc.Infra.Repository.EfCore.MySql;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -16,206 +17,21 @@ namespace Adnc.Demo.Maint.Repository.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.6")
+                .HasAnnotation("ProductVersion", "8.0.13")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             MySqlModelBuilderExtensions.HasCharSet(modelBuilder, "utf8mb4 ");
-
-            modelBuilder.Entity("Adnc.Demo.Maint.Repository.Entities.Cfg", b =>
-                {
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint")
-                        .HasColumnName("id")
-                        .HasColumnOrder(1)
-                        .HasComment("");
-
-                    b.Property<long>("CreateBy")
-                        .HasColumnType("bigint")
-                        .HasColumnName("createby")
-                        .HasComment("创建人");
-
-                    b.Property<DateTime>("CreateTime")
-                        .HasColumnType("datetime(6)")
-                        .HasColumnName("createtime")
-                        .HasComment("创建时间/注册时间");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("varchar(256)")
-                        .HasColumnName("description")
-                        .HasComment("备注");
-
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("tinyint(1)")
-                        .HasDefaultValue(false)
-                        .HasColumnName("isdeleted")
-                        .HasColumnOrder(2)
-                        .HasComment("");
-
-                    b.Property<long?>("ModifyBy")
-                        .HasColumnType("bigint")
-                        .HasColumnName("modifyby")
-                        .HasComment("最后更新人");
-
-                    b.Property<DateTime?>("ModifyTime")
-                        .HasColumnType("datetime(6)")
-                        .HasColumnName("modifytime")
-                        .HasComment("最后更新时间");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("varchar(64)")
-                        .HasColumnName("name")
-                        .HasComment("参数名");
-
-                    b.Property<string>("Value")
-                        .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("varchar(128)")
-                        .HasColumnName("value")
-                        .HasComment("参数值");
-
-                    b.HasKey("Id")
-                        .HasName("pk_sys_config");
-
-                    b.ToTable("sys_config", (string)null);
-
-                    b.HasComment("系统参数");
-                });
-
-            modelBuilder.Entity("Adnc.Demo.Maint.Repository.Entities.Dict", b =>
-                {
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint")
-                        .HasColumnName("id")
-                        .HasColumnOrder(1)
-                        .HasComment("");
-
-                    b.Property<long>("CreateBy")
-                        .HasColumnType("bigint")
-                        .HasColumnName("createby")
-                        .HasComment("创建人");
-
-                    b.Property<DateTime>("CreateTime")
-                        .HasColumnType("datetime(6)")
-                        .HasColumnName("createtime")
-                        .HasComment("创建时间/注册时间");
-
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("tinyint(1)")
-                        .HasDefaultValue(false)
-                        .HasColumnName("isdeleted")
-                        .HasColumnOrder(2)
-                        .HasComment("");
-
-                    b.Property<long?>("ModifyBy")
-                        .HasColumnType("bigint")
-                        .HasColumnName("modifyby")
-                        .HasComment("最后更新人");
-
-                    b.Property<DateTime?>("ModifyTime")
-                        .HasColumnType("datetime(6)")
-                        .HasColumnName("modifytime")
-                        .HasComment("最后更新时间");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("varchar(64)")
-                        .HasColumnName("name")
-                        .HasComment("");
-
-                    b.Property<int>("Ordinal")
-                        .HasColumnType("int")
-                        .HasColumnName("ordinal")
-                        .HasComment("");
-
-                    b.Property<long>("Pid")
-                        .HasColumnType("bigint")
-                        .HasColumnName("pid")
-                        .HasComment("");
-
-                    b.Property<string>("Value")
-                        .IsRequired()
-                        .HasMaxLength(16)
-                        .HasColumnType("varchar(16)")
-                        .HasColumnName("value")
-                        .HasComment("");
-
-                    b.HasKey("Id")
-                        .HasName("pk_sys_dictionary");
-
-                    b.ToTable("sys_dictionary", (string)null);
-
-                    b.HasComment("字典");
-                });
-
-            modelBuilder.Entity("Adnc.Demo.Maint.Repository.Entities.Notice", b =>
-                {
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint")
-                        .HasColumnName("id")
-                        .HasColumnOrder(1)
-                        .HasComment("");
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("varchar(255)")
-                        .HasColumnName("content")
-                        .HasComment("");
-
-                    b.Property<long>("CreateBy")
-                        .HasColumnType("bigint")
-                        .HasColumnName("createby")
-                        .HasComment("创建人");
-
-                    b.Property<DateTime>("CreateTime")
-                        .HasColumnType("datetime(6)")
-                        .HasColumnName("createtime")
-                        .HasComment("创建时间/注册时间");
-
-                    b.Property<long?>("ModifyBy")
-                        .HasColumnType("bigint")
-                        .HasColumnName("modifyby")
-                        .HasComment("最后更新人");
-
-                    b.Property<DateTime?>("ModifyTime")
-                        .HasColumnType("datetime(6)")
-                        .HasColumnName("modifytime")
-                        .HasComment("最后更新时间");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("varchar(64)")
-                        .HasColumnName("title")
-                        .HasComment("");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int")
-                        .HasColumnName("type")
-                        .HasComment("");
-
-                    b.HasKey("Id")
-                        .HasName("pk_sys_notice");
-
-                    b.ToTable("sys_notice", (string)null);
-
-                    b.HasComment("通知");
-                });
+            MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
             modelBuilder.Entity("Adnc.Shared.Repository.EfCoreEntities.EventTracker", b =>
                 {
                     b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
                         .HasColumnName("id")
-                        .HasColumnOrder(1)
                         .HasComment("");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<long>("CreateBy")
                         .HasColumnType("bigint")
@@ -246,9 +62,10 @@ namespace Adnc.Demo.Maint.Repository.Migrations
                         .IsUnique()
                         .HasDatabaseName("ix_sys_eventtracker_eventid_trackername");
 
-                    b.ToTable("sys_eventtracker", (string)null);
-
-                    b.HasComment("事件跟踪/处理信息");
+                    b.ToTable("sys_eventtracker", null, t =>
+                        {
+                            t.HasComment("事件跟踪/处理信息");
+                        });
                 });
 #pragma warning restore 612, 618
         }

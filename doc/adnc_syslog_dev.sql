@@ -22,14 +22,15 @@ USE `adnc_syslog_dev`;
 -- 导出  表 adnc_syslog_dev.login_log 结构
 CREATE TABLE IF NOT EXISTS `login_log` (
   `Id` bigint(20) NOT NULL,
-  `Device` varchar(16) NOT NULL,
-  `Message` varchar(255) NOT NULL,
+  `Device` varchar(32) NOT NULL,
+  `Message` varchar(128) NOT NULL,
   `Succeed` tinyint(1) NOT NULL,
   `StatusCode` int(11) NOT NULL,
   `UserId` bigint(20) DEFAULT NULL,
-  `Account` varchar(24) NOT NULL,
-  `UserName` varchar(24) NOT NULL,
+  `Account` varchar(32) NOT NULL,
+  `Name` varchar(32) NOT NULL,
   `RemoteIpAddress` varchar(16) NOT NULL,
+  `ExecutionTime` int(11) NOT NULL DEFAULT 0,
   `CreateTime` datetime NOT NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -43,13 +44,14 @@ CREATE TABLE IF NOT EXISTS `operation_log` (
   `CreateTime` datetime NOT NULL,
   `LogName` varchar(64) NOT NULL,
   `LogType` varchar(32) NOT NULL,
-  `Message` varchar(255) NOT NULL,
+  `Message` varchar(1024) NOT NULL,
   `Method` varchar(64) NOT NULL,
   `Succeed` tinyint(1) NOT NULL,
   `UserId` bigint(20) NOT NULL,
   `Account` varchar(24) NOT NULL,
-  `UserName` varchar(24) NOT NULL,
+  `Name` varchar(24) NOT NULL,
   `RemoteIpAddress` varchar(16) NOT NULL,
+  `ExecutionTime` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 

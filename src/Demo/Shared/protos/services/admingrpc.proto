@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
+import "messages/common.proto";
+import "messages/sys_config.proto";
+import "messages/sys_dictoption.proto";
+
+option csharp_namespace = "Adnc.Demo.Remote.Grpc.Services";
+
+package services;
+
+service  AdminGrpc {
+  // rpc GetSysConfigList(google.protobuf.Empty) returns (messages.GrpcResponse);
+    // rpc GetSysConfigList(google.protobuf.StringValue) returns (messages.GrpcResponse);
+rpc GetSysConfigList(messages.SysConfigSimpleRequest) returns (messages.SysConfigSimpleListReply);
+rpc GetDictOptions(messages.DictOptionRequest) returns (messages.DictOptionListReply);
+}
