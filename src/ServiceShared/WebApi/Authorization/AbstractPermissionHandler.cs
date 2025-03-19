@@ -1,4 +1,6 @@
-﻿namespace Adnc.Shared.WebApi.Authorization;
+﻿using System.Text.RegularExpressions;
+
+namespace Adnc.Shared.WebApi.Authorization;
 
 public abstract class AbstractPermissionHandler : AuthorizationHandler<PermissionRequirement>
 {
@@ -24,6 +26,7 @@ public abstract class AbstractPermissionHandler : AuthorizationHandler<Permissio
         }
 
         var codes = httpContext.GetEndpoint()?.Metadata?.GetMetadata<AdncAuthorizeAttribute>()?.Codes;
+        // for cap start
         if (codes is null || codes.Length == 0)
         {
             var perm = httpContext.Request.Query["perm"].ToString();
@@ -31,21 +34,37 @@ public abstract class AbstractPermissionHandler : AuthorizationHandler<Permissio
                 codes = [perm];
             else
             {
-                context.Fail(new AuthorizationFailureReason(this, "perm is null"));
+                var refererUrl = httpContext.Request.Headers["referer"].ToString();
+                if (!string.IsNullOrEmpty(refererUrl))
+                {
+                    string pattern = @"\?perm=([^&]+)";
+                    var match = Regex.Match(refererUrl, pattern);
+                    if (match.Success)
+                        codes = [match.Groups[1].Value];
+                }
+            }
+        }
+        // for cap end
+        if (codes is null || codes.Length == 0)
+        {
+            context.Fail();
+            return;
+        }
+        else
+        {
+            var userContext = httpContext.RequestServices.GetRequiredService<UserContext>();
+            var result = await CheckUserPermissions(userContext.Id, codes, userContext.RoleIds);
+            if (result)
+            {
+                context.Succeed(requirement);
+                return;
+            }
+            else
+            {
+                context.Fail();
                 return;
             }
         }
-
-        var userContext = httpContext.RequestServices.GetRequiredService<UserContext>();
-        var result = await CheckUserPermissions(userContext.Id, codes, userContext.RoleIds);
-        if (result)
-        {
-            context.Succeed(requirement);
-            return;
-        }
-
-        context.Fail();
-        return;
     }
 
     protected abstract Task<bool> CheckUserPermissions(long userId, IEnumerable<string> requestPermissions, string userBelongsRoleIds);
