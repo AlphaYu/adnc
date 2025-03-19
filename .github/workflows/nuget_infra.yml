@@ -2,9 +2,6 @@ name: nuget_infra
 
 on:
   workflow_dispatch:
-    branches:
-      - master
-      - develop
 
 jobs:
   build_artifact:
@@ -38,7 +35,9 @@ jobs:
         with:
           name: nugetpkgs
       - name: list nugetpkgs
-        run: ls nugetpkgs
+        run: |
+          cd /home/runner/work
+          ls nugetpkgs
       - name: Release
         run: |
           for file in nugetpkgs/*.nupkg
