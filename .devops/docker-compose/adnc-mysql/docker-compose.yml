@@ -1,0 +1,18 @@
+version: '3.7'
+services:
+  mariadb:
+    image: mariadb:latest
+    container_name: "adnc-mariadb"
+    restart: always
+    environment:
+      MYSQL_USER: "root"
+      MYSQL_PASSWORD: "alpha.netcore"
+      MYSQL_ROOT_PASSWORD: "alpha.netcore"
+      TZ: "Asia/Shanghai"
+    ports:
+      - "13308:3306"
+    volumes:
+      - ../adnc/mysql/data:/var/lib/mysql
+      - ../adnc/mysql/log:/var/log/mysql
+      - ./db_backups:/docker-entrypoint-initdb.d
+    command: --init-file /docker-entrypoint-initdb.d/bootstrap.sql
