@@ -3,7 +3,7 @@
 public interface ICustomerService : IAppService
 {
     /// <summary>
-    /// 创建客户
+    /// 客户创建
     /// </summary>
     /// <param name="input"></param>
     /// <returns></returns>
@@ -11,7 +11,7 @@ public interface ICustomerService : IAppService
     Task<ServiceResult<IdDto>> CreateAsync(CustomerCreationDto input);
 
     /// <summary>
-    /// 充值
+    /// 客户充值
     /// </summary>
     /// <param name="id"></param>
     /// <param name="input"></param>
@@ -21,16 +21,23 @@ public interface ICustomerService : IAppService
     Task<ServiceResult<IdDto>> RechargeAsync(long id, CustomerRechargeDto input);
 
     /// <summary>
-    /// 分页列表
+    /// 客户分页列表
     /// </summary>
     /// <param name="input"></param>
     /// <returns></returns>
     Task<ServiceResult<PageModelDto<CustomerDto>>> GetPagedAsync(SearchPagedDto input);
 
     /// <summary>
-    /// 分页列表(raw sql)
+    /// 客户分页列表(raw sql)
     /// </summary>
     /// <param name="input"></param>
     /// <returns></returns>
     Task<ServiceResult<PageModelDto<CustomerDto>>> GetPagedBySqlAsync(SearchPagedDto input);
+
+    /// <summary>
+    /// 客户充值记录分页列表
+    /// </summary>
+    /// <param name="input"></param>
+    /// <returns></returns>
+    Task<ServiceResult<PageModelDto<TransactionLogDto>>> GetTransactionLogsPagedAsync(SearchPagedDto input);
 }

@@ -63,7 +63,6 @@ public class CustomerAppService(IEfRepository<Customer> customerRepo, IEfReposit
     public async Task<ServiceResult<PageModelDto<CustomerDto>>> GetPagedAsync(SearchPagedDto input)
     {
         input.TrimStringFields();
-
         var whereCondition = ExpressionCreator
                                             .New<Customer>()
                                             .AndIf(input.Keywords.IsNotNullOrEmpty(), x => x.Account == input.Keywords);
@@ -96,12 +95,35 @@ public class CustomerAppService(IEfRepository<Customer> customerRepo, IEfReposit
     {
         input.TrimStringFields();
         var where = new StringBuilder(100)
-            .AppendIf(!string.IsNullOrEmpty(input.Keywords), " AND account = @Keywords")
-            .ToSqlWhereString();
+                                    .AppendIf(!string.IsNullOrEmpty(input.Keywords), " AND account = @Keywords")
+                                    .ToSqlWhereString();
         var orderBy = " ORDER BY id Desc";
 
         var queryCondition = new QueryCondition(where, orderBy, null, input);
         var queryResult = await customerRepo.GetPagedCustmersBySqlAsync<CustomerDto>(queryCondition, input.SkipRows(), input.PageSize);
         return new PageModelDto<CustomerDto>(input, Enumerable.ToArray<CustomerDto>(queryResult.Content), (int)queryResult.TotalCount);
+    }
+
+    public async Task<ServiceResult<PageModelDto<TransactionLogDto>>> GetTransactionLogsPagedAsync(SearchPagedDto input)
+    {
+        input.TrimStringFields();
+        var whereExpr = ExpressionCreator
+                                            .New<TransactionLog>()
+                                            .AndIf(input.Keywords.IsNotNullOrEmpty(), x => x.Account == input.Keywords);
+
+        var count = await transactionLogRepo.CountAsync(whereExpr);
+        if (count == 0)
+            return new PageModelDto<TransactionLogDto>(input);
+
+        var tranlogs = await transactionLogRepo
+                                            .Where(whereExpr)
+                                            .OrderByDescending(x => x.Id)
+                                            .Skip(input.SkipRows())
+                                            .Take(input.PageSize)
+                                            .ToListAsync();
+
+        var tranlogDtos = Mapper.Map<List<TransactionLogDto>>(tranlogs);
+
+        return new PageModelDto<TransactionLogDto>(input, tranlogDtos, count);
     }
 }
