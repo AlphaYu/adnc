@@ -11,7 +11,6 @@ public interface IDictService : IAppService
     /// <param name="input"></param>
     /// <returns></returns>
     [OperateLog(LogName = "新增字典")]
-    [CachingEvict(CacheKey = CachingConsts.DictOptionsListKey)]
     Task<ServiceResult<IdDto>> CreateAsync(DictCreationDto input);
 
     /// <summary>

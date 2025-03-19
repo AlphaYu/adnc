@@ -107,8 +107,8 @@ public class DictService(IEfRepository<Dict> dictRepo, IEfRepository<DictData> d
             .New<DictOptionDto>()
             .AndIf(codes != "all", x => codes.Split(",", StringSplitOptions.RemoveEmptyEntries).Contains(x.Code));
 
-        var result = (await cacheService.GetAllDictOptionsFromCacheAsync()).Where(whereExpr.Compile()).ToList();
-
+        var allDictOptions = await cacheService.GetAllDictOptionsFromCacheAsync();
+        var result = allDictOptions.Where(whereExpr.Compile()).ToList();
         return result ?? [];
     }
 }
