@@ -38,9 +38,9 @@ public static class WebApplicationBuilderExtension
                 }
                 break;
             case ConfigurationTypeConsts.Nacos:
-                throw new NotImplementedException(nameof(NodeConsts.Nacos));
+                throw new NotImplementedException(nameof(ConfigurationTypeConsts.Nacos));
             case ConfigurationTypeConsts.Etcd:
-                throw new NotImplementedException(nameof(NodeConsts.Nacos));
+                throw new NotImplementedException(nameof(ConfigurationTypeConsts.Etcd));
             default:
                 throw new NotImplementedException(nameof(configurationType));
         }

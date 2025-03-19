@@ -36,7 +36,7 @@ internal static class Program
             app.MapGet("/", async context =>
             {
                 var content = serviceInfo.GetDefaultPageContent(app.Services);
-                context.Response.Headers.Add("Content-Type", "text/html");
+                context.Response.Headers.TryAdd("Content-Type", "text/html");
                 await context.Response.WriteAsync(content);
             });
 
@@ -45,7 +45,6 @@ internal static class Program
         catch (Exception ex)
         {
             logger.Error(ex, "Stopped program because of exception");
-            throw;
         }
         finally
         {
