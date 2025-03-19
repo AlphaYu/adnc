@@ -45,6 +45,7 @@
 		<PackageReference Include="SkyAPM.Agent.AspNetCore" Version="$(SkyAPM_Agent_AspNetCore_Version)">
 			<TreatAsUsed>true</TreatAsUsed>
 		</PackageReference>
+		<PackageReference Include="DotNetCore.CAP.Dashboard.K8s" Version="$(DotNetCore_CAP_Dashboard_K8s_Version)"/>
 	</ItemGroup>
 
 	<ItemGroup>

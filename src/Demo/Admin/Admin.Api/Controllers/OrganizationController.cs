@@ -15,7 +15,7 @@ public class OrganizationController(IOrganizationService organizationService) : 
     [HttpPost]
     [AdncAuthorize(PermissionConsts.Org.Create)]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    public async Task<ActionResult<long>> CreateAsync([FromBody] OrganizationCreationDto input)
+    public async Task<ActionResult<IdDto>> CreateAsync([FromBody] OrganizationCreationDto input)
         => CreatedResult(await organizationService.CreateAsync(input));
 
     /// <summary>

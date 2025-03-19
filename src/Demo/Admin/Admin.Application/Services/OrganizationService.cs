@@ -3,7 +3,7 @@
 public class OrganizationService(IEfRepository<Organization> organizationRepo, CacheService cacheService) 
     : AbstractAppService, IOrganizationService
 {
-    public async Task<ServiceResult<long>> CreateAsync(OrganizationCreationDto input)
+    public async Task<ServiceResult<IdDto>> CreateAsync(OrganizationCreationDto input)
     {
         input.TrimStringFields();
         var exists = await organizationRepo.AnyAsync(x => x.Name == input.Name);
@@ -14,7 +14,7 @@ public class OrganizationService(IEfRepository<Organization> organizationRepo, C
         organization.ParentIds = await GetParentIdsAsync(organization.ParentId);
         await organizationRepo.InsertAsync(organization);
 
-        return organization.Id;
+        return new IdDto(organization.Id);
     }
 
     public async Task<ServiceResult> UpdateAsync(long id, OrganizationUpdationDto input)

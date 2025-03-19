@@ -118,10 +118,5 @@ public sealed class ServiceInfo : IServiceInfo
     }
 
     public static ServiceInfo GetInstance()
-    {
-        if (_instance is null)
-            throw new NullReferenceException(nameof(ServiceInfo));
-
-        return _instance;
-    }
+        => _instance ?? throw new NullReferenceException(nameof(ServiceInfo));
 }

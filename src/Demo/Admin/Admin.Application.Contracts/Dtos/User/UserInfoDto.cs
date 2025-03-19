@@ -3,13 +3,8 @@
     /// <summary>
     /// 用户信息
     /// </summary>
-    public class UserInfoDto : IDto
+    public class UserInfoDto : OutputDto
     {
-        /// <summary>
-        /// 用户Id
-        /// </summary>
-        public long Id { get; set; }
-
         /// <summary>
         ///  用户名
         /// </summary>

@@ -4,31 +4,48 @@ public abstract class AbstractPermissionHandler : AuthorizationHandler<Permissio
 {
     protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, PermissionRequirement requirement)
     {
-        if (context.User.Identity is not null && context.User.Identity.IsAuthenticated && context.Resource is HttpContext httpContext)
+        if (context.User.Identity is null || context.User.Identity.IsAuthenticated == false)
         {
-            var authHeader = httpContext.Request.Headers["Authorization"].ToString();
-            if (authHeader != null && authHeader.StartsWith(Authentication.Basic.BasicDefaults.AuthenticationScheme, StringComparison.OrdinalIgnoreCase))
-            {
-                context.Succeed(requirement);
-                return;
-            }
+            context.Fail(new AuthorizationFailureReason(this, "context.User.Identity is null || context.User.Identity.IsAuthenticated == false"));
+            return;
+        }
 
-            var codes = httpContext.GetEndpoint()?.Metadata?.GetMetadata<AdncAuthorizeAttribute>()?.Codes;
-            if (codes is null || codes.Length==0)
-            {
-                context.Succeed(requirement);
-                return;
-            }
+        if (context.Resource is HttpContext httpContext == false)
+        {
+            context.Fail(new AuthorizationFailureReason(this, "context.Resource is not HttpContext"));
+            return;
+        }
 
-            var userContext = httpContext.RequestServices.GetService<UserContext>() ?? throw new NullReferenceException(nameof(UserContext));
-            var result = await CheckUserPermissions(userContext.Id, codes, userContext.RoleIds);
-            if (result)
+        var authHeader = httpContext.Request.Headers.Authorization.ToString();
+        if (authHeader is not null && authHeader.StartsWith(Authentication.Basic.BasicDefaults.AuthenticationScheme, StringComparison.OrdinalIgnoreCase))
+        {
+            context.Succeed(requirement);
+            return;
+        }
+
+        var codes = httpContext.GetEndpoint()?.Metadata?.GetMetadata<AdncAuthorizeAttribute>()?.Codes;
+        if (codes is null || codes.Length == 0)
+        {
+            var perm = httpContext.Request.Query["perm"].ToString();
+            if (perm.IsNotNullOrWhiteSpace())
+                codes = [perm];
+            else
             {
-                context.Succeed(requirement);
+                context.Fail(new AuthorizationFailureReason(this, "perm is null"));
                 return;
             }
         }
+
+        var userContext = httpContext.RequestServices.GetRequiredService<UserContext>();
+        var result = await CheckUserPermissions(userContext.Id, codes, userContext.RoleIds);
+        if (result)
+        {
+            context.Succeed(requirement);
+            return;
+        }
+
         context.Fail();
+        return;
     }
 
     protected abstract Task<bool> CheckUserPermissions(long userId, IEnumerable<string> requestPermissions, string userBelongsRoleIds);

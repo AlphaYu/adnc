@@ -3,7 +3,7 @@
 public class RoleService(IEfRepository<Role> roleRepo, IEfRepository<RoleUserRelation> roleUserRelationRepo, IEfRepository<RoleMenuRelation> roleMenuRelationRepo, CacheService cacheService)
     : AbstractAppService, IRoleService
 {
-    public async Task<ServiceResult<long>> CreateAsync(RoleCreationDto input)
+    public async Task<ServiceResult<IdDto>> CreateAsync(RoleCreationDto input)
     {
         input.TrimStringFields();
         var existsCode = await roleRepo.AnyAsync(x => x.Code == input.Code);
@@ -17,7 +17,7 @@ public class RoleService(IEfRepository<Role> roleRepo, IEfRepository<RoleUserRel
         var role = Mapper.Map<Role>(input, IdGenerater.GetNextId());
         await roleRepo.InsertAsync(role);
 
-        return role.Id;
+        return new IdDto(role.Id);
     }
 
     public async Task<ServiceResult> UpdateAsync(long id, RoleUpdationDto input)

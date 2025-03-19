@@ -17,10 +17,4 @@ public static class AuthenticationBuilderExtensions
         builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<IPostConfigureOptions<BasicSchemeOptions>, BasicPostConfigureOptions>());
         return builder.AddScheme<BasicSchemeOptions, BasicAuthenticationHandler>(BasicDefaults.AuthenticationScheme, BasicDefaults.AuthenticationScheme, configureOptions);
     }
-
-    public static AuthenticationBuilder AddCustomJwtBearer(this AuthenticationBuilder builder, Action<BearerSchemeOptions>? configureOptions = null)
-    {
-        builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<IPostConfigureOptions<BearerSchemeOptions>, BearerPostConfigureOptions>());
-        return builder.AddScheme<BearerSchemeOptions, BearerAuthenticationHandler>(JwtBearerDefaults.AuthenticationScheme, JwtBearerDefaults.AuthenticationScheme, configureOptions);
-    }
 }

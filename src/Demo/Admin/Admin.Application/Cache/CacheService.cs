@@ -90,7 +90,7 @@ public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IDistr
     {
         var cahceValue = await CacheProvider.Value.GetAsync(CachingConsts.RoleMenuCodesCacheKey, async () =>
         {
-            var result = await GetAllRoleMenuCodes();
+            var result = await GetAllRoleMenuCodesFromDb();
             return result;
 
         }, TimeSpan.FromSeconds(GeneralConsts.OneYear));
@@ -100,7 +100,7 @@ public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IDistr
 
     internal async Task SetAllRoleMenuCodesToCacheAsync()
     {
-        var cacheValue = await GetAllRoleMenuCodes();
+        var cacheValue = await GetAllRoleMenuCodesFromDb();
         await CacheProvider.Value.SetAsync(CachingConsts.RoleMenuCodesCacheKey, cacheValue, TimeSpan.FromSeconds(GeneralConsts.OneYear));
     }
 
@@ -208,7 +208,7 @@ public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IDistr
         return cahceValue.Value;
     }
 
-    private async Task<List<RoleMenuCodeDto>> GetAllRoleMenuCodes()
+    private async Task<List<RoleMenuCodeDto>> GetAllRoleMenuCodesFromDb()
     {
         using var scope = ServiceProvider.Value.CreateScope();
         var menuRepo = scope.ServiceProvider.GetRequiredService<IEfRepository<Menu>>();
@@ -219,14 +219,14 @@ public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IDistr
 
         var roleCodes = await (from r in roleMenuQueryAble
                                join m in menuQueryAble on r.MenuId equals m.Id
-                               select new { r.RoleId, m.Perm }
+                               select new { r.RoleId, m.Perm,m.RoutePath }
                                 ).ToListAsync();
 
         var result = new List<RoleMenuCodeDto>();
         var roleIds = roleCodes.Select(x => x.RoleId).Distinct();
         foreach (var roleId in roleIds)
         {
-            var perms = roleCodes.Where(x => x.RoleId == roleId && x.Perm.IsNotNullOrWhiteSpace()).Select(x => x.Perm).ToArray() ?? [];
+            var perms = roleCodes.Where(x => x.RoleId == roleId).Select(x => x.Perm.IsNullOrWhiteSpace() ? x.RoutePath : x.Perm).ToArray() ?? [];
             result.Add(new RoleMenuCodeDto { RoleId = roleId, Perms = perms });
         }
         return result;

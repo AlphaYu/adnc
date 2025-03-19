@@ -1,5 +1,6 @@
 ﻿using Adnc.Demo.Remote.Grpc.Services;
 using Adnc.Demo.Remote.Http.Services;
+using Adnc.Shared.WebApi.Authorization;
 
 namespace Adnc.Demo.Cust.Api;
 
@@ -30,6 +31,13 @@ public sealed class ApiLayerRegistrar(IServiceCollection services, IServiceInfo 
                     .AddMySql(Configuration)
                     .AddRedis(Configuration)
                     .AddRabbitMQ(Configuration, ServiceInfo.Id);
+        });
+
+        Services.AddCapDashboardStandalone(options =>
+        {
+            options.PathMatch = $"/{ServiceInfo.RelativeRootPath}/cap";
+            options.AllowAnonymousExplicit = false;
+            options.AuthorizationPolicy = AuthorizePolicy.Default;
         });
 
         //register others services

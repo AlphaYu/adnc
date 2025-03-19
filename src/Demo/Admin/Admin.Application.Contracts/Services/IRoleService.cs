@@ -11,7 +11,7 @@
         /// <param name="input"></param>
         /// <returns></returns>
         [OperateLog(LogName = "新增角色")]
-        Task<ServiceResult<long>> CreateAsync(RoleCreationDto input);
+        Task<ServiceResult<IdDto>> CreateAsync(RoleCreationDto input);
 
         /// <summary>
         /// 修改角色

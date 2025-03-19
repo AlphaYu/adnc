@@ -2,7 +2,7 @@
 
 public class DictDataService(IEfRepository<DictData> dictDataRepo): AbstractAppService, IDictDataService
 {
-    public async Task<ServiceResult<long>> CreateAsync(DictDataCreationDto input)
+    public async Task<ServiceResult<IdDto>> CreateAsync(DictDataCreationDto input)
     {
         input.TrimStringFields();
         var lableExists = await dictDataRepo.AnyAsync(x => x.DictCode == input.DictCode && x.Label == input.Label);
@@ -16,7 +16,7 @@ public class DictDataService(IEfRepository<DictData> dictDataRepo): AbstractAppS
         var entity = Mapper.Map<DictData>(input, IdGenerater.GetNextId());
 
         await dictDataRepo.InsertAsync(entity);
-        return entity.Id;
+        return new IdDto(entity.Id);
     }
 
     public async Task<ServiceResult> UpdateAsync(long id, DictDataUpdationDto input)

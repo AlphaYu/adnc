@@ -2,27 +2,30 @@
 
 namespace Adnc.Infra.EventBus.Cap
 {
-    public class CapPublisher : IEventPublisher
+    public class CapPublisher(ICapPublisher publisher) : IEventPublisher
     {
-        private readonly ICapPublisher _eventBus;
+        public async Task PublishAsync<T>(T contentObj, string? callbackName = null, CancellationToken cancellationToken = default) where T : class
+            => await publisher.PublishAsync(typeof(T).Name, contentObj, callbackName, cancellationToken);
 
-        public CapPublisher(ICapPublisher capPublisher)
-            => _eventBus = capPublisher;
+        public async Task PublishAsync<T>(T contentObj, IDictionary<string, string?> headers, CancellationToken cancellationToken = default) where T : class
+            => await publisher.PublishAsync<T>(typeof(T).Name, contentObj, headers, cancellationToken);
 
-        public virtual async Task PublishAsync<T>(T eventObj, string? callbackName = null, CancellationToken cancellationToken = default)
-            where T : class
-            => await _eventBus.PublishAsync(typeof(T).Name, eventObj, callbackName, cancellationToken);
+        public void Publish<T>(T contentObj, string? callbackName = null) where T : class
+            => publisher.Publish(typeof(T).Name, contentObj, callbackName);
 
-        public virtual async Task PublishAsync<T>(T eventObj, IDictionary<string, string?> headers, CancellationToken cancellationToken = default)
-            where T : class
-            => await _eventBus.PublishAsync<T>(typeof(T).Name, eventObj, headers, cancellationToken);
+        public void Publish<T>(T contentObj, IDictionary<string, string?> headers) where T : class
+            => publisher.Publish(typeof(T).Name, contentObj, headers);
 
-        public virtual void Publish<T>(T eventObj, string? callbackName = null)
-            where T : class
-            => _eventBus.Publish(typeof(T).Name, eventObj, callbackName);
+        public async Task PublishDelayAsync<T>(TimeSpan delayTime, T? contentObj, IDictionary<string, string?> headers, CancellationToken cancellationToken = default)
+            => await publisher.PublishDelayAsync(delayTime, typeof(T).Name, contentObj, headers, cancellationToken);
 
-        public virtual void Publish<T>(T eventObj, IDictionary<string, string?> headers)
-            where T : class
-            => _eventBus.Publish(typeof(T).Name, eventObj, headers);
+        public async Task PublishDelayAsync<T>(TimeSpan delayTime, T? contentObj, string? callbackName = null, CancellationToken cancellationToken = default)
+            => await publisher.PublishDelayAsync(delayTime, typeof(T).Name, contentObj, callbackName, cancellationToken);
+
+        public void PublishDelay<T>(TimeSpan delayTime, T? contentObj, IDictionary<string, string?> headers)
+            => publisher.PublishDelay(delayTime, typeof(T).Name, contentObj, headers);
+
+        public void PublishDelay<T>(TimeSpan delayTime, T? contentObj, string? callbackName = null)
+            => publisher.PublishDelay(delayTime, typeof(T).Name, contentObj, callbackName);
     }
 }

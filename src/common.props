@@ -64,11 +64,12 @@
 		<Refit_HttpClientFactory>8.0.0</Refit_HttpClientFactory>
 		<Polly_Version>8.5.2</Polly_Version>
 		<RabbitMQ_Client_Version>7.0.0</RabbitMQ_Client_Version>
-		<DotNetCore_CAP_Version>8.3.3-preview-255432523</DotNetCore_CAP_Version>
-		<DotNetCore_CAP_Dashboard_Version>8.3.3-preview-255432523</DotNetCore_CAP_Dashboard_Version>
-		<DotNetCore_CAP_RabbitMQ_Version>8.3.3-preview-255432523</DotNetCore_CAP_RabbitMQ_Version>
-		<DotNetCore_CAP_MySql_Version>8.3.3-preview-255432523</DotNetCore_CAP_MySql_Version>
-		<DotNetCore_CAP_SqlServer_Version>8.3.3-preview-255432523</DotNetCore_CAP_SqlServer_Version>
+		<DotNetCore_CAP_Version>8.3.3</DotNetCore_CAP_Version>
+		<DotNetCore_CAP_Dashboard_Version>8.3.3</DotNetCore_CAP_Dashboard_Version>
+		<DotNetCore_CAP_RabbitMQ_Version>8.3.3</DotNetCore_CAP_RabbitMQ_Version>
+		<DotNetCore_CAP_MySql_Version>8.3.3</DotNetCore_CAP_MySql_Version>
+		<DotNetCore_CAP_SqlServer_Version>8.3.3</DotNetCore_CAP_SqlServer_Version>
+		<DotNetCore_CAP_Dashboard_K8s_Version>8.3.3</DotNetCore_CAP_Dashboard_K8s_Version>
 		<Yitter_IdGenerator_Version>1.0.14</Yitter_IdGenerator_Version>
 		<Castle_Core_AsyncInterceptor_Version>2.1.0</Castle_Core_AsyncInterceptor_Version>
 		<StackExchange_Redis_Version>2.8.24</StackExchange_Redis_Version>

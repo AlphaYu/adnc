@@ -4,13 +4,9 @@ using Adnc.Shared.WebApi.Middleware;
 namespace Adnc.Shared.WebApi.Registrar;
 
 //public abstract partial class AbstractWebApiMiddlewareRegistrar : IMiddlewareRegistrar
-public abstract partial class AbstractWebApiMiddlewareRegistrar
+public abstract partial class AbstractWebApiMiddlewareRegistrar(IApplicationBuilder app)
 {
-    protected IApplicationBuilder App { get; init; } = default!;
-    public AbstractWebApiMiddlewareRegistrar(IApplicationBuilder app)
-    {
-        App = app;
-    }
+    protected IApplicationBuilder App { get; init; } = app;
 
     /// <summary>
     /// 注册中间件
