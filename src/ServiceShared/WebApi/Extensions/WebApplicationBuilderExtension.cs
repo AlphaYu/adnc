@@ -14,36 +14,33 @@ public static class WebApplicationBuilderExtension
     /// <exception cref="ArgumentNullException"></exception>
     public static WebApplicationBuilder AddConfiguration(this WebApplicationBuilder builder, IServiceInfo serviceInfo)
     {
-        if (builder is null)
-            throw new ArgumentNullException(nameof(builder));
-        if (serviceInfo is null)
-            throw new ArgumentNullException(nameof(serviceInfo));
+        Checker.Argument.NotNull(builder, nameof(builder));
+        Checker.Argument.NotNull(serviceInfo, nameof(serviceInfo));
 
         // Configuration
         var initialData = new List<KeyValuePair<string, string?>> { new(nameof(serviceInfo.ServiceName), serviceInfo.ServiceName) };
         builder.Configuration.AddInMemoryCollection(initialData);
 
-        if (builder.Environment.IsDevelopment())
-        {
-            builder.Configuration.AddJsonFile($"{AppContext.BaseDirectory}/appsettings.shared.{builder.Environment.EnvironmentName}.json", true, true);
-        }
-
         var configurationType = builder.Configuration.GetValue<string>(NodeConsts.ConfigurationType) ?? "file";
-
-        if (string.Equals(configurationType, NodeConsts.Consul, StringComparison.OrdinalIgnoreCase))
+        switch (configurationType)
         {
-            var consulOption = builder.Configuration.GetSection(NodeConsts.Consul).Get<ConsulOptions>();
-            if (consulOption is null || consulOption.ConsulKeyPath.IsNullOrWhiteSpace())
-                throw new NotImplementedException(NodeConsts.Consul);
-
-            consulOption.ConsulKeyPath = consulOption.ConsulKeyPath.Replace("$SHORTNAME", serviceInfo.ShortName);
-            builder.Configuration.AddConsulConfiguration(consulOption, true);
-        }
-
-        if (string.Equals(configurationType, NodeConsts.Nacos, StringComparison.OrdinalIgnoreCase))
-        {
-            //todo
-            throw new NotImplementedException(nameof(NodeConsts.Nacos));
+            case "file":
+                builder.Configuration.AddJsonFile($"{AppContext.BaseDirectory}/appsettings.shared.{builder.Environment.EnvironmentName}.json", true, true);
+                break;
+            case NodeConsts.Consul:
+                var consulOption = builder.Configuration.GetSection(NodeConsts.Consul).Get<ConsulOptions>();
+                if (consulOption is null || consulOption.ConsulKeyPath.IsNullOrWhiteSpace())
+                    throw new NotImplementedException(NodeConsts.Consul);
+                else
+                {
+                    consulOption.ConsulKeyPath = consulOption.ConsulKeyPath.Replace("$SHORTNAME", serviceInfo.ShortName);
+                    builder.Configuration.AddConsulConfiguration(consulOption, true);
+                }
+                break;
+            case NodeConsts.Nacos:
+                throw new NotImplementedException(nameof(NodeConsts.Nacos));
+            default:
+                throw new NotImplementedException(nameof(configurationType));
         }
 
         OnSettingConfigurationChanged(builder.Configuration);
@@ -76,14 +73,17 @@ public static class WebApplicationBuilderExtension
                 continue;
 
             var sectionValue = section.Value;
-            if (sectionValue.Contains("$SERVICENAME"))
-                section.Value = sectionValue.Replace("$SERVICENAME", serviceInfo.ServiceName);
+            if (!string.IsNullOrWhiteSpace(sectionValue))
+            {
+                if (sectionValue.Contains("$SERVICENAME"))
+                    section.Value = sectionValue.Replace("$SERVICENAME", serviceInfo.ServiceName);
 
-            if (sectionValue.Contains("$SHORTNAME"))
-                section.Value = sectionValue.Replace("$SHORTNAME", serviceInfo.ShortName);
+                if (sectionValue.Contains("$SHORTNAME"))
+                    section.Value = sectionValue.Replace("$SHORTNAME", serviceInfo.ShortName);
 
-            if (sectionValue.Contains("$RELATIVEROOTPATH"))
-                section.Value = sectionValue.Replace("$RELATIVEROOTPATH", serviceInfo.RelativeRootPath);
+                if (sectionValue.Contains("$RELATIVEROOTPATH"))
+                    section.Value = sectionValue.Replace("$RELATIVEROOTPATH", serviceInfo.RelativeRootPath);
+            }
         }
     }
 
@@ -92,11 +92,11 @@ public static class WebApplicationBuilderExtension
     /// </summary>
     /// <param name="state"></param>
     private static IDisposable? _callbackRegistration;
-    private static void OnSettingConfigurationChanged(object state)
+    private static void OnSettingConfigurationChanged(object? state)
     {
         _callbackRegistration?.Dispose();
         if (state is not IConfiguration configuration)
-            throw new ArgumentException(nameof(state));
+            throw new NullReferenceException(nameof(state));
 
         var changedChildren = configuration.GetChildren();
         var reloadToken = configuration.GetReloadToken();
