@@ -8,5 +8,5 @@ public class CustomerDto : OutputBaseAuditDto
 
     public string Realname { get; set; } = string.Empty;
 
-    public decimal FinanceInfoBalance { get; set; }
+    public decimal Balance { get; set; }
 }

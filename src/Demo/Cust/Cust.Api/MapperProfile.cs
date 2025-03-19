@@ -7,5 +7,6 @@ public class CustProfile : Profile
         CreateMap(typeof(PagedModel<>), typeof(PageModelDto<>)).ForMember("XData", opt => opt.Ignore());
         CreateMap<CustomerCreationDto, Customer>();
         CreateMap<Customer, CustomerDto>();
+        CreateMap<TransactionLog, TransactionLogDto>();
     }
 }

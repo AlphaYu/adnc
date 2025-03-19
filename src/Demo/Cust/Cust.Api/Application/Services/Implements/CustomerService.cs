@@ -1,9 +1,11 @@
-﻿namespace Adnc.Demo.Cust.Api.Application.Services.Implements;
+﻿using Adnc.Demo.Remote.Http.Services;
+
+namespace Adnc.Demo.Cust.Api.Application.Services.Implements;
 
 /// <summary>
 /// 客户管理服务
 /// </summary>
-public class CustomerAppService(IEfRepository<Customer> customerRepo, IEfRepository<TransactionLog> transactionLogRepo, IEventPublisher eventPublisher)
+public class CustomerAppService(IEfRepository<Customer> customerRepo, IEfRepository<TransactionLog> transactionLogRepo, IEventPublisher eventPublisher, IAdminRestClient adminRestClient)
     : AbstractAppService, ICustomerService
 {
     public async Task<ServiceResult<IdDto>> CreateAsync(CustomerCreationDto input)
@@ -14,7 +16,7 @@ public class CustomerAppService(IEfRepository<Customer> customerRepo, IEfReposit
             return Problem(HttpStatusCode.Forbidden, "客户账号已经存在");
 
         var customer = Mapper.Map<Customer>(input, IdGenerater.GetNextId());
-        customer.Password = InfraHelper.Encrypt.Md5(customer.Password);
+        //customer.Password = InfraHelper.Encrypt.Md5(customer.Password);
 
         customer.FinanceInfo = new Finance()
         {
@@ -27,9 +29,8 @@ public class CustomerAppService(IEfRepository<Customer> customerRepo, IEfReposit
         return new IdDto(customer.Id);
     }
 
-    public async Task<ServiceResult<IdDto>> RechargeAsync(long id, CustomerRechargeDto input)
+    public async Task<ServiceResult<IdDto>> RechargeAsync(long id, decimal balance)
     {
-        input.TrimStringFields();
         var customer = await customerRepo.FetchAsync(x => x.Id == id);
         if (customer is null)
             return Problem(HttpStatusCode.NotFound, "客户账号不存在");
@@ -41,7 +42,7 @@ public class CustomerAppService(IEfRepository<Customer> customerRepo, IEfReposit
             Account = customer.Account,
             ExchangeType = ExchangeBehavior.Recharge,
             Remark = "",
-            Amount = input.Amount,
+            Amount = balance,
             ExchageStatus = ExchageStatus.Processing
         };
         await transactionLogRepo.InsertAsync(transactionLog);
@@ -65,6 +66,7 @@ public class CustomerAppService(IEfRepository<Customer> customerRepo, IEfReposit
         input.TrimStringFields();
         var whereCondition = ExpressionCreator
                                             .New<Customer>()
+                                            .AndIf(input.CreateTime is not null && input.CreateTime.Length > 0, x => x.CreateTime >= input.CreateTime[0] && x.CreateTime <= input.CreateTime[1])
                                             .AndIf(input.Keywords.IsNotNullOrEmpty(), x => x.Account == input.Keywords);
 
         var count = await customerRepo.CountAsync(whereCondition);
@@ -81,7 +83,7 @@ public class CustomerAppService(IEfRepository<Customer> customerRepo, IEfReposit
                                                 Realname = x.Realname,
                                                 CreateBy = x.CreateBy,
                                                 CreateTime = x.CreateTime,
-                                                FinanceInfoBalance = x.FinanceInfo.Balance
+                                                Balance = x.FinanceInfo.Balance
                                             })
                                             .OrderByDescending(x => x.Id)
                                             .Skip(input.SkipRows())
@@ -109,6 +111,7 @@ public class CustomerAppService(IEfRepository<Customer> customerRepo, IEfReposit
         input.TrimStringFields();
         var whereExpr = ExpressionCreator
                                             .New<TransactionLog>()
+                                            .AndIf(input.CreateTime is not null && input.CreateTime.Length > 0, x => x.CreateTime >= input.CreateTime[0] && x.CreateTime <= input.CreateTime[1])
                                             .AndIf(input.Keywords.IsNotNullOrEmpty(), x => x.Account == input.Keywords);
 
         var count = await transactionLogRepo.CountAsync(whereExpr);
@@ -124,6 +127,19 @@ public class CustomerAppService(IEfRepository<Customer> customerRepo, IEfReposit
 
         var tranlogDtos = Mapper.Map<List<TransactionLogDto>>(tranlogs);
 
+        var dictOptins = await adminRestClient.GetDictOptionsAsync("exchange_behavior,exchage_status");
+        if (dictOptins is not null && dictOptins.Count > 0)
+        {
+            var behaviorOptions = dictOptins.FirstOrDefault(x => x.Code == "exchange_behavior")?.DictDataList ?? [];
+            var statusOptions = dictOptins.FirstOrDefault(x => x.Code == "exchage_status")?.DictDataList ?? [];
+            foreach (var tranlogDto in tranlogDtos)
+            {
+                string exchageStatus = tranlogDto.ExchageStatus.ToString();
+                string exchangeType = tranlogDto.ExchangeType.ToString();
+                tranlogDto.ExchangeTypeName = statusOptions.FirstOrDefault(x => x.Value == exchangeType)?.Label ?? string.Empty;
+                tranlogDto.ExchageStatusName = behaviorOptions.FirstOrDefault(x => x.Value == exchageStatus)?.Label ?? string.Empty;
+            }
+        }
         return new PageModelDto<TransactionLogDto>(input, tranlogDtos, count);
     }
 }

@@ -21,4 +21,6 @@ public class TransactionLogDto : OutputDto
     public decimal ChangedAmount { get; set; }
 
     public string Remark { get; set; } = string.Empty;
+
+    public DateTime CreateTime { get; set; }
 }

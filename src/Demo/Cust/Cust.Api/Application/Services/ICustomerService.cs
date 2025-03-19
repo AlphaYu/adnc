@@ -14,11 +14,11 @@ public interface ICustomerService : IAppService
     /// 客户充值
     /// </summary>
     /// <param name="id"></param>
-    /// <param name="input"></param>
+    /// <param name="balance"></param>
     /// <returns></returns>
     [OperateLog(LogName = "客户充值")]
     [UnitOfWork(SharedToCap = true)]
-    Task<ServiceResult<IdDto>> RechargeAsync(long id, CustomerRechargeDto input);
+    Task<ServiceResult<IdDto>> RechargeAsync(long id, decimal balance);
 
     /// <summary>
     /// 客户分页列表
