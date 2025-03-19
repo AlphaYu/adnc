@@ -1,6 +1,4 @@
-﻿using Refit;
-
-namespace Adnc.Demo.Admin.Api.Controllers;
+﻿namespace Adnc.Demo.Admin.Api.Controllers;
 
 /// <summary>
 /// 角色管理
@@ -78,7 +76,7 @@ public class RoleController(IRoleService roleService) : AdncControllerBase
     /// <param name="id">角色Id</param>
     /// <param name="permissions">用户权限Ids</param>
     /// <returns></returns>
-    [Patch("{id}/permissons")]
+    [HttpPatch("{id}/permissons")]
     [AdncAuthorize(PermissionConsts.Role.SetPermissons)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult> SetPermissonsAsync([FromRoute] long id, [FromBody] long[] permissions)

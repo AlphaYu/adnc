@@ -1,6 +1,4 @@
-﻿using Refit;
-
-namespace Adnc.Demo.Admin.Api.Controllers;
+﻿namespace Adnc.Demo.Admin.Api.Controllers;
 
 /// <summary>
 /// 登录用户管理
@@ -81,7 +79,7 @@ public class AccountController(IOptions<JWTOptions> jwtOptions, UserContext user
     /// </summary>
     /// <param name="input"><see cref="UserProfileChangePwdDto"/></param>
     /// <returns></returns>
-    [Patch("password")]
+    [HttpPatch("password")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult> ChangePassword([FromBody] UserProfileChangePwdDto input)
         => Result(await userService.UpdatePasswordAsync(userContext.Id, input));
@@ -150,7 +148,7 @@ public class AccountController(IOptions<JWTOptions> jwtOptions, UserContext user
     /// 修改登录用户账户信息
     /// </summary>
     /// <returns></returns>
-    [Patch("profile")]
+    [HttpPatch("profile")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult> ChangeProfileAsync([FromBody] UserProfileUpdationDto input)
         => Result(await userService.ChangeProfileAsync(userContext.Id, input));

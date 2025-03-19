@@ -1,6 +1,4 @@
-﻿using Refit;
-
-namespace Adnc.Demo.Admin.Api.Controllers;
+﻿namespace Adnc.Demo.Admin.Api.Controllers;
 
 /// <summary>
 /// 用户管理
@@ -52,7 +50,7 @@ public class UserController(IUserService userService) : AdncControllerBase
     /// <param name="id"></param>
     /// <param name="password"></param>
     /// <returns></returns>
-    [Patch("{id}/password")]
+    [HttpPatch("{id}/password")]
     [AdncAuthorize(PermissionConsts.User.ResetPassword)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult> ResetPasswordAsync([FromRoute] long id, string password)
