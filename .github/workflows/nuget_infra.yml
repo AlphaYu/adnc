@@ -34,11 +34,10 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: nugetpkgs
+          path: nugetpkgs
       - name: list nugetpkgs
-        run: |
-          cd /home/runner/work
-          ls nugetpkgs
-      - name: Release
+        run: ls nugetpkgs
+      - name: Release to Nuget
         run: |
           for file in nugetpkgs/*.nupkg
           do
