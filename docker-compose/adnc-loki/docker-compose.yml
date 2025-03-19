@@ -1,0 +1,33 @@
+version: "3"
+
+networks:
+  adnc_loki:
+
+services:
+  loki:
+    container_name: adnc-loki
+    image: grafana/loki:latest
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
+    networks:
+      - adnc_loki
+    restart: always
+  promtail:
+    container_name: adnc-promtail
+    image: grafana/promtail:latest
+    volumes:
+      - ../adnc/promtail/local/logs/:/var/log/
+      - ./promtail.yaml:/etc/promtail/docker-config.yaml
+    command: -config.file=/etc/promtail/docker-config.yaml
+    networks:
+      - adnc_loki
+    restart: always
+  grafana:
+    container_name: adnc-grafana
+    image: grafana/grafana:latest
+    restart: always
+    ports:
+      - "9010:3000"
+    networks:
+      - adnc_loki
