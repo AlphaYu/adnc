@@ -12,7 +12,7 @@ public interface IAdminRestClient : IRestClient
     [Get("/api/admin/dicts/options")]
     //[Headers("Authorization: Basic", "Cache: 2000")]
     [Headers("Authorization: Basic")]
-    Task<ApiResponse<List<DictOptionResponse>>> GetDictOptionsAsync(string? codes = null);
+    Task<List<DictOptionResponse>> GetDictOptionsAsync(string? codes = null);
 
     /// <summary>
     /// 获取系统配置数据
@@ -21,5 +21,5 @@ public interface IAdminRestClient : IRestClient
     /// <returns><see cref="List{SysConfigSimpleResponse}"/></returns>
     [Get("/api/admin/sysconfigs")]
     [Headers("Authorization: Basic")]
-    Task<ApiResponse<List<SysConfigSimpleResponse>>> GetSysConfigListAsync(string? keys = null);
+    Task<List<SysConfigSimpleResponse>> GetSysConfigListAsync(string? keys = null);
 }

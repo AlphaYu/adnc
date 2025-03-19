@@ -18,13 +18,12 @@ public class GrpcClientDemoController(AdminGrpc.AdminGrpcClient adminGrpcClient)
     /// <returns></returns>
     [AllowAnonymous, HttpGet()]
     [Route("dictoptions")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<List<DictOptionReply>>> GetDictOptionsAsync(string codes = "all")
     {
         var request = new DictOptionRequest { Codes = codes };
         var grpcResult = await adminGrpcClient.GetDictOptionsAsync(request, GrpcClientConsts.BasicHeader);
-        if (grpcResult is not null)
-            return grpcResult.List.ToList();
-        return NotFound();
+        return grpcResult is not null ? grpcResult.List.ToList() : [];
     }
 
     /// <summary>
@@ -34,12 +33,11 @@ public class GrpcClientDemoController(AdminGrpc.AdminGrpcClient adminGrpcClient)
     /// <returns></returns>
     [AllowAnonymous, HttpGet()]
     [Route("sysconfigs")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<List<SysConfigSimpleReply>>> GetSysConfigListAsync(string keys = "all")
     {
         var request = new SysConfigSimpleRequest { Keys = keys };
-        var grpcResult =await adminGrpcClient.GetSysConfigListAsync(request, GrpcClientConsts.BasicHeader);
-        if (grpcResult is not null)
-            return grpcResult.List.ToList();
-        return NotFound();
+        var grpcResult = await adminGrpcClient.GetSysConfigListAsync(request, GrpcClientConsts.BasicHeader);
+        return grpcResult is not null ? grpcResult.List.ToList() : [];
     }
 }

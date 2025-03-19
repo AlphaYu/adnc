@@ -11,7 +11,7 @@ public class CustomerAppService(IEfRepository<Customer> customerRepo, IEfReposit
         input.TrimStringFields();
         var exists = await customerRepo.AnyAsync(t => t.Account == input.Account);
         if (exists)
-            return Problem(HttpStatusCode.Forbidden, "该账号已经存在");
+            return Problem(HttpStatusCode.Forbidden, "客户账号已经存在");
 
         var customer = Mapper.Map<Customer>(input, IdGenerater.GetNextId());
         customer.Password = InfraHelper.Encrypt.Md5(customer.Password);
@@ -32,7 +32,7 @@ public class CustomerAppService(IEfRepository<Customer> customerRepo, IEfReposit
         input.TrimStringFields();
         var customer = await customerRepo.FetchAsync(x => x.Id == id);
         if (customer is null)
-            return Problem(HttpStatusCode.NotFound, "不存在该账号");
+            return Problem(HttpStatusCode.NotFound, "客户账号不存在");
 
         var transactionLog = new TransactionLog()
         {
@@ -63,7 +63,6 @@ public class CustomerAppService(IEfRepository<Customer> customerRepo, IEfReposit
     public async Task<ServiceResult<PageModelDto<CustomerDto>>> GetPagedAsync(SearchPagedDto input)
     {
         input.TrimStringFields();
-
         var whereCondition = ExpressionCreator
                                             .New<Customer>()
                                             .AndIf(input.Keywords.IsNotNullOrEmpty(), x => x.Account == input.Keywords);
@@ -82,7 +81,7 @@ public class CustomerAppService(IEfRepository<Customer> customerRepo, IEfReposit
                                                 Realname = x.Realname,
                                                 CreateBy = x.CreateBy,
                                                 CreateTime = x.CreateTime,
-                                                FinanceInfoBalance = x.FinanceInfo == null ? 0 : x.FinanceInfo.Balance
+                                                FinanceInfoBalance = x.FinanceInfo.Balance
                                             })
                                             .OrderByDescending(x => x.Id)
                                             .Skip(input.SkipRows())
@@ -96,12 +95,35 @@ public class CustomerAppService(IEfRepository<Customer> customerRepo, IEfReposit
     {
         input.TrimStringFields();
         var where = new StringBuilder(100)
-            .AppendIf(!string.IsNullOrEmpty(input.Keywords), " AND account = @Keywords")
-            .ToSqlWhereString();
+                                    .AppendIf(!string.IsNullOrEmpty(input.Keywords), " AND account = @Keywords")
+                                    .ToSqlWhereString();
         var orderBy = " ORDER BY id Desc";
 
         var queryCondition = new QueryCondition(where, orderBy, null, input);
         var queryResult = await customerRepo.GetPagedCustmersBySqlAsync<CustomerDto>(queryCondition, input.SkipRows(), input.PageSize);
         return new PageModelDto<CustomerDto>(input, Enumerable.ToArray<CustomerDto>(queryResult.Content), (int)queryResult.TotalCount);
+    }
+
+    public async Task<ServiceResult<PageModelDto<TransactionLogDto>>> GetTransactionLogsPagedAsync(SearchPagedDto input)
+    {
+        input.TrimStringFields();
+        var whereExpr = ExpressionCreator
+                                            .New<TransactionLog>()
+                                            .AndIf(input.Keywords.IsNotNullOrEmpty(), x => x.Account == input.Keywords);
+
+        var count = await transactionLogRepo.CountAsync(whereExpr);
+        if (count == 0)
+            return new PageModelDto<TransactionLogDto>(input);
+
+        var tranlogs = await transactionLogRepo
+                                            .Where(whereExpr)
+                                            .OrderByDescending(x => x.Id)
+                                            .Skip(input.SkipRows())
+                                            .Take(input.PageSize)
+                                            .ToListAsync();
+
+        var tranlogDtos = Mapper.Map<List<TransactionLogDto>>(tranlogs);
+
+        return new PageModelDto<TransactionLogDto>(input, tranlogDtos, count);
     }
 }

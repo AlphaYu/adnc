@@ -5,14 +5,7 @@ namespace Adnc.Shared.Remote.Http.Services;
 
 public interface IAuthRestClient : IRestClient
 {
-    /// <summary>
-    ///  登录
-    /// </summary>
-    /// <returns></returns>
-    [Post("/api/auth/session")]
-    Task<ApiResponse<LoginResponse>> LoginAsync(string account, string password);
-
-    /// <summary>
+     /// <summary>
     ///  获取认证信息
     /// </summary>
     /// <returns></returns>

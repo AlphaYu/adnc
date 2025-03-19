@@ -15,14 +15,13 @@ public class RestClientDemoController(IAdminRestClient adminRestClient) : AdncCo
     /// </summary>
     /// <param name="codes"></param>
     /// <returns></returns>
-    [AllowAnonymous,HttpGet()]
+    [AllowAnonymous, HttpGet()]
     [Route("dictoptions")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<List<DictOptionResponse>>> GetDictOptionsAsync(string codes = "all")
     {
-        var restResult = await adminRestClient.GetDictOptionsAsync(codes);
-        if (restResult.IsSuccessStatusCode && restResult.Content is not null)
-            return restResult.Content;
-        return Problem(restResult.Error, restResult.Error.StatusCode);
+        var messages = await adminRestClient.GetDictOptionsAsync(codes);
+        return messages ?? [];
     }
 
     /// <summary>
@@ -32,11 +31,10 @@ public class RestClientDemoController(IAdminRestClient adminRestClient) : AdncCo
     /// <returns></returns>
     [AllowAnonymous, HttpGet()]
     [Route("sysconfigs")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<List<SysConfigSimpleResponse>>> GetSysConfigListAsync(string keys = "all")
     {
-        var restResult = await adminRestClient.GetSysConfigListAsync(keys);
-        if (restResult.IsSuccessStatusCode && restResult.Content is not null)
-            return restResult.Content;
-        return Problem(restResult.Error, restResult.Error.StatusCode);
+        var messages = await adminRestClient.GetSysConfigListAsync(keys);
+        return messages ?? [];
     }
 }

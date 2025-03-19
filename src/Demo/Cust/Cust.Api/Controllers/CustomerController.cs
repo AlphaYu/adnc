@@ -15,7 +15,7 @@ public class CustomerController(ICustomerService customerService) : AdncControll
     /// <param name="input"><see cref="CustomerCreationDto"/></param>
     /// <returns><see cref="CustomerDto"/></returns>
     [HttpPost]
-    [AllowAnonymous]
+    [AdncAuthorize(PermissionConsts.Customer.Create)]
     [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<ActionResult<IdDto>> CreateAsync([FromBody] CustomerCreationDto input)
         => CreatedResult(await customerService.CreateAsync(input));
@@ -25,7 +25,7 @@ public class CustomerController(ICustomerService customerService) : AdncControll
     /// </summary>
     /// <returns></returns>
     [HttpPut("{id}/balance")]
-    //[AdncAuthorize(PermissionConsts.Customer.Recharge)]
+    [AdncAuthorize(PermissionConsts.Customer.Recharge)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<IdDto>> RechargeAsync([FromRoute] long id, [FromBody] CustomerRechargeDto input)
         => Result(await customerService.RechargeAsync(id, input));
@@ -36,7 +36,7 @@ public class CustomerController(ICustomerService customerService) : AdncControll
     /// <param name="input"></param>
     /// <returns><see cref="PageModelDto{CustomerDto}"/></returns>
     [HttpGet("page")]
-    //[AdncAuthorize(PermissionConsts.Customer.Search)]
+    [AdncAuthorize(PermissionConsts.Customer.Search)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<PageModelDto<CustomerDto>>> GetPagedAsync([FromQuery] SearchPagedDto input)
         => Result(await customerService.GetPagedAsync(input));
@@ -47,8 +47,19 @@ public class CustomerController(ICustomerService customerService) : AdncControll
     /// <param name="input"></param>
     /// <returns><see cref="PageModelDto{CustomerDto}"/></returns>
     [HttpGet("page/rawsql")]
-    //[AdncAuthorize(PermissionConsts.Customer.Search)]
+    [AdncAuthorize(PermissionConsts.Customer.Search)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<PageModelDto<CustomerDto>>> GetPagedBySqlAsync([FromQuery] SearchPagedDto input)
       => Result(await customerService.GetPagedBySqlAsync(input));
+
+    /// <summary>
+    /// 客户充值记录分页列表
+    /// </summary>
+    /// <param name="input"></param>
+    /// <returns><see cref="PageModelDto{TransactionLogDto}"/></returns>
+    [HttpGet("page/transactionlogs")]
+    [AdncAuthorize(PermissionConsts.Customer.SearchTransactionLog)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<ActionResult<PageModelDto<TransactionLogDto>>> GetTransactionLogsPagedAsync([FromQuery] SearchPagedDto input)
+        => Result(await customerService.GetTransactionLogsPagedAsync(input));
 }
