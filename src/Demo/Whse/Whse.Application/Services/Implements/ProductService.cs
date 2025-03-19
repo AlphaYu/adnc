@@ -133,17 +133,13 @@ public class ProductService(IEfBasicRepository<Product> productRepo, IEfBasicRep
         if (productDtos.IsNotNullOrEmpty())
         {
             //调用maint微服务获取字典,组合商品状态信息
-            var restRpcResult = await adminClient.GetDictOptionsAsync("product_status");
-            if (restRpcResult.IsSuccessStatusCode)
+            var productStatus = (await adminClient.GetDictOptionsAsync("product_status")).FirstOrDefault();
+            if (productStatus is not null)
             {
-                var dict = restRpcResult.Content?.FirstOrDefault();
-                if (dict is not null)
+                productDtos.ForEach(x =>
                 {
-                    productDtos.ForEach(x =>
-                    {
-                        x.StatusDescription = dict.DictDataList.FirstOrDefault(d => d.Value == x.StatusCode.ToString())?.Label ?? string.Empty;
-                    });
-                }
+                    x.StatusDescription = productStatus.DictDataList.FirstOrDefault(d => d.Value == x.StatusCode.ToString())?.Label ?? string.Empty;
+                });
             }
         }
 
