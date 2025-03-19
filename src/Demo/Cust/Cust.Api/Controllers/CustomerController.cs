@@ -24,7 +24,7 @@ public class CustomerController(ICustomerService customerService) : AdncControll
     /// 后台管理员给客户充值
     /// </summary>
     /// <returns></returns>
-    [HttpPut("{id}/balance")]
+    [HttpPatch("{id}/balance")]
     [AdncAuthorize(PermissionConsts.Customer.Recharge)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<IdDto>> RechargeAsync([FromRoute] long id, [FromBody] CustomerRechargeDto input)

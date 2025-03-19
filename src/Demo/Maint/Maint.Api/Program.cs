@@ -45,7 +45,6 @@ internal static class Program
         catch (Exception ex)
         {
             logger.Error(ex, "Stopped program because of exception");
-            throw;
         }
         finally
         {

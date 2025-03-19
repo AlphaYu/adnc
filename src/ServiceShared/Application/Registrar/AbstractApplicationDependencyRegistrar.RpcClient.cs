@@ -45,7 +45,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar
                                                     .AddHttpMessageHandler<TokenDelegatingHandler>();
 
         var addressNode = RpcInfoOption.Address.First(x => x.Service.EqualsIgnoreCase(serviceName));
-        switch (RpcInfoOption.Type.ToLower())
+        switch (RpcInfoOption.Type)
         {
             case RegisteredTypeConsts.Direct:
                 {
@@ -97,7 +97,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar
 
         var baseAddress = string.Empty;
         var addressNode = RpcInfoOption.Address.First(x => x.Service.EqualsIgnoreCase(serviceName));
-        switch (RpcInfoOption.Type.ToLower())
+        switch (RpcInfoOption.Type)
         {
             case RegisteredTypeConsts.Direct:
                 {

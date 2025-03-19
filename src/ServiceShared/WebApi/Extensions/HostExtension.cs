@@ -1,4 +1,5 @@
-﻿using Adnc.Shared.WebApi;
+﻿using Adnc.Shared.Remote;
+using Adnc.Shared.WebApi;
 
 namespace Microsoft.Extensions.Hosting;
 
@@ -11,7 +12,8 @@ public static class HostExtension
     {
         var configuration = host.Services.GetRequiredService<IConfiguration>();
         var serviceInfo = host.Services.GetRequiredService<IServiceInfo>();
-        var registeredType = configuration.GetValue<string>(NodeConsts.RegisteredType) ?? "direct";
+        var rpcInfo = host.Services.GetService<RpcInfo>();
+        var registeredType = rpcInfo is null ? RegisteredTypeConsts.Direct : rpcInfo.Type;
         switch (registeredType)
         {
             case RegisteredTypeConsts.Consul:

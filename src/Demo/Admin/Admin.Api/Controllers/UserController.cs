@@ -50,7 +50,7 @@ public class UserController(IUserService userService) : AdncControllerBase
     /// <param name="id"></param>
     /// <param name="password"></param>
     /// <returns></returns>
-    [HttpPut("{id}/password")]
+    [HttpPatch("{id}/password")]
     [AdncAuthorize(PermissionConsts.User.ResetPassword)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult> ResetPasswordAsync([FromRoute] long id, string password)
