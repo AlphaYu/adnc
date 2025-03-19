@@ -1,4 +1,5 @@
-﻿Microsoft Visual Studio Solution File, Format Version 12.00
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32319.34
 MinimumVisualStudioVersion = 10.0.40219.1
@@ -9,26 +10,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01.Solution Items", "01.Sol
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02.Shared", "02.Shared", "{DF95ED05-B5A5-4CD9-A98D-39C32E5852EF}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "protos", "protos", "{0C59371F-342F-4618-A91F-2CE0C2EBE31D}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "messages", "messages", "{94F9FD5A-06C1-4B6C-8466-E1F271FF47F3}"
-	ProjectSection(SolutionItems) = preProject
-		Shared\protos\messages\authgrpc_login.proto = Shared\protos\messages\authgrpc_login.proto
-		Shared\protos\messages\common.proto = Shared\protos\messages\common.proto
-		Shared\protos\messages\maintgrpc_getdict.proto = Shared\protos\messages\maintgrpc_getdict.proto
-		Shared\protos\messages\usrgrpc_getcurrenuserpermissions.proto = Shared\protos\messages\usrgrpc_getcurrenuserpermissions.proto
-		Shared\protos\messages\usrgrpc_getdepts.proto = Shared\protos\messages\usrgrpc_getdepts.proto
-		Shared\protos\messages\whsegrpc_getproducts.proto = Shared\protos\messages\whsegrpc_getproducts.proto
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "services", "services", "{56608E71-771D-4D56-A0BB-48B6FB9147BA}"
-	ProjectSection(SolutionItems) = preProject
-		Shared\protos\services\authgrpc.proto = Shared\protos\services\authgrpc.proto
-		Shared\protos\services\maintgrpc.proto = Shared\protos\services\maintgrpc.proto
-		Shared\protos\services\usrgrpc.proto = Shared\protos\services\usrgrpc.proto
-		Shared\protos\services\whsegrpc.proto = Shared\protos\services\whsegrpc.proto
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "resources", "resources", "{920400DB-C301-4E10-BB0A-94F2D91A9751}"
 	ProjectSection(SolutionItems) = preProject
@@ -48,23 +29,23 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "wwwroot", "wwwroot", "{6DC9
 		Shared\resources\wwwroot\favicon.ico = Shared\resources\wwwroot\favicon.ico
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Demo.Shared.Rpc.Http", "Shared\Remote.Http\Adnc.Demo.Shared.Remote.Http.csproj", "{1E7AAF39-DB7C-4A14-8506-2C467BF15DAE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Demo.Remote.Http", "Shared\Remote.Http\Adnc.Demo.Remote.Http.csproj", "{1E7AAF39-DB7C-4A14-8506-2C467BF15DAE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Demo.Shared.Rpc.Grpc", "Shared\Remote.Grpc\Adnc.Demo.Shared.Remote.Grpc.csproj", "{C1D66A26-A970-4592-95B4-27F435C5E087}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Demo.Remote.Grpc", "Shared\Remote.Grpc\Adnc.Demo.Remote.Grpc.csproj", "{C1D66A26-A970-4592-95B4-27F435C5E087}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Demo.Shared.Rpc.Event", "Shared\Remote.Event\Adnc.Demo.Shared.Remote.Event.csproj", "{92D2CBA2-B54E-434B-95F3-C1004F95EA62}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Demo.Remote.Event", "Shared\Remote.Event\Adnc.Demo.Remote.Event.csproj", "{92D2CBA2-B54E-434B-95F3-C1004F95EA62}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Demo.Shared.Const", "Shared\Const\Adnc.Demo.Shared.Const.csproj", "{E4DABBB7-33B3-40C0-A35C-17426E03BDA6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Demo.Const", "Shared\Const\Adnc.Demo.Const.csproj", "{E4DABBB7-33B3-40C0-A35C-17426E03BDA6}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "21.Adnc.Demo.Usr", "21.Adnc.Demo.Usr", "{EB4CD5BA-9A74-4261-8CF3-28B8C7AE8D89}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "21.Adnc.Demo.Admin", "21.Adnc.Demo.Admin", "{EB4CD5BA-9A74-4261-8CF3-28B8C7AE8D89}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Demo.Usr.Api", "Usr\Usr.Api\Adnc.Demo.Usr.Api.csproj", "{1A612204-5F59-4940-B0F1-5F1098FDEF2A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Demo.Admin.Api", "Admin\Admin.Api\Adnc.Demo.Admin.Api.csproj", "{1A612204-5F59-4940-B0F1-5F1098FDEF2A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Demo.Usr.Application", "Usr\Usr.Application\Adnc.Demo.Usr.Application.csproj", "{ABA5BFEF-7D6A-4379-86FD-F34403FECF4F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Demo.Admin.Application", "Admin\Admin.Application\Adnc.Demo.Admin.Application.csproj", "{ABA5BFEF-7D6A-4379-86FD-F34403FECF4F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Demo.Usr.Application.Contracts", "Usr\Usr.Application.Contracts\Adnc.Demo.Usr.Application.Contracts.csproj", "{71520BFB-26D6-4931-BAED-91AEA9A40DDE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Demo.Admin.Application.Contracts", "Admin\Admin.Application.Contracts\Adnc.Demo.Admin.Application.Contracts.csproj", "{71520BFB-26D6-4931-BAED-91AEA9A40DDE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Demo.Usr.Repository", "Usr\Usr.Repository\Adnc.Demo.Usr.Repository.csproj", "{0F3C6418-FF43-45F5-A543-BFF6390C68CE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Demo.Admin.Repository", "Admin\Admin.Repository\Adnc.Demo.Admin.Repository.csproj", "{0F3C6418-FF43-45F5-A543-BFF6390C68CE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "22.Adnc.Demo.Maint", "22.Adnc.Demo.Maint", "{4362083A-615A-4EA5-9C7F-4A3F9C3AD7EB}"
 EndProject
@@ -271,9 +252,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{0C59371F-342F-4618-A91F-2CE0C2EBE31D} = {DF95ED05-B5A5-4CD9-A98D-39C32E5852EF}
-		{94F9FD5A-06C1-4B6C-8466-E1F271FF47F3} = {0C59371F-342F-4618-A91F-2CE0C2EBE31D}
-		{56608E71-771D-4D56-A0BB-48B6FB9147BA} = {0C59371F-342F-4618-A91F-2CE0C2EBE31D}
 		{920400DB-C301-4E10-BB0A-94F2D91A9751} = {DF95ED05-B5A5-4CD9-A98D-39C32E5852EF}
 		{A1225ACF-3292-49D2-A002-3A8D86CF3843} = {920400DB-C301-4E10-BB0A-94F2D91A9751}
 		{6DC922C3-0798-406F-8FD2-DA6BB268A597} = {920400DB-C301-4E10-BB0A-94F2D91A9751}
