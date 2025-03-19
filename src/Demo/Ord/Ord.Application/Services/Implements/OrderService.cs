@@ -1,4 +1,6 @@
-﻿namespace Adnc.Demo.Ord.Application.Services.Implements;
+﻿using Microsoft.AspNetCore.SignalR.Protocol;
+
+namespace Adnc.Demo.Ord.Application.Services.Implements;
 
 /// <summary>
 ///  订单管理
@@ -7,7 +9,7 @@
 /// <param name="orderMgr"></param>
 /// <param name="whseClient"></param>
 /// <param name="adminClient"></param>
-public class OrderService( IEfBasicRepository<Order> orderRepo , OrderManager orderMgr, IWhseRestClient whseClient, IAdminRestClient adminClient)
+public class OrderService(IEfBasicRepository<Order> orderRepo, OrderManager orderMgr, IWhseRestClient whseClient, IAdminRestClient adminClient)
     : AbstractAppService, IOrderService
 {
     /// <summary>
@@ -164,18 +166,12 @@ public class OrderService( IEfBasicRepository<Order> orderRepo , OrderManager or
         if (orderDtos.IsNotNullOrEmpty())
         {
             //调用admin微服务获取字典,组合订单状态信息
-            var rpcResult = await adminClient.GetDictOptionsAsync("order_status");
-            if (rpcResult.IsSuccessStatusCode)
-            {
-                var dict= rpcResult.Content?.FirstOrDefault();
-                if (dict is not null)
+            var orderStatus = (await adminClient.GetDictOptionsAsync("order_status")).FirstOrDefault();
+            if (orderStatus is not null)
+                orderDtos.ForEach(x =>
                 {
-                    orderDtos.ForEach(x =>
-                    {
-                        x.StatusChangesReason = dict.DictDataList.FirstOrDefault(d => d.Value == x.StatusCode.ToString())?.Label ?? string.Empty; ;
-                    });
-                }
-            }
+                    x.StatusChangesReason = orderStatus.DictDataList.FirstOrDefault(d => d.Value == x.StatusCode.ToString())?.Label ?? string.Empty; ;
+                });
         }
 
         return new PageModelDto<OrderDto>(input, orderDtos, total);
