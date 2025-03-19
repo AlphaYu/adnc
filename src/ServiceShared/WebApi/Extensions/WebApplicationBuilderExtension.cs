@@ -21,13 +21,13 @@ public static class WebApplicationBuilderExtension
         var initialData = new List<KeyValuePair<string, string?>> { new(nameof(serviceInfo.ServiceName), serviceInfo.ServiceName) };
         builder.Configuration.AddInMemoryCollection(initialData);
 
-        var configurationType = builder.Configuration.GetValue<string>(NodeConsts.ConfigurationType) ?? "file";
+        var configurationType = builder.Configuration.GetValue<string>(NodeConsts.ConfigurationType) ?? ConfigurationTypeConsts.File;
         switch (configurationType)
         {
-            case "file":
+            case ConfigurationTypeConsts.File:
                 builder.Configuration.AddJsonFile($"{AppContext.BaseDirectory}/appsettings.shared.{builder.Environment.EnvironmentName}.json", true, true);
                 break;
-            case NodeConsts.Consul:
+            case ConfigurationTypeConsts.Consul:
                 var consulOption = builder.Configuration.GetSection(NodeConsts.Consul).Get<ConsulOptions>();
                 if (consulOption is null || consulOption.ConsulKeyPath.IsNullOrWhiteSpace())
                     throw new NotImplementedException(NodeConsts.Consul);
@@ -37,7 +37,9 @@ public static class WebApplicationBuilderExtension
                     builder.Configuration.AddConsulConfiguration(consulOption, true);
                 }
                 break;
-            case NodeConsts.Nacos:
+            case ConfigurationTypeConsts.Nacos:
+                throw new NotImplementedException(nameof(NodeConsts.Nacos));
+            case ConfigurationTypeConsts.Etcd:
                 throw new NotImplementedException(nameof(NodeConsts.Nacos));
             default:
                 throw new NotImplementedException(nameof(configurationType));

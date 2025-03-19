@@ -14,7 +14,6 @@
 
     public static class NodeConsts
     {
-        public const string RegisteredType = "RegisteredType";
         public const string ConfigurationType = "ConfigurationType";
         public const string Kestrel = "Kestrel";
         public const string ThreadPoolSettings = "ThreadPoolSettings";
@@ -45,9 +44,17 @@
 
     public static class RegisteredTypeConsts
     {
-        public const string Direct = "direct";
-        public const string Consul = "consul";
-        public const string Nacos = "nacos";
-        public const string CoreDns = "coredns";
+        public const string Direct = "Direct";
+        public const string Consul = "Consul";
+        public const string Nacos = "Nacos";
+        public const string CoreDns = "Coredns";
+    }
+
+    public static class ConfigurationTypeConsts
+    {
+        public const string File = "File";
+        public const string Consul = "Consul";
+        public const string Nacos = "Nacos";
+        public const string Etcd = "Etcd";
     }
 }
