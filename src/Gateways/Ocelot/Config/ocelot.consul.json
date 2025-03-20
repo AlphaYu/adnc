@@ -18,46 +18,52 @@
   },
   "Routes": [
     {
-      "UpstreamPathTemplate": "/usr{everything}",
+      "UpstreamPathTemplate": "/api/admin{everything}",
       "UpstreamHttpMethod": [
         "Get",
         "Put",
         "Post",
-        "Delete"
+        "Delete",
+        "Patch",
+        "Options"
       ],
       "DownstreamScheme": "http",
-      "DownstreamPathTemplate": "/usr{everything}",
-      "ServiceName": "adnc-usr-webapi",
+      "DownstreamPathTemplate": "/api/admin{everything}",
+      "ServiceName": "adnc-demo-admin-api",
       "LoadBalancerOptions": {
         "Type": "RoundRobin"
       }
     },
     {
-      "UpstreamPathTemplate": "/maint{everything}",
+      "UpstreamPathTemplate": "/api/maint{everything}",
       "UpstreamHttpMethod": [
         "Get",
         "Put",
         "Post",
-        "Delete"
+        "Delete",
+        "Patch",
+        "Options"
       ],
       "DownstreamScheme": "http",
-      "DownstreamPathTemplate": "/maint{everything}",
-      "ServiceName": "adnc-maint-webapi",
+      "DownstreamPathTemplate": "/api/maint{everything}",
+      "ServiceName": "adnc-demo-maint-api",
       "LoadBalancerOptions": {
         "Type": "RoundRobin"
       }
     },
     {
-      "UpstreamPathTemplate": "/cus{everything}",
+      "UpstreamPathTemplate": "/api/cust{everything}",
       "UpstreamHttpMethod": [
         "Get",
         "Put",
         "Post",
-        "Delete"
+        "Delete",
+        "Patch",
+        "Options"
       ],
       "DownstreamScheme": "http",
-      "DownstreamPathTemplate": "/cus{everything}",
-      "ServiceName": "adnc-cus-webapi",
+      "DownstreamPathTemplate": "/api/cust{everything}",
+      "ServiceName": "adnc-demo-cust-api",
       "LoadBalancerOptions": {
         "Type": "RoundRobin"
       }
