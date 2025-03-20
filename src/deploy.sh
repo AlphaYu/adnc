@@ -4,15 +4,15 @@
 RUNNER_DEMO_SOURCE_ROOT="/home/ubuntu/adnc-devops/Demo"
 PUBLISH_PATH="bin/Release/net8.0/linux-x64/publish"
 
-ADMIN_IMAGE_NAME="adnc-demo-admin"
+ADMIN_IMAGE_NAME="adnc-demo-admin-api"
 ADMIN_PROJECT_PATH="Admin/Admin.Api"
 ADMIN_START_FILE="Adnc.Demo.Admin.Api.dll"
 
-MAINT_IMAGE_NAME="adnc-demo-maint"
+MAINT_IMAGE_NAME="adnc-demo-maint-api"
 MAINT_PROJECT_PATH="Maint/Maint.Api"
 MAINT_START_FILE="Adnc.Demo.Maint.Api.dll"
 
-CUST_IMAGE_NAME="adnc-demo-cust"
+CUST_IMAGE_NAME="adnc-demo-cust-api"
 CUST_PROJECT_PATH="Cust/Cust.Api"
 CUST_START_FILE="Adnc.Demo.Cust.Api.dll"
 
@@ -137,7 +137,7 @@ deploy_image() {
   docker run \
     -d \
     --name="${IMAGE_ID}-${RANDOM}" \
-    -e ASPNETCORE_ENVIRONMENT=Production \
+    -e ASPNETCORE_ENVIRONMENT=Staging \
     -e TZ=Asia/Shanghai \
     -e ASPNETCORE_HOSTINGSTARTUPASSEMBLIES=SkyAPM.Agent.AspNetCore \
     -e SKYWALKING__SERVICENAME="${IMAGE_ID}" \
