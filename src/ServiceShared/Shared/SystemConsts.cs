@@ -47,7 +47,7 @@
         public const string Direct = "Direct";
         public const string Consul = "Consul";
         public const string Nacos = "Nacos";
-        public const string CoreDns = "Coredns";
+        public const string CoreDns = "CoreDns";
     }
 
     public static class ConfigurationTypeConsts
