@@ -7,6 +7,9 @@ public static class ApplicationBuilderConsulExtension
     public static IHost RegisterToConsul(this IHost host, string? serviceId, IConfigurationSection configurationSection)
     {
         Checker.Argument.NotNull(configurationSection, nameof(IConfigurationSection));
+        var logger = host.Services.GetRequiredService<ILogger<KestrelOptions>>();
+
+        logger.LogInformation("{0} start register to consul",serviceId);
 
         var kestrelOptions = configurationSection.Get<KestrelOptions>();
 
@@ -22,6 +25,8 @@ public static class ApplicationBuilderConsulExtension
         var serviceAddress = new Uri(defaultEnpoint.Url);
         if (serviceAddress.Host == "0.0.0.0")
             serviceAddress = new Uri($"{serviceAddress.Scheme}://{ipAddresses.FirstOrDefault()}:{serviceAddress.Port}");
+
+        logger.LogInformation("service address {0}", serviceAddress);
 
         registration.Register(serviceAddress, serviceId);
         return host;
