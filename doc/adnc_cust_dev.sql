@@ -19,6 +19,41 @@
 CREATE DATABASE IF NOT EXISTS `adnc_cust_dev` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
 USE `adnc_cust_dev`;
 
+-- 导出  表 adnc_cust_dev.cap.published 结构
+CREATE TABLE IF NOT EXISTS `cap.published` (
+  `Id` bigint(20) NOT NULL,
+  `Version` varchar(20) DEFAULT NULL,
+  `Name` varchar(200) NOT NULL,
+  `Content` longtext DEFAULT NULL,
+  `Retries` int(11) DEFAULT NULL,
+  `Added` datetime NOT NULL,
+  `ExpiresAt` datetime DEFAULT NULL,
+  `StatusName` varchar(40) NOT NULL,
+  PRIMARY KEY (`Id`),
+  KEY `IX_Version_ExpiresAt_StatusName` (`Version`,`ExpiresAt`,`StatusName`),
+  KEY `IX_ExpiresAt_StatusName` (`ExpiresAt`,`StatusName`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 数据导出被取消选择。
+
+-- 导出  表 adnc_cust_dev.cap.received 结构
+CREATE TABLE IF NOT EXISTS `cap.received` (
+  `Id` bigint(20) NOT NULL,
+  `Version` varchar(20) DEFAULT NULL,
+  `Name` varchar(400) NOT NULL,
+  `Group` varchar(200) DEFAULT NULL,
+  `Content` longtext DEFAULT NULL,
+  `Retries` int(11) DEFAULT NULL,
+  `Added` datetime NOT NULL,
+  `ExpiresAt` datetime DEFAULT NULL,
+  `StatusName` varchar(50) NOT NULL,
+  PRIMARY KEY (`Id`),
+  KEY `IX_Version_ExpiresAt_StatusName` (`Version`,`ExpiresAt`,`StatusName`),
+  KEY `IX_ExpiresAt_StatusName` (`ExpiresAt`,`StatusName`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 数据导出被取消选择。
+
 -- 导出  表 adnc_cust_dev.cust_customer 结构
 CREATE TABLE IF NOT EXISTS `cust_customer` (
   `id` bigint(20) NOT NULL,
@@ -33,7 +68,7 @@ CREATE TABLE IF NOT EXISTS `cust_customer` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='客户表';
 
--- 正在导出表  adnc_cust_dev.cust_customer 的数据：~0 rows (大约)
+-- 数据导出被取消选择。
 
 -- 导出  表 adnc_cust_dev.cust_eventtracker 结构
 CREATE TABLE IF NOT EXISTS `cust_eventtracker` (
@@ -44,9 +79,9 @@ CREATE TABLE IF NOT EXISTS `cust_eventtracker` (
   `createtime` datetime(6) NOT NULL COMMENT '创建时间/注册时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `ix_cust_eventtracker_eventid_trackername` (`eventid`,`trackername`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='事件跟踪/处理信息';
+) ENGINE=InnoDB AUTO_INCREMENT=656288452876550 DEFAULT CHARSET=utf8mb4 COMMENT='事件跟踪/处理信息';
 
--- 正在导出表  adnc_cust_dev.cust_eventtracker 的数据：~0 rows (大约)
+-- 数据导出被取消选择。
 
 -- 导出  表 adnc_cust_dev.cust_finance 结构
 CREATE TABLE IF NOT EXISTS `cust_finance` (
@@ -62,7 +97,7 @@ CREATE TABLE IF NOT EXISTS `cust_finance` (
   CONSTRAINT `fk_cust_finance_cust_customer_id` FOREIGN KEY (`id`) REFERENCES `cust_customer` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='客户财务表';
 
--- 正在导出表  adnc_cust_dev.cust_finance 的数据：~0 rows (大约)
+-- 数据导出被取消选择。
 
 -- 导出  表 adnc_cust_dev.cust_transactionlog 结构
 CREATE TABLE IF NOT EXISTS `cust_transactionlog` (
@@ -82,7 +117,7 @@ CREATE TABLE IF NOT EXISTS `cust_transactionlog` (
   CONSTRAINT `fk_cust_transactionlog_cust_customer_customerid` FOREIGN KEY (`customerid`) REFERENCES `cust_customer` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='客户财务变动记录';
 
--- 正在导出表  adnc_cust_dev.cust_transactionlog 的数据：~0 rows (大约)
+-- 数据导出被取消选择。
 
 -- 导出  表 adnc_cust_dev.__efmigrationshistory 结构
 CREATE TABLE IF NOT EXISTS `__efmigrationshistory` (
@@ -91,9 +126,7 @@ CREATE TABLE IF NOT EXISTS `__efmigrationshistory` (
   PRIMARY KEY (`migrationid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- 正在导出表  adnc_cust_dev.__efmigrationshistory 的数据：~1 rows (大约)
-INSERT INTO `__efmigrationshistory` (`migrationid`, `productversion`) VALUES
-	('20250317152707_Init20250317', '8.0.13');
+-- 数据导出被取消选择。
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
