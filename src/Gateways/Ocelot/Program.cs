@@ -7,17 +7,19 @@ internal class Program
     internal static async Task Main(string[] args)
         => await Host.CreateDefaultBuilder(args)
                         .ConfigureWebHostDefaults(webBuilder => webBuilder.UseStartup<Startup>())
-                        .ConfigureAppConfiguration((context, config) =>
+                        .ConfigureAppConfiguration((context, configBuilder) =>
                         {
-                            var env = context.HostingEnvironment;
-                            if (env.IsDevelopment())
-                                config.AddJsonFile($"{AppContext.BaseDirectory}/Config/ocelot.direct.json", true, true);
-                            else
+                            var configuration = configBuilder.Build();
+                            var configurationType = configuration.GetValue<string>("ConfigurationType") ??"File";
+                            if (configurationType == "File")
+                                configBuilder.AddJsonFile($"{AppContext.BaseDirectory}/Config/ocelot.direct.json", true, true);
+                            else if (configurationType == "Consul")
                             {
-                                var configuration = config.Build();
                                 var consulOption = configuration.GetSection("Consul").Get<ConsulOptions>() ?? throw new ArgumentException("Consul configuration is missing");
-                                config.AddConsulConfiguration(consulOption, true);
+                                configBuilder.AddConsulConfiguration(consulOption, true);
                             }
+                            else
+                                throw new ArgumentException("ConfigurationType is invalid");
                         })
                         .Build()
                         .ChangeThreadPoolSettings()
