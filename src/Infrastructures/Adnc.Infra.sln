@@ -11,8 +11,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Consul", "Consul
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Repository", "Repository\Adnc.Infra.Repository.csproj", "{A559E53C-51BA-495D-BAD9-82920D38DD47}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Mapper", "Mapper\Adnc.Infra.Mapper.csproj", "{28342DDE-0AC6-4088-B4FF-9BBC3D7860DF}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Repository.Dapper", "Repository.Dapper\Adnc.Infra.Repository.Dapper.csproj", "{6CFA4455-51FA-43D1-ADB4-9C0011DEC647}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.EventBus", "EventBus\Adnc.Infra.EventBus.csproj", "{D7942274-BF2B-4C63-B75C-262644983F35}"
@@ -60,10 +58,6 @@ Global
 		{A559E53C-51BA-495D-BAD9-82920D38DD47}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A559E53C-51BA-495D-BAD9-82920D38DD47}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A559E53C-51BA-495D-BAD9-82920D38DD47}.Release|Any CPU.Build.0 = Release|Any CPU
-		{28342DDE-0AC6-4088-B4FF-9BBC3D7860DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{28342DDE-0AC6-4088-B4FF-9BBC3D7860DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{28342DDE-0AC6-4088-B4FF-9BBC3D7860DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{28342DDE-0AC6-4088-B4FF-9BBC3D7860DF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6CFA4455-51FA-43D1-ADB4-9C0011DEC647}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6CFA4455-51FA-43D1-ADB4-9C0011DEC647}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6CFA4455-51FA-43D1-ADB4-9C0011DEC647}.Release|Any CPU.ActiveCfg = Release|Any CPU
