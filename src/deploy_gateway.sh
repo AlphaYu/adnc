@@ -1,20 +1,12 @@
 #!/bin/bash
 
 # 环境变量
-RUNNER_DEMO_SOURCE_ROOT="/home/ubuntu/adnc-devops/Demo"
+RUNNER_DEMO_SOURCE_ROOT="/adnc/src/Gateways/Ocelot"
 PUBLISH_PATH="bin/Release/net8.0/linux-x64/publish"
 
-ADMIN_IMAGE_NAME="adnc-demo-admin-api"
-ADMIN_PROJECT_PATH="Admin/Admin.Api"
-ADMIN_START_FILE="Adnc.Demo.Admin.Api.dll"
-
-MAINT_IMAGE_NAME="adnc-demo-maint-api"
-MAINT_PROJECT_PATH="Maint/Maint.Api"
-MAINT_START_FILE="Adnc.Demo.Maint.Api.dll"
-
-CUST_IMAGE_NAME="adnc-demo-cust-api"
-CUST_PROJECT_PATH="Cust/Cust.Api"
-CUST_START_FILE="Adnc.Demo.Cust.Api.dll"
+OCELOT_IMAGE_NAME="adnc-gateway-ocelot"
+OCELOT_PROJECT_PATH=""
+OCELOT_START_FILE="Adnc.Gateway.Ocelot.dll"
 
 # 失败时终止脚本的函数
 check_error() {
@@ -28,7 +20,7 @@ check_error() {
 dotnet publish "${RUNNER_DEMO_SOURCE_ROOT}/Adnc.Demo.sln" --configuration Release --runtime linux-x64 --self-contained false
 check_error "dotnet publish"
 
-# 构建并推送镜像的函数
+# 构建镜像的函数
 build_and_push_image() {
   local IMAGE_NAME=$1
   local PROJECT_PATH=$2
@@ -92,6 +84,7 @@ EOF
   check_error "Docker tag $IMAGE_ID:latest"
 }
 
+#删除容器/镜像函数
 remove_container_image(){
   local IMAGE_NAME=$1
   local IMAGE_ID=$(echo "$IMAGE_NAME" | tr '[:upper:]' '[:lower:]')
@@ -147,15 +140,7 @@ deploy_image() {
   check_error "启动新容器 $IMAGE_ID"
 }
 
-# 构建镜像
-build_and_push_image "$ADMIN_IMAGE_NAME" "$ADMIN_PROJECT_PATH" "$ADMIN_START_FILE"
-# 删除容器/镜像
-remove_container_image "$ADMIN_IMAGE_NAME"
-# 部署镜像
-deploy_image "$ADMIN_IMAGE_NAME"
-
-# build_and_push_image "$MAINT_IMAGE_NAME" "$MAINT_PROJECT_PATH" "$MAINT_START_FILE"
-# deploy_image "$MAINT_IMAGE_NAME"
-
-# build_and_push_image "$CUST_IMAGE_NAME" "$CUST_PROJECT_PATH" "$CUST_START_FILE"
-# deploy_image "$CUST_IMAGE_NAME"
+# adnc-gateway-ocelot
+build_and_push_image "$OCELOT_IMAGE_NAME" "$OCELOT_PROJECT_PATH" "$OCELOT_START_FILE"
+remove_container_image "$OCELOT_IMAGE_NAME"
+deploy_image "$OCELOT_IMAGE_NAME"
