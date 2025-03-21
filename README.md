@@ -41,28 +41,26 @@ adnc
 │   └── workflows CICD脚本目录(github-action)
 ├── doc 技术文档目录
 ├── src 源代码目录
-│   ├── ServerApi 后端代码目录
-│   │   ├── Infrastructures 基础架构层代码目录
-│   │   ├── ServiceShared 服务通用层代码目录
-│   │   ├── Gateways ocelot网关代码目录
-│   │   └── Demo 示例代码目录
-│   └── ClientApp 前端代码目录
+│   ├── Infrastructures 基础架构层代码目录
+│   ├── ServiceShared 服务通用层代码目录
+│   ├── Gateways ocelot网关代码目录
+│   └── Demo 示例代码目录
 ├── test 测试相关目录
 ├── .gitignore
 ├── README.MD
 └── LICENSE
 ```
 ### 重要文件
-| 路径                                           | 描述                               |
-| ---------------------------------------------- | ---------------------------------- |
-| `src/ServerApi/Adnc.sln`                       | 该解决方案包含`adnc`所有工程       |
-| `src/ServerApi/Infrastructures/Adnc.Infra.sln` | 该解决方案仅包含基础架构层相关工程 |
-| `src/ServerApi/ServiceShared/Adnc.Shared.sln`  | 该解决方案仅包含服务通用层相关工程 |
-| `src/ServerApi/Demo/Adnc.Demo.sln`             | 该解决方案仅包含`demo`相关工程     |
-| `scr/ServerApi/common.props`                   | 工程文件`*.csproj`公用配置         |
-| `scr/ServerApi/version_infra.props`            | 基础架构层版本号                   |
-| `scr/ServerApi/version_shared.props`           | 服务通用层版本号                   |
-| `scr/ServerApi/nuget.props`                    | `Nuget`发布信息配置                |
+| 路径                                 | 描述                               |
+| -------------------------------------| ---------------------------------- |
+| `src/Adnc.sln`                       | 该解决方案包含`adnc`所有工程       |
+| `src/Infrastructures/Adnc.Infra.sln` | 该解决方案仅包含基础架构层相关工程 |
+| `src/ServiceShared/Adnc.Shared.sln`  | 该解决方案仅包含服务通用层相关工程 |
+| `src/Demo/Adnc.Demo.sln`             | 该解决方案仅包含`demo`相关工程     |
+| `scr/common.props`                   | 工程文件`*.csproj`公用配置         |
+| `scr/version_infra.props`            | 基础架构层版本号                   |
+| `scr/version_shared.props`           | 服务通用层版本号                   |
+| `scr/nuget.props`                    | `Nuget`发布信息配置                |
 ### 总体架构图
 
 <img src="https://aspdotnetcore.net/wp-content/uploads/2023/04/adnc_framework-e1682145003197.png" alt="adnc_framework"/>
@@ -95,7 +93,6 @@ adnc
 | <a target="_blank" href="https://github.com/castleproject/Core">Castle DynamicProxy</a> | 动态代理，AOP开源实现组件                                    |
 | <a target="_blank" href="https://github.com/PomeloFoundation/Pomelo.EntityFrameworkCore.MySql">Pomelo.EntityFrameworkCore.MySql</a> | EFCore ORM组件                                               |
 | <a target="_blank" href="https://github.com/StackExchange/Dapper">Dapper</a> | 轻量级ORM组件                                                |
-| <a target="_blank" href="https://entityframework-plus.net">Z.EntityFramework.Plus.EFCore</a> | 第三方高性能的EfCore组件                                     |
 | <a target="_blank" href="https://github.com/NLog/NLog">NLog</a><br />Nlog.Mongdb<br />Nlog.Loki | 日志记录组件                                                 |
 | <a target="_blank" href="https://github.com/AutoMapper/AutoMapper">AutoMapper</a> | 模型映射组件                                                 |
 | <a target="_blank" href="https://github.com/domaindrivendev/Swashbuckle.AspNetCore">Swashbuckle.AspNetCore</a> | APIs文档生成工具(swagger)                                    |
@@ -172,24 +169,24 @@ adnc
 
 - `protos` grpc定义文件
 - `resources` 公用的静态文件与配置文件
-- `Adnc.Demo.Shared.Const` 常量文件
-- `Adnc.Demo.Shared.Rpc.Event` 事件文件
-- `Adnc.Demo.Shared.Rpc.Grpc` gprc客户端
-- `Adnc.Demo.Shared.Rpc.Http` http客户端
+- `Adnc.Demo.Const` 常量文件
+- `Adnc.Demo.Remote.Event` 事件文件
+- `Adnc.Demo.Remote.Grpc` gprc客户端
+- `Adnc.Demo.Remote.Http` http客户端
 
-##### :white_check_mark: Adnc.Demo.Usr
+##### :white_check_mark: Adnc.Demo.Admin
 
-> 经典三层开发模式，剥离了应用服务协议定义文件到`Adnc.Demo.Usr.Application.Contracts`层
+> 经典三层开发模式，剥离了应用服务协议定义文件到`Adnc.Demo.Admin.Application.Contracts`层
 
-用户中心服务是系统支撑服务，实现了用户管理、角色管理、权限管理、菜单管理、组织架构管理。
+系统管理服务是系统支撑服务，实现了用户管理、角色管理、权限管理、菜单管理、组织架构、字典管理、系统配置管理。
 
 ##### :white_check_mark: Adnc.Demo.Maint
 
 > 经典三层开发模式，应用服务实现与协议定义都在`Adnc.Demo.Maint.Application`层
 
-运维中心服务是系统支撑服务，实现了登录日志、审计日志、异常日志、字典管理、配置参数管理。
+运维中心服务是系统支撑服务，实现了登录日志、审计日志、异常日志。
 
-##### :white_check_mark: Adnc.Demo.Cus
+##### :white_check_mark: Adnc.Demo.Cust
 
 > 经典三层开发模式，控制器、应用服务实现与协议定义、仓储都在同一个工程，这种结构适合细粒度服务拆分模式。
 
@@ -220,8 +217,7 @@ adnc
 
 ### 项目地址
 
-- [adnc-vue2: ADNC's Vue2 front-end](https://github.com/alphayu/adnc-vue2)
-- adnc-vue3: 尚未完成
+- [adnc-vue3: ADNC's Vue3 front-end](https://github.com/alphayu/adnc-vue-elementplus)
 
 ### 界面截图
 
