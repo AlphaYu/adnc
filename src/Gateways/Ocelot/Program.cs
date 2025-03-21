@@ -15,11 +15,11 @@ internal class Program
                                 configBuilder.AddJsonFile($"{AppContext.BaseDirectory}/Config/ocelot.direct.json", true, true);
                             else if (configurationType == "Consul")
                             {
-                                var consulOption = configuration.GetSection("Consul").Get<ConsulOptions>() ?? throw new ArgumentException("Consul configuration is missing");
-                                configBuilder.AddConsulConfiguration(consulOption, true);
+                                //var consulOption = configuration.GetSection("Consul").Get<ConsulOptions>() ?? throw new ArgumentException("Consul configuration is missing");
+                                //configBuilder.AddConsulConfiguration(consulOption, true);
                             }
-                            else
-                                throw new ArgumentException("ConfigurationType is invalid");
+                            //else
+                               //throw new ArgumentException("ConfigurationType is invalid");
                         })
                         .Build()
                         .ChangeThreadPoolSettings()
