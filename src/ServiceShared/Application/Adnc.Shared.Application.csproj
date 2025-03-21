@@ -14,6 +14,7 @@
 		<PackageReference Include="SkyAPM.Diagnostics.CAP" Version="$(SkyAPM_Diagnostics_CAP_Version)" />
 		<PackageReference Include="EFCore.NamingConventions" Version="$(EFCore_NamingConventions_Version)" />
 		<PackageReference Include="Grpc.Net.ClientFactory" Version="$(Grpc_Net_ClientFactory_Version)" />
+		<PackageReference Include="AutoMapper" Version="$(AutoMapper_Version)" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -29,7 +30,6 @@
 		<ProjectReference Include="..\..\Infrastructures\Repository.EfCore.MySql\Adnc.Infra.Repository.EfCore.MySql.csproj" />
 		<ProjectReference Include="..\..\Infrastructures\EventBus\Adnc.Infra.EventBus.csproj" />
 		<ProjectReference Include="..\..\Infrastructures\IdGenerater\Adnc.Infra.IdGenerater.csproj" />
-		<ProjectReference Include="..\..\Infrastructures\Mapper\Adnc.Infra.Mapper.csproj" />
 		<ProjectReference Include="..\..\Infrastructures\Redis.Caching\Adnc.Infra.Redis.Caching.csproj" />
 	</ItemGroup>
 
@@ -39,7 +39,6 @@
 		<PackageReference Include="Adnc.Infra.Repository.EfCore.MySql" Version="$(Infra_Version)" />
 		<PackageReference Include="Adnc.Infra.EventBus" Version="$(Infra_Version)" />
 		<PackageReference Include="Adnc.Infra.IdGenerater" Version="$(Infra_Version)" />
-		<PackageReference Include="Adnc.Infra.Mapper" Version="$(Infra_Version)" />
 		<PackageReference Include="Adnc.Infra.Redis.Caching" Version="$(Infra_Version)" />
 	</ItemGroup>
 </Project>

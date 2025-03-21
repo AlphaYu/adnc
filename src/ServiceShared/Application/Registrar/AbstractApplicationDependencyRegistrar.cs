@@ -1,5 +1,7 @@
-﻿using Adnc.Shared.Application.Services.Trackers;
+﻿using Adnc.Shared.Application.Mapper.AutoMapper;
+using Adnc.Shared.Application.Services.Trackers;
 using Adnc.Shared.Remote;
+using ProtoBuf.Meta;
 
 namespace Adnc.Shared.Application.Registrar;
 
@@ -56,8 +58,9 @@ public abstract partial class AbstractApplicationDependencyRegistrar
             .AddScoped<IMessageTracker, RedisMessageTrackerService>()
             .AddScoped<MessageTrackerFactory>()
             .AddHostedService<Channels.LogConsumersHostedService>()
+            .AddAutoMapper(ApplicationLayerAssembly)
+            .AddSingleton<IObjectMapper, AutoMapperObject>()
             .AddValidatorsFromAssembly(ContractsLayerAssembly, ServiceLifetime.Scoped)
-            .AddAdncInfraAutoMapper(ApplicationLayerAssembly)
             .AddAdncInfraYitterIdGenerater(RedisSection, ServiceInfo.ShortName.Split('-')[0])
             .AddAdncInfraConsul(ConsulSection)
             .AddAdncInfraDapper();

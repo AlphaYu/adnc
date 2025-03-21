@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
-using Adnc.Infra.Core.Guard;
 
-namespace Adnc.Infra.Mapper.AutoMapper
+namespace Adnc.Shared.Application.Mapper.AutoMapper
 {
     public sealed class AutoMapperObject(IMapper mapper) : IObjectMapper
     {
@@ -26,6 +25,16 @@ namespace Adnc.Infra.Mapper.AutoMapper
             Checker.Argument.NotNull(source, nameof(source));
             Checker.Argument.NotNull(destination, nameof(destination));
             return mapper.Map(source, destination);
+        }
+
+        public TDestination Map<TDestination>(object source, long id)
+            where TDestination : Entity
+        {
+            Checker.Argument.NotNull(source, nameof(source));
+            Checker.Argument.NotNull(source, nameof(id));
+            var destination = mapper.Map<TDestination>(source);
+            destination.Id = id;
+            return destination;
         }
     }
 }

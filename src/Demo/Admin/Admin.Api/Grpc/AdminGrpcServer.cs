@@ -1,5 +1,6 @@
 ﻿using Adnc.Demo.Remote.Grpc.Messages;
 using Adnc.Demo.Remote.Grpc.Services;
+using Adnc.Shared.Application.Mapper;
 using Grpc.Core;
 
 namespace Adnc.Demo.Admin.Api.Grpc;

@@ -2,7 +2,6 @@
 global using Adnc.Infra.Core.Guard;
 global using Adnc.Infra.Core.Json;
 global using Adnc.Infra.IdGenerater.Yitter;
-global using Adnc.Infra.Mapper;
 global using Adnc.Infra.Redis;
 global using Adnc.Infra.Redis.Caching;
 global using Adnc.Infra.Redis.Caching.Core;
@@ -17,6 +16,7 @@ global using Adnc.Shared.Application.Contracts.Enums;
 global using Adnc.Shared.Application.Contracts.Interfaces;
 global using Adnc.Shared.Application.Contracts.ResultModels;
 global using Adnc.Shared.Application.Interceptors;
+global using Adnc.Shared.Application.Mapper;
 global using Adnc.Shared.Repository.DapperEntities;
 global using Adnc.Shared.Repository.EfCoreEntities;
 global using Castle.DynamicProxy;
