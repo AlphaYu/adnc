@@ -1,5 +1,4 @@
-﻿using Adnc.Infra.Core.Configuration;
-using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.IdentityModel.Tokens;
 
 namespace Adnc.Gateway.Ocelot.Identity;
 
