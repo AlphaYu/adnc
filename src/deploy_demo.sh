@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # 环境变量
-RUNNER_DEMO_SOURCE_ROOT="/adnc/src/Demo"
+RUNNER_DEMO_SOURCE_ROOT="/home/ubuntu/adnc/src/Demo"
 PUBLISH_PATH="bin/Release/net8.0/linux-x64/publish"
 
 ADMIN_IMAGE_NAME="adnc-demo-admin-api"
@@ -153,8 +153,12 @@ build_and_push_image "$ADMIN_IMAGE_NAME" "$ADMIN_PROJECT_PATH" "$ADMIN_START_FIL
 remove_container_image "$ADMIN_IMAGE_NAME"
 deploy_image "$ADMIN_IMAGE_NAME"
 
-# build_and_push_image "$MAINT_IMAGE_NAME" "$MAINT_PROJECT_PATH" "$MAINT_START_FILE"
-# deploy_image "$MAINT_IMAGE_NAME"
+# admin-demo-maint-api
+build_and_push_image "$MAINT_IMAGE_NAME" "$MAINT_PROJECT_PATH" "$MAINT_START_FILE"
+remove_container_image "$MAINT_IMAGE_NAME"
+deploy_image "$MAINT_IMAGE_NAME"
 
-# build_and_push_image "$CUST_IMAGE_NAME" "$CUST_PROJECT_PATH" "$CUST_START_FILE"
-# deploy_image "$CUST_IMAGE_NAME"
+# admin-demo-cust-api
+build_and_push_image "$CUST_IMAGE_NAME" "$CUST_PROJECT_PATH" "$CUST_START_FILE"
+remove_container_image "$CUST_IMAGE_NAME"
+deploy_image "$CUST_IMAGE_NAME"

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # 环境变量
-RUNNER_DEMO_SOURCE_ROOT="/adnc/src/Gateways/Ocelot"
+RUNNER_DEMO_SOURCE_ROOT="/home/ubuntu/adnc/src/Gateways/Ocelot"
 PUBLISH_PATH="bin/Release/net8.0/linux-x64/publish"
 
 OCELOT_IMAGE_NAME="adnc-gateway-ocelot"
@@ -17,7 +17,7 @@ check_error() {
 }
 
 # 发布解决方案
-dotnet publish "${RUNNER_DEMO_SOURCE_ROOT}/Adnc.Demo.sln" --configuration Release --runtime linux-x64 --self-contained false
+dotnet publish "${RUNNER_DEMO_SOURCE_ROOT}/Adnc.Ocelot.sln" --configuration Release --runtime linux-x64 --self-contained false
 check_error "dotnet publish"
 
 # 构建镜像的函数
@@ -130,6 +130,7 @@ deploy_image() {
   docker run \
     -d \
     --name="${IMAGE_ID}-${RANDOM}" \
+    -p 8888:80 \
     -e ASPNETCORE_ENVIRONMENT=Staging \
     -e TZ=Asia/Shanghai \
     -e ASPNETCORE_HOSTINGSTARTUPASSEMBLIES=SkyAPM.Agent.AspNetCore \
