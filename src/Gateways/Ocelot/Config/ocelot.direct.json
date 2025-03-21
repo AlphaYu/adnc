@@ -1,7 +1,11 @@
 {
-  //consul
+  //direct
   "GlobalConfiguration": {
-    "BaseUrl": "http://62.234.187.128:8888",
+    "RequestIdKey": "RequestId",
+    //LeastConnection,RoundRobin,NoLoadBalance,CookieStickySessions
+    "LoadBalancerOptions": {
+      "Type": "NoLoadBalance"
+    },
     "UpstreamHeaderTransform": {
       "From": "gateway",
       "X-Forwarded-For": "{RemoteIpAddress}"
@@ -9,15 +13,58 @@
     "DownstreamHeaderTransform": {
       "X-Forwarded-For": "{RemoteIpAddress}"
     },
-    "ServiceDiscoveryProvider": {
-      "Scheme": "http",
-      "Host": "62.234.187.128",
-      "Port": 8500,
-      "Type": "Consul"
+    "RateLimitOptions": {
+      //白名单，不受限流控制
+      "ClientWhitelist": [],
+      //是否开启限流
+      "EnableRateLimiting": true,
+      //限流的时间，如：1s, 5m, 1h, 1d
+      "Period": "1s",
+      //在限流控制时间段内最大访问数
+      "Limit": 3000,
+      //多少秒后客户端可以重试
+      "PeriodTimespan": 10
+    },
+    "QoSOptions": {
+      //断路器次数（发生几次请求异常后进行熔断）
+      "ExceptionsAllowedBeforeBreaking": 10,
+      //断路器熔断时间（毫秒）
+      "DurationOfBreak": 30000,
+      //超时时间
+      "TimeoutValue": 5000
     }
   },
   "Routes": [
+    //auth service
     {
+      "DownstreamPathTemplate": "/api/auth{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 50010
+        }
+      ],
+      "UpstreamPathTemplate": "/api/auth{everything}",
+      "UpstreamHttpMethod": [
+        "Get",
+        "Put",
+        "Post",
+        "Delete",
+        "Patch",
+        "Options"
+      ]
+    },
+    //admin services
+    {
+      "DownstreamPathTemplate": "/api/admin{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 50010
+        }
+      ],
       "UpstreamPathTemplate": "/api/admin{everything}",
       "UpstreamHttpMethod": [
         "Get",
@@ -26,15 +73,18 @@
         "Delete",
         "Patch",
         "Options"
-      ],
-      "DownstreamScheme": "http",
-      "DownstreamPathTemplate": "/api/admin{everything}",
-      "ServiceName": "adnc-demo-admin-api",
-      "LoadBalancerOptions": {
-        "Type": "RoundRobin"
-      }
+      ]
     },
+    //maint services
     {
+      "DownstreamPathTemplate": "/api/maint{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 50020
+        }
+      ],
       "UpstreamPathTemplate": "/api/maint{everything}",
       "UpstreamHttpMethod": [
         "Get",
@@ -43,15 +93,18 @@
         "Delete",
         "Patch",
         "Options"
-      ],
-      "DownstreamScheme": "http",
-      "DownstreamPathTemplate": "/api/maint{everything}",
-      "ServiceName": "adnc-demo-maint-api",
-      "LoadBalancerOptions": {
-        "Type": "RoundRobin"
-      }
+      ]
     },
+    //cust services
     {
+      "DownstreamPathTemplate": "/api/cust{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 50030
+        }
+      ],
       "UpstreamPathTemplate": "/api/cust{everything}",
       "UpstreamHttpMethod": [
         "Get",
@@ -60,13 +113,7 @@
         "Delete",
         "Patch",
         "Options"
-      ],
-      "DownstreamScheme": "http",
-      "DownstreamPathTemplate": "/api/cust{everything}",
-      "ServiceName": "adnc-demo-cust-api",
-      "LoadBalancerOptions": {
-        "Type": "RoundRobin"
-      }
+      ]
     }
   ]
 }
