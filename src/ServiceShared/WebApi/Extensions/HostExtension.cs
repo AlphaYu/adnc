@@ -13,7 +13,7 @@ public static class HostExtension
         var configuration = host.Services.GetRequiredService<IConfiguration>();
         var serviceInfo = host.Services.GetRequiredService<IServiceInfo>();
         var logger = host.Services.GetRequiredService<ILogger<RpcInfo>>();
-        var registeredType = configuration.GetValue<string>($"{NodeConsts.RpcInfo}:Type") ?? RegisteredTypeConsts.Direct;
+        var registeredType = configuration.GetValue<string>($"{NodeConsts.RegisterType}") ?? RegisteredTypeConsts.Direct;
         logger.LogInformation("RegisteredType={0}", registeredType);
         switch (registeredType)
         {

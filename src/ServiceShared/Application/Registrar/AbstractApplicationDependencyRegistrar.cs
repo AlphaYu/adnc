@@ -11,6 +11,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar
     public abstract Assembly ContractsLayerAssembly { get; }
     public abstract Assembly RepositoryOrDomainLayerAssembly { get; }
     protected SkyApmExtensions SkyApm { get; init; }
+    protected string RegisterType { get; init; }
     protected RpcInfo? RpcInfoOption { get; init; }
     protected IServiceCollection Services { get; init; }
     protected IConfiguration Configuration { get; init; }
@@ -34,6 +35,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar
         ConsulSection = Configuration.GetSection(NodeConsts.Consul);
         RabbitMqSection = Configuration.GetSection(NodeConsts.RabbitMq);
         SkyApm = Services.AddSkyApmExtensions();
+        RegisterType  = Configuration.GetValue<string>(NodeConsts.RegisterType) ?? RegisteredTypeConsts.Direct;
         RpcInfoOption = Configuration.GetSection(NodeConsts.RpcInfo).Get<RpcInfo>();
     }
 

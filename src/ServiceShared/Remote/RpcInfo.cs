@@ -2,8 +2,6 @@
 
 public sealed class RpcInfo
 {
-    public string Type { get; set; } = string.Empty;
-
     public List<AddressNode> Address { get; set; } = [];
 
     public PollyNode Polly { get; set; } = new();

@@ -45,7 +45,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar
                                                     .AddHttpMessageHandler<TokenDelegatingHandler>();
 
         var addressNode = RpcInfoOption.Address.First(x => x.Service.EqualsIgnoreCase(serviceName));
-        switch (RpcInfoOption.Type)
+        switch (RegisterType)
         {
             case RegisteredTypeConsts.Direct:
                 {
@@ -69,7 +69,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar
                     break;
                 }
             default: 
-                throw new NotImplementedException(RpcInfoOption.Type);
+                throw new NotImplementedException(RegisterType);
         }
     }
 
@@ -97,7 +97,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar
 
         var baseAddress = string.Empty;
         var addressNode = RpcInfoOption.Address.First(x => x.Service.EqualsIgnoreCase(serviceName));
-        switch (RpcInfoOption.Type)
+        switch (RegisterType)
         {
             case RegisteredTypeConsts.Direct:
                 {
@@ -122,7 +122,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar
                     break;
                 }
             default:
-                throw new NotImplementedException(RpcInfoOption.Type);
+                throw new NotImplementedException(RegisterType);
         }
 
         var enablePolly = RpcInfoOption.Polly.Enable;

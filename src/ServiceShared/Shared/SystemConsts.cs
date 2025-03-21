@@ -15,6 +15,7 @@
     public static class NodeConsts
     {
         public const string ConfigurationType = "ConfigurationType";
+        public const string RegisterType = "RegisterType";
         public const string Kestrel = "Kestrel";
         public const string ThreadPoolSettings = "ThreadPoolSettings";
         public const string Redis = "Redis";
