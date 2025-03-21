@@ -90,14 +90,15 @@ public sealed class ServiceInfo : IServiceInfo
             var ticks = new DateTimeOffset(DateTime.Now).ToUnixTimeMilliseconds();
             var ticksHex = Convert.ToString(ticks, 16);
             var envName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")?.ToLower();
-            var serviceId = envName switch
-            {
-                "development" => $"{serviceName}-dev-{ticksHex}",
-                "test" => $"{serviceName}-test-{ticksHex}",
-                "staging" => $"{serviceName}-stag-{ticksHex}",
-                "production" => $"{serviceName}-{ticksHex}",
-                _ => throw new NullReferenceException("ASPNETCORE_ENVIRONMENT")
-            };
+            var serviceId = $"{serviceName}-{ticksHex}";
+            //var serviceId = envName switch
+            //{
+            //    "development" => $"{serviceName}-dev-{ticksHex}",
+            //    "test" => $"{serviceName}-test-{ticksHex}",
+            //    "staging" => $"{serviceName}-stag-{ticksHex}",
+            //    "production" => $"{serviceName}-{ticksHex}",
+            //    _ => throw new NullReferenceException("ASPNETCORE_ENVIRONMENT")
+            //};
 
             var names = startAssemblyName.Split(".");
             migrationsAssemblyName ??= startAssemblyName.Replace($".{names.Last()}", ".Migrations");
