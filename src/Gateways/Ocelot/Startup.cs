@@ -46,7 +46,7 @@ public class Startup
                 logging.ResponseBodyLogLimit = 4096;
             })
             .AddOcelot(Configuration)
-            .AddConsul()
+            .AddConsul<IpAddressConsulServiceBuilder>()
             .AddPolly();
     }
 
