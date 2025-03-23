@@ -41,7 +41,8 @@ CREATE TABLE IF NOT EXISTS `__EFMigrationsHistory` (
 
 -- 正在导出表  adnc_maint.__EFMigrationsHistory 的数据：~1 rows (大约)
 INSERT INTO `__EFMigrationsHistory` (`migrationid`, `productversion`) VALUES
-	('20250317152538_Init20250317', '8.0.13');
+	('20250317152538_Init20250317', '8.0.13'),
+	('20250323125304_Update25032302', '8.0.13');
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
