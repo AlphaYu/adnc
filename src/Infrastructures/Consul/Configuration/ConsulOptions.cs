@@ -10,4 +10,5 @@ public class ConsulOptions
     public string ConsulKeyPath { get; set; } = string.Empty;
     public int DeregisterCriticalServiceAfter { get; set; } = default;
     public int Timeout { get; set; } = default;
+    public string Token { get; set; } = string.Empty;
 }
