@@ -1,14 +1,16 @@
 {
   "Mysql": {
-    "ConnectionString": "Server=10.0.8.15;Port=13308;database=adnc_cust;uid=root;pwd=alpha.netcore;connection timeout=30;"
+    "ConnectionString": "Server=10.2.8.5;Port=13308;database=adnc_cust;uid=root;pwd=alpha.netcore;connection timeout=30;"
   },
-  "Redis": {
-    "Provider": "StackExchange",
-    "EnableBloomFilter": false,
-    "EnableLogging": true,
-    "SerializerName": "binary",
-    "Dbconfig": {
-      "ConnectionString": "10.0.8.15:13379,password=football,defaultDatabase=9,ssl=false,sslHost=null,connectTimeout=4000,allowAdmin=true"
+  "Kestrel": {
+    "Endpoints": {
+      "Default": {
+        "Url": "http://0.0.0.0:80"
+      },
+      "Grpc": {
+        "Url": "http://0.0.0.0:81",
+        "Protocols": "Http2"
+      }
     }
   }
 }

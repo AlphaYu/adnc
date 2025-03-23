@@ -1,6 +1,6 @@
 {
   "Mysql": {
-    "ConnectionString": "Server=10.2.8.5;Port=13308;database=adnc_maint;uid=root;pwd=alpha.netcore;connection timeout=30;"
+    "ConnectionString": "Server=10.2.8.5;Port=13308;database=adnc_admin;uid=root;pwd=alpha.netcore;connection timeout=30;"
   },
   "Kestrel": {
     "Endpoints": {

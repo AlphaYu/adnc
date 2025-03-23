@@ -1,155 +1,156 @@
 {
-"RegisteredType": "consul",
-"Consul": {
-"ServiceName": "$SERVICENAME",
-"ServerTags": [ "urlprefix-/$SHORTNAME" ],
-"HealthCheckUrl": "$RELATIVEROOTPATH/health-24b01005-a76a-4b3b-8fb1-5e0f2e9564fb",
-"HealthCheckIntervalInSecond": 6,
-"DeregisterCriticalServiceAfter": 20,
-"Timeout": 6
-},
-"ThreadPoolSettings": {
-"MinThreads": 8,
-"MinCompletionPortThreads": 8,
-"MaxThreads": 32767,
-"MaxCompletionPortThreads": 1000
-},
-"Loki": {
-"Endpoint": "http://10.0.8.15:3100",
-"UserName": "",
-"Password": ""
-},
-"Logging": {
-"IncludeScopes": true,
-"LogContainer": "console",
-"LogLevel": {
-  "Default": "Error",
-  "Adnc": "Information",
-  "Microsoft": "Error",
-  "Microsoft.Hosting.Lifetime": "Error"
-}
-},
-"Caching": {
-"MaxRdSecond": 30,
-"LockMs": 6000,
-"SleepMs": 300,
-"EnableLogging": true,
-"PollyTimeoutSeconds": 11,
-"PenetrationSetting": {
-  "Disable": false,
-  "BloomFilterSetting": {
-    "Name": "adnc:$SHORTNAME:bloomfilter:cachekeys",
-    "Capacity": 10000000,
-    "ErrorRate": 0.001
-  }
-}
-},
-"MongoDb": {
-"ConnectionString": "mongodb://alpha:football@10.0.8.15:13017/logs?authSource=logs",
-"CollectionNamingConvention": 2,
-"PluralizeCollectionNames": true
-},
-"RabbitMq": {
-"HostName": "10.0.8.15",
-"VirtualHost": "vhost.adnc.prod",
-"Port": "13572",
-"UserName": "adncprod",
-"Password": "adncprod.123"
-},
-"AllowedHosts": "*",
-"CorsHosts": "*",
-"SSOAuthentication": false,
-"JWT": {
-"ValidateIssuer": true,
-"ValidIssuer": "adnc",
-"ValidateIssuerSigningKey": true,
-"SymmetricSecurityKey": "alphadotnetcoresecurity2020",
-"ValidateAudience": true,
-"ValidAudience": "manager",
-"ValidateLifetime": true,
-"RequireExpirationTime": true,
-"ClockSkew": 1,
-"RefreshTokenAudience": "manager",
-"Expire": 6000,
-"RefreshTokenExpire": 10080
-},
-"SkyWalking": {
-"ServiceName": "$SERVICENAME",
-"Namespace": "adnc",
-"HeaderVersions": [
-  "sw8"
-],
-"Sampling": {
-  "SamplePer3Secs": -1,
-  "Percentage": -1.0,
-  "IgnorePaths": [ "/*/health-24b01005-a76a-4b3b-8fb1-5e0f2e9564fb", "http://**/appsettings", "/**/swagger.json","http://**/loki/api/v1/push" ]
-},
-"Logging": {
-  "Level": "Error",
-  "FilePath": "txtlogs\\skyapm-{Date}.log"
-},
-"Transport": {
-  "Interval": 3000,
-  "ProtocolVersion": "v8",
-  "QueueSize": 30000,
-  "BatchSize": 3000,
-  "gRPC": {
-    "Servers": "10.0.8.15:11800",
-    "Timeout": 10000,
-    "ConnectTimeout": 10000,
-    "ReportTimeout": 600000,
-    "Authentication": ""
-  }
-}
-},
-"Kestrel": {
-"Endpoints": {
-  "Default": {
-    "Url": "http://0.0.0.0:80"
+  "RegisterType": "Consul",
+  "Redis": {
+    "Provider": "StackExchange",
+    "EnableLogging": true,
+    "SerializerName": "json",
+    "EnableBloomFilter": false,
+    "Dbconfig": {
+      "ConnectionString": "10.2.8.5:13379,password=football,defaultDatabase=0,ssl=false,sslHost=null,connectTimeout=4000,allowAdmin=true"
+    }
   },
-  "Grpc": {
-    "Url": "http://0.0.0.0:81",
-    "Protocols": "Http2"
+  "Caching": {
+    "MaxRdSecond": 30,
+    "LockMs": 6000,
+    "SleepMs": 300,
+    "EnableLogging": true,
+    "PollyTimeoutSeconds": 11,
+    "PenetrationSetting": {
+      "Disable": false,
+      "BloomFilterSetting": {
+        "Name": "adnc:$SHORTNAME:bloomfilter:cachekeys",
+        "Capacity": 10000000,
+        "ErrorRate": 0.001
+      }
+    }
+  },
+  "RabbitMq": {
+    "HostName": "10.2.8.5",
+    "Port": "5672",
+    "VirtualHost": "/",
+    "UserName": "admin",
+    "Password": "football"
+  },
+  "SysLogDb": {
+    "DbType": "mysql",
+    "ConnectionString": "Server=10.2.8.5;Port=13308;database=adnc_syslog;uid=root;pwd=alpha.netcore;connection timeout=30;"
+  },
+  "Consul": {
+    "ServiceName": "$SERVICENAME",
+    "ServerTags": ["urlprefix-/$SHORTNAME"],
+    "HealthCheckUrl": "$RELATIVEROOTPATH/health-24b01005-a76a-4b3b-8fb1-5e0f2e9564fb",
+    "HealthCheckIntervalInSecond": 6,
+    "DeregisterCriticalServiceAfter": 20,
+    "Timeout": 6
+  },
+  "RpcInfo": {
+    "Polly": {
+      "Enable": false
+    },
+    "Address": [
+      {
+        "Service": "adnc-demo-admin-api",
+        "Direct": "http://localhost:50010",
+        "Consul": "http://adnc-demo-admin-api",
+        "CoreDns": "http://adnc-demo-admin-api.default.svc.cluster.local"
+      },
+      {
+        "Service": "adnc-demo-maint-api",
+        "Direct": "http://localhost:50020",
+        "Consul": "http://adnc-demo-maint-api",
+        "CoreDns": "http://adnc-demo-maint-api.default.svc.cluster.local"
+      },
+      {
+        "Service": "adnc-demo-cust-api",
+        "Direct": "http://localhost:50030",
+        "Consul": "http://adnc-demo-cust-api",
+        "CoreDns": "http://adnc-demo-cust-api.default.svc.cluster.local"
+      },
+      {
+        "Service": "adnc-demo-ord-api",
+        "Direct": "http://localhost:50040",
+        "Consul": "http://adnc-demo-ord-api",
+        "CoreDns": "http://adnc-demo-ord-api.default.svc.cluster.local"
+      },
+      {
+        "Service": "adnc-demo-whse-api",
+        "Direct": "http://localhost:50050",
+        "Consul": "http://adnc-demo-whse-api",
+        "CoreDns": "http://adnc-demo-whse-api.default.svc.cluster.local"
+      }
+    ]
+  },
+  "Logging": {
+    "IncludeScopes": true,
+    "LogContainer": "console",
+    "LogLevel": {
+      "Default": "Information",
+      "Adnc": "Debug",
+      "Microsoft": "Information"
+    }
+  },
+  "Loki": {
+    "Endpoint": "http://10.2.8.5:3100",
+    "UserName": "",
+    "Password": ""
+  },
+  "ThreadPoolSettings": {
+    "MinThreads": 8,
+    "MinCompletionPortThreads": 8,
+    "MaxThreads": 32767,
+    "MaxCompletionPortThreads": 1000
+  },
+  "AllowedHosts": "*",
+  "CorsHosts": "*",
+  "SSOAuthentication": false,
+  "JWT": {
+    "ValidateIssuer": true,
+    "ValidIssuer": "adnc",
+    "ValidateIssuerSigningKey": true,
+    "SymmetricSecurityKey": "alphadotnetcoresecurity24b010055e0f2e9564fb",
+    "ValidateAudience": true,
+    "ValidAudience": "manager",
+    "ValidateLifetime": true,
+    "RequireExpirationTime": true,
+    "ClockSkew": 1,
+    "RefreshTokenAudience": "manager",
+    "Expire": 6000,
+    "RefreshTokenExpire": 10080
+  },
+  "Basic": {
+    "UserName": "adnc",
+    "Password": "yvMRER0wzSStw2Va0z59PNQd0lqeMYIP"
+  },
+  "SkyWalking": {
+    "ServiceName": "$SERVICENAME",
+    "Namespace": "adnc",
+    "HeaderVersions": ["sw8"],
+    "Sampling": {
+      "SamplePer3Secs": -1,
+      "Percentage": -1.0,
+      "IgnorePaths": [
+        "/*/health-24b01005-a76a-4b3b-8fb1-5e0f2e9564fb",
+        "http://**/appsettings",
+        "/**/swagger.json",
+        "http://**/loki/api/v1/push"
+      ]
+    },
+    "Logging": {
+      "Level": "Error",
+      "FilePath": "txtlogs\\skyapm-{Date}.log"
+    },
+    "Transport": {
+      "Interval": 3000,
+      "ProtocolVersion": "v8",
+      "QueueSize": 30000,
+      "BatchSize": 3000,
+      "gRPC": {
+        "Servers": "10.2.8.5:11800",
+        "Timeout": 10000,
+        "ConnectTimeout": 10000,
+        "ReportTimeout": 600000,
+        "Authentication": ""
+      }
+    }
   }
-}
-},
-"RpcPartners": [
-{
-  "UserName": "internalcaller",
-  "AppId": "88888888",
-  "SecurityKey": "f37a1c7a5c959e25804ab33111b1cc9f"
-}
-],
-"RpcAddressInfo": [
-{
-  "Service": "adnc-demo-usr-api",
-  "Direct": "http://localhost:50010",
-  "Consul": "http://adnc-demo-usr-api",
-  "CoreDns": "http://adnc-demo-usr-api.default.svc.cluster.local"
-},
-{
-  "Service": "adnc-demo-maint-api",
-  "Direct": "http://localhost:50020",
-  "Consul": "http://adnc-demo-maint-api",
-  "CoreDns": "http://adnc-demo-maint-api.default.svc.cluster.local"
-},
-{
-  "Service": "adnc-demo-cust-api",
-  "Direct": "http://localhost:50030",
-  "Consul": "http://adnc-demo-cust-api",
-  "CoreDns": "http://adnc-demo-cust-api.default.svc.cluster.local"
-},
-{
-  "Service": "adnc-demo-ord-api",
-  "Direct": "http://localhost:50040",
-  "Consul": "http://adnc-demo-ord-api",
-  "CoreDnsDomain": "http://adnc-demo-ord-api.default.svc.cluster.local"
-},
-{
-  "Service": "adnc-demo-whse-api",
-  "Direct": "http://localhost:50050",
-  "Consul": "http://adnc-demo-whse-api",
-  "CoreDns": "http://adnc-demo-whse-api.default.svc.cluster.local"
-}
-]
 }
