@@ -1,6 +1,6 @@
 -- --------------------------------------------------------
 -- 主机:                           62.234.187.128
--- 服务器版本:                        10.5.8-MariaDB-1:10.5.8+maria~focal - mariadb.org binary distribution
+-- 服务器版本:                        11.7.2-MariaDB-ubu2404 - mariadb.org binary distribution
 -- 服务器操作系统:                      debian-linux-gnu
 -- HeidiSQL 版本:                  12.1.0.6537
 -- --------------------------------------------------------
@@ -15,11 +15,11 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 
--- 导出 adnc_syslog_dev 的数据库结构
-CREATE DATABASE IF NOT EXISTS `adnc_syslog_dev` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
-USE `adnc_syslog_dev`;
+-- 导出 adnc_syslog 的数据库结构
+CREATE DATABASE IF NOT EXISTS `adnc_syslog` /*!40100 DEFAULT CHARACTER SET armscii8 COLLATE armscii8_bin */;
+USE `adnc_syslog`;
 
--- 导出  表 adnc_syslog_dev.login_log 结构
+-- 导出  表 adnc_syslog.login_log 结构
 CREATE TABLE IF NOT EXISTS `login_log` (
   `Id` bigint(20) NOT NULL,
   `Device` varchar(32) NOT NULL,
@@ -33,11 +33,11 @@ CREATE TABLE IF NOT EXISTS `login_log` (
   `ExecutionTime` int(11) NOT NULL DEFAULT 0,
   `CreateTime` datetime NOT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
 
 -- 数据导出被取消选择。
 
--- 导出  表 adnc_syslog_dev.operation_log 结构
+-- 导出  表 adnc_syslog.operation_log 结构
 CREATE TABLE IF NOT EXISTS `operation_log` (
   `Id` bigint(20) NOT NULL,
   `ClassName` varchar(255) NOT NULL,
@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS `operation_log` (
   `RemoteIpAddress` varchar(16) NOT NULL,
   `ExecutionTime` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
 
 -- 数据导出被取消选择。
 
