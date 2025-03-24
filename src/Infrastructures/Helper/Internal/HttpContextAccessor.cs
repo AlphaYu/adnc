@@ -4,13 +4,13 @@
 ///   HttpContext Accessor
 ///   https://www.cnblogs.com/artech/p/how-to-get-httpcontext.html
 /// </summary>
-public sealed class Accessor
+public sealed class HttpContextAccessor
 {
     private static Func<object>? _asyncLocalAccessor;
     private static Func<object, object>? _holderAccessor;
     private static Func<object, HttpContext>? _httpContextAccessor;
 
-    internal Accessor()
+    internal HttpContextAccessor()
     {
     }
 

@@ -7,7 +7,7 @@ public static class InfraHelper
 {
     private readonly static EncryptProivder _encypt = new();
     private readonly static HashConsistentGenerater _hashConsistentGenerater = new();
-    private readonly static Accessor _accessor = new();
+    private readonly static Internal.HttpContextAccessor _accessor = new();
 
     static InfraHelper()
     {
@@ -17,5 +17,5 @@ public static class InfraHelper
 
     public static HashConsistentGenerater HashConsistent => _hashConsistentGenerater;
 
-    public static Accessor Accessor => _accessor;
+    public static Internal.HttpContextAccessor HttpContextAccessor => _accessor;
 }
