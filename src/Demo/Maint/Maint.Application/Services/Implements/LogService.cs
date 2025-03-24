@@ -15,7 +15,7 @@ public class LogService(IAdoQuerierRepository adoRepository) : AbstractAppServic
 
         var where = new StringBuilder(100)
             //.Append("AND CreateTime BETWEEN  '@CreateTime[0]' AND '@CreateTime[1]'")
-            .Append($"AND CreateTime>='{input.CreateTime[0]}' AND CreateTime<='{input.CreateTime[1]}'")
+            .Append($"AND CreateTime>='{input.CreateTime[0].ToStandardTimeString()}' AND CreateTime<='{input.CreateTime[1].ToStandardTimeString()}'")
             .AppendIf(input.Keywords.IsNotNullOrWhiteSpace(), " AND Account = @Keywords")
             .ToSqlWhereString();
         var orderBy = " ORDER BY id Desc";
@@ -38,7 +38,7 @@ public class LogService(IAdoQuerierRepository adoRepository) : AbstractAppServic
 
         var where = new StringBuilder(100)
             //.Append("AND CreateTime>=@CreateTime[0] AND CreateTime<=@CreateTime[1]")
-            .Append($"AND CreateTime>='{input.CreateTime[0]}' AND CreateTime<='{input.CreateTime[1]}'")
+            .Append($"AND CreateTime>='{input.CreateTime[0].ToStandardTimeString()}' AND CreateTime<='{input.CreateTime[1].ToStandardTimeString()}'")
             .AppendIf(input.Keywords.IsNotNullOrWhiteSpace(), " AND LogName = @Keywords")
             .ToSqlWhereString();
         var orderBy = " ORDER BY id Desc";
