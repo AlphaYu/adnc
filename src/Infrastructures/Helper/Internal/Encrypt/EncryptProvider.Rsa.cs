@@ -501,15 +501,13 @@ public partial class EncryptProivder
 
             string publicKey = rsa.ToJsonString(false);
             string privateKey = rsa.ToJsonString(true);
-            var exponent = rsa.ExportParameters(false).Exponent ?? throw new NullReferenceException("rsa.ExportParameters(false).Exponent is null");
-            var modulus = rsa.ExportParameters(false).Modulus ?? throw new NullReferenceException("rsa.ExportParameters(false).Modulus is null");
 
             return new RSAKey()
             {
                 PublicKey = publicKey,
                 PrivateKey = privateKey,
-                Exponent = exponent.ToHexString(),
-                Modulus = modulus.ToHexString()
+                Exponent = rsa.ExportParameters(false).Exponent.ToHexString(),
+                Modulus = rsa.ExportParameters(false).Modulus.ToHexString()
             };
         }
     }
@@ -525,15 +523,13 @@ public partial class EncryptProivder
         Checker.Argument.NotNull(rsa, nameof(rsa));
 
         string publicKey = rsa.ToJsonString(false);
-        var exponent = rsa.ExportParameters(false).Exponent ?? throw new NullReferenceException("rsa.ExportParameters(false).Exponent is null");
-        var modulus = rsa.ExportParameters(false).Modulus ?? throw new NullReferenceException("rsa.ExportParameters(false).Modulus is null");
 
         var rsaKey = new RSAKey()
         {
             PublicKey = publicKey,
 
-            Exponent = exponent.ToHexString(),
-            Modulus = modulus.ToHexString()
+            Exponent = rsa.ExportParameters(false).Exponent.ToHexString(),
+            Modulus = rsa.ExportParameters(false).Modulus.ToHexString()
         };
 
         if (includePrivate)
@@ -550,7 +546,7 @@ public partial class EncryptProivder
     /// <param name="rsa">Rsa instance </param>
     /// <param name="padding"><see cref="RSAEncryptionPadding"/></param>
     /// <returns></returns>
-    private int GetMaxRsaEncryptLength(RSA rsa, RSAEncryptionPadding padding)
+    private static int GetMaxRsaEncryptLength(RSA rsa, RSAEncryptionPadding padding)
     {
         var offset = 0;
         if (padding.Mode == RSAEncryptionPaddingMode.Pkcs1)

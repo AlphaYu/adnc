@@ -1,3 +1,4 @@
+using Adnc.Infra.Core.Guard;
 using Adnc.Infra.Helper.Internal.Encrypt.Shared;
 
 namespace Adnc.Infra.Helper.Encrypt.Extensions;
@@ -14,10 +15,12 @@ internal static class RSAKeyExtensions
     /// <param name="jsonString">RSA Key serialization JSON string</param>
     internal static void FromJsonString(this RSA rsa, string jsonString)
     {
+        Checker.Argument.NotNullOrEmpty(jsonString, nameof(jsonString));
+
         RSAParameters parameters = new RSAParameters();
         try
         {
-            var paramsJson = JsonSerializer.Deserialize<RSAParametersJson>(jsonString) ?? throw new NullReferenceException($"JsonSerializer.Deserialize(jsonString) is null£¬jsonString={jsonString}");
+            var paramsJson = JsonSerializer.Deserialize<RSAParametersJson>(jsonString) ?? throw new Exception("Invalid Json RSA key.");
 
             parameters.Modulus = paramsJson.Modulus != null ? Convert.FromBase64String(paramsJson.Modulus) : null;
             parameters.Exponent = paramsJson.Exponent != null ? Convert.FromBase64String(paramsJson.Exponent) : null;
@@ -43,18 +46,18 @@ internal static class RSAKeyExtensions
     /// <returns></returns>
     internal static string ToJsonString(this RSA rsa, bool includePrivateParameters)
     {
-        RSAParameters parameters = rsa.ExportParameters(includePrivateParameters);
+        var parameters = rsa.ExportParameters(includePrivateParameters);
 
         var parasJson = new RSAParametersJson()
         {
-            Modulus = parameters.Modulus != null ? Convert.ToBase64String(parameters.Modulus) : string.Empty,
-            Exponent = parameters.Exponent != null ? Convert.ToBase64String(parameters.Exponent) : string.Empty,
-            P = parameters.P != null ? Convert.ToBase64String(parameters.P) : string.Empty,
-            Q = parameters.Q != null ? Convert.ToBase64String(parameters.Q) : string.Empty,
-            DP = parameters.DP != null ? Convert.ToBase64String(parameters.DP) : string.Empty,
-            DQ = parameters.DQ != null ? Convert.ToBase64String(parameters.DQ) : string.Empty,
-            InverseQ = parameters.InverseQ != null ? Convert.ToBase64String(parameters.InverseQ) : string.Empty,
-            D = parameters.D != null ? Convert.ToBase64String(parameters.D) : string.Empty
+            Modulus = parameters.Modulus != null ? Convert.ToBase64String(parameters.Modulus) : null,
+            Exponent = parameters.Exponent != null ? Convert.ToBase64String(parameters.Exponent) : null,
+            P = parameters.P != null ? Convert.ToBase64String(parameters.P) : null,
+            Q = parameters.Q != null ? Convert.ToBase64String(parameters.Q) : null,
+            DP = parameters.DP != null ? Convert.ToBase64String(parameters.DP) : null,
+            DQ = parameters.DQ != null ? Convert.ToBase64String(parameters.DQ) : null,
+            InverseQ = parameters.InverseQ != null ? Convert.ToBase64String(parameters.InverseQ) : null,
+            D = parameters.D != null ? Convert.ToBase64String(parameters.D) : null
         };
 
         return JsonSerializer.Serialize(parasJson);
@@ -67,9 +70,9 @@ internal static class RSAKeyExtensions
     /// <param name="xmlString">RSA Key serialization XML string</param>
     public static void FromLvccXmlString(this RSA rsa, string xmlString)
     {
-        RSAParameters parameters = new RSAParameters();
+        var parameters = new RSAParameters();
 
-        XmlDocument xmlDoc = new XmlDocument();
+        var xmlDoc = new XmlDocument();
         xmlDoc.LoadXml(xmlString);
 
         if (xmlDoc.DocumentElement is not null && xmlDoc.DocumentElement.Name.Equals("RSAKeyValue"))
@@ -78,14 +81,14 @@ internal static class RSAKeyExtensions
             {
                 switch (node.Name)
                 {
-                    case "Modulus": parameters.Modulus = string.IsNullOrEmpty(node.InnerText) ? null : Convert.FromBase64String(node.InnerText); break;
-                    case "Exponent": parameters.Exponent = string.IsNullOrEmpty(node.InnerText) ? null : Convert.FromBase64String(node.InnerText); break;
-                    case "P": parameters.P = string.IsNullOrEmpty(node.InnerText) ? null : Convert.FromBase64String(node.InnerText); break;
-                    case "Q": parameters.Q = string.IsNullOrEmpty(node.InnerText) ? null : Convert.FromBase64String(node.InnerText); break;
-                    case "DP": parameters.DP = string.IsNullOrEmpty(node.InnerText) ? null : Convert.FromBase64String(node.InnerText); break;
-                    case "DQ": parameters.DQ = string.IsNullOrEmpty(node.InnerText) ? null : Convert.FromBase64String(node.InnerText); break;
-                    case "InverseQ": parameters.InverseQ = string.IsNullOrEmpty(node.InnerText) ? null : Convert.FromBase64String(node.InnerText); break;
-                    case "D": parameters.D = string.IsNullOrEmpty(node.InnerText) ? null : Convert.FromBase64String(node.InnerText); break;
+                    case "Modulus": parameters.Modulus = (string.IsNullOrEmpty(node.InnerText) ? null : Convert.FromBase64String(node.InnerText)); break;
+                    case "Exponent": parameters.Exponent = (string.IsNullOrEmpty(node.InnerText) ? null : Convert.FromBase64String(node.InnerText)); break;
+                    case "P": parameters.P = (string.IsNullOrEmpty(node.InnerText) ? null : Convert.FromBase64String(node.InnerText)); break;
+                    case "Q": parameters.Q = (string.IsNullOrEmpty(node.InnerText) ? null : Convert.FromBase64String(node.InnerText)); break;
+                    case "DP": parameters.DP = (string.IsNullOrEmpty(node.InnerText) ? null : Convert.FromBase64String(node.InnerText)); break;
+                    case "DQ": parameters.DQ = (string.IsNullOrEmpty(node.InnerText) ? null : Convert.FromBase64String(node.InnerText)); break;
+                    case "InverseQ": parameters.InverseQ = (string.IsNullOrEmpty(node.InnerText) ? null : Convert.FromBase64String(node.InnerText)); break;
+                    case "D": parameters.D = (string.IsNullOrEmpty(node.InnerText) ? null : Convert.FromBase64String(node.InnerText)); break;
                 }
             }
         }
