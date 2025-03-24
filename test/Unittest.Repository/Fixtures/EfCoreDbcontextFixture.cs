@@ -19,7 +19,6 @@ public class EfCoreDbcontextFixture
         services
             .AddScoped(provider => new Operater { Id = 1000000000001, Account = "unittest", Name = "unittest" })
             .AddScoped<IEntityInfo, EntityInfo>()
-            .AddAdncInfraAutoMapper(typeof(MapperProfile))
             .AddAdncInfraDapper()
             .AddAdncInfraEfCoreMySql(options =>
              {

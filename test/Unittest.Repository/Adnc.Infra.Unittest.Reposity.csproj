@@ -26,7 +26,6 @@
     <ProjectReference Include="..\..\src\Infrastructures\Repository.EfCore.MongoDB\Adnc.Infra.Repository.EfCore.MongoDB.csproj" />
     <ProjectReference Include="..\..\src\Infrastructures\Repository.EfCore.Mysql\Adnc.Infra.Repository.EfCore.MySql.csproj" />
     <ProjectReference Include="..\..\src\Infrastructures\Repository.EfCore\Adnc.Infra.Repository.EfCore.csproj" />
-    <ProjectReference Include="..\..\src\Infrastructures\Mapper\Adnc.Infra.Mapper.csproj" />
     <ProjectReference Include="..\..\src\Infrastructures\Repository\Adnc.Infra.Repository.csproj" />
   </ItemGroup>
 

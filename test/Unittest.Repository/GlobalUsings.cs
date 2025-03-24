@@ -1,13 +1,10 @@
-﻿global using Adnc.Infra.Mapper;
-global using Adnc.Infra.Repository;
+﻿global using Adnc.Infra.Repository;
 global using Adnc.Infra.Repository.EfCore;
 global using Adnc.Infra.Unittest.Reposity.Fixtures;
-global using AutoMapper;
+global using Adnc.Infra.Unittest.Reposity.Fixtures.Entities;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.EntityFrameworkCore.Metadata.Builders;
 global using Microsoft.Extensions.DependencyInjection;
 global using System.Linq.Expressions;
 global using System.Reflection;
 global using Xunit.Abstractions;
-global using Adnc.Infra.Unittest.Reposity.Fixtures.Dtos;
-global using Adnc.Infra.Unittest.Reposity.Fixtures.Entities;
