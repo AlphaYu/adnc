@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # 环境变量
-RUNNER_DEMO_SOURCE_ROOT="/home/ubuntu/adnc/src/Demo"
+RUNNER_DEMO_SOURCE_ROOT="/adnc/src/Demo"
 PUBLISH_PATH="bin/Release/net8.0/linux-x64/publish"
 
 ADMIN_IMAGE_NAME="adnc-demo-admin-api"
@@ -135,14 +135,14 @@ deploy_image() {
   echo "--- 部署镜像: ${IMAGE_NAME} ---"
 
   # 运行新容器
+  #-e ASPNETCORE_HOSTINGSTARTUPASSEMBLIES=SkyAPM.Agent.AspNetCore
+  #-e SKYWALKING__SERVICENAME="${IMAGE_ID}"
+  #-m 150M 
   docker run \
     -d \
     --name="${IMAGE_ID}-${RANDOM}" \
     -e ASPNETCORE_ENVIRONMENT=Staging \
     -e TZ=Asia/Shanghai \
-    -e ASPNETCORE_HOSTINGSTARTUPASSEMBLIES=SkyAPM.Agent.AspNetCore \
-    -e SKYWALKING__SERVICENAME="${IMAGE_ID}" \
-    -m 200M \
     "${IMAGE_ID}:latest"
   echo "启动新容器 $IMAGE_ID"
   check_error "启动新容器 $IMAGE_ID"

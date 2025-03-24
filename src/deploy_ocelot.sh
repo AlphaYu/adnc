@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # 环境变量
-RUNNER_DEMO_SOURCE_ROOT="/home/ubuntu/adnc/src/Gateways/Ocelot"
+RUNNER_DEMO_SOURCE_ROOT="/adnc/src/Gateways/Ocelot"
 PUBLISH_PATH="bin/Release/net8.0/linux-x64/publish"
 
 OCELOT_IMAGE_NAME="adnc-gateway-ocelot"
@@ -127,15 +127,15 @@ deploy_image() {
   echo "--- 部署镜像: ${IMAGE_NAME} ---"
 
   # 运行新容器
+  # -e ASPNETCORE_HOSTINGSTARTUPASSEMBLIES=SkyAPM.Agent.AspNetCore
+  # -e SKYWALKING__SERVICENAME="${IMAGE_ID}"  
+  # -m 100M \  
   docker run \
     -d \
     --name="${IMAGE_ID}-${RANDOM}" \
-    -p 8888:80 \
+    -p 5000:80 \
     -e ASPNETCORE_ENVIRONMENT=Staging \
     -e TZ=Asia/Shanghai \
-    -e ASPNETCORE_HOSTINGSTARTUPASSEMBLIES=SkyAPM.Agent.AspNetCore \
-    -e SKYWALKING__SERVICENAME="${IMAGE_ID}" \
-    -m 200M \
     "${IMAGE_ID}:latest"
   echo "启动新容器 $IMAGE_ID"
   check_error "启动新容器 $IMAGE_ID"
