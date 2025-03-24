@@ -16,7 +16,7 @@ public class HelperTests
     /// DES加密解密测试
     /// </summary>
     [Fact]
-    public void TestDes()
+    public void TestAes()
     {
         var aesKey = InfraHelper.Encrypt.CreateAesKey();
         var text = "MP1S0RHE";
