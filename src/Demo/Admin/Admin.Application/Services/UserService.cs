@@ -156,7 +156,7 @@ public class UserService(IEfRepository<User> userRepository, IEfRepository<Role>
         if (!exists)
             return Problem(HttpStatusCode.NotFound, "用户不存在");
 
-        await userRepository.ExecuteUpdateAsync(x => x.Id == x.Id, setters => setters.SetProperty(y => y.Name, input.Name).SetProperty(y => y.Gender, input.Gender));
+        await userRepository.ExecuteUpdateAsync(x => x.Id == id, setters => setters.SetProperty(y => y.Name, input.Name).SetProperty(y => y.Gender, input.Gender));
 
         return ServiceResult();
     }
