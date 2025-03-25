@@ -37,7 +37,7 @@ public class LogConsumersHostedService(ILogger<LogConsumersHostedService> logger
                             //await repository.AddManyAsync(entities);
                             using var scope = services.CreateScope();
                             var repository = scope.ServiceProvider.GetRequiredService<IAdoExecuterRepository>();
-                            repository.ChangeOrSetDbConnection(connectionString, dbType);
+                            using var _ = repository.ChangeOrSetDbConnection(connectionString, dbType);
                             await repository.ExecuteAsync("INSERT INTO login_log (Id, Device, Message, Succeed, StatusCode, UserId, Account, Name, RemoteIpAddress, ExecutionTime, CreateTime) VALUES (@Id, @Device, @Message, @Succeed, @StatusCode, @UserId, @Account, @Name, @RemoteIpAddress, @ExecutionTime, @CreateTime)", entities);
                         }
                         catch (Exception ex)
@@ -78,7 +78,7 @@ public class LogConsumersHostedService(ILogger<LogConsumersHostedService> logger
                             //await repository.AddManyAsync(entities);
                             using var scope = services.CreateScope();
                             var repository = scope.ServiceProvider.GetRequiredService<IAdoExecuterRepository>();
-                            repository.ChangeOrSetDbConnection(connectionString, dbType);
+                            using var _ = repository.ChangeOrSetDbConnection(connectionString, dbType);
                             await repository.ExecuteAsync("INSERT INTO operation_log (Id, ClassName, CreateTime, LogName, LogType, Message, Method, Succeed, UserId, Account, Name, RemoteIpAddress, ExecutionTime) VALUES (@Id, @ClassName, @CreateTime, @LogName, @LogType, @Message, @Method, @Succeed, @UserId, @Account, @Name, @RemoteIpAddress, @ExecutionTime)", entities);
                         }
                         catch (Exception ex)
