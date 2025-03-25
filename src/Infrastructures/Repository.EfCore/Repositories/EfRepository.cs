@@ -12,12 +12,12 @@ namespace Adnc.Infra.Repository.EfCore
     {
         private readonly IAdoQuerierRepository? _adoQuerier = adoQuerier;
 
-        public IAdoQuerierRepository? AdoQuerier
+        public IAdoQuerierRepository AdoQuerier
         {
             get
             {
                 if (_adoQuerier is null)
-                    return null;
+                    throw new NullReferenceException(nameof(_adoQuerier));
                 if (!_adoQuerier.HasDbConnection())
                     _adoQuerier.ChangeOrSetDbConnection(DbContext.Database.GetDbConnection());
                 return _adoQuerier;

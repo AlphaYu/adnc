@@ -13,7 +13,7 @@ public interface IEfRepository<TEntity> : IEfBaseRepository<TEntity>
     /// <summary>
     /// 执行原生Sql查询
     /// </summary>
-    IAdoQuerierRepository? AdoQuerier { get; }
+    IAdoQuerierRepository AdoQuerier { get; }
 
     /// <summary>
     /// 执行原生Sql写操作
