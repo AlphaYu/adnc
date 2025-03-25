@@ -15,9 +15,9 @@ public sealed class DependencyRegistrar(IServiceCollection services, IServiceInf
 
         Services.AddHealthChecks(checksBuilder =>
         {
-            var sqlServerConnectionString = Configuration.GetValue<string>(NodeConsts.SqlServer_ConnectionString);
+            var connectionString = Configuration.GetValue<string>(NodeConsts.SqlServer_ConnectionString) ?? throw new NullReferenceException(nameof(NodeConsts.SqlServer_ConnectionString));
             checksBuilder
-                    .AddSqlServer(sqlServerConnectionString)
+                    .AddSqlServer(connectionString)
                     .AddRedis(Configuration)
                     .AddRabbitMQ(Configuration, ServiceInfo.Id);
         });
