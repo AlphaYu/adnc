@@ -5,7 +5,7 @@
 		<OutputPath>..\Ord.Api\bin\$(Configuration)</OutputPath>
 	</PropertyGroup>
 	<ItemGroup Condition="'$(SolutionName)'=='Adnc'">
-		<ProjectReference Include="..\..\..\Infrastructures\Repository.EfCore.MySql\Adnc.Infra.Repository.EfCore.MySql.csproj" />
+		<ProjectReference Include="..\..\..\Infrastructures\Repository.EfCore.Mysql\Adnc.Infra.Repository.EfCore.MySql.csproj" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(SolutionName)'=='Adnc.Demo' ">

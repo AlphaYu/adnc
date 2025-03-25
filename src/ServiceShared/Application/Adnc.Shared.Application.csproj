@@ -27,7 +27,7 @@
 	<ItemGroup Condition="'$(SolutionName)'=='Adnc'">
 		<ProjectReference Include="..\..\Infrastructures\Consul\Adnc.Infra.Consul.csproj" />
 		<ProjectReference Include="..\..\Infrastructures\Repository.Dapper\Adnc.Infra.Repository.Dapper.csproj" />
-		<ProjectReference Include="..\..\Infrastructures\Repository.EfCore.MySql\Adnc.Infra.Repository.EfCore.MySql.csproj" />
+		<ProjectReference Include="..\..\Infrastructures\Repository.EfCore.Mysql\Adnc.Infra.Repository.EfCore.MySql.csproj" />
 		<ProjectReference Include="..\..\Infrastructures\EventBus\Adnc.Infra.EventBus.csproj" />
 		<ProjectReference Include="..\..\Infrastructures\IdGenerater\Adnc.Infra.IdGenerater.csproj" />
 		<ProjectReference Include="..\..\Infrastructures\Redis.Caching\Adnc.Infra.Redis.Caching.csproj" />
