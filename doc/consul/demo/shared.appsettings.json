@@ -82,11 +82,11 @@
   },
   "Logging": {
     "IncludeScopes": true,
-    "LogContainer": "console",
+    "LogContainer": "loki",
     "LogLevel": {
-      "Default": "Information",
-      "Adnc": "Debug",
-      "Microsoft": "Information"
+      "Default": "Error",
+      "Adnc": "Information",
+      "Microsoft": "Error"
     }
   },
   "Loki": {
