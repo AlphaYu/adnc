@@ -161,6 +161,10 @@ adnc
 #### 如何配置健康检测
 - 文档尚未完成
 
+## 数据库脚本
+
+- [adnc/doc/dbsql at develop · AlphaYu/adnc](https://github.com/AlphaYu/adnc/tree/develop/doc/dbsql)
+
 ## Demo介绍
 
 ##### :white_check_mark: Shared 
@@ -230,7 +234,7 @@ adnc
 - [https://aspdotnetcore.net](https://aspdotnetcore.net)
 
 ### 演示地址
-- [http://adnc.aspdotnetcore.net](http://adnc.aspdotnetcore.net)
+- [http://adnc.aspdotnetcore.net](http://62.234.187.128/)
 ### 问题交流
 - QQ群号：780634162
 
