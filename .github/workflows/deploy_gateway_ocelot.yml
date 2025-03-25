@@ -4,7 +4,7 @@ on: workflow_dispatch
 
 env:
   REPOSITORY: "adnc"
-  RUNNER_DEMO_SOURCE_ROOT: /home/runner/work/adnc/adnc/src/Gateways/Adnc.Gateway.Ocelot
+  RUNNER_DEMO_SOURCE_ROOT: /home/runner/work/adnc/adnc/src/Gateways/Ocelot
   PUBLISH_PATH: bin/Release/net8.0/linux-x64/publish
   IMAGE_NAME: adnc-gateway-ocelot
 
