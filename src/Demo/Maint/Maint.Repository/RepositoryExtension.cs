@@ -20,10 +20,10 @@ public static class RepositoryExtension
     public static async Task<QueryPageResult<TResult>> GetPagedLoginLogsBySqlAsync<TResult>(this IAdoQuerierRepository repository, QueryCondition condition, int offset, int rows)
         where TResult : notnull
     {
-        var configuration = ServiceLocator.Provider.GetRequiredService<IConfiguration>();
+        var configuration = ServiceLocator.GetProvider().GetRequiredService<IConfiguration>();
         var dbTypeString = configuration[$"{NodeConsts.SysLogDb_DbType}"];
         var connectionString = configuration[$"{NodeConsts.SysLogDb_ConnectionString}"];
-        _ = repository.ChangeOrSetDbConnection(connectionString, dbTypeString.ToUpper().ToEnum<DbTypes>());
+        using var _ = repository.ChangeOrSetDbConnection(connectionString, dbTypeString.ToUpper().ToEnum<DbTypes>());
 
         string countSql = $"select count(*) from login_log {condition.Where}";
         var total = await repository.QuerySingleAsync<int>(countSql, condition.Param);
@@ -48,10 +48,10 @@ public static class RepositoryExtension
     public static async Task<QueryPageResult<TResult>> GetPagedOperationLogsBySqlAsync<TResult>(this IAdoQuerierRepository repository, QueryCondition condition, int offset, int rows)
         where TResult : notnull
     {
-        var configuration = ServiceLocator.Provider.GetRequiredService<IConfiguration>();
+        var configuration = ServiceLocator.GetProvider().GetRequiredService<IConfiguration>();
         var dbTypeString = configuration[$"{NodeConsts.SysLogDb_DbType}"];
         var connectionString = configuration[$"{NodeConsts.SysLogDb_ConnectionString}"];
-        _ = repository.ChangeOrSetDbConnection(connectionString, dbTypeString.ToUpper().ToEnum<DbTypes>());
+        using var _ = repository.ChangeOrSetDbConnection(connectionString, dbTypeString.ToUpper().ToEnum<DbTypes>());
 
         string countSql = $"select count(*) from operation_log {condition.Where}";
         var total = await repository.QuerySingleAsync<int>(countSql, condition.Param);
