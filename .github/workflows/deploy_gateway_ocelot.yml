@@ -4,8 +4,8 @@ on: workflow_dispatch
 
 env:
   REPOSITORY: "adnc"
-  RUNNER_DEMO_SOURCE_ROOT: /home/runner/work/adnc/adnc/src/ServerApi/Gateways/Adnc.Gateway.Ocelot
-  PUBLISH_PATH: bin/Release/net6.0/linux-x64/publish
+  RUNNER_DEMO_SOURCE_ROOT: /home/runner/work/adnc/adnc/src/Gateways/Adnc.Gateway.Ocelot
+  PUBLISH_PATH: bin/Release/net8.0/linux-x64/publish
   IMAGE_NAME: adnc-gateway-ocelot
 
 jobs:
@@ -14,14 +14,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Setup .NET
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 6.0.x
+        dotnet-version: 8.0.x
         
     - name: Publish Solution
-      run: dotnet publish ${RUNNER_DEMO_SOURCE_ROOT}/Adnc.Gateway.Ocelot.csproj --configuration Release  --runtime linux-x64 --self-contained false
+      run: dotnet publish ${RUNNER_DEMO_SOURCE_ROOT}/Adnc.Ocelot.sln --configuration Release  --runtime linux-x64 --self-contained false
       
     - name: Build && Push images
       run: |
@@ -44,7 +44,7 @@ jobs:
         docker push $IMAGE_ID:$VERSION
         docker push $IMAGE_ID:latest
 
-    - name: Deploy all
+    - name: Deploy Gateway Ocelot
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.DEPLOY_HOST }}
@@ -62,9 +62,9 @@ jobs:
           docker run \
                 -d \
                 --name=${IMAGE_NAME}-${RANDOM} \
-                -p 8888:80 \
-                -e ASPNETCORE_ENVIRONMENT=Production \
+                -p 5000:80 \
+                -e ASPNETCORE_ENVIRONMENT=Staging \
                 -e TZ=Asia/Shanghai \
-                -e ASPNETCORE_HOSTINGSTARTUPASSEMBLIES=SkyAPM.Agent.AspNetCore \
-                -e SKYWALKING__SERVICENAME=${IMAGE_NAME} \
+                # -e ASPNETCORE_HOSTINGSTARTUPASSEMBLIES=SkyAPM.Agent.AspNetCore \
+                # -e SKYWALKING__SERVICENAME=${IMAGE_NAME} \
                 $IMAGE_ID
