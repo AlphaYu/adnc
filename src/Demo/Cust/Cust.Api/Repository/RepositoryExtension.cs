@@ -15,14 +15,13 @@
         public static async Task<QueryPageResult<TResult>> GetPagedCustmersBySqlAsync<TResult>(this IEfRepository<Customer> repository, QueryCondition condition, int offset, int rows)
             where TResult : notnull
         {
-            var adoQuerier = repository.AdoQuerier ?? throw new NullReferenceException("AdoQuerier is null");
             string countSql = $"select count(*) from cust_customer {condition.Where}";
-            var total = await adoQuerier.QuerySingleAsync<int>(countSql, condition.Param);
+            var total = await repository.AdoQuerier.QuerySingleAsync<int>(countSql, condition.Param);
             if (total == 0)
                 return new QueryPageResult<TResult>(total);
 
             string sql = $"select * from cust_customer  {condition.Where} {condition.OrderBy} limit {offset},{rows}";
-            var result = await adoQuerier.QueryAsync<TResult>(sql, condition.Param);
+            var result = await repository.AdoQuerier.QueryAsync<TResult>(sql, condition.Param);
             return new QueryPageResult<TResult>(total, result);
         }
     }
