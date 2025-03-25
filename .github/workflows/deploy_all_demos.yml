@@ -11,13 +11,13 @@ env:
   RUNNER_DEMO_SOURCE_ROOT: /home/runner/work/adnc/adnc/src/Demo
   PUBLISH_PATH: bin/Release/net8.0/linux-x64/publish
   USR_IMAGE_NAME: adnc-demo-admin-api
-  USR_PROJECT_PATH: Admin/Adnc.Demo.Admin.Api
+  USR_PROJECT_PATH: Admin/Admin.Api
   USR_START_FILE: "Adnc.Demo.Admin.Api.dll"
   MAINT_IMAGE_NAME: adnc-demo-maint-api
-  MAINT_PROJECT_PATH: Maint/Adnc.Demo.Maint.Api
+  MAINT_PROJECT_PATH: Maint/Maint.Api
   MAINT_START_FILE: "Adnc.Demo.Maint.Api.dll"
   CUST_IMAGE_NAME: adnc-demo-cust-api
-  CUST_PROJECT_PATH: Cust/Adnc.Demo.Cust.Api
+  CUST_PROJECT_PATH: Cust/Cust.Api
   CUST_START_FILE: "Adnc.Demo.Cust.Api.dll"
 
 jobs:

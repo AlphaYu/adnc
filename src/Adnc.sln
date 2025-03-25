@@ -45,7 +45,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Core", "Infrastr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Demo.Admin.Repository", "Demo\Admin\Admin.Repository\Adnc.Demo.Admin.Repository.csproj", "{0F3C6418-FF43-45F5-A543-BFF6390C68CE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Repository.EfCore.MySql", "Infrastructures\Repository.EfCore.MySql\Adnc.Infra.Repository.EfCore.MySql.csproj", "{4996AD8D-3CB3-4C18-9E5E-DD58F01757C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Repository.EfCore.MySql", "Infrastructures\Repository.EfCore.Mysql\Adnc.Infra.Repository.EfCore.MySql.csproj", "{4996AD8D-3CB3-4C18-9E5E-DD58F01757C6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Demo.Maint.Repository", "Demo\Maint\Maint.Repository\Adnc.Demo.Maint.Repository.csproj", "{DBA375C1-A4A7-4D7B-A342-EA1D4C6F8B16}"
 EndProject
