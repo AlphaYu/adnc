@@ -136,8 +136,8 @@ public class CustomerAppService(IEfRepository<Customer> customerRepo, IEfReposit
             {
                 string exchageStatus = tranlogDto.ExchageStatus.ToString();
                 string exchangeType = tranlogDto.ExchangeType.ToString();
-                tranlogDto.ExchangeTypeName = statusOptions.FirstOrDefault(x => x.Value == exchangeType)?.Label ?? string.Empty;
-                tranlogDto.ExchageStatusName = behaviorOptions.FirstOrDefault(x => x.Value == exchageStatus)?.Label ?? string.Empty;
+                tranlogDto.ExchangeTypeName = behaviorOptions.FirstOrDefault(x => x.Value == exchangeType)?.Label ?? string.Empty;
+                tranlogDto.ExchageStatusName = statusOptions.FirstOrDefault(x => x.Value == exchageStatus)?.Label ?? string.Empty;
             }
         }
         return new PageModelDto<TransactionLogDto>(input, tranlogDtos, count);
