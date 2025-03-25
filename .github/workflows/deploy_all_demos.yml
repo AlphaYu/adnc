@@ -9,7 +9,7 @@ on: workflow_dispatch
 env:
   REPOSITORY: "adnc"
   RUNNER_DEMO_SOURCE_ROOT: /home/runner/work/adnc/adnc/src/Demo
-  PUBLISH_PATH: bin/Release/net6.0/linux-x64/publish
+  PUBLISH_PATH: bin/Release/net8.0/linux-x64/publish
   USR_IMAGE_NAME: adnc-demo-admin-api
   USR_PROJECT_PATH: Admin/Adnc.Demo.Admin.Api
   USR_START_FILE: "Adnc.Demo.Admin.Api.dll"
