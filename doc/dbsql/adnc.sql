@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `sys_config` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci COMMENT='系统参数';
 
--- 正在导出表  adnc_admin.sys_config 的数据：~1 rows (大约)
+-- 正在导出表  adnc_admin.sys_config 的数据：~0 rows (大约)
 INSERT INTO `sys_config` (`id`, `createby`, `createtime`, `modifyby`, `modifytime`, `key`, `name`, `value`, `remark`) VALUES
 	(654337157616325, 653335112912901, '2025-03-14 09:24:44.641988', 653335112912901, '2025-03-14 09:24:44.642019', 'weixin-key', '微信接口Key', '343sfsdfas', '微信接口配置');
 
@@ -72,7 +72,7 @@ CREATE TABLE IF NOT EXISTS `sys_dictionary_data` (
   `status` tinyint(1) NOT NULL,
   `ordinal` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=657673015670726 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci COMMENT='字典数据';
+) ENGINE=InnoDB AUTO_INCREMENT=658281065769542 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci COMMENT='字典数据';
 
 -- 正在导出表  adnc_admin.sys_dictionary_data 的数据：~14 rows (大约)
 INSERT INTO `sys_dictionary_data` (`id`, `createby`, `createtime`, `modifyby`, `modifytime`, `dictcode`, `label`, `value`, `tagtype`, `status`, `ordinal`) VALUES
@@ -85,11 +85,11 @@ INSERT INTO `sys_dictionary_data` (`id`, `createby`, `createtime`, `modifyby`, `
 	(654241282986053, 653335112912901, '2025-03-14 02:54:37.749547', 653335112912901, '2025-03-14 02:54:37.749570', 'notice_level', '高', 'H', 'danger', 1, 1),
 	(654241329270853, 653335112912901, '2025-03-14 02:54:49.049727', 653335112912901, '2025-03-14 02:55:31.410027', 'notice_level', '中', 'M', 'primary', 1, 2),
 	(654241459761221, 653335112912901, '2025-03-14 02:55:20.908143', 653335112912901, '2025-03-14 02:55:40.136094', 'notice_level', '低', 'L', 'info', 1, 3),
-	(657672538613701, 653335112912901, '2025-03-23 19:36:26.683774', 653335112912901, '2025-03-23 19:36:26.684069', 'exchange_behavior', '后台充值', '8000', 'success', 1, 0),
-	(657672593401797, 653335112912901, '2025-03-23 19:36:40.018446', 653335112912901, '2025-03-23 19:39:34.482113', 'exchange_behavior', '订单交易', '8008', 'primary', 1, 1),
+	(657672538613701, 653335112912901, '2025-03-23 19:36:26.683774', 653335112912901, '2025-03-25 12:55:08.585748', 'exchange_behavior', '后台充值', '8000', 'success', 1, 0),
 	(657672875403205, 653335112912901, '2025-03-23 19:37:48.899555', 653335112912901, '2025-03-23 19:38:30.251295', 'exchage_status', '处理中', '2000', 'primary', 1, 0),
 	(657672927889349, 653335112912901, '2025-03-23 19:38:01.680144', 653335112912901, '2025-03-23 19:38:44.726467', 'exchage_status', '已完成', '2008', 'success', 1, 3),
-	(657673015670725, 653335112912901, '2025-03-23 19:38:23.111797', 653335112912901, '2025-03-23 19:38:48.499734', 'exchage_status', '已失败', '2016', 'danger', 1, 6);
+	(657673015670725, 653335112912901, '2025-03-23 19:38:23.111797', 653335112912901, '2025-03-23 19:38:48.499734', 'exchage_status', '已失败', '2016', 'danger', 1, 6),
+	(658281065769541, 653335112912901, '2025-03-25 12:52:32.845266', 653335112912901, '2025-03-25 12:55:21.807517', 'exchange_behavior', '订单交易', '8008', 'primary', 1, 1);
 
 -- 导出  表 adnc_admin.sys_eventtracker 结构
 CREATE TABLE IF NOT EXISTS `sys_eventtracker` (
@@ -129,7 +129,7 @@ CREATE TABLE IF NOT EXISTS `sys_menu` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci COMMENT='菜单';
 
--- 正在导出表  adnc_admin.sys_menu 的数据：~55 rows (大约)
+-- 正在导出表  adnc_admin.sys_menu 的数据：~54 rows (大约)
 INSERT INTO `sys_menu` (`id`, `createby`, `createtime`, `modifyby`, `modifytime`, `parentid`, `parentids`, `name`, `perm`, `routename`, `routepath`, `type`, `component`, `visible`, `redirect`, `icon`, `keepalive`, `alwaysshow`, `params`, `ordinal`) VALUES
 	(653342080185029, 1000000000000, '2025-03-11 13:55:46.028479', 653337659433029, '2025-03-14 16:30:12.233442', 0, '[0]', '系统管理', '', '', '/system', 'CATALOG', 'Layout', 1, '/system/user', 'role', 1, 1, '', 1),
 	(653342584296133, 1000000000000, '2025-03-11 13:57:49.016162', 653335112912901, '2025-03-14 09:10:34.425720', 653342080185029, '[0][653342080185029]', '菜单管理', '', 'Menu', 'menu', 'MENU', 'system/menu/index', 1, '', 'menu', 1, 0, '', 4),
@@ -230,7 +230,7 @@ CREATE TABLE IF NOT EXISTS `sys_role` (
 -- 正在导出表  adnc_admin.sys_role 的数据：~2 rows (大约)
 INSERT INTO `sys_role` (`id`, `createby`, `createtime`, `modifyby`, `modifytime`, `name`, `code`, `datascope`, `status`, `ordinal`) VALUES
 	(653344679641925, 1000000000000, '2025-03-11 14:06:20.618864', 653335112912901, '2025-03-12 11:45:34.554147', '系统管理员', 'administrator', 0, 1, 1),
-	(653682250118405, 653335112912901, '2025-03-12 12:59:55.116604', 653335112912901, '2025-03-15 01:41:00.311004', '访问者', 'customer', 2, 1, 1);
+	(653682250118405, 653335112912901, '2025-03-12 12:59:55.116604', 653335112912901, '2025-03-24 23:57:04.926460', '访问者', 'guest', 2, 1, 1);
 
 -- 导出  表 adnc_admin.sys_role_menu_relation 结构
 CREATE TABLE IF NOT EXISTS `sys_role_menu_relation` (
@@ -240,13 +240,8 @@ CREATE TABLE IF NOT EXISTS `sys_role_menu_relation` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci COMMENT='菜单角色关系';
 
--- 正在导出表  adnc_admin.sys_role_menu_relation 的数据：~60 rows (大约)
+-- 正在导出表  adnc_admin.sys_role_menu_relation 的数据：~83 rows (大约)
 INSERT INTO `sys_role_menu_relation` (`id`, `menuid`, `roleid`) VALUES
-	(654804815708229, 654442132821701, 653682250118405),
-	(654804816343109, 654442722764485, 653682250118405),
-	(654804816347205, 654455068768133, 653682250118405),
-	(654804816347206, 654523403131077, 653682250118405),
-	(654804816347207, 654523795179717, 653682250118405),
 	(657671141251013, 653342080185029, 653344679641925),
 	(657671141251014, 653688386045317, 653344679641925),
 	(657671141251015, 653688962147717, 653344679641925),
@@ -301,7 +296,35 @@ INSERT INTO `sys_role_menu_relation` (`id`, `menuid`, `roleid`) VALUES
 	(657671141251064, 657666599712709, 653344679641925),
 	(657671141251065, 657666452023237, 653344679641925),
 	(657671141251066, 657666958747589, 653344679641925),
-	(657671141251067, 657667115956165, 653344679641925);
+	(657671141251067, 657667115956165, 653344679641925),
+	(658096326596997, 653342080185029, 653682250118405),
+	(658096326596998, 653688386045317, 653682250118405),
+	(658096326596999, 653689402680709, 653682250118405),
+	(658096326597000, 653525628846981, 653682250118405),
+	(658096326597001, 653526703580037, 653682250118405),
+	(658096326597002, 653745302407109, 653682250118405),
+	(658096326597003, 653756020922437, 653682250118405),
+	(658096326597004, 653342584296133, 653682250118405),
+	(658096326597005, 653689923114373, 653682250118405),
+	(658096326597006, 654225897013253, 653682250118405),
+	(658096326597007, 654226547773445, 653682250118405),
+	(658096326597008, 654227048943621, 653682250118405),
+	(658096326597009, 654227565006853, 653682250118405),
+	(658096326597010, 654243405697093, 653682250118405),
+	(658096326597011, 654333310177925, 653682250118405),
+	(658096326597012, 654442132821701, 653682250118405),
+	(658096326597013, 657670977337285, 653682250118405),
+	(658096326597014, 657668727089093, 653682250118405),
+	(658096326597015, 654523403131077, 653682250118405),
+	(658096326597016, 654523795179717, 653682250118405),
+	(658096326597017, 654442722764485, 653682250118405),
+	(658096326597018, 654455068768133, 653682250118405),
+	(658096326597019, 657670470342597, 653682250118405),
+	(658096326597020, 657665676666821, 653682250118405),
+	(658096326597021, 657666023151557, 653682250118405),
+	(658096326601093, 657666452023237, 653682250118405),
+	(658096326601094, 657666958747589, 653682250118405),
+	(658096326601095, 657667115956165, 653682250118405);
 
 -- 导出  表 adnc_admin.sys_role_user_relation 结构
 CREATE TABLE IF NOT EXISTS `sys_role_user_relation` (
@@ -311,10 +334,14 @@ CREATE TABLE IF NOT EXISTS `sys_role_user_relation` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci COMMENT='用户角色关系';
 
--- 正在导出表  adnc_admin.sys_role_user_relation 的数据：~2 rows (大约)
+-- 正在导出表  adnc_admin.sys_role_user_relation 的数据：~6 rows (大约)
 INSERT INTO `sys_role_user_relation` (`id`, `userid`, `roleid`) VALUES
-	(654766446428229, 653337659433029, 653682250118405),
-	(657648366499717, 653335112912901, 653344679641925);
+	(658284478040646, 658284478040645, 653682250118405),
+	(658284667353670, 658284667353669, 653682250118405),
+	(658284849875525, 658284256315973, 653682250118405),
+	(658284876995141, 653337659433029, 653344679641925),
+	(658284902369861, 653335112912901, 653344679641925),
+	(658285201709637, 658285103086149, 653344679641925);
 
 -- 导出  表 adnc_admin.sys_user 结构
 CREATE TABLE IF NOT EXISTS `sys_user` (
@@ -338,13 +365,18 @@ CREATE TABLE IF NOT EXISTS `sys_user` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci COMMENT='管理员';
 
--- 正在导出表  adnc_admin.sys_user 的数据：~5 rows (大约)
+-- 正在导出表  adnc_admin.sys_user 的数据：~10 rows (大约)
 INSERT INTO `sys_user` (`id`, `isdeleted`, `createby`, `createtime`, `modifyby`, `modifytime`, `account`, `avatar`, `birthday`, `deptid`, `email`, `name`, `password`, `mobile`, `salt`, `gender`, `status`) VALUES
-	(653335112912901, 0, 1000000000000, '2025-03-11 13:27:25.038287', 653335112912901, '2025-03-15 15:03:36.000000', 'alpha2008', '', '2025-03-11 14:11:08.062000', 653725132137989, 'user@example.com', '余大猫', '3B6791E9AB14DFF278A3C2AF4B97F1E9', '', '846vm', 1, 1),
-	(653337659433029, 0, 1000000000000, '2025-03-11 13:37:46.724327', 653335112912901, '2025-03-14 11:17:44.000000', 'alpha2009', '', '2025-03-11 13:24:22.360000', 653726253618757, 'user@example.com', '余大猫', 'DE325BC108FD5B42D45500C3720F6628', '19964946688', '7vkvf', 1, 1),
+	(653335112912901, 0, 1000000000000, '2025-03-11 13:27:25.038287', 653335112912901, '2025-03-25 13:40:52.000000', 'alpha2008', '', '2025-03-11 14:11:08.062000', 653725132137989, 'user@example.com', '余大猫', '3B6791E9AB14DFF278A3C2AF4B97F1E9', '', '846vm', 2, 1),
+	(653337659433029, 0, 1000000000000, '2025-03-11 13:37:46.724327', 653335112912901, '2025-03-25 13:40:48.000000', 'alpha2009', '', '2025-03-11 13:24:22.360000', 653726253618757, 'user@example.com', '余大猫', 'DE325BC108FD5B42D45500C3720F6628', '19964946688', '7vkvf', 2, 1),
 	(653838533808773, 1, 653335112912901, '2025-03-12 23:35:50.884954', 653335112912901, '2025-03-12 23:36:58.000000', 'test1', '', NULL, 653725132137989, 'alphacn@foxmail.com', '测试用户', '86A961C57306BAC569B9FBB4EC6BA638', '', 'xfgiq', 0, 1),
 	(653838713631365, 1, 653335112912901, '2025-03-12 23:36:34.421153', 653335112912901, '2025-03-12 23:36:58.000000', 'test2', '', NULL, 653726253618757, 'alphacn@foxmail.com', '测试用户2', '0C54EFB2BAF6F1A13E2F39195D6AA8EB', '18898666555', 'so32e', 2, 1),
-	(653838923670149, 1, 653335112912901, '2025-03-12 23:37:25.701911', 653335112912901, '2025-03-12 23:37:29.000000', 'test1', '', NULL, 653726253618757, 'alphacn@foxmail.com', '测试用户1', '2A04D26E4CA62451402A1AC6F7515667', '', '3j8mi', 0, 0);
+	(653838923670149, 1, 653335112912901, '2025-03-12 23:37:25.701911', 653335112912901, '2025-03-12 23:37:29.000000', 'test1', '', NULL, 653726253618757, 'alphacn@foxmail.com', '测试用户1', '2A04D26E4CA62451402A1AC6F7515667', '', '3j8mi', 0, 0),
+	(658284069145157, 1, 653335112912901, '2025-03-25 13:04:46.170019', 653335112912901, '2025-03-25 13:06:45.000000', 'alpha2000', '', NULL, 653725132137989, 'alpha2000@tom.com', '2000', '60861703F6F7102ECF0DBB09CABD841B', '', 'v3pfy', 1, 1),
+	(658284256315973, 0, 653335112912901, '2025-03-25 13:05:31.786621', 653335112912901, '2025-03-25 13:40:45.000000', 'alpha2010', '', '2025-03-11 13:24:22.360000', 653725132137989, '2010@tom.com', '2010', 'C82AF7A87AE221D4D5C2624025BA318B', '', 'zi9j6', 1, 1),
+	(658284478040645, 0, 653335112912901, '2025-03-25 13:06:25.922623', 653335112912901, '2025-03-25 13:40:41.000000', 'alpha2011', '', '2025-03-11 13:24:22.360000', 653725132137989, '2011@tom.com', '2011', '4B75645227A161690BD0CDEAD09B3067', '', '1v7ho', 1, 1),
+	(658284667353669, 0, 653335112912901, '2025-03-25 13:07:12.139040', 653335112912901, '2025-03-25 13:40:37.000000', 'alpha2012', '', '2025-03-11 13:24:22.360000', 653725132137989, '2012@tom.com', '2012', '1011AD5C3D8665905E9358E385349C5B', '', '4ix1k', 1, 1),
+	(658285103086149, 0, 653335112912901, '2025-03-25 13:08:58.517647', 653335112912901, '2025-03-25 13:40:32.000000', 'alpha2007', '', NULL, 653725132137989, '2007@tom.com', '余大猫', '6DA705722E3CB40890B7CEA884821F7C', '', '3wjku', 2, 1);
 
 -- 导出  表 adnc_admin.__EFMigrationsHistory 结构
 CREATE TABLE IF NOT EXISTS `__EFMigrationsHistory` (
@@ -353,7 +385,7 @@ CREATE TABLE IF NOT EXISTS `__EFMigrationsHistory` (
   PRIMARY KEY (`migrationid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
 
--- 正在导出表  adnc_admin.__EFMigrationsHistory 的数据：~8 rows (大约)
+-- 正在导出表  adnc_admin.__EFMigrationsHistory 的数据：~7 rows (大约)
 INSERT INTO `__EFMigrationsHistory` (`migrationid`, `productversion`) VALUES
 	('20250311045441_Init20250311', '8.0.13'),
 	('20250312052404_Update-2025031201', '8.0.13'),
@@ -363,6 +395,136 @@ INSERT INTO `__EFMigrationsHistory` (`migrationid`, `productversion`) VALUES
 	('20250316133304_Update2025031601', '8.0.13'),
 	('20250317153239_Update2025031702', '8.0.13'),
 	('20250323101948_Update25032301', '8.0.13');
+
+
+-- 导出 adnc_cust 的数据库结构
+CREATE DATABASE IF NOT EXISTS `adnc_cust` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_uca1400_ai_ci */;
+USE `adnc_cust`;
+
+-- 导出  表 adnc_cust.cust_customer 结构
+CREATE TABLE IF NOT EXISTS `cust_customer` (
+  `id` bigint(20) NOT NULL,
+  `createby` bigint(20) NOT NULL COMMENT '创建人',
+  `createtime` datetime(6) NOT NULL COMMENT '创建时间/注册时间',
+  `modifyby` bigint(20) NOT NULL COMMENT '最后更新人',
+  `modifytime` datetime(6) NOT NULL COMMENT '最后更新时间',
+  `account` varchar(16) NOT NULL,
+  `password` varchar(32) NOT NULL,
+  `nickname` varchar(16) NOT NULL,
+  `realname` varchar(16) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci COMMENT='客户表';
+
+-- 正在导出表  adnc_cust.cust_customer 的数据：~0 rows (大约)
+INSERT INTO `cust_customer` (`id`, `createby`, `createtime`, `modifyby`, `modifytime`, `account`, `password`, `nickname`, `realname`) VALUES
+	(657670039692293, 653335112912901, '2025-03-23 19:26:16.726129', 653335112912901, '2025-03-23 19:26:16.728960', 'beta2008', '', '王二狗', '王二');
+
+-- 导出  表 adnc_cust.cust_eventtracker 结构
+CREATE TABLE IF NOT EXISTS `cust_eventtracker` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `eventid` bigint(20) NOT NULL,
+  `trackername` varchar(50) NOT NULL,
+  `createby` bigint(20) NOT NULL COMMENT '创建人',
+  `createtime` datetime(6) NOT NULL COMMENT '创建时间/注册时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `ix_cust_eventtracker_eventid_trackername` (`eventid`,`trackername`)
+) ENGINE=InnoDB AUTO_INCREMENT=658299319952902 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci COMMENT='事件跟踪/处理信息';
+
+-- 正在导出表  adnc_cust.cust_eventtracker 的数据：~6 rows (大约)
+INSERT INTO `cust_eventtracker` (`id`, `eventid`, `trackername`, `createby`, `createtime`) VALUES
+	(657670079996933, 657670078923781, 'HandleCustomerRechargedEvent', 1000000000000, '2025-03-23 19:26:26.407535'),
+	(657986596201605, 657986594858117, 'HandleCustomerRechargedEvent', 1000000000000, '2025-03-24 16:54:20.871952'),
+	(658091573248133, 658091572101253, 'HandleCustomerRechargedEvent', 1000000000000, '2025-03-25 00:01:30.031510'),
+	(658094553260165, 658094553063557, 'HandleCustomerRechargedEvent', 1000000000000, '2025-03-25 00:13:37.562638'),
+	(658274153239813, 658274152133893, 'HandleCustomerRechargedEvent', 1000000000000, '2025-03-25 12:24:25.225767'),
+	(658299319952901, 658299318760965, 'HandleCustomerRechargedEvent', 1000000000000, '2025-03-25 14:06:49.443631');
+
+-- 导出  表 adnc_cust.cust_finance 结构
+CREATE TABLE IF NOT EXISTS `cust_finance` (
+  `id` bigint(20) NOT NULL,
+  `rowversion` timestamp(6) NOT NULL DEFAULT current_timestamp(6) ON UPDATE current_timestamp(6),
+  `createby` bigint(20) NOT NULL COMMENT '创建人',
+  `createtime` datetime(6) NOT NULL COMMENT '创建时间/注册时间',
+  `modifyby` bigint(20) NOT NULL COMMENT '最后更新人',
+  `modifytime` datetime(6) NOT NULL COMMENT '最后更新时间',
+  `account` varchar(16) NOT NULL,
+  `balance` decimal(18,4) NOT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `fk_cust_finance_cust_customer_id` FOREIGN KEY (`id`) REFERENCES `cust_customer` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci COMMENT='客户财务表';
+
+-- 正在导出表  adnc_cust.cust_finance 的数据：~0 rows (大约)
+INSERT INTO `cust_finance` (`id`, `rowversion`, `createby`, `createtime`, `modifyby`, `modifytime`, `account`, `balance`) VALUES
+	(657670039692293, '2025-03-25 06:06:49.406508', 653335112912901, '2025-03-23 19:26:16.726174', 1000000000000, '2025-03-25 14:06:49.396450', 'beta2008', 113.0000);
+
+-- 导出  表 adnc_cust.cust_transactionlog 结构
+CREATE TABLE IF NOT EXISTS `cust_transactionlog` (
+  `id` bigint(20) NOT NULL,
+  `createby` bigint(20) NOT NULL COMMENT '创建人',
+  `createtime` datetime(6) NOT NULL COMMENT '创建时间/注册时间',
+  `customerid` bigint(20) NOT NULL,
+  `account` varchar(16) NOT NULL,
+  `exchangetype` int(11) NOT NULL,
+  `exchagestatus` int(11) NOT NULL,
+  `changingamount` decimal(18,4) NOT NULL,
+  `amount` decimal(18,4) NOT NULL,
+  `changedamount` decimal(18,4) NOT NULL,
+  `remark` varchar(64) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `ix_cust_transactionlog_customerid` (`customerid`),
+  CONSTRAINT `fk_cust_transactionlog_cust_customer_customerid` FOREIGN KEY (`customerid`) REFERENCES `cust_customer` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci COMMENT='客户财务变动记录';
+
+-- 正在导出表  adnc_cust.cust_transactionlog 的数据：~6 rows (大约)
+INSERT INTO `cust_transactionlog` (`id`, `createby`, `createtime`, `customerid`, `account`, `exchangetype`, `exchagestatus`, `changingamount`, `amount`, `changedamount`, `remark`) VALUES
+	(657670078731269, 653335112912901, '2025-03-23 19:26:26.118544', 657670039692293, 'beta2008', 8000, 2008, 0.0000, 10.0000, 10.0000, ''),
+	(657986593965189, 653335112912901, '2025-03-24 16:54:20.439592', 657670039692293, 'beta2008', 8000, 2008, 10.0000, 60.0000, 70.0000, ''),
+	(658091570659461, 653335112912901, '2025-03-25 00:01:29.655862', 657670039692293, 'beta2008', 8000, 2008, 70.0000, 20.0000, 90.0000, ''),
+	(658094553047173, 653335112912901, '2025-03-25 00:13:37.511061', 657670039692293, 'beta2008', 8000, 2008, 90.0000, 10.0000, 100.0000, ''),
+	(658274151302405, 653335112912901, '2025-03-25 12:24:24.841754', 657670039692293, 'beta2008', 8000, 2008, 100.0000, 10.0000, 110.0000, ''),
+	(658299317880325, 653335112912901, '2025-03-25 14:06:49.029827', 657670039692293, 'beta2008', 8000, 2008, 110.0000, 3.0000, 113.0000, '');
+
+-- 导出  表 adnc_cust.__EFMigrationsHistory 结构
+CREATE TABLE IF NOT EXISTS `__EFMigrationsHistory` (
+  `migrationid` varchar(150) NOT NULL,
+  `productversion` varchar(32) NOT NULL,
+  PRIMARY KEY (`migrationid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
+
+-- 正在导出表  adnc_cust.__EFMigrationsHistory 的数据：~2 rows (大约)
+INSERT INTO `__EFMigrationsHistory` (`migrationid`, `productversion`) VALUES
+	('20250317152707_Init20250317', '8.0.13'),
+	('20250323102232_Update25032301', '8.0.13');
+
+
+-- 导出 adnc_maint 的数据库结构
+CREATE DATABASE IF NOT EXISTS `adnc_maint` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_uca1400_ai_ci */;
+USE `adnc_maint`;
+
+-- 导出  表 adnc_maint.sys_eventtracker 结构
+CREATE TABLE IF NOT EXISTS `sys_eventtracker` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `eventid` bigint(20) NOT NULL,
+  `trackername` varchar(50) NOT NULL,
+  `createby` bigint(20) NOT NULL COMMENT '创建人',
+  `createtime` datetime(6) NOT NULL COMMENT '创建时间/注册时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `ix_sys_eventtracker_eventid_trackername` (`eventid`,`trackername`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci COMMENT='事件跟踪/处理信息';
+
+-- 正在导出表  adnc_maint.sys_eventtracker 的数据：~0 rows (大约)
+
+-- 导出  表 adnc_maint.__EFMigrationsHistory 结构
+CREATE TABLE IF NOT EXISTS `__EFMigrationsHistory` (
+  `migrationid` varchar(150) NOT NULL,
+  `productversion` varchar(32) NOT NULL,
+  PRIMARY KEY (`migrationid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
+
+-- 正在导出表  adnc_maint.__EFMigrationsHistory 的数据：~2 rows (大约)
+INSERT INTO `__EFMigrationsHistory` (`migrationid`, `productversion`) VALUES
+	('20250317152538_Init20250317', '8.0.13'),
+	('20250323125304_Update25032302', '8.0.13');
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
