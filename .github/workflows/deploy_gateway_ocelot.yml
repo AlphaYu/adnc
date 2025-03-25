@@ -28,7 +28,7 @@ jobs:
         cd ${RUNNER_DEMO_SOURCE_ROOT}/${PUBLISH_PATH}
         touch Dockerfile
         echo '' > Dockerfile
-        echo "FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base" >> Dockerfile
+        echo "FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base" >> Dockerfile
         echo "WORKDIR /app" >> Dockerfile
         echo "COPY . /app" >> Dockerfile
         echo "ENTRYPOINT [ \"dotnet\",\"Adnc.Gateway.Ocelot.dll\" ]" >> Dockerfile
