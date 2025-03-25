@@ -72,6 +72,7 @@
         /// <param name="id"></param>
         /// <param name="input"></param>
         /// <returns></returns>
+        [OperateLog(LogName = "修改当前用户信息")]
         Task<ServiceResult> ChangeProfileAsync(long id, UserProfileUpdationDto input);
 
         /// <summary>
