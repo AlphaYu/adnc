@@ -40,7 +40,7 @@ public class UserController(IUserService userService) : AdncControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult> DeleteAsync([FromRoute] string ids)
     {
-        var idArr = ids.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(x => long.Parse(x)).ToArray();
+        var idArr = ids.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(long.Parse).ToArray();
         return Result(await userService.DeleteAsync(idArr));
     }
 

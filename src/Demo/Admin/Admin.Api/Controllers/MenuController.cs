@@ -74,7 +74,7 @@ public class MenuController(IMenuService menuService, UserContext userContext) :
     public async Task<ActionResult<List<RouterTreeDto>>> GetMenusForRouterAsync()
     {
         string[] roleIds = userContext.RoleIds.Split(",", StringSplitOptions.RemoveEmptyEntries) ?? [];
-        return await menuService.GetMenusForRouterAsync(roleIds.Select(x=>long.Parse(x)));
+        return await menuService.GetMenusForRouterAsync(roleIds.Select(long.Parse));
     }
 
     /// <summary>

@@ -40,7 +40,7 @@ public class OrganizationController(IOrganizationService organizationService) : 
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult> Delete([FromRoute] string ids)
     {
-        var idArr = ids.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(x => long.Parse(x)).ToArray();
+        var idArr = ids.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(long.Parse).ToArray();
         return Result(await organizationService.DeleteAsync(idArr));
     }
 

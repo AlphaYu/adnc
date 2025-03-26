@@ -40,7 +40,7 @@ public class SysConfigController(ISysConfigService sysConfigService) : AdncContr
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult> DeleteAsync([FromRoute] string ids)
     {
-        var idArr = ids.Split(',').Select(x => long.Parse(x)).ToArray();
+        var idArr = ids.Split(',').Select(long.Parse).ToArray();
         return Result(await sysConfigService.DeleteAsync(idArr));
     }
 

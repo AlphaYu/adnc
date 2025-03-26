@@ -40,7 +40,7 @@ public class RoleController(IRoleService roleService) : AdncControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult> DeleteAsync([FromRoute] string ids)
     {
-        var idArr = ids.Split(",").Select(x => long.Parse(x)).ToArray();
+        var idArr = ids.Split(",").Select(long.Parse).ToArray();
         return Result(await roleService.DeleteAsync(idArr));
     }
 
