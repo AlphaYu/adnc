@@ -10,19 +10,19 @@ public class EfBasicRepository<TEntity>(DbContext dbContext) : AbstractEfBaseRep
 {
     public virtual async Task<int> RemoveAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
-        this.DbContext.Remove(entity);
-        return await this.DbContext.SaveChangesAsync(cancellationToken);
+        DbContext.Remove(entity);
+        return await DbContext.SaveChangesAsync(cancellationToken);
     }
 
     public virtual async Task<int> RemoveRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
     {
-        this.DbContext.RemoveRange(entities);
-        return await this.DbContext.SaveChangesAsync(cancellationToken);
+        DbContext.RemoveRange(entities);
+        return await DbContext.SaveChangesAsync(cancellationToken);
     }
 
     public virtual async Task<TEntity?> GetAsync(long keyValue, Expression<Func<TEntity, dynamic>>? navigationPropertyPath = null, bool writeDb = false, CancellationToken cancellationToken = default)
     {
-        var query = this.GetDbSet(writeDb, false).Where(t => t.Id == keyValue);
+        var query = GetDbSet(writeDb, false).Where(t => t.Id == keyValue);
         if (navigationPropertyPath is null)
         {
             return await query.FirstOrDefaultAsync(cancellationToken);
@@ -51,5 +51,11 @@ public class EfBasicRepository<TEntity>(DbContext dbContext) : AbstractEfBaseRep
             query = query.Include(navigationPath);
         }
         return await query.FirstOrDefaultAsync(cancellationToken);
+    }
+
+    public virtual async Task<TEntity> GetRequiredAsync(long keyValue, Expression<Func<TEntity, dynamic>>? navigationPropertyPath = null, bool writeDb = false, CancellationToken cancellationToken = default)
+    {
+        var entity = await GetAsync(keyValue, navigationPropertyPath, writeDb, cancellationToken);
+        return entity is null ? throw new InvalidDataException($"The entity with id {keyValue} was not found.") : entity;
     }
 }

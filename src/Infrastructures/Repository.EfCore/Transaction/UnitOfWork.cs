@@ -19,7 +19,7 @@ public abstract class UnitOfWork<TDbContext> : IUnitOfWork
     {
         if (AdncDbContext.Database.CurrentTransaction is not null)
         {
-            throw new ArgumentException($"UnitOfWork Error,{AdncDbContext.Database.CurrentTransaction}");
+            throw new InvalidDataException($"UnitOfWork Error,{AdncDbContext.Database.CurrentTransaction}");
         }
         else
         {
@@ -31,7 +31,7 @@ public abstract class UnitOfWork<TDbContext> : IUnitOfWork
     {
         if (DbTransaction is null)
         {
-            throw new ArgumentNullException(nameof(DbTransaction), "IDbContextTransaction is null");
+            throw new InvalidDataException($"{nameof(DbTransaction)} is null");
         }
         else
         {
@@ -43,7 +43,7 @@ public abstract class UnitOfWork<TDbContext> : IUnitOfWork
     {
         if (DbTransaction is null)
         {
-            throw new ArgumentNullException(nameof(DbTransaction), "IDbContextTransaction is null");
+            throw new InvalidDataException($"{nameof(DbTransaction)} is null");
         }
         else
         {
@@ -55,7 +55,7 @@ public abstract class UnitOfWork<TDbContext> : IUnitOfWork
     {
         if (DbTransaction is null)
         {
-            throw new ArgumentNullException(nameof(DbTransaction), "IDbContextTransaction is null");
+            throw new InvalidDataException($"{nameof(DbTransaction)} is null");
         }
         else
         {
@@ -67,7 +67,7 @@ public abstract class UnitOfWork<TDbContext> : IUnitOfWork
     {
         if (DbTransaction is null)
         {
-            throw new ArgumentNullException(nameof(DbTransaction), "IDbContextTransaction is null");
+            throw new InvalidDataException($"{nameof(DbTransaction)} is null");
         }
         else
         {

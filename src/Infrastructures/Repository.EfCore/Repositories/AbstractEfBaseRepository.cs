@@ -129,7 +129,7 @@ public abstract class AbstractEfBaseRepository<TDbContext, TEntity>(TDbContext d
             throw new ArgumentException($"{nameof(entity)},实体状态为{nameof(entry.State)}");
         }
 
-        return this.UpdateInternalAsync(cancellationToken);
+        return UpdateInternalAsync(cancellationToken);
     }
 
     protected async Task<int> UpdateInternalAsync(CancellationToken cancellationToken = default) =>

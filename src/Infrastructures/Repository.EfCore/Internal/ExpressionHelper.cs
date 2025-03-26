@@ -9,16 +9,16 @@ public static class ExpressionHelper
     public static Expression<Func<SetPropertyCalls<TEntity>, SetPropertyCalls<TEntity>>> ConvertToSetPropertyCalls<TEntity>(Expression<Func<TEntity, TEntity>> expression)
     {
         var parameterName = "a";
-        ParameterExpression param = Expression.Parameter(typeof(SetPropertyCalls<TEntity>), parameterName);
-        Expression constructorExpressions = null;
+        var param = Expression.Parameter(typeof(SetPropertyCalls<TEntity>), parameterName);
+        Expression? constructorExpressions = null;
         if (expression.Body is MemberInitExpression memberInitExpression)
         {
             foreach (var item in memberInitExpression.Bindings)
             {
                 if (item is MemberAssignment assignment)
                 {
-                    PropertyInfo propertyInfo = (PropertyInfo)assignment.Member;
-                    string propertyName = assignment.Member.Name;
+                    var propertyInfo = (PropertyInfo)assignment.Member;
+                    var propertyName = assignment.Member.Name;
                     var properrtyType = propertyInfo.PropertyType;
 
                     var parameter = Expression.Parameter(typeof(TEntity), parameterName);
@@ -38,7 +38,7 @@ public static class ExpressionHelper
                                 .Where(p =>
                                 p.ParameterType.IsGenericType &&
                                 p.ParameterType.GetGenericTypeDefinition() == typeof(Func<,>)).Count() == 2)
-                             .FirstOrDefault();
+                             .First();
 
                     setPropertyMethod = setPropertyMethod.MakeGenericMethod(properrtyType);
                     var setPropertyCall = Expression.Call(

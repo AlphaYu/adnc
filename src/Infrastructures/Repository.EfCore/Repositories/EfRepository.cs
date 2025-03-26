@@ -39,10 +39,10 @@ public class EfRepository<TEntity>(DbContext dbContext, Operater operater, IAdoQ
     public IDbTransaction? CurrentDbTransaction => DbContext.Database.CurrentTransaction?.GetDbTransaction();
 
     public virtual IQueryable<TEntity> GetAll(bool writeDb = false, bool noTracking = true) 
-        => this.GetDbSet(writeDb, noTracking);
+        => GetDbSet(writeDb, noTracking);
 
     public virtual IQueryable<TrdEntity> GetAll<TrdEntity>(bool writeDb = false, bool noTracking = true) where TrdEntity : EfEntity
-        => this.GetDbSet<TrdEntity>(writeDb, noTracking);
+        => GetDbSet<TrdEntity>(writeDb, noTracking);
 
     public virtual async Task<TEntity?> FindAsync(long keyValue, Expression<Func<TEntity, dynamic>>? navigationPropertyPath = null, bool writeDb = false, bool noTracking = true, CancellationToken cancellationToken = default)
         => await FetchAsync(x => x.Id == keyValue, navigationPropertyPath, null, false, writeDb, noTracking, cancellationToken);
@@ -80,7 +80,7 @@ public class EfRepository<TEntity>(DbContext dbContext, Operater operater, IAdoQ
     {
         TResult? result;
 
-        var query = this.GetDbSet(writeDb, noTracking).Where(whereExpression);
+        var query = GetDbSet(writeDb, noTracking).Where(whereExpression);
 
         if (orderByExpression is null)
         {

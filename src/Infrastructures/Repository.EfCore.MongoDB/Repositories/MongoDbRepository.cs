@@ -78,7 +78,7 @@ public class MongoDbRepository<TEntity>(DbContext dbContext) : IMongoDbRepositor
             throw new ArgumentException($"{nameof(entity)},实体状态为{nameof(entry.State)}");
         }
 
-        return this.UpdateInternalAsync(cancellationToken);
+        return UpdateInternalAsync(cancellationToken);
     }
 
     protected async Task<int> UpdateInternalAsync(CancellationToken cancellationToken = default) =>
@@ -86,19 +86,19 @@ public class MongoDbRepository<TEntity>(DbContext dbContext) : IMongoDbRepositor
 
     public virtual async Task<int> DeleteAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
-        this.DbContext.Remove(entity);
-        return await this.DbContext.SaveChangesAsync(cancellationToken);
+        DbContext.Remove(entity);
+        return await DbContext.SaveChangesAsync(cancellationToken);
     }
 
     public virtual async Task<int> DeleteRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
     {
-        this.DbContext.RemoveRange(entities);
-        return await this.DbContext.SaveChangesAsync(cancellationToken);
+        DbContext.RemoveRange(entities);
+        return await DbContext.SaveChangesAsync(cancellationToken);
     }
 
     public virtual async Task<TEntity?> FetchAsync(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, object>>? orderByExpression = null, bool ascending = false, CancellationToken cancellationToken = default)
     {
-        var query = this.GetDbSet(false).Where(whereExpression);
+        var query = GetDbSet(false).Where(whereExpression);
         if (orderByExpression != null)
         {
             query = ascending ? query.OrderBy(orderByExpression) : query.OrderByDescending(orderByExpression);
