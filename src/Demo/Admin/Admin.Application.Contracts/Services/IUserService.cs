@@ -110,7 +110,7 @@ public interface IUserService : IAppService
     /// <returns></returns>
     //[OperateLog(LogName = "获取认证信息")]
     [CachingAble(CacheKeyPrefix = CachingConsts.UserValidatedInfoKeyPrefix)]
-    Task<UserValidatedInfoDto> GetUserValidatedInfoAsync([CachingParam] long id) => Task.FromResult<UserValidatedInfoDto>(null);
+    Task<UserValidatedInfoDto?> GetUserValidatedInfoAsync([CachingParam] long id) => Task.FromResult<UserValidatedInfoDto?>(null);
 
     /// <summary>
     /// 移除认证信息

@@ -1,4 +1,4 @@
-﻿namespace Adnc.Demo.Maint.WebApi.Controllers;
+namespace Adnc.Demo.Maint.WebApi.Controllers;
 
 /// <summary>
 /// 操作日志管理

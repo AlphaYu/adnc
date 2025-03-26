@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 
 namespace Adnc.Demo.Admin.Application.Cache;
 
@@ -47,7 +47,7 @@ public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IDistr
         await CacheProvider.Value.SetAsync(cacheKey, value, TimeSpan.FromSeconds(GetRefreshTokenExpires()));
     }
 
-    internal async Task<UserValidatedInfoDto> GetUserValidateInfoFromCacheAsync(long id)
+    internal async Task<UserValidatedInfoDto?> GetUserValidateInfoFromCacheAsync(long id)
     {
         var cacheKey = ConcatCacheKey(CachingConsts.UserValidatedInfoKeyPrefix, id.ToString());
         var cacheValue = await CacheProvider.Value.GetAsync<UserValidatedInfoDto>(cacheKey);
@@ -70,7 +70,7 @@ public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IDistr
             return Mapper.Value.Map<List<OrganizationDto>>(allOrganizations);
         }, TimeSpan.FromSeconds(GeneralConsts.OneYear));
 
-        return cahceValue.Value;
+        return cahceValue.Value ?? [];
     }
 
     internal async Task<List<MenuDto>> GetAllMenusFromCacheAsync()
@@ -83,7 +83,7 @@ public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IDistr
             return Mapper.Value.Map<List<MenuDto>>(allMenus);
         }, TimeSpan.FromSeconds(GeneralConsts.OneYear));
 
-        return cahceValue.Value;
+        return cahceValue.Value ?? [];
     }
 
     internal async Task<List<RoleMenuCodeDto>> GetAllRoleMenuCodesFromCacheAsync()
@@ -95,7 +95,7 @@ public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IDistr
 
         }, TimeSpan.FromSeconds(GeneralConsts.OneYear));
 
-        return cahceValue.Value;
+        return cahceValue.Value ?? [];
     }
 
     internal async Task SetAllRoleMenuCodesToCacheAsync()
@@ -196,7 +196,7 @@ public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IDistr
             return dictOptions;
         }, TimeSpan.FromSeconds(GeneralConsts.OneYear));
 
-        return cahceValue.Value;
+        return cahceValue.Value ?? [];
     }
 
     internal async Task<List<SysConfigSimpleDto>> GetAllSysConfigsFromCacheAsync()
@@ -209,7 +209,7 @@ public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IDistr
             return simpleConfigs;
         }, TimeSpan.FromSeconds(GeneralConsts.OneYear));
 
-        return cahceValue.Value;
+        return cahceValue.Value ?? [];
     }
 
     private async Task<List<RoleMenuCodeDto>> GetAllRoleMenuCodesFromDb()

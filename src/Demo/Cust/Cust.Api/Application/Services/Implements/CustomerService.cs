@@ -70,7 +70,7 @@ public class CustomerAppService(IEfRepository<Customer> customerRepo, IEfReposit
         input.TrimStringFields();
         var whereCondition = ExpressionCreator
                                             .New<Customer>()
-                                            .AndIf(input.CreateTime is not null && input.CreateTime.Length > 0, x => x.CreateTime >= input.CreateTime[0] && x.CreateTime <= input.CreateTime[1])
+                                            .AndIf(input.CreateTime is not null && input.CreateTime.Length > 1, x => x.CreateTime >= input.CreateTime![0] && x.CreateTime <= input.CreateTime[1])
                                             .AndIf(input.Keywords.IsNotNullOrEmpty(), x => x.Account == input.Keywords);
 
         var count = await customerRepo.CountAsync(whereCondition);
@@ -117,7 +117,7 @@ public class CustomerAppService(IEfRepository<Customer> customerRepo, IEfReposit
         input.TrimStringFields();
         var whereExpr = ExpressionCreator
                                             .New<TransactionLog>()
-                                            .AndIf(input.CreateTime is not null && input.CreateTime.Length > 0, x => x.CreateTime >= input.CreateTime[0] && x.CreateTime <= input.CreateTime[1])
+                                            .AndIf(input.CreateTime is not null && input.CreateTime.Length > 1, x => x.CreateTime >= input.CreateTime![0] && x.CreateTime <= input.CreateTime[1])
                                             .AndIf(input.Keywords.IsNotNullOrEmpty(), x => x.Account == input.Keywords);
 
         var count = await transactionLogRepo.CountAsync(whereExpr);

@@ -21,18 +21,18 @@ public static class RepositoryExtension
         where TResult : notnull
     {
         var configuration = ServiceLocator.GetProvider().GetRequiredService<IConfiguration>();
-        var dbTypeString = configuration[$"{NodeConsts.SysLogDb_DbType}"];
-        var connectionString = configuration[$"{NodeConsts.SysLogDb_ConnectionString}"];
-        using var _ = repository.ChangeOrSetDbConnection(connectionString, dbTypeString.ToUpper().ToEnum<DbTypes>());
+        var (connectionString, dbType) = repository.GetDbTypeAndConnectionString(configuration, NodeConsts.SysLogDb_DbType, NodeConsts.SysLogDb_ConnectionString);
 
-        string countSql = $"select count(*) from login_log {condition.Where}";
+        using var _ = repository.ChangeOrSetDbConnection(connectionString, dbType);
+
+        var countSql = $"select count(*) from login_log {condition.Where}";
         var total = await repository.QuerySingleAsync<int>(countSql, condition.Param);
         if (total == 0)
         {
             return new QueryPageResult<TResult>(total);
         }
 
-        string sql = $"select * from login_log  {condition.Where} {condition.OrderBy} limit {offset},{rows}";
+        var sql = $"select * from login_log  {condition.Where} {condition.OrderBy} limit {offset},{rows}";
         var result = await repository.QueryAsync<TResult>(sql, condition.Param);
         return new QueryPageResult<TResult>(total, result);
     }
@@ -46,23 +46,23 @@ public static class RepositoryExtension
     /// <param name="offset"></param>
     /// <param name="rows"></param>
     /// <returns></returns>
-    /// <exception cref="ArgumentNullException"></exception>
+    /// <exception cref="InvalidDataException"></exception>
     public static async Task<QueryPageResult<TResult>> GetPagedOperationLogsBySqlAsync<TResult>(this IAdoQuerierRepository repository, QueryCondition condition, int offset, int rows)
         where TResult : notnull
     {
         var configuration = ServiceLocator.GetProvider().GetRequiredService<IConfiguration>();
-        var dbTypeString = configuration[$"{NodeConsts.SysLogDb_DbType}"];
-        var connectionString = configuration[$"{NodeConsts.SysLogDb_ConnectionString}"];
-        using var _ = repository.ChangeOrSetDbConnection(connectionString, dbTypeString.ToUpper().ToEnum<DbTypes>());
+        var (connectionString, dbType) = repository.GetDbTypeAndConnectionString(configuration, NodeConsts.SysLogDb_DbType, NodeConsts.SysLogDb_ConnectionString);
 
-        string countSql = $"select count(*) from operation_log {condition.Where}";
+        using var _ = repository.ChangeOrSetDbConnection(connectionString, dbType);
+
+        var countSql = $"select count(*) from operation_log {condition.Where}";
         var total = await repository.QuerySingleAsync<int>(countSql, condition.Param);
         if (total == 0)
         {
             return new QueryPageResult<TResult>(total);
         }
 
-        string sql = $"select * from operation_log  {condition.Where} {condition.OrderBy} limit {offset},{rows}";
+        var sql = $"select * from operation_log  {condition.Where} {condition.OrderBy} limit {offset},{rows}";
         var result = await repository.QueryAsync<TResult>(sql, condition.Param);
         return new QueryPageResult<TResult>(total, result);
     }

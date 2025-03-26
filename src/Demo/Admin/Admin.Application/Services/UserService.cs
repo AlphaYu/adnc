@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http;
 
 namespace Adnc.Demo.Admin.Application.Services;
 
@@ -110,14 +110,15 @@ public class UserService(IEfRepository<User> userRepository, IEfRepository<Role>
     public async Task<PageModelDto<UserDto>> GetPagedAsync(UserSearchPagedDto input)
     {
         input.TrimStringFields();
+
         var whereExpression = ExpressionCreator
-                                            .New<User>()
-                                            .AndIf(input.Status is not null, x => x.Status == input.Status)
-                                            .AndIf(input.DeptId is not null, x => x.DeptId == input.DeptId)
-                                            .AndIf(input.CreateTime is not null && input.CreateTime.Length > 0, x => x.CreateTime >= input.CreateTime[0] && x.CreateTime <= input.CreateTime[1])
-                                            .AndIf(input.Keywords.IsNotNullOrWhiteSpace(), x => EF.Functions.Like(x.Account, $"{input.Keywords}%")
-                                            || EF.Functions.Like(x.Name, $"{input.Keywords}%")
-                                            || EF.Functions.Like(x.Mobile, $"{input.Keywords}%"));
+            .New<User>()
+            .AndIf(input.Status is not null, x => x.Status == input.Status)
+            .AndIf(input.DeptId is not null, x => x.DeptId == input.DeptId)
+            .AndIf(input.CreateTime is not null && input.CreateTime.Length > 0, x => x.CreateTime >= input.CreateTime![0] && x.CreateTime <= input.CreateTime![1])
+            .AndIf(input.Keywords.IsNotNullOrWhiteSpace(), x => EF.Functions.Like(x.Account, $"{input.Keywords}%")
+            || EF.Functions.Like(x.Name, $"{input.Keywords}%")
+            || EF.Functions.Like(x.Mobile, $"{input.Keywords}%"));
 
         var total = await userRepository.CountAsync(whereExpression);
         if (total == 0)
@@ -338,6 +339,10 @@ public class UserService(IEfRepository<User> userRepository, IEfRepository<Role>
     {
         var allRoleCodes = await cacheService.GetAllRoleMenuCodesFromCacheAsync();
         var userValidateInfo = await cacheService.GetUserValidateInfoFromCacheAsync(userContext.Id);
+        if (userValidateInfo is null)
+        {
+            return null;
+        }
         var perms = allRoleCodes.Where(x => userValidateInfo.RoleIds.Contains(x.RoleId) && x.Perms.IsNotNullOrEmpty()).SelectMany(x => x.Perms).Distinct();
 
         var userInfo = new UserInfoDto
