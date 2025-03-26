@@ -13,3 +13,4 @@ txtlogs
 /src/ServerApi/.idea
 /src/ServerApi/ServiceShared/.idea
 /.env/adnc
+/src/.vscode
