@@ -4,8 +4,8 @@ namespace System;
 
 public static class RandomExtension
 {
-    private static readonly char[] Constant = new[]
-{
+    private static readonly char[] Constant =
+[
     '0',
     '1',
     '2',
@@ -42,10 +42,10 @@ public static class RandomExtension
     'x',
     'y',
     'z'
-};
+];
 
-    private static readonly char[] ConstantNumber = new[]
-    {
+    private static readonly char[] ConstantNumber =
+    [
     '0',
     '1',
     '2',
@@ -56,7 +56,7 @@ public static class RandomExtension
     '7',
     '8',
     '9'
-};
+];
 
     /// <summary>
     /// 生成真正的随机数

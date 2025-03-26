@@ -135,7 +135,7 @@ public static class StringExtension
     {
         if (hex.Length == 0)
         {
-            return new byte[] { 0 };
+            return [0];
         }
         if (hex.Length % 2 == 1)
         {

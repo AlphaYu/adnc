@@ -120,7 +120,7 @@ namespace Adnc.Demo.Cust.Api.Migrations
             migrationBuilder.CreateIndex(
                 name: "ix_cust_eventtracker_eventid_trackername",
                 table: "cust_eventtracker",
-                columns: new[] { "eventid", "trackername" },
+                columns: ["eventid", "trackername"],
                 unique: true);
 
             migrationBuilder.CreateIndex(

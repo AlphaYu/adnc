@@ -26,6 +26,6 @@
         /// <summary>
         /// The cache keys
         /// </summary>
-        public string[] CacheKeys { get; set; } = new string[] { };
+        public string[] CacheKeys { get; set; } = [];
     }
 }

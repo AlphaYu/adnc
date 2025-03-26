@@ -195,7 +195,7 @@ namespace Adnc.Demo.Admin.Repository.Migrations
             migrationBuilder.CreateIndex(
                 name: "ix_sys_eventtracker_eventid_trackername",
                 table: "sys_eventtracker",
-                columns: new[] { "eventid", "trackername" },
+                columns: ["eventid", "trackername"],
                 unique: true);
         }
 

@@ -83,7 +83,7 @@ namespace Adnc.Demo.Whse.Migrations.Migrations
             migrationBuilder.CreateIndex(
                 name: "ix_eventtracker_eventid_trackername",
                 table: "eventtracker",
-                columns: new[] { "eventid", "trackername" },
+                columns: ["eventid", "trackername"],
                 unique: true);
         }
 

@@ -184,7 +184,7 @@ public abstract class AbstracCacheProvider : ICacheProvider
 
     public CacheValue<T> Get<T>(string cacheKey, Func<T> dataRetriever, TimeSpan expiration)
     {
-        var operationId = s_diagnosticListener.WriteGetCacheBefore(new BeforeGetRequestEventData(CachingProviderType.ToString(), Name, nameof(Get), new[] { cacheKey }, expiration));
+        var operationId = s_diagnosticListener.WriteGetCacheBefore(new BeforeGetRequestEventData(CachingProviderType.ToString(), Name, nameof(Get), [cacheKey], expiration));
         Exception e = null;
         try
         {
@@ -210,7 +210,7 @@ public abstract class AbstracCacheProvider : ICacheProvider
 
     public CacheValue<T> Get<T>(string cacheKey)
     {
-        var operationId = s_diagnosticListener.WriteGetCacheBefore(new BeforeGetRequestEventData(CachingProviderType.ToString(), Name, nameof(Get), new[] { cacheKey }));
+        var operationId = s_diagnosticListener.WriteGetCacheBefore(new BeforeGetRequestEventData(CachingProviderType.ToString(), Name, nameof(Get), [cacheKey]));
         Exception e = null;
         try
         {
@@ -288,7 +288,7 @@ public abstract class AbstracCacheProvider : ICacheProvider
 
     public async Task<CacheValue<T>> GetAsync<T>(string cacheKey, Func<Task<T>> dataRetriever, TimeSpan expiration)
     {
-        var operationId = s_diagnosticListener.WriteGetCacheBefore(new BeforeGetRequestEventData(CachingProviderType.ToString(), Name, nameof(GetAsync), new[] { cacheKey }, expiration));
+        var operationId = s_diagnosticListener.WriteGetCacheBefore(new BeforeGetRequestEventData(CachingProviderType.ToString(), Name, nameof(GetAsync), [cacheKey], expiration));
         Exception e = null;
         try
         {
@@ -314,7 +314,7 @@ public abstract class AbstracCacheProvider : ICacheProvider
 
     public async Task<object> GetAsync(string cacheKey, Type type)
     {
-        var operationId = s_diagnosticListener.WriteGetCacheBefore(new BeforeGetRequestEventData(CachingProviderType.ToString(), Name, "GetAsync_Type", new[] { cacheKey }));
+        var operationId = s_diagnosticListener.WriteGetCacheBefore(new BeforeGetRequestEventData(CachingProviderType.ToString(), Name, "GetAsync_Type", [cacheKey]));
         Exception e = null;
         try
         {
@@ -340,7 +340,7 @@ public abstract class AbstracCacheProvider : ICacheProvider
 
     public async Task<CacheValue<T>> GetAsync<T>(string cacheKey)
     {
-        var operationId = s_diagnosticListener.WriteGetCacheBefore(new BeforeGetRequestEventData(CachingProviderType.ToString(), Name, nameof(GetAsync), new[] { cacheKey }));
+        var operationId = s_diagnosticListener.WriteGetCacheBefore(new BeforeGetRequestEventData(CachingProviderType.ToString(), Name, nameof(GetAsync), [cacheKey]));
         Exception e = null;
         try
         {
@@ -366,7 +366,7 @@ public abstract class AbstracCacheProvider : ICacheProvider
 
     public IDictionary<string, CacheValue<T>> GetByPrefix<T>(string prefix)
     {
-        var operationId = s_diagnosticListener.WriteGetCacheBefore(new BeforeGetRequestEventData(CachingProviderType.ToString(), Name, nameof(GetByPrefix), new[] { prefix }));
+        var operationId = s_diagnosticListener.WriteGetCacheBefore(new BeforeGetRequestEventData(CachingProviderType.ToString(), Name, nameof(GetByPrefix), [prefix]));
         Exception e = null;
         try
         {
@@ -392,7 +392,7 @@ public abstract class AbstracCacheProvider : ICacheProvider
 
     public async Task<IDictionary<string, CacheValue<T>>> GetByPrefixAsync<T>(string prefix)
     {
-        var operationId = s_diagnosticListener.WriteGetCacheBefore(new BeforeGetRequestEventData(CachingProviderType.ToString(), Name, nameof(GetByPrefixAsync), new[] { prefix }));
+        var operationId = s_diagnosticListener.WriteGetCacheBefore(new BeforeGetRequestEventData(CachingProviderType.ToString(), Name, nameof(GetByPrefixAsync), [prefix]));
         Exception e = null;
         try
         {
@@ -428,7 +428,7 @@ public abstract class AbstracCacheProvider : ICacheProvider
 
     public void Remove(string cacheKey)
     {
-        var operationId = s_diagnosticListener.WriteRemoveCacheBefore(new BeforeRemoveRequestEventData(CachingProviderType.ToString(), Name, nameof(Remove), new[] { cacheKey }));
+        var operationId = s_diagnosticListener.WriteRemoveCacheBefore(new BeforeRemoveRequestEventData(CachingProviderType.ToString(), Name, nameof(Remove), [cacheKey]));
         Exception e = null;
         try
         {
@@ -506,7 +506,7 @@ public abstract class AbstracCacheProvider : ICacheProvider
 
     public async Task RemoveAsync(string cacheKey)
     {
-        var operationId = s_diagnosticListener.WriteRemoveCacheBefore(new BeforeRemoveRequestEventData(CachingProviderType.ToString(), Name, nameof(RemoveAsync), new[] { cacheKey }));
+        var operationId = s_diagnosticListener.WriteRemoveCacheBefore(new BeforeRemoveRequestEventData(CachingProviderType.ToString(), Name, nameof(RemoveAsync), [cacheKey]));
         Exception e = null;
         try
         {
@@ -532,7 +532,7 @@ public abstract class AbstracCacheProvider : ICacheProvider
 
     public void RemoveByPrefix(string prefix)
     {
-        var operationId = s_diagnosticListener.WriteRemoveCacheBefore(new BeforeRemoveRequestEventData(CachingProviderType.ToString(), Name, nameof(RemoveByPrefix), new[] { prefix }));
+        var operationId = s_diagnosticListener.WriteRemoveCacheBefore(new BeforeRemoveRequestEventData(CachingProviderType.ToString(), Name, nameof(RemoveByPrefix), [prefix]));
         Exception e = null;
         try
         {
@@ -558,7 +558,7 @@ public abstract class AbstracCacheProvider : ICacheProvider
 
     public async Task RemoveByPrefixAsync(string prefix)
     {
-        var operationId = s_diagnosticListener.WriteRemoveCacheBefore(new BeforeRemoveRequestEventData(CachingProviderType.ToString(), Name, nameof(RemoveByPrefixAsync), new[] { prefix }));
+        var operationId = s_diagnosticListener.WriteRemoveCacheBefore(new BeforeRemoveRequestEventData(CachingProviderType.ToString(), Name, nameof(RemoveByPrefixAsync), [prefix]));
         Exception e = null;
         try
         {
