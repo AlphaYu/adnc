@@ -59,7 +59,6 @@ public partial class EncryptProivder
         return DESEncrypt(data, key, CipherMode.ECB);
     }
 
-
     /// <summary>
     /// DES encrypt
     /// </summary>

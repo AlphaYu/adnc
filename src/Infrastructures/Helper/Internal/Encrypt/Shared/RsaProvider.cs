@@ -209,7 +209,6 @@ internal class RsaProvider
             return ms.ToArray();
         };
 
-
         if (!includePrivateParameters)
         {
             /****Create public key****/
@@ -241,7 +240,6 @@ internal class RsaProvider
             bytes = writeLen(index3, bytes);
             bytes = writeLen(index2, bytes);
             bytes = writeLen(index1, bytes);
-
 
             return "-----BEGIN PUBLIC KEY-----\n" + TextBreak(Convert.ToBase64String(bytes), 64) + "\n-----END PUBLIC KEY-----";
         }
@@ -290,7 +288,6 @@ internal class RsaProvider
                 bytes = writeLen(index2, bytes);
             }
             bytes = writeLen(index1, bytes);
-
 
             var flag = " PRIVATE KEY";
             if (!isPKCS8)

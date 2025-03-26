@@ -29,7 +29,6 @@ public sealed partial class CapEventSubscriber(IUnitOfWork unitOfWork, IEfReposi
         if (finance is null)
             return;
 
-
         try
         {
             unitOfWork.BeginTransaction();
@@ -74,7 +73,6 @@ public sealed partial class CapEventSubscriber(IUnitOfWork unitOfWork, IEfReposi
         var hasProcessed = await tracker.HasProcessedAsync(eventId, eventHandler);
         if (hasProcessed)
             return;
-
 
         try
         {

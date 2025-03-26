@@ -1,6 +1,5 @@
 ﻿namespace Adnc.Shared.Application.Contracts.Validators;
 
-
 public static class FluentValidationExtensions
 {
     public static IRuleBuilderOptions<T, string> Chinese<T>(this IRuleBuilder<T, string> ruleBuilder)

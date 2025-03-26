@@ -97,7 +97,6 @@ public partial class EncryptProivder
         return str_hamc_out;
     }
 
-
     /// <summary>
     /// HMAC_SHA256
     /// </summary>
@@ -139,7 +138,6 @@ public partial class EncryptProivder
 
         byte[] bytes_hmac_in = Encoding.UTF8.GetBytes(srcString);
         byte[] bytes_hamc_out = hmac.ComputeHash(bytes_hmac_in);
-
 
         string str_hamc_out = BitConverter.ToString(bytes_hamc_out);
         str_hamc_out = str_hamc_out.Replace("-", "");

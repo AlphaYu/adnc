@@ -88,7 +88,6 @@ namespace Adnc.Shared.Application.Extensions
         public static List<IAsyncPolicy<HttpResponseMessage>> GenerateDefaultGrpcPolicies(this AbstractApplicationDependencyRegistrar registrar) =>
             registrar.GenerateDefaultRefitPolicies();
 
-
         public static string ASPNETCORE_ENVIRONMENT => Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? throw new NullReferenceException("ASPNETCORE_ENVIRONMENT is null");
 
         public static bool IsDevelopment(this AbstractApplicationDependencyRegistrar _) => ASPNETCORE_ENVIRONMENT.EqualsIgnoreCase("Development");

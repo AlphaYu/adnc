@@ -20,4 +20,3 @@ public sealed class DependencyRegistrar : AbstractApplicationDependencyRegistrar
     }
 }
 
-
