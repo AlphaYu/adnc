@@ -157,12 +157,13 @@ public static class DocumenationExtension
         }
         try
         {
-            if (!Cache.ContainsKey(assembly))
+            if (!Cache.TryGetValue(assembly, out var value))
             {
+                value = XmlFromAssemblyNonCached(assembly);
                 // load the docuemnt into the cache
-                Cache[assembly] = XmlFromAssemblyNonCached(assembly);
+                Cache[assembly] = value;
             }
-            return Cache[assembly];
+            return value;
         }
         catch (Exception exception)
         {

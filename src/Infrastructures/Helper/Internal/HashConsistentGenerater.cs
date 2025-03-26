@@ -71,7 +71,7 @@ public sealed class HashConsistentGenerater
         for (var i = 1; i <= _virtualNodeMultiple; i++)
         {
             var currentHash = GetHashCode(host + i) & int.MaxValue; //计算一个hash，此处用自定义hash算法原因是字符串默认的哈希实现不保证对同一字符串获取hash时得到相同的值。和int.MaxValue进行位与操作是为了将获取到的hash值设置为正数
-            if (VirtualNodeAndNodeMap.ContainsKey(currentHash) && VirtualNodeAndNodeMap[currentHash] == host) //因为hash可能会重复，所以此处判断在判断了哈希值是否存在于虚拟节点和节点映射中之后还需要判断通过当前hash值获取到的节点是否和指定节点一致，如果不一致，则证明这个这个虚拟节点不是当前hash值所拥有的
+            if (VirtualNodeAndNodeMap.TryGetValue(currentHash, out var value) && value == host) //因为hash可能会重复，所以此处判断在判断了哈希值是否存在于虚拟节点和节点映射中之后还需要判断通过当前hash值获取到的节点是否和指定节点一致，如果不一致，则证明这个这个虚拟节点不是当前hash值所拥有的
             {
                 VirtualNode.Remove(currentHash); //从虚拟节点中移出
                 VirtualNodeAndNodeMap.Remove(currentHash); //从虚拟节点和真实ip映射中移出
