@@ -32,7 +32,7 @@ public sealed class DependencyRegistrar : AbstractApplicationDependencyRegistrar
         //rpc-event
         AddCapEventBus<CapEventSubscriber>(replaceDbAction: capOption =>
         {
-            var connectionString = _sqlSection.GetValue<string>("ConnectionString");
+            var connectionString = _sqlSection.GetValue<string>("ConnectionString") ?? throw new InvalidDataException("SqlServer ConnectionString is null"); ;
             capOption.UseSqlServer(config =>
             {
                 config.ConnectionString = connectionString;

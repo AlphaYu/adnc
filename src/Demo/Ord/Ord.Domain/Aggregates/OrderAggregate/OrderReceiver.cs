@@ -19,8 +19,8 @@ public record OrderReceiver : ValueObject
 
     public OrderReceiver(string name, string phone, string address)
     {
-        this.Name = Checker.NotNullOrEmpty(name, nameof(name));
-        this.Phone = Checker.NotNullOrEmpty(phone, nameof(phone));
-        this.Address = Checker.NotNullOrEmpty(address, nameof(address));
+        Name = Checker.NotNullOrEmpty(name, nameof(name));
+        Phone = Checker.NotNullOrEmpty(phone, nameof(phone));
+        Address = Checker.NotNullOrEmpty(address, nameof(address));
     }
 }

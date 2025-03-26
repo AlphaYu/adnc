@@ -4,7 +4,7 @@ public record ProductStatus : ValueObject
 {
     public ProductStatusCodes Code { get; }
 
-    public string ChangesReason { get; }
+    public string ChangesReason { get; } = string.Empty;
 
     private ProductStatus()
     {

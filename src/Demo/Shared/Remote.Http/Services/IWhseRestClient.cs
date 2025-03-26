@@ -10,5 +10,5 @@ public interface IWhseRestClient : IRestClient
     /// <returns></returns>
     [Headers("Authorization: Basic", "Cache: 1000")]
     [Get("/whse/api/products")]
-    Task<ApiResponse<List<ProductResponse>>> GetProductsAsync(ProductSearchRequest input, CancellationToken cancellationToken = default);
+    Task<List<ProductResponse>> GetProductsAsync(ProductSearchRequest input, CancellationToken cancellationToken = default);
 }

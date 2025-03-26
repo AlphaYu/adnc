@@ -10,11 +10,11 @@ public class WarehouseDto : IDto
 
     public int FreezedQty { set; get; }
 
-    public string PositionCode { get; set; }
+    public string PositionCode { get; set; } = string.Empty;
 
-    public string PositionDescription { get; set; }
+    public string PositionDescription { get; set; } = string.Empty;
 
-    public string ProductSku { get; set; }
+    public string ProductSku { get; set; } = string.Empty;
 
-    public string ProductName { get; set; }
+    public string ProductName { get; set; } = string.Empty;
 }

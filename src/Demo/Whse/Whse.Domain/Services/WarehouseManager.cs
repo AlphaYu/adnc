@@ -89,7 +89,7 @@ public class WarehouseManager : IDomainService
                 foreach (var productId in blockQtyProductsInfo.Keys)
                 {
                     var needBlockQty = blockQtyProductsInfo[productId];
-                    var warehouse = warehouses.FirstOrDefault(x => x.ProductId == productId);
+                    var warehouse = warehouses.First(x => x.ProductId == productId);
                     warehouse.BlockQty(needBlockQty);
                 }
             }

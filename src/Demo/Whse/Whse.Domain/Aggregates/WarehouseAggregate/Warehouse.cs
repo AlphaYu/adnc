@@ -5,13 +5,13 @@
 /// </summary>
 public class Warehouse : AggregateRootWithBasicAuditInfo
 {
-    public long? ProductId { get; private set; }
+    public long ProductId { get; private set; }
 
     public int Qty { get; private set; }
 
     public int BlockedQty { get; private set; }
 
-    public WarehousePosition Position { get; private set; }
+    public WarehousePosition Position { get; private set; } = default!;
 
     private Warehouse()
     {
@@ -19,10 +19,10 @@ public class Warehouse : AggregateRootWithBasicAuditInfo
 
     internal Warehouse(long id, WarehousePosition position)
     {
-        this.Id = id;
-        this.Qty = 0;
-        this.BlockedQty = 0;
-        this.Position = Checker.NotNull(position, nameof(position));
+        Id = id;
+        Qty = 0;
+        BlockedQty = 0;
+        Position = Checker.NotNull(position, nameof(position));
     }
 
     /// <summary>
@@ -31,15 +31,15 @@ public class Warehouse : AggregateRootWithBasicAuditInfo
     /// <param name="needBlockedQty"></param>
     internal void BlockQty(int needBlockedQty)
     {
-        if (this.Qty < needBlockedQty)
+        if (Qty < needBlockedQty)
         {
             throw new BusinessException("Qty<needFreezedQty");
         }
 
-        Checker.GTZero(ProductId.Value, nameof(ProductId));
+        Checker.GTZero(ProductId, nameof(ProductId));
 
-        this.BlockedQty += needBlockedQty;
-        this.Qty -= needBlockedQty;
+        BlockedQty += needBlockedQty;
+        Qty -= needBlockedQty;
     }
 
     /// <summary>
@@ -48,15 +48,15 @@ public class Warehouse : AggregateRootWithBasicAuditInfo
     /// <param name="needRemoveQty"></param>
     internal void RemoveBlockedQty(int needRemoveQty)
     {
-        if (this.BlockedQty < needRemoveQty)
+        if (BlockedQty < needRemoveQty)
         {
             throw new BusinessException("FreezedQty<needUnfreezeQty");
         }
 
-        Checker.GTZero(ProductId.Value, nameof(ProductId));
+        Checker.GTZero(ProductId, nameof(ProductId));
 
-        this.BlockedQty -= needRemoveQty;
-        this.Qty += needRemoveQty;
+        BlockedQty -= needRemoveQty;
+        Qty += needRemoveQty;
     }
 
     /// <summary>
@@ -65,14 +65,14 @@ public class Warehouse : AggregateRootWithBasicAuditInfo
     /// <param name="qty"></param>
     internal void Deliver(int qty)
     {
-        if (this.BlockedQty < qty)
+        if (BlockedQty < qty)
         {
             throw new BusinessException("FreezedQty<qty");
         }
 
-        Checker.GTZero(ProductId.Value, nameof(ProductId));
+        Checker.GTZero(ProductId, nameof(ProductId));
 
-        this.BlockedQty -= qty;
+        BlockedQty -= qty;
     }
 
     /// <summary>
@@ -82,8 +82,8 @@ public class Warehouse : AggregateRootWithBasicAuditInfo
     internal void Entry(int qty)
     {
         Checker.GTZero(qty, nameof(qty));
-        Checker.GTZero(ProductId.Value, nameof(ProductId));
-        this.Qty += qty;
+        Checker.GTZero(ProductId, nameof(ProductId));
+        Qty += qty;
     }
 
     /// <summary>
@@ -97,6 +97,6 @@ public class Warehouse : AggregateRootWithBasicAuditInfo
 
         Checker.GTZero(productId, nameof(productId));
 
-        this.ProductId = productId;
+        ProductId = productId;
     }
 }

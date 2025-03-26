@@ -2,20 +2,21 @@
 
 public class Product : AggregateRootWithBasicAuditInfo
 {
-    public string Sku { get; private set; }
+    public string Sku { get; private set; } = string.Empty;
 
-    public string Name { get; private set; }
+    public string Name { get; private set; } = string.Empty;
 
-    public string Describe { set; get; }
+    public string Describe { set; get; } = string.Empty;
 
     public decimal Price { get; private set; }
 
     public ProductStatus Status { get; private set; }
 
-    public string Unit { get; private set; }
+    public string Unit { get; private set; } = string.Empty;
 
     private Product()
     {
+        Status = new ProductStatus(ProductStatusCodes.UnKnow, string.Empty);
     }
 
     /// <summary>
@@ -30,13 +31,13 @@ public class Product : AggregateRootWithBasicAuditInfo
     /// <param name="describe"></param>
     internal Product(long id, string sku, decimal price, string name, string unit, string? describe = null)
     {
-        this.Id = id;
+        Id = id;
         SetSku(sku);
         SetName(name);
         SetPrice(price);
         SetUnit(unit);
-        this.Describe = describe != null ? describe.Trim() : string.Empty;
-        this.Status = new ProductStatus(ProductStatusCodes.UnKnow, string.Empty);
+        Describe = describe != null ? describe.Trim() : string.Empty;
+        Status = new ProductStatus(ProductStatusCodes.UnKnow, string.Empty);
     }
 
     /// <summary>
@@ -45,7 +46,7 @@ public class Product : AggregateRootWithBasicAuditInfo
     /// <param name="sku"></param>
     internal void SetSku(string sku)
     {
-        this.Sku = Checker.NotNullOrEmpty(sku.Trim(), nameof(sku));
+        Sku = Checker.NotNullOrEmpty(sku.Trim(), nameof(sku));
     }
 
     /// <summary>
@@ -54,7 +55,7 @@ public class Product : AggregateRootWithBasicAuditInfo
     /// <param name="name"></param>
     internal void SetName(string name)
     {
-        this.Name = Checker.NotNullOrEmpty(name.Trim(), nameof(name));
+        Name = Checker.NotNullOrEmpty(name.Trim(), nameof(name));
     }
 
     /// <summary>
@@ -63,7 +64,7 @@ public class Product : AggregateRootWithBasicAuditInfo
     /// <param name="status"></param>
     internal void SetStatus(ProductStatus status)
     {
-        this.Status = Checker.NotNull(status, nameof(status));
+        Status = Checker.NotNull(status, nameof(status));
     }
 
     /// <summary>
@@ -72,7 +73,7 @@ public class Product : AggregateRootWithBasicAuditInfo
     /// <param name="unit"></param>
     public void SetUnit(string unit)
     {
-        this.Unit = Checker.NotNullOrEmpty(unit, nameof(unit));
+        Unit = Checker.NotNullOrEmpty(unit, nameof(unit));
     }
 
     /// <summary>
@@ -82,7 +83,7 @@ public class Product : AggregateRootWithBasicAuditInfo
     public void SetPrice(decimal price)
     {
         Checker.GTZero(price, nameof(price));
-        this.Price = price;
+        Price = price;
     }
 
     /// <summary>
@@ -90,6 +91,6 @@ public class Product : AggregateRootWithBasicAuditInfo
     /// </summary>
     public void PutOffSale(string reason)
     {
-        this.Status = new ProductStatus(ProductStatusCodes.SaleOff, reason);
+        Status = new ProductStatus(ProductStatusCodes.SaleOff, reason);
     }
 }

@@ -18,7 +18,7 @@ public class ProductManager : IDomainService
     /// <param name="unit"></param>
     /// <param name="describe"></param>
     /// <returns></returns>
-    public virtual async Task<Product> CreateAsync(string sku, decimal price, string name, string unit, string describe = null)
+    public virtual async Task<Product> CreateAsync(string sku, decimal price, string name, string unit, string describe = "")
     {
         var exists = await _productRepo.AnyAsync(x => x.Sku == sku);
         if (exists)

@@ -7,7 +7,6 @@
 /// 商品管理构造函数
 /// </remarks>
 /// <param name="productRepo"></param>
-/// <param name="warehouseRepo"></param>
 /// <param name="adminClient"></param>
 /// <param name="productMgr"></param>
 public class ProductService(IEfBasicRepository<Product> productRepo, /*IEfBasicRepository<Warehouse> warehouseRepo,*/ IAdminRestClient adminClient, ProductManager productMgr)
@@ -38,8 +37,7 @@ public class ProductService(IEfBasicRepository<Product> productRepo, /*IEfBasicR
     public async Task<ProductDto> UpdateAsync(long id, ProductUpdationDto input)
     {
         input.TrimStringFields();
-        var product = await productRepo.GetAsync(id);
-
+        var product = await productRepo.GetRequiredAsync(id);
         product.Describe = input.Describe;
         product.SetUnit(input.Unit);
         product.SetPrice(input.Price);
@@ -61,7 +59,7 @@ public class ProductService(IEfBasicRepository<Product> productRepo, /*IEfBasicR
     public async Task<ProductDto> ChangePriceAsync(long id, ProducChangePriceDto input)
     {
         input.TrimStringFields();
-        var product = await productRepo.GetAsync(id);
+        var product = await productRepo.GetRequiredAsync(id);
 
         product.SetPrice(input.Price);
 
@@ -79,7 +77,7 @@ public class ProductService(IEfBasicRepository<Product> productRepo, /*IEfBasicR
     public async Task<ProductDto> PutOnSaleAsync(long id, ProductPutOnSaleDto input)
     {
         input.TrimStringFields();
-        var product = await productRepo.GetAsync(id);
+        var product = await productRepo.GetRequiredAsync(id);
         //var warehouseInfo = await warehouseRepo.Where(x => x.ProductId == id).FirstOrDefaultAsync();
 
         productMgr.PutOnSale(product, input.Reason);
@@ -92,12 +90,13 @@ public class ProductService(IEfBasicRepository<Product> productRepo, /*IEfBasicR
     /// <summary>
     /// 下架商品
     /// </summary>
+    /// <param name="id"></param>
     /// <param name="input"></param>
     /// <returns></returns>
     public async Task<ProductDto> PutOffSaleAsync(long id, ProductPutOffSaleDto input)
     {
         input.TrimStringFields();
-        var product = await productRepo.GetAsync(id);
+        var product = await productRepo.GetRequiredAsync(id);
 
         product.PutOffSale(input.Reason);
 

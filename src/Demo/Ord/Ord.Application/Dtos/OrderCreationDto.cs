@@ -10,17 +10,17 @@ public class OrderCreationDto : IDto
     /// <summary>
     /// 备注
     /// </summary>
-    public string Remark { get; set; }
+    public string Remark { get; set; } = string.Empty;
 
     /// <summary>
     /// 收货信息
     /// </summary>
-    public OrderReceiverDto DeliveryInfomaton { get; set; }
+    public OrderReceiverDto DeliveryInfomaton { get; set; } = default!;
 
     /// <summary>
     /// 订单子项
     /// </summary>
-    public virtual ICollection<OrderCreationItemDto> Items { get; set; }
+    public virtual ICollection<OrderCreationItemDto> Items { get; set; } = [];
 
     public class OrderCreationItemDto : IDto
     {

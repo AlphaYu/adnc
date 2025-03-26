@@ -52,7 +52,7 @@ public class WarehouseService : AbstractAppService, IWarehouseService
     public async Task<WarehouseDto> AllocateShelfToProductAsync(long warehouseId, WarehouseAllocateToProductDto input)
     {
         input.TrimStringFields();
-        var warehouse = await _warehouseRepo.GetAsync(warehouseId);
+        var warehouse = await _warehouseRepo.GetRequiredAsync(warehouseId);
 
         await _warehouseManager.AllocateShelfToProductAsync(warehouse, input.ProductId);
 
@@ -111,7 +111,7 @@ public class WarehouseService : AbstractAppService, IWarehouseService
     {
         eventDto.TrimStringFields();
         var blockQtyProductsInfo = eventDto.Products.ToDictionary(x => x.ProductId, x => x.Qty);
-        var warehouses = await _warehouseRepo.Where(x => blockQtyProductsInfo.Keys.Contains(x.ProductId.Value), noTracking: false).ToListAsync();
+        var warehouses = await _warehouseRepo.Where(x => blockQtyProductsInfo.Keys.Contains(x.ProductId), noTracking: false).ToListAsync();
         // var products = await productRepo.Where(x => blockQtyProductsInfo.Keys.Contains(x.Id)).ToListAsync();
 
         var result = await _warehouseManager.BlockQtyAsync(eventDto.OrderId, blockQtyProductsInfo, warehouses);
@@ -120,7 +120,7 @@ public class WarehouseService : AbstractAppService, IWarehouseService
         if (result)
         {
             await _warehouseRepo.UpdateRangeAsync(warehouses);
-            await tracker?.MarkAsProcessedAsync(eventDto);
+            await tracker.MarkAsProcessedAsync(eventDto);
         }
     }
 }

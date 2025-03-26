@@ -4,5 +4,5 @@ public class OrderMarkCreatedStatusDto
 {
     public bool IsSuccess { get; set; }
 
-    public string Remark { get; set; }
+    public string Remark { get; set; } = string.Empty;
 }

@@ -18,7 +18,7 @@ public class OrderDto : OutputBaseAuditDto
     /// <summary>
     /// 备注
     /// </summary>
-    public string Remark { get; set; }
+    public string Remark { get; set; } = string.Empty;
 
     /// <summary>
     /// 订单状态-状态码
@@ -28,32 +28,32 @@ public class OrderDto : OutputBaseAuditDto
     /// <summary>
     /// 订单状态-状态名称
     /// </summary>
-    public string StatusName { get; set; }
+    public string StatusName { get; set; } = string.Empty;
 
     /// <summary>
     /// 订单状态-状态变动原因
     /// </summary>
-    public string StatusChangesReason { get; set; }
+    public string StatusChangesReason { get; set; } = string.Empty;
 
     /// <summary>
     /// 收货信息-收货人
     /// </summary>
-    public string ReceiverName { get; set; }
+    public string ReceiverName { get; set; } = string.Empty;
 
     /// <summary>
     /// 收货信息-收货电话
     /// </summary>
-    public string ReceiverPhone { get; set; }
+    public string ReceiverPhone { get; set; } = string.Empty;
 
     /// <summary>
     /// 收货信息-收货地址
     /// </summary>
-    public string ReceiverAddress { get; set; }
+    public string ReceiverAddress { get; set; } = string.Empty;
 
     /// <summary>
     /// 订单子项
     /// </summary>
-    public virtual ICollection<OrderItemDto> Items { get; set; }
+    public virtual ICollection<OrderItemDto> Items { get; set; } = [];
 
     /// <summary>
     /// 订单子项Dto
@@ -63,7 +63,7 @@ public class OrderDto : OutputBaseAuditDto
         /// <summary>
         /// 订单编号
         /// </summary>
-        public string OrderId { get; set; }
+        public string OrderId { get; set; } = string.Empty;
 
         /// <summary>
         /// 数量
@@ -78,7 +78,7 @@ public class OrderDto : OutputBaseAuditDto
         /// <summary>
         /// 商品信息-商品名
         /// </summary>
-        public string ProductName { get; set; }
+        public string ProductName { get; set; } = string.Empty;
 
         /// <summary>
         /// 商品信息-商品价格

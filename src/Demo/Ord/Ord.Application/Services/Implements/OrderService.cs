@@ -20,9 +20,7 @@ public class OrderService(IEfBasicRepository<Order> orderRepo, OrderManager orde
         input.TrimStringFields();
         var productIds = input.Items.Select(x => x.ProductId).ToArray();
         //调用whse服务获取产品的价格,名字
-        var restRpcResult = await whseClient.GetProductsAsync(new ProductSearchRequest { Ids = productIds });
-        Checker.ThrowIf(() => !restRpcResult.IsSuccessStatusCode || restRpcResult.Content.IsNullOrEmpty(), "product is not extists");
-        var products = restRpcResult.Content;
+        var products = await whseClient.GetProductsAsync(new ProductSearchRequest { Ids = productIds }) ?? [];
         var orderId = IdGenerater.GetNextId();
         var items = from o in input.Items
                     join p in products on o.ProductId equals p.Id
@@ -33,7 +31,7 @@ public class OrderService(IEfBasicRepository<Order> orderRepo, OrderManager orde
                                     (orderId
                                     , input.CustomerId
                                     , items
-                                    , new OrderReceiver(input.DeliveryInfomaton?.Name, input.DeliveryInfomaton?.Phone, input.DeliveryInfomaton?.Address)
+                                    , new OrderReceiver(input.DeliveryInfomaton.Name, input.DeliveryInfomaton.Phone, input.DeliveryInfomaton.Address)
                                     );
         // 保存到数据库
         await orderRepo.InsertAsync(order);
@@ -50,11 +48,11 @@ public class OrderService(IEfBasicRepository<Order> orderRepo, OrderManager orde
     public async Task MarkCreatedStatusAsync(WarehouseQtyBlockedEvent eventDto, IMessageTracker tracker)
     {
         eventDto.TrimStringFields();
-        var order = await orderRepo.GetAsync(eventDto.OrderId);
+        var order = await orderRepo.GetRequiredAsync(eventDto.OrderId);
         order.MarkCreatedStatus(eventDto.IsSuccess, eventDto.Remark);
 
         await orderRepo.UpdateAsync(order);
-        await tracker?.MarkAsProcessedAsync(eventDto);
+        await tracker.MarkAsProcessedAsync(eventDto);
     }
 
     /// <summary>
@@ -67,7 +65,7 @@ public class OrderService(IEfBasicRepository<Order> orderRepo, OrderManager orde
     {
         input.TrimStringFields();
 
-        var order = await orderRepo.GetAsync(id);
+        var order = await orderRepo.GetRequiredAsync(id);
 
         order.ChangeReceiver(new OrderReceiver(
             input.DeliveryInfomaton.Name
@@ -87,7 +85,7 @@ public class OrderService(IEfBasicRepository<Order> orderRepo, OrderManager orde
     /// <returns></returns>
     public async Task DeleteAsync(long id)
     {
-        var order = await orderRepo.GetAsync(id);
+        var order = await orderRepo.GetRequiredAsync(id);
         order.MarkDeletedStatus(string.Empty);
 
         await orderRepo.UpdateAsync(order);
@@ -100,7 +98,7 @@ public class OrderService(IEfBasicRepository<Order> orderRepo, OrderManager orde
     /// <returns></returns>
     public async Task<OrderDto> PayAsync(long id)
     {
-        var order = await orderRepo.GetAsync(id);
+        var order = await orderRepo.GetRequiredAsync(id);
 
         //需要发布领域事件，客户中心订阅该事件
         await orderMgr.PayAsync(order);
@@ -117,7 +115,7 @@ public class OrderService(IEfBasicRepository<Order> orderRepo, OrderManager orde
     /// <returns></returns>
     public async Task<OrderDto> CancelAsync(long id)
     {
-        var order = await orderRepo.GetAsync(id);
+        var order = await orderRepo.GetRequiredAsync(id);
 
         //需要发布领域事件，仓储中心订阅该事件
         await orderMgr.CancelAsync(order);
@@ -134,7 +132,7 @@ public class OrderService(IEfBasicRepository<Order> orderRepo, OrderManager orde
     /// <returns></returns>
     public async Task<OrderDto> GetAsync(long id)
     {
-        var order = await orderRepo.GetAsync(id, x => x.Items);
+        var order = await orderRepo.GetRequiredAsync(id, x => x.Items);
         return Mapper.Map<OrderDto>(order);
     }
 

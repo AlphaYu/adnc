@@ -2,9 +2,9 @@
 
 public record WarehousePosition : ValueObject
 {
-    public string Code { get; }
+    public string Code { get; } = string.Empty;
 
-    public string Description { get; }
+    public string Description { get; } = string.Empty;
 
     private WarehousePosition()
     {
@@ -12,7 +12,7 @@ public record WarehousePosition : ValueObject
 
     internal WarehousePosition(string code, string description)
     {
-        this.Code = Checker.NotNullOrEmpty(code, nameof(code));
-        this.Description = description is null ? string.Empty : description.Trim();
+        Code = Checker.NotNullOrEmpty(code, nameof(code));
+        Description = description is null ? string.Empty : description.Trim();
     }
 }
