@@ -532,6 +532,6 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
         ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         var timeSpan = _redisDb.KeyTimeToLive(cacheKey);
-        return timeSpan.HasValue ? timeSpan.Value : TimeSpan.Zero;
+        return timeSpan is not null && timeSpan.HasValue ? timeSpan.Value : TimeSpan.Zero;
     }
 }

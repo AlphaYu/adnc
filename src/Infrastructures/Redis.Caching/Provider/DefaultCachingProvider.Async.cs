@@ -412,8 +412,8 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
     /// <typeparam name="T">The 1st type parameter.</typeparam>
     protected override Task<bool> BaseTrySetAsync<T>(string cacheKey, T cacheValue, TimeSpan expiration)
     {
+        ArgumentNullException.ThrowIfNull(cacheValue, nameof(cacheValue));
         ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
-        ArgumentCheck.NotNull(cacheValue, nameof(cacheValue));
         ArgumentCheck.NotNegativeOrZero(expiration, nameof(expiration));
 
         if (_cacheOptions.Value.MaxRdSecond > 0)
@@ -440,7 +440,7 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
         ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         var timeSpan = await _redisDb.KeyTimeToLiveAsync(cacheKey);
-        return timeSpan.HasValue ? timeSpan.Value : TimeSpan.Zero;
+        return timeSpan is not null &&  timeSpan.HasValue ? timeSpan.Value : TimeSpan.Zero;
     }
 
     /// <summary>
