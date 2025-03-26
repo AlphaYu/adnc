@@ -7,6 +7,7 @@
 [ApiController]
 public class NoticeController() : AdncControllerBase
 {
+    /*
     /// <summary>
     /// 新增通知
     /// </summary>
@@ -72,4 +73,5 @@ public class NoticeController() : AdncControllerBase
         await Task.CompletedTask;
         return new PageModelDto<NoticeDto>(input);
     }
+    */
 }

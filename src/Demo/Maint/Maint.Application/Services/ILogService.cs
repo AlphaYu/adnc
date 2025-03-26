@@ -19,10 +19,12 @@ public interface ILogService : IAppService
     /// <returns></returns>
     Task<PageModelDto<OperationLogDto>> GetOperationLogsPagedAsync(SearchPagedDto input);
 
+    /*
     /// <summary>
     /// 异常日志
     /// </summary>
-    /// <param name="searchDto"></param>
+    /// <param name="input"></param>
     /// <returns></returns>
-    //Task<PageModelDto<NlogLogDto>> GetNlogLogsPagedAsync(SearchPagedDto input);
+    Task<PageModelDto<NlogLogDto>> GetNlogLogsPagedAsync(SearchPagedDto input);
+    */
 }
