@@ -1,17 +1,9 @@
-﻿using RabbitMQ.Client;
+using RabbitMQ.Client;
 
 namespace Adnc.Infra.EventBus.RabbitMq;
 
-public class RabbitMqProducer 
+public class RabbitMqProducer(IRabbitMqConnection rabbitMqConnection, ILogger<RabbitMqProducer> logger)
 {
-    private readonly ILogger<RabbitMqProducer> _logger;
-    private readonly IRabbitMqConnection _rabbitMqConnection;
-
-    public RabbitMqProducer(IRabbitMqConnection rabbitMqConnection, ILogger<RabbitMqProducer> logger)
-    {
-        _logger = logger;
-    }
-
     /// <summary>
     /// 简单队列,不通过交换机
     /// </summary>
@@ -48,7 +40,7 @@ public class RabbitMqProducer
         Policy.Handle<Exception>()
               .WaitAndRetry(3, retryAttempt => TimeSpan.FromSeconds(1), (ex, time, retryCount, content) =>
               {
-                  _logger.LogError(ex, string.Format("{0}:{1}", retryCount, ex.Message));
+                  logger.LogError(ex, string.Format("{0}:{1}", retryCount, ex.Message));
               })
               .Execute(async () =>
               {
@@ -63,7 +55,7 @@ public class RabbitMqProducer
                   //那么broker会调用basic.return方法将消息返还给生产者;
                   //当mandatory设置为false时，出现上述情况broker会直接将消息丢弃
 
-                  using var channel = await _rabbitMqConnection.Connection.CreateChannelAsync();
+                  using var channel = await rabbitMqConnection.Connection.CreateChannelAsync();
                   await channel.BasicPublishAsync(exchange, routingKey, mandatory, basicProperties ?? new BasicProperties(), body, cancellationToken);
                   //开启发布消息确认模式
                   //_channel.ConfirmSelect();

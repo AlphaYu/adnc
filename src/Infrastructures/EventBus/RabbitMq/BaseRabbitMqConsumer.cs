@@ -40,7 +40,7 @@ public abstract class BaseRabbitMqConsumer : IHostedService
         var queue = GetQueueConfig();
 
         //声明死信交换与队列
-        await this.RegiterDeadExchange(exchange.DeadExchangeName, queue.DeadQueueName, routingKeys, queue.Durable);
+        await RegiterDeadExchange(exchange.DeadExchangeName, queue.DeadQueueName, routingKeys, queue.Durable);
 
         //声明交换机
         using var channel = await _connection.CreateChannelAsync();

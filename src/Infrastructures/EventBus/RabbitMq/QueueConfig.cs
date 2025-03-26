@@ -43,7 +43,7 @@ public class QueueConfig
     /// x-dead-letter-routing-key 设置DLX的路由key，DLX会根据该值去找到死信消息存放的队列
     /// x-message-ttl 设置消息的存活时间，即过期时间(毫秒)
     /// </summary>
-    public IDictionary<string, object>? Arguments { get; set; }
+    public IDictionary<string, object?>? Arguments { get; set; }
 
     /// <summary>
     /// 是否开启自动确认
