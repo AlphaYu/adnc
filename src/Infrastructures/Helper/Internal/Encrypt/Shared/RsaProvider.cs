@@ -230,10 +230,10 @@ internal class RsaProvider
             var index3 = (int)ms.Length;
 
             //Write Modulus
-            writeBlock(param.Modulus ?? throw new ArgumentNullException(nameof(param.Modulus)));
+            writeBlock(param.Modulus ?? throw new InvalidDataException(nameof(param.Modulus)));
 
             //Write Exponent
-            writeBlock(param.Exponent ?? throw new ArgumentNullException(nameof(param.Exponent)));
+            writeBlock(param.Exponent ?? throw new InvalidDataException(nameof(param.Exponent)));
 
             var bytes = ms.ToArray();
 
@@ -271,14 +271,14 @@ internal class RsaProvider
             }
 
             //Write data
-            writeBlock(param.Modulus ?? throw new ArgumentNullException(nameof(param.Modulus)));
-            writeBlock(param.Exponent ?? throw new ArgumentNullException(nameof(param.Exponent)));
-            writeBlock(param.D ?? throw new ArgumentNullException(nameof(param.D)));
-            writeBlock(param.P ?? throw new ArgumentNullException(nameof(param.P)));
-            writeBlock(param.Q ?? throw new ArgumentNullException(nameof(param.Q)));
-            writeBlock(param.DP ?? throw new ArgumentNullException(nameof(param.DP)));
-            writeBlock(param.DQ ?? throw new ArgumentNullException(nameof(param.DQ)));
-            writeBlock(param.InverseQ ?? throw new ArgumentNullException(nameof(param.InverseQ)));
+            writeBlock(param.Modulus ?? throw new InvalidDataException(nameof(param.Modulus)));
+            writeBlock(param.Exponent ?? throw new InvalidDataException(nameof(param.Exponent)));
+            writeBlock(param.D ?? throw new InvalidDataException(nameof(param.D)));
+            writeBlock(param.P ?? throw new InvalidDataException(nameof(param.P)));
+            writeBlock(param.Q ?? throw new InvalidDataException(nameof(param.Q)));
+            writeBlock(param.DP ?? throw new InvalidDataException(nameof(param.DP)));
+            writeBlock(param.DQ ?? throw new InvalidDataException(nameof(param.DQ)));
+            writeBlock(param.InverseQ ?? throw new InvalidDataException(nameof(param.InverseQ)));
 
             var bytes = ms.ToArray();
 
