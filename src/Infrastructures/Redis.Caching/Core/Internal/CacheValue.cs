@@ -38,13 +38,13 @@ public class CacheValue<T>
     /// Gets the null.
     /// </summary>
     /// <value>The null.</value>
-    public static CacheValue<T> Null { get; } = new CacheValue<T>(default(T), true);
+    public static CacheValue<T> Null { get; } = new CacheValue<T>(default, true);
 
     /// <summary>
     /// Gets the no value.
     /// </summary>
     /// <value>The no value.</value>
-    public static CacheValue<T> NoValue { get; } = new CacheValue<T>(default(T), false);
+    public static CacheValue<T> NoValue { get; } = new CacheValue<T>(default, false);
 
     /// <summary>
     ///
