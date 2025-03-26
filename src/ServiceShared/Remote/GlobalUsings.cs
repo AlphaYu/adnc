@@ -1,8 +1,6 @@
-﻿global using Adnc.Infra.Core.DependencyInjection;
-global using Adnc.Infra.Helper;
+﻿global using Adnc.Infra.Helper;
 global using Microsoft.AspNetCore.Http;
 global using Microsoft.Extensions.Caching.Memory;
-global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Logging;
 global using System.Net;

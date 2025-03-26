@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-
-namespace Adnc.Shared.Remote.Handlers.Token;
+﻿namespace Adnc.Shared.Remote.Handlers.Token;
 
 public sealed class TokenFactory
 {

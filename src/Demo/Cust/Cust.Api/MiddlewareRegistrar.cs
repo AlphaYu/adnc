@@ -1,6 +1,4 @@
-﻿using Adnc.Shared.WebApi.Registrar;
-
-namespace Adnc.Demo.Cust.Api;
+﻿namespace Adnc.Demo.Cust.Api;
 
 public sealed class MiddlewareRegistrar(IApplicationBuilder app) : AbstractWebApiMiddlewareRegistrar(app)
 {

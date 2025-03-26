@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.SignalR.Protocol;
-
-namespace Adnc.Demo.Ord.Application.Services.Implements;
+﻿namespace Adnc.Demo.Ord.Application.Services.Implements;
 
 /// <summary>
 ///  订单管理

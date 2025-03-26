@@ -3,7 +3,6 @@ using Adnc.Shared.WebApi.Authentication.Basic;
 using Adnc.Shared.WebApi.Authentication.Bearer;
 using Adnc.Shared.WebApi.Authentication.Hybrid;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Polly;
 
 namespace Adnc.Shared.WebApi.Registrar;
 

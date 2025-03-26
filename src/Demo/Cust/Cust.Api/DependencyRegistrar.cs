@@ -1,6 +1,5 @@
 ﻿using Adnc.Demo.Remote.Grpc.Services;
 using Adnc.Demo.Remote.Http.Services;
-using Adnc.Shared.WebApi.Authorization;
 
 namespace Adnc.Demo.Cust.Api;
 

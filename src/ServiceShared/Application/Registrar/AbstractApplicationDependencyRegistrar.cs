@@ -1,7 +1,6 @@
 ﻿using Adnc.Shared.Application.Mapper.AutoMapper;
 using Adnc.Shared.Application.Services.Trackers;
 using Adnc.Shared.Remote;
-using ProtoBuf.Meta;
 
 namespace Adnc.Shared.Application.Registrar;
 

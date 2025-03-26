@@ -5,5 +5,4 @@ global using Adnc.Infra.Repository.EfCore;
 global using Adnc.Shared.Repository.EfCoreEntities;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.EntityFrameworkCore.Metadata.Builders;
-global using System.Linq.Expressions;
 global using System.Reflection;

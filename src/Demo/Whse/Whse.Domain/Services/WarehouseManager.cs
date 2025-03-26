@@ -1,5 +1,4 @@
-﻿using Adnc.Demo.Whse.Domain.Aggregates;
-using Adnc.Demo.Whse.Domain.Aggregates.WarehouseAggregate;
+﻿using Adnc.Demo.Whse.Domain.Aggregates.WarehouseAggregate;
 
 namespace Adnc.Demo.Whse.Domain.Services;
 

@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using System.Text.Json.Serialization;
 using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
 
 namespace Adnc.Shared.WebApi.Registrar;

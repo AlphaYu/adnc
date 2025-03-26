@@ -1,6 +1,4 @@
-﻿using Adnc.Demo.Remote.Grpc.Messages;
-
-namespace Adnc.Demo.Whse.Application;
+﻿namespace Adnc.Demo.Whse.Application;
 
 public class WhseProfile : Profile
 {

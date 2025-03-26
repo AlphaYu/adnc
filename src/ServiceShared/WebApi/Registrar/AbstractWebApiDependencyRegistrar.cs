@@ -1,5 +1,4 @@
 ﻿using Adnc.Shared.WebApi.Authentication;
-using Adnc.Shared.WebApi.Authentication.Bearer;
 using Adnc.Shared.WebApi.Authorization;
 
 namespace Adnc.Shared.WebApi.Registrar;

@@ -1,5 +1,3 @@
-using Adnc.Infra.Core.Guard;
-
 namespace Adnc.Infra.Helper.Encrypt.Extensions;
 
 public static class EncryptExtensions
