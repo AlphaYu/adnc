@@ -13,7 +13,7 @@ public class Customer : EfFullAuditEntity
 
     public string Realname { get; set; } = string.Empty;
 
-    public required virtual Finance FinanceInfo { get; set; }
+    public virtual required Finance FinanceInfo { get; set; }
 
     public virtual ICollection<TransactionLog>? TransactionLogs { get; set; }
 }

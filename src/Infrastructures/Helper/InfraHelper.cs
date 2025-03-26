@@ -5,9 +5,9 @@ namespace Adnc.Infra.Helper;
 
 public static class InfraHelper
 {
-    private readonly static EncryptProivder _encypt = new();
-    private readonly static HashConsistentGenerater _hashConsistentGenerater = new();
-    private readonly static Internal.HttpContextAccessor _accessor = new();
+    private static readonly EncryptProivder _encypt = new();
+    private static readonly HashConsistentGenerater _hashConsistentGenerater = new();
+    private static readonly Internal.HttpContextAccessor _accessor = new();
 
     static InfraHelper()
     {
