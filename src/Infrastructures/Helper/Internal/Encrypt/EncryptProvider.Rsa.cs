@@ -499,15 +499,18 @@ public partial class EncryptProivder
         {
             rsa.KeySize = (int)rsaSize;
 
-            string publicKey = rsa.ToJsonString(false);
-            string privateKey = rsa.ToJsonString(true);
+            var publicKey = rsa.ToJsonString(false);
+            var privateKey = rsa.ToJsonString(true);
+
+            var exponent = rsa.ExportParameters(false).Exponent?.ToHexString();
+            var modulus = rsa.ExportParameters(false).Modulus?.ToHexString();
 
             return new RSAKey()
             {
                 PublicKey = publicKey,
                 PrivateKey = privateKey,
-                Exponent = rsa.ExportParameters(false).Exponent.ToHexString(),
-                Modulus = rsa.ExportParameters(false).Modulus.ToHexString()
+                Exponent = exponent ?? string.Empty,
+                Modulus = modulus ?? string.Empty
             };
         }
     }
@@ -522,14 +525,16 @@ public partial class EncryptProivder
     {
         Checker.Argument.NotNull(rsa, nameof(rsa));
 
-        string publicKey = rsa.ToJsonString(false);
+        var publicKey = rsa.ToJsonString(false);
+        var exponent = rsa.ExportParameters(false).Exponent?.ToHexString();
+        var modulus = rsa.ExportParameters(false).Modulus?.ToHexString();
 
         var rsaKey = new RSAKey()
         {
             PublicKey = publicKey,
 
-            Exponent = rsa.ExportParameters(false).Exponent.ToHexString(),
-            Modulus = rsa.ExportParameters(false).Modulus.ToHexString()
+            Exponent = exponent ?? string.Empty,
+            Modulus = modulus ?? string.Empty
         };
 
         if (includePrivate)
