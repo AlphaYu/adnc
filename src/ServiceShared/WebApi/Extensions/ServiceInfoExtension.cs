@@ -4,8 +4,10 @@ namespace Adnc.Shared.WebApi;
 
 public static class ServiceInfoExtension
 {
+    /*
     private static readonly object lockObj = new();
     private static readonly Assembly? appAssembly;
+    */
 
     /// <summary>
     /// 获取导航首页内容
