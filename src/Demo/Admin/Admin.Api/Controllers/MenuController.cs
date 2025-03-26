@@ -85,7 +85,6 @@ public class MenuController(IMenuService menuService, UserContext userContext) :
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<List<OptionTreeDto>>> GetMenuOptionsAsync(bool? onlyParent)
     {
-        string[] roleIds = userContext.RoleIds.Split(",", StringSplitOptions.RemoveEmptyEntries) ?? [];
         return await menuService.GetMenuOptionsAsync(onlyParent);
     }
 }

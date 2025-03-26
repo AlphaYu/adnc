@@ -14,15 +14,13 @@ public partial class EncryptProivder
     public string Md5(string srcString, bool isLower = false, MD5Length length = MD5Length.L32)
     {
         Checker.Argument.NotNullOrEmpty(srcString, nameof(srcString));
-
-        string str_md5_out = string.Empty;
         using MD5 md5 = MD5.Create();
         byte[] bytes_md5_in = Encoding.UTF8.GetBytes(srcString);
         byte[] bytes_md5_out = md5.ComputeHash(bytes_md5_in);
 
-        str_md5_out = length == MD5Length.L32
-            ? BitConverter.ToString(bytes_md5_out)
-            : BitConverter.ToString(bytes_md5_out, 4, 8);
+        var str_md5_out = length == MD5Length.L32
+    ? BitConverter.ToString(bytes_md5_out)
+    : BitConverter.ToString(bytes_md5_out, 4, 8);
 
         str_md5_out = str_md5_out.Replace("-", "");
         return isLower ? str_md5_out.ToLower() : str_md5_out;

@@ -93,8 +93,7 @@ public partial class DefaultRedisProvider : IRedisProvider
     {
         ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
-        var len = 0L;
-
+        long len;
         if (cacheValues != null && cacheValues.Any())
         {
             var bytes = new List<RedisValue>();
@@ -200,8 +199,7 @@ public partial class DefaultRedisProvider : IRedisProvider
     {
         ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
-        var len = 0L;
-
+        long len;
         if (cacheValues != null && cacheValues.Any())
         {
             var bytes = new List<RedisValue>();

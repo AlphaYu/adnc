@@ -34,8 +34,7 @@ public static class ReflectionExtensions
 
     private static async Task<object> Unwrap(object value, TypeInfo valueTypeInfo)
     {
-        object result = null;
-
+        object result;
         if (valueTypeInfo.IsTaskWithResult())
         {
             // Is there better solution to unwrap ?
