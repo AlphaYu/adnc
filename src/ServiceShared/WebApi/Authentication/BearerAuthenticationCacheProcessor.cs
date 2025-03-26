@@ -19,7 +19,7 @@ public class BearerAuthenticationCacheProcessor( IHttpContextAccessor contextAcc
         else if (userContext.Id == 0)
             userContext.Id = userId;
 
-        var cacheKey = $"{CacheConsts.UserValidatedInfoKeyPrefix}:{userId}";
+        var cacheKey = $"{GeneralConsts.UserValidatedInfoKeyPrefix}:{userId}";
         var validationInfo = await cacheProvider.GetAsync<ValidationInfo>(cacheKey);
 
         if (validationInfo == null || validationInfo.Value == null)

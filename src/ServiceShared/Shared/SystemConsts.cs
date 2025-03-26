@@ -10,6 +10,8 @@
         public const int OneDay = 24 * 60 * 60;
         public const int OneHour = 60 * 60;
         public const int OneMinute = 60;
+        public const string UserValidatedInfoKeyPrefix = "admin:users:validatedinfo";
+        public const string RoleMenuCodesCacheKey = "admin:role:menus:codes";
     }
 
     public static class NodeConsts

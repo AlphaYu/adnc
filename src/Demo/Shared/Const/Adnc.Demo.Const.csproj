@@ -4,4 +4,11 @@
 	<PropertyGroup>
 		<Description>该层用来定义Const常量，不需要发布的到Nuget。</Description>
 	</PropertyGroup>
+	<ItemGroup Condition="'$(SolutionName)'=='Adnc'">
+		<ProjectReference Include="..\..\..\ServiceShared\Shared\Adnc.Shared.csproj" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(SolutionName)'=='Adnc.Demo'">
+		<PackageReference Include="Adnc.Shared" Version="$(Shared_Version)" />
+	</ItemGroup>
 </Project>

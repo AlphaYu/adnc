@@ -22,7 +22,7 @@ public sealed class PermissionCacheHandler(ICacheProvider cacheProvider) : Abstr
 
         var roleIds = userBelongsRoleIds.Split(",", StringSplitOptions.RemoveEmptyEntries).Select(x => long.Parse(x.Trim()));
 
-        var cache = await cacheProvider.GetAsync<List<PermissionInfo>>(CacheConsts.MenuCodesCacheKey);
+        var cache = await cacheProvider.GetAsync<List<PermissionInfo>>(GeneralConsts.RoleMenuCodesCacheKey);
 
         if (cache == null || cache.IsNull)
             return await Task.FromResult(false);
