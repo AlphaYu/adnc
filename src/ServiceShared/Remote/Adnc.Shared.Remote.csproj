@@ -1,7 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	<Import Project="..\..\common.props" />
-	<Import Project="..\..\nuget.props" />
-	<Import Project="..\..\version_shared.props" />
 	<PropertyGroup>
 		<Description>该层用来声明Rpc层公用类。</Description>
 	</PropertyGroup>

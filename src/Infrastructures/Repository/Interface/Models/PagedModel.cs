@@ -1,12 +1,12 @@
-﻿namespace Adnc.Infra.Repository;
+namespace Adnc.Infra.Repository;
 
 [Serializable]
 public class PagedModel<T> where T : class
 {
     private int _pageIndex = 1;
     private int _pageSize = 10;
-    private long _totalCount = 0;
-    private IReadOnlyList<T> _data = Array.Empty<T>();
+    private long _totalCount;
+    private IReadOnlyList<T> _data = [];
 
     public static PagedModel<T> Empty => new();
 

@@ -4,8 +4,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.1.32319.34
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02.Infrastructures", "02.Infrastructures", "{3B899133-BEAC-4438-977F-B28FDFF3AE27}"
+	ProjectSection(SolutionItems) = preProject
+		Infrastructures\Directory.Build.props = Infrastructures\Directory.Build.props
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "06.Demo", "06.Demo", "{0CDC8FFF-393C-4C44-A2D8-996C24C51024}"
+	ProjectSection(SolutionItems) = preProject
+		Demo\Directory.Build.props = Demo\Directory.Build.props
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "61.Adnc.Demo.Admin", "61.Adnc.Demo.Admin", "{EB4CD5BA-9A74-4261-8CF3-28B8C7AE8D89}"
 EndProject
@@ -77,14 +83,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Infra.Redis.Caching", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01.Solution Items", "01.Solution Items", "{22E3C569-C1D2-4562-ADE0-4E51EE0976D8}"
 	ProjectSection(SolutionItems) = preProject
-		common.props = common.props
-		nuget.props = nuget.props
-		version_infra.props = version_infra.props
-		version_service.props = version_service.props
-		version_shared.props = version_shared.props
+		.editorconfig = .editorconfig
+		deploy_demo.sh = deploy_demo.sh
+		deploy_ocelot.sh = deploy_ocelot.sh
+		Directory.Build.props = Directory.Build.props
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03.ServiceShared", "03.ServiceShared", "{9697B6F8-6C64-4184-AB6C-8683D6F12B61}"
+	ProjectSection(SolutionItems) = preProject
+		ServiceShared\Directory.Build.props = ServiceShared\Directory.Build.props
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Shared", "ServiceShared\Shared\Adnc.Shared.csproj", "{392F5810-E2FD-477E-AD37-A24691000222}"
 EndProject

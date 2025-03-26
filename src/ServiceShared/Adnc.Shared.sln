@@ -17,12 +17,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Shared.Repository", "R
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{D7E6D2DE-BF7D-41F1-AFB3-ABE6382EB935}"
 	ProjectSection(SolutionItems) = preProject
-		..\common.props = ..\common.props
-		..\nuget.props = ..\nuget.props
-		..\version_shared.props = ..\version_shared.props
+		Directory.Build.props = Directory.Build.props
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Shared.Rpc", "Remote\Adnc.Shared.Remote.csproj", "{C8488F55-0D9F-412F-B52E-9255C1E8264D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adnc.Shared.Remote", "Remote\Adnc.Shared.Remote.csproj", "{C8488F55-0D9F-412F-B52E-9255C1E8264D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

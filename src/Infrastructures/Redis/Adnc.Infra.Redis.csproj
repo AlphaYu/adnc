@@ -1,7 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	<Import Project="..\..\common.props" />
-	<Import Project="..\..\version_infra.props" />
-	<Import Project="..\..\nuget.props" />	
 	<PropertyGroup>
 		<Description>该库集成了`StackExchange.Redis`客户端，提供Redis常用类型操作、分布式锁、布隆过滤器。</Description>
 		<PackageTags>adnc,redis,stackexchange.redis</PackageTags>
@@ -9,7 +6,7 @@
 	<ItemGroup>
 		<PackageReference Include="StackExchange.Redis" Version="$(StackExchange_Redis_Version)" />
 		<PackageReference Include="protobuf-net" Version="$(protobuf-net_Version)" />
-		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="$(Microsoft_Extensions_Options_ConfigurationExtensions_Version)"/>
+		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="$(Microsoft_Extensions_Options_ConfigurationExtensions_Version)" />
 	</ItemGroup>
 
 	<ItemGroup>

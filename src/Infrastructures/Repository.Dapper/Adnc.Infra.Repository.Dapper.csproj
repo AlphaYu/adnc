@@ -1,7 +1,4 @@
 <Project Sdk="Microsoft.NET.Sdk">
-	<Import Project="..\..\common.props" />
-	<Import Project="..\..\version_infra.props" />
-	<Import Project="..\..\nuget.props" />
 	<PropertyGroup>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<Description>该库定义了Entity对象的基类、UnitOfWork接口、仓储接口。</Description>

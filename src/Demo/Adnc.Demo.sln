@@ -5,8 +5,7 @@ VisualStudioVersion = 17.1.32319.34
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01.Solution Items", "01.Solution Items", "{22E3C569-C1D2-4562-ADE0-4E51EE0976D8}"
 	ProjectSection(SolutionItems) = preProject
-		..\common.props = ..\common.props
-		..\version_service.props = ..\version_service.props
+		Directory.Build.props = Directory.Build.props
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02.Shared", "02.Shared", "{DF95ED05-B5A5-4CD9-A98D-39C32E5852EF}"

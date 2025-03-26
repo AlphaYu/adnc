@@ -1,7 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	<Import Project="..\..\common.props" />
-	<Import Project="..\..\version_shared.props" />
-	<Import Project="..\..\nuget.props" />
 	<PropertyGroup>
 		<Description>该库是提供所有Apllication层的公共实现。</Description>
 		<PackageTags>Adnc.Shared.Application</PackageTags>

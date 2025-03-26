@@ -1,7 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	<Import Project="..\..\common.props" />
-	<Import Project="..\..\version_infra.props" />
-	<Import Project="..\..\nuget.props" />
 	<PropertyGroup>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<Description>该工程是在`Adnc.Infra.Repository.EfCore`基础上MongoDB的实现。</Description>

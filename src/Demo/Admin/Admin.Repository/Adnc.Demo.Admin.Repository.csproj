@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	<Import Project="..\..\..\common.props" />
-	<Import Project="..\..\..\version_service.props" />
+	
+	
 	<PropertyGroup>
 	  <GenerateDocumentationFile>True</GenerateDocumentationFile>
 	</PropertyGroup>
