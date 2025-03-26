@@ -18,7 +18,7 @@ public static class ServiceCollectionExtension
                 var configOptions = provider.GetService<IOptions<ConsulOptions>>();
                 if (configOptions is null)
                 {
-                    throw new NullReferenceException(nameof(configOptions));
+                    throw new ArgumentNullException(nameof(configOptions));
                 }
 
                 return new ConsulClient(x =>

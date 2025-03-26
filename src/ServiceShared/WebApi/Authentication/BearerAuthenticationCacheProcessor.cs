@@ -16,7 +16,7 @@ public class BearerAuthenticationCacheProcessor( IHttpContextAccessor contextAcc
 
         if (userContext is null)
         {
-            throw new NullReferenceException(nameof(userContext));
+            throw new ArgumentNullException(nameof(userContext));
         }
         else if (userContext.Id == 0)
         {

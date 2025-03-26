@@ -85,12 +85,12 @@ public sealed class ServiceInfo : IServiceInfo
 
             if (startAssembly is null)
             {
-                startAssembly = Assembly.GetEntryAssembly() ?? throw new NullReferenceException(nameof(startAssembly));
+                startAssembly = Assembly.GetEntryAssembly() ?? throw new InvalidOperationException(nameof(startAssembly));
             }
 
             var attribute = startAssembly.GetCustomAttribute<AssemblyDescriptionAttribute>();
             var description = attribute is null ? string.Empty : attribute.Description;
-            var version = startAssembly.GetName().Version ?? throw new NullReferenceException("startAssembly.GetName().Version");
+            var version = startAssembly.GetName().Version ?? throw new InvalidOperationException("startAssembly.GetName().Version");
             var startAssemblyName = startAssembly.GetName().Name ?? string.Empty;
             var serviceName = startAssemblyName.Replace(".", "-").ToLower();
             var ticks = new DateTimeOffset(DateTime.Now).ToUnixTimeMilliseconds();
@@ -102,7 +102,7 @@ public sealed class ServiceInfo : IServiceInfo
                 "test" => $"{serviceName}-test-{ticksHex}",
                 "staging" => $"{serviceName}-stag-{ticksHex}",
                 "production" => $"{serviceName}-{ticksHex}",
-                _ => throw new NullReferenceException("ASPNETCORE_ENVIRONMENT")
+                _ => throw new InvalidOperationException("ASPNETCORE_ENVIRONMENT")
             };
 
             var names = startAssemblyName.Split(".");
@@ -124,5 +124,5 @@ public sealed class ServiceInfo : IServiceInfo
     }
 
     public static ServiceInfo GetInstance()
-        => _instance ?? throw new NullReferenceException(nameof(ServiceInfo));
+        => _instance ?? throw new InvalidOperationException(nameof(ServiceInfo));
 }

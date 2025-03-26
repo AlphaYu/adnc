@@ -18,7 +18,7 @@ public class EfRepository<TEntity>(DbContext dbContext, Operater operater, IAdoQ
         {
             if (_adoQuerier is null)
             {
-                throw new NullReferenceException(nameof(_adoQuerier));
+                throw new ArgumentNullException(nameof(_adoQuerier));
             }
 
             if (!_adoQuerier.HasDbConnection())

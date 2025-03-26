@@ -22,7 +22,7 @@ public class BearerAuthenticationRemoteProcessor : AbstractAuthenticationProcess
         var userContext = _contextAccessor?.HttpContext?.RequestServices.GetService<UserContext>();
         if (userContext is null)
         {
-            throw new NullReferenceException(nameof(userContext));
+            throw new ArgumentNullException(nameof(userContext));
         }
         else if (userContext.Id == 0)
         {

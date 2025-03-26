@@ -30,7 +30,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar
             else
             {
                 var tableNamePrefix = "cap";
-                var mysqlConfig = MysqlSection.Get<MysqlOptions>() ?? throw new NullReferenceException(nameof(MysqlOptions));
+                var mysqlConfig = MysqlSection.Get<MysqlOptions>() ?? throw new ArgumentNullException(nameof(MysqlOptions));
                 option.UseMySql(config =>
                 {
                     config.ConnectionString = mysqlConfig.ConnectionString;
@@ -45,7 +45,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar
             }
             else
             {
-                var rabbitMqConfig = RabbitMqSection.Get<RabbitMqOptions>() ?? throw new NullReferenceException(nameof(RabbitMqOptions));
+                var rabbitMqConfig = RabbitMqSection.Get<RabbitMqOptions>() ?? throw new ArgumentNullException(nameof(RabbitMqOptions));
                 option.UseRabbitMQ(option =>
                 {
                     option.HostName = rabbitMqConfig.HostName;

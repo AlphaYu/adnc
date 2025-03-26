@@ -26,11 +26,7 @@ public static class HostExtensions
 
     public static IHost ChangeThreadPoolSettings(this IHost host, IOptions<ThreadPoolSettings> poolOptions)
     {
-        if (host.Services.GetService(typeof(ILogger<IHost>)) is not ILogger<IHost> logger)
-        {
-            throw new NullReferenceException(nameof(logger));
-        }
-
+        var logger = host.Services.GetRequiredService<ILogger<IHost>>();
         var poolSetting = poolOptions.Value;
         ThreadPool.SetMinThreads(poolSetting.MinThreads, poolSetting.MinCompletionPortThreads);
         ThreadPool.SetMaxThreads(poolSetting.MaxThreads, poolSetting.MaxCompletionPortThreads);

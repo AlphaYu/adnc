@@ -28,7 +28,7 @@ public abstract partial class AbstractWebApiDependencyRegistrar
         //{
         //    var mongoConnectionString = Configuration.GetValue(NodeConsts.MongoDb_ConnectionString, string.Empty);
         //    if (mongoConnectionString.IsNullOrEmpty())
-        //        throw new NullReferenceException("mongoConfig is null");
+        //        throw new ArgumentNullException("mongoConfig is null");
 
         //    var mongoUrl = new MongoUrl(mongoConnectionString);
         //    Services.AddSingleton<IMongoClient>(new MongoClient(mongoUrl));

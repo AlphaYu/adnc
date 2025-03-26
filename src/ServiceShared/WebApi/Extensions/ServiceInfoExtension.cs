@@ -51,8 +51,8 @@ public static class ServiceInfoExtension
     //        {
     //            if (appAssembly is null)
     //            {
-    //                Assembly startAssembly = serviceInfo.StartAssembly ?? throw new NullReferenceException(nameof(serviceInfo.StartAssembly));
-    //                string startAssemblyFullName = startAssembly.FullName ?? throw new NullReferenceException(nameof(startAssembly.FullName));
+    //                Assembly startAssembly = serviceInfo.StartAssembly ?? throw new ArgumentNullException(nameof(serviceInfo.StartAssembly));
+    //                string startAssemblyFullName = startAssembly.FullName ?? throw new ArgumentNullException(nameof(startAssembly.FullName));
     //                string startAssemblyName = startAssembly.GetName().Name ?? string.Empty;
     //                string lastName = startAssemblyName.Split(".").Last();
     //                string appAssemblyFullName = startAssemblyFullName.Replace($".{lastName}", ".Application");

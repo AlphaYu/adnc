@@ -75,7 +75,7 @@ public partial class Checker
     {
         if (value is null)
         {
-            throw new NullReferenceException(message ?? $"{variableName ?? nameof(value)} cannot be null");
+            throw new ArgumentNullException(message ?? $"{variableName ?? nameof(value)} cannot be null");
         }
     }
 
@@ -84,7 +84,7 @@ public partial class Checker
     {
         if (value is null || value.Count == 0)
         {
-            throw new NullReferenceException(message ?? $"{variableName ?? nameof(value)} cannot be null or empty");
+            throw new ArgumentNullException(message ?? $"{variableName ?? nameof(value)} cannot be null or empty");
         }
     }
 
@@ -92,7 +92,7 @@ public partial class Checker
     {
         if (value is null)
         {
-            throw new NullReferenceException(message ?? $"{variableName ?? nameof(value)} cannot be null");
+            throw new ArgumentNullException(message ?? $"{variableName ?? nameof(value)} cannot be null");
         }
     }
 
@@ -100,7 +100,7 @@ public partial class Checker
     {
         if (value.IsNullOrWhiteSpace())
         {
-            throw new NullReferenceException(message ?? $"{variableName ?? nameof(value)} cannot be null or empty and ' '");
+            throw new ArgumentNullException(message ?? $"{variableName ?? nameof(value)} cannot be null or empty and ' '");
         }
     }
 }

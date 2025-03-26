@@ -24,7 +24,7 @@ public abstract partial class AbstractWebApiDependencyRegistrar
             .AddHybrid()
             .AddJwtBearer(options =>
             {
-                var jwtConfig = Configuration.GetSection(NodeConsts.JWT).Get<JWTOptions>() ?? throw new NullReferenceException(nameof(JWTOptions)); ;
+                var jwtConfig = Configuration.GetSection(NodeConsts.JWT).Get<JWTOptions>() ?? throw new ArgumentNullException(nameof(JWTOptions)); ;
                 options.MapInboundClaims = false;
                 options.TokenValidationParameters = jwtConfig.GenarateTokenValidationParameters();
                 options.Events = new JwtBearerEvents
@@ -53,7 +53,7 @@ public abstract partial class AbstractWebApiDependencyRegistrar
                     //在Token验证通过后调用
                     OnTokenValidated = async (context) =>
                     {
-                        var principal = context.Principal ?? throw new NullReferenceException(nameof(context.Principal));
+                        var principal = context.Principal ?? throw new ArgumentNullException(nameof(context.Principal));
                         var authenticationProcessor = context.HttpContext.RequestServices.GetRequiredService<AbstractAuthenticationProcessor>();
                         var claims = await authenticationProcessor.ValidateAsync(context.Principal);
                         if (claims.IsNullOrEmpty())
@@ -79,7 +79,7 @@ public abstract partial class AbstractWebApiDependencyRegistrar
             .AddBasic(options => options.Events.OnTokenValidated = (context) =>
             {
                 var userContext = context.HttpContext.RequestServices.GetRequiredService<UserContext>();
-                var principal = context.Principal ?? throw new NullReferenceException(nameof(context.Principal));
+                var principal = context.Principal ?? throw new ArgumentNullException(nameof(context.Principal));
                 var claims = principal.Claims;
                 userContext.Id = long.Parse(claims.First(x => x.Type == BasicDefaults.NameId).Value);
                 userContext.Account = claims.First(x => x.Type == BasicDefaults.UniqueName).Value;

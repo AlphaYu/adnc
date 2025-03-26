@@ -16,7 +16,7 @@ public static class RepositoryExtension
     /// <param name="offset"></param>
     /// <param name="rows"></param>
     /// <returns></returns>
-    /// <exception cref="NullReferenceException"></exception>
+    /// <exception cref="ArgumentNullException"></exception>
     public static async Task<QueryPageResult<TResult>> GetPagedLoginLogsBySqlAsync<TResult>(this IAdoQuerierRepository repository, QueryCondition condition, int offset, int rows)
         where TResult : notnull
     {
@@ -46,7 +46,7 @@ public static class RepositoryExtension
     /// <param name="offset"></param>
     /// <param name="rows"></param>
     /// <returns></returns>
-    /// <exception cref="NullReferenceException"></exception>
+    /// <exception cref="ArgumentNullException"></exception>
     public static async Task<QueryPageResult<TResult>> GetPagedOperationLogsBySqlAsync<TResult>(this IAdoQuerierRepository repository, QueryCondition condition, int offset, int rows)
         where TResult : notnull
     {

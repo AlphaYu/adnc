@@ -47,7 +47,7 @@ public static class HostExtension
     {
         if (host.Services.GetService(typeof(ILogger<IHost>)) is not ILogger<IHost> logger)
         {
-            throw new NullReferenceException(nameof(logger));
+            throw new ArgumentNullException(nameof(logger));
         }
 
         var poolSetting = poolOptions.Value;
@@ -64,7 +64,7 @@ public static class HostExtension
     {
         if (host.Services.GetService(typeof(ILogger<IHost>)) is not ILogger<IHost> logger)
         {
-            throw new NullReferenceException(nameof(logger));
+            throw new ArgumentNullException(nameof(logger));
         }
 
         poolOptions.OnChange(poolSetting =>

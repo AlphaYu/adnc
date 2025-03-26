@@ -10,7 +10,7 @@ public class LogConsumersHostedService(ILogger<LogConsumersHostedService> logger
 
         if (string.IsNullOrWhiteSpace(dbTypeString) || string.IsNullOrWhiteSpace(connectionString))
         {
-            throw new NullReferenceException("SysLogDb configuration is missing");
+            throw new ArgumentNullException("SysLogDb configuration is missing");
         }
 
         var dbType = dbTypeString.ToUpper().ToEnum<DbTypes>();

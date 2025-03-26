@@ -88,7 +88,7 @@ public static class AbstractApplicationDependencyRegistrarExtension
     public static List<IAsyncPolicy<HttpResponseMessage>> GenerateDefaultGrpcPolicies(this AbstractApplicationDependencyRegistrar registrar) =>
         registrar.GenerateDefaultRefitPolicies();
 
-    public static string ASPNETCORE_ENVIRONMENT => Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? throw new NullReferenceException("ASPNETCORE_ENVIRONMENT is null");
+    public static string ASPNETCORE_ENVIRONMENT => Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? throw new ArgumentNullException("ASPNETCORE_ENVIRONMENT is null");
 
     public static bool IsDevelopment(this AbstractApplicationDependencyRegistrar _) => ASPNETCORE_ENVIRONMENT.EqualsIgnoreCase("Development");
 
@@ -100,7 +100,7 @@ public static class AbstractApplicationDependencyRegistrarExtension
             "test" => "test",
             "staging" => $"stag",
             "production" => $"prod",
-            _ => throw new NullReferenceException(nameof(ASPNETCORE_ENVIRONMENT))
+            _ => throw new ArgumentNullException(nameof(ASPNETCORE_ENVIRONMENT))
         };
     }
 

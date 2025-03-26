@@ -11,7 +11,7 @@ public static class RepositoryExtension
     /// <param name="offset"></param>
     /// <param name="rows"></param>
     /// <returns></returns>
-    /// <exception cref="NullReferenceException"></exception>
+    /// <exception cref="ArgumentNullException"></exception>
     public static async Task<QueryPageResult<TResult>> GetPagedCustmersBySqlAsync<TResult>(this IEfRepository<Customer> repository, QueryCondition condition, int offset, int rows)
         where TResult : notnull
     {

@@ -26,12 +26,12 @@ public class BasicAuthenticationHandler(IOptionsMonitor<BasicSchemeOptions> opti
             {
                 if (string.IsNullOrWhiteSpace(validatedResult.UserName))
                 {
-                    throw new NullReferenceException(nameof(validatedResult.UserName));
+                    throw new ArgumentNullException(nameof(validatedResult.UserName));
                 }
 
                 if (validatedResult.UserId is null)
                 {
-                    throw new NullReferenceException(nameof(validatedResult.UserId));
+                    throw new ArgumentNullException(nameof(validatedResult.UserId));
                 }
 
                 var userId = validatedResult.UserId.ToString() ?? "0";

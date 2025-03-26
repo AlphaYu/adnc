@@ -27,6 +27,6 @@ public sealed class BloomFilterFactory
             bloomFilter = _instances.FirstOrDefault(x => x.Name.EqualsIgnoreCase("null"));
         }
 
-        return bloomFilter ?? throw new NullReferenceException(nameof(bloomFilter));
+        return bloomFilter ?? throw new ArgumentNullException(nameof(bloomFilter));
     }
 }

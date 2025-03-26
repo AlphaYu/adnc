@@ -8,7 +8,7 @@ public sealed class DapperRepository : IAdoExecuterWithQuerierRepository
     {
         if (_dbConnection is null)
         {
-            throw new NullReferenceException(nameof(_dbConnection));
+            throw new ArgumentNullException(nameof(_dbConnection));
         }
 
         return _dbConnection;

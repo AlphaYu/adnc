@@ -41,7 +41,7 @@ public class DiscoverProviderBuilder
     {
         if (_discoverProvider.ServiceName is null)
         {
-            throw new NullReferenceException(nameof(_discoverProvider.ServiceName));
+            throw new ArgumentNullException(nameof(_discoverProvider.ServiceName));
         }
 
         if (_discoverProvider.CacheSeconds == 0)

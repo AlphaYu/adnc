@@ -32,7 +32,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar
 
         if (RpcInfoOption is null)
         {
-            throw new NullReferenceException(nameof(RpcInfoOption));
+            throw new ArgumentNullException(nameof(RpcInfoOption));
         }
         else
         {
@@ -95,7 +95,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar
 
         if (RpcInfoOption is null)
         {
-            throw new NullReferenceException(nameof(RpcInfoOption));
+            throw new ArgumentNullException(nameof(RpcInfoOption));
         }
         else
         {

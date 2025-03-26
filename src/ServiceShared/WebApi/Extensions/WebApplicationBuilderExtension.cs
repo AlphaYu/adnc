@@ -111,7 +111,7 @@ public static class WebApplicationBuilderExtension
         _callbackRegistration?.Dispose();
         if (state is not IConfiguration configuration)
         {
-            throw new NullReferenceException(nameof(state));
+            throw new ArgumentNullException(nameof(state));
         }
 
         var changedChildren = configuration.GetChildren();

@@ -42,7 +42,7 @@ public abstract partial class AbstractWebApiDependencyRegistrar
                 var startAssemblyName = ServiceInfo.StartAssembly.GetName().Name;
                 if (string.IsNullOrEmpty(startAssemblyName))
                 {
-                    throw new NullReferenceException(nameof(startAssemblyName));
+                    throw new ArgumentNullException(nameof(startAssemblyName));
                 }
 
                 var lastName = startAssemblyName.Split('.').Last();
