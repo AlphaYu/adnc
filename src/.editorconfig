@@ -393,7 +393,7 @@ dotnet_diagnostic.CA1846.severity = suggestion
 # CA1847: Use string.Contains(char) instead of string.Contains(string) with single characters
 dotnet_diagnostic.CA1847.severity = suggestion
 # CA1852: Seal internal types
-dotnet_diagnostic.CA1852.severity = suggestion
+dotnet_diagnostic.CA1852.severity = false
 # CA1854: Prefer the IDictionary.TryGetValue(TKey, out TValue) method
 dotnet_diagnostic.CA1854.severity = suggestion
 # CA1855: Prefer 'Clear' over 'Fill'
