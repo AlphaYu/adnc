@@ -18,7 +18,7 @@ public class ConsulDiscoverDelegatingHandler : DelegatingHandler
         var currentUri = request.RequestUri;
         if (currentUri is null)
         {
-            throw new ArgumentNullException(nameof(request.RequestUri));
+            throw new InvalidDataException("RequestUri is null");
         }
 
         var discoverProvider = new DiscoverProviderBuilder(_consulClient)

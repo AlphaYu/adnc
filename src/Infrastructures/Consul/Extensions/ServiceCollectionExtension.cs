@@ -15,12 +15,7 @@ public static class ServiceCollectionExtension
             .Configure<ConsulOptions>(consulSection)
             .AddSingleton(provider =>
             {
-                var configOptions = provider.GetService<IOptions<ConsulOptions>>();
-                if (configOptions is null)
-                {
-                    throw new ArgumentNullException(nameof(configOptions));
-                }
-
+                var configOptions = provider.GetRequiredService<IOptions<ConsulOptions>>();
                 return new ConsulClient(x =>
                 {
                     x.Address = new Uri(configOptions.Value.ConsulUrl);

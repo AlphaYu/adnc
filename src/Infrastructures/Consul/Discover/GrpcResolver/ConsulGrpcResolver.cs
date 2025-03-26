@@ -58,7 +58,7 @@ public sealed class ConsulGrpcResolver : PollingResolver
         }
         catch (Exception ex)
         {
-            _logger.LogError("ConsulGrpcResolver.OnTimerCallback", ex);
+            _logger.LogError(ex, "ConsulGrpcResolver.OnTimerCallback");
         }
     }
 

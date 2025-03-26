@@ -1,6 +1,6 @@
 ﻿namespace Adnc.Infra.Consul.Discover.Balancers;
 
-internal class RandomLoadBalancer : ILoadBalancer
+internal sealed class RandomLoadBalancer : ILoadBalancer
 {
     private readonly Random _random = new();
 

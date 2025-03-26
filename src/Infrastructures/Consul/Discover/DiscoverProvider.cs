@@ -29,7 +29,7 @@ internal class DiscoverProvider : IDiscoverProvider
     {
         var serviceAddressCacheKey = $"service_consul_{ServiceName}";
         var healthAddresses = _memoryCache.Get<List<string>>(serviceAddressCacheKey);
-        if (healthAddresses.IsNotNullOrEmpty())
+        if (healthAddresses is not null && healthAddresses.Count > 0)
         {
             return healthAddresses;
         }
@@ -39,7 +39,7 @@ internal class DiscoverProvider : IDiscoverProvider
         {
             Logger?.LogDebug($"SemaphoreSlim=true,{serviceAddressCacheKey}");
             healthAddresses = _memoryCache.Get<List<string>>(serviceAddressCacheKey);
-            if (healthAddresses.IsNotNullOrEmpty())
+            if (healthAddresses is not null && healthAddresses.Count > 0)
             {
                 return healthAddresses;
             }
@@ -54,11 +54,11 @@ internal class DiscoverProvider : IDiscoverProvider
                 healthAddresses = query.Response.Select(entry => $"{entry.Service.Address}:{entry.Service.Port}").ToList();
                 _memoryCache.Set(serviceAddressCacheKey, healthAddresses, entryOptions);
             }
-            return healthAddresses;
+            return healthAddresses ?? [];
         }
-        catch (Exception ex)
+        catch
         {
-            throw new Exception(ex.Message, ex);
+            throw;
         }
         finally
         {
