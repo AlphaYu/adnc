@@ -2,7 +2,7 @@ using Adnc.Infra.Consul.Configuration;
 
 namespace Adnc.Gateway.Ocelot;
 
-internal class Program
+public class Program
 {
     internal static async Task Main(string[] args)
         => await Host.CreateDefaultBuilder(args)
