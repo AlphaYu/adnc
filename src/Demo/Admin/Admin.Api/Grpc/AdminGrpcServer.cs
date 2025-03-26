@@ -5,7 +5,7 @@ using Grpc.Core;
 
 namespace Adnc.Demo.Admin.Api.Grpc;
 
-public class AdminGrpcServer(ISysConfigService sysConfigService, IDictService dictService, IObjectMapper mapper) : AdminGrpc.AdminGrpcBase
+public class AdminGrpcServer(ISysConfigService sysConfigService, IDictService dictService/*,IObjectMapper mapper*/) : AdminGrpc.AdminGrpcBase
 {
     public override async Task<SysConfigSimpleListReply> GetSysConfigList(SysConfigSimpleRequest request, ServerCallContext context)
     {

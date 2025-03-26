@@ -104,10 +104,7 @@ public abstract class BaseRabbitMqConsumer : IHostedService
     /// </summary>
     protected virtual void DeRegister()
     {
-        if (_connection != null)
-        {
-            _connection.Dispose();
-        }
+        _connection?.Dispose();
     }
 
     /// <summary>

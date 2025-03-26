@@ -10,7 +10,7 @@
 /// <param name="warehouseRepo"></param>
 /// <param name="adminClient"></param>
 /// <param name="productMgr"></param>
-public class ProductService(IEfBasicRepository<Product> productRepo, IEfBasicRepository<Warehouse> warehouseRepo, IAdminRestClient adminClient, ProductManager productMgr)
+public class ProductService(IEfBasicRepository<Product> productRepo, /*IEfBasicRepository<Warehouse> warehouseRepo,*/ IAdminRestClient adminClient, ProductManager productMgr)
     : AbstractAppService, IProductService
 {
 

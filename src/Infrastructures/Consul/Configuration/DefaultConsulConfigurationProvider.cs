@@ -47,7 +47,7 @@ public sealed class DefaultConsulConfigurationProvider : ConfigurationProvider
         {
             return res;
         }
-        throw new Exception($"Error loading configuration from consul. Status code: {res.StatusCode}.");
+        throw new InvalidOperationException($"Error loading configuration from consul. Status code: {res.StatusCode}.");
     }
 
     private void PollReaload()
