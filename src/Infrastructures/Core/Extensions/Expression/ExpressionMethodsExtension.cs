@@ -88,7 +88,7 @@ public static class ExpressionMethodsExtension
     {
         if (expression.NodeType != ExpressionType.Lambda)
         {
-            throw new ArgumentException(nameof(expression));
+            throw new ArgumentException(nameof(Expression<Func<TEntity, TMember>>));
         }
 
         var lambda = (LambdaExpression)expression;
@@ -96,7 +96,7 @@ public static class ExpressionMethodsExtension
         var memberExpression = ExtractMemberExpression(lambda.Body);
         if (memberExpression == null)
         {
-            throw new ArgumentException(nameof(expression));
+            throw new ArgumentException(nameof(Expression<Func<TEntity, TMember>>));
         }
 
         return memberExpression.Member;
