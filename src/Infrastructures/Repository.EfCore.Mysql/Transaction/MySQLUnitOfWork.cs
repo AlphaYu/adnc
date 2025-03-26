@@ -3,7 +3,7 @@
 public class MySqlUnitOfWork<TDbContext>(TDbContext context, ICapPublisher? publisher = null) : UnitOfWork<TDbContext>(context)
     where TDbContext : MySqlDbContext
 {
-    private ICapPublisher? _publisher = publisher;
+    private readonly ICapPublisher? _publisher = publisher;
 
     protected override IDbContextTransaction GetDbContextTransaction(IsolationLevel isolationLevel = IsolationLevel.ReadCommitted, bool distributed = false)
     {

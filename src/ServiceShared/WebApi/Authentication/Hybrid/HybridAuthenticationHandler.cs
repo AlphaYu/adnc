@@ -6,7 +6,7 @@
 public sealed class HybridAuthenticationHandler(IOptionsMonitor<HybridSchemeOptions> options, ILoggerFactory loggerFactory, UrlEncoder encoder)
     : AuthenticationHandler<HybridSchemeOptions>(options, loggerFactory, encoder)
 {
-    private ILogger<HybridAuthenticationHandler> logeer = loggerFactory.CreateLogger<HybridAuthenticationHandler>();
+    private readonly ILogger<HybridAuthenticationHandler> logeer = loggerFactory.CreateLogger<HybridAuthenticationHandler>();
 
     protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
     {

@@ -73,7 +73,7 @@ public sealed class ConsulGrpcResolver : PollingResolver
 
 public class ConsulGrpcResolverFactory : ResolverFactory
 {
-    private ConsulClient _consulClient;
+    private readonly ConsulClient _consulClient;
 
     public ConsulGrpcResolverFactory(ConsulClient consulClient) => _consulClient = consulClient;
 

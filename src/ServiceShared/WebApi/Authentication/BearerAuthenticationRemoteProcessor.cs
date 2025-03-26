@@ -2,9 +2,9 @@
 
 public class BearerAuthenticationRemoteProcessor : AbstractAuthenticationProcessor
 {
-    private IHttpContextAccessor _contextAccessor;
-    private IAuthRestClient _authRestClient;
-    private ILogger<BearerAuthenticationRemoteProcessor> _logger;
+    private readonly IHttpContextAccessor _contextAccessor;
+    private readonly IAuthRestClient _authRestClient;
+    private readonly ILogger<BearerAuthenticationRemoteProcessor> _logger;
 
     public BearerAuthenticationRemoteProcessor(
         IHttpContextAccessor contextAccessor,

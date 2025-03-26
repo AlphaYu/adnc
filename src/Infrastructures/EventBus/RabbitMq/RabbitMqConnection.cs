@@ -13,7 +13,7 @@ public sealed class RabbitMqConnection : IRabbitMqConnection
 {
     private static volatile RabbitMqConnection? _uniqueInstance;
     private static readonly object _lockObject = new();
-    private ILogger<dynamic> _logger = default!;
+    private readonly ILogger<dynamic> _logger = default!;
     public IConnection Connection { get; private set; } = default!;
 
     private RabbitMqConnection()
