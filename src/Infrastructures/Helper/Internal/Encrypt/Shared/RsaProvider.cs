@@ -314,11 +314,11 @@ internal class RsaProvider
             }
             if (idx + line >= len)
             {
-                str.Append(text.Substring(idx));
+                str.Append(text.AsSpan(idx));
             }
             else
             {
-                str.Append(text.Substring(idx, line));
+                str.Append(text.AsSpan(idx, line));
             }
             idx += line;
         }
