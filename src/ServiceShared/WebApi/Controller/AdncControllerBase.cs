@@ -10,7 +10,7 @@ public abstract class AdncControllerBase : ControllerBase
     [NonAction]
     protected virtual ObjectResult Problem(Adnc.Shared.Application.Contracts.ResultModels.ProblemDetails problemDetails)
     {
-        problemDetails.Instance ??= this.Request.Path.ToString();
+        problemDetails.Instance ??= Request.Path.ToString();
         return Problem(problemDetails.Detail
             , problemDetails.Instance
             , problemDetails.Status
@@ -28,7 +28,7 @@ public abstract class AdncControllerBase : ControllerBase
     {
         var status = (int)statusCode;
         var type = string.Concat("https://httpstatuses.com/", status);
-        return Problem(exception.GetExceptionDetail(), this.Request.Path.ToString(), status, exception.Message, type);
+        return Problem(exception.GetExceptionDetail(), Request.Path.ToString(), status, exception.Message, type);
     }
 
     /// <summary>
@@ -75,7 +75,7 @@ public abstract class AdncControllerBase : ControllerBase
     {
         if (appSrvResult.IsSuccess)
         {
-            return Created(this.Request.Path, appSrvResult.Content);
+            return Created(Request.Path, appSrvResult.Content);
         }
 
         return Problem(appSrvResult.ProblemDetails);

@@ -1,4 +1,4 @@
-﻿namespace Adnc.Shared.WebApi.Authorization;
+namespace Adnc.Shared.WebApi.Authorization;
 
 public class PermissionInfo
 {
@@ -30,7 +30,7 @@ public sealed class PermissionCacheHandler(ICacheProvider cacheProvider) : Abstr
 
         var cache = await cacheProvider.GetAsync<List<PermissionInfo>>(GeneralConsts.RoleMenuCodesCacheKey);
 
-        if (cache == null || cache.IsNull)
+        if (cache == null || cache.Value is null)
         {
             return await Task.FromResult(false);
         }

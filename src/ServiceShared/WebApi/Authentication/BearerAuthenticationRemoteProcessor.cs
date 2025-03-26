@@ -22,7 +22,7 @@ public class BearerAuthenticationRemoteProcessor : AbstractAuthenticationProcess
         var userContext = _contextAccessor?.HttpContext?.RequestServices.GetService<UserContext>();
         if (userContext is null)
         {
-            throw new ArgumentNullException(nameof(userContext));
+            throw new InvalidDataException(nameof(userContext));
         }
         else if (userContext.Id == 0)
         {
@@ -37,6 +37,8 @@ public class BearerAuthenticationRemoteProcessor : AbstractAuthenticationProcess
             return (null, false);
         }
 
-        return (apiReuslt?.Content?.ValidationVersion, apiReuslt.Content.Status);
+        var content = apiReuslt.Content;
+        var status = content?.Status ?? false;
+        return (content?.ValidationVersion, status);
     }
 }

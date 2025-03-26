@@ -28,6 +28,9 @@ public sealed class PermissionRemoteHandler(IAuthRestClient authRestClient) : Ab
             return false;
         }
 
-        return restResult.Content.IsNotNullOrEmpty();
+        var content = restResult.Content;
+        var result = content != null && content.Count != 0;
+
+        return result;
     }
 }
