@@ -158,7 +158,7 @@ public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IDistr
         {
             logger.Value.LogError(ex, ex.Message);
             await dictributeLocker.Value.SafedUnLockAsync(CachingConsts.DictOptionsPreheatedKey, LockValue);
-            throw new Exception("PreheatAllCfgsAsync was failure", ex);
+            throw new InvalidOperationException("PreheatAllCfgsAsync was failure", ex);
         }
         var serverInfo = ServiceProvider.Value.GetRequiredService<IServiceInfo>();
         await CacheProvider.Value.SetAsync(CachingConsts.DictOptionsPreheatedKey, serverInfo.Version, TimeSpan.FromSeconds(GeneralConsts.OneYear));

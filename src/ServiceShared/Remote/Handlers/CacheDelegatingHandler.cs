@@ -66,9 +66,9 @@ public class CacheDelegatingHandler : DelegatingHandler
             }
             return responseMessage;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            throw new Exception(ex.Message, ex);
+            throw;
         }
         finally
         {

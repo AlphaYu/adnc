@@ -62,9 +62,9 @@ public sealed class OperateLogAsyncInterceptor(UserContext userContext, ILogger<
             invocation.Proceed();
             log.Succeed = true;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            throw new Exception(ex.Message, ex);
+            throw;
         }
         finally
         {
@@ -87,9 +87,9 @@ public sealed class OperateLogAsyncInterceptor(UserContext userContext, ILogger<
             await task;
             log.Succeed = true;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            throw new Exception(ex.Message, ex);
+            throw;
         }
         finally
         {
@@ -121,9 +121,9 @@ public sealed class OperateLogAsyncInterceptor(UserContext userContext, ILogger<
             result = await task;
             log.Succeed = true;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            throw new Exception(ex.Message, ex);
+            throw;
         }
         finally
         {

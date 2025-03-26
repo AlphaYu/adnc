@@ -56,7 +56,7 @@ public sealed partial class CapEventSubscriber(IUnitOfWork unitOfWork, IEfReposi
         catch (Exception ex)
         {
             await unitOfWork.RollbackAsync();
-            throw new Exception($"{eventHandler}-{eventId}", ex);
+            throw new InvalidOperationException($"{eventHandler}-{eventId}", ex);
         }
         finally
         {
@@ -99,7 +99,7 @@ public sealed partial class CapEventSubscriber(IUnitOfWork unitOfWork, IEfReposi
         catch (Exception ex)
         {
             await unitOfWork.RollbackAsync();
-            throw new Exception($"{eventHandler}-{eventId}", ex);
+            throw new InvalidOperationException($"{eventHandler}-{eventId}", ex);
         }
         finally
         {

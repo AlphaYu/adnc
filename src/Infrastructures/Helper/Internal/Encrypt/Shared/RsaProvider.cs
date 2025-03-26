@@ -27,7 +27,7 @@ internal class RsaProvider
         var data = Convert.FromBase64String(base64);
         if (data == null)
         {
-            throw new Exception("Pem content invalid ");
+            throw new InvalidDataException("Pem content invalid ");
         }
         var idx = 0;
 
@@ -52,7 +52,7 @@ internal class RsaProvider
                     return data[idx++];
                 }
             }
-            throw new Exception("Not found any content in pem file");
+            throw new InvalidDataException("Not found any content in pem file");
         };
         //read module length
         Func<byte[]> readBlock = () =>
@@ -90,7 +90,7 @@ internal class RsaProvider
             readLen(0x30);
             if (!eq(_SeqOID))
             {
-                throw new Exception("Unknown pem format");
+                throw new InvalidDataException("Unknown pem format");
             }
 
             readLen(0x03);
@@ -111,7 +111,7 @@ internal class RsaProvider
             //Read version
             if (!eq(_Ver))
             {
-                throw new Exception("Unknown pem version");
+                throw new InvalidDataException("Unknown pem version");
             }
 
             //Check PKCS8
@@ -126,7 +126,7 @@ internal class RsaProvider
                 //Read version
                 if (!eq(_Ver))
                 {
-                    throw new Exception("Pem version invalid");
+                    throw new InvalidDataException("Pem version invalid");
                 }
             }
             else
@@ -146,7 +146,7 @@ internal class RsaProvider
         }
         else
         {
-            throw new Exception("pem need 'BEGIN' and  'END'");
+            throw new InvalidDataException("pem need 'BEGIN' and  'END'");
         }
 
         rsa.ImportParameters(param);

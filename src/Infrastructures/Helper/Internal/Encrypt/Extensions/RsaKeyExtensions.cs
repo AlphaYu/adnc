@@ -20,7 +20,7 @@ internal static class RSAKeyExtensions
         RSAParameters parameters = new RSAParameters();
         try
         {
-            var paramsJson = JsonSerializer.Deserialize<RSAParametersJson>(jsonString) ?? throw new Exception("Invalid Json RSA key.");
+            var paramsJson = JsonSerializer.Deserialize<RSAParametersJson>(jsonString) ?? throw new InvalidDataException("Invalid Json RSA key.");
 
             parameters.Modulus = paramsJson.Modulus != null ? Convert.FromBase64String(paramsJson.Modulus) : null;
             parameters.Exponent = paramsJson.Exponent != null ? Convert.FromBase64String(paramsJson.Exponent) : null;
@@ -33,7 +33,7 @@ internal static class RSAKeyExtensions
         }
         catch
         {
-            throw new Exception("Invalid Json RSA key.");
+            throw new InvalidDataException("Invalid Json RSA key.");
         }
         rsa.ImportParameters(parameters);
     }
@@ -94,7 +94,7 @@ internal static class RSAKeyExtensions
         }
         else
         {
-            throw new Exception("Invalid XML RSA key.");
+            throw new InvalidDataException("Invalid XML RSA key.");
         }
 
         rsa.ImportParameters(parameters);

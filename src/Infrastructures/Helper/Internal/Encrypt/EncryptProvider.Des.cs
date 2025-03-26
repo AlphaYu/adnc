@@ -119,9 +119,9 @@ public partial class EncryptProivder
                         cryptoStream.FlushFinalBlock();
                         return Memory.ToArray();
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
-                        throw new Exception("DESEncrypt", ex);
+                        throw;
                     }
                 }
             }
@@ -226,9 +226,9 @@ public partial class EncryptProivder
                         Array.Copy(tmp, 0, ret, 0, len);
                         return ret;
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
-                        throw new Exception("DESDecrypt", ex);
+                        throw;
                     }
                 }
             }

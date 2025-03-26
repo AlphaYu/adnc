@@ -32,9 +32,9 @@ public sealed class WorkerNode(ILogger<WorkerNode> logger, IRedisProvider redisP
                 }
                 count = await _redisProvider.ZAddAsync(_redisKey, set);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw new Exception(ex.Message, ex);
+                throw;
             }
             finally
             {
@@ -68,7 +68,7 @@ public sealed class WorkerNode(ILogger<WorkerNode> logger, IRedisProvider redisP
     {
         if (workerId < 0 || workerId > IdGenerater.MaxWorkerId)
         {
-            throw new Exception(string.Format("worker Id can't be greater than {0} or less than 0", IdGenerater.MaxWorkerId));
+            throw new InvalidDataException(string.Format("worker Id can't be greater than {0} or less than 0", IdGenerater.MaxWorkerId));
         }
 
         var score = workerIdScore == null ? DateTime.Now.GetTotalMilliseconds() : workerIdScore.Value;

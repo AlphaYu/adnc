@@ -127,9 +127,9 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
                 return CacheValue<T>.NoValue;
             }
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            throw new Exception(ex.Message, ex);
+            throw;
         }
         finally
         {
