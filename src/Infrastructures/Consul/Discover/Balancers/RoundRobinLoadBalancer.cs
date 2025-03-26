@@ -3,7 +3,7 @@
 internal class RoundRobinLoadBalancer : ILoadBalancer
 {
     private readonly object _lock = new();
-    private int _index = 0;
+    private int _index;
 
     public string Resolve(IList<string> services)
     {

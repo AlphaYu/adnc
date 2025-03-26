@@ -16,6 +16,7 @@ public class LoginLogController(ILogService logService) : AdncControllerBase
     public async Task<ActionResult<PageModelDto<LoginLogDto>>> GetLoginLogsPagedAsync([FromQuery] SearchPagedDto searchDto)
         => await logService.GetLoginLogsPagedAsync(searchDto);
 
+    /*
     /// <summary>
     /// 查询Nlog日志
     /// </summary>
@@ -25,4 +26,5 @@ public class LoginLogController(ILogService logService) : AdncControllerBase
     //[AdncAuthorize(PermissionConsts.Log.GetListForNLog)]
     //public async Task<ActionResult<PageModelDto<NlogLogDto>>> GetNlogLogsPagedAsync([FromQuery] LogSearchPagedDto searchDto)
     //    => await logService.GetNlogLogsPagedAsync(searchDto);
+    */
 }

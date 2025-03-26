@@ -15,7 +15,7 @@ public class JWTOptions
     /// <summary>
     /// Whether to validate the issuer
     /// </summary>
-    public bool ValidateIssuer { get; set; } = default;
+    public bool ValidateIssuer { get; set; }
 
     /// <summary>
     /// The issuer of the JWT
@@ -25,7 +25,7 @@ public class JWTOptions
     /// <summary>
     /// Whether to validate the signature
     /// </summary>
-    public bool ValidateIssuerSigningKey { get; set; } = default;
+    public bool ValidateIssuerSigningKey { get; set; }
 
     /// <summary>
     /// The symmetric security key used to sign the JWT
@@ -65,15 +65,15 @@ public class JWTOptions
     /// <summary>
     /// Clock skew in seconds
     /// </summary>
-    public int ClockSkew { get; set; } = default;
+    public int ClockSkew { get; set; }
 
     /// <summary>
     /// Expiration time for access token in minutes
     /// </summary>
-    public int Expire { get; set; } = default;
+    public int Expire { get; set; }
 
     /// <summary>
     /// Expiration time for refresh token in minutes
     /// </summary>
-    public int RefreshTokenExpire { get; set; } = default;
+    public int RefreshTokenExpire { get; set; }
 }

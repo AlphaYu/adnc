@@ -5,7 +5,7 @@
 /// </summary>
 public class Organization : EfFullAuditEntity
 {
-    public long ParentId { get; set; } = 0;
+    public long ParentId { get; set; }
 
     public string ParentIds { get; set; } = string.Empty;
 

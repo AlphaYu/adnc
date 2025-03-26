@@ -4,7 +4,7 @@ namespace Adnc.Infra.IdGenerater.Yitter;
 
 public static class IdGenerater
 {
-    private static bool _isSet = false;
+    private static bool _isSet;
     private static readonly object _locker = new();
 
     public static byte WorkerIdBitLength => 6;

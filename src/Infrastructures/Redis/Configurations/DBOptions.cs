@@ -24,7 +24,7 @@ public class DBOptions
     /// <value>
     ///   <c>true</c> if this instance is SSL; otherwise, <c>false</c>.
     /// </value>
-    public bool IsSsl { get; set; } = false;
+    public bool IsSsl { get; set; }
 
     /// <summary>
     /// Gets or sets the SSL Host.
@@ -56,7 +56,7 @@ public class DBOptions
     /// allow admin.
     /// </summary>
     /// <value><c>true</c> if allow admin; otherwise, <c>false</c>.</value>
-    public bool AllowAdmin { get; set; } = false;
+    public bool AllowAdmin { get; set; }
 
     /// <summary>
     /// Gets or sets the string configuration.
@@ -69,7 +69,7 @@ public class DBOptions
     /// abort on connect fail.
     /// </summary>
     /// <value><c>true</c> if abort on connect fail; otherwise, <c>false</c>.</value>
-    public bool AbortOnConnectFail { get; set; } = false;
+    public bool AbortOnConnectFail { get; set; }
 
     /// <summary>
     /// Gets or sets the Redis database index the cache will use.
@@ -77,5 +77,5 @@ public class DBOptions
     /// <value>
     /// The database.
     /// </value>
-    public int Database { get; set; } = 0;
+    public int Database { get; set; }
 }

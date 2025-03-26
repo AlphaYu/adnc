@@ -8,7 +8,7 @@ public class OrganizationCreationDto : InputDto
     /// <summary>
     /// 父级Id
     /// </summary>
-    public long ParentId { get; set; } = 0;
+    public long ParentId { get; set; }
 
     /// <summary>
     /// 部门编号

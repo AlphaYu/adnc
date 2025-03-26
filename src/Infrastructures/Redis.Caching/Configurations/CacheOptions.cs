@@ -13,7 +13,7 @@ public sealed class CacheOptions
     /// This is mainly for preventing Cache Crash
     /// </remarks>
     /// <value>The max random second.</value>
-    public int MaxRdSecond { get; set; } = 0;
+    public int MaxRdSecond { get; set; }
 
     /// <summary>
     /// Gets or sets a value indicating whether enable logging.

@@ -16,7 +16,7 @@ public class EventEntity
     /// <summary>
     /// 事件Id
     /// </summary>
-    public long Id { get; set; } = default;
+    public long Id { get; set; }
 
     /// <summary>
     /// 事件发生的时间
