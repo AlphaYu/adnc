@@ -1,27 +1,26 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace Adnc.Infra.Redis.Core.Internal
+namespace Adnc.Infra.Redis.Core.Internal;
+
+// borrowed from https://github.com/neuecc/MemcachedTranscoder/blob/master/Common/TypeHelper.cs
+
+public static class TypeHelper
 {
-    // borrowed from https://github.com/neuecc/MemcachedTranscoder/blob/master/Common/TypeHelper.cs
+    /// <summary>
+    /// The subtract full name regex.
+    /// </summary>
+    private static readonly Regex SubtractFullNameRegex = new Regex(@", Version=\d+.\d+.\d+.\d+, Culture=\w+, PublicKeyToken=\w+", RegexOptions.Compiled);
 
-    public static class TypeHelper
+    /// <summary>
+    /// Builds the name of the type.
+    /// </summary>
+    /// <returns>The type name.</returns>
+    /// <param name="type">Type.</param>
+    public static string BuildTypeName(Type type)
     {
-        /// <summary>
-        /// The subtract full name regex.
-        /// </summary>
-        private static readonly Regex SubtractFullNameRegex = new Regex(@", Version=\d+.\d+.\d+.\d+, Culture=\w+, PublicKeyToken=\w+", RegexOptions.Compiled);
+        if (type.AssemblyQualifiedName is null)
+            return string.Empty;
 
-        /// <summary>
-        /// Builds the name of the type.
-        /// </summary>
-        /// <returns>The type name.</returns>
-        /// <param name="type">Type.</param>
-        public static string BuildTypeName(Type type)
-        {
-            if (type.AssemblyQualifiedName is null)
-                return string.Empty;
-
-            return SubtractFullNameRegex.Replace(type.AssemblyQualifiedName, "");
-        }
+        return SubtractFullNameRegex.Replace(type.AssemblyQualifiedName, "");
     }
 }

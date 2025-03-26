@@ -1,15 +1,14 @@
-﻿namespace Adnc.Infra.Redis.Caching.Core.Diagnostics
+﻿namespace Adnc.Infra.Redis.Caching.Core.Diagnostics;
+
+public class BeforePublishMessageRequestEventData //: EventData
 {
-    public class BeforePublishMessageRequestEventData //: EventData
-    {
-        //public BeforePublishMessageRequestEventData(string topic, Bus.Adnc.Infra.RedisMessage msg)
-        //{
-        //    this.Topic = topic;
-        //    this.Msg = msg;
-        //}
+    //public BeforePublishMessageRequestEventData(string topic, Bus.Adnc.Infra.RedisMessage msg)
+    //{
+    //    this.Topic = topic;
+    //    this.Msg = msg;
+    //}
 
-        //public string Topic { get; set; }
+    //public string Topic { get; set; }
 
-        //public Bus.Adnc.Infra.RedisMessage Msg { get; set; }
-    }
+    //public Bus.Adnc.Infra.RedisMessage Msg { get; set; }
 }

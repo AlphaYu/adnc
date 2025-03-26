@@ -1,22 +1,21 @@
 ﻿using Adnc.Shared.WebApi.Registrar;
 
-namespace Adnc.Demo.Whse.Api
-{
-    public sealed class MiddlewareRegistrar(IApplicationBuilder app) : AbstractWebApiMiddlewareRegistrar(app)
-    {
-        public override  void  UseAdnc()
-        {
-            UseWebApiDefault();
-        }
-    }
+namespace Adnc.Demo.Whse.Api;
 
-    public static class WebApplicationrExtensions
+public sealed class MiddlewareRegistrar(IApplicationBuilder app) : AbstractWebApiMiddlewareRegistrar(app)
+{
+    public override  void  UseAdnc()
     {
-        public static WebApplication UseAdnc(this WebApplication app)
-        {
-            var registrar = new MiddlewareRegistrar(app);
-            registrar.UseAdnc();
-            return app;
-        }
+        UseWebApiDefault();
+    }
+}
+
+public static class WebApplicationrExtensions
+{
+    public static WebApplication UseAdnc(this WebApplication app)
+    {
+        var registrar = new MiddlewareRegistrar(app);
+        registrar.UseAdnc();
+        return app;
     }
 }

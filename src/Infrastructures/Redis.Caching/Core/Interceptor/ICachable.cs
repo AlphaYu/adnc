@@ -1,14 +1,13 @@
-﻿namespace Adnc.Infra.Redis.Caching.Core.Interceptor
+﻿namespace Adnc.Infra.Redis.Caching.Core.Interceptor;
+
+/// <summary>
+/// Cachable.
+/// </summary>
+public interface ICachable
 {
     /// <summary>
-    /// Cachable.
+    /// Gets the cache key.
     /// </summary>
-    public interface ICachable
-    {
-        /// <summary>
-        /// Gets the cache key.
-        /// </summary>
-        /// <value>The cache key.</value>
-        string CacheKey { get; }
-    }
+    /// <value>The cache key.</value>
+    string CacheKey { get; }
 }

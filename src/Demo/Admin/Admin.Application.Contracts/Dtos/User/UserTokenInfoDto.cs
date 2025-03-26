@@ -1,33 +1,32 @@
-﻿namespace Adnc.Demo.Admin.Application.Contracts.Dtos
+﻿namespace Adnc.Demo.Admin.Application.Contracts.Dtos;
+
+public record UserTokenInfoDto : IDto
 {
-    public record UserTokenInfoDto : IDto
+    public UserTokenInfoDto(string token, DateTime exprie, string refreshToken, DateTime refreshExprie)
     {
-        public UserTokenInfoDto(string token, DateTime exprie, string refreshToken, DateTime refreshExprie)
-        {
-            Token = token;
-            Expire = exprie;
-            RefreshToken = refreshToken;
-            RefreshExpire = refreshExprie;
-        }
-
-        /// <summary>
-        /// accesstoken
-        /// </summary>
-        public string Token { get; set; }
-
-        /// <summary>
-        /// accesstoken exprie time
-        /// </summary>
-        public DateTime Expire { get; set; }
-
-        /// <summary>
-        /// refresh token
-        /// </summary>
-        public string RefreshToken { get; set; }
-
-        /// <summary>
-        /// refreshtoken exprie time
-        /// </summary>
-        public DateTime RefreshExpire { get; set; }
+        Token = token;
+        Expire = exprie;
+        RefreshToken = refreshToken;
+        RefreshExpire = refreshExprie;
     }
+
+    /// <summary>
+    /// accesstoken
+    /// </summary>
+    public string Token { get; set; }
+
+    /// <summary>
+    /// accesstoken exprie time
+    /// </summary>
+    public DateTime Expire { get; set; }
+
+    /// <summary>
+    /// refresh token
+    /// </summary>
+    public string RefreshToken { get; set; }
+
+    /// <summary>
+    /// refreshtoken exprie time
+    /// </summary>
+    public DateTime RefreshExpire { get; set; }
 }

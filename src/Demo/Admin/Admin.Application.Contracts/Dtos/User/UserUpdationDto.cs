@@ -1,6 +1,5 @@
-﻿namespace Adnc.Demo.Admin.Application.Contracts.Dtos
+﻿namespace Adnc.Demo.Admin.Application.Contracts.Dtos;
+
+public class UserUpdationDto : UserCreationAndUpdationDto
 {
-    public class UserUpdationDto : UserCreationAndUpdationDto
-    {
-    }
 }

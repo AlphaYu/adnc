@@ -1,22 +1,21 @@
 ﻿using Castle.DynamicProxy;
 
-namespace Adnc.Infra.Redis.Caching.Interceptor.Castle
+namespace Adnc.Infra.Redis.Caching.Interceptor.Castle;
+
+/// <summary>
+/// caching interceptor
+/// </summary>
+public class CachingInterceptor : IInterceptor
 {
-    /// <summary>
-    /// caching interceptor
-    /// </summary>
-    public class CachingInterceptor : IInterceptor
+    private readonly CachingAsyncInterceptor _cachingAsyncInterceptor;
+
+    public CachingInterceptor(CachingAsyncInterceptor cachingAsyncInterceptor)
     {
-        private readonly CachingAsyncInterceptor _cachingAsyncInterceptor;
+        _cachingAsyncInterceptor = cachingAsyncInterceptor;
+    }
 
-        public CachingInterceptor(CachingAsyncInterceptor cachingAsyncInterceptor)
-        {
-            _cachingAsyncInterceptor = cachingAsyncInterceptor;
-        }
-
-        public void Intercept(IInvocation invocation)
-        {
-            _cachingAsyncInterceptor.ToInterceptor().Intercept(invocation);
-        }
+    public void Intercept(IInvocation invocation)
+    {
+        _cachingAsyncInterceptor.ToInterceptor().Intercept(invocation);
     }
 }

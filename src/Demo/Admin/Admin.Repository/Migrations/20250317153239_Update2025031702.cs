@@ -2,21 +2,20 @@
 
 #nullable disable
 
-namespace Adnc.Demo.Admin.Repository.Migrations
+namespace Adnc.Demo.Admin.Repository.Migrations;
+
+/// <inheritdoc />
+public partial class Update2025031702 : Migration
 {
     /// <inheritdoc />
-    public partial class Update2025031702 : Migration
+    protected override void Up(MigrationBuilder migrationBuilder)
     {
-        /// <inheritdoc />
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
 
-        }
+    }
 
-        /// <inheritdoc />
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
+    /// <inheritdoc />
+    protected override void Down(MigrationBuilder migrationBuilder)
+    {
 
-        }
     }
 }

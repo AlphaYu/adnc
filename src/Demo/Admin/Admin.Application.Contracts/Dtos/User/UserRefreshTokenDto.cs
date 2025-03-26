@@ -1,13 +1,12 @@
-﻿namespace Adnc.Demo.Admin.Application.Contracts.Dtos
+﻿namespace Adnc.Demo.Admin.Application.Contracts.Dtos;
+
+/// <summary>
+/// 刷新Token实体
+/// </summary>
+public class UserRefreshTokenDto : InputDto
 {
     /// <summary>
-    /// 刷新Token实体
+    /// RefreshToken
     /// </summary>
-    public class UserRefreshTokenDto : InputDto
-    {
-        /// <summary>
-        /// RefreshToken
-        /// </summary>
-        public string RefreshToken { get; set; } = string.Empty;
-    }
+    public string RefreshToken { get; set; } = string.Empty;
 }

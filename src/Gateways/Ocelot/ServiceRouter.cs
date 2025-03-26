@@ -1,38 +1,37 @@
-﻿namespace Adnc.Gateway.Ocelot
+﻿namespace Adnc.Gateway.Ocelot;
+
+public class ServiceRouter
 {
-    public class ServiceRouter
+    public string Name
     {
-        public string Name
+        get
         {
-            get
-            {
-                var name = UpstreamPathTemplate.Replace("{everything}", "").Replace("/", "-");
-                if (name.Length > 1)
-                    return name[1..] ;
-                return name;
-            }
+            var name = UpstreamPathTemplate.Replace("{everything}", "").Replace("/", "-");
+            if (name.Length > 1)
+                return name[1..] ;
+            return name;
         }
+    }
 
-        public string UpstreamPathTemplate { get; set; } = string.Empty;
+    public string UpstreamPathTemplate { get; set; } = string.Empty;
 
-        public string Group
+    public string Group
+    {
+        get
         {
-            get
-            {
-                if (string.IsNullOrEmpty(UpstreamPathTemplate))
-                    return string.Empty;
+            if (string.IsNullOrEmpty(UpstreamPathTemplate))
+                return string.Empty;
 
-                var names = UpstreamPathTemplate.Replace("{everything}", "").Split('/', StringSplitOptions.RemoveEmptyEntries);
-                if (names is null)
-                    return string.Empty;
+            var names = UpstreamPathTemplate.Replace("{everything}", "").Split('/', StringSplitOptions.RemoveEmptyEntries);
+            if (names is null)
+                return string.Empty;
 
-                return names[0];
-            }
+            return names[0];
         }
+    }
 
-        public string Path
-        {
-            get => UpstreamPathTemplate.Replace("{everything}", "/index.html");
-        }
+    public string Path
+    {
+        get => UpstreamPathTemplate.Replace("{everything}", "/index.html");
     }
 }

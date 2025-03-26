@@ -1,15 +1,14 @@
-﻿namespace Adnc.Infra.Repository
-{
-    public interface IBasicAuditInfo
-    {
-        /// <summary>
-        /// 创建人
-        /// </summary>
-        public long CreateBy { get; set; }
+﻿namespace Adnc.Infra.Repository;
 
-        /// <summary>
-        /// 创建时间/注册时间
-        /// </summary>
-        public DateTime CreateTime { get; set; }
-    }
+public interface IBasicAuditInfo
+{
+    /// <summary>
+    /// 创建人
+    /// </summary>
+    public long CreateBy { get; set; }
+
+    /// <summary>
+    /// 创建时间/注册时间
+    /// </summary>
+    public DateTime CreateTime { get; set; }
 }

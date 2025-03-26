@@ -1,6 +1,5 @@
-﻿namespace Adnc.Infra.Repository
+﻿namespace Adnc.Infra.Repository;
+
+public interface IEfEntity<TKey> : IEntity<TKey>
 {
-    public interface IEfEntity<TKey> : IEntity<TKey>
-    {
-    }
 }

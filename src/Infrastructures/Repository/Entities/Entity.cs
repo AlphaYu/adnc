@@ -1,7 +1,6 @@
-﻿namespace Adnc.Infra.Repository
+﻿namespace Adnc.Infra.Repository;
+
+public class Entity : IEntity<long>
 {
-    public class Entity : IEntity<long>
-    {
-        public long Id { get; set; }
-    }
+    public long Id { get; set; }
 }

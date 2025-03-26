@@ -1,179 +1,178 @@
 ﻿using Adnc.Infra.Redis.Core;
 using StackExchange.Redis;
 
-namespace Adnc.Infra.Redis.Providers.StackExchange
+namespace Adnc.Infra.Redis.Providers.StackExchange;
+
+/// <summary>
+/// Default redis caching provider.
+/// </summary>
+public partial class DefaultRedisProvider : IRedisProvider
 {
-    /// <summary>
-    /// Default redis caching provider.
-    /// </summary>
-    public partial class DefaultRedisProvider : IRedisProvider
+    public long GeoAdd(string cacheKey, List<(double longitude, double latitude, string member)> values)
     {
-        public long GeoAdd(string cacheKey, List<(double longitude, double latitude, string member)> values)
+        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentCheck.NotNullAndCountGTZero(values, nameof(values));
+
+        var list = new List<GeoEntry>();
+
+        foreach (var item in values)
         {
-            ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
-            ArgumentCheck.NotNullAndCountGTZero(values, nameof(values));
-
-            var list = new List<GeoEntry>();
-
-            foreach (var item in values)
-            {
-                list.Add(new GeoEntry(item.longitude, item.latitude, item.member));
-            }
-
-            var res = _redisDb.GeoAdd(cacheKey, list.ToArray());
-            return res;
+            list.Add(new GeoEntry(item.longitude, item.latitude, item.member));
         }
 
-        public async Task<long> GeoAddAsync(string cacheKey, List<(double longitude, double latitude, string member)> values)
+        var res = _redisDb.GeoAdd(cacheKey, list.ToArray());
+        return res;
+    }
+
+    public async Task<long> GeoAddAsync(string cacheKey, List<(double longitude, double latitude, string member)> values)
+    {
+        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentCheck.NotNullAndCountGTZero(values, nameof(values));
+
+        var list = new List<GeoEntry>();
+
+        foreach (var item in values)
         {
-            ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
-            ArgumentCheck.NotNullAndCountGTZero(values, nameof(values));
-
-            var list = new List<GeoEntry>();
-
-            foreach (var item in values)
-            {
-                list.Add(new GeoEntry(item.longitude, item.latitude, item.member));
-            }
-
-            var res = await _redisDb.GeoAddAsync(cacheKey, list.ToArray());
-            return res;
+            list.Add(new GeoEntry(item.longitude, item.latitude, item.member));
         }
 
-        public double? GeoDist(string cacheKey, string member1, string member2, string unit = "m")
-        {
-            ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
-            ArgumentCheck.NotNullOrWhiteSpace(member1, nameof(member1));
-            ArgumentCheck.NotNullOrWhiteSpace(member2, nameof(member2));
-            ArgumentCheck.NotNullOrWhiteSpace(unit, nameof(unit));
+        var res = await _redisDb.GeoAddAsync(cacheKey, list.ToArray());
+        return res;
+    }
 
-            var res = _redisDb.GeoDistance(cacheKey, member1, member2, GetGeoUnit(unit));
-            return res;
+    public double? GeoDist(string cacheKey, string member1, string member2, string unit = "m")
+    {
+        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentCheck.NotNullOrWhiteSpace(member1, nameof(member1));
+        ArgumentCheck.NotNullOrWhiteSpace(member2, nameof(member2));
+        ArgumentCheck.NotNullOrWhiteSpace(unit, nameof(unit));
+
+        var res = _redisDb.GeoDistance(cacheKey, member1, member2, GetGeoUnit(unit));
+        return res;
+    }
+
+    public async Task<double?> GeoDistAsync(string cacheKey, string member1, string member2, string unit = "m")
+    {
+        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentCheck.NotNullOrWhiteSpace(member1, nameof(member1));
+        ArgumentCheck.NotNullOrWhiteSpace(member2, nameof(member2));
+        ArgumentCheck.NotNullOrWhiteSpace(unit, nameof(unit));
+
+        var res = await _redisDb.GeoDistanceAsync(cacheKey, member1, member2, GetGeoUnit(unit));
+        return res;
+    }
+
+    public List<string> GeoHash(string cacheKey, List<string> members)
+    {
+        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentCheck.NotNullAndCountGTZero(members, nameof(members));
+
+        var list = new List<RedisValue>();
+        foreach (var item in members)
+        {
+            list.Add(item);
         }
 
-        public async Task<double?> GeoDistAsync(string cacheKey, string member1, string member2, string unit = "m")
-        {
-            ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
-            ArgumentCheck.NotNullOrWhiteSpace(member1, nameof(member1));
-            ArgumentCheck.NotNullOrWhiteSpace(member2, nameof(member2));
-            ArgumentCheck.NotNullOrWhiteSpace(unit, nameof(unit));
+        var res = _redisDb.GeoHash(cacheKey, list.ToArray());
+        return res.ToList();
+    }
 
-            var res = await _redisDb.GeoDistanceAsync(cacheKey, member1, member2, GetGeoUnit(unit));
-            return res;
+    public async Task<List<string>> GeoHashAsync(string cacheKey, List<string> members)
+    {
+        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentCheck.NotNullAndCountGTZero(members, nameof(members));
+
+        var list = new List<RedisValue>();
+        foreach (var item in members)
+        {
+            list.Add(item);
         }
 
-        public List<string> GeoHash(string cacheKey, List<string> members)
+        var res = await _redisDb.GeoHashAsync(cacheKey, list.ToArray());
+        return res.ToList();
+    }
+
+    public List<(double longitude, double latitude)?> GeoPos(string cacheKey, List<string> members)
+    {
+        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentCheck.NotNullAndCountGTZero(members, nameof(members));
+
+        var list = new List<RedisValue>();
+        foreach (var item in members)
         {
-            ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
-            ArgumentCheck.NotNullAndCountGTZero(members, nameof(members));
-
-            var list = new List<RedisValue>();
-            foreach (var item in members)
-            {
-                list.Add(item);
-            }
-
-            var res = _redisDb.GeoHash(cacheKey, list.ToArray());
-            return res.ToList();
+            list.Add(item);
         }
 
-        public async Task<List<string>> GeoHashAsync(string cacheKey, List<string> members)
+        var res = _redisDb.GeoPosition(cacheKey, list.ToArray());
+
+        var tuple = new List<(double longitude, double latitude)?>();
+
+        foreach (var item in res)
         {
-            ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
-            ArgumentCheck.NotNullAndCountGTZero(members, nameof(members));
-
-            var list = new List<RedisValue>();
-            foreach (var item in members)
+            if (item.HasValue)
             {
-                list.Add(item);
+                tuple.Add((item.Value.Longitude, item.Value.Latitude));
             }
-
-            var res = await _redisDb.GeoHashAsync(cacheKey, list.ToArray());
-            return res.ToList();
+            else
+            {
+                tuple.Add(null);
+            }
         }
 
-        public List<(double longitude, double latitude)?> GeoPos(string cacheKey, List<string> members)
+        return tuple;
+    }
+
+    public async Task<List<(double longitude, double latitude)?>> GeoPosAsync(string cacheKey, List<string> members)
+    {
+        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentCheck.NotNullAndCountGTZero(members, nameof(members));
+
+        var list = new List<RedisValue>();
+        foreach (var item in members)
         {
-            ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
-            ArgumentCheck.NotNullAndCountGTZero(members, nameof(members));
-
-            var list = new List<RedisValue>();
-            foreach (var item in members)
-            {
-                list.Add(item);
-            }
-
-            var res = _redisDb.GeoPosition(cacheKey, list.ToArray());
-
-            var tuple = new List<(double longitude, double latitude)?>();
-
-            foreach (var item in res)
-            {
-                if (item.HasValue)
-                {
-                    tuple.Add((item.Value.Longitude, item.Value.Latitude));
-                }
-                else
-                {
-                    tuple.Add(null);
-                }
-            }
-
-            return tuple;
+            list.Add(item);
         }
 
-        public async Task<List<(double longitude, double latitude)?>> GeoPosAsync(string cacheKey, List<string> members)
+        var res = await _redisDb.GeoPositionAsync(cacheKey, list.ToArray());
+
+        var tuple = new List<(double longitude, double latitude)?>();
+
+        foreach (var item in res)
         {
-            ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
-            ArgumentCheck.NotNullAndCountGTZero(members, nameof(members));
-
-            var list = new List<RedisValue>();
-            foreach (var item in members)
+            if (item.HasValue)
             {
-                list.Add(item);
+                tuple.Add((item.Value.Longitude, item.Value.Latitude));
             }
-
-            var res = await _redisDb.GeoPositionAsync(cacheKey, list.ToArray());
-
-            var tuple = new List<(double longitude, double latitude)?>();
-
-            foreach (var item in res)
+            else
             {
-                if (item.HasValue)
-                {
-                    tuple.Add((item.Value.Longitude, item.Value.Latitude));
-                }
-                else
-                {
-                    tuple.Add(null);
-                }
+                tuple.Add(null);
             }
-
-            return tuple;
         }
 
-        private GeoUnit GetGeoUnit(string unit)
+        return tuple;
+    }
+
+    private GeoUnit GetGeoUnit(string unit)
+    {
+        GeoUnit geoUnit;
+        switch (unit)
         {
-            GeoUnit geoUnit;
-            switch (unit)
-            {
-                case "km":
-                    geoUnit = GeoUnit.Kilometers;
-                    break;
+            case "km":
+                geoUnit = GeoUnit.Kilometers;
+                break;
 
-                case "ft":
-                    geoUnit = GeoUnit.Feet;
-                    break;
+            case "ft":
+                geoUnit = GeoUnit.Feet;
+                break;
 
-                case "mi":
-                    geoUnit = GeoUnit.Miles;
-                    break;
+            case "mi":
+                geoUnit = GeoUnit.Miles;
+                break;
 
-                default:
-                    geoUnit = GeoUnit.Meters;
-                    break;
-            }
-            return geoUnit;
+            default:
+                geoUnit = GeoUnit.Meters;
+                break;
         }
+        return geoUnit;
     }
 }

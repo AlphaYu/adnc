@@ -1,10 +1,9 @@
-﻿namespace Adnc.Demo.Admin.Application.Contracts.DtoValidators
+﻿namespace Adnc.Demo.Admin.Application.Contracts.DtoValidators;
+
+public class UserUpdationDtoValidator : AbstractValidator<UserUpdationDto>
 {
-    public class UserUpdationDtoValidator : AbstractValidator<UserUpdationDto>
+    public UserUpdationDtoValidator()
     {
-        public UserUpdationDtoValidator()
-        {
-            Include(new UserCreationAndUpdationDtoValidator());
-        }
+        Include(new UserCreationAndUpdationDtoValidator());
     }
 }

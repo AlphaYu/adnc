@@ -1,7 +1,6 @@
-﻿namespace Adnc.Infra.Repository
+﻿namespace Adnc.Infra.Repository;
+
+public interface ISoftDelete
 {
-    public interface ISoftDelete
-    {
-        bool IsDeleted { get; set; }
-    }
+    bool IsDeleted { get; set; }
 }

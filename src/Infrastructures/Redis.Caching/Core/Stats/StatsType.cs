@@ -1,18 +1,17 @@
-﻿namespace Adnc.Infra.Redis.Caching.Core
+﻿namespace Adnc.Infra.Redis.Caching.Core;
+
+/// <summary>
+/// Stats type.
+/// </summary>
+public enum StatsType
 {
     /// <summary>
-    /// Stats type.
+    /// The hit.
     /// </summary>
-    public enum StatsType
-    {
-        /// <summary>
-        /// The hit.
-        /// </summary>
-        Hit = 0,
+    Hit = 0,
 
-        /// <summary>
-        /// The missed.
-        /// </summary>
-        Missed = 1,
-    }
+    /// <summary>
+    /// The missed.
+    /// </summary>
+    Missed = 1,
 }

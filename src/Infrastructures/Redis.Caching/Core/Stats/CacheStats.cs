@@ -1,72 +1,71 @@
-﻿namespace Adnc.Infra.Redis.Caching.Core
+﻿namespace Adnc.Infra.Redis.Caching.Core;
+
+/// <summary>
+/// Cache stats.
+/// </summary>
+public class CacheStats
 {
     /// <summary>
-    /// Cache stats.
+    /// The counters.
     /// </summary>
-    public class CacheStats
+    private readonly ConcurrentDictionary<string, CacheStatsCounter> _counters;
+
+    /// <summary>
+    /// The default key.
+    /// </summary>
+    private const string DEFAULT_KEY = "cahing_catche_stats";
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="T:Adnc.Infra.Redis.Core.CacheStats"/> class.
+    /// </summary>
+    public CacheStats()
     {
-        /// <summary>
-        /// The counters.
-        /// </summary>
-        private readonly ConcurrentDictionary<string, CacheStatsCounter> _counters;
+        _counters = new ConcurrentDictionary<string, CacheStatsCounter>();
+    }
 
-        /// <summary>
-        /// The default key.
-        /// </summary>
-        private const string DEFAULT_KEY = "cahing_catche_stats";
+    /// <summary>
+    /// Ons the hit.
+    /// </summary>
+    public void OnHit()
+    {
+        GetCounter().Increment(StatsType.Hit);
+    }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="T:Adnc.Infra.Redis.Core.CacheStats"/> class.
-        /// </summary>
-        public CacheStats()
+    /// <summary>
+    /// Ons the miss.
+    /// </summary>
+    public void OnMiss()
+    {
+        GetCounter().Increment(StatsType.Missed);
+    }
+
+    /// <summary>
+    /// Gets the statistic.
+    /// </summary>
+    /// <returns>The statistic.</returns>
+    /// <param name="statsType">Stats type.</param>
+    public long GetStatistic(StatsType statsType)
+    {
+        return GetCounter().Get(statsType);
+    }
+
+    /// <summary>
+    /// Gets the counter.
+    /// </summary>
+    /// <returns>The counter.</returns>
+    private CacheStatsCounter GetCounter()
+    {
+        if (!_counters.TryGetValue(DEFAULT_KEY, out CacheStatsCounter? counter))
         {
-            _counters = new ConcurrentDictionary<string, CacheStatsCounter>();
-        }
-
-        /// <summary>
-        /// Ons the hit.
-        /// </summary>
-        public void OnHit()
-        {
-            GetCounter().Increment(StatsType.Hit);
-        }
-
-        /// <summary>
-        /// Ons the miss.
-        /// </summary>
-        public void OnMiss()
-        {
-            GetCounter().Increment(StatsType.Missed);
-        }
-
-        /// <summary>
-        /// Gets the statistic.
-        /// </summary>
-        /// <returns>The statistic.</returns>
-        /// <param name="statsType">Stats type.</param>
-        public long GetStatistic(StatsType statsType)
-        {
-            return GetCounter().Get(statsType);
-        }
-
-        /// <summary>
-        /// Gets the counter.
-        /// </summary>
-        /// <returns>The counter.</returns>
-        private CacheStatsCounter GetCounter()
-        {
-            if (!_counters.TryGetValue(DEFAULT_KEY, out CacheStatsCounter? counter))
+            counter = new CacheStatsCounter();
+            if (_counters.TryAdd(DEFAULT_KEY, counter))
             {
-                counter = new CacheStatsCounter();
-                if (_counters.TryAdd(DEFAULT_KEY, counter))
-                {
-                    return counter;
-                }
-
-                return GetCounter();
+                return counter;
             }
 
-            return counter;
+            return GetCounter();
         }
+
+        return counter;
     }
 }

@@ -1,6 +1,5 @@
-﻿namespace System
+﻿namespace System;
+
+public static class BooleanExtension
 {
-    public static class BooleanExtension
-    {
-    }
 }

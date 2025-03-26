@@ -1,102 +1,101 @@
 ﻿using Adnc.Infra.Core.Json;
 using Adnc.Infra.Redis.Core.Internal;
 
-namespace Adnc.Infra.Redis.Core.Serialization
+namespace Adnc.Infra.Redis.Core.Serialization;
+
+/// <summary>
+/// Default json serializer.
+/// </summary>
+public class DefaultJsonSerializer : ISerializer
 {
     /// <summary>
-    /// Default json serializer.
+    /// The json serializer.
     /// </summary>
-    public class DefaultJsonSerializer : ISerializer
+    private static readonly JsonSerializerOptions jsonSerializerOption = SystemTextJson.GetAdncDefaultOptions();
+
+    /// <summary>
+    /// Gets the name.
+    /// </summary>
+    /// <value>The name.</value>
+    public string Name => ConstValue.Serializer.DefaultJsonSerializerName;
+
+    /// <summary>
+    /// Deserialize the specified bytes.
+    /// </summary>
+    /// <returns>The deserialize.</returns>
+    /// <param name="bytes">Bytes.</param>
+    /// <typeparam name="T">The 1st type parameter.</typeparam>
+    public T Deserialize<T>(byte[] bytes)
     {
-        /// <summary>
-        /// The json serializer.
-        /// </summary>
-        private static readonly JsonSerializerOptions jsonSerializerOption = SystemTextJson.GetAdncDefaultOptions();
+        return JsonSerializer.Deserialize<T>(bytes, jsonSerializerOption);
+    }
 
-        /// <summary>
-        /// Gets the name.
-        /// </summary>
-        /// <value>The name.</value>
-        public string Name => ConstValue.Serializer.DefaultJsonSerializerName;
+    /// <summary>
+    /// Deserialize the specified bytes.
+    /// </summary>
+    /// <returns>The deserialize.</returns>
+    /// <param name="bytes">Bytes.</param>
+    /// <param name="type">Type.</param>
+    public object Deserialize(byte[] bytes, Type type)
+    {
+        return JsonSerializer.Deserialize(bytes, type, jsonSerializerOption);
+    }
 
-        /// <summary>
-        /// Deserialize the specified bytes.
-        /// </summary>
-        /// <returns>The deserialize.</returns>
-        /// <param name="bytes">Bytes.</param>
-        /// <typeparam name="T">The 1st type parameter.</typeparam>
-        public T Deserialize<T>(byte[] bytes)
+    /// <summary>
+    /// Deserializes the object.
+    /// </summary>
+    /// <returns>The object.</returns>
+    /// <param name="value">Value.</param>
+    public object DeserializeObject(ArraySegment<byte> value)
+    {
+        var jr = new Utf8JsonReader(value);
+        jr.Read();
+        if (jr.TokenType == JsonTokenType.StartArray)
         {
-            return JsonSerializer.Deserialize<T>(bytes, jsonSerializerOption);
-        }
-
-        /// <summary>
-        /// Deserialize the specified bytes.
-        /// </summary>
-        /// <returns>The deserialize.</returns>
-        /// <param name="bytes">Bytes.</param>
-        /// <param name="type">Type.</param>
-        public object Deserialize(byte[] bytes, Type type)
-        {
-            return JsonSerializer.Deserialize(bytes, type, jsonSerializerOption);
-        }
-
-        /// <summary>
-        /// Deserializes the object.
-        /// </summary>
-        /// <returns>The object.</returns>
-        /// <param name="value">Value.</param>
-        public object DeserializeObject(ArraySegment<byte> value)
-        {
-            var jr = new Utf8JsonReader(value);
             jr.Read();
-            if (jr.TokenType == JsonTokenType.StartArray)
-            {
-                jr.Read();
-                var typeName = Encoding.UTF8.GetString(jr.ValueSpan.ToArray());
-                var type = Type.GetType(typeName, throwOnError: true);
+            var typeName = Encoding.UTF8.GetString(jr.ValueSpan.ToArray());
+            var type = Type.GetType(typeName, throwOnError: true);
 
-                jr.Read();
-                return JsonSerializer.Deserialize(ref jr, type, jsonSerializerOption);
-            }
-            else
-            {
-                throw new InvalidDataException("JsonTranscoder only supports [\"TypeName\", object]");
-            }
+            jr.Read();
+            return JsonSerializer.Deserialize(ref jr, type, jsonSerializerOption);
         }
-
-        /// <summary>
-        /// Serialize the specified value.
-        /// </summary>
-        /// <returns>The serialize.</returns>
-        /// <param name="value">Value.</param>
-        /// <typeparam name="T">The 1st type parameter.</typeparam>
-        public byte[] Serialize<T>(T value)
+        else
         {
-            return JsonSerializer.SerializeToUtf8Bytes(value, jsonSerializerOption);
+            throw new InvalidDataException("JsonTranscoder only supports [\"TypeName\", object]");
         }
+    }
 
-        /// <summary>
-        /// Serializes the object.
-        /// </summary>
-        /// <returns>The object.</returns>
-        /// <param name="obj">Object.</param>
-        public ArraySegment<byte> SerializeObject(object obj)
-        {
-            var typeName = TypeHelper.BuildTypeName(obj.GetType());
+    /// <summary>
+    /// Serialize the specified value.
+    /// </summary>
+    /// <returns>The serialize.</returns>
+    /// <param name="value">Value.</param>
+    /// <typeparam name="T">The 1st type parameter.</typeparam>
+    public byte[] Serialize<T>(T value)
+    {
+        return JsonSerializer.SerializeToUtf8Bytes(value, jsonSerializerOption);
+    }
 
-            using var ms = new MemoryStream();
-            using var jw = new Utf8JsonWriter(ms);
-            jw.WriteStartArray();
-            jw.WriteStringValue(typeName);
+    /// <summary>
+    /// Serializes the object.
+    /// </summary>
+    /// <returns>The object.</returns>
+    /// <param name="obj">Object.</param>
+    public ArraySegment<byte> SerializeObject(object obj)
+    {
+        var typeName = TypeHelper.BuildTypeName(obj.GetType());
 
-            JsonSerializer.Serialize(jw, obj, jsonSerializerOption);
+        using var ms = new MemoryStream();
+        using var jw = new Utf8JsonWriter(ms);
+        jw.WriteStartArray();
+        jw.WriteStringValue(typeName);
 
-            jw.WriteEndArray();
+        JsonSerializer.Serialize(jw, obj, jsonSerializerOption);
 
-            jw.Flush();
+        jw.WriteEndArray();
 
-            return new ArraySegment<byte>(ms.ToArray(), 0, (int)ms.Length);
-        }
+        jw.Flush();
+
+        return new ArraySegment<byte>(ms.ToArray(), 0, (int)ms.Length);
     }
 }
