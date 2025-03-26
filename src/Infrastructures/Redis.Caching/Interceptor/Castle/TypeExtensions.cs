@@ -6,19 +6,13 @@ public static class TypeExtensions
 
     public static bool IsTaskWithResult(this TypeInfo typeInfo)
     {
-        if (typeInfo == null)
-        {
-            throw new ArgumentNullException(nameof(typeInfo));
-        }
+        ArgumentNullException.ThrowIfNull(typeInfo);
         return isTaskOfTCache.GetOrAdd(typeInfo, Info => Info.IsGenericType && typeof(Task).GetTypeInfo().IsAssignableFrom(Info));
     }
 
     public static bool IsTask(this TypeInfo typeInfo)
     {
-        if (typeInfo == null)
-        {
-            throw new ArgumentNullException(nameof(typeInfo));
-        }
+        ArgumentNullException.ThrowIfNull(typeInfo);
         return typeInfo.AsType() == typeof(Task);
     }
 }

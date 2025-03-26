@@ -40,10 +40,7 @@ public static class ApplicationBuilderConsulExtension
 
     public static IHost RegisterToConsul(this IHost host, Uri serviceAddress, string? serviceId = null)
     {
-        if (serviceAddress is null)
-        {
-            throw new ArgumentNullException(nameof(serviceAddress));
-        }
+        ArgumentNullException.ThrowIfNull(serviceAddress);
 
         var registration = ActivatorUtilities.CreateInstance<RegistrationProvider>(host.Services);
         registration.Register(serviceAddress, serviceId);
@@ -52,10 +49,7 @@ public static class ApplicationBuilderConsulExtension
 
     public static IHost RegisterToConsul(this IHost host, AgentServiceRegistration instance)
     {
-        if (instance is null)
-        {
-            throw new ArgumentNullException(nameof(instance));
-        }
+        ArgumentNullException.ThrowIfNull(instance);
 
         var registration = ActivatorUtilities.CreateInstance<RegistrationProvider>(host.Services);
         registration.Register(instance);

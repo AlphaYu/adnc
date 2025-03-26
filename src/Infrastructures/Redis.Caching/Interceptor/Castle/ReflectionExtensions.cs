@@ -6,20 +6,14 @@ public static class ReflectionExtensions
 {
     public static bool IsReturnTask(this MethodInfo methodInfo)
     {
-        if (methodInfo == null)
-        {
-            throw new ArgumentNullException(nameof(methodInfo));
-        }
+        ArgumentNullException.ThrowIfNull(methodInfo);
         var returnType = methodInfo.ReturnType.GetTypeInfo();
         return returnType.IsTaskWithResult();
     }
 
     public static Task<object> UnwrapAsyncReturnValue(this IInvocation invocation)
     {
-        if (invocation == null)
-        {
-            throw new ArgumentNullException(nameof(invocation));
-        }
+        ArgumentNullException.ThrowIfNull(invocation);
 
         var serviceMethod = invocation.Method ?? invocation.MethodInvocationTarget;
 

@@ -12,10 +12,7 @@ public static class ByteArrayExtension
     /// <returns>The MemoryStream.</returns>
     public static MemoryStream ToMemoryStream(this byte[] byteArray)
     {
-        if (byteArray == null)
-        {
-            throw new ArgumentNullException(nameof(byteArray));
-        }
+        ArgumentNullException.ThrowIfNull(byteArray);
 
         return new MemoryStream(byteArray);
     }

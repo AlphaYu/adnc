@@ -27,10 +27,7 @@ public abstract class AbstractMongoDbEntityInfo : IEntityInfo
 
     protected virtual List<Type> GetEntityTypes(IEnumerable<Assembly> assemblies)
     {
-        if (assemblies is null)
-        {
-            throw new ArgumentNullException(nameof(assemblies));
-        }
+        ArgumentNullException.ThrowIfNull(assemblies);
 
         var typeList = assemblies.SelectMany(assembly => assembly.GetTypes()
                                                  .Where(m => m.FullName != null

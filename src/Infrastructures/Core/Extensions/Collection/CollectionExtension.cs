@@ -13,10 +13,7 @@ public static class CollectionExtension
     /// <exception cref="InvalidOperationException">Thrown when the collection is read-only.</exception>
     public static void AddIf<T>(this ICollection<T> collection, Func<T, bool> predicate, T value)
     {
-        if (collection == null)
-        {
-            throw new ArgumentNullException(nameof(collection));
-        }
+        ArgumentNullException.ThrowIfNull(collection);
 
         if (collection.IsReadOnly)
         {
@@ -39,15 +36,9 @@ public static class CollectionExtension
     /// <exception cref="ArgumentNullException">Thrown when the collection or the values parameter is null.</exception>
     public static bool ContainsAll<T>(this ICollection<T> collection, params T[] values)
     {
-        if (collection == null)
-        {
-            throw new ArgumentNullException(nameof(collection));
-        }
+        ArgumentNullException.ThrowIfNull(collection);
 
-        if (values == null)
-        {
-            throw new ArgumentNullException(nameof(values));
-        }
+        ArgumentNullException.ThrowIfNull(values);
 
         foreach (var value in values)
         {
@@ -70,15 +61,9 @@ public static class CollectionExtension
     /// <exception cref="ArgumentNullException">Thrown when the collection or the values parameter is null.</exception>
     public static bool ContainsAny<T>(this ICollection<T> collection, params T[] values)
     {
-        if (collection == null)
-        {
-            throw new ArgumentNullException(nameof(collection));
-        }
+        ArgumentNullException.ThrowIfNull(collection);
 
-        if (values == null)
-        {
-            throw new ArgumentNullException(nameof(values));
-        }
+        ArgumentNullException.ThrowIfNull(values);
 
         foreach (var value in values)
         {

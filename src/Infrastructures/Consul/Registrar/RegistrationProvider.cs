@@ -25,10 +25,7 @@ public sealed class RegistrationProvider
 
     public void Register(Uri serviceAddress, string? serviceId = null)
     {
-        if (serviceAddress is null)
-        {
-            throw new ArgumentNullException(nameof(serviceAddress));
-        }
+        ArgumentNullException.ThrowIfNull(serviceAddress);
 
         var instance = GetAgentServiceRegistration(serviceAddress, serviceId);
         Register(instance);
@@ -36,10 +33,7 @@ public sealed class RegistrationProvider
 
     public void Register(AgentServiceRegistration instance)
     {
-        if (instance is null)
-        {
-            throw new ArgumentNullException(nameof(instance));
-        }
+        ArgumentNullException.ThrowIfNull(instance);
 
         CheckConfig();
         var protocol = instance.Meta["Protocol"];
@@ -92,10 +86,7 @@ public sealed class RegistrationProvider
 
     private AgentServiceRegistration GetAgentServiceRegistration(Uri serviceAddress, string? serviceId = null)
     {
-        if (serviceAddress is null)
-        {
-            throw new ArgumentNullException(nameof(serviceAddress));
-        }
+        ArgumentNullException.ThrowIfNull(serviceAddress);
 
         var protocol = serviceAddress.Scheme;
         var host = serviceAddress.Host;

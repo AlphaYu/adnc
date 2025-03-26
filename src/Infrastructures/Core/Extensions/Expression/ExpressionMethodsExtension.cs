@@ -13,10 +13,7 @@ public static class ExpressionMethodsExtension
     /// <returns>The <see cref="MethodInfo"/> representing the method call.</returns>
     public static MethodInfo GetMethod<T>(this Expression<T> expression)
     {
-        if (expression == null)
-        {
-            throw new ArgumentNullException(nameof(expression));
-        }
+        ArgumentNullException.ThrowIfNull(expression);
 
         if (!(expression.Body is MethodCallExpression methodCallExpression))
         {

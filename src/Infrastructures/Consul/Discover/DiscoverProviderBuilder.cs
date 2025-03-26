@@ -8,10 +8,7 @@ public class DiscoverProviderBuilder
 
     public DiscoverProviderBuilder(ConsulClient client)
     {
-        if (client is null)
-        {
-            throw new ArgumentNullException(nameof(client));
-        }
+        ArgumentNullException.ThrowIfNull(client);
 
         _discoverProvider = new DiscoverProvider(client);
     }
