@@ -100,7 +100,7 @@ public static class AbstractApplicationDependencyRegistrarExtension
             "test" => "test",
             "staging" => $"stag",
             "production" => $"prod",
-            _ => throw new ArgumentNullException(nameof(ASPNETCORE_ENVIRONMENT))
+            _ => throw new InvalidDataException(nameof(ASPNETCORE_ENVIRONMENT))
         };
     }
 

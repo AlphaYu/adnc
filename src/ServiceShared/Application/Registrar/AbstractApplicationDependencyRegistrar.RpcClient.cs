@@ -25,14 +25,11 @@ public abstract partial class AbstractApplicationDependencyRegistrar
     protected virtual void AddRestClient<TRestClient>(string serviceName, List<IAsyncPolicy<HttpResponseMessage>> policies)
      where TRestClient : class,IRestClient
     {
-        if(string.IsNullOrWhiteSpace(serviceName))
-        {
-            throw new ArgumentNullException(nameof(serviceName));
-        }
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(serviceName, nameof(serviceName));
 
         if (RpcInfoOption is null)
         {
-            throw new ArgumentNullException(nameof(RpcInfoOption));
+            throw new InvalidDataException(nameof(RpcInfoOption));
         }
         else
         {
@@ -88,14 +85,11 @@ public abstract partial class AbstractApplicationDependencyRegistrar
     protected virtual void AddGrpcClient<TGrpcClient>(string serviceName, List<IAsyncPolicy<HttpResponseMessage>> policies)
      where TGrpcClient : ClientBase<TGrpcClient>
     {
-        if (string.IsNullOrWhiteSpace(serviceName))
-        {
-            throw new ArgumentNullException(nameof(serviceName));
-        }
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(serviceName, nameof(serviceName));
 
         if (RpcInfoOption is null)
         {
-            throw new ArgumentNullException(nameof(RpcInfoOption));
+            throw new InvalidDataException(nameof(RpcInfoOption));
         }
         else
         {

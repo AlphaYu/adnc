@@ -20,13 +20,13 @@ public sealed class BloomFilterFactory
         IBloomFilter? bloomFilter;
         if (_redisOptions.Value.EnableBloomFilter)
         {
-            bloomFilter = _instances.FirstOrDefault(x => x.Name.EqualsIgnoreCase(name));
+            bloomFilter = _instances.First(x => x.Name.EqualsIgnoreCase(name));
         }
         else
         {
-            bloomFilter = _instances.FirstOrDefault(x => x.Name.EqualsIgnoreCase("null"));
+            bloomFilter = _instances.First(x => x.Name.EqualsIgnoreCase("null"));
         }
 
-        return bloomFilter ?? throw new ArgumentNullException(nameof(bloomFilter));
+        return bloomFilter;
     }
 }

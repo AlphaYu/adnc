@@ -182,7 +182,7 @@ public sealed class OperateLogAsyncInterceptor(UserContext userContext, ILogger<
             //properties.Persistent = true;
             //_mqProducer.BasicPublish(MqExchanges.Logs, MqRoutingKeys.OpsLog, logInfo, properties);
             var operationLogWriter = Channels.LogAccessor<OperationLog>.Instance.Writer;
-            operationLogWriter.WriteAsync(logInfo).GetAwaiter().GetResult();
+            operationLogWriter.TryWrite(logInfo);
         }
         catch (Exception ex)
         {

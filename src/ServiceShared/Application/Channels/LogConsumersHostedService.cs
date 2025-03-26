@@ -5,15 +5,6 @@ public class LogConsumersHostedService(ILogger<LogConsumersHostedService> logger
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         var configuration = services.GetRequiredService<IConfiguration>();
-        var dbTypeString = configuration.GetValue<string>(NodeConsts.SysLogDb_DbType);
-        var connectionString = configuration.GetValue<string>(NodeConsts.SysLogDb_ConnectionString);
-
-        if (string.IsNullOrWhiteSpace(dbTypeString) || string.IsNullOrWhiteSpace(connectionString))
-        {
-            throw new ArgumentNullException("SysLogDb configuration is missing");
-        }
-
-        var dbType = dbTypeString.ToUpper().ToEnum<DbTypes>();
 
         //save loginlogs
         _ = Task.Factory.StartNew(async () =>
@@ -37,6 +28,7 @@ public class LogConsumersHostedService(ILogger<LogConsumersHostedService> logger
                             //await repository.AddManyAsync(entities);
                             using var scope = services.CreateScope();
                             var repository = scope.ServiceProvider.GetRequiredService<IAdoExecuterRepository>();
+                            var (connectionString, dbType) = repository.GetDbTypeAndConnectionString(configuration, NodeConsts.SysLogDb_DbType, NodeConsts.SysLogDb_ConnectionString);
                             using var _ = repository.ChangeOrSetDbConnection(connectionString, dbType);
                             await repository.ExecuteAsync("INSERT INTO login_log (Id, Device, Message, Succeed, StatusCode, UserId, Account, Name, RemoteIpAddress, ExecutionTime, CreateTime) VALUES (@Id, @Device, @Message, @Succeed, @StatusCode, @UserId, @Account, @Name, @RemoteIpAddress, @ExecutionTime, @CreateTime)", entities);
                         }
@@ -81,6 +73,7 @@ public class LogConsumersHostedService(ILogger<LogConsumersHostedService> logger
                             //await repository.AddManyAsync(entities);
                             using var scope = services.CreateScope();
                             var repository = scope.ServiceProvider.GetRequiredService<IAdoExecuterRepository>();
+                            var (connectionString, dbType) = repository.GetDbTypeAndConnectionString(configuration, NodeConsts.SysLogDb_DbType, NodeConsts.SysLogDb_ConnectionString);
                             using var _ = repository.ChangeOrSetDbConnection(connectionString, dbType);
                             await repository.ExecuteAsync("INSERT INTO operation_log (Id, ClassName, CreateTime, LogName, LogType, Message, Method, Succeed, UserId, Account, Name, RemoteIpAddress, ExecutionTime) VALUES (@Id, @ClassName, @CreateTime, @LogName, @LogType, @Message, @Method, @Succeed, @UserId, @Account, @Name, @RemoteIpAddress, @ExecutionTime)", entities);
                         }

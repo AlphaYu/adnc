@@ -18,16 +18,16 @@ public class PageModelDto<T> : IDto
     public PageModelDto(SearchPagedDto search, IReadOnlyList<T> data, int count, dynamic? xData = null)
         : this(search.PageIndex, search.PageSize, data, count)
     {
-        this.XData = xData ?? new object();
+        XData = xData ?? new object();
     }
 
     public PageModelDto(int pageIndex, int pageSize, IReadOnlyList<T> data, int count, dynamic? xData = null)
     {
-        this.PageIndex = pageIndex;
-        this.PageSize = pageSize;
-        this.Total = count;
-        this.List = data;
-        this.XData = xData ?? new object();
+        PageIndex = pageIndex;
+        PageSize = pageSize;
+        Total = count;
+        List = data;
+        XData = xData ?? new object();
     }
 
     public IReadOnlyList<T> List
@@ -44,7 +44,7 @@ public class PageModelDto<T> : IDto
 
     public int Total { get; set; }
 
-    public int PageCount => (this.RowsCount + this.PageSize - 1) / this.PageSize;
+    public int PageCount => (RowsCount + PageSize - 1) / PageSize;
 
     public dynamic XData { get; set; } = new object();
 }

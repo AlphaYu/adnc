@@ -52,40 +52,40 @@ public abstract class AbstractBloomFilter : IBloomFilter
 
     public virtual async Task<bool> AddAsync(string value)
     {
-        var exists = await this.ExistsBloomFilterAsync();
+        var exists = await ExistsBloomFilterAsync();
         if (!exists)
         {
-            throw new ArgumentNullException(this.Name, $"call {nameof(InitAsync)} methos before");
+            throw new ArgumentNullException(Name, $"call {nameof(InitAsync)} methos before");
         }
 
-        return await _redisProvider.Value.BfAddAsync(this.Name, value);
+        return await _redisProvider.Value.BfAddAsync(Name, value);
     }
 
     public virtual async Task<bool[]> AddAsync(IEnumerable<string> values)
     {
-        var exists = await this.ExistsBloomFilterAsync();
+        var exists = await ExistsBloomFilterAsync();
         if (!exists)
         {
-            throw new ArgumentNullException(this.Name, $"call {nameof(InitAsync)} methos before");
+            throw new ArgumentNullException(Name, $"call {nameof(InitAsync)} methos before");
         }
 
-        return await _redisProvider.Value.BfAddAsync(this.Name, values);
+        return await _redisProvider.Value.BfAddAsync(Name, values);
     }
 
-    public virtual async Task<bool> ExistsAsync(string value)   => await _redisProvider.Value.BfExistsAsync(this.Name, value);
+    public virtual async Task<bool> ExistsAsync(string value)   => await _redisProvider.Value.BfExistsAsync(Name, value);
 
-    public virtual async Task<bool[]> ExistsAsync(IEnumerable<string> values) => await _redisProvider.Value.BfExistsAsync(this.Name, values);
+    public virtual async Task<bool[]> ExistsAsync(IEnumerable<string> values) => await _redisProvider.Value.BfExistsAsync(Name, values);
 
     public abstract Task InitAsync();
 
     protected async Task InitAsync(IEnumerable<string> values)
     {
-        if (await this.ExistsBloomFilterAsync())
+        if (await ExistsBloomFilterAsync())
         {
             return;
         }
 
-        var (Success, LockValue) = await _distributedLocker.Value.LockAsync(this.Name);
+        var (Success, LockValue) = await _distributedLocker.Value.LockAsync(Name);
         if (!Success)
         {
             await Task.Delay(500);
@@ -96,15 +96,15 @@ public abstract class AbstractBloomFilter : IBloomFilter
         {
             if (values.IsNotNullOrEmpty())
             {
-                await _redisProvider.Value.BfReserveAsync(this.Name, this.ErrorRate, this.Capacity);
-                await _redisProvider.Value.BfAddAsync(this.Name, values);
+                await _redisProvider.Value.BfReserveAsync(Name, ErrorRate, Capacity);
+                await _redisProvider.Value.BfAddAsync(Name, values);
             }
         }
         finally
         {
-            await _distributedLocker.Value.SafedUnLockAsync(this.Name, LockValue);
+            await _distributedLocker.Value.SafedUnLockAsync(Name, LockValue);
         }
     }
 
-    protected virtual async Task<bool> ExistsBloomFilterAsync() => await _redisProvider.Value.KeyExistsAsync(this.Name);
+    protected virtual async Task<bool> ExistsBloomFilterAsync() => await _redisProvider.Value.KeyExistsAsync(Name);
 }
