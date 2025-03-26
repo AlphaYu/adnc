@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using System.Globalization;
-using System.Runtime.InteropServices;
 
 namespace System;
 
@@ -88,44 +87,6 @@ public static class DataTimeExtension
         dtWeekStart = dt.AddDays(-(int)dt.DayOfWeek + (int)DayOfWeek.Monday);
         dtWeekeEnd = dt.AddDays((int)DayOfWeek.Saturday - (int)dt.DayOfWeek + 1).AddDays(-2);
     }
-
-    #region P/Invoke 设置本地时间
-
-    [DllImport("kernel32.dll")]
-    private static extern bool SetLocalTime(ref SystemTime time);
-
-    [StructLayout(LayoutKind.Sequential)]
-    private struct SystemTime
-    {
-        public short year;
-        public short month;
-        public short dayOfWeek;
-        public short day;
-        public short hour;
-        public short minute;
-        public short second;
-        public short milliseconds;
-    }
-
-    /// <summary>
-    /// 设置本地计算机时间
-    /// </summary>
-    /// <param name="dt">DateTime对象</param>
-    public static void SetLocalTime(this in DateTime dt)
-    {
-        SystemTime st;
-        st.year = (short)dt.Year;
-        st.month = (short)dt.Month;
-        st.dayOfWeek = (short)dt.DayOfWeek;
-        st.day = (short)dt.Day;
-        st.hour = (short)dt.Hour;
-        st.minute = (short)dt.Minute;
-        st.second = (short)dt.Second;
-        st.milliseconds = (short)dt.Millisecond;
-        SetLocalTime(ref st);
-    }
-
-    #endregion P/Invoke 设置本地时间
 
     /// <summary>
     /// 返回相对于当前时间的相对天数
