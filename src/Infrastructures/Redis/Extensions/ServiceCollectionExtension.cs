@@ -15,7 +15,7 @@ public static class ServiceCollectionExtension
             return services;
         }
 
-        var redisConfig = redisSection.Get<RedisOptions>() ?? throw new ArgumentNullException("RedisOptions is null");
+        var redisConfig = redisSection.Get<RedisOptions>() ?? throw new InvalidDataException("RedisOptions is null");
         services.Configure<RedisOptions>(redisSection);
         services.AddSingleton(provider =>
         {

@@ -70,7 +70,7 @@ public static class ArgumentCheck
     /// <param name="argumentName">Argument name.</param>
     public static void NotNullAndCountGTZero<T>(IEnumerable<T> argument, string argumentName)
     {
-        if (argument == null || argument.Count() <= 0)
+        if (argument == null || !argument.Any())
         {
             throw new ArgumentNullException(argumentName);
         }

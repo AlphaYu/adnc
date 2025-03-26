@@ -80,7 +80,7 @@ public abstract class AbstracCacheProvider : ICacheProvider
     public bool Exists(string cacheKey)
     {
         var operationId = s_diagnosticListener.WriteExistsCacheBefore(new BeforeExistsRequestEventData(CachingProviderType.ToString(), Name, nameof(Exists), cacheKey));
-        Exception e = null;
+        Exception? e = null;
         try
         {
             return BaseExists(cacheKey);
@@ -106,7 +106,7 @@ public abstract class AbstracCacheProvider : ICacheProvider
     public async Task<bool> ExistsAsync(string cacheKey)
     {
         var operationId = s_diagnosticListener.WriteExistsCacheBefore(new BeforeExistsRequestEventData(CachingProviderType.ToString(), Name, nameof(ExistsAsync), cacheKey));
-        Exception e = null;
+        Exception? e = null;
         try
         {
             var flag = await BaseExistsAsync(cacheKey);
@@ -133,7 +133,7 @@ public abstract class AbstracCacheProvider : ICacheProvider
     public void Flush()
     {
         var operationId = s_diagnosticListener.WriteFlushCacheBefore(new EventData(CachingProviderType.ToString(), Name, nameof(Flush)));
-        Exception e = null;
+        Exception? e = null;
         try
         {
             BaseFlush();
@@ -159,7 +159,7 @@ public abstract class AbstracCacheProvider : ICacheProvider
     public async Task FlushAsync()
     {
         var operationId = s_diagnosticListener.WriteFlushCacheBefore(new EventData(CachingProviderType.ToString(), Name, nameof(FlushAsync)));
-        Exception e = null;
+        Exception? e = null;
         try
         {
             await BaseFlushAsync();
@@ -185,7 +185,7 @@ public abstract class AbstracCacheProvider : ICacheProvider
     public CacheValue<T> Get<T>(string cacheKey, Func<T> dataRetriever, TimeSpan expiration)
     {
         var operationId = s_diagnosticListener.WriteGetCacheBefore(new BeforeGetRequestEventData(CachingProviderType.ToString(), Name, nameof(Get), [cacheKey], expiration));
-        Exception e = null;
+        Exception? e = null;
         try
         {
             return BaseGet(cacheKey, dataRetriever, expiration);
@@ -211,7 +211,7 @@ public abstract class AbstracCacheProvider : ICacheProvider
     public CacheValue<T> Get<T>(string cacheKey)
     {
         var operationId = s_diagnosticListener.WriteGetCacheBefore(new BeforeGetRequestEventData(CachingProviderType.ToString(), Name, nameof(Get), [cacheKey]));
-        Exception e = null;
+        Exception? e = null;
         try
         {
             return BaseGet<T>(cacheKey);
@@ -237,7 +237,7 @@ public abstract class AbstracCacheProvider : ICacheProvider
     public IDictionary<string, CacheValue<T>> GetAll<T>(IEnumerable<string> cacheKeys)
     {
         var operationId = s_diagnosticListener.WriteGetCacheBefore(new BeforeGetRequestEventData(CachingProviderType.ToString(), Name, nameof(GetAll), cacheKeys.ToArray()));
-        Exception e = null;
+        Exception? e = null;
         try
         {
             return BaseGetAll<T>(cacheKeys);
@@ -263,7 +263,7 @@ public abstract class AbstracCacheProvider : ICacheProvider
     public async Task<IDictionary<string, CacheValue<T>>> GetAllAsync<T>(IEnumerable<string> cacheKeys)
     {
         var operationId = s_diagnosticListener.WriteGetCacheBefore(new BeforeGetRequestEventData(CachingProviderType.ToString(), Name, nameof(GetAllAsync), cacheKeys.ToArray()));
-        Exception e = null;
+        Exception? e = null;
         try
         {
             return await BaseGetAllAsync<T>(cacheKeys);
@@ -289,7 +289,7 @@ public abstract class AbstracCacheProvider : ICacheProvider
     public async Task<CacheValue<T>> GetAsync<T>(string cacheKey, Func<Task<T>> dataRetriever, TimeSpan expiration)
     {
         var operationId = s_diagnosticListener.WriteGetCacheBefore(new BeforeGetRequestEventData(CachingProviderType.ToString(), Name, nameof(GetAsync), [cacheKey], expiration));
-        Exception e = null;
+        Exception? e = null;
         try
         {
             return await BaseGetAsync(cacheKey, dataRetriever, expiration);
@@ -315,7 +315,7 @@ public abstract class AbstracCacheProvider : ICacheProvider
     public async Task<object> GetAsync(string cacheKey, Type type)
     {
         var operationId = s_diagnosticListener.WriteGetCacheBefore(new BeforeGetRequestEventData(CachingProviderType.ToString(), Name, "GetAsync_Type", [cacheKey]));
-        Exception e = null;
+        Exception? e = null;
         try
         {
             return await BaseGetAsync(cacheKey, type);
@@ -341,7 +341,7 @@ public abstract class AbstracCacheProvider : ICacheProvider
     public async Task<CacheValue<T>> GetAsync<T>(string cacheKey)
     {
         var operationId = s_diagnosticListener.WriteGetCacheBefore(new BeforeGetRequestEventData(CachingProviderType.ToString(), Name, nameof(GetAsync), [cacheKey]));
-        Exception e = null;
+        Exception? e = null;
         try
         {
             return await BaseGetAsync<T>(cacheKey);
@@ -367,7 +367,7 @@ public abstract class AbstracCacheProvider : ICacheProvider
     public IDictionary<string, CacheValue<T>> GetByPrefix<T>(string prefix)
     {
         var operationId = s_diagnosticListener.WriteGetCacheBefore(new BeforeGetRequestEventData(CachingProviderType.ToString(), Name, nameof(GetByPrefix), [prefix]));
-        Exception e = null;
+        Exception? e = null;
         try
         {
             return BaseGetByPrefix<T>(prefix);
@@ -393,7 +393,7 @@ public abstract class AbstracCacheProvider : ICacheProvider
     public async Task<IDictionary<string, CacheValue<T>>> GetByPrefixAsync<T>(string prefix)
     {
         var operationId = s_diagnosticListener.WriteGetCacheBefore(new BeforeGetRequestEventData(CachingProviderType.ToString(), Name, nameof(GetByPrefixAsync), [prefix]));
-        Exception e = null;
+        Exception? e = null;
         try
         {
             return await BaseGetByPrefixAsync<T>(prefix);
@@ -429,7 +429,7 @@ public abstract class AbstracCacheProvider : ICacheProvider
     public void Remove(string cacheKey)
     {
         var operationId = s_diagnosticListener.WriteRemoveCacheBefore(new BeforeRemoveRequestEventData(CachingProviderType.ToString(), Name, nameof(Remove), [cacheKey]));
-        Exception e = null;
+        Exception? e = null;
         try
         {
             BaseRemove(cacheKey);
@@ -455,7 +455,7 @@ public abstract class AbstracCacheProvider : ICacheProvider
     public void RemoveAll(IEnumerable<string> cacheKeys)
     {
         var operationId = s_diagnosticListener.WriteRemoveCacheBefore(new BeforeRemoveRequestEventData(CachingProviderType.ToString(), Name, nameof(RemoveAll), cacheKeys.ToArray()));
-        Exception e = null;
+        Exception? e = null;
         try
         {
             BaseRemoveAll(cacheKeys);
@@ -481,7 +481,7 @@ public abstract class AbstracCacheProvider : ICacheProvider
     public async Task RemoveAllAsync(IEnumerable<string> cacheKeys)
     {
         var operationId = s_diagnosticListener.WriteRemoveCacheBefore(new BeforeRemoveRequestEventData(CachingProviderType.ToString(), Name, nameof(RemoveAllAsync), cacheKeys.ToArray()));
-        Exception e = null;
+        Exception? e = null;
         try
         {
             await BaseRemoveAllAsync(cacheKeys);
@@ -507,7 +507,7 @@ public abstract class AbstracCacheProvider : ICacheProvider
     public async Task RemoveAsync(string cacheKey)
     {
         var operationId = s_diagnosticListener.WriteRemoveCacheBefore(new BeforeRemoveRequestEventData(CachingProviderType.ToString(), Name, nameof(RemoveAsync), [cacheKey]));
-        Exception e = null;
+        Exception? e = null;
         try
         {
             await BaseRemoveAsync(cacheKey);
@@ -533,7 +533,7 @@ public abstract class AbstracCacheProvider : ICacheProvider
     public void RemoveByPrefix(string prefix)
     {
         var operationId = s_diagnosticListener.WriteRemoveCacheBefore(new BeforeRemoveRequestEventData(CachingProviderType.ToString(), Name, nameof(RemoveByPrefix), [prefix]));
-        Exception e = null;
+        Exception? e = null;
         try
         {
             BaseRemoveByPrefix(prefix);
@@ -559,7 +559,7 @@ public abstract class AbstracCacheProvider : ICacheProvider
     public async Task RemoveByPrefixAsync(string prefix)
     {
         var operationId = s_diagnosticListener.WriteRemoveCacheBefore(new BeforeRemoveRequestEventData(CachingProviderType.ToString(), Name, nameof(RemoveByPrefixAsync), [prefix]));
-        Exception e = null;
+        Exception? e = null;
         try
         {
             await BaseRemoveByPrefixAsync(prefix);
@@ -585,7 +585,7 @@ public abstract class AbstracCacheProvider : ICacheProvider
     public void Set<T>(string cacheKey, T cacheValue, TimeSpan expiration)
     {
         var operationId = s_diagnosticListener.WriteSetCacheBefore(new BeforeSetRequestEventData(CachingProviderType.ToString(), Name, nameof(Set), new Dictionary<string, object> { { cacheKey, cacheValue } }, expiration));
-        Exception e = null;
+        Exception? e = null;
         try
         {
             BaseSet(cacheKey, cacheValue, expiration);
@@ -611,7 +611,7 @@ public abstract class AbstracCacheProvider : ICacheProvider
     public void SetAll<T>(IDictionary<string, T> value, TimeSpan expiration)
     {
         var operationId = s_diagnosticListener.WriteSetCacheBefore(new BeforeSetRequestEventData(CachingProviderType.ToString(), Name, nameof(SetAll), value.ToDictionary(k => k.Key, v => (object)v.Value), expiration));
-        Exception e = null;
+        Exception? e = null;
         try
         {
             BaseSetAll(value, expiration);
@@ -637,7 +637,7 @@ public abstract class AbstracCacheProvider : ICacheProvider
     public async Task SetAllAsync<T>(IDictionary<string, T> value, TimeSpan expiration)
     {
         var operationId = s_diagnosticListener.WriteSetCacheBefore(new BeforeSetRequestEventData(CachingProviderType.ToString(), Name, nameof(SetAllAsync), value.ToDictionary(k => k.Key, v => (object)v.Value), expiration));
-        Exception e = null;
+        Exception? e = null;
         try
         {
             await BaseSetAllAsync(value, expiration);
@@ -663,7 +663,7 @@ public abstract class AbstracCacheProvider : ICacheProvider
     public async Task SetAsync<T>(string cacheKey, T cacheValue, TimeSpan expiration)
     {
         var operationId = s_diagnosticListener.WriteSetCacheBefore(new BeforeSetRequestEventData(CachingProviderType.ToString(), Name, nameof(SetAsync), new Dictionary<string, object> { { cacheKey, cacheValue } }, expiration));
-        Exception e = null;
+        Exception? e = null;
         try
         {
             await BaseSetAsync(cacheKey, cacheValue, expiration);
@@ -689,7 +689,7 @@ public abstract class AbstracCacheProvider : ICacheProvider
     public bool TrySet<T>(string cacheKey, T cacheValue, TimeSpan expiration)
     {
         var operationId = s_diagnosticListener.WriteSetCacheBefore(new BeforeSetRequestEventData(CachingProviderType.ToString(), Name, nameof(TrySet), new Dictionary<string, object> { { cacheKey, cacheValue } }, expiration));
-        Exception e = null;
+        Exception? e = null;
         try
         {
             return BaseTrySet(cacheKey, cacheValue, expiration);
@@ -715,7 +715,7 @@ public abstract class AbstracCacheProvider : ICacheProvider
     public async Task<bool> TrySetAsync<T>(string cacheKey, T cacheValue, TimeSpan expiration)
     {
         var operationId = s_diagnosticListener.WriteSetCacheBefore(new BeforeSetRequestEventData(CachingProviderType.ToString(), Name, nameof(TrySetAsync), new Dictionary<string, object> { { cacheKey, cacheValue } }, expiration));
-        Exception e = null;
+        Exception? e = null;
         try
         {
             return await BaseTrySetAsync(cacheKey, cacheValue, expiration);
@@ -751,7 +751,7 @@ public abstract class AbstracCacheProvider : ICacheProvider
     public async Task KeyExpireAsync(IEnumerable<string> cacheKeys, int seconds)
     {
         var operationId = s_diagnosticListener.WriteSetCacheBefore(new BeforeSetRequestEventData(CachingProviderType.ToString(), Name, nameof(TrySetAsync), new Dictionary<string, object> { { "cacheKeys", cacheKeys } }, TimeSpan.FromSeconds(seconds)));
-        Exception e = null;
+        Exception? e = null;
         try
         {
             await BaseKeyExpireAsync(cacheKeys, seconds);

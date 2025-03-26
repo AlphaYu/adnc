@@ -33,7 +33,7 @@ public partial class DefaultRedisProvider : IRedisProvider
     /// <summary>
     /// The logger.
     /// </summary>
-    private readonly ILogger _logger;
+    private readonly ILogger? _logger;
 
     public string Name => ConstValue.Provider.StackExchange;
 
@@ -51,9 +51,9 @@ public partial class DefaultRedisProvider : IRedisProvider
     {
         ArgumentCheck.NotNull(dbProviders, nameof(dbProviders));
         ArgumentCheck.NotNull(serializer, nameof(serializer));
-        this._serializer = serializer;
-        this._logger = loggerFactory?.CreateLogger<DefaultRedisProvider>();
-        this._redisDb = dbProviders.GetDatabase();
-        this._servers = dbProviders.GetServerList();
+        _serializer = serializer;
+        _logger = loggerFactory?.CreateLogger<DefaultRedisProvider>();
+        _redisDb = dbProviders.GetDatabase();
+        _servers = dbProviders.GetServerList();
     }
 }
