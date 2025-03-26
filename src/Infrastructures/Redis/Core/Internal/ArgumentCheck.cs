@@ -83,7 +83,7 @@
         /// <param name="argumentName">Argument name.</param>
         public static void NotNullAndCountGTZero<T>(IDictionary<string, T> argument, string argumentName)
         {
-            if (argument == null || argument.Count() <= 0)
+            if (argument == null || argument.Count <= 0)
             {
                 throw new ArgumentNullException(argumentName);
             }

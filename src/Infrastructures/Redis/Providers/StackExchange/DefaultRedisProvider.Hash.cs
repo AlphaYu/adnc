@@ -137,7 +137,7 @@ namespace Adnc.Infra.Redis.Providers.StackExchange
 
             var list = _redisDb.HashGet(cacheKey, fields.Select(x => (RedisValue)x).ToArray());
 
-            for (int i = 0; i < fields.Count(); i++)
+            for (int i = 0; i < fields.Count; i++)
             {
                 if (!dict.ContainsKey(fields[i]))
                 {
@@ -274,7 +274,7 @@ namespace Adnc.Infra.Redis.Providers.StackExchange
 
             var res = await _redisDb.HashGetAsync(cacheKey, fields.Select(x => (RedisValue)x).ToArray());
 
-            for (int i = 0; i < fields.Count(); i++)
+            for (int i = 0; i < fields.Count; i++)
             {
                 if (!dict.ContainsKey(fields[i]))
                 {
