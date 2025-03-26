@@ -52,7 +52,7 @@ public interface IServiceInfo
 
 public sealed class ServiceInfo : IServiceInfo
 {
-    private static ServiceInfo? _instance = null;
+    private static ServiceInfo? _instance;
     private static readonly object _lockObj = new();
 
     public string Id { get; private set; } = string.Empty;

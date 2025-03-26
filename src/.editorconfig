@@ -326,8 +326,8 @@ dotnet_diagnostic.IDE0060.severity = warning
 dotnet_diagnostic.IDE0062.severity = warning
 
 # IDE0073: File header
-dotnet_diagnostic.IDE0073.severity = warning
-file_header_template = Licensed to the .NET Foundation under one or more agreements.\nThe .NET Foundation licenses this file to you under the MIT license.
+dotnet_diagnostic.IDE0073.severity = none
+file_header_template = Licensed to the ANDC under one or more agreements.\nThe ADNC licenses this file to you under the MIT license.
 
 # IDE0161: Convert to file-scoped namespace
 dotnet_diagnostic.IDE0161.severity = warning
