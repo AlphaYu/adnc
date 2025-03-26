@@ -9,8 +9,8 @@ public class EventEntity
 
     public EventEntity(long id, string source)
     {
-        this.Id = id;
-        this.EventSource = source;
+        Id = id;
+        EventSource = source;
     }
 
     /// <summary>
@@ -46,7 +46,7 @@ public class EventEntity<TData> : EventEntity
     public EventEntity(long id, TData data, string source)
         : base(id, source)
     {
-        this.Data = data;
+        Data = data;
     }
 
     /// <summary>

@@ -2,10 +2,10 @@
 
 public class CacheDelegatingHandler : DelegatingHandler
 {
-    private static readonly SemaphoreSlim _slimlock = new(1, 1);
-    private readonly IMemoryCache _memoryCache;
+    // private static readonly SemaphoreSlim _slimlock = new(1, 1);
+    // private readonly IMemoryCache _memoryCache;
 
-    public CacheDelegatingHandler(IMemoryCache memoryCache) => _memoryCache = memoryCache;
+    // public CacheDelegatingHandler(IMemoryCache memoryCache) => _memoryCache = memoryCache;
 
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
@@ -16,6 +16,7 @@ public class CacheDelegatingHandler : DelegatingHandler
         //    return await base.SendAsync(request, cancellationToken);
     }
 
+    /*
     /// <summary>
     /// cache handler 还需要测试
     /// </summary>
@@ -78,4 +79,5 @@ public class CacheDelegatingHandler : DelegatingHandler
             }
         }
     }
+    */
 }
