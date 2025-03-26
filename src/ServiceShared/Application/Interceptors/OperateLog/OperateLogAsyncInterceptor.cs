@@ -98,7 +98,7 @@ public sealed class OperateLogAsyncInterceptor(UserContext userContext, ILogger<
         }
     }
 
-    private async Task InternalInterceptAsynchronousWithOutOpsLog(IInvocation invocation)
+    private static async Task InternalInterceptAsynchronousWithOutOpsLog(IInvocation invocation)
     {
         invocation.Proceed();
         var task = (Task)invocation.ReturnValue;
@@ -133,7 +133,7 @@ public sealed class OperateLogAsyncInterceptor(UserContext userContext, ILogger<
         return result;
     }
 
-    private async Task<TResult> InternalInterceptAsynchronousWithOutOpsLog<TResult>(IInvocation invocation)
+    private static async Task<TResult> InternalInterceptAsynchronousWithOutOpsLog<TResult>(IInvocation invocation)
     {
         TResult result;
         invocation.Proceed();
@@ -143,7 +143,7 @@ public sealed class OperateLogAsyncInterceptor(UserContext userContext, ILogger<
         return result;
     }
 
-    private OperationLog CreateOpsLog(string className, string methodName, string logName, object[] arguments, UserContext userContext)
+    private static OperationLog CreateOpsLog(string className, string methodName, string logName, object[] arguments, UserContext userContext)
     {
         var message = string.Empty;
         if (arguments is not null)
@@ -195,7 +195,7 @@ public sealed class OperateLogAsyncInterceptor(UserContext userContext, ILogger<
     /// </summary>
     /// <param name="invocation"></param>
     /// <returns></returns>
-    private OperateLogAttribute? GetAttribute(IInvocation invocation)
+    private static OperateLogAttribute? GetAttribute(IInvocation invocation)
     {
         var methodInfo = invocation.Method ?? invocation.MethodInvocationTarget;
         var attribute = methodInfo.GetCustomAttribute<OperateLogAttribute>();

@@ -41,7 +41,7 @@ public partial class EncryptProivder
     /// </summary>
     /// <param name="length">Length</param>
     /// <returns></returns>
-    private string CreateMachineKey(int length)
+    private static string CreateMachineKey(int length)
     {
 
         byte[] random = new byte[length / 2];

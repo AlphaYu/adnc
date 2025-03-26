@@ -152,7 +152,7 @@ public partial class DefaultRedisProvider : IRedisProvider
         return tuple;
     }
 
-    private GeoUnit GetGeoUnit(string unit)
+    private static GeoUnit GetGeoUnit(string unit)
     {
         GeoUnit geoUnit;
         switch (unit)

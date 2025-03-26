@@ -101,7 +101,7 @@ public class DefaultProtobufSerializer : ISerializer
     /// <param name="buffer">Buffer.</param>
     /// <param name="offset">Offset.</param>
     /// <param name="count">Count.</param>
-    private Type ReadType(byte[] buffer, ref int offset, ref int count)
+    private static Type ReadType(byte[] buffer, ref int offset, ref int count)
     {
         if (count < 4)
         {
@@ -136,7 +136,7 @@ public class DefaultProtobufSerializer : ISerializer
     /// </summary>
     /// <param name="ms">Ms.</param>
     /// <param name="type">Type.</param>
-    private void WriteType(MemoryStream ms, Type type)
+    private static void WriteType(MemoryStream ms, Type type)
     {
         var typeName = TypeHelper.BuildTypeName(type);
         var typeArray = Encoding.UTF8.GetBytes(typeName);

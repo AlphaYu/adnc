@@ -144,7 +144,7 @@ public class UowAsyncInterceptor(IUnitOfWork unitOfWork) : IAsyncInterceptor
     /// </summary>
     /// <param name="invocation"></param>
     /// <returns></returns>
-    private async Task InternalInterceptAsynchronousWithoutUow(IInvocation invocation)
+    private static async Task InternalInterceptAsynchronousWithoutUow(IInvocation invocation)
     {
         invocation.Proceed();
         var task = (Task)invocation.ReturnValue;
@@ -157,7 +157,7 @@ public class UowAsyncInterceptor(IUnitOfWork unitOfWork) : IAsyncInterceptor
     /// <typeparam name="TResult"></typeparam>
     /// <param name="invocation"></param>
     /// <returns></returns>
-    private async Task<TResult> InternalInterceptAsynchronousWithoutUow<TResult>(IInvocation invocation)
+    private static async Task<TResult> InternalInterceptAsynchronousWithoutUow<TResult>(IInvocation invocation)
     {
         TResult result;
         invocation.Proceed();
@@ -171,7 +171,7 @@ public class UowAsyncInterceptor(IUnitOfWork unitOfWork) : IAsyncInterceptor
     /// </summary>
     /// <param name="invocation"></param>
     /// <returns></returns>
-    private UnitOfWorkAttribute? GetAttribute(IInvocation invocation)
+    private static UnitOfWorkAttribute? GetAttribute(IInvocation invocation)
     {
         var methodInfo = invocation.Method ?? invocation.MethodInvocationTarget;
         var attribute = methodInfo.GetCustomAttribute<UnitOfWorkAttribute>();

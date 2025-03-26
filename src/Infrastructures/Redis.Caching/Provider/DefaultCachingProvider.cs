@@ -337,7 +337,7 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
     /// </summary>
     /// <param name="prefix">Prefix of CacheKey.</param>
     /// <exception cref="ArgumentException"></exception>
-    private string HandlePrefix(string prefix)
+    private static string HandlePrefix(string prefix)
     {
         // Forbid
         if (prefix.Equals("*"))

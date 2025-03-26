@@ -28,7 +28,7 @@ public abstract class AbstractEntityInfo : IEntityInfo
     {
     }
 
-    private void SetComment(ModelBuilder modelBuilder, IEnumerable<Type>? types)
+    private static void SetComment(ModelBuilder modelBuilder, IEnumerable<Type>? types)
     {
         if (types is null)
         {

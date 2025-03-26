@@ -86,7 +86,7 @@ public partial class EncryptProivder
     /// <param name="paddingMode"><see cref="PaddingMode"/> default is PKCS7</param>
     /// <param name="vector">IV,requires 8 bits</param>
     /// <returns>Encrypted byte array</returns>
-    private byte[] DESEncrypt(byte[] data, string key, CipherMode cipherMode, string vector = "", PaddingMode paddingMode = PaddingMode.PKCS7)
+    private static byte[] DESEncrypt(byte[] data, string key, CipherMode cipherMode, string vector = "", PaddingMode paddingMode = PaddingMode.PKCS7)
     {
         Checker.Argument.NotEmpty(data, nameof(data));
         Checker.Argument.NotNullOrEmpty(key, nameof(key));
@@ -191,7 +191,7 @@ public partial class EncryptProivder
     /// <param name="cipherMode"><see cref="CipherMode"/></param>
     /// <param name="paddingMode"><see cref="PaddingMode"/> default is PKCS7</param>
     /// <returns>Decrypted byte array</returns>
-    private byte[] DESDecrypt(byte[] data, string key, CipherMode cipherMode, string vector = "", PaddingMode paddingMode = PaddingMode.PKCS7)
+    private static byte[] DESDecrypt(byte[] data, string key, CipherMode cipherMode, string vector = "", PaddingMode paddingMode = PaddingMode.PKCS7)
     {
         Checker.Argument.NotEmpty(data, nameof(data));
         Checker.Argument.NotNullOrEmpty(key, nameof(key));

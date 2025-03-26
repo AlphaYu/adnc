@@ -203,7 +203,7 @@ public sealed class CachingAsyncInterceptor : IAsyncInterceptor
         }
     }
 
-    private async Task InternalInterceptAsynchronousWithOutCaching(IInvocation invocation)
+    private static async Task InternalInterceptAsynchronousWithOutCaching(IInvocation invocation)
     {
         invocation.Proceed();
         var task = (Task)invocation.ReturnValue;
@@ -293,7 +293,7 @@ public sealed class CachingAsyncInterceptor : IAsyncInterceptor
         return result;
     }
 
-    private async Task<TResult> InternalInterceptAsynchronousWithOutCaching<TResult>(IInvocation invocation)
+    private static async Task<TResult> InternalInterceptAsynchronousWithOutCaching<TResult>(IInvocation invocation)
     {
         invocation.Proceed();
         var task = (Task<TResult>)invocation.ReturnValue;
@@ -301,7 +301,7 @@ public sealed class CachingAsyncInterceptor : IAsyncInterceptor
         return result;
     }
 
-    private CachingInterceptorAttribute GetAttribute(IInvocation invocation)
+    private static CachingInterceptorAttribute GetAttribute(IInvocation invocation)
     {
         var methodInfo = invocation.Method ?? invocation.MethodInvocationTarget;
         var attribute = methodInfo.GetCustomAttribute<CachingInterceptorAttribute>();

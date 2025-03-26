@@ -207,7 +207,7 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
             return Task.FromResult(allCount);
         }
 
-        return Task.FromResult(this.SearchRedisKeys(this.HandlePrefix(prefix)).Length);
+        return Task.FromResult(this.SearchRedisKeys(HandlePrefix(prefix)).Length);
     }
 
     /// <summary>
@@ -268,7 +268,7 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
     {
         ArgumentCheck.NotNullOrWhiteSpace(prefix, nameof(prefix));
 
-        prefix = this.HandlePrefix(prefix);
+        prefix = HandlePrefix(prefix);
 
         if (_cacheOptions.Value.EnableLogging)
         {
@@ -342,7 +342,7 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
     {
         ArgumentCheck.NotNullOrWhiteSpace(prefix, nameof(prefix));
 
-        prefix = this.HandlePrefix(prefix);
+        prefix = HandlePrefix(prefix);
 
         var redisKeys = this.SearchRedisKeys(prefix);
 
