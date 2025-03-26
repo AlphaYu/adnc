@@ -37,7 +37,10 @@ public class CachingHostedService : BackgroundService
 
                 while (!stoppingToken.IsCancellationRequested)
                 {
-                    if (DateTime.Now > model.ExpireDt) break;
+                    if (DateTime.Now > model.ExpireDt)
+                    {
+                        break;
+                    }
 
                     try
                     {

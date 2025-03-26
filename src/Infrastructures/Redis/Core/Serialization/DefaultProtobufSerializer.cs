@@ -103,7 +103,10 @@ public class DefaultProtobufSerializer : ISerializer
     /// <param name="count">Count.</param>
     private Type ReadType(byte[] buffer, ref int offset, ref int count)
     {
-        if (count < 4) throw new EndOfStreamException();
+        if (count < 4)
+        {
+            throw new EndOfStreamException();
+        }
 
         // len is size of header typeName(string)
         var len = (int)buffer[offset++]
@@ -111,7 +114,11 @@ public class DefaultProtobufSerializer : ISerializer
                 | (buffer[offset++] << 16)
                 | (buffer[offset++] << 24);
         count -= 4; // count is message total size, decr typeName length(int)
-        if (count < len) throw new EndOfStreamException();
+        if (count < len)
+        {
+            throw new EndOfStreamException();
+        }
+
         var keyOffset = offset;
         offset += len; // skip typeName body size
         count -= len; // decr typeName body size

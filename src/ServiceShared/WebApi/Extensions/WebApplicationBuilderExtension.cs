@@ -30,7 +30,9 @@ public static class WebApplicationBuilderExtension
             case ConfigurationTypeConsts.Consul:
                 var consulOption = builder.Configuration.GetSection(NodeConsts.Consul).Get<ConsulOptions>();
                 if (consulOption is null || consulOption.ConsulKeyPath.IsNullOrWhiteSpace())
+                {
                     throw new NotImplementedException(NodeConsts.Consul);
+                }
                 else
                 {
                     consulOption.ConsulKeyPath = consulOption.ConsulKeyPath.Replace("$SHORTNAME", serviceInfo.ShortName);
@@ -69,22 +71,32 @@ public static class WebApplicationBuilderExtension
         {
             var childrenSections = section.GetChildren();
             if (childrenSections.IsNotNullOrEmpty())
+            {
                 ReplacePlaceholder(childrenSections);
+            }
 
             if (section.Value.IsNullOrWhiteSpace())
+            {
                 continue;
+            }
 
             var sectionValue = section.Value;
             if (!string.IsNullOrWhiteSpace(sectionValue))
             {
                 if (sectionValue.Contains("$SERVICENAME"))
+                {
                     section.Value = sectionValue.Replace("$SERVICENAME", serviceInfo.ServiceName);
+                }
 
                 if (sectionValue.Contains("$SHORTNAME"))
+                {
                     section.Value = sectionValue.Replace("$SHORTNAME", serviceInfo.ShortName);
+                }
 
                 if (sectionValue.Contains("$RELATIVEROOTPATH"))
+                {
                     section.Value = sectionValue.Replace("$RELATIVEROOTPATH", serviceInfo.RelativeRootPath);
+                }
             }
         }
     }
@@ -98,7 +110,9 @@ public static class WebApplicationBuilderExtension
     {
         _callbackRegistration?.Dispose();
         if (state is not IConfiguration configuration)
+        {
             throw new NullReferenceException(nameof(state));
+        }
 
         var changedChildren = configuration.GetChildren();
         var reloadToken = configuration.GetReloadToken();

@@ -8,7 +8,9 @@ public static class ServiceCollectionExtension
     public static IServiceCollection AddAdncInfraEfCoreSQLServer(this IServiceCollection services, Action<DbContextOptionsBuilder> optionsBuilder)
     {
         if (services.HasRegistered(nameof(AddAdncInfraEfCoreSQLServer)))
+        {
             return services;
+        }
 
         services.TryAddScoped<IUnitOfWork, SqlServerUnitOfWork<SqlServerDbContext>>();
         services.TryAddScoped(typeof(IEfRepository<>), typeof(EfRepository<>));

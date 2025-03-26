@@ -10,7 +10,9 @@ public static class ObjectExtension
     public static string ToSafeString<T>(this T? obj) where T : struct
     {
         if (obj is null)
+        {
             return string.Empty;
+        }
 
         return obj.ToString() ?? string.Empty;
     }
@@ -22,7 +24,11 @@ public static class ObjectExtension
     /// <param name="obj"></param>
     public static void TrimStringFields<T>(this T obj) where T : class, new()
     {
-        if (obj is null) return;
+        if (obj is null)
+        {
+            return;
+        }
+
         var stringProperties = typeof(T).GetProperties(BindingFlags.Instance | BindingFlags.Public)
                                         .Where(p => p.PropertyType == typeof(string));
 

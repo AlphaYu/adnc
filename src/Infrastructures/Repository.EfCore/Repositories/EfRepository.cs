@@ -17,9 +17,15 @@ public class EfRepository<TEntity>(DbContext dbContext, Operater operater, IAdoQ
         get
         {
             if (_adoQuerier is null)
+            {
                 throw new NullReferenceException(nameof(_adoQuerier));
+            }
+
             if (!_adoQuerier.HasDbConnection())
+            {
                 _adoQuerier.ChangeOrSetDbConnection(DbContext.Database.GetDbConnection());
+            }
+
             return _adoQuerier;
         }
     }
@@ -51,15 +57,21 @@ public class EfRepository<TEntity>(DbContext dbContext, Operater operater, IAdoQ
         var query = GetDbSet(writeDb, noTracking).Where(whereExpression);
 
         if (navigationPropertyPath is not null)
+        {
             query = query.Include(navigationPropertyPath);
+        }
 
         if (orderByExpression is null)
+        {
             result = await query.OrderByDescending(x => x.Id).FirstOrDefaultAsync(cancellationToken);
+        }
         else
+        {
             result = ascending
                       ? await query.OrderBy(orderByExpression).FirstOrDefaultAsync(cancellationToken)
                       : await query.OrderByDescending(orderByExpression).FirstOrDefaultAsync(cancellationToken)
                       ;
+        }
 
         return result;
     }
@@ -71,12 +83,16 @@ public class EfRepository<TEntity>(DbContext dbContext, Operater operater, IAdoQ
         var query = this.GetDbSet(writeDb, noTracking).Where(whereExpression);
 
         if (orderByExpression is null)
+        {
             result = await query.OrderByDescending(x => x.Id).Select(selector).FirstOrDefaultAsync(cancellationToken);
+        }
         else
+        {
             result = ascending
                       ? await query.OrderBy(orderByExpression).Select(selector).FirstOrDefaultAsync(cancellationToken)
                       : await query.OrderByDescending(orderByExpression).Select(selector).FirstOrDefaultAsync(cancellationToken)
                       ;
+        }
 
         return result;
     }
@@ -88,7 +104,9 @@ public class EfRepository<TEntity>(DbContext dbContext, Operater operater, IAdoQ
         var entity = DbContext.Set<TEntity>().Local.FirstOrDefault(x => x.Id == keyValue);
 
         if (entity == null)
+        {
             entity = new TEntity { Id = keyValue };
+        }
 
         DbContext.Remove(entity);
 
@@ -126,32 +144,44 @@ public class EfRepository<TEntity>(DbContext dbContext, Operater operater, IAdoQ
         var enityType = typeof(TEntity);
         var hasSoftDeleteMember = typeof(ISoftDelete).IsAssignableFrom(enityType);
         if (!hasSoftDeleteMember)
+        {
             return await queryAble.ExecuteDeleteAsync(cancellationToken);
+        }
         else
         {
             var hasfullAuditInfoMember = typeof(IFullAuditInfo).IsAssignableFrom(enityType);
             if (!hasfullAuditInfoMember)
+            {
                 return await queryAble.ExecuteUpdateAsync(setters => setters.SetProperty(setter => ((ISoftDelete)setter).IsDeleted, true), cancellationToken);
+            }
             else
+            {
                 return await queryAble.ExecuteUpdateAsync(setters => setters
                 .SetProperty(setter => ((ISoftDelete)setter).IsDeleted, true)
                 .SetProperty(setter => ((IFullAuditInfo)setter).ModifyBy, operater.Id)
                 .SetProperty(setter => ((IFullAuditInfo)setter).ModifyTime, DateTime.Now), cancellationToken);
+            }
         }
     }
 
     public virtual async Task<int> UpdateAsync(TEntity entity, Expression<Func<TEntity, object>>[] updatingExpressions, CancellationToken cancellationToken = default)
     {
         if (updatingExpressions.IsNullOrEmpty())
+        {
             await UpdateAsync(entity, cancellationToken);
+        }
 
         var entry = DbContext.Entry(entity);
 
         if (entry.State == EntityState.Added || entry.State == EntityState.Deleted)
+        {
             throw new ArgumentException($"{nameof(entity)},实体状态为{nameof(entry.State)}");
+        }
 
         if (entry.State == EntityState.Unchanged)
+        {
             return await Task.FromResult(0);
+        }
 
         if (entry.State == EntityState.Modified)
         {
@@ -159,7 +189,9 @@ public class EfRepository<TEntity>(DbContext dbContext, Operater operater, IAdoQ
             entry.Properties.ForEach(propEntry =>
             {
                 if (!propNames.Contains(propEntry.Metadata.Name))
+                {
                     propEntry.IsModified = false;
+                }
             });
         }
 
@@ -190,7 +222,9 @@ public class EfRepository<TEntity>(DbContext dbContext, Operater operater, IAdoQ
             var enity = existsEntities?.FirstOrDefault(x => x.Id == item.Key) ?? new TEntity { Id = item.Key };
             var entry = DbContext.Entry(enity);
             if (entry.State == EntityState.Detached)
+            {
                 entry.State = EntityState.Unchanged;
+            }
 
             if (entry.State == EntityState.Unchanged)
             {
@@ -213,11 +247,15 @@ public class EfRepository<TEntity>(DbContext dbContext, Operater operater, IAdoQ
         var enityType = typeof(TEntity);
         var hasfullAuditInfoMember = typeof(IFullAuditInfo).IsAssignableFrom(enityType);
         if (!hasfullAuditInfoMember)
+        {
             newSetPropertyCalls = setPropertyCalls;
+        }
         else
+        {
             newSetPropertyCalls = setPropertyCalls
                 .Append(setter => setter.SetProperty(setter => ((IFullAuditInfo)setter).ModifyBy, operater.Id))
                 .Append(setter => setter.SetProperty(setter => ((IFullAuditInfo)setter).ModifyTime, DateTime.Now));
+        }
 
         return await DbContext.Set<TEntity>().Where(whereExpression).ExecuteUpdateAsync(newSetPropertyCalls, cancellationToken);
     }

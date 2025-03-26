@@ -24,18 +24,26 @@ public class EfBasicRepository<TEntity>(DbContext dbContext) : AbstractEfBaseRep
     {
         var query = this.GetDbSet(writeDb, false).Where(t => t.Id == keyValue);
         if (navigationPropertyPath is null)
+        {
             return await query.FirstOrDefaultAsync(cancellationToken);
+        }
         else
+        {
             return await query.Include(navigationPropertyPath).FirstOrDefaultAsync(cancellationToken);
+        }
     }
 
     public virtual async Task<TEntity?> GetAsync(long keyValue, IEnumerable<Expression<Func<TEntity, dynamic>>>? navigationPropertyPaths = null, bool writeDb = false, CancellationToken cancellationToken = default)
     {
         if (navigationPropertyPaths is null)
+        {
             return await GetAsync(keyValue, navigationPropertyPath: null, writeDb, cancellationToken);
+        }
 
         if (navigationPropertyPaths.Count() == 1)
+        {
             return await GetAsync(keyValue, navigationPropertyPaths.First(), writeDb, cancellationToken);
+        }
 
         var query = GetDbSet(writeDb, false).Where(t => t.Id == keyValue);
         foreach (var navigationPath in navigationPropertyPaths)

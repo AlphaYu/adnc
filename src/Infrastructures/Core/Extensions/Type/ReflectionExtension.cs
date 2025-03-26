@@ -7,15 +7,21 @@ public static class ReflectionExtension
     public static bool IsNotAbstractClass(this Type type, bool publicOnly)
     {
         if (type.IsSpecialName)
+        {
             return false;
+        }
 
         if (type.IsClass && !type.IsAbstract)
         {
             if (type.HasAttribute<CompilerGeneratedAttribute>())
+            {
                 return false;
+            }
 
             if (publicOnly)
+            {
                 return type.IsPublic || type.IsNestedPublic;
+            }
 
             return true;
         }

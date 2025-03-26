@@ -72,7 +72,9 @@ public class WarehouseService : AbstractAppService, IWarehouseService
         var total = await _warehouseRepo.CountAsync(x => true);
 
         if (total == 0)
+        {
             return new PageModelDto<WarehouseDto>(input);
+        }
 
         var products = _productRepo.Where(x => true);
         var warehouses = _warehouseRepo.Where(x => true);

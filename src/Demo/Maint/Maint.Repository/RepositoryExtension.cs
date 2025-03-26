@@ -28,7 +28,9 @@ public static class RepositoryExtension
         string countSql = $"select count(*) from login_log {condition.Where}";
         var total = await repository.QuerySingleAsync<int>(countSql, condition.Param);
         if (total == 0)
+        {
             return new QueryPageResult<TResult>(total);
+        }
 
         string sql = $"select * from login_log  {condition.Where} {condition.OrderBy} limit {offset},{rows}";
         var result = await repository.QueryAsync<TResult>(sql, condition.Param);
@@ -56,7 +58,9 @@ public static class RepositoryExtension
         string countSql = $"select count(*) from operation_log {condition.Where}";
         var total = await repository.QuerySingleAsync<int>(countSql, condition.Param);
         if (total == 0)
+        {
             return new QueryPageResult<TResult>(total);
+        }
 
         string sql = $"select * from operation_log  {condition.Where} {condition.OrderBy} limit {offset},{rows}";
         var result = await repository.QueryAsync<TResult>(sql, condition.Param);

@@ -31,7 +31,9 @@ public static class ServiceLocator
     public static IServiceProvider GetProvider()
     {
         if (_provider is null)
+        {
             throw new InvalidOperationException($"{nameof(Provider)} is not set.");
+        }
 
         return _provider;
     }

@@ -8,7 +8,9 @@ public class OrganizationService(IEfRepository<Organization> organizationRepo, C
         input.TrimStringFields();
         var exists = await organizationRepo.AnyAsync(x => x.Name == input.Name);
         if (exists)
+        {
             return Problem(HttpStatusCode.BadRequest, "该机构全称已经存在");
+        }
 
         var organization = Mapper.Map<Organization>(input, IdGenerater.GetNextId());
         organization.ParentIds = await GetParentIdsAsync(organization.ParentId);
@@ -23,14 +25,20 @@ public class OrganizationService(IEfRepository<Organization> organizationRepo, C
 
         var organization = await organizationRepo.FetchAsync(x => x.Id == id, noTracking: false);
         if (organization is null)
+        {
             return Problem(HttpStatusCode.NotFound, "该机构不存在");
+        }
 
         var exists = await organizationRepo.AnyAsync(x => x.Name == input.Name && x.Id != id);
         if (exists)
+        {
             return Problem(HttpStatusCode.BadRequest, "该机构全称已经存在");
+        }
 
         if (organization.ParentId == 0 && input.ParentId > 0)
+        {
             return Problem(HttpStatusCode.BadRequest, "一级单位不能修改等级");
+        }
 
         var oldParentId = organization.ParentId;
 
@@ -78,7 +86,9 @@ public class OrganizationService(IEfRepository<Organization> organizationRepo, C
             .AndIf(status is not null, x => x.Status == status);
         var orgs = (await cacheService.GetAllOrganizationsFromCacheAsync()).Where(whereExpr.Compile()).OrderBy(x => x.ParentId).ThenBy(x => x.Ordinal);
         if (orgs.IsNullOrEmpty())
+        {
             return [];
+        }
 
         List<OrganizationTreeDto> GetChildren(long id)
         {
@@ -108,8 +118,12 @@ public class OrganizationService(IEfRepository<Organization> organizationRepo, C
         var rootPids = "[0]";
         var superiorPids = await organizationRepo.FetchAsync(x => x.ParentIds, x => x.Id == pid) ?? rootPids;
         if (superiorPids == rootPids)
+        {
             return rootPids;
+        }
         else
+        {
             return $"{superiorPids}[{pid}]";
+        }
     }
 }

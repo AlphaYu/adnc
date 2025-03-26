@@ -72,15 +72,21 @@ public sealed class ServiceInfo : IServiceInfo
     public static ServiceInfo CreateInstance(Assembly startAssembly, string? migrationsAssemblyName = null)
     {
         if (_instance is not null)
+        {
             return _instance;
+        }
 
         lock (_lockObj)
         {
             if (_instance is not null)
+            {
                 return _instance;
+            }
 
             if (startAssembly is null)
+            {
                 startAssembly = Assembly.GetEntryAssembly() ?? throw new NullReferenceException(nameof(startAssembly));
+            }
 
             var attribute = startAssembly.GetCustomAttribute<AssemblyDescriptionAttribute>();
             var description = attribute is null ? string.Empty : attribute.Description;

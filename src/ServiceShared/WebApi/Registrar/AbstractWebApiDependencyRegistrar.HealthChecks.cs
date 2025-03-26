@@ -20,7 +20,9 @@ public abstract partial class AbstractWebApiDependencyRegistrar
         //.AddUrlGroup(new Uri("https://localhost:5001/weatherforecast"), "index endpoint")
         //await HttpContextUtility.GetCurrentHttpContext().GetTokenAsync("access_token");
         if (checkingMysql)
+        {
             checksBuilder.AddMySql(Configuration);
+        }
 
         //if (checkingMongodb)
         //{
@@ -34,10 +36,14 @@ public abstract partial class AbstractWebApiDependencyRegistrar
         //}
 
         if (checkingRedis)
+        {
             checksBuilder.AddRedis(Configuration);
+        }
 
         if (checkingRabitmq)
+        {
             checksBuilder.AddRabbitMQ(Configuration, ServiceInfo.Id);
+        }
 
         return checksBuilder;
     }

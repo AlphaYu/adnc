@@ -27,15 +27,21 @@ public class Startup
             {
                 var jwtOptions = Configuration.GetSection("JWT").Get<JWTOptions>();
                 if (jwtOptions is not null)
+                {
                     options.TokenValidationParameters = JwtSecurityTokenHandlerExtension.GenarateTokenValidationParameters(jwtOptions);
+                }
             });
 
         var corsHosts = Configuration.GetValue<string>("CorsHosts") ?? string.Empty;
         Action<CorsPolicyBuilder> corsPolicyAction = (corsPolicy) => corsPolicy.AllowAnyHeader().AllowAnyMethod().AllowCredentials();
         if (corsHosts == "*")
+        {
             corsPolicyAction += (corsPolicy) => corsPolicy.SetIsOriginAllowed(_ => true);
+        }
         else
+        {
             corsPolicyAction += (corsPolicy) => corsPolicy.WithOrigins(corsHosts.Split(','));
+        }
 
         services
             .AddCors(option => option.AddPolicy(_corsPolicyName, corsPolicyAction))

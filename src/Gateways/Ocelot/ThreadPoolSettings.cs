@@ -17,14 +17,19 @@ public static class HostExtensions
         //var poolOptions = host.Services.GetService(typeof(IOptionsMonitor<ThreadPoolSettings>)) as IOptionsMonitor<ThreadPoolSettings>;
         var poolOptions = host.Services.GetService(typeof(IOptions<ThreadPoolSettings>)) as IOptions<ThreadPoolSettings>;
         if (poolOptions is not null)
+        {
             ChangeThreadPoolSettings(host, poolOptions);
+        }
+
         return host;
     }
 
     public static IHost ChangeThreadPoolSettings(this IHost host, IOptions<ThreadPoolSettings> poolOptions)
     {
         if (host.Services.GetService(typeof(ILogger<IHost>)) is not ILogger<IHost> logger)
+        {
             throw new NullReferenceException(nameof(logger));
+        }
 
         var poolSetting = poolOptions.Value;
         ThreadPool.SetMinThreads(poolSetting.MinThreads, poolSetting.MinCompletionPortThreads);

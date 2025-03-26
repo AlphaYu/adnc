@@ -12,7 +12,9 @@ public static class NameValueCollectionExtension
     public static string ToQueryString(this NameValueCollection source)
     {
         if (source is null)
+        {
             return string.Empty;
+        }
 
         var sb = new StringBuilder(1024);
 

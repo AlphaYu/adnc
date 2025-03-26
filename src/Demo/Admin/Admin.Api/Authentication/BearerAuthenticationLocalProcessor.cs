@@ -7,7 +7,9 @@ public class BearerAuthenticationLocalProcessor(IUserService userAppService) : A
     {
         var validatedInfo = await userAppService.GetUserValidatedInfoAsync(userId);
         if (validatedInfo is null)
+        {
             return (null, false);
+        }
 
         return (validatedInfo.ValidationVersion, validatedInfo.Status);
     }

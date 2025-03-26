@@ -24,10 +24,14 @@ public class DefaultCachingKeyGenerator : ICachingKeyGenerator
                                                                             .Select(x => x.Position);
 
             if (cacheParams?.Any() == true)
+            {
                 methodArguments = args.Where(x => cacheParams.Contains(Array.IndexOf(args, x)))
                                                           .Select(ParameterCacheKeys.GenerateCacheKey);
+            }
             else
+            {
                 methodArguments = args.Select(ParameterCacheKeys.GenerateCacheKey);
+            }
         }
         return GenerateCacheKey(methodInfo, prefix, methodArguments);
     }
@@ -54,7 +58,10 @@ public class DefaultCachingKeyGenerator : ICachingKeyGenerator
 
     public string GetCacheKeyPrefix(MethodInfo methodInfo, string prefix)
     {
-        if (!string.IsNullOrWhiteSpace(prefix)) return $"{prefix}{LinkChar}";
+        if (!string.IsNullOrWhiteSpace(prefix))
+        {
+            return $"{prefix}{LinkChar}";
+        }
 
         var typeName = methodInfo.DeclaringType?.Name;
         var methodName = methodInfo.Name;

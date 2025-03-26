@@ -24,6 +24,8 @@ public static class ExceptionExtension
     {
         var result = predicate.Invoke();
         if (result)
+        {
             throw new BusinessException(message);
+        }
     }
 }

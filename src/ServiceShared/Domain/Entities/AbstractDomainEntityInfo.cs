@@ -10,7 +10,9 @@ public abstract class AbstractDomainEntityInfo : AbstractEntityInfo, IEntityInfo
                                                    && !m.IsAbstract));
 
         if (typeList is null)
+        {
             typeList = new List<Type>();
+        }
 
         return typeList.Append(typeof(EventTracker)).ToList();
     }

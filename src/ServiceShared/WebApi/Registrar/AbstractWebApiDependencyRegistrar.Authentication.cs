@@ -44,7 +44,10 @@ public abstract partial class AbstractWebApiDependencyRegistrar
                     {
                         //如果是过期，在http heard中加入act参数
                         if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+                        {
                             context.Response.Headers.TryAdd("act", "expired");
+                        }
+
                         return Task.CompletedTask;
                     },
                     //在Token验证通过后调用

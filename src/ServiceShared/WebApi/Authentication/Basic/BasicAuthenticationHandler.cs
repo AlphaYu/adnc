@@ -25,10 +25,14 @@ public class BasicAuthenticationHandler(IOptionsMonitor<BasicSchemeOptions> opti
             if (validatedResult is not null && validatedResult.IsSuccessful)
             {
                 if (string.IsNullOrWhiteSpace(validatedResult.UserName))
+                {
                     throw new NullReferenceException(nameof(validatedResult.UserName));
+                }
 
                 if (validatedResult.UserId is null)
+                {
                     throw new NullReferenceException(nameof(validatedResult.UserId));
+                }
 
                 var userId = validatedResult.UserId.ToString() ?? "0";
                 var claims = new[] {

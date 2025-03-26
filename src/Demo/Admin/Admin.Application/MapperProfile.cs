@@ -53,7 +53,9 @@ public class StringToKeyValuesResolver : IValueResolver<Menu, MenuDto, List<KeyV
     public List<KeyValuePair<string, string>> Resolve(Menu source, MenuDto destination, List<KeyValuePair<string, string>> member, ResolutionContext context)
     {
         if (source.Params.IsNullOrEmpty())
+        {
             return [];
+        }
 
         var keyValues = new List<KeyValuePair<string, string>>();
         foreach (var item in source.Params.Split("&"))

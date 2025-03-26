@@ -87,7 +87,9 @@ public abstract partial class AbstractApplicationDependencyRegistrar
         action?.Invoke(Services);
 
         if (RabbitMqSection is not null)
+        {
             Services.AddAdncInfraRabbitMq(RabbitMqSection, ServiceInfo.Id);
+        }
     }
 
 }

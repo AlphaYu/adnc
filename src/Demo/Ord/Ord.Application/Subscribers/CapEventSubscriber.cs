@@ -27,6 +27,8 @@ public sealed class CapEventSubscriber : ICapSubscribe
         eventDto.EventTarget = MethodBase.GetCurrentMethod()?.GetMethodName() ?? string.Empty;
         var hasProcessed = await _tracker.HasProcessedAsync(eventDto);
         if (!hasProcessed)
+        {
             await _orderSrv.MarkCreatedStatusAsync(eventDto, _tracker);
+        }
     }
 }

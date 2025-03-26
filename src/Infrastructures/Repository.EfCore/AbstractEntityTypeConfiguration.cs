@@ -21,7 +21,9 @@ public abstract class AbstractEntityTypeConfiguration<TEntity> : IEntityTypeConf
     protected virtual void ConfigureConcurrency(EntityTypeBuilder<TEntity> builder, Type entityType)
     {
         if (typeof(IConcurrency).IsAssignableFrom(entityType))
+        {
             builder.Property($"{nameof(IConcurrency.RowVersion)}").IsRequired().IsRowVersion().ValueGeneratedOnAddOrUpdate().HasColumnOrder(98);
+        }
     }
 
     protected virtual void ConfigureSoftDelete(EntityTypeBuilder<TEntity> builder, Type entityType)

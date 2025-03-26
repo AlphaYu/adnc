@@ -7,7 +7,9 @@ public abstract class AbstractMongoDbEntityInfo : IEntityInfo
     public virtual void OnModelCreating(dynamic modelBuilder)
     {
         if (modelBuilder is not ModelBuilder builder)
+        {
             throw new ArgumentNullException(nameof(modelBuilder));
+        }
 
         var assemblies = GetCurrentAssemblies();
 
@@ -26,7 +28,9 @@ public abstract class AbstractMongoDbEntityInfo : IEntityInfo
     protected virtual List<Type> GetEntityTypes(IEnumerable<Assembly> assemblies)
     {
         if (assemblies is null)
+        {
             throw new ArgumentNullException(nameof(assemblies));
+        }
 
         var typeList = assemblies.SelectMany(assembly => assembly.GetTypes()
                                                  .Where(m => m.FullName != null

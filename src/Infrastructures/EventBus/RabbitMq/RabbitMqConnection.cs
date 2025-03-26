@@ -72,7 +72,10 @@ public sealed class RabbitMqConnection : IRabbitMqConnection
               .WaitAndRetry(2, retryAttempt => TimeSpan.FromSeconds(1), (ex, time, retryCount, content) =>
               {
                   if (2 == retryCount)
+                  {
                       throw ex;
+                  }
+
                   _logger.LogError(ex, string.Format("{0}:{1}", retryCount, ex.Message));
               })
               .Execute(() =>

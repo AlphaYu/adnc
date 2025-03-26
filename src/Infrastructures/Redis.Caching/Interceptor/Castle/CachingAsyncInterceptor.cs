@@ -50,9 +50,13 @@ public sealed class CachingAsyncInterceptor : IAsyncInterceptor
     {
         var attribute = GetAttribute(invocation);
         if (attribute == null)
+        {
             invocation.Proceed();
+        }
         else
+        {
             InternalInterceptSynchronous(invocation, attribute);
+        }
     }
 
     /// <summary>
@@ -144,8 +148,14 @@ public sealed class CachingAsyncInterceptor : IAsyncInterceptor
             {
                 LocalVariables.Instance.Queue.Enqueue(new LocalVariables.Model(cacheKeys, expireDt));
 
-                if (!attribute.IsHighAvailability) throw;
-                else _logger?.LogError(new EventId(), ex, $"Cache provider remove error.");
+                if (!attribute.IsHighAvailability)
+                {
+                    throw;
+                }
+                else
+                {
+                    _logger?.LogError(new EventId(), ex, $"Cache provider remove error.");
+                }
             }
         }
     }
@@ -181,8 +191,14 @@ public sealed class CachingAsyncInterceptor : IAsyncInterceptor
             {
                 LocalVariables.Instance.Queue.Enqueue(new LocalVariables.Model(cacheKeys, expireDt));
 
-                if (!attribute.IsHighAvailability) throw;
-                else _logger?.LogError(new EventId(), ex, $"Cache provider remove error.");
+                if (!attribute.IsHighAvailability)
+                {
+                    throw;
+                }
+                else
+                {
+                    _logger?.LogError(new EventId(), ex, $"Cache provider remove error.");
+                }
             }
         }
     }
@@ -261,8 +277,14 @@ public sealed class CachingAsyncInterceptor : IAsyncInterceptor
             {
                 LocalVariables.Instance.Queue.Enqueue(new LocalVariables.Model(cacheKeys, expireDt));
 
-                if (!attribute.IsHighAvailability) throw;
-                else _logger?.LogError(new EventId(), ex, $"Cache provider remove error.");
+                if (!attribute.IsHighAvailability)
+                {
+                    throw;
+                }
+                else
+                {
+                    _logger?.LogError(new EventId(), ex, $"Cache provider remove error.");
+                }
             }
 
             return result;

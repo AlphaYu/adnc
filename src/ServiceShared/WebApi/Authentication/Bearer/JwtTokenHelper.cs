@@ -20,7 +20,9 @@ public static class JwtTokenHelper
         , string loginerType)
     {
         if (jti.IsNullOrWhiteSpace())
+        {
             throw new ArgumentNullException(nameof(jti));
+        }
 
         var claims = new Claim[]
         {
@@ -47,7 +49,9 @@ public static class JwtTokenHelper
         )
     {
         if (jti.IsNullOrWhiteSpace())
+        {
             throw new ArgumentNullException(nameof(jti));
+        }
 
         var claims = new Claim[]
         {
@@ -68,7 +72,10 @@ public static class JwtTokenHelper
         var tokenHandler = new JwtSecurityTokenHandler();
         var result = tokenHandler.ValidateToken(refreshToken, parameters, out var securityToken);
         if (result.Identity is null || !result.Identity.IsAuthenticated)
+        {
             return null;
+        }
+
         return result.Claims.FirstOrDefault(x => x.Type == claimName);
     }
 

@@ -31,7 +31,10 @@ public partial class DefaultRedisProvider : Adnc.Infra.Redis.IRedisProvider
         }
         batch.Execute();
 
-        if (!Task.WaitAll(results, TimeoutMilliseconds)) throw new TimeoutException();
+        if (!Task.WaitAll(results, TimeoutMilliseconds))
+        {
+            throw new TimeoutException();
+        }
 
         return results.Select(r => r.Result).ToList();
     }
@@ -57,7 +60,10 @@ public partial class DefaultRedisProvider : Adnc.Infra.Redis.IRedisProvider
             index++;
         }
         batch.Execute();
-        if (!Task.WaitAll(results, TimeoutMilliseconds)) throw new TimeoutException();
+        if (!Task.WaitAll(results, TimeoutMilliseconds))
+        {
+            throw new TimeoutException();
+        }
 
         return results.Select(r => r.Result).ToList();
     }

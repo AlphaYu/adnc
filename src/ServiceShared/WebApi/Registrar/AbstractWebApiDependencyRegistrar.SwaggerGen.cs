@@ -41,7 +41,9 @@ public abstract partial class AbstractWebApiDependencyRegistrar
                 });
                 var startAssemblyName = ServiceInfo.StartAssembly.GetName().Name;
                 if (string.IsNullOrEmpty(startAssemblyName))
+                {
                     throw new NullReferenceException(nameof(startAssemblyName));
+                }
 
                 var lastName = startAssemblyName.Split('.').Last();
                 var apiLayerXmlFilePath = Path.Combine(AppContext.BaseDirectory, $"{startAssemblyName}.xml");

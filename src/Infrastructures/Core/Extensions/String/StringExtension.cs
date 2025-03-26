@@ -121,9 +121,13 @@ public static class StringExtension
         bool status = long.TryParse(@this, out long result);
 
         if (status)
+        {
             return result;
+        }
         else
+        {
             return null;
+        }
     }
 
     /// <summary>

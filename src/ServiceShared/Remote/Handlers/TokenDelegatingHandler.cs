@@ -14,10 +14,14 @@ public class TokenDelegatingHandler : DelegatingHandler
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
         if(request.RequestUri is null)
+        {
             throw new ArgumentNullException(nameof(request));
+        }
 
         if (request.RequestUri.Scheme.EqualsIgnoreCase("https") && request.Version != new Version(2, 0))
+        {
             request.Version = new Version(2, 0);
+        }
 
         var headers = request.Headers;
         if (headers.Authorization is not null)

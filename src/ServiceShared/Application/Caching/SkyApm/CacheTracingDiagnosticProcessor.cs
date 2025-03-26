@@ -44,7 +44,10 @@ public sealed class CacheTracingDiagnosticProcessor : ITracingDiagnosticProcesso
     public void CachingAfterGetCache([Object] DiagnosticDataWrapper eventData)
     {
         var context = _localSegmentContextAccessor.Context;
-        if (context == null) return;
+        if (context == null)
+        {
+            return;
+        }
 
         context.Span.AddLog(LogEvent.Event("Get Cache End"));
         context.Span.AddLog(LogEvent.Message($"Adnc.Caching get cache succeeded!{Environment.NewLine}" +
@@ -57,7 +60,10 @@ public sealed class CacheTracingDiagnosticProcessor : ITracingDiagnosticProcesso
     public void CachingErrorGetCache([Object] DiagnosticExceptionWrapper eventData)
     {
         var context = _localSegmentContextAccessor.Context;
-        if (context == null) return;
+        if (context == null)
+        {
+            return;
+        }
 
         context.Span.AddLog(LogEvent.Event("Get Cache Error"));
         context.Span.AddLog(LogEvent.Message($"Adnc.Caching get cache failed!{Environment.NewLine}" +
@@ -88,7 +94,10 @@ public sealed class CacheTracingDiagnosticProcessor : ITracingDiagnosticProcesso
     public void CachingAfterSetCache([Object] DiagnosticDataWrapper eventData)
     {
         var context = _localSegmentContextAccessor.Context;
-        if (context == null) return;
+        if (context == null)
+        {
+            return;
+        }
 
         context.Span.AddLog(LogEvent.Event("Set Cache End"));
         context.Span.AddLog(LogEvent.Message($"Adnc.Caching set cache succeeded!{Environment.NewLine}" +
@@ -101,7 +110,10 @@ public sealed class CacheTracingDiagnosticProcessor : ITracingDiagnosticProcesso
     public void CachingErrorSetCache([Object] DiagnosticExceptionWrapper eventData)
     {
         var context = _localSegmentContextAccessor.Context;
-        if (context == null) return;
+        if (context == null)
+        {
+            return;
+        }
 
         context.Span.AddLog(LogEvent.Event("Set Cache Error"));
         context.Span.AddLog(LogEvent.Message($"Adnc.Caching set cache failed!{Environment.NewLine}" +
@@ -132,7 +144,10 @@ public sealed class CacheTracingDiagnosticProcessor : ITracingDiagnosticProcesso
     public void CachingAfterRemoveCache([Object] DiagnosticDataWrapper eventData)
     {
         var context = _localSegmentContextAccessor.Context;
-        if (context == null) return;
+        if (context == null)
+        {
+            return;
+        }
 
         context.Span.AddLog(LogEvent.Event("Remove Cache End"));
         context.Span.AddLog(LogEvent.Message($"Adnc.Caching remove cache succeeded!{Environment.NewLine}" +
@@ -145,7 +160,10 @@ public sealed class CacheTracingDiagnosticProcessor : ITracingDiagnosticProcesso
     public void CachingErrorRemoveCache([Object] DiagnosticExceptionWrapper eventData)
     {
         var context = _localSegmentContextAccessor.Context;
-        if (context == null) return;
+        if (context == null)
+        {
+            return;
+        }
 
         context.Span.AddLog(LogEvent.Event("Remove Cache Error"));
         context.Span.AddLog(LogEvent.Message($"Adnc.Caching remove cache failed!{Environment.NewLine}" +
@@ -176,7 +194,10 @@ public sealed class CacheTracingDiagnosticProcessor : ITracingDiagnosticProcesso
     public void CachingAfterExistsCache([Object] DiagnosticDataWrapper eventData)
     {
         var context = _localSegmentContextAccessor.Context;
-        if (context == null) return;
+        if (context == null)
+        {
+            return;
+        }
 
         context.Span.AddLog(LogEvent.Event("Exists Cache End"));
         context.Span.AddLog(LogEvent.Message($"Adnc.Caching exists cache succeeded!{Environment.NewLine}" +
@@ -189,7 +210,10 @@ public sealed class CacheTracingDiagnosticProcessor : ITracingDiagnosticProcesso
     public void CachingErrorExistsCache([Object] DiagnosticExceptionWrapper eventData)
     {
         var context = _localSegmentContextAccessor.Context;
-        if (context == null) return;
+        if (context == null)
+        {
+            return;
+        }
 
         context.Span.AddLog(LogEvent.Event("Exists Cache Error"));
         context.Span.AddLog(LogEvent.Message($"Adnc.Caching exists cache failed!{Environment.NewLine}" +

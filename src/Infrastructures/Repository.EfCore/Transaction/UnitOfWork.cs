@@ -18,41 +18,61 @@ public abstract class UnitOfWork<TDbContext> : IUnitOfWork
     public void BeginTransaction(IsolationLevel isolationLevel = IsolationLevel.ReadCommitted, bool distributed = false)
     {
         if (AdncDbContext.Database.CurrentTransaction is not null)
+        {
             throw new ArgumentException($"UnitOfWork Error,{AdncDbContext.Database.CurrentTransaction}");
+        }
         else
+        {
             DbTransaction = GetDbContextTransaction(isolationLevel, distributed);
+        }
     }
 
     public void Commit()
     {
         if (DbTransaction is null)
+        {
             throw new ArgumentNullException(nameof(DbTransaction), "IDbContextTransaction is null");
+        }
         else
+        {
             DbTransaction.Commit();
+        }
     }
 
     public async Task CommitAsync(CancellationToken cancellationToken = default)
     {
         if (DbTransaction is null)
+        {
             throw new ArgumentNullException(nameof(DbTransaction), "IDbContextTransaction is null");
+        }
         else
+        {
             await DbTransaction.CommitAsync(cancellationToken);
+        }
     }
 
     public void Rollback()
     {
         if (DbTransaction is null)
+        {
             throw new ArgumentNullException(nameof(DbTransaction), "IDbContextTransaction is null");
+        }
         else
+        {
             DbTransaction.Rollback();
+        }
     }
 
     public async Task RollbackAsync(CancellationToken cancellationToken = default)
     {
         if (DbTransaction is null)
+        {
             throw new ArgumentNullException(nameof(DbTransaction), "IDbContextTransaction is null");
+        }
         else
+        {
             await DbTransaction.RollbackAsync(cancellationToken);
+        }
     }
 
     public void Dispose()

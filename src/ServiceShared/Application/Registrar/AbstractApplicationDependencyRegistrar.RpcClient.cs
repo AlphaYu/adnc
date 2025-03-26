@@ -26,12 +26,18 @@ public abstract partial class AbstractApplicationDependencyRegistrar
      where TRestClient : class,IRestClient
     {
         if(string.IsNullOrWhiteSpace(serviceName))
+        {
             throw new ArgumentNullException(nameof(serviceName));
+        }
 
         if (RpcInfoOption is null)
+        {
             throw new NullReferenceException(nameof(RpcInfoOption));
+        }
         else
+        {
             AddRpcClientCommonServices(Services, RpcInfoOption);
+        }
 
         var enablePolly = RpcInfoOption.Polly.Enable;
         //注册RefitClient,设置httpclient生命周期时间，默认也是2分钟。
@@ -83,17 +89,25 @@ public abstract partial class AbstractApplicationDependencyRegistrar
      where TGrpcClient : ClientBase<TGrpcClient>
     {
         if (string.IsNullOrWhiteSpace(serviceName))
+        {
             throw new ArgumentNullException(nameof(serviceName));
+        }
 
         if (RpcInfoOption is null)
+        {
             throw new NullReferenceException(nameof(RpcInfoOption));
+        }
         else
+        {
             AddRpcClientCommonServices(Services, RpcInfoOption);
+        }
 
         var switchName = "System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport";
         var switchResult = AppContext.TryGetSwitch(switchName, out bool isEnabled);
         if (!switchResult || !isEnabled)
+        {
             AppContext.SetSwitch(switchName, true);
+        }
 
         var baseAddress = string.Empty;
         var addressNode = RpcInfoOption.Address.First(x => x.Service.EqualsIgnoreCase(serviceName));

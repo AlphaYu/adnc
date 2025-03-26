@@ -22,11 +22,15 @@ public class ProductManager : IDomainService
     {
         var exists = await _productRepo.AnyAsync(x => x.Sku == sku);
         if (exists)
+        {
             throw new BusinessException($"sku exists({sku})");
+        }
 
         exists = await _productRepo.AnyAsync(x => x.Name == name);
         if (exists)
+        {
             throw new BusinessException($"name exists{name}");
+        }
 
         return new Product(
                             IdGenerater.GetNextId()
@@ -49,11 +53,15 @@ public class ProductManager : IDomainService
         Checker.NotNull(product, nameof(product));
 
         if (product.Sku.EqualsIgnoreCase(newSku))
+        {
             return;
+        }
 
         var exists = await _productRepo.AnyAsync(x => x.Sku == newSku);
         if (exists)
+        {
             throw new BusinessException($"sku exists({newSku})");
+        }
 
         product.SetSku(newSku);
     }
@@ -69,11 +77,15 @@ public class ProductManager : IDomainService
         Checker.NotNull(product, nameof(product));
 
         if (product.Name.EqualsIgnoreCase(newName))
+        {
             return;
+        }
 
         var exists = await _productRepo.AnyAsync(x => x.Name == newName);
         if (exists)
+        {
             throw new BusinessException($"name exists{newName}");
+        }
 
         product.SetName(newName);
     }

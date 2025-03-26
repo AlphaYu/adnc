@@ -7,7 +7,9 @@ public static class ServiceCollectionExtension
     public static IServiceCollection AddAdncInfraConsul(this IServiceCollection services, IConfigurationSection consulSection, Action<ConsulClientConfiguration>? configOverride = null)
     {
         if (services.HasRegistered(nameof(AddAdncInfraConsul)))
+        {
             return services;
+        }
 
         return services
             .Configure<ConsulOptions>(consulSection)
@@ -15,7 +17,10 @@ public static class ServiceCollectionExtension
             {
                 var configOptions = provider.GetService<IOptions<ConsulOptions>>();
                 if (configOptions is null)
+                {
                     throw new NullReferenceException(nameof(configOptions));
+                }
+
                 return new ConsulClient(x =>
                 {
                     x.Address = new Uri(configOptions.Value.ConsulUrl);

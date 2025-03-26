@@ -19,8 +19,10 @@ public static class ApplicationBuilderExtension
             outputHtml.Append($"<br>--------------------------------------------------------------------------------------------<br>");
             foreach (var  router in serviceRoters)
             {
-                if (router.Name.Contains("auth")) 
+                if (router.Name.Contains("auth"))
+                {
                     continue;
+                }
 
                 outputHtml.Append($"<a href='{router.Path}' target='_blank'>{router.Name}</a>&nbsp;&nbsp;<b>");
             }

@@ -15,9 +15,13 @@ public class BearerAuthenticationCacheProcessor( IHttpContextAccessor contextAcc
         var userContext = contextAccessor?.HttpContext?.RequestServices.GetService<UserContext>();
 
         if (userContext is null)
+        {
             throw new NullReferenceException(nameof(userContext));
+        }
         else if (userContext.Id == 0)
+        {
             userContext.Id = userId;
+        }
 
         var cacheKey = $"{GeneralConsts.UserValidatedInfoKeyPrefix}:{userId}";
         var validationInfo = await cacheProvider.GetAsync<ValidationInfo>(cacheKey);

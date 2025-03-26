@@ -54,7 +54,9 @@ public abstract class AbstractBloomFilter : IBloomFilter
     {
         var exists = await this.ExistsBloomFilterAsync();
         if (!exists)
+        {
             throw new ArgumentNullException(this.Name, $"call {nameof(InitAsync)} methos before");
+        }
 
         return await _redisProvider.Value.BfAddAsync(this.Name, value);
     }
@@ -63,7 +65,9 @@ public abstract class AbstractBloomFilter : IBloomFilter
     {
         var exists = await this.ExistsBloomFilterAsync();
         if (!exists)
+        {
             throw new ArgumentNullException(this.Name, $"call {nameof(InitAsync)} methos before");
+        }
 
         return await _redisProvider.Value.BfAddAsync(this.Name, values);
     }
@@ -77,7 +81,9 @@ public abstract class AbstractBloomFilter : IBloomFilter
     protected async Task InitAsync(IEnumerable<string> values)
     {
         if (await this.ExistsBloomFilterAsync())
+        {
             return;
+        }
 
         var (Success, LockValue) = await _distributedLocker.Value.LockAsync(this.Name);
         if (!Success)

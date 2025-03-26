@@ -52,7 +52,10 @@ public class LogConsumersHostedService(ILogger<LogConsumersHostedService> logger
                     }
                 }
 
-                if (stoppingToken.IsCancellationRequested) break;
+                if (stoppingToken.IsCancellationRequested)
+                {
+                    break;
+                }
             }
         }, stoppingToken, TaskCreationOptions.LongRunning, TaskScheduler.Default);
 
@@ -93,7 +96,10 @@ public class LogConsumersHostedService(ILogger<LogConsumersHostedService> logger
                     }
                 }
 
-                if (stoppingToken.IsCancellationRequested) break;
+                if (stoppingToken.IsCancellationRequested)
+                {
+                    break;
+                }
             }
         }, stoppingToken, TaskCreationOptions.LongRunning, TaskScheduler.Default);
 

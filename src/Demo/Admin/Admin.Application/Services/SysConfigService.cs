@@ -9,11 +9,15 @@ public class SysConfigService(IEfRepository<SysConfig> sysConfigRepo, BloomFilte
         input.TrimStringFields();
         var keyExists = await sysConfigRepo.AnyAsync(x => x.Key == input.Key);
         if (keyExists)
+        {
             return Problem(HttpStatusCode.BadRequest, "配置键已经存在");
+        }
 
         var nameExists = await sysConfigRepo.AnyAsync(x => x.Name == input.Name);
         if (nameExists)
+        {
             return Problem(HttpStatusCode.BadRequest, "配置名已经存在");
+        }
 
         var entity = Mapper.Map<SysConfig>(input, IdGenerater.GetNextId());
 
@@ -36,15 +40,21 @@ public class SysConfigService(IEfRepository<SysConfig> sysConfigRepo, BloomFilte
 
         var entity = await sysConfigRepo.FetchAsync(x => x.Id == id, noTracking: false);
         if (entity is null)
+        {
             return Problem(HttpStatusCode.NotFound, "配置不存在");
+        }
 
         var keyExists = await sysConfigRepo.AnyAsync(c => c.Key == input.Key && c.Id != id);
         if (keyExists)
+        {
             return Problem(HttpStatusCode.BadRequest, "配置键已经存在");
+        }
 
         var nameExists = await sysConfigRepo.AnyAsync(c => c.Name == input.Name && c.Id != id);
         if (nameExists)
+        {
             return Problem(HttpStatusCode.BadRequest, "配置名称已经存在");
+        }
 
         var newEntity = Mapper.Map(input, entity);
         await sysConfigRepo.UpdateAsync(newEntity);
@@ -73,7 +83,9 @@ public class SysConfigService(IEfRepository<SysConfig> sysConfigRepo, BloomFilte
 
         var total = await sysConfigRepo.CountAsync(whereExpr);
         if (total == 0)
+        {
             return new PageModelDto<SysConfigDto>(input);
+        }
 
         var entities = await sysConfigRepo
                                         .Where(whereExpr)
@@ -89,7 +101,9 @@ public class SysConfigService(IEfRepository<SysConfig> sysConfigRepo, BloomFilte
     public async Task<List<SysConfigSimpleDto>> GetListAsync(string keys)
     {
         if (keys.IsNullOrWhiteSpace())
+        {
             return [];
+        }
 
         var whereExpr = ExpressionCreator
            .New<SysConfigSimpleDto>()

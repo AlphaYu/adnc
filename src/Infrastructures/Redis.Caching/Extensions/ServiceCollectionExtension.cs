@@ -11,7 +11,9 @@ public static class ServiceCollectionExtension
     public static IServiceCollection AddAdncInfraRedisCaching(this IServiceCollection services, IConfigurationSection redisSection, IConfigurationSection cachingSection)
     {
         if (services.HasRegistered(nameof(AddAdncInfraRedisCaching)))
+        {
             return services;
+        }
 
         return services
             .AddAdncInfraRedis(redisSection)

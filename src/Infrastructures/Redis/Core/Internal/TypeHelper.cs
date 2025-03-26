@@ -19,7 +19,9 @@ public static class TypeHelper
     public static string BuildTypeName(Type type)
     {
         if (type.AssemblyQualifiedName is null)
+        {
             return string.Empty;
+        }
 
         return SubtractFullNameRegex.Replace(type.AssemblyQualifiedName, "");
     }

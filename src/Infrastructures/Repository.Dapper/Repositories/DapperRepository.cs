@@ -7,7 +7,9 @@ public sealed class DapperRepository : IAdoExecuterWithQuerierRepository
     internal IDbConnection GetDbConnection()
     {
         if (_dbConnection is null)
+        {
             throw new NullReferenceException(nameof(_dbConnection));
+        }
 
         return _dbConnection;
     }
@@ -21,7 +23,9 @@ public sealed class DapperRepository : IAdoExecuterWithQuerierRepository
     public IDbConnection ChangeOrSetDbConnection(string connectionString, DbTypes dbType)
     {
         if (string.IsNullOrWhiteSpace(connectionString))
+        {
             throw new ArgumentNullException(nameof(connectionString));
+        }
 
         return _dbConnection = dbType switch
         {
@@ -48,154 +52,242 @@ public sealed class DapperRepository : IAdoExecuterWithQuerierRepository
 
     public async Task<IEnumerable<dynamic>> QueryAsync(string sql, object? param = null, IDbTransaction? transaction = null, int? commandTimeout = null, CommandType? commandType = null, bool writeDb = false)
     {
-        if (writeDb) sql = string.Concat(sql, " -- ", RepositoryConsts.MAXSCALE_ROUTE_TO_MASTER);
+        if (writeDb)
+        {
+            sql = string.Concat(sql, " -- ", RepositoryConsts.MAXSCALE_ROUTE_TO_MASTER);
+        }
+
         var result = await SqlMapper.QueryAsync(GetDbConnection(), sql, param, transaction, commandTimeout, commandType);
         return result;
     }
 
     public async Task<IEnumerable<T>> QueryAsync<T>(string sql, object? param = null, IDbTransaction? transaction = null, int? commandTimeout = null, CommandType? commandType = null, bool writeDb = false)
     {
-        if (writeDb) sql = string.Concat(sql, " -- ", RepositoryConsts.MAXSCALE_ROUTE_TO_MASTER);
+        if (writeDb)
+        {
+            sql = string.Concat(sql, " -- ", RepositoryConsts.MAXSCALE_ROUTE_TO_MASTER);
+        }
+
         var result = await SqlMapper.QueryAsync<T>(GetDbConnection(), sql, param, transaction, commandTimeout, commandType);
         return result;
     }
 
     public async Task<IEnumerable<object>> QueryAsync(Type type, string sql, object? param = null, IDbTransaction? transaction = null, int? commandTimeout = null, CommandType? commandType = null, bool writeDb = false)
     {
-        if (writeDb) sql = string.Concat(sql, " -- ", RepositoryConsts.MAXSCALE_ROUTE_TO_MASTER);
+        if (writeDb)
+        {
+            sql = string.Concat(sql, " -- ", RepositoryConsts.MAXSCALE_ROUTE_TO_MASTER);
+        }
+
         var result = await SqlMapper.QueryAsync(GetDbConnection(), type, sql, param, transaction, commandTimeout, commandType);
         return result;
     }
 
     public async Task<IEnumerable<TReturn>> QueryAsync<TFirst, TSecond, TReturn>(string sql, Func<TFirst, TSecond, TReturn> map, object? param = null, IDbTransaction? transaction = null, bool buffered = true, string splitOn = "Id", int? commandTimeout = null, CommandType? commandType = null, bool writeDb = false)
     {
-        if (writeDb) sql = string.Concat(sql, " -- ", RepositoryConsts.MAXSCALE_ROUTE_TO_MASTER);
+        if (writeDb)
+        {
+            sql = string.Concat(sql, " -- ", RepositoryConsts.MAXSCALE_ROUTE_TO_MASTER);
+        }
+
         var result = await SqlMapper.QueryAsync<TFirst, TSecond, TReturn>(GetDbConnection(), sql, map, param, transaction, buffered, splitOn, commandTimeout, commandType);
         return result;
     }
 
     public async Task<IEnumerable<TReturn>> QueryAsync<TFirst, TSecond, TThird, TReturn>(string sql, Func<TFirst, TSecond, TThird, TReturn> map, object? param = null, IDbTransaction? transaction = null, bool buffered = true, string splitOn = "Id", int? commandTimeout = null, CommandType? commandType = null, bool writeDb = false)
     {
-        if (writeDb) sql = string.Concat(sql, " -- ", RepositoryConsts.MAXSCALE_ROUTE_TO_MASTER);
+        if (writeDb)
+        {
+            sql = string.Concat(sql, " -- ", RepositoryConsts.MAXSCALE_ROUTE_TO_MASTER);
+        }
+
         var result = await SqlMapper.QueryAsync<TFirst, TSecond, TThird, TReturn>(GetDbConnection(), sql, map, param, transaction, buffered, splitOn, commandTimeout, commandType);
         return result;
     }
 
     public async Task<IEnumerable<TReturn>> QueryAsync<TFirst, TSecond, TThird, TFourth, TReturn>(string sql, Func<TFirst, TSecond, TThird, TFourth, TReturn> map, object? param = null, IDbTransaction? transaction = null, bool buffered = true, string splitOn = "Id", int? commandTimeout = null, CommandType? commandType = null, bool writeDb = false)
     {
-        if (writeDb) sql = string.Concat(sql, " -- ", RepositoryConsts.MAXSCALE_ROUTE_TO_MASTER);
+        if (writeDb)
+        {
+            sql = string.Concat(sql, " -- ", RepositoryConsts.MAXSCALE_ROUTE_TO_MASTER);
+        }
+
         var result = await SqlMapper.QueryAsync<TFirst, TSecond, TThird, TFourth, TReturn>(GetDbConnection(), sql, map, param, transaction, buffered, splitOn, commandTimeout, commandType);
         return result;
     }
 
     public async Task<IEnumerable<TReturn>> QueryAsync<TFirst, TSecond, TThird, TFourth, TFifth, TReturn>(string sql, Func<TFirst, TSecond, TThird, TFourth, TFifth, TReturn> map, object? param = null, IDbTransaction? transaction = null, bool buffered = true, string splitOn = "Id", int? commandTimeout = null, CommandType? commandType = null, bool writeDb = false)
     {
-        if (writeDb) sql = string.Concat(sql, " -- ", RepositoryConsts.MAXSCALE_ROUTE_TO_MASTER);
+        if (writeDb)
+        {
+            sql = string.Concat(sql, " -- ", RepositoryConsts.MAXSCALE_ROUTE_TO_MASTER);
+        }
+
         var result = await SqlMapper.QueryAsync<TFirst, TSecond, TThird, TFourth, TFifth, TReturn>(GetDbConnection(), sql, map, param, transaction, buffered, splitOn, commandTimeout, commandType);
         return result;
     }
 
     public async Task<IEnumerable<TReturn>> QueryAsync<TFirst, TSecond, TThird, TFourth, TFifth, TSixth, TReturn>(string sql, Func<TFirst, TSecond, TThird, TFourth, TFifth, TSixth, TReturn> map, object? param = null, IDbTransaction? transaction = null, bool buffered = true, string splitOn = "Id", int? commandTimeout = null, CommandType? commandType = null, bool writeDb = false)
     {
-        if (writeDb) sql = string.Concat(sql, " -- ", RepositoryConsts.MAXSCALE_ROUTE_TO_MASTER);
+        if (writeDb)
+        {
+            sql = string.Concat(sql, " -- ", RepositoryConsts.MAXSCALE_ROUTE_TO_MASTER);
+        }
+
         var result = await SqlMapper.QueryAsync<TFirst, TSecond, TThird, TFourth, TFifth, TSixth, TReturn>(GetDbConnection(), sql, map, param, transaction, buffered, splitOn, commandTimeout, commandType);
         return result;
     }
 
     public async Task<IEnumerable<TReturn>> QueryAsync<TFirst, TSecond, TThird, TFourth, TFifth, TSixth, TSeventh, TReturn>(string sql, Func<TFirst, TSecond, TThird, TFourth, TFifth, TSixth, TSeventh, TReturn> map, object? param = null, IDbTransaction? transaction = null, bool buffered = true, string splitOn = "Id", int? commandTimeout = null, CommandType? commandType = null, bool writeDb = false)
     {
-        if (writeDb) sql = string.Concat(sql, " -- ", RepositoryConsts.MAXSCALE_ROUTE_TO_MASTER);
+        if (writeDb)
+        {
+            sql = string.Concat(sql, " -- ", RepositoryConsts.MAXSCALE_ROUTE_TO_MASTER);
+        }
+
         var result = await SqlMapper.QueryAsync<TFirst, TSecond, TThird, TFourth, TFifth, TSixth, TSeventh, TReturn>(GetDbConnection(), sql, map, param, transaction, buffered, splitOn, commandTimeout, commandType);
         return result;
     }
 
     public async Task<IEnumerable<TReturn>> QueryAsync<TReturn>(string sql, Type[] types, Func<object[], TReturn> map, object? param = null, IDbTransaction? transaction = null, bool buffered = true, string splitOn = "Id", int? commandTimeout = null, CommandType? commandType = null, bool writeDb = false)
     {
-        if (writeDb) sql = string.Concat(sql, " -- ", RepositoryConsts.MAXSCALE_ROUTE_TO_MASTER);
+        if (writeDb)
+        {
+            sql = string.Concat(sql, " -- ", RepositoryConsts.MAXSCALE_ROUTE_TO_MASTER);
+        }
+
         var result = await SqlMapper.QueryAsync<TReturn>(GetDbConnection(), sql, types, map, param, transaction, buffered, splitOn, commandTimeout, commandType);
         return result;
     }
 
     public async Task<T> QueryFirstAsync<T>(string sql, object? param = null, IDbTransaction? transaction = null, int? commandTimeout = null, CommandType? commandType = null, bool writeDb = false)
     {
-        if (writeDb) sql = string.Concat(sql, " -- ", RepositoryConsts.MAXSCALE_ROUTE_TO_MASTER);
+        if (writeDb)
+        {
+            sql = string.Concat(sql, " -- ", RepositoryConsts.MAXSCALE_ROUTE_TO_MASTER);
+        }
+
         var result = await SqlMapper.QueryFirstAsync<T>(GetDbConnection(), sql, param, transaction, commandTimeout, commandType);
         return result;
     }
 
     public async Task<dynamic> QueryFirstAsync(string sql, object? param = null, IDbTransaction? transaction = null, int? commandTimeout = null, CommandType? commandType = null, bool writeDb = false)
     {
-        if (writeDb) sql = string.Concat(sql, " -- ", RepositoryConsts.MAXSCALE_ROUTE_TO_MASTER);
+        if (writeDb)
+        {
+            sql = string.Concat(sql, " -- ", RepositoryConsts.MAXSCALE_ROUTE_TO_MASTER);
+        }
+
         var result = await SqlMapper.QueryFirstAsync(GetDbConnection(), sql, param, transaction, commandTimeout, commandType);
         return result;
     }
 
     public async Task<object> QueryFirstAsync(Type type, string sql, object? param = null, IDbTransaction? transaction = null, int? commandTimeout = null, CommandType? commandType = null, bool writeDb = false)
     {
-        if (writeDb) sql = string.Concat(sql, " -- ", RepositoryConsts.MAXSCALE_ROUTE_TO_MASTER);
+        if (writeDb)
+        {
+            sql = string.Concat(sql, " -- ", RepositoryConsts.MAXSCALE_ROUTE_TO_MASTER);
+        }
+
         var result = await SqlMapper.QueryFirstAsync(GetDbConnection(), type, sql, param, transaction, commandTimeout, commandType);
         return result;
     }
 
     public async Task<T?> QueryFirstOrDefaultAsync<T>(string sql, object? param = null, IDbTransaction? transaction = null, int? commandTimeout = null, CommandType? commandType = null, bool writeDb = false)
     {
-        if (writeDb) sql = string.Concat(sql, " -- ", RepositoryConsts.MAXSCALE_ROUTE_TO_MASTER);
+        if (writeDb)
+        {
+            sql = string.Concat(sql, " -- ", RepositoryConsts.MAXSCALE_ROUTE_TO_MASTER);
+        }
+
         var result = await SqlMapper.QueryFirstOrDefaultAsync<T>(GetDbConnection(), sql, param, transaction, commandTimeout, commandType);
         return result;
     }
 
     public async Task<dynamic?> QueryFirstOrDefaultAsync(string sql, object? param = null, IDbTransaction? transaction = null, int? commandTimeout = null, CommandType? commandType = null, bool writeDb = false)
     {
-        if (writeDb) sql = string.Concat(sql, " -- ", RepositoryConsts.MAXSCALE_ROUTE_TO_MASTER);
+        if (writeDb)
+        {
+            sql = string.Concat(sql, " -- ", RepositoryConsts.MAXSCALE_ROUTE_TO_MASTER);
+        }
+
         var result = await SqlMapper.QueryFirstOrDefaultAsync(GetDbConnection(), sql, param, transaction, commandTimeout, commandType);
         return result;
     }
 
     public async Task<object?> QueryFirstOrDefaultAsync(Type type, string sql, object? param = null, IDbTransaction? transaction = null, int? commandTimeout = null, CommandType? commandType = null, bool writeDb = false)
     {
-        if (writeDb) sql = string.Concat(sql, " -- ", RepositoryConsts.MAXSCALE_ROUTE_TO_MASTER);
+        if (writeDb)
+        {
+            sql = string.Concat(sql, " -- ", RepositoryConsts.MAXSCALE_ROUTE_TO_MASTER);
+        }
+
         var result = await SqlMapper.QueryFirstOrDefaultAsync(GetDbConnection(), type, sql, param, transaction, commandTimeout, commandType);
         return result;
     }
 
     public async Task<T> QuerySingleAsync<T>(string sql, object? param = null, IDbTransaction? transaction = null, int? commandTimeout = null, CommandType? commandType = null, bool writeDb = false)
     {
-        if (writeDb) sql = string.Concat(sql, " -- ", RepositoryConsts.MAXSCALE_ROUTE_TO_MASTER);
+        if (writeDb)
+        {
+            sql = string.Concat(sql, " -- ", RepositoryConsts.MAXSCALE_ROUTE_TO_MASTER);
+        }
+
         var result = await SqlMapper.QuerySingleAsync<T>(GetDbConnection(), sql, param, transaction, commandTimeout, commandType);
         return result;
     }
 
     public async Task<dynamic> QuerySingleAsync(string sql, object? param = null, IDbTransaction? transaction = null, int? commandTimeout = null, CommandType? commandType = null, bool writeDb = false)
     {
-        if (writeDb) sql = string.Concat(sql, " -- ", RepositoryConsts.MAXSCALE_ROUTE_TO_MASTER);
+        if (writeDb)
+        {
+            sql = string.Concat(sql, " -- ", RepositoryConsts.MAXSCALE_ROUTE_TO_MASTER);
+        }
+
         var result = await SqlMapper.QuerySingleAsync(GetDbConnection(), sql, param, transaction, commandTimeout, commandType);
         return result;
     }
 
     public async Task<object> QuerySingleAsync(Type type, string sql, object? param = null, IDbTransaction? transaction = null, int? commandTimeout = null, CommandType? commandType = null, bool writeDb = false)
     {
-        if (writeDb) sql = string.Concat(sql, " -- ", RepositoryConsts.MAXSCALE_ROUTE_TO_MASTER);
+        if (writeDb)
+        {
+            sql = string.Concat(sql, " -- ", RepositoryConsts.MAXSCALE_ROUTE_TO_MASTER);
+        }
+
         var result = await SqlMapper.QuerySingleAsync(GetDbConnection(), type, sql, param, transaction, commandTimeout, commandType);
         return result;
     }
 
     public async Task<T?> QuerySingleOrDefaultAsync<T>(string sql, object? param = null, IDbTransaction? transaction = null, int? commandTimeout = null, CommandType? commandType = null, bool writeDb = false)
     {
-        if (writeDb) sql = string.Concat(sql, " -- ", RepositoryConsts.MAXSCALE_ROUTE_TO_MASTER);
+        if (writeDb)
+        {
+            sql = string.Concat(sql, " -- ", RepositoryConsts.MAXSCALE_ROUTE_TO_MASTER);
+        }
+
         var result = await SqlMapper.QuerySingleOrDefaultAsync<T>(GetDbConnection(), sql, param, transaction, commandTimeout, commandType);
         return result;
     }
 
     public async Task<dynamic?> QuerySingleOrDefaultAsync(string sql, object? param = null, IDbTransaction? transaction = null, int? commandTimeout = null, CommandType? commandType = null, bool writeDb = false)
     {
-        if (writeDb) sql = string.Concat(sql, " -- ", RepositoryConsts.MAXSCALE_ROUTE_TO_MASTER);
+        if (writeDb)
+        {
+            sql = string.Concat(sql, " -- ", RepositoryConsts.MAXSCALE_ROUTE_TO_MASTER);
+        }
+
         var result = await SqlMapper.QuerySingleOrDefaultAsync(GetDbConnection(), sql, param, transaction, commandTimeout, commandType);
         return result;
     }
 
     public async Task<object?> QuerySingleOrDefaultAsync(Type type, string sql, object? param = null, IDbTransaction? transaction = null, int? commandTimeout = null, CommandType? commandType = null, bool writeDb = false)
     {
-        if (writeDb) sql = string.Concat(sql, " -- ", RepositoryConsts.MAXSCALE_ROUTE_TO_MASTER);
+        if (writeDb)
+        {
+            sql = string.Concat(sql, " -- ", RepositoryConsts.MAXSCALE_ROUTE_TO_MASTER);
+        }
+
         var result = await SqlMapper.QuerySingleOrDefaultAsync(GetDbConnection(), type, sql, param, transaction, commandTimeout, commandType);
         return result;
     }

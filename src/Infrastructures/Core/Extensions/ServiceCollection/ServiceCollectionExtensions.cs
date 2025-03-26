@@ -20,7 +20,9 @@ public static partial class ServiceCollectionExtensions
         {
             var instance = hostBuilderContext.Configuration as IConfigurationRoot;
             if (instance is not null)
+            {
                 return instance;
+            }
         }
 
         return services.GetSingletonInstance<IConfiguration>();
@@ -31,7 +33,9 @@ public static partial class ServiceCollectionExtensions
     {
         var instance = services.FirstOrDefault(d => d.ServiceType == typeof(T))?.ImplementationInstance;
         if (instance is null)
+        {
             return null;
+        }
 
         return (T)instance;
     }
@@ -41,7 +45,10 @@ public static partial class ServiceCollectionExtensions
     {
         var instance = GetSingletonInstanceOrNull<T>(services);
         if (instance is null)
+        {
             throw new InvalidOperationException("Could not find singleton service: " + typeof(T).AssemblyQualifiedName);
+        }
+
         return instance;
     }
 }

@@ -5,7 +5,9 @@ internal class TimeStampeHandler : SqlMapper.TypeHandler<byte[]>
     public override void SetValue(IDbDataParameter parameter, byte[] value)
     {
         if (value.IsNullOrEmpty())
+        {
             parameter.Value = null;
+        }
         else
         {
             long timestampLong = BitConverter.ToInt64(value, 0);

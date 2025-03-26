@@ -16,7 +16,9 @@ public static class MethodInfoExtension
     {
         var originalMethodName = methodInfo.DeclaringType?.Name ?? string.Empty;
         if (string.IsNullOrWhiteSpace(originalMethodName))
+        {
             return string.Empty;
+        }
 
         var match = Regex.Match(originalMethodName, "<(.*)>");
         return match.Success ? match.Groups[1].Value : originalMethodName;

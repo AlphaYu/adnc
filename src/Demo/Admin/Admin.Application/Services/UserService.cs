@@ -11,7 +11,9 @@ public class UserService(IEfRepository<User> userRepository, IEfRepository<Role>
         input.TrimStringFields();
         var exists = await userRepository.AnyAsync(x => x.Account == input.Account);
         if (exists)
+        {
             return Problem(HttpStatusCode.BadRequest, "账号已经存在");
+        }
 
         var user = Mapper.Map<User>(input, IdGenerater.GetNextId());
         user.Account = user.Account.ToLower();
@@ -42,7 +44,9 @@ public class UserService(IEfRepository<User> userRepository, IEfRepository<Role>
 
         var user = await userRepository.FetchAsync(x => x.Id == id, noTracking: false);
         if (user is null)
+        {
             return Problem(HttpStatusCode.BadRequest, "账号不存在");
+        }
 
         await roleUserRelationRepository.ExecuteDeleteAsync(x => x.UserId == id);
         if (input.RoleIds.IsNotNullOrEmpty())
@@ -66,10 +70,14 @@ public class UserService(IEfRepository<User> userRepository, IEfRepository<Role>
     public async Task<List<string>> GetPermissionsAsync(long userId, IEnumerable<string> requestPermissions, string userBelongsRoleIds)
     {
         if (requestPermissions.IsNullOrEmpty())
+        {
             return [];
+        }
 
         if (userBelongsRoleIds.IsNullOrWhiteSpace())
+        {
             return [];
+        }
 
         var roleIds = userBelongsRoleIds.Split(",", StringSplitOptions.RemoveEmptyEntries).Select(x => long.Parse(x.Trim()));
 
@@ -77,7 +85,9 @@ public class UserService(IEfRepository<User> userRepository, IEfRepository<Role>
 
         var upperCodes = allMenuCodes.Where(x => roleIds.Contains(x.RoleId)).SelectMany(x => x.Perms.Select(y => y.ToUpper())).Distinct();
         if (upperCodes.IsNullOrEmpty())
+        {
             return [];
+        }
 
         var result = upperCodes.Intersect(requestPermissions.Select(x => x.ToUpper()));
         return result.ToList();
@@ -87,7 +97,9 @@ public class UserService(IEfRepository<User> userRepository, IEfRepository<Role>
     {
         var userEntity = await userRepository.FetchAsync(x => x.Id == id);
         if (userEntity is null)
+        {
             return null;
+        }
 
         var userDto = Mapper.Map<UserDto>(userEntity);
         var roleIds = await roleUserRelationRepository.Where(x => x.UserId == id).Select(x => x.RoleId).ToArrayAsync();
@@ -109,7 +121,9 @@ public class UserService(IEfRepository<User> userRepository, IEfRepository<Role>
 
         var total = await userRepository.CountAsync(whereExpression);
         if (total == 0)
+        {
             return new PageModelDto<UserDto>(input);
+        }
 
         var userEntities = await userRepository
                                         .Where(whereExpression)
@@ -132,7 +146,9 @@ public class UserService(IEfRepository<User> userRepository, IEfRepository<Role>
     {
         var userEntity = await userRepository.FetchAsync(x => x.Id == id);
         if (userEntity is null)
+        {
             return null;
+        }
 
         var deptsCahce = await cacheService.GetAllOrganizationsFromCacheAsync();
 
@@ -154,7 +170,9 @@ public class UserService(IEfRepository<User> userRepository, IEfRepository<Role>
     {
         var exists = await userRepository.AnyAsync(x => x.Id == id);
         if (!exists)
+        {
             return Problem(HttpStatusCode.NotFound, "用户不存在");
+        }
 
         await userRepository.ExecuteUpdateAsync(x => x.Id == id, setters => setters.SetProperty(y => y.Name, input.Name).SetProperty(y => y.Gender, input.Gender));
 
@@ -286,11 +304,15 @@ public class UserService(IEfRepository<User> userRepository, IEfRepository<Role>
         input.TrimStringFields();
         var user = await userRepository.FetchAsync(x => new { x.Id, x.Salt, x.Password, }, x => x.Id == id);
         if (user is null)
+        {
             return Problem(HttpStatusCode.NotFound, "用户不存在,参数信息不完整");
+        }
 
         var md5OldPwdString = InfraHelper.Encrypt.Md5(input.OldPassword + user.Salt);
         if (!md5OldPwdString.EqualsIgnoreCase(user.Password))
+        {
             return Problem(HttpStatusCode.BadRequest, "旧密码输入错误");
+        }
 
         var newPwdString = InfraHelper.Encrypt.Md5(input.ConfirmPassword + user.Salt);
         await userRepository.ExecuteUpdateAsync(x => x.Id == id, setters => setters.SetProperty(y => y.Password, newPwdString));
@@ -302,7 +324,9 @@ public class UserService(IEfRepository<User> userRepository, IEfRepository<Role>
     {
         var user = await userRepository.FetchAsync(x => new { x.Id, x.Salt, x.Password, }, x => x.Id == id);
         if (user is null)
+        {
             return Problem(HttpStatusCode.NotFound, "用户不存在,参数信息不完整");
+        }
 
         var newPwdString = InfraHelper.Encrypt.Md5(password + user.Salt);
         await userRepository.ExecuteUpdateAsync(x => x.Id == id, setters => setters.SetProperty(y => y.Password, newPwdString));

@@ -37,7 +37,10 @@ public sealed class WorkerNodeHostedService(ILogger<WorkerNodeHostedService> log
                 {
                     await Task.Delay(_millisecondsDelay, stoppingToken);
 
-                    if (stoppingToken.IsCancellationRequested) break;
+                    if (stoppingToken.IsCancellationRequested)
+                    {
+                        break;
+                    }
 
                     await workerNode.RefreshWorkerIdScoreAsync(IdGenerater.CurrentWorkerId);
                 }

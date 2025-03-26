@@ -24,7 +24,10 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
             if (!exists)
             {
                 if (_cacheOptions.Value.EnableLogging)
+                {
                     _logger?.LogInformation($"Cache Penetrated : cachekey = {cacheKey}");
+                }
+
                 return null;
             }
         }
@@ -35,7 +38,9 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
             _cacheStats.OnHit();
 
             if (_cacheOptions.Value.EnableLogging)
+            {
                 _logger?.LogInformation($"Cache Hit : cachekey = {cacheKey}");
+            }
 
             var value = _serializer.Deserialize(result, type);
             return value;
@@ -45,7 +50,9 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
             _cacheStats.OnMiss();
 
             if (_cacheOptions.Value.EnableLogging)
+            {
                 _logger?.LogInformation($"Cache Missed : cachekey = {cacheKey}");
+            }
 
             return null;
         }
@@ -70,7 +77,10 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
             if (!exists)
             {
                 if (_cacheOptions.Value.EnableLogging)
+                {
                     _logger?.LogInformation($"Cache Penetrated : cachekey = {cacheKey}");
+                }
+
                 return CacheValue<T>.NoValue;
             }
         }
@@ -81,7 +91,9 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
             _cacheStats.OnHit();
 
             if (_cacheOptions.Value.EnableLogging)
+            {
                 _logger?.LogInformation($"Cache Hit : cachekey = {cacheKey}");
+            }
 
             var value = _serializer.Deserialize<T>(result);
             return new CacheValue<T>(value, true);
@@ -90,7 +102,9 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
         _cacheStats.OnMiss();
 
         if (_cacheOptions.Value.EnableLogging)
+        {
             _logger?.LogInformation($"Cache Missed : cachekey = {cacheKey}");
+        }
 
         var flag = await _redisDb.LockAsync(cacheKey, _cacheOptions.Value.LockMs / 1000);
 
@@ -140,7 +154,10 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
             if (!exists)
             {
                 if (_cacheOptions.Value.EnableLogging)
+                {
                     _logger?.LogInformation($"Cache Penetrated : cachekey = {cacheKey}");
+                }
+
                 return CacheValue<T>.NoValue;
             }
         }
@@ -151,7 +168,9 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
             _cacheStats.OnHit();
 
             if (_cacheOptions.Value.EnableLogging)
+            {
                 _logger?.LogInformation($"Cache Hit : cachekey = {cacheKey}");
+            }
 
             var value = _serializer.Deserialize<T>(result);
             return new CacheValue<T>(value, true);
@@ -161,7 +180,9 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
             _cacheStats.OnMiss();
 
             if (_cacheOptions.Value.EnableLogging)
+            {
                 _logger?.LogInformation($"Cache Missed : cachekey = {cacheKey}");
+            }
 
             return CacheValue<T>.NoValue;
         }
@@ -179,7 +200,9 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
             var allCount = 0;
 
             foreach (var server in _servers)
+            {
                 allCount += (int)server.DatabaseSize(_redisDb.Database);
+            }
 
             return Task.FromResult(allCount);
         }
@@ -248,7 +271,9 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
         prefix = this.HandlePrefix(prefix);
 
         if (_cacheOptions.Value.EnableLogging)
+        {
             _logger?.LogInformation($"RemoveByPrefixAsync : prefix = {prefix}");
+        }
 
         var redisKeys = this.SearchRedisKeys(prefix);
 
@@ -270,7 +295,9 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
         var tasks = new List<Task>();
 
         foreach (var item in values)
+        {
             tasks.Add(SetAsync(item.Key, item.Value, expiration));
+        }
 
         await Task.WhenAll(tasks);
     }
@@ -293,9 +320,13 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
         {
             var cachedValue = values[i];
             if (!cachedValue.IsNull)
+            {
                 result.Add(keyArray[i], new CacheValue<T>(_serializer.Deserialize<T>(cachedValue), true));
+            }
             else
+            {
                 result.Add(keyArray[i], CacheValue<T>.NoValue);
+            }
         }
 
         return result;
@@ -322,9 +353,13 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
         {
             var cachedValue = values[i];
             if (!cachedValue.IsNull)
+            {
                 result.Add(redisKeys[i], new CacheValue<T>(_serializer.Deserialize<T>(cachedValue), true));
+            }
             else
+            {
                 result.Add(redisKeys[i], CacheValue<T>.NoValue);
+            }
         }
 
         return result;
@@ -341,7 +376,9 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
 
         var redisKeys = cacheKeys.Where(k => !string.IsNullOrEmpty(k)).Select(k => (RedisKey)k).ToArray();
         if (redisKeys.Length > 0)
+        {
             await _redisDb.KeyDeleteAsync(redisKeys);
+        }
     }
 
     /// <summary>
@@ -351,7 +388,9 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
     protected override async Task BaseFlushAsync()
     {
         if (_cacheOptions.Value.EnableLogging)
+        {
             _logger?.LogInformation("Redis -- FlushAsync");
+        }
 
         var tasks = new List<Task>();
 

@@ -8,7 +8,9 @@ public static class ServiceCollectionExtension
     public static IServiceCollection AddAdncInfraDapper(this IServiceCollection services)
     {
         if (services.HasRegistered(nameof(AddAdncInfraDapper)))
+        {
             return services;
+        }
 
         services.TryAddScoped<IAdoExecuterWithQuerierRepository, DapperRepository>();
         services.TryAddScoped<IAdoExecuterRepository, DapperRepository>();

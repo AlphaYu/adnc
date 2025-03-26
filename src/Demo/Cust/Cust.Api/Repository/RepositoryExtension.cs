@@ -18,7 +18,9 @@ public static class RepositoryExtension
         string countSql = $"select count(*) from cust_customer {condition.Where}";
         var total = await repository.AdoQuerier.QuerySingleAsync<int>(countSql, condition.Param);
         if (total == 0)
+        {
             return new QueryPageResult<TResult>(total);
+        }
 
         string sql = $"select * from cust_customer  {condition.Where} {condition.OrderBy} limit {offset},{rows}";
         var result = await repository.AdoQuerier.QueryAsync<TResult>(sql, condition.Param);

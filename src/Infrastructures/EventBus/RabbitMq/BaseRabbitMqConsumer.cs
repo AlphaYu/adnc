@@ -86,10 +86,16 @@ public abstract class BaseRabbitMqConsumer : IHostedService
 
             //关闭自动确认,开启手动确认后需要依据处理结果选择返回确认信息。
             if (!queue.AutoAck)
+            {
                 if (result)
+                {
                     await channel.BasicAckAsync(ea.DeliveryTag, multiple: queue.AckMultiple);
+                }
                 else
+                {
                     await channel.BasicRejectAsync(ea.DeliveryTag, requeue: queue.RejectRequeue);
+                }
+            }
         };
     }
 
@@ -99,7 +105,9 @@ public abstract class BaseRabbitMqConsumer : IHostedService
     protected virtual void DeRegister()
     {
         if (_connection != null)
+        {
             _connection.Dispose();
+        }
     }
 
     /// <summary>

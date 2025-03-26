@@ -92,7 +92,10 @@ public partial class DefaultRedisProvider : IRedisProvider
 
         foreach (var item in vals)
         {
-            if (!dict.ContainsKey(item.Name)) dict.Add(item.Name, item.Value);
+            if (!dict.ContainsKey(item.Name))
+            {
+                dict.Add(item.Name, item.Value);
+            }
         }
 
         return dict;
@@ -229,7 +232,10 @@ public partial class DefaultRedisProvider : IRedisProvider
 
         foreach (var item in vals)
         {
-            if (!dict.ContainsKey(item.Name)) dict.Add(item.Name, item.Value);
+            if (!dict.ContainsKey(item.Name))
+            {
+                dict.Add(item.Name, item.Value);
+            }
         }
 
         return dict;

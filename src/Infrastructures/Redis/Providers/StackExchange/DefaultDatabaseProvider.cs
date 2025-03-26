@@ -70,15 +70,21 @@ public class DefaultDatabaseProvider
                 {
                     var clusterConfiguration = server.ClusterConfiguration;
                     if (clusterConfiguration is null)
+                    {
                         throw new NullReferenceException(nameof(server.ClusterConfiguration));
+                    }
 
                     var nodes = clusterConfiguration.Nodes.Where(n => !n.IsReplica);
                     if (nodes is null)
+                    {
                         throw new NullReferenceException(nameof(server.ClusterConfiguration.Nodes));
+                    }
 
                     var endpoints = nodes.Select(n => n.EndPoint);
                     if (endpoints is null)
+                    {
                         throw new NullReferenceException(nameof(endpoints));
+                    }
 
                     masters.AddRange((IEnumerable<EndPoint>)endpoints);
 

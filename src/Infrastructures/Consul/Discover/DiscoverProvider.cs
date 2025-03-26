@@ -30,7 +30,9 @@ internal class DiscoverProvider : IDiscoverProvider
         var serviceAddressCacheKey = $"service_consul_{ServiceName}";
         var healthAddresses = _memoryCache.Get<List<string>>(serviceAddressCacheKey);
         if (healthAddresses.IsNotNullOrEmpty())
+        {
             return healthAddresses;
+        }
 
         await _slimlock.WaitAsync();
         try
@@ -38,7 +40,9 @@ internal class DiscoverProvider : IDiscoverProvider
             Logger?.LogDebug($"SemaphoreSlim=true,{serviceAddressCacheKey}");
             healthAddresses = _memoryCache.Get<List<string>>(serviceAddressCacheKey);
             if (healthAddresses.IsNotNullOrEmpty())
+            {
                 return healthAddresses;
+            }
 
             var query = await _consulClient.Health.Service(ServiceName, string.Empty, true);
             if (query is not null && query.Response.IsNotNullOrEmpty())

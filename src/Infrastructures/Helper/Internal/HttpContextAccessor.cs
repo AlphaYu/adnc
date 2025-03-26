@@ -38,7 +38,9 @@ public sealed class HttpContextAccessor
         {
             var fieldInfo = typeof(HttpContextAccessor).GetField("_httpContextCurrent", BindingFlags.Static | BindingFlags.NonPublic);
             if (fieldInfo is null)
+            {
                 return default;
+            }
 
             var field = Expression.Field(null, fieldInfo);
             return Expression.Lambda<Func<object>>(field).Compile();
@@ -49,7 +51,10 @@ public sealed class HttpContextAccessor
             var holderType = asyncLocal.GetType().GetGenericArguments()[0];
             var method = typeof(AsyncLocal<>).MakeGenericType(holderType)?.GetProperty("Value")?.GetGetMethod();
             if (method is null)
+            {
                 return default;
+            }
+
             var target = Expression.Parameter(typeof(object));
             var convert = Expression.Convert(target, asyncLocal.GetType());
             var getValue = Expression.Call(convert, method);

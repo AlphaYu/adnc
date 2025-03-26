@@ -9,11 +9,15 @@ public class DictService(IEfRepository<Dict> dictRepo, IEfRepository<DictData> d
 
         var codeExists = await dictRepo.AnyAsync(x => x.Code == input.Code);
         if (codeExists)
+        {
             return Problem(HttpStatusCode.BadRequest, "字典编码已经存在");
+        }
 
         var nameExists = await dictRepo.AnyAsync(x => x.Name == input.Name);
         if (nameExists)
+        {
             return Problem(HttpStatusCode.BadRequest, "字典名字已经存在");
+        }
 
         var entity = Mapper.Map<Dict>(input, IdGenerater.GetNextId());
 
@@ -33,19 +37,27 @@ public class DictService(IEfRepository<Dict> dictRepo, IEfRepository<DictData> d
     {
         var entity = await dictRepo.FetchAsync(x => x.Id == id, noTracking: false);
         if (entity is null)
+        {
             return Problem(HttpStatusCode.NotFound, "字典不存在");
+        }
 
         input.TrimStringFields();
         var codeExists = await dictRepo.AnyAsync(x => x.Code == input.Code && x.Id != id);
         if (codeExists)
+        {
             return Problem(HttpStatusCode.BadRequest, "字典编码已经存在");
+        }
 
         var nameExists = await dictRepo.AnyAsync(x => x.Name == input.Name && x.Id != id);
         if (nameExists)
+        {
             return Problem(HttpStatusCode.BadRequest, "字典名字已经存在");
+        }
 
         if (input.Code != entity.Code)
+        {
             await dictDataRepo.ExecuteUpdateAsync(x => x.DictCode == input.Code, setters => setters.SetProperty(x => x.DictCode, input.Code));
+        }
 
         var newEntity = Mapper.Map(input, entity);
         await dictRepo.UpdateAsync(newEntity);
@@ -59,7 +71,9 @@ public class DictService(IEfRepository<Dict> dictRepo, IEfRepository<DictData> d
 
         var dictCodes = await dictRepo.Where(x => ids.Contains(x.Id)).Select(x => x.Code).ToListAsync();
         if (dictCodes.IsNotNullOrEmpty())
+        {
             await dictDataRepo.ExecuteDeleteAsync(x => dictCodes.Contains(x.DictCode));
+        }
 
         return ServiceResult();
     }
@@ -68,7 +82,9 @@ public class DictService(IEfRepository<Dict> dictRepo, IEfRepository<DictData> d
     {
         var entity = await dictRepo.FetchAsync(x => x.Id == id);
         if (entity is null)
+        {
             return null;
+        }
 
         var dictDto = Mapper.Map<DictDto>(entity);
         return dictDto;
@@ -83,7 +99,9 @@ public class DictService(IEfRepository<Dict> dictRepo, IEfRepository<DictData> d
 
         var total = await dictRepo.CountAsync(whereExpr);
         if (total == 0)
+        {
             return new PageModelDto<DictDto>(input);
+        }
 
         var entities = await dictRepo
                                         .Where(whereExpr)
@@ -99,7 +117,9 @@ public class DictService(IEfRepository<Dict> dictRepo, IEfRepository<DictData> d
     public async Task<List<DictOptionDto>> GetOptionsAsync(string codes)
     {
         if (codes.IsNullOrWhiteSpace())
+        {
             return [];
+        }
 
         var whereExpr = ExpressionCreator
             .New<DictOptionDto>()

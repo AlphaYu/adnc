@@ -53,15 +53,21 @@ public class AccountController(IOptions<JWTOptions> jwtOptions, UserContext user
         {
             var id = claimOfId.Value.ToLong();
             if (id is null)
+            {
                 return Forbid();
+            }
 
             var validatedInfo = await userService.GetUserValidatedInfoAsync(id.Value);
             if (validatedInfo is null)
+            {
                 return Forbid();
+            }
 
             var jti = JwtTokenHelper.GetClaimFromRefeshToken(jwtOptions.Value, input.RefreshToken, JwtRegisteredClaimNames.Jti);
             if (jti is null || jti.Value != validatedInfo.ValidationVersion)
+            {
                 return Forbid();
+            }
 
             var accessToken = JwtTokenHelper.CreateAccessToken(jwtOptions.Value, validatedInfo.ValidationVersion, validatedInfo.Account, validatedInfo.Id.ToString(), validatedInfo.Name, validatedInfo.GetRoleIdsString(), BearerDefaults.Manager);
             var refreshToken = JwtTokenHelper.CreateRefreshToken(jwtOptions.Value, validatedInfo.ValidationVersion, validatedInfo.Id.ToString());

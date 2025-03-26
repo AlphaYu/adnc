@@ -7,7 +7,9 @@ public static class ServiceCollectionExtension
     public static IServiceCollection AddAdncInfraYitterIdGenerater(this IServiceCollection services, IConfigurationSection redisSection, string name)
     {
         if (services.HasRegistered(nameof(AddAdncInfraYitterIdGenerater)))
+        {
             return services;
+        }
 
         //var workerNode = Activator.CreateInstance(typeof(WorkerNode), services) as WorkerNode;
         return services

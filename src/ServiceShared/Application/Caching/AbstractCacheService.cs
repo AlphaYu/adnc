@@ -18,7 +18,9 @@ public abstract class AbstractCacheService : ICachePreheatable
     public virtual string ConcatCacheKey(params object[] items)
     {
         if (items.IsNullOrEmpty())
+        {
             throw new ArgumentNullException(nameof(items));
+        }
 
         return string.Join(GeneralConsts.LinkChar, items);
     }

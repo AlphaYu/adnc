@@ -32,7 +32,9 @@ public class Warehouse : AggregateRootWithBasicAuditInfo
     internal void BlockQty(int needBlockedQty)
     {
         if (this.Qty < needBlockedQty)
+        {
             throw new BusinessException("Qty<needFreezedQty");
+        }
 
         Checker.GTZero(ProductId.Value, nameof(ProductId));
 
@@ -47,7 +49,9 @@ public class Warehouse : AggregateRootWithBasicAuditInfo
     internal void RemoveBlockedQty(int needRemoveQty)
     {
         if (this.BlockedQty < needRemoveQty)
+        {
             throw new BusinessException("FreezedQty<needUnfreezeQty");
+        }
 
         Checker.GTZero(ProductId.Value, nameof(ProductId));
 
@@ -62,7 +66,9 @@ public class Warehouse : AggregateRootWithBasicAuditInfo
     internal void Deliver(int qty)
     {
         if (this.BlockedQty < qty)
+        {
             throw new BusinessException("FreezedQty<qty");
+        }
 
         Checker.GTZero(ProductId.Value, nameof(ProductId));
 

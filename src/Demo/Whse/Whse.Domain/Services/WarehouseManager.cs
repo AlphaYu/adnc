@@ -19,7 +19,9 @@ public class WarehouseManager : IDomainService
     {
         var exists = await _warehouseRepo.AnyAsync(x => x.Position.Code == positionCode);
         if (exists)
+        {
             throw new BusinessException($"positionCode exists({positionCode})");
+        }
 
         return new Warehouse(
             IdGenerater.GetNextId()
@@ -41,7 +43,9 @@ public class WarehouseManager : IDomainService
 
         //一个商品只能分配一个货架，但可以调整货架。
         if (existWarehouse != null && existWarehouse.Id != warehouse.Id)
+        {
             throw new BusinessException($"exist warehouse ({productId})");
+        }
 
         warehouse.SetProductId(productId);
     }
@@ -62,13 +66,21 @@ public class WarehouseManager : IDomainService
         Checker.NotNullOrAny(warehouses, nameof(warehouses));
 
         if (orderId <= 0)
+        {
             remark += $"{orderId}订单号错误";
+        }
         else if (blockQtyProductsInfo.Count == 0)
+        {
             remark += $"商品数量为空";
+        }
         else if (warehouses.Count == 0)
+        {
             remark += $"仓储数量为空";
+        }
         else if (warehouses.Count != blockQtyProductsInfo.Count)
+        {
             remark += remark + $"商品数量与库存数量不一致";
+        }
         else
         {
             try

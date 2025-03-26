@@ -8,7 +8,10 @@ public class ServiceRouter
         {
             var name = UpstreamPathTemplate.Replace("{everything}", "").Replace("/", "-");
             if (name.Length > 1)
+            {
                 return name[1..] ;
+            }
+
             return name;
         }
     }
@@ -20,11 +23,15 @@ public class ServiceRouter
         get
         {
             if (string.IsNullOrEmpty(UpstreamPathTemplate))
+            {
                 return string.Empty;
+            }
 
             var names = UpstreamPathTemplate.Replace("{everything}", "").Split('/', StringSplitOptions.RemoveEmptyEntries);
             if (names is null)
+            {
                 return string.Empty;
+            }
 
             return names[0];
         }

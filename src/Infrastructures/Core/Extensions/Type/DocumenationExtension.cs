@@ -60,7 +60,9 @@ public static class DocumenationExtension
         if (memberInfo is not null)
         {
             if (memberInfo.DeclaringType is null)
+            {
                 return default;
+            }
 
             // First character [0] of member type is prefix character in the name in the XML
             return XmlFromName(memberInfo.DeclaringType, memberInfo.MemberType.ToString()[0], memberInfo.Name);

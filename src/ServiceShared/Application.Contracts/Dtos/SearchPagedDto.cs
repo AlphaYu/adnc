@@ -24,8 +24,16 @@ public class SearchPagedDto : IDto
     {
         get
         {
-            if (_pageSize < 5) _pageSize = 5;
-            if (_pageSize > 100) _pageSize = 100;
+            if (_pageSize < 5)
+            {
+                _pageSize = 5;
+            }
+
+            if (_pageSize > 100)
+            {
+                _pageSize = 100;
+            }
+
             return _pageSize;
         }
         set => _pageSize = value;

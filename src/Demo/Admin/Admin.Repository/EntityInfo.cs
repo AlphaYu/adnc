@@ -7,7 +7,9 @@ public class EntityInfo : AbstractEntityInfo
     protected override void SetTableName(dynamic modelBuilder)
     {
         if (modelBuilder is not ModelBuilder builder)
+        {
             throw new ArgumentNullException(nameof(modelBuilder));
+        }
 
         builder.Entity<EventTracker>().ToTable("sys_eventtracker");
         builder.Entity<Organization>().ToTable("sys_organization");

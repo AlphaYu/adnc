@@ -8,7 +8,10 @@ public class DateTimeConverter : JsonConverter<DateTime>
     {
         var dateString = reader.GetString();
         if (dateString is null)
+        {
             throw new ArgumentException(nameof(reader));
+        }
+
         return DateTime.Parse(dateString);
     }
 

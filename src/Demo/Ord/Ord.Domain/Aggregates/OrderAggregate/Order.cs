@@ -66,9 +66,13 @@ public class Order : AggregateRootWithBasicAuditInfo
 
         var existProduct = Items.FirstOrDefault(x => x.Product.Id == product.Id);
         if (existProduct is null)
+        {
             Items.Add(new OrderItem(itemId, Id, product, count));
+        }
         else
+        {
             existProduct.ChangeCount(count);
+        }
 
         Amount += product.Price * count;
     }

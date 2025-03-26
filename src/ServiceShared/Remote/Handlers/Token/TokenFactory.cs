@@ -18,7 +18,10 @@ public sealed class TokenFactory
         */
         var tokenGenerator = _tokenGenerators.FirstOrDefault(x => x.GeneratorName == authorizationScheme);
         if (tokenGenerator is null)
+        {
             throw new NullReferenceException(nameof(tokenGenerator));
+        }
+
         return tokenGenerator;
     }
 }

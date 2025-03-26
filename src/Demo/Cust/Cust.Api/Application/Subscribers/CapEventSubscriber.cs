@@ -19,15 +19,21 @@ public sealed partial class CapEventSubscriber(IUnitOfWork unitOfWork, IEfReposi
         var eventHandler = nameof(HandleCustomerRechargedEvent);
         var hasProcessed = await tracker.HasProcessedAsync(eventId, eventHandler);
         if (hasProcessed)
+        {
             return;
+        }
 
         var transLog = await transactionLogRepo.FetchAsync(x => x.Id == eventDto.TransactionLogId, noTracking: false);
         if (transLog is null)
+        {
             return;
+        }
 
         var finance = await finaceRepo.FetchAsync(x => x.Id == eventDto.CustomerId, noTracking: false);
         if (finance is null)
+        {
             return;
+        }
 
         try
         {
@@ -72,7 +78,9 @@ public sealed partial class CapEventSubscriber(IUnitOfWork unitOfWork, IEfReposi
         var eventHandler = nameof(HandleOrderPaidEvent);
         var hasProcessed = await tracker.HasProcessedAsync(eventId, eventHandler);
         if (hasProcessed)
+        {
             return;
+        }
 
         try
         {

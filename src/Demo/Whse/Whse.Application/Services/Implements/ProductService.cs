@@ -120,7 +120,9 @@ public class ProductService(IEfBasicRepository<Product> productRepo, IEfBasicRep
 
         var total = await productRepo.CountAsync(whereCondition);
         if (total == 0)
+        {
             return new PageModelDto<ProductDto>(input);
+        }
 
         var entities = await productRepo
                             .Where(whereCondition)

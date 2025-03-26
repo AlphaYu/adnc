@@ -7,7 +7,9 @@ public abstract class AbstractEntityInfo : IEntityInfo
     public virtual void OnModelCreating(dynamic modelBuilder)
     {
         if (modelBuilder is not ModelBuilder builder)
+        {
             throw new ArgumentNullException(nameof(modelBuilder));
+        }
 
         var assemblies = GetCurrentAssemblies();
         assemblies.ForEach(assembly => builder.ApplyConfigurationsFromAssembly(assembly));
@@ -29,7 +31,9 @@ public abstract class AbstractEntityInfo : IEntityInfo
     private void SetComment(ModelBuilder modelBuilder, IEnumerable<Type>? types)
     {
         if (types is null)
+        {
             return;
+        }
 
         var entityTypes = modelBuilder.Model.GetEntityTypes().Where(x => types.Contains(x.ClrType));
         entityTypes.ForEach(entityType =>
@@ -53,7 +57,9 @@ public abstract class AbstractEntityInfo : IEntityInfo
     protected virtual List<Type> GetEntityTypes(IEnumerable<Assembly> assemblies)
     {
         if (assemblies is null)
+        {
             throw new ArgumentNullException(nameof(assemblies));
+        }
 
         var typeList = assemblies.SelectMany(assembly => assembly.GetTypes()
                                                  .Where(m => m.FullName != null

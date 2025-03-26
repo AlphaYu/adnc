@@ -10,11 +10,19 @@ public class SqlServerUnitOfWork<TDbContext>(TDbContext context, ICapPublisher? 
         , bool distributed = false)
     {
         if (distributed)
+        {
             if (_publisher is null)
+            {
                 throw new ArgumentException("CapPublisher is null");
+            }
             else
+            {
                 return AdncDbContext.Database.BeginTransaction(_publisher, false);
+            }
+        }
         else
+        {
             return AdncDbContext.Database.BeginTransaction(isolationLevel);
+        }
     }
 }

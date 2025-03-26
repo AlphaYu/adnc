@@ -15,10 +15,14 @@ public sealed class HybridAuthenticationHandler(IOptionsMonitor<HybridSchemeOpti
         Logger.LogDebug($"requestid: {requestId}");
 
         if (endpoint is null)
+        {
             return await Task.FromResult(AuthenticateResult.NoResult());
+        }
 
         if (endpoint.Metadata.GetMetadata<IAllowAnonymous>() is not null)
+        {
             return await Task.FromResult(AuthenticateResult.NoResult());
+        }
 
         var authHeader = Request.Headers.Authorization.ToString();
 

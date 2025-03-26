@@ -9,12 +9,16 @@ public class MenuService(IEfRepository<Menu> menuRepo, IEfRepository<RoleMenuRel
         {
             var existsCode = await menuRepo.AnyAsync(x => x.Perm == input.Perm);
             if (existsCode)
+            {
                 return Problem(HttpStatusCode.BadRequest, "该菜单编码已经存在");
+            }
         }
 
         var existsName = await menuRepo.AnyAsync(x => x.Name == input.Name);
         if (existsName)
+        {
             return Problem(HttpStatusCode.BadRequest, "该菜单名称已经存在");
+        }
 
         var menuEntity = Mapper.Map<Menu>(input, IdGenerater.GetNextId());
         if (input.Type == MenuType.CATALOG.ToString())
@@ -35,16 +39,22 @@ public class MenuService(IEfRepository<Menu> menuRepo, IEfRepository<RoleMenuRel
         {
             var existsCode = await menuRepo.AnyAsync(x => x.Perm == input.Perm && x.Id != id);
             if (existsCode)
+            {
                 return Problem(HttpStatusCode.BadRequest, "该菜单编码已经存在");
+            }
         }
 
         var existsName = await menuRepo.AnyAsync(x => x.Name == input.Name && x.Id != id);
         if (existsName)
+        {
             return Problem(HttpStatusCode.BadRequest, "该菜单名称已经存在");
+        }
 
         var menuEntity = await menuRepo.FetchAsync(x => x.Id == id, noTracking: false);
         if (menuEntity is null)
+        {
             return Problem(HttpStatusCode.NotFound, "该菜单不存在");
+        }
 
         Mapper.Map(input, menuEntity);
         menuEntity.ParentIds = await GetParentIds(menuEntity.ParentId);
@@ -58,7 +68,9 @@ public class MenuService(IEfRepository<Menu> menuRepo, IEfRepository<RoleMenuRel
     {
         var menuEnity = await menuRepo.FetchAsync(x => new { x.Id, x.ParentIds }, x => x.Id == id);
         if (menuEnity is null)
+        {
             return ServiceResult();
+        }
 
         var needDeletedParentIds = $"{menuEnity.ParentIds}[{menuEnity.Id}]";
         await menuRepo.ExecuteDeleteAsync(x => x.ParentIds.Contains(needDeletedParentIds) || x.Id == id);
@@ -109,7 +121,9 @@ public class MenuService(IEfRepository<Menu> menuRepo, IEfRepository<RoleMenuRel
         //根据菜单Id获取菜单实体
         var menus = allMenus.Where(x => menusIds.Contains(x.Id) && x.Type != MenuType.BUTTON.ToString());
         if (menus.IsNullOrEmpty())
+        {
             return [];
+        }
 
         List<RouterTreeDto> GetChildren(long id)
         {

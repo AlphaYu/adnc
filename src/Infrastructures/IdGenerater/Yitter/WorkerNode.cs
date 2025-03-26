@@ -44,7 +44,9 @@ public sealed class WorkerNode(ILogger<WorkerNode> logger, IRedisProvider redisP
             _logger.LogInformation("Finlished InitWorkerNodes:{0}:{1}", _redisKey, count);
         }
         else
+        {
             _logger.LogInformation("Exists WorkerNodes:{0}", _redisKey);
+        }
     }
 
     internal async Task<long> GetWorkerIdAsync()
@@ -65,7 +67,9 @@ public sealed class WorkerNode(ILogger<WorkerNode> logger, IRedisProvider redisP
     internal async Task RefreshWorkerIdScoreAsync(long workerId, double? workerIdScore = null)
     {
         if (workerId < 0 || workerId > IdGenerater.MaxWorkerId)
+        {
             throw new Exception(string.Format("worker Id can't be greater than {0} or less than 0", IdGenerater.MaxWorkerId));
+        }
 
         var score = workerIdScore == null ? DateTime.Now.GetTotalMilliseconds() : workerIdScore.Value;
         await _redisProvider.ZAddAsync(_redisKey, new Dictionary<long, double> { { workerId, score } });

@@ -12,9 +12,13 @@ public abstract partial class AbstractWebApiDependencyRegistrar
         var corsHosts = Configuration.GetValue<string>("CorsHosts") ?? string.Empty;
         Action<CorsPolicyBuilder> corsPolicyAction = (corsPolicy) => corsPolicy.AllowAnyHeader().AllowAnyMethod().AllowCredentials();
         if (corsHosts == "*")
+        {
             corsPolicyAction += (corsPolicy) => corsPolicy.SetIsOriginAllowed(_ => true);
+        }
         else
+        {
             corsPolicyAction += (corsPolicy) => corsPolicy.WithOrigins(corsHosts.Split(','));
+        }
 
         Services.AddCors(options => options.AddPolicy(ServiceInfo.CorsPolicy, corsPolicyAction));
     }

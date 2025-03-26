@@ -13,9 +13,13 @@ public sealed class OperateLogAsyncInterceptor(UserContext userContext, ILogger<
     {
         var attribute = GetAttribute(invocation);
         if (attribute == null)
+        {
             invocation.Proceed();
+        }
         else
+        {
             InternalInterceptSynchronous(invocation, attribute);
+        }
     }
 
     /// <summary>

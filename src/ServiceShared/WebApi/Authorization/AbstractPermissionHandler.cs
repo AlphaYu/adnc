@@ -31,7 +31,9 @@ public abstract class AbstractPermissionHandler : AuthorizationHandler<Permissio
         {
             var perm = httpContext.Request.Query["perm"].ToString();
             if (perm.IsNotNullOrWhiteSpace())
+            {
                 codes = [perm];
+            }
             else
             {
                 var refererUrl = httpContext.Request.Headers["referer"].ToString();
@@ -40,7 +42,9 @@ public abstract class AbstractPermissionHandler : AuthorizationHandler<Permissio
                     string pattern = @"\?perm=([^&]+)";
                     var match = Regex.Match(refererUrl, pattern);
                     if (match.Success)
+                    {
                         codes = [match.Groups[1].Value];
+                    }
                 }
             }
         }

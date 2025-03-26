@@ -102,7 +102,9 @@ public static class IDatabaseExtension
     internal static void Delay(IDatabase redisDb, string key, string value, int milliseconds)
     {
         if (!AutoDelayTimers.Instance.ContainsKey(key))
+        {
             return;
+        }
 
         // local ttltime = redis.call('PTTL', @key)
         var script = @"local val = redis.call('GET', @key)

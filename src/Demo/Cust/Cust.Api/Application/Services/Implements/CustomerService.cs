@@ -13,7 +13,9 @@ public class CustomerAppService(IEfRepository<Customer> customerRepo, IEfReposit
         input.TrimStringFields();
         var exists = await customerRepo.AnyAsync(t => t.Account == input.Account);
         if (exists)
+        {
             return Problem(HttpStatusCode.Forbidden, "客户账号已经存在");
+        }
 
         var customer = Mapper.Map<Customer>(input, IdGenerater.GetNextId());
         //customer.Password = InfraHelper.Encrypt.Md5(customer.Password);
@@ -33,7 +35,9 @@ public class CustomerAppService(IEfRepository<Customer> customerRepo, IEfReposit
     {
         var customer = await customerRepo.FetchAsync(x => x.Id == id);
         if (customer is null)
+        {
             return Problem(HttpStatusCode.NotFound, "客户账号不存在");
+        }
 
         var transactionLog = new TransactionLog()
         {
@@ -71,7 +75,9 @@ public class CustomerAppService(IEfRepository<Customer> customerRepo, IEfReposit
 
         var count = await customerRepo.CountAsync(whereCondition);
         if (count == 0)
+        {
             return new PageModelDto<CustomerDto>(input);
+        }
 
         var customerDtos = await customerRepo
                                             .Where(whereCondition)
@@ -116,7 +122,9 @@ public class CustomerAppService(IEfRepository<Customer> customerRepo, IEfReposit
 
         var count = await transactionLogRepo.CountAsync(whereExpr);
         if (count == 0)
+        {
             return new PageModelDto<TransactionLogDto>(input);
+        }
 
         var tranlogs = await transactionLogRepo
                                             .Where(whereExpr)

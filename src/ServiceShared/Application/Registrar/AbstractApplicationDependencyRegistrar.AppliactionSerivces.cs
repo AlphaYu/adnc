@@ -16,7 +16,9 @@ public abstract partial class AbstractApplicationDependencyRegistrar
         var appServiceType = typeof(IAppService);
         var serviceTypes = ContractsLayerAssembly.GetExportedTypes().Where(type => type.IsInterface && type.IsAssignableTo(appServiceType)).ToList();
         if (serviceTypes is null)
+        {
             return;
+        }
 
         //注册拦截器
         Services.AddScoped<OperateLogInterceptor>();
@@ -27,7 +29,9 @@ public abstract partial class AbstractApplicationDependencyRegistrar
         {
             var implType = ApplicationLayerAssembly.ExportedTypes.FirstOrDefault(type => type.IsAssignableTo(serviceType) && type.IsNotAbstractClass(true));
             if (implType is null)
+            {
                 return;
+            }
 
             Services.AddScoped(implType);
             Services.TryAddSingleton(new ProxyGenerator());

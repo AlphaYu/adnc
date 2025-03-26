@@ -28,23 +28,31 @@ public class CacheDelegatingHandler : DelegatingHandler
     {
         var cacheHeader = request.Headers.FirstOrDefault(x => x.Key.EqualsIgnoreCase("cache"));
         if (cacheHeader.Key.IsNullOrWhiteSpace())
+        {
             return await base.SendAsync(request, cancellationToken);
+        }
 
         _ = int.TryParse(cacheHeader.Value.FirstOrDefault(), out int milliseconds);
         if (milliseconds <= 0)
+        {
             return await base.SendAsync(request, cancellationToken);
+        }
 
         if (request is null || request.RequestUri is null)
+        {
             throw new ArgumentNullException(nameof(request));
+        }
 
         var cacheKey = request.RequestUri.AbsoluteUri.GetHashCode();
         var existsCache = _memoryCache.TryGetValue(cacheKey, out string content);
         if (existsCache)
+        {
             return new HttpResponseMessage
             {
                 StatusCode = HttpStatusCode.OK,
                 Content = new StringContent(content, Encoding.UTF8)
             };
+        }
 
         await _slimlock.WaitAsync(3000, cancellationToken);
         try
@@ -65,7 +73,9 @@ public class CacheDelegatingHandler : DelegatingHandler
         finally
         {
             if (_slimlock.CurrentCount > 0)
+            {
                 _slimlock.Release();
+            }
         }
     }
 }

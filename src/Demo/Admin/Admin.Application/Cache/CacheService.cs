@@ -109,7 +109,9 @@ public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IDistr
     {
         var exists = await CacheProvider.Value.ExistsAsync(CachingConsts.DictOptionsPreheatedKey);
         if (exists)
+        {
             return;
+        }
 
         var (Success, LockValue) = await dictributeLocker.Value.LockAsync(CachingConsts.DictOptionsPreheatedKey);
         if (!Success)
@@ -132,7 +134,9 @@ public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IDistr
                                    select new { dd.DictCode, d.Name, dd.Label, dd.Value, dd.TagType }).ToListAsync();
 
             if (queryList.IsNullOrEmpty())
+            {
                 return;
+            }
 
             var cahceDictionary = new Dictionary<string, DictOptionDto>();
             var codes = queryList.Select(x => x.DictCode).Distinct();

@@ -19,15 +19,21 @@ public static class IdGenerater
     public static void SetWorkerId(ushort workerId)
     {
         if (_isSet)
+        {
             throw new InvalidOperationException("allow only once");
+        }
 
         if (workerId > MaxWorkerId || workerId < 0)
+        {
             throw new ArgumentException($"worker Id can't be greater than {MaxWorkerId} or less than 0");
+        }
 
         lock (_locker)
         {
             if (_isSet)
+            {
                 throw new InvalidOperationException("allow only once");
+            }
 
             YitIdHelper.SetIdGenerator(new IdGeneratorOptions(workerId)
             {
@@ -51,7 +57,9 @@ public static class IdGenerater
     public static long GetNextId()
     {
         if (!_isSet)
+        {
             throw new InvalidOperationException("please call SetIdGenerator first");
+        }
 
         return YitIdHelper.NextId();
     }

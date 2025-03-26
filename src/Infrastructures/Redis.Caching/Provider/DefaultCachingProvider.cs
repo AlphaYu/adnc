@@ -108,7 +108,10 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
             if (!exists)
             {
                 if (_cacheOptions.Value.EnableLogging)
+                {
                     _logger?.LogInformation($"Cache Penetrated : cachekey = {cacheKey}");
+                }
+
                 return CacheValue<T>.NoValue;
             }
         }
@@ -119,7 +122,9 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
             _cacheStats.OnHit();
 
             if (_cacheOptions.Value.EnableLogging)
+            {
                 _logger?.LogInformation($"Cache Hit : cachekey = {cacheKey}");
+            }
 
             var value = _serializer.Deserialize<T>(result);
             return new CacheValue<T>(value, true);
@@ -128,7 +133,9 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
         _cacheStats.OnMiss();
 
         if (_cacheOptions.Value.EnableLogging)
+        {
             _logger?.LogInformation($"Cache Missed : cachekey = {cacheKey}");
+        }
 
         var flag = _redisDb.Lock(cacheKey, _cacheOptions.Value.LockMs / 1000);
         if (!flag.Success)
@@ -177,7 +184,10 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
             if (!exists)
             {
                 if (_cacheOptions.Value.EnableLogging)
+                {
                     _logger?.LogInformation($"Cache Penetrated : cachekey = {cacheKey}");
+                }
+
                 return CacheValue<T>.NoValue;
             }
         }
@@ -188,7 +198,9 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
             _cacheStats.OnHit();
 
             if (_cacheOptions.Value.EnableLogging)
+            {
                 _logger?.LogInformation($"Cache Hit : cachekey = {cacheKey}");
+            }
 
             var value = _serializer.Deserialize<T>(result);
             return new CacheValue<T>(value, true);
@@ -198,7 +210,9 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
             _cacheStats.OnMiss();
 
             if (_cacheOptions.Value.EnableLogging)
+            {
                 _logger?.LogInformation($"Cache Missed : cachekey = {cacheKey}");
+            }
 
             return CacheValue<T>.NoValue;
         }
@@ -265,7 +279,9 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
         prefix = HandlePrefix(prefix);
 
         if (_cacheOptions.Value.EnableLogging)
+        {
             _logger?.LogInformation($"RemoveByPrefix : prefix = {prefix}");
+        }
 
         var redisKeys = SearchRedisKeys(prefix);
 
@@ -288,10 +304,12 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
         var keys = new List<RedisKey>();
 
         foreach (var server in _servers)
+        {
             // the default pageSize is 10, if there are too many keys here, it will hurt performance
             // see https://github.com/dotnetcore/Adnc.Infra.Redis/pull/199 for more information
             // from this redis dev specification, https://yq.aliyun.com/articles/531067 , maybe the appropriate scope is 100~500, using 200 here.
             keys.AddRange(server.Keys(pattern: pattern, database: _redisDb.Database, pageSize: 200));
+        }
 
         return keys.Distinct().ToArray();
 
@@ -323,14 +341,18 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
     {
         // Forbid
         if (prefix.Equals("*"))
+        {
             throw new ArgumentException("the prefix should not equal to *");
+        }
 
         // Don't start with *
         prefix = new System.Text.RegularExpressions.Regex("^\\*+").Replace(prefix, "");
 
         // End with *
         if (!prefix.EndsWith("*", StringComparison.OrdinalIgnoreCase))
+        {
             prefix = string.Concat(prefix, "*");
+        }
 
         return prefix;
     }
@@ -349,7 +371,9 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
         var batch = _redisDb.CreateBatch();
 
         foreach (var item in values)
+        {
             batch.StringSetAsync(item.Key, _serializer.Serialize(item.Value), expiration);
+        }
 
         batch.Execute();
     }
@@ -372,9 +396,13 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
         {
             var cachedValue = values[i];
             if (!cachedValue.IsNull)
+            {
                 result.Add(keyArray[i], new CacheValue<T>(_serializer.Deserialize<T>(cachedValue), true));
+            }
             else
+            {
                 result.Add(keyArray[i], CacheValue<T>.NoValue);
+            }
         }
 
         return result;
@@ -401,9 +429,13 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
         {
             var cachedValue = values[i];
             if (!cachedValue.IsNull)
+            {
                 result.Add(redisKeys[i], new CacheValue<T>(_serializer.Deserialize<T>(cachedValue), true));
+            }
             else
+            {
                 result.Add(redisKeys[i], CacheValue<T>.NoValue);
+            }
         }
 
         return result;
@@ -419,7 +451,9 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
 
         var redisKeys = cacheKeys.Where(k => !string.IsNullOrEmpty(k)).Select(k => (RedisKey)k).ToArray();
         if (redisKeys.Length > 0)
+        {
             _redisDb.KeyDelete(redisKeys);
+        }
     }
 
     /// <summary>
@@ -434,7 +468,9 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
             var allCount = 0;
 
             foreach (var server in _servers)
+            {
                 allCount += (int)server.DatabaseSize(_redisDb.Database);
+            }
 
             return allCount;
         }
@@ -448,7 +484,9 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
     protected override void BaseFlush()
     {
         if (_cacheOptions.Value.EnableLogging)
+        {
             _logger?.LogInformation("Redis -- Flush");
+        }
 
         foreach (var server in _servers)
         {

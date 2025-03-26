@@ -7,17 +7,23 @@ public static class EntityEntryExtension
     internal static KeyEntryModel[]? GetKeyValues(this EntityEntry entry)
     {
         if (!entry.IsKeySet)
+        {
             return default;
+        }
 
         var keyProps = entry.Properties
                                     .Where(p => p.Metadata.IsPrimaryKey())
                                     .ToArray();
         if (keyProps.IsNullOrEmpty())
+        {
             return default;
+        }
 
         var keyEntries = new KeyEntryModel[keyProps.Length];
         if (keyEntries.IsNullOrEmpty())
+        {
             return default;
+        }
 
         for (var i = 0; i < keyProps.Length; i++)
         {

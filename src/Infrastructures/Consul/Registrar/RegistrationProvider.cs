@@ -26,7 +26,9 @@ public sealed class RegistrationProvider
     public void Register(Uri serviceAddress, string? serviceId = null)
     {
         if (serviceAddress is null)
+        {
             throw new ArgumentNullException(nameof(serviceAddress));
+        }
 
         var instance = GetAgentServiceRegistration(serviceAddress, serviceId);
         Register(instance);
@@ -35,7 +37,9 @@ public sealed class RegistrationProvider
     public void Register(AgentServiceRegistration instance)
     {
         if (instance is null)
+        {
             throw new ArgumentNullException(nameof(instance));
+        }
 
         CheckConfig();
         var protocol = instance.Meta["Protocol"];
@@ -89,7 +93,9 @@ public sealed class RegistrationProvider
     private AgentServiceRegistration GetAgentServiceRegistration(Uri serviceAddress, string? serviceId = null)
     {
         if (serviceAddress is null)
+        {
             throw new ArgumentNullException(nameof(serviceAddress));
+        }
 
         var protocol = serviceAddress.Scheme;
         var host = serviceAddress.Host;
@@ -120,18 +126,38 @@ public sealed class RegistrationProvider
     private void CheckConfig()
     {
         if (_consulConfig == null)
+        {
             throw new ArgumentException(nameof(_consulConfig));
+        }
+
         if (string.IsNullOrEmpty(_consulConfig.Value.ConsulUrl))
+        {
             throw new ArgumentException(nameof(_consulConfig.Value.ConsulUrl));
+        }
+
         if (string.IsNullOrEmpty(_consulConfig.Value.ServiceName))
+        {
             throw new ArgumentException(nameof(_consulConfig.Value.ServiceName));
+        }
+
         if (string.IsNullOrEmpty(_consulConfig.Value.HealthCheckUrl))
+        {
             throw new ArgumentException(nameof(_consulConfig.Value.HealthCheckUrl));
+        }
+
         if (_consulConfig.Value.HealthCheckIntervalInSecond <= 0)
+        {
             throw new ArgumentException(nameof(_consulConfig.Value.HealthCheckIntervalInSecond));
+        }
+
         if (_consulConfig.Value.DeregisterCriticalServiceAfter <= 0)
+        {
             throw new ArgumentException(nameof(_consulConfig.Value.DeregisterCriticalServiceAfter));
+        }
+
         if (_consulConfig.Value.Timeout <= 0)
+        {
             throw new ArgumentException(nameof(_consulConfig.Value.Timeout));
+        }
     }
 }

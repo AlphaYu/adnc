@@ -12,9 +12,13 @@ public class MongoDbRepository<TEntity>(DbContext dbContext) : IMongoDbRepositor
     protected virtual IQueryable<TEntity> GetDbSet(bool noTracking)
     {
         if (noTracking)
+        {
             return DbContext.Set<TEntity>().AsNoTracking();
+        }
         else
+        {
             return DbContext.Set<TEntity>();
+        }
     }
 
     public virtual IQueryable<TEntity> Where(Expression<Func<TEntity, bool>> expression,  bool noTracking = true)
@@ -44,10 +48,14 @@ public class MongoDbRepository<TEntity>(DbContext dbContext) : IMongoDbRepositor
         {
             var entry = DbContext.Entry(entity);
             if (entry.State == EntityState.Detached)
+            {
                 throw new ArgumentException($"实体没有被跟踪，不能使用该批量更新方法");
+            }
 
             if (entry.State == EntityState.Added || entry.State == EntityState.Deleted)
+            {
                 throw new ArgumentException($"{nameof(entity)},实体状态为{nameof(entry.State)}");
+            }
         }
 
         return UpdateInternalAsync(cancellationToken);
@@ -60,11 +68,15 @@ public class MongoDbRepository<TEntity>(DbContext dbContext) : IMongoDbRepositor
 
         //如果实体没有被跟踪，必须指定需要更新的列
         if (entry.State == EntityState.Detached)
+        {
             throw new ArgumentException($"实体没有被跟踪");
+        }
 
         //实体被标记为Added或者Deleted，抛出异常，ADNC应该不会出现这种状态。
         if (entry.State == EntityState.Added || entry.State == EntityState.Deleted)
+        {
             throw new ArgumentException($"{nameof(entity)},实体状态为{nameof(entry.State)}");
+        }
 
         return this.UpdateInternalAsync(cancellationToken);
     }

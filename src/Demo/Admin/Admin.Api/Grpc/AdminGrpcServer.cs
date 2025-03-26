@@ -12,7 +12,9 @@ public class AdminGrpcServer(ISysConfigService sysConfigService, IDictService di
         var replyList = new SysConfigSimpleListReply();
         var dtos = await sysConfigService.GetListAsync(request.Keys);
         if (dtos is null)
+        {
             return replyList;
+        }
         else
         {
             var reply = dtos.Select(x => new SysConfigSimpleReply { Name = x.Name, Value = x.Value, Key = x.Key });
@@ -29,7 +31,9 @@ public class AdminGrpcServer(ISysConfigService sysConfigService, IDictService di
         var replyList = new DictOptionListReply();
         var dtos = await dictService.GetOptionsAsync(request.Codes);
         if (dtos is null)
+        {
             return replyList;
+        }
         else
         {
             foreach (var dto in dtos)

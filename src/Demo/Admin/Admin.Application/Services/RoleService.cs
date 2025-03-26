@@ -8,11 +8,15 @@ public class RoleService(IEfRepository<Role> roleRepo, IEfRepository<RoleUserRel
         input.TrimStringFields();
         var existsCode = await roleRepo.AnyAsync(x => x.Code == input.Code);
         if (existsCode)
+        {
             return Problem(HttpStatusCode.BadRequest, "该角色代码已经存在");
+        }
 
         var existsName = await roleRepo.AnyAsync(x => x.Name == input.Name);
         if (existsName)
+        {
             return Problem(HttpStatusCode.BadRequest, "该角色名称已经存在");
+        }
 
         var role = Mapper.Map<Role>(input, IdGenerater.GetNextId());
         await roleRepo.InsertAsync(role);
@@ -26,15 +30,21 @@ public class RoleService(IEfRepository<Role> roleRepo, IEfRepository<RoleUserRel
 
         var role = await roleRepo.FetchAsync(x => x.Id == id, noTracking: false);
         if (role is null)
+        {
             return Problem(HttpStatusCode.BadRequest, "该角色Id不存在");
+        }
 
         var existsCode = await roleRepo.AnyAsync(x => x.Code == input.Code && x.Id != id);
         if (existsCode)
+        {
             return Problem(HttpStatusCode.BadRequest, "该角色代码已经存在");
+        }
 
         var existsName = await roleRepo.AnyAsync(x => x.Code == input.Code && x.Id != id);
         if (existsName)
+        {
             return Problem(HttpStatusCode.BadRequest, "该角色名称已经存在");
+        }
 
         Mapper.Map(input, role);
         await roleRepo.UpdateAsync(role);
@@ -44,7 +54,9 @@ public class RoleService(IEfRepository<Role> roleRepo, IEfRepository<RoleUserRel
     public async Task<ServiceResult> DeleteAsync(long[] ids)
     {
         if (ids.Contains(1600000000010))
+        {
             return Problem(HttpStatusCode.Forbidden, "禁止删除初始角色");
+        }
 
         await roleRepo.ExecuteDeleteAsync(x => ids.Contains(x.Id));
         await roleUserRelationRepo.ExecuteDeleteAsync(x => ids.Contains(x.RoleId));
@@ -68,7 +80,9 @@ public class RoleService(IEfRepository<Role> roleRepo, IEfRepository<RoleUserRel
 
         var total = await roleRepo.CountAsync(whereExpression);
         if (total == 0)
+        {
             return new PageModelDto<RoleDto>(input);
+        }
 
         var entities = await roleRepo
                             .Where(whereExpression)
@@ -84,7 +98,9 @@ public class RoleService(IEfRepository<Role> roleRepo, IEfRepository<RoleUserRel
     public async Task<ServiceResult> SetPermissonsAsync(RoleSetPermissonsDto input)
     {
         if (input.RoleId == 1600000000010)
+        {
             return Problem(HttpStatusCode.Forbidden, "禁止设置初始角色");
+        }
 
         await roleMenuRelationRepo.ExecuteDeleteAsync(x => x.RoleId == input.RoleId);
 

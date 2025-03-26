@@ -152,7 +152,9 @@ public class OrderService(IEfBasicRepository<Order> orderRepo, OrderManager orde
 
         var total = await orderRepo.CountAsync(whereCondition);
         if (total == 0)
+        {
             return new PageModelDto<OrderDto>(input);
+        }
 
         var entities = orderRepo
                                 .Where(whereCondition)
@@ -166,10 +168,12 @@ public class OrderService(IEfBasicRepository<Order> orderRepo, OrderManager orde
             //调用admin微服务获取字典,组合订单状态信息
             var orderStatus = (await adminClient.GetDictOptionsAsync("order_status")).FirstOrDefault();
             if (orderStatus is not null)
+            {
                 orderDtos.ForEach(x =>
                 {
                     x.StatusChangesReason = orderStatus.DictDataList.FirstOrDefault(d => d.Value == x.StatusCode.ToString())?.Label ?? string.Empty; ;
                 });
+            }
         }
 
         return new PageModelDto<OrderDto>(input, orderDtos, total);

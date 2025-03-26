@@ -21,7 +21,10 @@ public static class ServiceCollectionExtension
     where TSubscribeFilter : class, ISubscribeFilter
     {
         if (services.HasRegistered(nameof(AddAdncInfraCap)))
+        {
             return services;
+        }
+
         services
             .AddSingleton<IEventPublisher, CapPublisher>()
             .AddScoped<TSubscriber>()
@@ -34,7 +37,9 @@ public static class ServiceCollectionExtension
     public static IServiceCollection AddAdncInfraRabbitMq(this IServiceCollection services, IConfigurationSection rabitmqSection, string clientProvidedName)
     {
         if (services.HasRegistered(nameof(AddAdncInfraRabbitMq)))
+        {
             return services;
+        }
 
         return services
              .Configure<RabbitMqOptions>(rabitmqSection)

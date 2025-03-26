@@ -41,7 +41,10 @@ public abstract class AdncControllerBase : ControllerBase
     protected virtual ActionResult<TValue> Result<TValue>(ServiceResult<TValue> appSrvResult)
     {
         if (appSrvResult.IsSuccess)
+        {
             return appSrvResult.Content;
+        }
+
         return Problem(appSrvResult.ProblemDetails);
     }
 
@@ -54,7 +57,10 @@ public abstract class AdncControllerBase : ControllerBase
     protected virtual ActionResult Result(ServiceResult appSrvResult)
     {
         if (appSrvResult.IsSuccess)
+        {
             return NoContent();
+        }
+
         return Problem(appSrvResult.ProblemDetails);
     }
 
@@ -68,7 +74,10 @@ public abstract class AdncControllerBase : ControllerBase
     protected virtual ActionResult<TValue> CreatedResult<TValue>(ServiceResult<TValue> appSrvResult)
     {
         if (appSrvResult.IsSuccess)
+        {
             return Created(this.Request.Path, appSrvResult.Content);
+        }
+
         return Problem(appSrvResult.ProblemDetails);
     }
 }

@@ -28,13 +28,19 @@ public static class BasicTokenValidator
             var (userId, userName, tokenTotalSeconds) = GetDecryptInfo(basicPassword, authentication.Password);
 
             if (userName != basicUserName || userId is null)
+            {
                 return new UnPackedResult(false, null, null);
+            }
 
             var differenceTotalSeconds = DateTime.Now.GetTotalSeconds() - tokenTotalSeconds;
             if (differenceTotalSeconds > 60 || differenceTotalSeconds < -5)
+            {
                 return new UnPackedResult(false, null, null);
+            }
             else
+            {
                 return new UnPackedResult(true, userName, userId);
+            }
         }
         catch
         {

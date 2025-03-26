@@ -7,7 +7,9 @@ public static class HealthChecksBuilderExtension
         Checker.Argument.NotNull(setupAction, nameof(Action<IHealthChecksBuilder>));
 
         if (setupAction != null)
+        {
             setupAction.Invoke(services.AddHealthChecks());
+        }
 
         return services;
     }

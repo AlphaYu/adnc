@@ -34,7 +34,10 @@ public static class ExpressionMethodsExtension
     public static MethodCallExpression GetMethodExpression<T>(this Expression<Action<T>> method)
     {
         if (method.Body.NodeType != ExpressionType.Call)
+        {
             throw new ArgumentException("Method call expected", method.Body.ToString());
+        }
+
         return (MethodCallExpression)method.Body;
     }
 
@@ -87,13 +90,17 @@ public static class ExpressionMethodsExtension
     public static MemberInfo GetMemberInfo<TEntity, TMember>([NotNull] this Expression<Func<TEntity, TMember>> expression)
     {
         if (expression.NodeType != ExpressionType.Lambda)
+        {
             throw new ArgumentException(nameof(expression));
+        }
 
         var lambda = (LambdaExpression)expression;
 
         var memberExpression = ExtractMemberExpression(lambda.Body);
         if (memberExpression == null)
+        {
             throw new ArgumentException(nameof(expression));
+        }
 
         return memberExpression.Member;
     }
@@ -109,10 +116,14 @@ public static class ExpressionMethodsExtension
     {
         var member = GetMemberInfo(expression);
         if (null == member)
+        {
             throw new InvalidOperationException("no property found");
+        }
 
         if (member is PropertyInfo property)
+        {
             return property;
+        }
 
         return typeof(TEntity).GetProperty(member.Name);
     }

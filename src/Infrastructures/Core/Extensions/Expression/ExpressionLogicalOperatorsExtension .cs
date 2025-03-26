@@ -22,7 +22,10 @@ public static class ExpressionLogicalOperatorsExtension
         var rightVisitor = new ReplaceExpressionVisitor(secondExpr.Parameters[0], parameter);
         var right = rightVisitor.Visit(secondExpr.Body);
         if (left is null || right is null)
+        {
             return firstExpr;
+        }
+
         return Expression.Lambda<Func<T, bool>>(
             Expression.OrElse(left, right), parameter);
     }
@@ -45,7 +48,10 @@ public static class ExpressionLogicalOperatorsExtension
         var rightVisitor = new ReplaceExpressionVisitor(secondExpr.Parameters[0], parameter);
         var right = rightVisitor.Visit(secondExpr.Body);
         if (left is null || right is null)
+        {
             return firstExpr;
+        }
+
         return Expression.Lambda<Func<T1, T2, bool>>(
             Expression.OrElse(left, right), parameter, parameter2);
     }
@@ -68,7 +74,9 @@ public static class ExpressionLogicalOperatorsExtension
         var right = rightVisitor.Visit(secondExpr.Body);
 
         if (left is null || right is null)
+        {
             return firstExpr;
+        }
 
         return Expression.Lambda<Func<T, bool>>(
             Expression.AndAlso(left, right), parameter);
@@ -92,7 +100,10 @@ public static class ExpressionLogicalOperatorsExtension
         var rightVisitor = new ReplaceExpressionVisitor(secondExpr.Parameters[0], parameter);
         var right = rightVisitor.Visit(secondExpr.Body);
         if (left is null || right is null)
+        {
             return firstExpr;
+        }
+
         return Expression.Lambda<Func<T1, T2, bool>>(
             Expression.AndAlso(left, right), parameter, parameter2);
     }
@@ -184,7 +195,9 @@ public static class ExpressionLogicalOperatorsExtension
         public override Expression? Visit(Expression? node)
         {
             if (node == _oldValue)
+            {
                 return _newValue;
+            }
 
             return base.Visit(node);
         }

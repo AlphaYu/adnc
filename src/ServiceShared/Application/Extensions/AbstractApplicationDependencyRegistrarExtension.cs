@@ -108,8 +108,12 @@ public static class AbstractApplicationDependencyRegistrarExtension
     {
         var env = Environment.GetEnvironmentVariable("ASPNETCORE_HOSTINGSTARTUPASSEMBLIES");
         if (string.IsNullOrWhiteSpace(env))
+        {
             return false;
+        }
         else
+        {
             return env.Contains("SkyAPM.Agent.AspNetCore");
+        }
     }
 }

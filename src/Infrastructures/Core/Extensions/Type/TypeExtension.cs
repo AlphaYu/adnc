@@ -10,7 +10,10 @@ public static class TypeExtension
     {
         var obj = Activator.CreateInstance(type);
         if (obj is null)
+        {
             return default;
+        }
+
         return (T)obj;
     }
 
@@ -18,7 +21,10 @@ public static class TypeExtension
     {
         var obj = Activator.CreateInstance(type, args);
         if (obj is null)
+        {
             return default;
+        }
+
         return (T)obj;
     }
 
@@ -27,7 +33,9 @@ public static class TypeExtension
     public static bool IsVisibleAndVirtual([NotNull] this MethodInfo methodInfo)
     {
         if (methodInfo.IsStatic || methodInfo.IsFinal)
+        {
             return false;
+        }
 
         return methodInfo.IsVirtual &&
                (methodInfo.IsPublic || methodInfo.IsFamily || methodInfo.IsFamilyOrAssembly);
@@ -40,7 +48,9 @@ public static class TypeExtension
         return StrongTypedDictionary<T>.PropertyValueGetters.GetOrAdd(propertyInfo, prop =>
         {
             if (!prop.CanRead)
+            {
                 return (x) => string.Empty;
+            }
 
             var instance = Expression.Parameter(typeof(T), "i");
             var property = Expression.Property(instance, prop);
@@ -54,13 +64,17 @@ public static class TypeExtension
         return ReflectionDictionary.PropertyValueGetters.GetOrAdd(propertyInfo, prop =>
         {
             if (!prop.CanRead)
+            {
                 return (x) => string.Empty;
+            }
 
             Debug.Assert(propertyInfo.DeclaringType != null);
 
             var method = prop.GetGetMethod();
             if (method is null)
+            {
                 return (x) => string.Empty;
+            }
 
             var instance = Expression.Parameter(typeof(object), "obj");
             var getterCall = Expression.Call(propertyInfo.DeclaringType.IsValueType
@@ -76,7 +90,9 @@ public static class TypeExtension
         return ReflectionDictionary.PropertyValueSetters.GetOrAdd(propertyInfo, prop =>
         {
             if (!prop.CanWrite)
+            {
                 return (x, y) => { };
+            }
 
             var obj = Expression.Parameter(typeof(object), "o");
             var value = Expression.Parameter(typeof(object));
@@ -85,7 +101,9 @@ public static class TypeExtension
 
             var method = propertyInfo.GetSetMethod();
             if (method is null)
+            {
                 return (x, y) => { };
+            }
 
             // Note that we are using Expression.Unbox for value types and Expression.Convert for reference types
             var expr =
@@ -106,11 +124,15 @@ public static class TypeExtension
         return StrongTypedDictionary<T>.PropertyValueSetters.GetOrAdd(@this, prop =>
         {
             if (!prop.CanWrite)
+            {
                 return (x, y) => { };
+            }
 
             var method = prop.GetGetMethod();
             if (method is null)
+            {
                 return (x, y) => { };
+            }
 
             var instance = Expression.Parameter(typeof(T), "i");
             var argument = Expression.Parameter(typeof(object), "a");

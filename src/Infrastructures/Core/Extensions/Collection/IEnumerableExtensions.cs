@@ -78,9 +78,13 @@ public static class IEnumerableExtensions
         foreach (var item in source.Select((v, i) => new { Value = v, Index = i }).Where(p => p.Index == index).OrderByDescending(p => p.Index))
         {
             if (item.Index + 1 == source.Count)
+            {
                 source.Add(value);
+            }
             else
+            {
                 source.Insert(item.Index + 1, value);
+            }
         }
     }
 

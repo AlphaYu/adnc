@@ -11,7 +11,9 @@ public static class ServiceCollectionExtension
     public static IServiceCollection AddAdncInfraRedis(this IServiceCollection services, IConfigurationSection redisSection)
     {
         if (services.HasRegistered(nameof(AddAdncInfraRedis)))
+        {
             return services;
+        }
 
         var redisConfig = redisSection.Get<RedisOptions>() ?? throw new ArgumentNullException("RedisOptions is null");
         services.Configure<RedisOptions>(redisSection);

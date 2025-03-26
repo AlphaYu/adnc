@@ -17,7 +17,9 @@ public class ConsulDiscoverDelegatingHandler : DelegatingHandler
     {
         var currentUri = request.RequestUri;
         if (currentUri is null)
+        {
             throw new NullReferenceException(nameof(request.RequestUri));
+        }
 
         var discoverProvider = new DiscoverProviderBuilder(_consulClient)
                                                         .WithCacheSeconds(5)
@@ -28,7 +30,9 @@ public class ConsulDiscoverDelegatingHandler : DelegatingHandler
                                                         ;
         var baseUri = await discoverProvider.GetSingleHealthServiceAsync();
         if (baseUri.IsNullOrWhiteSpace())
+        {
             throw new NullReferenceException($"{currentUri.Host} does not contain helath service address!");
+        }
         else
         {
             var realRequestUri = new Uri($"{currentUri.Scheme}://{baseUri}{currentUri.PathAndQuery}");
