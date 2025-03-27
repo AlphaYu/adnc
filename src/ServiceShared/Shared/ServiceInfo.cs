@@ -83,10 +83,7 @@ public sealed class ServiceInfo : IServiceInfo
                 return _instance;
             }
 
-            if (startAssembly is null)
-            {
-                startAssembly = Assembly.GetEntryAssembly() ?? throw new InvalidOperationException(nameof(startAssembly));
-            }
+            startAssembly ??= Assembly.GetEntryAssembly() ?? throw new InvalidOperationException(nameof(startAssembly));
 
             var attribute = startAssembly.GetCustomAttribute<AssemblyDescriptionAttribute>();
             var description = attribute is null ? string.Empty : attribute.Description;
