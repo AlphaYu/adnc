@@ -2,12 +2,17 @@
 
 public class IdGeneraterTests : IClassFixture<RedisContextFixture>
 {
+    private static bool _isSet =false;
     private readonly ITestOutputHelper _output;
 
-    public IdGeneraterTests(ITestOutputHelper output) 
+    public IdGeneraterTests(ITestOutputHelper output)
     {
         _output = output;
-        IdGenerater.Yitter.IdGenerater.SetWorkerId(1);
+        if (!_isSet)
+        {
+            _isSet = true;
+            IdGenerater.Yitter.IdGenerater.SetWorkerId(1);
+        }
     }
 
     /// <summary>

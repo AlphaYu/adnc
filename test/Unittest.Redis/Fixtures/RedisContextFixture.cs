@@ -2,25 +2,30 @@
 
 public class RedisContextFixture
 {
-    public IServiceProvider Container { get; private set; }
-    public IConfiguration Configuration { get; private set; }
-
-    public RedisContextFixture()
+    private IServiceProvider? container;
+    public IServiceProvider Container
     {
-        Configuration = new ConfigurationBuilder()
-                                            .SetBasePath(Directory.GetCurrentDirectory())
-                                            .AddJsonFile("appsettings.json", optional: true)
-                                            .Build();
+        get
+        {
+            var redisSection = Configuration.GetSection("Redis");
+            var cachingSection = Configuration.GetSection("Caching");
+            return container ??= new ServiceCollection()
+                                        .AddAdncInfraRedis(redisSection)
+                                        .AddAdncInfraRedisCaching(redisSection, cachingSection)
+                                        .AddAdncInfraYitterIdGenerater(redisSection, "unittest")
+                                        .BuildServiceProvider();
+        }
+    }
 
-        var redisSection = Configuration.GetSection("Redis");
-        var cachingSection = Configuration.GetSection("Caching");
-
-        var services = new ServiceCollection();
-        services
-            .AddAdncInfraRedis(redisSection)
-            .AddAdncInfraRedisCaching(redisSection, cachingSection)
-            .AddAdncInfraYitterIdGenerater(redisSection, "unittest");
-
-        Container = services.BuildServiceProvider();
+    public IConfiguration? configuration;
+    public IConfiguration Configuration
+    {
+        get
+        {
+            return configuration ??= new ConfigurationBuilder()
+                                        .SetBasePath(Directory.GetCurrentDirectory())
+                                        .AddJsonFile("appsettings.json", optional: true)
+                                        .Build();
+        }
     }
 }
