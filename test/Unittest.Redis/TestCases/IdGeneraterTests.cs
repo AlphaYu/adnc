@@ -16,7 +16,7 @@ public class IdGeneraterTests : IClassFixture<RedisContextFixture>
     }
 
     /// <summary>
-    /// id 小于 js 最大值 151599672553541
+    /// id 小于 js 最大值 9007199254740992
     /// </summary>
     [Fact]
     public void TestIdLessThanjJsMaxNumber()
