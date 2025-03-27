@@ -1,4 +1,4 @@
-global using Microsoft.Extensions.Configuration;
+﻿global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.Hosting;
 global using System.Collections;
 global using System.Collections.Concurrent;
@@ -7,3 +7,5 @@ global using System.Net;
 global using System.Reflection;
 global using System.Text;
 global using System.Text.Json;
+global using Adnc.Infra.Core.Exceptions;
+global using System;

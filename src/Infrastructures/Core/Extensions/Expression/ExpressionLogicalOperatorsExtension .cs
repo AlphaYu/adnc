@@ -1,4 +1,4 @@
-namespace System.Linq.Expressions;
+﻿namespace System.Linq.Expressions;
 
 /// <summary>
 /// Extension methods for combining expressions using logical operators.
@@ -181,7 +181,7 @@ public static class ExpressionLogicalOperatorsExtension
         return default;
     }
 
-    private class ReplaceExpressionVisitor : ExpressionVisitor
+    private sealed class ReplaceExpressionVisitor : ExpressionVisitor
     {
         private readonly Expression _oldValue;
         private readonly Expression _newValue;
