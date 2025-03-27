@@ -1,4 +1,5 @@
-﻿using Yitter.IdGenerator;
+﻿using Adnc.Infra.Core.Guard;
+using Yitter.IdGenerator;
 
 namespace Adnc.Infra.IdGenerater.Yitter;
 
@@ -62,5 +63,22 @@ public static class IdGenerater
         }
 
         return YitIdHelper.NextId();
+    }
+
+    public static long[] GetNextIds(int number)
+    {
+        Checker.Argument.ThrowIfOutOfRange(number, 1, 100000, nameof(number));
+
+        var ids = new long[number];
+        for (var index = 0; index < 100000; index++)
+        {
+            ids[index] = YitIdHelper.NextId();
+        }
+        return ids;
+    }
+
+    public static string GetNextIdString(string prefix)
+    {
+        return prefix.Trim().ToUpper() + GetNextId().ToString();
     }
 }
