@@ -20,7 +20,7 @@ public class ArgumentChecker
     /// <param name="argument">Argument.</param>
     /// <param name="argumentName">Argument name.</param>
     /// <param name="message">message.</param>
-    public void ThrowIfLEZero(int argument, string argumentName, string? message = null)
+    public void ThrowIfLEZero(long argument, string argumentName, string? message = null)
     {
         if (argument <= 0)
         {

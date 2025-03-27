@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Adnc.Infra.Core.Guard;
+using AutoMapper;
 
 namespace Adnc.Shared.Application.Mapper.AutoMapper;
 
@@ -31,7 +32,7 @@ public sealed class AutoMapperObject(IMapper mapper) : IObjectMapper
         where TDestination : Entity
     {
         ArgumentNullException.ThrowIfNull(source, nameof(source));
-        ArgumentNullException.ThrowIfNull(source, nameof(id));
+        Checker.Argument.ThrowIfLEZero(id, nameof(id));
         var destination = mapper.Map<TDestination>(source);
         destination.Id = id;
         return destination;
