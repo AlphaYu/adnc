@@ -22,7 +22,7 @@ public class Warehouse : AggregateRootWithBasicAuditInfo
         Id = id;
         Qty = 0;
         BlockedQty = 0;
-        Position = Checker.NotNull(position, nameof(position));
+        Position = Checker.Variable.NotNull(position, nameof(position));
     }
 
     /// <summary>
@@ -36,7 +36,7 @@ public class Warehouse : AggregateRootWithBasicAuditInfo
             throw new BusinessException("Qty<needFreezedQty");
         }
 
-        Checker.GTZero(ProductId, nameof(ProductId));
+        Checker.Variable.GTZero(ProductId, nameof(ProductId));
 
         BlockedQty += needBlockedQty;
         Qty -= needBlockedQty;
@@ -53,7 +53,7 @@ public class Warehouse : AggregateRootWithBasicAuditInfo
             throw new BusinessException("FreezedQty<needUnfreezeQty");
         }
 
-        Checker.GTZero(ProductId, nameof(ProductId));
+        Checker.Variable.GTZero(ProductId, nameof(ProductId));
 
         BlockedQty -= needRemoveQty;
         Qty += needRemoveQty;
@@ -70,7 +70,7 @@ public class Warehouse : AggregateRootWithBasicAuditInfo
             throw new BusinessException("FreezedQty<qty");
         }
 
-        Checker.GTZero(ProductId, nameof(ProductId));
+        Checker.Variable.GTZero(ProductId, nameof(ProductId));
 
         BlockedQty -= qty;
     }
@@ -81,8 +81,8 @@ public class Warehouse : AggregateRootWithBasicAuditInfo
     /// <param name="qty"></param>
     internal void Entry(int qty)
     {
-        Checker.GTZero(qty, nameof(qty));
-        Checker.GTZero(ProductId, nameof(ProductId));
+        Checker.Variable.GTZero(qty, nameof(qty));
+        Checker.Variable.GTZero(ProductId, nameof(ProductId));
         Qty += qty;
     }
 
@@ -95,7 +95,7 @@ public class Warehouse : AggregateRootWithBasicAuditInfo
         //if (this.ProductId.HasValue && this.ProductId == productId)
         //    throw new ArgumentException("ProductId");
 
-        Checker.GTZero(productId, nameof(productId));
+        Checker.Variable.GTZero(productId, nameof(productId));
 
         ProductId = productId;
     }

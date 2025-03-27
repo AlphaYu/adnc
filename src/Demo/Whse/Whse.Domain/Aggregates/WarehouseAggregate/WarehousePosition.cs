@@ -12,7 +12,7 @@ public record WarehousePosition : ValueObject
 
     internal WarehousePosition(string code, string description)
     {
-        Code = Checker.NotNullOrEmpty(code, nameof(code));
+        Code = Checker.Variable.NotNullOrWhiteSpace(code, nameof(code));
         Description = description is null ? string.Empty : description.Trim();
     }
 }

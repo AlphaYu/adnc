@@ -46,7 +46,7 @@ public class Product : AggregateRootWithBasicAuditInfo
     /// <param name="sku"></param>
     internal void SetSku(string sku)
     {
-        Sku = Checker.NotNullOrEmpty(sku.Trim(), nameof(sku));
+        Sku = Checker.Variable.NotNullOrWhiteSpace(sku.Trim(), nameof(sku));
     }
 
     /// <summary>
@@ -55,7 +55,7 @@ public class Product : AggregateRootWithBasicAuditInfo
     /// <param name="name"></param>
     internal void SetName(string name)
     {
-        Name = Checker.NotNullOrEmpty(name.Trim(), nameof(name));
+        Name = Checker.Variable.NotNullOrWhiteSpace(name.Trim(), nameof(name));
     }
 
     /// <summary>
@@ -64,7 +64,7 @@ public class Product : AggregateRootWithBasicAuditInfo
     /// <param name="status"></param>
     internal void SetStatus(ProductStatus status)
     {
-        Status = Checker.NotNull(status, nameof(status));
+        Status = Checker.Variable.NotNull(status, nameof(status));
     }
 
     /// <summary>
@@ -73,7 +73,7 @@ public class Product : AggregateRootWithBasicAuditInfo
     /// <param name="unit"></param>
     public void SetUnit(string unit)
     {
-        Unit = Checker.NotNullOrEmpty(unit, nameof(unit));
+        Unit = Checker.Variable.NotNullOrWhiteSpace(unit, nameof(unit));
     }
 
     /// <summary>
@@ -82,7 +82,7 @@ public class Product : AggregateRootWithBasicAuditInfo
     /// <param name="price"></param>
     public void SetPrice(decimal price)
     {
-        Checker.GTZero(price, nameof(price));
+        Checker.Variable.GTZero(price, nameof(price));
         Price = price;
     }
 

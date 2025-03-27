@@ -37,7 +37,7 @@ public class WarehouseManager : IDomainService
     /// <returns></returns>
     public async Task AllocateShelfToProductAsync(Warehouse warehouse, long productId)
     {
-        Checker.NotNull(warehouse, nameof(warehouse));
+        Checker.Variable.NotNull(warehouse, nameof(warehouse));
 
         var existWarehouse = await _warehouseRepo.Where(x => x.ProductId == productId).SingleOrDefaultAsync();
 
@@ -62,8 +62,8 @@ public class WarehouseManager : IDomainService
         bool isSuccess = false;
         string remark = string.Empty;
 
-        Checker.NotNullOrAny(blockQtyProductsInfo, nameof(blockQtyProductsInfo));
-        Checker.NotNullOrAny(warehouses, nameof(warehouses));
+        Checker.Variable.NotNullOrAny(blockQtyProductsInfo, nameof(blockQtyProductsInfo));
+        Checker.Variable.NotNullOrAny(warehouses, nameof(warehouses));
 
         if (orderId <= 0)
         {
