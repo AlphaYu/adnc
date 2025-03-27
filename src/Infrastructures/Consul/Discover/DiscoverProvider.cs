@@ -3,7 +3,7 @@ using Microsoft.Extensions.Caching.Memory;
 
 namespace Adnc.Infra.Consul.Discover;
 
-internal class DiscoverProvider : IDiscoverProvider
+internal sealed class DiscoverProvider : IDiscoverProvider
 {
     private static readonly SemaphoreSlim _slimlock = new(1, 1);
 
