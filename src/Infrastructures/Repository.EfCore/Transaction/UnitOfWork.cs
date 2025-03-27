@@ -1,17 +1,13 @@
 ﻿namespace Adnc.Infra.Repository.EfCore.Transaction;
 
-public abstract class UnitOfWork<TDbContext> : IUnitOfWork
+public abstract class UnitOfWork<TDbContext>(TDbContext context) : IUnitOfWork
     where TDbContext : DbContext
 {
-    protected TDbContext AdncDbContext { get; init; }
+    protected TDbContext AdncDbContext { get; init; } = context ?? throw new ArgumentNullException(nameof(context));
+
     protected IDbContextTransaction? DbTransaction { get; set; }
 
     public bool IsStartingUow => AdncDbContext.Database.CurrentTransaction is not null;
-
-    protected UnitOfWork(TDbContext context)
-    {
-        AdncDbContext = context ?? throw new ArgumentNullException(nameof(context));
-    }
 
     protected abstract IDbContextTransaction GetDbContextTransaction(IsolationLevel isolationLevel = IsolationLevel.ReadCommitted, bool distributed = false);
 
