@@ -1,6 +1,6 @@
-namespace Adnc.Infra.Repository.Dapper.Internal;
+﻿namespace Adnc.Infra.Repository.Dapper.Internal;
 
-internal class TimeStampeHandler : SqlMapper.TypeHandler<byte[]>
+internal sealed class TimeStampeHandler : SqlMapper.TypeHandler<byte[]>
 {
     public override void SetValue(IDbDataParameter parameter, byte[]? value)
     {
