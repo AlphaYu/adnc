@@ -6,27 +6,18 @@ public sealed class DapperRepository : IAdoExecuterWithQuerierRepository
 
     internal IDbConnection GetDbConnection()
     {
-        if (_dbConnection is null)
-        {
-            throw new ArgumentNullException(nameof(_dbConnection));
-        }
-
+        ArgumentNullException.ThrowIfNull(_dbConnection, nameof(_dbConnection));
         return _dbConnection;
     }
 
-    public void ChangeOrSetDbConnection(IDbConnection connection)
+    public void ChangeOrSetDbConnection(IDbConnection dbConnection)
     {
-        ArgumentNullException.ThrowIfNull(connection);
-        _dbConnection = connection;
+        ArgumentNullException.ThrowIfNull(dbConnection);
+        _dbConnection = dbConnection;
     }
 
     public IDbConnection ChangeOrSetDbConnection(string connectionString, DbTypes dbType)
     {
-        if (string.IsNullOrWhiteSpace(connectionString))
-        {
-            throw new ArgumentNullException(nameof(connectionString));
-        }
-
         return _dbConnection = dbType switch
         {
             DbTypes.MYSQL => new MySqlConnector.MySqlConnection(connectionString),
