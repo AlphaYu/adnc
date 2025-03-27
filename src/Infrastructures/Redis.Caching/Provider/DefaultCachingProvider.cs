@@ -505,7 +505,7 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
     protected override bool BaseTrySet<T>(string cacheKey, T cacheValue, TimeSpan expiration)
     {
         ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
-        ArgumentCheck.NotNull(cacheValue, nameof(cacheValue));
+        ArgumentNullException.ThrowIfNull(cacheValue, nameof(cacheValue));
         ArgumentCheck.NotNegativeOrZero(expiration, nameof(expiration));
 
         if (_cacheOptions.Value.MaxRdSecond > 0)

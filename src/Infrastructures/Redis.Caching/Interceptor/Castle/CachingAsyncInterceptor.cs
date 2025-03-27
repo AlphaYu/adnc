@@ -29,9 +29,7 @@ public sealed class CachingAsyncInterceptor : IAsyncInterceptor
     /// </summary>
     /// <param name="cacheProvider">Cache provider .</param>
     /// <param name="keyGenerator">Key generator.</param>
-    /// <param name="options">Options.</param>
     /// <param name="logger">Logger.</param>
-    /// <param name="hybridCachingProvider">Hybrid caching provider.</param>
     public CachingAsyncInterceptor(
         ICacheProvider cacheProvider
         , ICachingKeyGenerator keyGenerator
@@ -210,9 +208,9 @@ public sealed class CachingAsyncInterceptor : IAsyncInterceptor
         await task;
     }
 
-    private async Task<TResult> InternalInterceptAsynchronous<TResult>(IInvocation invocation, CachingInterceptorAttribute attribute)
+    private async Task<TResult?> InternalInterceptAsynchronous<TResult>(IInvocation invocation, CachingInterceptorAttribute attribute)
     {
-        TResult result = default;
+        TResult? result = default;
         var methodInfo = invocation.Method ?? invocation.MethodInvocationTarget;
 
         if (attribute is CachingAbleAttribute ableAttribute)
@@ -293,7 +291,7 @@ public sealed class CachingAsyncInterceptor : IAsyncInterceptor
         return result;
     }
 
-    private static async Task<TResult> InternalInterceptAsynchronousWithOutCaching<TResult>(IInvocation invocation)
+    private static async Task<TResult?> InternalInterceptAsynchronousWithOutCaching<TResult>(IInvocation invocation)
     {
         invocation.Proceed();
         var task = (Task<TResult>)invocation.ReturnValue;
@@ -301,7 +299,7 @@ public sealed class CachingAsyncInterceptor : IAsyncInterceptor
         return result;
     }
 
-    private static CachingInterceptorAttribute GetAttribute(IInvocation invocation)
+    private static CachingInterceptorAttribute? GetAttribute(IInvocation invocation)
     {
         var methodInfo = invocation.Method ?? invocation.MethodInvocationTarget;
         var attribute = methodInfo.GetCustomAttribute<CachingInterceptorAttribute>();
