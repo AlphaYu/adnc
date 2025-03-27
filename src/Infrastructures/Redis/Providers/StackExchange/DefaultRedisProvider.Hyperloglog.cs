@@ -1,5 +1,4 @@
-﻿using Adnc.Infra.Redis.Core;
-using StackExchange.Redis;
+﻿using StackExchange.Redis;
 
 namespace Adnc.Infra.Redis.Providers.StackExchange;
 
@@ -10,8 +9,8 @@ public partial class DefaultRedisProvider : IRedisProvider
 {
     public bool PfAdd<T>(string cacheKey, List<T> values)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
-        ArgumentCheck.NotNullAndCountGTZero(values, nameof(values));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        Checker.Argument.ThrowIfNullOrCountLEZero(values, nameof(values));
 
         var list = new List<RedisValue>();
 
@@ -26,8 +25,8 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public async Task<bool> PfAddAsync<T>(string cacheKey, List<T> values)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
-        ArgumentCheck.NotNullAndCountGTZero(values, nameof(values));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        Checker.Argument.ThrowIfNullOrCountLEZero(values, nameof(values));
 
         var list = new List<RedisValue>();
 
@@ -42,7 +41,7 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public long PfCount(List<string> cacheKeys)
     {
-        ArgumentCheck.NotNullAndCountGTZero(cacheKeys, nameof(cacheKeys));
+        Checker.Argument.ThrowIfNullOrCountLEZero(cacheKeys, nameof(cacheKeys));
 
         var list = new List<RedisKey>();
 
@@ -57,7 +56,7 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public async Task<long> PfCountAsync(List<string> cacheKeys)
     {
-        ArgumentCheck.NotNullAndCountGTZero(cacheKeys, nameof(cacheKeys));
+        Checker.Argument.ThrowIfNullOrCountLEZero(cacheKeys, nameof(cacheKeys));
 
         var list = new List<RedisKey>();
 
@@ -72,8 +71,8 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public bool PfMerge(string destKey, List<string> sourceKeys)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(destKey, nameof(destKey));
-        ArgumentCheck.NotNullAndCountGTZero(sourceKeys, nameof(sourceKeys));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(destKey, nameof(destKey));
+        Checker.Argument.ThrowIfNullOrCountLEZero(sourceKeys, nameof(sourceKeys));
 
         var list = new List<RedisKey>();
 
@@ -88,8 +87,8 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public async Task<bool> PfMergeAsync(string destKey, List<string> sourceKeys)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(destKey, nameof(destKey));
-        ArgumentCheck.NotNullAndCountGTZero(sourceKeys, nameof(sourceKeys));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(destKey, nameof(destKey));
+        Checker.Argument.ThrowIfNullOrCountLEZero(sourceKeys, nameof(sourceKeys));
 
         var list = new List<RedisKey>();
 

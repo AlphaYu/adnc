@@ -49,8 +49,8 @@ public partial class DefaultRedisProvider : IRedisProvider
         ISerializer serializer,
         ILoggerFactory? loggerFactory = null)
     {
-        ArgumentCheck.NotNull(dbProviders, nameof(dbProviders));
-        ArgumentCheck.NotNull(serializer, nameof(serializer));
+        ArgumentNullException.ThrowIfNull(dbProviders, nameof(dbProviders));
+        ArgumentNullException.ThrowIfNull(serializer, nameof(serializer));
         _serializer = serializer;
         _logger = loggerFactory?.CreateLogger<DefaultRedisProvider>();
         _redisDb = dbProviders.GetDatabase();

@@ -1,5 +1,4 @@
-﻿using Adnc.Infra.Redis.Core;
-using StackExchange.Redis;
+﻿using StackExchange.Redis;
 
 namespace Adnc.Infra.Redis.Providers.StackExchange;
 
@@ -10,8 +9,8 @@ public partial class DefaultRedisProvider : IRedisProvider
 {
     public long SAdd<T>(string cacheKey, IList<T> cacheValues, TimeSpan? expiration = null)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
-        ArgumentCheck.NotNullAndCountGTZero(cacheValues, nameof(cacheValues));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        Checker.Argument.ThrowIfNullOrCountLEZero(cacheValues, nameof(cacheValues));
 
         var list = new List<RedisValue>();
 
@@ -32,7 +31,7 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public long SCard(string cacheKey)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         var len = _redisDb.SetLength(cacheKey);
         return len;
@@ -40,7 +39,7 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public bool SIsMember<T>(string cacheKey, T cacheValue)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         var bytes = _serializer.Serialize(cacheValue);
 
@@ -50,7 +49,7 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public List<T> SMembers<T>(string cacheKey)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         var list = new List<T>();
 
@@ -66,7 +65,7 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public T SPop<T>(string cacheKey)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         var bytes = _redisDb.SetPop(cacheKey);
 
@@ -75,7 +74,7 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public List<T> SRandMember<T>(string cacheKey, int count = 1)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         var list = new List<T>();
 
@@ -91,7 +90,7 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public long SRem<T>(string cacheKey, IList<T>? cacheValues = null)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         long len;
         if (cacheValues != null && cacheValues.Any())
@@ -116,8 +115,8 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public async Task<long> SAddAsync<T>(string cacheKey, IList<T> cacheValues, TimeSpan? expiration = null)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
-        ArgumentCheck.NotNullAndCountGTZero(cacheValues, nameof(cacheValues));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        Checker.Argument.ThrowIfNullOrCountLEZero(cacheValues, nameof(cacheValues));
 
         var list = new List<RedisValue>();
 
@@ -138,7 +137,7 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public async Task<long> SCardAsync(string cacheKey)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         var len = await _redisDb.SetLengthAsync(cacheKey);
         return len;
@@ -146,7 +145,7 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public async Task<bool> SIsMemberAsync<T>(string cacheKey, T cacheValue)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         var bytes = _serializer.Serialize(cacheValue);
 
@@ -156,7 +155,7 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public async Task<List<T>> SMembersAsync<T>(string cacheKey)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         var list = new List<T>();
 
@@ -172,7 +171,7 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public async Task<T> SPopAsync<T>(string cacheKey)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         var bytes = await _redisDb.SetPopAsync(cacheKey);
 
@@ -181,7 +180,7 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public async Task<List<T>> SRandMemberAsync<T>(string cacheKey, int count = 1)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         var list = new List<T>();
 
@@ -197,7 +196,7 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public async Task<long> SRemAsync<T>(string cacheKey, IList<T>? cacheValues = null)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         long len;
         if (cacheValues != null && cacheValues.Any())

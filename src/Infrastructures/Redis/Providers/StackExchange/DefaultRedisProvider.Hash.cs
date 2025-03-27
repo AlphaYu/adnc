@@ -1,5 +1,4 @@
-﻿using Adnc.Infra.Redis.Core;
-using StackExchange.Redis;
+﻿using StackExchange.Redis;
 
 namespace Adnc.Infra.Redis.Providers.StackExchange;
 
@@ -10,7 +9,7 @@ public partial class DefaultRedisProvider : IRedisProvider
 {
     public bool HMSet(string cacheKey, Dictionary<string, string> vals, TimeSpan? expiration = null)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         if (expiration.HasValue)
         {
@@ -44,23 +43,23 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public bool HSet(string cacheKey, string field, string cacheValue)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
-        ArgumentCheck.NotNullOrWhiteSpace(field, nameof(field));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(field, nameof(field));
 
         return _redisDb.HashSet(cacheKey, field, cacheValue);
     }
 
     public bool HExists(string cacheKey, string field)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
-        ArgumentCheck.NotNullOrWhiteSpace(field, nameof(field));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(field, nameof(field));
 
         return _redisDb.HashExists(cacheKey, field);
     }
 
     public long HDel(string cacheKey, IList<string>? fields = null)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         if (fields != null && fields.Any())
         {
@@ -75,8 +74,8 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public string HGet(string cacheKey, string field)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
-        ArgumentCheck.NotNullOrWhiteSpace(field, nameof(field));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(field, nameof(field));
 
         var res = _redisDb.HashGet(cacheKey, field);
         return res;
@@ -84,7 +83,7 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public Dictionary<string, string> HGetAll(string cacheKey)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         var dict = new Dictionary<string, string>();
 
@@ -103,15 +102,15 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public long HIncrBy(string cacheKey, string field, long val = 1)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
-        ArgumentCheck.NotNullOrWhiteSpace(field, nameof(field));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(field, nameof(field));
 
         return _redisDb.HashIncrement(cacheKey, field, val);
     }
 
     public List<string> HKeys(string cacheKey)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         var keys = _redisDb.HashKeys(cacheKey);
         return keys.Select(x => x.ToString()).ToList();
@@ -119,22 +118,22 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public long HLen(string cacheKey)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         return _redisDb.HashLength(cacheKey);
     }
 
     public List<string> HVals(string cacheKey)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         return _redisDb.HashValues(cacheKey).Select(x => x.ToString()).ToList();
     }
 
     public Dictionary<string, string> HMGet(string cacheKey, IList<string> fields)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
-        ArgumentCheck.NotNullAndCountGTZero(fields, nameof(fields));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        Checker.Argument.ThrowIfNullOrCountLEZero(fields, nameof(fields));
 
         var dict = new Dictionary<string, string>();
 
@@ -184,23 +183,23 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public async Task<bool> HSetAsync(string cacheKey, string field, string cacheValue)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
-        ArgumentCheck.NotNullOrWhiteSpace(field, nameof(field));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(field, nameof(field));
 
         return await _redisDb.HashSetAsync(cacheKey, field, cacheValue);
     }
 
     public async Task<bool> HExistsAsync(string cacheKey, string field)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
-        ArgumentCheck.NotNullOrWhiteSpace(field, nameof(field));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(field, nameof(field));
 
         return await _redisDb.HashExistsAsync(cacheKey, field);
     }
 
     public async Task<long> HDelAsync(string cacheKey, IList<string>? fields)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         if (fields != null && fields.Any())
         {
@@ -215,8 +214,8 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public async Task<string> HGetAsync(string cacheKey, string field)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
-        ArgumentCheck.NotNullOrWhiteSpace(field, nameof(field));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(field, nameof(field));
 
         var res = await _redisDb.HashGetAsync(cacheKey, field);
         return res;
@@ -224,7 +223,7 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public async Task<Dictionary<string, string>> HGetAllAsync(string cacheKey)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         var dict = new Dictionary<string, string>();
 
@@ -243,15 +242,15 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public async Task<long> HIncrByAsync(string cacheKey, string field, long val = 1)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
-        ArgumentCheck.NotNullOrWhiteSpace(field, nameof(field));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(field, nameof(field));
 
         return await _redisDb.HashIncrementAsync(cacheKey, field, val);
     }
 
     public async Task<List<string>> HKeysAsync(string cacheKey)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         var keys = await _redisDb.HashKeysAsync(cacheKey);
         return keys.Select(x => x.ToString()).ToList();
@@ -259,22 +258,22 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public async Task<long> HLenAsync(string cacheKey)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         return await _redisDb.HashLengthAsync(cacheKey);
     }
 
     public async Task<List<string>> HValsAsync(string cacheKey)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         return (await _redisDb.HashValuesAsync(cacheKey)).Select(x => x.ToString()).ToList();
     }
 
     public async Task<Dictionary<string, string>> HMGetAsync(string cacheKey, IList<string> fields)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
-        ArgumentCheck.NotNullAndCountGTZero(fields, nameof(fields));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        Checker.Argument.ThrowIfNullOrCountLEZero(fields, nameof(fields));
 
         var dict = new Dictionary<string, string>();
 

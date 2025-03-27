@@ -1,6 +1,4 @@
-﻿using Adnc.Infra.Redis.Core;
-
-namespace Adnc.Infra.Redis.Configurations;
+﻿namespace Adnc.Infra.Redis.Configurations;
 
 /// <summary>
 /// Defines an endpoint.
@@ -14,7 +12,7 @@ public class ServerEndPoint
     /// <param name="port">Port.</param>
     public ServerEndPoint(string host, int port)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(host, nameof(host));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(host, nameof(host));
 
         Host = host;
         Port = port;

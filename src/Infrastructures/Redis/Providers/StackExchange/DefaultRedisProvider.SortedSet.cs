@@ -1,5 +1,4 @@
-﻿using Adnc.Infra.Redis.Core;
-using StackExchange.Redis;
+﻿using StackExchange.Redis;
 
 namespace Adnc.Infra.Redis.Providers.StackExchange;
 
@@ -11,7 +10,7 @@ public partial class DefaultRedisProvider : IRedisProvider
     public long ZAdd<T>(string cacheKey, Dictionary<T, double> cacheValues) 
         where T : notnull
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         var param = new List<SortedSetEntry>();
 
@@ -27,7 +26,7 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public long ZCard(string cacheKey)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         var len = _redisDb.SortedSetLength(cacheKey);
         return len;
@@ -35,7 +34,7 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public long ZCount(string cacheKey, double min, double max)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         var len = _redisDb.SortedSetLengthByValue(cacheKey, min, max);
         return len;
@@ -43,8 +42,8 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public double ZIncrBy(string cacheKey, string field, double val = 1)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
-        ArgumentCheck.NotNullOrWhiteSpace(field, nameof(field));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(field, nameof(field));
 
         var value = _redisDb.SortedSetIncrement(cacheKey, field, val);
         return value;
@@ -52,7 +51,7 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public long ZLexCount(string cacheKey, string min, string max)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         var len = _redisDb.SortedSetLengthByValue(cacheKey, min, max);
         return len;
@@ -60,7 +59,7 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public List<T> ZRange<T>(string cacheKey, long start, long stop)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         var list = new List<T>();
 
@@ -76,7 +75,7 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public long? ZRank<T>(string cacheKey, T cacheValue)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         var bytes = _serializer.Serialize(cacheValue);
 
@@ -87,7 +86,7 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public long ZRem<T>(string cacheKey, IList<T> cacheValues)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         var bytes = new List<RedisValue>();
 
@@ -103,7 +102,7 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public double? ZScore<T>(string cacheKey, T cacheValue)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         var bytes = _serializer.Serialize(cacheValue);
 
@@ -115,7 +114,7 @@ public partial class DefaultRedisProvider : IRedisProvider
     public async Task<long> ZAddAsync<T>(string cacheKey, Dictionary<T, double> cacheValues)
         where T : notnull
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         var param = new List<SortedSetEntry>();
 
@@ -131,7 +130,7 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public async Task<long> ZCardAsync(string cacheKey)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         var len = await _redisDb.SortedSetLengthAsync(cacheKey);
         return len;
@@ -139,7 +138,7 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public async Task<long> ZCountAsync(string cacheKey, double min, double max)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         var len = await _redisDb.SortedSetLengthByValueAsync(cacheKey, min, max);
         return len;
@@ -147,8 +146,8 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public async Task<double> ZIncrByAsync(string cacheKey, string field, double val = 1)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
-        ArgumentCheck.NotNullOrWhiteSpace(field, nameof(field));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(field, nameof(field));
 
         var value = await _redisDb.SortedSetIncrementAsync(cacheKey, field, val);
         return value;
@@ -156,7 +155,7 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public async Task<long> ZLexCountAsync(string cacheKey, string min, string max)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         var len = await _redisDb.SortedSetLengthByValueAsync(cacheKey, min, max);
         return len;
@@ -164,7 +163,7 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public async Task<List<T>> ZRangeAsync<T>(string cacheKey, long start, long stop)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         var list = new List<T>();
 
@@ -180,7 +179,7 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public async Task<long?> ZRankAsync<T>(string cacheKey, T cacheValue)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         var bytes = _serializer.Serialize(cacheValue);
 
@@ -191,7 +190,7 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public async Task<long> ZRemAsync<T>(string cacheKey, IList<T> cacheValues)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         var bytes = new List<RedisValue>();
 
@@ -207,7 +206,7 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public async Task<double?> ZScoreAsync<T>(string cacheKey, T cacheValue)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         var bytes = _serializer.Serialize(cacheValue);
 

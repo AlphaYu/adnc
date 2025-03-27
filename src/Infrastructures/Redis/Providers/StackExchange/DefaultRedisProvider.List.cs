@@ -1,5 +1,4 @@
-﻿using Adnc.Infra.Redis.Core;
-using StackExchange.Redis;
+﻿using StackExchange.Redis;
 
 namespace Adnc.Infra.Redis.Providers.StackExchange;
 
@@ -10,7 +9,7 @@ public partial class DefaultRedisProvider : IRedisProvider
 {
     public T LIndex<T>(string cacheKey, long index)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         var bytes = _redisDb.ListGetByIndex(cacheKey, index);
         return _serializer.Deserialize<T>(bytes);
@@ -18,14 +17,14 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public long LLen(string cacheKey)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         return _redisDb.ListLength(cacheKey);
     }
 
     public T LPop<T>(string cacheKey)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         var bytes = _redisDb.ListLeftPop(cacheKey);
         return _serializer.Deserialize<T>(bytes);
@@ -33,8 +32,8 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public long LPush<T>(string cacheKey, IList<T> cacheValues)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
-        ArgumentCheck.NotNullAndCountGTZero(cacheValues, nameof(cacheValues));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        Checker.Argument.ThrowIfNullOrCountLEZero(cacheValues, nameof(cacheValues));
 
         var list = new List<RedisValue>();
 
@@ -49,7 +48,7 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public List<T> LRange<T>(string cacheKey, long start, long stop)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         var list = new List<T>();
 
@@ -65,7 +64,7 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public long LRem<T>(string cacheKey, long count, T cacheValue)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         var bytes = _serializer.Serialize(cacheValue);
         return _redisDb.ListRemove(cacheKey, bytes, count);
@@ -73,7 +72,7 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public bool LSet<T>(string cacheKey, long index, T cacheValue)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         var bytes = _serializer.Serialize(cacheValue);
         _redisDb.ListSetByIndex(cacheKey, index, bytes);
@@ -82,7 +81,7 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public bool LTrim(string cacheKey, long start, long stop)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         _redisDb.ListTrim(cacheKey, start, stop);
         return true;
@@ -90,7 +89,7 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public long LPushX<T>(string cacheKey, T cacheValue)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         var bytes = _serializer.Serialize(cacheValue);
         return _redisDb.ListLeftPush(cacheKey, bytes);
@@ -98,7 +97,7 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public long LInsertBefore<T>(string cacheKey, T pivot, T cacheValue)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         var pivotBytes = _serializer.Serialize(pivot);
         var cacheValueBytes = _serializer.Serialize(cacheValue);
@@ -107,7 +106,7 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public long LInsertAfter<T>(string cacheKey, T pivot, T cacheValue)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         var pivotBytes = _serializer.Serialize(pivot);
         var cacheValueBytes = _serializer.Serialize(cacheValue);
@@ -116,7 +115,7 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public long RPushX<T>(string cacheKey, T cacheValue)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         var bytes = _serializer.Serialize(cacheValue);
         return _redisDb.ListRightPush(cacheKey, bytes);
@@ -124,8 +123,8 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public long RPush<T>(string cacheKey, IList<T> cacheValues)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
-        ArgumentCheck.NotNullAndCountGTZero(cacheValues, nameof(cacheValues));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        Checker.Argument.ThrowIfNullOrCountLEZero(cacheValues, nameof(cacheValues));
 
         var list = new List<RedisValue>();
 
@@ -140,7 +139,7 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public T RPop<T>(string cacheKey)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         var bytes = _redisDb.ListRightPop(cacheKey);
         return _serializer.Deserialize<T>(bytes);
@@ -148,7 +147,7 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public async Task<T> LIndexAsync<T>(string cacheKey, long index)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         var bytes = await _redisDb.ListGetByIndexAsync(cacheKey, index);
         return _serializer.Deserialize<T>(bytes);
@@ -156,14 +155,14 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public async Task<long> LLenAsync(string cacheKey)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         return await _redisDb.ListLengthAsync(cacheKey);
     }
 
     public async Task<T> LPopAsync<T>(string cacheKey)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         var bytes = await _redisDb.ListLeftPopAsync(cacheKey);
         return _serializer.Deserialize<T>(bytes);
@@ -171,8 +170,8 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public async Task<long> LPushAsync<T>(string cacheKey, IList<T> cacheValues)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
-        ArgumentCheck.NotNullAndCountGTZero(cacheValues, nameof(cacheValues));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        Checker.Argument.ThrowIfNullOrCountLEZero(cacheValues, nameof(cacheValues));
 
         var list = new List<RedisValue>();
 
@@ -187,7 +186,7 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public async Task<List<T>> LRangeAsync<T>(string cacheKey, long start, long stop)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         var list = new List<T>();
 
@@ -203,7 +202,7 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public async Task<long> LRemAsync<T>(string cacheKey, long count, T cacheValue)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         var bytes = _serializer.Serialize(cacheValue);
         return await _redisDb.ListRemoveAsync(cacheKey, bytes, count);
@@ -211,7 +210,7 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public async Task<bool> LSetAsync<T>(string cacheKey, long index, T cacheValue)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         var bytes = _serializer.Serialize(cacheValue);
         await _redisDb.ListSetByIndexAsync(cacheKey, index, bytes);
@@ -220,7 +219,7 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public async Task<bool> LTrimAsync(string cacheKey, long start, long stop)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         await _redisDb.ListTrimAsync(cacheKey, start, stop);
         return true;
@@ -228,7 +227,7 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public Task<long> LPushXAsync<T>(string cacheKey, T cacheValue)
     {
-        //ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        //ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         //var bytes = _serializer.Serialize(cacheValue);
         //return await _cache.ListLeftPushAsync(cacheKey, bytes);
@@ -237,7 +236,7 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public async Task<long> LInsertBeforeAsync<T>(string cacheKey, T pivot, T cacheValue)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         var pivotBytes = _serializer.Serialize(pivot);
         var cacheValueBytes = _serializer.Serialize(cacheValue);
@@ -246,7 +245,7 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public async Task<long> LInsertAfterAsync<T>(string cacheKey, T pivot, T cacheValue)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         var pivotBytes = _serializer.Serialize(pivot);
         var cacheValueBytes = _serializer.Serialize(cacheValue);
@@ -255,7 +254,7 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public Task<long> RPushXAsync<T>(string cacheKey, T cacheValue)
     {
-        //ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        //ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         //var bytes = _serializer.Serialize(cacheValue);
         //return await _cache.ListRightPushAsync(cacheKey, bytes);
@@ -264,8 +263,8 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public async Task<long> RPushAsync<T>(string cacheKey, IList<T> cacheValues)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
-        ArgumentCheck.NotNullAndCountGTZero(cacheValues, nameof(cacheValues));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        Checker.Argument.ThrowIfNullOrCountLEZero(cacheValues, nameof(cacheValues));
 
         var list = new List<RedisValue>();
 
@@ -280,7 +279,7 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public async Task<T> RPopAsync<T>(string cacheKey)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         var bytes = await _redisDb.ListRightPopAsync(cacheKey);
         return _serializer.Deserialize<T>(bytes);

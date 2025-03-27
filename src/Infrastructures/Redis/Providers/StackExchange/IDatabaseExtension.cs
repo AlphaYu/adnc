@@ -1,16 +1,15 @@
-﻿using Adnc.Infra.Redis.Core;
-using Adnc.Infra.Redis.Core.Internal;
+﻿using Adnc.Infra.Redis.Core.Internal;
 
 namespace StackExchange.Redis;
 
-public static class IDatabaseExtension
+public static class DatabaseExtension
 {
     #region Distributed Locker
 
     public static (bool Success, string LockValue) Lock(this IDatabase redisDb, string cacheKey, int timeoutSeconds = 5, bool autoDelay = false)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
-        ArgumentCheck.NotLessThanOrEqualZero(timeoutSeconds, nameof(timeoutSeconds));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        Checker.Argument.ThrowIfLEZero(timeoutSeconds, nameof(timeoutSeconds));
 
         var lockKey = GetLockKey(cacheKey);
         var lockValue = Guid.NewGuid().ToString();
@@ -34,8 +33,8 @@ public static class IDatabaseExtension
 
     public static async Task<(bool Success, string LockValue)> LockAsync(this IDatabase redisDb, string cacheKey, int timeoutSeconds = 5, bool autoDelay = false)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
-        ArgumentCheck.NotLessThanOrEqualZero(timeoutSeconds, nameof(timeoutSeconds));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        Checker.Argument.ThrowIfLEZero(timeoutSeconds, nameof(timeoutSeconds));
 
         var lockKey = GetLockKey(cacheKey);
         var lockValue = Guid.NewGuid().ToString();
@@ -59,8 +58,8 @@ public static class IDatabaseExtension
 
     public static bool SafedUnLock(this IDatabase redisDb, string cacheKey, string lockValue)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
-        ArgumentCheck.NotNullOrWhiteSpace(lockValue, nameof(lockValue));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(lockValue, nameof(lockValue));
 
         var lockKey = GetLockKey(cacheKey);
         AutoDelayTimers.Instance.CloseTimer(lockKey);
@@ -80,8 +79,8 @@ public static class IDatabaseExtension
 
     public static async Task<bool> SafedUnLockAsync(this IDatabase redisDb, string cacheKey, string lockValue)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
-        ArgumentCheck.NotNullOrWhiteSpace(lockValue, nameof(lockValue));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(lockValue, nameof(lockValue));
 
         var lockKey = GetLockKey(cacheKey);
         AutoDelayTimers.Instance.CloseTimer(lockKey);
@@ -134,7 +133,7 @@ public static class IDatabaseExtension
 
     public static async Task KeyExpireAsync(this IDatabase redisDb, IEnumerable<string> cacheKeys, int seconds)
     {
-        ArgumentCheck.NotNullAndCountGTZero(cacheKeys, nameof(cacheKeys));
+        Checker.Argument.ThrowIfNullOrCountLEZero(cacheKeys, nameof(cacheKeys));
 
         var script = @"for i, inkey in ipairs(KEYS) do
                                        redis.call('EXPIRE',inkey,ARGV[1])

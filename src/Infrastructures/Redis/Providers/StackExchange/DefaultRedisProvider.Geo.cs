@@ -1,5 +1,4 @@
-﻿using Adnc.Infra.Redis.Core;
-using StackExchange.Redis;
+﻿using StackExchange.Redis;
 
 namespace Adnc.Infra.Redis.Providers.StackExchange;
 
@@ -10,8 +9,8 @@ public partial class DefaultRedisProvider : IRedisProvider
 {
     public long GeoAdd(string cacheKey, List<(double longitude, double latitude, string member)> values)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
-        ArgumentCheck.NotNullAndCountGTZero(values, nameof(values));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        Checker.Argument.ThrowIfNullOrCountLEZero(values, nameof(values));
 
         var list = new List<GeoEntry>();
 
@@ -26,8 +25,8 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public async Task<long> GeoAddAsync(string cacheKey, List<(double longitude, double latitude, string member)> values)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
-        ArgumentCheck.NotNullAndCountGTZero(values, nameof(values));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        Checker.Argument.ThrowIfNullOrCountLEZero(values, nameof(values));
 
         var list = new List<GeoEntry>();
 
@@ -42,10 +41,10 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public double? GeoDist(string cacheKey, string member1, string member2, string unit = "m")
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
-        ArgumentCheck.NotNullOrWhiteSpace(member1, nameof(member1));
-        ArgumentCheck.NotNullOrWhiteSpace(member2, nameof(member2));
-        ArgumentCheck.NotNullOrWhiteSpace(unit, nameof(unit));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(member1, nameof(member1));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(member2, nameof(member2));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(unit, nameof(unit));
 
         var res = _redisDb.GeoDistance(cacheKey, member1, member2, GetGeoUnit(unit));
         return res;
@@ -53,10 +52,10 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public async Task<double?> GeoDistAsync(string cacheKey, string member1, string member2, string unit = "m")
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
-        ArgumentCheck.NotNullOrWhiteSpace(member1, nameof(member1));
-        ArgumentCheck.NotNullOrWhiteSpace(member2, nameof(member2));
-        ArgumentCheck.NotNullOrWhiteSpace(unit, nameof(unit));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(member1, nameof(member1));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(member2, nameof(member2));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(unit, nameof(unit));
 
         var res = await _redisDb.GeoDistanceAsync(cacheKey, member1, member2, GetGeoUnit(unit));
         return res;
@@ -64,8 +63,8 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public List<string> GeoHash(string cacheKey, List<string> members)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
-        ArgumentCheck.NotNullAndCountGTZero(members, nameof(members));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        Checker.Argument.ThrowIfNullOrCountLEZero(members, nameof(members));
 
         var list = new List<RedisValue>();
         foreach (var item in members)
@@ -79,8 +78,8 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public async Task<List<string>> GeoHashAsync(string cacheKey, List<string> members)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
-        ArgumentCheck.NotNullAndCountGTZero(members, nameof(members));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        Checker.Argument.ThrowIfNullOrCountLEZero(members, nameof(members));
 
         var list = new List<RedisValue>();
         foreach (var item in members)
@@ -94,8 +93,8 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public List<(double longitude, double latitude)?> GeoPos(string cacheKey, List<string> members)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
-        ArgumentCheck.NotNullAndCountGTZero(members, nameof(members));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        Checker.Argument.ThrowIfNullOrCountLEZero(members, nameof(members));
 
         var list = new List<RedisValue>();
         foreach (var item in members)
@@ -124,8 +123,8 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     public async Task<List<(double longitude, double latitude)?>> GeoPosAsync(string cacheKey, List<string> members)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
-        ArgumentCheck.NotNullAndCountGTZero(members, nameof(members));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        Checker.Argument.ThrowIfNullOrCountLEZero(members, nameof(members));
 
         var list = new List<RedisValue>();
         foreach (var item in members)
