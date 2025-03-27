@@ -1,5 +1,4 @@
-﻿using Adnc.Infra.Core.Guard;
-using Adnc.Infra.Helper.Internal.Encrypt.Shared;
+﻿using Adnc.Infra.Helper.Internal.Encrypt.Shared;
 
 namespace Adnc.Infra.Helper.Internal.Encrypt;
 
