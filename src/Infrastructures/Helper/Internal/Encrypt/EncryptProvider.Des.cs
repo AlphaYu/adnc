@@ -30,9 +30,9 @@ public partial class EncryptProivder
     /// <returns>Encrypted string</returns>
     public string DESEncrypt(string data, string key)
     {
-        Checker.Argument.NotNullOrEmpty(data, nameof(data));
-        Checker.Argument.NotNullOrEmpty(key, nameof(key));
-        Checker.Argument.EqualLength(key.Length, 24, nameof(key));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(data, nameof(data));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(key, nameof(key));
+        Checker.Argument.ThrowIfNotEqualLength(key.Length, 24, nameof(key));
 
         byte[] plainBytes = Encoding.UTF8.GetBytes(data);
         var encryptBytes = DESEncrypt(plainBytes, key, CipherMode.ECB);
@@ -52,9 +52,9 @@ public partial class EncryptProivder
     /// <returns>Encrypted byte array</returns>
     public byte[] DESEncrypt(byte[] data, string key)
     {
-        Checker.Argument.NotEmpty(data, nameof(data));
-        Checker.Argument.NotNullOrEmpty(key, nameof(key));
-        Checker.Argument.EqualLength(key.Length, 24, nameof(key));
+        Checker.Argument.ThrowIfNullOrCountLEZero(data, nameof(data));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(key, nameof(key));
+        Checker.Argument.ThrowIfNotEqualLength(key.Length, 24, nameof(key));
 
         return DESEncrypt(data, key, CipherMode.ECB);
     }
@@ -68,11 +68,11 @@ public partial class EncryptProivder
     /// <returns>Encrypted byte array</returns>
     public byte[] DESEncrypt(byte[] data, string key, string vector)
     {
-        Checker.Argument.NotEmpty(data, nameof(data));
-        Checker.Argument.NotNullOrEmpty(key, nameof(key));
-        Checker.Argument.EqualLength(key.Length, 24, nameof(key));
-        Checker.Argument.NotNullOrEmpty(vector, nameof(vector));
-        Checker.Argument.EqualLength(vector.Length, 8, nameof(vector));
+        Checker.Argument.ThrowIfNullOrCountLEZero(data, nameof(data));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(key, nameof(key));
+        Checker.Argument.ThrowIfNotEqualLength(key.Length, 24, nameof(key));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(vector, nameof(vector));
+        Checker.Argument.ThrowIfNotEqualLength(vector.Length, 8, nameof(vector));
 
         return DESEncrypt(data, key, CipherMode.CBC, vector);
     }
@@ -88,9 +88,9 @@ public partial class EncryptProivder
     /// <returns>Encrypted byte array</returns>
     private static byte[] DESEncrypt(byte[] data, string key, CipherMode cipherMode, string vector = "", PaddingMode paddingMode = PaddingMode.PKCS7)
     {
-        Checker.Argument.NotEmpty(data, nameof(data));
-        Checker.Argument.NotNullOrEmpty(key, nameof(key));
-        Checker.Argument.EqualLength(key.Length, 24, nameof(key));
+        Checker.Argument.ThrowIfNullOrCountLEZero(data, nameof(data));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(key, nameof(key));
+        Checker.Argument.ThrowIfNotEqualLength(key.Length, 24, nameof(key));
 
         using (MemoryStream Memory = new MemoryStream())
         {
@@ -136,9 +136,9 @@ public partial class EncryptProivder
     /// <returns>Decrypted string</returns>
     public string DESDecrypt(string data, string key)
     {
-        Checker.Argument.NotNullOrEmpty(data, nameof(data));
-        Checker.Argument.NotNullOrEmpty(key, nameof(key));
-        Checker.Argument.EqualLength(key.Length, 24, nameof(key));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(data, nameof(data));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(key, nameof(key));
+        Checker.Argument.ThrowIfNotEqualLength(key.Length, 24, nameof(key));
 
         byte[] encryptedBytes = Convert.FromBase64String(data);
         byte[] bytes = DESDecrypt(encryptedBytes, key, CipherMode.ECB);
@@ -158,9 +158,9 @@ public partial class EncryptProivder
     /// <returns>Decrypted string</returns>
     public byte[] DESDecrypt(byte[] data, string key)
     {
-        Checker.Argument.NotEmpty(data, nameof(data));
-        Checker.Argument.NotNullOrEmpty(key, nameof(key));
-        Checker.Argument.EqualLength(key.Length, 24, nameof(key));
+        Checker.Argument.ThrowIfNullOrCountLEZero(data, nameof(data));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(key, nameof(key));
+        Checker.Argument.ThrowIfNotEqualLength(key.Length, 24, nameof(key));
 
         return DESDecrypt(data, key, CipherMode.ECB);
     }
@@ -174,11 +174,11 @@ public partial class EncryptProivder
     /// <returns>Encrypted byte array</returns>
     public byte[] DESDecrypt(byte[] data, string key, string vector)
     {
-        Checker.Argument.NotEmpty(data, nameof(data));
-        Checker.Argument.NotNullOrEmpty(key, nameof(key));
-        Checker.Argument.EqualLength(key.Length, 24, nameof(key));
-        Checker.Argument.NotNullOrEmpty(vector, nameof(vector));
-        Checker.Argument.EqualLength(vector.Length, 8, nameof(vector));
+        Checker.Argument.ThrowIfNullOrCountLEZero(data, nameof(data));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(key, nameof(key));
+        Checker.Argument.ThrowIfNotEqualLength(key.Length, 24, nameof(key));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(vector, nameof(vector));
+        Checker.Argument.ThrowIfNotEqualLength(vector.Length, 8, nameof(vector));
 
         return DESDecrypt(data, key, CipherMode.CBC, vector);
     }
@@ -193,9 +193,9 @@ public partial class EncryptProivder
     /// <returns>Decrypted byte array</returns>
     private static byte[] DESDecrypt(byte[] data, string key, CipherMode cipherMode, string vector = "", PaddingMode paddingMode = PaddingMode.PKCS7)
     {
-        Checker.Argument.NotEmpty(data, nameof(data));
-        Checker.Argument.NotNullOrEmpty(key, nameof(key));
-        Checker.Argument.EqualLength(key.Length, 24, nameof(key));
+        Checker.Argument.ThrowIfNullOrCountLEZero(data, nameof(data));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(key, nameof(key));
+        Checker.Argument.ThrowIfNotEqualLength(key.Length, 24, nameof(key));
 
         byte[] encryptedBytes = data;
         byte[] bKey = new byte[24];

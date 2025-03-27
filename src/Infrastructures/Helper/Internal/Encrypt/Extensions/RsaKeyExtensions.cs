@@ -1,5 +1,4 @@
-﻿using Adnc.Infra.Core.Guard;
-using Adnc.Infra.Helper.Internal.Encrypt.Shared;
+﻿using Adnc.Infra.Helper.Internal.Encrypt.Shared;
 
 namespace Adnc.Infra.Helper.Encrypt.Extensions;
 
@@ -15,7 +14,7 @@ internal static class RSAKeyExtensions
     /// <param name="jsonString">RSA Key serialization JSON string</param>
     internal static void FromJsonString(this RSA rsa, string jsonString)
     {
-        Checker.Argument.NotNullOrEmpty(jsonString, nameof(jsonString));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(jsonString, nameof(jsonString));
 
         RSAParameters parameters = new RSAParameters();
         try

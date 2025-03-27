@@ -1,6 +1,4 @@
-﻿using Adnc.Infra.Core.Guard;
-
-namespace Adnc.Infra.Helper.Internal.Encrypt;
+﻿namespace Adnc.Infra.Helper.Internal.Encrypt;
 
 public partial class EncryptProivder
 {
@@ -11,7 +9,7 @@ public partial class EncryptProivder
     /// <returns></returns>
     public string Sha1(string str)
     {
-        Checker.Argument.NotNullOrEmpty(str, nameof(str));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(str, nameof(str));
 
         using SHA1 sha1 = SHA1.Create();
         byte[] bytes_sha1_in = Encoding.UTF8.GetBytes(str);
@@ -28,7 +26,7 @@ public partial class EncryptProivder
     /// <returns></returns>
     public string Sha256(string srcString)
     {
-        Checker.Argument.NotNullOrEmpty(srcString, nameof(srcString));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(srcString, nameof(srcString));
 
         using SHA256 sha256 = SHA256.Create();
         byte[] bytes_sha256_in = Encoding.UTF8.GetBytes(srcString);
@@ -45,7 +43,7 @@ public partial class EncryptProivder
     /// <returns></returns>
     public string Sha384(string srcString)
     {
-        Checker.Argument.NotNullOrEmpty(srcString, nameof(srcString));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(srcString, nameof(srcString));
 
         using SHA384 sha384 = SHA384.Create();
         byte[] bytes_sha384_in = Encoding.UTF8.GetBytes(srcString);
@@ -63,7 +61,7 @@ public partial class EncryptProivder
     /// <returns></returns>
     public string Sha512(string srcString)
     {
-        Checker.Argument.NotNullOrEmpty(srcString, nameof(srcString));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(srcString, nameof(srcString));
 
         using SHA512 sha512 = SHA512.Create();
         byte[] bytes_sha512_in = Encoding.UTF8.GetBytes(srcString);
@@ -81,8 +79,8 @@ public partial class EncryptProivder
     /// <returns></returns>
     public string Sha1HMAC(string srcString, string key)
     {
-        Checker.Argument.NotNullOrEmpty(srcString, nameof(srcString));
-        Checker.Argument.NotNullOrEmpty(key, nameof(key));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(srcString, nameof(srcString));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(key, nameof(key));
 
         byte[] secrectKey = Encoding.UTF8.GetBytes(key);
         using HMACSHA1 hmac = new HMACSHA1(secrectKey);
@@ -105,8 +103,8 @@ public partial class EncryptProivder
     /// <returns></returns>
     public string Sha256HMAC(string srcString, string key)
     {
-        Checker.Argument.NotNullOrEmpty(srcString, nameof(srcString));
-        Checker.Argument.NotNullOrEmpty(key, nameof(key));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(srcString, nameof(srcString));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(key, nameof(key));
 
         byte[] secrectKey = Encoding.UTF8.GetBytes(key);
         using HMACSHA256 hmac = new HMACSHA256(secrectKey);
@@ -129,8 +127,8 @@ public partial class EncryptProivder
     /// <returns></returns>
     public string Sha384HMAC(string srcString, string key)
     {
-        Checker.Argument.NotNullOrEmpty(srcString, nameof(srcString));
-        Checker.Argument.NotNullOrEmpty(key, nameof(key));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(srcString, nameof(srcString));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(key, nameof(key));
 
         byte[] secrectKey = Encoding.UTF8.GetBytes(key);
         using HMACSHA384 hmac = new HMACSHA384(secrectKey);
@@ -153,8 +151,8 @@ public partial class EncryptProivder
     /// <returns></returns>
     public string Sha512HMAC(string srcString, string key)
     {
-        Checker.Argument.NotNullOrEmpty(srcString, nameof(srcString));
-        Checker.Argument.NotNullOrEmpty(key, nameof(key));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(srcString, nameof(srcString));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(key, nameof(key));
 
         byte[] secrectKey = Encoding.UTF8.GetBytes(key);
         using HMACSHA512 hmac = new HMACSHA512(secrectKey);

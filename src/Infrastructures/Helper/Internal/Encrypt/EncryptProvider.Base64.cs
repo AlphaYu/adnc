@@ -1,6 +1,4 @@
-﻿using Adnc.Infra.Core.Guard;
-
-namespace Adnc.Infra.Helper.Internal.Encrypt;
+﻿namespace Adnc.Infra.Helper.Internal.Encrypt;
 
 public partial class EncryptProivder
 {
@@ -22,7 +20,7 @@ public partial class EncryptProivder
     /// <returns></returns>
     public string Base64Encrypt(string input, Encoding encoding)
     {
-        Checker.Argument.NotNullOrEmpty(input, nameof(input));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(input, nameof(input));
         return Convert.ToBase64String(encoding.GetBytes(input));
     }
 
@@ -44,7 +42,7 @@ public partial class EncryptProivder
     /// <returns></returns>
     public string Base64Decrypt(string input, Encoding encoding)
     {
-        Checker.Argument.NotNullOrEmpty(input, nameof(input));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(input, nameof(input));
         return encoding.GetString(Convert.FromBase64String(input));
     }
 }

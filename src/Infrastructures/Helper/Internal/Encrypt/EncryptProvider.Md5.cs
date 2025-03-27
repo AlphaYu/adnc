@@ -13,7 +13,7 @@ public partial class EncryptProivder
     /// <returns></returns>
     public string Md5(string srcString, bool isLower = false, MD5Length length = MD5Length.L32)
     {
-        Checker.Argument.NotNullOrEmpty(srcString, nameof(srcString));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(srcString, nameof(srcString));
         using MD5 md5 = MD5.Create();
         byte[] bytes_md5_in = Encoding.UTF8.GetBytes(srcString);
         byte[] bytes_md5_out = md5.ComputeHash(bytes_md5_in);
@@ -34,8 +34,8 @@ public partial class EncryptProivder
     /// <returns></returns>
     public string Md5HMAC(string srcString, string key, bool isLower = false)
     {
-        Checker.Argument.NotNullOrEmpty(srcString, nameof(srcString));
-        Checker.Argument.NotNullOrEmpty(key, nameof(key));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(srcString, nameof(srcString));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(key, nameof(key));
 
         byte[] secrectKey = Encoding.UTF8.GetBytes(key);
         using HMACMD5 md5 = new HMACMD5(secrectKey);

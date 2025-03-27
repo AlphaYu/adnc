@@ -11,7 +11,7 @@ public partial class EncryptProivder
     /// <returns>DecryptionKey</returns>
     public string CreateDecryptionKey(int length)
     {
-        Checker.Argument.NotOutOfRange(length, 16, 48, nameof(length));
+        Checker.Argument.ThrowIfOutOfRange(length, 16, 48, nameof(length));
         return CreateMachineKey(length);
     }
 
@@ -22,7 +22,7 @@ public partial class EncryptProivder
     /// <returns>ValidationKey</returns>
     public string CreateValidationKey(int length)
     {
-        Checker.Argument.NotOutOfRange(length, 48, 128, nameof(length));
+        Checker.Argument.ThrowIfOutOfRange(length, 48, 128, nameof(length));
         return CreateMachineKey(length);
     }
 
