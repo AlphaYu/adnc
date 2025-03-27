@@ -4,13 +4,9 @@ obj
 txtlogs
 *.user
 *.pubxml
-/README.html
-/src/.sonarqube
-/src/.sonarlint
+.sonarqube
+.sonarlint
 .idea
-/src/.idea
-/src/ServiceShared/.idea
-/src/ServerApi/.idea
-/src/ServerApi/ServiceShared/.idea
+.vscode
+/README.html
 /.env/adnc
-/src/.vscode

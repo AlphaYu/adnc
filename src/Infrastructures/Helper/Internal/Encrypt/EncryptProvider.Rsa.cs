@@ -137,7 +137,7 @@ public partial class EncryptProivder
             {
                 rsa.ImportRSAPublicKey(keySource, out _);
             }
-            catch
+            catch (Exception)
             {
                 rsa.ImportSubjectPublicKeyInfo(keySource, out _);
             }

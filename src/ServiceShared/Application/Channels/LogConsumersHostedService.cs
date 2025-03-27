@@ -34,8 +34,7 @@ public class LogConsumersHostedService(ILogger<LogConsumersHostedService> logger
                         }
                         catch (Exception ex)
                         {
-                            var message = $"{nameof(ExecuteAsync)}:{nameof(channelLoginReader)}";
-                            logger.LogError(ex, message);
+                            logger.LogError(ex, "save login_log error");
                         }
                         finally
                         {
@@ -79,8 +78,7 @@ public class LogConsumersHostedService(ILogger<LogConsumersHostedService> logger
                         }
                         catch (Exception ex)
                         {
-                            var message = $"{nameof(ExecuteAsync)}:{nameof(channelOperationLogReader)}";
-                            logger.LogError(ex, message);
+                            logger.LogError(ex, "save operation_log error");
                         }
                         finally
                         {

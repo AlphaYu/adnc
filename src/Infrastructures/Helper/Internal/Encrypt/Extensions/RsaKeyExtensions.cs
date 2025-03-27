@@ -1,4 +1,4 @@
-using Adnc.Infra.Core.Guard;
+﻿using Adnc.Infra.Core.Guard;
 using Adnc.Infra.Helper.Internal.Encrypt.Shared;
 
 namespace Adnc.Infra.Helper.Encrypt.Extensions;
@@ -31,9 +31,9 @@ internal static class RSAKeyExtensions
             parameters.InverseQ = paramsJson.InverseQ != null ? Convert.FromBase64String(paramsJson.InverseQ) : null;
             parameters.D = paramsJson.D != null ? Convert.FromBase64String(paramsJson.D) : null;
         }
-        catch
+        catch (Exception ex)
         {
-            throw new InvalidDataException("Invalid Json RSA key.");
+            throw new InvalidDataException("Invalid Json RSA key.", ex);
         }
         rsa.ImportParameters(parameters);
     }

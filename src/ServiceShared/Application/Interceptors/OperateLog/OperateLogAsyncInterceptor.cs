@@ -186,7 +186,7 @@ public sealed class OperateLogAsyncInterceptor(UserContext userContext, ILogger<
         }
         catch (Exception ex)
         {
-            logger.LogError(ex.Message, ex);
+            logger.LogError(ex, "WriteOpsLog error");
         }
     }
 

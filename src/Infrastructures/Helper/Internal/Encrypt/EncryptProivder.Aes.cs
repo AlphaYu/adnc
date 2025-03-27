@@ -84,7 +84,7 @@ public partial class EncryptProivder
 
             encryptData = memory.ToArray();
         }
-        catch
+        catch(Exception)
         {
             encryptData = null;
         }
@@ -121,7 +121,7 @@ public partial class EncryptProivder
             cryptoStream.FlushFinalBlock();
             return Convert.ToBase64String(memory.ToArray());
         }
-        catch
+        catch (Exception)
         {
             throw;
         }
@@ -196,7 +196,7 @@ public partial class EncryptProivder
 
             decryptedData = tempMemory.ToArray();
         }
-        catch
+        catch (Exception)
         {
             decryptedData = null;
         }
@@ -243,7 +243,7 @@ public partial class EncryptProivder
             decryptedData = tempMemory.ToArray();
             return Encoding.UTF8.GetString(decryptedData);
         }
-        catch
+        catch (Exception)
         {
             throw;
         }
