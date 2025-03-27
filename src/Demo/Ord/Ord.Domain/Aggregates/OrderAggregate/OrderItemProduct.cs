@@ -15,8 +15,8 @@ public record OrderItemProduct : ValueObject
 
     public OrderItemProduct(long id, string name, decimal price)
     {
-        Id = Checker.GTZero(id, nameof(id));
-        Name = Checker.NotNullOrEmpty(name, nameof(name));
-        Price = Checker.GTZero(price, nameof(price));
+        Id = Checker.Variable.GTZero(id, nameof(id));
+        Name = Checker.Variable.NotNullOrWhiteSpace(name, nameof(name));
+        Price = Checker.Variable.GTZero(price, nameof(price));
     }
 }

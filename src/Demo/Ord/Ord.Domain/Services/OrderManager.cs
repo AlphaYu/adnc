@@ -57,7 +57,7 @@ public class OrderManager : IDomainService
     /// <returns></returns>
     public virtual async Task CancelAsync(Order order)
     {
-        Checker.NotNull(order, nameof(order));
+        Checker.Variable.NotNull(order, nameof(order));
 
         order.ChangeStatus(OrderStatusCodes.Canceling, string.Empty);
 
@@ -77,7 +77,7 @@ public class OrderManager : IDomainService
     /// <returns></returns>
     public virtual async Task PayAsync(Order order)
     {
-        Checker.NotNull(order, nameof(order));
+        Checker.Variable.NotNull(order, nameof(order));
 
         order.ChangeStatus(OrderStatusCodes.Paying, string.Empty);
 
