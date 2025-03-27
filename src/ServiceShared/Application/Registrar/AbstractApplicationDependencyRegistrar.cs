@@ -26,11 +26,11 @@ public abstract partial class AbstractApplicationDependencyRegistrar
 
     public AbstractApplicationDependencyRegistrar(IServiceCollection services, IServiceInfo serviceInfo)
     {
-        Services = services ?? throw new ArgumentException("IServiceCollection is null.");
-        ServiceInfo = serviceInfo ?? throw new ArgumentException("ServiceInfo is null.");
-        Configuration = services.GetConfiguration() ?? throw new ArgumentException("Configuration is null.");
-        RedisSection = Configuration.GetSection(NodeConsts.Redis);
-        CachingSection = Configuration.GetSection(NodeConsts.Caching);
+        Services = services ?? throw new ArgumentNullException(nameof(services), $"{nameof(IServiceCollection)} is null.");
+        ServiceInfo = serviceInfo ?? throw new ArgumentNullException(nameof(serviceInfo), $"{nameof(IServiceInfo)} is null.");
+        Configuration = services.GetConfiguration() ?? throw new InvalidDataException("Configuration is null.");
+        RedisSection = Configuration.GetRequiredSection(NodeConsts.Redis);
+        CachingSection = Configuration.GetRequiredSection(NodeConsts.Caching);
         MongoDbSection = Configuration.GetSection(NodeConsts.MongoDb);
         MysqlSection = Configuration.GetSection(NodeConsts.Mysql);
         ConsulSection = Configuration.GetSection(NodeConsts.Consul);
