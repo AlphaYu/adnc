@@ -1,7 +1,7 @@
-﻿using Adnc.Infra.Redis.Caching.Configurations;
+﻿using Adnc.Infra.Core.Guard;
+using Adnc.Infra.Redis.Caching.Configurations;
 using Adnc.Infra.Redis.Caching.Core;
 using Adnc.Infra.Redis.Configurations;
-using Adnc.Infra.Redis.Core;
 using Adnc.Infra.Redis.Core.Serialization;
 using Adnc.Infra.Redis.Providers.StackExchange;
 
@@ -77,7 +77,7 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
         IOptions<CacheOptions> cacheOptions,
         ILoggerFactory? loggerFactory = null)
     {
-        ArgumentCheck.NotNull(dbProviders, nameof(dbProviders));
+        ArgumentNullException.ThrowIfNull(dbProviders, nameof(dbProviders));
 
         _dbProvider = dbProviders;
         _serializer = serializer;
@@ -99,8 +99,8 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
     /// <typeparam name="T">The 1st type parameter.</typeparam>
     protected override CacheValue<T> BaseGet<T>(string cacheKey, Func<T> dataRetriever, TimeSpan expiration)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
-        ArgumentCheck.NotNegativeOrZero(expiration, nameof(expiration));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        Checker.Argument.ThrowIfLEZero(expiration, nameof(expiration));
 
         if (!_cacheOptions.Value.PenetrationSetting.Disable && _redisOptions.Value.EnableBloomFilter)
         {
@@ -176,7 +176,7 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
     /// <typeparam name="T">The 1st type parameter.</typeparam>
     protected override CacheValue<T> BaseGet<T>(string cacheKey)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         if (!_cacheOptions.Value.PenetrationSetting.Disable && _redisOptions.Value.EnableBloomFilter)
         {
@@ -225,7 +225,7 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
     /// <param name="cacheKey">Cache key.</param>
     protected override void BaseRemove(string cacheKey)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         _redisDb.KeyDelete(cacheKey);
     }
@@ -240,9 +240,9 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
     /// <typeparam name="T">The 1st type parameter.</typeparam>
     protected override void BaseSet<T>(string cacheKey, T cacheValue, TimeSpan expiration)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
-        ArgumentCheck.NotNull(cacheValue, nameof(cacheValue));
-        ArgumentCheck.NotNegativeOrZero(expiration, nameof(expiration));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNull(cacheValue, nameof(cacheValue));
+        Checker.Argument.ThrowIfLEZero(expiration, nameof(expiration));
 
         if (_cacheOptions.Value.MaxRdSecond > 0)
         {
@@ -263,7 +263,7 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
     /// <param name="cacheKey">Cache key.</param>
     protected override bool BaseExists(string cacheKey)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         return _redisDb.KeyExists(cacheKey);
     }
@@ -274,7 +274,7 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
     /// <param name="prefix">Prefix of CacheKey.</param>
     protected override void BaseRemoveByPrefix(string prefix)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(prefix, nameof(prefix));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(prefix, nameof(prefix));
 
         prefix = HandlePrefix(prefix);
 
@@ -365,8 +365,8 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
     /// <typeparam name="T">The 1st type parameter.</typeparam>
     protected override void BaseSetAll<T>(IDictionary<string, T> values, TimeSpan expiration)
     {
-        ArgumentCheck.NotNegativeOrZero(expiration, nameof(expiration));
-        ArgumentCheck.NotNullAndCountGTZero(values, nameof(values));
+        Checker.Argument.ThrowIfLEZero(expiration, nameof(expiration));
+        Checker.Argument.ThrowIfNullOrCountLEZero(values, nameof(values));
 
         var batch = _redisDb.CreateBatch();
 
@@ -386,7 +386,7 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
     /// <typeparam name="T">The 1st type parameter.</typeparam>
     protected override IDictionary<string, CacheValue<T>> BaseGetAll<T>(IEnumerable<string> cacheKeys)
     {
-        ArgumentCheck.NotNullAndCountGTZero(cacheKeys, nameof(cacheKeys));
+        Checker.Argument.ThrowIfNullOrCountLEZero(cacheKeys, nameof(cacheKeys));
 
         var keyArray = cacheKeys.ToArray();
         var values = _redisDb.StringGet(keyArray.Select(k => (RedisKey)k).ToArray());
@@ -416,7 +416,7 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
     /// <typeparam name="T">The 1st type parameter.</typeparam>
     protected override IDictionary<string, CacheValue<T>> BaseGetByPrefix<T>(string prefix)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(prefix, nameof(prefix));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(prefix, nameof(prefix));
 
         prefix = HandlePrefix(prefix);
 
@@ -447,7 +447,7 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
     /// <param name="cacheKeys">Cache keys.</param>
     protected override void BaseRemoveAll(IEnumerable<string> cacheKeys)
     {
-        ArgumentCheck.NotNullAndCountGTZero(cacheKeys, nameof(cacheKeys));
+        Checker.Argument.ThrowIfNullOrCountLEZero(cacheKeys, nameof(cacheKeys));
 
         var redisKeys = cacheKeys.Where(k => !string.IsNullOrEmpty(k)).Select(k => (RedisKey)k).ToArray();
         if (redisKeys.Length > 0)
@@ -504,9 +504,9 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
     /// <typeparam name="T">The 1st type parameter.</typeparam>
     protected override bool BaseTrySet<T>(string cacheKey, T cacheValue, TimeSpan expiration)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
         ArgumentNullException.ThrowIfNull(cacheValue, nameof(cacheValue));
-        ArgumentCheck.NotNegativeOrZero(expiration, nameof(expiration));
+        Checker.Argument.ThrowIfLEZero(expiration, nameof(expiration));
 
         if (_cacheOptions.Value.MaxRdSecond > 0)
         {
@@ -529,7 +529,7 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
     /// <returns>expiration</returns>
     protected override TimeSpan BaseGetExpiration(string cacheKey)
     {
-        ArgumentCheck.NotNullOrWhiteSpace(cacheKey, nameof(cacheKey));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         var timeSpan = _redisDb.KeyTimeToLive(cacheKey);
         return timeSpan is not null && timeSpan.HasValue ? timeSpan.Value : TimeSpan.Zero;
