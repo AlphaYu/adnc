@@ -6,7 +6,7 @@ public sealed class AutoMapperObject(IMapper mapper) : IObjectMapper
 {
     public TDestination Map<TDestination>(object source)
     {
-        Checker.Argument.NotNull(source, nameof(source));
+        ArgumentNullException.ThrowIfNull(source, nameof(source));
         return mapper.Map<TDestination>(source);
     }
 
@@ -14,7 +14,7 @@ public sealed class AutoMapperObject(IMapper mapper) : IObjectMapper
         where TSource : class
         where TDestination : class
     {
-        Checker.Argument.NotNull(source, nameof(source));
+        ArgumentNullException.ThrowIfNull(source, nameof(source));
         return mapper.Map<TSource, TDestination>(source);
     }
 
@@ -22,16 +22,16 @@ public sealed class AutoMapperObject(IMapper mapper) : IObjectMapper
       where TSource : class
       where TDestination : class
     {
-        Checker.Argument.NotNull(source, nameof(source));
-        Checker.Argument.NotNull(destination, nameof(destination));
+        ArgumentNullException.ThrowIfNull(source, nameof(source));
+        ArgumentNullException.ThrowIfNull(destination, nameof(destination));
         return mapper.Map(source, destination);
     }
 
     public TDestination Map<TDestination>(object source, long id)
         where TDestination : Entity
     {
-        Checker.Argument.NotNull(source, nameof(source));
-        Checker.Argument.NotNull(source, nameof(id));
+        ArgumentNullException.ThrowIfNull(source, nameof(source));
+        ArgumentNullException.ThrowIfNull(source, nameof(id));
         var destination = mapper.Map<TDestination>(source);
         destination.Id = id;
         return destination;
