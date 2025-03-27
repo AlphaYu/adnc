@@ -1,4 +1,5 @@
-﻿using Adnc.Demo.Remote.Http.Services;
+﻿using Adnc.Demo.Remote.Event;
+using Adnc.Demo.Remote.Http.Services;
 
 namespace Adnc.Demo.Cust.Api.Application.Services.Implements;
 

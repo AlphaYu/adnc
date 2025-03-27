@@ -20,7 +20,6 @@ global using Adnc.Shared.Application.Contracts.Interfaces;
 global using Adnc.Shared.Application.Services;
 global using Adnc.Shared.Application.Services.Trackers;
 global using Adnc.Shared.Domain;
-global using Adnc.Shared.Remote.Event;
 global using AutoMapper;
 global using DotNetCore.CAP;
 global using Microsoft.EntityFrameworkCore;

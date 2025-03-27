@@ -1,4 +1,6 @@
-﻿namespace Adnc.Demo.Cust.Api.Application.Subscribers;
+﻿using Adnc.Demo.Remote.Event;
+
+namespace Adnc.Demo.Cust.Api.Application.Subscribers;
 
 public sealed partial class CapEventSubscriber(IUnitOfWork unitOfWork, IEfRepository<Finance> finaceRepo, IEfRepository<TransactionLog> transactionLogRepo
     ,ILogger<CapEventSubscriber> logger, MessageTrackerFactory trackerFactory) : ICapSubscribe

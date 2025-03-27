@@ -1,4 +1,6 @@
-﻿namespace Adnc.Shared.Remote.Event;
+﻿using Adnc.Shared.Remote.Event;
+
+namespace Adnc.Demo.Remote.Event;
 
 /// <summary>
 /// 客户充值事件

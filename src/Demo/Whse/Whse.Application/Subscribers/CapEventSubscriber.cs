@@ -1,4 +1,6 @@
-﻿namespace Adnc.Demo.Whse.Application.Subscribers;
+﻿using Adnc.Demo.Remote.Event;
+
+namespace Adnc.Demo.Whse.Application.Subscribers;
 
 public sealed class CapEventSubscriber : ICapSubscribe
 {
