@@ -6,7 +6,7 @@ public static class ApplicationBuilderConsulExtension
 {
     public static IHost RegisterToConsul(this IHost host, string? serviceId, IConfigurationSection configurationSection)
     {
-        Checker.Argument.NotNull(configurationSection, nameof(IConfigurationSection));
+        ArgumentNullException.ThrowIfNull(configurationSection, nameof(IConfigurationSection));
         var logger = host.Services.GetRequiredService<ILogger<KestrelOptions>>();
 
         logger.LogInformation("{0} start register to consul",serviceId);
