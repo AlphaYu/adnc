@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 
 namespace Adnc.Demo.Admin.Application.Services;
 
@@ -187,7 +187,7 @@ public class UserService(IEfRepository<User> userRepository, IEfRepository<Role>
         var startTime = DateTime.Now;
         var device = httpContextAccessor.HttpContext?.Request.Headers["device"].FirstOrDefault() ?? "web";
         var ipAddress = httpContextAccessor.HttpContext?.Connection.RemoteIpAddress?.MapToIPv4().ToString() ?? "0.0.0.0";
-        var channelWriter = LogAccessor<LoginLog>.Instance.Writer;
+        var channelWriter = ChannelAccessor<LoginLog>.Instance.Writer;
         var log = new LoginLog
         {
             Id = IdGenerater.GetNextId(),

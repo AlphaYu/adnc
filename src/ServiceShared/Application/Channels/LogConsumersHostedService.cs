@@ -11,7 +11,7 @@ public class LogConsumersHostedService(ILogger<LogConsumersHostedService> logger
         {
             //using var scope = services.CreateScope();
             //var repository = scope.ServiceProvider.GetRequiredService<IMongoRepository<LoginLog>>();
-            var channelLoginReader = LogAccessor<LoginLog>.Instance.Reader;
+            var channelLoginReader = ChannelAccessor<LoginLog>.Instance.Reader;
             var maxAllowInsert = 100;
             var entities = new List<LoginLog>();
             while (await channelLoginReader.WaitToReadAsync(stoppingToken))
@@ -55,7 +55,7 @@ public class LogConsumersHostedService(ILogger<LogConsumersHostedService> logger
         {
             //using var scope = services.CreateScope();
             //var repository = scope.ServiceProvider.GetRequiredService<IMongoRepository<OperationLog>>();
-            var channelOperationLogReader = LogAccessor<OperationLog>.Instance.Reader;
+            var channelOperationLogReader = ChannelAccessor<OperationLog>.Instance.Reader;
             var maxAllowInsert = 100;
             var entities = new List<OperationLog>();
             while (await channelOperationLogReader.WaitToReadAsync())

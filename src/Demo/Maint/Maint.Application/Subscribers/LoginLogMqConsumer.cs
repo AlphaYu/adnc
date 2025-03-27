@@ -5,7 +5,7 @@
 ///// <summary>
 ///// 登录日志消费者
 ///// </summary>
-//[Obsolete($"use Channles.{nameof(LogAccessor<object>)} instead")]
+//[Obsolete($"use Channles.{nameof(ChannelAccessor<object>)} instead")]
 //public sealed class LoginLogMqConsumer : BaseRabbitMqConsumer
 //{
 //    // 因为Process函数是委托回调,直接将其他Service注入的话两者不在一个scope,

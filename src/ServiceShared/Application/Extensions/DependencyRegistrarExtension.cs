@@ -3,7 +3,7 @@ using Polly.Timeout;
 
 namespace Adnc.Shared.Application.Extensions;
 
-public static class AbstractApplicationDependencyRegistrarExtension
+public static class DependencyRegistrarExtension
 {
     /// <summary>
     /// default rest policies
