@@ -4,7 +4,7 @@
 /// RSA provider
 /// https://github.com/xiangyuecn/RSA-csharp
 /// </summary>
-internal class RsaProvider
+internal sealed class RsaProvider
 {
     private static readonly Regex _PEMCode = new Regex(@"--+.+?--+|\s+");
     private static readonly byte[] _SeqOID = [0x30, 0x0D, 0x06, 0x09, 0x2A, 0x86, 0x48, 0x86, 0xF7, 0x0D, 0x01, 0x01, 0x01, 0x05, 0x00];

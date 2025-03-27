@@ -1,6 +1,6 @@
-namespace Adnc.Infra.Helper.Internal.Encrypt.Shared;
+﻿namespace Adnc.Infra.Helper.Internal.Encrypt.Shared;
 
-internal class RSAParametersJson
+internal sealed class RSAParametersJson
 {
     //Public key Modulus
     public string? Modulus { get; set; } = string.Empty;

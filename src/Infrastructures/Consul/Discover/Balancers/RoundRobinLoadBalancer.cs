@@ -1,6 +1,6 @@
-namespace Adnc.Infra.Consul.Discover.Balancers;
+﻿namespace Adnc.Infra.Consul.Discover.Balancers;
 
-internal class RoundRobinLoadBalancer : ILoadBalancer
+internal sealed class RoundRobinLoadBalancer : ILoadBalancer
 {
     private readonly object _lock = new();
     private int _index;
