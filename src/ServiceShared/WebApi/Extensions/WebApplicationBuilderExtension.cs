@@ -14,8 +14,8 @@ public static class WebApplicationBuilderExtension
     /// <exception cref="ArgumentNullException"></exception>
     public static WebApplicationBuilder AddConfiguration(this WebApplicationBuilder builder, IServiceInfo serviceInfo)
     {
-        Checker.Argument.NotNull(builder, nameof(builder));
-        Checker.Argument.NotNull(serviceInfo, nameof(serviceInfo));
+        ArgumentNullException.ThrowIfNull(builder, nameof(builder));
+        ArgumentNullException.ThrowIfNull(serviceInfo, nameof(serviceInfo));
 
         // Configuration
         var initialData = new List<KeyValuePair<string, string?>> { new(nameof(serviceInfo.ServiceName), serviceInfo.ServiceName) };

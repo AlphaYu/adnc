@@ -2,30 +2,29 @@
 
 public static class HealthChecksBuilderExtension
 {
-    public static IServiceCollection AddHealthChecks(this IServiceCollection services, Action<IHealthChecksBuilder> setupAction)
+    public static IServiceCollection AddHealthChecks(this IServiceCollection services, Action<IHealthChecksBuilder>? setupAction)
     {
-        Checker.Argument.NotNull(setupAction, nameof(Action<IHealthChecksBuilder>));
         setupAction?.Invoke(services.AddHealthChecks());
         return services;
     }
 
     public static IHealthChecksBuilder AddMySql(this IHealthChecksBuilder checksBuilder, IConfiguration configuration)
     {
-        Checker.Argument.NotNull(configuration, nameof(IConfiguration));
+        ArgumentNullException.ThrowIfNull(configuration, nameof(IConfiguration));
         var mysqlConnectionString = configuration.GetValue<string>(NodeConsts.Mysql_ConnectionString) ?? throw new InvalidDataException($"{nameof(NodeConsts.Mysql_ConnectionString)} is null");
         return checksBuilder.AddMySql(mysqlConnectionString);
     }
 
     public static IHealthChecksBuilder AddRedis(this IHealthChecksBuilder checksBuilder, IConfiguration configuration)
     {
-        Checker.Argument.NotNull(configuration, nameof(IConfiguration));
+        ArgumentNullException.ThrowIfNull(configuration, nameof(IConfiguration));
         var redisConfig = configuration.GetSection(NodeConsts.Redis).Get<RedisOptions>() ?? throw new InvalidDataException($"{nameof(NodeConsts.Redis)} is null"); ;
         return checksBuilder.AddRedis(redisConfig.Dbconfig.ConnectionString);
     }
 
     public static IHealthChecksBuilder AddRabbitMQ(this IHealthChecksBuilder checksBuilder, IConfiguration configuration, string clientProvidedName = "unkonow")
     {
-        Checker.Argument.NotNull(configuration, nameof(IConfiguration));
+        ArgumentNullException.ThrowIfNull(configuration, nameof(IConfiguration));
         var rabitmqConfig = configuration.GetSection(NodeConsts.RabbitMq).Get<Adnc.Infra.EventBus.Configurations.RabbitMqOptions>() ?? throw new InvalidDataException("RabbitMqOptions is null");
         return checksBuilder.AddRabbitMQ(provider =>
         {
