@@ -139,6 +139,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar
                      {
                          options.Credentials = ChannelCredentials.Insecure;
                          options.ServiceConfig = new ServiceConfig { LoadBalancingConfigs = { new RoundRobinConfig() } };
+                         options.UnsafeUseInsecureChannelCallCredentials = true;
                      })
                      .AddHttpMessageHandler<TokenDelegatingHandler>()
                      .AddPolicyHandlerICollection(enablePolly ? policies : []);
