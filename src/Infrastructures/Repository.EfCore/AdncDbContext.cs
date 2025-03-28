@@ -6,7 +6,7 @@ public abstract class AdncDbContext(DbContextOptions options, IEntityInfo entity
     {
         //efcore7 support this feature
         //Database.AutoTransactionBehavior = AutoTransactionBehavior.WhenNeeded;
-        // var changedEntities = SetAuditFields();
+        _ = SetAuditFields();
         var result = base.SaveChangesAsync(cancellationToken);
         return result;
     }

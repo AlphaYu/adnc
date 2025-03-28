@@ -59,6 +59,7 @@ public class NoticeController() : AdncControllerBase
     //    var cfg = await sysConfigService.GetAsync(id);
     //    return cfg is null ? NotFound() : cfg;
     //}
+    */
 
     /// <summary>
     /// 获取通知分页列表
@@ -66,12 +67,10 @@ public class NoticeController() : AdncControllerBase
     /// <param name="input"><see cref="NoticeSearchPagedDto"/></param>
     /// <returns><see cref="PageModelDto{CfgDto}"/></returns>
     [HttpGet("mine")]
-    //[AdncAuthorize(PermissionConsts.SysConfig.Search)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<PageModelDto<NoticeDto>>> GetMinePagedAsync([FromQuery] NoticeSearchPagedDto input)
     {
         await Task.CompletedTask;
         return new PageModelDto<NoticeDto>(input);
     }
-    */
 }

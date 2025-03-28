@@ -26,7 +26,7 @@ public sealed class DapperRepository : IAdoExecuterWithQuerierRepository
         ArgumentNullException.ThrowIfNullOrWhiteSpace(connectionString, nameof(connectionString));
         ArgumentNullException.ThrowIfNull(dbType, nameof(dbType));
 
-        return dbType switch
+        return _dbConnection = dbType switch
         {
             DbTypes.MYSQL => new MySqlConnector.MySqlConnection(connectionString),
             DbTypes.SQLSERVER => new Microsoft.Data.SqlClient.SqlConnection(connectionString),
