@@ -37,7 +37,7 @@ public class ConsulDiscoverDelegatingHandler : DelegatingHandler
         {
             var realRequestUri = new Uri($"{currentUri.Scheme}://{baseUri}{currentUri.PathAndQuery}");
             request.RequestUri = realRequestUri;
-            _logger.LogDebug($"RequestUri:{request.RequestUri}");
+            _logger.LogDebug("RequestUri:{realRequestUri}", realRequestUri);
         }
 
         try

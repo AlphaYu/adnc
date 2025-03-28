@@ -12,7 +12,7 @@ public sealed class WorkerNode(ILogger<WorkerNode> logger, IRedisProvider redisP
     {
         if (!_redisProvider.KeyExists(_redisKey))
         {
-            _logger.LogInformation("Starting InitWorkerNodes:{0}", _redisKey);
+            _logger.LogInformation("Starting InitWorkerNodes:{_redisKey}", _redisKey);
 
             var flag = await _distributedLocker.LockAsync(_redisKey);
 
@@ -41,11 +41,11 @@ public sealed class WorkerNode(ILogger<WorkerNode> logger, IRedisProvider redisP
                 await _distributedLocker.SafedUnLockAsync(_redisKey, flag.LockValue);
             }
 
-            _logger.LogInformation("Finlished InitWorkerNodes:{0}:{1}", _redisKey, count);
+            _logger.LogInformation("Finlished InitWorkerNodes:{_redisKey}:{count}", _redisKey, count);
         }
         else
         {
-            _logger.LogInformation("Exists WorkerNodes:{0}", _redisKey);
+            _logger.LogInformation("Exists WorkerNodes:{_redisKey}", _redisKey);
         }
     }
 
@@ -59,7 +59,7 @@ public sealed class WorkerNode(ILogger<WorkerNode> logger, IRedisProvider redisP
         var luaResult = (byte[])await _redisProvider.ScriptEvaluateAsync(scirpt, parameters);
         var workerId = _redisProvider.Serializer.Deserialize<long>(luaResult);
 
-        _logger.LogInformation("Get WorkerNodes:{0}", workerId);
+        _logger.LogInformation("Get WorkerNodes:{workerId}", workerId);
 
         return workerId;
     }
@@ -73,7 +73,7 @@ public sealed class WorkerNode(ILogger<WorkerNode> logger, IRedisProvider redisP
 
         var score = workerIdScore == null ? DateTime.Now.GetTotalMilliseconds() : workerIdScore.Value;
         await _redisProvider.ZAddAsync(_redisKey, new Dictionary<long, double> { { workerId, score } });
-        _logger.LogInformation("Refresh WorkerNodes:{0}:{1}", workerId, score);
+        _logger.LogInformation("Refresh WorkerNodes:{workerId}:{score}", workerId, score);
     }
 
     public string GetWorkerNodeName() => _name;

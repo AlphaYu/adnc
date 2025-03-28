@@ -82,7 +82,7 @@ public abstract class BaseRabbitMqConsumer : IHostedService
             var message = Encoding.UTF8.GetString(body);
             var result = await Process(ea.Exchange, ea.RoutingKey, message);
 
-            _logger.LogDebug($"result:{result},message:{message}");
+            _logger.LogDebug("result:{result},message:{message}", result, message);
 
             //关闭自动确认,开启手动确认后需要依据处理结果选择返回确认信息。
             if (!queue.AutoAck)

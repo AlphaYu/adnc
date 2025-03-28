@@ -18,13 +18,14 @@ public sealed class WorkerNodeHostedService(ILogger<WorkerNodeHostedService> log
     {
         await base.StopAsync(cancellationToken);
 
-        logger.LogInformation("stopping service {0}", workerNode.GetWorkerNodeName());
+        var nodeName = workerNode.GetWorkerNodeName();
+        logger.LogInformation("stopping service {nodeName}", nodeName);
 
         var subtractionMilliseconds = 0 - (_millisecondsDelay * 1.5);
         var score = DateTime.Now.AddMilliseconds(subtractionMilliseconds).GetTotalMilliseconds();
         await workerNode.RefreshWorkerIdScoreAsync(IdGenerater.CurrentWorkerId, score);
 
-        logger.LogInformation("stopped service {0}:{1}", workerNode.GetWorkerNodeName(), score);
+        logger.LogInformation("stopped service {nodeName}:{score}", nodeName, score);
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)

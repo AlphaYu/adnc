@@ -37,7 +37,9 @@ public sealed class RegistrationProvider
 
         CheckConfig();
         var protocol = instance.Meta["Protocol"];
-        _logger.LogInformation(@$"register to consul ({protocol}://{instance.Address}:{instance.Port})");
+        var address = instance.Address;
+        var port = instance.Port;
+        _logger.LogInformation("register to consul ({protocol}://{address}:{port})", protocol, address, port);
         _hostApplicationLifetime.ApplicationStarted.Register(async () => await _consulClient.Agent.ServiceRegister(instance));
         _hostApplicationLifetime.ApplicationStopping.Register(async () => await _consulClient.Agent.ServiceDeregister(instance.ID));
     }

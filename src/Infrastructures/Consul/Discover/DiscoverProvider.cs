@@ -37,7 +37,7 @@ internal sealed class DiscoverProvider : IDiscoverProvider
         await _slimlock.WaitAsync();
         try
         {
-            Logger?.LogDebug($"SemaphoreSlim=true,{serviceAddressCacheKey}");
+            Logger?.LogDebug("SemaphoreSlim=true,{serviceAddressCacheKey}", serviceAddressCacheKey);
             healthAddresses = _memoryCache.Get<List<string>>(serviceAddressCacheKey);
             if (healthAddresses is not null && healthAddresses.Count > 0)
             {
@@ -70,7 +70,7 @@ internal sealed class DiscoverProvider : IDiscoverProvider
     {
         var serviceList = await GetAllHealthServicesAsync();
         var service = LoadBalancer.Resolve(serviceList);
-        Logger?.LogDebug($"service-address:{service}");
+        Logger?.LogDebug("service-address:{service}", service);
         return service;
     }
 }

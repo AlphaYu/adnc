@@ -32,8 +32,8 @@ public static class HostExtensions
         ThreadPool.SetMaxThreads(poolSetting.MaxThreads, poolSetting.MaxCompletionPortThreads);
         ThreadPool.GetMinThreads(out var workerThreads, out var completionPortThreads);
         ThreadPool.GetMaxThreads(out var maxWorkerThreads, out var maxCompletionPortThreads);
-        logger.LogInformation("Setting MinThreads={0},MinCompletionPortThreads={1}", workerThreads, completionPortThreads);
-        logger.LogInformation("Setting MaxThreads={0},MaxCompletionPortThreads={1}", maxWorkerThreads, maxCompletionPortThreads);
+        logger.LogInformation("Setting MinThreads={workerThreads},MinCompletionPortThreads={completionPortThreads}", workerThreads, completionPortThreads);
+        logger.LogInformation("Setting MaxThreads={maxWorkerThreads},MaxCompletionPortThreads={maxCompletionPortThreads}", maxWorkerThreads, maxCompletionPortThreads);
         return host;
     }
 }

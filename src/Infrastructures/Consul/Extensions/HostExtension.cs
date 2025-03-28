@@ -9,7 +9,7 @@ public static class ApplicationBuilderConsulExtension
         ArgumentNullException.ThrowIfNull(configurationSection, nameof(IConfigurationSection));
         var logger = host.Services.GetRequiredService<ILogger<KestrelOptions>>();
 
-        logger.LogInformation("{0} start register to consul", serviceId);
+        logger.LogInformation("{serviceId} start register to consul", serviceId);
 
         var kestrelOptions = configurationSection.Get<KestrelOptions>();
 
@@ -32,7 +32,7 @@ public static class ApplicationBuilderConsulExtension
             serviceAddress = new Uri($"{serviceAddress.Scheme}://{ipAddresses.FirstOrDefault()}:{serviceAddress.Port}");
         }
 
-        logger.LogInformation("service address {0}", serviceAddress);
+        logger.LogInformation("service address {serviceAddress}", serviceAddress);
 
         registration.Register(serviceAddress, serviceId);
         return host;
