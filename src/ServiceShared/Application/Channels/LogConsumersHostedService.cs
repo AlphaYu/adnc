@@ -5,6 +5,7 @@ public class LogConsumersHostedService(ILogger<LogConsumersHostedService> logger
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         var configuration = services.GetRequiredService<IConfiguration>();
+        var (connectionString, dbType) = configuration.GetDbConnectionInfo(NodeConsts.SysLogDb);
 
         //save loginlogs
         _ = Task.Factory.StartNew(async () =>
@@ -17,7 +18,7 @@ public class LogConsumersHostedService(ILogger<LogConsumersHostedService> logger
             while (await channelLoginReader.WaitToReadAsync(stoppingToken))
             {
                 var currentExistsCount = channelLoginReader.Count;
-                for (int index = 1; index <= currentExistsCount; index++)
+                for (var index = 1; index <= currentExistsCount; index++)
                 {
                     var entity = await channelLoginReader.ReadAsync();
                     entities.Add(entity);
@@ -28,8 +29,7 @@ public class LogConsumersHostedService(ILogger<LogConsumersHostedService> logger
                             //await repository.AddManyAsync(entities);
                             using var scope = services.CreateScope();
                             var repository = scope.ServiceProvider.GetRequiredService<IAdoExecuterRepository>();
-                            var (connectionString, dbType) = repository.GetDbTypeAndConnectionString(configuration, NodeConsts.SysLogDb_DbType, NodeConsts.SysLogDb_ConnectionString);
-                            using var _ = repository.ChangeOrSetDbConnection(connectionString, dbType);
+                            using var _ = repository.CreateDbConnection(connectionString, dbType);
                             await repository.ExecuteAsync("INSERT INTO login_log (Id, Device, Message, Succeed, StatusCode, UserId, Account, Name, RemoteIpAddress, ExecutionTime, CreateTime) VALUES (@Id, @Device, @Message, @Succeed, @StatusCode, @UserId, @Account, @Name, @RemoteIpAddress, @ExecutionTime, @CreateTime)", entities);
                         }
                         catch (Exception ex)
@@ -61,7 +61,7 @@ public class LogConsumersHostedService(ILogger<LogConsumersHostedService> logger
             while (await channelOperationLogReader.WaitToReadAsync())
             {
                 var currentExistsCount = channelOperationLogReader.Count;
-                for (int index = 1; index <= currentExistsCount; index++)
+                for (var index = 1; index <= currentExistsCount; index++)
                 {
                     var entity = await channelOperationLogReader.ReadAsync();
                     entities.Add(entity);
@@ -72,8 +72,7 @@ public class LogConsumersHostedService(ILogger<LogConsumersHostedService> logger
                             //await repository.AddManyAsync(entities);
                             using var scope = services.CreateScope();
                             var repository = scope.ServiceProvider.GetRequiredService<IAdoExecuterRepository>();
-                            var (connectionString, dbType) = repository.GetDbTypeAndConnectionString(configuration, NodeConsts.SysLogDb_DbType, NodeConsts.SysLogDb_ConnectionString);
-                            using var _ = repository.ChangeOrSetDbConnection(connectionString, dbType);
+                            using var _ = repository.CreateDbConnection(connectionString, dbType);
                             await repository.ExecuteAsync("INSERT INTO operation_log (Id, ClassName, CreateTime, LogName, LogType, Message, Method, Succeed, UserId, Account, Name, RemoteIpAddress, ExecutionTime) VALUES (@Id, @ClassName, @CreateTime, @LogName, @LogType, @Message, @Method, @Succeed, @UserId, @Account, @Name, @RemoteIpAddress, @ExecutionTime)", entities);
                         }
                         catch (Exception ex)

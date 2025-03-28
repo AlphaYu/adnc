@@ -18,7 +18,15 @@ public sealed class DapperRepository : IAdoExecuterWithQuerierRepository
 
     public IDbConnection ChangeOrSetDbConnection(string connectionString, DbTypes dbType)
     {
-        return _dbConnection = dbType switch
+        return CreateDbConnection(connectionString, dbType);
+    }
+
+    public IDbConnection CreateDbConnection(string connectionString, DbTypes dbType)
+    {
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(connectionString, nameof(connectionString));
+        ArgumentNullException.ThrowIfNull(dbType, nameof(dbType));
+
+        return dbType switch
         {
             DbTypes.MYSQL => new MySqlConnector.MySqlConnection(connectionString),
             DbTypes.SQLSERVER => new Microsoft.Data.SqlClient.SqlConnection(connectionString),

@@ -1,19 +1,11 @@
 ﻿namespace Adnc.Infra.Repository;
 
-public class QueryCondition
+public class QueryCondition(string? where, string? orderBy, string? groupBy, object? param)
 {
-    public QueryCondition(string? where, string? orderBy, string? groupBy, object? param)
-    {
-        Where = where;
-        OrderBy = orderBy;
-        GroupBy = groupBy;
-        Param = param;
-    }
-
-    public string? Where { get; init; }
-    public string? OrderBy { get; init; }
-    public string? GroupBy { get; init; }
-    public object? Param { get; init; }
+    public string? Where { get; init; } = where;
+    public string? OrderBy { get; init; } = orderBy;
+    public string? GroupBy { get; init; } = groupBy;
+    public object? Param { get; init; } = param;
 }
 
 public class QueryPageResult<TResult>
@@ -22,13 +14,13 @@ public class QueryPageResult<TResult>
     public QueryPageResult(int total)
     {
         TotalCount = total;
-        Content = Enumerable.Empty<TResult>();
+        Content = [];
     }
 
     public QueryPageResult(int total, IEnumerable<TResult>? result)
     {
         TotalCount = total;
-        Content = result ?? Enumerable.Empty<TResult>();
+        Content = result ?? [];
     }
 
     public int TotalCount { get; init; }

@@ -21,9 +21,8 @@ public static class RepositoryExtension
         where TResult : notnull
     {
         var configuration = ServiceLocator.GetProvider().GetRequiredService<IConfiguration>();
-        var (connectionString, dbType) = repository.GetDbTypeAndConnectionString(configuration, NodeConsts.SysLogDb_DbType, NodeConsts.SysLogDb_ConnectionString);
-
-        using var _ = repository.ChangeOrSetDbConnection(connectionString, dbType);
+        var (connectionString, dbType) = configuration.GetDbConnectionInfo(NodeConsts.SysLogDb);
+        using var _ = repository.CreateDbConnection(connectionString, dbType);
 
         var countSql = $"select count(*) from login_log {condition.Where}";
         var total = await repository.QuerySingleAsync<int>(countSql, condition.Param);
@@ -31,9 +30,9 @@ public static class RepositoryExtension
         {
             return new QueryPageResult<TResult>(total);
         }
-
         var sql = $"select * from login_log  {condition.Where} {condition.OrderBy} limit {offset},{rows}";
         var result = await repository.QueryAsync<TResult>(sql, condition.Param);
+
         return new QueryPageResult<TResult>(total, result);
     }
 
@@ -51,9 +50,8 @@ public static class RepositoryExtension
         where TResult : notnull
     {
         var configuration = ServiceLocator.GetProvider().GetRequiredService<IConfiguration>();
-        var (connectionString, dbType) = repository.GetDbTypeAndConnectionString(configuration, NodeConsts.SysLogDb_DbType, NodeConsts.SysLogDb_ConnectionString);
-
-        using var _ = repository.ChangeOrSetDbConnection(connectionString, dbType);
+        var (connectionString, dbType) = configuration.GetDbConnectionInfo(NodeConsts.SysLogDb);
+        using var _ = repository.CreateDbConnection(connectionString, dbType);
 
         var countSql = $"select count(*) from operation_log {condition.Where}";
         var total = await repository.QuerySingleAsync<int>(countSql, condition.Param);
@@ -61,9 +59,9 @@ public static class RepositoryExtension
         {
             return new QueryPageResult<TResult>(total);
         }
-
         var sql = $"select * from operation_log  {condition.Where} {condition.OrderBy} limit {offset},{rows}";
         var result = await repository.QueryAsync<TResult>(sql, condition.Param);
+
         return new QueryPageResult<TResult>(total, result);
     }
 }
