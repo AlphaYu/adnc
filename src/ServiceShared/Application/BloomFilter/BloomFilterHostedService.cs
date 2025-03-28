@@ -2,27 +2,13 @@
 
 namespace Adnc.Shared.Application.BloomFilter;
 
-public class BloomFilterHostedService : BackgroundService
+public class BloomFilterHostedService(IEnumerable<IBloomFilter> bloomFilters, IOptions<RedisOptions> redisOptions) : BackgroundService
 {
-    private readonly ILogger<BloomFilterHostedService> _logger;
-    private readonly IEnumerable<IBloomFilter> _bloomFilters;
-    private readonly IOptions<RedisOptions> _redisOptions;
-
-    public BloomFilterHostedService(
-        ILogger<BloomFilterHostedService> logger
-       , IEnumerable<IBloomFilter> bloomFilters
-       , IOptions<RedisOptions> redisOptions)
-    {
-        _logger = logger;
-        _bloomFilters = bloomFilters;
-        _redisOptions = redisOptions;
-    }
-
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        if (_redisOptions.Value.EnableBloomFilter && _bloomFilters.IsNotNullOrEmpty())
+        if (redisOptions.Value.EnableBloomFilter && bloomFilters.IsNotNullOrEmpty())
         {
-            foreach (var filter in _bloomFilters)
+            foreach (var filter in bloomFilters)
             {
                 await filter.InitAsync();
             }

@@ -2,25 +2,16 @@
 
 namespace Adnc.Infra.Consul.Discover.Handler;
 
-public class ConsulDiscoverDelegatingHandler : DelegatingHandler
+public class ConsulDiscoverDelegatingHandler(ConsulClient consulClient, ILogger<ConsulDiscoverDelegatingHandler> logger) : DelegatingHandler
 {
-    private readonly ConsulClient _consulClient;
-    private readonly ILogger<ConsulDiscoverDelegatingHandler> _logger;
-
-    public ConsulDiscoverDelegatingHandler(ConsulClient consulClient, ILogger<ConsulDiscoverDelegatingHandler> logger)
-    {
-        _consulClient = consulClient;
-        _logger = logger;
-    }
-
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
         var currentUri = request.RequestUri ?? throw new InvalidDataException("RequestUri is null");
-        var discoverProvider = new DiscoverProviderBuilder(_consulClient)
+        var discoverProvider = new DiscoverProviderBuilder(consulClient)
                                                         .WithCacheSeconds(5)
                                                         .WithServiceName(currentUri.Host)
                                                         .WithLoadBalancer(TypeLoadBalancer.RandomLoad)
-                                                        .WithLogger(_logger)
+                                                        .WithLogger(logger)
                                                         .Build()
                                                         ;
         var baseUri = await discoverProvider.GetSingleHealthServiceAsync();
@@ -32,7 +23,7 @@ public class ConsulDiscoverDelegatingHandler : DelegatingHandler
         {
             var realRequestUri = new Uri($"{currentUri.Scheme}://{baseUri}{currentUri.PathAndQuery}");
             request.RequestUri = realRequestUri;
-            _logger.LogDebug("RequestUri:{realRequestUri}", realRequestUri);
+            logger.LogDebug("RequestUri:{realRequestUri}", realRequestUri);
         }
 
         try
@@ -41,7 +32,7 @@ public class ConsulDiscoverDelegatingHandler : DelegatingHandler
         }
         catch (Exception ex)
         {
-            _logger?.LogDebug(ex, "Exception during SendAsync()");
+            logger?.LogDebug(ex, "Exception during SendAsync()");
             throw;
         }
         finally

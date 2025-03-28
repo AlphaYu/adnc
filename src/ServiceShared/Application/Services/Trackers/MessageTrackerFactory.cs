@@ -1,12 +1,8 @@
 ﻿namespace Adnc.Shared.Application.Services.Trackers;
 
-public sealed class MessageTrackerFactory
+public sealed class MessageTrackerFactory(IEnumerable<IMessageTracker> trackers)
 {
-    public IEnumerable<IMessageTracker> _trackers;
-    public MessageTrackerFactory(IEnumerable<IMessageTracker> trackers)
-    {
-        _trackers = trackers;
-    }
+    public IEnumerable<IMessageTracker> _trackers = trackers;
 
     public IMessageTracker Create(TrackerKind kind = TrackerKind.Db)
     {

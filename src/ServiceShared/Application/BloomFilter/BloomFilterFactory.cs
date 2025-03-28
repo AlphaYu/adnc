@@ -2,29 +2,18 @@
 
 namespace Adnc.Shared.Application.BloomFilter;
 
-public sealed class BloomFilterFactory
+public sealed class BloomFilterFactory(IEnumerable<IBloomFilter> instances, IOptions<RedisOptions> redisOptions)
 {
-    private readonly IEnumerable<IBloomFilter> _instances;
-    private readonly IOptions<RedisOptions> _redisOptions;
-
-    public BloomFilterFactory(
-        IEnumerable<IBloomFilter> instances
-        , IOptions<RedisOptions> redisOptions)
-    {
-        _instances = instances;
-        _redisOptions = redisOptions;
-    }
-
     public IBloomFilter Create(string name)
     {
         IBloomFilter? bloomFilter;
-        if (_redisOptions.Value.EnableBloomFilter)
+        if (redisOptions.Value.EnableBloomFilter)
         {
-            bloomFilter = _instances.First(x => x.Name.EqualsIgnoreCase(name));
+            bloomFilter = instances.First(x => x.Name.EqualsIgnoreCase(name));
         }
         else
         {
-            bloomFilter = _instances.First(x => x.Name.EqualsIgnoreCase("null"));
+            bloomFilter = instances.First(x => x.Name.EqualsIgnoreCase("null"));
         }
 
         return bloomFilter;

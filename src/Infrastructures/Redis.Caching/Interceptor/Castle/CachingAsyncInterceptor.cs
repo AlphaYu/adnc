@@ -7,39 +7,14 @@ namespace Adnc.Infra.Redis.Caching.Interceptor.Castle;
 /// <summary>
 /// caching async interceptor
 /// </summary>
-public sealed class CachingAsyncInterceptor : IAsyncInterceptor
+/// <remarks>
+/// Initializes a new instance of the <see cref="T:Adnc.Infa.Caching.CachingAsyncInterceptor"/> class.
+/// </remarks>
+/// <param name="cacheProvider">Cache provider .</param>
+/// <param name="keyGenerator">Key generator.</param>
+/// <param name="logger">Logger.</param>
+public sealed class CachingAsyncInterceptor(ICacheProvider cacheProvider, ICachingKeyGenerator keyGenerator, ILogger<CachingAsyncInterceptor>? logger = null) : IAsyncInterceptor
 {
-    /// <summary>
-    /// The key generator.
-    /// </summary>
-    private readonly ICachingKeyGenerator _keyGenerator;
-
-    /// <summary>
-    /// The redis cache provider.
-    /// </summary>
-    private readonly ICacheProvider _cacheProvider;
-
-    /// <summary>
-    /// logger
-    /// </summary>
-    private readonly ILogger<CachingAsyncInterceptor>? _logger;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="T:Adnc.Infa.Caching.CachingAsyncInterceptor"/> class.
-    /// </summary>
-    /// <param name="cacheProvider">Cache provider .</param>
-    /// <param name="keyGenerator">Key generator.</param>
-    /// <param name="logger">Logger.</param>
-    public CachingAsyncInterceptor(
-        ICacheProvider cacheProvider
-        , ICachingKeyGenerator keyGenerator
-        , ILogger<CachingAsyncInterceptor>? logger = null)
-    {
-        _cacheProvider = cacheProvider;
-        _keyGenerator = keyGenerator;
-        _logger = logger;
-    }
-
     /// <summary>
     /// 同步拦截器
     /// </summary>
@@ -92,13 +67,13 @@ public sealed class CachingAsyncInterceptor : IAsyncInterceptor
         if (attribute is CachingAbleAttribute ableAttribute)
         {
             var cacheKey = string.IsNullOrEmpty(attribute.CacheKey)
-             ? _keyGenerator.GetCacheKey(methodInfo, invocation.Arguments, attribute.CacheKeyPrefix)
+             ? keyGenerator.GetCacheKey(methodInfo, invocation.Arguments, attribute.CacheKeyPrefix)
              : attribute.CacheKey
              ;
 
             try
             {
-                var cacheValue = _cacheProvider.GetAsync(cacheKey, methodInfo.ReturnType).GetAwaiter().GetResult();
+                var cacheValue = cacheProvider.GetAsync(cacheKey, methodInfo.ReturnType).GetAwaiter().GetResult();
                 if (cacheKey != null)
                 {
                     invocation.ReturnValue = cacheValue;
@@ -108,7 +83,7 @@ public sealed class CachingAsyncInterceptor : IAsyncInterceptor
                     invocation.Proceed();
                     if (!string.IsNullOrWhiteSpace(cacheKey) && invocation.ReturnValue != null)
                     {
-                        _cacheProvider.Set(cacheKey, invocation.ReturnValue, TimeSpan.FromSeconds(ableAttribute.Expiration));
+                        cacheProvider.Set(cacheKey, invocation.ReturnValue, TimeSpan.FromSeconds(ableAttribute.Expiration));
                     }
                 }
             }
@@ -120,7 +95,7 @@ public sealed class CachingAsyncInterceptor : IAsyncInterceptor
                 }
                 else
                 {
-                    _logger?.LogError(new EventId(), ex, $"Cache provider get error.");
+                    logger?.LogError(new EventId(), ex, $"Cache provider get error.");
                 }
             }
             return;
@@ -131,7 +106,7 @@ public sealed class CachingAsyncInterceptor : IAsyncInterceptor
             var (cacheKeys, expireDt) = ProcessEvictBefore(invocation, evictAttribute);
 
             var cancelTokenSource = new CancellationTokenSource();
-            var timeoutPolicy = Policy.Timeout(_cacheProvider.CacheOptions.Value.PollyTimeoutSeconds, Polly.Timeout.TimeoutStrategy.Optimistic);
+            var timeoutPolicy = Policy.Timeout(cacheProvider.CacheOptions.Value.PollyTimeoutSeconds, Polly.Timeout.TimeoutStrategy.Optimistic);
             try
             {
                 timeoutPolicy.Execute((cancellToken) =>
@@ -140,7 +115,7 @@ public sealed class CachingAsyncInterceptor : IAsyncInterceptor
                     cancellToken.ThrowIfCancellationRequested();
                 }, cancelTokenSource.Token);
 
-                _cacheProvider.RemoveAll(cacheKeys);
+                cacheProvider.RemoveAll(cacheKeys);
             }
             catch (Exception ex)
             {
@@ -152,7 +127,7 @@ public sealed class CachingAsyncInterceptor : IAsyncInterceptor
                 }
                 else
                 {
-                    _logger?.LogError(new EventId(), ex, $"Cache provider remove error.");
+                    logger?.LogError(new EventId(), ex, $"Cache provider remove error.");
                 }
             }
         }
@@ -172,7 +147,7 @@ public sealed class CachingAsyncInterceptor : IAsyncInterceptor
         {
             var (cacheKeys, expireDt) = ProcessEvictBefore(invocation, evictAttribute);
             var cancelTokenSource = new CancellationTokenSource();
-            var timeoutPolicy = Policy.TimeoutAsync(_cacheProvider.CacheOptions.Value.PollyTimeoutSeconds, Polly.Timeout.TimeoutStrategy.Optimistic);
+            var timeoutPolicy = Policy.TimeoutAsync(cacheProvider.CacheOptions.Value.PollyTimeoutSeconds, Polly.Timeout.TimeoutStrategy.Optimistic);
             try
             {
                 await timeoutPolicy.ExecuteAsync(async (cancellToken) =>
@@ -183,7 +158,7 @@ public sealed class CachingAsyncInterceptor : IAsyncInterceptor
                     cancellToken.ThrowIfCancellationRequested();
                 }, cancelTokenSource.Token);
 
-                _cacheProvider.RemoveAll(cacheKeys);
+                cacheProvider.RemoveAll(cacheKeys);
             }
             catch (Exception ex)
             {
@@ -195,7 +170,7 @@ public sealed class CachingAsyncInterceptor : IAsyncInterceptor
                 }
                 else
                 {
-                    _logger?.LogError(new EventId(), ex, $"Cache provider remove error.");
+                    logger?.LogError(new EventId(), ex, $"Cache provider remove error.");
                 }
             }
         }
@@ -216,12 +191,12 @@ public sealed class CachingAsyncInterceptor : IAsyncInterceptor
         if (attribute is CachingAbleAttribute ableAttribute)
         {
             var cacheKey = string.IsNullOrEmpty(attribute.CacheKey)
-                 ? _keyGenerator.GetCacheKey(methodInfo, invocation.Arguments, attribute.CacheKeyPrefix)
+                 ? keyGenerator.GetCacheKey(methodInfo, invocation.Arguments, attribute.CacheKeyPrefix)
                  : attribute.CacheKey
                  ;
             try
             {
-                var cacheValue = _cacheProvider.Get<TResult>(cacheKey);
+                var cacheValue = cacheProvider.Get<TResult>(cacheKey);
                 if (cacheValue.HasValue)
                 {
                     result = cacheValue.Value;
@@ -234,7 +209,7 @@ public sealed class CachingAsyncInterceptor : IAsyncInterceptor
 
                     if (!string.IsNullOrWhiteSpace(cacheKey) && dbValue != null)
                     {
-                        _cacheProvider.Set(cacheKey, dbValue, TimeSpan.FromSeconds(ableAttribute.Expiration));
+                        cacheProvider.Set(cacheKey, dbValue, TimeSpan.FromSeconds(ableAttribute.Expiration));
                         result = dbValue;
                     }
                 }
@@ -247,7 +222,7 @@ public sealed class CachingAsyncInterceptor : IAsyncInterceptor
                 }
                 else
                 {
-                    _logger?.LogError(new EventId(), ex, $"Cache provider get error.");
+                    logger?.LogError(new EventId(), ex, $"Cache provider get error.");
                 }
             }
             return result;
@@ -257,7 +232,7 @@ public sealed class CachingAsyncInterceptor : IAsyncInterceptor
         {
             var (cacheKeys, expireDt) = ProcessEvictBefore(invocation, evictAttribute);
             var cancelTokenSource = new CancellationTokenSource();
-            var timeoutPolicy = Policy.TimeoutAsync<TResult>(_cacheProvider.CacheOptions.Value.PollyTimeoutSeconds, Polly.Timeout.TimeoutStrategy.Optimistic);
+            var timeoutPolicy = Policy.TimeoutAsync<TResult>(cacheProvider.CacheOptions.Value.PollyTimeoutSeconds, Polly.Timeout.TimeoutStrategy.Optimistic);
             try
             {
                 result = await timeoutPolicy.ExecuteAsync(async (cancellToken) =>
@@ -269,7 +244,7 @@ public sealed class CachingAsyncInterceptor : IAsyncInterceptor
                     return result;
                 }, cancelTokenSource.Token);
 
-                _cacheProvider.RemoveAll(cacheKeys);
+                cacheProvider.RemoveAll(cacheKeys);
             }
             catch (Exception ex)
             {
@@ -281,7 +256,7 @@ public sealed class CachingAsyncInterceptor : IAsyncInterceptor
                 }
                 else
                 {
-                    _logger?.LogError(new EventId(), ex, $"Cache provider remove error.");
+                    logger?.LogError(new EventId(), ex, $"Cache provider remove error.");
                 }
             }
 
@@ -323,12 +298,12 @@ public sealed class CachingAsyncInterceptor : IAsyncInterceptor
 
         if (!string.IsNullOrWhiteSpace(attribute.CacheKeyPrefix))
         {
-            var cacheKeys = _keyGenerator.GetCacheKeys(serviceMethod, invocation.Arguments, attribute.CacheKeyPrefix);
+            var cacheKeys = keyGenerator.GetCacheKeys(serviceMethod, invocation.Arguments, attribute.CacheKeyPrefix);
             needRemovedKeys.UnionWith(cacheKeys);
         }
 
-        var keyExpireSeconds = _cacheProvider.CacheOptions.Value.PollyTimeoutSeconds + 1;
-        _cacheProvider.KeyExpireAsync(needRemovedKeys, keyExpireSeconds).GetAwaiter().GetResult();
+        var keyExpireSeconds = cacheProvider.CacheOptions.Value.PollyTimeoutSeconds + 1;
+        cacheProvider.KeyExpireAsync(needRemovedKeys, keyExpireSeconds).GetAwaiter().GetResult();
 
         return (needRemovedKeys.ToList(), DateTime.Now.AddSeconds(keyExpireSeconds));
     }

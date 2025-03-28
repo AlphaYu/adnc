@@ -5,15 +5,8 @@ namespace Adnc.Shared.Remote.Event;
 /// <summary>
 /// https://cap.dotnetcore.xyz/user-guide/zh/cap/filter/
 /// </summary>
-public sealed class DefaultCapFilter : SubscribeFilter
+public sealed class DefaultCapFilter(ILogger<DefaultCapFilter> logger) : SubscribeFilter
 {
-    private readonly ILogger<DefaultCapFilter> _logger;
-
-    public DefaultCapFilter(ILogger<DefaultCapFilter> logger)
-    {
-        _logger = logger;
-    }
-
     public override Task OnSubscribeExecutingAsync(ExecutingContext context)
     {
         return Task.CompletedTask;
@@ -26,7 +19,7 @@ public sealed class DefaultCapFilter : SubscribeFilter
 
     public override Task OnSubscribeExceptionAsync(ExceptionContext context)
     {
-        _logger.LogError(context.Exception, "DefaultCapFilter.OnSubscribeExceptionAsync");
+        logger.LogError(context.Exception, "DefaultCapFilter.OnSubscribeExceptionAsync");
         return Task.CompletedTask;
     }
 }

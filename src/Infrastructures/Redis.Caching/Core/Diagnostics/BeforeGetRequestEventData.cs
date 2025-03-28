@@ -1,15 +1,8 @@
 ﻿namespace Adnc.Infra.Redis.Caching.Core.Diagnostics;
 
-public class BeforeGetRequestEventData : EventData
+public class BeforeGetRequestEventData(string cacheType, string name, string operation, string[] cacheKeys, TimeSpan? expiration = null) : EventData(cacheType, name, operation)
 {
-    public BeforeGetRequestEventData(string cacheType, string name, string operation, string[] cacheKeys, System.TimeSpan? expiration = null)
-        : base(cacheType, name, operation)
-    {
-        CacheKeys = cacheKeys;
-        Expiration = expiration;
-    }
+    public string[] CacheKeys { get; set; } = cacheKeys;
 
-    public string[] CacheKeys { get; set; }
-
-    public TimeSpan? Expiration { get; set; }
+    public TimeSpan? Expiration { get; set; } = expiration;
 }

@@ -5,31 +5,16 @@ namespace Adnc.Demo.Whse.Application.Services.Implements;
 /// <summary>
 /// 仓储管理
 /// </summary>
-public class WarehouseService : AbstractAppService, IWarehouseService
+/// <remarks>
+/// 构造函数
+/// </remarks>
+/// <param name="warehouseManager"></param>
+/// <param name="mapper"></param>
+/// <param name="warehouseRepo"></param>
+/// <param name="productRepo"></param>
+public class WarehouseService(WarehouseManager warehouseManager, IMapper mapper, IEfBasicRepository<Warehouse> warehouseRepo, IEfBasicRepository<Product> productRepo)
+    : AbstractAppService, IWarehouseService
 {
-    private readonly IMapper _mapper;
-    private readonly IEfBasicRepository<Warehouse> _warehouseRepo;
-    private readonly IEfBasicRepository<Product> _productRepo;
-    private readonly WarehouseManager _warehouseManager;
-
-    /// <summary>
-    /// 构造函数
-    /// </summary>
-    /// <param name="warehouseManager"></param>
-    /// <param name="mapper"></param>
-    /// <param name="warehouseRepo"></param>
-    /// <param name="productRepo"></param>
-    public WarehouseService(WarehouseManager warehouseManager
-        , IMapper mapper
-        , IEfBasicRepository<Warehouse> warehouseRepo
-        , IEfBasicRepository<Product> productRepo)
-    {
-        _warehouseManager = warehouseManager;
-        _warehouseRepo = warehouseRepo;
-        _productRepo = productRepo;
-        _mapper = mapper;
-    }
-
     /// <summary>
     /// 创建仓储
     /// </summary>
@@ -38,11 +23,11 @@ public class WarehouseService : AbstractAppService, IWarehouseService
     public async Task<WarehouseDto> CreateAsync(WarehouseCreationDto input)
     {
         input.TrimStringFields();
-        var warehouse = await _warehouseManager.CreateAsync(input.PositionCode, input.PositionDescription);
+        var warehouse = await warehouseManager.CreateAsync(input.PositionCode, input.PositionDescription);
 
-        await _warehouseRepo.InsertAsync(warehouse);
+        await warehouseRepo.InsertAsync(warehouse);
 
-        return _mapper.Map<WarehouseDto>(warehouse);
+        return mapper.Map<WarehouseDto>(warehouse);
     }
 
     /// <summary>
@@ -54,13 +39,13 @@ public class WarehouseService : AbstractAppService, IWarehouseService
     public async Task<WarehouseDto> AllocateShelfToProductAsync(long warehouseId, WarehouseAllocateToProductDto input)
     {
         input.TrimStringFields();
-        var warehouse = await _warehouseRepo.GetRequiredAsync(warehouseId);
+        var warehouse = await warehouseRepo.GetRequiredAsync(warehouseId);
 
-        await _warehouseManager.AllocateShelfToProductAsync(warehouse, input.ProductId);
+        await warehouseManager.AllocateShelfToProductAsync(warehouse, input.ProductId);
 
-        await _warehouseRepo.UpdateAsync(warehouse);
+        await warehouseRepo.UpdateAsync(warehouse);
 
-        return _mapper.Map<WarehouseDto>(warehouse);
+        return mapper.Map<WarehouseDto>(warehouse);
     }
 
     /// <summary>
@@ -71,15 +56,15 @@ public class WarehouseService : AbstractAppService, IWarehouseService
     public async Task<PageModelDto<WarehouseDto>> GetPagedAsync(WarehouseSearchDto input)
     {
         input.TrimStringFields();
-        var total = await _warehouseRepo.CountAsync(x => true);
+        var total = await warehouseRepo.CountAsync(x => true);
 
         if (total == 0)
         {
             return new PageModelDto<WarehouseDto>(input);
         }
 
-        var products = _productRepo.Where(x => true);
-        var warehouses = _warehouseRepo.Where(x => true);
+        var products = productRepo.Where(x => true);
+        var warehouses = warehouseRepo.Where(x => true);
         var data = await (from s in warehouses
                           join p in products
                           on s.ProductId equals p.Id into sp
@@ -113,15 +98,15 @@ public class WarehouseService : AbstractAppService, IWarehouseService
     {
         eventDto.TrimStringFields();
         var blockQtyProductsInfo = eventDto.Products.ToDictionary(x => x.ProductId, x => x.Qty);
-        var warehouses = await _warehouseRepo.Where(x => blockQtyProductsInfo.Keys.Contains(x.ProductId), noTracking: false).ToListAsync();
+        var warehouses = await warehouseRepo.Where(x => blockQtyProductsInfo.Keys.Contains(x.ProductId), noTracking: false).ToListAsync();
         // var products = await productRepo.Where(x => blockQtyProductsInfo.Keys.Contains(x.Id)).ToListAsync();
 
-        var result = await _warehouseManager.BlockQtyAsync(eventDto.OrderId, blockQtyProductsInfo, warehouses);
+        var result = await warehouseManager.BlockQtyAsync(eventDto.OrderId, blockQtyProductsInfo, warehouses);
 
         //库存都符合锁定条件才能批量更新数据库
         if (result)
         {
-            await _warehouseRepo.UpdateRangeAsync(warehouses);
+            await warehouseRepo.UpdateRangeAsync(warehouses);
             await tracker.MarkAsProcessedAsync(eventDto);
         }
     }

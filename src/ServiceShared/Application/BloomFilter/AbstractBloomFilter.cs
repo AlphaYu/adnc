@@ -32,18 +32,8 @@ public interface IBloomFilter
     Task<bool[]> ExistsAsync(IEnumerable<string> values);
 }
 
-public abstract class AbstractBloomFilter : IBloomFilter
+public abstract class AbstractBloomFilter(Lazy<IRedisProvider> redisProvider, Lazy<IDistributedLocker> distributedLocker) : IBloomFilter
 {
-    private readonly Lazy<IRedisProvider> _redisProvider;
-    private readonly Lazy<IDistributedLocker> _distributedLocker;
-
-    protected AbstractBloomFilter(Lazy<IRedisProvider> redisProvider
-        , Lazy<IDistributedLocker> distributedLocker)
-    {
-        _redisProvider = redisProvider;
-        _distributedLocker = distributedLocker;
-    }
-
     public abstract string Name { get; }
 
     public abstract double ErrorRate { get; }
@@ -58,7 +48,7 @@ public abstract class AbstractBloomFilter : IBloomFilter
             throw new ArgumentNullException(Name, $"call {nameof(InitAsync)} methos before");
         }
 
-        return await _redisProvider.Value.BfAddAsync(Name, value);
+        return await redisProvider.Value.BfAddAsync(Name, value);
     }
 
     public virtual async Task<bool[]> AddAsync(IEnumerable<string> values)
@@ -69,12 +59,12 @@ public abstract class AbstractBloomFilter : IBloomFilter
             throw new ArgumentNullException(Name, $"call {nameof(InitAsync)} methos before");
         }
 
-        return await _redisProvider.Value.BfAddAsync(Name, values);
+        return await redisProvider.Value.BfAddAsync(Name, values);
     }
 
-    public virtual async Task<bool> ExistsAsync(string value) => await _redisProvider.Value.BfExistsAsync(Name, value);
+    public virtual async Task<bool> ExistsAsync(string value) => await redisProvider.Value.BfExistsAsync(Name, value);
 
-    public virtual async Task<bool[]> ExistsAsync(IEnumerable<string> values) => await _redisProvider.Value.BfExistsAsync(Name, values);
+    public virtual async Task<bool[]> ExistsAsync(IEnumerable<string> values) => await redisProvider.Value.BfExistsAsync(Name, values);
 
     public abstract Task InitAsync();
 
@@ -85,7 +75,7 @@ public abstract class AbstractBloomFilter : IBloomFilter
             return;
         }
 
-        var (Success, LockValue) = await _distributedLocker.Value.LockAsync(Name);
+        var (Success, LockValue) = await distributedLocker.Value.LockAsync(Name);
         if (!Success)
         {
             await Task.Delay(500);
@@ -96,15 +86,15 @@ public abstract class AbstractBloomFilter : IBloomFilter
         {
             if (values.IsNotNullOrEmpty())
             {
-                await _redisProvider.Value.BfReserveAsync(Name, ErrorRate, Capacity);
-                await _redisProvider.Value.BfAddAsync(Name, values);
+                await redisProvider.Value.BfReserveAsync(Name, ErrorRate, Capacity);
+                await redisProvider.Value.BfAddAsync(Name, values);
             }
         }
         finally
         {
-            await _distributedLocker.Value.SafedUnLockAsync(Name, LockValue);
+            await distributedLocker.Value.SafedUnLockAsync(Name, LockValue);
         }
     }
 
-    protected virtual async Task<bool> ExistsBloomFilterAsync() => await _redisProvider.Value.KeyExistsAsync(Name);
+    protected virtual async Task<bool> ExistsBloomFilterAsync() => await redisProvider.Value.KeyExistsAsync(Name);
 }

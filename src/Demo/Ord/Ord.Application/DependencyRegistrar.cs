@@ -3,17 +3,13 @@ using Adnc.Shared.Application.Registrar;
 
 namespace Adnc.Demo.Ord.Application;
 
-public sealed class DependencyRegistrar : AbstractApplicationDependencyRegistrar
+public sealed class DependencyRegistrar(IServiceCollection services, IServiceInfo serviceInfo) : AbstractApplicationDependencyRegistrar(services, serviceInfo)
 {
     public override Assembly ApplicationLayerAssembly => Assembly.GetExecutingAssembly();
 
     public override Assembly ContractsLayerAssembly => typeof(IOrderService).Assembly;
 
     public override Assembly RepositoryOrDomainLayerAssembly => typeof(EntityInfo).Assembly;
-
-    public DependencyRegistrar(IServiceCollection services, IServiceInfo serviceInfo) : base(services, serviceInfo)
-    {
-    }
 
     public override void AddApplicationServices()
     {

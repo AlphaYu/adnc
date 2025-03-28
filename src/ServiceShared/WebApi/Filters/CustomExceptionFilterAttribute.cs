@@ -5,18 +5,8 @@ namespace Microsoft.AspNetCore.Mvc.Filters;
 /// <summary>
 /// 异常拦截器 拦截 StatusCode>=500 的异常
 /// </summary>
-public sealed class CustomExceptionFilterAttribute : ExceptionFilterAttribute
+public sealed class CustomExceptionFilterAttribute(ILogger<CustomExceptionFilterAttribute> logger, IWebHostEnvironment env) : ExceptionFilterAttribute
 {
-    private readonly ILogger<CustomExceptionFilterAttribute> _logger;
-    private readonly IWebHostEnvironment _env;
-
-    public CustomExceptionFilterAttribute(ILogger<CustomExceptionFilterAttribute> logger
-        , IWebHostEnvironment env)
-    {
-        _logger = logger;
-        _env = env;
-    }
-
     public override void OnException(ExceptionContext context)
     {
         var status = 500;
@@ -40,9 +30,9 @@ public sealed class CustomExceptionFilterAttribute : ExceptionFilterAttribute
         }
         else
         {
-            title = _env.IsDevelopment() ? exception.Message : $"系统异常";
-            detial = _env.IsDevelopment() ? exception.GetExceptionDetail() : $"系统异常,请联系管理员({eventId})";
-            _logger.LogError(eventId, exception, "{userId}:{requestUrl}", userContext?.Id, requestUrl);
+            title = env.IsDevelopment() ? exception.Message : $"系统异常";
+            detial = env.IsDevelopment() ? exception.GetExceptionDetail() : $"系统异常,请联系管理员({eventId})";
+            logger.LogError(eventId, exception, "{userId}:{requestUrl}", userContext?.Id, requestUrl);
         }
         var problemDetails = new ProblemDetails { Title = title, Detail = detial, Type = type, Status = status };
 

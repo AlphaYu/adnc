@@ -5,19 +5,15 @@
 /// </summary>
 [Route("ord/orders")]
 [ApiController]
-public class OrderController : AdncControllerBase
+public class OrderController(IOrderService orderSrv) : AdncControllerBase
 {
-    private readonly IOrderService _orderSrv;
-
-    public OrderController(IOrderService orderSrv) => _orderSrv = orderSrv;
-
     /// <summary>
     /// 新建订单
     /// </summary>
     /// <param name="input"><see cref="OrderCreationDto"/></param>
     /// <returns></returns>
     [HttpPost]
-    public async Task<ActionResult<OrderDto>> CreateAsync([FromBody] OrderCreationDto input) => await _orderSrv.CreateAsync(input);
+    public async Task<ActionResult<OrderDto>> CreateAsync([FromBody] OrderCreationDto input) => await orderSrv.CreateAsync(input);
 
     /// <summary>
     /// 订单付款
@@ -27,7 +23,7 @@ public class OrderController : AdncControllerBase
     [HttpPut("{id}/payment")]
     public async Task<ActionResult> PayAsync([FromRoute] long id)
     {
-        await _orderSrv.PayAsync(id);
+        await orderSrv.PayAsync(id);
         return NoContent();
     }
 
@@ -39,7 +35,7 @@ public class OrderController : AdncControllerBase
     [HttpPut("{id}/status/canceler")]
     public async Task<ActionResult> CancelAsync([FromRoute] long id)
     {
-        await _orderSrv.CancelAsync(id);
+        await orderSrv.CancelAsync(id);
         return NoContent();
     }
 
@@ -51,7 +47,7 @@ public class OrderController : AdncControllerBase
     [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteAsync([FromRoute] long id)
     {
-        await _orderSrv.DeleteAsync(id);
+        await orderSrv.DeleteAsync(id);
         return NoContent();
     }
 
@@ -61,7 +57,7 @@ public class OrderController : AdncControllerBase
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpGet("{id}")]
-    public async Task<ActionResult<OrderDto>> GetAsync([FromRoute] long id) => await _orderSrv.GetAsync(id);
+    public async Task<ActionResult<OrderDto>> GetAsync([FromRoute] long id) => await orderSrv.GetAsync(id);
 
     /// <summary>
     /// 订单分页列表
@@ -69,5 +65,5 @@ public class OrderController : AdncControllerBase
     /// <param name="input"></param>
     /// <returns></returns>
     [HttpGet("page")]
-    public async Task<ActionResult<PageModelDto<OrderDto>>> GetPagedAsync([FromQuery] OrderSearchPagedDto input) => await _orderSrv.GetPagedAsync(input);
+    public async Task<ActionResult<PageModelDto<OrderDto>>> GetPagedAsync([FromQuery] OrderSearchPagedDto input) => await orderSrv.GetPagedAsync(input);
 }

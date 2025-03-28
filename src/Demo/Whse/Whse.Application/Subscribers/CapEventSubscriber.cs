@@ -2,21 +2,9 @@
 
 namespace Adnc.Demo.Whse.Application.Subscribers;
 
-public sealed class CapEventSubscriber : ICapSubscribe
+public sealed class CapEventSubscriber(IWarehouseService wareHouserSrv, MessageTrackerFactory trackerFactory) : ICapSubscribe
 {
-    private readonly IWarehouseService _wareHouserSrv;
-    private readonly ILogger<CapEventSubscriber> _logger;
-    private readonly IMessageTracker _tracker;
-
-    public CapEventSubscriber(
-        IWarehouseService wareHouserSrv,
-        ILogger<CapEventSubscriber> logger,
-        MessageTrackerFactory trackerFactory)
-    {
-        _wareHouserSrv = wareHouserSrv;
-        _logger = logger;
-        _tracker = trackerFactory.Create();
-    }
+    private readonly IMessageTracker _tracker = trackerFactory.Create();
 
     /// <summary>
     /// 订阅订单创建事件
@@ -30,7 +18,7 @@ public sealed class CapEventSubscriber : ICapSubscribe
         var hasProcessed = await _tracker.HasProcessedAsync(eventDto);
         if (!hasProcessed)
         {
-            await _wareHouserSrv.BlockQtyAsync(eventDto, _tracker);
+            await wareHouserSrv.BlockQtyAsync(eventDto, _tracker);
         }
     }
 }

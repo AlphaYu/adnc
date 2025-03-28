@@ -3,12 +3,8 @@ using Adnc.Demo.Whse.Domain.Aggregates.ProductAggregate;
 
 namespace Adnc.Demo.Whse.Domain.Services;
 
-public class ProductManager : IDomainService
+public class ProductManager(IEfBasicRepository<Product> productRepo) : IDomainService
 {
-    private readonly IEfBasicRepository<Product> _productRepo;
-
-    public ProductManager(IEfBasicRepository<Product> productRepo) => _productRepo = productRepo;
-
     /// <summary>
     /// 创建商品
     /// </summary>
@@ -20,13 +16,13 @@ public class ProductManager : IDomainService
     /// <returns></returns>
     public virtual async Task<Product> CreateAsync(string sku, decimal price, string name, string unit, string describe = "")
     {
-        var exists = await _productRepo.AnyAsync(x => x.Sku == sku);
+        var exists = await productRepo.AnyAsync(x => x.Sku == sku);
         if (exists)
         {
             throw new BusinessException($"sku exists({sku})");
         }
 
-        exists = await _productRepo.AnyAsync(x => x.Name == name);
+        exists = await productRepo.AnyAsync(x => x.Name == name);
         if (exists)
         {
             throw new BusinessException($"name exists{name}");
@@ -57,7 +53,7 @@ public class ProductManager : IDomainService
             return;
         }
 
-        var exists = await _productRepo.AnyAsync(x => x.Sku == newSku);
+        var exists = await productRepo.AnyAsync(x => x.Sku == newSku);
         if (exists)
         {
             throw new BusinessException($"sku exists({newSku})");
@@ -81,7 +77,7 @@ public class ProductManager : IDomainService
             return;
         }
 
-        var exists = await _productRepo.AnyAsync(x => x.Name == newName);
+        var exists = await productRepo.AnyAsync(x => x.Name == newName);
         if (exists)
         {
             throw new BusinessException($"name exists{newName}");

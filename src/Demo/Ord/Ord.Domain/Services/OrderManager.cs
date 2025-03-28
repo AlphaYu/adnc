@@ -5,12 +5,8 @@ namespace Adnc.Demo.Ord.Domain.Services;
 /// <summary>
 /// 订单领域服务
 /// </summary>
-public class OrderManager : IDomainService
+public class OrderManager() : IDomainService
 {
-    private readonly IEfBasicRepository<Order> _orderRepo;
-
-    public OrderManager(IEfBasicRepository<Order> orderRepo) => _orderRepo = orderRepo;
-
     /// <summary>
     /// 订单创建
     /// </summary>

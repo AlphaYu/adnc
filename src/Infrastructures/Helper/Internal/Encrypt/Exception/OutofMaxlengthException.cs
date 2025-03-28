@@ -3,12 +3,16 @@
 /// <summary>
 /// The encrypt string out of max length exception
 /// </summary>
-public class OutofMaxlengthException : Exception
+/// <remarks>
+/// Ctor
+/// </remarks>
+/// <param name="maxLength"></param>
+public class OutofMaxlengthException(int maxLength, int keySize, RSAEncryptionPadding rsaEncryptionPadding) : Exception
 {
     /// <summary>
     /// The max length of ecnrypt data
     /// </summary>
-    public int MaxLength { get; private set; }
+    public int MaxLength { get; private set; } = maxLength;
 
     /// <summary>
     /// Error message
@@ -19,23 +23,12 @@ public class OutofMaxlengthException : Exception
     /// <summary>
     /// Rsa key size
     /// </summary>
-    public int KeySize { get; private set; }
+    public int KeySize { get; private set; } = keySize;
 
     /// <summary>
     /// Rsa padding
     /// </summary>
-    public RSAEncryptionPadding RSAEncryptionPadding { get; private set; }
-
-    /// <summary>
-    /// Ctor
-    /// </summary>
-    /// <param name="maxLength"></param>
-    public OutofMaxlengthException(int maxLength, int keySize, RSAEncryptionPadding rsaEncryptionPadding)
-    {
-        MaxLength = maxLength;
-        KeySize = keySize;
-        RSAEncryptionPadding = rsaEncryptionPadding;
-    }
+    public RSAEncryptionPadding RSAEncryptionPadding { get; private set; } = rsaEncryptionPadding;
 
     /// <summary>
     /// Ctor

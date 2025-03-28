@@ -1,10 +1,7 @@
 ﻿namespace Adnc.Shared.Remote.Handlers.Token;
 
-public sealed class TokenFactory
+public sealed class TokenFactory(IEnumerable<ITokenGenerator> tokenGenerators)
 {
-    private readonly IEnumerable<ITokenGenerator> _tokenGenerators;
-    public TokenFactory(IEnumerable<ITokenGenerator> tokenGenerators) => _tokenGenerators = tokenGenerators;
-
     public ITokenGenerator CreateGenerator(string authorizationScheme)
     {
         /*
@@ -16,7 +13,7 @@ public sealed class TokenFactory
 
         return default;
         */
-        var tokenGenerator = _tokenGenerators.First(x => x.GeneratorName == authorizationScheme);
+        var tokenGenerator = tokenGenerators.First(x => x.GeneratorName == authorizationScheme);
         return tokenGenerator;
     }
 }

@@ -5,26 +5,22 @@
 /// </summary>
 [Route("whse/warehouses")]
 [ApiController]
-public class WarehouseController : AdncControllerBase
+public class WarehouseController(IWarehouseService warehouseSrv) : AdncControllerBase
 {
-    private readonly IWarehouseService _warehouseSrv;
-
-    public WarehouseController(IWarehouseService warehouseSrv) => _warehouseSrv = warehouseSrv;
-
     /// <summary>
     /// 新建货架
     /// </summary>
     /// <param name="input"><see cref="WarehouseCreationDto"/></param>
     /// <returns></returns>
     [HttpPost]
-    public async Task<ActionResult<WarehouseDto>> CreateAsync([FromBody] WarehouseCreationDto input) => await _warehouseSrv.CreateAsync(input);
+    public async Task<ActionResult<WarehouseDto>> CreateAsync([FromBody] WarehouseCreationDto input) => await warehouseSrv.CreateAsync(input);
 
     /// <summary>
     /// 分配货架给商品
     /// </summary>
     /// <returns></returns>
     [HttpPut("{id}/product")]
-    public async Task<ActionResult<WarehouseDto>> AllocateShelfToProductAsync([FromRoute] long id, [FromBody] WarehouseAllocateToProductDto input) => await _warehouseSrv.AllocateShelfToProductAsync(id, input);
+    public async Task<ActionResult<WarehouseDto>> AllocateShelfToProductAsync([FromRoute] long id, [FromBody] WarehouseAllocateToProductDto input) => await warehouseSrv.AllocateShelfToProductAsync(id, input);
 
     /// <summary>
     /// 分页列表
@@ -32,5 +28,5 @@ public class WarehouseController : AdncControllerBase
     /// <param name="input"></param>
     /// <returns></returns>
     [HttpGet]
-    public async Task<PageModelDto<WarehouseDto>> GetPagedAsync([FromQuery] WarehouseSearchDto input) => await _warehouseSrv.GetPagedAsync(input);
+    public async Task<PageModelDto<WarehouseDto>> GetPagedAsync([FromQuery] WarehouseSearchDto input) => await warehouseSrv.GetPagedAsync(input);
 }

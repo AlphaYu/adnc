@@ -1,36 +1,23 @@
 ﻿namespace Adnc.Shared.Application.Caching.SkyApm;
 
-public sealed class CacheTracingDiagnosticProcessor : ITracingDiagnosticProcessor
+public sealed class CacheTracingDiagnosticProcessor(
+    ITracingContext tracingContext,
+    ILocalSegmentContextAccessor localSegmentContextAccessor,
+    //IEntrySegmentContextAccessor entrySegmentContextAccessor,
+    //IExitSegmentContextAccessor exitSegmentContextAccessor,
+    IConfigAccessor configAccessor) : ITracingDiagnosticProcessor
 {
     public static readonly StringOrIntValue Caching = new(nameof(Adnc.Infra.Redis.Caching));
-    private readonly ITracingContext _tracingContext;
-    private readonly IEntrySegmentContextAccessor _entrySegmentContextAccessor;
-    private readonly IExitSegmentContextAccessor _exitSegmentContextAccessor;
-    private readonly ILocalSegmentContextAccessor _localSegmentContextAccessor;
-    private readonly TracingConfig _tracingConfig;
+    private readonly TracingConfig _tracingConfig = configAccessor.Get<TracingConfig>();
 
     public string ListenerName => CachingDiagnosticListenerExtensions.DiagnosticListenerName;
-
-    public CacheTracingDiagnosticProcessor(
-        ITracingContext tracingContext,
-        ILocalSegmentContextAccessor localSegmentContextAccessor,
-        IEntrySegmentContextAccessor entrySegmentContextAccessor,
-        IExitSegmentContextAccessor exitSegmentContextAccessor,
-        IConfigAccessor configAccessor)
-    {
-        _tracingContext = tracingContext;
-        _exitSegmentContextAccessor = exitSegmentContextAccessor;
-        _localSegmentContextAccessor = localSegmentContextAccessor;
-        _entrySegmentContextAccessor = entrySegmentContextAccessor;
-        _tracingConfig = configAccessor.Get<TracingConfig>();
-    }
 
     #region GetCache
 
     [DiagnosticName(CachingDiagnosticListenerExtensions.CachingBeforeGetCache)]
     public void CachingBeforeGetCache([Object] DiagnosticDataWrapper<BeforeGetRequestEventData> eventData)
     {
-        var context = _tracingContext.CreateLocalSegmentContext("Cache: " + eventData.EventData.Operation);
+        var context = tracingContext.CreateLocalSegmentContext("Cache: " + eventData.EventData.Operation);
         context.Span.SpanLayer = SpanLayer.CACHE;
         context.Span.Component = Caching;
         context.Span.AddTag("Name", eventData.EventData.Name);
@@ -43,7 +30,7 @@ public sealed class CacheTracingDiagnosticProcessor : ITracingDiagnosticProcesso
     [DiagnosticName(CachingDiagnosticListenerExtensions.CachingAfterGetCache)]
     public void CachingAfterGetCache([Object] DiagnosticDataWrapper eventData)
     {
-        var context = _localSegmentContextAccessor.Context;
+        var context = localSegmentContextAccessor.Context;
         if (context == null)
         {
             return;
@@ -53,13 +40,13 @@ public sealed class CacheTracingDiagnosticProcessor : ITracingDiagnosticProcesso
         context.Span.AddLog(LogEvent.Message($"Adnc.Caching get cache succeeded!{Environment.NewLine}" +
                                              $"--> Message Id: {eventData.OperationId}"));
 
-        _tracingContext.Release(context);
+        tracingContext.Release(context);
     }
 
     [DiagnosticName(CachingDiagnosticListenerExtensions.CachingErrorGetCache)]
     public void CachingErrorGetCache([Object] DiagnosticExceptionWrapper eventData)
     {
-        var context = _localSegmentContextAccessor.Context;
+        var context = localSegmentContextAccessor.Context;
         if (context == null)
         {
             return;
@@ -70,7 +57,7 @@ public sealed class CacheTracingDiagnosticProcessor : ITracingDiagnosticProcesso
                                              $"--> Message Id: {eventData.OperationId}"));
         context.Span.ErrorOccurred(eventData.Exception, _tracingConfig);
 
-        _tracingContext.Release(context);
+        tracingContext.Release(context);
     }
 
     #endregion GetCache
@@ -80,7 +67,7 @@ public sealed class CacheTracingDiagnosticProcessor : ITracingDiagnosticProcesso
     [DiagnosticName(CachingDiagnosticListenerExtensions.CachingBeforeSetCache)]
     public void CachingBeforeSetCache([Object] DiagnosticDataWrapper<BeforeSetRequestEventData> eventData)
     {
-        var context = _tracingContext.CreateLocalSegmentContext("Cache: " + eventData.EventData.Operation);
+        var context = tracingContext.CreateLocalSegmentContext("Cache: " + eventData.EventData.Operation);
         context.Span.SpanLayer = SpanLayer.CACHE;
         context.Span.Component = Caching;
         context.Span.AddTag("Name", eventData.EventData.Name);
@@ -93,7 +80,7 @@ public sealed class CacheTracingDiagnosticProcessor : ITracingDiagnosticProcesso
     [DiagnosticName(CachingDiagnosticListenerExtensions.CachingAfterSetCache)]
     public void CachingAfterSetCache([Object] DiagnosticDataWrapper eventData)
     {
-        var context = _localSegmentContextAccessor.Context;
+        var context = localSegmentContextAccessor.Context;
         if (context == null)
         {
             return;
@@ -103,13 +90,13 @@ public sealed class CacheTracingDiagnosticProcessor : ITracingDiagnosticProcesso
         context.Span.AddLog(LogEvent.Message($"Adnc.Caching set cache succeeded!{Environment.NewLine}" +
                                              $"--> Message Id: {eventData.OperationId}"));
 
-        _tracingContext.Release(context);
+        tracingContext.Release(context);
     }
 
     [DiagnosticName(CachingDiagnosticListenerExtensions.CachingErrorSetCache)]
     public void CachingErrorSetCache([Object] DiagnosticExceptionWrapper eventData)
     {
-        var context = _localSegmentContextAccessor.Context;
+        var context = localSegmentContextAccessor.Context;
         if (context == null)
         {
             return;
@@ -120,7 +107,7 @@ public sealed class CacheTracingDiagnosticProcessor : ITracingDiagnosticProcesso
                                              $"--> Message Id: {eventData.OperationId}"));
         context.Span.ErrorOccurred(eventData.Exception, _tracingConfig);
 
-        _tracingContext.Release(context);
+        tracingContext.Release(context);
     }
 
     #endregion SetCache
@@ -130,7 +117,7 @@ public sealed class CacheTracingDiagnosticProcessor : ITracingDiagnosticProcesso
     [DiagnosticName(CachingDiagnosticListenerExtensions.CachingBeforeRemoveCache)]
     public void CachingBeforeRemoveCache([Object] DiagnosticDataWrapper<BeforeRemoveRequestEventData> eventData)
     {
-        var context = _tracingContext.CreateLocalSegmentContext("Cache: " + eventData.EventData.Operation);
+        var context = tracingContext.CreateLocalSegmentContext("Cache: " + eventData.EventData.Operation);
         context.Span.SpanLayer = SpanLayer.CACHE;
         context.Span.Component = Caching;
         context.Span.AddTag("Name", eventData.EventData.Name);
@@ -143,7 +130,7 @@ public sealed class CacheTracingDiagnosticProcessor : ITracingDiagnosticProcesso
     [DiagnosticName(CachingDiagnosticListenerExtensions.CachingAfterRemoveCache)]
     public void CachingAfterRemoveCache([Object] DiagnosticDataWrapper eventData)
     {
-        var context = _localSegmentContextAccessor.Context;
+        var context = localSegmentContextAccessor.Context;
         if (context == null)
         {
             return;
@@ -153,13 +140,13 @@ public sealed class CacheTracingDiagnosticProcessor : ITracingDiagnosticProcesso
         context.Span.AddLog(LogEvent.Message($"Adnc.Caching remove cache succeeded!{Environment.NewLine}" +
                                              $"--> Message Id: {eventData.OperationId}"));
 
-        _tracingContext.Release(context);
+        tracingContext.Release(context);
     }
 
     [DiagnosticName(CachingDiagnosticListenerExtensions.CachingErrorRemoveCache)]
     public void CachingErrorRemoveCache([Object] DiagnosticExceptionWrapper eventData)
     {
-        var context = _localSegmentContextAccessor.Context;
+        var context = localSegmentContextAccessor.Context;
         if (context == null)
         {
             return;
@@ -170,7 +157,7 @@ public sealed class CacheTracingDiagnosticProcessor : ITracingDiagnosticProcesso
                                              $"--> Message Id: {eventData.OperationId}"));
         context.Span.ErrorOccurred(eventData.Exception, _tracingConfig);
 
-        _tracingContext.Release(context);
+        tracingContext.Release(context);
     }
 
     #endregion RemoveCache
@@ -180,7 +167,7 @@ public sealed class CacheTracingDiagnosticProcessor : ITracingDiagnosticProcesso
     [DiagnosticName(CachingDiagnosticListenerExtensions.CachingBeforeExistsCache)]
     public void CachingBeforeExistsCache([Object] DiagnosticDataWrapper<BeforeExistsRequestEventData> eventData)
     {
-        var context = _tracingContext.CreateLocalSegmentContext("Cache: " + eventData.EventData.Operation);
+        var context = tracingContext.CreateLocalSegmentContext("Cache: " + eventData.EventData.Operation);
         context.Span.SpanLayer = SpanLayer.CACHE;
         context.Span.Component = Caching;
         context.Span.AddTag("Name", eventData.EventData.Name);
@@ -193,7 +180,7 @@ public sealed class CacheTracingDiagnosticProcessor : ITracingDiagnosticProcesso
     [DiagnosticName(CachingDiagnosticListenerExtensions.CachingAfterExistsCache)]
     public void CachingAfterExistsCache([Object] DiagnosticDataWrapper eventData)
     {
-        var context = _localSegmentContextAccessor.Context;
+        var context = localSegmentContextAccessor.Context;
         if (context == null)
         {
             return;
@@ -203,13 +190,13 @@ public sealed class CacheTracingDiagnosticProcessor : ITracingDiagnosticProcesso
         context.Span.AddLog(LogEvent.Message($"Adnc.Caching exists cache succeeded!{Environment.NewLine}" +
                                              $"--> Message Id: {eventData.OperationId}"));
 
-        _tracingContext.Release(context);
+        tracingContext.Release(context);
     }
 
     [DiagnosticName(CachingDiagnosticListenerExtensions.CachingErrorExistsCache)]
     public void CachingErrorExistsCache([Object] DiagnosticExceptionWrapper eventData)
     {
-        var context = _localSegmentContextAccessor.Context;
+        var context = localSegmentContextAccessor.Context;
         if (context == null)
         {
             return;
@@ -220,7 +207,7 @@ public sealed class CacheTracingDiagnosticProcessor : ITracingDiagnosticProcesso
                                              $"--> Message Id: {eventData.OperationId}"));
         context.Span.ErrorOccurred(eventData.Exception, _tracingConfig);
 
-        _tracingContext.Release(context);
+        tracingContext.Release(context);
     }
 
     #endregion ExistsCache

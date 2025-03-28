@@ -1,25 +1,11 @@
 ﻿namespace Adnc.Shared.Application.Caching;
 
-public class CachingHostedService : BackgroundService
+public class CachingHostedService(ILogger<CachingHostedService> logger, ICacheProvider cacheProvider, ICachePreheatable cachePreheatService) : BackgroundService
 {
-    private readonly ILogger<CachingHostedService> _logger;
-    private readonly ICacheProvider _cacheProvider;
-    private readonly ICachePreheatable _cachePreheatService;
-
-    public CachingHostedService(
-       ILogger<CachingHostedService> logger,
-       ICacheProvider cacheProvider,
-       ICachePreheatable cachePreheatService)
-    {
-        _logger = logger;
-        _cacheProvider = cacheProvider;
-        _cachePreheatService = cachePreheatService;
-    }
-
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         //preheating caches
-        await _cachePreheatService.PreheatAsync();
+        await cachePreheatService.PreheatAsync();
 
         //cofirming removed caches
         _ = Task.Factory.StartNew(async () =>
@@ -31,7 +17,7 @@ public class CachingHostedService : BackgroundService
                     || model.CacheKeys.IsNullOrEmpty()
                     || DateTime.Now > model.ExpireDt)
                 {
-                    await Task.Delay(_cacheProvider.CacheOptions.Value.LockMs, stoppingToken);
+                    await Task.Delay(cacheProvider.CacheOptions.Value.LockMs, stoppingToken);
                     continue;
                 }
 
@@ -44,14 +30,14 @@ public class CachingHostedService : BackgroundService
 
                     try
                     {
-                        await _cacheProvider.RemoveAllAsync(model.CacheKeys);
+                        await cacheProvider.RemoveAllAsync(model.CacheKeys);
                         break;
                     }
                     catch (Exception ex)
                     {
                         var message = $"{nameof(ExecuteAsync)}:{string.Join(",", model.CacheKeys)}";
-                        _logger.LogError(ex, "{message}", message);
-                        await Task.Delay(_cacheProvider.CacheOptions.Value.LockMs, stoppingToken);
+                        logger.LogError(ex, "{message}", message);
+                        await Task.Delay(cacheProvider.CacheOptions.Value.LockMs, stoppingToken);
                     }
                 }
             }

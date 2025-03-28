@@ -24,4 +24,3 @@ global using AutoMapper;
 global using DotNetCore.CAP;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.Extensions.DependencyInjection;
-global using Microsoft.Extensions.Logging;

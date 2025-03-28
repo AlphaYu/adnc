@@ -3,16 +3,9 @@ using RabbitMQ.Client.Events;
 
 namespace Adnc.Infra.EventBus.RabbitMq;
 
-public abstract class BaseRabbitMqConsumer : IHostedService
+public abstract class BaseRabbitMqConsumer(IRabbitMqConnection RabbitMqConnection, ILogger<dynamic> logger) : IHostedService
 {
-    private readonly IConnection _connection;
-    private readonly ILogger<dynamic> _logger;
-
-    protected BaseRabbitMqConsumer(IRabbitMqConnection RabbitMqConnection, ILogger<dynamic> logger)
-    {
-        _connection = RabbitMqConnection.Connection;
-        _logger = logger;
-    }
+    private readonly IConnection _connection = RabbitMqConnection.Connection;
 
     public async Task StartAsync(CancellationToken cancellationToken)
     {
@@ -82,7 +75,7 @@ public abstract class BaseRabbitMqConsumer : IHostedService
             var message = Encoding.UTF8.GetString(body);
             var result = await Process(ea.Exchange, ea.RoutingKey, message);
 
-            _logger.LogDebug("result:{result},message:{message}", result, message);
+            logger.LogDebug("result:{result},message:{message}", result, message);
 
             //关闭自动确认,开启手动确认后需要依据处理结果选择返回确认信息。
             if (!queue.AutoAck)

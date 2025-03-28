@@ -1,4 +1,4 @@
-using Adnc.Gateway.Ocelot.Identity;
+﻿using Adnc.Gateway.Ocelot.Identity;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
@@ -7,13 +7,11 @@ using Ocelot.Provider.Polly;
 
 namespace Adnc.Gateway.Ocelot;
 
-public class Startup
+public class Startup(IConfiguration configuration)
 {
     private readonly string _corsPolicyName = "default";
 
-    public IConfiguration Configuration { get; }
-
-    public Startup(IConfiguration configuration) => Configuration = configuration;
+    public IConfiguration Configuration { get; } = configuration;
 
     public void ConfigureServices(IServiceCollection services)
     {

@@ -3,16 +3,9 @@
 using System;
 using System.Collections.Generic;
 
-public class BeforeSetRequestEventData : EventData
+public class BeforeSetRequestEventData(string cacheType, string name, string operation, IDictionary<string, object> dict, TimeSpan expiration) : EventData(cacheType, name, operation)
 {
-    public BeforeSetRequestEventData(string cacheType, string name, string operation, IDictionary<string, object> dict, System.TimeSpan expiration)
-        : base(cacheType, name, operation)
-    {
-        Dict = dict;
-        Expiration = expiration;
-    }
+    public IDictionary<string, object> Dict { get; set; } = dict;
 
-    public IDictionary<string, object> Dict { get; set; }
-
-    public TimeSpan Expiration { get; set; }
+    public TimeSpan Expiration { get; set; } = expiration;
 }

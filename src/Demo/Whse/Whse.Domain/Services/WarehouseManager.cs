@@ -3,12 +3,8 @@ using Adnc.Demo.Whse.Domain.Aggregates.WarehouseAggregate;
 
 namespace Adnc.Demo.Whse.Domain.Services;
 
-public class WarehouseManager : IDomainService
+public class WarehouseManager(IEfBasicRepository<Warehouse> warehouseRepo) : IDomainService
 {
-    private readonly IEfBasicRepository<Warehouse> _warehouseRepo;
-
-    public WarehouseManager(IEfBasicRepository<Warehouse> warehouseRepo) => _warehouseRepo = warehouseRepo;
-
     /// <summary>
     /// 创建货架
     /// </summary>
@@ -18,7 +14,7 @@ public class WarehouseManager : IDomainService
     /// <exception cref="BusinessException"></exception>
     public async Task<Warehouse> CreateAsync(string positionCode, string positionDescription)
     {
-        var exists = await _warehouseRepo.AnyAsync(x => x.Position.Code == positionCode);
+        var exists = await warehouseRepo.AnyAsync(x => x.Position.Code == positionCode);
         if (exists)
         {
             throw new BusinessException($"positionCode exists({positionCode})");
@@ -40,7 +36,7 @@ public class WarehouseManager : IDomainService
     {
         Checker.Variable.NotNull(warehouse, nameof(warehouse));
 
-        var existWarehouse = await _warehouseRepo.Where(x => x.ProductId == productId).SingleOrDefaultAsync();
+        var existWarehouse = await warehouseRepo.Where(x => x.ProductId == productId).SingleOrDefaultAsync();
 
         //一个商品只能分配一个货架，但可以调整货架。
         if (existWarehouse != null && existWarehouse.Id != warehouse.Id)

@@ -1,21 +1,10 @@
 ﻿namespace Adnc.Infra.Consul.Configuration;
 
-public sealed class DefaultConsulConfigurationProvider : ConfigurationProvider
+public sealed class DefaultConsulConfigurationProvider(ConsulClient consulClient, string consulKeyPath, bool reloadOnChanges) : ConfigurationProvider
 {
-    private readonly ConsulClient _consulClient;
-    private readonly string _path;
-    private readonly int _waitMillisecond;
-    private readonly bool _reloadOnChange;
+    private readonly int _waitMillisecond = 1000 * 3;
     private ulong _currentIndex;
     private Task? _pollTask;
-
-    public DefaultConsulConfigurationProvider(ConsulClient consulClient, string consulKeyPath, bool reloadOnChanges)
-    {
-        _consulClient = consulClient;
-        _path = consulKeyPath;
-        _waitMillisecond = 1000 * 3;
-        _reloadOnChange = reloadOnChanges;
-    }
 
     public override void Load()
     {
@@ -42,7 +31,7 @@ public sealed class DefaultConsulConfigurationProvider : ConfigurationProvider
 
     private async Task<QueryResult<KVPair>> GetData()
     {
-        var res = await _consulClient.KV.Get(_path);
+        var res = await consulClient.KV.Get(consulKeyPath);
         if (res.StatusCode == HttpStatusCode.OK || res.StatusCode == HttpStatusCode.NotFound)
         {
             return res;
@@ -52,7 +41,7 @@ public sealed class DefaultConsulConfigurationProvider : ConfigurationProvider
 
     private void PollReaload()
     {
-        if (_reloadOnChange)
+        if (reloadOnChanges)
         {
             _pollTask = Task.Run(async () =>
             {

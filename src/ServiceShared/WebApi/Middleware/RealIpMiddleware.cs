@@ -1,44 +1,33 @@
 ﻿namespace Adnc.Shared.WebApi.Middleware;
 
-public class RealIpMiddleware
+public class RealIpMiddleware(RequestDelegate next, ILogger<RealIpMiddleware> logger, FilterOption option)
 {
-    private readonly RequestDelegate _next;
-    private readonly ILogger<RealIpMiddleware> _logger;
-    private readonly FilterOption _option;
-
-    public RealIpMiddleware(RequestDelegate next, ILogger<RealIpMiddleware> logger, FilterOption option)
-    {
-        _next = next;
-        _logger = logger;
-        _option = option;
-    }
-
     public async Task Invoke(HttpContext context)
     {
-        if (_option.HeaderKey.IsNullOrWhiteSpace())
+        if (option.HeaderKey.IsNullOrWhiteSpace())
         {
-            await _next(context);
+            await next(context);
             return;
         }
 
-        var ips = context.Request.Headers[_option.HeaderKey].FirstOrDefault()?.Trim();
+        var ips = context.Request.Headers[option.HeaderKey].FirstOrDefault()?.Trim();
         if (string.IsNullOrEmpty(ips))
         {
-            await _next(context);
+            await next(context);
             return;
         }
 
         var realIp = ips.Split(",")[0];
         if (realIp == string.Empty)
         {
-            await _next(context);
+            await next(context);
             return;
         }
 
         context.Connection.RemoteIpAddress = IPAddress.Parse(realIp);
-        _logger.LogDebug("Resolve real ip success: {realIp}", realIp);
+        logger.LogDebug("Resolve real ip success: {realIp}", realIp);
 
-        await _next(context);
+        await next(context);
     }
 }
 

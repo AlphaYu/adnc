@@ -17,15 +17,9 @@ public sealed class LocalVariables
 
     public ConcurrentQueue<Model> Queue => _queue;
 
-    public sealed class Model
+    public sealed class Model(IEnumerable<string> cacheKeys, DateTime expireDt)
     {
-        public List<string> CacheKeys { get; init; }
-        public DateTime ExpireDt { get; init; }
-
-        public Model(IEnumerable<string> cacheKeys, DateTime expireDt)
-        {
-            CacheKeys = cacheKeys.ToList();
-            ExpireDt = expireDt;
-        }
+        public List<string> CacheKeys { get; init; } = cacheKeys.ToList();
+        public DateTime ExpireDt { get; init; } = expireDt;
     }
 }

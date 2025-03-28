@@ -181,22 +181,13 @@ public static class ExpressionLogicalOperatorsExtension
         return default;
     }
 
-    private sealed class ReplaceExpressionVisitor : ExpressionVisitor
+    private sealed class ReplaceExpressionVisitor(Expression oldValue, Expression newValue) : ExpressionVisitor
     {
-        private readonly Expression _oldValue;
-        private readonly Expression _newValue;
-
-        public ReplaceExpressionVisitor(Expression oldValue, Expression newValue)
-        {
-            _oldValue = oldValue;
-            _newValue = newValue;
-        }
-
         public override Expression? Visit(Expression? node)
         {
-            if (node == _oldValue)
+            if (node == oldValue)
             {
-                return _newValue;
+                return newValue;
             }
 
             return base.Visit(node);

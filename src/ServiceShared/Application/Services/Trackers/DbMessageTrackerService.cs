@@ -1,13 +1,8 @@
 ﻿namespace Adnc.Shared.Application.Services.Trackers;
 
-public class DbMessageTrackerService : IMessageTracker
+public class DbMessageTrackerService(IEfRepository<EventTracker> trackerRepo) : IMessageTracker
 {
-    public IEfRepository<EventTracker> _trackerRepo;
-
-    public DbMessageTrackerService(IEfRepository<EventTracker> trackerRepo)
-    {
-        _trackerRepo = trackerRepo;
-    }
+    public IEfRepository<EventTracker> _trackerRepo = trackerRepo;
 
     public TrackerKind Kind => TrackerKind.Db;
 

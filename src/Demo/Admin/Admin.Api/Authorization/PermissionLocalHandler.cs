@@ -1,12 +1,8 @@
 ﻿namespace Adnc.Demo.Admin.Api.Authorization;
 
 [Obsolete($"use {nameof(PermissionCacheHandler)} instead 2025 -02-17")]
-public sealed class PermissionLocalHandler : AbstractPermissionHandler
+public sealed class PermissionLocalHandler(IUserService userAppService) : AbstractPermissionHandler
 {
-    private readonly IUserService _userAppService;
-
-    public PermissionLocalHandler(IUserService userAppService) => _userAppService = userAppService;
-
     protected override async Task<bool> CheckUserPermissions(long userId, IEnumerable<string> requestPermissions, string userBelongsRoleIds)
     {
         if (requestPermissions == null || !requestPermissions.Any())
@@ -25,7 +21,7 @@ public sealed class PermissionLocalHandler : AbstractPermissionHandler
             return await Task.FromResult(false);
         }
 
-        var permissions = await _userAppService.GetPermissionsAsync(userId, requestPermissions, userBelongsRoleIds);
+        var permissions = await userAppService.GetPermissionsAsync(userId, requestPermissions, userBelongsRoleIds);
         return permissions.IsNotNullOrEmpty();
     }
 }

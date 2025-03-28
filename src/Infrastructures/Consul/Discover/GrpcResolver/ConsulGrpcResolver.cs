@@ -3,29 +3,16 @@
 namespace Adnc.Infra.Consul.Discover.GrpcResolver;
 
 //https://docs.microsoft.com/zh-cn/aspnet/core/grpc/loadbalancing?view=aspnetcore-6.0
-public sealed class ConsulGrpcResolver : PollingResolver
+public sealed class ConsulGrpcResolver(Uri uri, ConsulClient client, ILoggerFactory loggerFactory) : PollingResolver(loggerFactory)
 {
-    private readonly Uri _address;
-    private readonly int _port;
-    private readonly ConsulClient _client;
     private Timer? _timer;
-    private readonly TimeSpan _refreshInterval;
-    private readonly ILogger _logger;
-
-    public ConsulGrpcResolver(Uri address, int defaultPort, ConsulClient client, ILoggerFactory loggerFactory)
-        : base(loggerFactory)
-    {
-        _address = address;
-        _port = defaultPort;
-        _client = client;
-        _logger = loggerFactory.CreateLogger<ConsulGrpcResolver>();
-        _refreshInterval = TimeSpan.FromSeconds(30);
-    }
+    private readonly TimeSpan _refreshInterval = TimeSpan.FromSeconds(30);
+    private readonly ILogger _logger = loggerFactory.CreateLogger<ConsulGrpcResolver>();
 
     protected override async Task ResolveAsync(CancellationToken cancellationToken)
     {
-        var address = _address.Host.Replace("consul://", string.Empty);
-        var _consulServiceProvider = new DiscoverProviderBuilder(_client).WithServiceName(address).WithCacheSeconds(5).Build();
+        var address = uri.Host.Replace("consul://", string.Empty);
+        var _consulServiceProvider = new DiscoverProviderBuilder(client).WithServiceName(address).WithCacheSeconds(5).Build();
         var results = await _consulServiceProvider.GetAllHealthServicesAsync();
         var balancerAddresses = new List<BalancerAddress>();
         results.ForEach(result =>
@@ -71,13 +58,9 @@ public sealed class ConsulGrpcResolver : PollingResolver
 
 }
 
-public class ConsulGrpcResolverFactory : ResolverFactory
+public class ConsulGrpcResolverFactory(ConsulClient consulClient) : ResolverFactory
 {
-    private readonly ConsulClient _consulClient;
-
-    public ConsulGrpcResolverFactory(ConsulClient consulClient) => _consulClient = consulClient;
-
     public override string Name => "consul";
 
-    public override Resolver Create(ResolverOptions options) => new ConsulGrpcResolver(options.Address, options.DefaultPort, _consulClient, options.LoggerFactory);
+    public override Resolver Create(ResolverOptions options) => new ConsulGrpcResolver(options.Address, consulClient, options.LoggerFactory);
 }

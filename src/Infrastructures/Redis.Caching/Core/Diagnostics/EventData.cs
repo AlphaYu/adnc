@@ -1,17 +1,10 @@
 ﻿namespace Adnc.Infra.Redis.Caching.Core.Diagnostics;
 
-public class EventData
+public class EventData(string cacheType, string name, string operation)
 {
-    public EventData(string cacheType, string name, string operation)
-    {
-        CacheType = cacheType;
-        Name = name;
-        Operation = operation;
-    }
+    public string CacheType { get; set; } = cacheType;
 
-    public string CacheType { get; set; }
+    public string Name { get; set; } = name;
 
-    public string Name { get; set; }
-
-    public string Operation { get; set; }
+    public string Operation { get; set; } = operation;
 }

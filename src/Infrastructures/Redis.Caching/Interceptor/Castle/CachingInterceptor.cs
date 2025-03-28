@@ -5,17 +5,10 @@ namespace Adnc.Infra.Redis.Caching.Interceptor.Castle;
 /// <summary>
 /// caching interceptor
 /// </summary>
-public class CachingInterceptor : IInterceptor
+public class CachingInterceptor(CachingAsyncInterceptor cachingAsyncInterceptor) : IInterceptor
 {
-    private readonly CachingAsyncInterceptor _cachingAsyncInterceptor;
-
-    public CachingInterceptor(CachingAsyncInterceptor cachingAsyncInterceptor)
-    {
-        _cachingAsyncInterceptor = cachingAsyncInterceptor;
-    }
-
     public void Intercept(IInvocation invocation)
     {
-        _cachingAsyncInterceptor.ToInterceptor().Intercept(invocation);
+        cachingAsyncInterceptor.ToInterceptor().Intercept(invocation);
     }
 }
