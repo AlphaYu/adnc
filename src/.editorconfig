@@ -329,6 +329,9 @@ dotnet_diagnostic.IDE0062.severity = warning
 dotnet_diagnostic.IDE0073.severity = none
 file_header_template = Licensed to the ANDC under one or more agreements.\nThe ADNC licenses this file to you under the MIT license.
 
+# IDE0130: dotnet_style_namespace_match_folders
+dotnet_diagnostic.IDE0130.severity = none
+
 # IDE0161: Convert to file-scoped namespace
 dotnet_diagnostic.IDE0161.severity = warning
 
