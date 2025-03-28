@@ -28,7 +28,7 @@ public class BearerAuthenticationCacheProcessor(IHttpContextAccessor contextAcce
 
         if (validationInfo == null || validationInfo.Value == null)
         {
-            logger.LogDebug($"cacheValue [{cacheKey}] is null");
+            logger.LogDebug("cacheValue [{cacheKey}] is null,", cacheKey);
             return (null, false);
         }
 

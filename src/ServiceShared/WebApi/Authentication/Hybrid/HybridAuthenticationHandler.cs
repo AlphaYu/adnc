@@ -12,7 +12,7 @@ public sealed class HybridAuthenticationHandler(IOptionsMonitor<HybridSchemeOpti
     {
         var endpoint = Context.GetEndpoint();
         var requestId = System.Diagnostics.Activity.Current?.Id ?? Context.TraceIdentifier;
-        Logger.LogDebug($"requestid: {requestId}");
+        Logger.LogDebug("requestid: {requestId}", requestId);
 
         if (endpoint is null)
         {
@@ -26,7 +26,7 @@ public sealed class HybridAuthenticationHandler(IOptionsMonitor<HybridSchemeOpti
 
         var authHeader = Request.Headers.Authorization.ToString();
 
-        logeer.LogDebug($"{nameof(Request.Headers.Authorization)}: {authHeader}");
+        logeer.LogDebug("{Authorization}: {authHeader}", nameof(Request.Headers.Authorization), authHeader);
 
         if (authHeader.IsNotNullOrWhiteSpace())
         {

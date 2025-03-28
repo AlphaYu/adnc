@@ -32,8 +32,7 @@ public class BearerAuthenticationRemoteProcessor : AbstractAuthenticationProcess
         var apiReuslt = await _authRestClient.GetValidatedInfoAsync();
         if (!apiReuslt.IsSuccessStatusCode)
         {
-            var message = $"{apiReuslt.StatusCode}:{apiReuslt.Error?.Message}";
-            _logger.LogDebug(message);
+            _logger.LogDebug("{StatusCode}:{Message}", apiReuslt.StatusCode, apiReuslt.Error?.Message);
             return (null, false);
         }
 

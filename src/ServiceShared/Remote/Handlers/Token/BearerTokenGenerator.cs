@@ -10,7 +10,7 @@ public class BearerTokenGenerator(IHttpContextAccessor httpContextAccessor, ILog
     {
         var token = httpContextAccessor.HttpContext.Request.Headers["Authorization"].FirstOrDefault();
         var tokenTxt = token?.Remove(0, 7);
-        logger.LogDebug($"Accessor:{tokenTxt}");
+        logger.LogDebug("Accessor:{tokenTxt}", tokenTxt);
         return tokenTxt ?? string.Empty;
     }
 }
