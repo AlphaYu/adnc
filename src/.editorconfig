@@ -333,6 +333,9 @@ dotnet_diagnostic.IDE0062.severity = warning
 dotnet_diagnostic.IDE0073.severity = none
 file_header_template = Licensed to the ANDC under one or more agreements.\nThe ADNC licenses this file to you under the MIT license.
 
+# IDE0079 dotnet_remove_unnecessary_suppression_exclusions
+dotnet_diagnostic.IDE0079.severity = silent
+
 # IDE0130: dotnet_style_namespace_match_folders
 dotnet_diagnostic.IDE0130.severity = none
 
@@ -474,7 +477,7 @@ dotnet_diagnostic.IDE0161.severity = silent
 # IDE0005: Remove unused usings. Ignore for shared src files since imports for those depend on the projects in which they are included.
 dotnet_diagnostic.IDE0005.severity = silent
 #
-dotnet_diagnostic.ASP0025.severity = silent
+dotnet_diagnostic.ASP0025.severity = none
 
 # Verify settings
 [*.{received,verified}.{txt,xml,json}]
