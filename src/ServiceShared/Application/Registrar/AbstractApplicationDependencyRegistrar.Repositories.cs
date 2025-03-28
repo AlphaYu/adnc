@@ -31,7 +31,6 @@ public abstract partial class AbstractApplicationDependencyRegistrar
         {
             Services.AddScoped(serviceType, implType);
         }
-
         AddEfCoreContext();
     }
 
@@ -41,11 +40,10 @@ public abstract partial class AbstractApplicationDependencyRegistrar
     protected virtual void AddEfCoreContext()
     {
         var mysqlConfig = MysqlSection.Get<MysqlOptions>() ?? throw new InvalidDataException(nameof(MysqlOptions));
-        var serverVersion = new MariaDbServerVersion(new Version(10, 5, 4));
         Services.AddAdncInfraEfCoreMySql(options =>
         {
             options.UseLowerCaseNamingConvention();
-            options.UseMySql(mysqlConfig.ConnectionString, serverVersion, optionsBuilder =>
+            options.UseMySql(mysqlConfig.ConnectionString, DbVersion, optionsBuilder =>
             {
                 optionsBuilder.MinBatchSize(4)
                                         .MigrationsAssembly(ServiceInfo.MigrationsAssemblyName)

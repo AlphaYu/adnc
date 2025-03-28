@@ -1,9 +1,8 @@
 ﻿using Adnc.Infra.EventBus.Configurations;
-using Adnc.Infra.Repository.EfCore.MySql.Configurations;
+using Adnc.Infra.Repository.EfCore.MySql;
 using Adnc.Shared.Application.Extensions;
 using DotNetCore.CAP;
 using DotNetCore.CAP.Messages;
-using Microsoft.EntityFrameworkCore;
 using SkyApm.Diagnostics.CAP;
 
 namespace Adnc.Shared.Application.Registrar;
@@ -29,12 +28,9 @@ public abstract partial class AbstractApplicationDependencyRegistrar
             }
             else
             {
-                var tableNamePrefix = "cap";
-                var mysqlConfig = MysqlSection.Get<MysqlOptions>() ?? throw new InvalidDataException(nameof(MysqlOptions));
-                option.UseMySql(config =>
+                option.UseEntityFramework<MySqlDbContext>(config =>
                 {
-                    config.ConnectionString = mysqlConfig.ConnectionString;
-                    config.TableNamePrefix = tableNamePrefix;
+                    config.TableNamePrefix = "cap";
                 });
             }
 
@@ -91,5 +87,4 @@ public abstract partial class AbstractApplicationDependencyRegistrar
             Services.AddAdncInfraRabbitMq(RabbitMqSection, ServiceInfo.Id);
         }
     }
-
 }

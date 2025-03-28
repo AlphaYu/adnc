@@ -23,6 +23,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar
     protected IConfigurationSection MongoDbSection { get; init; }
     protected IConfigurationSection ConsulSection { get; init; }
     protected IConfigurationSection RabbitMqSection { get; init; }
+    protected virtual Microsoft.EntityFrameworkCore.ServerVersion DbVersion { get; set; } = new Microsoft.EntityFrameworkCore.MariaDbServerVersion(new Version(10, 5, 4));
 
     public AbstractApplicationDependencyRegistrar(IServiceCollection services, IServiceInfo serviceInfo)
     {
