@@ -150,15 +150,15 @@ public class ProductService(IEfBasicRepository<Product> productRepo, /*IEfBasicR
     /// <summary>
     /// 商品列表
     /// </summary>
-    /// <param name="search"></param>
+    /// <param name="input"></param>
     /// <returns></returns>
-    public async Task<List<ProductDto>> GetListAsync(ProductSearchListDto search)
+    public async Task<List<ProductDto>> GetListAsync(ProductSearchListDto input)
     {
-        search.TrimStringFields();
+        input.TrimStringFields();
         var whereCondition = ExpressionCreator
                                             .New<Product>()
-                                            .AndIf(search.Ids.IsNotNullOrEmpty(), x => search.Ids.Select(x => x).Distinct().Contains(x.Id))
-                                            .AndIf(search.StatusCode > 0, x => (int)x.Status.Code == search.StatusCode);
+                                            .AndIf(input.Ids.IsNotNullOrEmpty(), x => input.Ids.Select(x => x).Distinct().Contains(x.Id))
+                                            .AndIf(input.StatusCode > 0, x => (int)x.Status.Code == input.StatusCode);
 
         var products = await productRepo.Where(whereCondition).ToListAsync();
         var productsDto = Mapper.Map<List<ProductDto>>(products);
