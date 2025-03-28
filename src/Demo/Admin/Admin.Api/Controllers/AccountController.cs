@@ -117,7 +117,8 @@ public class AccountController(IOptions<JWTOptions> jwtOptions, UserContext user
     {
         if (id != userContext.Id)
         {
-            logger.LogDebug($"id={id},usercontextid={userContext.Id}");
+            var userContextId = userContext.Id;
+            logger.LogDebug("id={id},usercontextid={userContextId}", id, userContextId);
             return Forbid();
         }
         var result = await userService.GetPermissionsAsync(id, requestPermissions, userBelongsRoleIds);

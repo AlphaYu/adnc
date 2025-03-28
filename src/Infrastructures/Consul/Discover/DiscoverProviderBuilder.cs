@@ -49,10 +49,7 @@ public class DiscoverProviderBuilder
             _discoverProvider.CacheSeconds = 5;
         }
 
-        if (_discoverProvider.LoadBalancer is null)
-        {
-            _discoverProvider.LoadBalancer = TypeLoadBalancer.RandomLoad;
-        }
+        _discoverProvider.LoadBalancer ??= TypeLoadBalancer.RandomLoad;
 
         return _discoverProvider;
     }

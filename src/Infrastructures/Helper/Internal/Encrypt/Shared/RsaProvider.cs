@@ -6,9 +6,9 @@
 /// </summary>
 internal sealed class RsaProvider
 {
-    private static readonly Regex _PEMCode = new(@"--+.+?--+|\s+");
-    private static readonly byte[] _SeqOID = [0x30, 0x0D, 0x06, 0x09, 0x2A, 0x86, 0x48, 0x86, 0xF7, 0x0D, 0x01, 0x01, 0x01, 0x05, 0x00];
-    private static readonly byte[] _Ver = [0x02, 0x01, 0x00];
+    private static readonly Regex _pEMCode = new(@"--+.+?--+|\s+");
+    private static readonly byte[] _seqOID = [0x30, 0x0D, 0x06, 0x09, 0x2A, 0x86, 0x48, 0x86, 0xF7, 0x0D, 0x01, 0x01, 0x01, 0x05, 0x00];
+    private static readonly byte[] _ver = [0x02, 0x01, 0x00];
 
     /// <summary>
     /// Convert pem to rsa，support PKCS#1、PKCS#8 
@@ -23,7 +23,7 @@ internal sealed class RsaProvider
 
         var param = new RSAParameters();
 
-        var base64 = _PEMCode.Replace(pem, "");
+        var base64 = _pEMCode.Replace(pem, "");
         var data = Convert.FromBase64String(base64) ?? throw new InvalidDataException("Pem content invalid ");
         var idx = 0;
 
@@ -84,7 +84,7 @@ internal sealed class RsaProvider
         {
             /****Use public key****/
             readLen(0x30);
-            if (!eq(_SeqOID))
+            if (!eq(_seqOID))
             {
                 throw new InvalidDataException("Unknown pem format");
             }
@@ -105,14 +105,14 @@ internal sealed class RsaProvider
             readLen(0x30);
 
             //Read version
-            if (!eq(_Ver))
+            if (!eq(_ver))
             {
                 throw new InvalidDataException("Unknown pem version");
             }
 
             //Check PKCS8
             var idx2 = idx;
-            if (eq(_SeqOID))
+            if (eq(_seqOID))
             {
                 //Read one byte
                 readLen(0x04);
@@ -120,7 +120,7 @@ internal sealed class RsaProvider
                 readLen(0x30);
 
                 //Read version
-                if (!eq(_Ver))
+                if (!eq(_ver))
                 {
                     throw new InvalidDataException("Pem version invalid");
                 }
@@ -214,7 +214,7 @@ internal sealed class RsaProvider
             var index1 = (int)ms.Length;
 
             // Encoded OID sequence for PKCS #1 rsaEncryption szOID_RSA_RSA = "1.2.840.113549.1.1.1"
-            ms.WriteAll(_SeqOID);
+            ms.WriteAll(_seqOID);
 
             //Start with 0x00 
             ms.WriteByte(0x03);
@@ -249,13 +249,13 @@ internal sealed class RsaProvider
             var index1 = (int)ms.Length;
 
             //Write version
-            ms.WriteAll(_Ver);
+            ms.WriteAll(_ver);
 
             //PKCS8 
             int index2 = -1, index3 = -1;
             if (isPKCS8)
             {
-                ms.WriteAll(_SeqOID);
+                ms.WriteAll(_seqOID);
 
                 ms.WriteByte(0x04);
                 index2 = (int)ms.Length;
@@ -263,7 +263,7 @@ internal sealed class RsaProvider
                 ms.WriteByte(0x30);
                 index3 = (int)ms.Length;
 
-                ms.WriteAll(_Ver);
+                ms.WriteAll(_ver);
             }
 
             //Write data
