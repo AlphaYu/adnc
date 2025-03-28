@@ -212,6 +212,8 @@ dotnet_diagnostic.CA1846.severity = warning
 # CA1847: Use string.Contains(char) instead of string.Contains(string) with single characters
 dotnet_diagnostic.CA1847.severity = warning
 
+dotnet_diagnostic.CA1848.severity = silent
+
 # CA1852: Seal internal types
 dotnet_diagnostic.CA1852.severity = warning
 
@@ -314,6 +316,8 @@ dotnet_diagnostic.IDE0051.severity = warning
 
 # IDE0055: All formatting rules
 dotnet_diagnostic.IDE0055.severity = suggestion
+
+dotnet_diagnostic.IDE0057.severity = silent
 
 # IDE0059: Unnecessary assignment to a value
 dotnet_diagnostic.IDE0059.severity = warning
