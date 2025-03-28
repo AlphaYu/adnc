@@ -102,27 +102,6 @@ public abstract class AbstractEfBaseRepository<TDbContext, TEntity>(TDbContext d
             throw new ArgumentException($"实体没有被跟踪，需要指定更新的列");
         }
 
-        #region removed code
-
-#pragma warning disable S125 // Sections of code should not be commented out
-        //实体没有被更改
-        //if (entry.State == EntityState.Unchanged)
-        //{
-        //    var navigations = entry.Navigations.Where(x => x.CurrentValue is ValueObject);
-        //    if (navigations?.Count() > 0)
-        //    {
-        //        foreach (var navigation in navigations)
-        //        {
-        //            DbContext.Add(navigation.CurrentValue);
-        //        }
-        //    }
-        //    else
-        //        return await Task.FromResult(0);
-        //}
-#pragma warning restore S125 // Sections of code should not be commented out
-
-        #endregion removed code
-
         //实体被标记为Added或者Deleted，抛出异常，ADNC应该不会出现这种状态。
         if (entry.State == EntityState.Added || entry.State == EntityState.Deleted)
         {

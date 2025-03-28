@@ -7,7 +7,7 @@ public class BoolConverter : JsonConverter<bool>
     public override bool Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         var obj = reader.GetInt32();
-        return obj == 0 ? false : true;
+        return obj != 0;
     }
 
     public override void Write(Utf8JsonWriter writer, bool value, JsonSerializerOptions options)

@@ -48,7 +48,7 @@ public sealed class WorkerNodeHostedService(ILogger<WorkerNodeHostedService> log
                 catch (Exception ex)
                 {
                     var message = $"{nameof(ExecuteAsync)}:{workerNode.GetWorkerNodeName()}-{IdGenerater.CurrentWorkerId}";
-                    logger.LogError(ex, message);
+                    logger.LogError(ex, "{message}", message);
                     await Task.Delay(_millisecondsDelay / 3, stoppingToken);
                 }
             }

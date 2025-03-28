@@ -14,9 +14,9 @@ public sealed class WorkerNode(ILogger<WorkerNode> logger, IRedisProvider redisP
         {
             _logger.LogInformation("Starting InitWorkerNodes:{_redisKey}", _redisKey);
 
-            var flag = await _distributedLocker.LockAsync(_redisKey);
+            var (success, lockValue) = await _distributedLocker.LockAsync(_redisKey);
 
-            if (!flag.Success)
+            if (!success)
             {
                 await Task.Delay(300);
                 await InitWorkerNodesAsync();
@@ -38,7 +38,7 @@ public sealed class WorkerNode(ILogger<WorkerNode> logger, IRedisProvider redisP
             }
             finally
             {
-                await _distributedLocker.SafedUnLockAsync(_redisKey, flag.LockValue);
+                await _distributedLocker.SafedUnLockAsync(_redisKey, lockValue);
             }
 
             _logger.LogInformation("Finlished InitWorkerNodes:{_redisKey}:{count}", _redisKey, count);

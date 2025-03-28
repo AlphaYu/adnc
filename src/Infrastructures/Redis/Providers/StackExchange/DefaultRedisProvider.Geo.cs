@@ -14,9 +14,9 @@ public partial class DefaultRedisProvider : IRedisProvider
 
         var list = new List<GeoEntry>();
 
-        foreach (var item in values)
+        foreach (var (longitude, latitude, member) in values)
         {
-            list.Add(new GeoEntry(item.longitude, item.latitude, item.member));
+            list.Add(new GeoEntry(longitude, latitude, member));
         }
 
         var res = _redisDb.GeoAdd(cacheKey, list.ToArray());
@@ -30,9 +30,9 @@ public partial class DefaultRedisProvider : IRedisProvider
 
         var list = new List<GeoEntry>();
 
-        foreach (var item in values)
+        foreach (var (longitude, latitude, member) in values)
         {
-            list.Add(new GeoEntry(item.longitude, item.latitude, item.member));
+            list.Add(new GeoEntry(longitude, latitude, member));
         }
 
         var res = await _redisDb.GeoAddAsync(cacheKey, list.ToArray());

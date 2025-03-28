@@ -40,7 +40,7 @@ public class RabbitMqProducer(IRabbitMqConnection rabbitMqConnection, ILogger<Ra
         Policy.Handle<Exception>()
               .WaitAndRetry(3, retryAttempt => TimeSpan.FromSeconds(1), (ex, time, retryCount, content) =>
               {
-                  logger.LogError(ex, string.Format("{0}:{1}", retryCount, ex.Message));
+                  logger.LogError(ex, "Policy.Handle.RetryCount：{retryCount}", retryCount);
               })
               .Execute(async () =>
               {

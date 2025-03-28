@@ -50,7 +50,7 @@ public class CachingHostedService : BackgroundService
                     catch (Exception ex)
                     {
                         var message = $"{nameof(ExecuteAsync)}:{string.Join(",", model.CacheKeys)}";
-                        _logger.LogError(ex, message);
+                        _logger.LogError(ex, "{message}", message);
                         await Task.Delay(_cacheProvider.CacheOptions.Value.LockMs, stoppingToken);
                     }
                 }

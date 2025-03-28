@@ -150,9 +150,8 @@ public sealed class HashConsistentGenerater
 
     private static int GetHashCode(string key, int nTime = 0)
     {
-        using var algorithm = MD5.Create();
         var keyBytes = Encoding.UTF8.GetBytes(key);
-        var digest = algorithm.ComputeHash(keyBytes);
+        var digest = MD5.HashData(keyBytes);
         var rv = (long)(digest[3 + nTime * 4] & 0xFF) << 24
                         | (long)(digest[2 + nTime * 4] & 0xFF) << 16
                         | (long)(digest[1 + nTime * 4] & 0xFF) << 8

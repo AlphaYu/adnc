@@ -15,7 +15,7 @@ public static class ExpressionMethodsExtension
     {
         ArgumentNullException.ThrowIfNull(expression);
 
-        if (!(expression.Body is MethodCallExpression methodCallExpression))
+        if (expression.Body is not MethodCallExpression methodCallExpression)
         {
             throw new InvalidCastException("Cannot be converted to MethodCallExpression");
         }

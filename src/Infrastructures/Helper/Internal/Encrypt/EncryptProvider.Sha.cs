@@ -10,10 +10,8 @@ public partial class EncryptProivder
     public string Sha1(string str)
     {
         ArgumentNullException.ThrowIfNullOrWhiteSpace(str, nameof(str));
-
-        using var sha1 = SHA1.Create();
         var bytes_sha1_in = Encoding.UTF8.GetBytes(str);
-        var bytes_sha1_out = sha1.ComputeHash(bytes_sha1_in);
+        var bytes_sha1_out = SHA1.HashData(bytes_sha1_in);
         var str_sha1_out = BitConverter.ToString(bytes_sha1_out);
         str_sha1_out = str_sha1_out.Replace("-", "");
         return str_sha1_out;
@@ -27,10 +25,8 @@ public partial class EncryptProivder
     public string Sha256(string srcString)
     {
         ArgumentNullException.ThrowIfNullOrWhiteSpace(srcString, nameof(srcString));
-
-        using var sha256 = SHA256.Create();
         var bytes_sha256_in = Encoding.UTF8.GetBytes(srcString);
-        var bytes_sha256_out = sha256.ComputeHash(bytes_sha256_in);
+        var bytes_sha256_out = SHA256.HashData(bytes_sha256_in);
         var str_sha256_out = BitConverter.ToString(bytes_sha256_out);
         str_sha256_out = str_sha256_out.Replace("-", "");
         return str_sha256_out;
@@ -44,10 +40,8 @@ public partial class EncryptProivder
     public string Sha384(string srcString)
     {
         ArgumentNullException.ThrowIfNullOrWhiteSpace(srcString, nameof(srcString));
-
-        using var sha384 = SHA384.Create();
         var bytes_sha384_in = Encoding.UTF8.GetBytes(srcString);
-        var bytes_sha384_out = sha384.ComputeHash(bytes_sha384_in);
+        var bytes_sha384_out = SHA384.HashData(bytes_sha384_in);
         var str_sha384_out = BitConverter.ToString(bytes_sha384_out);
         str_sha384_out = str_sha384_out.Replace("-", "");
         return str_sha384_out;
@@ -62,10 +56,8 @@ public partial class EncryptProivder
     public string Sha512(string srcString)
     {
         ArgumentNullException.ThrowIfNullOrWhiteSpace(srcString, nameof(srcString));
-
-        using var sha512 = SHA512.Create();
         var bytes_sha512_in = Encoding.UTF8.GetBytes(srcString);
-        var bytes_sha512_out = sha512.ComputeHash(bytes_sha512_in);
+        var bytes_sha512_out = SHA512.HashData(bytes_sha512_in);
         var str_sha512_out = BitConverter.ToString(bytes_sha512_out);
         str_sha512_out = str_sha512_out.Replace("-", "");
         return str_sha512_out;

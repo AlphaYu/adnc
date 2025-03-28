@@ -18,7 +18,7 @@ public class DefaultCachingKeyGenerator : ICachingKeyGenerator
     public string GetCacheKey(MethodInfo methodInfo, object[] args, string prefix)
     {
         IEnumerable<string> methodArguments = ["0"];
-        if (args?.Any() == true)
+        if (args?.Length > 0)
         {
             var cacheParams = methodInfo.GetParameters().Where(x => x.GetCustomAttribute<CachingParamAttribute>() != null)
                                                                             .Select(x => x.Position);
@@ -39,7 +39,7 @@ public class DefaultCachingKeyGenerator : ICachingKeyGenerator
     public string[] GetCacheKeys(MethodInfo methodInfo, object[] args, string prefix)
     {
         var cacheKeys = new List<string>();
-        if (args?.Any() == true && args[0].GetType().IsArray)
+        if (args?.Length > 0 && args[0].GetType().IsArray)
         {
             foreach (var arg0 in (Array)args[0])
             {

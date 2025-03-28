@@ -28,7 +28,7 @@ internal sealed class RsaProvider
         var idx = 0;
 
         //read  length
-        Func<byte, int> readLen = (first) =>
+        int readLen(byte first)
         {
             if (data[idx] == first)
             {
@@ -49,9 +49,9 @@ internal sealed class RsaProvider
                 }
             }
             throw new InvalidDataException("Not found any content in pem file");
-        };
+        }
         //read module length
-        Func<byte[]> readBlock = () =>
+        byte[] readBlock()
         {
             var len = readLen(0x02);
             if (data[idx] == 0x00)
@@ -62,9 +62,9 @@ internal sealed class RsaProvider
             var val = data.Sub(idx, len);
             idx += len;
             return val;
-        };
+        }
 
-        Func<byte[], bool> eq = (byts) =>
+        bool eq(byte[] byts)
         {
             for (var i = 0; i < byts.Length; i++, idx++)
             {
@@ -78,7 +78,7 @@ internal sealed class RsaProvider
                 }
             }
             return true;
-        };
+        }
 
         if (pem.Contains("PUBLIC KEY"))
         {
@@ -160,7 +160,7 @@ internal sealed class RsaProvider
     {
         var ms = new MemoryStream();
 
-        Action<int> writeLenByte = (len) =>
+        void writeLenByte(int len)
         {
             if (len < 0x80)
             {
@@ -177,9 +177,9 @@ internal sealed class RsaProvider
                 ms.WriteByte((byte)(len >> 8 & 0xff));
                 ms.WriteByte((byte)(len & 0xff));
             }
-        };
+        }
         //write moudle data
-        Action<byte[]> writeBlock = (byts) =>
+        void writeBlock(byte[] byts)
         {
             var addZero = byts[0] >> 4 >= 0x8;
             ms.WriteByte(0x02);
@@ -191,9 +191,9 @@ internal sealed class RsaProvider
                 ms.WriteByte(0x00);
             }
             ms.Write(byts, 0, byts.Length);
-        };
+        }
 
-        Func<int, byte[], byte[]> writeLen = (index, byts) =>
+        byte[] writeLen(int index, byte[] byts)
         {
             var len = byts.Length - index;
 
@@ -203,7 +203,7 @@ internal sealed class RsaProvider
             ms.Write(byts, index, len);
 
             return ms.ToArray();
-        };
+        }
 
         if (!includePrivateParameters)
         {

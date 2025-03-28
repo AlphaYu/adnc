@@ -74,7 +74,7 @@ public static class IntExtension
         }
 
         var sqrt = (int)Math.Sqrt(@this);
-        for (var t = 3; t <= sqrt; t = t + 2)
+        for (var t = 3; t <= sqrt; t += 2)
         {
             if (@this % t == 0)
             {

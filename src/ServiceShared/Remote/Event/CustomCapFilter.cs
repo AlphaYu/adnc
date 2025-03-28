@@ -26,7 +26,7 @@ public sealed class DefaultCapFilter : SubscribeFilter
 
     public override Task OnSubscribeExceptionAsync(ExceptionContext context)
     {
-        _logger.LogError(context.Exception, context.Exception.Message);
+        _logger.LogError(context.Exception, "DefaultCapFilter.OnSubscribeExceptionAsync");
         return Task.CompletedTask;
     }
 }

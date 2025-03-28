@@ -36,7 +36,7 @@ public class RealIpMiddleware
         }
 
         context.Connection.RemoteIpAddress = IPAddress.Parse(realIp);
-        _logger.LogDebug($"Resolve real ip success: {context.Connection.RemoteIpAddress}");
+        _logger.LogDebug("Resolve real ip success: {realIp}", realIp);
 
         await _next(context);
     }

@@ -42,7 +42,7 @@ public sealed class CustomExceptionFilterAttribute : ExceptionFilterAttribute
         {
             title = _env.IsDevelopment() ? exception.Message : $"系统异常";
             detial = _env.IsDevelopment() ? exception.GetExceptionDetail() : $"系统异常,请联系管理员({eventId})";
-            _logger.LogError(eventId, exception, exception.Message, requestUrl, userContext?.Id);
+            _logger.LogError(eventId, exception, "{userId}:{requestUrl}", userContext?.Id, requestUrl);
         }
         var problemDetails = new ProblemDetails { Title = title, Detail = detial, Type = type, Status = status };
 

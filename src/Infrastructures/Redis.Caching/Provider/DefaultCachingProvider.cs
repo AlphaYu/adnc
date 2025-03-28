@@ -137,8 +137,8 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
             _logger?.LogInformation("Cache Missed : cachekey = {cacheKey}", cacheKey);
         }
 
-        var flag = _redisDb.Lock(cacheKey, _cacheOptions.Value.LockMs / 1000);
-        if (!flag.Success)
+        var (success, lockValue) = _redisDb.Lock(cacheKey, _cacheOptions.Value.LockMs / 1000);
+        if (!success)
         {
             Thread.Sleep(_cacheOptions.Value.SleepMs);
             return Get(cacheKey, dataRetriever, expiration);
@@ -164,7 +164,7 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
         finally
         {
             //remove mutex key
-            _redisDb.SafedUnLock(cacheKey, flag.LockValue);
+            _redisDb.SafedUnLock(cacheKey, lockValue);
         }
     }
 

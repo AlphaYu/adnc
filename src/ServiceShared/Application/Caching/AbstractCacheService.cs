@@ -49,7 +49,7 @@ public abstract class AbstractCacheService : ICachePreheatable
         {
             LocalVariables.Instance.Queue.Enqueue(new LocalVariables.Model(cacheKeys, expireDt));
             var logger = ServiceProvider.Value.GetRequiredService<Lazy<ILogger<AbstractCacheService>>>();
-            logger.Value.LogError(ex, ex.Message);
+            logger.Value.LogError(ex, "{message}", ex.Message);
         }
     }
 }

@@ -13,9 +13,8 @@ public partial class EncryptProivder
     public string Md5(string srcString, bool isLower = false, MD5Length length = MD5Length.L32)
     {
         ArgumentNullException.ThrowIfNullOrWhiteSpace(srcString, nameof(srcString));
-        using var md5 = MD5.Create();
         var bytes_md5_in = Encoding.UTF8.GetBytes(srcString);
-        var bytes_md5_out = md5.ComputeHash(bytes_md5_in);
+        var bytes_md5_out = MD5.HashData(bytes_md5_in);
 
         var str_md5_out = length == MD5Length.L32
     ? BitConverter.ToString(bytes_md5_out)

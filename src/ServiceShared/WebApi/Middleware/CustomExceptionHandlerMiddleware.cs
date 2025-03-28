@@ -53,7 +53,7 @@ public class CustomExceptionHandlerMiddleware(RequestDelegate next, IWebHostEnvi
     {
         var requestId = System.Diagnostics.Activity.Current?.Id ?? context.TraceIdentifier;
         var eventId = new EventId(exception.HResult, requestId);
-        logger.LogError(eventId, exception, exception.Message);
+        logger.LogError(eventId, exception, "CustomExceptionHandlerMiddleware.HandleExceptionAsync");
 
         var status = 500;
         var type = string.Concat("https://httpstatuses.com/", status);

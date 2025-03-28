@@ -26,10 +26,7 @@ public sealed class RabbitMqConnection : IRabbitMqConnection
         {
             lock (_lockObject)
             {
-                if (_uniqueInstance is null)
-                {
-                    _uniqueInstance = new RabbitMqConnection(options.Value, clientProvidedName, logger);
-                }
+                _uniqueInstance ??= new RabbitMqConnection(options.Value, clientProvidedName, logger);
             }
         }
         return _uniqueInstance;
@@ -41,10 +38,7 @@ public sealed class RabbitMqConnection : IRabbitMqConnection
         {
             lock (_lockObject)
             {
-                if (_uniqueInstance is null)
-                {
-                    _uniqueInstance = new RabbitMqConnection(options, clientProvidedName, logger);
-                }
+                _uniqueInstance ??= new RabbitMqConnection(options, clientProvidedName, logger);
             }
         }
         return _uniqueInstance;
@@ -76,7 +70,7 @@ public sealed class RabbitMqConnection : IRabbitMqConnection
                       throw ex;
                   }
 
-                  _logger.LogError(ex, string.Format("{0}:{1}", retryCount, ex.Message));
+                  _logger.LogError(ex, "Policy.Handle.RetryCount：{retryCount}", retryCount);
               })
               .Execute(() =>
               {
