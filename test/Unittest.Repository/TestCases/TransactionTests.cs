@@ -147,7 +147,7 @@ public class TransactionTests : IClassFixture<EfCoreDbcontextFixture>
         Assert.Equal(0, cusTotal);
 
         var customerFromDb = await _customerRsp.FindAsync(id);
-        var financeFromDb = await _customerRsp.FetchAsync(x => x.Id == id, c => c);
+        var financeFromDb = await _customerRsp.FetchAsync(x => x.Id == id, c => c.FinanceInfo);
 
         Assert.Null(customerFromDb);
         Assert.Null(financeFromDb);
@@ -232,23 +232,23 @@ public class TransactionTests : IClassFixture<EfCoreDbcontextFixture>
             var customer = await InsertCustomer();
 
             //raw sql find
-            var sql = @"SELECT * FROM CustomerFinance WHERE Id=@Id";
+            var sql = @"SELECT * FROM customerfinance WHERE Id=@Id";
             var dbCusFinance = await _cusFinanceRsp.AdoQuerier.QueryFirstAsync(sql, new { customer.Id }, _cusFinanceRsp.CurrentDbTransaction);
             Assert.NotNull(dbCusFinance);
 
-            var sql2 = @"SELECT * FROM Customer ORDER BY Id ASC";
+            var sql2 = @"SELECT * FROM customer ORDER BY Id ASC";
             var dbCustomer = await _customerRsp.AdoQuerier.QueryFirstAsync<Customer>(sql2, null, _customerRsp.CurrentDbTransaction);
             Assert.NotNull(dbCustomer);
             Assert.True(dbCustomer.Id > 0);
 
             //raw update sql
-            var rawSql1 = "update Customer set nickname='test8888' where id=1000000000";
+            var rawSql1 = "update customer set nickname='test8888' where id=1000000000";
             var rows = await _customerRsp.ExecuteSqlRawAsync(rawSql1);
             Assert.True(rows == 0);
 
             //raw update formatsql
             var newNickName = "test8888";
-            FormattableString formatSql2 = $"update Customer set nickname={newNickName} where id={dbCustomer.Id}";
+            FormattableString formatSql2 = $"update customer set nickname={newNickName} where id={dbCustomer.Id}";
             rows = await _customerRsp.ExecuteSqlInterpolatedAsync(formatSql2);
             Assert.True(rows > 0);
 

@@ -40,7 +40,7 @@ public class MaxscaleTests : IClassFixture<EfCoreDbcontextFixture>
         var result = await InsertCustomer();
         var cusFinance = await InsertCusFinance(result.Id);
 
-        var cus = await _cusRsp.AdoQuerier.QueryAsync<Customer>("select * from customer where id=@id", new { id = result.Id }, writeDb: true);
+        var cus = await _cusRsp.AdoQuerier.QueryAsync<Customer>("select * FROM customer where id=@id", new { id = result.Id }, writeDb: true);
         Assert.NotNull(cus);
 
         await _cusFinanceRsp.DeleteAsync(result.Id);

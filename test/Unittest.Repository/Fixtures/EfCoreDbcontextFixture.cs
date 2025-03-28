@@ -4,33 +4,40 @@ namespace Adnc.Infra.Unittest.Reposity.Fixtures;
 
 public class EfCoreDbcontextFixture
 {
-    public IServiceProvider Container { get; private set; }
-    public IConfiguration Configuration { get; private set; }
-
-    public EfCoreDbcontextFixture()
+    private IServiceProvider? _container;
+    public IServiceProvider Container
     {
-        Configuration = new ConfigurationBuilder()
+        get
+        {
+            var serverVersion = new MariaDbServerVersion(new Version(10, 5, 4));
+            return _container ??= new ServiceCollection()
+                                            .AddScoped(provider => new Operater { Id = 1000000000001, Account = "unittest", Name = "unittest" })
+                                            .AddScoped<IEntityInfo, EntityInfo>()
+                                            .AddAdncInfraDapper()
+                                            .AddAdncInfraEfCoreMySql(options =>
+                                            {
+                                                var connectionString = Configuration["Mysql:ConnectionString"];
+                                                options.UseLowerCaseNamingConvention();
+                                                options.UseMySql(connectionString, serverVersion, optionsBuilder =>
+                                                {
+                                                    optionsBuilder.MinBatchSize(4)
+                                                                            .MigrationsAssembly(GetType().Assembly.FullName)
+                                                                            .UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
+                                                });
+                                            })
+                                            .BuildServiceProvider();
+        }
+    }
+
+    private IConfiguration? _configuration;
+    public IConfiguration Configuration
+    {
+        get
+        {
+            return _configuration ??= new ConfigurationBuilder()
                                             .SetBasePath(Directory.GetCurrentDirectory())
                                             .AddJsonFile("appsettings.json", optional: true)
                                             .Build();
-
-        var serverVersion = new MariaDbServerVersion(new Version(10, 5, 4));
-        var services = new ServiceCollection();
-        services
-            .AddScoped(provider => new Operater { Id = 1000000000001, Account = "unittest", Name = "unittest" })
-            .AddScoped<IEntityInfo, EntityInfo>()
-            .AddAdncInfraDapper()
-            .AddAdncInfraEfCoreMySql(options =>
-             {
-                 var connectionString = Configuration["Mysql:ConnectionString"];
-                 options.UseLowerCaseNamingConvention();
-                 options.UseMySql(connectionString, serverVersion, optionsBuilder =>
-                 {
-                     optionsBuilder.MinBatchSize(4)
-                                             .MigrationsAssembly(GetType().Assembly.FullName)
-                                             .UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
-                 });
-             });
-        Container = services.BuildServiceProvider();
+        }
     }
 }
