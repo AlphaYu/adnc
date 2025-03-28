@@ -295,7 +295,7 @@ public sealed class CachingAsyncInterceptor : IAsyncInterceptor
     {
         invocation.Proceed();
         var task = (Task<TResult>)invocation.ReturnValue;
-        TResult result = await task;
+        var result = await task;
         return result;
     }
 

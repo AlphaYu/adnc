@@ -11,7 +11,7 @@ public class BasicTokenGenerator(IHttpContextAccessor httpContextAccessor, IOpti
     public virtual string Create()
     {
         var userContext = httpContextAccessor.HttpContext.RequestServices.GetService<UserContext>();
-        long userId = userContext is null ? 0 : userContext.Id;
+        var userId = userContext is null ? 0 : userContext.Id;
         logger.LogDebug("UserContext:{userId}", userId);
         var token = BasicTokenValidator.PackToBase64(userId, basicOptions.Value);
         return token;

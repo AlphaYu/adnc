@@ -16,7 +16,7 @@ public abstract class AbstractAuthenticationProcessor
             return Array.Empty<Claim>();
         }
 
-        var parseResult = long.TryParse(idClaim.Value, out long userId);
+        var parseResult = long.TryParse(idClaim.Value, out var userId);
         if (parseResult == false)
         {
             throw new InvalidCastException(nameof(idClaim.Value));

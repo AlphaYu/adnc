@@ -216,7 +216,7 @@ public static class CachingDiagnosticListenerExtensions
     {
         if (@this.IsEnabled(CachingBeforeSetCache))
         {
-            Guid operationId = Guid.NewGuid();
+            var operationId = Guid.NewGuid();
 
             @this.Write(CachingBeforeSetCache, new DiagnosticDataWrapper<BeforeSetRequestEventData>
             {
@@ -235,7 +235,7 @@ public static class CachingDiagnosticListenerExtensions
     {
         if (@this.IsEnabled(CachingBeforeRemoveCache))
         {
-            Guid operationId = Guid.NewGuid();
+            var operationId = Guid.NewGuid();
             @this.Write(CachingBeforeRemoveCache, new DiagnosticDataWrapper<BeforeRemoveRequestEventData>
             {
                 OperationId = operationId,
@@ -252,7 +252,7 @@ public static class CachingDiagnosticListenerExtensions
     {
         if (@this.IsEnabled(CachingBeforeGetCache))
         {
-            Guid operationId = Guid.NewGuid();
+            var operationId = Guid.NewGuid();
 
             @this.Write(CachingBeforeGetCache, new DiagnosticDataWrapper<BeforeGetRequestEventData>
             {
@@ -271,7 +271,7 @@ public static class CachingDiagnosticListenerExtensions
     {
         if (@this.IsEnabled(CachingBeforeExistsCache))
         {
-            Guid operationId = Guid.NewGuid();
+            var operationId = Guid.NewGuid();
 
             @this.Write(CachingBeforeExistsCache, new DiagnosticDataWrapper<BeforeExistsRequestEventData>
             {
@@ -290,7 +290,7 @@ public static class CachingDiagnosticListenerExtensions
     {
         if (@this.IsEnabled(CachingBeforeFlushCache))
         {
-            Guid operationId = Guid.NewGuid();
+            var operationId = Guid.NewGuid();
 
             @this.Write(CachingBeforeFlushCache, new DiagnosticDataWrapper<EventData>
             {
@@ -309,7 +309,7 @@ public static class CachingDiagnosticListenerExtensions
     {
         if (@this.IsEnabled(CachingBeforeSubscribeMessage))
         {
-            Guid operationId = Guid.NewGuid();
+            var operationId = Guid.NewGuid();
 
             @this.Write(CachingBeforeSubscribeMessage, new DiagnosticDataWrapper<BeforeSubscribeMessageRequestEventData>
             {
@@ -328,7 +328,7 @@ public static class CachingDiagnosticListenerExtensions
     {
         if (@this.IsEnabled(CachingBeforePublishMessage))
         {
-            Guid operationId = Guid.NewGuid();
+            var operationId = Guid.NewGuid();
 
             @this.Write(CachingBeforePublishMessage, new
             {

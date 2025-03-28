@@ -78,7 +78,7 @@ public abstract class BaseRabbitMqConsumer : IHostedService
 
         consumer.ReceivedAsync += async (model, ea) =>
         {
-            byte[] body = ea.Body.ToArray();
+            var body = ea.Body.ToArray();
             var message = Encoding.UTF8.GetString(body);
             var result = await Process(ea.Exchange, ea.RoutingKey, message);
 

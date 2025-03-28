@@ -169,7 +169,7 @@ public static class DataTimeExtension
     public static int GetDaysOfYear(this in DateTime dt)
     {
         //取得传入参数的年份部分，用来判断是否是闰年
-        int n = dt.Year;
+        var n = dt.Year;
         return IsRuYear(n) ? 366 : 365;
     }
 
@@ -309,7 +309,7 @@ public static class DataTimeExtension
     /// <param name="lastDay">最后一天</param>
     public static void ReturnDateFormat(this DateTime _, int month, out string firstDay, out string lastDay)
     {
-        int year = DateTime.Now.Year + month / 12;
+        var year = DateTime.Now.Year + month / 12;
         if (month != 12)
         {
             month %= 12;
@@ -388,8 +388,8 @@ public static class DataTimeExtension
     /// <returns>日</returns>
     public static int GetMonthLastDate(this DateTime _, int year, int month)
     {
-        DateTime lastDay = new DateTime(year, month, new GregorianCalendar().GetDaysInMonth(year, month));
-        int day = lastDay.Day;
+        var lastDay = new DateTime(year, month, new GregorianCalendar().GetDaysInMonth(year, month));
+        var day = lastDay.Day;
         return day;
     }
 
@@ -401,8 +401,8 @@ public static class DataTimeExtension
     /// <returns>小时差</returns>
     public static string GetTimeDelay(this in DateTime dtStar, DateTime dtEnd)
     {
-        long lTicks = (dtEnd.Ticks - dtStar.Ticks) / 10000000;
-        string sTemp = (lTicks / 3600).ToString().PadLeft(2, '0') + ":";
+        var lTicks = (dtEnd.Ticks - dtStar.Ticks) / 10000000;
+        var sTemp = (lTicks / 3600).ToString().PadLeft(2, '0') + ":";
         sTemp += (lTicks % 3600 / 60).ToString().PadLeft(2, '0') + ":";
         sTemp += (lTicks % 3600 % 60).ToString().PadLeft(2, '0');
         return sTemp;
@@ -448,15 +448,15 @@ public static class DataTimeExtension
     /// <returns>时间差</returns>
     public static string GetDiffTime(this in DateTime beginTime, in DateTime endTime)
     {
-        string strResout = string.Empty;
+        var strResout = string.Empty;
         //获得2时间的时间间隔秒计算
-        TimeSpan span = endTime.Subtract(beginTime);
-        int sec = Convert.ToInt32(span.TotalSeconds);
-        int minutes = 1 * 60;
-        int hours = minutes * 60;
-        int day = hours * 24;
-        int month = day * 30;
-        int year = month * 12;
+        var span = endTime.Subtract(beginTime);
+        var sec = Convert.ToInt32(span.TotalSeconds);
+        var minutes = 1 * 60;
+        var hours = minutes * 60;
+        var day = hours * 24;
+        var month = day * 30;
+        var year = month * 12;
 
         //提醒时间,到了返回1,否则返回0
         if (sec > year)

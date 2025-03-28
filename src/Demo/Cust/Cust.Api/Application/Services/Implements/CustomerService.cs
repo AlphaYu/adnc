@@ -143,8 +143,8 @@ public class CustomerAppService(IEfRepository<Customer> customerRepo, IEfReposit
             var statusOptions = dictOptins.FirstOrDefault(x => x.Code == "exchage_status")?.DictDataList ?? [];
             foreach (var tranlogDto in tranlogDtos)
             {
-                string exchageStatus = tranlogDto.ExchageStatus.ToString();
-                string exchangeType = tranlogDto.ExchangeType.ToString();
+                var exchageStatus = tranlogDto.ExchageStatus.ToString();
+                var exchangeType = tranlogDto.ExchangeType.ToString();
                 tranlogDto.ExchangeTypeName = behaviorOptions.FirstOrDefault(x => x.Value == exchangeType)?.Label ?? string.Empty;
                 tranlogDto.ExchageStatusName = statusOptions.FirstOrDefault(x => x.Value == exchageStatus)?.Label ?? string.Empty;
             }

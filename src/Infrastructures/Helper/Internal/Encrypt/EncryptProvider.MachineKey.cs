@@ -44,13 +44,13 @@ public partial class EncryptProivder
     private static string CreateMachineKey(int length)
     {
 
-        byte[] random = new byte[length / 2];
+        var random = new byte[length / 2];
 
-        RandomNumberGenerator rng = RandomNumberGenerator.Create();
+        var rng = RandomNumberGenerator.Create();
         rng.GetBytes(random);
 
-        StringBuilder machineKey = new StringBuilder(length);
-        for (int i = 0; i < random.Length; i++)
+        var machineKey = new StringBuilder(length);
+        for (var i = 0; i < random.Length; i++)
         {
             machineKey.Append(string.Format("{0:X2}", random[i]));
         }

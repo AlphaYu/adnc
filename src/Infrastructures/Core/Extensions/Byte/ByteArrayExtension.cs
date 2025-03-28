@@ -24,8 +24,8 @@ public static class ByteArrayExtension
     /// <returns>The hex string.</returns>
     public static string ToHexString(this byte[] bytes)
     {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < bytes.Length; i++)
+        var sb = new StringBuilder();
+        for (var i = 0; i < bytes.Length; i++)
         {
             sb.Append(bytes[i].ToString("X2"));
         }

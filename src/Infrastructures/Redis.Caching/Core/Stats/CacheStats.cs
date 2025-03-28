@@ -55,7 +55,7 @@ public class CacheStats
     /// <returns>The counter.</returns>
     private CacheStatsCounter GetCounter()
     {
-        if (!_counters.TryGetValue(DEFAULT_KEY, out CacheStatsCounter? counter))
+        if (!_counters.TryGetValue(DEFAULT_KEY, out var counter))
         {
             counter = new CacheStatsCounter();
             if (_counters.TryAdd(DEFAULT_KEY, counter))

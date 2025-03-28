@@ -154,7 +154,7 @@ public sealed class HashConsistentGenerater
         using var algorithm = MD5.Create();
         var keyBytes = Encoding.UTF8.GetBytes(key);
         var digest = algorithm.ComputeHash(keyBytes);
-        long rv = (long)(digest[3 + nTime * 4] & 0xFF) << 24
+        var rv = (long)(digest[3 + nTime * 4] & 0xFF) << 24
                         | (long)(digest[2 + nTime * 4] & 0xFF) << 16
                         | (long)(digest[1 + nTime * 4] & 0xFF) << 8
                         | (long)digest[0 + nTime * 4] & 0xFF;

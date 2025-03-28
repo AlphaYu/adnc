@@ -18,7 +18,7 @@ public partial class EncryptProivder
             throw new ArgumentException($" Key size min value is 2048!");
         }
 
-        using (RSA rsa = RSA.Create())
+        using (var rsa = RSA.Create())
         {
             rsa.KeySize = keySize;
 
@@ -52,7 +52,7 @@ public partial class EncryptProivder
             throw new ArgumentException($" Key size min value is 2048!");
         }
 
-        using (RSA rsa = RSA.Create())
+        using (var rsa = RSA.Create())
         {
             rsa.KeySize = keySize;
             var publicKey = Convert.ToBase64String(rsa.ExportRSAPublicKey());
@@ -74,7 +74,7 @@ public partial class EncryptProivder
             throw new ArgumentException($" Key size min value is 2048!");
         }
 
-        using (RSA rsa = RSA.Create())
+        using (var rsa = RSA.Create())
         {
             rsa.KeySize = keySize;
 
@@ -126,7 +126,7 @@ public partial class EncryptProivder
     {
         ArgumentNullException.ThrowIfNullOrWhiteSpace(pkcsKey, nameof(pkcsKey));
 
-        RSA rsa = RSA.Create();
+        var rsa = RSA.Create();
 
         var keySource = Convert.FromBase64String(pkcsKey);
 
@@ -183,9 +183,9 @@ public partial class EncryptProivder
         ArgumentNullException.ThrowIfNullOrWhiteSpace(privateKey, nameof(privateKey));
         ArgumentNullException.ThrowIfNull(rSASignaturePadding, nameof(rSASignaturePadding));
 
-        byte[] dataBytes = encoding.GetBytes(content);
+        var dataBytes = encoding.GetBytes(content);
 
-        using (RSA rsa = RSA.Create())
+        using (var rsa = RSA.Create())
         {
             rsa.FromJsonString(privateKey);
             var signBytes = rsa.SignData(dataBytes, hashAlgorithmName, rSASignaturePadding);
@@ -221,10 +221,10 @@ public partial class EncryptProivder
         ArgumentNullException.ThrowIfNullOrWhiteSpace(content, nameof(content));
         ArgumentNullException.ThrowIfNullOrWhiteSpace(signStr, nameof(signStr));
 
-        byte[] dataBytes = encoding.GetBytes(content);
-        byte[] signBytes = Convert.FromBase64String(signStr);
+        var dataBytes = encoding.GetBytes(content);
+        var signBytes = Convert.FromBase64String(signStr);
 
-        using (RSA rsa = RSA.Create())
+        using (var rsa = RSA.Create())
         {
             rsa.FromJsonString(publickKey);
             return rsa.VerifyData(dataBytes, signBytes, hashAlgorithmName, rSASignaturePadding);
@@ -239,7 +239,7 @@ public partial class EncryptProivder
     /// <returns>encrypted string</returns>
     public string RSAEncrypt(string publicKey, string srcString)
     {
-        string encryptStr = RSAEncrypt(publicKey, srcString, RSAEncryptionPadding.OaepSHA512);
+        var encryptStr = RSAEncrypt(publicKey, srcString, RSAEncryptionPadding.OaepSHA512);
         return encryptStr;
     }
 
@@ -251,7 +251,7 @@ public partial class EncryptProivder
     /// <returns></returns>
     public string RSAEncryptWithPem(string publicKey, string srcString)
     {
-        string encryptStr = RSAEncrypt(publicKey, srcString, RSAEncryptionPadding.Pkcs1, true);
+        var encryptStr = RSAEncrypt(publicKey, srcString, RSAEncryptionPadding.Pkcs1, true);
         return encryptStr;
     }
 
@@ -290,7 +290,7 @@ public partial class EncryptProivder
                 throw new OutofMaxlengthException($"'{srcString}' is out of max encrypt length {maxLength}", maxLength, rsa.KeySize, padding);
             }
 
-            byte[] encryptBytes = rsa.Encrypt(rawBytes, padding);
+            var encryptBytes = rsa.Encrypt(rawBytes, padding);
             return encryptBytes.ToHexString();
         }
     }
@@ -303,7 +303,7 @@ public partial class EncryptProivder
     /// <returns>encrypted byte[]</returns>
     public byte[] RSAEncrypt(string publicKey, byte[] data)
     {
-        byte[] encryptBytes = RSAEncrypt(publicKey, data, RSAEncryptionPadding.OaepSHA512);
+        var encryptBytes = RSAEncrypt(publicKey, data, RSAEncryptionPadding.OaepSHA512);
         return encryptBytes;
     }
 
@@ -315,7 +315,7 @@ public partial class EncryptProivder
     /// <returns></returns>
     public byte[] RSAEncryptWithPem(string publicKey, byte[] data)
     {
-        byte[] encryptBytes = RSAEncrypt(publicKey, data, RSAEncryptionPadding.Pkcs1, true);
+        var encryptBytes = RSAEncrypt(publicKey, data, RSAEncryptionPadding.Pkcs1, true);
         return encryptBytes;
     }
 
@@ -354,7 +354,7 @@ public partial class EncryptProivder
                 throw new OutofMaxlengthException($"data is out of max encrypt length {maxLength}", maxLength, rsa.KeySize, padding);
             }
 
-            byte[] encryptBytes = rsa.Encrypt(rawBytes, padding);
+            var encryptBytes = rsa.Encrypt(rawBytes, padding);
             return encryptBytes;
         }
     }
@@ -367,7 +367,7 @@ public partial class EncryptProivder
     /// <returns>Decrypted string</returns>
     public string RSADecrypt(string privateKey, string srcString)
     {
-        string decryptStr = RSADecrypt(privateKey, srcString, RSAEncryptionPadding.OaepSHA512);
+        var decryptStr = RSADecrypt(privateKey, srcString, RSAEncryptionPadding.OaepSHA512);
         return decryptStr;
     }
 
@@ -379,7 +379,7 @@ public partial class EncryptProivder
     /// <returns></returns>
     public string RSADecryptWithPem(string privateKey, string srcString)
     {
-        string decryptStr = RSADecrypt(privateKey, srcString, RSAEncryptionPadding.Pkcs1, true);
+        var decryptStr = RSADecrypt(privateKey, srcString, RSAEncryptionPadding.Pkcs1, true);
         return decryptStr;
     }
 
@@ -410,8 +410,8 @@ public partial class EncryptProivder
 
         using (rsa)
         {
-            byte[] srcBytes = srcString.ToBytes();
-            byte[] decryptBytes = rsa.Decrypt(srcBytes, padding);
+            var srcBytes = srcString.ToBytes();
+            var decryptBytes = rsa.Decrypt(srcBytes, padding);
             return Encoding.UTF8.GetString(decryptBytes);
         }
     }
@@ -424,7 +424,7 @@ public partial class EncryptProivder
     /// <returns>Decrypted string</returns>
     public byte[] RSADecrypt(string privateKey, byte[] data)
     {
-        byte[] decryptBytes = RSADecrypt(privateKey, data, RSAEncryptionPadding.OaepSHA512);
+        var decryptBytes = RSADecrypt(privateKey, data, RSAEncryptionPadding.OaepSHA512);
         return decryptBytes;
     }
 
@@ -436,7 +436,7 @@ public partial class EncryptProivder
     /// <returns></returns>
     public byte[] RSADecryptWithPem(string privateKey, byte[] data)
     {
-        byte[] decryptBytes = RSADecrypt(privateKey, data, RSAEncryptionPadding.Pkcs1, true);
+        var decryptBytes = RSADecrypt(privateKey, data, RSAEncryptionPadding.Pkcs1, true);
         return decryptBytes;
     }
 
@@ -467,8 +467,8 @@ public partial class EncryptProivder
 
         using (rsa)
         {
-            byte[] srcBytes = data;
-            byte[] decryptBytes = rsa.Decrypt(srcBytes, padding);
+            var srcBytes = data;
+            var decryptBytes = rsa.Decrypt(srcBytes, padding);
             return decryptBytes;
         }
     }
@@ -481,7 +481,7 @@ public partial class EncryptProivder
     public RSA RSAFromJson(string rsaKey)
     {
         ArgumentNullException.ThrowIfNullOrWhiteSpace(rsaKey, nameof(rsaKey));
-        RSA rsa = RSA.Create();
+        var rsa = RSA.Create();
 
         rsa.FromJsonString(rsaKey);
         return rsa;
@@ -494,7 +494,7 @@ public partial class EncryptProivder
     /// <returns></returns>
     public RSAKey CreateRsaKey(RsaSize rsaSize = RsaSize.R2048)
     {
-        using (RSA rsa = RSA.Create())
+        using (var rsa = RSA.Create())
         {
             rsa.KeySize = (int)rsaSize;
 
@@ -538,7 +538,7 @@ public partial class EncryptProivder
 
         if (includePrivate)
         {
-            string privateKey = rsa.ToJsonString(true);
+            var privateKey = rsa.ToJsonString(true);
             rsaKey.PrivateKey = privateKey;
         }
         return rsaKey;

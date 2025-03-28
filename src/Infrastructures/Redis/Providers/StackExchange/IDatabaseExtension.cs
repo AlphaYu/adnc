@@ -40,7 +40,7 @@ public static class DatabaseExtension
         var lockValue = Guid.NewGuid().ToString();
         var timeoutMilliseconds = timeoutSeconds * 1000;
         var expiration = TimeSpan.FromMilliseconds(timeoutMilliseconds);
-        bool flag = await redisDb.StringSetAsync(lockKey, lockValue, expiration, When.NotExists);
+        var flag = await redisDb.StringSetAsync(lockKey, lockValue, expiration, When.NotExists);
         if (flag && autoDelay)
         {
             var refreshMilliseconds = (int)(timeoutMilliseconds / 2.0);

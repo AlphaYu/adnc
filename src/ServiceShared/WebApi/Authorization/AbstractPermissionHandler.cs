@@ -39,7 +39,7 @@ public abstract class AbstractPermissionHandler : AuthorizationHandler<Permissio
                 var refererUrl = httpContext.Request.Headers.Referer.ToString();
                 if (!string.IsNullOrEmpty(refererUrl))
                 {
-                    string pattern = @"\?perm=([^&]+)";
+                    var pattern = @"\?perm=([^&]+)";
                     var match = Regex.Match(refererUrl, pattern);
                     if (match.Success)
                     {

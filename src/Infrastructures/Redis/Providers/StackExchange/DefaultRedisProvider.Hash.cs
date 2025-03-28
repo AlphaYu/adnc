@@ -139,7 +139,7 @@ public partial class DefaultRedisProvider : IRedisProvider
 
         var list = _redisDb.HashGet(cacheKey, fields.Select(x => (RedisValue)x).ToArray());
 
-        for (int i = 0; i < fields.Count; i++)
+        for (var i = 0; i < fields.Count; i++)
         {
             if (!dict.ContainsKey(fields[i]))
             {
@@ -279,7 +279,7 @@ public partial class DefaultRedisProvider : IRedisProvider
 
         var res = await _redisDb.HashGetAsync(cacheKey, fields.Select(x => (RedisValue)x).ToArray());
 
-        for (int i = 0; i < fields.Count; i++)
+        for (var i = 0; i < fields.Count; i++)
         {
             if (!dict.ContainsKey(fields[i]))
             {

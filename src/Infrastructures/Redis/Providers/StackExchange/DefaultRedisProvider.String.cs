@@ -43,7 +43,7 @@ public partial class DefaultRedisProvider : Adnc.Infra.Redis.IRedisProvider
     {
         ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
-        When w = When.Always;
+        var w = When.Always;
 
         if (when.Equals("nx", StringComparison.OrdinalIgnoreCase))
         {
@@ -54,7 +54,7 @@ public partial class DefaultRedisProvider : Adnc.Infra.Redis.IRedisProvider
             w = When.Exists;
         }
 
-        bool flag = _redisDb.StringSet(cacheKey, cacheValue, expiration, w);
+        var flag = _redisDb.StringSet(cacheKey, cacheValue, expiration, w);
         return flag;
     }
 
@@ -62,7 +62,7 @@ public partial class DefaultRedisProvider : Adnc.Infra.Redis.IRedisProvider
     {
         ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
-        When w = When.Always;
+        var w = When.Always;
 
         if (when.Equals("nx", StringComparison.OrdinalIgnoreCase))
         {
@@ -73,7 +73,7 @@ public partial class DefaultRedisProvider : Adnc.Infra.Redis.IRedisProvider
             w = When.Exists;
         }
 
-        bool flag = await _redisDb.StringSetAsync(cacheKey, cacheValue, expiration, w);
+        var flag = await _redisDb.StringSetAsync(cacheKey, cacheValue, expiration, w);
         return flag;
     }
 

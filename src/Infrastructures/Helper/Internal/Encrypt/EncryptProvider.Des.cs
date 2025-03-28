@@ -34,7 +34,7 @@ public partial class EncryptProivder
         ArgumentNullException.ThrowIfNullOrWhiteSpace(key, nameof(key));
         Checker.Argument.ThrowIfNotEqualLength(key.Length, 24, nameof(key));
 
-        byte[] plainBytes = Encoding.UTF8.GetBytes(data);
+        var plainBytes = Encoding.UTF8.GetBytes(data);
         var encryptBytes = DESEncrypt(plainBytes, key, CipherMode.ECB);
 
         if (encryptBytes == null)
@@ -92,12 +92,12 @@ public partial class EncryptProivder
         ArgumentNullException.ThrowIfNullOrWhiteSpace(key, nameof(key));
         Checker.Argument.ThrowIfNotEqualLength(key.Length, 24, nameof(key));
 
-        using (MemoryStream Memory = new MemoryStream())
+        using (var Memory = new MemoryStream())
         {
-            using (TripleDES des = TripleDES.Create())
+            using (var des = TripleDES.Create())
             {
-                byte[] plainBytes = data;
-                byte[] bKey = new byte[24];
+                var plainBytes = data;
+                var bKey = new byte[24];
                 Array.Copy(Encoding.UTF8.GetBytes(key.PadRight(bKey.Length)), bKey, bKey.Length);
 
                 des.Mode = cipherMode;
@@ -106,12 +106,12 @@ public partial class EncryptProivder
 
                 if (cipherMode == CipherMode.CBC)
                 {
-                    byte[] bVector = new byte[8];
+                    var bVector = new byte[8];
                     Array.Copy(Encoding.UTF8.GetBytes(vector.PadRight(bVector.Length)), bVector, bVector.Length);
                     des.IV = bVector;
                 }
 
-                using (CryptoStream cryptoStream = new CryptoStream(Memory, des.CreateEncryptor(), CryptoStreamMode.Write))
+                using (var cryptoStream = new CryptoStream(Memory, des.CreateEncryptor(), CryptoStreamMode.Write))
                 {
                     try
                     {
@@ -140,8 +140,8 @@ public partial class EncryptProivder
         ArgumentNullException.ThrowIfNullOrWhiteSpace(key, nameof(key));
         Checker.Argument.ThrowIfNotEqualLength(key.Length, 24, nameof(key));
 
-        byte[] encryptedBytes = Convert.FromBase64String(data);
-        byte[] bytes = DESDecrypt(encryptedBytes, key, CipherMode.ECB);
+        var encryptedBytes = Convert.FromBase64String(data);
+        var bytes = DESDecrypt(encryptedBytes, key, CipherMode.ECB);
 
         if (bytes == null)
         {
@@ -197,13 +197,13 @@ public partial class EncryptProivder
         ArgumentNullException.ThrowIfNullOrWhiteSpace(key, nameof(key));
         Checker.Argument.ThrowIfNotEqualLength(key.Length, 24, nameof(key));
 
-        byte[] encryptedBytes = data;
-        byte[] bKey = new byte[24];
+        var encryptedBytes = data;
+        var bKey = new byte[24];
         Array.Copy(Encoding.UTF8.GetBytes(key.PadRight(bKey.Length)), bKey, bKey.Length);
 
-        using (MemoryStream Memory = new MemoryStream(encryptedBytes))
+        using (var Memory = new MemoryStream(encryptedBytes))
         {
-            using (TripleDES des = TripleDES.Create())
+            using (var des = TripleDES.Create())
             {
                 des.Mode = cipherMode;
                 des.Padding = paddingMode;
@@ -211,18 +211,18 @@ public partial class EncryptProivder
 
                 if (cipherMode == CipherMode.CBC)
                 {
-                    byte[] bVector = new byte[8];
+                    var bVector = new byte[8];
                     Array.Copy(Encoding.UTF8.GetBytes(vector.PadRight(bVector.Length)), bVector, bVector.Length);
                     des.IV = bVector;
                 }
 
-                using (CryptoStream cryptoStream = new CryptoStream(Memory, des.CreateDecryptor(), CryptoStreamMode.Read))
+                using (var cryptoStream = new CryptoStream(Memory, des.CreateDecryptor(), CryptoStreamMode.Read))
                 {
                     try
                     {
-                        byte[] tmp = new byte[encryptedBytes.Length];
-                        int len = cryptoStream.Read(tmp, 0, encryptedBytes.Length);
-                        byte[] ret = new byte[len];
+                        var tmp = new byte[encryptedBytes.Length];
+                        var len = cryptoStream.Read(tmp, 0, encryptedBytes.Length);
+                        var ret = new byte[len];
                         Array.Copy(tmp, 0, ret, 0, len);
                         return ret;
                     }

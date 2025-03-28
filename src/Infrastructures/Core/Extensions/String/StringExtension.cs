@@ -118,7 +118,7 @@ public static class StringExtension
     /// <returns></returns>
     public static long? ToLong(this string @this)
     {
-        bool status = long.TryParse(@this, out long result);
+        var status = long.TryParse(@this, out var result);
 
         if (status)
         {
@@ -145,8 +145,8 @@ public static class StringExtension
         {
             hex = "0" + hex;
         }
-        byte[] result = new byte[hex.Length / 2];
-        for (int i = 0; i < hex.Length / 2; i++)
+        var result = new byte[hex.Length / 2];
+        for (var i = 0; i < hex.Length / 2; i++)
         {
             result[i] = byte.Parse(hex.Substring(2 * i, 2), System.Globalization.NumberStyles.AllowHexSpecifier);
         }

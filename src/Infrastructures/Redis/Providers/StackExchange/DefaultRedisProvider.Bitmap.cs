@@ -21,7 +21,7 @@ public partial class DefaultRedisProvider : Adnc.Infra.Redis.IRedisProvider
         var results = new Task<bool>[offsets.Count()];
 
         var batch = _redisDb.CreateBatch();
-        int index = 0;
+        var index = 0;
         foreach (var position in offsets)
         {
             results[index] = batch.StringGetBitAsync(cacheKey, position);
@@ -80,7 +80,7 @@ public partial class DefaultRedisProvider : Adnc.Infra.Redis.IRedisProvider
         var results = new bool[offsets.Count()];
 
         var batch = _redisDb.CreateBatch();
-        int index = 0;
+        var index = 0;
         foreach (var position in offsets)
         {
             results[index] = await batch.StringGetBitAsync(cacheKey, position);

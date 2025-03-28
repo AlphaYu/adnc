@@ -22,7 +22,7 @@ public class DefaultProtobufSerializer : ISerializer
     /// <typeparam name="T">The 1st type parameter.</typeparam>
     public T Deserialize<T>(byte[] bytes)
     {
-        using (MemoryStream ms = new MemoryStream(bytes))
+        using (var ms = new MemoryStream(bytes))
         {
             return Serializer.Deserialize<T>(ms);
         }
@@ -36,7 +36,7 @@ public class DefaultProtobufSerializer : ISerializer
     /// <param name="type">Type.</param>
     public object Deserialize(byte[] bytes, Type type)
     {
-        using (MemoryStream ms = new MemoryStream(bytes))
+        using (var ms = new MemoryStream(bytes))
         {
             return Serializer.Deserialize(type, ms);
         }

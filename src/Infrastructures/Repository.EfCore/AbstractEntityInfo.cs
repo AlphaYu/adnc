@@ -46,7 +46,7 @@ public abstract class AbstractEntityInfo : IEntityInfo
 
                 entityType.GetProperties().ForEach(property =>
                 {
-                    string propertyName = property.Name;
+                    var propertyName = property.Name;
                     var memberSummary = entityType.ClrType?.GetMember(propertyName)?.FirstOrDefault()?.GetSummary();
                     buider.Property(propertyName).HasComment(memberSummary);
                 });

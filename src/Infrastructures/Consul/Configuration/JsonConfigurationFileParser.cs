@@ -24,7 +24,7 @@ internal sealed class JsonConfigurationFileParser
         };
 
         using (var reader = new StreamReader(input))
-        using (JsonDocument doc = JsonDocument.Parse(reader.ReadToEnd(), jsonDocumentOptions))
+        using (var doc = JsonDocument.Parse(reader.ReadToEnd(), jsonDocumentOptions))
         {
             if (doc.RootElement.ValueKind != JsonValueKind.Object)
             {

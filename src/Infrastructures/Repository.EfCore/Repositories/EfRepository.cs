@@ -99,7 +99,7 @@ public class EfRepository<TEntity>(DbContext dbContext, Operater operater, IAdoQ
 
     public virtual async Task<int> DeleteAsync(long keyValue, CancellationToken cancellationToken = default)
     {
-        int rows = 0;
+        var rows = 0;
         //查询当前上下文中，有没有同Id实体
         var entity = DbContext.Set<TEntity>().Local.FirstOrDefault(x => x.Id == keyValue);
 

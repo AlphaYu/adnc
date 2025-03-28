@@ -7,7 +7,7 @@ public class DateTimeNullableConverter : JsonConverter<DateTime?>
     public override DateTime? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         var result = default(DateTime?);
-        if (DateTime.TryParse(reader.GetString(), out DateTime datetime))
+        if (DateTime.TryParse(reader.GetString(), out var datetime))
         {
             result = datetime;
         }

@@ -250,7 +250,7 @@ internal sealed class RsaProvider
 
             //Write total length
             ms.WriteByte(0x30);
-            int index1 = (int)ms.Length;
+            var index1 = (int)ms.Length;
 
             //Write version
             ms.WriteAll(_Ver);

@@ -49,8 +49,8 @@ public static class HostExtension
         var poolSetting = poolOptions.Value;
         ThreadPool.SetMinThreads(poolSetting.MinThreads, poolSetting.MinCompletionPortThreads);
         ThreadPool.SetMaxThreads(poolSetting.MaxThreads, poolSetting.MaxCompletionPortThreads);
-        ThreadPool.GetMinThreads(out int workerThreads, out int completionPortThreads);
-        ThreadPool.GetMaxThreads(out int maxWorkerThreads, out int maxCompletionPortThreads);
+        ThreadPool.GetMinThreads(out var workerThreads, out var completionPortThreads);
+        ThreadPool.GetMaxThreads(out var maxWorkerThreads, out var maxCompletionPortThreads);
         logger.LogInformation("Setting MinThreads={0},MinCompletionPortThreads={1}", workerThreads, completionPortThreads);
         logger.LogInformation("Setting MaxThreads={0},MaxCompletionPortThreads={1}", maxWorkerThreads, maxCompletionPortThreads);
         return host;
@@ -61,16 +61,16 @@ public static class HostExtension
         var logger = host.Services.GetRequiredService<ILogger<IHost>>();
         poolOptions.OnChange(poolSetting =>
         {
-            ThreadPool.GetMinThreads(out int workerThreads, out int completionPortThreads);
-            ThreadPool.GetMaxThreads(out int maxWorkerThreads, out int maxCompletionPortThreads);
+            ThreadPool.GetMinThreads(out var workerThreads, out var completionPortThreads);
+            ThreadPool.GetMaxThreads(out var maxWorkerThreads, out var maxCompletionPortThreads);
             logger.LogInformation("before MinThreads={0},MinCompletionPortThreads={1}", workerThreads, completionPortThreads);
             logger.LogInformation("before MaxThreads={0},MaxCompletionPortThreads={1}", maxWorkerThreads, maxCompletionPortThreads);
 
             ThreadPool.SetMinThreads(poolSetting.MinThreads, poolSetting.MinCompletionPortThreads);
             ThreadPool.SetMaxThreads(poolSetting.MaxThreads, poolSetting.MaxCompletionPortThreads);
 
-            ThreadPool.GetMinThreads(out int changedWorkerThreads, out int changedCompletionPortThreads);
-            ThreadPool.GetMaxThreads(out int changedMaxWorkerThreads, out int changedsMaxCompletionPortThreads);
+            ThreadPool.GetMinThreads(out var changedWorkerThreads, out var changedCompletionPortThreads);
+            ThreadPool.GetMaxThreads(out var changedMaxWorkerThreads, out var changedsMaxCompletionPortThreads);
             logger.LogInformation("changed MinThreads={0},MinCompletionPortThreads={1}", changedWorkerThreads, changedCompletionPortThreads);
             logger.LogInformation("changed MaxThreads={0},MaxCompletionPortThreads={1}", changedMaxWorkerThreads, changedsMaxCompletionPortThreads);
         });
@@ -79,8 +79,8 @@ public static class HostExtension
         ThreadPool.SetMinThreads(poolSetting.MinThreads, poolSetting.MinCompletionPortThreads);
         ThreadPool.SetMaxThreads(poolSetting.MaxThreads, poolSetting.MaxCompletionPortThreads);
 
-        ThreadPool.GetMinThreads(out int workerThreads, out int completionPortThreads);
-        ThreadPool.GetMaxThreads(out int maxWorkerThreads, out int maxCompletionPortThreads);
+        ThreadPool.GetMinThreads(out var workerThreads, out var completionPortThreads);
+        ThreadPool.GetMaxThreads(out var maxWorkerThreads, out var maxCompletionPortThreads);
         logger.LogInformation("Setting MinThreads={0},MinCompletionPortThreads={1}", workerThreads, completionPortThreads);
         logger.LogInformation("Setting MaxThreads={0},MaxCompletionPortThreads={1}", maxWorkerThreads, maxCompletionPortThreads);
         return host;

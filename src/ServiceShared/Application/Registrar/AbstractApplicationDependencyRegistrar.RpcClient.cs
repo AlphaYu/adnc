@@ -97,7 +97,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar
         }
 
         var switchName = "System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport";
-        var switchResult = AppContext.TryGetSwitch(switchName, out bool isEnabled);
+        var switchResult = AppContext.TryGetSwitch(switchName, out var isEnabled);
         if (!switchResult || !isEnabled)
         {
             AppContext.SetSwitch(switchName, true);

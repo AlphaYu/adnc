@@ -38,7 +38,7 @@ public partial class EncryptProivder
         ArgumentNullException.ThrowIfNullOrWhiteSpace(vector, nameof(vector));
         Checker.Argument.ThrowIfNotEqualLength(vector.Length, 16, nameof(vector));
 
-        byte[] plainBytes = Encoding.UTF8.GetBytes(data);
+        var plainBytes = Encoding.UTF8.GetBytes(data);
 
         var encryptBytes = AESEncrypt(plainBytes, key, vector);
         if (encryptBytes == null)
@@ -65,18 +65,18 @@ public partial class EncryptProivder
         ArgumentNullException.ThrowIfNullOrWhiteSpace(vector, nameof(vector));
         Checker.Argument.ThrowIfNotEqualLength(vector.Length, 16, nameof(vector));
 
-        byte[] plainBytes = data;
-        byte[] bKey = new byte[32];
+        var plainBytes = data;
+        var bKey = new byte[32];
         Array.Copy(Encoding.UTF8.GetBytes(key.PadRight(bKey.Length)), bKey, bKey.Length);
-        byte[] bVector = new byte[16];
+        var bVector = new byte[16];
         Array.Copy(Encoding.UTF8.GetBytes(vector.PadRight(bVector.Length)), bVector, bVector.Length);
 
         byte[]? encryptData = null; // encrypted data
         using Aes Aes = Aes.Create();
         try
         {
-            using MemoryStream memory = new MemoryStream();
-            using CryptoStream Encryptor = new CryptoStream(memory,
+            using var memory = new MemoryStream();
+            using var Encryptor = new CryptoStream(memory,
              Aes.CreateEncryptor(bKey, bVector),
              CryptoStreamMode.Write);
             Encryptor.Write(plainBytes, 0, plainBytes.Length);
@@ -103,10 +103,10 @@ public partial class EncryptProivder
         ArgumentNullException.ThrowIfNullOrWhiteSpace(key, nameof(key));
         Checker.Argument.ThrowIfNotEqualLength(key.Length, 32, nameof(key));
 
-        using MemoryStream memory = new MemoryStream();
-        using Aes aes = Aes.Create();
-        byte[] plainBytes = Encoding.UTF8.GetBytes(data);
-        byte[] bKey = new byte[32];
+        using var memory = new MemoryStream();
+        using var aes = Aes.Create();
+        var plainBytes = Encoding.UTF8.GetBytes(data);
+        var bKey = new byte[32];
         Array.Copy(Encoding.UTF8.GetBytes(key.PadRight(bKey.Length)), bKey, bKey.Length);
 
         aes.Mode = CipherMode.ECB;
@@ -114,7 +114,7 @@ public partial class EncryptProivder
         aes.KeySize = 256;
         aes.Key = bKey;
 
-        using CryptoStream cryptoStream = new CryptoStream(memory, aes.CreateEncryptor(), CryptoStreamMode.Write);
+        using var cryptoStream = new CryptoStream(memory, aes.CreateEncryptor(), CryptoStreamMode.Write);
         try
         {
             cryptoStream.Write(plainBytes, 0, plainBytes.Length);
@@ -144,9 +144,9 @@ public partial class EncryptProivder
         ArgumentNullException.ThrowIfNullOrWhiteSpace(vector, nameof(vector));
         Checker.Argument.ThrowIfNotEqualLength(vector.Length, 16, nameof(vector));
 
-        byte[] encryptedBytes = Convert.FromBase64String(data);
+        var encryptedBytes = Convert.FromBase64String(data);
 
-        byte[]? decryptBytes = AESDecrypt(encryptedBytes, key, vector);
+        var decryptBytes = AESDecrypt(encryptedBytes, key, vector);
 
         if (decryptBytes == null)
         {
@@ -173,10 +173,10 @@ public partial class EncryptProivder
         ArgumentNullException.ThrowIfNullOrWhiteSpace(vector, nameof(vector));
         Checker.Argument.ThrowIfNotEqualLength(vector.Length, 16, nameof(vector));
 
-        byte[] encryptedBytes = data;
-        byte[] bKey = new byte[32];
+        var encryptedBytes = data;
+        var bKey = new byte[32];
         Array.Copy(Encoding.UTF8.GetBytes(key.PadRight(bKey.Length)), bKey, bKey.Length);
-        byte[] bVector = new byte[16];
+        var bVector = new byte[16];
         Array.Copy(Encoding.UTF8.GetBytes(vector.PadRight(bVector.Length)), bVector, bVector.Length);
 
         byte[]? decryptedData = null; // decrypted data
@@ -184,11 +184,11 @@ public partial class EncryptProivder
         using Aes Aes = Aes.Create();
         try
         {
-            using MemoryStream memory = new MemoryStream(encryptedBytes);
-            using CryptoStream decryptor = new CryptoStream(memory, Aes.CreateDecryptor(bKey, bVector), CryptoStreamMode.Read);
-            using MemoryStream tempMemory = new MemoryStream();
-            byte[] Buffer = new byte[1024];
-            int readBytes = 0;
+            using var memory = new MemoryStream(encryptedBytes);
+            using var decryptor = new CryptoStream(memory, Aes.CreateDecryptor(bKey, bVector), CryptoStreamMode.Read);
+            using var tempMemory = new MemoryStream();
+            var Buffer = new byte[1024];
+            var readBytes = 0;
             while ((readBytes = decryptor.Read(Buffer, 0, Buffer.Length)) > 0)
             {
                 tempMemory.Write(Buffer, 0, readBytes);
@@ -216,25 +216,25 @@ public partial class EncryptProivder
         ArgumentNullException.ThrowIfNullOrWhiteSpace(key, nameof(key));
         Checker.Argument.ThrowIfNotEqualLength(key.Length, 32, nameof(key));
 
-        byte[] encryptedBytes = Convert.FromBase64String(data);
-        byte[] bKey = new byte[32];
+        var encryptedBytes = Convert.FromBase64String(data);
+        var bKey = new byte[32];
         Array.Copy(Encoding.UTF8.GetBytes(key.PadRight(bKey.Length)), bKey, bKey.Length);
 
         try
         {
             byte[]? decryptedData = null; // decrypted data
 
-            using MemoryStream memory = new MemoryStream(encryptedBytes);
-            using Aes aes = Aes.Create();
+            using var memory = new MemoryStream(encryptedBytes);
+            using var aes = Aes.Create();
             aes.Mode = CipherMode.ECB;
             aes.Padding = PaddingMode.PKCS7;
             aes.KeySize = 256;
             aes.Key = bKey;
 
-            using CryptoStream decryptor = new CryptoStream(memory, aes.CreateDecryptor(), CryptoStreamMode.Read);
-            using MemoryStream tempMemory = new MemoryStream();
-            byte[] buffer = new byte[1024];
-            int readBytes = 0;
+            using var decryptor = new CryptoStream(memory, aes.CreateDecryptor(), CryptoStreamMode.Read);
+            using var tempMemory = new MemoryStream();
+            var buffer = new byte[1024];
+            var readBytes = 0;
             while ((readBytes = decryptor.Read(buffer, 0, buffer.Length)) > 0)
             {
                 tempMemory.Write(buffer, 0, readBytes);

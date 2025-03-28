@@ -58,13 +58,13 @@ public sealed class RegistrationProvider
     /// <param name="netType">"InterNetwork":ipv4，"InterNetworkV6":ipv6</param>
     public List<string> GetLocalIpAddress(string netType)
     {
-        string hostName = Dns.GetHostName();
-        IPAddress[] addresses = Dns.GetHostAddresses(hostName);
+        var hostName = Dns.GetHostName();
+        var addresses = Dns.GetHostAddresses(hostName);
 
         var IPList = new List<string>();
         if (netType == string.Empty)
         {
-            for (int i = 0; i < addresses.Length; i++)
+            for (var i = 0; i < addresses.Length; i++)
             {
                 IPList.Add(addresses[i].ToString());
             }
@@ -73,7 +73,7 @@ public sealed class RegistrationProvider
         {
             //AddressFamily.InterNetwork = IPv4,
             //AddressFamily.InterNetworkV6= IPv6
-            for (int i = 0; i < addresses.Length; i++)
+            for (var i = 0; i < addresses.Length; i++)
             {
                 if (addresses[i].AddressFamily.ToString() == netType)
                 {

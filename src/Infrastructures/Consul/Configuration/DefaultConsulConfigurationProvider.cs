@@ -58,7 +58,7 @@ public sealed class DefaultConsulConfigurationProvider : ConfigurationProvider
             {
                 while (true)
                 {
-                    QueryResult<KVPair> queryResult = await GetData();
+                    var queryResult = await GetData();
                     if (queryResult.LastIndex != _currentIndex)
                     {
                         LoadData(queryResult);

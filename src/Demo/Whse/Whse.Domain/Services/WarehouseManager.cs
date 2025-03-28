@@ -60,8 +60,8 @@ public class WarehouseManager : IDomainService
     /// <returns></returns>
     public async Task<bool> BlockQtyAsync(long orderId, Dictionary<long, int> blockQtyProductsInfo, List<Warehouse> warehouses)
     {
-        bool isSuccess = false;
-        string remark = string.Empty;
+        var isSuccess = false;
+        var remark = string.Empty;
 
         Checker.Variable.NotNullOrAny(blockQtyProductsInfo, nameof(blockQtyProductsInfo));
         Checker.Variable.NotNullOrAny(warehouses, nameof(warehouses));

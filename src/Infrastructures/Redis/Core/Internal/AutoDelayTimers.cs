@@ -30,7 +30,7 @@ public class AutoDelayTimers
     {
         if (_timers.ContainsKey(key))
         {
-            if (_timers.TryRemove(key, out Timer? timer))
+            if (_timers.TryRemove(key, out var timer))
             {
                 timer?.Dispose();
             }

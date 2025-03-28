@@ -90,9 +90,9 @@ public static class JwtTokenHelper
     {
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtConfig.SymmetricSecurityKey));
 
-        string issuer = jwtConfig.ValidIssuer;
-        string audience = tokenType.Equals(Tokens.AccessToken) ? jwtConfig.ValidAudience : jwtConfig.RefreshTokenAudience;
-        int seconds = tokenType.Equals(Tokens.AccessToken) ? jwtConfig.Expire : jwtConfig.RefreshTokenExpire;
+        var issuer = jwtConfig.ValidIssuer;
+        var audience = tokenType.Equals(Tokens.AccessToken) ? jwtConfig.ValidAudience : jwtConfig.RefreshTokenAudience;
+        var seconds = tokenType.Equals(Tokens.AccessToken) ? jwtConfig.Expire : jwtConfig.RefreshTokenExpire;
         var expires = DateTime.Now.AddSeconds(seconds);
         var token = new JwtSecurityToken(
             issuer: issuer,

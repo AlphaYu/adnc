@@ -8,7 +8,7 @@ public class CustomExceptionHandlerMiddleware(RequestDelegate next, IWebHostEnvi
     {
         try
         {
-            string envVariable = (Environment.GetEnvironmentVariable("DEMO_SERVER") ?? "false").ToLower();
+            var envVariable = (Environment.GetEnvironmentVariable("DEMO_SERVER") ?? "false").ToLower();
             if (envVariable == "false")
             {
                 await next(context);
@@ -16,14 +16,14 @@ public class CustomExceptionHandlerMiddleware(RequestDelegate next, IWebHostEnvi
             else
             {
                 string[] methods = ["post", "put", "delete", "patch"];
-                string curretMethod = context.Request.Method.ToLower();
+                var curretMethod = context.Request.Method.ToLower();
                 if (!methods.Contains(curretMethod))
                 {
                     await next(context);
                 }
                 else
                 {
-                    string? path = context.Request.Path.Value;
+                    var path = context.Request.Path.Value;
                     if (path is null || path.Contains("auth/session", StringComparison.CurrentCultureIgnoreCase)
                         || path.Contains("profiler/results", StringComparison.CurrentCultureIgnoreCase))
                     {

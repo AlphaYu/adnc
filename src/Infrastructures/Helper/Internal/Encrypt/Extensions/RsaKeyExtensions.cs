@@ -16,7 +16,7 @@ internal static class RSAKeyExtensions
     {
         ArgumentNullException.ThrowIfNullOrWhiteSpace(jsonString, nameof(jsonString));
 
-        RSAParameters parameters = new RSAParameters();
+        var parameters = new RSAParameters();
         try
         {
             var paramsJson = JsonSerializer.Deserialize<RSAParametersJson>(jsonString) ?? throw new InvalidDataException("Invalid Json RSA key.");
@@ -107,7 +107,7 @@ internal static class RSAKeyExtensions
     /// <returns></returns>
     public static string ToLvccXmlString(this RSA rsa, bool includePrivateParameters)
     {
-        RSAParameters parameters = rsa.ExportParameters(includePrivateParameters);
+        var parameters = rsa.ExportParameters(includePrivateParameters);
 
         return string.Format("<RSAKeyValue><Modulus>{0}</Modulus><Exponent>{1}</Exponent><P>{2}</P><Q>{3}</Q><DP>{4}</DP><DQ>{5}</DQ><InverseQ>{6}</InverseQ><D>{7}</D></RSAKeyValue>",
               parameters.Modulus != null ? Convert.ToBase64String(parameters.Modulus) : null,

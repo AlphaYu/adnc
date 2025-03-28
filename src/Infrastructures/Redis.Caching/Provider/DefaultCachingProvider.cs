@@ -392,7 +392,7 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
         var values = _redisDb.StringGet(keyArray.Select(k => (RedisKey)k).ToArray());
 
         var result = new Dictionary<string, CacheValue<T>>();
-        for (int i = 0; i < keyArray.Length; i++)
+        for (var i = 0; i < keyArray.Length; i++)
         {
             var cachedValue = values[i];
             if (!cachedValue.IsNull)
@@ -425,7 +425,7 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
         var values = _redisDb.StringGet(redisKeys).ToArray();
 
         var result = new Dictionary<string, CacheValue<T>>();
-        for (int i = 0; i < redisKeys.Length; i++)
+        for (var i = 0; i < redisKeys.Length; i++)
         {
             var cachedValue = values[i];
             if (!cachedValue.IsNull)

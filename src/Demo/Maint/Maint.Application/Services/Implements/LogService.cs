@@ -8,8 +8,8 @@ public class LogService(IAdoQuerierRepository adoRepository) : AbstractAppServic
 
         if (input.CreateTime is null || input.CreateTime.Length < 1)
         {
-            DateTime startTime = DateTime.Now.AddDays(-7);
-            DateTime endTime = DateTime.Now;
+            var startTime = DateTime.Now.AddDays(-7);
+            var endTime = DateTime.Now;
             input.CreateTime = [startTime, endTime];
         }
 
@@ -31,8 +31,8 @@ public class LogService(IAdoQuerierRepository adoRepository) : AbstractAppServic
 
         if (input.CreateTime is null || input.CreateTime.Length < 1)
         {
-            DateTime startTime = DateTime.Now.AddDays(-7);
-            DateTime endTime = DateTime.Now;
+            var startTime = DateTime.Now.AddDays(-7);
+            var endTime = DateTime.Now;
             input.CreateTime = [startTime, endTime];
         }
 
