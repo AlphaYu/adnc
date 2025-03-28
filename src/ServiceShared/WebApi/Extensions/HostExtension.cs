@@ -14,7 +14,7 @@ public static class HostExtension
         var serviceInfo = host.Services.GetRequiredService<IServiceInfo>();
         var logger = host.Services.GetRequiredService<ILogger<RpcInfo>>();
         var registeredType = configuration.GetValue<string>($"{NodeConsts.RegisterType}") ?? RegisteredTypeConsts.Direct;
-        logger.LogInformation("RegisteredType={0}", registeredType);
+        logger.LogInformation("RegisteredType={registeredType}", registeredType);
         switch (registeredType)
         {
             case RegisteredTypeConsts.Consul:
@@ -51,8 +51,8 @@ public static class HostExtension
         ThreadPool.SetMaxThreads(poolSetting.MaxThreads, poolSetting.MaxCompletionPortThreads);
         ThreadPool.GetMinThreads(out var workerThreads, out var completionPortThreads);
         ThreadPool.GetMaxThreads(out var maxWorkerThreads, out var maxCompletionPortThreads);
-        logger.LogInformation("Setting MinThreads={0},MinCompletionPortThreads={1}", workerThreads, completionPortThreads);
-        logger.LogInformation("Setting MaxThreads={0},MaxCompletionPortThreads={1}", maxWorkerThreads, maxCompletionPortThreads);
+        logger.LogInformation("Setting MinThreads={workerThreads},MinCompletionPortThreads={completionPortThreads}", workerThreads, completionPortThreads);
+        logger.LogInformation("Setting MaxThreads={maxWorkerThreads},MaxCompletionPortThreads={maxCompletionPortThreads}", maxWorkerThreads, maxCompletionPortThreads);
         return host;
     }
 
@@ -63,16 +63,16 @@ public static class HostExtension
         {
             ThreadPool.GetMinThreads(out var workerThreads, out var completionPortThreads);
             ThreadPool.GetMaxThreads(out var maxWorkerThreads, out var maxCompletionPortThreads);
-            logger.LogInformation("before MinThreads={0},MinCompletionPortThreads={1}", workerThreads, completionPortThreads);
-            logger.LogInformation("before MaxThreads={0},MaxCompletionPortThreads={1}", maxWorkerThreads, maxCompletionPortThreads);
+            logger.LogInformation("before MinThreads={workerThreads},MinCompletionPortThreads={completionPortThreads}", workerThreads, completionPortThreads);
+            logger.LogInformation("before MaxThreads={maxWorkerThreads},MaxCompletionPortThreads={maxCompletionPortThreads}", maxWorkerThreads, maxCompletionPortThreads);
 
             ThreadPool.SetMinThreads(poolSetting.MinThreads, poolSetting.MinCompletionPortThreads);
             ThreadPool.SetMaxThreads(poolSetting.MaxThreads, poolSetting.MaxCompletionPortThreads);
 
             ThreadPool.GetMinThreads(out var changedWorkerThreads, out var changedCompletionPortThreads);
             ThreadPool.GetMaxThreads(out var changedMaxWorkerThreads, out var changedsMaxCompletionPortThreads);
-            logger.LogInformation("changed MinThreads={0},MinCompletionPortThreads={1}", changedWorkerThreads, changedCompletionPortThreads);
-            logger.LogInformation("changed MaxThreads={0},MaxCompletionPortThreads={1}", changedMaxWorkerThreads, changedsMaxCompletionPortThreads);
+            logger.LogInformation("changed MinThreads={changedWorkerThreads},MinCompletionPortThreads={changedCompletionPortThreads}", changedWorkerThreads, changedCompletionPortThreads);
+            logger.LogInformation("changed MaxThreads={changedMaxWorkerThreads},MaxCompletionPortThreads={changedsMaxCompletionPortThreads}", changedMaxWorkerThreads, changedsMaxCompletionPortThreads);
         });
 
         var poolSetting = poolOptions.CurrentValue;
@@ -81,8 +81,8 @@ public static class HostExtension
 
         ThreadPool.GetMinThreads(out var workerThreads, out var completionPortThreads);
         ThreadPool.GetMaxThreads(out var maxWorkerThreads, out var maxCompletionPortThreads);
-        logger.LogInformation("Setting MinThreads={0},MinCompletionPortThreads={1}", workerThreads, completionPortThreads);
-        logger.LogInformation("Setting MaxThreads={0},MaxCompletionPortThreads={1}", maxWorkerThreads, maxCompletionPortThreads);
+        logger.LogInformation("Setting MinThreads={workerThreads},MinCompletionPortThreads={completionPortThreads}", workerThreads, completionPortThreads);
+        logger.LogInformation("Setting MaxThreads={maxWorkerThreads},MaxCompletionPortThreads={maxCompletionPortThreads}", maxWorkerThreads, maxCompletionPortThreads);
         return host;
     }
 }
