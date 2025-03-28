@@ -8,8 +8,8 @@ public class BeforeSetRequestEventData : EventData
     public BeforeSetRequestEventData(string cacheType, string name, string operation, IDictionary<string, object> dict, System.TimeSpan expiration)
         : base(cacheType, name, operation)
     {
-        this.Dict = dict;
-        this.Expiration = expiration;
+        Dict = dict;
+        Expiration = expiration;
     }
 
     public IDictionary<string, object> Dict { get; set; }

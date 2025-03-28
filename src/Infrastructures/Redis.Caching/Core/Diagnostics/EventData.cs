@@ -4,9 +4,9 @@ public class EventData
 {
     public EventData(string cacheType, string name, string operation)
     {
-        this.CacheType = cacheType;
-        this.Name = name;
-        this.Operation = operation;
+        CacheType = cacheType;
+        Name = name;
+        Operation = operation;
     }
 
     public string CacheType { get; set; }

@@ -207,7 +207,7 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
             return Task.FromResult(allCount);
         }
 
-        return Task.FromResult(this.SearchRedisKeys(HandlePrefix(prefix)).Length);
+        return Task.FromResult(SearchRedisKeys(HandlePrefix(prefix)).Length);
     }
 
     /// <summary>
@@ -275,7 +275,7 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
             _logger?.LogInformation($"RemoveByPrefixAsync : prefix = {prefix}");
         }
 
-        var redisKeys = this.SearchRedisKeys(prefix);
+        var redisKeys = SearchRedisKeys(prefix);
 
         await _redisDb.KeyDeleteAsync(redisKeys);
     }
@@ -344,7 +344,7 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
 
         prefix = HandlePrefix(prefix);
 
-        var redisKeys = this.SearchRedisKeys(prefix);
+        var redisKeys = SearchRedisKeys(prefix);
 
         var values = (await _redisDb.StringGetAsync(redisKeys)).ToArray();
 
