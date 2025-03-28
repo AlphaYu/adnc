@@ -9,7 +9,7 @@ public class BasicAuthenticationHandler(IOptionsMonitor<BasicSchemeOptions> opti
     protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
     {
         AuthenticateResult authResult;
-        var authHeader = Request.Headers["Authorization"].ToString();
+        var authHeader = Request.Headers.Authorization.ToString();
         if (authHeader is not null && authHeader.StartsWith(BasicDefaults.AuthenticationScheme))
         {
             var startIndex = BasicDefaults.AuthenticationScheme.Length + 1;
