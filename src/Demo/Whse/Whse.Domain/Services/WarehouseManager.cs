@@ -110,7 +110,7 @@ public class WarehouseManager : IDomainService
             EventSource = MethodBase.GetCurrentMethod()?.GetMethodName() ?? string.Empty,
             OrderId = orderId,
             IsSuccess = isSuccess,
-            Remark = remark 
+            Remark = remark
         };
         await warehouses[0].EventPublisher.Value.PublishAsync(warehouseQtyBlockedEvent);
 

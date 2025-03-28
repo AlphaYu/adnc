@@ -56,7 +56,7 @@ internal sealed class DiscoverProvider : IDiscoverProvider
             }
             return healthAddresses ?? [];
         }
-        catch(Exception)
+        catch (Exception)
         {
             throw;
         }

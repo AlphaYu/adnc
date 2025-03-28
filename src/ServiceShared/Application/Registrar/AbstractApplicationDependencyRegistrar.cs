@@ -36,7 +36,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar
         ConsulSection = Configuration.GetSection(NodeConsts.Consul);
         RabbitMqSection = Configuration.GetSection(NodeConsts.RabbitMq);
         SkyApm = Services.AddSkyApmExtensions();
-        RegisterType  = Configuration.GetValue<string>(NodeConsts.RegisterType) ?? RegisteredTypeConsts.Direct;
+        RegisterType = Configuration.GetValue<string>(NodeConsts.RegisterType) ?? RegisteredTypeConsts.Direct;
         RpcInfoOption = Configuration.GetSection(NodeConsts.RpcInfo).Get<RpcInfo>();
     }
 

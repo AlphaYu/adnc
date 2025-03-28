@@ -5,5 +5,5 @@
 /// </summary>
 public class OperationLogDto : OperationLog
 {
- 
+
 }

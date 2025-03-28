@@ -9,7 +9,7 @@ public static class ApplicationBuilderConsulExtension
         ArgumentNullException.ThrowIfNull(configurationSection, nameof(IConfigurationSection));
         var logger = host.Services.GetRequiredService<ILogger<KestrelOptions>>();
 
-        logger.LogInformation("{0} start register to consul",serviceId);
+        logger.LogInformation("{0} start register to consul", serviceId);
 
         var kestrelOptions = configurationSection.Get<KestrelOptions>();
 

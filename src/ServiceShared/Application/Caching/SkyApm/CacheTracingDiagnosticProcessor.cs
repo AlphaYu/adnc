@@ -2,7 +2,7 @@
 
 public sealed class CacheTracingDiagnosticProcessor : ITracingDiagnosticProcessor
 {
-    public static readonly StringOrIntValue Caching = new (nameof(Adnc.Infra.Redis.Caching));
+    public static readonly StringOrIntValue Caching = new(nameof(Adnc.Infra.Redis.Caching));
     private readonly ITracingContext _tracingContext;
     private readonly IEntrySegmentContextAccessor _entrySegmentContextAccessor;
     private readonly IExitSegmentContextAccessor _exitSegmentContextAccessor;
@@ -51,7 +51,7 @@ public sealed class CacheTracingDiagnosticProcessor : ITracingDiagnosticProcesso
 
         context.Span.AddLog(LogEvent.Event("Get Cache End"));
         context.Span.AddLog(LogEvent.Message($"Adnc.Caching get cache succeeded!{Environment.NewLine}" +
-                                             $"--> Message Id: { eventData.OperationId }"));
+                                             $"--> Message Id: {eventData.OperationId}"));
 
         _tracingContext.Release(context);
     }
@@ -67,7 +67,7 @@ public sealed class CacheTracingDiagnosticProcessor : ITracingDiagnosticProcesso
 
         context.Span.AddLog(LogEvent.Event("Get Cache Error"));
         context.Span.AddLog(LogEvent.Message($"Adnc.Caching get cache failed!{Environment.NewLine}" +
-                                             $"--> Message Id: { eventData.OperationId }"));
+                                             $"--> Message Id: {eventData.OperationId}"));
         context.Span.ErrorOccurred(eventData.Exception, _tracingConfig);
 
         _tracingContext.Release(context);
@@ -101,7 +101,7 @@ public sealed class CacheTracingDiagnosticProcessor : ITracingDiagnosticProcesso
 
         context.Span.AddLog(LogEvent.Event("Set Cache End"));
         context.Span.AddLog(LogEvent.Message($"Adnc.Caching set cache succeeded!{Environment.NewLine}" +
-                                             $"--> Message Id: { eventData.OperationId }"));
+                                             $"--> Message Id: {eventData.OperationId}"));
 
         _tracingContext.Release(context);
     }
@@ -117,7 +117,7 @@ public sealed class CacheTracingDiagnosticProcessor : ITracingDiagnosticProcesso
 
         context.Span.AddLog(LogEvent.Event("Set Cache Error"));
         context.Span.AddLog(LogEvent.Message($"Adnc.Caching set cache failed!{Environment.NewLine}" +
-                                             $"--> Message Id: { eventData.OperationId }"));
+                                             $"--> Message Id: {eventData.OperationId}"));
         context.Span.ErrorOccurred(eventData.Exception, _tracingConfig);
 
         _tracingContext.Release(context);
@@ -151,7 +151,7 @@ public sealed class CacheTracingDiagnosticProcessor : ITracingDiagnosticProcesso
 
         context.Span.AddLog(LogEvent.Event("Remove Cache End"));
         context.Span.AddLog(LogEvent.Message($"Adnc.Caching remove cache succeeded!{Environment.NewLine}" +
-                                             $"--> Message Id: { eventData.OperationId }"));
+                                             $"--> Message Id: {eventData.OperationId}"));
 
         _tracingContext.Release(context);
     }
@@ -167,7 +167,7 @@ public sealed class CacheTracingDiagnosticProcessor : ITracingDiagnosticProcesso
 
         context.Span.AddLog(LogEvent.Event("Remove Cache Error"));
         context.Span.AddLog(LogEvent.Message($"Adnc.Caching remove cache failed!{Environment.NewLine}" +
-                                             $"--> Message Id: { eventData.OperationId }"));
+                                             $"--> Message Id: {eventData.OperationId}"));
         context.Span.ErrorOccurred(eventData.Exception, _tracingConfig);
 
         _tracingContext.Release(context);
@@ -201,7 +201,7 @@ public sealed class CacheTracingDiagnosticProcessor : ITracingDiagnosticProcesso
 
         context.Span.AddLog(LogEvent.Event("Exists Cache End"));
         context.Span.AddLog(LogEvent.Message($"Adnc.Caching exists cache succeeded!{Environment.NewLine}" +
-                                             $"--> Message Id: { eventData.OperationId }"));
+                                             $"--> Message Id: {eventData.OperationId}"));
 
         _tracingContext.Release(context);
     }
@@ -217,7 +217,7 @@ public sealed class CacheTracingDiagnosticProcessor : ITracingDiagnosticProcesso
 
         context.Span.AddLog(LogEvent.Event("Exists Cache Error"));
         context.Span.AddLog(LogEvent.Message($"Adnc.Caching exists cache failed!{Environment.NewLine}" +
-                                             $"--> Message Id: { eventData.OperationId }"));
+                                             $"--> Message Id: {eventData.OperationId}"));
         context.Span.ErrorOccurred(eventData.Exception, _tracingConfig);
 
         _tracingContext.Release(context);

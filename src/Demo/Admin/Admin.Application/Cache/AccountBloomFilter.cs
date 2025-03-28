@@ -1,6 +1,6 @@
 ﻿namespace Adnc.Demo.Admin.Application.Cache;
 
-public class AccountBloomFilter(Lazy<IRedisProvider> redisProvider, Lazy<IDistributedLocker> distributedLocker , Lazy<IServiceProvider> serviceProvider) 
+public class AccountBloomFilter(Lazy<IRedisProvider> redisProvider, Lazy<IDistributedLocker> distributedLocker, Lazy<IServiceProvider> serviceProvider)
     : AbstractBloomFilter(redisProvider, distributedLocker)
 {
     public override string Name => CachingConsts.BloomfilterOfAccountsKey;

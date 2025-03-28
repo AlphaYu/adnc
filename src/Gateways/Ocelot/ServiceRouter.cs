@@ -9,7 +9,7 @@ public class ServiceRouter
             var name = UpstreamPathTemplate.Replace("{everything}", "").Replace("/", "-");
             if (name.Length > 1)
             {
-                return name[1..] ;
+                return name[1..];
             }
 
             return name;

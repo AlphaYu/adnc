@@ -41,7 +41,7 @@ public class OutofMaxlengthException : Exception
     /// Ctor
     /// </summary>
     /// <param name="maxLength"></param>
-    public OutofMaxlengthException(string message, int maxLength, int keySize, RSAEncryptionPadding rsaEncryptionPadding) : this(maxLength,keySize, rsaEncryptionPadding)
+    public OutofMaxlengthException(string message, int maxLength, int keySize, RSAEncryptionPadding rsaEncryptionPadding) : this(maxLength, keySize, rsaEncryptionPadding)
     {
         ErrorMessage = message;
     }

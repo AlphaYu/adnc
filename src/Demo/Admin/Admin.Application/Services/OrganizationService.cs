@@ -1,6 +1,6 @@
 ﻿namespace Adnc.Demo.Admin.Application.Services;
 
-public class OrganizationService(IEfRepository<Organization> organizationRepo, CacheService cacheService) 
+public class OrganizationService(IEfRepository<Organization> organizationRepo, CacheService cacheService)
     : AbstractAppService, IOrganizationService
 {
     public async Task<ServiceResult<IdDto>> CreateAsync(OrganizationCreationDto input)
@@ -42,7 +42,7 @@ public class OrganizationService(IEfRepository<Organization> organizationRepo, C
 
         var oldParentId = organization.ParentId;
 
-         var newOrganization = Mapper.Map(input, organization);
+        var newOrganization = Mapper.Map(input, organization);
         if (oldParentId != input.ParentId)
         {
             var oldPids = $"{organization.ParentIds}";
@@ -60,7 +60,7 @@ public class OrganizationService(IEfRepository<Organization> organizationRepo, C
 
     public async Task<ServiceResult> DeleteAsync(long[] ids)
     {
-        foreach( var id in ids)
+        foreach (var id in ids)
         {
             var organization = await organizationRepo.FetchAsync(x => new { x.Id, x.ParentIds }, x => x.Id == id);
             if (organization is not null)

@@ -35,7 +35,7 @@ public sealed class MapperProfile : Profile
         CreateMap<SysConfig, SysConfigDto>();
 
         CreateMap<SysConfigSimpleDto, SysConfigSimpleReply>();
-        CreateMap<DictOptionDto,DictOptionReply>();
+        CreateMap<DictOptionDto, DictOptionReply>();
 
     }
 }
@@ -48,7 +48,7 @@ public class KeyValuesToStringResolver : IValueResolver<MenuCreationDto, Menu, s
     }
 }
 
-public class StringToKeyValuesResolver : IValueResolver<Menu, MenuDto, List<KeyValuePair<string,string>>>
+public class StringToKeyValuesResolver : IValueResolver<Menu, MenuDto, List<KeyValuePair<string, string>>>
 {
     public List<KeyValuePair<string, string>> Resolve(Menu source, MenuDto destination, List<KeyValuePair<string, string>> member, ResolutionContext context)
     {

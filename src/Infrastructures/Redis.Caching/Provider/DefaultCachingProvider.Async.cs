@@ -440,7 +440,7 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
         ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKey, nameof(cacheKey));
 
         var timeSpan = await _redisDb.KeyTimeToLiveAsync(cacheKey);
-        return timeSpan is not null &&  timeSpan.HasValue ? timeSpan.Value : TimeSpan.Zero;
+        return timeSpan is not null && timeSpan.HasValue ? timeSpan.Value : TimeSpan.Zero;
     }
 
     /// <summary>

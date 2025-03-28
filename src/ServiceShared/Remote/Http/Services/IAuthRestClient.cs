@@ -5,7 +5,7 @@ namespace Adnc.Shared.Remote.Http.Services;
 
 public interface IAuthRestClient : IRestClient
 {
-     /// <summary>
+    /// <summary>
     ///  获取认证信息
     /// </summary>
     /// <returns></returns>

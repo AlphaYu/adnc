@@ -43,7 +43,7 @@ public abstract partial class AbstractWebApiDependencyRegistrar(IServiceCollecti
         AddCors();
 
         var enableSwaggerUI = Configuration.GetValue(NodeConsts.SwaggerUI_Enable, true);
-        if(enableSwaggerUI)
+        if (enableSwaggerUI)
         {
             AddSwaggerGen();
             AddMiniProfiler();

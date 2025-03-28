@@ -91,7 +91,7 @@ public interface IEfRepository<TEntity> : IEfBaseRepository<TEntity>
     /// <param name="noTracking">是否开启跟踪，默认不开启，可选参数</param>
     /// <param name="cancellationToken"><see cref="CancellationToken"/></param>
     /// <returns></returns>
-    Task<TResult?> FetchAsync<TResult>(Expression<Func<TEntity, TResult>> selector, Expression<Func<TEntity, bool>> whereExpression,  Expression<Func<TEntity, object>>? orderByExpression = null, bool ascending = false, bool writeDb = false, bool noTracking = true, CancellationToken cancellationToken = default);
+    Task<TResult?> FetchAsync<TResult>(Expression<Func<TEntity, TResult>> selector, Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, object>>? orderByExpression = null, bool ascending = false, bool writeDb = false, bool noTracking = true, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// 更新单个实体

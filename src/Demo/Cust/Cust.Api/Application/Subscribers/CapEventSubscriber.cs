@@ -3,7 +3,7 @@
 namespace Adnc.Demo.Cust.Api.Application.Subscribers;
 
 public sealed partial class CapEventSubscriber(IUnitOfWork unitOfWork, IEfRepository<Finance> finaceRepo, IEfRepository<TransactionLog> transactionLogRepo
-    ,ILogger<CapEventSubscriber> logger, MessageTrackerFactory trackerFactory) : ICapSubscribe
+    , ILogger<CapEventSubscriber> logger, MessageTrackerFactory trackerFactory) : ICapSubscribe
 {
     private readonly IMessageTracker tracker = trackerFactory.Create();
 

@@ -10,5 +10,5 @@ public class ProductUpdationDto : IDto
 
     public string Unit { set; get; } = string.Empty;
 
-    public decimal Price { set; get; }  
+    public decimal Price { set; get; }
 }

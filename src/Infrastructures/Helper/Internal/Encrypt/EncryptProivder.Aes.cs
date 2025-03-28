@@ -43,7 +43,7 @@ public partial class EncryptProivder
         var encryptBytes = AESEncrypt(plainBytes, key, vector);
         if (encryptBytes == null)
         {
-            return  null;
+            return null;
         }
         return Convert.ToBase64String(encryptBytes);
     }
@@ -84,7 +84,7 @@ public partial class EncryptProivder
 
             encryptData = memory.ToArray();
         }
-        catch(Exception)
+        catch (Exception)
         {
             encryptData = null;
         }

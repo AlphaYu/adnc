@@ -16,6 +16,6 @@ public static class JWTOptionsExtension
             ValidateLifetime = tokenConfig.ValidateLifetime,
             RequireExpirationTime = tokenConfig.RequireExpirationTime,
             ClockSkew = TimeSpan.FromSeconds(tokenConfig.ClockSkew),
-        //AudienceValidator = (m, n, z) =>m != null && m.FirstOrDefault().Equals(Const.ValidAudience)
+            //AudienceValidator = (m, n, z) =>m != null && m.FirstOrDefault().Equals(Const.ValidAudience)
         };
 }

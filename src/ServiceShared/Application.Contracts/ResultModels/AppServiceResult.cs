@@ -34,7 +34,7 @@ public sealed class AppSrvResult
 public sealed class AppSrvResult<TValue>
 {
     public AppSrvResult()
-    { 
+    {
     }
 
     public AppSrvResult(TValue value) => Content = value;

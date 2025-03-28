@@ -11,7 +11,7 @@ public sealed class DependencyRegistrar : AbstractApplicationDependencyRegistrar
 
     public override Assembly RepositoryOrDomainLayerAssembly => typeof(EntityInfo).Assembly;
 
-    public DependencyRegistrar(IServiceCollection services,IServiceInfo serviceInfo) : base(services, serviceInfo)
+    public DependencyRegistrar(IServiceCollection services, IServiceInfo serviceInfo) : base(services, serviceInfo)
     {
     }
 

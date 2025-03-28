@@ -13,7 +13,7 @@ public class TokenDelegatingHandler : DelegatingHandler
 
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
-        if(request.RequestUri is null)
+        if (request.RequestUri is null)
         {
             throw new ArgumentNullException(nameof(request));
         }

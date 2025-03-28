@@ -47,7 +47,7 @@ public abstract partial class AbstractWebApiMiddlewareRegistrar(IApplicationBuil
         }
 
         var enableSwaggerUI = configuration.GetValue(NodeConsts.SwaggerUI_Enable, true);
-        if(enableSwaggerUI)
+        if (enableSwaggerUI)
         {
 #if DEBUG
             App.UseMiniProfiler();
@@ -113,7 +113,7 @@ public abstract partial class AbstractWebApiMiddlewareRegistrar(IApplicationBuil
             .UseEndpoints(endpoints =>
             {
                 endpointRoute?.Invoke(endpoints);
-                if(enableMetrics)
+                if (enableMetrics)
                 {
                     endpoints.MapMetrics();
                 }

@@ -32,7 +32,7 @@ public sealed class ServiceResult
 public sealed class ServiceResult<TValue>
 {
     public ServiceResult()
-    { 
+    {
     }
 
     public ServiceResult(TValue value) => Content = value;

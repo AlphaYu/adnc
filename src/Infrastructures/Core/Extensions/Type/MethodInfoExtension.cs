@@ -11,7 +11,7 @@ public static class MethodInfoExtension
             || (methodInfo.ReturnType.IsGenericType && methodInfo.ReturnType.GetGenericTypeDefinition() == typeof(Task<>))
         );
     }
-   
+
     public static string GetMethodName(this MethodBase methodInfo)
     {
         var originalMethodName = methodInfo.DeclaringType?.Name ?? string.Empty;

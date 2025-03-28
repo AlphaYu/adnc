@@ -64,7 +64,7 @@ public class UserController(IUserService userService) : AdncControllerBase
     [HttpGet("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [AdncAuthorize([PermissionConsts.User.Get , PermissionConsts.User.Update])]
+    [AdncAuthorize([PermissionConsts.User.Get, PermissionConsts.User.Update])]
     public async Task<ActionResult<UserDto>> GetAsync([FromRoute] long id)
     {
         var user = await userService.GetAsync(id);

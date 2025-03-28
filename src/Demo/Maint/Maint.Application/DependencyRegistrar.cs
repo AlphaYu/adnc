@@ -1,6 +1,6 @@
 ﻿namespace Adnc.Demo.Maint.Application;
 
-public sealed class DependencyRegistrar(IServiceCollection services, IServiceInfo serviceInfo) 
+public sealed class DependencyRegistrar(IServiceCollection services, IServiceInfo serviceInfo)
     : AbstractApplicationDependencyRegistrar(services, serviceInfo)
 {
     public override Assembly ApplicationLayerAssembly => Assembly.GetExecutingAssembly();

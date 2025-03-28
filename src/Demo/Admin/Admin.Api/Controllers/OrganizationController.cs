@@ -76,5 +76,5 @@ public class OrganizationController(IOrganizationService organizationService) : 
     [HttpGet("options")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<List<OptionTreeDto>>> GetOrgOptionsAsync()
-        =>await  organizationService.GetOrgOptionsAsync(true);
+        => await organizationService.GetOrgOptionsAsync(true);
 }

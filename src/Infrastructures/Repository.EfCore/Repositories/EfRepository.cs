@@ -31,14 +31,14 @@ public class EfRepository<TEntity>(DbContext dbContext, Operater operater, IAdoQ
     }
 
     public async Task<int> ExecuteSqlInterpolatedAsync(FormattableString sql, CancellationToken cancellationToken = default)
-       =>  await DbContext.Database.ExecuteSqlInterpolatedAsync(sql, cancellationToken);
+       => await DbContext.Database.ExecuteSqlInterpolatedAsync(sql, cancellationToken);
 
     public async Task<int> ExecuteSqlRawAsync(string sql, CancellationToken cancellationToken = default)
-       =>  await DbContext.Database.ExecuteSqlRawAsync(sql, cancellationToken);
+       => await DbContext.Database.ExecuteSqlRawAsync(sql, cancellationToken);
 
     public IDbTransaction? CurrentDbTransaction => DbContext.Database.CurrentTransaction?.GetDbTransaction();
 
-    public virtual IQueryable<TEntity> GetAll(bool writeDb = false, bool noTracking = true) 
+    public virtual IQueryable<TEntity> GetAll(bool writeDb = false, bool noTracking = true)
         => GetDbSet(writeDb, noTracking);
 
     public virtual IQueryable<TrdEntity> GetAll<TrdEntity>(bool writeDb = false, bool noTracking = true) where TrdEntity : EfEntity
@@ -48,7 +48,7 @@ public class EfRepository<TEntity>(DbContext dbContext, Operater operater, IAdoQ
         => await FetchAsync(x => x.Id == keyValue, navigationPropertyPath, null, false, writeDb, noTracking, cancellationToken);
 
     public virtual async Task<TEntity?> FindAsync(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, dynamic>>? navigationPropertyPath = null, Expression<Func<TEntity, object>>? orderByExpression = null, bool ascending = false, bool writeDb = false, bool noTracking = true, CancellationToken cancellationToken = default)
-        =>await FetchAsync(whereExpression, navigationPropertyPath, orderByExpression, ascending, writeDb, noTracking, cancellationToken);  
+        => await FetchAsync(whereExpression, navigationPropertyPath, orderByExpression, ascending, writeDb, noTracking, cancellationToken);
 
     public virtual async Task<TEntity?> FetchAsync(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, dynamic>>? navigationPropertyPath = null, Expression<Func<TEntity, object>>? orderByExpression = null, bool ascending = false, bool writeDb = false, bool noTracking = true, CancellationToken cancellationToken = default)
     {

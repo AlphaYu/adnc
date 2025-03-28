@@ -22,7 +22,7 @@ public interface IDictDataService : IAppService
     /// <returns></returns>
     [OperateLog(LogName = "修改字典数据")]
     [CachingEvict(CacheKey = CachingConsts.DictOptionsListKey)]
-    Task<ServiceResult> UpdateAsync( long id, DictDataUpdationDto input);
+    Task<ServiceResult> UpdateAsync(long id, DictDataUpdationDto input);
 
     /// <summary>
     /// 删除字典数据

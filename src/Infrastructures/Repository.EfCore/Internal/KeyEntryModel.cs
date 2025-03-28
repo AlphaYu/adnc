@@ -1,6 +1,6 @@
 ﻿namespace Adnc.Infra.Repository.EfCore.Internal;
 
-internal  sealed class KeyEntryModel
+internal sealed class KeyEntryModel
 {
     public string PropertyName { get; set; } = string.Empty;
 

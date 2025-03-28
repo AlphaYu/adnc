@@ -223,7 +223,7 @@ public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IDistr
 
         var roleCodes = await (from r in roleMenuQueryAble
                                join m in menuQueryAble on r.MenuId equals m.Id
-                               select new { r.RoleId, m.Perm,m.RoutePath }
+                               select new { r.RoleId, m.Perm, m.RoutePath }
                                 ).ToListAsync();
 
         var result = new List<RoleMenuCodeDto>();

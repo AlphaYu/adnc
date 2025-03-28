@@ -1,4 +1,4 @@
-using Adnc.Infra.Consul.Configuration;
+﻿using Adnc.Infra.Consul.Configuration;
 
 namespace Adnc.Gateway.Ocelot;
 
@@ -10,7 +10,7 @@ public class Program
                         .ConfigureAppConfiguration((context, configBuilder) =>
                         {
                             var configuration = configBuilder.Build();
-                            var configurationType = configuration.GetValue<string>("ConfigurationType") ??"File";
+                            var configurationType = configuration.GetValue<string>("ConfigurationType") ?? "File";
                             if (configurationType == "File")
                             {
                                 configBuilder.AddJsonFile($"{AppContext.BaseDirectory}/Config/ocelot.direct.json", true, true);

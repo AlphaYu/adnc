@@ -2,7 +2,7 @@
 
 public class ArgumentChecker
 {
-    private static readonly ArgumentChecker _instance = new ();
+    private static readonly ArgumentChecker _instance = new();
 
     static ArgumentChecker()
     {

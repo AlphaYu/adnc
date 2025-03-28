@@ -5,7 +5,7 @@ namespace Adnc.Demo.Admin.Api;
 
 public sealed class MiddlewareRegistrar(IApplicationBuilder app) : AbstractWebApiMiddlewareRegistrar(app)
 {
-    public override  void  UseAdnc()
+    public override void UseAdnc()
     {
         UseWebApiDefault(endpointRoute: endpoint =>
         {

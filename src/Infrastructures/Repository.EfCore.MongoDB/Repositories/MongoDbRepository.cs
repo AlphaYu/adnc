@@ -21,7 +21,7 @@ public class MongoDbRepository<TEntity>(DbContext dbContext) : IMongoDbRepositor
         }
     }
 
-    public virtual IQueryable<TEntity> Where(Expression<Func<TEntity, bool>> expression,  bool noTracking = true)
+    public virtual IQueryable<TEntity> Where(Expression<Func<TEntity, bool>> expression, bool noTracking = true)
         => GetDbSet(noTracking).Where(expression);
 
     public virtual async Task<int> InsertAsync(TEntity entity, CancellationToken cancellationToken = default)
@@ -36,10 +36,10 @@ public class MongoDbRepository<TEntity>(DbContext dbContext) : IMongoDbRepositor
         return await DbContext.SaveChangesAsync(cancellationToken);
     }
 
-    public virtual async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> whereExpression,  CancellationToken cancellationToken = default)
+    public virtual async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> whereExpression, CancellationToken cancellationToken = default)
         => await DbContext.Set<TEntity>().AsNoTracking().AnyAsync(whereExpression, cancellationToken);
 
-    public virtual async Task<int> CountAsync(Expression<Func<TEntity, bool>> whereExpression,  CancellationToken cancellationToken = default)
+    public virtual async Task<int> CountAsync(Expression<Func<TEntity, bool>> whereExpression, CancellationToken cancellationToken = default)
         => await DbContext.Set<TEntity>().AsNoTracking().CountAsync(whereExpression, cancellationToken);
 
     public virtual Task<int> UpdateRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)

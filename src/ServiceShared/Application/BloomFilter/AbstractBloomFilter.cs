@@ -72,7 +72,7 @@ public abstract class AbstractBloomFilter : IBloomFilter
         return await _redisProvider.Value.BfAddAsync(Name, values);
     }
 
-    public virtual async Task<bool> ExistsAsync(string value)   => await _redisProvider.Value.BfExistsAsync(Name, value);
+    public virtual async Task<bool> ExistsAsync(string value) => await _redisProvider.Value.BfExistsAsync(Name, value);
 
     public virtual async Task<bool[]> ExistsAsync(IEnumerable<string> values) => await _redisProvider.Value.BfExistsAsync(Name, values);
 

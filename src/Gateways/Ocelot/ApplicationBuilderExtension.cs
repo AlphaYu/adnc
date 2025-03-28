@@ -17,7 +17,7 @@ public static class ApplicationBuilderExtension
         if (serviceRoters is not null)
         {
             outputHtml.Append($"<br>--------------------------------------------------------------------------------------------<br>");
-            foreach (var  router in serviceRoters)
+            foreach (var router in serviceRoters)
             {
                 if (router.Name.Contains("auth"))
                 {

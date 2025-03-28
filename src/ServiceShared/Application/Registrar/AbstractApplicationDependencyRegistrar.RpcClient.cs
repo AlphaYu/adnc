@@ -14,7 +14,7 @@ namespace Adnc.Shared.Application.Registrar;
 
 public abstract partial class AbstractApplicationDependencyRegistrar
 {
-    private static bool _theFirstCalled = true; 
+    private static bool _theFirstCalled = true;
 
     /// <summary>
     /// 注册Rest服务(跨微服务之间的同步通讯)
@@ -23,7 +23,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar
     /// <param name="serviceName">在注册中心注册的服务名称，或者服务的Url</param>
     /// <param name="policies">Polly策略</param>
     protected virtual void AddRestClient<TRestClient>(string serviceName, List<IAsyncPolicy<HttpResponseMessage>> policies)
-     where TRestClient : class,IRestClient
+     where TRestClient : class, IRestClient
     {
         ArgumentNullException.ThrowIfNullOrWhiteSpace(serviceName, nameof(serviceName));
 
@@ -71,7 +71,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar
                     //todo
                     break;
                 }
-            default: 
+            default:
                 throw new NotImplementedException(RegisterType);
         }
     }

@@ -2,12 +2,12 @@
 
 public class ValidationInfo
 {
-    public long Id { get; set; } 
+    public long Id { get; set; }
     public string? ValidationVersion { get; set; }
-    public bool Status { get; set; } 
+    public bool Status { get; set; }
 }
 
-public class BearerAuthenticationCacheProcessor( IHttpContextAccessor contextAccessor, ICacheProvider cacheProvider,ILogger<BearerAuthenticationCacheProcessor> logger)
+public class BearerAuthenticationCacheProcessor(IHttpContextAccessor contextAccessor, ICacheProvider cacheProvider, ILogger<BearerAuthenticationCacheProcessor> logger)
     : AbstractAuthenticationProcessor
 {
     protected override async Task<(string? ValidationVersion, bool Status)> GetValidatedInfoAsync(long userId)

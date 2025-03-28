@@ -1,4 +1,4 @@
-using RabbitMQ.Client;
+﻿using RabbitMQ.Client;
 
 namespace Adnc.Infra.EventBus.RabbitMq;
 
@@ -62,7 +62,7 @@ public class RabbitMqProducer(IRabbitMqConnection rabbitMqConnection, ILogger<Ra
                   //消息是否到达服务器
                   //bool publishStatus = _channel.WaitForConfirms();
               });
-             return Task.CompletedTask;  
+        return Task.CompletedTask;
     }
 
     public virtual BasicProperties CreateBasicProperties() => new();

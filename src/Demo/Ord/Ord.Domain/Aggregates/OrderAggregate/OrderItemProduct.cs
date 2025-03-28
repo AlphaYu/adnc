@@ -4,7 +4,7 @@ public record OrderItemProduct : ValueObject
 {
     public long Id { get; }
 
-    public string Name { get; } 
+    public string Name { get; }
 
     public decimal Price { get; }
 

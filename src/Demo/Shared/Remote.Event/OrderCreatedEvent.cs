@@ -12,7 +12,7 @@ public class OrderCreatedEvent : EventEntity
     {
     }
 
-    public OrderCreatedEvent(long id, string eventSource,long orderId, IEnumerable<OrderItem> orderItems)
+    public OrderCreatedEvent(long id, string eventSource, long orderId, IEnumerable<OrderItem> orderItems)
         : base(id, eventSource)
     {
         OrderId = orderId;

@@ -11,7 +11,7 @@ public interface IOrganizationService : IAppService
     /// <param name="input"></param>
     /// <returns></returns>
     [OperateLog(LogName = "新增机构")]
-    [CachingEvict(CacheKeys = new string[] { CachingConsts.DetpListCacheKey})]
+    [CachingEvict(CacheKeys = new string[] { CachingConsts.DetpListCacheKey })]
     Task<ServiceResult<IdDto>> CreateAsync(OrganizationCreationDto input);
 
     /// <summary>
@@ -21,7 +21,7 @@ public interface IOrganizationService : IAppService
     /// <param name="input"></param>
     /// <returns></returns>
     [OperateLog(LogName = "修改机构")]
-    [CachingEvict(CacheKeys = new string[] {CachingConsts.DetpListCacheKey })]
+    [CachingEvict(CacheKeys = new string[] { CachingConsts.DetpListCacheKey })]
     [UnitOfWork]
     Task<ServiceResult> UpdateAsync(long id, OrganizationUpdationDto input);
 

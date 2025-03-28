@@ -19,7 +19,7 @@ public abstract class AbstractAuthenticationProcessor
         var parseResult = long.TryParse(idClaim.Value, out long userId);
         if (parseResult == false)
         {
-            throw  new  InvalidCastException(nameof(idClaim.Value));
+            throw new InvalidCastException(nameof(idClaim.Value));
         }
 
         var (ValidationVersion, Status) = await GetValidatedInfoAsync(userId);
