@@ -7,7 +7,7 @@ internal sealed class JsonConfigurationFileParser
     }
 
     private readonly IDictionary<string, string?> _data = new SortedDictionary<string, string?>(StringComparer.OrdinalIgnoreCase);
-    private readonly Stack<string> _context = new Stack<string>();
+    private readonly Stack<string> _context = new();
     private string _currentPath = string.Empty;
 
     public static IDictionary<string, string?> Parse(Stream input)

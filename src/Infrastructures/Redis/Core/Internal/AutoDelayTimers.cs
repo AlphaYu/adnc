@@ -2,8 +2,8 @@
 
 public class AutoDelayTimers
 {
-    private static readonly Lazy<AutoDelayTimers> lazy = new Lazy<AutoDelayTimers>(() => new AutoDelayTimers());
-    private static readonly ConcurrentDictionary<string, Timer> _timers = new ConcurrentDictionary<string, Timer>();
+    private static readonly Lazy<AutoDelayTimers> lazy = new(() => new AutoDelayTimers());
+    private static readonly ConcurrentDictionary<string, Timer> _timers = new();
 
     static AutoDelayTimers()
     {

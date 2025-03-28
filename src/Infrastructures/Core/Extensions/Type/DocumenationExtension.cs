@@ -137,12 +137,12 @@ public static class DocumenationExtension
     /// <summary>
     /// A cache used to remember Xml documentation for assemblies
     /// </summary>
-    private static readonly Dictionary<Assembly, XmlDocument> Cache = new Dictionary<Assembly, XmlDocument>();
+    private static readonly Dictionary<Assembly, XmlDocument> Cache = new();
 
     /// <summary>
     /// A cache used to store failure exceptions for assembly lookups
     /// </summary>
-    private static readonly Dictionary<Assembly, Exception> FailCache = new Dictionary<Assembly, Exception>();
+    private static readonly Dictionary<Assembly, Exception> FailCache = new();
 
     /// <summary>
     /// Obtains the documentation file for the specified assembly

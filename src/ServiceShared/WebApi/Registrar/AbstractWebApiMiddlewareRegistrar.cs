@@ -58,7 +58,7 @@ public abstract partial class AbstractWebApiMiddlewareRegistrar(IApplicationBuil
                     c.RouteTemplate = $"/{serviceInfo.RelativeRootPath}/swagger/{{documentName}}/swagger.json";
                     c.PreSerializeFilters.Add((swaggerDoc, httpReq) =>
                     {
-                        swaggerDoc.Servers = new List<OpenApiServer> { new OpenApiServer { Url = $"/", Description = serviceInfo.Description } };
+                        swaggerDoc.Servers = new List<OpenApiServer> { new() { Url = $"/", Description = serviceInfo.Description } };
                     });
                 })
                 .UseSwaggerUI(c =>

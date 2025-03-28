@@ -26,12 +26,12 @@ public static class JwtTokenHelper
 
         var claims = new Claim[]
         {
-            new Claim(JwtRegisteredClaimNames.Jti,jti),
-            new Claim(JwtRegisteredClaimNames.UniqueName, uniqueName),
-            new Claim(JwtRegisteredClaimNames.NameId, nameId),
-            new Claim(JwtRegisteredClaimNames.Name, name),
-            new Claim(BearerDefaults.RoleIds, roleIds),
-            new Claim(BearerDefaults.LoginerType,loginerType)
+            new(JwtRegisteredClaimNames.Jti,jti),
+            new(JwtRegisteredClaimNames.UniqueName, uniqueName),
+            new(JwtRegisteredClaimNames.NameId, nameId),
+            new(JwtRegisteredClaimNames.Name, name),
+            new(BearerDefaults.RoleIds, roleIds),
+            new(BearerDefaults.LoginerType,loginerType)
         };
         return WriteToken(jwtConfig, claims, Tokens.AccessToken);
     }
@@ -55,8 +55,8 @@ public static class JwtTokenHelper
 
         var claims = new Claim[]
         {
-            new Claim(JwtRegisteredClaimNames.Jti,jti),
-            new Claim(JwtRegisteredClaimNames.NameId, nameId),
+            new(JwtRegisteredClaimNames.Jti,jti),
+            new(JwtRegisteredClaimNames.NameId, nameId),
         };
         return WriteToken(jwtConfig, claims, Tokens.RefreshToken);
     }

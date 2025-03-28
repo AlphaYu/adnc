@@ -2,7 +2,7 @@
 
 public static class TypeExtensions
 {
-    private static readonly ConcurrentDictionary<TypeInfo, bool> isTaskOfTCache = new ConcurrentDictionary<TypeInfo, bool>();
+    private static readonly ConcurrentDictionary<TypeInfo, bool> isTaskOfTCache = new();
 
     public static bool IsTaskWithResult(this TypeInfo typeInfo)
     {
