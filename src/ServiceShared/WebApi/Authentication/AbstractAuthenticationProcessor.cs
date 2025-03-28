@@ -13,7 +13,7 @@ public abstract class AbstractAuthenticationProcessor
         var idClaim = claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.NameId);
         if (idClaim is null)
         {
-            return Array.Empty<Claim>();
+            return [];
         }
 
         var parseResult = long.TryParse(idClaim.Value, out var userId);
@@ -26,18 +26,18 @@ public abstract class AbstractAuthenticationProcessor
 
         if (string.IsNullOrWhiteSpace(ValidationVersion) || Status == false)
         {
-            return Array.Empty<Claim>();
+            return [];
         }
 
         var jtiClaim = claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Jti);
         if (jtiClaim is null)
         {
-            return Array.Empty<Claim>();
+            return [];
         }
 
         if (ValidationVersion != jtiClaim.Value)
         {
-            return Array.Empty<Claim>();
+            return [];
         }
 
         return claims.ToArray();

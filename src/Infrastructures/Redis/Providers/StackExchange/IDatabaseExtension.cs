@@ -154,13 +154,13 @@ public static class DatabaseExtension
         => (bool)await redisDb.ExecuteAsync("BF.ADD", key, value);
 
     public static async Task<bool[]> BfAddAsync(this IDatabase redisDb, RedisKey key, IEnumerable<RedisValue> values)
-        => (bool[]?)await redisDb.ExecuteAsync("BF.MADD", values.Cast<object>().Prepend(key).ToArray()) ?? Array.Empty<bool>();
+        => (bool[]?)await redisDb.ExecuteAsync("BF.MADD", values.Cast<object>().Prepend(key).ToArray()) ?? [];
 
     public static async Task<bool> BfExistsAsync(this IDatabase redisDb, RedisKey key, RedisValue value)
         => (bool)await redisDb.ExecuteAsync("BF.EXISTS", key, value);
 
     public static async Task<bool[]> BfExistsAsync(this IDatabase redisDb, RedisKey key, IEnumerable<RedisValue> values)
-        => (bool[]?)await redisDb.ExecuteAsync("BF.MEXISTS", values.Cast<object>().Prepend(key).ToArray()) ?? Array.Empty<bool>();
+        => (bool[]?)await redisDb.ExecuteAsync("BF.MEXISTS", values.Cast<object>().Prepend(key).ToArray()) ?? [];
 
     #endregion Bloom Filter
 
@@ -173,28 +173,28 @@ public static class DatabaseExtension
         => (RedisValue)await db.ExecuteAsync("TOPK.ADD", key, value);
 
     public static async Task<RedisValue[]> TopKAddAsync(this IDatabase db, RedisKey key, IEnumerable<RedisValue> values)
-        => (RedisValue[]?)await db.ExecuteAsync("TOPK.ADD", values.Cast<object>().Prepend(key).ToArray()) ?? Array.Empty<RedisValue>();
+        => (RedisValue[]?)await db.ExecuteAsync("TOPK.ADD", values.Cast<object>().Prepend(key).ToArray()) ?? [];
 
     public static async Task<RedisValue> TopKIncrementAsync(this IDatabase db, RedisKey key, RedisValue value, int increment)
         => (RedisValue)await db.ExecuteAsync("TOPK.INCRBY", key, value, increment);
 
     public static async Task<RedisValue[]> TopKIncrementAsync(this IDatabase db, RedisKey key, (RedisValue value, int increment)[] increments)
-        => (RedisValue[]?)await db.ExecuteAsync("TOPK.INCRBY", increments.SelectMany(i => new object[] { i.value, i.increment }).Prepend(key).ToArray()) ?? Array.Empty<RedisValue>();
+        => (RedisValue[]?)await db.ExecuteAsync("TOPK.INCRBY", increments.SelectMany(i => new object[] { i.value, i.increment }).Prepend(key).ToArray()) ?? [];
 
     public static async Task<RedisValue[]> TopKListAsync(this IDatabase db, RedisKey key)
-        => (RedisValue[]?)await db.ExecuteAsync("TOPK.LIST", key) ?? Array.Empty<RedisValue>();
+        => (RedisValue[]?)await db.ExecuteAsync("TOPK.LIST", key) ?? [];
 
     public static async Task<bool> TopKQueryAsync(this IDatabase db, RedisKey key, RedisValue value)
         => (bool)await db.ExecuteAsync("TOPK.QUERY", key, value);
 
     public static async Task<bool[]> TopKQueryAsync(this IDatabase db, RedisKey key, RedisValue[] values)
-        => (bool[]?)await db.ExecuteAsync("TOPK.QUERY", values.Cast<object>().Prepend(key).ToArray()) ?? Array.Empty<bool>();
+        => (bool[]?)await db.ExecuteAsync("TOPK.QUERY", values.Cast<object>().Prepend(key).ToArray()) ?? [];
 
     public static async Task<int> TopKCountAsync(this IDatabase db, RedisKey key, RedisValue value)
         => (int)await db.ExecuteAsync("TOPK.COUNT", key, value);
 
     public static async Task<int[]> TopKCountAsync(this IDatabase db, RedisKey key, RedisValue[] values)
-        => (int[]?)await db.ExecuteAsync("TOPK.COUNT", values.Cast<object>().Prepend(key).ToArray()) ?? Array.Empty<int>();
+        => (int[]?)await db.ExecuteAsync("TOPK.COUNT", values.Cast<object>().Prepend(key).ToArray()) ?? [];
 
     #endregion TopK
 }
