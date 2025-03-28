@@ -152,7 +152,7 @@ public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IDistr
                 cahceDictionary.Add(cacheKey, dictOptions);
             }
             await CacheProvider.Value.SetAllAsync(cahceDictionary, TimeSpan.FromSeconds(GeneralConsts.OneMonth));
-            logger.Value.LogInformation($"finished({cahceDictionary.Count}) preheat {CachingConsts.DictOptionSingleKeyPrefix}");
+            logger.Value.LogInformation("finished({Count}) preheat {DictOptionSingleKeyPrefix}", cahceDictionary.Count, CachingConsts.DictOptionSingleKeyPrefix);
         }
         catch (Exception ex)
         {

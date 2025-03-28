@@ -88,11 +88,11 @@ public sealed partial class CapEventSubscriber(IUnitOfWork unitOfWork, IEfReposi
         {
             unitOfWork.BeginTransaction();
 
-            logger.LogInformation($"------开始处理[{eventId}]------");
+            logger.LogInformation("------开始处理[{eventId}]------", eventId);
             //TODO
             //
             //
-            logger.LogInformation($"------完成处理[{eventId}]------");
+            logger.LogInformation("------完成处理[{eventId}]------", eventId);
 
             await tracker.MarkAsProcessedAsync(eventId, eventHandler);
 

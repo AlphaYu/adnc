@@ -100,7 +100,7 @@ public class AccountController(IOptions<JWTOptions> jwtOptions, UserContext user
     public async Task<ActionResult<UserValidatedInfoDto>> GetUserValidatedInfoAsync()
     {
         var validatedInfo = await userService.GetUserValidatedInfoAsync(userContext.Id);
-        logger.LogDebug($"UserContext:{userContext.Id}");
+        logger.LogDebug("UserContext:{Id}", userContext.Id);
         return validatedInfo is null ? NotFound() : validatedInfo;
     }
 

@@ -25,7 +25,7 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
             {
                 if (_cacheOptions.Value.EnableLogging)
                 {
-                    _logger?.LogInformation($"Cache Penetrated : cachekey = {cacheKey}");
+                    _logger?.LogInformation("Cache Penetrated : cachekey = {cacheKey}", cacheKey);
                 }
 
                 return null;

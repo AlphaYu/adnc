@@ -109,7 +109,7 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
             {
                 if (_cacheOptions.Value.EnableLogging)
                 {
-                    _logger?.LogInformation($"Cache Penetrated : cachekey = {cacheKey}");
+                    _logger?.LogInformation("Cache Penetrated : cachekey = {cacheKey}", cacheKey);
                 }
 
                 return CacheValue<T>.NoValue;
@@ -123,7 +123,7 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
 
             if (_cacheOptions.Value.EnableLogging)
             {
-                _logger?.LogInformation($"Cache Hit : cachekey = {cacheKey}");
+                _logger?.LogInformation("Cache Hit : cachekey = {cacheKey}", cacheKey);
             }
 
             var value = _serializer.Deserialize<T>(result);
@@ -134,7 +134,7 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
 
         if (_cacheOptions.Value.EnableLogging)
         {
-            _logger?.LogInformation($"Cache Missed : cachekey = {cacheKey}");
+            _logger?.LogInformation("Cache Missed : cachekey = {cacheKey}", cacheKey);
         }
 
         var flag = _redisDb.Lock(cacheKey, _cacheOptions.Value.LockMs / 1000);
@@ -185,7 +185,7 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
             {
                 if (_cacheOptions.Value.EnableLogging)
                 {
-                    _logger?.LogInformation($"Cache Penetrated : cachekey = {cacheKey}");
+                    _logger?.LogInformation("Cache Penetrated : cachekey = {cacheKey}", cacheKey);
                 }
 
                 return CacheValue<T>.NoValue;
@@ -199,7 +199,7 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
 
             if (_cacheOptions.Value.EnableLogging)
             {
-                _logger?.LogInformation($"Cache Hit : cachekey = {cacheKey}");
+                _logger?.LogInformation("Cache Hit : cachekey = {cacheKey}", cacheKey);
             }
 
             var value = _serializer.Deserialize<T>(result);
@@ -211,7 +211,7 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
 
             if (_cacheOptions.Value.EnableLogging)
             {
-                _logger?.LogInformation($"Cache Missed : cachekey = {cacheKey}");
+                _logger?.LogInformation("Cache Missed : cachekey = {cacheKey}", cacheKey);
             }
 
             return CacheValue<T>.NoValue;
@@ -280,7 +280,7 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
 
         if (_cacheOptions.Value.EnableLogging)
         {
-            _logger?.LogInformation($"RemoveByPrefix : prefix = {prefix}");
+            _logger?.LogInformation("RemoveByPrefix : prefix = {prefix}", prefix);
         }
 
         var redisKeys = SearchRedisKeys(prefix);
