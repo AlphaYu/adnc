@@ -9,7 +9,9 @@ public static class TypeHelper
     /// <summary>
     /// The subtract full name regex.
     /// </summary>
+#pragma warning disable SYSLIB1045 // “GeneratedRegexAttribute”。
     private static readonly Regex _subtractFullNameRegex = new(@", Version=\d+.\d+.\d+.\d+, Culture=\w+, PublicKeyToken=\w+", RegexOptions.Compiled);
+#pragma warning restore SYSLIB1045 // “GeneratedRegexAttribute”。
 
     /// <summary>
     /// Builds the name of the type.

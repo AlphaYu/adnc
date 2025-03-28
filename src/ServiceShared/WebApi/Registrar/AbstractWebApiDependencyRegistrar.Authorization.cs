@@ -12,6 +12,7 @@ public abstract partial class AbstractWebApiDependencyRegistrar
     /// <typeparam name="THandler"></typeparam>
     protected virtual void AddAuthorization<TAuthorizationHandler>() where TAuthorizationHandler : AbstractPermissionHandler
     {
+#pragma warning disable ASP0025 // Use AddAuthorizationBuilder
         Services
             .AddScoped<IAuthorizationHandler, TAuthorizationHandler>()
             .AddAuthorization(options =>
@@ -21,5 +22,6 @@ public abstract partial class AbstractWebApiDependencyRegistrar
                     policy.Requirements.Add(new PermissionRequirement());
                 });
             });
+#pragma warning restore ASP0025 // Use AddAuthorizationBuilder
     }
 }

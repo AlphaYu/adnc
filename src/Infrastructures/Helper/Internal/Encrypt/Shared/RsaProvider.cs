@@ -6,7 +6,9 @@
 /// </summary>
 internal sealed class RsaProvider
 {
+#pragma warning disable SYSLIB1045 // “GeneratedRegexAttribute”。
     private static readonly Regex _pEMCode = new(@"--+.+?--+|\s+");
+#pragma warning restore SYSLIB1045 // “GeneratedRegexAttribute”。
     private static readonly byte[] _seqOID = [0x30, 0x0D, 0x06, 0x09, 0x2A, 0x86, 0x48, 0x86, 0xF7, 0x0D, 0x01, 0x01, 0x01, 0x05, 0x00];
     private static readonly byte[] _ver = [0x02, 0x01, 0x00];
 

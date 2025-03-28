@@ -20,7 +20,9 @@ public static class MethodInfoExtension
             return string.Empty;
         }
 
+#pragma warning disable SYSLIB1045 // “GeneratedRegexAttribute”。
         var match = Regex.Match(originalMethodName, "<(.*)>");
+#pragma warning restore SYSLIB1045 // “GeneratedRegexAttribute”。
         return match.Success ? match.Groups[1].Value : originalMethodName;
     }
 }

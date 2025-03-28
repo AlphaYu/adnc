@@ -346,7 +346,9 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
         }
 
         // Don't start with *
+#pragma warning disable SYSLIB1045 // “GeneratedRegexAttribute”。
         prefix = new System.Text.RegularExpressions.Regex("^\\*+").Replace(prefix, "");
+#pragma warning restore SYSLIB1045 // “GeneratedRegexAttribute”。
 
         // End with *
         if (!prefix.EndsWith("*", StringComparison.OrdinalIgnoreCase))
