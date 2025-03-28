@@ -82,7 +82,7 @@ public static class CollectionExtension
     /// <typeparam name="T">The type of the items in the collection.</typeparam>
     /// <param name="collection">The collection to check.</param>
     /// <returns>True if the collection is null or empty; otherwise, false.</returns>
-    public static bool IsNullOrEmpty<T>(this ICollection<T> collection) => collection == null || !collection.Any();
+    public static bool IsNullOrEmpty<T>(this ICollection<T> collection) => collection == null || collection.Count == 0;
 
     /// <summary>
     /// Determines whether the collection is not null or not empty.
@@ -90,5 +90,5 @@ public static class CollectionExtension
     /// <typeparam name="T">The type of the items in the collection.</typeparam>
     /// <param name="collection">The collection to check.</param>
     /// <returns>True if the collection is not null and not empty; otherwise, false.</returns>
-    public static bool IsNotNullOrEmpty<T>(this ICollection<T> collection) => collection != null && collection.Any();
+    public static bool IsNotNullOrEmpty<T>(this ICollection<T> collection) => collection != null && collection.Count != 0;
 }

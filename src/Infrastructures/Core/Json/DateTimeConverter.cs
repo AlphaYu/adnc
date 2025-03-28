@@ -6,12 +6,7 @@ public class DateTimeConverter : JsonConverter<DateTime>
 {
     public override DateTime Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        var dateString = reader.GetString();
-        if (dateString is null)
-        {
-            throw new ArgumentException(nameof(Utf8JsonReader));
-        }
-
+        var dateString = reader.GetString() ?? throw new ArgumentException(nameof(Utf8JsonReader));
         return DateTime.Parse(dateString);
     }
 

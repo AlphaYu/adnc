@@ -30,11 +30,11 @@ public static class DependencyRegistrarExtension
         //重试次数会统计到失败次数
         var retryPolicy = Policy.Handle<TimeoutRejectedException>()
                                 .OrResult<HttpResponseMessage>(response => (int)response.StatusCode >= 500)
-                                .WaitAndRetryAsync(new[]
-                                {
+                                .WaitAndRetryAsync(
+                                [
                                 TimeSpan.FromSeconds(3),
                                 TimeSpan.FromSeconds(5),
-                                });
+                                ]);
         //超时策略
         var timeoutPolicy = Policy.TimeoutAsync<HttpResponseMessage>(_.IsDevelopment() ? 10 : 9);
 
@@ -72,12 +72,12 @@ public static class DependencyRegistrarExtension
                                              }
                                          );
 
-        return new List<IAsyncPolicy<HttpResponseMessage>>()
-                    {
+        return
+                    [
                         retryPolicy
                        ,timeoutPolicy
                        ,circuitBreakerPolicy.AsAsyncPolicy<HttpResponseMessage>()
-                    };
+                    ];
     }
 
     /// <summary>

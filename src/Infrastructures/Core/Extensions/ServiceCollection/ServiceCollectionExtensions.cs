@@ -4,9 +4,9 @@ namespace Microsoft.Extensions.DependencyInjection;
 
 public static partial class ServiceCollectionExtensions
 {
-    private static readonly ConcurrentDictionary<string, char> s_RegisteredModels = new();
+    private static readonly ConcurrentDictionary<string, char> _registeredModels = new();
 
-    public static bool HasRegistered(this IServiceCollection _, string modelName) => !s_RegisteredModels.TryAdd(modelName.ToLower(), '1');
+    public static bool HasRegistered(this IServiceCollection _, string modelName) => !_registeredModels.TryAdd(modelName.ToLower(), '1');
 
     public static IServiceCollection ReplaceConfiguration(this IServiceCollection services, IConfiguration configuration)
     {
@@ -43,12 +43,7 @@ public static partial class ServiceCollectionExtensions
     internal static T GetSingletonInstance<T>(this IServiceCollection services)
         where T : class
     {
-        var instance = GetSingletonInstanceOrNull<T>(services);
-        if (instance is null)
-        {
-            throw new InvalidOperationException("Could not find singleton service: " + typeof(T).AssemblyQualifiedName);
-        }
-
+        var instance = GetSingletonInstanceOrNull<T>(services) ?? throw new InvalidOperationException("Could not find singleton service: " + typeof(T).AssemblyQualifiedName);
         return instance;
     }
 }

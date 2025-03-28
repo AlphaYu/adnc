@@ -11,7 +11,7 @@ public class DefaultJsonSerializer : ISerializer
     /// <summary>
     /// The json serializer.
     /// </summary>
-    private static readonly JsonSerializerOptions jsonSerializerOption = SystemTextJson.GetAdncDefaultOptions();
+    private static readonly JsonSerializerOptions _jsonSerializerOption = SystemTextJson.GetAdncDefaultOptions();
 
     /// <summary>
     /// Gets the name.
@@ -27,7 +27,7 @@ public class DefaultJsonSerializer : ISerializer
     /// <typeparam name="T">The 1st type parameter.</typeparam>
     public T Deserialize<T>(byte[] bytes)
     {
-        return JsonSerializer.Deserialize<T>(bytes, jsonSerializerOption);
+        return JsonSerializer.Deserialize<T>(bytes, _jsonSerializerOption);
     }
 
     /// <summary>
@@ -38,7 +38,7 @@ public class DefaultJsonSerializer : ISerializer
     /// <param name="type">Type.</param>
     public object Deserialize(byte[] bytes, Type type)
     {
-        return JsonSerializer.Deserialize(bytes, type, jsonSerializerOption);
+        return JsonSerializer.Deserialize(bytes, type, _jsonSerializerOption);
     }
 
     /// <summary>
@@ -57,7 +57,7 @@ public class DefaultJsonSerializer : ISerializer
             var type = Type.GetType(typeName, throwOnError: true);
 
             jr.Read();
-            return JsonSerializer.Deserialize(ref jr, type, jsonSerializerOption);
+            return JsonSerializer.Deserialize(ref jr, type, _jsonSerializerOption);
         }
         else
         {
@@ -73,7 +73,7 @@ public class DefaultJsonSerializer : ISerializer
     /// <typeparam name="T">The 1st type parameter.</typeparam>
     public byte[] Serialize<T>(T value)
     {
-        return JsonSerializer.SerializeToUtf8Bytes(value, jsonSerializerOption);
+        return JsonSerializer.SerializeToUtf8Bytes(value, _jsonSerializerOption);
     }
 
     /// <summary>
@@ -90,7 +90,7 @@ public class DefaultJsonSerializer : ISerializer
         jw.WriteStartArray();
         jw.WriteStringValue(typeName);
 
-        JsonSerializer.Serialize(jw, obj, jsonSerializerOption);
+        JsonSerializer.Serialize(jw, obj, _jsonSerializerOption);
 
         jw.WriteEndArray();
 

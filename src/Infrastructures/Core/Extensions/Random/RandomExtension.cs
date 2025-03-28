@@ -4,7 +4,7 @@ namespace System;
 
 public static class RandomExtension
 {
-    private static readonly char[] Constant =
+    private static readonly char[] _constant =
 [
     '0',
     '1',
@@ -44,7 +44,7 @@ public static class RandomExtension
     'z'
 ];
 
-    private static readonly char[] ConstantNumber =
+    private static readonly char[] _constantNumber =
     [
     '0',
     '1',
@@ -80,11 +80,11 @@ public static class RandomExtension
         char[] array;
         if (isNumberOnly)
         {
-            array = ConstantNumber;
+            array = _constantNumber;
         }
         else
         {
-            array = Constant;
+            array = _constant;
         }
         var stringBuilder = new StringBuilder(length);
         for (var i = 0; i < length; i++)

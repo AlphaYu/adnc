@@ -63,6 +63,6 @@ public abstract class AbstractEntityInfo : IEntityInfo
                                                  && typeof(EfEntity).IsAssignableFrom(m)
                                                  && !m.IsAbstract));
 
-        return typeList.ToList() ?? new List<Type>();
+        return typeList.ToList() ?? [];
     }
 }

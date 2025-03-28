@@ -18,17 +18,17 @@ public class UserInfoDto : OutputDto
     /// <summary>
     /// 头像
     /// </summary>
-    private string avatar = string.Empty;
+    private string _avatar = string.Empty;
     public string Avatar
     {
-        set { avatar = value; }
+        set { _avatar = value; }
         get
         {
-            if (avatar.IsNullOrEmpty())
+            if (_avatar.IsNullOrEmpty())
             {
-                avatar = "https://foruda.gitee.com/images/1723603502796844527/03cdca2a_716974.gif";
+                _avatar = "https://foruda.gitee.com/images/1723603502796844527/03cdca2a_716974.gif";
             }
-            return avatar;
+            return _avatar;
         }
     }
 

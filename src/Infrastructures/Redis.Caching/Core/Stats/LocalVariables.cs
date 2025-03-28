@@ -2,7 +2,7 @@
 
 public sealed class LocalVariables
 {
-    private static readonly Lazy<LocalVariables> lazy = new(() => new LocalVariables());
+    private static readonly Lazy<LocalVariables> _lazy = new(() => new LocalVariables());
     private static readonly ConcurrentQueue<Model> _queue = new();
 
     static LocalVariables()
@@ -13,7 +13,7 @@ public sealed class LocalVariables
     {
     }
 
-    public static LocalVariables Instance => lazy.Value;
+    public static LocalVariables Instance => _lazy.Value;
 
     public ConcurrentQueue<Model> Queue => _queue;
 

@@ -44,12 +44,7 @@ public class RabbitMqProducer(IRabbitMqConnection rabbitMqConnection, ILogger<Ra
               })
               .Execute(async () =>
               {
-                  var content = message as string;
-                  if (content == null)
-                  {
-                      content = JsonSerializer.Serialize(message);
-                  }
-
+                  var content = message as string ?? JsonSerializer.Serialize(message);
                   var body = Encoding.UTF8.GetBytes(content);
                   //当mandatory标志位设置为true时，如果exchange根据自身类型和消息routingKey无法找到一个合适的queue存储消息
                   //那么broker会调用basic.return方法将消息返还给生产者;

@@ -17,17 +17,17 @@ public sealed class HashConsistentGenerater
     /// <summary>
     /// 真实节点信息
     /// </summary>
-    private readonly List<string> _nodes = new();
+    private readonly List<string> _nodes = [];
 
     /// <summary>
     /// 虚拟节点信息（int类型主要是为了获取虚拟节点时的二分查找）
     /// </summary>
-    private readonly List<int> _virtualNode = new();
+    private readonly List<int> _virtualNode = [];
 
     /// <summary>
     /// 虚拟节点和真实节点映射，在获取到虚拟节点之后，能以O(1)的时间复杂度返回真实节点
     /// </summary>
-    private readonly Dictionary<int, string> _virtualNodeAndNodeMap = new();
+    private readonly Dictionary<int, string> _virtualNodeAndNodeMap = [];
 
     /// <summary>
     /// 增加节点
@@ -46,10 +46,9 @@ public sealed class HashConsistentGenerater
             for (var i = 1; i <= _virtualNodeMultiple; i++) //此处循环为类似“192.168.3.1”这样的真实ip字符串从1加到1000，算作虚拟节点。192.168.3.11，192.168.3.11000
             {
                 var currentHash = GetHashCode(item + i) & int.MaxValue; //计算一个hash，此处用自定义hash算法原因是字符串默认的哈希实现不保证对同一字符串获取hash时得到相同的值。和int.MaxValue进行位与操作是为了将获取到的hash值设置为正数
-                if (!_virtualNodeAndNodeMap.ContainsKey(currentHash)) //因为hash可能会重复，如果当前hash已经包含在虚拟节点和真实节点映射中，则以第一次添加的为准，此处不再进行添加
+                if (_virtualNodeAndNodeMap.TryAdd(currentHash, item)) //因为hash可能会重复，如果当前hash已经包含在虚拟节点和真实节点映射中，则以第一次添加的为准，此处不再进行添加
                 {
                     _virtualNode.Add(currentHash);//将当前虚拟节点添加到虚拟节点中
-                    _virtualNodeAndNodeMap.Add(currentHash, item);//将当前虚拟节点和真实ip放入映射中。
                 }
             }
         }

@@ -2,7 +2,7 @@
 
 public class AutoDelayTimers
 {
-    private static readonly Lazy<AutoDelayTimers> lazy = new(() => new AutoDelayTimers());
+    private static readonly Lazy<AutoDelayTimers> _lazy = new(() => new AutoDelayTimers());
     private static readonly ConcurrentDictionary<string, Timer> _timers = new();
 
     static AutoDelayTimers()
@@ -17,7 +17,7 @@ public class AutoDelayTimers
     {
         get
         {
-            return lazy.Value;
+            return _lazy.Value;
         }
     }
 

@@ -5,7 +5,7 @@ namespace Adnc.Demo.Cust.Api.Application.Subscribers;
 public sealed partial class CapEventSubscriber(IUnitOfWork unitOfWork, IEfRepository<Finance> finaceRepo, IEfRepository<TransactionLog> transactionLogRepo
     , ILogger<CapEventSubscriber> logger, MessageTrackerFactory trackerFactory) : ICapSubscribe
 {
-    private readonly IMessageTracker tracker = trackerFactory.Create();
+    private readonly IMessageTracker _tracker = trackerFactory.Create();
 
     /// <summary>
     /// 订阅充值事件
@@ -19,7 +19,7 @@ public sealed partial class CapEventSubscriber(IUnitOfWork unitOfWork, IEfReposi
 
         var eventId = eventDto.Id;
         var eventHandler = nameof(HandleCustomerRechargedEvent);
-        var hasProcessed = await tracker.HasProcessedAsync(eventId, eventHandler);
+        var hasProcessed = await _tracker.HasProcessedAsync(eventId, eventHandler);
         if (hasProcessed)
         {
             return;
@@ -51,7 +51,7 @@ public sealed partial class CapEventSubscriber(IUnitOfWork unitOfWork, IEfReposi
             transLog.ChangedAmount = changedBalance;
             await transactionLogRepo.UpdateAsync(transLog);
 
-            await tracker.MarkAsProcessedAsync(eventId, eventHandler);
+            await _tracker.MarkAsProcessedAsync(eventId, eventHandler);
 
             unitOfWork.Commit();
         }
@@ -78,7 +78,7 @@ public sealed partial class CapEventSubscriber(IUnitOfWork unitOfWork, IEfReposi
 
         var eventId = eventDto.Id;
         var eventHandler = nameof(HandleOrderPaidEvent);
-        var hasProcessed = await tracker.HasProcessedAsync(eventId, eventHandler);
+        var hasProcessed = await _tracker.HasProcessedAsync(eventId, eventHandler);
         if (hasProcessed)
         {
             return;
@@ -94,7 +94,7 @@ public sealed partial class CapEventSubscriber(IUnitOfWork unitOfWork, IEfReposi
             //
             logger.LogInformation("------完成处理[{eventId}]------", eventId);
 
-            await tracker.MarkAsProcessedAsync(eventId, eventHandler);
+            await _tracker.MarkAsProcessedAsync(eventId, eventHandler);
 
             unitOfWork.Commit();
         }

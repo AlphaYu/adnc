@@ -1,4 +1,4 @@
-namespace Adnc.Infra.Repository;
+﻿namespace Adnc.Infra.Repository;
 
 [Serializable]
 public class PagedModel<T> where T : class
@@ -13,7 +13,7 @@ public class PagedModel<T> where T : class
     public IReadOnlyList<T> Data
     {
         get => _data;
-        set => _data = value ?? Array.Empty<T>();
+        set => _data = value ?? [];
     }
 
     public int PageIndex

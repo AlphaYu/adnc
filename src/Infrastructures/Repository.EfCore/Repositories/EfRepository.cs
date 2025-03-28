@@ -103,10 +103,7 @@ public class EfRepository<TEntity>(DbContext dbContext, Operater operater, IAdoQ
         //查询当前上下文中，有没有同Id实体
         var entity = DbContext.Set<TEntity>().Local.FirstOrDefault(x => x.Id == keyValue);
 
-        if (entity == null)
-        {
-            entity = new TEntity { Id = keyValue };
-        }
+        entity ??= new TEntity { Id = keyValue };
 
         DbContext.Remove(entity);
 

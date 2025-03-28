@@ -15,12 +15,7 @@ public class ConsulDiscoverDelegatingHandler : DelegatingHandler
 
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
-        var currentUri = request.RequestUri;
-        if (currentUri is null)
-        {
-            throw new InvalidDataException("RequestUri is null");
-        }
-
+        var currentUri = request.RequestUri ?? throw new InvalidDataException("RequestUri is null");
         var discoverProvider = new DiscoverProviderBuilder(_consulClient)
                                                         .WithCacheSeconds(5)
                                                         .WithServiceName(currentUri.Host)

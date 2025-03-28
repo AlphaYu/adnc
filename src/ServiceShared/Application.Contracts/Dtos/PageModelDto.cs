@@ -4,14 +4,14 @@
 public class PageModelDto<T> : IDto
     where T : notnull
 {
-    private IReadOnlyList<T> _data = Array.Empty<T>();
+    private IReadOnlyList<T> _data = [];
 
     public PageModelDto()
     {
     }
 
     public PageModelDto(SearchPagedDto search)
-        : this(search, Array.Empty<T>(), default)
+        : this(search, [], default)
     {
     }
 
@@ -33,7 +33,7 @@ public class PageModelDto<T> : IDto
     public IReadOnlyList<T> List
     {
         get => _data;
-        set => _data = value ?? Array.Empty<T>();
+        set => _data = value ?? [];
     }
 
     public int RowsCount => _data.Count;

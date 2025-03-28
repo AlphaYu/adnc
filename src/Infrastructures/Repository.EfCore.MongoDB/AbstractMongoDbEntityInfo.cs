@@ -34,6 +34,6 @@ public abstract class AbstractMongoDbEntityInfo : IEntityInfo
                                                  && typeof(MongoEntity).IsAssignableFrom(m)
                                                  && !m.IsAbstract));
 
-        return typeList.ToList() ?? new List<Type>();
+        return typeList.ToList() ?? [];
     }
 }

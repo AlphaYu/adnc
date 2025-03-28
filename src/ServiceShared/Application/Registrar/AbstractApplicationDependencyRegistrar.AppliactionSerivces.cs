@@ -4,7 +4,7 @@ namespace Adnc.Shared.Application.Registrar;
 
 public abstract partial class AbstractApplicationDependencyRegistrar
 {
-    protected static List<Type> DefaultInterceptorTypes => new() { typeof(OperateLogInterceptor), typeof(CachingInterceptor), typeof(UowInterceptor) };
+    protected static List<Type> DefaultInterceptorTypes => [typeof(OperateLogInterceptor), typeof(CachingInterceptor), typeof(UowInterceptor)];
 
     /// <summary>
     /// 注册Application服务

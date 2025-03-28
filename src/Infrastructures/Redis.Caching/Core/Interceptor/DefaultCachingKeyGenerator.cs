@@ -17,7 +17,7 @@ public class DefaultCachingKeyGenerator : ICachingKeyGenerator
 
     public string GetCacheKey(MethodInfo methodInfo, object[] args, string prefix)
     {
-        IEnumerable<string> methodArguments = new[] { "0" };
+        IEnumerable<string> methodArguments = ["0"];
         if (args?.Any() == true)
         {
             var cacheParams = methodInfo.GetParameters().Where(x => x.GetCustomAttribute<CachingParamAttribute>() != null)

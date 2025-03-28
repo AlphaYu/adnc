@@ -49,7 +49,7 @@ public class DBOptions
     /// <value>
     /// The endpoints.
     /// </value>
-    public IList<ServerEndPoint> Endpoints { get; } = new List<ServerEndPoint>();
+    public IList<ServerEndPoint> Endpoints { get; } = [];
 
     /// <summary>
     /// Gets or sets a value indicating whether this <see cref="T:Adnc.Infra.Redis.Core.Internal.BaseRedisOptions"/>

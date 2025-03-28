@@ -24,11 +24,7 @@ internal sealed class RsaProvider
         var param = new RSAParameters();
 
         var base64 = _PEMCode.Replace(pem, "");
-        var data = Convert.FromBase64String(base64);
-        if (data == null)
-        {
-            throw new InvalidDataException("Pem content invalid ");
-        }
+        var data = Convert.FromBase64String(base64) ?? throw new InvalidDataException("Pem content invalid ");
         var idx = 0;
 
         //read  length

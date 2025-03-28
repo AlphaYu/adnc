@@ -20,7 +20,7 @@ public class OrderCreatedEvent : EventEntity
     }
 
     public long OrderId { get; set; }
-    public IEnumerable<OrderItem> Products { get; set; } = new List<OrderItem>();
+    public IEnumerable<OrderItem> Products { get; set; } = [];
 
     public class OrderItem
     {

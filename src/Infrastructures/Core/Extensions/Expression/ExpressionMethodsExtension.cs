@@ -93,12 +93,7 @@ public static class ExpressionMethodsExtension
 
         var lambda = (LambdaExpression)expression;
 
-        var memberExpression = ExtractMemberExpression(lambda.Body);
-        if (memberExpression == null)
-        {
-            throw new ArgumentException(nameof(Expression<Func<TEntity, TMember>>));
-        }
-
+        var memberExpression = ExtractMemberExpression(lambda.Body) ?? throw new ArgumentException(nameof(Expression<Func<TEntity, TMember>>));
         return memberExpression.Member;
     }
 

@@ -276,7 +276,7 @@ public static class DataTimeExtension
     /// <returns>True/False</returns>
     public static bool IsDateTime(this string strDate)
     {
-        DateTime.TryParse(strDate, out var result);
+        _ = DateTime.TryParse(strDate, out var result);
         return result.CompareTo(DateTime.Parse("1800-1-1")) > 0;
     }
 

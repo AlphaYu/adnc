@@ -9,7 +9,7 @@ public static class TypeHelper
     /// <summary>
     /// The subtract full name regex.
     /// </summary>
-    private static readonly Regex SubtractFullNameRegex = new(@", Version=\d+.\d+.\d+.\d+, Culture=\w+, PublicKeyToken=\w+", RegexOptions.Compiled);
+    private static readonly Regex _subtractFullNameRegex = new(@", Version=\d+.\d+.\d+.\d+, Culture=\w+, PublicKeyToken=\w+", RegexOptions.Compiled);
 
     /// <summary>
     /// Builds the name of the type.
@@ -23,6 +23,6 @@ public static class TypeHelper
             return string.Empty;
         }
 
-        return SubtractFullNameRegex.Replace(type.AssemblyQualifiedName, "");
+        return _subtractFullNameRegex.Replace(type.AssemblyQualifiedName, "");
     }
 }

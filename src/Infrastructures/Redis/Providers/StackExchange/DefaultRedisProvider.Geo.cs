@@ -153,25 +153,13 @@ public partial class DefaultRedisProvider : IRedisProvider
 
     private static GeoUnit GetGeoUnit(string unit)
     {
-        GeoUnit geoUnit;
-        switch (unit)
+        var geoUnit = unit switch
         {
-            case "km":
-                geoUnit = GeoUnit.Kilometers;
-                break;
-
-            case "ft":
-                geoUnit = GeoUnit.Feet;
-                break;
-
-            case "mi":
-                geoUnit = GeoUnit.Miles;
-                break;
-
-            default:
-                geoUnit = GeoUnit.Meters;
-                break;
-        }
+            "km" => GeoUnit.Kilometers,
+            "ft" => GeoUnit.Feet,
+            "mi" => GeoUnit.Miles,
+            _ => GeoUnit.Meters,
+        };
         return geoUnit;
     }
 }

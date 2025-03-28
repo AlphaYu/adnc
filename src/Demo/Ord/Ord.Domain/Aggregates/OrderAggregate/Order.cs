@@ -46,7 +46,7 @@ public class Order : AggregateRootWithBasicAuditInfo
     {
         Id = Checker.Variable.GTZero(id, nameof(id));
         CustomerId = Checker.Variable.GTZero(customerId, nameof(customerId));
-        Items = new List<OrderItem>();
+        Items = [];
         Receiver = Checker.Variable.NotNull(orderReceiver, nameof(orderReceiver));
         Status = new OrderStatus(OrderStatusCodes.Creating);
         Remark = remark;

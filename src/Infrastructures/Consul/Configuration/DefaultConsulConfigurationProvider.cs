@@ -32,7 +32,7 @@ public sealed class DefaultConsulConfigurationProvider : ConfigurationProvider
         _currentIndex = queryResult.LastIndex;
         if (queryResult.Response == null
             || queryResult.Response.Value == null
-            || !queryResult.Response.Value.Any())
+            || queryResult.Response.Value.Length == 0)
         {
             return;
         }

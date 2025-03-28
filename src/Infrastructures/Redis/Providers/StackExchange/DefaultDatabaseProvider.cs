@@ -68,18 +68,8 @@ public class DefaultDatabaseProvider
                 //Cluster
                 if (server.ServerType == ServerType.Cluster)
                 {
-                    var clusterConfiguration = server.ClusterConfiguration;
-                    if (clusterConfiguration is null)
-                    {
-                        throw new ArgumentNullException(nameof(server.ClusterConfiguration));
-                    }
-
-                    var nodes = clusterConfiguration.Nodes.Where(n => !n.IsReplica);
-                    if (nodes is null)
-                    {
-                        throw new ArgumentNullException(nameof(server.ClusterConfiguration.Nodes));
-                    }
-
+                    var clusterConfiguration = server.ClusterConfiguration ?? throw new ArgumentNullException(nameof(server.ClusterConfiguration));
+                    var nodes = clusterConfiguration.Nodes.Where(n => !n.IsReplica) ?? throw new ArgumentNullException(nameof(server.ClusterConfiguration.Nodes));
                     var endpoints = nodes.Select(n => n.EndPoint);
                     if (endpoints is null)
                     {
