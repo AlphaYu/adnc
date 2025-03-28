@@ -22,10 +22,8 @@ public class DefaultProtobufSerializer : ISerializer
     /// <typeparam name="T">The 1st type parameter.</typeparam>
     public T Deserialize<T>(byte[] bytes)
     {
-        using (var ms = new MemoryStream(bytes))
-        {
-            return Serializer.Deserialize<T>(ms);
-        }
+        using var ms = new MemoryStream(bytes);
+        return Serializer.Deserialize<T>(ms);
     }
 
     /// <summary>
@@ -51,11 +49,9 @@ public class DefaultProtobufSerializer : ISerializer
     /// <typeparam name="T">The 1st type parameter.</typeparam>
     public byte[] Serialize<T>(T value)
     {
-        using (var ms = new MemoryStream())
-        {
-            Serializer.Serialize<T>(ms, value);
-            return ms.ToArray();
-        }
+        using var ms = new MemoryStream();
+        Serializer.Serialize<T>(ms, value);
+        return ms.ToArray();
     }
 
     #region Mainly For Memcached
@@ -67,13 +63,11 @@ public class DefaultProtobufSerializer : ISerializer
     /// <param name="obj">Object.</param>
     public ArraySegment<byte> SerializeObject(object obj)
     {
-        using (var ms = new MemoryStream())
-        {
-            WriteType(ms, obj.GetType());
-            Serializer.NonGeneric.Serialize(ms, obj);
+        using var ms = new MemoryStream();
+        WriteType(ms, obj.GetType());
+        Serializer.NonGeneric.Serialize(ms, obj);
 
-            return new ArraySegment<byte>(ms.ToArray(), 0, (int)ms.Length);
-        }
+        return new ArraySegment<byte>(ms.ToArray(), 0, (int)ms.Length);
     }
 
     /// <summary>
@@ -88,10 +82,8 @@ public class DefaultProtobufSerializer : ISerializer
         var offset = value.Offset;
         var type = ReadType(raw, ref offset, ref count);
 
-        using (var ms = new MemoryStream(raw, offset, count, writable: false))
-        {
-            return Serializer.NonGeneric.Deserialize(type, ms);
-        }
+        using var ms = new MemoryStream(raw, offset, count, writable: false);
+        return Serializer.NonGeneric.Deserialize(type, ms);
     }
 
     /// <summary>

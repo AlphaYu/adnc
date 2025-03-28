@@ -18,15 +18,13 @@ public partial class EncryptProivder
             throw new ArgumentException($" Key size min value is 2048!");
         }
 
-        using (var rsa = RSA.Create())
-        {
-            rsa.KeySize = keySize;
+        using var rsa = RSA.Create();
+        rsa.KeySize = keySize;
 
-            var publicPem = RsaProvider.ToPem(rsa, false, isPKCS8);
-            var privatePem = RsaProvider.ToPem(rsa, true, isPKCS8);
+        var publicPem = RsaProvider.ToPem(rsa, false, isPKCS8);
+        var privatePem = RsaProvider.ToPem(rsa, true, isPKCS8);
 
-            return (publicPem, privatePem);
-        }
+        return (publicPem, privatePem);
     }
 
     /// <summary>
@@ -52,14 +50,12 @@ public partial class EncryptProivder
             throw new ArgumentException($" Key size min value is 2048!");
         }
 
-        using (var rsa = RSA.Create())
-        {
-            rsa.KeySize = keySize;
-            var publicKey = Convert.ToBase64String(rsa.ExportRSAPublicKey());
-            var privateKey = Convert.ToBase64String(rsa.ExportRSAPrivateKey());
+        using var rsa = RSA.Create();
+        rsa.KeySize = keySize;
+        var publicKey = Convert.ToBase64String(rsa.ExportRSAPublicKey());
+        var privateKey = Convert.ToBase64String(rsa.ExportRSAPrivateKey());
 
-            return (publicKey, privateKey);
-        }
+        return (publicKey, privateKey);
     }
 
     /// <summary>
@@ -74,15 +70,13 @@ public partial class EncryptProivder
             throw new ArgumentException($" Key size min value is 2048!");
         }
 
-        using (var rsa = RSA.Create())
-        {
-            rsa.KeySize = keySize;
+        using var rsa = RSA.Create();
+        rsa.KeySize = keySize;
 
-            var publicKey = Convert.ToBase64String(rsa.ExportRSAPublicKey());
-            var privateKey = Convert.ToBase64String(rsa.ExportPkcs8PrivateKey());
+        var publicKey = Convert.ToBase64String(rsa.ExportRSAPublicKey());
+        var privateKey = Convert.ToBase64String(rsa.ExportPkcs8PrivateKey());
 
-            return (publicKey, privateKey);
-        }
+        return (publicKey, privateKey);
     }
 
     /// <summary>
@@ -185,13 +179,11 @@ public partial class EncryptProivder
 
         var dataBytes = encoding.GetBytes(content);
 
-        using (var rsa = RSA.Create())
-        {
-            rsa.FromJsonString(privateKey);
-            var signBytes = rsa.SignData(dataBytes, hashAlgorithmName, rSASignaturePadding);
+        using var rsa = RSA.Create();
+        rsa.FromJsonString(privateKey);
+        var signBytes = rsa.SignData(dataBytes, hashAlgorithmName, rSASignaturePadding);
 
-            return Convert.ToBase64String(signBytes);
-        }
+        return Convert.ToBase64String(signBytes);
     }
 
     /// <summary>
@@ -224,11 +216,9 @@ public partial class EncryptProivder
         var dataBytes = encoding.GetBytes(content);
         var signBytes = Convert.FromBase64String(signStr);
 
-        using (var rsa = RSA.Create())
-        {
-            rsa.FromJsonString(publickKey);
-            return rsa.VerifyData(dataBytes, signBytes, hashAlgorithmName, rSASignaturePadding);
-        }
+        using var rsa = RSA.Create();
+        rsa.FromJsonString(publickKey);
+        return rsa.VerifyData(dataBytes, signBytes, hashAlgorithmName, rSASignaturePadding);
     }
 
     /// <summary>
@@ -494,24 +484,22 @@ public partial class EncryptProivder
     /// <returns></returns>
     public RSAKey CreateRsaKey(RsaSize rsaSize = RsaSize.R2048)
     {
-        using (var rsa = RSA.Create())
+        using var rsa = RSA.Create();
+        rsa.KeySize = (int)rsaSize;
+
+        var publicKey = rsa.ToJsonString(false);
+        var privateKey = rsa.ToJsonString(true);
+
+        var exponent = rsa.ExportParameters(false).Exponent?.ToHexString();
+        var modulus = rsa.ExportParameters(false).Modulus?.ToHexString();
+
+        return new RSAKey()
         {
-            rsa.KeySize = (int)rsaSize;
-
-            var publicKey = rsa.ToJsonString(false);
-            var privateKey = rsa.ToJsonString(true);
-
-            var exponent = rsa.ExportParameters(false).Exponent?.ToHexString();
-            var modulus = rsa.ExportParameters(false).Modulus?.ToHexString();
-
-            return new RSAKey()
-            {
-                PublicKey = publicKey,
-                PrivateKey = privateKey,
-                Exponent = exponent ?? string.Empty,
-                Modulus = modulus ?? string.Empty
-            };
-        }
+            PublicKey = publicKey,
+            PrivateKey = privateKey,
+            Exponent = exponent ?? string.Empty,
+            Modulus = modulus ?? string.Empty
+        };
     }
 
     /// <summary>
