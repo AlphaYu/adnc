@@ -23,9 +23,10 @@ public sealed class CustomExceptionFilterAttribute(ILogger<CustomExceptionFilter
 
         string title;
         string detial;
-        if (exception is IAdncException)
+        if (exception is IAdncException adncException)
         {
-            title = "参数错误";
+            title = "业务异常";
+            status = adncException.Status;
             detial = exception.Message;
         }
         else

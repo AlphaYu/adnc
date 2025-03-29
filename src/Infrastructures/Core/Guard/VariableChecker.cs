@@ -1,4 +1,6 @@
-﻿namespace Adnc.Infra.Core.Guard;
+﻿using Adnc.Infra.Core.Exceptions;
+
+namespace Adnc.Infra.Core.Guard;
 
 public class VariableChecker
 {

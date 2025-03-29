@@ -2,4 +2,5 @@
 
 public interface IAdncException
 {
+    int Status { get; set; }
 }

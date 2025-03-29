@@ -1,17 +1,7 @@
 ﻿namespace Adnc.Infra.Core.Exceptions;
 
 [Serializable]
-public class BusinessException : Exception, IAdncException
+public class BusinessException(string message) : Exception(message), IAdncException
 {
-    public BusinessException(string message)
-        : base(message)
-    {
-        base.HResult = (int)HttpStatusCode.BadRequest;
-    }
-
-    public BusinessException(HttpStatusCode statusCode, string message)
-    : base(message)
-    {
-        base.HResult = (int)statusCode;
-    }
+    public int Status { get; set; } = 521;
 }
