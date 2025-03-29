@@ -6,5 +6,5 @@ public class UnitOfWorkAttribute : Attribute
     /// <summary>
     /// 需要把事务共享给CAP
     /// </summary>
-    public bool SharedToCap { get; set; }
+    public bool Distributed { get; set; }
 }

@@ -17,7 +17,7 @@ public interface ICustomerService : IAppService
     /// <param name="balance"></param>
     /// <returns></returns>
     [OperateLog(LogName = "客户充值")]
-    [UnitOfWork(SharedToCap = true)]
+    [UnitOfWork(Distributed = true)]
     Task<ServiceResult<IdDto>> RechargeAsync(long id, decimal balance);
 
     /// <summary>

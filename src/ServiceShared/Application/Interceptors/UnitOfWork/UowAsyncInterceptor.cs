@@ -61,7 +61,7 @@ public class UowAsyncInterceptor(IUnitOfWork unitOfWork) : IAsyncInterceptor
     {
         try
         {
-            unitOfWork.BeginTransaction(distributed: attribute.SharedToCap);
+            unitOfWork.BeginTransaction(distributed: attribute.Distributed);
             invocation.Proceed();
             unitOfWork.Commit();
         }
@@ -86,7 +86,7 @@ public class UowAsyncInterceptor(IUnitOfWork unitOfWork) : IAsyncInterceptor
     {
         try
         {
-            unitOfWork.BeginTransaction(distributed: attribute.SharedToCap);
+            unitOfWork.BeginTransaction(distributed: attribute.Distributed);
 
             invocation.Proceed();
             var task = (Task)invocation.ReturnValue;
@@ -118,7 +118,7 @@ public class UowAsyncInterceptor(IUnitOfWork unitOfWork) : IAsyncInterceptor
 
         try
         {
-            unitOfWork.BeginTransaction(distributed: attribute.SharedToCap);
+            unitOfWork.BeginTransaction(distributed: attribute.Distributed);
 
             invocation.Proceed();
             var task = (Task<TResult>)invocation.ReturnValue;
