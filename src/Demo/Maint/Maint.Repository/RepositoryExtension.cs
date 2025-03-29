@@ -1,9 +1,4 @@
-﻿using Adnc.Infra.Core.DependencyInjection;
-using Adnc.Shared;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-
-namespace Adnc.Demo.Maint.Repository;
+﻿namespace Adnc.Demo.Maint.Repository;
 
 public static class RepositoryExtension
 {
