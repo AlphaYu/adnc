@@ -22,7 +22,7 @@ public abstract partial class AbstractWebApiMiddlewareRegistrar(IApplicationBuil
         Action<IApplicationBuilder>? afterAuthorization = null,
         Action<IEndpointRouteBuilder>? endpointRoute = null)
     {
-        ServiceLocator.Provider = App.ApplicationServices;
+        ServiceLocator.SetProvider(App.ApplicationServices);
         var environment = App.ApplicationServices.GetRequiredService<IHostEnvironment>();
         var serviceInfo = App.ApplicationServices.GetRequiredService<IServiceInfo>();
         var consulOptions = App.ApplicationServices.GetRequiredService<IOptions<ConsulOptions>>();
