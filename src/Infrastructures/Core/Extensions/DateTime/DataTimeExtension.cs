@@ -3,6 +3,9 @@ using System.Globalization;
 
 namespace System;
 
+/// <summary>
+/// Extension methods for DateTime.
+/// </summary>
 public static class DataTimeExtension
 {
     /// <summary>
@@ -17,11 +20,11 @@ public static class DataTimeExtension
     }
 
     /// <summary>
-    /// 获取某一年有多少周
+    /// Gets the number of weeks in a given year.
     /// </summary>
     /// <param name="_"></param>
-    /// <param name="year">年份</param>
-    /// <returns>该年周数</returns>
+    /// <param name="year">The year</param>
+    /// <returns>The number of weeks in that year</returns>
     public static int GetWeekAmount(this DateTime _, int year)
     {
         var end = new DateTime(year, 12, 31); //该年最后一天
@@ -30,10 +33,10 @@ public static class DataTimeExtension
     }
 
     /// <summary>
-    /// 返回年度第几个星期   默认星期日是第一天
+    /// Returns the week number of the year. By default, Sunday is considered the first day of the week.
     /// </summary>
-    /// <param name="value">时间</param>
-    /// <returns>第几周</returns>
+    /// <param name="value">The date</param>
+    /// <returns>The week number</returns>
     public static int WeekOfYear(this in DateTime value)
     {
         var gc = new GregorianCalendar();
@@ -41,11 +44,11 @@ public static class DataTimeExtension
     }
 
     /// <summary>
-    /// 返回年度第几个星期
+    /// Returns the week number of the year.
     /// </summary>
-    /// <param name="date">时间</param>
-    /// <param name="week">一周的开始日期</param>
-    /// <returns>第几周</returns>
+    /// <param name="date">The date</param>
+    /// <param name="week">The starting day of the week</param>
+    /// <returns>The week number</returns>
     public static int WeekOfYear(this in DateTime date, DayOfWeek week)
     {
         var gc = new GregorianCalendar();
@@ -53,114 +56,116 @@ public static class DataTimeExtension
     }
 
     /// <summary>
-    /// 得到一年中的某周的起始日和截止日
-    /// 年 nYear
-    /// 周数 nNumWeek
-    /// 周始 out dtWeekStart
-    /// 周终 out dtWeekeEnd
+    /// Gets the start and end dates of a specific week in a given year.
+    /// Year nYear
+    /// Week number nNumWeek
+    /// Week start out dtWeekStart
+    /// Week end out dtWeekEnd
     /// </summary>
     /// <param name="_"></param>
-    /// <param name="nYear">年份</param>
-    /// <param name="nNumWeek">第几周</param>
-    /// <param name="dtWeekStart">开始日期</param>
-    /// <param name="dtWeekeEnd">结束日期</param>
-    public static void GetWeekTime(this DateTime _, int nYear, int nNumWeek, out DateTime dtWeekStart, out DateTime dtWeekeEnd)
+    /// <param name="nYear">The year</param>
+    /// <param name="nNumWeek">The week number</param>
+    /// <param name="dtWeekStart">The start date of the week</param>
+    /// <param name="dtWeekEnd">The end date of the week</param>
+    public static void GetWeekTime(this DateTime _, int nYear, int nNumWeek, out DateTime dtWeekStart, out DateTime dtWeekEnd)
     {
         var dt = new DateTime(nYear, 1, 1);
         dt += new TimeSpan((nNumWeek - 1) * 7, 0, 0, 0);
         dtWeekStart = dt.AddDays(-(int)dt.DayOfWeek + (int)DayOfWeek.Monday);
-        dtWeekeEnd = dt.AddDays((int)DayOfWeek.Saturday - (int)dt.DayOfWeek + 1);
+        dtWeekEnd = dt.AddDays((int)DayOfWeek.Saturday - (int)dt.DayOfWeek + 1);
     }
 
     /// <summary>
-    /// 得到一年中的某周的起始日和截止日    周一到周五  工作日
+    /// Gets the start and end dates of a specific week in a given year, from Monday to Friday (weekdays).
     /// </summary>
     /// <param name="_"></param>
-    /// <param name="nYear">年份</param>
-    /// <param name="nNumWeek">第几周</param>
-    /// <param name="dtWeekStart">开始日期</param>
-    /// <param name="dtWeekeEnd">结束日期</param>
-    public static void GetWeekWorkTime(this DateTime _, int nYear, int nNumWeek, out DateTime dtWeekStart, out DateTime dtWeekeEnd)
+    /// <param name="nYear">The year</param>
+    /// <param name="nNumWeek">The week number</param>
+    /// <param name="dtWeekStart">The start date of the week</param>
+    /// <param name="dtWeekEnd">The end date of the week</param>
+    public static void GetWeekWorkTime(this DateTime _, int nYear, int nNumWeek, out DateTime dtWeekStart, out DateTime dtWeekEnd)
     {
         var dt = new DateTime(nYear, 1, 1);
         dt += new TimeSpan((nNumWeek - 1) * 7, 0, 0, 0);
         dtWeekStart = dt.AddDays(-(int)dt.DayOfWeek + (int)DayOfWeek.Monday);
-        dtWeekeEnd = dt.AddDays((int)DayOfWeek.Saturday - (int)dt.DayOfWeek + 1).AddDays(-2);
+        dtWeekEnd = dt.AddDays((int)DayOfWeek.Saturday - (int)dt.DayOfWeek + 1).AddDays(-2);
     }
 
     /// <summary>
-    /// 返回相对于当前时间的相对天数
+    /// Returns the relative number of days compared to the current date.
     /// </summary>
     /// <param name="value"></param>
-    /// <param name="relativeday">相对天数</param>
+    /// <param name="relativeday">The relative number of days</param>
     public static string GetDateTime(this in DateTime value, int relativeday)
     {
         return value.AddDays(relativeday).ToString("yyyy-MM-dd HH:mm:ss");
     }
 
     /// <summary>
-    /// 获取该时间相对于1970-01-01 00:00:00的秒数
+    /// Gets the number of seconds that have passed since 1970-01-01 00:00:00 (Unix epoch).
     /// </summary>
     /// <param name="value"></param>
     /// <returns></returns>
     public static double GetTotalSeconds(this in DateTime value) => new DateTimeOffset(value).ToUnixTimeSeconds();
 
     /// <summary>
-    /// 获取该时间相对于1970-01-01 00:00:00的毫秒数
+    /// Gets the number of milliseconds that have passed since 1970-01-01 00:00:00 (Unix epoch).
     /// </summary>
     /// <param name="value"></param>
     /// <returns></returns>
     public static double GetTotalMilliseconds(this in DateTime value) => new DateTimeOffset(value).ToUnixTimeMilliseconds();
 
     /// <summary>
-    /// 获取该时间相对于1970-01-01 00:00:00的微秒时间戳
+    /// Gets the microsecond timestamp relative to 1970-01-01 00:00:00 (Unix epoch).
     /// </summary>
     /// <param name="value"></param>
     /// <returns></returns>
     public static long GetTotalMicroseconds(this in DateTime value) => new DateTimeOffset(value).Ticks / 10;
 
     /// <summary>
-    /// 获取该时间相对于1970-01-01 00:00:00的纳秒时间戳
+    /// Gets the nanosecond timestamp relative to 1970-01-01 00:00:00 (Unix epoch).
     /// </summary>
     /// <param name="value"></param>
     /// <returns></returns>
     public static long GetTotalNanoseconds(this in DateTime value) => new DateTimeOffset(value).Ticks * 100 + Stopwatch.GetTimestamp() % 100;
 
     /// <summary>
-    /// 获取该时间相对于1970-01-01 00:00:00的分钟数
+    /// Gets the number of minutes that have passed since 1970-01-01 00:00:00 (Unix epoch).
     /// </summary>
     /// <param name="value"></param>
     /// <returns></returns>
     public static double GetTotalMinutes(this in DateTime value) => new DateTimeOffset(value).Offset.TotalMinutes;
 
     /// <summary>
-    /// 获取该时间相对于1970-01-01 00:00:00的小时数
+    /// Gets the number of hours that have passed since 1970-01-01 00:00:00 (Unix epoch).
     /// </summary>
     /// <param name="value"></param>
     /// <returns></returns>
     public static double GetTotalHours(this in DateTime value) => new DateTimeOffset(value).Offset.TotalHours;
 
     /// <summary>
-    /// 获取该时间相对于1970-01-01 00:00:00的天数
+    /// Gets the number of days that have passed since 1970-01-01 00:00:00 (Unix epoch).
     /// </summary>
     /// <param name="value"></param>
     /// <returns></returns>
     public static double GetTotalDays(this in DateTime value) => new DateTimeOffset(value).Offset.TotalDays;
 
     /// <summary>
-    /// 返回本年有多少天
+    /// Returns the number of days in the current year.
     /// </summary>
     /// <param name="_"></param>
-    /// <param name="iYear">年份</param>
-    /// <returns>本年的天数</returns>
+    /// <param name="iYear">The year</param>
+    /// <returns>The number of days in the year</returns>
     public static int GetDaysOfYear(this DateTime _, int iYear)
     {
         return IsRuYear(iYear) ? 366 : 365;
     }
 
-    /// <summary>本年有多少天</summary>
-    /// <param name="value">日期</param>
-    /// <returns>本天在当年的天数</returns>
+    /// <summary> 
+    /// Returns the number of days in the current year. 
+    /// </summary>
+    /// <param name="value">The date</param>
+    /// <returns>The day of the year for the given date</returns>
     public static int GetDaysOfYear(this in DateTime value)
     {
         //取得传入参数的年份部分，用来判断是否是闰年
@@ -168,11 +173,13 @@ public static class DataTimeExtension
         return IsRuYear(n) ? 366 : 365;
     }
 
-    /// <summary>本月有多少天</summary>
+    /// <summary> 
+    /// Returns the number of days in the current month. 
+    /// </summary>
     /// <param name="_"></param>
-    /// <param name="iYear">年</param>
-    /// <param name="month">月</param>
-    /// <returns>天数</returns>
+    /// <param name="iYear">The year</param>
+    /// <param name="month">The month</param>
+    /// <returns>The number of days in the month</returns>
     public static int GetDaysOfMonth(this DateTime _, int iYear, int month)
     {
         return month switch
@@ -193,12 +200,14 @@ public static class DataTimeExtension
         };
     }
 
-    /// <summary>本月有多少天</summary>
-    /// <param name="vakye">日期</param>
-    /// <returns>天数</returns>
+    /// <summary> 
+    /// Returns the number of days in the current month. 
+    /// </summary>
+    /// <param name="value">The date</param>
+    /// <returns>The number of days in the month</returns>
     public static int GetDaysOfMonth(this in DateTime vakye)
     {
-        //--利用年月信息，得到当前月的天数信息。
+        // Uses the year and month information to get the number of days in the current month.
         return vakye.Month switch
         {
             1 => 31,
@@ -217,9 +226,11 @@ public static class DataTimeExtension
         };
     }
 
-    /// <summary>返回当前日期的星期名称</summary>
-    /// <param name="value">日期</param>
-    /// <returns>星期名称</returns>
+    /// <summary>
+    /// Returns the name of the weekday for the given date.
+    /// </summary>
+    /// <param name="value">The date</param>
+    /// <returns>The name of the weekday</returns>
     public static string GetWeekNameOfDay(this in DateTime value)
     {
         return value.DayOfWeek.ToString() switch
@@ -235,9 +246,11 @@ public static class DataTimeExtension
         };
     }
 
-    /// <summary>返回当前日期的星期编号</summary>
-    /// <param name="value">日期</param>
-    /// <returns>星期数字编号</returns>
+    /// <summary>
+    /// Returns the weekday number for the given date.
+    /// </summary>
+    /// <param name="value">The date</param>
+    /// <returns>The weekday number</returns>
     public static string GetWeekNumberOfDay(this in DateTime value)
     {
         return value.DayOfWeek.ToString() switch
@@ -253,22 +266,24 @@ public static class DataTimeExtension
         };
     }
 
-    /// <summary>判断当前年份是否是闰年，私有函数</summary>
-    /// <param name="value">年份</param>
-    /// <returns>是闰年：True ，不是闰年：False</returns>
+    /// <summary>
+    /// Determines whether the given year is a leap year. Private function.
+    /// </summary>
+    /// <param name="value">The year</param>
+    /// <returns>True if it's a leap year, False if it's not a leap year</returns>
     private static bool IsRuYear(int value)
     {
-        //形式参数为年份
-        //例如：2003
+        // The parameter is the year.
+        // Example: 2003
         var n = value;
         return n % 400 == 0 || n % 4 == 0 && n % 100 != 0;
     }
 
     /// <summary>
-    /// 判断是否为合法日期，必须大于1800年1月1日
+    /// Determines whether the given date is valid, must be after January 1, 1800.
     /// </summary>
-    /// <param name="value">输入日期字符串</param>
-    /// <returns>True/False</returns>
+    /// <param name="value">The input date string</param>
+    /// <returns>True if valid, False if not</returns>
     public static bool IsDateTime(this string value)
     {
         _ = DateTime.TryParse(value, out var result);
@@ -276,12 +291,12 @@ public static class DataTimeExtension
     }
 
     /// <summary>
-    /// 判断时间是否在区间内
+    /// Determines whether the given time is within the specified range.
     /// </summary>
-    /// <param name="this"></param>
-    /// <param name="start">开始</param>
-    /// <param name="end">结束</param>
-    /// <param name="mode">模式</param>
+    /// <param name="dateTime"></param>
+    /// <param name="start">The start time</param>
+    /// <param name="end">The end time</param>
+    /// <param name="mode">The mode</param>
     /// <returns></returns>
     public static bool In(this in DateTime dateTime, DateTime start, DateTime end, RangeMode mode = RangeMode.Close)
     {
@@ -296,12 +311,12 @@ public static class DataTimeExtension
     }
 
     /// <summary>
-    ///  返回每月的第一天和最后一天
+    /// Returns the first and last day of the given month.
     /// </summary>
     /// <param name="_"></param>
-    /// <param name="month">月份</param>
-    /// <param name="firstDay">第一天</param>
-    /// <param name="lastDay">最后一天</param>
+    /// <param name="month">The month</param>
+    /// <param name="firstDay">The first day</param>
+    /// <param name="lastDay">The last day</param>
     public static void GetDateFormat(this DateTime _, int month, out string firstDay, out string lastDay)
     {
         var year = DateTime.Now.Year + month / 12;
@@ -375,12 +390,12 @@ public static class DataTimeExtension
     }
 
     /// <summary>
-    /// 返回某年某月最后一天
+    /// Returns the last day of a given year and month.
     /// </summary>
     /// <param name="_"></param>
-    /// <param name="year">年份</param>
-    /// <param name="month">月份</param>
-    /// <returns>日</returns>
+    /// <param name="year">The year</param>
+    /// <param name="month">The month</param>
+    /// <returns>The day</returns>
     public static int GetMonthLastDate(this DateTime _, int year, int month)
     {
         var lastDay = new DateTime(year, month, new GregorianCalendar().GetDaysInMonth(year, month));
@@ -389,11 +404,11 @@ public static class DataTimeExtension
     }
 
     /// <summary>
-    /// 获得一段时间内有多少小时
+    /// Gets the number of hours between two given times.
     /// </summary>
-    /// <param name="dtStar">起始时间</param>
-    /// <param name="dtEnd">终止时间</param>
-    /// <returns>小时差</returns>
+    /// <param name="dtStart">The start time</param>
+    /// <param name="dtEnd">The end time</param>
+    /// <returns>The hour difference</returns>
     public static string GetTimeDelay(this in DateTime dtStar, DateTime dtEnd)
     {
         var lTicks = (dtEnd.Ticks - dtStar.Ticks) / 10000000;
@@ -404,21 +419,21 @@ public static class DataTimeExtension
     }
 
     /// <summary>
-    /// 获得8位时间整型数字
+    /// Gets an 8-digit integer representing the current time.
     /// </summary>
-    /// <param name="value">当前的日期时间对象</param>
-    /// <returns>8位时间整型数字</returns>
+    /// <param name="value">The current date-time object</param>
+    /// <returns>An 8-digit integer representing the time</returns>
     public static string GetDateString(this in DateTime value)
     {
         return value.Year + value.Month.ToString().PadLeft(2, '0') + value.Day.ToString().PadLeft(2, '0');
     }
 
     /// <summary>
-    /// 返回时间差
+    /// Returns the time difference between two dates.
     /// </summary>
-    /// <param name="dateTime1">时间1</param>
-    /// <param name="dateTime2">时间2</param>
-    /// <returns>时间差</returns>
+    /// <param name="dateTime1">The first date/time</param>
+    /// <param name="dateTime2">The second date/time</param>
+    /// <returns>The time difference</returns>
     public static string DateDiff(this in DateTime dateTime1, in DateTime dateTime2)
     {
         string dateDiff;
@@ -436,15 +451,15 @@ public static class DataTimeExtension
     }
 
     /// <summary>
-    /// 计算2个时间差
+    /// Calculates the time difference between two times.
     /// </summary>
-    /// <param name="beginTime">开始时间</param>
-    /// <param name="endTime">结束时间</param>
-    /// <returns>时间差</returns>
+    /// <param name="beginTime">The start time</param>
+    /// <param name="endTime">The end time</param>
+    /// <returns>The time difference</returns>
     public static string GetDiffTime(this in DateTime beginTime, in DateTime endTime)
     {
         var strResout = string.Empty;
-        //获得2时间的时间间隔秒计算
+        // Gets the time interval in seconds between two times.
         var span = endTime.Subtract(beginTime);
         var sec = Convert.ToInt32(span.TotalSeconds);
         var minutes = 1 * 60;
@@ -453,11 +468,11 @@ public static class DataTimeExtension
         var month = day * 30;
         var year = month * 12;
 
-        //提醒时间,到了返回1,否则返回0
+        // Reminder time: returns 1 if the time has arrived, otherwise returns 0.
         if (sec > year)
         {
             strResout += sec / year + "年";
-            sec %= year; //剩余
+            sec %= year; // Remaining
         }
 
         if (sec > month)
@@ -578,27 +593,28 @@ public static class DataTimeExtension
 }
 
 /// <summary>
-/// 区间模式
+/// Range mode
 /// </summary>
 public enum RangeMode
 {
     /// <summary>
-    /// 开区间
+    /// Open interval
     /// </summary>
     Open,
 
     /// <summary>
-    /// 闭区间
+    /// Closed interval
     /// </summary>
     Close,
 
     /// <summary>
-    /// 左开右闭区间
+    /// Left open, right closed interval
     /// </summary>
     OpenClose,
 
     /// <summary>
-    /// 左闭右开区间
+    /// Left closed, right open interval
     /// </summary>
     CloseOpen
 }
+

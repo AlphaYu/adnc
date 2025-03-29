@@ -1,14 +1,16 @@
 ﻿namespace System.Collections.Specialized;
 
 /// <summary>
-/// NameValueCollectionExtension
+/// Extension methods for NameValueCollection.
 /// </summary>
 public static class NameValueCollectionExtension
 {
-    /// <summary>将名值集合转换成字符串，key1=value1&key2=value2，k/v会编码</summary>
-    /// <param name="source">数据源</param>
-    /// <returns>字符串</returns>
-
+    /// <summary>
+    /// Converts a name-value collection into a query string in the format key1=value1&key2=value2. 
+    /// Keys and values are URL-encoded.
+    /// </summary>
+    /// <param name="source">The data source.</param>
+    /// <returns>The formatted query string.</returns>
     public static string ToQueryString(this NameValueCollection source)
     {
         if (source is null)

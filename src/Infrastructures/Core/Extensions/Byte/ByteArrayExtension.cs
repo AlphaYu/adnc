@@ -1,7 +1,7 @@
 ﻿namespace System;
 
 /// <summary>
-/// Provides extension methods for working with System.
+/// /// Extension methods for ByteArrayExtension.
 /// </summary>
 public static class ByteArrayExtension
 {

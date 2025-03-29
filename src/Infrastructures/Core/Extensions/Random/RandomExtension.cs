@@ -59,22 +59,22 @@ public static class RandomExtension
 ];
 
     /// <summary>
-    /// 生成真正的随机数
+    /// Generates a truly random number.
     /// </summary>
     /// <param name="_"></param>
-    /// <param name="seed"></param>
-    /// <returns></returns>
+    /// <param name="seed">The seed value</param>
+    /// <returns>A random number</returns>
     public static int StrictNext(this Random _, int seed = int.MaxValue)
     {
         return new Random((int)Stopwatch.GetTimestamp()).Next(seed);
     }
 
     /// <summary>
-    /// 生成随机数
+    /// Generates a random number.
     /// </summary>
-    /// <param name="length">随机数长度</param>
-    /// <param name="isNumberOnly">随机数是否是纯数字</param>
-    /// <returns></returns>
+    /// <param name="length">The length of the random number</param>
+    /// <param name="isNumberOnly">Whether the random number is purely numeric</param>
+    /// <returns>A random number</returns>
     public static string Next(this Random rand, int length, bool isNumberOnly)
     {
         char[] array;
@@ -96,12 +96,12 @@ public static class RandomExtension
     }
 
     /// <summary>
-    /// 产生正态分布的随机数
+    /// Generates a random number following a normal distribution.
     /// </summary>
     /// <param name="rand"></param>
-    /// <param name="mean">均值</param>
-    /// <param name="stdDev">方差</param>
-    /// <returns></returns>
+    /// <param name="mean">The mean (average) value</param>
+    /// <param name="stdDev">The standard deviation</param>
+    /// <returns>A random number following a normal distribution</returns>
     public static double NextGauss(this Random rand, double mean, double stdDev)
     {
         var u1 = 1.0 - rand.NextDouble();
