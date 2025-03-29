@@ -28,7 +28,7 @@ public abstract class AdncControllerBase : ControllerBase
     {
         var status = (int)statusCode;
         var type = string.Concat("https://httpstatuses.com/", status);
-        return Problem(exception.GetExceptionDetail(), Request.Path.ToString(), status, exception.Message, type);
+        return Problem(exception.GetDetail(), Request.Path.ToString(), status, exception.Message, type);
     }
 
     /// <summary>

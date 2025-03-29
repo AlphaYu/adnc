@@ -32,7 +32,7 @@ public sealed class CustomExceptionFilterAttribute(ILogger<CustomExceptionFilter
         else
         {
             title = env.IsDevelopment() ? exception.Message : $"系统异常";
-            detial = env.IsDevelopment() ? exception.GetExceptionDetail() : $"系统异常,请联系管理员({eventId})";
+            detial = env.IsDevelopment() ? exception.GetDetail() : $"系统异常,请联系管理员({eventId})";
             logger.LogError(eventId, exception, "{userId}:{requestUrl}", userContext?.Id, requestUrl);
         }
         var problemDetails = new ProblemDetails { Title = title, Detail = detial, Type = type, Status = status };

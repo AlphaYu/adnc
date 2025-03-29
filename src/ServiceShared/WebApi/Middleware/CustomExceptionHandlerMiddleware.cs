@@ -58,7 +58,7 @@ public class CustomExceptionHandlerMiddleware(RequestDelegate next, IWebHostEnvi
         var status = 500;
         var type = string.Concat("https://httpstatuses.com/", status);
         var title = env.IsDevelopment() ? exception.Message : $"系统异常";
-        var detial = env.IsDevelopment() ? exception.GetExceptionDetail() : $"系统异常,请联系管理员({eventId})";
+        var detial = env.IsDevelopment() ? exception.GetDetail() : $"系统异常,请联系管理员({eventId})";
 
         context.Response.StatusCode = status;
         context.Response.ContentType = "application/problem+json";
