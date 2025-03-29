@@ -5,7 +5,7 @@ public static class IntExtension
     /// <summary>
     ///     A T extension method that check if the value is between inclusively the minValue and maxValue.
     /// </summary>
-    /// <param name="this">The value to act on.</param>
+    /// <param name="value">The value to act on.</param>
     /// <param name="minValue">The minimum value.</param>
     /// <param name="maxValue">The maximum value.</param>
     /// <returns>true if the value is between inclusively the minValue and maxValue, otherwise false.</returns>
@@ -17,7 +17,7 @@ public static class IntExtension
     /// <summary>
     ///     An Int32 extension method that factor of.
     /// </summary>
-    /// <param name="this">The value to act on.</param>
+    /// <param name="value">The value to act on.</param>
     /// <param name="factorNumer">The factor numer.</param>
     /// <returns>true if it succeeds, false if it fails.</returns>
     public static bool FactorOf(this int value, int factorNumer)
@@ -38,7 +38,7 @@ public static class IntExtension
     /// <summary>
     ///     An Int32 extension method that query if 'value' is odd.
     /// </summary>
-    /// <param name="this">The value to act on.</param>
+    /// <param name="value">The value to act on.</param>
     /// <returns>true if odd, false if not.</returns>
     public static bool IsOdd(this int value)
     {
@@ -48,7 +48,7 @@ public static class IntExtension
     /// <summary>
     ///     An Int32 extension method that query if 'value' is multiple of.
     /// </summary>
-    /// <param name="this">The value to act on.</param>
+    /// <param name="value">The value to act on.</param>
     /// <param name="factor">The factor.</param>
     /// <returns>true if multiple of, false if not.</returns>
     public static bool IsMultipleOf(this int value, int factor)
@@ -59,7 +59,7 @@ public static class IntExtension
     /// <summary>
     ///     An Int32 extension method that query if 'value' is prime.
     /// </summary>
-    /// <param name="this">The value to act on.</param>
+    /// <param name="value">The value to act on.</param>
     /// <returns>true if prime, false if not.</returns>
     public static bool IsPrime(this int value)
     {
