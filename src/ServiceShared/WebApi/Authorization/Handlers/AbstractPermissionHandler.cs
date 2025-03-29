@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace Adnc.Shared.WebApi.Authorization;
+namespace Adnc.Shared.WebApi.Authorization.Handlers;
 
 public abstract class AbstractPermissionHandler : AuthorizationHandler<PermissionRequirement>
 {

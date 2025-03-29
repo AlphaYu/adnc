@@ -1,7 +1,7 @@
-﻿using Adnc.Shared.WebApi.Authentication;
-using Adnc.Shared.WebApi.Authentication.Basic;
+﻿using Adnc.Shared.WebApi.Authentication.Basic;
 using Adnc.Shared.WebApi.Authentication.Bearer;
 using Adnc.Shared.WebApi.Authentication.Hybrid;
+using Adnc.Shared.WebApi.Authentication.Processors;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Adnc.Shared.WebApi.Registrar;

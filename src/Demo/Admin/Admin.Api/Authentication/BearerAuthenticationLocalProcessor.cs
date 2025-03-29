@@ -1,4 +1,6 @@
-﻿namespace Adnc.Demo.Admin.Api.Authentication;
+﻿using Adnc.Shared.WebApi.Authentication.Processors;
+
+namespace Adnc.Demo.Admin.Api.Authentication;
 
 [Obsolete($"use {nameof(BearerAuthenticationCacheProcessor)} instead 2025-02-17")]
 public class BearerAuthenticationLocalProcessor(IUserService userAppService) : AbstractAuthenticationProcessor

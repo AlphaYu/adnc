@@ -1,4 +1,6 @@
-﻿namespace Adnc.Demo.Admin.Api.Authorization;
+﻿using Adnc.Shared.WebApi.Authorization.Handlers;
+
+namespace Adnc.Demo.Admin.Api.Authorization.Handlers;
 
 [Obsolete($"use {nameof(PermissionCacheHandler)} instead 2025 -02-17")]
 public sealed class PermissionLocalHandler(IUserService userAppService) : AbstractPermissionHandler

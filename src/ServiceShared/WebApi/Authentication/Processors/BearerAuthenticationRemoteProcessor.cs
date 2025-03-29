@@ -1,4 +1,4 @@
-﻿namespace Adnc.Shared.WebApi.Authentication;
+﻿namespace Adnc.Shared.WebApi.Authentication.Processors;
 
 public class BearerAuthenticationRemoteProcessor(IHttpContextAccessor contextAccessor, IAuthRestClient authRestClient, ILogger<BearerAuthenticationRemoteProcessor> logger)
     : AbstractAuthenticationProcessor
