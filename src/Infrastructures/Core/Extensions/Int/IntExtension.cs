@@ -5,78 +5,78 @@ public static class IntExtension
     /// <summary>
     ///     A T extension method that check if the value is between inclusively the minValue and maxValue.
     /// </summary>
-    /// <param name="this">The @this to act on.</param>
+    /// <param name="this">The value to act on.</param>
     /// <param name="minValue">The minimum value.</param>
     /// <param name="maxValue">The maximum value.</param>
     /// <returns>true if the value is between inclusively the minValue and maxValue, otherwise false.</returns>
-    public static bool InRange(this int @this, int minValue, int maxValue)
+    public static bool InRange(this int value, int minValue, int maxValue)
     {
-        return @this.CompareTo(minValue) >= 0 && @this.CompareTo(maxValue) <= 0;
+        return value.CompareTo(minValue) >= 0 && value.CompareTo(maxValue) <= 0;
     }
 
     /// <summary>
     ///     An Int32 extension method that factor of.
     /// </summary>
-    /// <param name="this">The @this to act on.</param>
+    /// <param name="this">The value to act on.</param>
     /// <param name="factorNumer">The factor numer.</param>
     /// <returns>true if it succeeds, false if it fails.</returns>
-    public static bool FactorOf(this int @this, int factorNumer)
+    public static bool FactorOf(this int value, int factorNumer)
     {
-        return factorNumer % @this == 0;
+        return factorNumer % value == 0;
     }
 
     /// <summary>
-    ///     An Int32 extension method that query if '@this' is even.
+    ///     An Int32 extension method that query if 'value' is even.
     /// </summary>
-    /// <param name="this">The @this to act on.</param>
+    /// <param name="this">The value to act on.</param>
     /// <returns>true if even, false if not.</returns>
-    public static bool IsEven(this int @this)
+    public static bool IsEven(this int value)
     {
-        return @this % 2 == 0;
+        return value % 2 == 0;
     }
 
     /// <summary>
-    ///     An Int32 extension method that query if '@this' is odd.
+    ///     An Int32 extension method that query if 'value' is odd.
     /// </summary>
-    /// <param name="this">The @this to act on.</param>
+    /// <param name="this">The value to act on.</param>
     /// <returns>true if odd, false if not.</returns>
-    public static bool IsOdd(this int @this)
+    public static bool IsOdd(this int value)
     {
-        return @this % 2 != 0;
+        return value % 2 != 0;
     }
 
     /// <summary>
-    ///     An Int32 extension method that query if '@this' is multiple of.
+    ///     An Int32 extension method that query if 'value' is multiple of.
     /// </summary>
-    /// <param name="this">The @this to act on.</param>
+    /// <param name="this">The value to act on.</param>
     /// <param name="factor">The factor.</param>
     /// <returns>true if multiple of, false if not.</returns>
-    public static bool IsMultipleOf(this int @this, int factor)
+    public static bool IsMultipleOf(this int value, int factor)
     {
-        return @this % factor == 0;
+        return value % factor == 0;
     }
 
     /// <summary>
-    ///     An Int32 extension method that query if '@this' is prime.
+    ///     An Int32 extension method that query if 'value' is prime.
     /// </summary>
-    /// <param name="this">The @this to act on.</param>
+    /// <param name="this">The value to act on.</param>
     /// <returns>true if prime, false if not.</returns>
-    public static bool IsPrime(this int @this)
+    public static bool IsPrime(this int value)
     {
-        if (@this == 1 || @this == 2)
+        if (value == 1 || value == 2)
         {
             return true;
         }
 
-        if (@this % 2 == 0)
+        if (value % 2 == 0)
         {
             return false;
         }
 
-        var sqrt = (int)Math.Sqrt(@this);
+        var sqrt = (int)Math.Sqrt(value);
         for (var t = 3; t <= sqrt; t += 2)
         {
-            if (@this % t == 0)
+            if (value % t == 0)
             {
                 return false;
             }
@@ -93,18 +93,5 @@ public static class IntExtension
     public static byte[] GetBytes(this int value)
     {
         return BitConverter.GetBytes(value);
-    }
-
-    /// <summary>
-    ///     Converts the specified Unicode code point into a UTF-16 encoded string.
-    /// </summary>
-    /// <param name="utf32">A 21-bit Unicode code point.</param>
-    /// <returns>
-    ///     A string consisting of one  object or a surrogate pair of  objects equivalent to the code point specified by
-    ///     the  parameter.
-    /// </returns>
-    public static string ConvertFromUtf32(this int utf32)
-    {
-        return char.ConvertFromUtf32(utf32);
     }
 }

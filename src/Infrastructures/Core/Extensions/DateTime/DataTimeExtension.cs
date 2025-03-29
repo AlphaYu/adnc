@@ -32,12 +32,12 @@ public static class DataTimeExtension
     /// <summary>
     /// 返回年度第几个星期   默认星期日是第一天
     /// </summary>
-    /// <param name="date">时间</param>
+    /// <param name="value">时间</param>
     /// <returns>第几周</returns>
-    public static int WeekOfYear(this in DateTime date)
+    public static int WeekOfYear(this in DateTime value)
     {
         var gc = new GregorianCalendar();
-        return gc.GetWeekOfYear(date, CalendarWeekRule.FirstDay, DayOfWeek.Sunday);
+        return gc.GetWeekOfYear(value, CalendarWeekRule.FirstDay, DayOfWeek.Sunday);
     }
 
     /// <summary>
@@ -91,66 +91,61 @@ public static class DataTimeExtension
     /// <summary>
     /// 返回相对于当前时间的相对天数
     /// </summary>
-    /// <param name="dt"></param>
+    /// <param name="value"></param>
     /// <param name="relativeday">相对天数</param>
-    public static string GetDateTime(this in DateTime dt, int relativeday)
+    public static string GetDateTime(this in DateTime value, int relativeday)
     {
-        return dt.AddDays(relativeday).ToString("yyyy-MM-dd HH:mm:ss");
+        return value.AddDays(relativeday).ToString("yyyy-MM-dd HH:mm:ss");
     }
-
-    /// <summary>
-    /// 返回标准时间格式string
-    /// </summary>
-    public static string GetDateTimeF(this in DateTime dt) => dt.ToString("yyyy-MM-dd HH:mm:ss:fffffff");
 
     /// <summary>
     /// 获取该时间相对于1970-01-01 00:00:00的秒数
     /// </summary>
-    /// <param name="dt"></param>
+    /// <param name="value"></param>
     /// <returns></returns>
-    public static double GetTotalSeconds(this in DateTime dt) => new DateTimeOffset(dt).ToUnixTimeSeconds();
+    public static double GetTotalSeconds(this in DateTime value) => new DateTimeOffset(value).ToUnixTimeSeconds();
 
     /// <summary>
     /// 获取该时间相对于1970-01-01 00:00:00的毫秒数
     /// </summary>
-    /// <param name="dt"></param>
+    /// <param name="value"></param>
     /// <returns></returns>
-    public static double GetTotalMilliseconds(this in DateTime dt) => new DateTimeOffset(dt).ToUnixTimeMilliseconds();
+    public static double GetTotalMilliseconds(this in DateTime value) => new DateTimeOffset(value).ToUnixTimeMilliseconds();
 
     /// <summary>
     /// 获取该时间相对于1970-01-01 00:00:00的微秒时间戳
     /// </summary>
-    /// <param name="dt"></param>
+    /// <param name="value"></param>
     /// <returns></returns>
-    public static long GetTotalMicroseconds(this in DateTime dt) => new DateTimeOffset(dt).Ticks / 10;
+    public static long GetTotalMicroseconds(this in DateTime value) => new DateTimeOffset(value).Ticks / 10;
 
     /// <summary>
     /// 获取该时间相对于1970-01-01 00:00:00的纳秒时间戳
     /// </summary>
-    /// <param name="dt"></param>
+    /// <param name="value"></param>
     /// <returns></returns>
-    public static long GetTotalNanoseconds(this in DateTime dt) => new DateTimeOffset(dt).Ticks * 100 + Stopwatch.GetTimestamp() % 100;
+    public static long GetTotalNanoseconds(this in DateTime value) => new DateTimeOffset(value).Ticks * 100 + Stopwatch.GetTimestamp() % 100;
 
     /// <summary>
     /// 获取该时间相对于1970-01-01 00:00:00的分钟数
     /// </summary>
-    /// <param name="dt"></param>
+    /// <param name="value"></param>
     /// <returns></returns>
-    public static double GetTotalMinutes(this in DateTime dt) => new DateTimeOffset(dt).Offset.TotalMinutes;
+    public static double GetTotalMinutes(this in DateTime value) => new DateTimeOffset(value).Offset.TotalMinutes;
 
     /// <summary>
     /// 获取该时间相对于1970-01-01 00:00:00的小时数
     /// </summary>
-    /// <param name="dt"></param>
+    /// <param name="value"></param>
     /// <returns></returns>
-    public static double GetTotalHours(this in DateTime dt) => new DateTimeOffset(dt).Offset.TotalHours;
+    public static double GetTotalHours(this in DateTime value) => new DateTimeOffset(value).Offset.TotalHours;
 
     /// <summary>
     /// 获取该时间相对于1970-01-01 00:00:00的天数
     /// </summary>
-    /// <param name="dt"></param>
+    /// <param name="value"></param>
     /// <returns></returns>
-    public static double GetTotalDays(this in DateTime dt) => new DateTimeOffset(dt).Offset.TotalDays;
+    public static double GetTotalDays(this in DateTime value) => new DateTimeOffset(value).Offset.TotalDays;
 
     /// <summary>
     /// 返回本年有多少天
@@ -164,12 +159,12 @@ public static class DataTimeExtension
     }
 
     /// <summary>本年有多少天</summary>
-    /// <param name="dt">日期</param>
+    /// <param name="value">日期</param>
     /// <returns>本天在当年的天数</returns>
-    public static int GetDaysOfYear(this in DateTime dt)
+    public static int GetDaysOfYear(this in DateTime value)
     {
         //取得传入参数的年份部分，用来判断是否是闰年
-        var n = dt.Year;
+        var n = value.Year;
         return IsRuYear(n) ? 366 : 365;
     }
 
@@ -199,15 +194,15 @@ public static class DataTimeExtension
     }
 
     /// <summary>本月有多少天</summary>
-    /// <param name="dt">日期</param>
+    /// <param name="vakye">日期</param>
     /// <returns>天数</returns>
-    public static int GetDaysOfMonth(this in DateTime dt)
+    public static int GetDaysOfMonth(this in DateTime vakye)
     {
         //--利用年月信息，得到当前月的天数信息。
-        return dt.Month switch
+        return vakye.Month switch
         {
             1 => 31,
-            2 => (IsRuYear(dt.Year) ? 29 : 28),
+            2 => (IsRuYear(vakye.Year) ? 29 : 28),
             3 => 31,
             4 => 30,
             5 => 31,
@@ -223,11 +218,11 @@ public static class DataTimeExtension
     }
 
     /// <summary>返回当前日期的星期名称</summary>
-    /// <param name="idt">日期</param>
+    /// <param name="value">日期</param>
     /// <returns>星期名称</returns>
-    public static string GetWeekNameOfDay(this in DateTime idt)
+    public static string GetWeekNameOfDay(this in DateTime value)
     {
-        return idt.DayOfWeek.ToString() switch
+        return value.DayOfWeek.ToString() switch
         {
             "Mondy" => "星期一",
             "Tuesday" => "星期二",
@@ -241,11 +236,11 @@ public static class DataTimeExtension
     }
 
     /// <summary>返回当前日期的星期编号</summary>
-    /// <param name="idt">日期</param>
+    /// <param name="value">日期</param>
     /// <returns>星期数字编号</returns>
-    public static string GetWeekNumberOfDay(this in DateTime idt)
+    public static string GetWeekNumberOfDay(this in DateTime value)
     {
-        return idt.DayOfWeek.ToString() switch
+        return value.DayOfWeek.ToString() switch
         {
             "Mondy" => "1",
             "Tuesday" => "2",
@@ -259,24 +254,24 @@ public static class DataTimeExtension
     }
 
     /// <summary>判断当前年份是否是闰年，私有函数</summary>
-    /// <param name="iYear">年份</param>
+    /// <param name="value">年份</param>
     /// <returns>是闰年：True ，不是闰年：False</returns>
-    private static bool IsRuYear(int iYear)
+    private static bool IsRuYear(int value)
     {
         //形式参数为年份
         //例如：2003
-        var n = iYear;
+        var n = value;
         return n % 400 == 0 || n % 4 == 0 && n % 100 != 0;
     }
 
     /// <summary>
     /// 判断是否为合法日期，必须大于1800年1月1日
     /// </summary>
-    /// <param name="strDate">输入日期字符串</param>
+    /// <param name="value">输入日期字符串</param>
     /// <returns>True/False</returns>
-    public static bool IsDateTime(this string strDate)
+    public static bool IsDateTime(this string value)
     {
-        _ = DateTime.TryParse(strDate, out var result);
+        _ = DateTime.TryParse(value, out var result);
         return result.CompareTo(DateTime.Parse("1800-1-1")) > 0;
     }
 
@@ -288,14 +283,14 @@ public static class DataTimeExtension
     /// <param name="end">结束</param>
     /// <param name="mode">模式</param>
     /// <returns></returns>
-    public static bool In(this in DateTime @this, DateTime start, DateTime end, RangeMode mode = RangeMode.Close)
+    public static bool In(this in DateTime dateTime, DateTime start, DateTime end, RangeMode mode = RangeMode.Close)
     {
         return mode switch
         {
-            RangeMode.Open => start < @this && end > @this,
-            RangeMode.Close => start <= @this && end >= @this,
-            RangeMode.OpenClose => start < @this && end >= @this,
-            RangeMode.CloseOpen => start <= @this && end > @this,
+            RangeMode.Open => start < dateTime && end > dateTime,
+            RangeMode.Close => start <= dateTime && end >= dateTime,
+            RangeMode.OpenClose => start < dateTime && end >= dateTime,
+            RangeMode.CloseOpen => start <= dateTime && end > dateTime,
             _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
         };
     }
@@ -307,7 +302,7 @@ public static class DataTimeExtension
     /// <param name="month">月份</param>
     /// <param name="firstDay">第一天</param>
     /// <param name="lastDay">最后一天</param>
-    public static void ReturnDateFormat(this DateTime _, int month, out string firstDay, out string lastDay)
+    public static void GetDateFormat(this DateTime _, int month, out string firstDay, out string lastDay)
     {
         var year = DateTime.Now.Year + month / 12;
         if (month != 12)
@@ -411,11 +406,11 @@ public static class DataTimeExtension
     /// <summary>
     /// 获得8位时间整型数字
     /// </summary>
-    /// <param name="dt">当前的日期时间对象</param>
+    /// <param name="value">当前的日期时间对象</param>
     /// <returns>8位时间整型数字</returns>
-    public static string GetDateString(this in DateTime dt)
+    public static string GetDateString(this in DateTime value)
     {
-        return dt.Year + dt.Month.ToString().PadLeft(2, '0') + dt.Day.ToString().PadLeft(2, '0');
+        return value.Year + value.Month.ToString().PadLeft(2, '0') + value.Day.ToString().PadLeft(2, '0');
     }
 
     /// <summary>
@@ -491,6 +486,94 @@ public static class DataTimeExtension
 
         strResout += sec + "秒";
         return strResout;
+    }
+
+    /// <summary>
+    /// ToDateString("yyyy-MM-dd")
+    /// </summary>
+    /// <param name="value">value</param>
+    /// <returns></returns>
+    public static string ToStandardDateString(this DateTime value)
+    {
+        return value.ToString("yyyy-MM-dd");
+    }
+
+    /// <summary>
+    /// ToTimeString("yyyy-MM-dd HH:mm:ss")
+    /// </summary>
+    /// <param name="value">datetime</param>
+    /// <returns></returns>
+    public static string ToStandardTimeString(this DateTime value)
+    {
+        return value.ToString("yyyy-MM-dd HH:mm:ss");
+    }
+
+    /// <summary>
+    /// ToTimeString("yyyy-MM-dd HH:mm:ss:fffffff")
+    /// </summary>
+    /// <param name="value">datetime</param>
+    /// <returns></returns>
+    public static string ToStandardFullTimeString(this in DateTime value) => value.ToString("yyyy-MM-dd HH:mm:ss:fffffff");
+
+    /// <summary>
+    ///     Converts a time to the time in a particular time zone.
+    /// </summary>
+    /// <param name="value">The value and time to convert.</param>
+    /// <param name="destinationTimeZone">The time zone to convert  to.</param>
+    /// <returns>The value and time in the destination time zone.</returns>
+    public static DateTime ConvertTime(this DateTime value, TimeZoneInfo destinationTimeZone)
+    {
+        return TimeZoneInfo.ConvertTime(value, destinationTimeZone);
+    }
+
+    /// <summary>
+    ///     Converts a time from one time zone to another.
+    /// </summary>
+    /// <param name="value">The value and time to convert.</param>
+    /// <param name="sourceTimeZone">The time zone of .</param>
+    /// <param name="destinationTimeZone">The time zone to convert  to.</param>
+    /// <returns>
+    ///     The value and time in the destination time zone that corresponds to the  parameter in the source time zone.
+    /// </returns>
+    public static DateTime ConvertTime(this DateTime value, TimeZoneInfo sourceTimeZone, TimeZoneInfo destinationTimeZone)
+    {
+        return TimeZoneInfo.ConvertTime(value, sourceTimeZone, destinationTimeZone);
+    }
+
+    /// <summary>
+    ///     A DateTime extension method that query if 'value' is a week day.
+    /// </summary>
+    /// <param name="value">The value to act on.</param>
+    /// <returns>true if 'value' is a week day, false if not.</returns>
+    public static bool IsWeekDay(this DateTime value)
+    {
+        return !(value.DayOfWeek == DayOfWeek.Saturday || value.DayOfWeek == DayOfWeek.Sunday);
+    }
+
+    /// <summary>
+    ///     A DateTime extension method that query if 'value' is a week day.
+    /// </summary>
+    /// <param name="value">The value to act on.</param>
+    /// <returns>true if 'value' is a week day, false if not.</returns>
+    public static bool IsWeekendDay(this DateTime value)
+    {
+        return value.DayOfWeek == DayOfWeek.Saturday || value.DayOfWeek == DayOfWeek.Sunday;
+    }
+
+    /// <summary>
+    ///     A DateTime extension method that ages the given this.
+    /// </summary>
+    /// <param name="value">The value to act on.</param>
+    /// <returns>An int.</returns>
+    public static int GetAge(this DateTime value)
+    {
+        if (DateTime.Today.Month < value.Month ||
+            DateTime.Today.Month == value.Month &&
+            DateTime.Today.Day < value.Day)
+        {
+            return DateTime.Today.Year - value.Year - 1;
+        }
+        return DateTime.Today.Year - value.Year;
     }
 }
 

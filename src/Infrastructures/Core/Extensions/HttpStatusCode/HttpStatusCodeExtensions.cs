@@ -12,5 +12,5 @@ public static class HttpStatusCodeExtensions
 
     public static bool Is5xx(this HttpStatusCode _, int statusCode) => statusCode >= 500 && statusCode <= 599;
 
-    public static bool Is5xx(this HttpStatusCode statusCode) => (int)statusCode >= 500 && (int)statusCode <= 599;
+    public static int GetInt(this HttpStatusCode statusCode) => (int)statusCode;
 }

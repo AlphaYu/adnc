@@ -12,8 +12,7 @@ public static class ByteArrayExtension
     /// <returns>The MemoryStream.</returns>
     public static MemoryStream ToMemoryStream(this byte[] byteArray)
     {
-        ArgumentNullException.ThrowIfNull(byteArray);
-
+        ArgumentNullException.ThrowIfNull(byteArray, nameof(byteArray));
         return new MemoryStream(byteArray);
     }
 
@@ -24,6 +23,7 @@ public static class ByteArrayExtension
     /// <returns>The hex string.</returns>
     public static string ToHexString(this byte[] bytes)
     {
+        ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
         var sb = new StringBuilder();
         for (var i = 0; i < bytes.Length; i++)
         {

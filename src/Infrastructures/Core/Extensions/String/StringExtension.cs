@@ -5,40 +5,40 @@ namespace System;
 public static class StringExtension
 {
     /// <summary>
-    ///     A string extension method that query if '@this' is null or empty.
+    ///     A string extension method that query if 'value' is null or empty.
     /// </summary>
-    /// <param name="this">The @this to act on.</param>
+    /// <param name="this">The value to act on.</param>
     /// <returns>true if null or empty, false if not.</returns>
-    public static bool IsNullOrEmpty(this string? @this) => string.IsNullOrEmpty(@this);
+    public static bool IsNullOrEmpty(this string? value) => string.IsNullOrEmpty(value);
 
     /// <summary>
-    ///     A string extension method that query if '@this' is not null and not empty.
+    ///     A string extension method that query if 'value' is not null and not empty.
     /// </summary>
-    /// <param name="this">The @this to act on.</param>
+    /// <param name="this">The value to act on.</param>
     /// <returns>false if null or empty, true if not.</returns>
-    public static bool IsNotNullOrEmpty(this string? @this) => !string.IsNullOrEmpty(@this);
+    public static bool IsNotNullOrEmpty(this string? value) => !string.IsNullOrEmpty(value);
 
     /// <summary>
-    ///     A string extension method that query if '@this' is null or whiteSpace.
+    ///     A string extension method that query if 'value' is null or whiteSpace.
     /// </summary>
-    /// <param name="this">The @this to act on.</param>
+    /// <param name="this">The value to act on.</param>
     /// <returns>true if null or whiteSpace, false if not.</returns>
-    public static bool IsNullOrWhiteSpace(this string? @this) => string.IsNullOrWhiteSpace(@this);
+    public static bool IsNullOrWhiteSpace(this string? value) => string.IsNullOrWhiteSpace(value);
 
     /// <summary>
-    ///     A string extension method that query if '@this' is not null and not whiteSpace.
+    ///     A string extension method that query if 'value' is not null and not whiteSpace.
     /// </summary>
-    /// <param name="this">The @this to act on.</param>
+    /// <param name="this">The value to act on.</param>
     /// <returns>false if null or whiteSpace, true if not.</returns>
-    public static bool IsNotNullOrWhiteSpace(this string? @this) => !string.IsNullOrWhiteSpace(@this);
+    public static bool IsNotNullOrWhiteSpace(this string? value) => !string.IsNullOrWhiteSpace(value);
 
     /// <summary>
-    ///     A string extension method that query if '@this' satisfy the specified pattern.
+    ///     A string extension method that query if 'value' satisfy the specified pattern.
     /// </summary>
-    /// <param name="this">The @this to act on.</param>
+    /// <param name="this">The value to act on.</param>
     /// <param name="pattern">The pattern to use. Use '*' as wildcard string.</param>
-    /// <returns>true if '@this' satisfy the specified pattern, false if not.</returns>
-    public static bool IsLike([NotNull] this string @this, string pattern)
+    /// <returns>true if 'value' satisfy the specified pattern, false if not.</returns>
+    public static bool IsLike([NotNull] this string value, string pattern)
     {
         // Turn the pattern into regex pattern, and match the whole string with ^$
         var regexPattern = "^" + Regex.Escape(pattern) + "$";
@@ -51,26 +51,26 @@ public static class StringExtension
             .Replace(@"\*", ".*")
             .Replace(@"\#", @"\d");
 
-        return Regex.IsMatch(@this, regexPattern);
+        return Regex.IsMatch(value, regexPattern);
     }
 
     /// <summary>
     ///     A string extension method that repeats the string a specified number of times.
     /// </summary>
-    /// <param name="this">The @this to act on.</param>
+    /// <param name="this">The value to act on.</param>
     /// <param name="repeatCount">Number of repeats.</param>
     /// <returns>The repeated string.</returns>
-    public static string Repeat([NotNull] this string @this, int repeatCount)
+    public static string Repeat([NotNull] this string value, int repeatCount)
     {
-        if (@this.Length == 1)
+        if (value.Length == 1)
         {
-            return new string(@this[0], repeatCount);
+            return new string(value[0], repeatCount);
         }
 
-        var sb = new StringBuilder(repeatCount * @this.Length);
+        var sb = new StringBuilder(repeatCount * value.Length);
         while (repeatCount-- > 0)
         {
-            sb.Append(@this);
+            sb.Append(value);
         }
 
         return sb.ToString();
@@ -79,16 +79,16 @@ public static class StringExtension
     /// <summary>
     ///     A string extension method that reverses the given string.
     /// </summary>
-    /// <param name="this">The @this to act on.</param>
+    /// <param name="this">The value to act on.</param>
     /// <returns>The string reversed.</returns>
-    public static string Reverse([NotNull] this string @this)
+    public static string Reverse([NotNull] this string value)
     {
-        if (@this.Length <= 1)
+        if (value.Length <= 1)
         {
-            return @this;
+            return value;
         }
 
-        var chars = @this.ToCharArray();
+        var chars = value.ToCharArray();
         Array.Reverse(chars);
         return new string(chars);
     }
@@ -96,12 +96,12 @@ public static class StringExtension
     public static byte[] GetBytes([NotNull] this string str, Encoding encoding) => encoding.GetBytes(str);
 
     /// <summary>
-    ///     A string extension method that converts the @this to an enum.
+    ///     A string extension method that converts the value to an enum.
     /// </summary>
     /// <typeparam name="T">Generic type parameter.</typeparam>
-    /// <param name="this">The @this to act on.</param>
-    /// <returns>@this as a T.</returns>
-    public static T ToEnum<T>([NotNull] this string @this) => (T)Enum.Parse(typeof(T), @this);
+    /// <param name="this">The value to act on.</param>
+    /// <returns>value as a T.</returns>
+    public static T ToEnum<T>([NotNull] this string value) => (T)Enum.Parse(typeof(T), value);
 
     /// <summary>
     /// EqualsIgnoreCase
@@ -116,9 +116,9 @@ public static class StringExtension
     /// </summary>
     /// <param name="txt"></param>
     /// <returns></returns>
-    public static long? ToLong(this string @this)
+    public static long? ToLong(this string value)
     {
-        var status = long.TryParse(@this, out var result);
+        var status = long.TryParse(value, out var result);
 
         if (status)
         {
