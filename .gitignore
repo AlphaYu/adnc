@@ -4,6 +4,7 @@ obj
 txtlogs
 *.user
 *.pubxml
+*.diff
 .sonarqube
 .sonarlint
 .idea
