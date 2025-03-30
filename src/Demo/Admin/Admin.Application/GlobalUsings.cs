@@ -1,4 +1,7 @@
-﻿global using Adnc.Demo.Admin.Application.Cache;
+﻿global using System.Linq.Expressions;
+global using System.Net;
+global using System.Reflection;
+global using Adnc.Demo.Admin.Application.Cache;
 global using Adnc.Demo.Admin.Application.Contracts.Dtos;
 global using Adnc.Demo.Admin.Application.Contracts.Services;
 global using Adnc.Demo.Admin.Repository;
@@ -25,6 +28,3 @@ global using Microsoft.EntityFrameworkCore;
 global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Options;
-global using System.Linq.Expressions;
-global using System.Net;
-global using System.Reflection;

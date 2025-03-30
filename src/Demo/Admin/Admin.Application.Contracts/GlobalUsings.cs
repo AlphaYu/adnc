@@ -1,6 +1,6 @@
-﻿global using Adnc.Demo.Const.Caching.Admin;
+﻿global using Adnc.Demo.Admin.Application.Contracts.Dtos;
+global using Adnc.Demo.Const.Caching.Admin;
 global using Adnc.Demo.Const.Entity.Admin;
-global using Adnc.Demo.Admin.Application.Contracts.Dtos;
 global using Adnc.Infra.Redis.Caching.Core.Interceptor;
 global using Adnc.Shared;
 global using Adnc.Shared.Application.Contracts.Attributes;

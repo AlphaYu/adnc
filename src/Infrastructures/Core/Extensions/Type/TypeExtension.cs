@@ -1,6 +1,6 @@
-﻿using Adnc.Infra.Core.Internal;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Linq.Expressions;
+using Adnc.Infra.Core.Internal;
 
 namespace System;
 

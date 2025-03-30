@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Query;
-using System.Reflection;
+﻿using System.Reflection;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace Adnc.Infra.Repository.EfCore.Internal;
 
