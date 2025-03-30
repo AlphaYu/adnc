@@ -28,9 +28,9 @@ public static class HealthChecksBuilderExtension
         var rabitmqConfig = configuration.GetSection(NodeConsts.RabbitMq).Get<Adnc.Infra.EventBus.Configurations.RabbitMqOptions>() ?? throw new InvalidDataException("RabbitMqOptions is null");
         return checksBuilder.AddRabbitMQ(provider =>
         {
-            var logger = provider.GetRequiredService<ILogger<dynamic>>();
+            var logger = provider.GetRequiredService<ILogger<IConnectionManager>>();
             var serviceInfo = provider.GetRequiredService<IServiceInfo>();
-            return RabbitMqConnection.GetInstance(rabitmqConfig, clientProvidedName, logger).Connection;
+            return ConnectionManager.GetInstance(rabitmqConfig, clientProvidedName, logger).Connection;
         });
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Adnc.Infra.EventBus.RabbitMq;
 
-public class RabbitMqProducer(IRabbitMqConnection rabbitMqConnection, ILogger<RabbitMqProducer> logger)
+public class RabbitMqProducer(IConnectionManager connectionManager, ILogger<RabbitMqProducer> logger)
 {
     /// <summary>
     /// 简单队列,不通过交换机
@@ -50,7 +50,7 @@ public class RabbitMqProducer(IRabbitMqConnection rabbitMqConnection, ILogger<Ra
                   //那么broker会调用basic.return方法将消息返还给生产者;
                   //当mandatory设置为false时，出现上述情况broker会直接将消息丢弃
 
-                  using var channel = await rabbitMqConnection.Connection.CreateChannelAsync();
+                  using var channel = await connectionManager.Connection.CreateChannelAsync();
                   await channel.BasicPublishAsync(exchange, routingKey, mandatory, basicProperties ?? new BasicProperties(), body, cancellationToken);
                   //开启发布消息确认模式
                   //_channel.ConfirmSelect();

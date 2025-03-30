@@ -3,19 +3,16 @@ using RabbitMQ.Client.Events;
 
 namespace Adnc.Infra.EventBus.RabbitMq;
 
-public abstract class BaseRabbitMqConsumer(IRabbitMqConnection RabbitMqConnection, ILogger<dynamic> logger) : IHostedService
+public abstract class BaseRabbitMqConsumer(IConnectionManager connectionManager, ILogger<dynamic> logger) : IHostedService
 {
-    private readonly IConnection _connection = RabbitMqConnection.Connection;
-
     public async Task StartAsync(CancellationToken cancellationToken)
     {
         await RegisterAsync();
     }
 
-    public Task StopAsync(CancellationToken cancellationToken)
+    public async Task StopAsync(CancellationToken cancellationToken)
     {
-        DeRegister();
-        return Task.CompletedTask;
+        await DeRegisterAsync();
     }
 
     /// <summary>
@@ -36,7 +33,7 @@ public abstract class BaseRabbitMqConsumer(IRabbitMqConnection RabbitMqConnectio
         await RegiterDeadExchange(exchange.DeadExchangeName, queue.DeadQueueName, routingKeys, queue.Durable);
 
         //声明交换机
-        using var channel = await _connection.CreateChannelAsync();
+        using var channel = await connectionManager.Connection.CreateChannelAsync();
         await channel.ExchangeDeclareAsync(exchange.Name, type: exchange.Type.ToString().ToLower());
 
         //声明队列
@@ -95,10 +92,20 @@ public abstract class BaseRabbitMqConsumer(IRabbitMqConnection RabbitMqConnectio
     /// <summary>
     /// 注销/关闭连接
     /// </summary>
-    protected virtual void DeRegister()
+    protected virtual async Task DeRegisterAsync()
     {
-        _connection?.Dispose();
+        if (connectionManager.Connection != null)
+        {
+            await connectionManager.Connection.DisposeAsync();
+        }
     }
+
+    /// <summary>
+    /// 处理消息的方法
+    /// </summary>
+    /// <param name="message"></param>
+    /// <returns></returns>
+    protected abstract Task<bool> Process(string exchange, string routingKey, string message);
 
     /// <summary>
     /// 获取交互机列配置
@@ -149,20 +156,13 @@ public abstract class BaseRabbitMqConsumer(IRabbitMqConnection RabbitMqConnectio
     }
 
     /// <summary>
-    /// 处理消息的方法
-    /// </summary>
-    /// <param name="message"></param>
-    /// <returns></returns>
-    protected abstract Task<bool> Process(string exchange, string routingKey, string message);
-
-    /// <summary>
     /// 声明死信交换与队列
     /// </summary>
     protected virtual async Task RegiterDeadExchange(string deadExchangeName, string deadQueueName, string[] routingKeys, bool durable)
     {
         if (!string.IsNullOrWhiteSpace(deadExchangeName))
         {
-            using var channel = await _connection.CreateChannelAsync();
+            using var channel = await connectionManager.Connection.CreateChannelAsync();
             await channel.ExchangeDeclareAsync(deadExchangeName, ExchangeType.Direct.ToString().ToLower());
             await channel.QueueDeclareAsync(queue: deadQueueName, durable: durable, exclusive: false, autoDelete: false, arguments: null);
             foreach (var key in routingKeys)

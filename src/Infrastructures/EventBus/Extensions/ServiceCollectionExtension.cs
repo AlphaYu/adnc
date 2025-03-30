@@ -43,12 +43,12 @@ public static class ServiceCollectionExtension
 
         return services
              .Configure<RabbitMqOptions>(rabitmqSection)
-             .AddSingleton<IRabbitMqConnection>(provider =>
+             .AddSingleton<IConnectionManager>(provider =>
              {
                  var options = provider.GetRequiredService<IOptions<RabbitMqOptions>>();
-                 var logger = provider.GetRequiredService<ILogger<RabbitMqConnection>>();
+                 var logger = provider.GetRequiredService<ILogger<ConnectionManager>>();
                  var clientName = clientProvidedName.IsNullOrWhiteSpace() ? clientProvidedName : "unknow";
-                 return RabbitMqConnection.GetInstance(options, clientName, logger);
+                 return ConnectionManager.GetInstance(options, clientName, logger);
              })
              .AddSingleton<RabbitMqProducer>()
              ;

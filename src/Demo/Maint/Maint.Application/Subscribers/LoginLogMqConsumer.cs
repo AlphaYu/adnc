@@ -15,7 +15,7 @@
 //    private readonly ILogger<LoginLogMqConsumer> _logger;
 
 //    public LoginLogMqConsumer(
-//        IRabbitMqConnection mqConnection
+//        IConnectionManager mqConnection
 //       , ILogger<LoginLogMqConsumer> logger
 //       , IServiceProvider services)
 //        : base(mqConnection, logger)
