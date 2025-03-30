@@ -57,10 +57,8 @@ adnc
 | `src/Infrastructures/Adnc.Infra.sln` | 该解决方案仅包含基础架构层相关工程 |
 | `src/ServiceShared/Adnc.Shared.sln`  | 该解决方案仅包含服务通用层相关工程 |
 | `src/Demo/Adnc.Demo.sln`             | 该解决方案仅包含`demo`相关工程     |
-| `scr/common.props`                   | 工程文件`*.csproj`公用配置         |
-| `scr/version_infra.props`            | 基础架构层版本号                   |
-| `scr/version_shared.props`           | 服务通用层版本号                   |
-| `scr/nuget.props`                    | `Nuget`发布信息配置                |
+| `Directory.Build.props`                   | 工程文件`*.csproj`公用配置  |
+
 ### 总体架构图
 
 <img src="https://aspdotnetcore.net/wp-content/uploads/2023/04/adnc_framework-e1682145003197.png" alt="adnc_framework"/>
@@ -109,6 +107,10 @@ adnc
 #### 如何快速跑起来
 - 详细介绍如何使用docker安装redis、mysql、rabbitmq、mongodb，以及如何在本地配置ClientApp、ServerApi。<br/>
 [请点击链接，查看详细介绍](https://aspdotnetcore.net/docs/quickstart/)
+
+#### 配置文件详解
+- 详细介绍各个配置节点。<br/>
+[请点击链接，查看详细介绍](https://aspdotnetcore.net/docs/appsettings/)
 
 #### 如何手动部署到容器
 - 详细介绍如何使用docker安装配置consul集群、Skywalking系列组件、相关项目的dockerfile文件编写与配置以及如何将多个服务部署到服务器。<br/>
