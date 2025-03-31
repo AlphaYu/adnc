@@ -5,7 +5,7 @@ global using System.Text.Json;
 global using Adnc.Infra.Core.DependencyInjection;
 global using Adnc.Infra.Core.Json;
 global using Adnc.Infra.IdGenerater.Yitter;
-global using Adnc.Infra.Redis.Caching.Interceptor.Castle;
+global using Adnc.Infra.Redis.Caching.Core.Interceptor.Castle;
 global using Adnc.Infra.Repository;
 global using Adnc.Shared.Application.Contracts.Attributes;
 global using Adnc.Shared.Application.Contracts.Enums;
