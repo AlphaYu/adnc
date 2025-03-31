@@ -103,17 +103,4 @@ public static class DependencyRegistrarExtension
             _ => throw new InvalidDataException(nameof(ASPNETCORE_ENVIRONMENT))
         };
     }
-
-    public static bool IsEnableSkyApm(this AbstractApplicationDependencyRegistrar _)
-    {
-        var env = Environment.GetEnvironmentVariable("ASPNETCORE_HOSTINGSTARTUPASSEMBLIES");
-        if (string.IsNullOrWhiteSpace(env))
-        {
-            return false;
-        }
-        else
-        {
-            return env.Contains("SkyAPM.Agent.AspNetCore");
-        }
-    }
 }

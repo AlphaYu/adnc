@@ -1,5 +1,4 @@
-﻿using Adnc.Infra.Repository.EfCore.MySql.Configurations;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace Adnc.Shared.Application.Registrar;
 
@@ -8,9 +7,29 @@ public abstract partial class AbstractApplicationDependencyRegistrar
     /// <summary>
     /// 注册EFCoreContext与仓储
     /// </summary>
-    protected virtual void AddEfCoreContextWithRepositories()
+    protected virtual void AddEfCoreContext()
     {
-        Services.AddScoped(provider =>
+        AddOperater(Services);
+
+        Services.AddAdncInfraEfCoreMySql(RepositoryOrDomainLayerAssembly, optionsBuilder =>
+         {
+             var connectionString = Configuration[NodeConsts.Mysql_ConnectionString] ?? throw new ArgumentNullException(nameof(NodeConsts.Mysql_ConnectionString)); ;
+             var dbVersion = new MariaDbServerVersion(new Version(11, 7, 2)) as ServerVersion;
+             optionsBuilder.UseLowerCaseNamingConvention();
+             optionsBuilder.UseMySql(connectionString, dbVersion, mySqlOptions =>
+             {
+                 mySqlOptions.MinBatchSize(4)
+                                                  .MigrationsAssembly(ServiceInfo.MigrationsAssemblyName)
+                                                  .UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
+             });
+         }, Lifetime);
+    }
+
+    protected void AddOperater(IServiceCollection services)
+    {
+        ArgumentNullException.ThrowIfNull(services, nameof(services));
+
+        services.Add(new ServiceDescriptor(typeof(Operater), provider =>
         {
             var userContext = provider.GetRequiredService<UserContext>();
             return new Operater
@@ -19,62 +38,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar
                 Account = userContext.Account.IsNullOrEmpty() ? "system" : userContext.Account,
                 Name = userContext.Name.IsNullOrEmpty() ? "system" : userContext.Name
             };
-        });
 
-        var serviceType = typeof(IEntityInfo);
-        var implType = RepositoryOrDomainLayerAssembly.ExportedTypes.FirstOrDefault(type => type.IsAssignableTo(serviceType) && type.IsNotAbstractClass(true));
-        if (implType is null)
-        {
-            throw new NotImplementedException(nameof(IEntityInfo));
-        }
-        else
-        {
-            Services.AddScoped(serviceType, implType);
-        }
-        AddEfCoreContext();
+        }, Lifetime));
     }
-
-    /// <summary>
-    /// 注册EFCoreContext
-    /// </summary>
-    protected virtual void AddEfCoreContext()
-    {
-        var mysqlConfig = MysqlSection.Get<MysqlOptions>() ?? throw new InvalidDataException(nameof(MysqlOptions));
-        Services.AddAdncInfraEfCoreMySql(options =>
-        {
-            options.UseLowerCaseNamingConvention();
-            options.UseMySql(mysqlConfig.ConnectionString, DbVersion, optionsBuilder =>
-            {
-                optionsBuilder.MinBatchSize(4)
-                                        .MigrationsAssembly(ServiceInfo.MigrationsAssemblyName)
-                                        .UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
-            });
-
-            //if (this.IsDevelopment())
-            //{
-            //    //options.AddInterceptors(new DefaultDbCommandInterceptor())
-            //    options.LogTo(Console.WriteLine, LogLevel.Information)
-            //                .EnableSensitiveDataLogging()
-            //                .EnableDetailedErrors();
-            //}
-            //替换默认查询sql生成器,如果通过mycat中间件实现读写分离需要替换默认SQL工厂。
-            //options.ReplaceService<IQuerySqlGeneratorFactory, AdncMySqlQuerySqlGeneratorFactory>();
-        });
-    }
-
-    /// <summary>
-    /// 注册MongoContext与仓储
-    /// </summary>
-    //protected virtual void AddMongoContextWithRepositries(Action<IServiceCollection>? action = null)
-    //{
-    //    action?.Invoke(Services);
-
-    //    var mongoConfig = MongoDbSection.Get<MongoOptions>();
-    //    Services.AddAdncInfraMongo<MongoContext>(options =>
-    //    {
-    //        options.ConnectionString = mongoConfig.ConnectionString;
-    //        options.PluralizeCollectionNames = mongoConfig.PluralizeCollectionNames;
-    //        options.CollectionNamingConvention = (NamingConvention)mongoConfig.CollectionNamingConvention;
-    //    });
-    //}
 }

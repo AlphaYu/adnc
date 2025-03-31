@@ -26,6 +26,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar
      where TRestClient : class, IRestClient
     {
         ArgumentNullException.ThrowIfNullOrWhiteSpace(serviceName, nameof(serviceName));
+        ArgumentNullException.ThrowIfNull(policies, nameof(policies));
 
         if (RpcInfoOption is null)
         {
@@ -42,7 +43,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar
         var refitSettings = new RefitSettings(contentSerializer);
         var clientbuilder = Services.AddRefitClient<TRestClient>(refitSettings)
                                                     .SetHandlerLifetime(TimeSpan.FromMinutes(2))
-                                                    .AddPolicyHandlerICollection(enablePolly ? policies : [])
+                                                    .AddPolicyHandlers(enablePolly ? policies : [])
                                                     //.UseHttpClientMetrics()
                                                     .AddHttpMessageHandler<CacheDelegatingHandler>()
                                                     .AddHttpMessageHandler<TokenDelegatingHandler>();
@@ -86,6 +87,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar
      where TGrpcClient : ClientBase<TGrpcClient>
     {
         ArgumentNullException.ThrowIfNullOrWhiteSpace(serviceName, nameof(serviceName));
+        ArgumentNullException.ThrowIfNull(policies, nameof(policies));
 
         if (RpcInfoOption is null)
         {
@@ -142,7 +144,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar
                          options.UnsafeUseInsecureChannelCallCredentials = true;
                      })
                      .AddHttpMessageHandler<TokenDelegatingHandler>()
-                     .AddPolicyHandlerICollection(enablePolly ? policies : []);
+                     .AddPolicyHandlers(enablePolly ? policies : []);
     }
 
     /// <summary>
@@ -150,15 +152,15 @@ public abstract partial class AbstractApplicationDependencyRegistrar
     /// </summary>
     /// <param name="services"></param>
     /// <param name="rpcInfo"></param>
-    private static void AddRpcClientCommonServices(IServiceCollection services, RpcInfo rpcInfo)
+    private void AddRpcClientCommonServices(IServiceCollection services, RpcInfo rpcInfo)
     {
         if (_theFirstCalled)
         {
             _theFirstCalled = false;
             services.AddSingleton(rpcInfo);
-            services.AddScoped<CacheDelegatingHandler>();
-            services.AddScoped<TokenDelegatingHandler>();
-            services.AddScoped<ConsulDiscoverDelegatingHandler>();
+            services.Add(new ServiceDescriptor(typeof(CacheDelegatingHandler), typeof(CacheDelegatingHandler), Lifetime));
+            services.Add(new ServiceDescriptor(typeof(TokenDelegatingHandler), typeof(TokenDelegatingHandler), Lifetime));
+            services.Add(new ServiceDescriptor(typeof(ConsulDiscoverDelegatingHandler), typeof(ConsulDiscoverDelegatingHandler), Lifetime));
             services.AddSingleton<TokenFactory>();
             services.AddSingleton<ITokenGenerator, BasicTokenGenerator>();
             services.AddSingleton<ITokenGenerator, BearerTokenGenerator>();

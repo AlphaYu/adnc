@@ -20,7 +20,7 @@ public abstract partial class AbstractWebApiDependencyRegistrar(IServiceCollecti
     /// 注册Webapi通用的服务
     /// </summary>
     /// <typeparam name="THandler"></typeparam>
-    public virtual void AddWebApiDefaultServices()
+    public void AddWebApiDefaultServices()
         => AddWebApiDefaultServices<BearerAuthenticationCacheProcessor, PermissionCacheHandler>();
 
     /// <summary>
@@ -28,7 +28,7 @@ public abstract partial class AbstractWebApiDependencyRegistrar(IServiceCollecti
     /// </summary>
     /// <typeparam name="TAuthenticationProcessor"><see cref="AbstractAuthenticationProcessor"/></typeparam>
     /// <typeparam name="TAuthorizationHandler"><see cref="AbstractPermissionHandler"/></typeparam>
-    public virtual void AddWebApiDefaultServices<TAuthenticationProcessor, TAuthorizationHandler>()
+    public void AddWebApiDefaultServices<TAuthenticationProcessor, TAuthorizationHandler>()
         where TAuthenticationProcessor : AbstractAuthenticationProcessor
         where TAuthorizationHandler : AbstractPermissionHandler
     {

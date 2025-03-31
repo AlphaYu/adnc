@@ -1,17 +1,18 @@
-﻿using Adnc.Shared.Application.Mapper.AutoMapper;
+﻿using Adnc.Infra.Repository.Interceptor.Castle;
+using Adnc.Shared.Application.Mapper.AutoMapper;
 using Adnc.Shared.Application.Services.Trackers;
 using Adnc.Shared.Remote;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Adnc.Shared.Application.Registrar;
 
-//public abstract partial class AbstractApplicationDependencyRegistrar : IDependencyRegistrar
 public abstract partial class AbstractApplicationDependencyRegistrar
 {
     public string Name => "application";
     public abstract Assembly ApplicationLayerAssembly { get; }
     public abstract Assembly ContractsLayerAssembly { get; }
     public abstract Assembly RepositoryOrDomainLayerAssembly { get; }
-    protected SkyApmExtensions SkyApm { get; init; }
+    protected List<Type> DefaultInterceptorTypes => [typeof(OperateLogInterceptor), typeof(CachingInterceptor), typeof(UowInterceptor)];
     protected string RegisterType { get; init; }
     protected RpcInfo? RpcInfoOption { get; init; }
     protected IServiceCollection Services { get; init; }
@@ -23,12 +24,13 @@ public abstract partial class AbstractApplicationDependencyRegistrar
     protected IConfigurationSection MongoDbSection { get; init; }
     protected IConfigurationSection ConsulSection { get; init; }
     protected IConfigurationSection RabbitMqSection { get; init; }
-    protected virtual Microsoft.EntityFrameworkCore.ServerVersion DbVersion { get; set; } = new Microsoft.EntityFrameworkCore.MariaDbServerVersion(new Version(10, 5, 4));
+    protected ServiceLifetime Lifetime { get; init; }
 
-    public AbstractApplicationDependencyRegistrar(IServiceCollection services, IServiceInfo serviceInfo)
+    public AbstractApplicationDependencyRegistrar(IServiceCollection services, IServiceInfo serviceInfo, ServiceLifetime serviceLifetime = ServiceLifetime.Scoped)
     {
         Services = services ?? throw new ArgumentNullException(nameof(services), $"{nameof(IServiceCollection)} is null.");
         ServiceInfo = serviceInfo ?? throw new ArgumentNullException(nameof(serviceInfo), $"{nameof(IServiceInfo)} is null.");
+        Lifetime = serviceLifetime;
         Configuration = services.GetConfiguration() ?? throw new InvalidDataException("Configuration is null.");
         RedisSection = Configuration.GetRequiredSection(NodeConsts.Redis);
         CachingSection = Configuration.GetRequiredSection(NodeConsts.Caching);
@@ -36,7 +38,6 @@ public abstract partial class AbstractApplicationDependencyRegistrar
         MysqlSection = Configuration.GetSection(NodeConsts.Mysql);
         ConsulSection = Configuration.GetSection(NodeConsts.Consul);
         RabbitMqSection = Configuration.GetSection(NodeConsts.RabbitMq);
-        SkyApm = Services.AddSkyApmExtensions();
         RegisterType = Configuration.GetValue<string>(NodeConsts.RegisterType) ?? RegisteredTypeConsts.Direct;
         RpcInfoOption = Configuration.GetSection(NodeConsts.RpcInfo).Get<RpcInfo>();
     }
@@ -49,25 +50,49 @@ public abstract partial class AbstractApplicationDependencyRegistrar
     /// <summary>
     /// 注册adnc.application通用服务
     /// </summary>
-    protected virtual void AddApplicaitonDefault()
+    protected void AddApplicaitonDefaultServices()
     {
-        Services
-            .AddSingleton(typeof(Lazy<>))
-            .AddScoped<UserContext>()
-            .AddScoped<IMessageTracker, DbMessageTrackerService>()
-            .AddScoped<IMessageTracker, RedisMessageTrackerService>()
-            .AddScoped<MessageTrackerFactory>()
-            .AddHostedService<Channels.LogConsumersHostedService>()
-            .AddAutoMapper(ApplicationLayerAssembly)
-            .AddSingleton<IObjectMapper, AutoMapperObject>()
-            .AddValidatorsFromAssembly(ContractsLayerAssembly, ServiceLifetime.Scoped)
-            .AddAdncInfraYitterIdGenerater(RedisSection, ServiceInfo.ShortName.Split('-')[0])
-            .AddAdncInfraConsul(ConsulSection)
-            .AddAdncInfraDapper();
+        Services.AddSingleton(typeof(Lazy<>));
+        Services.Add(new ServiceDescriptor(typeof(UserContext), typeof(UserContext), Lifetime));
 
-        AddAppliactionSerivcesWithInterceptors();
-        AddEfCoreContextWithRepositories();
-        AddRedisCaching();
-        AddBloomFilters();
+        Services.Add(new ServiceDescriptor(typeof(IMessageTracker), typeof(DbMessageTrackerService), Lifetime));
+        Services.Add(new ServiceDescriptor(typeof(IMessageTracker), typeof(RedisMessageTrackerService), Lifetime));
+        Services.Add(new ServiceDescriptor(typeof(MessageTrackerFactory), typeof(MessageTrackerFactory), Lifetime));
+
+        Services.AddHostedService<Channels.LogConsumersHostedService>();
+
+        Services.Add(new ServiceDescriptor(typeof(OperateLogInterceptor), typeof(OperateLogInterceptor), Lifetime));
+        Services.Add(new ServiceDescriptor(typeof(OperateLogAsyncInterceptor), typeof(OperateLogAsyncInterceptor), Lifetime));
+
+        Services
+            .AddSingleton<IObjectMapper, AutoMapperObject>()
+            .AddAutoMapper([ApplicationLayerAssembly])
+            .AddValidatorsFromAssembly(ContractsLayerAssembly, Lifetime)
+            .AddAdncInfraYitterIdGenerater(RedisSection, ServiceInfo.ShortName.Split('-')[0], Lifetime)
+            .AddAdncInfraConsul(ConsulSection, null, Lifetime)
+            .AddAdncInfraRedisCaching(ApplicationLayerAssembly, RedisSection, CachingSection, Lifetime)
+            .AddAdncInfraDapper(Lifetime);
+
+        AddEfCoreContext();
+
+        var serviceTypes = ContractsLayerAssembly.GetExportedTypes().Where(type => type.IsInterface && type.IsAssignableTo(typeof(IAppService))).ToList();
+        serviceTypes?.ForEach(serviceType =>
+        {
+            var implType = ApplicationLayerAssembly.ExportedTypes.FirstOrDefault(type => type.IsAssignableTo(serviceType) && type.IsNotAbstractClass(true));
+            if (implType is not null)
+            {
+                Services.TryAddSingleton(new ProxyGenerator());
+                Services.Add(new ServiceDescriptor(implType, implType, Lifetime));
+                Services.Add(new ServiceDescriptor(serviceType, provider =>
+                {
+                    var interfaceToProxy = serviceType;
+                    var target = provider.GetRequiredService(implType);
+                    var interceptors = DefaultInterceptorTypes.ConvertAll(interceptorType => provider.GetService(interceptorType) as IInterceptor).ToArray();
+                    var proxyGenerator = provider.GetRequiredService<ProxyGenerator>();
+                    var proxy = proxyGenerator.CreateInterfaceProxyWithTargetInterface(interfaceToProxy, target, interceptors);
+                    return proxy;
+                }, Lifetime));
+            }
+        });
     }
 }

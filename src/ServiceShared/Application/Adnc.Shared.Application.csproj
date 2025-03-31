@@ -7,8 +7,6 @@
 		<PackageReference Include="Microsoft.Extensions.Http.Polly" Version="$(Microsoft_Extensions_Http_Polly_Version)" />
 		<PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="$(FluentValidation_DependencyInjectionExtensions_Version)" />
 		<PackageReference Include="DotNetCore.CAP.RabbitMQ" Version="$(DotNetCore_CAP_RabbitMQ_Version)" />
-		<PackageReference Include="DotNetCore.CAP.Dashboard" Version="$(DotNetCore_CAP_Dashboard_Version)" />
-		<PackageReference Include="SkyAPM.Diagnostics.CAP" Version="$(SkyAPM_Diagnostics_CAP_Version)" />
 		<PackageReference Include="EFCore.NamingConventions" Version="$(EFCore_NamingConventions_Version)" />
 		<PackageReference Include="Grpc.Net.ClientFactory" Version="$(Grpc_Net_ClientFactory_Version)" />
 		<PackageReference Include="AutoMapper" Version="$(AutoMapper_Version)" />

@@ -4,7 +4,8 @@ public static class HealthChecksBuilderExtension
 {
     public static IServiceCollection AddHealthChecks(this IServiceCollection services, Action<IHealthChecksBuilder>? setupAction)
     {
-        setupAction?.Invoke(services.AddHealthChecks());
+        var checksBuilder = services.AddHealthChecks();
+        setupAction?.Invoke(checksBuilder);
         return services;
     }
 
