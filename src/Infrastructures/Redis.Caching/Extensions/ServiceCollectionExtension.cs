@@ -4,7 +4,7 @@ using Adnc.Infra.Redis.Caching.Core.BloomFilter;
 using Adnc.Infra.Redis.Caching.Core.Diagnostics.SkyApm;
 using Adnc.Infra.Redis.Caching.Core.Interceptor;
 using Adnc.Infra.Redis.Caching.Core.Preheater;
-using Adnc.Infra.Redis.Caching.Interceptor.Castle;
+using Adnc.Infra.Redis.Caching.Core.Interceptor.Castle;
 using Adnc.Infra.Redis.Caching.Provider;
 using SkyApm;
 using SkyApm.Utilities.DependencyInjection;

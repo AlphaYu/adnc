@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.Redis.Caching.Interceptor.Castle;
+﻿namespace Adnc.Infra.Redis.Caching.Core.Interceptor.Castle;
 
 public static class TypeExtensions
 {

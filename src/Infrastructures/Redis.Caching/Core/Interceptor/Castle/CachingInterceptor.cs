@@ -1,6 +1,6 @@
 ﻿using Castle.DynamicProxy;
 
-namespace Adnc.Infra.Redis.Caching.Interceptor.Castle;
+namespace Adnc.Infra.Redis.Caching.Core.Interceptor.Castle;
 
 /// <summary>
 /// caching interceptor

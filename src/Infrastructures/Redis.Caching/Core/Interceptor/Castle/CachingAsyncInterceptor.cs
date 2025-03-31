@@ -1,8 +1,6 @@
-﻿using Adnc.Infra.Redis.Caching.Core;
-using Adnc.Infra.Redis.Caching.Core.Interceptor;
-using Castle.DynamicProxy;
+﻿using Castle.DynamicProxy;
 
-namespace Adnc.Infra.Redis.Caching.Interceptor.Castle;
+namespace Adnc.Infra.Redis.Caching.Core.Interceptor.Castle;
 
 /// <summary>
 /// caching async interceptor
