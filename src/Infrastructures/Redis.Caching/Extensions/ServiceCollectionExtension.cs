@@ -3,8 +3,8 @@ using Adnc.Infra.Redis.Caching.Configurations;
 using Adnc.Infra.Redis.Caching.Core.BloomFilter;
 using Adnc.Infra.Redis.Caching.Core.Diagnostics.SkyApm;
 using Adnc.Infra.Redis.Caching.Core.Interceptor;
-using Adnc.Infra.Redis.Caching.Core.Preheater;
 using Adnc.Infra.Redis.Caching.Core.Interceptor.Castle;
+using Adnc.Infra.Redis.Caching.Core.Preheater;
 using Adnc.Infra.Redis.Caching.Provider;
 using SkyApm;
 using SkyApm.Utilities.DependencyInjection;
@@ -13,10 +13,9 @@ namespace Microsoft.Extensions.DependencyInjection;
 
 public static class ServiceCollectionExtension
 {
-    public static IServiceCollection AddAdncInfraRedisCaching(this IServiceCollection services, Assembly assembly, IConfigurationSection redisSection, IConfigurationSection cachingSection, ServiceLifetime serviceLifetime = ServiceLifetime.Scoped)
+    public static IServiceCollection AddAdncInfraRedisCaching(this IServiceCollection services, Assembly? assembly, IConfigurationSection redisSection, IConfigurationSection cachingSection, ServiceLifetime serviceLifetime = ServiceLifetime.Scoped)
     {
         ArgumentNullException.ThrowIfNull(services, nameof(services));
-        ArgumentNullException.ThrowIfNull(assembly, nameof(assembly));
         ArgumentNullException.ThrowIfNull(redisSection, nameof(redisSection));
         ArgumentNullException.ThrowIfNull(cachingSection, nameof(cachingSection));
 
@@ -30,25 +29,28 @@ public static class ServiceCollectionExtension
             services.AddSkyApmExtensions().Services.AddSingleton<ITracingDiagnosticProcessor, CacheTracingDiagnosticProcessor>();
         }
 
-        var preheatableImpl = assembly.ExportedTypes.SingleOrDefault(type => type.IsAssignableTo(typeof(ICachePreheatable)) && type.IsNotAbstractClass(true));
-        if (preheatableImpl is not null)
+        if (assembly is not null)
         {
-            services
-                .AddSingleton(preheatableImpl)
-                .AddSingleton(x => (ICachePreheatable)x.GetRequiredService(preheatableImpl))
-                .AddHostedService<CachingHostedService>();
-        }
+            var preheatableImpl = assembly.ExportedTypes.SingleOrDefault(type => type.IsAssignableTo(typeof(ICachePreheatable)) && type.IsNotAbstractClass(true));
+            if (preheatableImpl is not null)
+            {
+                services
+                    .AddSingleton(preheatableImpl)
+                    .AddSingleton(x => (ICachePreheatable)x.GetRequiredService(preheatableImpl))
+                    .AddHostedService<CachingHostedService>();
+            }
 
-        var bloomFilterType = typeof(IBloomFilter);
-        var bloomFilterImpls = assembly.ExportedTypes.Where(type => type.IsAssignableTo(bloomFilterType) && type.IsNotAbstractClass(true)).ToList();
-        if (bloomFilterImpls.IsNotNullOrEmpty())
-        {
-            bloomFilterImpls.ForEach(implType => services.AddSingleton(bloomFilterType, implType));
+            var bloomFilterType = typeof(IBloomFilter);
+            var bloomFilterImpls = assembly.ExportedTypes.Where(type => type.IsAssignableTo(bloomFilterType) && type.IsNotAbstractClass(true)).ToList();
+            if (bloomFilterImpls.IsNotNullOrEmpty())
+            {
+                bloomFilterImpls.ForEach(implType => services.AddSingleton(bloomFilterType, implType));
 
-            services
-                .AddSingleton<IBloomFilter, NullBloomFilter>()
-                .AddSingleton<BloomFilterFactory>()
-                .AddHostedService<BloomFilterHostedService>();
+                services
+                    .AddSingleton<IBloomFilter, NullBloomFilter>()
+                    .AddSingleton<BloomFilterFactory>()
+                    .AddHostedService<BloomFilterHostedService>();
+            }
         }
 
         services
