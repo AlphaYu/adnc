@@ -1,7 +1,7 @@
 ﻿using Adnc.Infra.Repository.EfCore.MongoDB;
 using MongoDB.EntityFrameworkCore.Extensions;
 
-namespace Adnc.Infra.Unittest.Reposity.Fixtures.Entities;
+namespace Adnc.Infra.Unittest.Reposity.MongoDb.Fixtures.Entities;
 
 public class MongoEntityInfo : AbstractMongoDbEntityInfo
 {

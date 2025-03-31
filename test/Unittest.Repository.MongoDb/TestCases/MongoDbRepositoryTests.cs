@@ -1,6 +1,8 @@
-﻿using MongoDB.Bson;
+﻿using Adnc.Infra.Unittest.Reposity.MongoDb.Fixtures;
+using Adnc.Infra.Unittest.Reposity.MongoDb.Fixtures.Entities;
+using MongoDB.Bson;
 
-namespace Adnc.Infra.Unittest.Reposity.TestCases;
+namespace Adnc.Infra.Unittest.Reposity.MongoDb.TestCases;
 
 public class MongoDbRepositoryTests : IClassFixture<EfCoreMongoDbcontextFixture>
 {

@@ -12,9 +12,8 @@ public class EfCoreDbcontextFixture
             var serverVersion = new MariaDbServerVersion(new Version(10, 5, 4));
             return _container ??= new ServiceCollection()
                                             .AddScoped(provider => new Operater { Id = 1000000000001, Account = "unittest", Name = "unittest" })
-                                            .AddScoped<IEntityInfo, EntityInfo>()
                                             .AddAdncInfraDapper()
-                                            .AddAdncInfraEfCoreMySql(options =>
+                                            .AddAdncInfraEfCoreMySql(typeof(EntityInfo).Assembly, options =>
                                             {
                                                 var connectionString = Configuration["Mysql:ConnectionString"];
                                                 options.UseLowerCaseNamingConvention();

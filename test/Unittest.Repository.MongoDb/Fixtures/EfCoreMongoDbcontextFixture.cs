@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 
-namespace Adnc.Infra.Unittest.Reposity.Fixtures;
+namespace Adnc.Infra.Unittest.Reposity.MongoDb.Fixtures;
 
 public class EfCoreMongoDbcontextFixture
 {
@@ -17,8 +17,7 @@ public class EfCoreMongoDbcontextFixture
         var services = new ServiceCollection();
         services
             .AddScoped(provider => new Operater { Id = 1000000000001, Account = "unittest", Name = "unittest" })
-            .AddScoped<IEntityInfo, MongoEntityInfo>()
-            .AddAdncInfraEfCoreMongoDb(options =>
+            .AddAdncInfraEfCoreMongoDb(GetType().Assembly, options =>
              {
                  var connectionString = Configuration["MongoDb:ConnectionString"];
                  var databaseName = Configuration["MongoDb:DataBase"];

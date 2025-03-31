@@ -11,7 +11,7 @@ public class RedisContextFixture
             var cachingSection = Configuration.GetSection("Caching");
             return container ??= new ServiceCollection()
                                         .AddAdncInfraRedis(redisSection)
-                                        .AddAdncInfraRedisCaching(redisSection, cachingSection)
+                                        .AddAdncInfraRedisCaching(null, redisSection, cachingSection)
                                         .AddAdncInfraYitterIdGenerater(redisSection, "unittest")
                                         .BuildServiceProvider();
         }

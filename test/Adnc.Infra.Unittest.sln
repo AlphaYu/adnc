@@ -39,6 +39,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adnc.Infra.Unittest.Helper"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adnc.Infra.Unittest.Consul", "Unittest.Consul\Adnc.Infra.Unittest.Consul.csproj", "{EC3999FD-BD1E-50E0-562D-40F3B0236866}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adnc.Infra.Unittest.Reposity.MongoDb", "Unittest.Repository.MongoDb\Adnc.Infra.Unittest.Reposity.MongoDb.csproj", "{0C8E8ABE-1CD5-F3A8-7672-FB4BA7ACA328}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -113,6 +115,10 @@ Global
 		{EC3999FD-BD1E-50E0-562D-40F3B0236866}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EC3999FD-BD1E-50E0-562D-40F3B0236866}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EC3999FD-BD1E-50E0-562D-40F3B0236866}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C8E8ABE-1CD5-F3A8-7672-FB4BA7ACA328}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C8E8ABE-1CD5-F3A8-7672-FB4BA7ACA328}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C8E8ABE-1CD5-F3A8-7672-FB4BA7ACA328}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C8E8ABE-1CD5-F3A8-7672-FB4BA7ACA328}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
