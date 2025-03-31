@@ -1,7 +1,6 @@
 ﻿using Adnc.Infra.Core.Guard;
 using Adnc.Infra.Redis.Caching.Configurations;
 using Adnc.Infra.Redis.Caching.Core;
-using Adnc.Infra.Redis.Configurations;
 using Adnc.Infra.Redis.Core.Serialization;
 using Adnc.Infra.Redis.Providers.StackExchange;
 

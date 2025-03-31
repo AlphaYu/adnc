@@ -10,14 +10,13 @@
 	<ItemGroup>
 		<PackageReference Include="Polly" Version="$(Polly_Version)" />
 		<PackageReference Include="Castle.Core.AsyncInterceptor" Version="$(Castle_Core_AsyncInterceptor_Version)" />
-	</ItemGroup>
+    <PackageReference Include="SkyAPM.Core" Version="$(SkyAPM_Agent_AspNetCore_Version)" />
+    <PackageReference Include="SkyAPM.Abstractions" Version="$(SkyAPM_Agent_AspNetCore_Version)" />
+    <PackageReference Include="SkyAPM.Utilities.DependencyInjection" Version="$(SkyAPM_Agent_AspNetCore_Version)" />
+  </ItemGroup>
 
 	<ItemGroup>
 	  <ProjectReference Include="..\Core\Adnc.Infra.Core.csproj" />
 	  <ProjectReference Include="..\Redis\Adnc.Infra.Redis.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Core\" />
 	</ItemGroup>
 </Project>
