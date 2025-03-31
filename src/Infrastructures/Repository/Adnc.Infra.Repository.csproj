@@ -5,11 +5,7 @@
 		<PackageTags>adnc,repository</PackageTags>
 	</PropertyGroup>
 	<ItemGroup>
-	  <Compile Remove="Entities\EfEnities\Extensions\**" />
-	  <EmbeddedResource Remove="Entities\EfEnities\Extensions\**" />
-	  <None Remove="Entities\EfEnities\Extensions\**" />
-	</ItemGroup>
-	<ItemGroup>
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="$(Microsoft_EntityFrameworkCore_Relational_Version)" />
-	</ItemGroup>
+    <PackageReference Include="Castle.Core.AsyncInterceptor" Version="$(Castle_Core_AsyncInterceptor_Version)" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="$(Microsoft_EntityFrameworkCore_Relational_Version)" />
+  </ItemGroup>
 </Project>
