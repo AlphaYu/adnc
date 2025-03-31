@@ -5,14 +5,6 @@
 		<PackageTags>adnc,repository,efcore</PackageTags>
 	</PropertyGroup>
 	<ItemGroup>
-	  <Compile Remove="Extensions\DbContextExtension.cs" />
-	  <Compile Remove="Extensions\MutableEntityTypeExtension.cs" />
-	  <Compile Remove="Internal\EFCoreUtil.cs" />
-	</ItemGroup>
-	<!--<ItemGroup>
-		<PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="$(Z_EntityFramework_Plus_EFCore_Version)" />
-	</ItemGroup>-->
-	<ItemGroup>
 	  <ProjectReference Include="..\Core\Adnc.Infra.Core.csproj" />
 	  <ProjectReference Include="..\Repository\Adnc.Infra.Repository.csproj" />
 	</ItemGroup>
