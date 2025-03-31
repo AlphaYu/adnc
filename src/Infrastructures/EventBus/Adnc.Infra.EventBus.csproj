@@ -5,9 +5,11 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="Polly" Version="$(Polly_Version)" />
-		<PackageReference Include="RabbitMQ.Client" Version="$(RabbitMQ_Client_Version)" />
+    <PackageReference Include="SkyAPM.Utilities.DependencyInjection" Version="$(SkyAPM_Diagnostics_CAP_Version)" />
+    <PackageReference Include="RabbitMQ.Client" Version="$(RabbitMQ_Client_Version)" />
 		<PackageReference Include="DotNetCore.CAP" Version="$(DotNetCore_CAP_Version)" />
-		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="$(Microsoft_Extensions_Options_ConfigurationExtensions_Version)"/>
+    <PackageReference Include="SkyAPM.Diagnostics.CAP" Version="$(SkyAPM_Diagnostics_CAP_Version)" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="$(Microsoft_Extensions_Options_ConfigurationExtensions_Version)"/>
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Core\Adnc.Infra.Core.csproj" />
