@@ -8,8 +8,11 @@ namespace Microsoft.Extensions.DependencyInjection;
 
 public static class ServiceCollectionExtension
 {
-    public static IServiceCollection AddAdncInfraRedis(this IServiceCollection services, IConfigurationSection redisSection)
+    public static IServiceCollection AddAdncInfraRedis(this IServiceCollection services, IConfigurationSection redisSection, ServiceLifetime serviceLifetime = ServiceLifetime.Scoped)
     {
+        ArgumentNullException.ThrowIfNull(services, nameof(services));
+        ArgumentNullException.ThrowIfNull(redisSection, nameof(redisSection));
+
         if (services.HasRegistered(nameof(AddAdncInfraRedis)))
         {
             return services;
