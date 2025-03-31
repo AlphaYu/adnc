@@ -44,7 +44,8 @@ public sealed class ApiLayerRegistrar(IServiceCollection services, IServiceInfo 
     }
 }
 
-public sealed class ApplicationLayerRegistrar(IServiceCollection services, IServiceInfo serviceInfo) : AbstractApplicationDependencyRegistrar(services, serviceInfo)
+public sealed class ApplicationLayerRegistrar(IServiceCollection services, IServiceInfo serviceInfo, ServiceLifetime lifetime = ServiceLifetime.Scoped)
+    : AbstractApplicationDependencyRegistrar(services, serviceInfo, lifetime)
 {
     private readonly Assembly _assembly = Assembly.GetExecutingAssembly();
 
@@ -55,7 +56,7 @@ public sealed class ApplicationLayerRegistrar(IServiceCollection services, IServ
     public override void AddApplicationServices()
     {
         //register default services
-        AddApplicaitonDefault();
+        AddApplicaitonDefaultServices();
         //register http services
         var restPolicies = this.GenerateDefaultRefitPolicies();
         AddRestClient<IAdminRestClient>(ServiceAddressConsts.AdminDemoService, restPolicies);

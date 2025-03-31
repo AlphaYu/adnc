@@ -1,9 +1,8 @@
-﻿using Microsoft.Extensions.Logging;
-
-namespace Adnc.Demo.Admin.Application.Cache;
+﻿namespace Adnc.Demo.Admin.Application.Cache;
 
 public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IDistributedLocker> dictributeLocker
-    , Lazy<ILogger<CacheService>> logger, Lazy<IServiceProvider> serviceProvider, Lazy<IConfiguration> configuration)
+    , Lazy<ILogger<CacheService>> logger, Lazy<IServiceProvider> serviceProvider, Lazy<IConfiguration> configuration
+    , Lazy<IObjectMapper> mapper)
     : AbstractCacheService(cacheProvider, serviceProvider), ICachePreheatable
 {
     public override async Task PreheatAsync()
@@ -67,7 +66,7 @@ public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IDistr
             using var scope = ServiceProvider.Value.CreateScope();
             var orgRepo = scope.ServiceProvider.GetRequiredService<IEfRepository<Organization>>();
             var allOrganizations = await orgRepo.GetAll(writeDb: true).OrderBy(x => x.Ordinal).ToListAsync();
-            return Mapper.Value.Map<List<OrganizationDto>>(allOrganizations);
+            return mapper.Value.Map<List<OrganizationDto>>(allOrganizations);
         }, TimeSpan.FromSeconds(GeneralConsts.OneYear));
 
         return cahceValue.Value ?? [];
@@ -80,7 +79,7 @@ public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IDistr
             using var scope = ServiceProvider.Value.CreateScope();
             var menuRepo = scope.ServiceProvider.GetRequiredService<IEfRepository<Menu>>();
             var allMenus = await menuRepo.GetAll(writeDb: true).OrderBy(x => x.Ordinal).ToListAsync();
-            return Mapper.Value.Map<List<MenuDto>>(allMenus);
+            return mapper.Value.Map<List<MenuDto>>(allMenus);
         }, TimeSpan.FromSeconds(GeneralConsts.OneYear));
 
         return cahceValue.Value ?? [];

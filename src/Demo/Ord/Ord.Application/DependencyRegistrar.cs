@@ -3,7 +3,8 @@ using Adnc.Shared.Application.Registrar;
 
 namespace Adnc.Demo.Ord.Application;
 
-public sealed class DependencyRegistrar(IServiceCollection services, IServiceInfo serviceInfo) : AbstractApplicationDependencyRegistrar(services, serviceInfo)
+public sealed class DependencyRegistrar(IServiceCollection services, IServiceInfo serviceInfo, ServiceLifetime lifetime = ServiceLifetime.Scoped)
+    : AbstractApplicationDependencyRegistrar(services, serviceInfo, lifetime)
 {
     public override Assembly ApplicationLayerAssembly => Assembly.GetExecutingAssembly();
 
@@ -13,7 +14,7 @@ public sealed class DependencyRegistrar(IServiceCollection services, IServiceInf
 
     public override void AddApplicationServices()
     {
-        AddApplicaitonDefault();
+        AddApplicaitonDefaultServices();
         AddDomainSerivces<IDomainService>();
 
         //rpc-rest

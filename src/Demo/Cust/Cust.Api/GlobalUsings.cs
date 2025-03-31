@@ -12,6 +12,7 @@ global using Adnc.Infra.EventBus;
 global using Adnc.Infra.IdGenerater.Yitter;
 global using Adnc.Infra.Repository;
 global using Adnc.Infra.Repository.EfCore;
+global using Adnc.Infra.Repository.Interceptor;
 global using Adnc.Shared;
 global using Adnc.Shared.Application.Contracts.Attributes;
 global using Adnc.Shared.Application.Contracts.Dtos;

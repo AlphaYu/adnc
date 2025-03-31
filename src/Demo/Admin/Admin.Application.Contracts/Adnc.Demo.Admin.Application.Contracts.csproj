@@ -1,6 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	
-	
 	<PropertyGroup>
 	  <GenerateDocumentationFile>True</GenerateDocumentationFile>
 	</PropertyGroup>
@@ -11,7 +9,8 @@
 	
 	<ItemGroup Condition="'$(SolutionName)'=='Adnc'">
 		<ProjectReference Include="..\..\..\Infrastructures\Helper\Adnc.Infra.Helper.csproj" />
-		<ProjectReference Include="..\..\..\Infrastructures\Redis.Caching\Adnc.Infra.Redis.Caching.csproj" />
+    <ProjectReference Include="..\..\..\Infrastructures\Repository\Adnc.Infra.Repository.csproj" />
+    <ProjectReference Include="..\..\..\Infrastructures\Redis.Caching\Adnc.Infra.Redis.Caching.csproj" />
 		<ProjectReference Include="..\..\..\ServiceShared\Shared\Adnc.Shared.csproj" />
 		<ProjectReference Include="..\..\..\ServiceShared\Application.Contracts\Adnc.Shared.Application.Contracts.csproj" />
 	</ItemGroup>

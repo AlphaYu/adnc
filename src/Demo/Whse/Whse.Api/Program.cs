@@ -1,4 +1,4 @@
-using NLog;
+﻿using NLog;
 using NLog.Web;
 
 namespace Adnc.Demo.Whse.Api;
@@ -7,10 +7,10 @@ internal static class Program
 {
     internal static async Task Main(string[] args)
     {
-        var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
-        logger.Debug($"init {nameof(Program.Main)}");
         try
         {
+            LogManager.Setup().LoadConfigurationFromAppSettings();
+
             var startAssembly = System.Reflection.Assembly.GetExecutingAssembly();
             var startAssemblyName = startAssembly.GetName().Name ?? string.Empty;
             var lastName = startAssemblyName.Split('.').Last();
@@ -44,7 +44,7 @@ internal static class Program
         }
         catch (Exception ex)
         {
-            logger.Error(ex, "Stopped program because of exception");
+            Console.WriteLine(ex);
         }
         finally
         {

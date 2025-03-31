@@ -1,7 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	
-	
-	
 	<ItemGroup>
 		<ProjectReference Include="..\..\Shared\Remote.Grpc\Adnc.Demo.Remote.Grpc.csproj" />
 		<ProjectReference Include="..\Admin.Application.Contracts\Adnc.Demo.Admin.Application.Contracts.csproj" />

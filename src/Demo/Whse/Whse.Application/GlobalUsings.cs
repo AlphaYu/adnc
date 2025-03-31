@@ -11,7 +11,7 @@ global using Adnc.Demo.Whse.Domain.EntityConfig;
 global using Adnc.Demo.Whse.Domain.Services;
 global using Adnc.Infra.Redis.Caching;
 global using Adnc.Infra.Repository;
-global using Adnc.Shared.Application.Caching;
+global using Adnc.Infra.Repository.Interceptor;
 global using Adnc.Shared.Application.Contracts.Attributes;
 global using Adnc.Shared.Application.Contracts.Dtos;
 global using Adnc.Shared.Application.Contracts.Interfaces;
