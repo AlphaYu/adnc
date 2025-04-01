@@ -4,19 +4,15 @@ namespace Adnc.Infra.Repository.EfCore.MongoDB;
 
 public abstract class AbstractMongoDbEntityInfo : IEntityInfo
 {
-    public virtual void OnModelCreating(dynamic modelBuilder)
+    public virtual void OnModelCreating(ModelBuilder modelBuilder)
     {
         ArgumentNullException.ThrowIfNull(modelBuilder, nameof(modelBuilder));
-        if (modelBuilder is not ModelBuilder builder)
-        {
-            throw new InvalidOperationException(nameof(modelBuilder));
-        }
 
         var assemblies = GetEntityAssemblies();
         var entityTypes = GetEntityTypes(assemblies);
         foreach (var entityType in entityTypes)
         {
-            builder.Entity(entityType);
+            modelBuilder.Entity(entityType);
         }
 
         SetCollectionName(modelBuilder);
@@ -24,7 +20,7 @@ public abstract class AbstractMongoDbEntityInfo : IEntityInfo
 
     protected abstract List<Assembly> GetEntityAssemblies();
 
-    protected virtual void SetCollectionName(dynamic modelBuilder)
+    protected virtual void SetCollectionName(ModelBuilder modelBuilder)
     {
     }
 

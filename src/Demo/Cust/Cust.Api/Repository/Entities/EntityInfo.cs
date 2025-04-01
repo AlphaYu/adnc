@@ -4,16 +4,13 @@ public class EntityInfo : AbstractEntityInfo
 {
     protected override List<Assembly> GetEntityAssemblies() => [GetType().Assembly, typeof(EventTracker).Assembly];
 
-    protected override void SetTableName(dynamic modelBuilder)
+    protected override void SetTableName(ModelBuilder modelBuilder)
     {
-        if (modelBuilder is not ModelBuilder builder)
-        {
-            throw new ArgumentNullException(nameof(modelBuilder));
-        }
+        ArgumentNullException.ThrowIfNull(modelBuilder, nameof(modelBuilder));
 
-        builder.Entity<EventTracker>().ToTable("cust_eventtracker");
-        builder.Entity<Customer>().ToTable("cust_customer");
-        builder.Entity<Finance>().ToTable("cust_finance");
-        builder.Entity<TransactionLog>().ToTable("cust_transactionlog");
+        modelBuilder.Entity<EventTracker>().ToTable("cust_eventtracker");
+        modelBuilder.Entity<Customer>().ToTable("cust_customer");
+        modelBuilder.Entity<Finance>().ToTable("cust_finance");
+        modelBuilder.Entity<TransactionLog>().ToTable("cust_transactionlog");
     }
 }

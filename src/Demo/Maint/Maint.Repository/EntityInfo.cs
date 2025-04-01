@@ -4,13 +4,10 @@ public class EntityInfo : AbstractEntityInfo
 {
     protected override List<Assembly> GetEntityAssemblies() => [GetType().Assembly, typeof(EventTracker).Assembly];
 
-    protected override void SetTableName(dynamic modelBuilder)
+    protected override void SetTableName(ModelBuilder modelBuilder)
     {
-        if (modelBuilder is not ModelBuilder builder)
-        {
-            throw new ArgumentNullException(nameof(modelBuilder));
-        }
+        ArgumentNullException.ThrowIfNull(modelBuilder, nameof(modelBuilder));
 
-        builder.Entity<EventTracker>().ToTable("sys_eventtracker");
+        modelBuilder.Entity<EventTracker>().ToTable("sys_eventtracker");
     }
 }

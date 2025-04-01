@@ -1,6 +1,8 @@
-﻿namespace Adnc.Infra.Repository;
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace Adnc.Infra.Repository;
 
 public interface IEntityInfo
 {
-    void OnModelCreating(dynamic modelBuilder);
+    void OnModelCreating(ModelBuilder modelBuilder);
 }

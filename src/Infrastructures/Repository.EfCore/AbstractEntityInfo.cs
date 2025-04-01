@@ -4,24 +4,20 @@ namespace Adnc.Infra.Repository.EfCore;
 
 public abstract class AbstractEntityInfo : IEntityInfo
 {
-    public virtual void OnModelCreating(dynamic modelBuilder)
+    public virtual void OnModelCreating(ModelBuilder modelBuilder)
     {
         ArgumentNullException.ThrowIfNull(modelBuilder, nameof(modelBuilder));
-        if (modelBuilder is not ModelBuilder builder)
-        {
-            throw new InvalidOperationException(nameof(modelBuilder));
-        }
 
         var assemblies = GetEntityAssemblies();
         foreach (var assembly in assemblies)
         {
-            builder.ApplyConfigurationsFromAssembly(assembly);
+            modelBuilder.ApplyConfigurationsFromAssembly(assembly);
         }
 
         var entityTypes = GetEntityTypes(assemblies);
         foreach (var entityType in entityTypes)
         {
-            builder.Entity(entityType, entityTypeBuilder =>
+            modelBuilder.Entity(entityType, entityTypeBuilder =>
             {
                 var metadata = entityTypeBuilder.Metadata;
                 var tableComment = metadata.ClrType.GetSummary();
@@ -42,7 +38,7 @@ public abstract class AbstractEntityInfo : IEntityInfo
 
     protected abstract List<Assembly> GetEntityAssemblies();
 
-    protected virtual void SetTableName(dynamic modelBuilder)
+    protected virtual void SetTableName(ModelBuilder modelBuilder)
     {
     }
 
