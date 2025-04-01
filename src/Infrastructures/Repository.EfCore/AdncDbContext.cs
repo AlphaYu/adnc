@@ -6,7 +6,7 @@ public abstract class AdncDbContext(DbContextOptions options, IEntityInfo entity
     {
         //efcore7 support this feature
         //Database.AutoTransactionBehavior = AutoTransactionBehavior.WhenNeeded;
-        _ = SetAuditFields();
+        SetAuditFields();
         var result = base.SaveChangesAsync(cancellationToken);
         return result;
     }
@@ -22,7 +22,7 @@ public abstract class AdncDbContext(DbContextOptions options, IEntityInfo entity
         entityInfo.OnModelCreating(modelBuilder);
     }
 
-    protected virtual int SetAuditFields()
+    protected virtual void SetAuditFields()
     {
         var allBasicAuditEntities = ChangeTracker.Entries<IBasicAuditInfo>().Where(x => x.State == EntityState.Added);
         allBasicAuditEntities.ForEach(entry =>
@@ -37,7 +37,5 @@ public abstract class AdncDbContext(DbContextOptions options, IEntityInfo entity
             entry.Entity.ModifyBy = operater.Id;
             entry.Entity.ModifyTime = DateTime.Now;
         });
-
-        return ChangeTracker.Entries<Entity>().Count();
     }
 }

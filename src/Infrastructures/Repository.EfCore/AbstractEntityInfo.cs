@@ -6,63 +6,53 @@ public abstract class AbstractEntityInfo : IEntityInfo
 {
     public virtual void OnModelCreating(dynamic modelBuilder)
     {
+        ArgumentNullException.ThrowIfNull(modelBuilder, nameof(modelBuilder));
         if (modelBuilder is not ModelBuilder builder)
         {
-            throw new ArgumentNullException(nameof(modelBuilder));
+            throw new InvalidOperationException(nameof(modelBuilder));
         }
 
-        var assemblies = GetCurrentAssemblies();
-        assemblies.ForEach(assembly => builder.ApplyConfigurationsFromAssembly(assembly));
+        var assemblies = GetEntityAssemblies();
+        foreach (var assembly in assemblies)
+        {
+            builder.ApplyConfigurationsFromAssembly(assembly);
+        }
 
         var entityTypes = GetEntityTypes(assemblies);
-        entityTypes.ForEach(entityType => builder.Entity(entityType));
+        foreach (var entityType in entityTypes)
+        {
+            builder.Entity(entityType, entityTypeBuilder =>
+            {
+                var metadata = entityTypeBuilder.Metadata;
+                var tableComment = metadata.ClrType.GetSummary();
+                entityTypeBuilder.ToTable(t => t.HasComment(tableComment));
 
-        SetComment(modelBuilder, entityTypes);
+                var properties = metadata.GetProperties();
+                foreach (var property in properties)
+                {
+                    var propertyName = property.Name;
+                    var memberComment = metadata.ClrType?.GetMember(propertyName)?.FirstOrDefault()?.GetSummary();
+                    entityTypeBuilder.Property(propertyName).HasComment(memberComment);
+                }
+            });
+        }
 
         SetTableName(modelBuilder);
     }
 
-    protected abstract List<Assembly> GetCurrentAssemblies();
+    protected abstract List<Assembly> GetEntityAssemblies();
 
     protected virtual void SetTableName(dynamic modelBuilder)
     {
     }
 
-    private static void SetComment(ModelBuilder modelBuilder, IEnumerable<Type>? types)
-    {
-        if (types is null)
-        {
-            return;
-        }
-
-        var entityTypes = modelBuilder.Model.GetEntityTypes().Where(x => types.Contains(x.ClrType));
-        entityTypes.ForEach(entityType =>
-        {
-            modelBuilder.Entity(entityType.Name, buider =>
-            {
-                var typeSummary = entityType.ClrType.GetSummary();
-                buider.ToTable(t => t.HasComment(typeSummary));
-                //buider.HasComment(typeSummary);
-
-                entityType.GetProperties().ForEach(property =>
-                {
-                    var propertyName = property.Name;
-                    var memberSummary = entityType.ClrType?.GetMember(propertyName)?.FirstOrDefault()?.GetSummary();
-                    buider.Property(propertyName).HasComment(memberSummary);
-                });
-            });
-        });
-    }
-
     protected virtual List<Type> GetEntityTypes(IEnumerable<Assembly> assemblies)
     {
-        ArgumentNullException.ThrowIfNull(assemblies);
-
-        var typeList = assemblies.SelectMany(assembly => assembly.GetTypes()
+        var typeList = assemblies?.SelectMany(assembly => assembly.GetTypes()
                                                  .Where(m => m.FullName != null
                                                  && typeof(EfEntity).IsAssignableFrom(m)
                                                  && !m.IsAbstract));
 
-        return typeList.ToList() ?? [];
+        return typeList?.ToList() ?? [];
     }
 }
