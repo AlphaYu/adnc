@@ -36,7 +36,7 @@ public class CachingHostedService(ILogger<CachingHostedService> logger, ICachePr
                     catch (Exception ex)
                     {
                         var message = $"{nameof(ExecuteAsync)}:{string.Join(",", model.CacheKeys)}";
-                        logger.LogError(ex, "{message}", message);
+                        logger.LogError(ex, "remove cache kes error ：{message}", message);
                         await Task.Delay(cacheProvider.CacheOptions.Value.LockMs, stoppingToken);
                     }
                 }

@@ -58,10 +58,11 @@ public abstract partial class AbstractApplicationDependencyRegistrar
     /// <summary>
     /// 注册RabbitMq-Client
     /// </summary>
-    protected virtual void AddRabbitMqClient()
+    protected virtual void AddRabbitMqClient(Action<IServiceCollection>? registrarAction = null)
     {
         ArgumentNullException.ThrowIfNull(RabbitMqSection, nameof(RabbitMqSection));
-        Services.AddAdncInfraRabbitMq(RabbitMqSection, ServiceInfo.Id);
+
+        Services.AddAdncInfraRabbitMq(RabbitMqSection, ServiceInfo.Id, registrarAction);
     }
 
     private void SetDefaultValue(CapOptions capOptions, Action<FailedInfo>? failedThresholdCallback = null)
