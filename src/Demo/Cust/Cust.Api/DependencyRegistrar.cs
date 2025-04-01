@@ -3,23 +3,11 @@ using Adnc.Demo.Remote.Http.Services;
 
 namespace Adnc.Demo.Cust.Api;
 
-public static class ServiceCollectionExtensions
-{
-    public static IServiceCollection AddAdnc(this IServiceCollection services, IServiceInfo serviceInfo)
-    {
-        var registrar = new ApiLayerRegistrar(services, serviceInfo);
-        registrar.AddAdncServices();
-        return services;
-    }
-}
-
-public sealed class ApiLayerRegistrar(IServiceCollection services, IServiceInfo serviceInfo) : AbstractWebApiDependencyRegistrar(services, serviceInfo)
+public sealed class ApiLayerRegistrar(IServiceCollection services, IServiceInfo serviceInfo, IConfiguration configuration) : AbstractWebApiDependencyRegistrar(services, serviceInfo, configuration)
 {
     public override void AddAdncServices()
     {
-        Services.AddSingleton(typeof(IServiceInfo), ServiceInfo);
-
-        var registrar = new ApplicationLayerRegistrar(Services, ServiceInfo);
+        var registrar = new ApplicationLayerRegistrar(Services, ServiceInfo, Configuration);
         registrar.AddApplicationServices();
 
         AddWebApiDefaultServices();
@@ -44,8 +32,8 @@ public sealed class ApiLayerRegistrar(IServiceCollection services, IServiceInfo 
     }
 }
 
-public sealed class ApplicationLayerRegistrar(IServiceCollection services, IServiceInfo serviceInfo, ServiceLifetime lifetime = ServiceLifetime.Scoped)
-    : AbstractApplicationDependencyRegistrar(services, serviceInfo, lifetime)
+public sealed class ApplicationLayerRegistrar(IServiceCollection services, IServiceInfo serviceInfo, IConfiguration configuration, ServiceLifetime lifetime = ServiceLifetime.Scoped)
+    : AbstractApplicationDependencyRegistrar(services, serviceInfo, configuration, lifetime)
 {
     private readonly Assembly _assembly = Assembly.GetExecutingAssembly();
 

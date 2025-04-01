@@ -6,6 +6,9 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Adnc.Shared.Application.Registrar;
 
+/// <summary>
+///  Application依赖注册器
+/// </summary>
 public abstract partial class AbstractApplicationDependencyRegistrar
 {
     public string Name => "application";
@@ -26,12 +29,17 @@ public abstract partial class AbstractApplicationDependencyRegistrar
     protected IConfigurationSection RabbitMqSection { get; init; }
     protected ServiceLifetime Lifetime { get; init; }
 
-    public AbstractApplicationDependencyRegistrar(IServiceCollection services, IServiceInfo serviceInfo, ServiceLifetime serviceLifetime = ServiceLifetime.Scoped)
+    public AbstractApplicationDependencyRegistrar(IServiceCollection services, IServiceInfo serviceInfo, IConfiguration configuration, ServiceLifetime serviceLifetime = ServiceLifetime.Scoped)
     {
-        Services = services ?? throw new ArgumentNullException(nameof(services), $"{nameof(IServiceCollection)} is null.");
-        ServiceInfo = serviceInfo ?? throw new ArgumentNullException(nameof(serviceInfo), $"{nameof(IServiceInfo)} is null.");
+        ArgumentNullException.ThrowIfNull(services, $"{nameof(IServiceCollection)} is null.");
+        ArgumentNullException.ThrowIfNull(serviceInfo, $"{nameof(IServiceInfo)} is null.");
+        ArgumentNullException.ThrowIfNull(serviceLifetime, $"{nameof(ServiceLifetime)} is null.");
+        ArgumentNullException.ThrowIfNull(configuration, $"{nameof(IConfiguration)} is null.");
+
+        Services = services;
+        ServiceInfo = serviceInfo;
         Lifetime = serviceLifetime;
-        Configuration = services.GetConfiguration() ?? throw new InvalidDataException("Configuration is null.");
+        Configuration = configuration;
         RedisSection = Configuration.GetRequiredSection(NodeConsts.Redis);
         CachingSection = Configuration.GetRequiredSection(NodeConsts.Caching);
         MongoDbSection = Configuration.GetSection(NodeConsts.MongoDb);
@@ -52,7 +60,9 @@ public abstract partial class AbstractApplicationDependencyRegistrar
     /// </summary>
     protected void AddApplicaitonDefaultServices()
     {
-        Services.AddSingleton(typeof(Lazy<>));
+        Services.TryAddSingleton(ServiceInfo);
+
+        Services.TryAddSingleton(typeof(Lazy<>));
         Services.Add(new ServiceDescriptor(typeof(UserContext), typeof(UserContext), Lifetime));
 
         Services.Add(new ServiceDescriptor(typeof(IMessageTracker), typeof(DbMessageTrackerService), Lifetime));

@@ -3,10 +3,9 @@ using Adnc.Shared.WebApi.Middleware;
 
 namespace Adnc.Shared.WebApi.Registrar;
 
-//public abstract partial class AbstractWebApiMiddlewareRegistrar : IMiddlewareRegistrar
-public abstract partial class AbstractWebApiMiddlewareRegistrar(IApplicationBuilder app)
+public abstract partial class AbstractWebApiMiddlewareRegistrar(WebApplication app)
 {
-    protected IApplicationBuilder App { get; init; } = app;
+    protected WebApplication App { get; init; } = app;
 
     /// <summary>
     /// 注册中间件
@@ -17,16 +16,16 @@ public abstract partial class AbstractWebApiMiddlewareRegistrar(IApplicationBuil
     /// 注册webapi通用中间件
     /// </summary>
     protected void UseWebApiDefault(
-        Action<IApplicationBuilder>? beforeAuthentication = null,
-        Action<IApplicationBuilder>? afterAuthentication = null,
-        Action<IApplicationBuilder>? afterAuthorization = null,
+        Action<WebApplication>? beforeAuthentication = null,
+        Action<WebApplication>? afterAuthentication = null,
+        Action<WebApplication>? afterAuthorization = null,
         Action<IEndpointRouteBuilder>? endpointRoute = null)
     {
-        ServiceLocator.SetProvider(App.ApplicationServices);
-        var environment = App.ApplicationServices.GetRequiredService<IHostEnvironment>();
-        var serviceInfo = App.ApplicationServices.GetRequiredService<IServiceInfo>();
-        var consulOptions = App.ApplicationServices.GetRequiredService<IOptions<ConsulOptions>>();
-        var configuration = App.ApplicationServices.GetRequiredService<IConfiguration>();
+        ServiceLocator.SetProvider(App.Services);
+        var environment = App.Services.GetRequiredService<IHostEnvironment>();
+        var serviceInfo = App.Services.GetRequiredService<IServiceInfo>();
+        var consulOptions = App.Services.GetRequiredService<IOptions<ConsulOptions>>();
+        var configuration = App.Services.GetRequiredService<IConfiguration>();
         var healthCheckUrl = consulOptions?.Value?.HealthCheckUrl ?? $"{serviceInfo.RelativeRootPath}/health-24b01005-a76a-4b3b-8fb1-5e0f2e9564fb";
 
         //var defaultFilesOptions = new DefaultFilesOptions();
@@ -109,15 +108,11 @@ public abstract partial class AbstractWebApiMiddlewareRegistrar(IApplicationBuil
         App.UseAuthorization();
         afterAuthorization?.Invoke(App);
 
-        App
-            .UseEndpoints(endpoints =>
-            {
-                endpointRoute?.Invoke(endpoints);
-                if (enableMetrics)
-                {
-                    endpoints.MapMetrics();
-                }
-                endpoints.MapControllers().RequireAuthorization();
-            });
+        App.MapControllers().RequireAuthorization();
+        if (enableMetrics)
+        {
+            App.MapMetrics();
+        }
+        endpointRoute?.Invoke(App);
     }
 }

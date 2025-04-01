@@ -20,7 +20,7 @@ internal static class Program
             var builder = WebApplication.CreateBuilder(args).AddConfiguration(serviceInfo);
 
             //register services
-            builder.Services.AddAdnc(serviceInfo);
+            builder.Services.AddAdnc(serviceInfo, builder.Configuration);
 
             //create webHost
             var app = builder.Build();

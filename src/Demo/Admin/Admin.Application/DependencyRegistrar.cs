@@ -1,7 +1,7 @@
 ﻿namespace Adnc.Demo.Admin.Application;
 
-public sealed class DependencyRegistrar(IServiceCollection services, IServiceInfo serviceInfo, ServiceLifetime lifetime = ServiceLifetime.Scoped)
-    : AbstractApplicationDependencyRegistrar(services, serviceInfo, lifetime)
+public sealed class DependencyRegistrar(IServiceCollection services, IServiceInfo serviceInfo, IConfiguration configuration, ServiceLifetime lifetime = ServiceLifetime.Scoped)
+    : AbstractApplicationDependencyRegistrar(services, serviceInfo, configuration, lifetime)
 {
     public override Assembly ApplicationLayerAssembly => Assembly.GetExecutingAssembly();
 

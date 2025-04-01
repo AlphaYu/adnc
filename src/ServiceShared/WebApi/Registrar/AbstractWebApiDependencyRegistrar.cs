@@ -4,15 +4,25 @@ using Adnc.Shared.WebApi.Authorization.Handlers;
 namespace Adnc.Shared.WebApi.Registrar;
 
 /// <summary>
-/// 服务注册与系统配置
+/// WebApi依赖注册器
 /// </summary>
-/// <param name="services"><see cref="IServiceInfo"/></param>
-public abstract partial class AbstractWebApiDependencyRegistrar(IServiceCollection services, IServiceInfo serviceInfo)
+public abstract partial class AbstractWebApiDependencyRegistrar
 {
     public string Name => "webapi";
-    protected IConfiguration Configuration { get; init; } = services.GetConfiguration();
-    protected IServiceCollection Services { get; init; } = services;
-    protected IServiceInfo ServiceInfo { get; init; } = serviceInfo;
+    protected IConfiguration Configuration { get; init; }
+    protected IServiceCollection Services { get; init; }
+    protected IServiceInfo ServiceInfo { get; init; }
+
+    public AbstractWebApiDependencyRegistrar(IServiceCollection services, IServiceInfo serviceInfo, IConfiguration configuration)
+    {
+        ArgumentNullException.ThrowIfNull(services, $"{nameof(IServiceCollection)} is null.");
+        ArgumentNullException.ThrowIfNull(serviceInfo, $"{nameof(IServiceInfo)} is null.");
+        ArgumentNullException.ThrowIfNull(configuration, $"{nameof(IConfiguration)} is null.");
+
+        Services = services;
+        ServiceInfo = serviceInfo;
+        Configuration = configuration;
+    }
 
     public abstract void AddAdncServices();
 

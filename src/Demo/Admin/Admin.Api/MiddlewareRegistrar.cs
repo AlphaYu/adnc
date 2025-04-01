@@ -3,7 +3,7 @@ using Adnc.Shared.WebApi.Registrar;
 
 namespace Adnc.Demo.Admin.Api;
 
-public sealed class MiddlewareRegistrar(IApplicationBuilder app) : AbstractWebApiMiddlewareRegistrar(app)
+public sealed class MiddlewareRegistrar(WebApplication app) : AbstractWebApiMiddlewareRegistrar(app)
 {
     public override void UseAdnc()
     {
@@ -11,15 +11,5 @@ public sealed class MiddlewareRegistrar(IApplicationBuilder app) : AbstractWebAp
         {
             endpoint.MapGrpcService<AdminGrpcServer>();
         });
-    }
-}
-
-public static class WebApplicationrExtensions
-{
-    public static WebApplication UseAdnc(this WebApplication app)
-    {
-        var registrar = new MiddlewareRegistrar(app);
-        registrar.UseAdnc();
-        return app;
     }
 }

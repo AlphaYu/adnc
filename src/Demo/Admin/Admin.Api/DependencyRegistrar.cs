@@ -2,13 +2,11 @@
 
 namespace Adnc.Demo.Admin.Api;
 
-public sealed class DependencyRegistrar(IServiceCollection services, IServiceInfo serviceInfo) : AbstractWebApiDependencyRegistrar(services, serviceInfo)
+public sealed class DependencyRegistrar(IServiceCollection services, IServiceInfo serviceInfo, IConfiguration configuration) : AbstractWebApiDependencyRegistrar(services, serviceInfo, configuration)
 {
     public override void AddAdncServices()
     {
-        Services.AddSingleton(typeof(IServiceInfo), ServiceInfo);
-
-        var registrar = new Application.DependencyRegistrar(Services, ServiceInfo);
+        var registrar = new Application.DependencyRegistrar(Services, ServiceInfo, Configuration);
         registrar.AddApplicationServices();
 
         AddWebApiDefaultServices();
@@ -22,15 +20,5 @@ public sealed class DependencyRegistrar(IServiceCollection services, IServiceInf
         });
 
         Services.AddGrpc();
-    }
-}
-
-public static class ServiceCollectionExtensions
-{
-    public static IServiceCollection AddAdnc(this IServiceCollection services, IServiceInfo serviceInfo)
-    {
-        var registrar = new DependencyRegistrar(services, serviceInfo);
-        registrar.AddAdncServices();
-        return services;
     }
 }
