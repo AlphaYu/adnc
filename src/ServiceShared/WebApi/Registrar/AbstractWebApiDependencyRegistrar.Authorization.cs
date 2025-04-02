@@ -10,7 +10,7 @@ public abstract partial class AbstractWebApiDependencyRegistrar
     /// PermissionHandlerRemote 跨服务授权
     /// PermissionHandlerLocal  本地授权,adnc.usr走本地授权，其他服务走Rpc授权
     /// </summary>
-    /// <typeparam name="THandler"></typeparam>
+    /// <typeparam name="TAuthorizationHandler"></typeparam>
     protected virtual void AddAuthorization<TAuthorizationHandler>() where TAuthorizationHandler : AbstractPermissionHandler
     {
 #pragma warning disable ASP0025 // Use AddAuthorizationBuilder

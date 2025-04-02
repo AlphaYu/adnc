@@ -183,6 +183,7 @@ public partial class EncryptProivder
     /// <param name="data">Encrypted data</param>
     /// <param name="key">Key, requires 24 bits</param>
     /// <param name="cipherMode"><see cref="CipherMode"/></param>
+    /// <param name="vector">Vector</param>
     /// <param name="paddingMode"><see cref="PaddingMode"/> default is PKCS7</param>
     /// <returns>Decrypted byte array</returns>
     private static byte[] DESDecrypt(byte[] data, string key, CipherMode cipherMode, string vector = "", PaddingMode paddingMode = PaddingMode.PKCS7)

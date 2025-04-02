@@ -6,7 +6,7 @@
 public static class NameValueCollectionExtension
 {
     /// <summary>
-    /// Converts a name-value collection into a query string in the format key1=value1&key2=value2. 
+    /// Converts a name-value collection into a query string in the format key1=value1&amp;key2=value2. 
     /// Keys and values are URL-encoded.
     /// </summary>
     /// <param name="source">The data source.</param>

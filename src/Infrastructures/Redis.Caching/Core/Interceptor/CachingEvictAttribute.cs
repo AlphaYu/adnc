@@ -8,6 +8,7 @@ using System;
 [AttributeUsage(AttributeTargets.Method, Inherited = true)]
 public class CachingEvictAttribute : CachingInterceptorAttribute
 {
+    /*
     /// <summary>
     /// Gets or sets a value indicating whether evict all cached values by cachekey prefix
     /// </summary>
@@ -22,6 +23,7 @@ public class CachingEvictAttribute : CachingInterceptorAttribute
     /// </summary>
     /// <value><c>true</c> if is before; otherwise, <c>false</c>.</value>
     //public bool IsBefore { get; set; } = false;
+    */
 
     /// <summary>
     /// The cache keys

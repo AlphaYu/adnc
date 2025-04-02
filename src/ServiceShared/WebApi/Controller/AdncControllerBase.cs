@@ -5,8 +5,8 @@ public abstract class AdncControllerBase : ControllerBase
     /// <summary>
     /// Adnc.Shared.Application.Services.ProblemDetails.ProblemDetails => Problem
     /// </summary>
-    /// <param name="problemDetails"><see cref="Adnc.Shared.Application.Services.ProblemDetails"/></param>
-    /// <returns><see cref="ObjectResult"/></returns>
+    /// <param name="problemDetails"></param>
+    /// <returns></returns>
     [NonAction]
     protected virtual ObjectResult Problem(Adnc.Shared.Application.Contracts.ResultModels.ProblemDetails problemDetails)
     {
@@ -19,9 +19,10 @@ public abstract class AdncControllerBase : ControllerBase
     }
 
     /// <summary>
-    ///exception => Problem
+    /// exception => Problem
     /// </summary>
-    /// <param name="problemDetails"></param>
+    /// <param name="exception"></param>
+    /// <param name="statusCode"></param>
     /// <returns></returns>
     [NonAction]
     protected virtual ObjectResult Problem(Exception exception, HttpStatusCode statusCode = HttpStatusCode.InternalServerError)
@@ -32,7 +33,7 @@ public abstract class AdncControllerBase : ControllerBase
     }
 
     /// <summary>
-    /// ServiceResult<TValue> => ActionResult<TValue>
+    /// ServiceResult{TValue} => ActionResult{TValue}
     /// </summary>
     /// <typeparam name="TValue"></typeparam>
     /// <param name="appSrvResult"><see cref="ServiceResult{TValue}"/></param>
@@ -65,7 +66,7 @@ public abstract class AdncControllerBase : ControllerBase
     }
 
     /// <summary>
-    /// ServiceResult<TValue> => ActionResult<TValue>
+    /// ServiceResult {TValue} => ActionResult{TValue}
     /// </summary>
     /// <typeparam name="TValue"></typeparam>
     /// <param name="appSrvResult"><see cref="ServiceResult{TValue}"/></param>

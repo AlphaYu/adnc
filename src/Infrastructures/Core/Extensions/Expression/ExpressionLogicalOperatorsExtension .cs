@@ -33,7 +33,6 @@ public static class ExpressionLogicalOperatorsExtension
     /// <summary>
     /// Combine two expressions using the logical OR operator.
     /// </summary>
-    /// <typeparam name="T">The type of the object being tested.</typeparam>
     /// <param name="firstExpr">The first expression.</param>
     /// <param name="secondExpr">The second expression.</param>
     /// <returns>The combined expression.</returns>
@@ -85,7 +84,8 @@ public static class ExpressionLogicalOperatorsExtension
     /// <summary>
     /// Combine two expressions using the logical AND operator.
     /// </summary>
-    /// <typeparam name="T">The type of the object being tested.</typeparam>
+    /// <typeparam name="T1">The type of the object being tested.</typeparam>
+    /// <typeparam name="T2">The type of the object being tested.</typeparam>
     /// <param name="firstExpr">The first expression.</param>
     /// <param name="secondExpr">The second expression.</param>
     /// <returns>The combined expression.</returns>
@@ -125,7 +125,8 @@ public static class ExpressionLogicalOperatorsExtension
     /// <summary>
     /// Combine two expressions using the logical OR operator.
     /// </summary>
-    /// <typeparam name="T">The type of the object being tested.</typeparam>
+    /// <typeparam name="T1">The type of the object being tested.</typeparam>
+    /// <typeparam name="T2">The type of the object being tested.</typeparam>
     /// <param name="firstExpr">The first expression.</param>
     /// <param name="condition">The condition.</param>
     /// <param name="secondExpr">The second expression.</param>
@@ -153,7 +154,8 @@ public static class ExpressionLogicalOperatorsExtension
     /// <summary>
     /// Combine two expressions using the logical AND operator.
     /// </summary>
-    /// <typeparam name="T">The type of the object being tested.</typeparam>
+    /// <typeparam name="T1">The type of the object being tested.</typeparam>
+    /// <typeparam name="T2">The type of the object being tested.</typeparam>
     /// <param name="firstExpr">The first expression.</param>
     /// <param name="condition">The condition.</param>
     /// <param name="secondExpr">The second expression.</param>

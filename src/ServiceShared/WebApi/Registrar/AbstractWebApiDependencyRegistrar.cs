@@ -29,7 +29,6 @@ public abstract partial class AbstractWebApiDependencyRegistrar
     /// <summary>
     /// 注册Webapi通用的服务
     /// </summary>
-    /// <typeparam name="THandler"></typeparam>
     public void AddWebApiDefaultServices()
         => AddWebApiDefaultServices<BearerAuthenticationCacheProcessor, PermissionCacheHandler>();
 

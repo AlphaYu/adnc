@@ -74,10 +74,6 @@ public static class ExpressionMethodsExtension
         GetMemberInfo(memberExpression)?.Name;
 
     /// <summary>
-    /// Extracts the <see cref="MemberInfo"/> from an <see cref="Expression{TDelegate}"/> representing a member access.
-    /// </summary>
-    /// <typeparam name="TEntity">The type of the object containing
-    /// <summary>
     /// GetMemberInfo
     /// </summary>
     /// <typeparam name="TEntity">TEntity</typeparam>

@@ -4,6 +4,7 @@ namespace Adnc.Infra.EventBus.RabbitMq;
 
 public class RabbitMqProducer(IConnectionManager connectionManager, ILogger<RabbitMqProducer> logger)
 {
+    /*
     /// <summary>
     /// 简单队列,不通过交换机
     /// </summary>
@@ -28,6 +29,7 @@ public class RabbitMqProducer(IConnectionManager connectionManager, ILogger<Rabb
     //                          basicProperties: null,
     //                          body: body);
     //}
+    */
 
     public virtual Task BasicPublishAsync<TMessage>(string exchange
         , string routingKey

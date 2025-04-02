@@ -13,7 +13,7 @@ public static class ServiceInfoExtension
     /// 获取导航首页内容
     /// </summary>
     /// <param name="serviceInfo"></param>
-    /// <param name="app"></param>
+    /// <param name="serviceProvider"></param>
     /// <returns></returns>
     public static string GetDefaultPageContent(this IServiceInfo serviceInfo, IServiceProvider serviceProvider)
     {
@@ -32,6 +32,7 @@ public static class ServiceInfoExtension
         return content;
     }
 
+    /*
     /// <summary>
     /// 获取WebApiAssembly程序集
     /// </summary>
@@ -69,4 +70,5 @@ public static class ServiceInfoExtension
     //    }
     //    return appAssembly;
     //}
+    */
 }

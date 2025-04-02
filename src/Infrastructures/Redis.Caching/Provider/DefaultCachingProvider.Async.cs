@@ -446,7 +446,8 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
     /// <summary>
     /// Get the expiration of cache key
     /// </summary>
-    /// <param name="cacheKey">cache key</param>
+    /// <param name="cacheKeys">cache key</param>
+    /// <param name="seconds">seconds</param>
     /// <returns>expiration</returns>
     protected override async Task BaseKeyExpireAsync(IEnumerable<string> cacheKeys, int seconds)
     {

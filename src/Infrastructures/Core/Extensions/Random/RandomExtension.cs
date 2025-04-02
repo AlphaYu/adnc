@@ -72,6 +72,7 @@ public static class RandomExtension
     /// <summary>
     /// Generates a random number.
     /// </summary>
+    ///  <param name="rand"></param>
     /// <param name="length">The length of the random number</param>
     /// <param name="isNumberOnly">Whether the random number is purely numeric</param>
     /// <returns>A random number</returns>

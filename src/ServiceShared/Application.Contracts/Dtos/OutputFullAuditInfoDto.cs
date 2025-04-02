@@ -1,9 +1,8 @@
 ﻿namespace Adnc.Shared.Application.Contracts.Dtos;
 
 /// <summary>
-/// DTO基类
+/// Dto基类
 /// </summary>
-/// <typeparam name="TKey"></typeparam>
 [Serializable]
 public abstract class OutputFullAuditInfoDto : OutputBaseAuditDto
 {

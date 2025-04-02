@@ -9,9 +9,10 @@ namespace Adnc.Shared.WebApi.Registrar;
 public abstract partial class AbstractWebApiDependencyRegistrar
 {
     /// <summary>
-    /// <summary>
     /// 注册身份认证组件
     /// </summary>
+    /// <typeparam name="TAuthenticationHandler"></typeparam>
+    /// <exception cref="ArgumentNullException"></exception>
     protected virtual void AddAuthentication<TAuthenticationHandler>() where TAuthenticationHandler : AbstractAuthenticationProcessor
     {
         JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();

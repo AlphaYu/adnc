@@ -8,8 +8,14 @@ public static class JwtTokenHelper
     /// create access token
     /// </summary>
     /// <param name="jwtConfig"></param>
-    /// <param name="user"></param>
+    /// <param name="jti"></param>
+    /// <param name="uniqueName"></param>
+    /// <param name="nameId"></param>
+    /// <param name="name"></param>
+    /// <param name="roleIds"></param>
+    /// <param name="loginerType"></param>
     /// <returns></returns>
+    /// <exception cref="ArgumentNullException"></exception>
     public static JwtToken CreateAccessToken(
         JWTOptions jwtConfig
         , string jti
@@ -37,11 +43,13 @@ public static class JwtTokenHelper
     }
 
     /// <summary>
-    /// create refres token
+    ///  create refresh token
     /// </summary>
     /// <param name="jwtConfig"></param>
-    /// <param name="user"></param>
+    /// <param name="jti"></param>
+    /// <param name="nameId"></param>
     /// <returns></returns>
+    /// <exception cref="ArgumentNullException"></exception>
     public static JwtToken CreateRefreshToken(
         JWTOptions jwtConfig
         , string jti
@@ -64,7 +72,9 @@ public static class JwtTokenHelper
     /// <summary>
     /// get claim from refesh token
     /// </summary>
+    /// <param name="jwtConfig"></param>
     /// <param name="refreshToken"></param>
+    /// <param name="claimName"></param>
     /// <returns></returns>
     public static Claim? GetClaimFromRefeshToken(JWTOptions jwtConfig, string refreshToken, string claimName)
     {

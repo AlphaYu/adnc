@@ -365,7 +365,7 @@ public partial class EncryptProivder
     /// RSA decrypt with pem key
     /// </summary>
     /// <param name="privateKey">pem private key</param>
-    /// <param name="scrString">src string</param>
+    /// <param name="srcString">src string</param>
     /// <returns></returns>
     public string RSADecryptWithPem(string privateKey, string srcString)
     {
@@ -376,7 +376,7 @@ public partial class EncryptProivder
     /// <summary>
     /// RSA encrypt
     /// </summary>
-    /// <param name="publicKey">public key</param>
+    /// <param name="privateKey">private key</param>
     /// <param name="srcString">src string</param>
     /// <param name="padding">rsa encryptPadding <see cref="RSAEncryptionPadding"/> RSAEncryptionPadding.Pkcs1 for linux/mac openssl </param>
     /// <param name="isPemKey">set key is pem format,default is false</param>
@@ -433,7 +433,7 @@ public partial class EncryptProivder
     /// <summary>
     /// RSA encrypt
     /// </summary>
-    /// <param name="publicKey">public key</param>
+    /// <param name="privateKey">private key</param>
     /// <param name="data">src string</param>
     /// <param name="padding">rsa encryptPadding <see cref="RSAEncryptionPadding"/> RSAEncryptionPadding.Pkcs1 for linux/mac openssl </param>
     /// <param name="isPemKey">set key is pem format,default is false</param>
@@ -480,7 +480,7 @@ public partial class EncryptProivder
     /// <summary>
     /// Create an RSA key
     /// </summary>
-    /// <param name="keySizeInBits">the default size is 2048</param>
+    /// <param name="rsaSize">the default size is 2048</param>
     /// <returns></returns>
     public RSAKey CreateRsaKey(RsaSize rsaSize = RsaSize.R2048)
     {

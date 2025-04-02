@@ -1152,7 +1152,6 @@ public interface IRedisProvider
     /// <summary>
     /// Adds an item to the Bloom Filter, creating the filter if it does not yet exist.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
     /// <param name="key"></param>
     /// <param name="value"></param>
     /// <returns></returns>
@@ -1162,7 +1161,6 @@ public interface IRedisProvider
     /// Adds one or more items to the Bloom Filter and creates the filter if it does not exist yet.
     /// This command operates identically to BF.ADD except that it allows multiple inputs and returns multiple values.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
     /// <param name="key"></param>
     /// <param name="values"></param>
     /// <returns></returns>
@@ -1171,7 +1169,6 @@ public interface IRedisProvider
     /// <summary>
     /// Determines whether an item may exist in the Bloom Filter or not.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
     /// <param name="key"></param>
     /// <param name="value"></param>
     /// <returns></returns>
@@ -1180,7 +1177,6 @@ public interface IRedisProvider
     /// <summary>
     /// Determines if one or more items may exist in the filter or not.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
     /// <param name="key"></param>
     /// <param name="values"></param>
     /// <returns></returns>

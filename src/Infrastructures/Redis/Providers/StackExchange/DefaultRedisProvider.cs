@@ -38,11 +38,12 @@ public partial class DefaultRedisProvider : IRedisProvider
     public string Name => ConstValue.Provider.StackExchange;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="T:Adnc.Infra.Redis.Redis.DefaultRedisCachingProvider"/> class.
+    /// Initializes a new instance of the <see cref="DefaultRedisProvider" /> class.
     /// </summary>
-    /// <param name="dbProviders">Db providers.</param>
-    /// <param name="redisOptions">CacheOptions.</param>
-    /// <param name="loggerFactory">Logger factory.</param>
+    /// <param name="dbProviders"></param>
+    /// <param name="redisOptions"></param>
+    /// <param name="serializer"></param>
+    /// <param name="loggerFactory"></param>
     public DefaultRedisProvider(
         DefaultDatabaseProvider dbProviders,
         IOptions<RedisOptions> redisOptions,

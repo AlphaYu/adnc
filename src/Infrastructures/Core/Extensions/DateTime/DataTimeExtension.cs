@@ -205,13 +205,13 @@ public static class DataTimeExtension
     /// </summary>
     /// <param name="value">The date</param>
     /// <returns>The number of days in the month</returns>
-    public static int GetDaysOfMonth(this in DateTime vakye)
+    public static int GetDaysOfMonth(this in DateTime value)
     {
         // Uses the year and month information to get the number of days in the current month.
-        return vakye.Month switch
+        return value.Month switch
         {
             1 => 31,
-            2 => (IsRuYear(vakye.Year) ? 29 : 28),
+            2 => (IsRuYear(value.Year) ? 29 : 28),
             3 => 31,
             4 => 30,
             5 => 31,
@@ -409,9 +409,9 @@ public static class DataTimeExtension
     /// <param name="dtStart">The start time</param>
     /// <param name="dtEnd">The end time</param>
     /// <returns>The hour difference</returns>
-    public static string GetTimeDelay(this in DateTime dtStar, DateTime dtEnd)
+    public static string GetTimeDelay(this in DateTime dtStart, DateTime dtEnd)
     {
-        var lTicks = (dtEnd.Ticks - dtStar.Ticks) / 10000000;
+        var lTicks = (dtEnd.Ticks - dtStart.Ticks) / 10000000;
         var sTemp = (lTicks / 3600).ToString().PadLeft(2, '0') + ":";
         sTemp += (lTicks % 3600 / 60).ToString().PadLeft(2, '0') + ":";
         sTemp += (lTicks % 3600 % 60).ToString().PadLeft(2, '0');

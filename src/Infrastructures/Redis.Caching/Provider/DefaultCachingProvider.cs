@@ -63,12 +63,13 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
     public override ISerializer Serializer => _serializer;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="T:Adnc.Infra.Redis.Redis.DefaultRedisCachingProvider"/> class.
+    /// Initializes a new instance of the <see cref="DefaultCachingProvider"/> class.
     /// </summary>
-    /// <param name="dbProviders">Db providers.</param>
-    /// <param name="serializer">serializer.</param>
-    /// <param name="cacheOptions">CacheOptions.</param>
-    /// <param name="loggerFactory">Logger factory.</param>
+    /// <param name="dbProviders"></param>
+    /// <param name="serializer"></param>
+    /// <param name="redisOptions"></param>
+    /// <param name="cacheOptions"></param>
+    /// <param name="loggerFactory"></param>
     public DefaultCachingProvider(
         DefaultDatabaseProvider dbProviders,
         ISerializer serializer,

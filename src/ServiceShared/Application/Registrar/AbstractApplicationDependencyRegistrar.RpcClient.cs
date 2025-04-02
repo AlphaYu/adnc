@@ -80,9 +80,11 @@ public abstract partial class AbstractApplicationDependencyRegistrar
     /// <summary>
     /// 注册Grpc服务(跨微服务之间的同步通讯)
     /// </summary>
-    /// <typeparam name="TRpcService">Rpc服务接口</typeparam>
+    /// <typeparam name="TGrpcClient"></typeparam>
     /// <param name="serviceName">在注册中心注册的服务名称，或者服务的Url</param>
-    /// <param name="policies">Polly策略</param>
+    /// <param name="policies"></param>
+    /// <exception cref="InvalidDataException"></exception>
+    /// <exception cref="NotImplementedException"></exception>
     protected virtual void AddGrpcClient<TGrpcClient>(string serviceName, List<IAsyncPolicy<HttpResponseMessage>> policies)
      where TGrpcClient : ClientBase<TGrpcClient>
     {

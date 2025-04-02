@@ -5,7 +5,7 @@ public static class IntExtension
     /// <summary>
     ///     An Int32 extension method that query if 'value' is even.
     /// </summary>
-    /// <param name="this">The value to act on.</param>
+    /// <param name="value">The value to act on.</param>
     /// <returns>true if even, false if not.</returns>
     public static bool IsEven(this int value)
     {

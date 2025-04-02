@@ -12,6 +12,7 @@ public static class WebApplicationBuilderExtension
     /// <param name="serviceInfo"></param>
     /// <returns></returns>
     /// <exception cref="ArgumentNullException"></exception>
+    /// </summary>
     public static WebApplicationBuilder AddConfiguration(this WebApplicationBuilder builder, IServiceInfo serviceInfo)
     {
         ArgumentNullException.ThrowIfNull(builder, nameof(builder));
@@ -104,7 +105,6 @@ public static class WebApplicationBuilderExtension
     /// <summary>
     /// Register Cofiguration ChangeCallback
     /// </summary>
-    /// <param name="state"></param>
     private static IDisposable? _callbackRegistration;
     private static void OnSettingConfigurationChanged(object? state)
     {

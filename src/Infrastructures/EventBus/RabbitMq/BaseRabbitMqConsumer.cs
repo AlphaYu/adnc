@@ -103,6 +103,8 @@ public abstract class BaseRabbitMqConsumer(IConnectionManager connectionManager,
     /// <summary>
     /// 处理消息的方法
     /// </summary>
+    /// <param name="exchange"></param>
+    /// <param name="routingKey"></param>
     /// <param name="message"></param>
     /// <returns></returns>
     protected abstract Task<bool> Process(string exchange, string routingKey, string message);

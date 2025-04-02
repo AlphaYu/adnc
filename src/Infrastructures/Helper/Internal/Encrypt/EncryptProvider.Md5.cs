@@ -8,6 +8,7 @@ public partial class EncryptProivder
     /// MD5 hash
     /// </summary>
     /// <param name="srcString">The string to be encrypted.</param>
+    /// <param name="isLower"></param>
     /// <param name="length">The length of hash result , default value is <see cref="MD5Length.L32"/>.</param>
     /// <returns></returns>
     public string Md5(string srcString, bool isLower = false, MD5Length length = MD5Length.L32)
@@ -28,6 +29,7 @@ public partial class EncryptProivder
     /// Md5HMAC hash
     /// </summary>
     /// <param name="srcString">The string to be encrypted</param>
+    /// <param name="isLower"></param>
     /// <param name="key">encrypte key</param>
     /// <returns></returns>
     public string Md5HMAC(string srcString, string key, bool isLower = false)
