@@ -1,10 +1,12 @@
-﻿using Adnc.Infra.EventBus;
+﻿using System.Reflection;
+using Adnc.Infra.EventBus;
 using Adnc.Infra.EventBus.Cap;
 using Adnc.Infra.EventBus.Cap.Filters;
 using Adnc.Infra.EventBus.Configurations;
 using Adnc.Infra.EventBus.RabbitMq;
 using DotNetCore.CAP;
 using DotNetCore.CAP.Filter;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using SkyApm.Diagnostics.CAP;
 using SkyApm.Utilities.DependencyInjection;
 
@@ -50,7 +52,7 @@ public static class ServiceCollectionExtension
         return services;
     }
 
-    public static IServiceCollection AddAdncInfraRabbitMq(this IServiceCollection services, IConfigurationSection rabitmqSection, string clientProvidedName, Action<IServiceCollection>? registrarAction = null)
+    public static IServiceCollection AddAdncInfraRabbitMq(this IServiceCollection services, Assembly? assembly, IConfigurationSection rabitmqSection, string clientProvidedName, Action<IServiceCollection>? registrarAction = null)
     {
         ArgumentNullException.ThrowIfNull(services, nameof(services));
         ArgumentNullException.ThrowIfNull(rabitmqSection, nameof(rabitmqSection));
@@ -62,6 +64,17 @@ public static class ServiceCollectionExtension
         }
 
         registrarAction?.Invoke(services);
+
+        if (assembly is not null)
+        {
+            var serviceType = typeof(BaseRabbitMqConsumer);
+            var implTypes = assembly.ExportedTypes.Where(type => type.IsAssignableTo(serviceType) && type.IsNotAbstractClass(true));
+            if (implTypes is not null && implTypes.Any())
+            {
+                var descriptors = implTypes.Select(implType => new ServiceDescriptor(typeof(IHostedService), implType, ServiceLifetime.Singleton));
+                services.TryAddEnumerable(descriptors);
+            }
+        }
 
         return services
              .Configure<RabbitMqOptions>(rabitmqSection)
