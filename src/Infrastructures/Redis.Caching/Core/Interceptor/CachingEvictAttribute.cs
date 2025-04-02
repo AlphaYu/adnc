@@ -1,7 +1,5 @@
 ﻿namespace Adnc.Infra.Redis.Caching.Core.Interceptor;
 
-using System;
-
 /// <summary>
 /// Adnc.Infra.Redis evict attribute.
 /// </summary>
