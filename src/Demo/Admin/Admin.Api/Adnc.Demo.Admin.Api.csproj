@@ -8,9 +8,9 @@
   <ItemGroup>
     <ProjectReference Include="..\Admin.Application.Contracts\Adnc.Demo.Admin.Application.Contracts.csproj" />
     <ProjectReference Include="..\Admin.Application\Adnc.Demo.Admin.Application.csproj" />
-    <PackageReference Include="Grpc.AspNetCore" Version="$(Grpc_AspNetCore_Version)" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Grpc.AspNetCore" Version="$(Grpc_AspNetCore_Version)" />
     <Compile Remove="Grpc\AuthGrpcServer.cs" />
     <!--<Protobuf Include="..\..\..\ServiceShared\Adnc.Shared\Protos\Rtos\*.proto" GrpcServices="Server" Link="Grpc\Protos\Rtos\%(RecursiveDir)%(Filename)%(Extension)" ProtoRoot="..\..\..\ServiceShared\Adnc.Shared\" />-->
     <Protobuf Include="..\..\Shared\protos\messages\sys_dictoption.proto" GrpcServices="Server" Link="Grpc\protos\messages\sys_dictoption.proto" ProtoRoot="..\..\Shared\protos\" />

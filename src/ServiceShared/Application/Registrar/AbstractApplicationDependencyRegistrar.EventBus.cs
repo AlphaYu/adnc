@@ -55,16 +55,6 @@ public abstract partial class AbstractApplicationDependencyRegistrar
         }, null, Lifetime);
     }
 
-    /// <summary>
-    /// 注册RabbitMq-Client
-    /// </summary>
-    protected virtual void AddRabbitMqClient(Action<IServiceCollection>? registrarAction = null)
-    {
-        ArgumentNullException.ThrowIfNull(RabbitMqSection, nameof(RabbitMqSection));
-
-        Services.AddAdncInfraRabbitMq(RabbitMqSection, ServiceInfo.Id, registrarAction);
-    }
-
     private void SetDefaultValue(CapOptions capOptions, Action<FailedInfo>? failedThresholdCallback = null)
     {
         capOptions.Version = ServiceInfo.Version;
