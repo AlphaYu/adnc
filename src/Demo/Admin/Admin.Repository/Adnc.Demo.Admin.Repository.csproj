@@ -1,25 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	
-	
-	<PropertyGroup>
-	  <GenerateDocumentationFile>True</GenerateDocumentationFile>
-	</PropertyGroup>
 	<ItemGroup>
     <ProjectReference Include="..\..\Shared\Const\Adnc.Demo.Const.csproj" />
   </ItemGroup>
-
 	<ItemGroup Condition="'$(SolutionName)'=='Adnc'">
 		<ProjectReference Include="..\..\..\Infrastructures\Repository\Adnc.Infra.Repository.csproj" />
 		<ProjectReference Include="..\..\..\ServiceShared\Repository\Adnc.Shared.Repository.csproj" />
 		<ProjectReference Include="..\..\..\Infrastructures\Repository.EfCore.Mysql\Adnc.Infra.Repository.EfCore.MySql.csproj" />
 	</ItemGroup>
-
 	<ItemGroup Condition="'$(SolutionName)'=='Adnc.Demo' ">
 		<PackageReference Include="Adnc.Infra.Repository" Version="$(Infra_Version)" />
 		<PackageReference Include="Adnc.Shared.Repository" Version="$(Shared_Version)" />
 		<PackageReference Include="Adnc.Infra.Repository.EfCore.MySql" Version="$(Infra_Version)" />
 	</ItemGroup>
-
 	<ItemGroup>
 	  <Folder Include="Migrations\" />
 	</ItemGroup>

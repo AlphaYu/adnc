@@ -1,19 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	
-	
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
 		<OutputPath>..\Whse.Api\bin\$(Configuration)</OutputPath>
 	</PropertyGroup>
 	<ItemGroup Condition="'$(SolutionName)'=='Adnc'">
 		<ProjectReference Include="..\..\..\Infrastructures\Repository.EfCore.SqlServer\Adnc.Infra.Repository.EfCore.SqlServer.csproj" />
 	</ItemGroup>
-
 	<ItemGroup Condition="'$(SolutionName)'=='Adnc.Demo' ">
 		<PackageReference Include="Adnc.Infra.Repository.EfCore.SqlServer" Version="$(Infra_Version)" />
 	</ItemGroup>
-
 	<ItemGroup>
 		<ProjectReference Include="..\Whse.Domain\Adnc.Demo.Whse.Domain.csproj" />
 	</ItemGroup>
-	
 </Project>

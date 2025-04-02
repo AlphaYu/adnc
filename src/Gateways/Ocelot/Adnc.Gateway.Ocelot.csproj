@@ -9,7 +9,6 @@
 		  <TreatAsUsed>true</TreatAsUsed>
 		</PackageReference>
 	</ItemGroup>
-
 	<ItemGroup>
 		<Content Update="Config\ocelot.directjwt.json">
 		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -27,17 +26,9 @@
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 	</ItemGroup>
-
 	<ItemGroup>
 	  <None Include="wwwroot\favicon.ico">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	</ItemGroup>
-
-
-	<ProjectExtensions>
-		<VisualStudio>
-			<UserProperties properties_4launchsettings_1json__JsonSchema="" />
-		</VisualStudio>
-	</ProjectExtensions>
 </Project>

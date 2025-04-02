@@ -15,7 +15,6 @@ public sealed class DependencyRegistrar(IServiceCollection services, IServiceInf
         {
             var connectionString = Configuration.GetValue<string>(NodeConsts.SqlServer_ConnectionString) ?? throw new ArgumentNullException(nameof(NodeConsts.SqlServer_ConnectionString));
             checksBuilder
-                    .AddSqlServer(connectionString)
                     .AddRedis(Configuration)
                     .AddRabbitMQ(Configuration, ServiceInfo.Id);
         });

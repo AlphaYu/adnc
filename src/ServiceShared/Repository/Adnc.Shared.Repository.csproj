@@ -2,14 +2,8 @@
 	<PropertyGroup>
 		<Description>该层定义了仓储层基类。</Description>
 		<PackageTags>Adnc.Shared.Repository</PackageTags>
-		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 	</PropertyGroup>
-	
-	<ItemGroup Condition="'$(SolutionName)'=='Adnc.Shared'">
-		<PackageReference Include="Adnc.Infra.Repository" Version="$(Infra_Version)" />
-	</ItemGroup>
-
-	<ItemGroup Condition="'$(SolutionName)'=='Adnc'">
+	<ItemGroup>
 		<ProjectReference Include="..\..\Infrastructures\Repository\Adnc.Infra.Repository.csproj" />
 	</ItemGroup>
 </Project>

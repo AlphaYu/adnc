@@ -1,6 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<Description>该库定义了Entity对象的基类、UnitOfWork接口、仓储接口。</Description>
 		<PackageTags>adnc,repository,dapper</PackageTags>
 	</PropertyGroup>
@@ -10,10 +9,8 @@
 		<PackageReference Include="Microsoft.Data.SqlClient" Version="$(Microsoft_Data_SqlClient)" />
 		<PackageReference Include="Oracle.ManagedDataAccess.Core" Version="$(Oracle_ManagedDataAccess_Core)" />
 	</ItemGroup>
-
 	<ItemGroup>
 		<ProjectReference Include="..\Core\Adnc.Infra.Core.csproj" />
 		<ProjectReference Include="..\Repository\Adnc.Infra.Repository.csproj" />
 	</ItemGroup>
-
 </Project>

@@ -1,6 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<Description>该库是`Adnc.Infra.Repository`相关接口EfCore的实现，提供数据库CRUD操作,支持分布式事务。</Description>
 		<PackageTags>adnc,repository,efcore</PackageTags>
 	</PropertyGroup>

@@ -1,13 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	
-	
-	<PropertyGroup>
-		<GenerateDocumentationFile>True</GenerateDocumentationFile>
-	</PropertyGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\..\Shared\Const\Adnc.Demo.Const.csproj" />
 	</ItemGroup>
-
 	<ItemGroup Condition="'$(SolutionName)'=='Adnc'">
 		<ProjectReference Include="..\..\..\Infrastructures\Repository\Adnc.Infra.Repository.csproj" />
     <ProjectReference Include="..\..\..\Infrastructures\Repository.Dapper\Adnc.Infra.Repository.Dapper.csproj" />
@@ -15,7 +9,6 @@
 		<ProjectReference Include="..\..\..\ServiceShared\Repository\Adnc.Shared.Repository.csproj" />
 		<ProjectReference Include="..\..\..\ServiceShared\Shared\Adnc.Shared.csproj" />
 	</ItemGroup>
-
 	<ItemGroup Condition="'$(SolutionName)'=='Adnc.Demo' ">
 		<PackageReference Include="Adnc.Infra.Repository" Version="$(Infra_Version)" />
     <PackageReference Include="Adnc.Infra.Repository.Dapper" Version="$(Infra_Version)" />
@@ -23,7 +16,6 @@
 		<PackageReference Include="Adnc.Shared" Version="$(Shared_Version)" />
 		<PackageReference Include="Adnc.Shared.Repository" Version="$(Shared_Version)" />
 	</ItemGroup>
-
 	<ItemGroup>
 	  <Folder Include="Entities\Config\" />
 	  <Folder Include="Migrations\" />

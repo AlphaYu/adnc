@@ -11,7 +11,6 @@
 	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Http" Version="$(Microsoft_AspNetCore_Http_Version)" />
 	</ItemGroup>
-
 	<ItemGroup>
 		<ProjectReference Include="..\Core\Adnc.Infra.Core.csproj" />
 	</ItemGroup>

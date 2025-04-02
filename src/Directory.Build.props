@@ -9,13 +9,14 @@
 		<Product>Adnc</Product>
 		<RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/alphayu/adnc</RepositoryUrl>
+    <PackageProjectUrl>https://aspdotnetcore.net</PackageProjectUrl>
     <SatelliteResourceLanguages>zh-Hans</SatelliteResourceLanguages>
 		<SatelliteResourceLanguages>zh-Hant</SatelliteResourceLanguages>
 		<SatelliteResourceLanguages>en</SatelliteResourceLanguages>
 		<NoWarn>$(NoWarn);1591;0436</NoWarn>
 		<ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
-	</PropertyGroup>
-
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
 	<PropertyGroup>
 		<Infra_Version>1.0.0-preview-250339</Infra_Version>
 		<Shared_Version>1.0.0-preview-250339</Shared_Version>
