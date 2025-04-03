@@ -376,7 +376,8 @@ dotnet_diagnostic.IDE0062.severity = warning
 
 # IDE0073: File header
 dotnet_diagnostic.IDE0073.severity = none
-file_header_template = Licensed to the ANDC under one or more agreements.\nThe ADNC licenses this file to you under the MIT license.
+# file_header_template = Licensed to the ANDC under one or more agreements.\nThe ADNC licenses this file to you under the MIT license.
+file_header_template = unset
 
 # IDE0079 dotnet_remove_unnecessary_suppression_exclusions
 dotnet_diagnostic.IDE0079.severity = silent
