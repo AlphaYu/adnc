@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration;
 
 namespace Adnc.Demo.Maint.Application;
 
@@ -9,7 +9,7 @@ public sealed class DependencyRegistrar(IServiceCollection services, IServiceInf
 
     public override Assembly ContractsLayerAssembly => Assembly.GetExecutingAssembly();
 
-    public override Assembly RepositoryOrDomainLayerAssembly => typeof(EntityInfo).Assembly;
+    public override Assembly RepositoryOrDomainLayerAssembly => typeof(RepositoryExtension).Assembly;
 
     public override void AddApplicationServices()
     {
