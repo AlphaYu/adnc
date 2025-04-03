@@ -1,4 +1,5 @@
-﻿using Adnc.Infra.EventBus.Configurations;
+using Adnc.Infra.Core.Guard;
+using Adnc.Infra.EventBus.Configurations;
 using Adnc.Shared.Application.Extensions;
 using DotNetCore.CAP;
 using DotNetCore.CAP.Messages;
@@ -10,10 +11,30 @@ public abstract partial class AbstractApplicationDependencyRegistrar
     /// <summary>
     /// 注册CAP组件(实现事件总线及最终一致性（分布式事务）的一个开源的组件)
     /// </summary>
+    /// <typeparam name="TSubscriber"></typeparam>
+    /// <param name="replaceDbAction"></param>
+    /// <param name="replaceMqAction"></param>
+    /// <param name="failedThresholdCallback"></param>
     protected virtual void AddCapEventBus<TSubscriber>(Action<CapOptions>? replaceDbAction = null, Action<CapOptions>? replaceMqAction = null, Action<FailedInfo>? failedThresholdCallback = null)
-        where TSubscriber : class, ICapSubscribe
+    where TSubscriber : class, ICapSubscribe
     {
-        Services.AddAdncInfraCap<TSubscriber>(capOptions =>
+        AddCapEventBus([typeof(TSubscriber)], replaceDbAction, replaceMqAction, failedThresholdCallback);
+    }
+
+    /// <summary>
+    /// 注册CAP组件(实现事件总线及最终一致性（分布式事务）的一个开源的组件)
+    /// </summary>
+    /// <param name="subscribers"></param>
+    /// <param name="replaceDbAction"></param>
+    /// <param name="replaceMqAction"></param>
+    /// <param name="failedThresholdCallback"></param>
+    /// <exception cref="ArgumentNullException"></exception>
+    protected virtual void AddCapEventBus(IEnumerable<Type> subscribers, Action<CapOptions>? replaceDbAction = null, Action<CapOptions>? replaceMqAction = null, Action<FailedInfo>? failedThresholdCallback = null)
+    {
+        ArgumentNullException.ThrowIfNull(subscribers, nameof(subscribers));
+        Checker.Argument.ThrowIfNullOrCountLEZero(subscribers, nameof(subscribers));
+
+        Services.AddAdncInfraCap(subscribers, capOptions =>
         {
             SetDefaultValue(capOptions, failedThresholdCallback);
 

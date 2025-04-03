@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+using System.Reflection;
 using Adnc.Infra.EventBus;
 using Adnc.Infra.EventBus.Cap;
 using Adnc.Infra.EventBus.Cap.Filters;
@@ -14,20 +14,20 @@ namespace Microsoft.Extensions.DependencyInjection;
 
 public static class ServiceCollectionExtension
 {
-    public static IServiceCollection AddAdncInfraCap<TSubscriber>(this IServiceCollection services, Action<CapOptions> setupAction, Action<IServiceCollection>? registrarAction = null, ServiceLifetime serviceLifetime = ServiceLifetime.Scoped)
-        where TSubscriber : class, ICapSubscribe
+    public static IServiceCollection AddAdncInfraCap(this IServiceCollection services, IEnumerable<Type> capSubscribes, Action<CapOptions> setupAction, Action<IServiceCollection>? registrarAction = null, ServiceLifetime serviceLifetime = ServiceLifetime.Scoped)
     {
         ArgumentNullException.ThrowIfNull(services, nameof(services));
+        ArgumentNullException.ThrowIfNull(capSubscribes, nameof(capSubscribes));
         ArgumentNullException.ThrowIfNull(setupAction, nameof(setupAction));
 
-        return services.AddAdncInfraCap<TSubscriber, DefaultCapFilter>(setupAction, registrarAction, serviceLifetime);
+        return AddAdncInfraCap<DefaultCapFilter>(services, capSubscribes, setupAction, registrarAction, serviceLifetime);
     }
 
-    public static IServiceCollection AddAdncInfraCap<TSubscriber, TSubscribeFilter>(this IServiceCollection services, Action<CapOptions> setupAction, Action<IServiceCollection>? registrarAction = null, ServiceLifetime serviceLifetime = ServiceLifetime.Scoped)
-    where TSubscriber : class, ICapSubscribe
+    public static IServiceCollection AddAdncInfraCap<TSubscribeFilter>(this IServiceCollection services, IEnumerable<Type> capSubscribes, Action<CapOptions> setupAction, Action<IServiceCollection>? registrarAction = null, ServiceLifetime serviceLifetime = ServiceLifetime.Scoped)
     where TSubscribeFilter : class, ISubscribeFilter
     {
         ArgumentNullException.ThrowIfNull(services, nameof(services));
+        ArgumentNullException.ThrowIfNull(capSubscribes, nameof(capSubscribes));
         ArgumentNullException.ThrowIfNull(setupAction, nameof(setupAction));
 
         if (services.HasRegistered(nameof(AddAdncInfraCap)))
@@ -42,7 +42,17 @@ public static class ServiceCollectionExtension
             services.AddSkyApmExtensions().AddCap();
         }
 
-        services.Add(new ServiceDescriptor(typeof(TSubscriber), typeof(TSubscriber), serviceLifetime));
+        foreach (var subScriber in capSubscribes)
+        {
+            if (subScriber.IsAssignableTo(typeof(ICapSubscribe)))
+            {
+                services.Add(new ServiceDescriptor(subScriber, subScriber, serviceLifetime));
+            }
+            else
+            {
+                throw new InvalidDataException("invalid data type");
+            }
+        }
 
         services
             .AddSingleton<IEventPublisher, CapPublisher>()
