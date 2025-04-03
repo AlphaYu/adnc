@@ -11,9 +11,9 @@ namespace Adnc.Infra.Redis.Providers.StackExchange;
 public partial class DefaultRedisProvider : IRedisProvider
 {
     /// <summary>
-    /// The serializer.
+    /// The logger.
     /// </summary>
-    public ISerializer Serializer => _serializer;
+    private readonly ILogger? _logger;
 
     /// <summary>
     /// The cache.
@@ -29,13 +29,6 @@ public partial class DefaultRedisProvider : IRedisProvider
     /// The servers.
     /// </summary>
     private readonly IEnumerable<IServer> _servers;
-
-    /// <summary>
-    /// The logger.
-    /// </summary>
-    private readonly ILogger? _logger;
-
-    public string Name => ConstValue.Provider.StackExchange;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="DefaultRedisProvider" /> class.
@@ -57,4 +50,11 @@ public partial class DefaultRedisProvider : IRedisProvider
         _redisDb = dbProviders.GetDatabase();
         _servers = dbProviders.GetServerList();
     }
+
+    public string Name => ConstValue.Provider.StackExchange;
+
+    /// <summary>
+    /// The serializer.
+    /// </summary>
+    public ISerializer Serializer => _serializer;
 }

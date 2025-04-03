@@ -5,6 +5,8 @@
 /// </summary>
 public static class ConstValue
 {
+    public const int PollyTimeout = 5;
+
     public static class Serializer
     {
         public const string DefaultBinarySerializerName = "binary";
@@ -21,6 +23,4 @@ public static class ConstValue
         public const string ServiceStack = "ServiceStack";
         public const string CSRedis = "CSRedis";
     }
-
-    public const int PollyTimeout = 5;
 }

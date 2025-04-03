@@ -5,14 +5,6 @@
 /// </summary>
 public class Warehouse : AggregateRootWithBasicAuditInfo
 {
-    public long ProductId { get; private set; }
-
-    public int Qty { get; private set; }
-
-    public int BlockedQty { get; private set; }
-
-    public WarehousePosition Position { get; private set; } = default!;
-
     private Warehouse()
     {
     }
@@ -24,6 +16,14 @@ public class Warehouse : AggregateRootWithBasicAuditInfo
         BlockedQty = 0;
         Position = Checker.Variable.NotNull(position, nameof(position));
     }
+
+    public long ProductId { get; private set; }
+
+    public int Qty { get; private set; }
+
+    public int BlockedQty { get; private set; }
+
+    public WarehousePosition Position { get; private set; } = default!;
 
     /// <summary>
     /// 冻结库存

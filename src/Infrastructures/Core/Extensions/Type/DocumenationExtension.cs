@@ -8,6 +8,16 @@ namespace System.Reflection;
 public static class DocumenationExtension
 {
     /// <summary>
+    /// A cache used to remember Xml documentation for assemblies
+    /// </summary>
+    private static readonly Dictionary<Assembly, XmlDocument> _cache = [];
+
+    /// <summary>
+    /// A cache used to store failure exceptions for assembly lookups
+    /// </summary>
+    private static readonly Dictionary<Assembly, Exception> _failCache = [];
+
+    /// <summary>
     /// Provides the documentation comments for a specific type
     /// </summary>
     /// <param name="type">Type to find the documentation for</param>
@@ -133,16 +143,6 @@ public static class DocumenationExtension
         }
         return default;
     }
-
-    /// <summary>
-    /// A cache used to remember Xml documentation for assemblies
-    /// </summary>
-    private static readonly Dictionary<Assembly, XmlDocument> _cache = [];
-
-    /// <summary>
-    /// A cache used to store failure exceptions for assembly lookups
-    /// </summary>
-    private static readonly Dictionary<Assembly, Exception> _failCache = [];
 
     /// <summary>
     /// Obtains the documentation file for the specified assembly

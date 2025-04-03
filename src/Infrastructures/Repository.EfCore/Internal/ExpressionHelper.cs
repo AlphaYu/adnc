@@ -53,6 +53,5 @@ public static class ExpressionHelper
         }
         return Expression.Lambda<Func<SetPropertyCalls<TEntity>, SetPropertyCalls<TEntity>>>(constructorExpressions ?? param, param);
     }
-
 }
 

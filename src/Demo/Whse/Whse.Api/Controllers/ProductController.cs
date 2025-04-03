@@ -7,7 +7,6 @@
 [ApiController]
 public class ProductController(IProductService productSrv) : AdncControllerBase
 {
-
     /// <summary>
     /// 新建商品
     /// </summary>

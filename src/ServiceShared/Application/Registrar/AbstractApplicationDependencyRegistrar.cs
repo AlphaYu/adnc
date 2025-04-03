@@ -11,24 +11,6 @@ namespace Adnc.Shared.Application.Registrar;
 /// </summary>
 public abstract partial class AbstractApplicationDependencyRegistrar
 {
-    public string Name => "application";
-    public abstract Assembly ApplicationLayerAssembly { get; }
-    public abstract Assembly ContractsLayerAssembly { get; }
-    public abstract Assembly RepositoryOrDomainLayerAssembly { get; }
-    protected List<Type> DefaultInterceptorTypes => [typeof(OperateLogInterceptor), typeof(CachingInterceptor), typeof(UowInterceptor)];
-    protected string RegisterType { get; init; }
-    protected RpcInfo? RpcInfoOption { get; init; }
-    protected IServiceCollection Services { get; init; }
-    protected IConfiguration Configuration { get; init; }
-    protected IServiceInfo ServiceInfo { get; init; }
-    protected IConfigurationSection RedisSection { get; init; }
-    protected IConfigurationSection CachingSection { get; init; }
-    protected IConfigurationSection MysqlSection { get; init; }
-    protected IConfigurationSection MongoDbSection { get; init; }
-    protected IConfigurationSection ConsulSection { get; init; }
-    protected IConfigurationSection RabbitMqSection { get; init; }
-    protected ServiceLifetime Lifetime { get; init; }
-
     public AbstractApplicationDependencyRegistrar(IServiceCollection services, IServiceInfo serviceInfo, IConfiguration configuration, ServiceLifetime serviceLifetime = ServiceLifetime.Scoped)
     {
         ArgumentNullException.ThrowIfNull(services, $"{nameof(IServiceCollection)} is null.");
@@ -49,6 +31,24 @@ public abstract partial class AbstractApplicationDependencyRegistrar
         RegisterType = Configuration.GetValue<string>(NodeConsts.RegisterType) ?? RegisteredTypeConsts.Direct;
         RpcInfoOption = Configuration.GetSection(NodeConsts.RpcInfo).Get<RpcInfo>();
     }
+
+    public string Name => "application";
+    public abstract Assembly ApplicationLayerAssembly { get; }
+    public abstract Assembly ContractsLayerAssembly { get; }
+    public abstract Assembly RepositoryOrDomainLayerAssembly { get; }
+    protected List<Type> DefaultInterceptorTypes => [typeof(OperateLogInterceptor), typeof(CachingInterceptor), typeof(UowInterceptor)];
+    protected string RegisterType { get; init; }
+    protected RpcInfo? RpcInfoOption { get; init; }
+    protected IServiceCollection Services { get; init; }
+    protected IConfiguration Configuration { get; init; }
+    protected IServiceInfo ServiceInfo { get; init; }
+    protected IConfigurationSection RedisSection { get; init; }
+    protected IConfigurationSection CachingSection { get; init; }
+    protected IConfigurationSection MysqlSection { get; init; }
+    protected IConfigurationSection MongoDbSection { get; init; }
+    protected IConfigurationSection ConsulSection { get; init; }
+    protected IConfigurationSection RabbitMqSection { get; init; }
+    protected ServiceLifetime Lifetime { get; init; }
 
     /// <summary>
     /// 注册所有服务

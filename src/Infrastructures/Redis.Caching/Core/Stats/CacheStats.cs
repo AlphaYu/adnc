@@ -6,14 +6,14 @@
 public class CacheStats
 {
     /// <summary>
-    /// The counters.
-    /// </summary>
-    private readonly ConcurrentDictionary<string, CacheStatsCounter> _counters;
-
-    /// <summary>
     /// The default key.
     /// </summary>
     private const string DEFAULT_KEY = "cahing_catche_stats";
+
+    /// <summary>
+    /// The counters.
+    /// </summary>
+    private readonly ConcurrentDictionary<string, CacheStatsCounter> _counters;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="T:Adnc.Infra.Redis.Core.CacheStats"/> class.

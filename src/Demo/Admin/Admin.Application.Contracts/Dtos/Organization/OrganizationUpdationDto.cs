@@ -4,5 +4,4 @@
 /// 部门
 /// </summary>
 public class OrganizationUpdationDto : OrganizationCreationDto
-{
-}
+{}

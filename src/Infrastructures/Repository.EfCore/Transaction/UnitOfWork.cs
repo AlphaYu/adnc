@@ -9,8 +9,6 @@ public abstract class UnitOfWork<TDbContext>(TDbContext context) : IUnitOfWork
 
     public bool IsStartingUow => AdncDbContext.Database.CurrentTransaction is not null;
 
-    protected abstract IDbContextTransaction GetDbContextTransaction(IsolationLevel isolationLevel = IsolationLevel.ReadCommitted, bool distributed = false);
-
     public void BeginTransaction(IsolationLevel isolationLevel = IsolationLevel.ReadCommitted, bool distributed = false)
     {
         if (AdncDbContext.Database.CurrentTransaction is not null)
@@ -76,6 +74,8 @@ public abstract class UnitOfWork<TDbContext>(TDbContext context) : IUnitOfWork
         Dispose(true);
         GC.SuppressFinalize(this);
     }
+
+    protected abstract IDbContextTransaction GetDbContextTransaction(IsolationLevel isolationLevel = IsolationLevel.ReadCommitted, bool distributed = false);
 
     protected virtual void Dispose(bool disposing)
     {

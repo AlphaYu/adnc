@@ -9,6 +9,18 @@
 public class OutofMaxlengthException(int maxLength, int keySize, RSAEncryptionPadding rsaEncryptionPadding) : Exception
 {
     /// <summary>
+    /// The encrypt string out of max length exception
+    /// </summary>
+    /// <param name="message"></param>
+    /// <param name="maxLength"></param>
+    /// <param name="keySize"></param>
+    /// <param name="rsaEncryptionPadding"></param>
+    public OutofMaxlengthException(string message, int maxLength, int keySize, RSAEncryptionPadding rsaEncryptionPadding) : this(maxLength, keySize, rsaEncryptionPadding)
+    {
+        ErrorMessage = message;
+    }
+
+    /// <summary>
     /// The max length of ecnrypt data
     /// </summary>
     public int MaxLength { get; private set; } = maxLength;
@@ -28,16 +40,4 @@ public class OutofMaxlengthException(int maxLength, int keySize, RSAEncryptionPa
     /// Rsa padding
     /// </summary>
     public RSAEncryptionPadding RSAEncryptionPadding { get; private set; } = rsaEncryptionPadding;
-
-    /// <summary>
-    /// The encrypt string out of max length exception
-    /// </summary>
-    /// <param name="message"></param>
-    /// <param name="maxLength"></param>
-    /// <param name="keySize"></param>
-    /// <param name="rsaEncryptionPadding"></param>
-    public OutofMaxlengthException(string message, int maxLength, int keySize, RSAEncryptionPadding rsaEncryptionPadding) : this(maxLength, keySize, rsaEncryptionPadding)
-    {
-        ErrorMessage = message;
-    }
 }

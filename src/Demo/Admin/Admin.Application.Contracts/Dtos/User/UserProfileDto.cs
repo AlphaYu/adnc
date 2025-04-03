@@ -6,6 +6,11 @@
 public class UserProfileDto : OutputDto
 {
     /// <summary>
+    /// 头像
+    /// </summary>
+    private string _avatar = string.Empty;
+
+    /// <summary>
     /// 用户账号
     /// </summary>
     public string Account { get; set; } = string.Empty;
@@ -45,10 +50,6 @@ public class UserProfileDto : OutputDto
     /// </summary>
     public string RoleNames { get; set; } = string.Empty;
 
-    /// <summary>
-    /// 头像
-    /// </summary>
-    private string _avatar = string.Empty;
     public string Avatar
     {
         set { _avatar = value; }

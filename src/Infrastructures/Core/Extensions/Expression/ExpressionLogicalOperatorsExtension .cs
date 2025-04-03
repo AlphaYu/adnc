@@ -137,6 +137,7 @@ public static class ExpressionLogicalOperatorsExtension
     {
         return condition ? Or(firstExpr, secondExpr) : firstExpr;
     }
+
     /// <summary>
     /// Combine two expressions using the logical AND operator.
     /// </summary>

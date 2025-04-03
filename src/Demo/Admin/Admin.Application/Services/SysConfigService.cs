@@ -3,7 +3,6 @@
 public class SysConfigService(IEfRepository<SysConfig> sysConfigRepo/*, BloomFilterFactory bloomFilterFactory*/, CacheService cacheService)
     : AbstractAppService, ISysConfigService
 {
-
     public async Task<ServiceResult<IdDto>> CreateAsync(SysConfigCreationDto input)
     {
         input.TrimStringFields();

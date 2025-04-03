@@ -4,6 +4,7 @@ internal sealed class RSAParametersJson
 {
     //Public key Modulus
     public string? Modulus { get; set; } = string.Empty;
+
     //Public key Exponent
     public string? Exponent { get; set; } = string.Empty;
 

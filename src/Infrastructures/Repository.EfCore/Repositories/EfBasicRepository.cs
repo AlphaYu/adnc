@@ -33,6 +33,12 @@ public class EfBasicRepository<TEntity>(DbContext dbContext) : AbstractEfBaseRep
         }
     }
 
+    public virtual async Task<TEntity> GetRequiredAsync(long keyValue, Expression<Func<TEntity, dynamic>>? navigationPropertyPath = null, bool writeDb = false, CancellationToken cancellationToken = default)
+    {
+        var entity = await GetAsync(keyValue, navigationPropertyPath, writeDb, cancellationToken);
+        return entity is null ? throw new InvalidDataException($"The entity with id {keyValue} was not found.") : entity;
+    }
+
     public virtual async Task<TEntity?> GetAsync(long keyValue, IEnumerable<Expression<Func<TEntity, dynamic>>>? navigationPropertyPaths = null, bool writeDb = false, CancellationToken cancellationToken = default)
     {
         if (navigationPropertyPaths is null)
@@ -51,11 +57,5 @@ public class EfBasicRepository<TEntity>(DbContext dbContext) : AbstractEfBaseRep
             query = query.Include(navigationPath);
         }
         return await query.FirstOrDefaultAsync(cancellationToken);
-    }
-
-    public virtual async Task<TEntity> GetRequiredAsync(long keyValue, Expression<Func<TEntity, dynamic>>? navigationPropertyPath = null, bool writeDb = false, CancellationToken cancellationToken = default)
-    {
-        var entity = await GetAsync(keyValue, navigationPropertyPath, writeDb, cancellationToken);
-        return entity is null ? throw new InvalidDataException($"The entity with id {keyValue} was not found.") : entity;
     }
 }

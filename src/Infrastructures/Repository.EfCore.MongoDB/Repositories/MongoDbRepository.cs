@@ -9,18 +9,6 @@ public class MongoDbRepository<TEntity>(DbContext dbContext) : IMongoDbRepositor
 {
     protected virtual DbContext DbContext { get; } = dbContext;
 
-    protected virtual IQueryable<TEntity> GetDbSet(bool noTracking)
-    {
-        if (noTracking)
-        {
-            return DbContext.Set<TEntity>().AsNoTracking();
-        }
-        else
-        {
-            return DbContext.Set<TEntity>();
-        }
-    }
-
     public virtual IQueryable<TEntity> Where(Expression<Func<TEntity, bool>> expression, bool noTracking = true)
         => GetDbSet(noTracking).Where(expression);
 
@@ -81,9 +69,6 @@ public class MongoDbRepository<TEntity>(DbContext dbContext) : IMongoDbRepositor
         return UpdateInternalAsync(cancellationToken);
     }
 
-    protected async Task<int> UpdateInternalAsync(CancellationToken cancellationToken = default) =>
-        await DbContext.SaveChangesAsync(cancellationToken);
-
     public virtual async Task<int> DeleteAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
         DbContext.Remove(entity);
@@ -105,4 +90,19 @@ public class MongoDbRepository<TEntity>(DbContext dbContext) : IMongoDbRepositor
         }
         return await query.FirstOrDefaultAsync(cancellationToken);
     }
+
+    protected virtual IQueryable<TEntity> GetDbSet(bool noTracking)
+    {
+        if (noTracking)
+        {
+            return DbContext.Set<TEntity>().AsNoTracking();
+        }
+        else
+        {
+            return DbContext.Set<TEntity>();
+        }
+    }
+
+    protected async Task<int> UpdateInternalAsync(CancellationToken cancellationToken = default) =>
+        await DbContext.SaveChangesAsync(cancellationToken);
 }

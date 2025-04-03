@@ -2,11 +2,11 @@
 
 public sealed class WorkerNode(ILogger<WorkerNode> logger, IRedisProvider redisProvider, IDistributedLocker distributedLocker, string name)
 {
-    private readonly ILogger<WorkerNode> _logger = logger;
-    private readonly IRedisProvider _redisProvider = redisProvider;
     private readonly IDistributedLocker _distributedLocker = distributedLocker;
+    private readonly ILogger<WorkerNode> _logger = logger;
     private readonly string _name = string.IsNullOrWhiteSpace(name) ? throw new ArgumentNullException("workernode.servicename is empty or null") : name;
     private readonly string _redisKey = $"adnc:{name}:workids";
+    private readonly IRedisProvider _redisProvider = redisProvider;
 
     internal async Task InitWorkerNodesAsync()
     {

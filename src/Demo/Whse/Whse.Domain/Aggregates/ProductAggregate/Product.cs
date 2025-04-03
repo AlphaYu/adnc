@@ -2,18 +2,6 @@
 
 public class Product : AggregateRootWithBasicAuditInfo
 {
-    public string Sku { get; private set; } = string.Empty;
-
-    public string Name { get; private set; } = string.Empty;
-
-    public string Describe { set; get; } = string.Empty;
-
-    public decimal Price { get; private set; }
-
-    public ProductStatus Status { get; private set; }
-
-    public string Unit { get; private set; } = string.Empty;
-
     private Product()
     {
         Status = new ProductStatus(ProductStatusCodes.UnKnow, string.Empty);
@@ -39,6 +27,18 @@ public class Product : AggregateRootWithBasicAuditInfo
         Describe = describe != null ? describe.Trim() : string.Empty;
         Status = new ProductStatus(ProductStatusCodes.UnKnow, string.Empty);
     }
+
+    public string Sku { get; private set; } = string.Empty;
+
+    public string Name { get; private set; } = string.Empty;
+
+    public string Describe { set; get; } = string.Empty;
+
+    public decimal Price { get; private set; }
+
+    public ProductStatus Status { get; private set; }
+
+    public string Unit { get; private set; } = string.Empty;
 
     /// <summary>
     /// 设置sku

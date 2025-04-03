@@ -5,9 +5,9 @@ namespace Adnc.Shared.Application.Channels;
 public sealed class ChannelAccessor<TModel>
 {
     private static readonly Lazy<ChannelAccessor<TModel>> _lazy = new(() => new ChannelAccessor<TModel>());
+    private readonly ChannelReader<TModel> _reader;
 
     private readonly ChannelWriter<TModel> _writer;
-    private readonly ChannelReader<TModel> _reader;
 
     static ChannelAccessor()
     {

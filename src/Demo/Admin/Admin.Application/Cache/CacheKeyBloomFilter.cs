@@ -3,7 +3,6 @@
 public class CacheKeyBloomFilter(Lazy<IOptions<CacheOptions>> cacheOptions, Lazy<IRedisProvider> redisProvider, Lazy<IDistributedLocker> distributedLocker/*, Lazy<IServiceProvider> serviceProvider*/)
     : AbstractBloomFilter(redisProvider, distributedLocker)
 {
-
     public override string Name => cacheOptions.Value.Value.PenetrationSetting.BloomFilterSetting.Name;
 
     public override double ErrorRate => cacheOptions.Value.Value.PenetrationSetting.BloomFilterSetting.ErrorRate;

@@ -69,6 +69,7 @@ public class ArgumentChecker
             throw new ArgumentNullException(argumentName, message: message);
         }
     }
+
     public void ThrowIfInvalidDate(DateTime argument, string argumentName)
     {
         var MinDate = new DateTime(1900, 1, 1);

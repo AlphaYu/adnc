@@ -2,10 +2,6 @@
 
 public record OrderStatus : ValueObject
 {
-    public OrderStatusCodes Code { get; }
-
-    public string? ChangesReason { get; }
-
     private OrderStatus()
     {
     }
@@ -15,4 +11,8 @@ public record OrderStatus : ValueObject
         Code = statusCode;
         ChangesReason = reason is null ? string.Empty : reason.Trim();
     }
+
+    public OrderStatusCodes Code { get; }
+
+    public string? ChangesReason { get; }
 }

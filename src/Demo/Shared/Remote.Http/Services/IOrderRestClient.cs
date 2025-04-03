@@ -3,5 +3,4 @@
 namespace Adnc.Demo.Remote.Http.Services;
 
 public interface IOrderRestClient : IRestClient
-{
-}
+{}

@@ -7,6 +7,11 @@ namespace Microsoft.Extensions.Hosting;
 public static class WebApplicationBuilderExtension
 {
     /// <summary>
+    /// Register Cofiguration ChangeCallback
+    /// </summary>
+    private static IDisposable? _callbackRegistration;
+
+    /// <summary>
     /// Configure Configuration/ServiceCollection/Logging
     /// <param name="builder"></param>
     /// <param name="serviceInfo"></param>
@@ -102,10 +107,6 @@ public static class WebApplicationBuilderExtension
         }
     }
 
-    /// <summary>
-    /// Register Cofiguration ChangeCallback
-    /// </summary>
-    private static IDisposable? _callbackRegistration;
     private static void OnSettingConfigurationChanged(object? state)
     {
         _callbackRegistration?.Dispose();

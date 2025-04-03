@@ -16,6 +16,11 @@ public interface IEfRepository<TEntity> : IEfBaseRepository<TEntity>
     IAdoQuerierRepository AdoQuerier { get; }
 
     /// <summary>
+    /// 当前事务
+    /// </summary>
+    IDbTransaction? CurrentDbTransaction { get; }
+
+    /// <summary>
     /// 执行原生Sql写操作
     /// </summary>
     Task<int> ExecuteSqlInterpolatedAsync(FormattableString sql, CancellationToken cancellationToken = default);
@@ -24,11 +29,6 @@ public interface IEfRepository<TEntity> : IEfBaseRepository<TEntity>
     /// 执行原生Sql写操作
     /// </summary>
     Task<int> ExecuteSqlRawAsync(string sql, CancellationToken cancellationToken = default);
-
-    /// <summary>
-    /// 当前事务
-    /// </summary>
-    IDbTransaction? CurrentDbTransaction { get; }
 
     /// <summary>
     /// 返回IQueryable{TEntity}

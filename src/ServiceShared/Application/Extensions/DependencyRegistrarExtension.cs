@@ -5,6 +5,8 @@ namespace Adnc.Shared.Application.Extensions;
 
 public static class DependencyRegistrarExtension
 {
+    public static string ASPNETCORE_ENVIRONMENT => Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? throw new ArgumentNullException("ASPNETCORE_ENVIRONMENT is null");
+
     /// <summary>
     /// default rest policies
     /// </summary>
@@ -87,8 +89,6 @@ public static class DependencyRegistrarExtension
     /// <returns></returns>
     public static List<IAsyncPolicy<HttpResponseMessage>> GenerateDefaultGrpcPolicies(this AbstractApplicationDependencyRegistrar registrar) =>
         registrar.GenerateDefaultRefitPolicies();
-
-    public static string ASPNETCORE_ENVIRONMENT => Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? throw new ArgumentNullException("ASPNETCORE_ENVIRONMENT is null");
 
     public static bool IsDevelopment(this AbstractApplicationDependencyRegistrar _) => ASPNETCORE_ENVIRONMENT.EqualsIgnoreCase("Development");
 

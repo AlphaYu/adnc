@@ -8,11 +8,6 @@ namespace Adnc.Shared.WebApi.Registrar;
 /// </summary>
 public abstract partial class AbstractWebApiDependencyRegistrar
 {
-    public string Name => "webapi";
-    protected IConfiguration Configuration { get; init; }
-    protected IServiceCollection Services { get; init; }
-    protected IServiceInfo ServiceInfo { get; init; }
-
     public AbstractWebApiDependencyRegistrar(IServiceCollection services, IServiceInfo serviceInfo, IConfiguration configuration)
     {
         ArgumentNullException.ThrowIfNull(services, $"{nameof(IServiceCollection)} is null.");
@@ -23,6 +18,11 @@ public abstract partial class AbstractWebApiDependencyRegistrar
         ServiceInfo = serviceInfo;
         Configuration = configuration;
     }
+
+    public string Name => "webapi";
+    protected IConfiguration Configuration { get; init; }
+    protected IServiceCollection Services { get; init; }
+    protected IServiceInfo ServiceInfo { get; init; }
 
     public abstract void AddAdncServices();
 

@@ -2,12 +2,6 @@
 
 public record OrderItemProduct : ValueObject
 {
-    public long Id { get; }
-
-    public string Name { get; }
-
-    public decimal Price { get; }
-
     private OrderItemProduct()
     {
         Name = string.Empty;
@@ -19,4 +13,10 @@ public record OrderItemProduct : ValueObject
         Name = Checker.Variable.NotNullOrWhiteSpace(name, nameof(name));
         Price = Checker.Variable.GTZero(price, nameof(price));
     }
+
+    public long Id { get; }
+
+    public string Name { get; }
+
+    public decimal Price { get; }
 }

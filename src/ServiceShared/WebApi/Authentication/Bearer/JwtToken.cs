@@ -7,6 +7,7 @@ public record JwtToken
         Token = token;
         Expire = expire;
     }
+
     public string Token { get; set; }
     public DateTime Expire { get; set; }
 }

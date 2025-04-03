@@ -46,5 +46,4 @@ public abstract class UserCreationAndUpdationDto : InputDto
     /// 账户状态
     /// </summary>
     public bool Status { get; set; }
-
 }

@@ -9,73 +9,13 @@ public abstract class AbstracCacheProvider : ICacheProvider
 {
     protected static readonly DiagnosticListener s_diagnosticListener = new(CachingDiagnosticListenerExtensions.DiagnosticListenerName);
 
+    public abstract string CachingProviderType { get; }
+
     public abstract string Name { get; }
 
     public abstract IOptions<CacheOptions> CacheOptions { get; }
 
-    public abstract string CachingProviderType { get; }
-
     public abstract ISerializer Serializer { get; }
-
-    protected abstract bool BaseExists(string cacheKey);
-
-    protected abstract Task<bool> BaseExistsAsync(string cacheKey);
-
-    protected abstract void BaseFlush();
-
-    protected abstract Task BaseFlushAsync();
-
-    protected abstract CacheValue<T> BaseGet<T>(string cacheKey, Func<T> dataRetriever, TimeSpan expiration);
-
-    protected abstract CacheValue<T> BaseGet<T>(string cacheKey);
-
-    protected abstract IDictionary<string, CacheValue<T>> BaseGetAll<T>(IEnumerable<string> cacheKeys);
-
-    protected abstract Task<IDictionary<string, CacheValue<T>>> BaseGetAllAsync<T>(IEnumerable<string> cacheKeys);
-
-    protected abstract Task<CacheValue<T>> BaseGetAsync<T>(string cacheKey, Func<Task<T>> dataRetriever, TimeSpan expiration);
-
-    protected abstract Task<object> BaseGetAsync(string cacheKey, Type type);
-
-    protected abstract Task<CacheValue<T>> BaseGetAsync<T>(string cacheKey);
-
-    protected abstract IDictionary<string, CacheValue<T>> BaseGetByPrefix<T>(string prefix);
-
-    protected abstract Task<IDictionary<string, CacheValue<T>>> BaseGetByPrefixAsync<T>(string prefix);
-
-    protected abstract int BaseGetCount(string prefix = "");
-
-    protected abstract Task<int> BaseGetCountAsync(string prefix = "");
-
-    protected abstract void BaseRemove(string cacheKey);
-
-    protected abstract void BaseRemoveAll(IEnumerable<string> cacheKeys);
-
-    protected abstract Task BaseRemoveAllAsync(IEnumerable<string> cacheKeys);
-
-    protected abstract Task BaseRemoveAsync(string cacheKey);
-
-    protected abstract void BaseRemoveByPrefix(string prefix);
-
-    protected abstract Task BaseRemoveByPrefixAsync(string prefix);
-
-    protected abstract void BaseSet<T>(string cacheKey, T cacheValue, TimeSpan expiration);
-
-    protected abstract void BaseSetAll<T>(IDictionary<string, T> values, TimeSpan expiration);
-
-    protected abstract Task BaseSetAllAsync<T>(IDictionary<string, T> values, TimeSpan expiration);
-
-    protected abstract Task BaseSetAsync<T>(string cacheKey, T cacheValue, TimeSpan expiration);
-
-    protected abstract bool BaseTrySet<T>(string cacheKey, T cacheValue, TimeSpan expiration);
-
-    protected abstract Task<bool> BaseTrySetAsync<T>(string cacheKey, T cacheValue, TimeSpan expiration);
-
-    protected abstract TimeSpan BaseGetExpiration(string cacheKey);
-
-    protected abstract Task BaseKeyExpireAsync(IEnumerable<string> cacheKeys, int seconds);
-
-    protected abstract Task<TimeSpan> BaseGetExpirationAsync(string cacheKey);
 
     public bool Exists(string cacheKey)
     {
@@ -130,58 +70,6 @@ public abstract class AbstracCacheProvider : ICacheProvider
         }
     }
 
-    public void Flush()
-    {
-        var operationId = s_diagnosticListener.WriteFlushCacheBefore(new EventData(CachingProviderType.ToString(), Name, nameof(Flush)));
-        Exception? e = null;
-        try
-        {
-            BaseFlush();
-        }
-        catch (Exception ex)
-        {
-            e = ex;
-            throw;
-        }
-        finally
-        {
-            if (e != null)
-            {
-                s_diagnosticListener.WriteFlushCacheError(operationId, e);
-            }
-            else
-            {
-                s_diagnosticListener.WriteFlushCacheAfter(operationId);
-            }
-        }
-    }
-
-    public async Task FlushAsync()
-    {
-        var operationId = s_diagnosticListener.WriteFlushCacheBefore(new EventData(CachingProviderType.ToString(), Name, nameof(FlushAsync)));
-        Exception? e = null;
-        try
-        {
-            await BaseFlushAsync();
-        }
-        catch (Exception ex)
-        {
-            e = ex;
-            throw;
-        }
-        finally
-        {
-            if (e != null)
-            {
-                s_diagnosticListener.WriteFlushCacheError(operationId, e);
-            }
-            else
-            {
-                s_diagnosticListener.WriteFlushCacheAfter(operationId);
-            }
-        }
-    }
-
     public CacheValue<T> Get<T>(string cacheKey, Func<T> dataRetriever, TimeSpan expiration)
     {
         var operationId = s_diagnosticListener.WriteGetCacheBefore(new BeforeGetRequestEventData(CachingProviderType.ToString(), Name, nameof(Get), [cacheKey], expiration));
@@ -215,58 +103,6 @@ public abstract class AbstracCacheProvider : ICacheProvider
         try
         {
             return BaseGet<T>(cacheKey);
-        }
-        catch (Exception ex)
-        {
-            e = ex;
-            throw;
-        }
-        finally
-        {
-            if (e != null)
-            {
-                s_diagnosticListener.WriteGetCacheError(operationId, e);
-            }
-            else
-            {
-                s_diagnosticListener.WriteGetCacheAfter(operationId);
-            }
-        }
-    }
-
-    public IDictionary<string, CacheValue<T>> GetAll<T>(IEnumerable<string> cacheKeys)
-    {
-        var operationId = s_diagnosticListener.WriteGetCacheBefore(new BeforeGetRequestEventData(CachingProviderType.ToString(), Name, nameof(GetAll), cacheKeys.ToArray()));
-        Exception? e = null;
-        try
-        {
-            return BaseGetAll<T>(cacheKeys);
-        }
-        catch (Exception ex)
-        {
-            e = ex;
-            throw;
-        }
-        finally
-        {
-            if (e != null)
-            {
-                s_diagnosticListener.WriteGetCacheError(operationId, e);
-            }
-            else
-            {
-                s_diagnosticListener.WriteGetCacheAfter(operationId);
-            }
-        }
-    }
-
-    public async Task<IDictionary<string, CacheValue<T>>> GetAllAsync<T>(IEnumerable<string> cacheKeys)
-    {
-        var operationId = s_diagnosticListener.WriteGetCacheBefore(new BeforeGetRequestEventData(CachingProviderType.ToString(), Name, nameof(GetAllAsync), cacheKeys.ToArray()));
-        Exception? e = null;
-        try
-        {
-            return await BaseGetAllAsync<T>(cacheKeys);
         }
         catch (Exception ex)
         {
@@ -362,68 +198,6 @@ public abstract class AbstracCacheProvider : ICacheProvider
                 s_diagnosticListener.WriteGetCacheAfter(operationId);
             }
         }
-    }
-
-    public IDictionary<string, CacheValue<T>> GetByPrefix<T>(string prefix)
-    {
-        var operationId = s_diagnosticListener.WriteGetCacheBefore(new BeforeGetRequestEventData(CachingProviderType.ToString(), Name, nameof(GetByPrefix), [prefix]));
-        Exception? e = null;
-        try
-        {
-            return BaseGetByPrefix<T>(prefix);
-        }
-        catch (Exception ex)
-        {
-            e = ex;
-            throw;
-        }
-        finally
-        {
-            if (e != null)
-            {
-                s_diagnosticListener.WriteGetCacheError(operationId, e);
-            }
-            else
-            {
-                s_diagnosticListener.WriteGetCacheAfter(operationId);
-            }
-        }
-    }
-
-    public async Task<IDictionary<string, CacheValue<T>>> GetByPrefixAsync<T>(string prefix)
-    {
-        var operationId = s_diagnosticListener.WriteGetCacheBefore(new BeforeGetRequestEventData(CachingProviderType.ToString(), Name, nameof(GetByPrefixAsync), [prefix]));
-        Exception? e = null;
-        try
-        {
-            return await BaseGetByPrefixAsync<T>(prefix);
-        }
-        catch (Exception ex)
-        {
-            e = ex;
-            throw;
-        }
-        finally
-        {
-            if (e != null)
-            {
-                s_diagnosticListener.WriteGetCacheError(operationId, e);
-            }
-            else
-            {
-                s_diagnosticListener.WriteGetCacheAfter(operationId);
-            }
-        }
-    }
-
-    public int GetCount(string prefix = "")
-    {
-        return BaseGetCount(prefix);
-    }
-
-    public async Task<int> GetCountAsync(string prefix = "")
-    {
-        return await BaseGetCountAsync(prefix);
     }
 
     public void Remove(string cacheKey)
@@ -738,16 +512,6 @@ public abstract class AbstracCacheProvider : ICacheProvider
         }
     }
 
-    public TimeSpan GetExpiration(string cacheKey)
-    {
-        return BaseGetExpiration(cacheKey);
-    }
-
-    public async Task<TimeSpan> GetExpirationAsync(string cacheKey)
-    {
-        return await BaseGetExpirationAsync(cacheKey);
-    }
-
     public async Task KeyExpireAsync(IEnumerable<string> cacheKeys, int seconds)
     {
         var operationId = s_diagnosticListener.WriteSetCacheBefore(new BeforeSetRequestEventData(CachingProviderType.ToString(), Name, nameof(TrySetAsync), new Dictionary<string, object> { { "cacheKeys", cacheKeys } }, TimeSpan.FromSeconds(seconds)));
@@ -772,5 +536,241 @@ public abstract class AbstracCacheProvider : ICacheProvider
                 s_diagnosticListener.WriteSetCacheAfter(operationId);
             }
         }
+    }
+
+    protected abstract bool BaseExists(string cacheKey);
+
+    protected abstract Task<bool> BaseExistsAsync(string cacheKey);
+
+    protected abstract void BaseFlush();
+
+    protected abstract Task BaseFlushAsync();
+
+    protected abstract CacheValue<T> BaseGet<T>(string cacheKey, Func<T> dataRetriever, TimeSpan expiration);
+
+    protected abstract CacheValue<T> BaseGet<T>(string cacheKey);
+
+    protected abstract IDictionary<string, CacheValue<T>> BaseGetAll<T>(IEnumerable<string> cacheKeys);
+
+    protected abstract Task<IDictionary<string, CacheValue<T>>> BaseGetAllAsync<T>(IEnumerable<string> cacheKeys);
+
+    protected abstract Task<CacheValue<T>> BaseGetAsync<T>(string cacheKey, Func<Task<T>> dataRetriever, TimeSpan expiration);
+
+    protected abstract Task<object> BaseGetAsync(string cacheKey, Type type);
+
+    protected abstract Task<CacheValue<T>> BaseGetAsync<T>(string cacheKey);
+
+    protected abstract IDictionary<string, CacheValue<T>> BaseGetByPrefix<T>(string prefix);
+
+    protected abstract Task<IDictionary<string, CacheValue<T>>> BaseGetByPrefixAsync<T>(string prefix);
+
+    protected abstract int BaseGetCount(string prefix = "");
+
+    protected abstract Task<int> BaseGetCountAsync(string prefix = "");
+
+    protected abstract void BaseRemove(string cacheKey);
+
+    protected abstract void BaseRemoveAll(IEnumerable<string> cacheKeys);
+
+    protected abstract Task BaseRemoveAllAsync(IEnumerable<string> cacheKeys);
+
+    protected abstract Task BaseRemoveAsync(string cacheKey);
+
+    protected abstract void BaseRemoveByPrefix(string prefix);
+
+    protected abstract Task BaseRemoveByPrefixAsync(string prefix);
+
+    protected abstract void BaseSet<T>(string cacheKey, T cacheValue, TimeSpan expiration);
+
+    protected abstract void BaseSetAll<T>(IDictionary<string, T> values, TimeSpan expiration);
+
+    protected abstract Task BaseSetAllAsync<T>(IDictionary<string, T> values, TimeSpan expiration);
+
+    protected abstract Task BaseSetAsync<T>(string cacheKey, T cacheValue, TimeSpan expiration);
+
+    protected abstract bool BaseTrySet<T>(string cacheKey, T cacheValue, TimeSpan expiration);
+
+    protected abstract Task<bool> BaseTrySetAsync<T>(string cacheKey, T cacheValue, TimeSpan expiration);
+
+    protected abstract TimeSpan BaseGetExpiration(string cacheKey);
+
+    protected abstract Task BaseKeyExpireAsync(IEnumerable<string> cacheKeys, int seconds);
+
+    protected abstract Task<TimeSpan> BaseGetExpirationAsync(string cacheKey);
+
+    public void Flush()
+    {
+        var operationId = s_diagnosticListener.WriteFlushCacheBefore(new EventData(CachingProviderType.ToString(), Name, nameof(Flush)));
+        Exception? e = null;
+        try
+        {
+            BaseFlush();
+        }
+        catch (Exception ex)
+        {
+            e = ex;
+            throw;
+        }
+        finally
+        {
+            if (e != null)
+            {
+                s_diagnosticListener.WriteFlushCacheError(operationId, e);
+            }
+            else
+            {
+                s_diagnosticListener.WriteFlushCacheAfter(operationId);
+            }
+        }
+    }
+
+    public async Task FlushAsync()
+    {
+        var operationId = s_diagnosticListener.WriteFlushCacheBefore(new EventData(CachingProviderType.ToString(), Name, nameof(FlushAsync)));
+        Exception? e = null;
+        try
+        {
+            await BaseFlushAsync();
+        }
+        catch (Exception ex)
+        {
+            e = ex;
+            throw;
+        }
+        finally
+        {
+            if (e != null)
+            {
+                s_diagnosticListener.WriteFlushCacheError(operationId, e);
+            }
+            else
+            {
+                s_diagnosticListener.WriteFlushCacheAfter(operationId);
+            }
+        }
+    }
+
+    public IDictionary<string, CacheValue<T>> GetAll<T>(IEnumerable<string> cacheKeys)
+    {
+        var operationId = s_diagnosticListener.WriteGetCacheBefore(new BeforeGetRequestEventData(CachingProviderType.ToString(), Name, nameof(GetAll), cacheKeys.ToArray()));
+        Exception? e = null;
+        try
+        {
+            return BaseGetAll<T>(cacheKeys);
+        }
+        catch (Exception ex)
+        {
+            e = ex;
+            throw;
+        }
+        finally
+        {
+            if (e != null)
+            {
+                s_diagnosticListener.WriteGetCacheError(operationId, e);
+            }
+            else
+            {
+                s_diagnosticListener.WriteGetCacheAfter(operationId);
+            }
+        }
+    }
+
+    public async Task<IDictionary<string, CacheValue<T>>> GetAllAsync<T>(IEnumerable<string> cacheKeys)
+    {
+        var operationId = s_diagnosticListener.WriteGetCacheBefore(new BeforeGetRequestEventData(CachingProviderType.ToString(), Name, nameof(GetAllAsync), cacheKeys.ToArray()));
+        Exception? e = null;
+        try
+        {
+            return await BaseGetAllAsync<T>(cacheKeys);
+        }
+        catch (Exception ex)
+        {
+            e = ex;
+            throw;
+        }
+        finally
+        {
+            if (e != null)
+            {
+                s_diagnosticListener.WriteGetCacheError(operationId, e);
+            }
+            else
+            {
+                s_diagnosticListener.WriteGetCacheAfter(operationId);
+            }
+        }
+    }
+
+    public IDictionary<string, CacheValue<T>> GetByPrefix<T>(string prefix)
+    {
+        var operationId = s_diagnosticListener.WriteGetCacheBefore(new BeforeGetRequestEventData(CachingProviderType.ToString(), Name, nameof(GetByPrefix), [prefix]));
+        Exception? e = null;
+        try
+        {
+            return BaseGetByPrefix<T>(prefix);
+        }
+        catch (Exception ex)
+        {
+            e = ex;
+            throw;
+        }
+        finally
+        {
+            if (e != null)
+            {
+                s_diagnosticListener.WriteGetCacheError(operationId, e);
+            }
+            else
+            {
+                s_diagnosticListener.WriteGetCacheAfter(operationId);
+            }
+        }
+    }
+
+    public async Task<IDictionary<string, CacheValue<T>>> GetByPrefixAsync<T>(string prefix)
+    {
+        var operationId = s_diagnosticListener.WriteGetCacheBefore(new BeforeGetRequestEventData(CachingProviderType.ToString(), Name, nameof(GetByPrefixAsync), [prefix]));
+        Exception? e = null;
+        try
+        {
+            return await BaseGetByPrefixAsync<T>(prefix);
+        }
+        catch (Exception ex)
+        {
+            e = ex;
+            throw;
+        }
+        finally
+        {
+            if (e != null)
+            {
+                s_diagnosticListener.WriteGetCacheError(operationId, e);
+            }
+            else
+            {
+                s_diagnosticListener.WriteGetCacheAfter(operationId);
+            }
+        }
+    }
+
+    public int GetCount(string prefix = "")
+    {
+        return BaseGetCount(prefix);
+    }
+
+    public async Task<int> GetCountAsync(string prefix = "")
+    {
+        return await BaseGetCountAsync(prefix);
+    }
+
+    public TimeSpan GetExpiration(string cacheKey)
+    {
+        return BaseGetExpiration(cacheKey);
+    }
+
+    public async Task<TimeSpan> GetExpirationAsync(string cacheKey)
+    {
+        return await BaseGetExpirationAsync(cacheKey);
     }
 }

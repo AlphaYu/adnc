@@ -4,12 +4,6 @@ public sealed class DapperRepository : IAdoExecuterWithQuerierRepository
 {
     private IDbConnection? _dbConnection;
 
-    internal IDbConnection GetDbConnection()
-    {
-        ArgumentNullException.ThrowIfNull(_dbConnection, nameof(_dbConnection));
-        return _dbConnection;
-    }
-
     public void ChangeOrSetDbConnection(IDbConnection dbConnection)
     {
         ArgumentNullException.ThrowIfNull(dbConnection);
@@ -289,5 +283,11 @@ public sealed class DapperRepository : IAdoExecuterWithQuerierRepository
 
         var result = await SqlMapper.QuerySingleOrDefaultAsync(GetDbConnection(), type, sql, param, transaction, commandTimeout, commandType);
         return result;
+    }
+
+    internal IDbConnection GetDbConnection()
+    {
+        ArgumentNullException.ThrowIfNull(_dbConnection, nameof(_dbConnection));
+        return _dbConnection;
     }
 }

@@ -5,15 +5,6 @@
 /// </summary>
 public sealed class HashConsistentGenerater
 {
-    internal HashConsistentGenerater()
-    {
-    }
-
-    /// <summary>
-    /// 虚拟节点倍数
-    /// </summary>
-    private int _virtualNodeMultiple = 100;
-
     /// <summary>
     /// 真实节点信息
     /// </summary>
@@ -28,6 +19,15 @@ public sealed class HashConsistentGenerater
     /// 虚拟节点和真实节点映射，在获取到虚拟节点之后，能以O(1)的时间复杂度返回真实节点
     /// </summary>
     private readonly Dictionary<int, string> _virtualNodeAndNodeMap = [];
+
+    /// <summary>
+    /// 虚拟节点倍数
+    /// </summary>
+    private int _virtualNodeMultiple = 100;
+
+    internal HashConsistentGenerater()
+    {
+    }
 
     /// <summary>
     /// 增加节点

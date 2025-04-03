@@ -2,10 +2,6 @@
 
 public record WarehousePosition : ValueObject
 {
-    public string Code { get; } = string.Empty;
-
-    public string Description { get; } = string.Empty;
-
     private WarehousePosition()
     {
     }
@@ -15,4 +11,8 @@ public record WarehousePosition : ValueObject
         Code = Checker.Variable.NotNullOrWhiteSpace(code, nameof(code));
         Description = description is null ? string.Empty : description.Trim();
     }
+
+    public string Code { get; } = string.Empty;
+
+    public string Description { get; } = string.Empty;
 }

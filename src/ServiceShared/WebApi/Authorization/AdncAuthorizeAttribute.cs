@@ -5,8 +5,6 @@ public class AdncAuthorizeAttribute : AuthorizeAttribute
 {
     public const string JwtWithBasicSchemes = $"{JwtBearerDefaults.AuthenticationScheme},{Authentication.Basic.BasicDefaults.AuthenticationScheme}";
 
-    public string[] Codes { get; set; }
-
     public AdncAuthorizeAttribute(string code, string schemes = JwtBearerDefaults.AuthenticationScheme)
         : this([code], schemes)
     {
@@ -18,4 +16,6 @@ public class AdncAuthorizeAttribute : AuthorizeAttribute
         Policy = AuthorizePolicy.Default;
         AuthenticationSchemes = schemes ?? throw new ArgumentNullException(nameof(schemes)); ;
     }
+
+    public string[] Codes { get; set; }
 }

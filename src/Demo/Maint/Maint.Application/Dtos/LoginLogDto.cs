@@ -4,5 +4,4 @@
 /// 登录日志
 /// </summary>
 public class LoginLogDto : LoginLog
-{
-}
+{}

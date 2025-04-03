@@ -55,6 +55,10 @@ public sealed class ServiceInfo : IServiceInfo
     private static ServiceInfo? _instance;
     private static readonly object _lockObj = new();
 
+    private ServiceInfo()
+    {
+    }
+
     public string Id { get; private set; } = string.Empty;
     public string ServiceName { get; private set; } = string.Empty;
     public string CorsPolicy { get; set; } = string.Empty;
@@ -64,10 +68,6 @@ public sealed class ServiceInfo : IServiceInfo
     public string Description { get; private set; } = string.Empty;
     public Assembly StartAssembly { get; private set; } = default!;
     public string MigrationsAssemblyName { get; private set; } = string.Empty;
-
-    private ServiceInfo()
-    {
-    }
 
     public static ServiceInfo CreateInstance(Assembly startAssembly, string? migrationsAssemblyName = null)
     {

@@ -2,11 +2,11 @@
 
 public static class BasicTokenValidator
 {
-    public static string InternalCaller { get; } = "internal";
-
     static BasicTokenValidator()
     {
     }
+
+    public static string InternalCaller { get; } = "internal";
 
     public static string PackToBase64(long userId, BasicOptions authentication)
     {

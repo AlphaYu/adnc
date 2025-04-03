@@ -7,9 +7,8 @@ namespace Adnc.Infra.EventBus.Cap;
 /// </summary>
 public class NullCapPublisher : ICapPublisher
 {
-    public IServiceProvider ServiceProvider { get; } = default!;
-
     public AsyncLocal<ICapTransaction> Transaction { get; } = default!;
+    public IServiceProvider ServiceProvider { get; } = default!;
     ICapTransaction? ICapPublisher.Transaction { get; set; }
 
     public void Publish<T>(string name, T? contentObj, string? callbackName = null)

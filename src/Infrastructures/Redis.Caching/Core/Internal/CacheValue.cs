@@ -10,7 +10,6 @@
 /// <param name="hasValue">If set to <c>true</c> has value.</param>
 public class CacheValue<T>(T value, bool hasValue)
 {
-
     /// <summary>
     /// Gets a value indicating whether this <see cref="T:Adnc.Infra.Redis.Core.CacheValue`1"/> has value.
     /// </summary>

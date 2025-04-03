@@ -11,30 +11,6 @@ public abstract class AbstractEfBaseRepository<TDbContext, TEntity>(TDbContext d
 {
     protected virtual TDbContext DbContext { get; } = dbContext;
 
-    protected virtual IQueryable<TEntity> GetDbSet(bool writeDb, bool noTracking)
-        => GetDbSet<TEntity>(writeDb, noTracking);
-
-    protected virtual IQueryable<TSource> GetDbSet<TSource>(bool writeDb, bool noTracking)
-        where TSource : Entity, IEfEntity<long>
-    {
-        if (noTracking && writeDb)
-        {
-            return DbContext.Set<TSource>().AsNoTracking().TagWith(RepositoryConsts.MAXSCALE_ROUTE_TO_MASTER);
-        }
-        else if (noTracking)
-        {
-            return DbContext.Set<TSource>().AsNoTracking();
-        }
-        else if (writeDb)
-        {
-            return DbContext.Set<TSource>().TagWith(RepositoryConsts.MAXSCALE_ROUTE_TO_MASTER);
-        }
-        else
-        {
-            return DbContext.Set<TSource>();
-        }
-    }
-
     public virtual IQueryable<TEntity> Where(Expression<Func<TEntity, bool>> expression, bool writeDb = false, bool noTracking = true)
         => GetDbSet(writeDb, noTracking).Where(expression);
 
@@ -109,6 +85,30 @@ public abstract class AbstractEfBaseRepository<TDbContext, TEntity>(TDbContext d
         }
 
         return UpdateInternalAsync(cancellationToken);
+    }
+
+    protected virtual IQueryable<TEntity> GetDbSet(bool writeDb, bool noTracking)
+        => GetDbSet<TEntity>(writeDb, noTracking);
+
+    protected virtual IQueryable<TSource> GetDbSet<TSource>(bool writeDb, bool noTracking)
+        where TSource : Entity, IEfEntity<long>
+    {
+        if (noTracking && writeDb)
+        {
+            return DbContext.Set<TSource>().AsNoTracking().TagWith(RepositoryConsts.MAXSCALE_ROUTE_TO_MASTER);
+        }
+        else if (noTracking)
+        {
+            return DbContext.Set<TSource>().AsNoTracking();
+        }
+        else if (writeDb)
+        {
+            return DbContext.Set<TSource>().TagWith(RepositoryConsts.MAXSCALE_ROUTE_TO_MASTER);
+        }
+        else
+        {
+            return DbContext.Set<TSource>();
+        }
     }
 
     protected async Task<int> UpdateInternalAsync(CancellationToken cancellationToken = default) =>

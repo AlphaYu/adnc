@@ -12,7 +12,6 @@
 public class ProductService(IEfBasicRepository<Product> productRepo, /*IEfBasicRepository<Warehouse> warehouseRepo,*/ IAdminRestClient adminClient, ProductManager productMgr)
     : AbstractAppService, IProductService
 {
-
     /// <summary>
     /// 创建商品
     /// </summary>

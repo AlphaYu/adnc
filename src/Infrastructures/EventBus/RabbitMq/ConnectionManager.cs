@@ -10,14 +10,14 @@ public interface IConnectionManager
 
 public sealed class ConnectionManager : IConnectionManager
 {
-    public IConnection Connection { get; private set; } = default!;
-
     private static volatile ConnectionManager? _uniqueInstance;
     private static readonly object _lockObject = new();
 
     private ConnectionManager()
     {
     }
+
+    public IConnection Connection { get; private set; } = default!;
 
     public static ConnectionManager GetInstance(IOptions<RabbitMqOptions> options, string clientProvidedName, ILogger<IConnectionManager> logger)
     {

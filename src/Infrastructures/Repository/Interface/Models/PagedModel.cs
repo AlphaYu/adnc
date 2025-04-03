@@ -3,10 +3,10 @@
 [Serializable]
 public class PagedModel<T> where T : class
 {
+    private IReadOnlyList<T> _data = [];
     private int _pageIndex = 1;
     private int _pageSize = 10;
     private long _totalCount;
-    private IReadOnlyList<T> _data = [];
 
     public static PagedModel<T> Empty => new();
 

@@ -5,6 +5,24 @@
 /// </summary>
 public class Order : AggregateRootWithBasicAuditInfo
 {
+    private Order()
+    {
+        Status = default!;
+        Receiver = default!;
+        Items = Array.Empty<OrderItem>();
+    }
+
+    internal Order(long id, long customerId, OrderReceiver orderReceiver, string? remark = null)
+    {
+        Id = Checker.Variable.GTZero(id, nameof(id));
+        CustomerId = Checker.Variable.GTZero(customerId, nameof(customerId));
+        Items = [];
+        Receiver = Checker.Variable.NotNull(orderReceiver, nameof(orderReceiver));
+        Status = new OrderStatus(OrderStatusCodes.Creating);
+        Remark = remark;
+        Amount = 0;
+    }
+
     /// <summary>
     /// 客户Id
     /// </summary>
@@ -34,24 +52,6 @@ public class Order : AggregateRootWithBasicAuditInfo
     /// 订单子项
     /// </summary>
     public virtual ICollection<OrderItem> Items { get; private set; }
-
-    private Order()
-    {
-        Status = default!;
-        Receiver = default!;
-        Items = Array.Empty<OrderItem>();
-    }
-
-    internal Order(long id, long customerId, OrderReceiver orderReceiver, string? remark = null)
-    {
-        Id = Checker.Variable.GTZero(id, nameof(id));
-        CustomerId = Checker.Variable.GTZero(customerId, nameof(customerId));
-        Items = [];
-        Receiver = Checker.Variable.NotNull(orderReceiver, nameof(orderReceiver));
-        Status = new OrderStatus(OrderStatusCodes.Creating);
-        Remark = remark;
-        Amount = 0;
-    }
 
     /// <summary>
     /// 添加订单产品

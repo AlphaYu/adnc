@@ -4,5 +4,4 @@
 /// 输入DTO基类
 /// </summary>
 public abstract class InputDto : IDto
-{
-}
+{}

@@ -5,9 +5,9 @@ namespace Adnc.Infra.Consul.Discover.GrpcResolver;
 //https://docs.microsoft.com/zh-cn/aspnet/core/grpc/loadbalancing?view=aspnetcore-6.0
 public sealed class ConsulGrpcResolver(Uri uri, ConsulClient client, ILoggerFactory loggerFactory) : PollingResolver(loggerFactory)
 {
-    private Timer? _timer;
-    private readonly TimeSpan _refreshInterval = TimeSpan.FromSeconds(30);
     private readonly ILogger _logger = loggerFactory.CreateLogger<ConsulGrpcResolver>();
+    private readonly TimeSpan _refreshInterval = TimeSpan.FromSeconds(30);
+    private Timer? _timer;
 
     protected override async Task ResolveAsync(CancellationToken cancellationToken)
     {
@@ -55,7 +55,6 @@ public sealed class ConsulGrpcResolver(Uri uri, ConsulClient client, ILoggerFact
 
         _timer?.Dispose();
     }
-
 }
 
 public class ConsulGrpcResolverFactory(ConsulClient consulClient) : ResolverFactory

@@ -6,6 +6,11 @@
 public class UserInfoDto : OutputDto
 {
     /// <summary>
+    /// 头像
+    /// </summary>
+    private string _avatar = string.Empty;
+
+    /// <summary>
     ///  用户名
     /// </summary>
     public string Account { get; set; } = string.Empty;
@@ -15,10 +20,6 @@ public class UserInfoDto : OutputDto
     /// </summary>
     public string Name { get; set; } = string.Empty;
 
-    /// <summary>
-    /// 头像
-    /// </summary>
-    private string _avatar = string.Empty;
     public string Avatar
     {
         set { _avatar = value; }

@@ -4,6 +4,22 @@ namespace StackExchange.Redis;
 
 public static class DatabaseExtension
 {
+    #region Expire keys
+
+    public static async Task KeyExpireAsync(this IDatabase redisDb, IEnumerable<string> cacheKeys, int seconds)
+    {
+        Checker.Argument.ThrowIfNullOrCountLEZero(cacheKeys, nameof(cacheKeys));
+
+        var script = @"for i, inkey in ipairs(KEYS) do
+                                       redis.call('EXPIRE',inkey,ARGV[1])
+                                    end ";
+        var keys = Array.ConvertAll(cacheKeys.ToArray(), item => (RedisKey)item);
+        var values = new RedisValue[] { seconds };
+        var result = await redisDb.ScriptEvaluateAsync(script, keys, values);
+    }
+
+    #endregion Expire keys
+
     #region Distributed Locker
 
     public static (bool Success, string LockValue) Lock(this IDatabase redisDb, string cacheKey, int timeoutSeconds = 5, bool autoDelay = false)
@@ -128,22 +144,6 @@ public static class DatabaseExtension
     }
 
     #endregion Distributed Locker
-
-    #region Expire keys
-
-    public static async Task KeyExpireAsync(this IDatabase redisDb, IEnumerable<string> cacheKeys, int seconds)
-    {
-        Checker.Argument.ThrowIfNullOrCountLEZero(cacheKeys, nameof(cacheKeys));
-
-        var script = @"for i, inkey in ipairs(KEYS) do
-                                       redis.call('EXPIRE',inkey,ARGV[1])
-                                    end ";
-        var keys = Array.ConvertAll(cacheKeys.ToArray(), item => (RedisKey)item);
-        var values = new RedisValue[] { seconds };
-        var result = await redisDb.ScriptEvaluateAsync(script, keys, values);
-    }
-
-    #endregion Expire keys
 
     #region Bloom Filter
 

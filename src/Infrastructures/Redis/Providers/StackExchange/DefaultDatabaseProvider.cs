@@ -10,14 +10,22 @@ namespace Adnc.Infra.Redis.Providers.StackExchange;
 public class DefaultDatabaseProvider
 {
     /// <summary>
+    /// The connection multiplexer.
+    /// </summary>
+    private readonly Lazy<ConnectionMultiplexer> _connectionMultiplexer;
+
+    /// <summary>
     /// The options.
     /// </summary>
     private readonly IOptions<RedisOptions> _options;
 
-    /// <summary>
-    /// The connection multiplexer.
-    /// </summary>
-    private readonly Lazy<ConnectionMultiplexer> _connectionMultiplexer;
+    public DefaultDatabaseProvider(IOptions<RedisOptions> options)
+    {
+        _options = options;
+        _connectionMultiplexer = new Lazy<ConnectionMultiplexer>(CreateConnectionMultiplexer);
+    }
+
+    public string DBProviderName => ConstValue.Provider.StackExchange;
 
     /// <summary>
     /// Creates the connection multiplexer.
@@ -90,14 +98,6 @@ public class DefaultDatabaseProvider
         }
         return masters;
     }
-
-    public DefaultDatabaseProvider(IOptions<RedisOptions> options)
-    {
-        _options = options;
-        _connectionMultiplexer = new Lazy<ConnectionMultiplexer>(CreateConnectionMultiplexer);
-    }
-
-    public string DBProviderName => ConstValue.Provider.StackExchange;
 
     /// <summary>
     /// Gets the database connection.

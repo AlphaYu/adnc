@@ -5,6 +5,8 @@
 /// </summary>
 public static class CachingConstValue
 {
+    public static readonly int PollyTimeout = 5;
+
     public static class Serializer
     {
         public static readonly string DefaultBinarySerializerName = "binary";
@@ -21,6 +23,4 @@ public static class CachingConstValue
         public static readonly string ServiceStack = "ServiceStack";
         public static readonly string CSRedis = "CSRedis";
     }
-
-    public static readonly int PollyTimeout = 5;
 }

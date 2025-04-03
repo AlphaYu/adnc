@@ -2,13 +2,14 @@
 
 internal sealed class JsonConfigurationFileParser
 {
+    private readonly Stack<string> _context = new();
+
+    private readonly SortedDictionary<string, string?> _data = new(StringComparer.OrdinalIgnoreCase);
+    private string _currentPath = string.Empty;
+
     private JsonConfigurationFileParser()
     {
     }
-
-    private readonly SortedDictionary<string, string?> _data = new(StringComparer.OrdinalIgnoreCase);
-    private readonly Stack<string> _context = new();
-    private string _currentPath = string.Empty;
 
     public static SortedDictionary<string, string?> Parse(Stream input)
         => new JsonConfigurationFileParser().ParseStream(input);

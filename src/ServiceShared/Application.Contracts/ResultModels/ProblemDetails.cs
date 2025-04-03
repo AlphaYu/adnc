@@ -19,8 +19,6 @@ public sealed class ProblemDetails
         Type = type ?? string.Concat("https://httpstatuses.com/", status);
     }
 
-    public override string ToString() => JsonSerializer.Serialize(this, SystemTextJson.GetAdncDefaultOptions());
-
     [JsonPropertyName("detail")]
     public string Detail { get; set; } = string.Empty;
 
@@ -38,4 +36,6 @@ public sealed class ProblemDetails
 
     [JsonPropertyName("type")]
     public string Type { get; set; } = string.Empty;
+
+    public override string ToString() => JsonSerializer.Serialize(this, SystemTextJson.GetAdncDefaultOptions());
 }

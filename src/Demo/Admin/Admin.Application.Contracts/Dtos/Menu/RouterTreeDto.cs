@@ -9,6 +9,7 @@ public sealed class RouterTreeDto
     public string Component { get; set; } = string.Empty;
     public string Redirect { get; set; } = string.Empty;
     public required RouteMeta Meta { get; set; }
+
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<RouterTreeDto>? Children { get; set; }
 

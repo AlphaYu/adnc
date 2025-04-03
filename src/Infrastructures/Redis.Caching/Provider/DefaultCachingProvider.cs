@@ -12,14 +12,14 @@ namespace Adnc.Infra.Redis.Caching.Provider;
 public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvider
 {
     /// <summary>
-    /// The cache.
+    /// The cache options.
     /// </summary>
-    private readonly IDatabase _redisDb;
+    private readonly IOptions<CacheOptions> _cacheOptions;
 
     /// <summary>
-    /// The servers.
+    /// The cache stats.
     /// </summary>
-    private readonly IEnumerable<IServer> _servers;
+    private readonly CacheStats _cacheStats;
 
     /// <summary>
     /// The db provider.
@@ -27,14 +27,14 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
     private readonly DefaultDatabaseProvider _dbProvider;
 
     /// <summary>
-    /// The serializer.
-    /// </summary>
-    private readonly ISerializer _serializer;
-
-    /// <summary>
     /// The logger.
     /// </summary>
     private readonly ILogger? _logger;
+
+    /// <summary>
+    /// The cache.
+    /// </summary>
+    private readonly IDatabase _redisDb;
 
     /// <summary>
     /// The redis options.
@@ -42,25 +42,14 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
     private readonly IOptions<RedisOptions> _redisOptions;
 
     /// <summary>
-    /// The cache options.
-    /// </summary>
-    private readonly IOptions<CacheOptions> _cacheOptions;
-
-    public override IOptions<CacheOptions> CacheOptions => _cacheOptions;
-
-    /// <summary>
-    /// The cache stats.
-    /// </summary>
-    private readonly CacheStats _cacheStats;
-
-    public override string Name => CachingConstValue.Provider.StackExchange;
-
-    public override string CachingProviderType => Name + "." + nameof(DefaultCachingProvider);
-
-    /// <summary>
     /// The serializer.
     /// </summary>
-    public override ISerializer Serializer => _serializer;
+    private readonly ISerializer _serializer;
+
+    /// <summary>
+    /// The servers.
+    /// </summary>
+    private readonly IEnumerable<IServer> _servers;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="DefaultCachingProvider"/> class.
@@ -88,6 +77,17 @@ public partial class DefaultCachingProvider : AbstracCacheProvider, ICacheProvid
         _servers = _dbProvider.GetServerList();
         _cacheStats = new CacheStats();
     }
+
+    public override string CachingProviderType => Name + "." + nameof(DefaultCachingProvider);
+
+    public override IOptions<CacheOptions> CacheOptions => _cacheOptions;
+
+    public override string Name => CachingConstValue.Provider.StackExchange;
+
+    /// <summary>
+    /// The serializer.
+    /// </summary>
+    public override ISerializer Serializer => _serializer;
 
     /// <summary>
     /// Get the specified cacheKey, dataRetriever and expiration.

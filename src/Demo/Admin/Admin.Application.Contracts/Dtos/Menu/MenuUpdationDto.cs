@@ -4,5 +4,4 @@
 /// 菜单
 /// </summary>
 public class MenuUpdationDto : MenuCreationDto
-{
-}
+{}
