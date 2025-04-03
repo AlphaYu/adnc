@@ -1,10 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<ItemGroup>
-	  <Compile Remove="Entities\**" />
-	  <EmbeddedResource Remove="Entities\**" />
-	  <None Remove="Entities\**" />
-	</ItemGroup>
-	<ItemGroup>
 	  <ProjectReference Include="..\..\Shared\Const\Adnc.Demo.Const.csproj" />
 	</ItemGroup>
 	<ItemGroup Condition="'$(SolutionName)'=='Adnc'">
