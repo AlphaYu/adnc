@@ -1,4 +1,4 @@
-﻿using Adnc.Demo.Remote.Event;
+using Adnc.Demo.Remote.Event;
 using Adnc.Demo.Remote.Http.Services;
 
 namespace Adnc.Demo.Cust.Api.Application.Services.Implements;
@@ -110,7 +110,7 @@ public class CustomerAppService(IEfRepository<Customer> customerRepo, IEfReposit
 
         var queryCondition = new QueryCondition(where, orderBy, null, input);
         var queryResult = await customerRepo.GetPagedCustmersBySqlAsync<CustomerDto>(queryCondition, input.SkipRows(), input.PageSize);
-        return new PageModelDto<CustomerDto>(input, Enumerable.ToArray<CustomerDto>(queryResult.Content), (int)queryResult.TotalCount);
+        return new PageModelDto<CustomerDto>(input, queryResult.Content.ToArray(), queryResult.TotalCount);
     }
 
     public async Task<ServiceResult<PageModelDto<TransactionLogDto>>> GetTransactionLogsPagedAsync(SearchPagedDto input)
