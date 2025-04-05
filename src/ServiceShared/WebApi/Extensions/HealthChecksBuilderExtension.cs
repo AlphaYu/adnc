@@ -1,4 +1,6 @@
-﻿namespace Microsoft.Extensions.DependencyInjection;
+using DotNetCore.CAP;
+
+namespace Microsoft.Extensions.DependencyInjection;
 
 public static class HealthChecksBuilderExtension
 {
@@ -26,7 +28,7 @@ public static class HealthChecksBuilderExtension
     public static IHealthChecksBuilder AddRabbitMQ(this IHealthChecksBuilder checksBuilder, IConfiguration configuration, string clientProvidedName = "unkonow")
     {
         ArgumentNullException.ThrowIfNull(configuration, nameof(IConfiguration));
-        var rabitmqConfig = configuration.GetSection(NodeConsts.RabbitMq).Get<Adnc.Infra.EventBus.Configurations.RabbitMqOptions>() ?? throw new InvalidDataException("RabbitMqOptions is null");
+        var rabitmqConfig = configuration.GetSection(NodeConsts.RabbitMq).Get<RabbitMQOptions>() ?? throw new InvalidDataException("RabbitMqOptions is null");
         return checksBuilder.AddRabbitMQ(provider =>
         {
             var logger = provider.GetRequiredService<ILogger<IConnectionManager>>();

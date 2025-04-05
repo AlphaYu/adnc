@@ -1,4 +1,4 @@
-﻿using Adnc.Shared.Application.Extensions;
+using Adnc.Shared.Application.Extensions;
 using Adnc.Shared.Application.Registrar;
 using Microsoft.Extensions.Configuration;
 
@@ -23,6 +23,6 @@ public sealed class DependencyRegistrar(IServiceCollection services, IServiceInf
         AddRestClient<IAdminRestClient>(ServiceAddressConsts.AdminDemoService, restPolicies);
         AddRestClient<IWhseRestClient>(ServiceAddressConsts.WhseDemoService, restPolicies);
         //rpc-event
-        AddCapEventBus<CapEventSubscriber>();
+        AddCapEventBus([typeof(CapEventSubscriber)]);
     }
 }

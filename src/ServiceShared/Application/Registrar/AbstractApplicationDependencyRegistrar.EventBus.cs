@@ -1,5 +1,4 @@
 using Adnc.Infra.Core.Guard;
-using Adnc.Infra.EventBus.Configurations;
 using Adnc.Shared.Application.Extensions;
 using DotNetCore.CAP;
 using DotNetCore.CAP.Messages;
@@ -11,72 +10,50 @@ public abstract partial class AbstractApplicationDependencyRegistrar
     /// <summary>
     /// 注册CAP组件(实现事件总线及最终一致性（分布式事务）的一个开源的组件)
     /// </summary>
-    /// <typeparam name="TSubscriber"></typeparam>
-    /// <param name="replaceDbAction"></param>
-    /// <param name="replaceMqAction"></param>
-    /// <param name="failedThresholdCallback"></param>
-    protected virtual void AddCapEventBus<TSubscriber>(Action<CapOptions>? replaceDbAction = null, Action<CapOptions>? replaceMqAction = null, Action<FailedInfo>? failedThresholdCallback = null)
-    where TSubscriber : class, ICapSubscribe
-    {
-        AddCapEventBus([typeof(TSubscriber)], replaceDbAction, replaceMqAction, failedThresholdCallback);
-    }
-
-    /// <summary>
-    /// 注册CAP组件(实现事件总线及最终一致性（分布式事务）的一个开源的组件)
-    /// </summary>
     /// <param name="subscribers"></param>
-    /// <param name="replaceDbAction"></param>
-    /// <param name="replaceMqAction"></param>
     /// <param name="failedThresholdCallback"></param>
     /// <exception cref="ArgumentNullException"></exception>
-    protected virtual void AddCapEventBus(IEnumerable<Type> subscribers, Action<CapOptions>? replaceDbAction = null, Action<CapOptions>? replaceMqAction = null, Action<FailedInfo>? failedThresholdCallback = null)
+    protected virtual void AddCapEventBus(IEnumerable<Type> subscribers, Action<FailedInfo>? failedThresholdCallback = null)
     {
         ArgumentNullException.ThrowIfNull(subscribers, nameof(subscribers));
         Checker.Argument.ThrowIfNullOrCountLEZero(subscribers, nameof(subscribers));
 
         Services.AddAdncInfraCap(subscribers, capOptions =>
         {
-            SetDefaultValue(capOptions, failedThresholdCallback);
-
-            if (replaceDbAction is not null)
-            {
-                replaceDbAction.Invoke(capOptions);
-            }
-            else
-            {
-                var connectionString = Configuration[NodeConsts.Mysql_ConnectionString] ?? throw new InvalidDataException("MySql ConnectionString is null"); ;
-                capOptions.UseMySql(config =>
-                {
-                    config.ConnectionString = connectionString;
-                    config.TableNamePrefix = "cap";
-                });
-            }
-
-            //CAP支持 RabbitMQ、Kafka、AzureServiceBus 等作为MQ，根据使用选择配置：
-            if (replaceMqAction is not null)
-            {
-                replaceMqAction.Invoke(capOptions);
-            }
-            else
-            {
-                var rabbitMqConfig = RabbitMqSection.Get<RabbitMqOptions>() ?? throw new InvalidDataException(nameof(RabbitMqOptions));
-                capOptions.UseRabbitMQ(mqOptions =>
-                {
-                    mqOptions.HostName = rabbitMqConfig.HostName;
-                    mqOptions.VirtualHost = rabbitMqConfig.VirtualHost;
-                    mqOptions.Port = rabbitMqConfig.Port;
-                    mqOptions.UserName = rabbitMqConfig.UserName;
-                    mqOptions.Password = rabbitMqConfig.Password;
-                    mqOptions.ConnectionFactoryOptions = (facotry) =>
-                    {
-                        facotry.ClientProvidedName = ServiceInfo.Id;
-                    };
-                });
-            }
+            SetCapBasicInfo(capOptions, failedThresholdCallback);
+            SetCapRabbitMQInfo(capOptions);
+            SetCapMySqlInfo(capOptions);
         }, null, Lifetime);
     }
 
-    private void SetDefaultValue(CapOptions capOptions, Action<FailedInfo>? failedThresholdCallback = null)
+    protected void SetCapRabbitMQInfo(CapOptions capOptions)
+    {
+        var rabbitMqConfig = RabbitMqSection.Get<RabbitMQOptions>() ?? throw new InvalidDataException(nameof(RabbitMQOptions));
+        capOptions.UseRabbitMQ(mqOptions =>
+        {
+            mqOptions.HostName = rabbitMqConfig.HostName;
+            mqOptions.VirtualHost = rabbitMqConfig.VirtualHost;
+            mqOptions.Port = rabbitMqConfig.Port;
+            mqOptions.UserName = rabbitMqConfig.UserName;
+            mqOptions.Password = rabbitMqConfig.Password;
+            mqOptions.ConnectionFactoryOptions = (facotry) =>
+            {
+                facotry.ClientProvidedName = ServiceInfo.Id;
+            };
+        });
+    }
+
+    protected void SetCapMySqlInfo(CapOptions capOptions)
+    {
+        var connectionString = Configuration[NodeConsts.Mysql_ConnectionString] ?? throw new InvalidDataException("MySql ConnectionString is null"); ;
+        capOptions.UseMySql(config =>
+        {
+            config.ConnectionString = connectionString;
+            config.TableNamePrefix = "cap";
+        });
+    }
+
+    protected void SetCapBasicInfo(CapOptions capOptions, Action<FailedInfo>? failedThresholdCallback = null)
     {
         capOptions.Version = ServiceInfo.Version;
         //默认值：cap.queue.{程序集名称},在 RabbitMQ 中映射到 Queue Names。

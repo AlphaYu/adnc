@@ -1,4 +1,4 @@
-﻿using Adnc.Infra.EventBus.Configurations;
+using DotNetCore.CAP;
 using RabbitMQ.Client;
 
 namespace Adnc.Infra.EventBus.RabbitMq;
@@ -19,12 +19,12 @@ public sealed class ConnectionManager : IConnectionManager
 
     public IConnection Connection { get; private set; } = default!;
 
-    public static ConnectionManager GetInstance(IOptions<RabbitMqOptions> options, string clientProvidedName, ILogger<IConnectionManager> logger)
+    public static ConnectionManager GetInstance(IOptions<RabbitMQOptions> options, string clientProvidedName, ILogger<IConnectionManager> logger)
     {
         return GetInstance(options.Value, clientProvidedName, logger);
     }
 
-    public static ConnectionManager GetInstance(RabbitMqOptions options, string clientProvidedName, ILogger<IConnectionManager> logger)
+    public static ConnectionManager GetInstance(RabbitMQOptions options, string clientProvidedName, ILogger<IConnectionManager> logger)
     {
         if (_uniqueInstance is null)
         {
@@ -37,7 +37,7 @@ public sealed class ConnectionManager : IConnectionManager
         return _uniqueInstance;
     }
 
-    private static IConnection CreateConnection(RabbitMqOptions options, string clientProvidedName, ILogger<IConnectionManager> logger)
+    private static IConnection CreateConnection(RabbitMQOptions options, string clientProvidedName, ILogger<IConnectionManager> logger)
     {
         var factory = new ConnectionFactory()
         {

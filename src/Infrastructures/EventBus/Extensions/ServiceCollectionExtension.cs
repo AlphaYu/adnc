@@ -2,7 +2,6 @@ using System.Reflection;
 using Adnc.Infra.EventBus;
 using Adnc.Infra.EventBus.Cap;
 using Adnc.Infra.EventBus.Cap.Filters;
-using Adnc.Infra.EventBus.Configurations;
 using Adnc.Infra.EventBus.RabbitMq;
 using DotNetCore.CAP;
 using DotNetCore.CAP.Filter;
@@ -87,10 +86,9 @@ public static class ServiceCollectionExtension
         }
 
         return services
-             .Configure<RabbitMqOptions>(rabitmqSection)
              .AddSingleton<IConnectionManager>(provider =>
              {
-                 var options = provider.GetRequiredService<IOptions<RabbitMqOptions>>();
+                 var options = provider.GetRequiredService<IOptions<RabbitMQOptions>>();
                  var logger = provider.GetRequiredService<ILogger<ConnectionManager>>();
                  var clientName = clientProvidedName.IsNullOrWhiteSpace() ? clientProvidedName : "unknow";
                  return ConnectionManager.GetInstance(options, clientName, logger);

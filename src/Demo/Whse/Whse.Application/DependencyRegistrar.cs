@@ -1,6 +1,7 @@
-﻿using Adnc.Shared;
+using Adnc.Shared;
 using Adnc.Shared.Application.Extensions;
 using Adnc.Shared.Application.Registrar;
+using DotNetCore.CAP.Messages;
 using Microsoft.Extensions.Configuration;
 
 namespace Adnc.Demo.Whse.Application;
@@ -23,15 +24,22 @@ public sealed class DependencyRegistrar(IServiceCollection services, IServiceInf
         var restPolicies = this.GenerateDefaultRefitPolicies();
         AddRestClient<IAdminRestClient>(ServiceAddressConsts.AdminDemoService, restPolicies);
         //rpc-event
-        AddCapEventBus<CapEventSubscriber>(replaceDbAction: capOptions =>
+        AddCapEventBus([typeof(CapEventSubscriber)]);
+    }
+
+    protected override void AddCapEventBus(IEnumerable<Type> subscribers, Action<FailedInfo>? failedThresholdCallback = null)
+    {
+        Services.AddAdncInfraCap(subscribers, capOptions =>
         {
+            SetCapBasicInfo(capOptions, failedThresholdCallback);
+            SetCapRabbitMQInfo(capOptions);
             var connectionString = Configuration[NodeConsts.SqlServer_ConnectionString] ?? throw new InvalidDataException("SqlServer ConnectionString is null"); ;
             capOptions.UseSqlServer(sqlServerOptions =>
             {
                 sqlServerOptions.ConnectionString = connectionString;
                 sqlServerOptions.Schema = "cap";
             });
-        });
+        }, null, Lifetime);
     }
 
     protected override void AddEfCoreContext()

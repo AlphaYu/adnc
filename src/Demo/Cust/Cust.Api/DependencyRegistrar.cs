@@ -1,4 +1,4 @@
-﻿using Adnc.Demo.Remote.Grpc.Services;
+using Adnc.Demo.Remote.Grpc.Services;
 using Adnc.Demo.Remote.Http.Services;
 
 namespace Adnc.Demo.Cust.Api;
@@ -52,6 +52,6 @@ public sealed class ApplicationLayerRegistrar(IServiceCollection services, IServ
         var gprcPolicies = this.GenerateDefaultGrpcPolicies();
         AddGrpcClient<AdminGrpc.AdminGrpcClient>(ServiceAddressConsts.AdminDemoService, gprcPolicies);
         //register event service
-        AddCapEventBus<CapEventSubscriber>();
+        AddCapEventBus([typeof(CapEventSubscriber)]);
     }
 }

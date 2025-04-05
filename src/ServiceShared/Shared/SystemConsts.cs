@@ -1,4 +1,4 @@
-﻿namespace Adnc.Shared;
+namespace Adnc.Shared;
 
 public static class GeneralConsts
 {
@@ -23,6 +23,8 @@ public static class NodeConsts
     public const string Redis = "Redis";
     public const string Mysql = "Mysql";
     public const string Mysql_ConnectionString = "Mysql:ConnectionString";
+    public const string Mysql_ServerVersion = "Mysql:ServerVersion";
+    public const string Mysql_ServerType = "Mysql:ServerType";
     public const string SqlServer = "SqlServer";
     public const string SqlServer_ConnectionString = "SqlServer:ConnectionString";
     public const string SysLogDb = "SysLogDb";

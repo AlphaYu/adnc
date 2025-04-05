@@ -8,6 +8,7 @@
     <PackageReference Include="SkyAPM.Utilities.DependencyInjection" Version="$(SkyAPM_Diagnostics_CAP_Version)" />
     <PackageReference Include="RabbitMQ.Client" Version="$(RabbitMQ_Client_Version)" />
 		<PackageReference Include="DotNetCore.CAP" Version="$(DotNetCore_CAP_Version)" />
+    <PackageReference Include="DotNetCore.CAP.RabbitMQ" Version="$(DotNetCore_CAP_RabbitMQ_Version)" />
     <PackageReference Include="SkyAPM.Diagnostics.CAP" Version="$(SkyAPM_Diagnostics_CAP_Version)" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="$(Microsoft_Extensions_Options_ConfigurationExtensions_Version)"/>
 	</ItemGroup>
