@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 	<ItemGroup>
 		<ProjectReference Include="..\..\Shared\Remote.Http\Adnc.Demo.Remote.Http.csproj" />
 		<ProjectReference Include="..\Ord.Domain\Adnc.Demo.Ord.Domain.csproj" />

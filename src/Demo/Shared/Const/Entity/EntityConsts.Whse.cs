@@ -1,4 +1,4 @@
-﻿namespace Adnc.Demo.Const.Entity.Whse;
+namespace Adnc.Demo.Const.Entity.Whse;
 
 public static class WhseConsts
 {

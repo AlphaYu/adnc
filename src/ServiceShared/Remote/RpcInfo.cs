@@ -1,4 +1,4 @@
-﻿namespace Adnc.Shared.Remote;
+namespace Adnc.Shared.Remote;
 
 public sealed class RpcInfo
 {

@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.Redis.Core;
+namespace Adnc.Infra.Redis.Core;
 
 /// <summary>
 /// Adnc.Infra.Redis const value.

@@ -1,4 +1,4 @@
-﻿using Adnc.Infra.IdGenerater.Yitter;
+using Adnc.Infra.IdGenerater.Yitter;
 
 namespace Microsoft.Extensions.DependencyInjection;
 

@@ -1,4 +1,4 @@
-﻿using Grpc.Net.Client.Balancer;
+using Grpc.Net.Client.Balancer;
 
 namespace Adnc.Infra.Consul.Discover.GrpcResolver;
 

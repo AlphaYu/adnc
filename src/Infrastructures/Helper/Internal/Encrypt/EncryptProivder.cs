@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.Helper.Internal.Encrypt;
+namespace Adnc.Infra.Helper.Internal.Encrypt;
 
 public sealed partial class EncryptProivder
 {

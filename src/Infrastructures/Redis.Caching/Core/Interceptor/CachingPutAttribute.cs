@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.Caching.Interceptor
+namespace Adnc.Infra.Caching.Interceptor
 {
     using System;
 

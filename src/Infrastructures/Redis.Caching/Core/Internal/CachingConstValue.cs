@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.Redis.Caching.Core;
+namespace Adnc.Infra.Redis.Caching.Core;
 
 /// <summary>
 /// Adnc.Infra.Redis const value.

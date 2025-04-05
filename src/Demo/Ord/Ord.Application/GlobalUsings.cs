@@ -1,4 +1,4 @@
-﻿global using System.Linq.Expressions;
+global using System.Linq.Expressions;
 global using System.Reflection;
 global using Adnc.Demo.Const;
 global using Adnc.Demo.Ord.Application.Dtos;

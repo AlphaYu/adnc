@@ -1,4 +1,4 @@
-﻿using RabbitMQ.Client;
+using RabbitMQ.Client;
 
 namespace Adnc.Infra.EventBus.RabbitMq;
 

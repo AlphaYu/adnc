@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.Redis.Caching.Core.Interceptor;
+namespace Adnc.Infra.Redis.Caching.Core.Interceptor;
 
 /// <summary>
 /// Default Adnc.Infra.Redis key generator.

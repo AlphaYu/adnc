@@ -1,4 +1,4 @@
-﻿using Adnc.Gateway.Ocelot.Identity;
+using Adnc.Gateway.Ocelot.Identity;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;

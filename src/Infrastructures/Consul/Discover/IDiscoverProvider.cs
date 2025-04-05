@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.Consul.Discover;
+namespace Adnc.Infra.Consul.Discover;
 
 public interface IDiscoverProvider
 {

@@ -1,4 +1,4 @@
-﻿namespace Adnc.Demo.Cust.Api;
+namespace Adnc.Demo.Cust.Api;
 
 public sealed class MiddlewareRegistrar(WebApplication app) : AbstractWebApiMiddlewareRegistrar(app)
 {

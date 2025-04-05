@@ -1,4 +1,4 @@
-﻿using Adnc.Shared.Remote.Http;
+using Adnc.Shared.Remote.Http;
 
 namespace Adnc.Demo.Remote.Http.Services;
 

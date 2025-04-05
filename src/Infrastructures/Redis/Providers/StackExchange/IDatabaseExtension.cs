@@ -1,4 +1,4 @@
-﻿using Adnc.Infra.Redis.Core.Internal;
+using Adnc.Infra.Redis.Core.Internal;
 
 namespace StackExchange.Redis;
 

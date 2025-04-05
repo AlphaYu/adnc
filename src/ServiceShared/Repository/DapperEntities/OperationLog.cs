@@ -1,4 +1,4 @@
-﻿namespace Adnc.Shared.Repository.DapperEntities;
+namespace Adnc.Shared.Repository.DapperEntities;
 
 /// <summary>
 /// Operation logs

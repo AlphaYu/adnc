@@ -1,4 +1,4 @@
-﻿namespace Adnc.Shared.WebApi.Middleware;
+namespace Adnc.Shared.WebApi.Middleware;
 
 public class RealIpMiddleware(RequestDelegate next, ILogger<RealIpMiddleware> logger, FilterOption option)
 {

@@ -1,4 +1,4 @@
-﻿global using System.IdentityModel.Tokens.Jwt;
+global using System.IdentityModel.Tokens.Jwt;
 global using System.Net;
 global using System.Security.Claims;
 global using System.Text;

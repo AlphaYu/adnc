@@ -1,4 +1,4 @@
-﻿namespace Adnc.Demo.Whse.Application;
+namespace Adnc.Demo.Whse.Application;
 
 public class WhseProfile : Profile
 {

@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.Core.Internal;
+namespace Adnc.Infra.Core.Internal;
 
 internal static class ReflectionDictionary
 {

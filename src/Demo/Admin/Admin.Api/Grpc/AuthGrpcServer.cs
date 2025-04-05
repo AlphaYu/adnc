@@ -1,4 +1,4 @@
-﻿using Adnc.Demo.Remote.Grpc.Messages;
+using Adnc.Demo.Remote.Grpc.Messages;
 using Adnc.Demo.Remote.Grpc.Services;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;

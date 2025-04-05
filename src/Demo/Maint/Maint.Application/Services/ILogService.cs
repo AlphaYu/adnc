@@ -1,4 +1,4 @@
-﻿namespace Adnc.Demo.Maint.Application.Services;
+namespace Adnc.Demo.Maint.Application.Services;
 
 /// <summary>
 /// 日志查询

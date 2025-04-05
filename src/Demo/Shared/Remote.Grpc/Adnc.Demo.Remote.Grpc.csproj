@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<Description>该层用来定义Grpc客户端，不需要发布的到Nuget。</Description>
 	</PropertyGroup>

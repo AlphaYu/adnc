@@ -1,4 +1,4 @@
-﻿namespace Adnc.Demo.Const;
+namespace Adnc.Demo.Const;
 
 public static class ServiceAddressConsts
 {

@@ -1,4 +1,4 @@
-﻿namespace Adnc.Shared.WebApi;
+namespace Adnc.Shared.WebApi;
 
 public sealed class ThreadPoolSettings
 {

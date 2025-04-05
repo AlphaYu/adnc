@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.Repository;
+namespace Adnc.Infra.Repository;
 
 public interface IMongoDbRepository<TEntity> : IRepository<TEntity>
     where TEntity : class, IEntity<string>

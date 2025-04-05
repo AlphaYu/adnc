@@ -1,4 +1,4 @@
-﻿using Adnc.Infra.Redis.Caching.Core.Preheater;
+using Adnc.Infra.Redis.Caching.Core.Preheater;
 
 namespace Adnc.Demo.Whse.Application.Cache;
 

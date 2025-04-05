@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.Redis.Caching.Configurations;
+namespace Adnc.Infra.Redis.Caching.Configurations;
 
 /// <summary>
 /// redis options.

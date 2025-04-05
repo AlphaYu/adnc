@@ -1,4 +1,4 @@
-﻿namespace Adnc.Shared.Application.Contracts.ResultModels;
+namespace Adnc.Shared.Application.Contracts.ResultModels;
 
 /// <summary>
 /// 错误信息类

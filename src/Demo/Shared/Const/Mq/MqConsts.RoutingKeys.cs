@@ -1,4 +1,4 @@
-﻿namespace Adnc.Demo.Const.Mq;
+namespace Adnc.Demo.Const.Mq;
 
 public static class MqRoutingKeys
 {

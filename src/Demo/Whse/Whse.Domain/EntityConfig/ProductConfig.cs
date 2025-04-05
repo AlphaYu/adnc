@@ -1,4 +1,4 @@
-﻿using Adnc.Demo.Whse.Domain.Aggregates.ProductAggregate;
+using Adnc.Demo.Whse.Domain.Aggregates.ProductAggregate;
 
 namespace Adnc.Demo.Whse.Domain.EntityConfig;
 

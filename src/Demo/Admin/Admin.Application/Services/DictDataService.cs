@@ -1,4 +1,4 @@
-﻿namespace Adnc.Demo.Admin.Application.Services;
+namespace Adnc.Demo.Admin.Application.Services;
 
 public class DictDataService(IEfRepository<DictData> dictDataRepo) : AbstractAppService, IDictDataService
 {

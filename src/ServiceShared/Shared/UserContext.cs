@@ -1,4 +1,4 @@
-﻿namespace Adnc.Shared;
+namespace Adnc.Shared;
 
 public sealed class UserContext
 {

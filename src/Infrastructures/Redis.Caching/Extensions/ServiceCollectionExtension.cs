@@ -1,4 +1,4 @@
-﻿using Adnc.Infra.Redis.Caching;
+using Adnc.Infra.Redis.Caching;
 using Adnc.Infra.Redis.Caching.Configurations;
 using Adnc.Infra.Redis.Caching.Core.BloomFilter;
 using Adnc.Infra.Redis.Caching.Core.Diagnostics.SkyApm;

@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<Description>该工库是在`Adnc.Infra.Redis`基础上的进一步封装，负责缓存管理，除常用操作外还解决了缓存穿透，击穿，雪崩等问题。</Description>
 		<PackageTags>adnc,redis,distributed cache</PackageTags>

@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<Description>该工程是在`Adnc.Infra.Repository.EfCore`基础上MongoDB的实现。</Description>
 		<PackageTags>adnc,efcore,mongodb</PackageTags>

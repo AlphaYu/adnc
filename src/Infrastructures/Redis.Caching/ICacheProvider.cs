@@ -1,4 +1,4 @@
-﻿using Adnc.Infra.Redis.Caching.Configurations;
+using Adnc.Infra.Redis.Caching.Configurations;
 using Adnc.Infra.Redis.Caching.Core;
 using Adnc.Infra.Redis.Core.Serialization;
 

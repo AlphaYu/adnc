@@ -1,4 +1,4 @@
-﻿using Adnc.Infra.Consul.Discover.Balancers;
+using Adnc.Infra.Consul.Discover.Balancers;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace Adnc.Infra.Consul.Discover;

@@ -1,4 +1,4 @@
-﻿namespace Adnc.Shared.Application.Contracts.Dtos;
+namespace Adnc.Shared.Application.Contracts.Dtos;
 
 public static class SearchPagedDtoExtension
 {

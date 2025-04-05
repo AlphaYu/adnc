@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.IdGenerater.Yitter;
+namespace Adnc.Infra.IdGenerater.Yitter;
 
 public sealed class WorkerNode(ILogger<WorkerNode> logger, IRedisProvider redisProvider, IDistributedLocker distributedLocker, string name)
 {

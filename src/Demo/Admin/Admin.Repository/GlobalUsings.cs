@@ -1,4 +1,4 @@
-﻿global using System.Reflection;
+global using System.Reflection;
 global using Adnc.Demo.Admin.Repository.Entities;
 global using Adnc.Demo.Const.Entity.Admin;
 global using Adnc.Infra.Repository;

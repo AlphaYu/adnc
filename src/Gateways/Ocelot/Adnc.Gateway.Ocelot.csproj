@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 	<ItemGroup>
 		<PackageReference Include="Adnc.Infra.Consul" Version="1.0.0-preview-250336" />
 		<PackageReference Include="Ocelot" Version="23.4.3" />

@@ -1,4 +1,4 @@
-﻿global using System.Reflection;
+global using System.Reflection;
 global using Adnc.Infra.Core.DependencyInjection;
 global using Adnc.Infra.EventBus;
 global using Adnc.Infra.Repository;

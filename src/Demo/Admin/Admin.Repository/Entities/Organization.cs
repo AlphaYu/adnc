@@ -1,4 +1,4 @@
-﻿namespace Adnc.Demo.Admin.Repository.Entities;
+namespace Adnc.Demo.Admin.Repository.Entities;
 
 /// <summary>
 /// 部门

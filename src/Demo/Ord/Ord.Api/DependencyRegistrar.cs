@@ -1,4 +1,4 @@
-﻿using Adnc.Shared.WebApi.Registrar;
+using Adnc.Shared.WebApi.Registrar;
 
 namespace Adnc.Demo.Ord.Api;
 

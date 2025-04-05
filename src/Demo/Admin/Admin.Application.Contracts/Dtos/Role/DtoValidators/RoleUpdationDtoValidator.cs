@@ -1,4 +1,4 @@
-﻿namespace Adnc.Demo.Admin.Application.Contracts.DtoValidators;
+namespace Adnc.Demo.Admin.Application.Contracts.DtoValidators;
 
 public class RoleUpdationDtoValidator : AbstractValidator<RoleUpdationDto>
 {

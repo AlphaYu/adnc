@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.Redis.Configurations;
+namespace Adnc.Infra.Redis.Configurations;
 
 /// <summary>
 /// Defines an endpoint.

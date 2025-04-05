@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.Core.Guard;
+namespace Adnc.Infra.Core.Guard;
 
 public static class Checker
 {

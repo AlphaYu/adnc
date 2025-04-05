@@ -1,4 +1,4 @@
-﻿namespace Adnc.Demo.Admin.Application.Services;
+namespace Adnc.Demo.Admin.Application.Services;
 
 public class RoleService(IEfRepository<Role> roleRepo, IEfRepository<RoleUserRelation> roleUserRelationRepo, IEfRepository<RoleMenuRelation> roleMenuRelationRepo, CacheService cacheService)
     : AbstractAppService, IRoleService

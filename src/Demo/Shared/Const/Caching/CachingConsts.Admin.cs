@@ -1,4 +1,4 @@
-﻿using Adnc.Shared;
+using Adnc.Shared;
 
 namespace Adnc.Demo.Const.Caching.Admin;
 

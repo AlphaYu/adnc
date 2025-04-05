@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<Description>该层定义了仓储层基类。</Description>
 		<PackageTags>Adnc.Shared.Repository</PackageTags>

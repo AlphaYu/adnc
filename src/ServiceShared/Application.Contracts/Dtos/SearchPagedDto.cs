@@ -1,4 +1,4 @@
-﻿namespace Adnc.Shared.Application.Contracts.Dtos;
+namespace Adnc.Shared.Application.Contracts.Dtos;
 
 /// <summary>
 /// 查询条件基类

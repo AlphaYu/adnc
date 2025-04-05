@@ -1,4 +1,4 @@
-﻿namespace Adnc.Demo.Whse.WebApi.Controllers;
+namespace Adnc.Demo.Whse.WebApi.Controllers;
 
 /// <summary>
 /// 商品管理

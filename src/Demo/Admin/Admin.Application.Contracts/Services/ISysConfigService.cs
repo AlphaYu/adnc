@@ -1,4 +1,4 @@
-﻿namespace Adnc.Demo.Admin.Application.Contracts.Services;
+namespace Adnc.Demo.Admin.Application.Contracts.Services;
 
 /// <summary>
 /// 配置管理

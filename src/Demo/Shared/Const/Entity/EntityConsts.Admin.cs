@@ -1,4 +1,4 @@
-﻿namespace Adnc.Demo.Const.Entity.Admin;
+namespace Adnc.Demo.Const.Entity.Admin;
 
 public static class UserConsts
 {

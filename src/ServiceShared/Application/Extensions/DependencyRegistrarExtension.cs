@@ -1,4 +1,4 @@
-﻿using Adnc.Shared.Application.Registrar;
+using Adnc.Shared.Application.Registrar;
 using Polly.Timeout;
 
 namespace Adnc.Shared.Application.Extensions;

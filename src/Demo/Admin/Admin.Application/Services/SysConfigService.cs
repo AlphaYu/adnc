@@ -1,4 +1,4 @@
-﻿namespace Adnc.Demo.Admin.Application.Services;
+namespace Adnc.Demo.Admin.Application.Services;
 
 public class SysConfigService(IEfRepository<SysConfig> sysConfigRepo/*, BloomFilterFactory bloomFilterFactory*/, CacheService cacheService)
     : AbstractAppService, ISysConfigService

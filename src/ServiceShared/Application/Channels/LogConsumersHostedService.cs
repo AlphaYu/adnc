@@ -1,4 +1,4 @@
-﻿namespace Adnc.Shared.Application.Channels;
+namespace Adnc.Shared.Application.Channels;
 
 public class LogConsumersHostedService(ILogger<LogConsumersHostedService> logger, IServiceProvider services) : BackgroundService
 {

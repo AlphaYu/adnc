@@ -1,4 +1,4 @@
-﻿namespace Adnc.Shared.Application.Contracts.Dtos;
+namespace Adnc.Shared.Application.Contracts.Dtos;
 
 /// <summary>
 /// 用于解决返回基本类型

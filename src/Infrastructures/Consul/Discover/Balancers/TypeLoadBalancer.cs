@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.Consul.Discover.Balancers;
+namespace Adnc.Infra.Consul.Discover.Balancers;
 
 public static class TypeLoadBalancer
 {

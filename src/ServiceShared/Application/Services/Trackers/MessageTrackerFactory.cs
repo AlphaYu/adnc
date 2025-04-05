@@ -1,4 +1,4 @@
-﻿namespace Adnc.Shared.Application.Services.Trackers;
+namespace Adnc.Shared.Application.Services.Trackers;
 
 public sealed class MessageTrackerFactory(IEnumerable<IMessageTracker> trackers)
 {

@@ -1,4 +1,4 @@
-﻿namespace Adnc.Demo.Whse.Application.Dtos;
+namespace Adnc.Demo.Whse.Application.Dtos;
 
 public class WarehouseAllocateToProductDto : IDto
 {

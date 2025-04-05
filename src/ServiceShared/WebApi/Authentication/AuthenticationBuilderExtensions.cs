@@ -1,4 +1,4 @@
-﻿using Adnc.Shared.WebApi.Authentication.Basic;
+using Adnc.Shared.WebApi.Authentication.Basic;
 using Adnc.Shared.WebApi.Authentication.Hybrid;
 
 namespace Microsoft.Extensions.DependencyInjection.Extensions;

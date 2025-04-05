@@ -1,4 +1,4 @@
-﻿using Adnc.Infra.Consul.Discover.Balancers;
+using Adnc.Infra.Consul.Discover.Balancers;
 
 namespace Adnc.Infra.Consul.Discover.Handler;
 

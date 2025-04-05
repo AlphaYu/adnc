@@ -1,4 +1,4 @@
-﻿namespace Adnc.Demo.Ord.Domain.EntityConfig;
+namespace Adnc.Demo.Ord.Domain.EntityConfig;
 
 public class EntityInfo : AbstractDomainEntityInfo
 {

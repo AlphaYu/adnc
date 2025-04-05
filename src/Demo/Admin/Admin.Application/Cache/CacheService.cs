@@ -1,4 +1,4 @@
-﻿namespace Adnc.Demo.Admin.Application.Cache;
+namespace Adnc.Demo.Admin.Application.Cache;
 
 public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IDistributedLocker> dictributeLocker
     , Lazy<ILogger<CacheService>> logger, Lazy<IServiceProvider> serviceProvider, Lazy<IConfiguration> configuration

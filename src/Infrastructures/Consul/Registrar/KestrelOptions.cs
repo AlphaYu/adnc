@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.Consul.Registrar;
+namespace Adnc.Infra.Consul.Registrar;
 
 /// <summary>
 /// Represents options for Kestrel server.

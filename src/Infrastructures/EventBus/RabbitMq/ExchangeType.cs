@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.EventBus.RabbitMq;
+namespace Adnc.Infra.EventBus.RabbitMq;
 
 public enum ExchangeType
 {

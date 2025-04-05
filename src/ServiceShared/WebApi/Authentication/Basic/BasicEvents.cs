@@ -1,4 +1,4 @@
-﻿namespace Adnc.Shared.WebApi.Authentication.Basic;
+namespace Adnc.Shared.WebApi.Authentication.Basic;
 
 public class BasicEvents
 {

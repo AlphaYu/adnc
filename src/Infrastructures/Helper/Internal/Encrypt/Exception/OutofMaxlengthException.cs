@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.Helper.Internal.Encrypt;
+namespace Adnc.Infra.Helper.Internal.Encrypt;
 
 /// <summary>
 /// The encrypt string out of max length exception

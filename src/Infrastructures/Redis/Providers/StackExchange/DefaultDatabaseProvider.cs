@@ -1,4 +1,4 @@
-﻿using Adnc.Infra.Redis.Configurations;
+using Adnc.Infra.Redis.Configurations;
 using Adnc.Infra.Redis.Core;
 using StackExchange.Redis;
 

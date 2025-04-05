@@ -1,4 +1,4 @@
-﻿namespace Adnc.Demo.Admin.Api.Controllers;
+namespace Adnc.Demo.Admin.Api.Controllers;
 
 /// <summary>
 /// 字典数据管理

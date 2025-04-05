@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.Redis.Caching.Core.BloomFilter;
+namespace Adnc.Infra.Redis.Caching.Core.BloomFilter;
 
 public sealed class NullBloomFilter(Lazy<IRedisProvider> redisProvider, Lazy<IDistributedLocker> distributedLocker) : AbstractBloomFilter(redisProvider, distributedLocker)
 {

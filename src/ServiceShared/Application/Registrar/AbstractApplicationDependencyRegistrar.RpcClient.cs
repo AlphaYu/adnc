@@ -1,4 +1,4 @@
-﻿using Adnc.Infra.Consul.Discover.GrpcResolver;
+using Adnc.Infra.Consul.Discover.GrpcResolver;
 using Adnc.Infra.Consul.Discover.Handler;
 using Adnc.Shared.Remote;
 using Adnc.Shared.Remote.Handlers;

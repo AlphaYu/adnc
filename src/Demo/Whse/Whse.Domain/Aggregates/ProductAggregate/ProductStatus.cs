@@ -1,4 +1,4 @@
-﻿namespace Adnc.Demo.Whse.Domain.Aggregates.ProductAggregate;
+namespace Adnc.Demo.Whse.Domain.Aggregates.ProductAggregate;
 
 public record ProductStatus : ValueObject
 {

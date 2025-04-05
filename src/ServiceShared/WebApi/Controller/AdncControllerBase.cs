@@ -1,4 +1,4 @@
-﻿namespace Microsoft.AspNetCore.Mvc;
+namespace Microsoft.AspNetCore.Mvc;
 
 public abstract class AdncControllerBase : ControllerBase
 {

@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.Consul.Configuration;
+namespace Adnc.Infra.Consul.Configuration;
 
 public class ConsulOptions
 {

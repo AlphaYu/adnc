@@ -1,4 +1,4 @@
-﻿using Adnc.Infra.Core.Guard;
+using Adnc.Infra.Core.Guard;
 using AutoMapper;
 
 namespace Adnc.Shared.Application.Mapper.AutoMapper;

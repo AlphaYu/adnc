@@ -1,4 +1,4 @@
-﻿using Adnc.Infra.Helper.Encrypt.Extensions;
+using Adnc.Infra.Helper.Encrypt.Extensions;
 using Adnc.Infra.Helper.Internal.Encrypt.Shared;
 
 namespace Adnc.Infra.Helper.Internal.Encrypt;

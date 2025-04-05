@@ -1,4 +1,4 @@
-﻿namespace Adnc.Shared.Application.Contracts.Interfaces;
+namespace Adnc.Shared.Application.Contracts.Interfaces;
 
 public interface IAppService
 {}

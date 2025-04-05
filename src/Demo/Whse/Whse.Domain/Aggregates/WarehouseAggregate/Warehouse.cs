@@ -1,4 +1,4 @@
-﻿namespace Adnc.Demo.Whse.Domain.Aggregates.WarehouseAggregate;
+namespace Adnc.Demo.Whse.Domain.Aggregates.WarehouseAggregate;
 
 /// <summary>
 /// 货架

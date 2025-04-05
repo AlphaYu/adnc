@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.Repository;
+namespace Adnc.Infra.Repository;
 
 public class QueryCondition(string? where, string? orderBy, string? groupBy, object? param)
 {

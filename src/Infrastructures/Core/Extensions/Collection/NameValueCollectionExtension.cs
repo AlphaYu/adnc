@@ -1,4 +1,4 @@
-﻿namespace System.Collections.Specialized;
+namespace System.Collections.Specialized;
 
 /// <summary>
 /// Extension methods for NameValueCollection.

@@ -1,4 +1,4 @@
-﻿namespace Adnc.Demo.Remote.Http.Messages;
+namespace Adnc.Demo.Remote.Http.Messages;
 
 public class ProductSearchRequest
 {

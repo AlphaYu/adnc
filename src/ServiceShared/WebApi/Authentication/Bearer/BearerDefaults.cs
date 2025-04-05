@@ -1,4 +1,4 @@
-﻿namespace Adnc.Shared.WebApi.Authentication.Bearer;
+namespace Adnc.Shared.WebApi.Authentication.Bearer;
 
 public static class BearerDefaults
 {

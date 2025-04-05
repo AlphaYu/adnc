@@ -1,4 +1,4 @@
-﻿//using Adnc.Shared.Application.Channels;
+//using Adnc.Shared.Application.Channels;
 
 //namespace Adnc.Demo.Maint.Application.Subscribers;
 

@@ -1,4 +1,4 @@
-﻿using Adnc.Shared.Remote.Http.Messages;
+using Adnc.Shared.Remote.Http.Messages;
 using Refit;
 
 namespace Adnc.Shared.Remote.Http.Services;

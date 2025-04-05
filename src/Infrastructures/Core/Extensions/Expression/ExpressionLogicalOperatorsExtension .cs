@@ -1,4 +1,4 @@
-﻿namespace System.Linq.Expressions;
+namespace System.Linq.Expressions;
 
 /// <summary>
 /// Extension methods for combining expressions using logical operators.

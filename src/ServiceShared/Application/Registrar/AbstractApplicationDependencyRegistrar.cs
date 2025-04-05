@@ -1,4 +1,4 @@
-﻿using Adnc.Infra.Repository.Interceptor.Castle;
+using Adnc.Infra.Repository.Interceptor.Castle;
 using Adnc.Shared.Application.Mapper.AutoMapper;
 using Adnc.Shared.Application.Services.Trackers;
 using Adnc.Shared.Remote;

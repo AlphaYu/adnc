@@ -1,4 +1,4 @@
-﻿namespace Adnc.Demo.Admin.Application.Services;
+namespace Adnc.Demo.Admin.Application.Services;
 
 public class OrganizationService(IEfRepository<Organization> organizationRepo, CacheService cacheService)
     : AbstractAppService, IOrganizationService

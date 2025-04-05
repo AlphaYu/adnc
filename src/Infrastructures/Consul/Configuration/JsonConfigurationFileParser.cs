@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.Consul.Configuration;
+namespace Adnc.Infra.Consul.Configuration;
 
 internal sealed class JsonConfigurationFileParser
 {

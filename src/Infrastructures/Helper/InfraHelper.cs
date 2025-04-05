@@ -1,4 +1,4 @@
-﻿using Adnc.Infra.Helper.Internal;
+using Adnc.Infra.Helper.Internal;
 using Adnc.Infra.Helper.Internal.Encrypt;
 
 namespace Adnc.Infra.Helper;

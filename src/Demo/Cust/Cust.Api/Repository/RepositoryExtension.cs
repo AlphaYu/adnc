@@ -1,4 +1,4 @@
-﻿namespace Adnc.Demo.Cust.Api.Repository;
+namespace Adnc.Demo.Cust.Api.Repository;
 
 public static class RepositoryExtension
 {

@@ -1,4 +1,4 @@
-﻿namespace Adnc.Shared.Application.Services.Trackers;
+namespace Adnc.Shared.Application.Services.Trackers;
 
 public class DbMessageTrackerService(IEfRepository<EventTracker> trackerRepo) : IMessageTracker
 {

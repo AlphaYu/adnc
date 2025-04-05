@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.Repository.Interceptor;
+namespace Adnc.Infra.Repository.Interceptor;
 
 [AttributeUsage(AttributeTargets.Method, Inherited = true)]
 public class UnitOfWorkAttribute : Attribute

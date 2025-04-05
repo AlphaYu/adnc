@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.EventBus.RabbitMq;
+namespace Adnc.Infra.EventBus.RabbitMq;
 
 /// <summary>
 /// 队列配置信息

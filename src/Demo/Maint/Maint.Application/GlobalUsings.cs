@@ -1,4 +1,4 @@
-﻿global using System.Reflection;
+global using System.Reflection;
 global using System.Text;
 global using Adnc.Demo.Maint.Application.Dtos;
 global using Adnc.Demo.Maint.Repository;

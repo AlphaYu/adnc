@@ -1,4 +1,4 @@
-﻿global using System.Data;
+global using System.Data;
 global using Adnc.Infra.Repository;
 global using Adnc.Infra.Repository.EfCore.Transaction;
 global using DotNetCore.CAP;

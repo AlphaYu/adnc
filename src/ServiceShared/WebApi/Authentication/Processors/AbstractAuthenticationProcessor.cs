@@ -1,4 +1,4 @@
-﻿namespace Adnc.Shared.WebApi.Authentication.Processors;
+namespace Adnc.Shared.WebApi.Authentication.Processors;
 
 public abstract class AbstractAuthenticationProcessor
 {

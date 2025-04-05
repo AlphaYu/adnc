@@ -1,4 +1,4 @@
-﻿namespace Adnc.Shared.WebApi.Authentication.Basic;
+namespace Adnc.Shared.WebApi.Authentication.Basic;
 
 /// <summary>
 /// Basic验证(认证)服务

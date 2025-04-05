@@ -1,4 +1,4 @@
-﻿namespace Adnc.Shared.Remote.Handlers.Token;
+namespace Adnc.Shared.Remote.Handlers.Token;
 
 public class BearerTokenGenerator(IHttpContextAccessor httpContextAccessor, ILogger<BearerTokenGenerator> logger) : ITokenGenerator
 {

@@ -1,4 +1,4 @@
-﻿using Adnc.Infra.Consul.Configuration;
+using Adnc.Infra.Consul.Configuration;
 using Adnc.Shared.WebApi.Middleware;
 
 namespace Adnc.Shared.WebApi.Registrar;

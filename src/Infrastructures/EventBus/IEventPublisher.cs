@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.EventBus;
+namespace Adnc.Infra.EventBus;
 
 public interface IEventPublisher
 {

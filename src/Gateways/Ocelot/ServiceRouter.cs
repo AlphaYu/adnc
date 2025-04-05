@@ -1,4 +1,4 @@
-﻿namespace Adnc.Gateway.Ocelot;
+namespace Adnc.Gateway.Ocelot;
 
 public class ServiceRouter
 {

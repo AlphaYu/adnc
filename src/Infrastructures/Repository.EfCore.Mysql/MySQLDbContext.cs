@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.Repository.EfCore.MySql;
+namespace Adnc.Infra.Repository.EfCore.MySql;
 
 public class MySqlDbContext(DbContextOptions options, IEntityInfo entityInfo, Operater operater) : AdncDbContext(options, entityInfo, operater)
 {

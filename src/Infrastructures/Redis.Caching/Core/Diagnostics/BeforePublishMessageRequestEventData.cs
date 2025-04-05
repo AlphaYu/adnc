@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.Redis.Caching.Core.Diagnostics;
+namespace Adnc.Infra.Redis.Caching.Core.Diagnostics;
 
 public class BeforePublishMessageRequestEventData //: EventData
 {

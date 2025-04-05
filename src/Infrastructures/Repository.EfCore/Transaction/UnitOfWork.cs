@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.Repository.EfCore.Transaction;
+namespace Adnc.Infra.Repository.EfCore.Transaction;
 
 public abstract class UnitOfWork<TDbContext>(TDbContext context) : IUnitOfWork
     where TDbContext : DbContext

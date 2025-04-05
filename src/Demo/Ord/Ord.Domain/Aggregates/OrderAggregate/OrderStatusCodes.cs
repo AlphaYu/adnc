@@ -1,4 +1,4 @@
-﻿namespace Adnc.Demo.Ord.Domain.Aggregates.OrderAggregate;
+namespace Adnc.Demo.Ord.Domain.Aggregates.OrderAggregate;
 
 /// <summary>
 /// 订单状态枚举

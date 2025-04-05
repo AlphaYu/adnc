@@ -1,4 +1,4 @@
-﻿namespace Adnc.Demo.Cust.Api.Repository.Entities;
+namespace Adnc.Demo.Cust.Api.Repository.Entities;
 
 /// <summary>
 /// 客户财务变动记录

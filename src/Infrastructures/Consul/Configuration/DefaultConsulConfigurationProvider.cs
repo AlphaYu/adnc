@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.Consul.Configuration;
+namespace Adnc.Infra.Consul.Configuration;
 
 public sealed class DefaultConsulConfigurationProvider(ConsulClient consulClient, string consulKeyPath, bool reloadOnChanges) : ConfigurationProvider
 {

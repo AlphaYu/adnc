@@ -1,4 +1,4 @@
-﻿using Adnc.Infra.Consul.Configuration;
+using Adnc.Infra.Consul.Configuration;
 
 namespace Adnc.Infra.Consul.Registrar;
 

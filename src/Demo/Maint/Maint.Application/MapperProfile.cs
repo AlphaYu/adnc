@@ -1,4 +1,4 @@
-﻿namespace Adnc.Demo.Maint.Application;
+namespace Adnc.Demo.Maint.Application;
 
 public class MaintProfile : Profile
 {

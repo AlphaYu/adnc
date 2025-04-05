@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+using System.Reflection;
 using Castle.DynamicProxy;
 
 namespace Adnc.Infra.Repository.Interceptor.Castle;

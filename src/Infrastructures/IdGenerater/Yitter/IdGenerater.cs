@@ -1,4 +1,4 @@
-﻿using Adnc.Infra.Core.Guard;
+using Adnc.Infra.Core.Guard;
 using Yitter.IdGenerator;
 
 namespace Adnc.Infra.IdGenerater.Yitter;

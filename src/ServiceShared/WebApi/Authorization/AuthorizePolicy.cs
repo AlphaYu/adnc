@@ -1,4 +1,4 @@
-﻿namespace Adnc.Shared.WebApi.Authorization;
+namespace Adnc.Shared.WebApi.Authorization;
 
 public static class AuthorizePolicy
 {

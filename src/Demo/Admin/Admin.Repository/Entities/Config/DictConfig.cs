@@ -1,4 +1,4 @@
-﻿namespace Adnc.Demo.Admin.Repository.Entities.Config;
+namespace Adnc.Demo.Admin.Repository.Entities.Config;
 
 public class DictConfig : AbstractEntityTypeConfiguration<Dict>
 {

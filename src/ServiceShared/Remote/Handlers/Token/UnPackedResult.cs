@@ -1,4 +1,4 @@
-﻿namespace Adnc.Shared.Remote.Handlers.Token;
+namespace Adnc.Shared.Remote.Handlers.Token;
 
 public class UnPackedResult(bool isSuccessful, string? userName, long? userId)
 {

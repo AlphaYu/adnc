@@ -1,4 +1,4 @@
-﻿using Adnc.Shared.WebApi.Authorization.Handlers;
+using Adnc.Shared.WebApi.Authorization.Handlers;
 
 namespace Adnc.Demo.Admin.Api.Authorization.Handlers;
 

@@ -1,4 +1,4 @@
-﻿namespace Adnc.Shared.Application.Contracts.Enums;
+namespace Adnc.Shared.Application.Contracts.Enums;
 
 public enum TrackerKind
 {

@@ -1,4 +1,4 @@
-﻿namespace Adnc.Shared.Application.Registrar;
+namespace Adnc.Shared.Application.Registrar;
 
 public abstract partial class AbstractApplicationDependencyRegistrar
 {

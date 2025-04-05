@@ -1,4 +1,4 @@
-﻿namespace Adnc.Demo.Ord.WebApi.Controllers;
+namespace Adnc.Demo.Ord.WebApi.Controllers;
 
 /// <summary>
 /// 订单管理

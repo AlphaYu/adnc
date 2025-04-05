@@ -1,4 +1,4 @@
-﻿namespace Adnc.Shared.Domain;
+namespace Adnc.Shared.Domain;
 
 public interface IDomainService
 {}

@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.Repository.EfCore.Internal;
+namespace Adnc.Infra.Repository.EfCore.Internal;
 
 internal sealed class KeyEntryModel
 {

@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.Redis.Core.Serialization;
+namespace Adnc.Infra.Redis.Core.Serialization;
 
 /// <summary>
 /// caching serializer.

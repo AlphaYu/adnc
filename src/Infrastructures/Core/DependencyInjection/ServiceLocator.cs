@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.Core.DependencyInjection;
+namespace Adnc.Infra.Core.DependencyInjection;
 
 /// <summary>
 /// Provides access to the root scope IServiceProvider instance

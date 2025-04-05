@@ -1,4 +1,4 @@
-﻿namespace Adnc.Shared.WebApi.Authorization;
+namespace Adnc.Shared.WebApi.Authorization;
 
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false)]
 public class AdncAuthorizeAttribute : AuthorizeAttribute

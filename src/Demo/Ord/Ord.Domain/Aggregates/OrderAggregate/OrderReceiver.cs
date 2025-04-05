@@ -1,4 +1,4 @@
-﻿namespace Adnc.Demo.Ord.Domain.Aggregates.OrderAggregate;
+namespace Adnc.Demo.Ord.Domain.Aggregates.OrderAggregate;
 
 public record OrderReceiver : ValueObject
 {

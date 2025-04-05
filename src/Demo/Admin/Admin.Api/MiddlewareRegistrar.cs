@@ -1,4 +1,4 @@
-﻿using Adnc.Demo.Admin.Api.Grpc;
+using Adnc.Demo.Admin.Api.Grpc;
 using Adnc.Shared.WebApi.Registrar;
 
 namespace Adnc.Demo.Admin.Api;

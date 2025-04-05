@@ -1,4 +1,4 @@
-﻿using Adnc.Infra.Core.Exceptions;
+using Adnc.Infra.Core.Exceptions;
 
 namespace Adnc.Infra.Core.Guard;
 

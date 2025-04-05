@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.Redis.Caching.Core.Diagnostics;
+namespace Adnc.Infra.Redis.Caching.Core.Diagnostics;
 
 /// <summary>
 /// Extension methods on the DiagnosticListener class to log Adnc.Infra.Redis

@@ -1,4 +1,4 @@
-﻿namespace System.Text;
+namespace System.Text;
 
 public static class StringBuilderExtension
 {

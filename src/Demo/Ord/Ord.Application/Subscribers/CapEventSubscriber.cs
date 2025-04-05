@@ -1,4 +1,4 @@
-﻿using Adnc.Demo.Remote.Event;
+using Adnc.Demo.Remote.Event;
 
 namespace Adnc.Demo.Ord.Application.EventSubscribers;
 

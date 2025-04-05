@@ -1,4 +1,4 @@
-﻿using StackExchange.Redis;
+using StackExchange.Redis;
 
 namespace Adnc.Infra.Redis.Providers.StackExchange;
 

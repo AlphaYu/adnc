@@ -1,4 +1,4 @@
-﻿namespace Adnc.Shared.Application.Contracts.Dtos;
+namespace Adnc.Shared.Application.Contracts.Dtos;
 
 public abstract class MongoDto : IDto
 {

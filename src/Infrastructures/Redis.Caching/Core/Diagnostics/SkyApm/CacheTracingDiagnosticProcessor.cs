@@ -1,4 +1,4 @@
-﻿using SkyApm;
+using SkyApm;
 using SkyApm.Common;
 using SkyApm.Config;
 using SkyApm.Diagnostics;

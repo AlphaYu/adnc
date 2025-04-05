@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.Helper.Internal.Encrypt.Shared;
+namespace Adnc.Infra.Helper.Internal.Encrypt.Shared;
 
 internal sealed class RSAParametersJson
 {

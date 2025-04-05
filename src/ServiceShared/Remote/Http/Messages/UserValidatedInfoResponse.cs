@@ -1,4 +1,4 @@
-﻿namespace Adnc.Shared.Remote.Http.Messages;
+namespace Adnc.Shared.Remote.Http.Messages;
 
 public record UserValidatedInfoResponse
 {

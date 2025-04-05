@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<Description>该库是提供所有Apllication层的公共实现。</Description>
 		<PackageTags>Adnc.Shared.Application</PackageTags>

@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.Redis.Caching.Core.BloomFilter;
+namespace Adnc.Infra.Redis.Caching.Core.BloomFilter;
 
 public interface IBloomFilter
 {

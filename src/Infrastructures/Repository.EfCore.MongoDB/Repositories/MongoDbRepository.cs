@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.Repository.EfCore.MongoDB;
+namespace Adnc.Infra.Repository.EfCore.MongoDB;
 
 /// <summary>
 ///   mongodb repository implement

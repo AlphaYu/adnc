@@ -1,4 +1,4 @@
-﻿using DotNetCore.CAP.Filter;
+using DotNetCore.CAP.Filter;
 
 namespace Adnc.Infra.EventBus.Cap.Filters;
 

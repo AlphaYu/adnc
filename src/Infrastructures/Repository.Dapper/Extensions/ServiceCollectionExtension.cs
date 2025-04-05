@@ -1,4 +1,4 @@
-﻿using Adnc.Infra.Repository.Dapper;
+using Adnc.Infra.Repository.Dapper;
 using Adnc.Infra.Repository.Dapper.Internal;
 
 namespace Microsoft.Extensions.DependencyInjection;

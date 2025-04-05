@@ -1,4 +1,4 @@
-﻿using Adnc.Shared.Remote;
+using Adnc.Shared.Remote;
 using Adnc.Shared.WebApi;
 
 namespace Microsoft.Extensions.Hosting;

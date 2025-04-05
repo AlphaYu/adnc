@@ -1,4 +1,4 @@
-﻿namespace Adnc.Shared.Remote.Handlers;
+namespace Adnc.Shared.Remote.Handlers;
 
 public class CacheDelegatingHandler : DelegatingHandler
 {

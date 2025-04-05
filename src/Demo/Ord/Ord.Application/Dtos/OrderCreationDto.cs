@@ -1,4 +1,4 @@
-﻿namespace Adnc.Demo.Ord.Application.Dtos;
+namespace Adnc.Demo.Ord.Application.Dtos;
 
 public class OrderCreationDto : IDto
 {

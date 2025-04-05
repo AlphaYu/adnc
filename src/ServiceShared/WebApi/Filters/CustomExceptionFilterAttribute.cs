@@ -1,4 +1,4 @@
-﻿using Adnc.Infra.Core.Exceptions;
+using Adnc.Infra.Core.Exceptions;
 
 namespace Microsoft.AspNetCore.Mvc.Filters;
 

@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.Repository.Dapper.Internal;
+namespace Adnc.Infra.Repository.Dapper.Internal;
 
 internal sealed class TimeStampeHandler : SqlMapper.TypeHandler<byte[]>
 {

@@ -1,4 +1,4 @@
-﻿using NLog;
+using NLog;
 using NLog.Web;
 
 namespace Adnc.Demo.Cust.Api;

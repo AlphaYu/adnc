@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.Redis.Core.Internal;
+namespace Adnc.Infra.Redis.Core.Internal;
 
 public class AutoDelayTimers
 {

@@ -1,4 +1,4 @@
-﻿namespace Adnc.Demo.Ord.Application;
+namespace Adnc.Demo.Ord.Application;
 
 public class OrdProfile : Profile
 {

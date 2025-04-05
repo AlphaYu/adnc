@@ -1,4 +1,4 @@
-﻿using Adnc.Infra.Repository.EfCore.Extensions;
+using Adnc.Infra.Repository.EfCore.Extensions;
 using Microsoft.EntityFrameworkCore.Query;
 
 namespace Adnc.Infra.Repository.EfCore;

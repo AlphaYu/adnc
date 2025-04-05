@@ -1,4 +1,4 @@
-﻿using Adnc.Demo.Const.Entity.Cust;
+using Adnc.Demo.Const.Entity.Cust;
 
 namespace Adnc.Demo.Cust.Api.Application.Dtos.DtoValidators;
 

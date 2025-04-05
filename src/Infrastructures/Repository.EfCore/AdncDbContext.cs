@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.Repository.EfCore;
+namespace Adnc.Infra.Repository.EfCore;
 
 public abstract class AdncDbContext(DbContextOptions options, IEntityInfo entityInfo, Operater operater) : DbContext(options)
 {

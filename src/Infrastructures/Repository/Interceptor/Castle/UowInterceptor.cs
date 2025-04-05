@@ -1,4 +1,4 @@
-﻿using Castle.DynamicProxy;
+using Castle.DynamicProxy;
 
 namespace Adnc.Infra.Repository.Interceptor.Castle;
 

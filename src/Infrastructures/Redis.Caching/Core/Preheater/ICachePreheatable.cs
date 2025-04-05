@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.Redis.Caching.Core.Preheater;
+namespace Adnc.Infra.Redis.Caching.Core.Preheater;
 
 public interface ICachePreheatable
 {

@@ -1,4 +1,4 @@
-﻿namespace Adnc.Demo.Const.Permissions.Maint;
+namespace Adnc.Demo.Const.Permissions.Maint;
 
 public static class PermissionConsts
 {

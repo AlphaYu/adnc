@@ -1,4 +1,4 @@
-﻿namespace Adnc.Demo.Admin.Application;
+namespace Adnc.Demo.Admin.Application;
 
 public sealed class DependencyRegistrar(IServiceCollection services, IServiceInfo serviceInfo, IConfiguration configuration, ServiceLifetime lifetime = ServiceLifetime.Scoped)
     : AbstractApplicationDependencyRegistrar(services, serviceInfo, configuration, lifetime)

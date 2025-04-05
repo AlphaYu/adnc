@@ -1,4 +1,4 @@
-﻿namespace Adnc.Demo.Admin.Application.Services;
+namespace Adnc.Demo.Admin.Application.Services;
 
 public class MenuService(IEfRepository<Menu> menuRepo, IEfRepository<RoleMenuRelation> roleMenuRepo, CacheService cacheService) : AbstractAppService, IMenuService
 {

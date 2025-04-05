@@ -1,4 +1,4 @@
-﻿using Adnc.Infra.Redis.Core.Serialization;
+using Adnc.Infra.Redis.Core.Serialization;
 using StackExchange.Redis;
 
 namespace Adnc.Infra.Redis;

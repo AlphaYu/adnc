@@ -1,4 +1,4 @@
-﻿using Consul;
+using Consul;
 using Ocelot.Logging;
 using Ocelot.Provider.Consul;
 using Ocelot.Provider.Consul.Interfaces;

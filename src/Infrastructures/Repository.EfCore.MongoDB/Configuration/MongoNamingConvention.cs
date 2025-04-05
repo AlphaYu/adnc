@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.Repository.EfCore.MongoDB.Configuration;
+namespace Adnc.Infra.Repository.EfCore.MongoDB.Configuration;
 
 public enum MongoNamingConvention
 {

@@ -1,4 +1,4 @@
-﻿using Adnc.Shared.WebApi.Authentication.Bearer;
+using Adnc.Shared.WebApi.Authentication.Bearer;
 
 namespace Adnc.Shared.WebApi;
 

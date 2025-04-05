@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.Redis.Providers.StackExchange;
+namespace Adnc.Infra.Redis.Providers.StackExchange;
 
 /// <summary>
 /// Default redis caching provider.

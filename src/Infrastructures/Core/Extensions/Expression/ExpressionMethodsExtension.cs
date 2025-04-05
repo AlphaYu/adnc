@@ -1,4 +1,4 @@
-﻿namespace System.Linq.Expressions;
+namespace System.Linq.Expressions;
 
 /// <summary>
 /// Provides extension methods for working with System.Linq.Expressions.

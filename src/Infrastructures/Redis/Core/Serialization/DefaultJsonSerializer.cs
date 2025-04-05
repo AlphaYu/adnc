@@ -1,4 +1,4 @@
-﻿using Adnc.Infra.Core.Json;
+using Adnc.Infra.Core.Json;
 using Adnc.Infra.Redis.Core.Internal;
 
 namespace Adnc.Infra.Redis.Core.Serialization;

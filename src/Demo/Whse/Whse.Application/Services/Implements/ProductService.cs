@@ -1,4 +1,4 @@
-﻿namespace Adnc.Demo.Whse.Application.Services.Implements;
+namespace Adnc.Demo.Whse.Application.Services.Implements;
 
 /// <summary>
 ///  商品管理

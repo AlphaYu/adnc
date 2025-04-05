@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.Repository.EfCore.MongoDB.Transaction;
+namespace Adnc.Infra.Repository.EfCore.MongoDB.Transaction;
 
 //todo: implement MongoDbUnitOfWork
 //public class MongoDbUnitOfWork<TDbContext>(TDbContext context, ICapPublisher? publisher = null) : UnitOfWork<TDbContext>(context)

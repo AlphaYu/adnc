@@ -1,4 +1,4 @@
-﻿namespace Adnc.Shared.Repository.EfCoreEntities.Config;
+namespace Adnc.Shared.Repository.EfCoreEntities.Config;
 
 public class EventTrackerConfig : IEntityTypeConfiguration<EventTracker>
 {

@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.Redis;
+namespace Adnc.Infra.Redis;
 
 public interface IDistributedLocker
 {

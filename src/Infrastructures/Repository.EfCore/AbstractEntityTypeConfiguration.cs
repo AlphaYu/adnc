@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.Repository.EfCore;
+namespace Adnc.Infra.Repository.EfCore;
 
 public abstract class AbstractEntityTypeConfiguration<TEntity> : IEntityTypeConfiguration<TEntity>
    where TEntity : Entity

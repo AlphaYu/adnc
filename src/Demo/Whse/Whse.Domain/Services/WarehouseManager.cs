@@ -1,4 +1,4 @@
-﻿using Adnc.Demo.Remote.Event;
+using Adnc.Demo.Remote.Event;
 using Adnc.Demo.Whse.Domain.Aggregates.WarehouseAggregate;
 
 namespace Adnc.Demo.Whse.Domain.Services;

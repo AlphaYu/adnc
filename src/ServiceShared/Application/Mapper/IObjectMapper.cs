@@ -1,4 +1,4 @@
-﻿namespace Adnc.Shared.Application.Mapper;
+namespace Adnc.Shared.Application.Mapper;
 
 public interface IObjectMapper
 {

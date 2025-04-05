@@ -1,4 +1,4 @@
-﻿namespace Adnc.Shared.WebApi.Authentication.Hybrid;
+namespace Adnc.Shared.WebApi.Authentication.Hybrid;
 
 /// <summary>
 /// Hybrid验证(认证)服务

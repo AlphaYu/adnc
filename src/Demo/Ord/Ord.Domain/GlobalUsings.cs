@@ -1,4 +1,4 @@
-﻿global using System.Reflection;
+global using System.Reflection;
 global using Adnc.Demo.Const.Entity.Ord;
 global using Adnc.Demo.Ord.Domain.Aggregates.OrderAggregate;
 global using Adnc.Infra.Core.Guard;

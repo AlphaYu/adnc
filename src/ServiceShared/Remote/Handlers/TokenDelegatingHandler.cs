@@ -1,4 +1,4 @@
-﻿using Adnc.Shared.Remote.Handlers.Token;
+using Adnc.Shared.Remote.Handlers.Token;
 
 namespace Adnc.Shared.Remote.Handlers;
 

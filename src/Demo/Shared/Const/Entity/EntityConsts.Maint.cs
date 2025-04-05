@@ -1,2 +1,2 @@
-﻿namespace Adnc.Demo.Const.Entity.Maint;
+namespace Adnc.Demo.Const.Entity.Maint;
 

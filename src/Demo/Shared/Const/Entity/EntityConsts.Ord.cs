@@ -1,4 +1,4 @@
-﻿namespace Adnc.Demo.Const.Entity.Ord;
+namespace Adnc.Demo.Const.Entity.Ord;
 
 public static class OrdConsts
 {

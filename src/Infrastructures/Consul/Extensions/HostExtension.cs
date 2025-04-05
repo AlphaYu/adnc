@@ -1,4 +1,4 @@
-﻿using Adnc.Infra.Consul.Registrar;
+using Adnc.Infra.Consul.Registrar;
 
 namespace Microsoft.Extensions.Hosting;
 

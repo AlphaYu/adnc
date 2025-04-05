@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.Core.Exceptions;
+namespace Adnc.Infra.Core.Exceptions;
 
 [Serializable]
 public class InvalidVariableException(string message) : Exception(message), IAdncException

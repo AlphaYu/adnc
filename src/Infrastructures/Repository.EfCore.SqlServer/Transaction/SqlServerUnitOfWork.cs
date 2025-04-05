@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.Repository.EfCore.SqlServer.Transaction;
+namespace Adnc.Infra.Repository.EfCore.SqlServer.Transaction;
 
 public class SqlServerUnitOfWork<TDbContext>(TDbContext context, ICapPublisher? publisher = null) : UnitOfWork<TDbContext>(context)
     where TDbContext : SqlServerDbContext

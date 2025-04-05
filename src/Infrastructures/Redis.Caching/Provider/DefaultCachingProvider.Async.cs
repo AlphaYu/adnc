@@ -1,4 +1,4 @@
-﻿using Adnc.Infra.Core.Guard;
+using Adnc.Infra.Core.Guard;
 using Adnc.Infra.Redis.Caching.Core;
 
 namespace Adnc.Infra.Redis.Caching.Provider;

@@ -1,4 +1,4 @@
-﻿namespace Adnc.Demo.Admin.Application.Services;
+namespace Adnc.Demo.Admin.Application.Services;
 
 public class DictService(IEfRepository<Dict> dictRepo, IEfRepository<DictData> dictDataRepo/*, BloomFilterFactory bloomFilterFactory*/, CacheService cacheService)
     : AbstractAppService, IDictService

@@ -1,4 +1,4 @@
-﻿using Adnc.Shared.WebApi.Authentication.Processors;
+using Adnc.Shared.WebApi.Authentication.Processors;
 using Adnc.Shared.WebApi.Authorization.Handlers;
 
 namespace Adnc.Shared.WebApi.Registrar;

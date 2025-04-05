@@ -1,4 +1,4 @@
-﻿namespace Adnc.Shared.WebApi.Authentication.Hybrid;
+namespace Adnc.Shared.WebApi.Authentication.Hybrid;
 
 public class HybridPostConfigureOptions : IPostConfigureOptions<HybridSchemeOptions>
 {

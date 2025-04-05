@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.IdGenerater.Yitter;
+namespace Adnc.Infra.IdGenerater.Yitter;
 
 public sealed class WorkerNodeHostedService(ILogger<WorkerNodeHostedService> logger, WorkerNode workerNode) : BackgroundService
 {

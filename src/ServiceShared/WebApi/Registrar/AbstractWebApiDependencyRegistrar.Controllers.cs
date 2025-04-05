@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
 
 namespace Adnc.Shared.WebApi.Registrar;

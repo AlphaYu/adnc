@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<Description>该库是最顶层库，任何库都会者直接或间接依赖该库。该库提供了大量的C#基础类型的扩展方法与Configuration、DependencyInjection、ContainerBuilder的扩展方法。</Description>
 		<PackageTags>adnc,adnc.infra,adnc.infra.core</PackageTags>

@@ -1,4 +1,4 @@
-﻿using Adnc.Shared.Application.Contracts.Enums;
+using Adnc.Shared.Application.Contracts.Enums;
 
 namespace Adnc.Shared.Application.Contracts.Interfaces;
 

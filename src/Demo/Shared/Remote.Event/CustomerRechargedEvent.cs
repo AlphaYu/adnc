@@ -1,4 +1,4 @@
-﻿using Adnc.Shared.Remote.Event;
+using Adnc.Shared.Remote.Event;
 
 namespace Adnc.Demo.Remote.Event;
 
