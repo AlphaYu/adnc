@@ -11,12 +11,16 @@ public sealed class DependencyRegistrar(IServiceCollection services, IServiceInf
 
         AddWebApiDefaultServices();
 
+        var connectionString = Configuration.GetValue<string>(NodeConsts.SqlServer_ConnectionString) ?? throw new ArgumentNullException(nameof(NodeConsts.SqlServer_ConnectionString));
+        var redisSecton = Configuration.GetRequiredSection(NodeConsts.Redis);
+        var rabbitSecton = Configuration.GetRequiredSection(NodeConsts.RabbitMq);
+        var clientProvidedName = ServiceInfo.Id;
         Services.AddHealthChecks(checksBuilder =>
         {
-            var connectionString = Configuration.GetValue<string>(NodeConsts.SqlServer_ConnectionString) ?? throw new ArgumentNullException(nameof(NodeConsts.SqlServer_ConnectionString));
             checksBuilder
-                    .AddRedis(Configuration)
-                    .AddRabbitMQ(Configuration, ServiceInfo.Id);
+                    .AddSqlServer(connectionString)
+                    .AddRedis(redisSecton)
+                    .AddRabbitMQ(rabbitSecton, clientProvidedName);
         });
     }
 }

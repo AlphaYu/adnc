@@ -29,11 +29,15 @@ public sealed class DependencyRegistrar(IServiceCollection services, IServiceInf
 
     protected override void AddCapEventBus(IEnumerable<Type> subscribers, Action<FailedInfo>? failedThresholdCallback = null)
     {
+        var connectionString = Configuration[NodeConsts.SqlServer_ConnectionString] ?? throw new InvalidDataException("SqlServer ConnectionString is null");
+        var rabbitMQOptions = Configuration.GetRequiredSection(NodeConsts.RabbitMq).Get<RabbitMQOptions>() ?? throw new InvalidDataException(nameof(NodeConsts.RabbitMq));
+        var clientProvidedName = ServiceInfo.Id;
+        var version = ServiceInfo.Version;
+        var groupName = $"cap.{ServiceInfo.ShortName}.{this.GetEnvShortName()}";
         Services.AddAdncInfraCap(subscribers, capOptions =>
         {
-            SetCapBasicInfo(capOptions, failedThresholdCallback);
-            SetCapRabbitMQInfo(capOptions);
-            var connectionString = Configuration[NodeConsts.SqlServer_ConnectionString] ?? throw new InvalidDataException("SqlServer ConnectionString is null"); ;
+            SetCapBasicInfo(capOptions, version, groupName, failedThresholdCallback);
+            SetCapRabbitMQInfo(capOptions, rabbitMQOptions, clientProvidedName);
             capOptions.UseSqlServer(sqlServerOptions =>
             {
                 sqlServerOptions.ConnectionString = connectionString;
@@ -46,14 +50,15 @@ public sealed class DependencyRegistrar(IServiceCollection services, IServiceInf
     {
         AddOperater(Services);
 
+        var connectionString = Configuration[NodeConsts.SqlServer_ConnectionString] ?? throw new InvalidDataException("SqlServer ConnectionString is null");
+        var migrationsAssemblyName = ServiceInfo.MigrationsAssemblyName;
         Services.AddAdncInfraEfCoreSQLServer(RepositoryOrDomainLayerAssembly, optionsBuilder =>
         {
-            var connectionString = Configuration[NodeConsts.SqlServer_ConnectionString] ?? throw new InvalidDataException("SqlServer ConnectionString is null"); ;
             optionsBuilder.UseLowerCaseNamingConvention();
             optionsBuilder.UseSqlServer(connectionString, optionsBuilder =>
             {
                 optionsBuilder.MinBatchSize(4)
-                                        .MigrationsAssembly(ServiceInfo.MigrationsAssemblyName)
+                                        .MigrationsAssembly(migrationsAssemblyName)
                                         .UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
             });
         }, Lifetime);

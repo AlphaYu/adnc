@@ -11,12 +11,16 @@ public sealed class DependencyRegistrar(IServiceCollection services, IServiceInf
 
         AddWebApiDefaultServices();
 
+        var mysqlSection = Configuration.GetRequiredSection(NodeConsts.Mysql);
+        var redisSecton = Configuration.GetRequiredSection(NodeConsts.Redis);
+        var rabbitSecton = Configuration.GetRequiredSection(NodeConsts.RabbitMq);
+        var clientProvidedName = ServiceInfo.Id;
         Services.AddHealthChecks(checksBuilder =>
         {
             checksBuilder
-                    .AddMySql(Configuration)
-                    .AddRedis(Configuration)
-                    .AddRabbitMQ(Configuration, ServiceInfo.Id);
+                    .AddMySql(mysqlSection)
+                    .AddRedis(redisSecton)
+                    .AddRabbitMQ(rabbitSecton, clientProvidedName);
         });
     }
 }

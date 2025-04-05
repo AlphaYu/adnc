@@ -11,29 +11,30 @@ public static class HealthChecksBuilderExtension
         return services;
     }
 
-    public static IHealthChecksBuilder AddMySql(this IHealthChecksBuilder checksBuilder, IConfiguration configuration)
+    public static IHealthChecksBuilder AddMySql(this IHealthChecksBuilder checksBuilder, IConfigurationSection mysqlSection)
     {
-        ArgumentNullException.ThrowIfNull(configuration, nameof(IConfiguration));
-        var mysqlConnectionString = configuration.GetValue<string>(NodeConsts.Mysql_ConnectionString) ?? throw new InvalidDataException($"{nameof(NodeConsts.Mysql_ConnectionString)} is null");
+        ArgumentNullException.ThrowIfNull(mysqlSection, nameof(mysqlSection));
+        var mysqlConnectionString = mysqlSection.GetValue<string>(NodeConsts.ConnectionString) ?? throw new InvalidDataException($"{nameof(NodeConsts.ConnectionString)} is null");
         return checksBuilder.AddMySql(mysqlConnectionString);
     }
 
-    public static IHealthChecksBuilder AddRedis(this IHealthChecksBuilder checksBuilder, IConfiguration configuration)
+    public static IHealthChecksBuilder AddRedis(this IHealthChecksBuilder checksBuilder, IConfigurationSection redisSection)
     {
-        ArgumentNullException.ThrowIfNull(configuration, nameof(IConfiguration));
-        var redisConfig = configuration.GetSection(NodeConsts.Redis).Get<RedisOptions>() ?? throw new InvalidDataException($"{nameof(NodeConsts.Redis)} is null"); ;
-        return checksBuilder.AddRedis(redisConfig.Dbconfig.ConnectionString);
+        ArgumentNullException.ThrowIfNull(redisSection, nameof(redisSection));
+        var redisConfig = redisSection.Get<RedisOptions>() ?? throw new InvalidDataException($"{nameof(NodeConsts.Redis)} is null");
+        var connectionString = redisConfig.Dbconfig.ConnectionString;
+        return checksBuilder.AddRedis(connectionString);
     }
 
-    public static IHealthChecksBuilder AddRabbitMQ(this IHealthChecksBuilder checksBuilder, IConfiguration configuration, string clientProvidedName = "unkonow")
+    public static IHealthChecksBuilder AddRabbitMQ(this IHealthChecksBuilder checksBuilder, IConfigurationSection rabbitMQSection, string clientProvidedName = "unkonow")
     {
-        ArgumentNullException.ThrowIfNull(configuration, nameof(IConfiguration));
-        var rabitmqConfig = configuration.GetSection(NodeConsts.RabbitMq).Get<RabbitMQOptions>() ?? throw new InvalidDataException("RabbitMqOptions is null");
+        ArgumentNullException.ThrowIfNull(rabbitMQSection, nameof(rabbitMQSection));
+        var rabbitMQOptions = rabbitMQSection.Get<RabbitMQOptions>() ?? throw new InvalidDataException($"{nameof(NodeConsts.RabbitMq)} is null");
         return checksBuilder.AddRabbitMQ(provider =>
         {
             var logger = provider.GetRequiredService<ILogger<IConnectionManager>>();
             var serviceInfo = provider.GetRequiredService<IServiceInfo>();
-            return ConnectionManager.GetInstance(rabitmqConfig, clientProvidedName, logger).Connection;
+            return ConnectionManager.GetInstance(rabbitMQOptions, clientProvidedName, logger).Connection;
         });
     }
 }

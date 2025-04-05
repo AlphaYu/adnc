@@ -12,17 +12,18 @@ public abstract partial class AbstractApplicationDependencyRegistrar
     {
         AddOperater(Services);
 
+        var connectionString = Configuration[NodeConsts.Mysql_ConnectionString] ?? throw new ArgumentNullException($"connectionString is null");
+        var versionString = Configuration[NodeConsts.Mysql_ServerVersion] ?? "11.7.2";
+        var serverTypeString = Configuration[NodeConsts.Mysql_ServerType] ?? $"{nameof(ServerType.MariaDb)}";
+        var serverVersion = Enum.TryParse(serverTypeString, out ServerType serverType) ? ServerVersion.Create(new Version(versionString), serverType) : throw new ArgumentException($"serverTypeString is invalid: {serverTypeString}");
+        var migrationsAssemblyName = ServiceInfo.MigrationsAssemblyName;
         Services.AddAdncInfraEfCoreMySql(RepositoryOrDomainLayerAssembly, optionsBuilder =>
          {
-             var connectionString = Configuration[NodeConsts.Mysql_ConnectionString] ?? throw new ArgumentNullException($"connectionString is null");
-             var versionString = Configuration[NodeConsts.Mysql_ServerVersion] ?? "11.7.2";
-             var serverTypeString = Configuration[NodeConsts.Mysql_ServerType] ?? $"{nameof(ServerType.MariaDb)}";
-             var serverVersion = Enum.TryParse(serverTypeString, out ServerType serverType) ? ServerVersion.Create(new Version(versionString), serverType) : throw new ArgumentException($"serverTypeString is invalid: {serverTypeString}");
              optionsBuilder.UseLowerCaseNamingConvention();
              optionsBuilder.UseMySql(connectionString, serverVersion, mySqlOptions =>
              {
                  mySqlOptions.MinBatchSize(4)
-                                                  .MigrationsAssembly(ServiceInfo.MigrationsAssemblyName)
+                                                  .MigrationsAssembly(migrationsAssemblyName)
                                                   .UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
              });
          }, Lifetime);

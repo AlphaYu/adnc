@@ -4,4 +4,4 @@ namespace Adnc.Demo.Maint.Application.Dtos;
 /// 操作日志
 /// </summary>
 public class OperationLogDto : OperationLog
-{}
+{ }

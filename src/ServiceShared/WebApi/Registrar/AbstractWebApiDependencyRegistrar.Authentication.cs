@@ -17,15 +17,17 @@ public abstract partial class AbstractWebApiDependencyRegistrar
     {
         JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
+        var jwtSection = Configuration.GetRequiredSection(NodeConsts.JWT);
+        var basicSection = Configuration.GetRequiredSection(NodeConsts.Basic);
+        var jwtConfig = jwtSection.Get<JWTOptions>() ?? throw new InvalidDataException(nameof(jwtSection));
         Services
-            .Configure<JWTOptions>(Configuration.GetSection(NodeConsts.JWT))
-            .Configure<BasicOptions>(Configuration.GetSection(NodeConsts.Basic))
+            .Configure<JWTOptions>(jwtSection)
+            .Configure<BasicOptions>(basicSection)
             .AddScoped<AbstractAuthenticationProcessor, TAuthenticationHandler>()
             .AddAuthentication(HybridDefaults.AuthenticationScheme)
             .AddHybrid()
             .AddJwtBearer(options =>
             {
-                var jwtConfig = Configuration.GetSection(NodeConsts.JWT).Get<JWTOptions>() ?? throw new ArgumentNullException(nameof(JWTOptions)); ;
                 options.MapInboundClaims = false;
                 options.TokenValidationParameters = jwtConfig.GenarateTokenValidationParameters();
                 options.Events = new JwtBearerEvents

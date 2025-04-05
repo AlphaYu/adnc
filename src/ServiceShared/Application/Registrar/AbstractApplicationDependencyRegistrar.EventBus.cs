@@ -18,34 +18,37 @@ public abstract partial class AbstractApplicationDependencyRegistrar
         ArgumentNullException.ThrowIfNull(subscribers, nameof(subscribers));
         Checker.Argument.ThrowIfNullOrCountLEZero(subscribers, nameof(subscribers));
 
+        var connectionString = Configuration.GetValue<string>(NodeConsts.Mysql_ConnectionString) ?? throw new InvalidDataException("MySql ConnectionString is null");
+        var rabbitMQOptions = Configuration.GetRequiredSection(NodeConsts.RabbitMq).Get<RabbitMQOptions>() ?? throw new InvalidDataException(nameof(RabbitMQOptions));
+        var clientProvidedName = ServiceInfo.Id;
+        var version = ServiceInfo.Version;
+        var groupName = $"cap.{ServiceInfo.ShortName}.{this.GetEnvShortName()}";
         Services.AddAdncInfraCap(subscribers, capOptions =>
         {
-            SetCapBasicInfo(capOptions, failedThresholdCallback);
-            SetCapRabbitMQInfo(capOptions);
-            SetCapMySqlInfo(capOptions);
+            SetCapBasicInfo(capOptions, version, groupName, failedThresholdCallback);
+            SetCapRabbitMQInfo(capOptions, rabbitMQOptions, clientProvidedName);
+            SetCapMySqlInfo(capOptions, connectionString);
         }, null, Lifetime);
     }
 
-    protected void SetCapRabbitMQInfo(CapOptions capOptions)
+    protected void SetCapRabbitMQInfo(CapOptions capOptions, RabbitMQOptions rabbitMQOptions, string clientProvidedName)
     {
-        var rabbitMqConfig = RabbitMqSection.Get<RabbitMQOptions>() ?? throw new InvalidDataException(nameof(RabbitMQOptions));
         capOptions.UseRabbitMQ(mqOptions =>
         {
-            mqOptions.HostName = rabbitMqConfig.HostName;
-            mqOptions.VirtualHost = rabbitMqConfig.VirtualHost;
-            mqOptions.Port = rabbitMqConfig.Port;
-            mqOptions.UserName = rabbitMqConfig.UserName;
-            mqOptions.Password = rabbitMqConfig.Password;
+            mqOptions.HostName = rabbitMQOptions.HostName;
+            mqOptions.VirtualHost = rabbitMQOptions.VirtualHost;
+            mqOptions.Port = rabbitMQOptions.Port;
+            mqOptions.UserName = rabbitMQOptions.UserName;
+            mqOptions.Password = rabbitMQOptions.Password;
             mqOptions.ConnectionFactoryOptions = (facotry) =>
             {
-                facotry.ClientProvidedName = ServiceInfo.Id;
+                facotry.ClientProvidedName = clientProvidedName;
             };
         });
     }
 
-    protected void SetCapMySqlInfo(CapOptions capOptions)
+    protected void SetCapMySqlInfo(CapOptions capOptions, string connectionString)
     {
-        var connectionString = Configuration[NodeConsts.Mysql_ConnectionString] ?? throw new InvalidDataException("MySql ConnectionString is null"); ;
         capOptions.UseMySql(config =>
         {
             config.ConnectionString = connectionString;
@@ -53,11 +56,11 @@ public abstract partial class AbstractApplicationDependencyRegistrar
         });
     }
 
-    protected void SetCapBasicInfo(CapOptions capOptions, Action<FailedInfo>? failedThresholdCallback = null)
+    protected void SetCapBasicInfo(CapOptions capOptions, string version, string groupName, Action<FailedInfo>? failedThresholdCallback = null)
     {
-        capOptions.Version = ServiceInfo.Version;
+        capOptions.Version = version;
         //默认值：cap.queue.{程序集名称},在 RabbitMQ 中映射到 Queue Names。
-        capOptions.DefaultGroupName = $"cap.{ServiceInfo.ShortName}.{this.GetEnvShortName()}";
+        capOptions.DefaultGroupName = groupName;
         //默认值：60 秒,重试 & 间隔
         //在默认情况下，重试将在发送和消费消息失败的 4分钟后 开始，这是为了避免设置消息状态延迟导致可能出现的问题。
         //发送和消费消息的过程中失败会立即重试 3 次，在 3 次以后将进入重试轮询，此时 FailedRetryInterval 配置才会生效。

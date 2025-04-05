@@ -4,4 +4,4 @@ namespace Adnc.Shared.Application.Contracts.Dtos;
 /// DTO 基类
 /// </summary>
 public interface IDto
-{}
+{ }

@@ -4,4 +4,4 @@ namespace Adnc.Infra.Redis.Providers.StackExchange;
 /// Default redis caching provider.
 /// </summary>
 public partial class DefaultRedisProvider : Adnc.Infra.Redis.IRedisProvider
-{}
+{ }

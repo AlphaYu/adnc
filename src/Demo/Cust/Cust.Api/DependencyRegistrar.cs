@@ -12,19 +12,25 @@ public sealed class ApiLayerRegistrar(IServiceCollection services, IServiceInfo 
 
         AddWebApiDefaultServices();
 
+        var mysqlSection = Configuration.GetRequiredSection(NodeConsts.Mysql);
+        var redisSecton = Configuration.GetRequiredSection(NodeConsts.Redis);
+        var rabbitSecton = Configuration.GetRequiredSection(NodeConsts.RabbitMq);
+        var clientProvidedName = ServiceInfo.Id;
         Services.AddHealthChecks(checksBuilder =>
         {
             checksBuilder
-                    .AddMySql(Configuration)
-                    .AddRedis(Configuration)
-                    .AddRabbitMQ(Configuration, ServiceInfo.Id);
+                    .AddMySql(mysqlSection)
+                    .AddRedis(redisSecton)
+                    .AddRabbitMQ(rabbitSecton, clientProvidedName);
         });
 
+        var capPath = $"/{ServiceInfo.RelativeRootPath}/cap";
+        var capPolicy = AuthorizePolicy.Default;
         Services.AddCapDashboardStandalone(options =>
         {
-            options.PathMatch = $"/{ServiceInfo.RelativeRootPath}/cap";
+            options.PathMatch = capPath;
             options.AllowAnonymousExplicit = false;
-            options.AuthorizationPolicy = AuthorizePolicy.Default;
+            options.AuthorizationPolicy = capPolicy;
         });
 
         //register others services

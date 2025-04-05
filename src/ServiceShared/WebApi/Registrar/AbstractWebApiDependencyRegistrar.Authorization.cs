@@ -13,11 +13,12 @@ public abstract partial class AbstractWebApiDependencyRegistrar
     /// <typeparam name="TAuthorizationHandler"></typeparam>
     protected virtual void AddAuthorization<TAuthorizationHandler>() where TAuthorizationHandler : AbstractPermissionHandler
     {
+        var policyName = AuthorizePolicy.Default;
         Services
             .AddScoped<IAuthorizationHandler, TAuthorizationHandler>()
             .AddAuthorization(options =>
             {
-                options.AddPolicy(AuthorizePolicy.Default, policy =>
+                options.AddPolicy(policyName, policy =>
                 {
                     policy.Requirements.Add(new PermissionRequirement());
                 });

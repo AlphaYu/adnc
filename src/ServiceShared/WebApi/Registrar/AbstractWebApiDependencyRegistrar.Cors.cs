@@ -10,6 +10,7 @@ public abstract partial class AbstractWebApiDependencyRegistrar
     protected virtual void AddCors()
     {
         var corsHosts = Configuration.GetValue<string>("CorsHosts") ?? string.Empty;
+        var policyName = ServiceInfo.CorsPolicy;
         Action<CorsPolicyBuilder> corsPolicyAction = (corsPolicy) => corsPolicy.AllowAnyHeader().AllowAnyMethod().AllowCredentials();
         if (corsHosts == "*")
         {
@@ -20,6 +21,6 @@ public abstract partial class AbstractWebApiDependencyRegistrar
             corsPolicyAction += (corsPolicy) => corsPolicy.WithOrigins(corsHosts.Split(','));
         }
 
-        Services.AddCors(options => options.AddPolicy(ServiceInfo.CorsPolicy, corsPolicyAction));
+        Services.AddCors(options => options.AddPolicy(policyName, corsPolicyAction));
     }
 }

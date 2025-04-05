@@ -8,6 +8,7 @@ public abstract partial class AbstractWebApiDependencyRegistrar
     protected virtual void AddSwaggerGen()
     {
         var openApiInfo = new OpenApiInfo { Title = ServiceInfo.ShortName, Version = ServiceInfo.Version };
+        var startAssemblyName = ServiceInfo.StartAssembly.GetName().Name ?? throw new InvalidDataException($"{nameof(ServiceInfo.StartAssembly)} is null");
         //Services.AddEndpointsApiExplorer();
         Services
             .AddSwaggerGen(c =>
@@ -39,11 +40,6 @@ public abstract partial class AbstractWebApiDependencyRegistrar
                         Array.Empty<string>()
                     }
                 });
-                var startAssemblyName = ServiceInfo.StartAssembly.GetName().Name;
-                if (string.IsNullOrEmpty(startAssemblyName))
-                {
-                    throw new ArgumentNullException(nameof(startAssemblyName));
-                }
 
                 var lastName = startAssemblyName.Split('.').Last();
                 var apiLayerXmlFilePath = Path.Combine(AppContext.BaseDirectory, $"{startAssemblyName}.xml");

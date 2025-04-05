@@ -21,6 +21,7 @@ public static class NodeConsts
     public const string Kestrel = "Kestrel";
     public const string ThreadPoolSettings = "ThreadPoolSettings";
     public const string Redis = "Redis";
+    public const string ConnectionString = "ConnectionString";
     public const string Mysql = "Mysql";
     public const string Mysql_ConnectionString = "Mysql:ConnectionString";
     public const string Mysql_ServerVersion = "Mysql:ServerVersion";

@@ -5,6 +5,9 @@
   <ItemGroup>
     <None Include="..\..\Shared\resources\**\*" Link="%(Link)" CopyToOutputDirectory="PreserveNewest"/>
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="$(AspNetCore_HealthChecks_SqlServer_Version)" />
+  </ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Whse.Application\Adnc.Demo.Whse.Application.csproj" />
 	</ItemGroup>

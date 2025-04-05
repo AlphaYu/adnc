@@ -28,16 +28,11 @@ public abstract partial class AbstractApplicationDependencyRegistrar
         ArgumentNullException.ThrowIfNullOrWhiteSpace(serviceName, nameof(serviceName));
         ArgumentNullException.ThrowIfNull(policies, nameof(policies));
 
-        if (RpcInfoOption is null)
-        {
-            throw new InvalidDataException(nameof(RpcInfoOption));
-        }
-        else
-        {
-            AddRpcClientCommonServices(Services, RpcInfoOption);
-        }
+        var registerType = Configuration.GetValue<string>(NodeConsts.RegisterType) ?? RegisteredTypeConsts.Direct;
+        var rpcInfo = Configuration.GetRequiredSection(NodeConsts.RpcInfo).Get<RpcInfo>() ?? throw new InvalidDataException(nameof(NodeConsts.RpcInfo));
+        AddRpcClientCommonServices(Services, rpcInfo);
 
-        var enablePolly = RpcInfoOption.Polly.Enable;
+        var enablePolly = rpcInfo.Polly.Enable;
         //注册RefitClient,设置httpclient生命周期时间，默认也是2分钟。
         var contentSerializer = new SystemTextJsonContentSerializer(SystemTextJson.GetAdncDefaultOptions());
         var refitSettings = new RefitSettings(contentSerializer);
@@ -48,8 +43,8 @@ public abstract partial class AbstractApplicationDependencyRegistrar
                                                     .AddHttpMessageHandler<CacheDelegatingHandler>()
                                                     .AddHttpMessageHandler<TokenDelegatingHandler>();
 
-        var addressNode = RpcInfoOption.Address.First(x => x.Service.EqualsIgnoreCase(serviceName));
-        switch (RegisterType)
+        var addressNode = rpcInfo.Address.First(x => x.Service.EqualsIgnoreCase(serviceName));
+        switch (registerType)
         {
             case RegisteredTypeConsts.Direct:
                 {
@@ -73,7 +68,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar
                     break;
                 }
             default:
-                throw new NotImplementedException(RegisterType);
+                throw new NotImplementedException(registerType);
         }
     }
 
@@ -91,14 +86,9 @@ public abstract partial class AbstractApplicationDependencyRegistrar
         ArgumentNullException.ThrowIfNullOrWhiteSpace(serviceName, nameof(serviceName));
         ArgumentNullException.ThrowIfNull(policies, nameof(policies));
 
-        if (RpcInfoOption is null)
-        {
-            throw new InvalidDataException(nameof(RpcInfoOption));
-        }
-        else
-        {
-            AddRpcClientCommonServices(Services, RpcInfoOption);
-        }
+        var registerType = Configuration.GetValue<string>(NodeConsts.RegisterType) ?? RegisteredTypeConsts.Direct;
+        var rpcInfo = Configuration.GetRequiredSection(NodeConsts.RpcInfo).Get<RpcInfo>() ?? throw new InvalidDataException(nameof(NodeConsts.RpcInfo));
+        AddRpcClientCommonServices(Services, rpcInfo);
 
         var switchName = "System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport";
         var switchResult = AppContext.TryGetSwitch(switchName, out var isEnabled);
@@ -108,8 +98,8 @@ public abstract partial class AbstractApplicationDependencyRegistrar
         }
 
         var baseAddress = string.Empty;
-        var addressNode = RpcInfoOption.Address.First(x => x.Service.EqualsIgnoreCase(serviceName));
-        switch (RegisterType)
+        var addressNode = rpcInfo.Address.First(x => x.Service.EqualsIgnoreCase(serviceName));
+        switch (registerType)
         {
             case RegisteredTypeConsts.Direct:
                 {
@@ -134,10 +124,10 @@ public abstract partial class AbstractApplicationDependencyRegistrar
                     break;
                 }
             default:
-                throw new NotImplementedException(RegisterType);
+                throw new NotImplementedException(registerType);
         }
 
-        var enablePolly = RpcInfoOption.Polly.Enable;
+        var enablePolly = rpcInfo.Polly.Enable;
         Services.AddGrpcClient<TGrpcClient>(options => options.Address = new Uri(baseAddress))
                      .ConfigureChannel(options =>
                      {
