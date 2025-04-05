@@ -1,7 +1,6 @@
 global using System.Linq.Expressions;
 global using System.Net;
 global using System.Reflection;
-global using System.Text.Json;
 global using Adnc.Infra.Core.DependencyInjection;
 global using Adnc.Infra.Core.Json;
 global using Adnc.Infra.IdGenerater.Yitter;

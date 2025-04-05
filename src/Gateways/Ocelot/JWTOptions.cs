@@ -1,5 +1,3 @@
-using System.Text;
-
 namespace Adnc.Gateway.Ocelot;
 
 /// <summary>

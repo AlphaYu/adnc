@@ -1,9 +1,7 @@
 global using System.IdentityModel.Tokens.Jwt;
 global using System.Net;
 global using System.Security.Claims;
-global using System.Text;
 global using System.Text.Encodings.Web;
-global using System.Text.Json;
 global using Adnc.Infra.Core.DependencyInjection;
 global using Adnc.Infra.Core.Json;
 global using Adnc.Infra.EventBus.RabbitMq;

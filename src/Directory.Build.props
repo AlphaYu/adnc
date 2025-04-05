@@ -17,6 +17,11 @@
 		<ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
+  <ItemGroup>
+    <Using Include="System.Text" />
+    <Using Include="System.Text.Json"/>
+    <Using Include="System.Collections" />
+  </ItemGroup>
 	<PropertyGroup>
 		<Infra_Version>1.0.0-preview-250339</Infra_Version>
 		<Shared_Version>1.0.0-preview-250339</Shared_Version>
