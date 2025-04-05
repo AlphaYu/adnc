@@ -1,4 +1,4 @@
-﻿using Adnc.Infra.Repository.EfCore.Internal;
+using Adnc.Infra.Repository.EfCore.Internal;
 
 namespace Adnc.Infra.Unittest.Reposity.TestCases;
 

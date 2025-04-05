@@ -1,4 +1,4 @@
-﻿using Adnc.Infra.Helper;
+using Adnc.Infra.Helper;
 using Xunit.Abstractions;
 
 namespace Adnc.Infra.Unittest.Helper.TestCases;

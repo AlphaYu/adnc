@@ -1,4 +1,4 @@
-﻿global using Adnc.Infra.Repository;
+global using Adnc.Infra.Repository;
 global using Adnc.Infra.Repository.EfCore;
 global using Adnc.Infra.Unittest.Reposity.Fixtures;
 global using Adnc.Infra.Unittest.Reposity.Fixtures.Entities;

@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.Unittest.Redis.TestCases;
+namespace Adnc.Infra.Unittest.Redis.TestCases;
 
 public class RedisCahceTests(RedisContextFixture fixture, ITestOutputHelper output) : IClassFixture<RedisContextFixture>
 {

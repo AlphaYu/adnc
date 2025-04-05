@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.Unittest.Reposity.Fixtures.Entities.Config;
+namespace Adnc.Infra.Unittest.Reposity.Fixtures.Entities.Config;
 /// <summary>
 /// 客户
 /// </summary>

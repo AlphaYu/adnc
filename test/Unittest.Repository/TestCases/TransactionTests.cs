@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.Unittest.Reposity.TestCases;
+namespace Adnc.Infra.Unittest.Reposity.TestCases;
 
 public class TransactionTests : IClassFixture<EfCoreDbcontextFixture>
 {

@@ -1,4 +1,4 @@
-﻿using Adnc.Infra.Unittest.Reposity.MongoDb.Fixtures;
+using Adnc.Infra.Unittest.Reposity.MongoDb.Fixtures;
 using Adnc.Infra.Unittest.Reposity.MongoDb.Fixtures.Entities;
 using MongoDB.Bson;
 

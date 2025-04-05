@@ -1,4 +1,4 @@
-﻿using Adnc.Infra.Unittest.Reposity.Fixtures.Entities;
+using Adnc.Infra.Unittest.Reposity.Fixtures.Entities;
 
 namespace Adnc.Infra.Unittest.Reposity.Fixtures.Entities.Config;
 

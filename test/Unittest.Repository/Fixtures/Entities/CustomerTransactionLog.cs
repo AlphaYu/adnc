@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.Unittest.Reposity.Fixtures.Entities;
+namespace Adnc.Infra.Unittest.Reposity.Fixtures.Entities;
 
 /// <summary>
 /// 客户财务变动记录

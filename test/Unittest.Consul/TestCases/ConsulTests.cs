@@ -1,4 +1,4 @@
-﻿using Adnc.Infra.Consul.Discover;
+using Adnc.Infra.Consul.Discover;
 using Adnc.Infra.Consul.Discover.Balancers;
 using Consul;
 

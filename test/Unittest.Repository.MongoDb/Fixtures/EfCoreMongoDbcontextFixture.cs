@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration;
 
 namespace Adnc.Infra.Unittest.Reposity.MongoDb.Fixtures;
 

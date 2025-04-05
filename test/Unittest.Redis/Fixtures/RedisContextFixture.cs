@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.Unittest.Redis.Fixtures;
+namespace Adnc.Infra.Unittest.Redis.Fixtures;
 
 public class RedisContextFixture
 {

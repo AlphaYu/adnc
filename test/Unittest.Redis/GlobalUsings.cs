@@ -1,4 +1,4 @@
-﻿global using Adnc.Infra.Redis;
+global using Adnc.Infra.Redis;
 global using Adnc.Infra.Redis.Caching;
 global using Adnc.Infra.Unittest.Redis.Fixtures;
 global using Microsoft.Extensions.Configuration;

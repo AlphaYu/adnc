@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.Unittest.Reposity.Fixtures.Entities;
+namespace Adnc.Infra.Unittest.Reposity.Fixtures.Entities;
 
 /// <summary>
 /// 工程表，仅用于测试，无实际意义

@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.Unittest.Reposity.Fixtures.Dtos;
+namespace Adnc.Infra.Unittest.Reposity.Fixtures.Dtos;
 
 public class CustomerDto
 {

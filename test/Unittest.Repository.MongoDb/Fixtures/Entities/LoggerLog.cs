@@ -1,4 +1,4 @@
-﻿using Adnc.Infra.Repository.EfCore.MongoDB;
+using Adnc.Infra.Repository.EfCore.MongoDB;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace Adnc.Infra.Unittest.Reposity.MongoDb.Fixtures.Entities;

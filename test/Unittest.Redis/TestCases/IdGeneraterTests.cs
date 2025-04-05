@@ -1,4 +1,4 @@
-﻿namespace Adnc.Infra.Unittest.Redis.TestCases;
+namespace Adnc.Infra.Unittest.Redis.TestCases;
 
 public class IdGeneraterTests : IClassFixture<RedisContextFixture>
 {

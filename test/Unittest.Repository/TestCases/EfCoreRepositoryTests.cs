@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using MongoDB.Driver.Core.Misc;
 
 namespace Adnc.Infra.Unittest.Reposity.TestCases;
