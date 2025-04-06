@@ -1,8 +1,6 @@
-global using System.Collections;
 global using System.Collections.Concurrent;
 global using System.Diagnostics;
 global using System.Reflection;
-global using System.Text;
 global using Adnc.Infra.Redis.Configurations;
 global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.Hosting;

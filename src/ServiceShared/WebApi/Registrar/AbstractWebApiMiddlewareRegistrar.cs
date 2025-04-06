@@ -91,7 +91,7 @@ public abstract partial class AbstractWebApiMiddlewareRegistrar(WebApplication a
             })
             .UseRouting();
 
-        var enableMetrics = configuration.GetValue(NodeConsts.Metrics_Enable, true);
+        var enableMetrics = configuration.GetValue(NodeConsts.Metrics_Enable, false);
         if (enableMetrics)
         {
             App

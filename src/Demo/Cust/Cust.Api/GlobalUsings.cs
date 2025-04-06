@@ -1,7 +1,6 @@
 global using System.Linq.Expressions;
 global using System.Net;
 global using System.Reflection;
-global using System.Text;
 global using Adnc.Demo.Const;
 global using Adnc.Demo.Const.Permissions.Cust;
 global using Adnc.Demo.Cust.Api.Application.Dtos;

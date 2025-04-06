@@ -10,12 +10,12 @@ public static class DocumenationExtension
     /// <summary>
     /// A cache used to remember Xml documentation for assemblies
     /// </summary>
-    private static readonly Dictionary<Assembly, XmlDocument> _cache = [];
+    private static readonly ConcurrentDictionary<string, XmlDocument> _cache = [];
 
     /// <summary>
     /// A cache used to store failure exceptions for assembly lookups
     /// </summary>
-    private static readonly Dictionary<Assembly, Exception> _failCache = [];
+    private static readonly ConcurrentDictionary<string, string> _failCache = [];
 
     /// <summary>
     /// Provides the documentation comments for a specific type
@@ -153,23 +153,26 @@ public static class DocumenationExtension
     /// the XML file is not loaded and parsed on every single lookup</remarks>
     public static XmlDocument? XmlFromAssembly(this Assembly assembly)
     {
-        if (_failCache.ContainsKey(assembly))
+        var assemblyName = assembly.GetName().Name;
+        if (string.IsNullOrWhiteSpace(assemblyName))
+        {
+            return default;
+        }
+
+        if (_failCache.ContainsKey(assemblyName))
         {
             return default;
         }
         try
         {
-            if (!_cache.TryGetValue(assembly, out var value))
-            {
-                value = XmlFromAssemblyNonCached(assembly);
-                // load the docuemnt into the cache
-                _cache[assembly] = value;
-            }
-            return value;
+            return _cache.GetOrAdd(assemblyName, assemblyName =>
+           {
+               return XmlFromAssemblyNonCached(assembly);
+           });
         }
         catch (Exception exception)
         {
-            _failCache[assembly] = exception;
+            _failCache.TryAdd(assemblyName, exception.Message);
             return default;
         }
     }
