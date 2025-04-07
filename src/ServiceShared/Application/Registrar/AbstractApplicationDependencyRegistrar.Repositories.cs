@@ -17,14 +17,16 @@ public abstract partial class AbstractApplicationDependencyRegistrar
         var serverTypeString = Configuration[NodeConsts.Mysql_ServerType] ?? $"{nameof(ServerType.MariaDb)}";
         var serverVersion = Enum.TryParse(serverTypeString, out ServerType serverType) ? ServerVersion.Create(new Version(versionString), serverType) : throw new ArgumentException($"serverTypeString is invalid: {serverTypeString}");
         var migrationsAssemblyName = ServiceInfo.MigrationsAssemblyName;
+        var splittingBehavior = QuerySplittingBehavior.SplitQuery;
         Services.AddAdncInfraEfCoreMySql(RepositoryOrDomainLayerAssembly, optionsBuilder =>
          {
              optionsBuilder.UseLowerCaseNamingConvention();
              optionsBuilder.UseMySql(connectionString, serverVersion, mySqlOptions =>
              {
-                 mySqlOptions.MinBatchSize(4)
-                                                  .MigrationsAssembly(migrationsAssemblyName)
-                                                  .UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
+                 mySqlOptions
+                 .MinBatchSize(4)
+                 .MigrationsAssembly(migrationsAssemblyName)
+                 .UseQuerySplittingBehavior(splittingBehavior);
              });
          }, Lifetime);
     }
