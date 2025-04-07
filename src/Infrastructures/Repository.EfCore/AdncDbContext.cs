@@ -4,17 +4,11 @@ public abstract class AdncDbContext(DbContextOptions options, IEntityInfo entity
 {
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
+        //efcore7 support this feature , default is WhenNeeded
+        //Database.AutoTransactionBehavior = AutoTransactionBehavior.WhenNeeded;
         SetAuditFields();
         var result = base.SaveChangesAsync(cancellationToken);
         return result;
-    }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        Database.AutoSavepointsEnabled = false;
-        //efcore7 support this feature , default is WhenNeeded
-        //Database.AutoTransactionBehavior = AutoTransactionBehavior.WhenNeeded;
-        //ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

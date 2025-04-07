@@ -19,6 +19,7 @@ public abstract class UnitOfWork<TDbContext>(TDbContext context, ILogger<UnitOfW
         }
         else
         {
+            AdncDbContext.Database.AutoSavepointsEnabled = false;
             DbTransaction = GetDbContextTransaction(isolationLevel, distributed);
             logger?.LogDebug("Begin Transaction, transactionId:{transactionId}, IsolationLevel:{IsolationLevel}, Distributed:{Distributed}", DbTransaction.TransactionId, isolationLevel, distributed);
         }
