@@ -1,13 +1,13 @@
+using Microsoft.Extensions.Logging;
+
 namespace Adnc.Infra.Repository.EfCore.SqlServer.Transaction;
 
-public class SqlServerUnitOfWork<TDbContext>(TDbContext context, ICapPublisher? publisher = null) : UnitOfWork<TDbContext>(context)
+public class SqlServerUnitOfWork<TDbContext>(TDbContext context, ILogger<SqlServerUnitOfWork<TDbContext>>? logger, ICapPublisher? publisher = null) : UnitOfWork<TDbContext>(context, logger)
     where TDbContext : SqlServerDbContext
 {
     private readonly ICapPublisher? _publisher = publisher;
 
-    protected override IDbContextTransaction GetDbContextTransaction(
-        IsolationLevel isolationLevel = IsolationLevel.ReadCommitted
-        , bool distributed = false)
+    protected override IDbContextTransaction GetDbContextTransaction(IsolationLevel isolationLevel = IsolationLevel.ReadCommitted, bool distributed = false)
     {
         if (distributed)
         {
@@ -17,7 +17,7 @@ public class SqlServerUnitOfWork<TDbContext>(TDbContext context, ICapPublisher? 
             }
             else
             {
-                return AdncDbContext.Database.BeginTransaction(_publisher, false);
+                return AdncDbContext.Database.BeginTransaction(isolationLevel, _publisher, false);
             }
         }
         else

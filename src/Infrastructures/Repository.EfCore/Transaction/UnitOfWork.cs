@@ -1,6 +1,8 @@
+using Microsoft.Extensions.Logging;
+
 namespace Adnc.Infra.Repository.EfCore.Transaction;
 
-public abstract class UnitOfWork<TDbContext>(TDbContext context) : IUnitOfWork
+public abstract class UnitOfWork<TDbContext>(TDbContext context, ILogger<UnitOfWork<TDbContext>>? logger) : IUnitOfWork
     where TDbContext : DbContext
 {
     protected TDbContext AdncDbContext { get; init; } = context ?? throw new ArgumentNullException(nameof(context));
@@ -18,6 +20,7 @@ public abstract class UnitOfWork<TDbContext>(TDbContext context) : IUnitOfWork
         else
         {
             DbTransaction = GetDbContextTransaction(isolationLevel, distributed);
+            logger?.LogDebug("Begin Transaction, transactionId:{transactionId}, IsolationLevel:{IsolationLevel}, Distributed:{Distributed}", DbTransaction.TransactionId, isolationLevel, distributed);
         }
     }
 
@@ -30,6 +33,7 @@ public abstract class UnitOfWork<TDbContext>(TDbContext context) : IUnitOfWork
         else
         {
             DbTransaction.Commit();
+            logger?.LogDebug("Commit Transaction, transactionId:{transactionId}", DbTransaction.TransactionId);
         }
     }
 
@@ -42,6 +46,7 @@ public abstract class UnitOfWork<TDbContext>(TDbContext context) : IUnitOfWork
         else
         {
             await DbTransaction.CommitAsync(cancellationToken);
+            logger?.LogDebug("CommitAsync Transaction, transactionId:{transactionId}", DbTransaction.TransactionId);
         }
     }
 
@@ -54,6 +59,7 @@ public abstract class UnitOfWork<TDbContext>(TDbContext context) : IUnitOfWork
         else
         {
             DbTransaction.Rollback();
+            logger?.LogDebug("Rollback Transaction, transactionId:{transactionId}", DbTransaction.TransactionId);
         }
     }
 
@@ -66,6 +72,7 @@ public abstract class UnitOfWork<TDbContext>(TDbContext context) : IUnitOfWork
         else
         {
             await DbTransaction.RollbackAsync(cancellationToken);
+            logger?.LogDebug("RollbackAsync Transaction, transactionId:{transactionId}", DbTransaction.TransactionId);
         }
     }
 

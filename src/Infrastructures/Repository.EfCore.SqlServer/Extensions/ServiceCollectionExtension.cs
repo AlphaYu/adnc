@@ -16,7 +16,7 @@ public static class ServiceCollectionExtension
             return services;
         }
 
-        services.AddDbContext<DbContext, SqlServerDbContext>(optionsBuilder, serviceLifetime);
+        services.AddDbContext<DbContext, SqlServerDbContext>(optionsBuilder, serviceLifetime, serviceLifetime);
         services.Add(new ServiceDescriptor(typeof(IUnitOfWork), typeof(SqlServerUnitOfWork<SqlServerDbContext>), serviceLifetime));
         services.AddUowInterceptor(serviceLifetime);
         services.AddEfRepository(serviceLifetime);

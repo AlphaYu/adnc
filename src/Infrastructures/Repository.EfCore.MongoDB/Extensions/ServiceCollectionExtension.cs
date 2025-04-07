@@ -15,7 +15,7 @@ public static class ServiceCollectionExtension
             return services;
         }
 
-        services.AddDbContext<DbContext, MongoDbContext>(optionsBuilder, serviceLifetime);
+        services.AddDbContext<DbContext, MongoDbContext>(optionsBuilder, serviceLifetime, serviceLifetime);
         services.Add(new ServiceDescriptor(typeof(IMongoDbRepository<>), typeof(MongoDbRepository<>), serviceLifetime));
         services.AddEntityInfo(assembly);
         return services;

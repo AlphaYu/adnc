@@ -1,6 +1,8 @@
+using Microsoft.Extensions.Logging;
+
 namespace Adnc.Infra.Repository.EfCore.MySql.Transaction;
 
-public class MySqlUnitOfWork<TDbContext>(TDbContext context, ICapPublisher? publisher = null) : UnitOfWork<TDbContext>(context)
+public class MySqlUnitOfWork<TDbContext>(TDbContext context, ILogger<MySqlUnitOfWork<TDbContext>>? logger, ICapPublisher? publisher = null) : UnitOfWork<TDbContext>(context, logger)
     where TDbContext : MySqlDbContext
 {
     private readonly ICapPublisher? _publisher = publisher;
@@ -15,7 +17,7 @@ public class MySqlUnitOfWork<TDbContext>(TDbContext context, ICapPublisher? publ
             }
             else
             {
-                return AdncDbContext.Database.BeginTransaction(_publisher, false);
+                return AdncDbContext.Database.BeginTransaction(isolationLevel, _publisher, false);
             }
         }
         else

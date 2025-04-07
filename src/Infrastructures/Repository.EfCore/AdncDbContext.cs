@@ -14,6 +14,7 @@ public abstract class AdncDbContext(DbContextOptions options, IEntityInfo entity
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         Database.AutoTransactionBehavior = AutoTransactionBehavior.WhenNeeded;
+        Database.AutoSavepointsEnabled = false;
         //ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
     }
 
