@@ -53,7 +53,7 @@ public sealed partial class CapEventSubscriber(IUnitOfWork unitOfWork, IEfReposi
 
             await _tracker.MarkAsProcessedAsync(eventId, eventHandler);
 
-            unitOfWork.Commit();
+            await unitOfWork.CommitAsync();
         }
         catch (Exception ex)
         {
@@ -96,7 +96,7 @@ public sealed partial class CapEventSubscriber(IUnitOfWork unitOfWork, IEfReposi
 
             await _tracker.MarkAsProcessedAsync(eventId, eventHandler);
 
-            unitOfWork.Commit();
+            await unitOfWork.CommitAsync();
         }
         catch (Exception ex)
         {
