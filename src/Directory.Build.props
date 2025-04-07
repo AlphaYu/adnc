@@ -31,6 +31,7 @@
 		<System_Text_Json_Version>8.0.5</System_Text_Json_Version>
 		<System_Threading_Channels_Version>8.0.0</System_Threading_Channels_Version>
 		<System_ValueTuple_Version>4.5.0</System_ValueTuple_Version>
+    <System_Runtime_Caching_Version>8.0.0</System_Runtime_Caching_Version>
 		<Microsoft_VisualStudio_Azure_Containers_Tools_Targets_Version>1.21.0</Microsoft_VisualStudio_Azure_Containers_Tools_Targets_Version>
 		<Microsoft_AspNetCore_Hosting_Version>2.3.0</Microsoft_AspNetCore_Hosting_Version>
 		<Microsoft_AspNetCore_Http_Version>2.3.0</Microsoft_AspNetCore_Http_Version>

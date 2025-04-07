@@ -1,3 +1,4 @@
+using System.Runtime.Caching;
 using System.Xml;
 
 namespace System.Reflection;
@@ -7,15 +8,7 @@ namespace System.Reflection;
 /// </summary>
 public static class DocumenationExtension
 {
-    /// <summary>
-    /// A cache used to remember Xml documentation for assemblies
-    /// </summary>
-    private static readonly ConcurrentDictionary<string, XmlDocument> _cache = [];
-
-    /// <summary>
-    /// A cache used to store failure exceptions for assembly lookups
-    /// </summary>
-    private static readonly ConcurrentDictionary<string, string> _failCache = [];
+    private static readonly DateTimeOffset _absoluteExpiration = DateTimeOffset.UtcNow.AddMinutes(3);
 
     /// <summary>
     /// Provides the documentation comments for a specific type
@@ -159,20 +152,29 @@ public static class DocumenationExtension
             return default;
         }
 
-        if (_failCache.ContainsKey(assemblyName))
+        var cacheKey = $"XmlDoc.{assemblyName}";
+        var failCahceKey = $"XmlDoc.Fail.{assemblyName}";
+        if (MemoryCache.Default.Contains(failCahceKey))
         {
             return default;
         }
+
         try
         {
-            return _cache.GetOrAdd(assemblyName, assemblyName =>
-           {
-               return XmlFromAssemblyNonCached(assembly);
-           });
+            if (MemoryCache.Default.Contains(cacheKey))
+            {
+                return MemoryCache.Default.Get(cacheKey) as XmlDocument;
+            }
+            else
+            {
+                var xmlDoc = XmlFromAssemblyNonCached(assembly);
+                MemoryCache.Default.Set(cacheKey, xmlDoc, _absoluteExpiration);
+                return xmlDoc;
+            }
         }
         catch (Exception exception)
         {
-            _failCache.TryAdd(assemblyName, exception.Message);
+            MemoryCache.Default.Set(failCahceKey, exception.Message, _absoluteExpiration);
             return default;
         }
     }
