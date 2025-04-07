@@ -23,8 +23,8 @@
     <Using Include="System.Collections" />
   </ItemGroup>
 	<PropertyGroup>
-		<Infra_Version>1.0.0-preview-250339</Infra_Version>
-		<Shared_Version>1.0.0-preview-250339</Shared_Version>
+		<Infra_Version>1.0.0</Infra_Version>
+		<Shared_Version>1.0.0</Shared_Version>
 		<System_Text_RegularExpressions_Version>4.3.1</System_Text_RegularExpressions_Version>
 		<System_Net_Http_Version>4.3.4</System_Net_Http_Version>
 		<System_ComponentModel_Annotations_Version>5.0.0</System_ComponentModel_Annotations_Version>

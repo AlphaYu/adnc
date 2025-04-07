@@ -4,8 +4,8 @@
     <VersionMajor>1</VersionMajor>
     <VersionMinor>0</VersionMinor>
     <VersionPatch>0</VersionPatch>
-    <VersionQuality>0-preview-250339</VersionQuality>
-    <VersionPrefix>$(VersionMajor).$(VersionMinor).$(VersionPatch).$(VersionQuality)</VersionPrefix>
+    <VersionQuality></VersionQuality>
+    <VersionPrefix>$(VersionMajor).$(VersionMinor).$(VersionPatch)</VersionPrefix>
   </PropertyGroup>
   <Choose>
     <When Condition="'$(MSBuildProjectName.EndsWith(`Api`, StringComparison.OrdinalIgnoreCase))'=='true'">
