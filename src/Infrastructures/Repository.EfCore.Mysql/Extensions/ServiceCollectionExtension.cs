@@ -15,8 +15,7 @@ public static class ServiceCollectionExtension
         {
             return services;
         }
-
-        services.AddDbContext<DbContext, MySqlDbContext>(optionsBuilder, serviceLifetime, serviceLifetime);
+        services.AddDbContext<DbContext, MySqlDbContext>(optionsBuilder, serviceLifetime, ServiceLifetime.Singleton);
         services.Add(new ServiceDescriptor(typeof(IUnitOfWork), typeof(MySqlUnitOfWork<MySqlDbContext>), serviceLifetime));
         services.AddUowInterceptor(serviceLifetime);
         services.AddEfRepository(serviceLifetime);
