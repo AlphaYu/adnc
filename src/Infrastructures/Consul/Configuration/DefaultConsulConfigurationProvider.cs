@@ -23,6 +23,7 @@ public sealed class DefaultConsulConfigurationProvider(ConsulClient consulClient
             || queryResult.Response.Value == null
             || queryResult.Response.Value.Length == 0)
         {
+            Data = new Dictionary<string, string?>();
             return;
         }
         Stream stream = new MemoryStream(queryResult.Response.Value);
