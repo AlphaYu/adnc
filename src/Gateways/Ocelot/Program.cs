@@ -13,7 +13,7 @@ public class Program
                             var configurationType = configuration.GetValue<string>("ConfigurationType") ?? "File";
                             if (configurationType == "File")
                             {
-                                configBuilder.AddJsonFile($"{AppContext.BaseDirectory}/Config/ocelot.direct.json", true, true);
+                                configBuilder.AddJsonFile("Config/ocelot.direct.json", true, true);
                             }
                             else if (configurationType == "Consul")
                             {
