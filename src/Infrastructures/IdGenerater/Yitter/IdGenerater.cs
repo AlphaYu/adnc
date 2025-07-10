@@ -70,7 +70,7 @@ public static class IdGenerater
         Checker.Argument.ThrowIfOutOfRange(number, 1, 100000, nameof(number));
 
         var ids = new long[number];
-        for (var index = 0; index < 100000; index++)
+        for (var index = 0; index < number; index++)
         {
             ids[index] = YitIdHelper.NextId();
         }
