@@ -173,40 +173,71 @@ adnc
 
 > Demo公用工程
 
-- `protos` grpc定义文件
-- `resources` 公用的静态文件与配置文件
-- `Adnc.Demo.Const` 常量文件
-- `Adnc.Demo.Remote.Event` 事件文件
-- `Adnc.Demo.Remote.Grpc` gprc客户端
-- `Adnc.Demo.Remote.Http` http客户端
+```
+Shared/
+├── Const/ - 用于缓存、实体、权限的常量
+├── Remote.Event/ - 用于跨服务通信事件定义
+├── Remote.Grpc/ - gRPC客户端定义
+├── Remote.Http/ - HTTP客户端定义
+├── protos/ - gRPC的协议文件定义
+└── resources/ - 共享配置和资源
+```
 
 ##### :white_check_mark: Adnc.Demo.Admin
 
-> 经典三层开发模式，剥离了应用服务协议定义文件到`Adnc.Demo.Admin.Application.Contracts`层
+> Admin服务遵循经典的三层模式，项目分离，这种分离提供了层之间的清晰边界，便于维护，剥离了应用服务协议定义文件到`Adnc.Demo.Admin.Application.Contracts`层
+
+```
+Admin/
+├── Admin.Api/ - 控制器和API端点
+├── Admin.Application/ - 业务逻辑实现
+├── Admin.Application.Contracts/ - DTO和服务接口
+└── Admin.Repository/ - 数据访问层
+```
 
 系统管理服务是系统支撑服务，实现了用户管理、角色管理、权限管理、菜单管理、组织架构、字典管理、系统配置管理。
 
 ##### :white_check_mark: Adnc.Demo.Maint
 
-> 经典三层开发模式，应用服务实现与协议定义都在`Adnc.Demo.Maint.Application`层
+> Maint服务使用更紧凑的三层结构，这种方法减少了项目数量，同时仍保持关注点分离，应用服务实现与协议定义都在`Adnc.Demo.Maint.Application`层。
+
+```
+Maint/
+├── Maint.Api/ - 控制器和端点
+├── Maint.Application/ - 包含合约和实现
+└── Maint.Repository/ - 数据访问层
+```
 
 运维中心服务是系统支撑服务，实现了登录日志、审计日志、异常日志。
 
 ##### :white_check_mark: Adnc.Demo.Cust
 
-> 经典三层开发模式，控制器、应用服务实现与协议定义、仓储都在同一个工程，这种结构适合细粒度服务拆分模式。
+> Cust服务展示了一种超紧凑的方法，所有内容都在一个项目中，这种方法适用于小型、专注的微服务，复杂性有限，控制器、应用服务实现与协议定义、仓储都在同一个工程，这种结构适合细粒度服务拆分模式。
+
+```
+Cust/
+└── Cust.Api/ - 包含控制器、应用逻辑和存储库
+```
 
 客户中心微服务。
 
 ##### :white_check_mark: Adnc.Demo.Ord
 
-> DDD开发模式
+> Ord服务遵循DDD原则，带专用领域层，这种架构强调业务规则和领域逻辑，将其与应用关注点分离。
+
+```
+Ord/
+├── Ord.Api/ - API端点
+├── Ord.Application/ - 应用服务
+├── Ord.Domain/ - 领域实体、聚合和领域服务
+└── Ord.Migrations/ - 数据库迁移
+```
 
 订单中心微服务。
 
 ##### :white_check_mark: Adnc.Demo.Whse
 
-> DDD开发模式
+> 项目结构与Ord服务一样，带专用领域层，这种架构强调业务规则和领域逻辑，将其与应用关注点分离。
 
 仓储中心微服务。
 
