@@ -5,6 +5,9 @@ namespace Adnc.Infra.EventBus.RabbitMq;
 
 public abstract class BaseRabbitMqConsumer(IConnectionManager connectionManager, ILogger<dynamic> logger) : IHostedService
 {
+    private IChannel? _normalChannel;
+    private IChannel? _deadChannel;
+
     public async Task StartAsync(CancellationToken cancellationToken)
     {
         await RegisterAsync();
@@ -33,11 +36,11 @@ public abstract class BaseRabbitMqConsumer(IConnectionManager connectionManager,
         await RegiterDeadExchange(exchange.DeadExchangeName, queue.DeadQueueName, routingKeys, queue.Durable);
 
         //声明交换机
-        using var channel = await connectionManager.Connection.CreateChannelAsync();
-        await channel.ExchangeDeclareAsync(exchange.Name, type: exchange.Type.ToString().ToLower());
+        _normalChannel = await connectionManager.Connection.CreateChannelAsync();
+        await _normalChannel.ExchangeDeclareAsync(exchange.Name, type: exchange.Type.ToString().ToLower());
 
         //声明队列
-        await channel.QueueDeclareAsync(queue: queue.Name
+        await _normalChannel.QueueDeclareAsync(queue: queue.Name
             , durable: queue.Durable
             , exclusive: queue.Exclusive
             , autoDelete: queue.AutoDelete
@@ -47,23 +50,23 @@ public abstract class BaseRabbitMqConsumer(IConnectionManager connectionManager,
         //将队列与交换机进行绑定
         if (routingKeys == null || routingKeys.Length == 0)
         {
-            await channel.QueueBindAsync(queue: queue.Name, exchange: exchange.Name, routingKey: string.Empty);
+            await _normalChannel.QueueBindAsync(queue: queue.Name, exchange: exchange.Name, routingKey: string.Empty);
         }
         else
         {
             foreach (var key in routingKeys)
             {
-                await channel.QueueBindAsync(queue: queue.Name, exchange: exchange.Name, routingKey: key);
+                await _normalChannel.QueueBindAsync(queue: queue.Name, exchange: exchange.Name, routingKey: key);
             }
         }
 
-        var consumer = new AsyncEventingBasicConsumer(channel);
+        var consumer = new AsyncEventingBasicConsumer(_normalChannel);
 
         //关闭自动确认,开启手动确认后需要配置这些
         if (!queue.AutoAck)
         {
-            await channel.BasicQosAsync(prefetchSize: 0, prefetchCount: queue.PrefetchCount, global: queue.Global);
-            await channel.BasicConsumeAsync(queue: queue.Name, consumer: consumer, autoAck: queue.AutoAck);
+            await _normalChannel.BasicQosAsync(prefetchSize: 0, prefetchCount: queue.PrefetchCount, global: queue.Global);
+            await _normalChannel.BasicConsumeAsync(queue: queue.Name, consumer: consumer, autoAck: queue.AutoAck);
         }
 
         consumer.ReceivedAsync += async (model, ea) =>
@@ -79,11 +82,11 @@ public abstract class BaseRabbitMqConsumer(IConnectionManager connectionManager,
             {
                 if (result)
                 {
-                    await channel.BasicAckAsync(ea.DeliveryTag, multiple: queue.AckMultiple);
+                    await _normalChannel.BasicAckAsync(ea.DeliveryTag, multiple: queue.AckMultiple);
                 }
                 else
                 {
-                    await channel.BasicRejectAsync(ea.DeliveryTag, requeue: queue.RejectRequeue);
+                    await _normalChannel.BasicRejectAsync(ea.DeliveryTag, requeue: queue.RejectRequeue);
                 }
             }
         };
@@ -94,7 +97,15 @@ public abstract class BaseRabbitMqConsumer(IConnectionManager connectionManager,
     /// </summary>
     protected virtual async Task DeRegisterAsync()
     {
-        if (connectionManager.Connection != null)
+        if (_normalChannel is not null)
+        {
+            await _normalChannel.DisposeAsync();
+        }
+        if (_deadChannel is not null)
+        {
+            await _deadChannel.DisposeAsync();
+        }
+        if (connectionManager.Connection is not null)
         {
             await connectionManager.Connection.DisposeAsync();
         }
@@ -164,12 +175,12 @@ public abstract class BaseRabbitMqConsumer(IConnectionManager connectionManager,
     {
         if (!string.IsNullOrWhiteSpace(deadExchangeName))
         {
-            using var channel = await connectionManager.Connection.CreateChannelAsync();
-            await channel.ExchangeDeclareAsync(deadExchangeName, ExchangeType.Direct.ToString().ToLower());
-            await channel.QueueDeclareAsync(queue: deadQueueName, durable: durable, exclusive: false, autoDelete: false, arguments: null);
+            _deadChannel = await connectionManager.Connection.CreateChannelAsync();
+            await _deadChannel.ExchangeDeclareAsync(deadExchangeName, ExchangeType.Direct.ToString().ToLower());
+            await _deadChannel.QueueDeclareAsync(queue: deadQueueName, durable: durable, exclusive: false, autoDelete: false, arguments: null);
             foreach (var key in routingKeys)
             {
-                await channel.QueueBindAsync(queue: deadQueueName, exchange: deadExchangeName, routingKey: key);
+                await _deadChannel.QueueBindAsync(queue: deadQueueName, exchange: deadExchangeName, routingKey: key);
             }
         }
     }

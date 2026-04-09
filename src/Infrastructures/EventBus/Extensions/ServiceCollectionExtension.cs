@@ -73,6 +73,7 @@ public static class ServiceCollectionExtension
         }
 
         registrarAction?.Invoke(services);
+        services.Configure<RabbitMQOptions>(rabitmqSection);
 
         if (assembly is not null)
         {

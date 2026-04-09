@@ -14,6 +14,7 @@ public sealed class DependencyRegistrar(IServiceCollection services, IServiceInf
     public override void AddApplicationServices()
     {
         AddApplicaitonDefaultServices();
-        // AddRabbitMqClient();
+        //var rabbitSecton = Configuration.GetRequiredSection(NodeConsts.RabbitMq);
+        //Services.AddAdncInfraRabbitMq(ApplicationLayerAssembly, rabbitSecton, "client name");
     }
 }
