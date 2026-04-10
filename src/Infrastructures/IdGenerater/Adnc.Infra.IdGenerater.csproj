@@ -4,7 +4,7 @@
 		<PackageTags>adnc,snowklake,yitter</PackageTags>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="Yitter.IdGenerator" Version="$(Yitter_IdGenerator_Version)" />
+		<PackageReference Include="Yitter.IdGenerator" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Redis\Adnc.Infra.Redis.csproj" />

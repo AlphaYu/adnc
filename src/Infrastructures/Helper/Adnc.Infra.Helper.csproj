@@ -9,7 +9,7 @@
 	  <None Remove="Internal\IdGenerater\**" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="Microsoft.AspNetCore.Http" Version="$(Microsoft_AspNetCore_Http_Version)" />
+		<PackageReference Include="Microsoft.AspNetCore.Http" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Core\Adnc.Infra.Core.csproj" />

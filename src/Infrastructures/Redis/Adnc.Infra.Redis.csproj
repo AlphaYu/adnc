@@ -4,9 +4,9 @@
 		<PackageTags>adnc,redis,stackexchange.redis</PackageTags>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="StackExchange.Redis" Version="$(StackExchange_Redis_Version)" />
-		<PackageReference Include="protobuf-net" Version="$(protobuf-net_Version)" />
-		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="$(Microsoft_Extensions_Options_ConfigurationExtensions_Version)" />
+		<PackageReference Include="StackExchange.Redis"/>
+		<PackageReference Include="protobuf-net"  />
+		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" />
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\Core\Adnc.Infra.Core.csproj" />

@@ -4,7 +4,7 @@
 		<PackageTags>adnc,repository</PackageTags>
 	</PropertyGroup>
 	<ItemGroup>
-    <PackageReference Include="Castle.Core.AsyncInterceptor" Version="$(Castle_Core_AsyncInterceptor_Version)" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="$(Microsoft_EntityFrameworkCore_Relational_Version)" />
+    <PackageReference Include="Castle.Core.AsyncInterceptor" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" />
   </ItemGroup>
 </Project>

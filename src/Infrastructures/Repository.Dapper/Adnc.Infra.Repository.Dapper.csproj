@@ -4,10 +4,10 @@
 		<PackageTags>adnc,repository,dapper</PackageTags>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="Dapper" Version="$(Dapper_Version)" />
-		<PackageReference Include="MySqlConnector" Version="$(MySqlConnector_Version)" />
-		<PackageReference Include="Microsoft.Data.SqlClient" Version="$(Microsoft_Data_SqlClient)" />
-		<PackageReference Include="Oracle.ManagedDataAccess.Core" Version="$(Oracle_ManagedDataAccess_Core)" />
+		<PackageReference Include="Dapper"/>
+		<PackageReference Include="MySqlConnector" />
+		<PackageReference Include="Microsoft.Data.SqlClient" />
+		<PackageReference Include="Oracle.ManagedDataAccess.Core" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Core\Adnc.Infra.Core.csproj" />

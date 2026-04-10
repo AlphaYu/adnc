@@ -9,8 +9,8 @@
 	  <None Remove="SqlGenerator\**" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="$(Pomelo_EntityFrameworkCore_MySql_Version)" />
-		<PackageReference Include="DotNetCore.CAP.MySql" Version="$(DotNetCore_CAP_MySql_Version)" />
+		<PackageReference Include="Pomelo.EntityFrameworkCore.MySql"/>
+		<PackageReference Include="DotNetCore.CAP.MySql"/>
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Repository.EfCore\Adnc.Infra.Repository.EfCore.csproj" />

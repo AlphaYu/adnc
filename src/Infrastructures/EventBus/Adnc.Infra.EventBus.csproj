@@ -4,13 +4,13 @@
 		<PackageTags>adnc,adnc.infra,adnc.infra.eventbus,eventbus,rabbitmq,cap</PackageTags>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="Polly" Version="$(Polly_Version)" />
-    <PackageReference Include="SkyAPM.Utilities.DependencyInjection" Version="$(SkyAPM_Diagnostics_CAP_Version)" />
-    <PackageReference Include="RabbitMQ.Client" Version="$(RabbitMQ_Client_Version)" />
-		<PackageReference Include="DotNetCore.CAP" Version="$(DotNetCore_CAP_Version)" />
-    <PackageReference Include="DotNetCore.CAP.RabbitMQ" Version="$(DotNetCore_CAP_RabbitMQ_Version)" />
-    <PackageReference Include="SkyAPM.Diagnostics.CAP" Version="$(SkyAPM_Diagnostics_CAP_Version)" />
-    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="$(Microsoft_Extensions_Options_ConfigurationExtensions_Version)"/>
+		<PackageReference Include="Polly" />
+    <PackageReference Include="SkyAPM.Utilities.DependencyInjection"/>
+    <PackageReference Include="RabbitMQ.Client"/>
+		<PackageReference Include="DotNetCore.CAP"/>
+    <PackageReference Include="DotNetCore.CAP.RabbitMQ" />
+    <PackageReference Include="SkyAPM.Diagnostics.CAP" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions"/>
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Core\Adnc.Infra.Core.csproj" />

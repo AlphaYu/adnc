@@ -1,0 +1,116 @@
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+  <ItemGroup>
+    <!--System-->
+    <PackageVersion Include="Microsoft.AspNetCore.Hosting" Version="2.3.0"/>
+    <PackageVersion Include="Microsoft.AspNetCore.Http" Version="2.3.0"/>
+    <PackageVersion Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0"/>
+    <PackageVersion Include="System.Text.RegularExpressions" Version="4.3.1"/>
+    <PackageVersion Include="System.Net.Http" Version="4.3.4"/>
+    <PackageVersion Include="System.ComponentModel.Annotations" Version="5.0.0"/>
+    <PackageVersion Include="System.Text.Json" Version="8.0.5"/>
+    <PackageVersion Include="System.Threading.Channels" Version="8.0.0"/>
+    <PackageVersion Include="System.ValueTuple" Version="4.5.0"/>
+    <PackageVersion Include="System.Runtime.Caching" Version="8.0.0"/>
+    <!--Microsoft-->
+    <PackageVersion Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0"/>
+    <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.13"/>
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.2"/>
+    <PackageVersion Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.1"/>
+    <PackageVersion Include="Microsoft.Extensions.Caching.Abstractions" Version="8.0.0"/>
+    <PackageVersion Include="Microsoft.Extensions.Caching.Memory" Version="8.0.1"/>
+    <PackageVersion Include="Microsoft.Extensions.Configuration" Version="8.0.0"/>
+    <PackageVersion Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.2"/>
+    <PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0"/>
+    <PackageVersion Include="Microsoft.Extensions.Options" Version="8.0.2"/>
+    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.3"/>
+    <PackageVersion Include="Microsoft.Extensions.Http.Polly" Version="8.0.13"/>
+    <!--EFCore-->
+    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="8.0.13"/>
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.13"/>
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.13"/>
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.13"/>
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.13"/>
+    <PackageVersion Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.2"/>
+    <PackageVersion Include="MongoDB.EntityFrameworkCore" Version="8.2.3"/>
+    <PackageVersion Include="EFCore.NamingConventions" Version="8.0.3"/>
+    <!--Db Driver-->
+    <PackageVersion Include="MySqlConnector" Version="2.3.7"/>
+    <PackageVersion Include="Microsoft.Data.SqlClient" Version="5.2.2"/>
+    <PackageVersion Include="Oracle.ManagedDataAccess.Core" Version="23.7.0"/>
+    <PackageVersion Include="Dapper" Version="2.1.66"/>
+    <PackageVersion Include="MongoDB.Driver" Version="3.1.0"/>
+    <!--Other-->
+    <PackageVersion Include="AutoMapper" Version="13.0.1"/>
+    <PackageVersion Include="Consul" Version="1.7.14.7"/>
+    <PackageVersion Include="Grpc.Net.Client" Version="2.67.0"/>
+    <PackageVersion Include="Grpc.Net.ClientFactory" Version="2.67.0"/>
+    <PackageVersion Include="Grpc.AspNetCore" Version="2.67.0"/>
+    <PackageVersion Include="Google.Protobuf" Version="3.29.3"/>
+    <PackageVersion Include="Grpc.Tools" Version="2.67.0"/>
+    <PackageVersion Include="protobuf-net" Version="3.2.45"/>
+    <PackageVersion Include="Refit.HttpClientFactory" Version="8.0.0"/>
+    <PackageVersion Include="Polly" Version="8.5.2"/>
+    <PackageVersion Include="RabbitMQ.Client" Version="7.0.0"/>
+    <PackageVersion Include="DotNetCore.CAP" Version="8.3.3"/>
+    <PackageVersion Include="DotNetCore.CAP.Dashboard" Version="8.3.3"/>
+    <PackageVersion Include="DotNetCore.CAP.RabbitMQ" Version="8.3.3"/>
+    <PackageVersion Include="DotNetCore.CAP.MySql" Version="8.3.3"/>
+    <PackageVersion Include="DotNetCore.CAP.SqlServer" Version="8.3.3"/>
+    <PackageVersion Include="DotNetCore.CAP.Dashboard.K8s" Version="8.3.3"/>
+    <PackageVersion Include="Yitter.IdGenerator" Version="1.0.14"/>
+    <PackageVersion Include="Castle.Core.AsyncInterceptor" Version="2.1.0"/>
+    <PackageVersion Include="StackExchange.Redis" Version="2.8.24"/>
+    <PackageVersion Include="Humanizer.Core" Version="2.14.1"/>
+    <PackageVersion Include="FluentValidation" Version="11.11.0"/>
+    <PackageVersion Include="FluentValidation.DependencyInjectionExtensions" Version="11.11.0"/>
+    <PackageVersion Include="FluentValidation.AspNetCore" Version="11.3.0"/>
+    <PackageVersion Include="MicroElements.Swashbuckle.FluentValidation" Version="6.1.0"/>
+    <PackageVersion Include="Swashbuckle.AspNetCore" Version="7.2.0"/>
+    <PackageVersion Include="Swashbuckle.AspNetCore.SwaggerGen" Version="7.2.0"/>
+    <PackageVersion Include="MiniProfiler.AspNetCore.Mvc" Version="4.5.4"/>
+    <PackageVersion Include="MiniProfiler.EntityFrameworkCore" Version="4.5.4"/>
+    <PackageVersion Include="AspNetCore.HealthChecks.RabbitMQ" Version="9.0.0"/>
+    <PackageVersion Include="AspNetCore.HealthChecks.UI.Client" Version="9.0.0"/>
+    <PackageVersion Include="AspNetCore.HealthChecks.MySql" Version="9.0.0"/>
+    <PackageVersion Include="AspNetCore.HealthChecks.SqlServer" Version="9.0.0"/>
+    <PackageVersion Include="AspNetCore.HealthChecks.MongoDb" Version="9.0.0"/>
+    <PackageVersion Include="LiteX.HealthChecks.Redis" Version="3.0.0"/>
+    <PackageVersion Include="prometheus-net.AspNetCore" Version="8.2.1"/>
+    <PackageVersion Include="prometheus-net.DotNetRuntime" Version="4.4.1"/>
+    <PackageVersion Include="NLog.Web.AspNetCore" Version="5.4.0"/>
+    <PackageVersion Include="NLog.Targets.Loki" Version="2.2.0"/>
+    <PackageVersion Include="NLog.Mongo" Version="5.0.0"/>
+    <PackageVersion Include="SkyAPM.Core" Version="2.2.0"/>
+    <PackageVersion Include="SkyAPM.Abstractions" Version="2.2.0"/>
+    <PackageVersion Include="SkyAPM.Agent.AspNetCore" Version="2.2.0"/>
+    <PackageVersion Include="SkyAPM.Diagnostics.CAP" Version="2.2.0"/>
+    <PackageVersion Include="SkyAPM.Utilities.DependencyInjection" Version="2.2.0"/>
+    <PackageVersion Include="Ocelot" Version="23.4.3" />
+    <PackageVersion Include="Ocelot.Provider.Consul" Version="23.4.3" />
+    <PackageVersion Include="Ocelot.Provider.Polly" Version="23.4.3" />
+    <!--Adnc-->
+    <PackageVersion Include="Adnc.Infra.Core" Version="1.0.1"/>
+    <PackageVersion Include="Adnc.Infra.Consul" Version="1.0.1"/>
+    <PackageVersion Include="Adnc.Infra.EventBus" Version="1.0.1"/>
+    <PackageVersion Include="Adnc.Infra.Helper" Version="1.0.1"/>
+    <PackageVersion Include="Adnc.Infra.Redis" Version="1.0.1"/>
+    <PackageVersion Include="Adnc.Infra.Redis.Caching" Version="1.0.1"/>
+    <PackageVersion Include="Adnc.Infra.IdGenerater" Version="1.0.1"/>
+    <PackageVersion Include="Adnc.Infra.Repository" Version="1.0.1"/>
+    <PackageVersion Include="Adnc.Infra.Repository.Dapper" Version="1.0.1"/>
+    <PackageVersion Include="Adnc.Infra.Repository.EfCore" Version="1.0.1"/>
+    <PackageVersion Include="Adnc.Infra.Repository.EfCore.MySql" Version="1.0.1"/>
+    <PackageVersion Include="Adnc.Infra.Repository.EfCore.SqlServer" Version="1.0.1"/>
+    <PackageVersion Include="Adnc.Infra.Repository.EfCore.MongoDB" Version="1.0.1"/>
+    <PackageVersion Include="Adnc.Shared" Version="1.0.0"/>
+    <PackageVersion Include="Adnc.Shared.WebApi" Version="1.0.0"/>
+    <PackageVersion Include="Adnc.Shared.Application" Version="1.0.0"/>
+    <PackageVersion Include="Adnc.Shared.Application.Contracts" Version="1.0.0"/>
+    <PackageVersion Include="Adnc.Shared.Domain" Version="1.0.0"/>
+    <PackageVersion Include="Adnc.Shared.Repository" Version="1.0.0"/>
+    <PackageVersion Include="Adnc.Shared.Remote" Version="1.0.0"/>
+  </ItemGroup>
+</Project>

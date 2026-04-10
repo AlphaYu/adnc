@@ -7,11 +7,11 @@
 		<Compile Remove="Core\Interceptor\CachingPutAttribute.cs" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="Polly" Version="$(Polly_Version)" />
-		<PackageReference Include="Castle.Core.AsyncInterceptor" Version="$(Castle_Core_AsyncInterceptor_Version)" />
-    <PackageReference Include="SkyAPM.Core" Version="$(SkyAPM_Agent_AspNetCore_Version)" />
-    <PackageReference Include="SkyAPM.Abstractions" Version="$(SkyAPM_Agent_AspNetCore_Version)" />
-    <PackageReference Include="SkyAPM.Utilities.DependencyInjection" Version="$(SkyAPM_Agent_AspNetCore_Version)" />
+		<PackageReference Include="Polly" />
+		<PackageReference Include="Castle.Core.AsyncInterceptor" />
+    <PackageReference Include="SkyAPM.Core" />
+    <PackageReference Include="SkyAPM.Abstractions" />
+    <PackageReference Include="SkyAPM.Utilities.DependencyInjection" />
   </ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\Core\Adnc.Infra.Core.csproj" />

@@ -86,6 +86,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01.Solution Items", "01.Sol
 		deploy_demo.sh = deploy_demo.sh
 		deploy_ocelot.sh = deploy_ocelot.sh
 		Directory.Build.props = Directory.Build.props
+		Directory.Packages.props = Directory.Packages.props
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03.ServiceShared", "03.ServiceShared", "{9697B6F8-6C64-4184-AB6C-8683D6F12B61}"

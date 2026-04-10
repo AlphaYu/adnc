@@ -3,9 +3,9 @@
 		<Description>该层用来定义Grpc客户端，不需要发布的到Nuget。</Description>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="Grpc.Net.ClientFactory" Version="$(Grpc_Net_ClientFactory_Version)" />
-		<PackageReference Include="Google.Protobuf" Version="$(Google_Protobuf_Version)" />
-		<PackageReference Include="Grpc.Tools" Version="$(Grpc_Tools_Version)">
+		<PackageReference Include="Grpc.Net.ClientFactory"/>
+		<PackageReference Include="Google.Protobuf"/>
+		<PackageReference Include="Grpc.Tools">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
