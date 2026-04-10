@@ -1,3 +1,5 @@
+using Adnc.Demo.Admin.Application.Contracts.Dtos.SysConfig;
+
 namespace Adnc.Demo.Admin.Application.Services;
 
 public class SysConfigService(IEfRepository<SysConfig> sysConfigRepo/*, BloomFilterFactory bloomFilterFactory*/, CacheService cacheService)

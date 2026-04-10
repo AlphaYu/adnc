@@ -1,4 +1,4 @@
-namespace Adnc.Demo.Admin.Application.Contracts.Dtos;
+namespace Adnc.Demo.Admin.Application.Contracts.Dtos.User;
 
 /// <summary>
 /// 用户检索条件

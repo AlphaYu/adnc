@@ -1,4 +1,4 @@
-namespace Adnc.Demo.Admin.Application.Contracts.Dtos;
+namespace Adnc.Demo.Admin.Application.Contracts.Dtos.Dict;
 
 /// <summary>
 /// 字典数据检索条件

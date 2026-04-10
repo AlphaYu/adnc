@@ -2,7 +2,6 @@ global using System.Linq.Expressions;
 global using System.Net;
 global using System.Reflection;
 global using Adnc.Demo.Admin.Application.Cache;
-global using Adnc.Demo.Admin.Application.Contracts.Dtos;
 global using Adnc.Demo.Admin.Application.Contracts.Interfaces;
 global using Adnc.Demo.Admin.Repository;
 global using Adnc.Demo.Admin.Repository.Entities;

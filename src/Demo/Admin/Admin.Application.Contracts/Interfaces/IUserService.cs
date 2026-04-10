@@ -1,3 +1,5 @@
+using Adnc.Demo.Admin.Application.Contracts.Dtos.User;
+
 namespace Adnc.Demo.Admin.Application.Contracts.Interfaces;
 
 /// <summary>

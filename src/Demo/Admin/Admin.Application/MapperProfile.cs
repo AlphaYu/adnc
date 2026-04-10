@@ -1,3 +1,10 @@
+using Adnc.Demo.Admin.Application.Contracts.Dtos.Dict;
+using Adnc.Demo.Admin.Application.Contracts.Dtos.Menu;
+using Adnc.Demo.Admin.Application.Contracts.Dtos.Organization;
+using Adnc.Demo.Admin.Application.Contracts.Dtos.Role;
+using Adnc.Demo.Admin.Application.Contracts.Dtos.SysConfig;
+using Adnc.Demo.Admin.Application.Contracts.Dtos.User;
+
 namespace Adnc.Demo.Admin.Application;
 
 public sealed class MapperProfile : Profile

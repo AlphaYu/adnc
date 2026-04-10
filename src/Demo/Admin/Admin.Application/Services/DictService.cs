@@ -1,3 +1,5 @@
+using Adnc.Demo.Admin.Application.Contracts.Dtos.Dict;
+
 namespace Adnc.Demo.Admin.Application.Services;
 
 public class DictService(IEfRepository<Dict> dictRepo, IEfRepository<DictData> dictDataRepo/*, BloomFilterFactory bloomFilterFactory*/, CacheService cacheService)

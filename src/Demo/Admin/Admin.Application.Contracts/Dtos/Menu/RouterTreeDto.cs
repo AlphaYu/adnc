@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace Adnc.Demo.Admin.Application.Contracts.Dtos;
+namespace Adnc.Demo.Admin.Application.Contracts.Dtos.Menu;
 
 public sealed class RouterTreeDto
 {
