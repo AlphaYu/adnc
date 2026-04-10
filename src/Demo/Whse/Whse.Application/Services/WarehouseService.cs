@@ -1,6 +1,6 @@
 using Adnc.Demo.Remote.Event;
 
-namespace Adnc.Demo.Whse.Application.Services.Implements;
+namespace Adnc.Demo.Whse.Application.Services;
 
 /// <summary>
 /// 仓储管理

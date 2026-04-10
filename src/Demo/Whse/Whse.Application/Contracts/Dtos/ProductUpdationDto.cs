@@ -1,6 +1,6 @@
-namespace Adnc.Demo.Whse.Application.Dtos;
+namespace Adnc.Demo.Whse.Application.Contracts.Dtos;
 
-public class ProductCreationDto : IDto
+public class ProductUpdationDto : IDto
 {
     public string Sku { set; get; } = string.Empty;
 
@@ -8,7 +8,7 @@ public class ProductCreationDto : IDto
 
     public string Describe { set; get; } = string.Empty;
 
-    public decimal Price { set; get; }
-
     public string Unit { set; get; } = string.Empty;
+
+    public decimal Price { set; get; }
 }

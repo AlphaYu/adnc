@@ -1,4 +1,4 @@
-namespace Adnc.Demo.Whse.Application.Services;
+namespace Adnc.Demo.Whse.Application.Contracts.Interfaces;
 
 public interface IProductService : IAppService
 {

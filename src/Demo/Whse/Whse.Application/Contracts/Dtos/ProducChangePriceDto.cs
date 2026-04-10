@@ -1,4 +1,4 @@
-namespace Adnc.Demo.Whse.Application.Dtos;
+namespace Adnc.Demo.Whse.Application.Contracts.Dtos;
 
 public class ProducChangePriceDto : IDto
 {

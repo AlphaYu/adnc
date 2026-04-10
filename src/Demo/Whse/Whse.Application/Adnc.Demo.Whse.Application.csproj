@@ -16,6 +16,6 @@
 		<PackageReference Include="Adnc.Shared.Application" Version="$(Shared_Version)" />
 	</ItemGroup>
 	<ItemGroup>
-	  <Folder Include="Dtos\DtoValidators\" />
+	  <Folder Include="Contracts\Dtos\DtoValidators\" />
 	</ItemGroup>
 </Project>
