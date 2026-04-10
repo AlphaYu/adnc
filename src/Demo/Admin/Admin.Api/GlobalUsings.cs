@@ -1,6 +1,6 @@
 global using System.IdentityModel.Tokens.Jwt;
 global using Adnc.Demo.Admin.Application.Contracts.Dtos;
-global using Adnc.Demo.Admin.Application.Contracts.Services;
+global using Adnc.Demo.Admin.Application.Contracts.Interfaces;
 global using Adnc.Demo.Const;
 global using Adnc.Demo.Const.Permissions.Admin;
 global using Adnc.Shared;
