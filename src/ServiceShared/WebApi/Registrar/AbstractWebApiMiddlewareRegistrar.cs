@@ -51,10 +51,8 @@ public abstract partial class AbstractWebApiMiddlewareRegistrar(WebApplication a
             var description = serviceInfo.Description;
             var serverName = serviceInfo.ServiceName;
             var version = serviceInfo.Version;
-#if DEBUG
-            App.UseMiniProfiler();
-#endif
             App
+                .UseMiniProfiler()
                 .UseSwagger(c =>
                 {
                     c.RouteTemplate = $"/{relativeRootPath}/swagger/{{documentName}}/swagger.json";
@@ -65,7 +63,6 @@ public abstract partial class AbstractWebApiMiddlewareRegistrar(WebApplication a
                 })
                 .UseSwaggerUI(c =>
                 {
-#if DEBUG
                     var assembly = serviceInfo.StartAssembly;
                     c.IndexStream = () =>
                     {
@@ -77,7 +74,6 @@ public abstract partial class AbstractWebApiMiddlewareRegistrar(WebApplication a
                         var stream = new MemoryStream(byteArray);
                         return stream;
                     };
-#endif
                     c.SwaggerEndpoint($"/{relativeRootPath}/swagger/{version}/swagger.json", $"{serverName}-{version}");
                     c.RoutePrefix = $"{relativeRootPath}";
                 });
