@@ -1,4 +1,4 @@
-namespace Adnc.Demo.Cust.Api.Application.Contracts.Dtos.DtoValidators;
+namespace Adnc.Demo.Cust.Api.Application.Contracts.Dtos.Validators;
 
 public class CustomerRechargeDtoValidator : AbstractValidator<CustomerRechargeDto>
 {
