@@ -19,7 +19,7 @@ public abstract partial class AbstractWebApiDependencyRegistrar
 
         var jwtSection = Configuration.GetRequiredSection(NodeConsts.JWT);
         var basicSection = Configuration.GetRequiredSection(NodeConsts.Basic);
-        var jwtConfig = jwtSection.Get<JWTOptions>() ?? throw new InvalidDataException(nameof(jwtSection));
+        var jwtOptions = jwtSection.Get<JWTOptions>() ?? throw new InvalidDataException(nameof(jwtSection));
         Services
             .Configure<JWTOptions>(jwtSection)
             .Configure<BasicOptions>(basicSection)
@@ -29,7 +29,7 @@ public abstract partial class AbstractWebApiDependencyRegistrar
             .AddJwtBearer(options =>
             {
                 options.MapInboundClaims = false;
-                options.TokenValidationParameters = jwtConfig.GenarateTokenValidationParameters();
+                options.TokenValidationParameters = jwtOptions.GenarateTokenValidationParameters();
                 options.Events = new JwtBearerEvents
                 {
                     //接受到消息时调用
