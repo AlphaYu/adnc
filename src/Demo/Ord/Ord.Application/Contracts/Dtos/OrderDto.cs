@@ -1,4 +1,4 @@
-namespace Adnc.Demo.Ord.Application.Dtos;
+namespace Adnc.Demo.Ord.Application.Contracts.Dtos;
 
 /// <summary>
 /// 订单输出Dto

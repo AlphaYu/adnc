@@ -1,6 +1,6 @@
 using Adnc.Demo.Remote.Event;
 
-namespace Adnc.Demo.Ord.Application.Services.Implements;
+namespace Adnc.Demo.Ord.Application.Services;
 
 /// <summary>
 ///  订单管理

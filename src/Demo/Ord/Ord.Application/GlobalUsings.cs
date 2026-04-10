@@ -1,9 +1,9 @@
 global using System.Linq.Expressions;
 global using System.Reflection;
 global using Adnc.Demo.Const;
-global using Adnc.Demo.Ord.Application.Dtos;
+global using Adnc.Demo.Ord.Application.Contracts.Dtos;
+global using Adnc.Demo.Ord.Application.Contracts.Interfaces;
 global using Adnc.Demo.Ord.Application.EventSubscribers;
-global using Adnc.Demo.Ord.Application.Services;
 global using Adnc.Demo.Ord.Domain.Aggregates.OrderAggregate;
 global using Adnc.Demo.Ord.Domain.EntityConfig;
 global using Adnc.Demo.Ord.Domain.Services;
