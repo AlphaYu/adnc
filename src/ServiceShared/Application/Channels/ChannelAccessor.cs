@@ -5,9 +5,6 @@ namespace Adnc.Shared.Application.Channels;
 public sealed class ChannelAccessor<TModel>
 {
     private static readonly Lazy<ChannelAccessor<TModel>> _lazy = new(() => new ChannelAccessor<TModel>());
-    private readonly ChannelReader<TModel> _reader;
-
-    private readonly ChannelWriter<TModel> _writer;
 
     static ChannelAccessor()
     {
@@ -20,13 +17,13 @@ public sealed class ChannelAccessor<TModel>
             FullMode = BoundedChannelFullMode.DropOldest
         };
         var channel = Channel.CreateBounded<TModel>(channelOptions);
-        _writer = channel.Writer;
-        _reader = channel.Reader;
+        Writer = channel.Writer;
+        Reader = channel.Reader;
     }
 
     public static ChannelAccessor<TModel> Instance => _lazy.Value;
 
-    public ChannelWriter<TModel> Writer => _writer;
+    public ChannelWriter<TModel> Writer { get; private set; }
 
-    public ChannelReader<TModel> Reader => _reader;
+    public ChannelReader<TModel> Reader { get; private set; }
 }
