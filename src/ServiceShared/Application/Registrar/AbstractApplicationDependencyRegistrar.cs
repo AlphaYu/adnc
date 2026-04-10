@@ -28,10 +28,10 @@ public abstract partial class AbstractApplicationDependencyRegistrar
     public abstract Assembly ContractsLayerAssembly { get; }
     public abstract Assembly RepositoryOrDomainLayerAssembly { get; }
     protected List<Type> DefaultInterceptorTypes => [typeof(OperateLogInterceptor), typeof(CachingInterceptor), typeof(UowInterceptor)];
-    protected IServiceCollection Services { get; init; }
-    protected IConfiguration Configuration { get; init; }
-    protected IServiceInfo ServiceInfo { get; init; }
-    protected ServiceLifetime Lifetime { get; init; }
+    internal IServiceCollection Services { get; init; }
+    internal IConfiguration Configuration { get; init; }
+    internal IServiceInfo ServiceInfo { get; init; }
+    internal ServiceLifetime Lifetime { get; init; }
 
     /// <summary>
     /// 注册所有服务

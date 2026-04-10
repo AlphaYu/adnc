@@ -9,6 +9,11 @@ namespace Adnc.Demo.Whse.Application;
 public sealed class DependencyRegistrar(IServiceCollection services, IServiceInfo serviceInfo, IConfiguration configuration, ServiceLifetime lifetime = ServiceLifetime.Scoped)
     : AbstractApplicationDependencyRegistrar(services, serviceInfo, configuration, lifetime)
 {
+    private readonly IServiceCollection _services = services;
+    private readonly IServiceInfo _serviceInfo = serviceInfo;
+    private readonly IConfiguration _configuration = configuration;
+    private readonly ServiceLifetime _lifetime = lifetime;
+
     public override Assembly ApplicationLayerAssembly => Assembly.GetExecutingAssembly();
 
     public override Assembly ContractsLayerAssembly => typeof(IWarehouseService).Assembly;
@@ -29,12 +34,12 @@ public sealed class DependencyRegistrar(IServiceCollection services, IServiceInf
 
     protected override void AddCapEventBus(IEnumerable<Type> subscribers, Action<FailedInfo>? failedThresholdCallback = null)
     {
-        var connectionString = Configuration[NodeConsts.SqlServer_ConnectionString] ?? throw new InvalidDataException("SqlServer ConnectionString is null");
-        var rabbitMQOptions = Configuration.GetRequiredSection(NodeConsts.RabbitMq).Get<RabbitMQOptions>() ?? throw new InvalidDataException(nameof(NodeConsts.RabbitMq));
-        var clientProvidedName = ServiceInfo.Id;
-        var version = ServiceInfo.Version;
-        var groupName = $"cap.{ServiceInfo.ShortName}.{this.GetEnvShortName()}";
-        Services.AddAdncInfraCap(subscribers, capOptions =>
+        var connectionString = _configuration[NodeConsts.SqlServer_ConnectionString] ?? throw new InvalidDataException("SqlServer ConnectionString is null");
+        var rabbitMQOptions = _configuration.GetRequiredSection(NodeConsts.RabbitMq).Get<RabbitMQOptions>() ?? throw new InvalidDataException(nameof(NodeConsts.RabbitMq));
+        var clientProvidedName = _serviceInfo.Id;
+        var version = _serviceInfo.Version;
+        var groupName = $"cap.{_serviceInfo.ShortName}.{this.GetEnvShortName()}";
+        _services.AddAdncInfraCap(subscribers, capOptions =>
         {
             SetCapBasicInfo(capOptions, version, groupName, failedThresholdCallback);
             SetCapRabbitMQInfo(capOptions, rabbitMQOptions, clientProvidedName);
@@ -43,16 +48,16 @@ public sealed class DependencyRegistrar(IServiceCollection services, IServiceInf
                 sqlServerOptions.ConnectionString = connectionString;
                 sqlServerOptions.Schema = "cap";
             });
-        }, null, Lifetime);
+        }, null, _lifetime);
     }
 
     protected override void AddEfCoreContext()
     {
-        AddOperater(Services);
+        AddOperater(_services);
 
-        var connectionString = Configuration[NodeConsts.SqlServer_ConnectionString] ?? throw new InvalidDataException("SqlServer ConnectionString is null");
-        var migrationsAssemblyName = ServiceInfo.MigrationsAssemblyName;
-        Services.AddAdncInfraEfCoreSQLServer(RepositoryOrDomainLayerAssembly, optionsBuilder =>
+        var connectionString = _configuration[NodeConsts.SqlServer_ConnectionString] ?? throw new InvalidDataException("SqlServer ConnectionString is null");
+        var migrationsAssemblyName = _serviceInfo.MigrationsAssemblyName;
+        _services.AddAdncInfraEfCoreSQLServer(RepositoryOrDomainLayerAssembly, optionsBuilder =>
         {
             optionsBuilder.UseLowerCaseNamingConvention();
             optionsBuilder.UseSqlServer(connectionString, optionsBuilder =>
@@ -61,6 +66,6 @@ public sealed class DependencyRegistrar(IServiceCollection services, IServiceInf
                                         .MigrationsAssembly(migrationsAssemblyName)
                                         .UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
             });
-        }, Lifetime);
+        }, _lifetime);
     }
 }

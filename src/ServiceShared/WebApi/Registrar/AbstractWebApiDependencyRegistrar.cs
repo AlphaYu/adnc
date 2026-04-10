@@ -20,9 +20,9 @@ public abstract partial class AbstractWebApiDependencyRegistrar
     }
 
     public string Name => "webapi";
-    protected IConfiguration Configuration { get; init; }
-    protected IServiceCollection Services { get; init; }
-    protected IServiceInfo ServiceInfo { get; init; }
+    internal IConfiguration Configuration { get; init; }
+    internal IServiceCollection Services { get; init; }
+    internal IServiceInfo ServiceInfo { get; init; }
 
     public abstract void AddAdncServices();
 

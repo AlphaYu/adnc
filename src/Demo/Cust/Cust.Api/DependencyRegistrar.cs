@@ -5,18 +5,22 @@ namespace Adnc.Demo.Cust.Api;
 
 public sealed class ApiLayerRegistrar(IServiceCollection services, IServiceInfo serviceInfo, IConfiguration configuration) : AbstractWebApiDependencyRegistrar(services, serviceInfo, configuration)
 {
+    private readonly IServiceCollection _services = services;
+    private readonly IServiceInfo _serviceInfo = serviceInfo;
+    private readonly IConfiguration _configuration = configuration;
+
     public override void AddAdncServices()
     {
-        var registrar = new ApplicationLayerRegistrar(Services, ServiceInfo, Configuration);
+        var registrar = new ApplicationLayerRegistrar(_services, _serviceInfo, _configuration);
         registrar.AddApplicationServices();
 
         AddWebApiDefaultServices();
 
-        var mysqlSection = Configuration.GetRequiredSection(NodeConsts.Mysql);
-        var redisSecton = Configuration.GetRequiredSection(NodeConsts.Redis);
-        var rabbitSecton = Configuration.GetRequiredSection(NodeConsts.RabbitMq);
-        var clientProvidedName = ServiceInfo.Id;
-        Services.AddHealthChecks(checksBuilder =>
+        var mysqlSection = _configuration.GetRequiredSection(NodeConsts.Mysql);
+        var redisSecton = _configuration.GetRequiredSection(NodeConsts.Redis);
+        var rabbitSecton = _configuration.GetRequiredSection(NodeConsts.RabbitMq);
+        var clientProvidedName = _serviceInfo.Id;
+        _services.AddHealthChecks(checksBuilder =>
         {
             checksBuilder
                     .AddMySql(mysqlSection)
@@ -24,9 +28,9 @@ public sealed class ApiLayerRegistrar(IServiceCollection services, IServiceInfo 
                     .AddRabbitMQ(rabbitSecton, clientProvidedName);
         });
 
-        var capPath = $"/{ServiceInfo.RelativeRootPath}/cap";
+        var capPath = $"/{_serviceInfo.RelativeRootPath}/cap";
         var capPolicy = AuthorizePolicy.Default;
-        Services.AddCapDashboardStandalone(options =>
+        _services.AddCapDashboardStandalone(options =>
         {
             options.PathMatch = capPath;
             options.AllowAnonymousExplicit = false;
@@ -34,13 +38,16 @@ public sealed class ApiLayerRegistrar(IServiceCollection services, IServiceInfo 
         });
 
         //register others services
-        //Services.AddScoped<xxxx>
+        //_services.AddScoped<xxxx>
     }
 }
 
 public sealed class ApplicationLayerRegistrar(IServiceCollection services, IServiceInfo serviceInfo, IConfiguration configuration, ServiceLifetime lifetime = ServiceLifetime.Scoped)
     : AbstractApplicationDependencyRegistrar(services, serviceInfo, configuration, lifetime)
 {
+    //private readonly IServiceCollection _services = services;
+    //private readonly IServiceInfo _serviceInfo = serviceInfo;
+    //private readonly IConfiguration _configuration = configuration;
     private readonly Assembly _assembly = Assembly.GetExecutingAssembly();
 
     public override Assembly ApplicationLayerAssembly => _assembly;
