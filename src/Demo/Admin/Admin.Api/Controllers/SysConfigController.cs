@@ -1,3 +1,5 @@
+using Adnc.Demo.Admin.Application.Contracts.Dtos.SysConfig;
+
 namespace Adnc.Demo.Admin.Api.Controllers;
 
 /// <summary>

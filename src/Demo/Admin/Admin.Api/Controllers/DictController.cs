@@ -1,3 +1,5 @@
+using Adnc.Demo.Admin.Application.Contracts.Dtos.Dict;
+
 namespace Adnc.Demo.Admin.Api.Controllers;
 
 /// <summary>
