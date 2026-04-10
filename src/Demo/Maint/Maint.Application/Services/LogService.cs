@@ -1,4 +1,4 @@
-namespace Adnc.Demo.Maint.Application.Services.Implements;
+namespace Adnc.Demo.Maint.Application.Services;
 
 public class LogService(IAdoQuerierRepository adoRepository) : AbstractAppService, ILogService
 {

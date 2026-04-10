@@ -1,4 +1,4 @@
-namespace Adnc.Demo.Maint.Application.Dtos;
+namespace Adnc.Demo.Maint.Application.Contracts.Dtos;
 
 /// <summary>
 /// 操作日志

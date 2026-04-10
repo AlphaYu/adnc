@@ -1,5 +1,6 @@
 global using System.Reflection;
-global using Adnc.Demo.Maint.Application.Dtos;
+global using Adnc.Demo.Maint.Application.Contracts.Dtos;
+global using Adnc.Demo.Maint.Application.Contracts.Interfaces;
 global using Adnc.Demo.Maint.Repository;
 global using Adnc.Infra.Repository;
 global using Adnc.Shared;
