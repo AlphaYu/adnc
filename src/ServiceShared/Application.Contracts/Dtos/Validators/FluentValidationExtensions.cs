@@ -1,4 +1,4 @@
-namespace Adnc.Shared.Application.Contracts.Validators;
+namespace Adnc.Shared.Application.Contracts.Dtos.Validators;
 
 public static class FluentValidationExtensions
 {
