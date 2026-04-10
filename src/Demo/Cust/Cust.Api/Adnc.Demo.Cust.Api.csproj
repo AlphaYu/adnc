@@ -3,7 +3,7 @@
     <Description>客户中心服务</Description>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="..\..\Shared\resources\**\*" Link="%(Link)" CopyToOutputDirectory="PreserveNewest"/>
+    <None Include="..\..\Shared\resources\**\*" Link="%(Link)" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\..\Shared\Const\Adnc.Demo.Const.csproj" />

@@ -1,4 +1,4 @@
-namespace Adnc.Demo.Cust.Api.Application.Services;
+namespace Adnc.Demo.Cust.Api.Application.Contracts.Interfaces;
 
 public interface ICustomerService : IAppService
 {

@@ -1,6 +1,6 @@
-namespace Adnc.Demo.Cust.Api.Application.Dtos;
+namespace Adnc.Demo.Cust.Api.Application.Contracts.Dtos;
 
-public class CustomerCreationDto : InputDto
+public class CustomerDto : OutputBaseAuditDto
 {
     public string Account { get; set; } = string.Empty;
 
@@ -8,5 +8,5 @@ public class CustomerCreationDto : InputDto
 
     public string Realname { get; set; } = string.Empty;
 
-    public string Password { get; set; } = string.Empty;
+    public decimal Balance { get; set; }
 }
