@@ -1,3 +1,5 @@
+using System.Text;
+
 namespace Adnc.Gateway.Ocelot;
 
 public static class ApplicationBuilderExtension
