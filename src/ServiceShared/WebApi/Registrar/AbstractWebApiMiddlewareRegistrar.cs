@@ -1,3 +1,4 @@
+using System.Text;
 using Adnc.Infra.Consul.Configuration;
 using Adnc.Shared.WebApi.Middleware;
 

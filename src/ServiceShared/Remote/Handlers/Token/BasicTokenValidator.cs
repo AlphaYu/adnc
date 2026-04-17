@@ -1,3 +1,5 @@
+using System.Text;
+
 namespace Adnc.Shared.Remote.Handlers.Token;
 
 public static class BasicTokenValidator

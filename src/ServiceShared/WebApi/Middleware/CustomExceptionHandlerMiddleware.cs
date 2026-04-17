@@ -1,3 +1,4 @@
+using System.Text.Json;
 using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
 
 namespace Adnc.Shared.WebApi.Middleware;

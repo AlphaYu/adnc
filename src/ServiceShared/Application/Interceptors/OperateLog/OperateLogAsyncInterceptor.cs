@@ -1,3 +1,5 @@
+using System.Text.Json;
+
 namespace Adnc.Shared.Application.Interceptors;
 
 /// <summary>

@@ -1,3 +1,5 @@
+using System.Text;
+
 namespace Adnc.Shared.WebApi.Authentication.Bearer;
 
 /// <summary>
