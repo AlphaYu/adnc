@@ -1,4 +1,4 @@
-namespace Adnc.Demo.Maint.Application.Contracts.Dtos;
+namespace Adnc.Demo.Maint.Application.Contracts.Dtos.Log;
 
 /// <summary>
 /// Nlog日志

@@ -1,4 +1,4 @@
-namespace Adnc.Demo.Whse.Application.Contracts.Dtos;
+namespace Adnc.Demo.Whse.Application.Contracts.Dtos.Warehouse;
 
 public class WarehouseBlockQtyDto : IDto
 {

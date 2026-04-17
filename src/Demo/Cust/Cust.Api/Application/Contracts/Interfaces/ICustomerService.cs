@@ -1,3 +1,5 @@
+using Adnc.Demo.Cust.Api.Application.Contracts.Dtos.Customer;
+
 namespace Adnc.Demo.Cust.Api.Application.Contracts.Interfaces;
 
 public interface ICustomerService : IAppService

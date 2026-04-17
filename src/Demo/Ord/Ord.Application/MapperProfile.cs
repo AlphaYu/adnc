@@ -1,3 +1,6 @@
+using Adnc.Demo.Ord.Application.Contracts.Dtos.Order;
+using AutoMapper;
+
 namespace Adnc.Demo.Ord.Application;
 
 public class OrdProfile : Profile

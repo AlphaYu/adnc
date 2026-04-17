@@ -1,3 +1,7 @@
+using Adnc.Demo.Whse.Application.Contracts.Dtos.Product;
+using Adnc.Demo.Whse.Application.Contracts.Dtos.Warehouse;
+using AutoMapper;
+
 namespace Adnc.Demo.Whse.Application;
 
 public class WhseProfile : Profile

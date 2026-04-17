@@ -1,3 +1,5 @@
+using Adnc.Demo.Whse.Application.Contracts.Dtos.Warehouse;
+
 namespace Adnc.Demo.Whse.WebApi.Controllers;
 
 /// <summary>

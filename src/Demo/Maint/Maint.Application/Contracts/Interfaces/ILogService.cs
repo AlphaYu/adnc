@@ -1,3 +1,5 @@
+using Adnc.Demo.Maint.Application.Contracts.Dtos.Log;
+
 namespace Adnc.Demo.Maint.Application.Contracts.Interfaces;
 
 /// <summary>

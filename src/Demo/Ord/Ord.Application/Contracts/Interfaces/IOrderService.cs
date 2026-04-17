@@ -1,3 +1,4 @@
+using Adnc.Demo.Ord.Application.Contracts.Dtos.Order;
 using Adnc.Demo.Remote.Event;
 
 namespace Adnc.Demo.Ord.Application.Contracts.Interfaces;

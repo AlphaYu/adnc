@@ -1,7 +1,6 @@
 global using System.Linq.Expressions;
 global using System.Reflection;
 global using Adnc.Demo.Const;
-global using Adnc.Demo.Ord.Application.Contracts.Dtos;
 global using Adnc.Demo.Ord.Application.Contracts.Interfaces;
 global using Adnc.Demo.Ord.Application.EventSubscribers;
 global using Adnc.Demo.Ord.Domain.Aggregates.OrderAggregate;
@@ -20,7 +19,6 @@ global using Adnc.Shared.Application.Contracts.Interfaces;
 global using Adnc.Shared.Application.Services;
 global using Adnc.Shared.Application.Services.Trackers;
 global using Adnc.Shared.Domain;
-global using AutoMapper;
 global using DotNetCore.CAP;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.Extensions.DependencyInjection;

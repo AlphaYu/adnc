@@ -1,3 +1,5 @@
+using Adnc.Demo.Whse.Application.Contracts.Dtos.Product;
+
 namespace Adnc.Demo.Whse.Application.Services;
 
 /// <summary>

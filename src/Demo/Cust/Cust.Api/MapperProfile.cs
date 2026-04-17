@@ -1,3 +1,6 @@
+using Adnc.Demo.Cust.Api.Application.Contracts.Dtos.Customer;
+using AutoMapper;
+
 namespace Adnc.Demo.Cust.Api;
 
 public class CustProfile : Profile

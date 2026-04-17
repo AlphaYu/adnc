@@ -1,3 +1,6 @@
+using System.Text;
+using Adnc.Demo.Maint.Application.Contracts.Dtos.Log;
+
 namespace Adnc.Demo.Maint.Application.Services;
 
 public class LogService(IAdoQuerierRepository adoRepository) : AbstractAppService, ILogService

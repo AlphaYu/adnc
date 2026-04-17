@@ -1,4 +1,4 @@
-namespace Adnc.Demo.Cust.Api.Application.Contracts.Dtos;
+namespace Adnc.Demo.Cust.Api.Application.Contracts.Dtos.Customer;
 
 public class CustomerCreationDto : InputDto
 {

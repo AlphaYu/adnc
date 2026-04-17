@@ -1,4 +1,5 @@
 using Adnc.Demo.Remote.Event;
+using Adnc.Demo.Whse.Application.Contracts.Dtos.Warehouse;
 
 namespace Adnc.Demo.Whse.Application.Contracts.Interfaces;
 

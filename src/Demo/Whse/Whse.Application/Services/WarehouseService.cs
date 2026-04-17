@@ -1,4 +1,5 @@
 using Adnc.Demo.Remote.Event;
+using Adnc.Demo.Whse.Application.Contracts.Dtos.Warehouse;
 
 namespace Adnc.Demo.Whse.Application.Services;
 
@@ -12,7 +13,7 @@ namespace Adnc.Demo.Whse.Application.Services;
 /// <param name="mapper"></param>
 /// <param name="warehouseRepo"></param>
 /// <param name="productRepo"></param>
-public class WarehouseService(WarehouseManager warehouseManager, IMapper mapper, IEfBasicRepository<Warehouse> warehouseRepo, IEfBasicRepository<Product> productRepo)
+public class WarehouseService(WarehouseManager warehouseManager, IEfBasicRepository<Warehouse> warehouseRepo, IEfBasicRepository<Product> productRepo)
     : AbstractAppService, IWarehouseService
 {
     /// <summary>
@@ -27,7 +28,7 @@ public class WarehouseService(WarehouseManager warehouseManager, IMapper mapper,
 
         await warehouseRepo.InsertAsync(warehouse);
 
-        return mapper.Map<WarehouseDto>(warehouse);
+        return Mapper.Map<WarehouseDto>(warehouse);
     }
 
     /// <summary>
@@ -45,7 +46,7 @@ public class WarehouseService(WarehouseManager warehouseManager, IMapper mapper,
 
         await warehouseRepo.UpdateAsync(warehouse);
 
-        return mapper.Map<WarehouseDto>(warehouse);
+        return Mapper.Map<WarehouseDto>(warehouse);
     }
 
     /// <summary>

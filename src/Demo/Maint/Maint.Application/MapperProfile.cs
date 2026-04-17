@@ -1,3 +1,6 @@
+using Adnc.Demo.Maint.Application.Contracts.Dtos.Log;
+using AutoMapper;
+
 namespace Adnc.Demo.Maint.Application;
 
 public class MaintProfile : Profile

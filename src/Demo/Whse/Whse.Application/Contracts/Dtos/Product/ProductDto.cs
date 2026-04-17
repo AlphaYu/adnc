@@ -1,4 +1,4 @@
-namespace Adnc.Demo.Whse.Application.Contracts.Dtos;
+namespace Adnc.Demo.Whse.Application.Contracts.Dtos.Product;
 
 public class ProductDto : IDto
 {
