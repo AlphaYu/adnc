@@ -18,8 +18,6 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Using Include="System.Text" />
-    <Using Include="System.Text.Json"/>
     <Using Include="System.Collections" />
   </ItemGroup>
 </Project>
