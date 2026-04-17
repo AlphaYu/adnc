@@ -1,3 +1,5 @@
+using System.Text;
+using System.Text.Json;
 using RabbitMQ.Client;
 
 namespace Adnc.Infra.EventBus.RabbitMq;

@@ -1,3 +1,5 @@
+using System.Text;
+
 namespace Adnc.Infra.Redis.Caching.Core.Interceptor;
 
 /// <summary>

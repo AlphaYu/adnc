@@ -1,3 +1,4 @@
+using System.Text;
 using Adnc.Infra.Redis.Core.Internal;
 using ProtoBuf;
 

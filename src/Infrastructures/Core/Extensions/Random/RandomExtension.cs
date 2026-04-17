@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Text;
 
 namespace System;
 

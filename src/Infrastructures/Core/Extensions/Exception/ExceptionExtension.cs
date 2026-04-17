@@ -1,3 +1,5 @@
+using System.Text;
+
 namespace System;
 
 public static class ExceptionExtensions

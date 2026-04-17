@@ -1,3 +1,5 @@
+using System.Text.Json;
+
 namespace Adnc.Infra.Consul.Configuration;
 
 internal sealed class JsonConfigurationFileParser
