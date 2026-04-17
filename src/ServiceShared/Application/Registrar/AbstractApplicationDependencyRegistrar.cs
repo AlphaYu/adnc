@@ -62,7 +62,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar
         var consulSection = Configuration.GetRequiredSection(NodeConsts.Consul);
         Services
             .AddSingleton<IObjectMapper, AutoMapperObject>()
-            .AddAutoMapper([ApplicationLayerAssembly])
+            .AddAutoMapper(cfg => { }, ApplicationLayerAssembly)
             .AddValidatorsFromAssembly(ContractsLayerAssembly, Lifetime)
             .AddAdncInfraYitterIdGenerater(redisSection, ServiceInfo.ShortName.Split('-')[0], Lifetime)
             .AddAdncInfraConsul(consulSection, null, Lifetime)
