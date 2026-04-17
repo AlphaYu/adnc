@@ -9,7 +9,7 @@
 		<PackageReference Include="Adnc.Infra.Repository.EfCore.MySql"/>
 	</ItemGroup>
 	<ItemGroup>
-	  <ProjectReference Include="..\Ord.Domain\Adnc.Demo.Ord.Domain.csproj" />
+	  <ProjectReference Include="..\Domain\Adnc.Demo.Ord.Domain.csproj" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="Migrations\" />

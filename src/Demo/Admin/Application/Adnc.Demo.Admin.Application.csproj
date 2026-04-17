@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<ItemGroup>
 		<ProjectReference Include="..\..\Shared\Remote.Grpc\Adnc.Demo.Remote.Grpc.csproj" />
-		<ProjectReference Include="..\Admin.Application.Contracts\Adnc.Demo.Admin.Application.Contracts.csproj" />
-		<ProjectReference Include="..\Admin.Repository\Adnc.Demo.Admin.Repository.csproj" />
+		<ProjectReference Include="..\Application.Contracts\Adnc.Demo.Admin.Application.Contracts.csproj" />
+		<ProjectReference Include="..\Repository\Adnc.Demo.Admin.Repository.csproj" />
 	</ItemGroup>
 	<ItemGroup Condition="'$(SolutionName)'=='Adnc'">
 		<ProjectReference Include="..\..\..\ServiceShared\Application\Adnc.Shared.Application.csproj" />

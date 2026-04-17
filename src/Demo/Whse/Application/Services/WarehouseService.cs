@@ -10,7 +10,6 @@ namespace Adnc.Demo.Whse.Application.Services;
 /// 构造函数
 /// </remarks>
 /// <param name="warehouseManager"></param>
-/// <param name="mapper"></param>
 /// <param name="warehouseRepo"></param>
 /// <param name="productRepo"></param>
 public class WarehouseService(WarehouseManager warehouseManager, IEfBasicRepository<Warehouse> warehouseRepo, IEfBasicRepository<Product> productRepo)

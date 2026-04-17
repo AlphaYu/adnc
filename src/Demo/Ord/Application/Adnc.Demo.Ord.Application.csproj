@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<ItemGroup>
 		<ProjectReference Include="..\..\Shared\Remote.Http\Adnc.Demo.Remote.Http.csproj" />
-		<ProjectReference Include="..\Ord.Domain\Adnc.Demo.Ord.Domain.csproj" />
+		<ProjectReference Include="..\Domain\Adnc.Demo.Ord.Domain.csproj" />
 	</ItemGroup>
 	<ItemGroup Condition="'$(SolutionName)'=='Adnc'">
     <ProjectReference Include="..\..\..\Infrastructures\Repository\Adnc.Infra.Repository.csproj" />

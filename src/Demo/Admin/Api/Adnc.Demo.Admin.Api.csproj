@@ -6,8 +6,8 @@
     <None Include="..\..\Shared\resources\**\*" Link="%(Link)" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Admin.Application.Contracts\Adnc.Demo.Admin.Application.Contracts.csproj" />
-    <ProjectReference Include="..\Admin.Application\Adnc.Demo.Admin.Application.csproj" />
+    <ProjectReference Include="..\Application.Contracts\Adnc.Demo.Admin.Application.Contracts.csproj" />
+    <ProjectReference Include="..\Application\Adnc.Demo.Admin.Application.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Grpc.AspNetCore" Version="$(Grpc_AspNetCore_Version)" />

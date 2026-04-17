@@ -9,6 +9,6 @@
 		<PackageReference Include="Adnc.Infra.Repository.EfCore.SqlServer"/>
 	</ItemGroup>
 	<ItemGroup>
-		<ProjectReference Include="..\Whse.Domain\Adnc.Demo.Whse.Domain.csproj" />
+		<ProjectReference Include="..\Domain\Adnc.Demo.Whse.Domain.csproj" />
 	</ItemGroup>
 </Project>
