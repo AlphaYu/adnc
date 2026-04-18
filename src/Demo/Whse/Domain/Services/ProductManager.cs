@@ -6,7 +6,7 @@ namespace Adnc.Demo.Whse.Domain.Services;
 public class ProductManager(IEfBasicRepository<Product> productRepo) : IDomainService
 {
     /// <summary>
-    /// 创建商品
+    /// Create a product
     /// </summary>
     /// <param name="sku"></param>
     /// <param name="price"></param>
@@ -39,7 +39,7 @@ public class ProductManager(IEfBasicRepository<Product> productRepo) : IDomainSe
     }
 
     /// <summary>
-    /// 修改SKU
+    /// Change the SKU
     /// </summary>
     /// <param name="product"></param>
     /// <param name="newSku"></param>
@@ -63,7 +63,7 @@ public class ProductManager(IEfBasicRepository<Product> productRepo) : IDomainSe
     }
 
     /// <summary>
-    /// 修改商品名称
+    /// Change the product name
     /// </summary>
     /// <param name="product"></param>
     /// <param name="newName"></param>
@@ -87,7 +87,7 @@ public class ProductManager(IEfBasicRepository<Product> productRepo) : IDomainSe
     }
 
     /// <summary>
-    /// 上架商品
+    /// Put a product on sale
     /// </summary>
     /// <param name="product"></param>
     /// <param name="reason"></param>

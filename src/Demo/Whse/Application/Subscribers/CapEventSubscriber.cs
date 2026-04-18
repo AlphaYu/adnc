@@ -7,7 +7,7 @@ public sealed class CapEventSubscriber(IWarehouseService wareHouserSrv, MessageT
     private readonly IMessageTracker _tracker = trackerFactory.Create();
 
     /// <summary>
-    /// 订阅订单创建事件
+    /// Subscribe to order creation events
     /// </summary>
     /// <param name="eventDto"></param>
     /// <returns></returns>

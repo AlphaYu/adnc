@@ -4,10 +4,10 @@ using Adnc.Demo.Whse.Application.Contracts.Dtos.Warehouse;
 namespace Adnc.Demo.Whse.Application.Services;
 
 /// <summary>
-/// 仓储管理
+/// Warehouse management
 /// </summary>
 /// <remarks>
-/// 构造函数
+/// Constructor
 /// </remarks>
 /// <param name="warehouseManager"></param>
 /// <param name="warehouseRepo"></param>
@@ -16,7 +16,7 @@ public class WarehouseService(WarehouseManager warehouseManager, IEfBasicReposit
     : AbstractAppService, IWarehouseService
 {
     /// <summary>
-    /// 创建仓储
+    /// Create a warehouse
     /// </summary>
     /// <param name="input"></param>
     /// <returns></returns>
@@ -31,7 +31,7 @@ public class WarehouseService(WarehouseManager warehouseManager, IEfBasicReposit
     }
 
     /// <summary>
-    /// 分配仓储给商品
+    /// Allocate a warehouse shelf to a product
     /// </summary>
     /// <param name="warehouseId"></param>
     /// <param name="input"></param>
@@ -49,7 +49,7 @@ public class WarehouseService(WarehouseManager warehouseManager, IEfBasicReposit
     }
 
     /// <summary>
-    /// 分页列表
+    /// Get a paginated list
     /// </summary>
     /// <param name="input"></param>
     /// <returns></returns>
@@ -89,7 +89,7 @@ public class WarehouseService(WarehouseManager warehouseManager, IEfBasicReposit
     }
 
     /// <summary>
-    /// 锁定库存
+    /// Reserve inventory
     /// </summary>
     /// <param name="eventDto"></param>
     /// <param name="tracker"></param>
@@ -103,7 +103,7 @@ public class WarehouseService(WarehouseManager warehouseManager, IEfBasicReposit
 
         var result = await warehouseManager.BlockQtyAsync(eventDto.OrderId, blockQtyProductsInfo, warehouses);
 
-        //库存都符合锁定条件才能批量更新数据库
+        // Only update the database in batch when all inventory entries satisfy the reservation conditions.
         if (result)
         {
             await warehouseRepo.UpdateRangeAsync(warehouses);

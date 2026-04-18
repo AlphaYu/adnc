@@ -4,40 +4,40 @@ using Adnc.Demo.Whse.Application.Contracts.Dtos.Warehouse;
 namespace Adnc.Demo.Whse.Application.Contracts.Interfaces;
 
 /// <summary>
-/// 仓储管理
+/// Warehouse management
 /// </summary>
 public interface IWarehouseService : IAppService
 {
     /// <summary>
-    /// 创建仓储
+    /// Create a warehouse
     /// </summary>
     /// <param name="input"></param>
     /// <returns></returns>
-    [OperateLog(LogName = "创建仓储")]
+    [OperateLog(LogName = "Create warehouse")]
     Task<WarehouseDto> CreateAsync(WarehouseCreationDto input);
 
     /// <summary>
-    /// 分配仓储给商品
+    /// Allocate a warehouse shelf to a product
     /// </summary>
     /// <param name="warehouseId"></param>
     /// <param name="input"></param>
     /// <returns></returns>
     [UnitOfWork()]
-    [OperateLog(LogName = "分配货架")]
+    [OperateLog(LogName = "Assign shelf")]
     Task<WarehouseDto> AllocateShelfToProductAsync(long warehouseId, WarehouseAllocateToProductDto input);
 
     /// <summary>
-    /// 锁定商品库存
+    /// Reserve product inventory
     /// </summary>
     /// <param name="eventDto"></param>
     ///  <param name="tracker"></param>
     /// <returns></returns>
     [UnitOfWork]
-    [OperateLog(LogName = "锁定库存")]
+    [OperateLog(LogName = "Reserve inventory")]
     Task BlockQtyAsync(OrderCreatedEvent eventDto, IMessageTracker tracker);
 
     /// <summary>
-    /// 分页列表
+    /// Get a paginated list
     /// </summary>
     /// <param name="input"></param>
     /// <returns></returns>

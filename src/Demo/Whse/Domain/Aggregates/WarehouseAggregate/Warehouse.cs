@@ -1,7 +1,7 @@
 namespace Adnc.Demo.Whse.Domain.Aggregates.WarehouseAggregate;
 
 /// <summary>
-/// 货架
+/// Warehouse shelf
 /// </summary>
 public class Warehouse : AggregateRootWithBasicAuditInfo
 {
@@ -26,7 +26,7 @@ public class Warehouse : AggregateRootWithBasicAuditInfo
     public WarehousePosition Position { get; private set; } = default!;
 
     /// <summary>
-    /// 冻结库存
+    /// Reserve inventory
     /// </summary>
     /// <param name="needBlockedQty"></param>
     internal void BlockQty(int needBlockedQty)
@@ -43,7 +43,7 @@ public class Warehouse : AggregateRootWithBasicAuditInfo
     }
 
     /// <summary>
-    /// 移除被冻结的库存
+    /// Remove reserved inventory
     /// </summary>
     /// <param name="needRemoveQty"></param>
     internal void RemoveBlockedQty(int needRemoveQty)
@@ -60,7 +60,7 @@ public class Warehouse : AggregateRootWithBasicAuditInfo
     }
 
     /// <summary>
-    /// 出库
+    /// Ship inventory
     /// </summary>
     /// <param name="qty"></param>
     internal void Deliver(int qty)
@@ -76,7 +76,7 @@ public class Warehouse : AggregateRootWithBasicAuditInfo
     }
 
     /// <summary>
-    /// 入库
+    /// Stock inventory
     /// </summary>
     /// <param name="qty"></param>
     internal void Entry(int qty)
@@ -87,7 +87,7 @@ public class Warehouse : AggregateRootWithBasicAuditInfo
     }
 
     /// <summary>
-    /// 分配货架给商品
+    /// Assign the shelf to a product
     /// </summary>
     /// <param name="productId"></param>
     internal void SetProductId(long productId)

@@ -15,14 +15,14 @@ public partial class Init : Migration
                 id = table.Column<long>(type: "bigint", nullable: false, comment: ""),
                 eventid = table.Column<long>(type: "bigint", nullable: false, comment: ""),
                 trackername = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false, comment: ""),
-                createby = table.Column<long>(type: "bigint", nullable: false, comment: "创建人"),
-                createtime = table.Column<DateTime>(type: "datetime2", nullable: false, comment: "创建时间/注册时间")
+                createby = table.Column<long>(type: "bigint", nullable: false, comment: "Created by"),
+                createtime = table.Column<DateTime>(type: "datetime2", nullable: false, comment: "Created time/registered time")
             },
             constraints: table =>
             {
                 table.PrimaryKey("pk_eventtracker", x => x.id);
             },
-            comment: "事件跟踪/处理信息");
+            comment: "Event tracking/processing info");
 
         migrationBuilder.CreateTable(
             name: "inventorychangeslog",
@@ -77,7 +77,7 @@ public partial class Init : Migration
             {
                 table.PrimaryKey("pk_warehouse", x => x.id);
             },
-            comment: "货架");
+            comment: "Warehouse shelf");
 
         migrationBuilder.CreateIndex(
             name: "ix_eventtracker_eventid_trackername",

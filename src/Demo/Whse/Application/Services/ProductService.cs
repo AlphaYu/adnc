@@ -3,10 +3,10 @@ using Adnc.Demo.Whse.Application.Contracts.Dtos.Product;
 namespace Adnc.Demo.Whse.Application.Services;
 
 /// <summary>
-///  商品管理
+/// Product management
 /// </summary>
 /// <remarks>
-/// 商品管理构造函数
+/// Product management constructor
 /// </remarks>
 /// <param name="productRepo"></param>
 /// <param name="adminClient"></param>
@@ -15,7 +15,7 @@ public class ProductService(IEfBasicRepository<Product> productRepo, /*IEfBasicR
     : AbstractAppService, IProductService
 {
     /// <summary>
-    /// 创建商品
+    /// Create a product
     /// </summary>
     /// <param name="input"></param>
     /// <returns></returns>
@@ -30,7 +30,7 @@ public class ProductService(IEfBasicRepository<Product> productRepo, /*IEfBasicR
     }
 
     /// <summary>
-    /// 修改商品
+    /// Update a product
     /// </summary>
     /// <param name="id"></param>
     /// <param name="input"></param>
@@ -52,7 +52,7 @@ public class ProductService(IEfBasicRepository<Product> productRepo, /*IEfBasicR
     }
 
     /// <summary>
-    /// 调整价格
+    /// Change the price
     /// </summary>
     /// <param name="id"></param>
     /// <param name="input"></param>
@@ -70,7 +70,7 @@ public class ProductService(IEfBasicRepository<Product> productRepo, /*IEfBasicR
     }
 
     /// <summary>
-    /// 上架商品
+    /// Put a product on sale
     /// </summary>
     /// <param name="id"></param>
     /// <param name="input"></param>
@@ -89,7 +89,7 @@ public class ProductService(IEfBasicRepository<Product> productRepo, /*IEfBasicR
     }
 
     /// <summary>
-    /// 下架商品
+    /// Take a product off sale
     /// </summary>
     /// <param name="id"></param>
     /// <param name="input"></param>
@@ -107,7 +107,7 @@ public class ProductService(IEfBasicRepository<Product> productRepo, /*IEfBasicR
     }
 
     /// <summary>
-    /// 商品分页列表
+    /// Get a paginated product list
     /// </summary>
     /// <param name="input"></param>
     /// <returns></returns>
@@ -134,7 +134,7 @@ public class ProductService(IEfBasicRepository<Product> productRepo, /*IEfBasicR
         var productDtos = Mapper.Map<List<ProductDto>>(entities);
         if (productDtos.IsNotNullOrEmpty())
         {
-            //调用maint微服务获取字典,组合商品状态信息
+            // Call the maint microservice to get dictionary data and compose product status information.
             var productStatus = (await adminClient.GetDictOptionsAsync("product_status")).FirstOrDefault();
             if (productStatus is not null)
             {
@@ -149,7 +149,7 @@ public class ProductService(IEfBasicRepository<Product> productRepo, /*IEfBasicR
     }
 
     /// <summary>
-    /// 商品列表
+    /// Get a product list
     /// </summary>
     /// <param name="input"></param>
     /// <returns></returns>

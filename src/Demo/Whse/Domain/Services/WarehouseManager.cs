@@ -6,10 +6,10 @@ namespace Adnc.Demo.Whse.Domain.Services;
 public class WarehouseManager(IEfBasicRepository<Warehouse> warehouseRepo) : IDomainService
 {
     /// <summary>
-    /// 创建货架
+    /// Create a warehouse shelf
     /// </summary>
-    /// <param name="positionCode">位置代码</param>
-    /// <param name="positionDescription">位置描述</param>
+    /// <param name="positionCode">Position code</param>
+    /// <param name="positionDescription">Position description</param>
     /// <returns></returns>
     /// <exception cref="BusinessException"></exception>
     public async Task<Warehouse> CreateAsync(string positionCode, string positionDescription)
@@ -27,7 +27,7 @@ public class WarehouseManager(IEfBasicRepository<Warehouse> warehouseRepo) : IDo
     }
 
     /// <summary>
-    /// 分配货架给商品
+    /// Assign the shelf to a product
     /// </summary>
     /// <param name="warehouse"></param>
     /// <param name="productId"></param>
@@ -38,7 +38,7 @@ public class WarehouseManager(IEfBasicRepository<Warehouse> warehouseRepo) : IDo
 
         var existWarehouse = await warehouseRepo.Where(x => x.ProductId == productId).SingleOrDefaultAsync();
 
-        //一个商品只能分配一个货架，但可以调整货架。
+        // A product can only be assigned to one shelf, but the assigned shelf can be changed.
         if (existWarehouse != null && existWarehouse.Id != warehouse.Id)
         {
             throw new BusinessException($"exist warehouse ({productId})");
@@ -48,7 +48,7 @@ public class WarehouseManager(IEfBasicRepository<Warehouse> warehouseRepo) : IDo
     }
 
     /// <summary>
-    /// 锁定库存
+    /// Reserve inventory
     /// </summary>
     /// <param name="orderId"></param>
     /// <param name="blockQtyProductsInfo"></param>
@@ -64,25 +64,25 @@ public class WarehouseManager(IEfBasicRepository<Warehouse> warehouseRepo) : IDo
 
         if (orderId <= 0)
         {
-            remark += $"{orderId}订单号错误";
+            remark += $"{orderId} has an invalid order ID";
         }
         else if (blockQtyProductsInfo.Count == 0)
         {
-            remark += $"商品数量为空";
+            remark += "Product quantity is empty";
         }
         else if (warehouses.Count == 0)
         {
-            remark += $"仓储数量为空";
+            remark += "Warehouse quantity is empty";
         }
         else if (warehouses.Count != blockQtyProductsInfo.Count)
         {
-            remark += remark + $"商品数量与库存数量不一致";
+            remark += remark + "Product quantity does not match inventory quantity";
         }
         else
         {
             try
             {
-                //这里需要捕获业务逻辑的异常
+                // Business logic exceptions need to be caught here.
                 foreach (var productId in blockQtyProductsInfo.Keys)
                 {
                     var needBlockQty = blockQtyProductsInfo[productId];
@@ -96,10 +96,10 @@ public class WarehouseManager(IEfBasicRepository<Warehouse> warehouseRepo) : IDo
             }
         }
 
-        //成功冻结所有库存
+        // All inventory reservations succeeded.
         isSuccess = string.IsNullOrEmpty(remark);
 
-        //发布冻结库存事件(不管是否冻结成功)
+        // Publish the inventory reservation event, regardless of success.
         var warehouseQtyBlockedEvent = new WarehouseQtyBlockedEvent
         {
             Id = IdGenerater.GetNextId(),

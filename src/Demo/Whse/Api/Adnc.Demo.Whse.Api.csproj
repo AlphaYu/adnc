@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 	<PropertyGroup>
-		<Description>仓储中心服务</Description>
+		<Description>Warehouse Center Service</Description>
 	</PropertyGroup>
   <ItemGroup>
     <None Include="..\..\Shared\resources\**\*" Link="%(Link)" CopyToOutputDirectory="PreserveNewest"/>

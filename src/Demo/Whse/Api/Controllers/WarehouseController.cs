@@ -3,14 +3,14 @@ using Adnc.Demo.Whse.Application.Contracts.Dtos.Warehouse;
 namespace Adnc.Demo.Whse.WebApi.Controllers;
 
 /// <summary>
-/// 货架管理
+/// Warehouse shelf management
 /// </summary>
 [Route("whse/warehouses")]
 [ApiController]
 public class WarehouseController(IWarehouseService warehouseSrv) : AdncControllerBase
 {
     /// <summary>
-    /// 新建货架
+    /// Create a warehouse shelf
     /// </summary>
     /// <param name="input"><see cref="WarehouseCreationDto"/></param>
     /// <returns></returns>
@@ -18,14 +18,14 @@ public class WarehouseController(IWarehouseService warehouseSrv) : AdncControlle
     public async Task<ActionResult<WarehouseDto>> CreateAsync([FromBody] WarehouseCreationDto input) => await warehouseSrv.CreateAsync(input);
 
     /// <summary>
-    /// 分配货架给商品
+    /// Assign the shelf to a product
     /// </summary>
     /// <returns></returns>
     [HttpPut("{id}/product")]
     public async Task<ActionResult<WarehouseDto>> AllocateShelfToProductAsync([FromRoute] long id, [FromBody] WarehouseAllocateToProductDto input) => await warehouseSrv.AllocateShelfToProductAsync(id, input);
 
     /// <summary>
-    /// 分页列表
+    /// Get a paginated list
     /// </summary>
     /// <param name="input"></param>
     /// <returns></returns>

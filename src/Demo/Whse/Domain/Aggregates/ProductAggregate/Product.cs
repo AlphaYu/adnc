@@ -8,8 +8,8 @@ public class Product : AggregateRootWithBasicAuditInfo
     }
 
     /// <summary>
-    /// 创建商品需要依赖仓储判断是否存在同名，所以必须要在领域服务类处理部分业务逻辑
-    /// internal可以防止应用服务直接使用Product的构造函数去创建实例,限制必须使用ProductManager来创建.
+    /// Product creation must rely on the repository to check for duplicate names, so part of the business logic must stay in the domain service.
+    /// internal prevents application services from directly using Product constructors and requires ProductManager to create instances.
     /// </summary>
     /// <param name="id"></param>
     /// <param name="sku"></param>
@@ -41,7 +41,7 @@ public class Product : AggregateRootWithBasicAuditInfo
     public string Unit { get; private set; } = string.Empty;
 
     /// <summary>
-    /// 设置sku
+    /// Set the SKU
     /// </summary>
     /// <param name="sku"></param>
     internal void SetSku(string sku)
@@ -50,7 +50,7 @@ public class Product : AggregateRootWithBasicAuditInfo
     }
 
     /// <summary>
-    /// 设置Name
+    /// Set the name
     /// </summary>
     /// <param name="name"></param>
     internal void SetName(string name)
@@ -59,7 +59,7 @@ public class Product : AggregateRootWithBasicAuditInfo
     }
 
     /// <summary>
-    /// 设置商品状态
+    /// Set the product status
     /// </summary>
     /// <param name="status"></param>
     internal void SetStatus(ProductStatus status)
@@ -68,7 +68,7 @@ public class Product : AggregateRootWithBasicAuditInfo
     }
 
     /// <summary>
-    /// 修改unit
+    /// Change the unit
     /// </summary>
     /// <param name="unit"></param>
     public void SetUnit(string unit)
@@ -77,7 +77,7 @@ public class Product : AggregateRootWithBasicAuditInfo
     }
 
     /// <summary>
-    /// 修改Price
+    /// Change the price
     /// </summary>
     /// <param name="price"></param>
     public void SetPrice(decimal price)
@@ -87,7 +87,7 @@ public class Product : AggregateRootWithBasicAuditInfo
     }
 
     /// <summary>
-    /// 下架商品，不允许销售
+    /// Take a product off sale so it cannot be sold
     /// </summary>
     public void PutOffSale(string reason)
     {

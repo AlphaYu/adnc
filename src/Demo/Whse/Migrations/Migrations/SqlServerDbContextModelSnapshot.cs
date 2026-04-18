@@ -33,12 +33,12 @@ namespace Adnc.Demo.Whse.Migrations.Migrations
                     b.Property<long>("CreateBy")
                         .HasColumnType("bigint")
                         .HasColumnName("createby")
-                        .HasComment("创建人");
+                        .HasComment("Created by");
 
                     b.Property<DateTime>("CreateTime")
                         .HasColumnType("datetime2")
                         .HasColumnName("createtime")
-                        .HasComment("创建时间/注册时间");
+                        .HasComment("Created time/registered time");
 
                     b.Property<long>("EventId")
                         .HasColumnType("bigint")
@@ -61,7 +61,7 @@ namespace Adnc.Demo.Whse.Migrations.Migrations
 
                     b.ToTable("eventtracker", (string)null);
 
-                    b.HasComment("事件跟踪/处理信息");
+                    b.HasComment("Event tracking/processing info");
                 });
 
             modelBuilder.Entity("Adnc.Demo.Whse.Domain.Aggregates.ProductAggregate.Product", b =>
@@ -195,7 +195,7 @@ namespace Adnc.Demo.Whse.Migrations.Migrations
 
                     b.ToTable("warehouse", (string)null);
 
-                    b.HasComment("货架");
+                    b.HasComment("Warehouse shelf");
                 });
 
             modelBuilder.Entity("Adnc.Demo.Whse.Domain.Aggregates.ProductAggregate.Product", b =>
