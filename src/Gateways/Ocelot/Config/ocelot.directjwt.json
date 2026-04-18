@@ -14,23 +14,23 @@
       "X-Forwarded-For": "{RemoteIpAddress}"
     },
     "RateLimitOptions": {
-      //白名单，不受限流控制
+      // Whitelist entries are exempt from rate limiting
       "ClientWhitelist": [],
-      //是否开启限流
+      // Whether rate limiting is enabled
       "EnableRateLimiting": true,
-      //限流的时间，如：1s, 5m, 1h, 1d
+      // Rate limit period, for example: 1s, 5m, 1h, 1d
       "Period": "1s",
-      //在限流控制时间段内最大访问数
+      // Maximum number of requests allowed within the rate limit period
       "Limit": 3000,
-      //多少秒后客户端可以重试
+      // Number of seconds before the client can retry
       "PeriodTimespan": 10
     },
     "QoSOptions": {
-      //断路器次数（发生几次请求异常后进行熔断）
+      // Number of exceptions allowed before the circuit breaks
       "ExceptionsAllowedBeforeBreaking": 10,
-      //断路器熔断时间（毫秒）
+      // Circuit break duration in milliseconds
       "DurationOfBreak": 30000,
-      //超时时间
+      // Timeout duration
       "TimeoutValue": 5000
     }
   },
