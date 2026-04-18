@@ -10,17 +10,17 @@ public record OrderReceiver : ValueObject
     }
 
     /// <summary>
-    /// 姓名
+    /// Name
     /// </summary>
     public string Name { get; }
 
     /// <summary>
-    /// 电话
+    /// Phone
     /// </summary>
     public string Phone { get; }
 
     /// <summary>
-    /// 地址
+    /// Address
     /// </summary>
     public string Address { get; }
 }

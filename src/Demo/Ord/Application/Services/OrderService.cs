@@ -4,7 +4,7 @@ using Adnc.Demo.Remote.Event;
 namespace Adnc.Demo.Ord.Application.Services;
 
 /// <summary>
-///  订单管理
+/// Order management
 /// </summary>
 /// <param name="orderRepo"></param>
 /// <param name="orderMgr"></param>
@@ -14,7 +14,7 @@ public class OrderService(IEfBasicRepository<Order> orderRepo, OrderManager orde
     : AbstractAppService, IOrderService
 {
     /// <summary>
-    /// 创建订单
+    /// Create an order
     /// </summary>
     /// <param name="input"></param>
     /// <returns></returns>
@@ -22,28 +22,28 @@ public class OrderService(IEfBasicRepository<Order> orderRepo, OrderManager orde
     {
         input.TrimStringFields();
         var productIds = input.Items.Select(x => x.ProductId).ToArray();
-        //调用whse服务获取产品的价格,名字
+        // Call the whse service to get product prices and names.
         var products = await whseClient.GetProductsAsync(new ProductSearchRequest { Ids = productIds }) ?? [];
         var orderId = IdGenerater.GetNextId();
         var items = from o in input.Items
                     join p in products on o.ProductId equals p.Id
                     select (new OrderItemProduct(p.Id, p.Name, p.Price), o.Count);
 
-        //需要发布领域事件,通知仓储中心冻结库存
+        // A domain event needs to be published to notify the warehouse center to reserve inventory.
         var order = await orderMgr.CreateAsync
                                     (orderId
                                     , input.CustomerId
                                     , items
                                     , new OrderReceiver(input.DeliveryInfomaton.Name, input.DeliveryInfomaton.Phone, input.DeliveryInfomaton.Address)
                                     );
-        // 保存到数据库
+        // Save to the database.
         await orderRepo.InsertAsync(order);
 
         return Mapper.Map<OrderDto>(order);
     }
 
     /// <summary>
-    /// 标记订单状态
+    /// Mark the order status
     /// </summary>
     /// <param name="eventDto"></param>
     /// <param name="tracker"></param>
@@ -59,7 +59,7 @@ public class OrderService(IEfBasicRepository<Order> orderRepo, OrderManager orde
     }
 
     /// <summary>
-    /// 修改订单信息
+    /// Update order information
     /// </summary>
     /// <param name="id"></param>
     /// <param name="input"></param>
@@ -82,7 +82,7 @@ public class OrderService(IEfBasicRepository<Order> orderRepo, OrderManager orde
     }
 
     /// <summary>
-    /// 删除订单
+    /// Delete an order
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -95,7 +95,7 @@ public class OrderService(IEfBasicRepository<Order> orderRepo, OrderManager orde
     }
 
     /// <summary>
-    /// 订单付款
+    /// Pay for an order
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -103,7 +103,7 @@ public class OrderService(IEfBasicRepository<Order> orderRepo, OrderManager orde
     {
         var order = await orderRepo.GetRequiredAsync(id);
 
-        //需要发布领域事件，客户中心订阅该事件
+        // A domain event needs to be published, and the customer center subscribes to it.
         await orderMgr.PayAsync(order);
 
         await orderRepo.UpdateAsync(order);
@@ -112,7 +112,7 @@ public class OrderService(IEfBasicRepository<Order> orderRepo, OrderManager orde
     }
 
     /// <summary>
-    /// 取消订单
+    /// Cancel an order
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -120,7 +120,7 @@ public class OrderService(IEfBasicRepository<Order> orderRepo, OrderManager orde
     {
         var order = await orderRepo.GetRequiredAsync(id);
 
-        //需要发布领域事件，仓储中心订阅该事件
+        // A domain event needs to be published, and the warehouse center subscribes to it.
         await orderMgr.CancelAsync(order);
 
         await orderRepo.UpdateAsync(order);
@@ -129,7 +129,7 @@ public class OrderService(IEfBasicRepository<Order> orderRepo, OrderManager orde
     }
 
     /// <summary>
-    /// 获取订单信息
+    /// Get order information
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -140,7 +140,7 @@ public class OrderService(IEfBasicRepository<Order> orderRepo, OrderManager orde
     }
 
     /// <summary>
-    /// 订单分页列表
+    /// Get a paginated order list
     /// </summary>
     /// <param name="input"></param>
     /// <returns></returns>
@@ -166,7 +166,7 @@ public class OrderService(IEfBasicRepository<Order> orderRepo, OrderManager orde
         var orderDtos = Mapper.Map<List<OrderDto>>(entities);
         if (orderDtos.IsNotNullOrEmpty())
         {
-            //调用admin微服务获取字典,组合订单状态信息
+            // Call the admin microservice to get dictionary data and compose order status information.
             var orderStatus = (await adminClient.GetDictOptionsAsync("order_status")).FirstOrDefault();
             if (orderStatus is not null)
             {

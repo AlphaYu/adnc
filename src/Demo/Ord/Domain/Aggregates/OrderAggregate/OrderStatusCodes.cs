@@ -1,7 +1,7 @@
 namespace Adnc.Demo.Ord.Domain.Aggregates.OrderAggregate;
 
 /// <summary>
-/// 订单状态枚举
+/// Order status enum
 /// </summary>
 public enum OrderStatusCodes
 {

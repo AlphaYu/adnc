@@ -3,14 +3,14 @@ using Adnc.Demo.Ord.Application.Contracts.Dtos.Order;
 namespace Adnc.Demo.Ord.WebApi.Controllers;
 
 /// <summary>
-/// 订单管理
+/// Order management
 /// </summary>
 [Route("ord/orders")]
 [ApiController]
 public class OrderController(IOrderService orderSrv) : AdncControllerBase
 {
     /// <summary>
-    /// 新建订单
+    /// Create an order
     /// </summary>
     /// <param name="input"><see cref="OrderCreationDto"/></param>
     /// <returns></returns>
@@ -18,7 +18,7 @@ public class OrderController(IOrderService orderSrv) : AdncControllerBase
     public async Task<ActionResult<OrderDto>> CreateAsync([FromBody] OrderCreationDto input) => await orderSrv.CreateAsync(input);
 
     /// <summary>
-    /// 订单付款
+    /// Pay for an order
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -30,7 +30,7 @@ public class OrderController(IOrderService orderSrv) : AdncControllerBase
     }
 
     /// <summary>
-    /// 订单取消
+    /// Cancel an order
     /// </summary>
     /// <param name="id"></param>s
     /// <returns></returns>
@@ -42,7 +42,7 @@ public class OrderController(IOrderService orderSrv) : AdncControllerBase
     }
 
     /// <summary>
-    /// 订单删除
+    /// Delete an order
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -54,7 +54,7 @@ public class OrderController(IOrderService orderSrv) : AdncControllerBase
     }
 
     /// <summary>
-    /// 订单详情
+    /// Get order details
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -62,7 +62,7 @@ public class OrderController(IOrderService orderSrv) : AdncControllerBase
     public async Task<ActionResult<OrderDto>> GetAsync([FromRoute] long id) => await orderSrv.GetAsync(id);
 
     /// <summary>
-    /// 订单分页列表
+    /// Get a paginated order list
     /// </summary>
     /// <param name="input"></param>
     /// <returns></returns>

@@ -34,7 +34,7 @@ namespace Adnc.Demo.Ord.Migrations.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18,4)")
                         .HasColumnName("amount")
-                        .HasComment("订单金额");
+                        .HasComment("Order amount");
 
                     b.Property<long>("CreateBy")
                         .HasColumnType("bigint")
@@ -49,13 +49,13 @@ namespace Adnc.Demo.Ord.Migrations.Migrations
                     b.Property<long>("CustomerId")
                         .HasColumnType("bigint")
                         .HasColumnName("customerid")
-                        .HasComment("客户Id");
+                        .HasComment("Customer ID");
 
                     b.Property<string>("Remark")
                         .HasMaxLength(64)
                         .HasColumnType("varchar(64)")
                         .HasColumnName("remark")
-                        .HasComment("备注");
+                        .HasComment("Remark");
 
                     b.Property<DateTime>("RowVersion")
                         .IsConcurrencyToken()
@@ -69,7 +69,7 @@ namespace Adnc.Demo.Ord.Migrations.Migrations
 
                     b.ToTable("order", null, t =>
                         {
-                            t.HasComment("订单");
+                            t.HasComment("Order");
                         });
                 });
 
@@ -84,12 +84,12 @@ namespace Adnc.Demo.Ord.Migrations.Migrations
                     b.Property<int>("Count")
                         .HasColumnType("int")
                         .HasColumnName("count")
-                        .HasComment("数量");
+                        .HasComment("Quantity");
 
                     b.Property<long>("OrderId")
                         .HasColumnType("bigint")
                         .HasColumnName("orderid")
-                        .HasComment("订单Id");
+                        .HasComment("Order ID");
 
                     b.HasKey("Id")
                         .HasName("pk_orderitem");
@@ -99,7 +99,7 @@ namespace Adnc.Demo.Ord.Migrations.Migrations
 
                     b.ToTable("orderitem", null, t =>
                         {
-                            t.HasComment("订单条目");
+                            t.HasComment("Order item");
                         });
                 });
 
@@ -116,12 +116,12 @@ namespace Adnc.Demo.Ord.Migrations.Migrations
                     b.Property<long>("CreateBy")
                         .HasColumnType("bigint")
                         .HasColumnName("createby")
-                        .HasComment("创建人");
+                        .HasComment("Created by");
 
                     b.Property<DateTime>("CreateTime")
                         .HasColumnType("datetime(6)")
                         .HasColumnName("createtime")
-                        .HasComment("创建时间/注册时间");
+                        .HasComment("Created time/registered time");
 
                     b.Property<long>("EventId")
                         .HasColumnType("bigint")
@@ -144,7 +144,7 @@ namespace Adnc.Demo.Ord.Migrations.Migrations
 
                     b.ToTable("ord_eventtracker", null, t =>
                         {
-                            t.HasComment("事件跟踪/处理信息");
+                            t.HasComment("Event tracking/processing info");
                         });
                 });
 

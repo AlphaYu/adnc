@@ -3,22 +3,22 @@ namespace Adnc.Demo.Ord.Application.Contracts.Dtos.Order;
 public class OrderCreationDto : IDto
 {
     /// <summary>
-    /// 客户Id
+    /// Customer ID
     /// </summary>
     public long CustomerId { get; set; }
 
     /// <summary>
-    /// 备注
+    /// Remark
     /// </summary>
     public string Remark { get; set; } = string.Empty;
 
     /// <summary>
-    /// 收货信息
+    /// Receiver information
     /// </summary>
     public OrderReceiverDto DeliveryInfomaton { get; set; } = default!;
 
     /// <summary>
-    /// 订单子项
+    /// Order items
     /// </summary>
     public virtual ICollection<OrderCreationItemDto> Items { get; set; } = [];
 

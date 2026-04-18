@@ -3,12 +3,12 @@ using Adnc.Demo.Remote.Event;
 namespace Adnc.Demo.Ord.Domain.Services;
 
 /// <summary>
-/// 订单领域服务
+/// Order domain service
 /// </summary>
 public class OrderManager() : IDomainService
 {
     /// <summary>
-    /// 订单创建
+    /// Create an order
     /// </summary>
     /// <param name="id"></param>
     /// <param name="customerId"></param>
@@ -28,13 +28,13 @@ public class OrderManager() : IDomainService
            , remark
         );
 
-        //AddProduct会判断是否有重复的产品
+        // AddProduct checks whether a duplicate product already exists.
         foreach (var (product, count) in items)
         {
             order.AddProduct(IdGenerater.GetNextId(), new OrderItemProduct(product.Id, product.Name, product.Price), count);
         }
 
-        //发送OrderCreatedEvent事件，通知仓储中心冻结库存
+        // Publish the OrderCreatedEvent to notify the warehouse center to reserve inventory.
         var products = order.Items.Select(x => new OrderCreatedEvent.OrderItem { ProductId = x.Product.Id, Qty = x.Count });
         var orderCreatedEvent = new OrderCreatedEvent
         {
@@ -48,7 +48,7 @@ public class OrderManager() : IDomainService
     }
 
     /// <summary>
-    /// 订单取消，没有付款的订单可以取消
+    /// Cancel an order. Unpaid orders can be cancelled.
     /// </summary>
     /// <returns></returns>
     public virtual async Task CancelAsync(Order order)
@@ -57,7 +57,7 @@ public class OrderManager() : IDomainService
 
         order.ChangeStatus(OrderStatusCodes.Canceling, string.Empty);
 
-        //发布领域事件，通知仓储中心解冻被冻结的库存
+        // Publish a domain event to notify the warehouse center to release reserved inventory.
         var orderCanceledEvent = new OrderCanceledEvent
         {
             Id = IdGenerater.GetNextId(),
@@ -68,7 +68,7 @@ public class OrderManager() : IDomainService
     }
 
     /// <summary>
-    /// 订单付款
+    /// Pay for an order
     /// </summary>
     /// <returns></returns>
     public virtual async Task PayAsync(Order order)
@@ -77,7 +77,7 @@ public class OrderManager() : IDomainService
 
         order.ChangeStatus(OrderStatusCodes.Paying, string.Empty);
 
-        //发布领域事件，通知客户中心扣款(Demo是从余额中扣款)
+        // Publish a domain event to notify the customer center to deduct funds (the demo uses account balance).
         var orderPaidEvent = new OrderPaidEvent
         {
             Id = IdGenerater.GetNextId(),

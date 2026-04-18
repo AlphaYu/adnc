@@ -4,35 +4,35 @@ using Adnc.Demo.Remote.Event;
 namespace Adnc.Demo.Ord.Application.Contracts.Interfaces;
 
 /// <summary>
-/// 订单管理
+/// Order management
 /// </summary>
 public interface IOrderService : IAppService
 {
-    [OperateLog(LogName = "订单创建")]
+    [OperateLog(LogName = "Create order")]
     [UnitOfWork(Distributed = true)]
     Task<OrderDto> CreateAsync(OrderCreationDto input);
 
-    [OperateLog(LogName = "调整订单状态")]
+    [OperateLog(LogName = "Change order status")]
     [UnitOfWork]
     Task MarkCreatedStatusAsync(WarehouseQtyBlockedEvent eventDto, IMessageTracker tracker);
 
-    [OperateLog(LogName = "订单付款")]
+    [OperateLog(LogName = "Pay order")]
     [UnitOfWork(Distributed = true)]
     Task<OrderDto> PayAsync(long id);
 
-    [OperateLog(LogName = "订单更新")]
+    [OperateLog(LogName = "Update order")]
     Task<OrderDto> UpdateAsync(long id, OrderUpdationDto input);
 
-    [OperateLog(LogName = "订单取消")]
+    [OperateLog(LogName = "Cancel order")]
     [UnitOfWork(Distributed = true)]
     Task<OrderDto> CancelAsync(long id);
 
-    [OperateLog(LogName = "订单删除")]
+    [OperateLog(LogName = "Delete order")]
     Task DeleteAsync(long id);
 
-    [OperateLog(LogName = "订单搜索")]
+    [OperateLog(LogName = "Search orders")]
     Task<PageModelDto<OrderDto>> GetPagedAsync(OrderSearchPagedDto input);
 
-    [OperateLog(LogName = "订单详情")]
+    [OperateLog(LogName = "Order details")]
     Task<OrderDto> GetAsync(long id);
 }

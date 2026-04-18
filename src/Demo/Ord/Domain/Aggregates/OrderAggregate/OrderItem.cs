@@ -1,7 +1,7 @@
 namespace Adnc.Demo.Ord.Domain.Aggregates.OrderAggregate;
 
 /// <summary>
-/// 订单条目
+/// Order item
 /// </summary>
 public class OrderItem : DomainEntity
 {
@@ -19,17 +19,17 @@ public class OrderItem : DomainEntity
     }
 
     /// <summary>
-    /// 订单Id
+    /// Order ID
     /// </summary>
     public long OrderId { get; private set; }
 
     /// <summary>
-    /// 产品
+    /// Product
     /// </summary>
     public OrderItemProduct Product { get; private set; }
 
     /// <summary>
-    /// 数量
+    /// Quantity
     /// </summary>
     public int Count { get; private set; }
 

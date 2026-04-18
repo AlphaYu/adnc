@@ -1,7 +1,7 @@
 namespace Adnc.Demo.Ord.Domain.Aggregates.OrderAggregate;
 
 /// <summary>
-/// 订单
+/// Order
 /// </summary>
 public class Order : AggregateRootWithBasicAuditInfo
 {
@@ -24,37 +24,37 @@ public class Order : AggregateRootWithBasicAuditInfo
     }
 
     /// <summary>
-    /// 客户Id
+    /// Customer ID
     /// </summary>
     public long CustomerId { get; private set; }
 
     /// <summary>
-    /// 订单金额
+    /// Order amount
     /// </summary>
     public decimal Amount { get; private set; }
 
     /// <summary>
-    /// 备注
+    /// Remark
     /// </summary>
     public string? Remark { get; set; }
 
     /// <summary>
-    /// 订单状态
+    /// Order status
     /// </summary>
     public OrderStatus Status { get; private set; }
 
     /// <summary>
-    /// 收货信息
+    /// Receiver information
     /// </summary>
     public OrderReceiver Receiver { get; private set; }
 
     /// <summary>
-    /// 订单子项
+    /// Order items
     /// </summary>
     public virtual ICollection<OrderItem> Items { get; private set; }
 
     /// <summary>
-    /// 添加订单产品
+    /// Add an order product
     /// </summary>
     /// <param name="itemId"></param>
     /// <param name="product"></param>
@@ -78,7 +78,7 @@ public class Order : AggregateRootWithBasicAuditInfo
     }
 
     /// <summary>
-    /// 调整收货信息
+    /// Update receiver information
     /// </summary>
     /// <param name="orderReceiver"></param>
     public void ChangeReceiver(OrderReceiver orderReceiver)
@@ -88,7 +88,7 @@ public class Order : AggregateRootWithBasicAuditInfo
     }
 
     /// <summary>
-    /// 标记订单创建状态
+    /// Mark the order creation status
     /// </summary>
     /// <param name="isSuccess"></param>
     /// <param name="changesReason"></param>
@@ -99,7 +99,7 @@ public class Order : AggregateRootWithBasicAuditInfo
     }
 
     /// <summary>
-    /// 标记订单删除状态
+    /// Mark the order deletion status
     /// </summary>
     /// <param name="changesReason"></param>
     public void MarkDeletedStatus(string changesReason)
@@ -108,7 +108,7 @@ public class Order : AggregateRootWithBasicAuditInfo
     }
 
     /// <summary>
-    /// 调整订单状态
+    /// Change the order status
     /// </summary>
     /// <param name="newStatusCode"></param>
     /// <param name="changesReason"></param>
@@ -124,7 +124,7 @@ public class Order : AggregateRootWithBasicAuditInfo
             OrderStatusCodes.WaitConfirm when Status.Code == OrderStatusCodes.WaitSend => new OrderStatus(newStatusCode, changesReason),
             OrderStatusCodes.WaitRate when Status.Code == OrderStatusCodes.WaitConfirm => new OrderStatus(newStatusCode, changesReason),
             OrderStatusCodes.Finished when Status.Code == OrderStatusCodes.WaitRate => new OrderStatus(newStatusCode, changesReason),
-            _ => throw new ArgumentException("不允许修改状态", nameof(newStatusCode)),
+            _ => throw new ArgumentException("Status change is not allowed", nameof(newStatusCode)),
         };
     }
 }

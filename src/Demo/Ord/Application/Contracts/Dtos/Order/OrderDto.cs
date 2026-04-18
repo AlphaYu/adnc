@@ -1,87 +1,87 @@
 namespace Adnc.Demo.Ord.Application.Contracts.Dtos.Order;
 
 /// <summary>
-/// 订单输出Dto
+/// Order output DTO
 /// </summary>
 public class OrderDto : OutputBaseAuditDto
 {
     /// <summary>
-    /// 客户Id
+    /// Customer ID
     /// </summary>
     public long CustomerId { get; set; }
 
     /// <summary>
-    /// 订单金额
+    /// Order amount
     /// </summary>
     public decimal Amount { get; set; }
 
     /// <summary>
-    /// 备注
+    /// Remark
     /// </summary>
     public string Remark { get; set; } = string.Empty;
 
     /// <summary>
-    /// 订单状态-状态码
+    /// Order status - status code
     /// </summary>
     public int StatusCode { get; set; }
 
     /// <summary>
-    /// 订单状态-状态名称
+    /// Order status - status name
     /// </summary>
     public string StatusName { get; set; } = string.Empty;
 
     /// <summary>
-    /// 订单状态-状态变动原因
+    /// Order status - status change reason
     /// </summary>
     public string StatusChangesReason { get; set; } = string.Empty;
 
     /// <summary>
-    /// 收货信息-收货人
+    /// Receiver information - recipient
     /// </summary>
     public string ReceiverName { get; set; } = string.Empty;
 
     /// <summary>
-    /// 收货信息-收货电话
+    /// Receiver information - phone
     /// </summary>
     public string ReceiverPhone { get; set; } = string.Empty;
 
     /// <summary>
-    /// 收货信息-收货地址
+    /// Receiver information - address
     /// </summary>
     public string ReceiverAddress { get; set; } = string.Empty;
 
     /// <summary>
-    /// 订单子项
+    /// Order items
     /// </summary>
     public virtual ICollection<OrderItemDto> Items { get; set; } = [];
 
     /// <summary>
-    /// 订单子项Dto
+    /// Order item DTO
     /// </summary>
     public class OrderItemDto : OutputDto
     {
         /// <summary>
-        /// 订单编号
+        /// Order ID
         /// </summary>
         public string OrderId { get; set; } = string.Empty;
 
         /// <summary>
-        /// 数量
+        /// Quantity
         /// </summary>
         public int Count { get; set; }
 
         /// <summary>
-        /// 商品信息-商品Id
+        /// Product information - product ID
         /// </summary>
         public long ProductId { get; set; }
 
         /// <summary>
-        /// 商品信息-商品名
+        /// Product information - product name
         /// </summary>
         public string ProductName { get; set; } = string.Empty;
 
         /// <summary>
-        /// 商品信息-商品价格
+        /// Product information - product price
         /// </summary>
         public decimal ProductPrice { get; set; }
     }
