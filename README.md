@@ -15,13 +15,11 @@
 ###### <div align="center">代码改变世界，开源推动社区</div>
 
 ## 简介
-### ADNC是什么？
+### ADNC 是什么？
 
-`ADNC` 是一个基于 `.NET 8` 的开源分布式 / 微服务框架，也适用于单体架构项目。它围绕服务注册与发现、配置中心、链路追踪、负载均衡、熔断容错、分布式事务、分布式缓存、消息队列、`RPC` 调用（`http` / `grpc`）、认证授权、读写分离和日志记录等常见能力，提供了一套可直接组合使用的基础设施与工程实践。仓库同时提供了配套文档和示例代码，便于理解框架设计并快速上手。
+`ADNC` 是一个基于 `.NET 8` 的开源分布式/微服务框架，也适用于单体架构项目。它围绕服务注册与发现、配置中心、链路追踪、负载均衡、熔断容错、分布式事务、分布式缓存、消息队列、`RPC` 调用（`HTTP` / `gRPC`）、认证授权、读写分离和日志记录等常见能力，提供了一套可直接落地的基础设施与工程实践。项目同时提供了配套文档和示例代码，便于理解框架设计并快速上手。
 
-> 微服务是一种分布式架构模式，通过将应用程序拆分成一组小型、松耦合的服务，可以提高应用程序的可伸缩性、可靠性和灵活性。
-
-### ADNC 有什么优点？
+### 为什么选择 ADNC？
 
 - 支持多种服务形态：既支持经典三层，也支持 `DDD` 和更紧凑的单项目服务结构。
 - 基础设施开箱可用：围绕配置、注册发现、缓存、消息、认证、日志等常见需求提供现成集成方案。
@@ -39,7 +37,7 @@
 3. 如需前端项目，请查看文末前端链接
 4. 如需初始化数据，请查看文末数据库脚本链接
 
-运行 Demo 前请先准备 `.NET 8 SDK`，以及快速开始文档中提到的基础依赖。详细接入与本地运行说明请直接查看快速开始文档。
+运行 Demo 前请先准备 `.NET 8 SDK`，以及快速开始文档中提到的基础依赖。更完整的接入与本地运行说明请直接查看快速开始文档。
 
 ## 目录 / 架构
 
@@ -93,24 +91,24 @@ adnc
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | <a target="_blank" href="https://github.com/ThreeMammals/Ocelot">Ocelot</a> | 基于 .NET 编写的开源网关                                     |
 | <a target="_blank" href="https://github.com/hashicorp/consul">Consul</a> | 配置中心、注册中心组件                                       |
-| <a target="_blank" href="https://github.com/reactiveui/refit">Refit</a> | 一个声明式自动类型安全的RESTful服务调用组件，用于同步调用其他微服务 |
-| <a target="_blank" href="https://github.com/grpc/grpc-dotnet">Grpc.Net.ClientFactory</a><br />Grpc.Tools | Grpc通讯框架                                                 |
+| <a target="_blank" href="https://github.com/reactiveui/refit">Refit</a> | 声明式、类型安全的 RESTful 服务调用组件                      |
+| <a target="_blank" href="https://github.com/grpc/grpc-dotnet">Grpc.Net.ClientFactory</a><br />Grpc.Tools | gRPC 通讯框架                                                |
 | <a target="_blank" href="https://github.com/SkyAPM/SkyAPM-dotnet">SkyAPM.Agent.AspNetCore</a> | SkyWalking .NET 探针，链路追踪与性能监测组件                 |
 | <a target="_blank" href="https://github.com/castleproject/Core">Castle DynamicProxy</a> | 动态代理，AOP开源实现组件                                    |
-| <a target="_blank" href="https://github.com/PomeloFoundation/Pomelo.EntityFrameworkCore.MySql">Pomelo.EntityFrameworkCore.MySql</a> | EFCore ORM组件                                               |
-| <a target="_blank" href="https://github.com/StackExchange/Dapper">Dapper</a> | 轻量级ORM组件                                                |
+| <a target="_blank" href="https://github.com/PomeloFoundation/Pomelo.EntityFrameworkCore.MySql">Pomelo.EntityFrameworkCore.MySql</a> | EF Core ORM 组件                                             |
+| <a target="_blank" href="https://github.com/StackExchange/Dapper">Dapper</a> | 轻量级 ORM 组件                                              |
 | <a target="_blank" href="https://github.com/NLog/NLog">NLog</a><br />NLog.MongoDB<br />NLog.Loki | 日志记录组件                                                 |
 | <a target="_blank" href="https://github.com/AutoMapper/AutoMapper">AutoMapper</a> | 模型映射组件                                                 |
 | <a target="_blank" href="https://github.com/domaindrivendev/Swashbuckle.AspNetCore">Swashbuckle.AspNetCore</a> | API 文档生成工具（Swagger）                                  |
 | <a target="_blank" href="https://github.com/StackExchange/StackExchange.Redis">StackExchange.Redis</a> | Redis 客户端 SDK                                             |
-| <a target="_blank" href="https://github.com/dotnetcore/CAP">CAP</a> | 实现事件总线及最终一致性（分布式事务）的一个开源的组件       |
+| <a target="_blank" href="https://github.com/dotnetcore/CAP">CAP</a> | 事件总线与最终一致性（分布式事务）组件                       |
 | <a target="_blank" href="https://github.com/rabbitmq/rabbitmq-dotnet-client">RabbitMQ</a> | 异步消息队列组件                                             |
-| <a target="_blank" href="https://github.com/App-vNext/Polly">Polly</a> | 一个 .NET 弹性和瞬态故障处理库，允许开发人员以 Fluent 和线程安全的方式来实现重试、断路、超时、隔离和回退策略 |
-| <a target="_blank" href="https://github.com/FluentValidation">FluentValidation</a> | 一个 .NET 验证框架，支持链式操作，易于理解，功能完善，组件内提供十几种常用验证器，可扩展性好，支持自定义验证器，支持本地化多语言 |
+| <a target="_blank" href="https://github.com/App-vNext/Polly">Polly</a> | .NET 弹性与瞬态故障处理库                                    |
+| <a target="_blank" href="https://github.com/FluentValidation">FluentValidation</a> | .NET 验证框架                                                |
 | <a target="_blank" href="https://github.com/mariadb-corporation/MaxScale">MaxScale</a> | MariaDB 开发的一款成熟、高性能、免费开源的数据库中间件       |
-| <a target="_blank" href="https://github.com/Xabaril/AspNetCore.Diagnostics.HealthChecks">AspNetCore.HealthChecks</a> | 健康监测组件，搭配 Consul 的健康监测                         |
+| <a target="_blank" href="https://github.com/Xabaril/AspNetCore.Diagnostics.HealthChecks">AspNetCore.HealthChecks</a> | 健康检查组件，可与 Consul 健康检查配合使用                   |
 
-## Demo 服务说明
+## Demo 服务概览
 
 Demo 提供了五个相互关联的微服务示例，分别展示了不同的服务拆分方式与工程组织形式。
 
@@ -205,7 +203,7 @@ Whse/
 涵盖如何使用 Docker 安装并配置 Consul 集群、SkyWalking 系列组件，以及编写和配置相关项目的 Dockerfile 并部署多个服务：[查看文档](https://aspdotnetcore.net/docs/deploy-docker/)
 
 #### 如何实现读写分离
-说明为什么通过中间件实现读写分离，以及 EFCore 在这一方案下的代码写法：[查看文档](https://aspdotnetcore.net/docs/maxscale-readwritesplit/)
+说明为什么通过中间件实现读写分离，以及 EF Core 在这一方案下的代码写法：[查看文档](https://aspdotnetcore.net/docs/maxscale-readwritesplit/)
 
 #### 如何使用 Cache、Redis、分布式锁与布隆过滤器
 包含 Cache、Redis、分布式锁和布隆过滤器的使用方式，以及缓存防雪崩、防击穿、防穿透和同步方案：[查看文档](https://aspdotnetcore.net/docs/cache-redis-distributedlock-bloomfilter/)
@@ -216,8 +214,8 @@ Whse/
 #### 如何认证与授权
 介绍为何采用 JwtBearer + Basic 混合认证模式，以及对应的实现逻辑与配置方式：[查看文档](https://aspdotnetcore.net/docs/claims-based-authentication/)
 
-#### 如何使用 EFCore 仓储
-涵盖 EFCore 仓储基础功能、工作单元、CodeFirst、原生 SQL 等内容，并附带对应的演示代码与 SQL 示例。
+#### 如何使用 EF Core 仓储
+涵盖 EF Core 仓储基础功能、工作单元、Code First、原生 SQL 等内容，并附带对应的演示代码与 SQL 示例。
 1. [如何使用仓储(一)-基础功能](https://aspdotnetcore.net/docs/efcore-pemelo-grud/)<br/>
 1. [如何使用仓储(二)-分布式事务/本地事务](https://aspdotnetcore.net/docs/efcore-pemolo-unitofwork/)<br/>
 1. [如何使用仓储(三)-CodeFirst](https://aspdotnetcore.net/docs/efcore-pemelo-codefirst/)<br/>
