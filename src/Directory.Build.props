@@ -16,6 +16,7 @@
 		<NoWarn>$(NoWarn);1591;0436</NoWarn>
 		<ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <!--<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>-->
   </PropertyGroup>
   <ItemGroup>
     <Using Include="System.Collections" />
