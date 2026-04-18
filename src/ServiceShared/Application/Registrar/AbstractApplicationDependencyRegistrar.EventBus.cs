@@ -8,7 +8,7 @@ namespace Adnc.Shared.Application.Registrar;
 public abstract partial class AbstractApplicationDependencyRegistrar
 {
     /// <summary>
-    /// 注册CAP组件(实现事件总线及最终一致性（分布式事务）的一个开源的组件)
+    /// Registers the CAP component for the event bus and eventual consistency (distributed transactions).
     /// </summary>
     /// <param name="subscribers"></param>
     /// <param name="failedThresholdCallback"></param>
@@ -59,21 +59,25 @@ public abstract partial class AbstractApplicationDependencyRegistrar
     protected void SetCapBasicInfo(CapOptions capOptions, string version, string groupName, Action<FailedInfo>? failedThresholdCallback = null)
     {
         capOptions.Version = version;
-        //默认值：cap.queue.{程序集名称},在 RabbitMQ 中映射到 Queue Names。
+        // Default: cap.queue.{assembly name}, mapped to queue names in RabbitMQ.
         capOptions.DefaultGroupName = groupName;
-        //默认值：60 秒,重试 & 间隔
-        //在默认情况下，重试将在发送和消费消息失败的 4分钟后 开始，这是为了避免设置消息状态延迟导致可能出现的问题。
-        //发送和消费消息的过程中失败会立即重试 3 次，在 3 次以后将进入重试轮询，此时 FailedRetryInterval 配置才会生效。
+        // Default: 60 seconds for the retry interval.
+        // By default, retries start 4 minutes after message publishing or consumption fails
+        // to avoid issues caused by delayed message status updates.
+        // Failures are retried immediately 3 times first, then the retry polling interval takes effect.
         capOptions.FailedRetryInterval = 60;
-        //默认值：50,重试的最大次数。当达到此设置值时，将不会再继续重试，通过改变此参数来设置重试的最大次数。
+        // Default: 50, the maximum retry count. No more retries are attempted after this value is reached.
         capOptions.FailedRetryCount = 50;
-        //默认值：NULL,重试阈值的失败回调。当重试达到 FailedRetryCount 设置的值的时候，将调用此 Action 回调
-        //，你可以通过指定此回调来接收失败达到最大的通知，以做出人工介入。例如发送邮件或者短信。
+        // Default: NULL, callback invoked when retries reach the FailedRetryCount threshold.
+        // You can use this callback to receive failure notifications for manual intervention,
+        // such as sending an email or text message.
         capOptions.FailedThresholdCallback = failedThresholdCallback;
-        //默认值：24*3600 秒（1天后),成功消息的过期时间（秒）。
-        //当消息发送或者消费成功时候，在时间达到 SucceedMessageExpiredAfter 秒时候将会从 Persistent 中删除，你可以通过指定此值来设置过期的时间。
+        // Default: 24 * 3600 seconds (1 day), expiration time for successful messages.
+        // After a message is published or consumed successfully, it will be removed from persistence
+        // when the SucceedMessageExpiredAfter threshold is reached.
         capOptions.SucceedMessageExpiredAfter = 24 * 3600;
-        //默认值：1,消费者线程并行处理消息的线程数，当这个值大于1时，将不能保证消息执行的顺序。
+        // Default: 1, the number of consumer threads processing messages in parallel.
+        // When this value is greater than 1, message execution order is not guaranteed.
         capOptions.ConsumerThreadCount = 1;
     }
 }

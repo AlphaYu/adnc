@@ -3,7 +3,7 @@ namespace Adnc.Shared.Application.Registrar;
 public abstract partial class AbstractApplicationDependencyRegistrar
 {
     /// <summary>
-    /// 注册Domain服务
+    /// Registers domain services.
     /// </summary>
     protected virtual void AddDomainSerivces<TDomainService>()
         where TDomainService : class

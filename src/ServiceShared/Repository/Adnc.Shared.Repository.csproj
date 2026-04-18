@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<Description>该层定义了仓储层基类。</Description>
+		<Description>This layer defines the base classes for the repository layer.</Description>
 		<PackageTags>Adnc.Shared.Repository</PackageTags>
 	</PropertyGroup>
 	<ItemGroup>

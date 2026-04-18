@@ -3,7 +3,7 @@ namespace Adnc.Shared.WebApi.Registrar;
 public abstract partial class AbstractWebApiDependencyRegistrar
 {
     /// <summary>
-    /// 注册swagger组件
+    /// Registers Swagger components.
     /// </summary>
     protected virtual void AddSwaggerGen()
     {
@@ -15,7 +15,7 @@ public abstract partial class AbstractWebApiDependencyRegistrar
             {
                 c.SwaggerDoc(openApiInfo.Version, openApiInfo);
 
-                // 采用bearer token认证
+                // Use bearer token authentication
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Name = "Authorization",
@@ -25,7 +25,7 @@ public abstract partial class AbstractWebApiDependencyRegistrar
                     In = ParameterLocation.Header,
                     Description = "JWT Authorization header using the Bearer scheme."
                 });
-                //设置全局认证
+                // Set global authentication
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
                     {

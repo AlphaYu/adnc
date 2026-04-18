@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<Description>该库是提供所有Domain层的公共实现。</Description>
+		<Description>This library provides the shared implementation for all domain layers.</Description>
 		<PackageTags>Adnc.Shared.Domain</PackageTags>
 	</PropertyGroup>	
 	<ItemGroup>

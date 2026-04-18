@@ -5,7 +5,7 @@ namespace Adnc.Shared.WebApi.Registrar;
 public abstract partial class AbstractWebApiDependencyRegistrar
 {
     /// <summary>
-    /// 注册跨域组件
+    /// Registers CORS components.
     /// </summary>
     protected virtual void AddCors()
     {

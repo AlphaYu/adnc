@@ -35,8 +35,8 @@ public class CustomExceptionHandlerMiddleware(RequestDelegate next, IWebHostEnvi
                         context.Response.StatusCode = 403;
                         context.Response.ContentType = "application/problem+json";
                         var type = string.Concat("https://httpstatuses.com/", context.Response.StatusCode);
-                        var title = "演示环境";
-                        var detial = "演示环境,不允许操作";
+                        var title = "Demo environment";
+                        var detial = "Operations are not allowed in the demo environment";
                         var problemDetails = new ProblemDetails { Title = title, Detail = detial, Type = type, Status = context.Response.StatusCode };
                         var errorText = JsonSerializer.Serialize(problemDetails, SystemTextJson.GetAdncDefaultOptions());
                         await context.Response.WriteAsync(errorText);
@@ -58,8 +58,8 @@ public class CustomExceptionHandlerMiddleware(RequestDelegate next, IWebHostEnvi
 
         var status = 500;
         var type = string.Concat("https://httpstatuses.com/", status);
-        var title = env.IsDevelopment() ? exception.Message : $"系统异常";
-        var detial = env.IsDevelopment() ? exception.GetDetail() : $"系统异常,请联系管理员({eventId})";
+        var title = env.IsDevelopment() ? exception.Message : "System exception";
+        var detial = env.IsDevelopment() ? exception.GetDetail() : $"System exception, please contact the administrator ({eventId})";
 
         context.Response.StatusCode = status;
         context.Response.ContentType = "application/problem+json";

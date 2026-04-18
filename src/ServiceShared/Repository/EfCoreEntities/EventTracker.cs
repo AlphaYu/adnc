@@ -1,10 +1,10 @@
 namespace Adnc.Shared.Repository.EfCoreEntities;
 
 /// <summary>
-/// 事件跟踪/处理信息
+/// Event tracking/processing information
 /// </summary>
 /// <remarks>
-/// EventId,TrackerName 需要建联合唯一索引
+/// EventId and TrackerName require a composite unique index
 /// CREATE UNIQUE INDEX UK_EventId_TrackerNam ON EventTracker(EventId, TrackerName);
 /// </remarks>
 public class EventTracker : EfBasicAuditEntity

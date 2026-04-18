@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<Description>该层实现了认证、鉴权、异常捕获、服务组件注册等公共类和中间件。所有微服务WebApi层的共享层，并且都需要依赖该层。</Description>
+		<Description>This layer implements shared classes and middleware for authentication, authorization, exception handling, and service component registration. It is the shared layer for all microservice WebApi layers and is required by each of them.</Description>
 		<PackageTags>Adnc.Shared.WebApi</PackageTags>
 	</PropertyGroup>
 	<ItemGroup>

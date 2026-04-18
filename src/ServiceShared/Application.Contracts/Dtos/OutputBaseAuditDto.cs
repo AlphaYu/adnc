@@ -4,12 +4,12 @@ namespace Adnc.Shared.Application.Contracts.Dtos;
 public abstract class OutputBaseAuditDto : OutputDto
 {
     /// <summary>
-    /// 创建人
+    /// Created by
     /// </summary>
     public virtual long CreateBy { get; set; }
 
     /// <summary>
-    /// 创建时间/注册时间
+    /// Creation time / registration time
     /// </summary>
     public virtual DateTime CreateTime { get; set; }
 }

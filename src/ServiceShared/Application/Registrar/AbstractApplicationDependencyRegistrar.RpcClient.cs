@@ -17,11 +17,11 @@ public abstract partial class AbstractApplicationDependencyRegistrar
     private static bool _theFirstCalled = true;
 
     /// <summary>
-    /// 注册Rest服务(跨微服务之间的同步通讯)
+    /// Registers REST services for synchronous communication across microservices.
     /// </summary>
-    /// <typeparam name="TRestClient">Rpc服务接口</typeparam>
-    /// <param name="serviceName">在注册中心注册的服务名称，或者服务的Url</param>
-    /// <param name="policies">Polly策略</param>
+    /// <typeparam name="TRestClient">RPC service interface</typeparam>
+    /// <param name="serviceName">The service name registered in the service registry, or the service URL.</param>
+    /// <param name="policies">Polly policies</param>
     protected virtual void AddRestClient<TRestClient>(string serviceName, List<IAsyncPolicy<HttpResponseMessage>> policies)
      where TRestClient : class, IRestClient
     {
@@ -33,7 +33,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar
         AddRpcClientCommonServices(Services, rpcInfo);
 
         var enablePolly = rpcInfo.Polly.Enable;
-        //注册RefitClient,设置httpclient生命周期时间，默认也是2分钟。
+        // Register the Refit client and set the HttpClient lifetime. The default is also 2 minutes.
         var contentSerializer = new SystemTextJsonContentSerializer(SystemTextJson.GetAdncDefaultOptions());
         var refitSettings = new RefitSettings(contentSerializer);
         var clientbuilder = Services.AddRefitClient<TRestClient>(refitSettings)
@@ -73,10 +73,10 @@ public abstract partial class AbstractApplicationDependencyRegistrar
     }
 
     /// <summary>
-    /// 注册Grpc服务(跨微服务之间的同步通讯)
+    /// Registers gRPC services for synchronous communication across microservices.
     /// </summary>
     /// <typeparam name="TGrpcClient"></typeparam>
-    /// <param name="serviceName">在注册中心注册的服务名称，或者服务的Url</param>
+    /// <param name="serviceName">The service name registered in the service registry, or the service URL.</param>
     /// <param name="policies"></param>
     /// <exception cref="InvalidDataException"></exception>
     /// <exception cref="NotImplementedException"></exception>
@@ -140,7 +140,7 @@ public abstract partial class AbstractApplicationDependencyRegistrar
     }
 
     /// <summary>
-    /// 注册RpcClient通用服务
+    /// Registers common RPC client services.
     /// </summary>
     /// <param name="services"></param>
     /// <param name="rpcInfo"></param>

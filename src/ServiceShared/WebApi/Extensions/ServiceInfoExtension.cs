@@ -10,7 +10,7 @@ public static class ServiceInfoExtension
     */
 
     /// <summary>
-    /// 获取导航首页内容
+    /// Gets the navigation home page content
     /// </summary>
     /// <param name="serviceInfo"></param>
     /// <param name="serviceProvider"></param>
@@ -34,16 +34,16 @@ public static class ServiceInfoExtension
 
     /*
     /// <summary>
-    /// 获取WebApiAssembly程序集
+    /// Gets the WebApiAssembly assembly
     /// </summary>
     /// <returns></returns>
     //public static Assembly GetWebApiAssembly(this IServiceInfo serviceInfo) => serviceInfo.StartAssembly;
 
     /// <summary>
-    /// 获取Application程序集
+    /// Gets the Application assembly
     /// </summary>
     /// <returns></returns>
-    //[Obsolete(".NET8版本作废，.NET8版本AppDomain.CurrentDomain.GetAssemblies()仅能获取到当前程序集直接引用的程序集与.NET6返回的结果集不不一样")]
+    //[Obsolete("Obsolete in .NET 8. AppDomain.CurrentDomain.GetAssemblies() in .NET 8 can only return assemblies directly referenced by the current assembly, which differs from the .NET 6 result set.")]
     //public static Assembly GetApplicationAssembly(this IServiceInfo serviceInfo)
     //{
     //    if (appAssembly is null)

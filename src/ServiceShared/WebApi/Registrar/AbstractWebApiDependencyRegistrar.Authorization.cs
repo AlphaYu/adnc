@@ -6,7 +6,7 @@ namespace Adnc.Shared.WebApi.Registrar;
 public abstract partial class AbstractWebApiDependencyRegistrar
 {
     /// <summary>
-    /// 注册授权组件
+    /// Registers authorization components.
     /// </summary>
     /// <typeparam name="TAuthorizationHandler"></typeparam>
     protected virtual void AddAuthorization<TAuthorizationHandler>() where TAuthorizationHandler : AbstractPermissionHandler

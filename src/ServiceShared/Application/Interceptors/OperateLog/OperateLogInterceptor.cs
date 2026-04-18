@@ -1,7 +1,7 @@
 namespace Adnc.Shared.Application.Interceptors;
 
 /// <summary>
-/// 操作日志拦截器
+/// Operation log interceptor
 /// </summary>
 public class OperateLogInterceptor(OperateLogAsyncInterceptor opsLogAsyncInterceptor) : IInterceptor
 {

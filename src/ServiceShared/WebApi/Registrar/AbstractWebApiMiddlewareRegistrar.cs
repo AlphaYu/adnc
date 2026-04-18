@@ -9,12 +9,12 @@ public abstract partial class AbstractWebApiMiddlewareRegistrar(WebApplication a
     protected WebApplication App { get; init; } = app;
 
     /// <summary>
-    /// 注册中间件
+    /// Registers middleware.
     /// </summary>
     public abstract void UseAdnc();
 
     /// <summary>
-    /// 注册webapi通用中间件
+    /// Registers common WebApi middleware.
     /// </summary>
     protected void UseWebApiDefault(
         Action<WebApplication>? beforeAuthentication = null,
@@ -83,7 +83,7 @@ public abstract partial class AbstractWebApiMiddlewareRegistrar(WebApplication a
             .UseHealthChecks($"/{healthCheckUrl}", new HealthCheckOptions()
             {
                 Predicate = _ => true,
-                // 该响应输出是一个json，包含所有检查项的详细检查结果
+                // This response outputs a JSON payload that contains the detailed results of all checks
                 ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
             })
             .UseRouting();

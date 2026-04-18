@@ -7,10 +7,10 @@ namespace Adnc.Shared.WebApi.Registrar;
 public abstract partial class AbstractWebApiDependencyRegistrar
 {
     /// <summary>
-    /// Controllers 注册
-    /// Sytem.Text.Json 配置
-    /// FluentValidation 注册
-    /// ApiBehaviorOptions 配置
+    /// Registers controllers
+    /// Configures System.Text.Json
+    /// Registers FluentValidation
+    /// Configures ApiBehaviorOptions
     /// </summary>
     protected virtual void AddControllers()
     {
@@ -21,20 +21,20 @@ public abstract partial class AbstractWebApiDependencyRegistrar
                 options.JsonSerializerOptions.Converters.Add(new DateTimeConverter());
                 options.JsonSerializerOptions.Converters.Add(new DateTimeNullableConverter());
                 options.JsonSerializerOptions.Encoder = SystemTextJson.GetAdncDefaultEncoder();
-                //该值指示是否允许、不允许或跳过注释。
+                // Indicates whether comments are allowed, disallowed, or skipped.
                 options.JsonSerializerOptions.ReadCommentHandling = JsonCommentHandling.Skip;
-                //dynamic与匿名类型序列化设置
+                // Serialization settings for dynamic and anonymous types
                 options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
                 //dynamic
                 options.JsonSerializerOptions.DictionaryKeyPolicy = JsonNamingPolicy.CamelCase;
-                //匿名类型
+                // Anonymous types
                 options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
             });
 
         Services
             .AddFluentValidationAutoValidation(cfg =>
             {
-                //Continue 验证失败，继续验证其他项
+                // Continue validating the remaining items after a validation failure
                 ValidatorOptions.Global.DefaultClassLevelCascadeMode = CascadeMode.Continue;
                 //cfg.ValidatorOptions.DefaultClassLevelCascadeMode = FluentValidation.CascadeMode.Continue;
                 // Optionally set validator factory if you have problems with scope resolve inside validators.
@@ -44,16 +44,16 @@ public abstract partial class AbstractWebApiDependencyRegistrar
         Services
             .Configure<ApiBehaviorOptions>(options =>
             {
-                //调整参数验证返回信息格式
-                //关闭自动验证
+                // Adjust the response format for parameter validation failures
+                // Disable automatic validation
                 //options.SuppressModelStateInvalidFilter = true;
-                //格式化验证信息
+                // Format validation messages
                 options.InvalidModelStateResponseFactory = (context) =>
                 {
                     var problemDetails = new ProblemDetails
                     {
                         Detail = context.ModelState.GetValidationSummary("<br>"),
-                        Title = "参数错误",
+                        Title = "Invalid parameters",
                         Status = (int)HttpStatusCode.BadRequest,
                         Type = "https://httpstatuses.com/400",
                         Instance = context.HttpContext.Request.Path

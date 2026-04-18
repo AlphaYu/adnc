@@ -6,47 +6,47 @@ namespace Adnc.Shared.Repository.DapperEntities;
 public class OperationLog : Entity
 {
     /// <summary>
-    /// 控制器类名
+    /// Controller class name
     /// </summary>
     public string ClassName { get; set; } = string.Empty;
 
     /// <summary>
-    /// 日志业务名称
+    /// Log business name
     /// </summary>
     public string LogName { get; set; } = string.Empty;
 
     /// <summary>
-    /// 日志类型
+    /// Log type
     /// </summary>
     public string LogType { get; set; } = string.Empty;
 
     /// <summary>
-    /// 详细信息
+    /// Details
     /// </summary>
     public string Message { get; set; } = string.Empty;
 
     /// <summary>
-    /// 控制器方法
+    /// Controller method
     /// </summary>
     public string Method { get; set; } = string.Empty;
 
     /// <summary>
-    /// 是否操作成功
+    /// Whether the operation succeeded
     /// </summary>
     public bool Succeed { get; set; }
 
     /// <summary>
-    /// 操作用户ID
+    /// Operator user ID
     /// </summary>
     public long UserId { get; set; }
 
     /// <summary>
-    /// 账号
+    /// Account
     /// </summary>
     public string Account { get; set; } = string.Empty;
 
     /// <summary>
-    /// 操作用户名
+    /// Operator user name
     /// </summary>
     public string Name { get; set; } = string.Empty;
 
@@ -56,12 +56,12 @@ public class OperationLog : Entity
     public string RemoteIpAddress { get; set; } = string.Empty;
 
     /// <summary>
-    /// 执行时间
+    /// Execution time
     /// </summary>
     public int ExecutionTime { get; set; }
 
     /// <summary>
-    /// 操作时间
+    /// Operation time
     /// </summary>
     public DateTime CreateTime { get; set; }
 }

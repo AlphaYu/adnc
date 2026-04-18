@@ -47,28 +47,28 @@ public class SsoAuthenticationMiddleware
 
         var statusCode = (HttpStatusCode)context.Response.StatusCode;
 
-        //判断Api是否需要认证
+        // Determine whether the API requires authentication
         bool isNeedAuthentication = endpoint.Metadata.GetMetadata<IAllowAnonymous>() == null;
 
-        //Api不需要认证
+        // The API does not require authentication
         if (!isNeedAuthentication)
         {
-            //如果是调用登录API、刷新token的Api,并且调用成功，需要保存accesstoken到cache
+            // If this is the login API or refresh-token API and the call succeeds, save the access token to the cache
             if (controller == "account" && (action == "login" || action == "refreshaccesstoken"))
             {
                 await SaveToken(context, _next);
                 return;
             }
 
-            //其他Api
+            // Other APIs
             await _next(context);
             return;
         }
 
-        //API需要认证
+        // The API requires authentication
         if (isNeedAuthentication)
         {
-            //是修改密码,需要从cahce移除Token
+            // For password changes, remove the token from the cache
             if (controller == "account" && action == "password")
             {
                 await _next(context);
@@ -77,13 +77,13 @@ public class SsoAuthenticationMiddleware
                 return;
             }
 
-            //是注销，需要判断是否主动注销
+            // For logout, determine whether it is an active logout
             if (controller == "account" && action == "logout")
             {
                 await _next(context);
                 if (statusCode.Is2xx())
                 {
-                    //主动注销，从cahce移除token
+                    // Active logout: remove the token from the cache
                     if (await CheckToken(context))
                         await RemoveToken(context);
                     return;
@@ -91,10 +91,10 @@ public class SsoAuthenticationMiddleware
             }
         }
 
-        //API需要认证，并且验证成功，需要检查accesstoken是否在缓存中。
+        // If the API requires authentication and validation succeeds, check whether the access token is in the cache.
         if (statusCode.Is2xx())
         {
-            //需要先检查token是否是最新的，再走其它中间件
+            // Check whether the token is the latest one before continuing through the remaining middleware
             var result = await CheckToken(context);
             if (result)
             {
@@ -114,8 +114,8 @@ public class SsoAuthenticationMiddleware
                 var hostAndPort = context.Request.Host.HasValue ? context.Request.Host.Value : string.Empty;
                 var requestUrl = string.Concat(hostAndPort, context.Request.Path);
                 var type = string.Concat("https://httpstatuses.com/", status);
-                var title = "Token已经过期";
-                var detial = "Token已经过期,请重新登录";
+                var title = "Token has expired";
+                var detial = "Token has expired. Please sign in again.";
                 var problemDetails = new ProblemDetails
                 {
                     Title = title
@@ -140,7 +140,7 @@ public class SsoAuthenticationMiddleware
     }
 
     /// <summary>
-    /// 保存token
+    /// Saves the token
     /// </summary>
     /// <param name="context"></param>
     /// <param name="next"></param>
@@ -189,7 +189,7 @@ public class SsoAuthenticationMiddleware
     }
 
     /// <summary>
-    /// 移除token
+    /// Removes the token
     /// </summary>
     /// <param name="context"></param>
     /// <returns></returns>
@@ -213,7 +213,7 @@ public class SsoAuthenticationMiddleware
     }
 
     /// <summary>
-    /// 检查token
+    /// Checks the token
     /// </summary>
     /// <param name="context"></param>
     /// <returns></returns>
@@ -234,7 +234,7 @@ public class SsoAuthenticationMiddleware
     }
 
     /// <summary>
-    /// 解析token
+    /// Parses the token
     /// </summary>
     /// <param name="tokenTxt"></param>
     /// <returns></returns>
@@ -259,9 +259,9 @@ public class SsoAuthenticationMiddleware
 }
 
 /// <summary>
-/// 注册单点登录中间件
+/// Registers the single sign-on middleware
 /// </summary>
-[Obsolete("已经废弃")]
+[Obsolete("Obsolete")]
 public static class SsoAuthenticationMiddlewareExtensions
 {
     public static IApplicationBuilder UseSSOAuthentication(this IApplicationBuilder builder, bool isOpenSSOAuthentication = true)

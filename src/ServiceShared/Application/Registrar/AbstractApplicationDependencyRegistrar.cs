@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 namespace Adnc.Shared.Application.Registrar;
 
 /// <summary>
-///  Application依赖注册器
+    /// Application dependency registrar
 /// </summary>
 public abstract partial class AbstractApplicationDependencyRegistrar
 {
@@ -34,12 +34,12 @@ public abstract partial class AbstractApplicationDependencyRegistrar
     internal ServiceLifetime Lifetime { get; init; }
 
     /// <summary>
-    /// 注册所有服务
+    /// Registers all services.
     /// </summary>
     public abstract void AddApplicationServices();
 
     /// <summary>
-    /// 注册adnc.application通用服务
+    /// Registers common adnc.application services.
     /// </summary>
     protected void AddApplicaitonDefaultServices()
     {

@@ -6,7 +6,7 @@ namespace Adnc.Shared.Application.Registrar;
 public abstract partial class AbstractApplicationDependencyRegistrar
 {
     /// <summary>
-    /// 注册EFCoreContext与仓储
+    /// Registers the EF Core context and repositories.
     /// </summary>
     protected virtual void AddEfCoreContext()
     {

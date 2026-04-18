@@ -1,7 +1,7 @@
 //namespace Adnc.Shared.WebApi.Authentication.Bearer;
 
 ///// <summary>
-///// Bearer验证(认证)服务
+///// Bearer authentication service
 ///// </summary>
 //public class BearerAuthenticationHandler : AuthenticationHandler<BearerSchemeOptions>
 //{

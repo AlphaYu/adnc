@@ -3,8 +3,8 @@ namespace Adnc.Shared.Remote.Http.Messages;
 public class LoginResponse
 {
     /// <summary>
-    /// 构造函数
-    /// 修复Warning, add by garfield 20220530
+    /// Constructor
+    /// Added by garfield on 20220530 to fix the warning
     /// </summary>
     public LoginResponse(string token, string refreshToken) => (Token, RefreshToken) = (token, refreshToken);
 

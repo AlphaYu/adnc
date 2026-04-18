@@ -1,7 +1,7 @@
 namespace Adnc.Shared.WebApi.Authentication.Basic;
 
 /// <summary>
-/// Basic验证(认证)服务
+/// Basic authentication service
 /// </summary>
 public class BasicAuthenticationHandler(IOptionsMonitor<BasicSchemeOptions> options, IOptions<BasicOptions> basicOptions, ILoggerFactory logger, UrlEncoder encoder)
     : AuthenticationHandler<BasicSchemeOptions>(options, logger, encoder)

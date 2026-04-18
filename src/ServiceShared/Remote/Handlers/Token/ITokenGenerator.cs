@@ -7,7 +7,7 @@ public interface ITokenGenerator
     public string GeneratorName { get; }
 
     /// <summary>
-    /// 创建/获取一个token
+    /// Creates or retrieves a token
     /// </summary>
     /// <returns></returns>
     public string Create();

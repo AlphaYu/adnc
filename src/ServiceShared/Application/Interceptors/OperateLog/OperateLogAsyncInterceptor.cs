@@ -3,12 +3,12 @@ using System.Text.Json;
 namespace Adnc.Shared.Application.Interceptors;
 
 /// <summary>
-/// 操作日志拦截器
+/// Operation log interceptor
 /// </summary>
 public sealed class OperateLogAsyncInterceptor(UserContext userContext, ILogger<OperateLogAsyncInterceptor> logger) : IAsyncInterceptor
 {
     /// <summary>
-    /// 同步拦截器
+    /// Synchronous interceptor
     /// </summary>
     /// <param name="invocation"></param>
     public void InterceptSynchronous(IInvocation invocation)
@@ -25,7 +25,7 @@ public sealed class OperateLogAsyncInterceptor(UserContext userContext, ILogger<
     }
 
     /// <summary>
-    /// 异步拦截器 无返回值
+    /// Asynchronous interceptor without a return value
     /// </summary>
     /// <param name="invocation"></param>
     public void InterceptAsynchronous(IInvocation invocation)
@@ -39,7 +39,7 @@ public sealed class OperateLogAsyncInterceptor(UserContext userContext, ILogger<
     }
 
     /// <summary>
-    /// 异步拦截器 有返回值
+    /// Asynchronous interceptor with a return value
     /// </summary>
     /// <typeparam name="TResult"></typeparam>
     /// <param name="invocation"></param>
@@ -163,7 +163,7 @@ public sealed class OperateLogAsyncInterceptor(UserContext userContext, ILogger<
             ClassName = className,
             CreateTime = DateTime.Now,
             LogName = logName,
-            LogType = "操作日志",
+            LogType = "Operation Log",
             Message = message,
             Method = methodName,
             Succeed = false,
@@ -180,7 +180,7 @@ public sealed class OperateLogAsyncInterceptor(UserContext userContext, ILogger<
         try
         {
             //var properties = _mqProducer.CreateBasicProperties();
-            ////设置消息持久化
+            //// Enable message persistence
             //properties.Persistent = true;
             //_mqProducer.BasicPublish(MqExchanges.Logs, MqRoutingKeys.OpsLog, logInfo, properties);
             Channels.ChannelAccessor<OperationLog>.Instance.Writer.WriteAsync(logInfo).AsTask().ConfigureAwait(false).GetAwaiter().GetResult();
@@ -192,7 +192,7 @@ public sealed class OperateLogAsyncInterceptor(UserContext userContext, ILogger<
     }
 
     /// <summary>
-    /// 获取拦截器attrbute
+    /// Gets the interceptor attribute
     /// </summary>
     /// <param name="invocation"></param>
     /// <returns></returns>

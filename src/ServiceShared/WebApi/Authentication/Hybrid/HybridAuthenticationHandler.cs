@@ -1,7 +1,7 @@
 namespace Adnc.Shared.WebApi.Authentication.Hybrid;
 
 /// <summary>
-/// Hybrid验证(认证)服务
+/// Hybrid authentication service
 /// </summary>
 public sealed class HybridAuthenticationHandler(IOptionsMonitor<HybridSchemeOptions> options, ILoggerFactory loggerFactory, UrlEncoder encoder)
     : AuthenticationHandler<HybridSchemeOptions>(options, loggerFactory, encoder)

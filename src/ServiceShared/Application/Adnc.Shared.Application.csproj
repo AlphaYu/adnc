@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<Description>该库是提供所有Apllication层的公共实现。</Description>
+		<Description>This library provides the shared implementation for all application layers.</Description>
 		<PackageTags>Adnc.Shared.Application</PackageTags>
 	</PropertyGroup>
 	<ItemGroup>

@@ -14,22 +14,22 @@ public class EventEntity
     }
 
     /// <summary>
-    /// 事件Id
+    /// Event ID
     /// </summary>
     public long Id { get; set; }
 
     /// <summary>
-    /// 事件发生的时间
+    /// Time when the event occurred
     /// </summary>
     public DateTime OccurredDate { get; set; } = DateTime.Now;
 
     /// <summary>
-    /// 触发事件的方法
+    /// Method that triggered the event
     /// </summary>
     public string EventSource { get; set; } = string.Empty;
 
     /// <summary>
-    /// 处理事件的方法
+    /// Method that handles the event
     /// </summary>
     public string EventTarget { get; set; } = string.Empty;
 }
@@ -50,7 +50,7 @@ public class EventEntity<TData> : EventEntity
     }
 
     /// <summary>
-    /// 事件数据
+    /// Event payload
     /// </summary>
     public TData Data { get; set; } = default!;
 }

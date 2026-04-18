@@ -18,7 +18,7 @@ public class CacheDelegatingHandler : DelegatingHandler
 
     /*
     /// <summary>
-    /// cache handler 还需要测试
+    /// The cache handler still needs testing
     /// </summary>
     /// <param name="request"></param>
     /// <param name="cancellationToken"></param>
@@ -58,7 +58,7 @@ public class CacheDelegatingHandler : DelegatingHandler
         await _slimlock.WaitAsync(3000, cancellationToken);
         try
         {
-            //SendAsync异常(请求、超时异常)，会throw；服务端异常，不会抛出
+            // SendAsync throws for request and timeout exceptions; server-side exceptions are not thrown here
             var responseMessage = await base.SendAsync(request, cancellationToken);
             if (responseMessage.StatusCode == HttpStatusCode.OK)
             {

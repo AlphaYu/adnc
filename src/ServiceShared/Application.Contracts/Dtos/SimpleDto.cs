@@ -1,7 +1,7 @@
 namespace Adnc.Shared.Application.Contracts.Dtos;
 
 /// <summary>
-/// 用于解决返回基本类型
+/// Used to wrap primitive return types
 /// </summary>
 /// <typeparam name="T"></typeparam>
 [Serializable]
@@ -18,7 +18,7 @@ public class SimpleDto<T> : IDto
     }
 
     /// <summary>
-    /// 需要传递的值
+    /// The value to pass.
     /// </summary>
     public T Value { get; set; } = default!;
 }

@@ -6,7 +6,7 @@ namespace Adnc.Shared.Remote.Http.Services;
 public interface IAuthRestClient : IRestClient
 {
     /// <summary>
-    ///  获取认证信息
+    /// Gets authentication information
     /// </summary>
     /// <returns></returns>
     [Get("/api/auth/session")]
@@ -15,7 +15,7 @@ public interface IAuthRestClient : IRestClient
     Task<ApiResponse<UserValidatedInfoResponse>> GetValidatedInfoAsync();
 
     /// <summary>
-    /// 获取当前用户权限
+    /// Gets the current user's permissions
     /// </summary>
     /// <returns></returns>
     //[Headers("Authorization: Basic", "Cache: 2000")]

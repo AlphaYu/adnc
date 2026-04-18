@@ -1,7 +1,7 @@
 namespace Adnc.Shared.Application.Contracts.ResultModels;
 
 /// <summary>
-/// Application层返回结果包装类,无返回类型(void,task)
+/// Application-layer result wrapper without a return value (void, Task)
 /// </summary>
 [Serializable]
 public sealed class ServiceResult
@@ -26,7 +26,7 @@ public sealed class ServiceResult
 }
 
 /// <summary>
-/// Application返回结果包装类,有返回类型
+/// Application result wrapper with a return value
 /// </summary>
 [Serializable]
 public sealed class ServiceResult<TValue>

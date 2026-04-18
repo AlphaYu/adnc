@@ -1,7 +1,7 @@
 namespace Adnc.Shared.Application.Contracts.ResultModels;
 
 /// <summary>
-/// 错误信息类
+/// Error details model
 /// </summary>
 [Serializable]
 public sealed class ProblemDetails
@@ -13,7 +13,7 @@ public sealed class ProblemDetails
     {
         var status = statusCode.HasValue ? (int)statusCode.Value : (int)HttpStatusCode.BadRequest;
         Status = status;
-        Title = title ?? "参数错误";
+        Title = title ?? "Invalid parameters";
         Detail = detail ?? string.Empty;
         Instance = instance ?? string.Empty;
         Type = type ?? string.Concat("https://httpstatuses.com/", status);

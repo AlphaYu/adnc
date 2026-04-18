@@ -3,7 +3,7 @@ namespace Adnc.Shared.Application.Contracts.Dtos;
 public static class SearchPagedDtoExtension
 {
     /// <summary>
-    /// 计算查询需要跳过的行数
+    /// Calculates the number of rows to skip.
     /// </summary>
     /// <param name="dto"></param>
     /// <returns></returns>

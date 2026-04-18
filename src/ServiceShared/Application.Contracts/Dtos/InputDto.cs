@@ -1,7 +1,7 @@
 namespace Adnc.Shared.Application.Contracts.Dtos;
 
 /// <summary>
-/// 输入DTO基类
+/// Base input DTO
 /// </summary>
 public abstract class InputDto : IDto
 { }

@@ -3,7 +3,7 @@ using Adnc.Infra.Core.Exceptions;
 namespace Microsoft.AspNetCore.Mvc.Filters;
 
 /// <summary>
-/// 异常拦截器 拦截 StatusCode>=500 的异常
+/// Exception interceptor for exceptions with StatusCode >= 500
 /// </summary>
 public sealed class CustomExceptionFilterAttribute(ILogger<CustomExceptionFilterAttribute> logger, IWebHostEnvironment env) : ExceptionFilterAttribute
 {
@@ -25,14 +25,14 @@ public sealed class CustomExceptionFilterAttribute(ILogger<CustomExceptionFilter
         string detial;
         if (exception is IAdncException adncException)
         {
-            title = "业务异常";
+            title = "Business exception";
             status = adncException.Status;
             detial = exception.Message;
         }
         else
         {
-            title = env.IsDevelopment() ? exception.Message : $"系统异常";
-            detial = env.IsDevelopment() ? exception.GetDetail() : $"系统异常,请联系管理员({eventId})";
+            title = env.IsDevelopment() ? exception.Message : "System exception";
+            detial = env.IsDevelopment() ? exception.GetDetail() : $"System exception, please contact the administrator ({eventId})";
             logger.LogError(eventId, exception, "{userId}:{requestUrl}", userContext?.Id, requestUrl);
         }
         var problemDetails = new ProblemDetails { Title = title, Detail = detial, Type = type, Status = status };

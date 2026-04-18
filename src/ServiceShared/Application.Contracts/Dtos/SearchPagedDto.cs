@@ -1,7 +1,7 @@
 namespace Adnc.Shared.Application.Contracts.Dtos;
 
 /// <summary>
-/// 查询条件基类
+/// Base class for query criteria
 /// </summary>
 public class SearchPagedDto : IDto
 {
@@ -9,7 +9,7 @@ public class SearchPagedDto : IDto
     private int _pageSize;
 
     /// <summary>
-    /// 页码
+    /// Page index
     /// </summary>
     public int PageIndex
     {
@@ -18,7 +18,7 @@ public class SearchPagedDto : IDto
     }
 
     /// <summary>
-    /// 每页显示条数
+    /// Number of items per page
     /// </summary>
     public int PageSize
     {
@@ -45,7 +45,7 @@ public class SearchPagedDto : IDto
     public string? Keywords { get; set; }
 
     /// <summary>
-    /// 创建时间
+    /// Creation time
     /// </summary>
     public DateTime[]? CreateTime { get; set; }
 }

@@ -1,7 +1,7 @@
 namespace Adnc.Shared.Application.Contracts.ResultModels;
 
 /// <summary>
-/// Application返回结果包装类,无返回类型(void,task)
+/// Application result wrapper without a return value (void, Task)
 /// </summary>
 [Obsolete($"use {nameof(ServiceResult)} instead")]
 [Serializable]
@@ -27,7 +27,7 @@ public sealed class AppSrvResult
 }
 
 /// <summary>
-/// Application返回结果包装类,有返回类型
+/// Application result wrapper with a return value
 /// </summary>
 [Obsolete($"use {nameof(ServiceResult)} instead")]
 [Serializable]
