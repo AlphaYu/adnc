@@ -3,73 +3,73 @@ using System.Text;
 namespace Adnc.Infra.Helper.Internal.IdGenerater;
 
 /// <summary>
-/// 雪花ID
+/// Snowflake ID
 /// Twitter_Snowflake
-/// SnowFlake的结构如下(每部分用-分开)
+/// SnowFlake structure (each part separated by -)
 /// 0 - 0000000000 0000000000 0000000000 0000000000 0 - 00000 - 00000 - 000000000000
-/// 1位标识，由于long基本类型在Java中是带符号的，最高位是符号位，正数是0，负数是1，所以id一般是正数，最高位是0
-/// 41位时间截(毫秒级)，注意，41位时间截不是存储当前时间的时间截，而是存储时间截的差值（当前时间截 - 开始时间截)得到的值），
-/// 41位的时间截，可以使用69年，年T = (1L << 41) / (1000L * 60 * 60 * 24 * 365) = 69
-/// 这里的的开始时间截，一般是我们的id生成器开始使用的时间，由我们程序来指定的（如下下面程序IdWorker类的startTime属性）。
-/// 10位的数据机器位，可以部署在1024个节点，包括5位datacenterId和5位workerId
-/// 12位序列，毫秒内的计数，12位的计数顺序号支持每个节点每毫秒(同一机器，同一时间截)产生4096个ID序号
-/// 总共加起来刚好64位，为一个Long型。
-/// SnowFlake的优点是，整体上按照时间自增排序，并且整个分布式系统内不会产生ID碰撞(由数据中心ID和机器ID作区分)，
-/// 并且效率较高，经测试，SnowFlake单机每秒都能够产生出极限4,096,000个ID来
+/// 1-bit sign: since long in Java is signed, the MSB is the sign bit (0 = positive, 1 = negative), so IDs are always positive.
+/// 41-bit timestamp (milliseconds): stores the difference between the current time and the start time.
+/// 41 bits allow usage for 69 years: T = (1L << 41) / (1000L * 60 * 60 * 24 * 365) = 69.
+/// The start timestamp is typically the time when the ID generator was first used, specified by the program (e.g., the startTime property of IdWorker).
+/// 10-bit machine bits: supports deployment on 1024 nodes, including 5-bit datacenterId and 5-bit workerId.
+/// 12-bit sequence: intra-millisecond counter; supports 4096 IDs per node per millisecond (same machine, same timestamp).
+/// Total: exactly 64 bits, a Long type.
+/// SnowFlake advantages: globally time-ordered, no ID collisions across distributed systems (distinguished by data center ID and machine ID),
+/// and highly efficient — tested to produce up to 4,096,000 IDs per second on a single machine.
 /// </summary>
-[Obsolete("原生雪花算法,现已经废弃")]
+[Obsolete("Native Snowflake algorithm, now deprecated")]
 internal class Snowflake
 {
-    // 开始时间截 (new DateTime(2020, 1, 1).ToUniversalTime() - Jan1st1970).TotalMilliseconds
+    // Start timestamp (new DateTime(2020, 1, 1).ToUniversalTime() - Jan1st1970).TotalMilliseconds
     private const long twepoch = 1577808000000L;
 
-    // 机器id所占的位数
+    // Number of bits for worker ID
     private const int workerIdBits = 5;
 
-    // 数据标识id所占的位数
+    // Number of bits for data center ID
     private const int datacenterIdBits = 5;
 
-    // 支持的最大机器id，结果是31 (这个移位算法可以很快的计算出几位二进制数所能表示的最大十进制数)
+    // Max worker ID = 31 (this bit-shift quickly calculates the max decimal value representable by N binary bits)
     private const long maxWorkerId = -1L ^ (-1L << workerIdBits);
 
-    // 支持的最大数据标识id，结果是31
+    // Max data center ID = 31
     private const long maxDatacenterId = -1L ^ (-1L << datacenterIdBits);
 
-    // 序列在id中占的位数
+    // Number of bits for sequence
     private const int sequenceBits = 12;
 
-    // 数据标识id向左移17位(12+5)
+    // Data center ID left-shifted by 17 bits (12+5)
     private const int datacenterIdShift = sequenceBits + workerIdBits;
 
-    // 机器ID向左移12位
+    // Worker ID left-shifted by 12 bits
     private const int workerIdShift = sequenceBits;
 
-    // 时间截向左移22位(5+5+12)
+    // Timestamp left-shifted by 22 bits (5+5+12)
     private const int timestampLeftShift = sequenceBits + workerIdBits + datacenterIdBits;
 
-    // 生成序列的掩码，这里为4095 (0b111111111111=0xfff=4095)
+    // Sequence mask = 4095 (0b111111111111=0xfff=4095)
     private const long sequenceMask = -1L ^ (-1L << sequenceBits);
 
-    // 数据中心ID(0~31)
+    // Data center ID (0~31)
     public long datacenterId { get; private set; }
 
-    // 工作机器ID(0~31)
+    // Worker machine ID (0~31)
     public long workerId { get; private set; }
 
-    // 毫秒内序列(0~4095)
+    // Intra-millisecond sequence (0~4095)
     public long sequence { get; private set; }
 
-    // 上次生成ID的时间截
+    // Timestamp of last generated ID
     public long lastTimestamp { get; private set; }
 
     private static readonly DateTime Jan1st1970 = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
-    private static readonly object _syncRoot = new object(); //加锁对象
+    private static readonly object _syncRoot = new object(); // Lock object
 
     private static Snowflake _snowflake;
 
     /// <summary>
-    /// 创建一个实例
+    /// Creates an instance.
     /// </summary>
     /// <returns></returns>
     public static Snowflake GetInstance(long datacenterId = 1, long workerId = 1)
@@ -84,16 +84,16 @@ internal class Snowflake
         else
         {
             if (_snowflake.datacenterId != datacenterId || _snowflake.workerId != workerId)
-                throw new Exception($"原始datacenterId:{_snowflake.datacenterId},workerId={_snowflake.workerId}");
+                throw new Exception($"Original datacenterId:{_snowflake.datacenterId},workerId={_snowflake.workerId}");
         }
         return _snowflake;
     }
 
     /// <summary>
-    /// 雪花ID
+    /// Snowflake ID
     /// </summary>
-    /// <param name="datacenterId">数据中心ID</param>
-    /// <param name="workerId">工作机器ID</param>
+    /// <param name="datacenterId">Data center ID</param>
+    /// <param name="workerId">Worker machine ID</param>
     private Snowflake(long datacenterId, long workerId)
     {
         if (datacenterId > maxDatacenterId || datacenterId < 0)
@@ -111,7 +111,7 @@ internal class Snowflake
     }
 
     /// <summary>
-    /// 获得下一个ID
+    /// Gets the next ID.
     /// </summary>
     /// <returns></returns>
     public long NextId()
@@ -119,35 +119,35 @@ internal class Snowflake
         lock (_syncRoot)
         {
             long timestamp = GetCurrentTimestamp();
-            if (timestamp > lastTimestamp) //时间戳改变，毫秒内序列重置
+            if (timestamp > lastTimestamp) // Timestamp changed; reset intra-millisecond sequence
             {
                 sequence = 0L;
             }
-            else if (timestamp == lastTimestamp) //如果是同一时间生成的，则进行毫秒内序列
+            else if (timestamp == lastTimestamp) // Same millisecond; increment intra-millisecond sequence
             {
                 sequence = (sequence + 1) & sequenceMask;
-                if (sequence == 0) //毫秒内序列溢出
+                if (sequence == 0) // Intra-millisecond sequence overflow
                 {
-                    timestamp = GetNextTimestamp(lastTimestamp); //阻塞到下一个毫秒,获得新的时间戳
+                    timestamp = GetNextTimestamp(lastTimestamp); // Block until next millisecond to get a new timestamp
                 }
             }
-            else   //当前时间小于上一次ID生成的时间戳，证明系统时钟被回拨，此时需要做回拨处理
+            else // Current time is less than last ID timestamp; clock was rolled back, handle accordingly
             {
                 sequence = (sequence + 1) & sequenceMask;
                 if (sequence > 0)
                 {
-                    timestamp = lastTimestamp;     //停留在最后一次时间戳上，等待系统时间追上后即完全度过了时钟回拨问题。
+                    timestamp = lastTimestamp;     // Stay at last timestamp; wait for system clock to catch up, resolving the rollback
                 }
-                else   //毫秒内序列溢出
+                else   // Intra-millisecond sequence overflow
                 {
-                    timestamp = lastTimestamp + 1;   //直接进位到下一个毫秒
+                    timestamp = lastTimestamp + 1;   // Advance directly to next millisecond
                 }
                 //throw new Exception(string.Format("Clock moved backwards.  Refusing to generate id for {0} milliseconds", lastTimestamp - timestamp));
             }
 
-            lastTimestamp = timestamp;       //上次生成ID的时间截
+            lastTimestamp = timestamp;       // Update timestamp of last generated ID
 
-            //移位并通过或运算拼到一起组成64位的ID
+            // Combine via bit-shifting and OR to form the 64-bit ID
             var id = ((timestamp - twepoch) << timestampLeftShift)
                     | (datacenterId << datacenterIdShift)
                     | (workerId << workerIdShift)
@@ -157,10 +157,10 @@ internal class Snowflake
     }
 
     /// <summary>
-    /// 阻塞到下一个毫秒，直到获得新的时间戳
+    /// Blocks until the next millisecond to obtain a new timestamp.
     /// </summary>
-    /// <param name="lastTimestamp">上次生成ID的时间截</param>
-    /// <returns>当前时间戳</returns>
+    /// <param name="lastTimestamp">Timestamp of last generated ID</param>
+    /// <returns>Current timestamp</returns>
     private long GetNextTimestamp(long lastTimestamp)
     {
         long timestamp = GetCurrentTimestamp();
@@ -172,7 +172,7 @@ internal class Snowflake
     }
 
     /// <summary>
-    /// 获取当前时间戳
+    /// Gets the current timestamp.
     /// </summary>
     /// <returns></returns>
     private long GetCurrentTimestamp()
@@ -181,7 +181,7 @@ internal class Snowflake
     }
 
     /// <summary>
-    /// 解析雪花ID
+    /// Parses a Snowflake ID.
     /// </summary>
     /// <returns></returns>
     public static string AnalyzeId(long Id)

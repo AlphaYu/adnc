@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<Description>该库提供一些通用帮助类，如HashHelper,SecurityHelper等等。</Description>
+		<Description>This library provides general-purpose helper classes such as HashHelper, SecurityHelper, and others.</Description>
 		<PackageTags>adnc,helper</PackageTags>
 	</PropertyGroup>
 	<ItemGroup>

@@ -20,27 +20,27 @@ public abstract class BaseRabbitMqConsumer(IConnectionManager connectionManager,
     }
 
     /// <summary>
-    /// 注册消费者
+    /// Registers the consumer.
     /// </summary>
     protected virtual async Task RegisterAsync()
     {
-        //获取交换机配置
+        // Get exchange configuration
         var exchange = GetExchageConfig();
 
-        //获取routingKeys
+        // Get routing keys
         var routingKeys = GetRoutingKeys();
 
-        //获取队列配置
+        // Get queue configuration
         var queue = GetQueueConfig();
 
-        //声明死信交换与队列
+        // Declare the dead-letter exchange and queue
         await RegiterDeadExchange(exchange.DeadExchangeName, queue.DeadQueueName, routingKeys, queue.Durable);
 
-        //声明交换机
+        // Declare the exchange
         _normalChannel = await connectionManager.Connection.CreateChannelAsync();
         await _normalChannel.ExchangeDeclareAsync(exchange.Name, type: exchange.Type.ToString().ToLower());
 
-        //声明队列
+        // Declare the queue
         await _normalChannel.QueueDeclareAsync(queue: queue.Name
             , durable: queue.Durable
             , exclusive: queue.Exclusive
@@ -48,7 +48,7 @@ public abstract class BaseRabbitMqConsumer(IConnectionManager connectionManager,
             , arguments: queue.Arguments
         );
 
-        //将队列与交换机进行绑定
+        // Bind the queue to the exchange
         if (routingKeys == null || routingKeys.Length == 0)
         {
             await _normalChannel.QueueBindAsync(queue: queue.Name, exchange: exchange.Name, routingKey: string.Empty);
@@ -63,7 +63,7 @@ public abstract class BaseRabbitMqConsumer(IConnectionManager connectionManager,
 
         var consumer = new AsyncEventingBasicConsumer(_normalChannel);
 
-        //关闭自动确认,开启手动确认后需要配置这些
+        // Disable auto-ack; when manual ack is enabled, configure QoS and consume
         if (!queue.AutoAck)
         {
             await _normalChannel.BasicQosAsync(prefetchSize: 0, prefetchCount: queue.PrefetchCount, global: queue.Global);
@@ -78,7 +78,7 @@ public abstract class BaseRabbitMqConsumer(IConnectionManager connectionManager,
 
             logger.LogDebug("result:{result},message:{message}", result, message);
 
-            //关闭自动确认,开启手动确认后需要依据处理结果选择返回确认信息。
+            // When manual ack is enabled, choose the ack response based on the processing result
             if (!queue.AutoAck)
             {
                 if (result)
@@ -94,7 +94,7 @@ public abstract class BaseRabbitMqConsumer(IConnectionManager connectionManager,
     }
 
     /// <summary>
-    /// 注销/关闭连接
+    /// Deregisters / closes connections.
     /// </summary>
     protected virtual async Task DeRegisterAsync()
     {
@@ -113,7 +113,7 @@ public abstract class BaseRabbitMqConsumer(IConnectionManager connectionManager,
     }
 
     /// <summary>
-    /// 处理消息的方法
+    /// Processes a received message.
     /// </summary>
     /// <param name="exchange"></param>
     /// <param name="routingKey"></param>
@@ -122,25 +122,25 @@ public abstract class BaseRabbitMqConsumer(IConnectionManager connectionManager,
     protected abstract Task<bool> Process(string exchange, string routingKey, string message);
 
     /// <summary>
-    /// 获取交互机列配置
+    /// Gets the exchange configuration.
     /// </summary>
     /// <returns></returns>
     protected abstract ExchageConfig GetExchageConfig();
 
     /// <summary>
-    /// 获取路由keys
+    /// Gets the routing keys.
     /// </summary>
     /// <returns></returns>
     protected abstract string[] GetRoutingKeys();
 
     /// <summary>
-    /// 获取队列配置
+    /// Gets the queue configuration.
     /// </summary>
     /// <returns></returns>
     protected abstract QueueConfig GetQueueConfig();
 
     /// <summary>
-    /// 获取队列公共配置
+    /// Gets the common queue configuration.
     /// </summary>
     /// <returns></returns>
     protected QueueConfig GetCommonQueueConfig()
@@ -170,7 +170,7 @@ public abstract class BaseRabbitMqConsumer(IConnectionManager connectionManager,
     }
 
     /// <summary>
-    /// 声明死信交换与队列
+    /// Declares the dead-letter exchange and queue.
     /// </summary>
     protected virtual async Task RegiterDeadExchange(string deadExchangeName, string deadQueueName, string[] routingKeys, bool durable)
     {

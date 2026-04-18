@@ -3,12 +3,12 @@ namespace Adnc.Infra.Repository;
 public interface IFullAuditInfo : IBasicAuditInfo
 {
     /// <summary>
-    /// 最后更新人
+    /// Last updater
     /// </summary>
     public long ModifyBy { get; set; }
 
     /// <summary>
-    /// 最后更新时间
+    /// Last update time
     /// </summary>
     public DateTime ModifyTime { get; set; }
 }

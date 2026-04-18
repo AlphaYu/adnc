@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 namespace Adnc.Infra.Repository.EfCore.Extensions;
 
 /// <summary>
-/// 延时加载扩展方法
+/// Lazy-loading extension methods
 /// </summary>
 public static class PocoLoadingExtension
 {

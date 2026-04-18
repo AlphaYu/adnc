@@ -1,17 +1,17 @@
 namespace Adnc.Infra.EventBus.RabbitMq;
 
 /// <summary>
-/// 队列配置信息
+/// Queue configuration
 /// </summary>
 public class QueueConfig
 {
     /// <summary>
-    /// 队列名称
+    /// Queue name
     /// </summary>
     public string Name { get; set; } = string.Empty;
 
     /// <summary>
-    /// 死信队列名称,需要先配置死信交互机
+    /// Dead-letter queue name; requires the dead-letter exchange to be configured first
     /// </summary>
     public string DeadQueueName
     {
@@ -19,58 +19,58 @@ public class QueueConfig
     }
 
     /// <summary>
-    /// 是否持久化队列
+    /// Whether to make the queue durable
     /// </summary>
     public bool Durable { get; set; }
 
     /// <summary>
-    /// exclusive exclusive：是否排外的，有两个作用
-    /// 1、当连接关闭时connection.close()该队列是否会自动删除；
-    /// 2、该队列是否是私有的private，如果不是排外的，可以使用两个消费者都访问同一个队列，没有任何问题；
-    ///   如果是排外的，会对当前队列加锁，其他通道channel是不能访问的，如果强制访问会报异常
-    ///  一般等于true的话用于一个队列只能有一个消费者来消费的场景
+    /// exclusive: whether the queue is exclusive; has two effects:
+    /// 1. Whether the queue is auto-deleted when the connection (connection.close()) is closed.
+    /// 2. Whether the queue is private; if not exclusive, two consumers can access the same queue without issue.
+    ///    If exclusive, the queue is locked to the current channel; other channels cannot access it and will throw an exception.
+    ///    Typically set to true when only one consumer should consume from the queue.
     /// </summary>
     public bool Exclusive { get; set; }
 
     /// <summary>
-    /// 是否自动删除，当最后一个消费者断开连接之后队列是否自动被删除
+    /// Whether to auto-delete the queue when the last consumer disconnects
     /// </summary>
     public bool AutoDelete { get; set; }
 
     /// <summary>
-    /// 队列扩展参数配置
-    /// x-dead-letter-exchange 设置当前队列的DLX(死信交机)
-    /// x-dead-letter-routing-key 设置DLX的路由key，DLX会根据该值去找到死信消息存放的队列
-    /// x-message-ttl 设置消息的存活时间，即过期时间(毫秒)
+    /// Extended queue argument configuration:
+    /// x-dead-letter-exchange: sets the DLX (dead-letter exchange) for this queue
+    /// x-dead-letter-routing-key: sets the routing key for the DLX; the DLX uses this to route dead-letter messages to the appropriate queue
+    /// x-message-ttl: sets the message TTL (time-to-live) in milliseconds
     /// </summary>
     public IDictionary<string, object?>? Arguments { get; set; }
 
     /// <summary>
-    /// 是否开启自动确认
+    /// Whether to enable auto-acknowledgement
     /// </summary>
     public bool AutoAck { get; set; }
 
     /// <summary>
-    /// glotal=true时表示在当前channel上所有的consumer都生效，否则只对设置了之后新建的consumer生效
+    /// When global=true, applies to all consumers on the current channel; otherwise only affects consumers created after the setting is applied
     /// </summary>
     public bool Global { get; set; }
 
     /// <summary>
-    /// 开启手动确认后才生效
-    /// 是否一次可以确认多条
+    /// Takes effect only when manual acknowledgement is enabled.
+    /// Whether to acknowledge multiple messages at once.
     /// </summary>
     public bool AckMultiple { get; set; }
 
     /// <summary>
-    /// 开启手动确认后才生效
-    /// requeue = true,重新放回队列
-    /// requeue = false,如果配置死信队列，会转义到死信队列,没有则丢弃。
+    /// Takes effect only when manual acknowledgement is enabled.
+    /// requeue = true: re-queue the message.
+    /// requeue = false: route to the dead-letter queue if configured, otherwise discard.
     /// </summary>
     public bool RejectRequeue { get; set; }
 
     /// <summary>
-    /// 开启手动确认后才生效
-    /// 每次只能向消费者发送一条信息,再消费者未确认之前,不再向他发送信息
+    /// Takes effect only when manual acknowledgement is enabled.
+    /// Limits to one unacknowledged message per consumer at a time; no new messages are sent until the current one is acknowledged.
     /// </summary>
     public ushort PrefetchCount { get; set; }
 }

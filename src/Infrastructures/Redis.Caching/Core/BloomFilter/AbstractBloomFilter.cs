@@ -3,22 +3,22 @@ namespace Adnc.Infra.Redis.Caching.Core.BloomFilter;
 public interface IBloomFilter
 {
     /// <summary>
-    /// 过滤器名字
+    /// Filter name
     /// </summary>
     string Name { get; }
 
     /// <summary>
-    /// 容错率
+    /// Error rate
     /// </summary>
     double ErrorRate { get; }
 
     /// <summary>
-    /// 容积
+    /// Capacity
     /// </summary>
     int Capacity { get; }
 
     /// <summary>
-    /// 初始化布隆过滤器
+    /// Initializes the Bloom filter.
     /// </summary>
     /// <returns></returns>
     Task InitAsync();

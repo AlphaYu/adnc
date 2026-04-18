@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<Description>该库是在`Adnc.Infra.Repository.EfCore`基础上Mysql的实现。</Description>
+		<Description>This project is a MySQL implementation built on top of `Adnc.Infra.Repository.EfCore`.</Description>
 		<PackageTags>adnc,efcore,pomelo</PackageTags>
 	</PropertyGroup>
 	<ItemGroup>

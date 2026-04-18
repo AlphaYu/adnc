@@ -3,7 +3,7 @@ using DotNetCore.CAP;
 namespace Adnc.Infra.EventBus.Cap;
 
 /// <summary>
-/// 空的Cap发布者，给单元测试用
+/// Null CAP publisher — for use in unit tests
 /// </summary>
 public class NullCapPublisher : ICapPublisher
 {

@@ -4,12 +4,12 @@ using Castle.DynamicProxy;
 namespace Adnc.Infra.Repository.Interceptor.Castle;
 
 /// <summary>
-/// 工作单元拦截器
+/// Unit of work interceptor
 /// </summary>
 public class UowAsyncInterceptor(IUnitOfWork unitOfWork) : IAsyncInterceptor
 {
     /// <summary>
-    /// 同步拦截器
+    /// Synchronous interceptor
     /// </summary>
     /// <param name="invocation"></param>
     public void InterceptSynchronous(IInvocation invocation)
@@ -27,7 +27,7 @@ public class UowAsyncInterceptor(IUnitOfWork unitOfWork) : IAsyncInterceptor
     }
 
     /// <summary>
-    /// 异步拦截器 无返回值
+    /// Async interceptor without return value
     /// </summary>
     /// <param name="invocation"></param>
     public void InterceptAsynchronous(IInvocation invocation)
@@ -41,7 +41,7 @@ public class UowAsyncInterceptor(IUnitOfWork unitOfWork) : IAsyncInterceptor
     }
 
     /// <summary>
-    /// 异步拦截器 有返回值
+    /// Async interceptor with return value
     /// </summary>
     /// <typeparam name="TResult"></typeparam>
     /// <param name="invocation"></param>
@@ -56,7 +56,7 @@ public class UowAsyncInterceptor(IUnitOfWork unitOfWork) : IAsyncInterceptor
     }
 
     /// <summary>
-    /// 同步拦截器事务处理
+    /// Synchronous interceptor transaction handling
     /// </summary>
     /// <param name="invocation"></param>
     /// <param name="attribute"></param>
@@ -80,7 +80,7 @@ public class UowAsyncInterceptor(IUnitOfWork unitOfWork) : IAsyncInterceptor
     }
 
     /// <summary>
-    /// 异步拦截器事务处理-无返回值
+    /// Async interceptor transaction handling — no return value
     /// </summary>
     /// <param name="invocation"></param>
     /// <param name="attribute"></param>
@@ -109,7 +109,7 @@ public class UowAsyncInterceptor(IUnitOfWork unitOfWork) : IAsyncInterceptor
     }
 
     /// <summary>
-    /// 异步拦截器事务处理-有返回值
+    /// Async interceptor transaction handling — with return value
     /// </summary>
     /// <typeparam name="TResult"></typeparam>
     /// <param name="invocation"></param>
@@ -143,7 +143,7 @@ public class UowAsyncInterceptor(IUnitOfWork unitOfWork) : IAsyncInterceptor
     }
 
     /// <summary>
-    /// 异步拦截器无事务处理-无返回值
+    /// Async interceptor without transaction — no return value
     /// </summary>
     /// <param name="invocation"></param>
     /// <returns></returns>
@@ -155,7 +155,7 @@ public class UowAsyncInterceptor(IUnitOfWork unitOfWork) : IAsyncInterceptor
     }
 
     /// <summary>
-    /// 异步拦截器无事务处理-有返回值
+    /// Async interceptor without transaction — with return value
     /// </summary>
     /// <typeparam name="TResult"></typeparam>
     /// <param name="invocation"></param>
@@ -170,7 +170,7 @@ public class UowAsyncInterceptor(IUnitOfWork unitOfWork) : IAsyncInterceptor
     }
 
     /// <summary>
-    /// 获取拦截器attrbute
+    /// Gets the interceptor attribute.
     /// </summary>
     /// <param name="invocation"></param>
     /// <returns></returns>

@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<Description>该工程定义了Entity对象的基类、UnitOfWork接口、仓储接口。</Description>
+		<Description>Defines the base classes for Entity objects, the UnitOfWork interface, and repository interfaces.</Description>
 		<PackageTags>adnc,repository</PackageTags>
 	</PropertyGroup>
 	<ItemGroup>

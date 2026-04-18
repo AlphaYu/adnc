@@ -1,7 +1,7 @@
 namespace Adnc.Infra.Repository;
 
 /// <summary>
-/// 仓储基类接口
+/// Base repository interface
 /// </summary>
 /// <typeparam name="TEntity"></typeparam>
 public interface IRepository<TEntity> where TEntity : class

@@ -5,10 +5,10 @@ using Pomelo.EntityFrameworkCore.MySql.Query.Internal;
 namespace Pomelo.EntityFrameworkCore.MySql.Query.ExpressionVisitors.Internal
 {
     /// <summary>
-    /// adnc sql生成工厂类
+    /// ADNC SQL generator factory class
     /// </summary>
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "EF1001:Internal EF Core API usage.", Justification = "<挂起>")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "EF1001:Internal EF Core API usage.", Justification = "<Pending>")]
     public class AdncMySqlQuerySqlGeneratorFactory : MySqlQuerySqlGeneratorFactory
     {
         private readonly QuerySqlGeneratorDependencies _dependencies;
@@ -26,7 +26,7 @@ namespace Pomelo.EntityFrameworkCore.MySql.Query.ExpressionVisitors.Internal
         }
 
         /// <summary>
-        /// 重写QuerySqlGenerator
+        /// Overrides QuerySqlGenerator.
         /// </summary>
         /// <returns></returns>
         public override QuerySqlGenerator Create()

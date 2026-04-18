@@ -1,7 +1,7 @@
 namespace Adnc.Infra.Repository.EfCore;
 
 /// <summary>
-/// Ef仓储的基类实现,抽象类
+/// Abstract base class for EF repositories.
 /// </summary>
 /// <typeparam name="TDbContext"></typeparam>
 /// <typeparam name="TEntity"></typeparam>
@@ -55,12 +55,12 @@ public abstract class AbstractEfBaseRepository<TDbContext, TEntity>(TDbContext d
             var entry = DbContext.Entry(entity);
             if (entry.State == EntityState.Detached)
             {
-                throw new ArgumentException($"实体没有被跟踪，不能使用该批量更新方法");
+                throw new ArgumentException($"Entity is not being tracked; this bulk-update method cannot be used.");
             }
 
             if (entry.State == EntityState.Added || entry.State == EntityState.Deleted)
             {
-                throw new ArgumentException($"{nameof(entity)},实体状态为{nameof(entry.State)}");
+                throw new ArgumentException($"{nameof(entity)}, entity state is {nameof(entry.State)}");
             }
         }
 
@@ -69,19 +69,19 @@ public abstract class AbstractEfBaseRepository<TDbContext, TEntity>(TDbContext d
 
     public virtual Task<int> UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
-        //获取实体状态
+        // Get entity state
         var entry = DbContext.Entry(entity);
 
-        //如果实体没有被跟踪，必须指定需要更新的列
+        // Entity is not tracked; caller must specify which columns to update
         if (entry.State == EntityState.Detached)
         {
-            throw new ArgumentException($"实体没有被跟踪，需要指定更新的列");
+            throw new ArgumentException($"Entity is not being tracked; you must specify which columns to update.");
         }
 
-        //实体被标记为Added或者Deleted，抛出异常，ADNC应该不会出现这种状态。
+        // Entity is Added or Deleted — should never happen in ADNC, but guard anyway
         if (entry.State == EntityState.Added || entry.State == EntityState.Deleted)
         {
-            throw new ArgumentException($"{nameof(entity)},实体状态为{nameof(entry.State)}");
+            throw new ArgumentException($"{nameof(entity)}, entity state is {nameof(entry.State)}");
         }
 
         return UpdateInternalAsync(cancellationToken);

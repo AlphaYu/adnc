@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<Description>该库集成了`StackExchange.Redis`客户端，提供Redis常用类型操作、分布式锁、布隆过滤器。</Description>
+		<Description>This library integrates `StackExchange.Redis` and provides common Redis type operations, distributed locking, and Bloom filter support.</Description>
 		<PackageTags>adnc,redis,stackexchange.redis</PackageTags>
 	</PropertyGroup>
 	<ItemGroup>

@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<Description>该工程是在`Adnc.Infra.Repository.EfCore`基础上SqlServer的实现。</Description>
+		<Description>This project is a SQL Server implementation built on top of `Adnc.Infra.Repository.EfCore`.</Description>
 		<PackageTags>adnc,efcore,sqlserver</PackageTags>
 	</PropertyGroup>
 	<ItemGroup>

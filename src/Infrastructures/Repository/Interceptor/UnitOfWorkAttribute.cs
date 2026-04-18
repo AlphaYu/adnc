@@ -4,7 +4,7 @@ namespace Adnc.Infra.Repository.Interceptor;
 public class UnitOfWorkAttribute : Attribute
 {
     /// <summary>
-    /// 需要把事务共享给CAP
+    /// The transaction needs to be shared with CAP.
     /// </summary>
     public bool Distributed { get; set; }
 }

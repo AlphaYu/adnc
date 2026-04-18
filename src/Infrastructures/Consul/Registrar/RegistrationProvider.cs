@@ -84,13 +84,13 @@ public sealed class RegistrationProvider(IOptions<ConsulOptions> consulOption, C
             Tags = consulOption.Value.ServerTags,
             Check = new AgentServiceCheck
             {
-                //服务停止多久后进行注销
+                // How long after service stops before deregistration
                 DeregisterCriticalServiceAfter = TimeSpan.FromSeconds(consulOption.Value.DeregisterCriticalServiceAfter),
-                //健康检查间隔,心跳间隔
+                // Health check interval / heartbeat interval
                 Interval = TimeSpan.FromSeconds(consulOption.Value.HealthCheckIntervalInSecond),
-                //健康检查地址
+                // Health check endpoint
                 HTTP = $"{protocol}://{host}:{port}/{consulOption.Value.HealthCheckUrl}",
-                //超时时间
+                // Timeout
                 Timeout = TimeSpan.FromSeconds(consulOption.Value.Timeout),
             }
         };

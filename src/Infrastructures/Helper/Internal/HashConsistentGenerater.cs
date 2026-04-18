@@ -1,27 +1,27 @@
-namespace Adnc.Infra.Helper.Internal;
+﻿﻿namespace Adnc.Infra.Helper.Internal;
 
 /// <summary>
-/// 一致性哈希算法
+/// Consistent hashing algorithm
 /// </summary>
 public sealed class HashConsistentGenerater
 {
     /// <summary>
-    /// 真实节点信息
+    /// Real node information
     /// </summary>
     private readonly List<string> _nodes = [];
 
     /// <summary>
-    /// 虚拟节点信息（int类型主要是为了获取虚拟节点时的二分查找）
+    /// Virtual node information (int type is used for binary search when retrieving virtual nodes)
     /// </summary>
     private readonly List<int> _virtualNode = [];
 
     /// <summary>
-    /// 虚拟节点和真实节点映射，在获取到虚拟节点之后，能以O(1)的时间复杂度返回真实节点
+    /// Mapping from virtual nodes to real nodes; after finding a virtual node, the real node can be retrieved in O(1) time
     /// </summary>
     private readonly Dictionary<int, string> _virtualNodeAndNodeMap = [];
 
     /// <summary>
-    /// 虚拟节点倍数
+    /// Virtual node multiplier
     /// </summary>
     private int _virtualNodeMultiple = 100;
 
@@ -30,58 +30,58 @@ public sealed class HashConsistentGenerater
     }
 
     /// <summary>
-    /// 增加节点
+    /// Adds nodes.
     /// </summary>
-    /// <param name="hosts">节点集合</param>
-    /// <returns>操作结果</returns>
+    /// <param name="hosts">Node collection</param>
+    /// <returns>Operation result</returns>
     public bool AddNode(params string[] hosts)
     {
         if (hosts == null || hosts.Length == 0)
         {
             return false;
         }
-        _nodes.AddRange(hosts); //先将节点增加到真实节点信息中。
+        _nodes.AddRange(hosts); // Add nodes to the real node list first
         foreach (var item in hosts)
         {
-            for (var i = 1; i <= _virtualNodeMultiple; i++) //此处循环为类似“192.168.3.1”这样的真实ip字符串从1加到1000，算作虚拟节点。192.168.3.11，192.168.3.11000
+            for (var i = 1; i <= _virtualNodeMultiple; i++) // Loop over real IP strings like "192.168.3.1" from 1 to 1000 to generate virtual nodes: "192.168.3.11" ... "192.168.3.11000"
             {
-                var currentHash = GetHashCode(item + i) & int.MaxValue; //计算一个hash，此处用自定义hash算法原因是字符串默认的哈希实现不保证对同一字符串获取hash时得到相同的值。和int.MaxValue进行位与操作是为了将获取到的hash值设置为正数
-                if (_virtualNodeAndNodeMap.TryAdd(currentHash, item)) //因为hash可能会重复，如果当前hash已经包含在虚拟节点和真实节点映射中，则以第一次添加的为准，此处不再进行添加
+                var currentHash = GetHashCode(item + i) & int.MaxValue; // Compute a hash using a custom algorithm (the default string hash is not guaranteed to be stable); AND with int.MaxValue to ensure a positive value
+                if (_virtualNodeAndNodeMap.TryAdd(currentHash, item)) // Hash collisions are possible; if this hash is already mapped, keep the first one and skip
                 {
-                    _virtualNode.Add(currentHash);//将当前虚拟节点添加到虚拟节点中
+                    _virtualNode.Add(currentHash); // Add current virtual node to the virtual node list
                 }
             }
         }
-        _virtualNode.Sort(); //操作完成之后进行一次映射，是为了后面根据key的hash值查找虚拟节点时使用二分查找。
+        _virtualNode.Sort(); // Sort after adding, enabling binary search when looking up by key hash
         return true;
     }
 
     /// <summary>
-    /// 移除节点
+    /// Removes a node.
     /// </summary>
-    /// <param name="host">指定节点</param>
+    /// <param name="host">The node to remove</param>
     /// <returns></returns>
     public bool RemoveNode(string host)
     {
-        if (!_nodes.Remove(host)) //如果将指定节点从真实节点集合中移出失败，后序操作不需要进行，直接返回
+        if (!_nodes.Remove(host)) // If removing the node from the real node list fails, skip remaining operations
         {
             return false;
         }
         for (var i = 1; i <= _virtualNodeMultiple; i++)
         {
-            var currentHash = GetHashCode(host + i) & int.MaxValue; //计算一个hash，此处用自定义hash算法原因是字符串默认的哈希实现不保证对同一字符串获取hash时得到相同的值。和int.MaxValue进行位与操作是为了将获取到的hash值设置为正数
-            if (_virtualNodeAndNodeMap.TryGetValue(currentHash, out var value) && value == host) //因为hash可能会重复，所以此处判断在判断了哈希值是否存在于虚拟节点和节点映射中之后还需要判断通过当前hash值获取到的节点是否和指定节点一致，如果不一致，则证明这个这个虚拟节点不是当前hash值所拥有的
+            var currentHash = GetHashCode(host + i) & int.MaxValue; // Compute hash using custom algorithm; AND with int.MaxValue to keep it positive
+            if (_virtualNodeAndNodeMap.TryGetValue(currentHash, out var value) && value == host) // Since hashes may collide, also verify the mapped node matches the target before removing
             {
-                _virtualNode.Remove(currentHash); //从虚拟节点中移出
-                _virtualNodeAndNodeMap.Remove(currentHash); //从虚拟节点和真实ip映射中移出
+                _virtualNode.Remove(currentHash); // Remove from virtual node list
+                _virtualNodeAndNodeMap.Remove(currentHash); // Remove from virtual-to-real node mapping
             }
         }
-        _virtualNode.Sort(); //操作完成之后进行一次映射，是为了后面根据key的hash值查找虚拟节点时使用二分查找。
+        _virtualNode.Sort(); // Re-sort for binary search when looking up by key hash
         return true;
     }
 
     /// <summary>
-    /// 获取所有节点
+    /// Gets all nodes.
     /// </summary>
     /// <returns></returns>
     public List<string> GetAllNodes()
@@ -92,7 +92,7 @@ public sealed class HashConsistentGenerater
     }
 
     /// <summary>
-    /// 获取节点数量
+    /// Gets the node count.
     /// </summary>
     /// <returns></returns>
     public int GetNodesCount()
@@ -101,7 +101,7 @@ public sealed class HashConsistentGenerater
     }
 
     /// <summary>
-    /// 重新设置虚拟节点倍数
+    /// Resets the virtual node multiplier.
     /// </summary>
     /// <param name="multiple"></param>
     public void ReSetVirtualNodeMultiple(int multiple)
@@ -111,16 +111,16 @@ public sealed class HashConsistentGenerater
             return;
         }
         var nodes = new List<string>(_nodes.Count);
-        nodes.AddRange(_nodes); //将现有的真实节点拷贝出来
-        _virtualNodeMultiple = multiple; //设置倍数
+        nodes.AddRange(_nodes); // Copy existing real nodes
+        _virtualNodeMultiple = multiple; // Set new multiplier
         _nodes.Clear();
         _virtualNode.Clear();
-        _virtualNodeAndNodeMap.Clear(); //清空数据
-        AddNode(nodes.ToArray()); //重新添加
+        _virtualNodeAndNodeMap.Clear(); // Clear data
+        AddNode(nodes.ToArray()); // Re-add all nodes
     }
 
     /// <summary>
-    /// 获取节点
+    /// Gets a node.
     /// </summary>
     /// <param name="key"></param>
     /// <returns></returns>

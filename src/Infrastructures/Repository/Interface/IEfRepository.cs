@@ -3,135 +3,135 @@ using Microsoft.EntityFrameworkCore.Query;
 namespace Adnc.Infra.Repository;
 
 /// <summary>
-/// Ef默认的、全功能的仓储接口
-/// 适合传统三层模式开发，实体必须继承 EfEntity
+/// The default full-featured EF repository interface.
+/// Suitable for traditional 3-tier architecture; entity must inherit EfEntity.
 /// </summary>
 /// <typeparam name="TEntity"></typeparam>
 public interface IEfRepository<TEntity> : IEfBaseRepository<TEntity>
    where TEntity : EfEntity
 {
     /// <summary>
-    /// 执行原生Sql查询
+    /// Executes a raw SQL query.
     /// </summary>
     IAdoQuerierRepository AdoQuerier { get; }
 
     /// <summary>
-    /// 当前事务
+    /// The current transaction.
     /// </summary>
     IDbTransaction? CurrentDbTransaction { get; }
 
     /// <summary>
-    /// 执行原生Sql写操作
+    /// Executes a raw SQL write operation.
     /// </summary>
     Task<int> ExecuteSqlInterpolatedAsync(FormattableString sql, CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// 执行原生Sql写操作
+    /// Executes a raw SQL write operation.
     /// </summary>
     Task<int> ExecuteSqlRawAsync(string sql, CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// 返回IQueryable{TEntity}
+    /// Returns IQueryable{TEntity}.
     /// </summary>
-    /// <param name="writeDb">是否读写库，默认false,可选参数</param>
-    /// <param name="noTracking">是否开启跟踪，默认false,可选参数</param>
+    /// <param name="writeDb">Whether to use the read-write database; default false (optional)</param>
+    /// <param name="noTracking">Whether to disable tracking; default false (optional)</param>
     /// <returns></returns>
     IQueryable<TEntity> GetAll(bool writeDb = false, bool noTracking = true);
 
     IQueryable<TrdEntity> GetAll<TrdEntity>(bool writeDb = false, bool noTracking = true) where TrdEntity : EfEntity;
 
     /// <summary>
-    /// 根据Id查询,返回单个实体
+    /// Queries by ID and returns a single entity.
     /// </summary>
     /// <param name="keyValue">Id</param>
-    /// <param name="navigationPropertyPath">导航属性,可选参数</param>
-    /// <param name="writeDb">是否读写库,默认false，可选参数</param>
-    /// <param name="noTracking">是否开启跟踪，默认不开启，可选参数</param>
+    /// <param name="navigationPropertyPath">Navigation property (optional)</param>
+    /// <param name="writeDb">Whether to use the read-write database; default false (optional)</param>
+    /// <param name="noTracking">Whether to disable tracking; default true (optional)</param>
     /// <param name="cancellationToken"><see cref="CancellationToken"/></param>
     /// <returns><see cref="T:TEntity"/></returns>
     [Obsolete($"use {nameof(FetchAsync)} instead")]
     Task<TEntity?> FindAsync(long keyValue, Expression<Func<TEntity, dynamic>>? navigationPropertyPath = null, bool writeDb = false, bool noTracking = true, CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// 根据条件查询,返回单个实体
+    /// Queries by condition and returns a single entity.
     /// </summary>
-    /// <param name="whereExpression">查询条件</param>
-    /// <param name="navigationPropertyPath">导航属性,可选参数</param>
-    /// <param name="orderByExpression">排序字段，默认主键，可选参数</param>
-    /// <param name="ascending">排序方式，默认逆序，可选参数</param>
-    /// <param name="writeDb">是否读写库,默认false，可选参数</param>
-    /// <param name="noTracking">是否开启跟踪，默认不开启，可选参数</param>
+    /// <param name="whereExpression">Query condition</param>
+    /// <param name="navigationPropertyPath">Navigation property (optional)</param>
+    /// <param name="orderByExpression">Sort field; default primary key (optional)</param>
+    /// <param name="ascending">Sort direction; default descending (optional)</param>
+    /// <param name="writeDb">Whether to use the read-write database; default false (optional)</param>
+    /// <param name="noTracking">Whether to disable tracking; default true (optional)</param>
     /// <param name="cancellationToken"><see cref="CancellationToken"/></param>
     /// <returns></returns>
     [Obsolete($"use {nameof(FetchAsync)} instead")]
     Task<TEntity?> FindAsync(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, dynamic>>? navigationPropertyPath = null, Expression<Func<TEntity, object>>? orderByExpression = null, bool ascending = false, bool writeDb = false, bool noTracking = true, CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// 根据条件查询,返回单个实体
+    /// Queries by condition and returns a single entity.
     /// </summary>
-    /// <param name="whereExpression">查询条件</param>
-    /// <param name="navigationPropertyPath">导航属性,可选参数</param>
-    /// <param name="orderByExpression">排序字段，默认主键，可选参数</param>
-    /// <param name="ascending">排序方式，默认逆序，可选参数</param>
-    /// <param name="writeDb">是否读写库,默认false，可选参数</param>
-    /// <param name="noTracking">是否开启跟踪，默认不开启，可选参数</param>
+    /// <param name="whereExpression">Query condition</param>
+    /// <param name="navigationPropertyPath">Navigation property (optional)</param>
+    /// <param name="orderByExpression">Sort field; default primary key (optional)</param>
+    /// <param name="ascending">Sort direction; default descending (optional)</param>
+    /// <param name="writeDb">Whether to use the read-write database; default false (optional)</param>
+    /// <param name="noTracking">Whether to disable tracking; default true (optional)</param>
     /// <param name="cancellationToken"><see cref="CancellationToken"/></param>
     /// <returns></returns>
     Task<TEntity?> FetchAsync(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, dynamic>>? navigationPropertyPath = null, Expression<Func<TEntity, object>>? orderByExpression = null, bool ascending = false, bool writeDb = false, bool noTracking = true, CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// 根据条件查询,返回单个实体或对象
+    /// Queries by condition and returns a single entity or object.
     /// </summary>
-    /// <typeparam name="TResult">匿名对象</typeparam>
-    /// <param name="selector">选择器</param>
-    /// <param name="whereExpression">查询条件</param>
-    /// <param name="orderByExpression">排序字段，默认主键，可选参数</param>
-    /// <param name="ascending">排序方式，默认逆序，可选参数</param>
-    /// <param name="writeDb">是否读写库,默认false，可选参数</param>
-    /// <param name="noTracking">是否开启跟踪，默认不开启，可选参数</param>
+    /// <typeparam name="TResult">Anonymous object type</typeparam>
+    /// <param name="selector">Selector</param>
+    /// <param name="whereExpression">Query condition</param>
+    /// <param name="orderByExpression">Sort field; default primary key (optional)</param>
+    /// <param name="ascending">Sort direction; default descending (optional)</param>
+    /// <param name="writeDb">Whether to use the read-write database; default false (optional)</param>
+    /// <param name="noTracking">Whether to disable tracking; default true (optional)</param>
     /// <param name="cancellationToken"><see cref="CancellationToken"/></param>
     /// <returns></returns>
     Task<TResult?> FetchAsync<TResult>(Expression<Func<TEntity, TResult>> selector, Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, object>>? orderByExpression = null, bool ascending = false, bool writeDb = false, bool noTracking = true, CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// 更新单个实体
+    /// Updates a single entity.
     /// </summary>
     /// <param name="entity"><see cref="T:TEntity"/></param>
-    /// <param name="updatingExpressions">需要更新列的表达式树数组</param>
+    /// <param name="updatingExpressions">Array of expression trees for columns to update</param>
     /// <param name="cancellationToken"><see cref="CancellationToken"/></param>
     /// <returns></returns>
     [Obsolete($"use {nameof(ExecuteUpdateAsync)} instead")]
     Task<int> UpdateAsync(TEntity entity, Expression<Func<TEntity, object>>[] updatingExpressions, CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// 批量更新
+    /// Batch update.
     /// </summary>
-    /// <param name="whereExpression">查询条件</param>
-    /// <param name="updatingExpression">需要更新的字段</param>
+    /// <param name="whereExpression">Query condition</param>
+    /// <param name="updatingExpression">Fields to update</param>
     /// <param name="cancellationToken"><see cref="CancellationToken"/></param>
     /// <returns></returns>
     [Obsolete($"use {nameof(ExecuteUpdateAsync)} instead")]
     Task<int> UpdateRangeAsync(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, TEntity>> updatingExpression, CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// 批量更新
+    /// Batch update.
     /// </summary>
-    /// <param name="whereExpression">查询条件</param>
-    /// <param name="setPropertyCalls">需要更新的字段</param>
+    /// <param name="whereExpression">Query condition</param>
+    /// <param name="setPropertyCalls">Fields to update</param>
     /// <param name="cancellationToken"><see cref="CancellationToken"/></param>
     /// <returns></returns>
     Task<int> ExecuteUpdateAsync(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<SetPropertyCalls<TEntity>, SetPropertyCalls<TEntity>>> setPropertyCalls, CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// 批量更新
+    /// Batch update.
     /// </summary>
-    /// <param name="propertyNameAndValues">需要更新的字段与值</param>
+    /// <param name="propertyNameAndValues">Fields and their values to update</param>
     /// <param name="cancellationToken"><see cref="CancellationToken"/></param>
     /// <returns></returns>
     Task<int> UpdateRangeAsync(Dictionary<long, List<(string propertyName, dynamic propertyValue)>> propertyNameAndValues, CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// 删除实体
+    /// Deletes an entity.
     /// </summary>
     /// <param name="keyValue">Id</param>
     /// <param name="cancellationToken"><see cref="CancellationToken"/></param>
@@ -139,18 +139,18 @@ public interface IEfRepository<TEntity> : IEfBaseRepository<TEntity>
     Task<int> DeleteAsync(long keyValue, CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// 批量删除实体
+    /// Batch delete entities.
     /// </summary>
-    /// <param name="whereExpression">查询条件</param>
+    /// <param name="whereExpression">Query condition</param>
     /// <param name="cancellationToken"><see cref="CancellationToken"/></param>
     /// <returns></returns>
     [Obsolete($"use {nameof(ExecuteDeleteAsync)} instead")]
     Task<int> DeleteRangeAsync(Expression<Func<TEntity, bool>> whereExpression, CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// 批量删除实体
+    /// Batch delete entities.
     /// </summary>
-    /// <param name="whereExpression">查询条件</param>
+    /// <param name="whereExpression">Query condition</param>
     /// <param name="cancellationToken"><see cref="CancellationToken"/></param>
     /// <returns></returns>
     Task<int> ExecuteDeleteAsync(Expression<Func<TEntity, bool>> whereExpression, CancellationToken cancellationToken = default);

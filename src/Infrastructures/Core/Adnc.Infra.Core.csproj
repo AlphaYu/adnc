@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<Description>该库是最顶层库，任何库都会者直接或间接依赖该库。该库提供了大量的C#基础类型的扩展方法与Configuration、DependencyInjection、ContainerBuilder的扩展方法。</Description>
+		<Description>This is the top-level library that all other libraries depend on directly or indirectly. It provides a wide range of extension methods for C# primitive types as well as extensions for Configuration, DependencyInjection, and ContainerBuilder.</Description>
 		<PackageTags>adnc,adnc.infra,adnc.infra.core</PackageTags>
 	</PropertyGroup>
 	<ItemGroup>

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Query;
 namespace Adnc.Infra.Repository.EfCore;
 
 /// <summary>
-/// Ef默认的、全功能的仓储实现
+/// Default full-featured EF repository implementation
 /// </summary>
 /// <typeparam name="TEntity"></typeparam>
 public class EfRepository<TEntity>(DbContext dbContext, Operater operater, IAdoQuerierRepository? adoQuerier = null) : AbstractEfBaseRepository<DbContext, TEntity>(dbContext), IEfRepository<TEntity>
@@ -100,7 +100,7 @@ public class EfRepository<TEntity>(DbContext dbContext, Operater operater, IAdoQ
     public virtual async Task<int> DeleteAsync(long keyValue, CancellationToken cancellationToken = default)
     {
         var rows = 0;
-        //查询当前上下文中，有没有同Id实体
+        // Check whether the same entity already exists in the current context by Id
         var entity = DbContext.Set<TEntity>().Local.FirstOrDefault(x => x.Id == keyValue);
 
         entity ??= new TEntity { Id = keyValue };
@@ -172,7 +172,7 @@ public class EfRepository<TEntity>(DbContext dbContext, Operater operater, IAdoQ
 
         if (entry.State == EntityState.Added || entry.State == EntityState.Deleted)
         {
-            throw new ArgumentException($"{nameof(entity)},实体状态为{nameof(entry.State)}");
+            throw new ArgumentException($"{nameof(entity)}, entity state is {nameof(entry.State)}");
         }
 
         if (entry.State == EntityState.Unchanged)

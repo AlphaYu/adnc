@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<Description>该库封装并扩展了CAP，同时集成了RabbitMq客户端，封装了发布者与订阅者等公共类，能让开发人员更加便捷的调用。</Description>
+		<Description>This library encapsulates and extends CAP while integrating the RabbitMQ client. It wraps publisher and subscriber abstractions, making it easier for developers to publish and consume messages.</Description>
 		<PackageTags>adnc,adnc.infra,adnc.infra.eventbus,eventbus,rabbitmq,cap</PackageTags>
 	</PropertyGroup>
 	<ItemGroup>

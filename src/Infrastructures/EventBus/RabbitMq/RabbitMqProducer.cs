@@ -8,7 +8,7 @@ public class RabbitMqProducer(IConnectionManager connectionManager, ILogger<Rabb
 {
     /*
     /// <summary>
-    /// 简单队列,不通过交换机
+    /// Simple queue; does not route through an exchange.
     /// </summary>
     /// <typeparam name="TMessage"></typeparam>
     /// <param name="queueName"></param>
@@ -50,15 +50,15 @@ public class RabbitMqProducer(IConnectionManager connectionManager, ILogger<Rabb
               {
                   var content = message as string ?? JsonSerializer.Serialize(message);
                   var body = Encoding.UTF8.GetBytes(content);
-                  //当mandatory标志位设置为true时，如果exchange根据自身类型和消息routingKey无法找到一个合适的queue存储消息
-                  //那么broker会调用basic.return方法将消息返还给生产者;
-                  //当mandatory设置为false时，出现上述情况broker会直接将消息丢弃
+                  // When mandatory is true, if the exchange cannot find a suitable queue for the message based on its type and routingKey,
+                  // the broker will call basic.return to return the message to the producer.
+                  // When mandatory is false, the broker silently drops the message in that case.
 
                   using var channel = await connectionManager.Connection.CreateChannelAsync();
                   await channel.BasicPublishAsync(exchange, routingKey, mandatory, basicProperties ?? new BasicProperties(), body, cancellationToken);
-                  //开启发布消息确认模式
+                  // Enable publisher confirms
                   //_channel.ConfirmSelect();
-                  //消息是否到达服务器
+                  // Whether the message reached the server
                   //bool publishStatus = _channel.WaitForConfirms();
               });
         return Task.CompletedTask;

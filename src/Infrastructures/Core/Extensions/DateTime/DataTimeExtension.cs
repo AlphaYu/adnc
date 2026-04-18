@@ -27,9 +27,9 @@ public static class DataTimeExtension
     /// <returns>The number of weeks in that year</returns>
     public static int GetWeekAmount(this DateTime _, int year)
     {
-        var end = new DateTime(year, 12, 31); //该年最后一天
+        var end = new DateTime(year, 12, 31); // last day of the year
         var gc = new GregorianCalendar();
-        return gc.GetWeekOfYear(end, CalendarWeekRule.FirstDay, DayOfWeek.Monday); //该年星期数
+        return gc.GetWeekOfYear(end, CalendarWeekRule.FirstDay, DayOfWeek.Monday); // total week count for the year
     }
 
     /// <summary>
@@ -168,7 +168,7 @@ public static class DataTimeExtension
     /// <returns>The day of the year for the given date</returns>
     public static int GetDaysOfYear(this in DateTime value)
     {
-        //取得传入参数的年份部分，用来判断是否是闰年
+        //Extract the year part from the parameter to check for leap year
         var n = value.Year;
         return IsRuYear(n) ? 366 : 365;
     }
@@ -227,15 +227,15 @@ public static class DataTimeExtension
     }
 
     /// <summary>
-    /// Returns the name of the weekday for the given date.
+    /// Returns the chinese name of the weekday for the given date.
     /// </summary>
     /// <param name="value">The date</param>
-    /// <returns>The name of the weekday</returns>
-    public static string GetWeekNameOfDay(this in DateTime value)
+    /// <returns>The chinese name of the weekday</returns>
+    public static string GetWeekChineseNameOfDay(this in DateTime value)
     {
         return value.DayOfWeek.ToString() switch
         {
-            "Mondy" => "星期一",
+            "Monday" => "星期一",
             "Tuesday" => "星期二",
             "Wednesday" => "星期三",
             "Thursday" => "星期四",
@@ -440,11 +440,11 @@ public static class DataTimeExtension
         var ts = dateTime2 - dateTime1;
         if (ts.Days >= 1)
         {
-            dateDiff = dateTime1.Month + "月" + dateTime1.Day + "日";
+            dateDiff = dateTime1.Month + "/" + dateTime1.Day;
         }
         else
         {
-            dateDiff = ts.Hours > 1 ? ts.Hours + "小时前" : ts.Minutes + "分钟前";
+            dateDiff = ts.Hours > 1 ? ts.Hours + "h ago" : ts.Minutes + "min ago";
         }
 
         return dateDiff;
@@ -471,35 +471,35 @@ public static class DataTimeExtension
         // Reminder time: returns 1 if the time has arrived, otherwise returns 0.
         if (sec > year)
         {
-            strResout += sec / year + "年";
+            strResout += sec / year + "y";
             sec %= year; // Remaining
         }
 
         if (sec > month)
         {
-            strResout += sec / month + "月";
+            strResout += sec / month + "mo";
             sec %= month;
         }
 
         if (sec > day)
         {
-            strResout += sec / day + "天";
+            strResout += sec / day + "d";
             sec %= day;
         }
 
         if (sec > hours)
         {
-            strResout += sec / hours + "小时";
+            strResout += sec / hours + "h";
             sec %= hours;
         }
 
         if (sec > minutes)
         {
-            strResout += sec / minutes + "分";
+            strResout += sec / minutes + "m";
             sec %= minutes;
         }
 
-        strResout += sec + "秒";
+        strResout += sec + "s";
         return strResout;
     }
 

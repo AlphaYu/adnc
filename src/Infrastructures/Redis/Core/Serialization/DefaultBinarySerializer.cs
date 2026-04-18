@@ -22,9 +22,9 @@ public class DefaultBinarySerializer : ISerializer
     public T Deserialize<T>(byte[] bytes)
     {
         using var ms = new MemoryStream(bytes);
-#pragma warning disable SYSLIB0011 // 类型或成员已过时
+#pragma warning disable SYSLIB0011 // Type or member is obsolete
         return (T)new BinaryFormatter().Deserialize(ms);
-#pragma warning restore SYSLIB0011 // 类型或成员已过时
+#pragma warning restore SYSLIB0011 // Type or member is obsolete
     }
 
     /// <summary>
@@ -36,9 +36,9 @@ public class DefaultBinarySerializer : ISerializer
     public object Deserialize(byte[] bytes, Type type)
     {
         using var ms = new MemoryStream(bytes);
-#pragma warning disable SYSLIB0011 // 类型或成员已过时
+#pragma warning disable SYSLIB0011 // Type or member is obsolete
         return new BinaryFormatter().Deserialize(ms);
-#pragma warning restore SYSLIB0011 // 类型或成员已过时
+#pragma warning restore SYSLIB0011 // Type or member is obsolete
     }
 
     /// <summary>
@@ -49,9 +49,9 @@ public class DefaultBinarySerializer : ISerializer
     public object DeserializeObject(ArraySegment<byte> value)
     {
         using var ms = new MemoryStream(value.Array, value.Offset, value.Count);
-#pragma warning disable SYSLIB0011 // 类型或成员已过时
+#pragma warning disable SYSLIB0011 // Type or member is obsolete
         return new BinaryFormatter().Deserialize(ms);
-#pragma warning restore SYSLIB0011 // 类型或成员已过时
+#pragma warning restore SYSLIB0011 // Type or member is obsolete
     }
 
     /// <summary>
@@ -63,9 +63,9 @@ public class DefaultBinarySerializer : ISerializer
     public byte[] Serialize<T>(T value)
     {
         using var ms = new MemoryStream();
-#pragma warning disable SYSLIB0011 // 类型或成员已过时
+#pragma warning disable SYSLIB0011 // Type or member is obsolete
         new BinaryFormatter().Serialize(ms, value);
-#pragma warning restore SYSLIB0011 // 类型或成员已过时
+#pragma warning restore SYSLIB0011 // Type or member is obsolete
         return ms.ToArray();
     }
 
@@ -77,9 +77,9 @@ public class DefaultBinarySerializer : ISerializer
     public ArraySegment<byte> SerializeObject(object obj)
     {
         using var ms = new MemoryStream();
-#pragma warning disable SYSLIB0011 // 类型或成员已过时
+#pragma warning disable SYSLIB0011 // Type or member is obsolete
         new BinaryFormatter().Serialize(ms, obj);
-#pragma warning restore SYSLIB0011 // 类型或成员已过时
+#pragma warning restore SYSLIB0011 // Type or member is obsolete
         return new ArraySegment<byte>(ms.GetBuffer(), 0, (int)ms.Length);
     }
 }

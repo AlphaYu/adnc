@@ -3,12 +3,12 @@ namespace Adnc.Infra.Repository;
 public abstract class EfBasicAuditEntity : EfEntity, IBasicAuditInfo
 {
     /// <summary>
-    /// 创建人
+    /// Creator
     /// </summary>
     public long CreateBy { get; set; }
 
     /// <summary>
-    /// 创建时间/注册时间
+    /// Creation time / registration time
     /// </summary>
     public DateTime CreateTime { get; set; }
 }

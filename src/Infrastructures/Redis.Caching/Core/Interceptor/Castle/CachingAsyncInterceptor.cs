@@ -14,7 +14,7 @@ namespace Adnc.Infra.Redis.Caching.Core.Interceptor.Castle;
 public sealed class CachingAsyncInterceptor(ICacheProvider cacheProvider, ICachingKeyGenerator keyGenerator, ILogger<CachingAsyncInterceptor>? logger = null) : IAsyncInterceptor
 {
     /// <summary>
-    /// 同步拦截器
+    /// Synchronous interceptor
     /// </summary>
     /// <param name="invocation"></param>
     public void InterceptSynchronous(IInvocation invocation)
@@ -31,7 +31,7 @@ public sealed class CachingAsyncInterceptor(ICacheProvider cacheProvider, ICachi
     }
 
     /// <summary>
-    /// 异步拦截器 无返回值
+    /// Async interceptor — no return value
     /// </summary>
     /// <param name="invocation"></param>
     public void InterceptAsynchronous(IInvocation invocation)
@@ -45,7 +45,7 @@ public sealed class CachingAsyncInterceptor(ICacheProvider cacheProvider, ICachi
     }
 
     /// <summary>
-    /// 异步拦截器 有返回值
+    /// Async interceptor — with return value
     /// </summary>
     /// <typeparam name="TResult"></typeparam>
     /// <param name="invocation"></param>

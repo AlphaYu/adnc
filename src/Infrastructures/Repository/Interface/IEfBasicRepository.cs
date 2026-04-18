@@ -1,8 +1,8 @@
 namespace Adnc.Infra.Repository;
 
 /// <summary>
-/// Ef简单的、基础的，初级的仓储接口
-/// 适合DDD开发模式,实体必须继承AggregateRoot
+/// Simple, basic EF repository interface.
+/// Suitable for DDD development; entity must inherit AggregateRoot.
 /// </summary>
 /// <typeparam name="TEntity"></typeparam>
 public interface IEfBasicRepository<TEntity> : IEfBaseRepository<TEntity>

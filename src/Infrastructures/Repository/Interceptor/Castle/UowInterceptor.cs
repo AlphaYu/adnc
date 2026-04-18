@@ -3,7 +3,7 @@ using Castle.DynamicProxy;
 namespace Adnc.Infra.Repository.Interceptor.Castle;
 
 /// <summary>
-/// 工作单元拦截器
+/// Unit of work interceptor
 /// </summary>
 public class UowInterceptor(UowAsyncInterceptor uowAsyncInterceptor) : IInterceptor
 {
