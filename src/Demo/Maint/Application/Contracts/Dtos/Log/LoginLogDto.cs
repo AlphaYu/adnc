@@ -1,7 +1,7 @@
 namespace Adnc.Demo.Maint.Application.Contracts.Dtos.Log;
 
 /// <summary>
-/// 登录日志
+/// Represents a login log entry.
 /// </summary>
 public class LoginLogDto : LoginLog
 { }

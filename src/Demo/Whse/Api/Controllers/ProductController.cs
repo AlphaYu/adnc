@@ -1,6 +1,6 @@
 using Adnc.Demo.Whse.Application.Contracts.Dtos.Product;
 
-namespace Adnc.Demo.Whse.WebApi.Controllers;
+namespace Adnc.Demo.Whse.Api.Controllers;
 
 /// <summary>
 /// Product management

@@ -1,9 +1,9 @@
 namespace Adnc.Demo.Maint.Repository;
 
-public static class RepositoryExtension
+public static class LogRepoExtension
 {
     /// <summary>
-    ///  通过sql查询登录日志分页信息
+    /// Queries a paged result of login logs by SQL.
     /// </summary>
     /// <typeparam name="TResult"></typeparam>
     /// <param name="repository"></param>
@@ -32,7 +32,7 @@ public static class RepositoryExtension
     }
 
     /// <summary>
-    ///  通过sql查询登录日志分页信息
+    /// Queries a paged result of operation logs by SQL.
     /// </summary>
     /// <typeparam name="TResult"></typeparam>
     /// <param name="repository"></param>

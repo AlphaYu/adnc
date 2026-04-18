@@ -1,18 +1,18 @@
 using Adnc.Demo.Maint.Application.Contracts.Dtos.Log;
 
-namespace Adnc.Demo.Maint.WebApi.Controllers;
+namespace Adnc.Demo.Maint.Api.Controllers;
 
 /// <summary>
-/// 登录日志管理
+/// Manages login log queries.
 /// </summary>
 [Route($"{RouteConsts.MaintRoot}/loginlogs")]
 public class LoginLogController(ILogService logService) : AdncControllerBase
 {
     /// <summary>
-    /// 查询登录日志
+    /// Gets a paged list of login logs.
     /// </summary>
-    /// <param name="searchDto">查询条件</param>
-    /// <returns></returns>
+    /// <param name="searchDto">The paging and filtering criteria.</param>
+    /// <returns>A paged list of login logs.</returns>
     [HttpGet("page")]
     [AdncAuthorize(PermissionConsts.Log.SearchForLogingLog)]
     public async Task<ActionResult<PageModelDto<LoginLogDto>>> GetLoginLogsPagedAsync([FromQuery] SearchPagedDto searchDto)
@@ -20,10 +20,10 @@ public class LoginLogController(ILogService logService) : AdncControllerBase
 
     /*
     /// <summary>
-    /// 查询Nlog日志
+    /// Gets a paged list of NLog entries.
     /// </summary>
-    /// <param name="searchDto">查询条件</param>
-    /// <returns></returns>
+    /// <param name="searchDto">The paging and filtering criteria.</param>
+    /// <returns>A paged list of NLog entries.</returns>
     //[HttpGet("nloglogs")]
     //[AdncAuthorize(PermissionConsts.Log.GetListForNLog)]
     //public async Task<ActionResult<PageModelDto<NlogLogDto>>> GetNlogLogsPagedAsync([FromQuery] LogSearchPagedDto searchDto)

@@ -3,8 +3,10 @@ using Adnc.Demo.Maint.Application.Contracts.Dtos.Log;
 
 namespace Adnc.Demo.Maint.Application.Services;
 
-public class LogService(IAdoQuerierRepository adoRepository) : AbstractAppService, ILogService
+/// <inheritdoc cref="ILogService"/>
+public class LogService(IAdoQuerierRepository adoRepo) : AbstractAppService, ILogService
 {
+    /// <inheritdoc />
     public async Task<PageModelDto<LoginLogDto>> GetLoginLogsPagedAsync(SearchPagedDto input)
     {
         input.TrimStringFields();
@@ -24,10 +26,11 @@ public class LogService(IAdoQuerierRepository adoRepository) : AbstractAppServic
         var orderBy = " ORDER BY id Desc";
 
         var queryCondition = new QueryCondition(where, orderBy, null, input);
-        var queryResult = await adoRepository.GetPagedLoginLogsBySqlAsync<LoginLogDto>(queryCondition, input.SkipRows(), input.PageSize);
+        var queryResult = await adoRepo.GetPagedLoginLogsBySqlAsync<LoginLogDto>(queryCondition, input.SkipRows(), input.PageSize);
         return new PageModelDto<LoginLogDto>(input, queryResult.Content.ToArray(), queryResult.TotalCount);
     }
 
+    /// <inheritdoc />
     public async Task<PageModelDto<OperationLogDto>> GetOperationLogsPagedAsync(SearchPagedDto input)
     {
         input.TrimStringFields();
@@ -47,7 +50,7 @@ public class LogService(IAdoQuerierRepository adoRepository) : AbstractAppServic
         var orderBy = " ORDER BY id Desc";
 
         var queryCondition = new QueryCondition(where, orderBy, null, input);
-        var queryResult = await adoRepository.GetPagedOperationLogsBySqlAsync<OperationLogDto>(queryCondition, input.SkipRows(), input.PageSize);
+        var queryResult = await adoRepo.GetPagedOperationLogsBySqlAsync<OperationLogDto>(queryCondition, input.SkipRows(), input.PageSize);
         return new PageModelDto<OperationLogDto>(input, queryResult.Content.ToArray(), queryResult.TotalCount);
     }
 

@@ -1,28 +1,28 @@
 using Adnc.Demo.Maint.Application.Contracts.Dtos.Log;
 
-namespace Adnc.Demo.Maint.WebApi.Controllers;
+namespace Adnc.Demo.Maint.Api.Controllers;
 
 /// <summary>
-/// 操作日志管理
+/// Manages operation log queries.
 /// </summary>
 [Route($"{RouteConsts.MaintRoot}/operationlogs")]
 public class OperationLogController(ILogService logService, UserContext userContext) : AdncControllerBase
 {
     /// <summary>
-    /// 查询操作日志
+    /// Gets a paged list of operation logs.
     /// </summary>
-    /// <param name="input">查询条件</param>
-    /// <returns></returns>
+    /// <param name="input">The paging and filtering criteria.</param>
+    /// <returns>A paged list of operation logs.</returns>
     [HttpGet("page")]
     [AdncAuthorize(PermissionConsts.Log.SearchForOperationLog)]
     public async Task<ActionResult<PageModelDto<OperationLogDto>>> GetOpsLogsPaged([FromQuery] SearchPagedDto input)
         => await logService.GetOperationLogsPagedAsync(input);
 
     /// <summary>
-    /// 查询登录用户操作日志
+    /// Gets a paged list of operation logs for the current user.
     /// </summary>
-    /// <param name="input">查询条件</param>
-    /// <returns></returns>
+    /// <param name="input">The paging and filtering criteria.</param>
+    /// <returns>A paged list of operation logs for the current user.</returns>
     [HttpGet("user/page")]
     public async Task<ActionResult<PageModelDto<OperationLogDto>>> GetUserOpsLogsPagedAsync([FromQuery] SearchPagedDto input)
     {

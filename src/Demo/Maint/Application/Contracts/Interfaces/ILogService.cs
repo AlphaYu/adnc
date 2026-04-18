@@ -3,30 +3,30 @@ using Adnc.Demo.Maint.Application.Contracts.Dtos.Log;
 namespace Adnc.Demo.Maint.Application.Contracts.Interfaces;
 
 /// <summary>
-/// 日志查询
+/// Defines log query services.
 /// </summary>
 public interface ILogService : IAppService
 {
     /// <summary>
-    /// 登录日志
+    /// Gets a paged list of login logs.
     /// </summary>
-    /// <param name="input"></param>
-    /// <returns></returns>
+    /// <param name="input">The paging and filtering criteria.</param>
+    /// <returns>A paged list of login logs.</returns>
     Task<PageModelDto<LoginLogDto>> GetLoginLogsPagedAsync(SearchPagedDto input);
 
     /// <summary>
-    /// 操作日志
+    /// Gets a paged list of operation logs.
     /// </summary>
-    /// <param name="input"></param>
-    /// <returns></returns>
+    /// <param name="input">The paging and filtering criteria.</param>
+    /// <returns>A paged list of operation logs.</returns>
     Task<PageModelDto<OperationLogDto>> GetOperationLogsPagedAsync(SearchPagedDto input);
 
     /*
     /// <summary>
-    /// 异常日志
+    /// Gets a paged list of NLog entries.
     /// </summary>
-    /// <param name="input"></param>
-    /// <returns></returns>
+    /// <param name="input">The paging and filtering criteria.</param>
+    /// <returns>A paged list of NLog entries.</returns>
     Task<PageModelDto<NlogLogDto>> GetNlogLogsPagedAsync(SearchPagedDto input);
     */
 }

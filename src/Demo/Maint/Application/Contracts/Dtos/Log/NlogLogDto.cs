@@ -1,7 +1,7 @@
 namespace Adnc.Demo.Maint.Application.Contracts.Dtos.Log;
 
 /// <summary>
-/// Nlog日志
+/// Represents an NLog entry.
 /// </summary>
 public class NlogLogDto : MongoDto
 {
@@ -23,9 +23,12 @@ public class NlogLogDto : MongoDto
 
     public string ProcessName { get; set; } = string.Empty;
 
-    public NlogLogPropertyDto Properties { get; set; } = new NlogLogPropertyDto();
+    public NlogLogPropertyDto Properties { get; set; } = new();
 }
 
+/// <summary>
+/// Represents additional properties captured for an NLog entry.
+/// </summary>
 public class NlogLogPropertyDto
 {
     public string TraceIdentifier { get; set; } = string.Empty;
