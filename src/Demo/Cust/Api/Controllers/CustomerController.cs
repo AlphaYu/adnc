@@ -3,14 +3,14 @@ using Adnc.Demo.Cust.Api.Application.Contracts.Dtos.Customer;
 namespace Adnc.Demo.Cust.Api.Controllers;
 
 /// <summary>
-/// 客户管理
+/// Customer management
 /// </summary>
 [Route($"{RouteConsts.CustRoot}/customers")]
 [ApiController]
 public class CustomerController(ICustomerService customerService) : AdncControllerBase
 {
     /// <summary>
-    /// 创建客户
+    /// Create a customer
     /// </summary>
     /// <param name="input"><see cref="CustomerCreationDto"/></param>
     /// <returns><see cref="CustomerDto"/></returns>
@@ -21,7 +21,7 @@ public class CustomerController(ICustomerService customerService) : AdncControll
         => CreatedResult(await customerService.CreateAsync(input));
 
     /// <summary>
-    /// 后台管理员给客户充值
+    /// Recharge a customer as a back-office admin
     /// </summary>
     /// <returns></returns>
     [HttpPatch("{id}/balance")]
@@ -31,7 +31,7 @@ public class CustomerController(ICustomerService customerService) : AdncControll
         => Result(await customerService.RechargeAsync(id, balance));
 
     /// <summary>
-    /// 客户分页列表
+    /// Get a paginated customer list
     /// </summary>
     /// <param name="input"></param>
     /// <returns><see cref="PageModelDto{CustomerDto}"/></returns>
@@ -42,7 +42,7 @@ public class CustomerController(ICustomerService customerService) : AdncControll
         => Result(await customerService.GetPagedAsync(input));
 
     /// <summary>
-    /// 客户分页列表-通过Sql查询
+    /// Get a paginated customer list via SQL
     /// </summary>
     /// <param name="input"></param>
     /// <returns><see cref="PageModelDto{CustomerDto}"/></returns>
@@ -53,7 +53,7 @@ public class CustomerController(ICustomerService customerService) : AdncControll
       => Result(await customerService.GetPagedBySqlAsync(input));
 
     /// <summary>
-    /// 客户充值记录分页列表
+    /// Get a paginated customer recharge log list
     /// </summary>
     /// <param name="input"></param>
     /// <returns><see cref="PageModelDto{TransactionLogDto}"/></returns>

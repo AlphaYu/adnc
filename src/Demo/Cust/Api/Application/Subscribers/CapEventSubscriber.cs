@@ -8,7 +8,7 @@ public sealed partial class CapEventSubscriber(IUnitOfWork unitOfWork, IEfReposi
     private readonly IMessageTracker _tracker = trackerFactory.Create();
 
     /// <summary>
-    /// 订阅充值事件
+    /// Subscribe to recharge events
     /// </summary>
     /// <param name="eventDto"></param>
     /// <returns></returns>
@@ -67,7 +67,7 @@ public sealed partial class CapEventSubscriber(IUnitOfWork unitOfWork, IEfReposi
     }
 
     /// <summary>
-    /// 订阅付款事件
+    /// Subscribe to payment events
     /// </summary>
     /// <param name="eventDto"></param>
     /// <returns></returns>
@@ -88,11 +88,11 @@ public sealed partial class CapEventSubscriber(IUnitOfWork unitOfWork, IEfReposi
         {
             unitOfWork.BeginTransaction();
 
-            logger.LogInformation("------开始处理[{eventId}]------", eventId);
+            logger.LogInformation("------Start processing [{eventId}]------", eventId);
             //TODO
             //
             //
-            logger.LogInformation("------完成处理[{eventId}]------", eventId);
+            logger.LogInformation("------Completed processing [{eventId}]------", eventId);
 
             await _tracker.MarkAsProcessedAsync(eventId, eventHandler);
 

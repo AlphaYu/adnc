@@ -12,7 +12,7 @@ namespace Adnc.Demo.Cust.Api.Controllers;
 public class GrpcClientDemoController(AdminGrpc.AdminGrpcClient adminGrpcClient) : AdncControllerBase
 {
     /// <summary>
-    /// 获取字典数据选项列表
+    /// Get the dictionary option list
     /// </summary>
     /// <param name="codes"></param>
     /// <returns></returns>
@@ -27,7 +27,7 @@ public class GrpcClientDemoController(AdminGrpc.AdminGrpcClient adminGrpcClient)
     }
 
     /// <summary>
-    /// 获取系统配置列表
+    /// Get the system configuration list
     /// </summary>
     /// <param name="keys"></param>
     /// <returns></returns>

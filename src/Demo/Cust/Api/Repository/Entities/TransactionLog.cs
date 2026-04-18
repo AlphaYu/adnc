@@ -1,7 +1,7 @@
 namespace Adnc.Demo.Cust.Api.Repository.Entities;
 
 /// <summary>
-/// 客户财务变动记录
+/// Customer finance change log
 /// </summary>
 public class TransactionLog : EfBasicAuditEntity
 {

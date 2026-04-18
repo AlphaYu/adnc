@@ -1,7 +1,7 @@
 namespace Adnc.Demo.Cust.Api.Repository.Entities;
 
 /// <summary>
-/// 客户表
+/// Customer table
 /// </summary>
 public class Customer : EfFullAuditEntity
 {

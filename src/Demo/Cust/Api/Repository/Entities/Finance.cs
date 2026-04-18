@@ -1,7 +1,7 @@
 namespace Adnc.Demo.Cust.Api.Repository.Entities;
 
 /// <summary>
-/// 客户财务表
+/// Customer finance table
 /// </summary>
 public class Finance : EfFullAuditEntity, IConcurrency
 {

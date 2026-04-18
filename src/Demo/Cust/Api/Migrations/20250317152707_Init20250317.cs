@@ -19,10 +19,10 @@ public partial class Init20250317 : Migration
             columns: table => new
             {
                 id = table.Column<long>(type: "bigint", nullable: false, comment: ""),
-                createby = table.Column<long>(type: "bigint", nullable: false, comment: "创建人"),
-                createtime = table.Column<DateTime>(type: "datetime(6)", nullable: false, comment: "创建时间/注册时间"),
-                modifyby = table.Column<long>(type: "bigint", nullable: false, comment: "最后更新人"),
-                modifytime = table.Column<DateTime>(type: "datetime(6)", nullable: false, comment: "最后更新时间"),
+                createby = table.Column<long>(type: "bigint", nullable: false, comment: "Created by"),
+                createtime = table.Column<DateTime>(type: "datetime(6)", nullable: false, comment: "Created time/registered time"),
+                modifyby = table.Column<long>(type: "bigint", nullable: false, comment: "Last modified by"),
+                modifytime = table.Column<DateTime>(type: "datetime(6)", nullable: false, comment: "Last modified time"),
                 account = table.Column<string>(type: "varchar(16)", maxLength: 16, nullable: false, comment: "")
                     .Annotation("MySql:CharSet", "utf8mb4 "),
                 password = table.Column<string>(type: "varchar(32)", maxLength: 32, nullable: false, comment: "")
@@ -36,7 +36,7 @@ public partial class Init20250317 : Migration
             {
                 table.PrimaryKey("pk_cust_customer", x => x.id);
             },
-            comment: "客户表")
+            comment: "Customer table")
             .Annotation("MySql:CharSet", "utf8mb4 ");
 
         migrationBuilder.CreateTable(
@@ -48,14 +48,14 @@ public partial class Init20250317 : Migration
                 eventid = table.Column<long>(type: "bigint", nullable: false, comment: ""),
                 trackername = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false, comment: "")
                     .Annotation("MySql:CharSet", "utf8mb4 "),
-                createby = table.Column<long>(type: "bigint", nullable: false, comment: "创建人"),
-                createtime = table.Column<DateTime>(type: "datetime(6)", nullable: false, comment: "创建时间/注册时间")
+                createby = table.Column<long>(type: "bigint", nullable: false, comment: "Created by"),
+                createtime = table.Column<DateTime>(type: "datetime(6)", nullable: false, comment: "Created time/registered time")
             },
             constraints: table =>
             {
                 table.PrimaryKey("pk_cust_eventtracker", x => x.id);
             },
-            comment: "事件跟踪/处理信息")
+            comment: "Event tracking/processing info")
             .Annotation("MySql:CharSet", "utf8mb4 ");
 
         migrationBuilder.CreateTable(
@@ -64,10 +64,10 @@ public partial class Init20250317 : Migration
             {
                 id = table.Column<long>(type: "bigint", nullable: false, comment: ""),
                 rowversion = table.Column<DateTime>(type: "timestamp(6)", rowVersion: true, nullable: false, comment: ""),
-                createby = table.Column<long>(type: "bigint", nullable: false, comment: "创建人"),
-                createtime = table.Column<DateTime>(type: "datetime(6)", nullable: false, comment: "创建时间/注册时间"),
-                modifyby = table.Column<long>(type: "bigint", nullable: false, comment: "最后更新人"),
-                modifytime = table.Column<DateTime>(type: "datetime(6)", nullable: false, comment: "最后更新时间"),
+                createby = table.Column<long>(type: "bigint", nullable: false, comment: "Created by"),
+                createtime = table.Column<DateTime>(type: "datetime(6)", nullable: false, comment: "Created time/registered time"),
+                modifyby = table.Column<long>(type: "bigint", nullable: false, comment: "Last modified by"),
+                modifytime = table.Column<DateTime>(type: "datetime(6)", nullable: false, comment: "Last modified time"),
                 account = table.Column<string>(type: "varchar(16)", maxLength: 16, nullable: false, comment: "")
                     .Annotation("MySql:CharSet", "utf8mb4 "),
                 balance = table.Column<decimal>(type: "decimal(18,4)", nullable: false, comment: "")
@@ -82,7 +82,7 @@ public partial class Init20250317 : Migration
                     principalColumn: "id",
                     onDelete: ReferentialAction.Cascade);
             },
-            comment: "客户财务表")
+            comment: "Customer finance table")
             .Annotation("MySql:CharSet", "utf8mb4 ");
 
         migrationBuilder.CreateTable(
@@ -90,8 +90,8 @@ public partial class Init20250317 : Migration
             columns: table => new
             {
                 id = table.Column<long>(type: "bigint", nullable: false, comment: ""),
-                createby = table.Column<long>(type: "bigint", nullable: false, comment: "创建人"),
-                createtime = table.Column<DateTime>(type: "datetime(6)", nullable: false, comment: "创建时间/注册时间"),
+                createby = table.Column<long>(type: "bigint", nullable: false, comment: "Created by"),
+                createtime = table.Column<DateTime>(type: "datetime(6)", nullable: false, comment: "Created time/registered time"),
                 customerid = table.Column<long>(type: "bigint", nullable: false, comment: ""),
                 account = table.Column<string>(type: "varchar(16)", maxLength: 16, nullable: false, comment: "")
                     .Annotation("MySql:CharSet", "utf8mb4 "),
@@ -113,7 +113,7 @@ public partial class Init20250317 : Migration
                     principalColumn: "id",
                     onDelete: ReferentialAction.Cascade);
             },
-            comment: "客户财务变动记录")
+            comment: "Customer finance change log")
             .Annotation("MySql:CharSet", "utf8mb4 ");
 
         migrationBuilder.CreateIndex(

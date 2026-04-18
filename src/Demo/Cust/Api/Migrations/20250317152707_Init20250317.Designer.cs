@@ -45,25 +45,25 @@ namespace Adnc.Demo.Cust.Api.Migrations
                         .HasColumnType("bigint")
                         .HasColumnName("createby")
                         .HasColumnOrder(100)
-                        .HasComment("创建人");
+                        .HasComment("Created by");
 
                     b.Property<DateTime>("CreateTime")
                         .HasColumnType("datetime(6)")
                         .HasColumnName("createtime")
                         .HasColumnOrder(101)
-                        .HasComment("创建时间/注册时间");
+                        .HasComment("Created time/registered time");
 
                     b.Property<long>("ModifyBy")
                         .HasColumnType("bigint")
                         .HasColumnName("modifyby")
                         .HasColumnOrder(102)
-                        .HasComment("最后更新人");
+                        .HasComment("Last modified by");
 
                     b.Property<DateTime>("ModifyTime")
                         .HasColumnType("datetime(6)")
                         .HasColumnName("modifytime")
                         .HasColumnOrder(103)
-                        .HasComment("最后更新时间");
+                        .HasComment("Last modified time");
 
                     b.Property<string>("Nickname")
                         .IsRequired()
@@ -91,7 +91,7 @@ namespace Adnc.Demo.Cust.Api.Migrations
 
                     b.ToTable("cust_customer", null, t =>
                         {
-                            t.HasComment("客户表");
+                            t.HasComment("Customer table");
                         });
                 });
 
@@ -119,25 +119,25 @@ namespace Adnc.Demo.Cust.Api.Migrations
                         .HasColumnType("bigint")
                         .HasColumnName("createby")
                         .HasColumnOrder(100)
-                        .HasComment("创建人");
+                        .HasComment("Created by");
 
                     b.Property<DateTime>("CreateTime")
                         .HasColumnType("datetime(6)")
                         .HasColumnName("createtime")
                         .HasColumnOrder(101)
-                        .HasComment("创建时间/注册时间");
+                        .HasComment("Created time/registered time");
 
                     b.Property<long>("ModifyBy")
                         .HasColumnType("bigint")
                         .HasColumnName("modifyby")
                         .HasColumnOrder(102)
-                        .HasComment("最后更新人");
+                        .HasComment("Last modified by");
 
                     b.Property<DateTime>("ModifyTime")
                         .HasColumnType("datetime(6)")
                         .HasColumnName("modifytime")
                         .HasColumnOrder(103)
-                        .HasComment("最后更新时间");
+                        .HasComment("Last modified time");
 
                     b.Property<DateTime>("RowVersion")
                         .IsConcurrencyToken()
@@ -152,7 +152,7 @@ namespace Adnc.Demo.Cust.Api.Migrations
 
                     b.ToTable("cust_finance", null, t =>
                         {
-                            t.HasComment("客户财务表");
+                            t.HasComment("Customer finance table");
                         });
                 });
 
@@ -190,13 +190,13 @@ namespace Adnc.Demo.Cust.Api.Migrations
                         .HasColumnType("bigint")
                         .HasColumnName("createby")
                         .HasColumnOrder(100)
-                        .HasComment("创建人");
+                        .HasComment("Created by");
 
                     b.Property<DateTime>("CreateTime")
                         .HasColumnType("datetime(6)")
                         .HasColumnName("createtime")
                         .HasColumnOrder(101)
-                        .HasComment("创建时间/注册时间");
+                        .HasComment("Created time/registered time");
 
                     b.Property<long>("CustomerId")
                         .HasColumnType("bigint")
@@ -228,7 +228,7 @@ namespace Adnc.Demo.Cust.Api.Migrations
 
                     b.ToTable("cust_transactionlog", null, t =>
                         {
-                            t.HasComment("客户财务变动记录");
+                            t.HasComment("Customer finance change log");
                         });
                 });
 
@@ -245,12 +245,12 @@ namespace Adnc.Demo.Cust.Api.Migrations
                     b.Property<long>("CreateBy")
                         .HasColumnType("bigint")
                         .HasColumnName("createby")
-                        .HasComment("创建人");
+                        .HasComment("Created by");
 
                     b.Property<DateTime>("CreateTime")
                         .HasColumnType("datetime(6)")
                         .HasColumnName("createtime")
-                        .HasComment("创建时间/注册时间");
+                        .HasComment("Created time/registered time");
 
                     b.Property<long>("EventId")
                         .HasColumnType("bigint")
@@ -273,7 +273,7 @@ namespace Adnc.Demo.Cust.Api.Migrations
 
                     b.ToTable("cust_eventtracker", null, t =>
                         {
-                            t.HasComment("事件跟踪/处理信息");
+                            t.HasComment("Event tracking/processing info");
                         });
                 });
 

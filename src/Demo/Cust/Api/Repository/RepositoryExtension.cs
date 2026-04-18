@@ -3,7 +3,7 @@ namespace Adnc.Demo.Cust.Api.Repository;
 public static class RepositoryExtension
 {
     /// <summary>
-    ///  通过sql查询客户分页信息
+    /// Query paginated customer data via SQL
     /// </summary>
     /// <typeparam name="TResult"></typeparam>
     /// <param name="repository"></param>

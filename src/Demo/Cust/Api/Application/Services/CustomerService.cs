@@ -6,7 +6,7 @@ using Adnc.Demo.Remote.Http.Services;
 namespace Adnc.Demo.Cust.Api.Application.Services;
 
 /// <summary>
-/// 客户管理服务
+/// Customer management service
 /// </summary>
 public class CustomerAppService(IEfRepository<Customer> customerRepo, IEfRepository<TransactionLog> transactionLogRepo, IEventPublisher eventPublisher, IAdminRestClient adminRestClient)
     : AbstractAppService, ICustomerService
@@ -17,7 +17,7 @@ public class CustomerAppService(IEfRepository<Customer> customerRepo, IEfReposit
         var exists = await customerRepo.AnyAsync(t => t.Account == input.Account);
         if (exists)
         {
-            return Problem(HttpStatusCode.Forbidden, "客户账号已经存在");
+            return Problem(HttpStatusCode.Forbidden, "The customer account already exists");
         }
 
         var customer = Mapper.Map<Customer>(input, IdGenerater.GetNextId());
@@ -39,7 +39,7 @@ public class CustomerAppService(IEfRepository<Customer> customerRepo, IEfReposit
         var customer = await customerRepo.FetchAsync(x => x.Id == id);
         if (customer is null)
         {
-            return Problem(HttpStatusCode.NotFound, "客户账号不存在");
+            return Problem(HttpStatusCode.NotFound, "The customer account does not exist");
         }
 
         var transactionLog = new TransactionLog()
@@ -54,7 +54,7 @@ public class CustomerAppService(IEfRepository<Customer> customerRepo, IEfReposit
         };
         await transactionLogRepo.InsertAsync(transactionLog);
 
-        //发布充值事件
+        // Publish the recharge event
         var customerRechargedEvent = new CustomerRechargedEvent
         {
             Id = IdGenerater.GetNextId(),
