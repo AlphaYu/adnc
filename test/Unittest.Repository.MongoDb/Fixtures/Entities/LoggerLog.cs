@@ -4,7 +4,7 @@ using MongoDB.Bson.Serialization.Attributes;
 namespace Adnc.Infra.Unittest.Reposity.MongoDb.Fixtures.Entities;
 
 /// <summary>
-/// ILogger日志
+/// ILogger log
 /// </summary>
 //the driver would ignore any extra fields instead of throwing an exception
 [BsonIgnoreExtraElements]

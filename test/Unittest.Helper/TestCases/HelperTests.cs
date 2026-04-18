@@ -13,7 +13,7 @@ public class HelperTests
     }
 
     /// <summary>
-    /// DES加密解密测试
+    /// AES encryption and decryption test
     /// </summary>
     [Fact]
     public void TestAes()

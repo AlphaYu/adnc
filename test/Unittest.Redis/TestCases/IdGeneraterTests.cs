@@ -16,7 +16,7 @@ public class IdGeneraterTests : IClassFixture<RedisContextFixture>
     }
 
     /// <summary>
-    /// id 小于 js 最大值 9007199254740992
+    /// The ID is smaller than the JavaScript max safe integer 9007199254740992
     /// </summary>
     [Fact]
     public void TestIdLessThanjJsMaxNumber()
@@ -27,7 +27,7 @@ public class IdGeneraterTests : IClassFixture<RedisContextFixture>
     }
 
     /// <summary>
-    /// 10w个ids,没有重复
+    /// 100k IDs with no duplicates
     /// </summary>
     [Fact]
     public void TestNotContainsDuplicateIds()
@@ -41,7 +41,7 @@ public class IdGeneraterTests : IClassFixture<RedisContextFixture>
     }
 
     /// <summary>
-    /// 10W个ids,517毫秒
+    /// 100k IDs in 517 milliseconds
     /// </summary>
     [Fact]
     public void TestSpeed()
@@ -53,7 +53,7 @@ public class IdGeneraterTests : IClassFixture<RedisContextFixture>
             IdGenerater.Yitter.IdGenerater.GetNextId();
         });
         stopwatch.Stop();
-        //持续时间: 517 毫秒
+        // Duration: 517 milliseconds
         _output.WriteLine(stopwatch.ElapsedMilliseconds.ToString());
         stopwatch.Reset();
     }

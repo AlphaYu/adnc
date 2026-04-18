@@ -1,7 +1,7 @@
 namespace Adnc.Infra.Unittest.Reposity.Fixtures.Entities;
 
 /// <summary>
-/// 客户表
+/// Customer table
 /// </summary>
 public class Customer : EfFullAuditEntity
 {

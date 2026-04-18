@@ -1,7 +1,7 @@
 namespace Adnc.Infra.Unittest.Reposity.Fixtures.Entities;
 
 /// <summary>
-/// 客户财务表
+/// Customer finance table
 /// </summary>
 public class CustomerFinance : EfFullAuditEntity, IConcurrency
 {

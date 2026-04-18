@@ -17,7 +17,7 @@ public class RedisCahceTests(RedisContextFixture fixture, ITestOutputHelper outp
     }
 
     /// <summary>
-    /// 测试lua脚本
+    /// Test the Lua script
     /// </summary>
     [Fact]
     public async Task TestScriptEvaluateStoreSet()
@@ -47,7 +47,7 @@ public class RedisCahceTests(RedisContextFixture fixture, ITestOutputHelper outp
     }
 
     /// <summary>
-    /// 测试lua脚本
+    /// Test the Lua script
     /// </summary>
     [Fact]
     public void TestScriptEvaluateString()
@@ -76,7 +76,7 @@ public class RedisCahceTests(RedisContextFixture fixture, ITestOutputHelper outp
     }
 
     /// <summary>
-    /// 测试分布式锁
+    /// Test the distributed lock
     /// </summary>
     [Fact]
     public async Task TestDistributedLocker()
@@ -168,7 +168,7 @@ public class RedisCahceTests(RedisContextFixture fixture, ITestOutputHelper outp
         output.WriteLine(returnReulst[0].ToString());
         Assert.NotNull(returnReulst);
 
-        // 返回有序集合中指定成员的索引
+        // Return the index of the specified member in the sorted set
         returnReulst = redisProvider.ZRank<long>(cacheKey, 1);
         output.WriteLine(returnReulst.ToString());
         Assert.True(returnReulst >= 0);
@@ -211,7 +211,7 @@ public class RedisCahceTests(RedisContextFixture fixture, ITestOutputHelper outp
     }
 
     /// <summary>
-    /// 测试布隆过滤器
+    /// Test the Bloom filter
     /// </summary>
     [Fact]
     public async Task TestBloomFilter()

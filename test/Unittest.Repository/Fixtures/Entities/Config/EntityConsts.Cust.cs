@@ -1,6 +1,6 @@
 namespace Adnc.Infra.Unittest.Reposity.Fixtures.Entities.Config;
 /// <summary>
-/// 客户
+/// Customer
 /// </summary>
 public static class CustomerConsts
 {
@@ -11,7 +11,7 @@ public static class CustomerConsts
 }
 
 /// <summary>
-/// 客户财务表
+/// Customer finance table
 /// </summary>
 public static class CustomerFinanceConsts
 {
@@ -19,7 +19,7 @@ public static class CustomerFinanceConsts
 }
 
 /// <summary>
-/// 客户财务变动
+/// Customer finance change
 /// </summary>
 public static class CustomerTransactionLogConsts
 {
@@ -28,7 +28,7 @@ public static class CustomerTransactionLogConsts
 }
 
 /// <summary>
-/// 工程表
+/// Project table
 /// </summary>
 public static class ProjectConsts
 {

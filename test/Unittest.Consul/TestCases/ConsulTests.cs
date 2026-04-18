@@ -17,7 +17,7 @@ public class ConsulTests : IClassFixture<ConsulContextFixture>
     }
 
     /// <summary>
-    /// 测试服务发现
+    /// Test service discovery
     /// </summary>
     [Fact]
     public async Task TestDiscover()

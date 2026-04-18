@@ -65,8 +65,8 @@ public class MaxscaleTests : IClassFixture<EfCoreDbcontextFixture>
     [Fact]
     public async Task TestUpdate()
     {
-        var newRealName = "测试用户";
-        var newNickname = "测试";
+        var newRealName = "TestUser";
+        var newNickname = "Test";
         long id = 0;
 
         try
@@ -99,8 +99,8 @@ public class MaxscaleTests : IClassFixture<EfCoreDbcontextFixture>
     [Fact]
     public async Task TestUpdateFullColumn()
     {
-        var newRealName = "测试用户";
-        var newNickname = "测试";
+        var newRealName = "TestUser";
+        var newNickname = "Test";
         long id = 0;
 
         try
@@ -135,8 +135,8 @@ public class MaxscaleTests : IClassFixture<EfCoreDbcontextFixture>
     {
         var list = await InsertRangeCustomer(10);
         var ids = list.Select(c => c.Id).ToArray();
-        var newRealName = "测试用户001";
-        var newNickname = "测试";
+        var newRealName = "TestUser001";
+        var newNickname = "Test";
 
         await _cusRsp.UpdateRangeAsync(c => ids.Contains(c.Id), c => new Customer { Realname = newRealName, Nickname = newNickname });
 
@@ -150,7 +150,7 @@ public class MaxscaleTests : IClassFixture<EfCoreDbcontextFixture>
     }
 
     /// <summary>
-    /// 生成测试数据
+    /// Generate test data
     /// </summary>
     /// <returns></returns>
     private async Task<List<Customer>> InsertRangeCustomer(int rows)
@@ -169,7 +169,7 @@ public class MaxscaleTests : IClassFixture<EfCoreDbcontextFixture>
     }
 
     /// <summary>
-    /// 生成测试数据
+    /// Generate test data
     /// </summary>
     /// <returns></returns>
     private async Task<Customer> InsertCustomer()
@@ -181,7 +181,7 @@ public class MaxscaleTests : IClassFixture<EfCoreDbcontextFixture>
     }
 
     /// <summary>
-    /// 生成测试数据
+    /// Generate test data
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>

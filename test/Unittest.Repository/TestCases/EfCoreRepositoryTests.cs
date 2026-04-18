@@ -8,10 +8,10 @@ public class EfCoreRepositoryTests(EfCoreDbcontextFixture fixture, ITestOutputHe
     private static Expression<Func<TEntity, object>>[] UpdatingProps<TEntity>(params Expression<Func<TEntity, object>>[] expressions) => expressions;
 
     /// <summary>
-    /// 新增1条件记录
-    /// Database.AutoTransactionBehavior = AutoTransactionBehavior.Never 不会开启事物
-    /// Database.AutoTransactionBehavior = AutoTransactionBehavior.WhenNeeded 不会开启事物
-    /// Database.AutoTransactionBehavior = AutoTransactionBehavior.Always 会开启1次事物
+    /// Insert one conditional record
+    /// Database.AutoTransactionBehavior = AutoTransactionBehavior.Never will not start a transaction
+    /// Database.AutoTransactionBehavior = AutoTransactionBehavior.WhenNeeded will not start a transaction
+    /// Database.AutoTransactionBehavior = AutoTransactionBehavior.Always will start one transaction
     /// </summary>
     /// <returns></returns>
     [Fact]
@@ -27,10 +27,10 @@ public class EfCoreRepositoryTests(EfCoreDbcontextFixture fixture, ITestOutputHe
     }
 
     /// <summary>
-    /// 新增2条件记录，不是批量新增
-    /// Database.AutoTransactionBehavior = AutoTransactionBehavior.Never 不会开启事物
-    /// Database.AutoTransactionBehavior = AutoTransactionBehavior.WhenNeeded 不会开启事物
-    /// Database.AutoTransactionBehavior = AutoTransactionBehavior.Always 会开启2次事物
+    /// Insert two conditional records, not a batch insert
+    /// Database.AutoTransactionBehavior = AutoTransactionBehavior.Never will not start a transaction
+    /// Database.AutoTransactionBehavior = AutoTransactionBehavior.WhenNeeded will not start a transaction
+    /// Database.AutoTransactionBehavior = AutoTransactionBehavior.Always will start two transactions
     /// </summary>
     /// <returns></returns>
     [Fact]
@@ -51,10 +51,10 @@ public class EfCoreRepositoryTests(EfCoreDbcontextFixture fixture, ITestOutputHe
     }
 
     /// <summary>
-    /// 新增主从
-    /// Database.AutoTransactionBehavior = AutoTransactionBehavior.Never 不会开启事物
-    /// Database.AutoTransactionBehavior = AutoTransactionBehavior.WhenNeeded 会开1次事物
-    /// Database.AutoTransactionBehavior = AutoTransactionBehavior.Always 会开启1次事物
+    /// Insert parent and child records
+    /// Database.AutoTransactionBehavior = AutoTransactionBehavior.Never will not start a transaction
+    /// Database.AutoTransactionBehavior = AutoTransactionBehavior.WhenNeeded will start one transaction
+    /// Database.AutoTransactionBehavior = AutoTransactionBehavior.Always will start one transaction
     /// </summary>
     /// <returns></returns>
     [Fact]
@@ -73,10 +73,10 @@ public class EfCoreRepositoryTests(EfCoreDbcontextFixture fixture, ITestOutputHe
     }
 
     /// <summary>
-    /// 批量新增，开启事物
-    /// Database.AutoTransactionBehavior = AutoTransactionBehavior.Never 不会开启事物
-    /// Database.AutoTransactionBehavior = AutoTransactionBehavior.WhenNeeded 会开1次事物
-    /// Database.AutoTransactionBehavior = AutoTransactionBehavior.Always 会开启1次事物
+    /// Batch insert with a transaction
+    /// Database.AutoTransactionBehavior = AutoTransactionBehavior.Never will not start a transaction
+    /// Database.AutoTransactionBehavior = AutoTransactionBehavior.WhenNeeded will start one transaction
+    /// Database.AutoTransactionBehavior = AutoTransactionBehavior.Always will start one transaction
     /// </summary>
     /// <returns></returns>
     [Fact]
@@ -104,7 +104,7 @@ public class EfCoreRepositoryTests(EfCoreDbcontextFixture fixture, ITestOutputHe
     }
 
     /// <summary>
-    /// 测试更新
+    /// Test update
     /// </summary>
     /// <returns></returns>
     [Fact]
@@ -118,26 +118,26 @@ public class EfCoreRepositoryTests(EfCoreDbcontextFixture fixture, ITestOutputHe
         var ids = await customerRsp.AdoQuerier.QueryAsync<long>("SELECT Id FROM customer where ID in @ids ORDER BY ID", new { ids = new[] { cus1.Id, cus2.Id } });
         var id0 = ids.ToArray()[0];
 
-        //IEfRepository<>默认关闭了跟踪，需要手动开启跟踪
+        // IEfRepository<> disables tracking by default, so tracking must be enabled manually.
         var customer = await customerRsp.FindAsync(id0, noTracking: false);
-        //实体已经被跟踪
-        customer.Realname = "被跟踪01";
+        // The entity is already tracked.
+        customer.Realname = "Tracked01";
         await customerRsp.UpdateAsync(customer);
         var newCust1 = await customerRsp.AdoQuerier.QueryAsync<Customer>("SELECT * FROM customer WHERE Id=@Id", new { Id = id0 });
-        Assert.Equal("被跟踪01", newCust1.FirstOrDefault().Realname);
+        Assert.Equal("Tracked01", newCust1.FirstOrDefault().Realname);
 
         var customerId = (await customerRsp.AdoQuerier.QueryAsync<long>("SELECT Id  FROM customerfinance limit 0,1")).FirstOrDefault();
         customer = await customerRsp.FindAsync(x => x.Id == customerId, x => x.FinanceInfo, noTracking: false);
-        customer.Account = "主从更新01";
-        customer.FinanceInfo.Account = "主从更新01";
+        customer.Account = "ParentChildUpdate01";
+        customer.FinanceInfo.Account = "ParentChildUpdate01";
         await customerRsp.UpdateAsync(customer);
         var newCust2 = await customerRsp.FindAsync(customerId, x => x.FinanceInfo);
-        Assert.Equal("主从更新01", newCust2.Account);
-        Assert.Equal("主从更新01", newCust2.FinanceInfo.Account);
+        Assert.Equal("ParentChildUpdate01", newCust2.Account);
+        Assert.Equal("ParentChildUpdate01", newCust2.FinanceInfo.Account);
     }
 
     /// <summary>
-    /// 更新，指定列
+    /// Update specified columns
     /// </summary>
     [Fact]
     public async Task TestUpdateAssigns()
@@ -152,17 +152,17 @@ public class EfCoreRepositoryTests(EfCoreDbcontextFixture fixture, ITestOutputHe
         var ids = await customerRsp.AdoQuerier.QueryAsync<long>("SELECT Id FROM customer where ID in @ids ORDER BY ID", new { ids = new[] { cus1.Id, cus2.Id, cus3.Id, cus4.Id } });
         var id0 = ids.ToArray()[0];
         var customer = await customerRsp.FetchAsync(x=>x.Id == id0, noTracking: false);
-        //实体已经被跟踪并且指定更新列,     更新列没有指定Realname，该列不会被更新
-        customer.Nickname = "更新指定列";
-        customer.Realname = "不指定该列";
+        // The entity is already tracked and specific columns are selected, so Realname will not be updated.
+        customer.Nickname = "UpdateSelectedColumn";
+        customer.Realname = "ColumnNotSelected";
         await customerRsp.UpdateAsync(customer, UpdatingProps<Customer>(c => c.Nickname));
         var newCus = (await customerRsp.AdoQuerier.QueryAsync<Customer>("SELECT * FROM customer WHERE ID=@ID", customer)).FirstOrDefault();
-        Assert.Equal("更新指定列", newCus.Nickname);
-        Assert.NotEqual("不指定该列", newCus.Realname);
+        Assert.Equal("UpdateSelectedColumn", newCus.Nickname);
+        Assert.NotEqual("ColumnNotSelected", newCus.Realname);
     }
 
     /// <summary>
-    /// 批量更新，指定列
+    /// Batch update specified columns
     /// </summary>
     /// <returns></returns>
     [Fact]
@@ -175,15 +175,15 @@ public class EfCoreRepositoryTests(EfCoreDbcontextFixture fixture, ITestOutputHe
         var total = await customerRsp.CountAsync(c => c.Id == cus1.Id || c.Id == cus2.Id);
         Assert.Equal(2, total);
 
-        await customerRsp.UpdateRangeAsync(c => c.Id == cus1.Id || c.Id == cus2.Id, x => new Customer { Realname = "批量更新" });
+        await customerRsp.UpdateRangeAsync(c => c.Id == cus1.Id || c.Id == cus2.Id, x => new Customer { Realname = "BatchUpdate" });
         var result2 = await customerRsp.AdoQuerier.QueryAsync<Customer>("SELECT * FROM customer WHERE ID in @ids", new { ids = new[] { cus1.Id, cus2.Id } });
         Assert.NotEmpty(result2);
-        Assert.Equal("批量更新", result2.FirstOrDefault().Realname);
-        Assert.Equal("批量更新", result2.LastOrDefault().Realname);
+        Assert.Equal("BatchUpdate", result2.FirstOrDefault().Realname);
+        Assert.Equal("BatchUpdate", result2.LastOrDefault().Realname);
     }
 
     /// <summary>
-    /// 批量更新，带跟踪
+    /// Batch update with tracking
     /// </summary>
     /// <returns></returns>
     [Fact]
@@ -214,7 +214,7 @@ public class EfCoreRepositoryTests(EfCoreDbcontextFixture fixture, ITestOutputHe
         }
         catch
         {
-            output.WriteLine("不允许更新");
+            output.WriteLine("Update is not allowed");
         }
     }
 
@@ -274,7 +274,7 @@ public class EfCoreRepositoryTests(EfCoreDbcontextFixture fixture, ITestOutputHe
     }
 
     /// <summary>3
-    /// 测试删除
+    /// Test delete
     /// </summary>
     /// <returns></returns>
     [Fact]
@@ -282,7 +282,7 @@ public class EfCoreRepositoryTests(EfCoreDbcontextFixture fixture, ITestOutputHe
     {
         var customerRsp = fixture.Container.GetRequiredService<IEfRepository<Customer>>();
 
-        //删除，无跟踪状态
+        // Delete without tracking
         var customer = await InsertCustomer();
         var customerFromDb = await customerRsp.FindAsync(customer.Id);
         Assert.Equal(customer.Id, customerFromDb.Id);
@@ -291,26 +291,26 @@ public class EfCoreRepositoryTests(EfCoreDbcontextFixture fixture, ITestOutputHe
         var result = await customerRsp.AdoQuerier.QueryAsync<Customer>("SELECT * FROM customer WHERE ID=@Id", new { customer.Id });
         Assert.Equal(0, result.Count());
 
-        //删除，有跟踪状态
+        // Delete with tracking
         //var customer2 = await InsertCustomer();
         //await customerRsp.DeleteAsync(customer2.Id);
         //result = await customerRsp.AdoQuerier.QueryAsync<Customer>("SELECT * FROM customer WHERE ID=@Id", new { customer2.Id });
         //Assert.Equal(0,result.Count());
 
         //var ids = await customerRsp.AdoQuerier.QueryAsync<long>("SELECT Id FROM customer ORDER BY ID DESC LIMIT 1");
-        ////删除，上下文中无该实体。
+        //// Delete when the entity is not in the context.
         //var id = ids.First();
         //await customerRsp.DeleteAsync(id);
         //result = await customerRsp.AdoQuerier.QueryAsync<Customer>("SELECT * FROM customer WHERE ID=@Id", new { Id = id });
         //Assert.Equal(0, result.Count());
 
-        //删除不存在的记录
+        // Delete a non-existent record
         var total = await customerRsp.DeleteAsync(99872221111111111);
         Assert.Equal(0, total);
     }
 
     /// <summary>
-    /// 批量删除
+    /// Batch delete
     /// </summary>
     /// <returns></returns>
     [Fact]
@@ -330,7 +330,7 @@ public class EfCoreRepositoryTests(EfCoreDbcontextFixture fixture, ITestOutputHe
     }
 
     /// <summary>
-    /// 测试条件查询单条记录
+    /// Test querying a single record by condition
     /// </summary>
     /// <returns></returns>
     [Fact]
@@ -341,17 +341,17 @@ public class EfCoreRepositoryTests(EfCoreDbcontextFixture fixture, ITestOutputHe
         var cus1 = await InsertCustomer();
         var cus2 = await InsertCustomer();
 
-        //指定列查询
+        // Query specified columns
         var customer = await customerRsp.FetchAsync(x => new { x.Id, x.Account }, x => x.Id == cus1.Id);
         Assert.NotNull(customer);
 
-        //指定列查询，指定列包含导航属性
+        // Query specified columns, including navigation properties
         var customer2 = await customerRsp.FetchAsync(x => new { x.Id, x.Account, x.FinanceInfo }, x => x.Id == cus2.Id);
         Assert.NotNull(customer2.FinanceInfo);
     }
 
     /// <summary>
-    /// 测试where and getall
+    /// Test where and getall
     /// </summary>
     /// <returns></returns>
     [Fact]
@@ -399,7 +399,7 @@ public class EfCoreRepositoryTests(EfCoreDbcontextFixture fixture, ITestOutputHe
     }
 
     /// <summary>
-    /// 测试sql查询
+    /// Test SQL query
     /// </summary>
     /// <returns></returns>
     [Fact]
@@ -417,7 +417,7 @@ public class EfCoreRepositoryTests(EfCoreDbcontextFixture fixture, ITestOutputHe
     }
 
     /// <summary>
-    /// 测试多种查询
+    /// Test multiple query variants
     /// </summary>
     /// <returns></returns>
     [Fact]
@@ -436,7 +436,7 @@ public class EfCoreRepositoryTests(EfCoreDbcontextFixture fixture, ITestOutputHe
     }
 
     /// <summary>
-    ///  测试EFCore8 ExcuteDelete是否支持软删除
+    /// Test whether EF Core 8 ExecuteDelete supports soft delete
     /// </summary>
     /// <returns></returns>
     [Fact]
@@ -454,7 +454,7 @@ public class EfCoreRepositoryTests(EfCoreDbcontextFixture fixture, ITestOutputHe
         //DELETE `p`
         //FROM `project` AS `p`
         //WHERE NOT(`p`.`isdeleted`) AND(`p`.`id` = 1740035750473)
-        //EFCore8 ExcuteDelete不支持软删除
+        // EF Core 8 ExecuteDelete does not support soft delete
         await custProject.ExecuteDeleteAsync(x => x.Id == project.Id);
         var result = await custProject.AdoQuerier.QueryFirstOrDefaultAsync<Project>("SELECT * FROM project WHERE ID=@Id", new { Id = project.Id });
 

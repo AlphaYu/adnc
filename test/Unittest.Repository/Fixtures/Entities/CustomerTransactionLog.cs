@@ -1,7 +1,7 @@
 namespace Adnc.Infra.Unittest.Reposity.Fixtures.Entities;
 
 /// <summary>
-/// 客户财务变动记录
+/// Customer finance change log
 /// </summary>
 public class CustomerTransactionLog : EfBasicAuditEntity
 {
