@@ -1,7 +1,7 @@
 namespace Adnc.Demo.Admin.Repository.Entities;
 
 /// <summary>
-/// 字典
+/// Dictionary
 /// </summary>
 public class Dict : EfFullAuditEntity
 {
@@ -15,7 +15,7 @@ public class Dict : EfFullAuditEntity
 }
 
 /// <summary>
-/// 字典数据
+/// Dictionary data
 /// </summary>
 public class DictData : EfFullAuditEntity
 {

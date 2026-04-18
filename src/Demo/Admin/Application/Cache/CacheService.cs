@@ -7,11 +7,17 @@ using Adnc.Demo.Admin.Application.Contracts.Dtos.User;
 
 namespace Adnc.Demo.Admin.Application.Cache;
 
+/// <summary>
+/// Provides cache access and cache preheating for Admin application data.
+/// </summary>
 public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IDistributedLocker> dictributeLocker
     , Lazy<ILogger<CacheService>> logger, Lazy<IServiceProvider> serviceProvider, Lazy<IConfiguration> configuration
     , Lazy<IObjectMapper> mapper)
     : AbstractCacheService(cacheProvider, serviceProvider), ICachePreheatable
 {
+    /// <summary>
+    /// Preheats commonly used cache entries.
+    /// </summary>
     public override async Task PreheatAsync()
     {
         await GetAllOrganizationsFromCacheAsync();
@@ -21,6 +27,10 @@ public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IDistr
         await GetAllSysConfigsFromCacheAsync();
     }
 
+    /// <summary>
+    /// Gets the refresh token expiration period, including clock skew.
+    /// </summary>
+    /// <returns>The refresh token expiration period in seconds.</returns>
     internal int GetRefreshTokenExpires()
     {
         var refreshTokenExpire = configuration.Value.GetValue<int>($"{NodeConsts.JWT}:RefreshTokenExpire");
@@ -28,18 +38,32 @@ public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IDistr
         return refreshTokenExpire + clockSkew;
     }
 
+    /// <summary>
+    /// Stores the failed login count for a user in the cache.
+    /// </summary>
+    /// <param name="id">The user ID.</param>
+    /// <param name="count">The failed login count.</param>
     internal async Task SetFailLoginCountToCacheAsync(long id, int count)
     {
         var cacheKey = ConcatCacheKey(CachingConsts.UserFailCountKeyPrefix, id);
         await CacheProvider.Value.SetAsync(cacheKey, count, TimeSpan.FromSeconds(GetRefreshTokenExpires()));
     }
 
+    /// <summary>
+    /// Removes the cached failed login count for a user.
+    /// </summary>
+    /// <param name="id">The user ID.</param>
     internal async Task RemoveFailLoginCountToCacheAsync(long id)
     {
         var cacheKey = ConcatCacheKey(CachingConsts.UserFailCountKeyPrefix, id);
         await CacheProvider.Value.RemoveAsync(cacheKey);
     }
 
+    /// <summary>
+    /// Gets the cached failed login count for a user.
+    /// </summary>
+    /// <param name="id">The user ID.</param>
+    /// <returns>The failed login count.</returns>
     internal async Task<int> GetFailLoginCountByUserIdAsync(long id)
     {
         var cacheKey = ConcatCacheKey(CachingConsts.UserFailCountKeyPrefix, id);
@@ -47,12 +71,21 @@ public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IDistr
         return cacheValue.Value;
     }
 
+    /// <summary>
+    /// Stores validated user information in the cache.
+    /// </summary>
+    /// <param name="value">The validated user information to cache.</param>
     internal async Task SetValidateInfoToCacheAsync(UserValidatedInfoDto value)
     {
         var cacheKey = ConcatCacheKey(CachingConsts.UserValidatedInfoKeyPrefix, value.Id);
         await CacheProvider.Value.SetAsync(cacheKey, value, TimeSpan.FromSeconds(GetRefreshTokenExpires()));
     }
 
+    /// <summary>
+    /// Gets validated user information from the cache.
+    /// </summary>
+    /// <param name="id">The user ID.</param>
+    /// <returns>The cached validated user information, or <see langword="null"/> if none exists.</returns>
     internal async Task<UserValidatedInfoDto?> GetUserValidateInfoFromCacheAsync(long id)
     {
         var cacheKey = ConcatCacheKey(CachingConsts.UserValidatedInfoKeyPrefix, id.ToString());
@@ -60,12 +93,20 @@ public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IDistr
         return cacheValue.Value;
     }
 
+    /// <summary>
+    /// Refreshes the expiration time for cached validated user information.
+    /// </summary>
+    /// <param name="id">The user ID.</param>
     internal async Task ChangeUserValidateInfoCacheExpiresDtAsync(long id)
     {
         var cacheKey = ConcatCacheKey(CachingConsts.UserValidatedInfoKeyPrefix, id);
         await CacheProvider.Value.KeyExpireAsync([cacheKey], GetRefreshTokenExpires());
     }
 
+    /// <summary>
+    /// Gets all organizations from the cache.
+    /// </summary>
+    /// <returns>A list of cached organizations.</returns>
     internal async Task<List<OrganizationDto>> GetAllOrganizationsFromCacheAsync()
     {
         var cahceValue = await CacheProvider.Value.GetAsync(CachingConsts.DetpListCacheKey, async () =>
@@ -79,6 +120,10 @@ public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IDistr
         return cahceValue.Value ?? [];
     }
 
+    /// <summary>
+    /// Gets all menus from the cache.
+    /// </summary>
+    /// <returns>A list of cached menus.</returns>
     internal async Task<List<MenuDto>> GetAllMenusFromCacheAsync()
     {
         var cahceValue = await CacheProvider.Value.GetAsync(CachingConsts.MenuListCacheKey, async () =>
@@ -92,6 +137,10 @@ public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IDistr
         return cahceValue.Value ?? [];
     }
 
+    /// <summary>
+    /// Gets all role menu codes from the cache.
+    /// </summary>
+    /// <returns>A list of cached role menu code mappings.</returns>
     internal async Task<List<RoleMenuCodeDto>> GetAllRoleMenuCodesFromCacheAsync()
     {
         var cahceValue = await CacheProvider.Value.GetAsync(CachingConsts.RoleMenuCodesCacheKey, async () =>
@@ -104,12 +153,18 @@ public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IDistr
         return cahceValue.Value ?? [];
     }
 
+    /// <summary>
+    /// Reloads all role menu codes and stores them in the cache.
+    /// </summary>
     internal async Task SetAllRoleMenuCodesToCacheAsync()
     {
         var cacheValue = await GetAllRoleMenuCodesFromDb();
         await CacheProvider.Value.SetAsync(CachingConsts.RoleMenuCodesCacheKey, cacheValue, TimeSpan.FromSeconds(GeneralConsts.OneYear));
     }
 
+    /// <summary>
+    /// Preheats dictionary options into individual cache entries.
+    /// </summary>
     [Obsolete($"use {nameof(GetAllDictOptionsFromCacheAsync)} instead")]
     internal async Task PreheatAllDictOptionsAsync()
     {
@@ -170,6 +225,10 @@ public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IDistr
         await CacheProvider.Value.SetAsync(CachingConsts.DictOptionsPreheatedKey, serverInfo.Version, TimeSpan.FromSeconds(GeneralConsts.OneYear));
     }
 
+    /// <summary>
+    /// Gets all dictionary options from the cache.
+    /// </summary>
+    /// <returns>A list of cached dictionary options.</returns>
     internal async Task<List<DictOptionDto>> GetAllDictOptionsFromCacheAsync()
     {
         var cahceValue = await CacheProvider.Value.GetAsync(CachingConsts.DictOptionsListKey, async () =>
@@ -205,6 +264,10 @@ public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IDistr
         return cahceValue.Value ?? [];
     }
 
+    /// <summary>
+    /// Gets all system configuration entries from the cache.
+    /// </summary>
+    /// <returns>A list of cached system configuration entries.</returns>
     internal async Task<List<SysConfigSimpleDto>> GetAllSysConfigsFromCacheAsync()
     {
         var cahceValue = await CacheProvider.Value.GetAsync(CachingConsts.SysConfigListCacheKey, async () =>

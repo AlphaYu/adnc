@@ -1,5 +1,8 @@
 namespace Adnc.Demo.Admin.Application.Cache;
 
+/// <summary>
+/// Provides the bloom filter used for cache key penetration protection.
+/// </summary>
 public class CacheKeyBloomFilter(Lazy<IOptions<CacheOptions>> cacheOptions, Lazy<IRedisProvider> redisProvider, Lazy<IDistributedLocker> distributedLocker/*, Lazy<IServiceProvider> serviceProvider*/)
     : AbstractBloomFilter(redisProvider, distributedLocker)
 {
@@ -9,6 +12,9 @@ public class CacheKeyBloomFilter(Lazy<IOptions<CacheOptions>> cacheOptions, Lazy
 
     public override int Capacity => cacheOptions.Value.Value.PenetrationSetting.BloomFilterSetting.Capacity;
 
+    /// <summary>
+    /// Initializes the cache key bloom filter.
+    /// </summary>
     public override async Task InitAsync()
     {
         await Task.CompletedTask;

@@ -2,21 +2,23 @@ using Adnc.Demo.Admin.Application.Contracts.Dtos.Dict;
 
 namespace Adnc.Demo.Admin.Application.Services;
 
+/// <inheritdoc cref="IDictDataService"/>
 public class DictDataService(IEfRepository<DictData> dictDataRepo) : AbstractAppService, IDictDataService
 {
+    /// <inheritdoc />
     public async Task<ServiceResult<IdDto>> CreateAsync(DictDataCreationDto input)
     {
         input.TrimStringFields();
         var lableExists = await dictDataRepo.AnyAsync(x => x.DictCode == input.DictCode && x.Label == input.Label);
         if (lableExists)
         {
-            return Problem(HttpStatusCode.BadRequest, "字典数据标签已经存在");
+            return Problem(HttpStatusCode.BadRequest, "This dictionary data label already exists");
         }
 
         var valueExists = await dictDataRepo.AnyAsync(x => x.DictCode == input.DictCode && x.Value == input.Value);
         if (valueExists)
         {
-            return Problem(HttpStatusCode.BadRequest, "字典数据值已经存在");
+            return Problem(HttpStatusCode.BadRequest, "This dictionary data value already exists");
         }
 
         var entity = Mapper.Map<DictData>(input, IdGenerater.GetNextId());
@@ -25,24 +27,25 @@ public class DictDataService(IEfRepository<DictData> dictDataRepo) : AbstractApp
         return new IdDto(entity.Id);
     }
 
+    /// <inheritdoc />
     public async Task<ServiceResult> UpdateAsync(long id, DictDataUpdationDto input)
     {
         var entity = await dictDataRepo.FetchAsync(x => x.Id == id, noTracking: false);
         if (entity is null)
         {
-            return Problem(HttpStatusCode.NotFound, "字典数据不存在");
+            return Problem(HttpStatusCode.NotFound, "This dictionary data does not exist");
         }
 
         var lableExists = await dictDataRepo.AnyAsync(x => x.DictCode == input.DictCode && x.Label == input.Label && x.Id != id);
         if (lableExists)
         {
-            return Problem(HttpStatusCode.BadRequest, "字典数据标签已经存在");
+            return Problem(HttpStatusCode.BadRequest, "This dictionary data label already exists");
         }
 
         var valueExists = await dictDataRepo.AnyAsync(x => x.DictCode == input.DictCode && x.Value == input.Value && x.Id != id);
         if (valueExists)
         {
-            return Problem(HttpStatusCode.BadRequest, "字典数据值已经存在");
+            return Problem(HttpStatusCode.BadRequest, "This dictionary data value already exists");
         }
 
         var newEntity = Mapper.Map(input, entity);
@@ -51,12 +54,14 @@ public class DictDataService(IEfRepository<DictData> dictDataRepo) : AbstractApp
         return ServiceResult();
     }
 
+    /// <inheritdoc />
     public async Task<ServiceResult> DeleteAsync(long[] ids)
     {
         await dictDataRepo.ExecuteDeleteAsync(x => ids.Contains(x.Id));
         return ServiceResult();
     }
 
+    /// <inheritdoc />
     public async Task<DictDataDto?> GetAsync(long id)
     {
         var entity = await dictDataRepo.FetchAsync(x => x.Id == id);
@@ -69,6 +74,7 @@ public class DictDataService(IEfRepository<DictData> dictDataRepo) : AbstractApp
         return dictDataDto;
     }
 
+    /// <inheritdoc />
     public async Task<PageModelDto<DictDataDto>> GetPagedAsync(DictDataSearchPagedDto input)
     {
         input.TrimStringFields();

@@ -1,82 +1,82 @@
 namespace Adnc.Demo.Admin.Repository.Entities;
 
 /// <summary>
-/// 菜单
+/// Menu
 /// </summary>
 public class Menu : EfFullAuditEntity
 {
     /// <summary>
-    /// 父菜单Id
+    /// Parent menu ID
     /// </summary>
     public long ParentId { get; set; }
 
     /// <summary>
-    /// 父菜单Id组合
+    /// Parent menu ID path
     /// </summary>
     public string ParentIds { get; set; } = string.Empty;
 
     /// <summary>
-    /// 名称
+    /// Name
     /// </summary>
     public string Name { get; set; } = string.Empty;
 
     /// <summary>
-    /// 权限编码
+    /// Permission code
     /// </summary>
     public string Perm { get; set; } = string.Empty;
 
     /// <summary>
-    /// 路由名称
+    /// Route name
     /// </summary>
     public string RouteName { get; set; } = string.Empty;
 
     /// <summary>
-    /// 路由路径
+    /// Route path
     /// </summary>
     public string RoutePath { get; set; } = string.Empty;
 
     /// <summary>
-    /// 菜单类型
+    /// Menu type
     /// </summary>
     public string Type { get; set; } = string.Empty;
 
     /// <summary>
-    /// 組件配置
+    /// Component configuration
     /// </summary>
     public string Component { get; set; } = string.Empty;
 
     /// <summary>
-    /// 是否显示
+    /// Visible
     /// </summary>
     public bool Visible { get; set; }
 
     /// <summary>
-    /// 跳转路由路径
+    /// Redirect route path
     /// </summary>
     public string Redirect { get; set; } = string.Empty;
 
     /// <summary>
-    /// 图标
+    /// Icon
     /// </summary>
     public string Icon { get; set; } = string.Empty;
 
     /// <summary>
-    /// 是否开启页面缓存
+    /// Enable page caching
     /// </summary>
     public bool KeepAlive { get; set; }
 
     /// <summary>
-    /// 只有一个子路由是否始终显示
+    /// Always show when there is only one child route
     /// </summary>
     public bool AlwaysShow { get; set; }
 
     /// <summary>
-    ///  路由参数
+    /// Route parameters
     /// </summary>
     public string Params { get; set; } = string.Empty;
 
     /// <summary>
-    /// 序号
+    /// Ordinal
     /// </summary>
     public int Ordinal { get; set; }
 }

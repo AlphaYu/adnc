@@ -1,17 +1,17 @@
 namespace Adnc.Demo.Admin.Application.Contracts.Dtos.User;
 
 /// <summary>
-/// 登录信息
+/// Represents the payload used to sign in a user.
 /// </summary>
 public class UserLoginDto : InputDto
 {
     /// <summary>
-    /// 账户
+    /// Gets or sets the account name.
     /// </summary>
     public string Account { get; set; } = string.Empty;
 
     /// <summary>
-    /// 密码
+    /// Gets or sets the password.
     /// </summary>
     public string Password { get; set; } = string.Empty;
 }

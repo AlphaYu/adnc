@@ -3,17 +3,17 @@ using Adnc.Demo.Admin.Application.Contracts.Dtos.Dict;
 namespace Adnc.Demo.Admin.Api.Controllers;
 
 /// <summary>
-/// 字典管理
+/// Manages dictionaries.
 /// </summary>
 [Route($"{RouteConsts.AdminRoot}/dicts")]
 [ApiController]
 public class DictController(IDictService dictService) : AdncControllerBase
 {
     /// <summary>
-    /// 新增字典
+    /// Creates a dictionary.
     /// </summary>
-    /// <param name="input"><see cref="DictCreationDto"/></param>
-    /// <returns></returns>
+    /// <param name="input">The dictionary to create.</param>
+    /// <returns>The ID of the created dictionary.</returns>
     [HttpPost]
     [AdncAuthorize(PermissionConsts.Dict.Create)]
     [ProducesResponseType(StatusCodes.Status201Created)]
@@ -21,11 +21,11 @@ public class DictController(IDictService dictService) : AdncControllerBase
         => CreatedResult(await dictService.CreateAsync(input));
 
     /// <summary>
-    /// 修改字典
+    /// Updates a dictionary.
     /// </summary>
-    /// <param name="id">id</param>
-    /// <param name="input"><see cref="DictUpdationDto"/></param>
-    /// <returns></returns>
+    /// <param name="id">The dictionary ID.</param>
+    /// <param name="input">The dictionary changes.</param>
+    /// <returns>A result indicating whether the dictionary was updated.</returns>
     [HttpPut("{id}")]
     [AdncAuthorize(PermissionConsts.Dict.Update)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -33,10 +33,10 @@ public class DictController(IDictService dictService) : AdncControllerBase
         => Result(await dictService.UpdateAsync(id, input));
 
     /// <summary>
-    /// 删除字典
+    /// Deletes one or more dictionaries.
     /// </summary>
-    /// <param name="ids">字典ID</param>
-    /// <returns></returns>
+    /// <param name="ids">The comma-separated dictionary IDs.</param>
+    /// <returns>A result indicating whether the dictionaries were deleted.</returns>
     [HttpDelete("{ids}")]
     [AdncAuthorize(PermissionConsts.Dict.Delete)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -47,10 +47,10 @@ public class DictController(IDictService dictService) : AdncControllerBase
     }
 
     /// <summary>
-    /// 获取字典分页列表
+    /// Gets a paged list of dictionaries.
     /// </summary>
-    /// <param name="input"></param>
-    /// <returns><see cref="PageModelDto{DictDto}"/></returns>
+    /// <param name="input">The paging and filtering criteria.</param>
+    /// <returns>A paged list of dictionaries.</returns>
     [HttpGet("page")]
     [AdncAuthorize(PermissionConsts.Dict.Search)]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -58,9 +58,10 @@ public class DictController(IDictService dictService) : AdncControllerBase
         => await dictService.GetPagedAsync(input);
 
     /// <summary>
-    /// 获取单个字典
+    /// Gets a dictionary by ID.
     /// </summary>
-    /// <returns></returns>
+    /// <param name="id">The dictionary ID.</param>
+    /// <returns>The requested dictionary.</returns>
     [HttpGet("{id}")]
     [AdncAuthorize([PermissionConsts.Dict.Get, PermissionConsts.Dict.Update])]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -72,10 +73,10 @@ public class DictController(IDictService dictService) : AdncControllerBase
     }
 
     /// <summary>
-    /// 获取字典数据选项列表
+    /// Gets dictionary option data for the specified dictionary codes.
     /// </summary>
-    /// <param name="codes">字典编码</param>
-    /// <returns><see cref="List{DictOption}"/></returns>
+    /// <param name="codes">The dictionary codes.</param>
+    /// <returns>The option data grouped by dictionary code.</returns>
     [HttpGet("options")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<List<DictOptionDto>>> GetOptionsAsync([FromQuery] string codes)

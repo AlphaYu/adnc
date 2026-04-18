@@ -1,7 +1,7 @@
 namespace Adnc.Demo.Admin.Application.Contracts.Dtos.Menu;
 
 /// <summary>
-/// 菜单
+/// Defines supported menu types.
 /// </summary>
 public enum MenuType
 {

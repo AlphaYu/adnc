@@ -3,17 +3,19 @@ using Microsoft.AspNetCore.Http;
 
 namespace Adnc.Demo.Admin.Application.Services;
 
-public class UserService(IEfRepository<User> userRepository, IEfRepository<Role> roleRepository, IEfRepository<RoleUserRelation> roleUserRelationRepository
+/// <inheritdoc cref="IUserService"/>
+public class UserService(IEfRepository<User> userRepo, IEfRepository<Role> roleRepo, IEfRepository<RoleUserRelation> roleUserRelationRepo
     , CacheService cacheService, /*BloomFilterFactory bloomFilterFactory,*/ IHttpContextAccessor httpContextAccessor)
     : AbstractAppService, IUserService
 {
+    /// <inheritdoc />
     public async Task<ServiceResult<IdDto>> CreateAsync(UserCreationDto input)
     {
         input.TrimStringFields();
-        var exists = await userRepository.AnyAsync(x => x.Account == input.Account);
+        var exists = await userRepo.AnyAsync(x => x.Account == input.Account);
         if (exists)
         {
-            return Problem(HttpStatusCode.BadRequest, "账号已经存在");
+            return Problem(HttpStatusCode.BadRequest, "The account already exists");
         }
 
         var user = Mapper.Map<User>(input, IdGenerater.GetNextId());
@@ -31,43 +33,46 @@ public class UserService(IEfRepository<User> userRepository, IEfRepository<Role>
         if (input.RoleIds.IsNotNullOrEmpty())
         {
             var roleUsers = input.RoleIds.Select(x => new RoleUserRelation { Id = IdGenerater.GetNextId(), RoleId = x, UserId = user.Id });
-            await roleUserRelationRepository.InsertRangeAsync(roleUsers);
+            await roleUserRelationRepo.InsertRangeAsync(roleUsers);
         }
 
-        await userRepository.InsertAsync(user);
+        await userRepo.InsertAsync(user);
 
         return new IdDto(user.Id);
     }
 
+    /// <inheritdoc />
     public async Task<ServiceResult> UpdateAsync(long id, UserUpdationDto input)
     {
         input.TrimStringFields();
 
-        var user = await userRepository.FetchAsync(x => x.Id == id, noTracking: false);
+        var user = await userRepo.FetchAsync(x => x.Id == id, noTracking: false);
         if (user is null)
         {
-            return Problem(HttpStatusCode.BadRequest, "账号不存在");
+            return Problem(HttpStatusCode.BadRequest, "The account does not exist");
         }
 
-        await roleUserRelationRepository.ExecuteDeleteAsync(x => x.UserId == id);
+        await roleUserRelationRepo.ExecuteDeleteAsync(x => x.UserId == id);
         if (input.RoleIds.IsNotNullOrEmpty())
         {
             var roleUsers = input.RoleIds.Select(x => new RoleUserRelation { Id = IdGenerater.GetNextId(), RoleId = x, UserId = id });
-            await roleUserRelationRepository.InsertRangeAsync(roleUsers);
+            await roleUserRelationRepo.InsertRangeAsync(roleUsers);
         }
         var newUser = Mapper.Map(input, user);
-        await userRepository.UpdateAsync(newUser);
+        await userRepo.UpdateAsync(newUser);
 
         return ServiceResult();
     }
 
+    /// <inheritdoc />
     public async Task<ServiceResult> DeleteAsync(long[] ids)
     {
-        await userRepository.ExecuteDeleteAsync(x => ids.Contains(x.Id));
-        await roleUserRelationRepository.ExecuteDeleteAsync(x => ids.Contains(x.UserId));
+        await userRepo.ExecuteDeleteAsync(x => ids.Contains(x.Id));
+        await roleUserRelationRepo.ExecuteDeleteAsync(x => ids.Contains(x.UserId));
         return ServiceResult();
     }
 
+    /// <inheritdoc />
     public async Task<List<string>> GetPermissionsAsync(long userId, IEnumerable<string> requestPermissions, string userBelongsRoleIds)
     {
         if (requestPermissions.IsNullOrEmpty())
@@ -94,20 +99,22 @@ public class UserService(IEfRepository<User> userRepository, IEfRepository<Role>
         return result.ToList();
     }
 
+    /// <inheritdoc />
     public async Task<UserDto?> GetAsync(long id)
     {
-        var userEntity = await userRepository.FetchAsync(x => x.Id == id);
+        var userEntity = await userRepo.FetchAsync(x => x.Id == id);
         if (userEntity is null)
         {
             return null;
         }
 
         var userDto = Mapper.Map<UserDto>(userEntity);
-        var roleIds = await roleUserRelationRepository.Where(x => x.UserId == id).Select(x => x.RoleId).ToArrayAsync();
+        var roleIds = await roleUserRelationRepo.Where(x => x.UserId == id).Select(x => x.RoleId).ToArrayAsync();
         userDto.RoleIds = roleIds;
         return userDto;
     }
 
+    /// <inheritdoc />
     public async Task<PageModelDto<UserDto>> GetPagedAsync(UserSearchPagedDto input)
     {
         input.TrimStringFields();
@@ -121,13 +128,13 @@ public class UserService(IEfRepository<User> userRepository, IEfRepository<Role>
             || EF.Functions.Like(x.Name, $"{input.Keywords}%")
             || EF.Functions.Like(x.Mobile, $"{input.Keywords}%"));
 
-        var total = await userRepository.CountAsync(whereExpression);
+        var total = await userRepo.CountAsync(whereExpression);
         if (total == 0)
         {
             return new PageModelDto<UserDto>(input);
         }
 
-        var userEntities = await userRepository
+        var userEntities = await userRepo
                                         .Where(whereExpression)
                                         .OrderByDescending(x => x.Id)
                                         .Skip(input.SkipRows())
@@ -144,9 +151,10 @@ public class UserService(IEfRepository<User> userRepository, IEfRepository<Role>
         return new PageModelDto<UserDto>(input, userDtos, total);
     }
 
+    /// <inheritdoc />
     public async Task<UserProfileDto?> GetProfileAsync(long id)
     {
-        var userEntity = await userRepository.FetchAsync(x => x.Id == id);
+        var userEntity = await userRepo.FetchAsync(x => x.Id == id);
         if (userEntity is null)
         {
             return null;
@@ -154,8 +162,8 @@ public class UserService(IEfRepository<User> userRepository, IEfRepository<Role>
 
         var deptsCahce = await cacheService.GetAllOrganizationsFromCacheAsync();
 
-        var roleQueryAble = roleRepository.GetAll();
-        var roleUserQueryAble = roleUserRelationRepository.GetAll();
+        var roleQueryAble = roleRepo.GetAll();
+        var roleUserQueryAble = roleUserRelationRepo.GetAll();
         var roleNames = await (from ru in roleUserQueryAble
                                join r in roleQueryAble on ru.RoleId equals r.Id
                                where ru.UserId == id
@@ -168,19 +176,21 @@ public class UserService(IEfRepository<User> userRepository, IEfRepository<Role>
         return userProfileDto;
     }
 
+    /// <inheritdoc />
     public async Task<ServiceResult> ChangeProfileAsync(long id, UserProfileUpdationDto input)
     {
-        var exists = await userRepository.AnyAsync(x => x.Id == id);
+        var exists = await userRepo.AnyAsync(x => x.Id == id);
         if (!exists)
         {
-            return Problem(HttpStatusCode.NotFound, "用户不存在");
+            return Problem(HttpStatusCode.NotFound, "User does not exist");
         }
 
-        await userRepository.ExecuteUpdateAsync(x => x.Id == id, setters => setters.SetProperty(y => y.Name, input.Name).SetProperty(y => y.Gender, input.Gender));
+        await userRepo.ExecuteUpdateAsync(x => x.Id == id, setters => setters.SetProperty(y => y.Name, input.Name).SetProperty(y => y.Gender, input.Gender));
 
         return ServiceResult();
     }
 
+    /// <inheritdoc />
     public async Task<ServiceResult<UserValidatedInfoDto>> LoginAsync(UserLoginDto input)
     {
         input.TrimStringFields();
@@ -201,16 +211,16 @@ public class UserService(IEfRepository<User> userRepository, IEfRepository<Role>
             RemoteIpAddress = ipAddress
         };
 
-        // 布隆过滤器演示代码
+        // Bloom filter demo code.
         //var accountsFilter = bloomFilterFactory.Create(CachingConsts.BloomfilterOfAccountsKey);
         //var exists = await accountsFilter.ExistsAsync(input.Account.ToLower());
         //if (!exists)
-        //    return Problem(HttpStatusCode.BadRequest, "用户名或密码错误");
+        //    return Problem(HttpStatusCode.BadRequest, "Invalid username or password.");
 
-        var user = await userRepository.FetchAsync(x => new { x.Id, x.Status, x.Salt, x.Password, x.Account, x.Name }, y => y.Account == input.Account);
+        var user = await userRepo.FetchAsync(x => new { x.Id, x.Status, x.Salt, x.Password, x.Account, x.Name }, y => y.Account == input.Account);
         if (user is null)
         {
-            var problem = Problem(HttpStatusCode.BadRequest, "用户名或密码错误");
+            var problem = Problem(HttpStatusCode.BadRequest, "Invalid username or password");
             log.Message = problem.Detail;
             log.StatusCode = problem.Status;
             log.ExecutionTime = (int)(DateTime.Now - startTime).TotalMilliseconds;
@@ -225,7 +235,7 @@ public class UserService(IEfRepository<User> userRepository, IEfRepository<Role>
 
         if (user.Status == false)
         {
-            var problem = Problem(HttpStatusCode.TooManyRequests, "账号已锁定");
+            var problem = Problem(HttpStatusCode.TooManyRequests, "The account is locked");
             log.Message = problem.Detail;
             log.StatusCode = problem.Status;
             log.ExecutionTime = (int)(DateTime.Now - startTime).TotalMilliseconds;
@@ -236,7 +246,7 @@ public class UserService(IEfRepository<User> userRepository, IEfRepository<Role>
         var failLoginCount = await cacheService.GetFailLoginCountByUserIdAsync(user.Id);// set fail count from cache
         if (failLoginCount >= 5)
         {
-            var problem = Problem(HttpStatusCode.TooManyRequests, "连续登录失败次数超过5次，账号已锁定");
+            var problem = Problem(HttpStatusCode.TooManyRequests, "The account has been locked after more than 5 consecutive failed login attempts");
             log.Message = problem.Detail;
             log.StatusCode = problem.Status;
             await channelWriter.WriteAsync(log);
@@ -244,7 +254,7 @@ public class UserService(IEfRepository<User> userRepository, IEfRepository<Role>
             string[] needRemovedKeys = [cacheService.ConcatCacheKey(CachingConsts.UserFailCountKeyPrefix, user.Id), cacheService.ConcatCacheKey(CachingConsts.UserValidatedInfoKeyPrefix, user.Id)];
             await cacheService.RemoveCachesAsync(async (cancellToken) =>
             {
-                await userRepository.ExecuteUpdateAsync(x => x.Id == user.Id, setters => setters.SetProperty(y => y.Status, false), cancellToken);
+                await userRepo.ExecuteUpdateAsync(x => x.Id == user.Id, setters => setters.SetProperty(y => y.Status, false), cancellToken);
             }, needRemovedKeys);
 
             return problem;
@@ -252,7 +262,7 @@ public class UserService(IEfRepository<User> userRepository, IEfRepository<Role>
 
         if (InfraHelper.Encrypt.Md5(input.Password + user.Salt) != user.Password)
         {
-            var problem = Problem(HttpStatusCode.BadRequest, "用户名或密码错误");
+            var problem = Problem(HttpStatusCode.BadRequest, "Invalid username or password");
             log.Message = problem.Detail;
             log.StatusCode = problem.Status;
             log.ExecutionTime = (int)(DateTime.Now - startTime).TotalMilliseconds;
@@ -261,8 +271,8 @@ public class UserService(IEfRepository<User> userRepository, IEfRepository<Role>
             return problem;
         }
 
-        var roleUserQueryAble = roleUserRelationRepository.GetAll();
-        var rolesQueryAble = roleRepository.GetAll();
+        var roleUserQueryAble = roleUserRelationRepo.GetAll();
+        var rolesQueryAble = roleRepo.GetAll();
         var roleInfos = await (from ru in roleUserQueryAble
                                join r in rolesQueryAble on ru.RoleId equals r.Id
                                where ru.UserId == user.Id
@@ -270,7 +280,7 @@ public class UserService(IEfRepository<User> userRepository, IEfRepository<Role>
 
         if (roleInfos.IsNullOrEmpty())
         {
-            var problem = Problem(HttpStatusCode.Forbidden, "未分配任务角色，请联系管理员");
+            var problem = Problem(HttpStatusCode.Forbidden, "No role has been assigned. Please contact the administrator");
             log.Message = problem.Detail;
             log.StatusCode = problem.Status;
             log.ExecutionTime = (int)(DateTime.Now - startTime).TotalMilliseconds;
@@ -279,7 +289,7 @@ public class UserService(IEfRepository<User> userRepository, IEfRepository<Role>
             return problem;
         }
 
-        log.Message = "登录成功";
+        log.Message = "Login succeeded";
         log.StatusCode = (int)HttpStatusCode.Created;
         log.ExecutionTime = (int)(DateTime.Now - startTime).TotalMilliseconds;
         log.Succeed = true;
@@ -295,47 +305,51 @@ public class UserService(IEfRepository<User> userRepository, IEfRepository<Role>
         return userValidtedInfo;
     }
 
+    /// <inheritdoc />
     public async Task<ServiceResult> ChangeUserValidateInfoExpiresDtAsync(long id)
     {
         await cacheService.ChangeUserValidateInfoCacheExpiresDtAsync(id);
         return ServiceResult();
     }
 
+    /// <inheritdoc />
     public async Task<ServiceResult> UpdatePasswordAsync(long id, UserProfileChangePwdDto input)
     {
         input.TrimStringFields();
-        var user = await userRepository.FetchAsync(x => new { x.Id, x.Salt, x.Password, }, x => x.Id == id);
+        var user = await userRepo.FetchAsync(x => new { x.Id, x.Salt, x.Password, }, x => x.Id == id);
         if (user is null)
         {
-            return Problem(HttpStatusCode.NotFound, "用户不存在,参数信息不完整");
+            return Problem(HttpStatusCode.NotFound, "The user does not exist or the parameters are incomplete");
         }
 
         var md5OldPwdString = InfraHelper.Encrypt.Md5(input.OldPassword + user.Salt);
         if (!md5OldPwdString.EqualsIgnoreCase(user.Password))
         {
-            return Problem(HttpStatusCode.BadRequest, "旧密码输入错误");
+            return Problem(HttpStatusCode.BadRequest, "The old password is incorrect");
         }
 
         var newPwdString = InfraHelper.Encrypt.Md5(input.ConfirmPassword + user.Salt);
-        await userRepository.ExecuteUpdateAsync(x => x.Id == id, setters => setters.SetProperty(y => y.Password, newPwdString));
+        await userRepo.ExecuteUpdateAsync(x => x.Id == id, setters => setters.SetProperty(y => y.Password, newPwdString));
 
         return ServiceResult();
     }
 
+    /// <inheritdoc />
     public async Task<ServiceResult> ResetPasswordAsync(long id, string password)
     {
-        var user = await userRepository.FetchAsync(x => new { x.Id, x.Salt, x.Password, }, x => x.Id == id);
+        var user = await userRepo.FetchAsync(x => new { x.Id, x.Salt, x.Password, }, x => x.Id == id);
         if (user is null)
         {
-            return Problem(HttpStatusCode.NotFound, "用户不存在,参数信息不完整");
+            return Problem(HttpStatusCode.NotFound, "The user does not exist or the parameters are incomplete");
         }
 
         var newPwdString = InfraHelper.Encrypt.Md5(password + user.Salt);
-        await userRepository.ExecuteUpdateAsync(x => x.Id == id, setters => setters.SetProperty(y => y.Password, newPwdString));
+        await userRepo.ExecuteUpdateAsync(x => x.Id == id, setters => setters.SetProperty(y => y.Password, newPwdString));
 
         return ServiceResult();
     }
 
+    /// <inheritdoc />
     public async Task<UserInfoDto?> GetUserInfoAsync(UserContext userContext)
     {
         var allRoleCodes = await cacheService.GetAllRoleMenuCodesFromCacheAsync();

@@ -3,17 +3,17 @@ using Adnc.Demo.Admin.Application.Contracts.Dtos.SysConfig;
 namespace Adnc.Demo.Admin.Api.Controllers;
 
 /// <summary>
-/// 配置管理
+/// Manages system configurations.
 /// </summary>
 [Route($"{RouteConsts.AdminRoot}/sysconfigs")]
 [ApiController]
 public class SysConfigController(ISysConfigService sysConfigService) : AdncControllerBase
 {
     /// <summary>
-    /// 新增配置
+    /// Creates a system configuration.
     /// </summary>
-    /// <param name="input"><see cref="SysConfigCreationDto"/></param>
-    /// <returns></returns>
+    /// <param name="input">The system configuration to create.</param>
+    /// <returns>The ID of the created configuration.</returns>
     [HttpPost]
     [AdncAuthorize(PermissionConsts.SysConfig.Create)]
     [ProducesResponseType(StatusCodes.Status201Created)]
@@ -21,11 +21,11 @@ public class SysConfigController(ISysConfigService sysConfigService) : AdncContr
         => CreatedResult(await sysConfigService.CreateAsync(input));
 
     /// <summary>
-    /// 更新配置
+    /// Updates a system configuration.
     /// </summary>
-    /// <param name="id">id</param>
-    /// <param name="input"><see cref="SysConfigUpdationDto"/></param>
-    /// <returns></returns>
+    /// <param name="id">The configuration ID.</param>
+    /// <param name="input">The configuration changes.</param>
+    /// <returns>A result indicating whether the configuration was updated.</returns>
     [HttpPut("{id}")]
     [AdncAuthorize(PermissionConsts.SysConfig.Update)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -33,10 +33,10 @@ public class SysConfigController(ISysConfigService sysConfigService) : AdncContr
         => Result(await sysConfigService.UpdateAsync(id, input));
 
     /// <summary>
-    /// 删除配置节点
+    /// Deletes one or more system configurations.
     /// </summary>
-    /// <param name="ids">节点id</param>
-    /// <returns></returns>
+    /// <param name="ids">The comma-separated configuration IDs.</param>
+    /// <returns>A result indicating whether the configurations were deleted.</returns>
     [HttpDelete("{ids}")]
     [AdncAuthorize(PermissionConsts.SysConfig.Delete)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -47,10 +47,10 @@ public class SysConfigController(ISysConfigService sysConfigService) : AdncContr
     }
 
     /// <summary>
-    /// 获取单个配置节点
+    /// Gets a system configuration by ID.
     /// </summary>
-    /// <param name="id">节点id</param>
-    /// <returns></returns>
+    /// <param name="id">The configuration ID.</param>
+    /// <returns>The requested system configuration.</returns>
     [HttpGet("{id}")]
     [AdncAuthorize([PermissionConsts.SysConfig.Get, PermissionConsts.SysConfig.Update])]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -62,10 +62,10 @@ public class SysConfigController(ISysConfigService sysConfigService) : AdncContr
     }
 
     /// <summary>
-    /// 获取配置列表
+    /// Gets a paged list of system configurations.
     /// </summary>
-    /// <param name="input"><see cref="SearchPagedDto"/></param>
-    /// <returns><see cref="PageModelDto{SysConfigDto}"/></returns>
+    /// <param name="input">The paging and filtering criteria.</param>
+    /// <returns>A paged list of system configurations.</returns>
     [HttpGet("page")]
     [AdncAuthorize(PermissionConsts.SysConfig.Search)]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -73,10 +73,10 @@ public class SysConfigController(ISysConfigService sysConfigService) : AdncContr
       => await sysConfigService.GetPagedAsync(input);
 
     /// <summary>
-    /// 根据keys获取配置列表
+    /// Gets system configurations by key list.
     /// </summary>
-    /// <param name="keys"></param>
-    /// <returns><see cref="List{SysConfigSimpleDto}"/></returns>
+    /// <param name="keys">The configuration keys, or <c>all</c> to get all items.</param>
+    /// <returns>The matching system configurations.</returns>
     [HttpGet()]
     [AdncAuthorize(PermissionConsts.SysConfig.Search, AdncAuthorizeAttribute.JwtWithBasicSchemes)]
     [ProducesResponseType(StatusCodes.Status200OK)]

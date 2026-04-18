@@ -1,7 +1,7 @@
 namespace Adnc.Demo.Admin.Repository.Entities;
 
 /// <summary>
-/// 菜单角色关系
+/// Menu-role relation
 /// </summary>
 public class RoleMenuRelation : EfEntity
 {

@@ -3,17 +3,17 @@ using Adnc.Demo.Admin.Application.Contracts.Dtos.Organization;
 namespace Adnc.Demo.Admin.Api.Controllers;
 
 /// <summary>
-/// 组织机构管理
+/// Manages organizations.
 /// </summary>
 [Route($"{RouteConsts.AdminRoot}/organizations")]
 [ApiController]
 public class OrganizationController(IOrganizationService organizationService) : AdncControllerBase
 {
     /// <summary>
-    /// 新增组织机构
+    /// Creates an organization.
     /// </summary>
-    /// <param name="input">组织机构</param>
-    /// <returns></returns>
+    /// <param name="input">The organization to create.</param>
+    /// <returns>The ID of the created organization.</returns>
     [HttpPost]
     [AdncAuthorize(PermissionConsts.Org.Create)]
     [ProducesResponseType(StatusCodes.Status201Created)]
@@ -21,11 +21,11 @@ public class OrganizationController(IOrganizationService organizationService) : 
         => CreatedResult(await organizationService.CreateAsync(input));
 
     /// <summary>
-    /// 修改组织机构
+    /// Updates an organization.
     /// </summary>
-    /// <param name="id">id</param>
-    /// <param name="input">组织机构</param>
-    /// <returns></returns>
+    /// <param name="id">The organization ID.</param>
+    /// <param name="input">The organization changes.</param>
+    /// <returns>A result indicating whether the organization was updated.</returns>
     [HttpPut("{id}")]
     [AdncAuthorize(PermissionConsts.Org.Update)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -33,10 +33,10 @@ public class OrganizationController(IOrganizationService organizationService) : 
         => Result(await organizationService.UpdateAsync(id, input));
 
     /// <summary>
-    /// 删除组织机构
+    /// Deletes one or more organizations.
     /// </summary>
-    /// <param name="ids">组织机构ID</param>
-    /// <returns></returns>
+    /// <param name="ids">The comma-separated organization IDs.</param>
+    /// <returns>A result indicating whether the organizations were deleted.</returns>
     [HttpDelete("{ids}")]
     [AdncAuthorize(PermissionConsts.Org.Delete)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -47,10 +47,10 @@ public class OrganizationController(IOrganizationService organizationService) : 
     }
 
     /// <summary>
-    /// 获取组织机构信息
+    /// Gets an organization by ID.
     /// </summary>
-    /// <param name="id">组织机构ID</param>
-    /// <returns></returns>
+    /// <param name="id">The organization ID.</param>
+    /// <returns>The requested organization.</returns>
     [HttpGet("{id}")]
     [AdncAuthorize([PermissionConsts.Org.Get, PermissionConsts.Org.Update])]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -62,9 +62,11 @@ public class OrganizationController(IOrganizationService organizationService) : 
     }
 
     /// <summary>
-    /// 获取组织机构列表
+    /// Gets the organization tree.
     /// </summary>
-    /// <returns></returns>
+    /// <param name="keywords">The optional organization name filter.</param>
+    /// <param name="status">The optional organization status filter.</param>
+    /// <returns>The organization tree.</returns>
     [HttpGet()]
     [AdncAuthorize(PermissionConsts.Org.Search, AdncAuthorizeAttribute.JwtWithBasicSchemes)]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -72,9 +74,9 @@ public class OrganizationController(IOrganizationService organizationService) : 
         => await organizationService.GetTreeListAsync(keywords, status);
 
     /// <summary>
-    /// 获取取组织机构选项
+    /// Gets organization options.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>The organization option tree.</returns>
     [HttpGet("options")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<List<OptionTreeDto>>> GetOrgOptionsAsync()

@@ -2,16 +2,18 @@ using Adnc.Demo.Admin.Application.Contracts.Dtos.Organization;
 
 namespace Adnc.Demo.Admin.Application.Services;
 
+/// <inheritdoc cref="IOrganizationService"/>
 public class OrganizationService(IEfRepository<Organization> organizationRepo, CacheService cacheService)
     : AbstractAppService, IOrganizationService
 {
+    /// <inheritdoc />
     public async Task<ServiceResult<IdDto>> CreateAsync(OrganizationCreationDto input)
     {
         input.TrimStringFields();
         var exists = await organizationRepo.AnyAsync(x => x.Name == input.Name);
         if (exists)
         {
-            return Problem(HttpStatusCode.BadRequest, "该机构全称已经存在");
+            return Problem(HttpStatusCode.BadRequest, "This organization full name already exists");
         }
 
         var organization = Mapper.Map<Organization>(input, IdGenerater.GetNextId());
@@ -21,6 +23,7 @@ public class OrganizationService(IEfRepository<Organization> organizationRepo, C
         return new IdDto(organization.Id);
     }
 
+    /// <inheritdoc />
     public async Task<ServiceResult> UpdateAsync(long id, OrganizationUpdationDto input)
     {
         input.TrimStringFields();
@@ -28,18 +31,18 @@ public class OrganizationService(IEfRepository<Organization> organizationRepo, C
         var organization = await organizationRepo.FetchAsync(x => x.Id == id, noTracking: false);
         if (organization is null)
         {
-            return Problem(HttpStatusCode.NotFound, "该机构不存在");
+            return Problem(HttpStatusCode.NotFound, "This organization does not exist");
         }
 
         var exists = await organizationRepo.AnyAsync(x => x.Name == input.Name && x.Id != id);
         if (exists)
         {
-            return Problem(HttpStatusCode.BadRequest, "该机构全称已经存在");
+            return Problem(HttpStatusCode.BadRequest, "This organization full name already exists");
         }
 
         if (organization.ParentId == 0 && input.ParentId > 0)
         {
-            return Problem(HttpStatusCode.BadRequest, "一级单位不能修改等级");
+            return Problem(HttpStatusCode.BadRequest, "The top-level organization cannot change its hierarchy");
         }
 
         var oldParentId = organization.ParentId;
@@ -60,6 +63,7 @@ public class OrganizationService(IEfRepository<Organization> organizationRepo, C
         return ServiceResult();
     }
 
+    /// <inheritdoc />
     public async Task<ServiceResult> DeleteAsync(long[] ids)
     {
         foreach (var id in ids)
@@ -74,12 +78,14 @@ public class OrganizationService(IEfRepository<Organization> organizationRepo, C
         return ServiceResult();
     }
 
+    /// <inheritdoc />
     public async Task<OrganizationDto?> GetAsync(long Id)
     {
         var org = (await cacheService.GetAllOrganizationsFromCacheAsync()).FirstOrDefault(x => x.Id == Id);
         return org;
     }
 
+    /// <inheritdoc />
     public async Task<List<OrganizationTreeDto>> GetTreeListAsync(string? name = null, bool? status = null)
     {
         var whereExpr = ExpressionCreator
@@ -109,12 +115,18 @@ public class OrganizationService(IEfRepository<Organization> organizationRepo, C
         return GetChildren(rootId);
     }
 
+    /// <inheritdoc />
     public async Task<List<OptionTreeDto>> GetOrgOptionsAsync(bool? status = null)
     {
         var orgTree = await GetTreeListAsync(null, status);
         return Mapper.Map<List<OptionTreeDto>>(orgTree);
     }
 
+    /// <summary>
+    /// Builds the serialized parent ID path for an organization.
+    /// </summary>
+    /// <param name="pid">The parent organization ID.</param>
+    /// <returns>The serialized parent ID path.</returns>
     private async Task<string> GetParentIdsAsync(long pid)
     {
         var rootPids = "[0]";

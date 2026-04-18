@@ -3,70 +3,70 @@ using Adnc.Demo.Admin.Application.Contracts.Dtos.Role;
 namespace Adnc.Demo.Admin.Application.Contracts.Interfaces;
 
 /// <summary>
-/// 角色服务
+/// Defines role services.
 /// </summary>
 public interface IRoleService : IAppService
 {
     /// <summary>
-    /// 新增角色
+    /// Creates a role.
     /// </summary>
-    /// <param name="input"></param>
-    /// <returns></returns>
-    [OperateLog(LogName = "新增角色")]
+    /// <param name="input">The role to create.</param>
+    /// <returns>The ID of the created role.</returns>
+    [OperateLog(LogName = "Create role")]
     Task<ServiceResult<IdDto>> CreateAsync(RoleCreationDto input);
 
     /// <summary>
-    /// 修改角色
+    /// Updates a role.
     /// </summary>
-    /// <param name="id"></param>
-    /// <param name="input"></param>
-    /// <returns></returns>
-    [OperateLog(LogName = "修改角色")]
+    /// <param name="id">The role ID.</param>
+    /// <param name="input">The role changes.</param>
+    /// <returns>A result indicating whether the role was updated.</returns>
+    [OperateLog(LogName = "Update role")]
     Task<ServiceResult> UpdateAsync(long id, RoleUpdationDto input);
 
     /// <summary>
-    /// 删除角色
+    /// Deletes one or more roles.
     /// </summary>
-    /// <param name="ids"></param>
-    /// <returns></returns>
-    [OperateLog(LogName = "删除角色")]
+    /// <param name="ids">The role IDs to delete.</param>
+    /// <returns>A result indicating whether the roles were deleted.</returns>
+    [OperateLog(LogName = "Delete role")]
     [UnitOfWork]
     Task<ServiceResult> DeleteAsync(long[] ids);
 
     /// <summary>
-    /// 获取角色信息
+    /// Gets a role by ID.
     /// </summary>
-    /// <param name="id"></param>
-    /// <returns></returns>
+    /// <param name="id">The role ID.</param>
+    /// <returns>The requested role, or <c>null</c> if it does not exist.</returns>
     Task<RoleDto?> GetAsync(long id);
 
     /// <summary>
-    /// 获取角色列表
+    /// Gets a paged list of roles.
     /// </summary>
-    /// <param name="input"></param>
-    /// <returns></returns>
+    /// <param name="input">The paging and filtering criteria.</param>
+    /// <returns>A paged list of roles.</returns>
     Task<PageModelDto<RoleDto>> GetPagedAsync(SearchPagedDto input);
 
     /// <summary>
-    /// 设置角色权限
+    /// Sets permissions for a role.
     /// </summary>
-    /// <param name="input"></param>
-    /// <returns></returns>
-    [OperateLog(LogName = "设置角色权限")]
+    /// <param name="input">The role permission assignment.</param>
+    /// <returns>A result indicating whether the permissions were saved.</returns>
+    [OperateLog(LogName = "Set role permissions")]
     [UnitOfWork]
     Task<ServiceResult> SetPermissonsAsync(RoleSetPermissonsDto input);
 
     /// <summary>
-    /// 获取用户拥有的角色
+    /// Gets the menu IDs assigned to a role.
     /// </summary>
-    /// <param name="id"></param>
-    /// <returns></returns>
+    /// <param name="id">The role ID.</param>
+    /// <returns>The menu IDs assigned to the role.</returns>
     Task<long[]> GetMenuIdsAsync(long id);
 
     /// <summary>
-    /// 获取角色
+    /// Gets role options.
     /// </summary>
-    /// <param name="status"></param>
-    /// <returns></returns>
+    /// <param name="status">The optional role status filter.</param>
+    /// <returns>The available role options.</returns>
     Task<List<OptionTreeDto>> GetOptionsAsync(bool? status = null);
 }

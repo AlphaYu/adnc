@@ -3,7 +3,7 @@ using Adnc.Demo.Admin.Application.Contracts.Dtos.User;
 namespace Adnc.Demo.Admin.Api.Controllers;
 
 /// <summary>
-/// 登录用户管理
+/// Manages the current authenticated user session and profile.
 /// </summary>
 [Route($"{RouteConsts.AuthRoot}/session")]
 [ApiController]
@@ -11,10 +11,10 @@ public class AccountController(IOptions<JWTOptions> jwtOptions, UserContext user
     : AdncControllerBase
 {
     /// <summary>
-    /// 登录
+    /// Signs in a user and issues access and refresh tokens.
     /// </summary>
-    /// <param name="input"><see cref="UserLoginDto"/></param>
-    /// <returns><see cref="UserTokenInfoDto"></see>/></returns>
+    /// <param name="input">The login credentials.</param>
+    /// <returns>The issued access token and refresh token.</returns>
     [AllowAnonymous]
     [HttpPost()]
     [ProducesResponseType(StatusCodes.Status201Created)]
@@ -33,19 +33,19 @@ public class AccountController(IOptions<JWTOptions> jwtOptions, UserContext user
     }
 
     /// <summary>
-    /// 注销
+    /// Signs out the current user.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>A result indicating whether the current session was removed.</returns>
     [HttpDelete()]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult> LogoutAsync()
         => Result(await userService.DeleteUserValidateInfoAsync(userContext.Id));
 
     /// <summary>
-    /// 刷新Token
+    /// Refreshes the access token by using a refresh token.
     /// </summary>
-    /// <param name="input"><see cref="UserRefreshTokenDto"/></param>
-    /// <returns></returns>
+    /// <param name="input">The refresh token payload.</param>
+    /// <returns>The refreshed access token and refresh token pair.</returns>
     [AllowAnonymous, HttpPut()]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<UserTokenInfoDto>> RefreshAccessTokenAsync([FromBody] UserRefreshTokenDto input)
@@ -83,19 +83,19 @@ public class AccountController(IOptions<JWTOptions> jwtOptions, UserContext user
     }
 
     /// <summary>
-    /// 登录用户修改密码
+    /// Changes the password of the current authenticated user.
     /// </summary>
-    /// <param name="input"><see cref="UserProfileChangePwdDto"/></param>
-    /// <returns></returns>
+    /// <param name="input">The password change request.</param>
+    /// <returns>A result indicating whether the password was updated.</returns>
     [HttpPatch("password")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult> ChangePassword([FromBody] UserProfileChangePwdDto input)
         => Result(await userService.UpdatePasswordAsync(userContext.Id, input));
 
     /// <summary>
-    ///  获取登录用户认证信息
+    /// Gets the validation info of the current authenticated user.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>The validation info for the current user.</returns>
     [HttpGet()]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -107,12 +107,12 @@ public class AccountController(IOptions<JWTOptions> jwtOptions, UserContext user
     }
 
     /// <summary>
-    /// 获取登录用户是否拥有指定权限
+    /// Gets the permissions owned by the current user from the requested permission set.
     /// </summary>
-    /// <param name="id">用户id</param>
-    /// <param name="requestPermissions"></param>
-    /// <param name="userBelongsRoleIds"></param>
-    /// <returns></returns>
+    /// <param name="id">The current user ID.</param>
+    /// <param name="requestPermissions">The permissions to check.</param>
+    /// <param name="userBelongsRoleIds">The comma-separated role IDs assigned to the user.</param>
+    /// <returns>The matching permissions granted to the user.</returns>
     [HttpGet("{id}/permissions")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<List<string>>> GetCurrenUserPermissions([FromRoute] long id, [FromQuery] IEnumerable<string> requestPermissions, [FromQuery] string userBelongsRoleIds)
@@ -128,9 +128,9 @@ public class AccountController(IOptions<JWTOptions> jwtOptions, UserContext user
     }
 
     /// <summary>
-    /// 获取登录用户权限信息
+    /// Gets the role and permission info of the current authenticated user.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>The current user's role and permission info.</returns>
     [HttpGet("userinfo")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -141,9 +141,9 @@ public class AccountController(IOptions<JWTOptions> jwtOptions, UserContext user
     }
 
     /// <summary>
-    /// 获取登录用户个人中心信息
+    /// Gets the profile details of the current authenticated user.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>The profile of the current user.</returns>
     [HttpGet("profile")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -154,9 +154,10 @@ public class AccountController(IOptions<JWTOptions> jwtOptions, UserContext user
     }
 
     /// <summary>
-    /// 修改登录用户账户信息
+    /// Updates the profile of the current authenticated user.
     /// </summary>
-    /// <returns></returns>
+    /// <param name="input">The profile update request.</param>
+    /// <returns>A result indicating whether the profile was updated.</returns>
     [HttpPatch("profile")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult> ChangeProfileAsync([FromBody] UserProfileUpdationDto input)

@@ -1,52 +1,52 @@
 namespace Adnc.Demo.Admin.Application.Contracts.Dtos.User;
 
 /// <summary>
-/// 用户个人信息
+/// Represents the current user's profile.
 /// </summary>
 public class UserProfileDto : OutputDto
 {
     /// <summary>
-    /// 头像
+    /// Stores the avatar URL.
     /// </summary>
     private string _avatar = string.Empty;
 
     /// <summary>
-    /// 用户账号
+    /// Gets or sets the account name.
     /// </summary>
     public string Account { get; set; } = string.Empty;
 
     /// <summary>
-    /// 部门名称
+    /// Gets or sets the department name.
     /// </summary>
     public string DeptName { get; set; } = string.Empty;
 
     /// <summary>
-    /// 性别
+    /// Gets or sets the gender.
     /// </summary>
     public int Gender { get; set; }
 
     /// <summary>
-    /// 邮件地址
+    /// Gets or sets the email address.
     /// </summary>
     public string Email { get; set; } = string.Empty;
 
     /// <summary>
-    /// 姓名
+    /// Gets or sets the display name.
     /// </summary>
     public string Name { get; set; } = string.Empty;
 
     /// <summary>
-    /// 手机号
+    /// Gets or sets the mobile phone number.
     /// </summary>
     public string Mobile { get; set; } = string.Empty;
 
     /// <summary>
-    /// 创建时间/注册时间
+    /// Gets or sets the creation time.
     /// </summary>
     public DateTime CreateTime { get; set; }
 
     /// <summary>
-    /// 多个角色名称
+    /// Gets or sets the role names.
     /// </summary>
     public string RoleNames { get; set; } = string.Empty;
 
@@ -64,33 +64,39 @@ public class UserProfileDto : OutputDto
     }
 }
 
+/// <summary>
+/// Represents the payload used to update the current user's profile.
+/// </summary>
 public class UserProfileUpdationDto : InputDto
 {
     /// <summary>
-    /// 性别
+    /// Gets or sets the gender.
     /// </summary>
     public int Gender { get; set; }
 
     /// <summary>
-    /// 姓名/昵称
+    /// Gets or sets the display name.
     /// </summary>
     public string Name { get; set; } = string.Empty;
 }
 
+/// <summary>
+/// Represents the payload used to change the current user's password.
+/// </summary>
 public class UserProfileChangePwdDto : InputDto
 {
     /// <summary>
-    /// 旧密码
+    /// Gets or sets the current password.
     /// </summary>
     public string OldPassword { get; set; } = string.Empty;
 
     /// <summary>
-    /// 当前密码
+    /// Gets or sets the new password.
     /// </summary>
     public string NewPassword { get; set; } = string.Empty;
 
     /// <summary>
-    /// 确认密码
+    /// Gets or sets the confirmation password.
     /// </summary>
     public string ConfirmPassword { get; set; } = string.Empty;
 }

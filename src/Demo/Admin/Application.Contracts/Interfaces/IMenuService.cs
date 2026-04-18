@@ -3,63 +3,64 @@ using Adnc.Demo.Admin.Application.Contracts.Dtos.Menu;
 namespace Adnc.Demo.Admin.Application.Contracts.Interfaces;
 
 /// <summary>
-/// 菜单/权限服务
+/// Defines menu and permission services.
 /// </summary>
 public interface IMenuService : IAppService
 {
     /// <summary>
-    /// 新增菜单
+    /// Creates a menu.
     /// </summary>
-    /// <param name="input"></param>
-    /// <returns></returns>
-    [OperateLog(LogName = "新增菜单")]
+    /// <param name="input">The menu to create.</param>
+    /// <returns>The ID of the created menu.</returns>
+    [OperateLog(LogName = "Create menu")]
     [CachingEvict(CacheKeys = new[] { CachingConsts.MenuListCacheKey })]
     Task<ServiceResult<IdDto>> CreateAsync(MenuCreationDto input);
 
     /// <summary>
-    /// 修改菜单
+    /// Updates a menu.
     /// </summary>
-    /// <param name="id"></param>
-    /// <param name="input"></param>
-    /// <returns></returns>
-    [OperateLog(LogName = "修改菜单")]
+    /// <param name="id">The menu ID.</param>
+    /// <param name="input">The menu changes.</param>
+    /// <returns>A result indicating whether the menu was updated.</returns>
+    [OperateLog(LogName = "Update menu")]
     [CachingEvict(CacheKeys = new[] { CachingConsts.MenuListCacheKey, CachingConsts.RoleMenuCodesCacheKey })]
     Task<ServiceResult> UpdateAsync(long id, MenuUpdationDto input);
 
     /// <summary>
-    /// 删除菜单
+    /// Deletes a menu.
     /// </summary>
-    /// <param name="id"></param>
-    /// <returns></returns>
-    [OperateLog(LogName = "删除菜单")]
+    /// <param name="id">The menu ID.</param>
+    /// <returns>A result indicating whether the menu was deleted.</returns>
+    [OperateLog(LogName = "Delete menu")]
     [CachingEvict(CacheKeys = new[] { CachingConsts.MenuListCacheKey, CachingConsts.RoleMenuCodesCacheKey })]
     Task<ServiceResult> DeleteAsync(long id);
 
     /// <summary>
-    /// 获取菜单列表
+    /// Gets the menu tree.
     /// </summary>
-    /// <returns></returns>
+    /// <param name="keywords">The optional keyword used to filter menus.</param>
+    /// <returns>The menu tree.</returns>
     //[CachingAble(CacheKey = CachingConsts.MenuTreeListCacheKey, Expiration = CachingConsts.OneYear)]
     Task<List<MenuTreeDto>> GetTreelistAsync(string? keywords = null);
 
     /// <summary>
-    /// 获取菜单信息
+    /// Gets a menu by ID.
     /// </summary>
-    /// <param name="id"></param>
-    /// <returns></returns>
+    /// <param name="id">The menu ID.</param>
+    /// <returns>The requested menu, or <c>null</c> if it does not exist.</returns>
     Task<MenuDto?> GetAsync(long id);
 
     /// <summary>
-    /// 获取左侧路由菜单
+    /// Gets router menus for the specified roles.
     /// </summary>
-    /// <param name="roleIds"></param>
-    /// <returns></returns>
+    /// <param name="roleIds">The role IDs used to filter menus.</param>
+    /// <returns>The router menu tree for the roles.</returns>
     Task<List<RouterTreeDto>> GetMenusForRouterAsync(IEnumerable<long> roleIds);
 
     /// <summary>
-    /// 获取菜单选项
+    /// Gets menu options.
     /// </summary>
-    /// <param name="onlyParent"></param>
-    /// <returns></returns>
+    /// <param name="onlyParent">Whether only parent-capable menus should be returned.</param>
+    /// <returns>The menu option tree.</returns>
     Task<List<OptionTreeDto>> GetMenuOptionsAsync(bool? onlyParent);
 }

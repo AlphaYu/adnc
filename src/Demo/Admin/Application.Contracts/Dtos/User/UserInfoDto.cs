@@ -1,22 +1,22 @@
 namespace Adnc.Demo.Admin.Application.Contracts.Dtos.User;
 
 /// <summary>
-/// 用户信息
+/// Represents the authenticated user's role and permission info.
 /// </summary>
 public class UserInfoDto : OutputDto
 {
     /// <summary>
-    /// 头像
+    /// Stores the avatar URL.
     /// </summary>
     private string _avatar = string.Empty;
 
     /// <summary>
-    ///  用户名
+    /// Gets or sets the account name.
     /// </summary>
     public string Account { get; set; } = string.Empty;
 
     /// <summary>
-    ///  姓名/昵称
+    /// Gets or sets the display name.
     /// </summary>
     public string Name { get; set; } = string.Empty;
 
@@ -34,12 +34,12 @@ public class UserInfoDto : OutputDto
     }
 
     /// <summary>
-    /// 角色代码集合
+    /// Gets or sets the role codes.
     /// </summary>
     public string[] Roles { get; set; } = [];
 
     /// <summary>
-    /// 权限集合
+    /// Gets or sets the permissions.
     /// </summary>
     public string[] Perms { get; set; } = [];
 }

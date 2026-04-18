@@ -1,18 +1,18 @@
 namespace Adnc.Demo.Admin.Application.Contracts.Dtos.Role;
 
 /// <summary>
-/// 菜单-角色关联
+/// Represents a menu-to-role relation.
 /// </summary>
 [Serializable]
 public class RoleMenuRelationDto : IDto
 {
     /// <summary>
-    /// 菜单Id
+    /// Gets or sets the menu ID.
     /// </summary>
     public long MenuId { get; set; }
 
     /// <summary>
-    /// 角色Id
+    /// Gets or sets the role ID.
     /// </summary>
     public long RoleId { get; set; }
 }

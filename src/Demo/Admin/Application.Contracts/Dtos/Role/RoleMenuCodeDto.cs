@@ -1,18 +1,18 @@
 namespace Adnc.Demo.Admin.Application.Contracts.Dtos.Role;
 
 /// <summary>
-/// 角色，权限
+/// Represents a role and its permission codes.
 /// </summary>
 [Serializable]
 public class RoleMenuCodeDto : IDto
 {
     /// <summary>
-    /// 角色Id
+    /// Gets or sets the role ID.
     /// </summary>
     public long RoleId { get; set; }
 
     /// <summary>
-    /// 权限代码
+    /// Gets or sets the permission codes.
     /// </summary>
     public string[] Perms { get; set; } = [];
 }

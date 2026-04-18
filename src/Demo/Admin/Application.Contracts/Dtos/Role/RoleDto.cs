@@ -1,13 +1,13 @@
 namespace Adnc.Demo.Admin.Application.Contracts.Dtos.Role;
 
 /// <summary>
-/// 角色
+/// Represents a role.
 /// </summary>
 [Serializable]
 public class RoleDto : RoleCreationDto
 {
     /// <summary>
-    /// 角色Id
+    /// Gets or sets the role ID.
     /// </summary>
     public long Id { get; set; }
 }

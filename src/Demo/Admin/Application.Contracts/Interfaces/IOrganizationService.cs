@@ -3,52 +3,58 @@ using Adnc.Demo.Admin.Application.Contracts.Dtos.Organization;
 namespace Adnc.Demo.Admin.Application.Contracts.Interfaces;
 
 /// <summary>
-/// 机构服务
+/// Defines organization management services.
 /// </summary>
 public interface IOrganizationService : IAppService
 {
     /// <summary>
-    /// 新增机构
+    /// Creates an organization.
     /// </summary>
-    /// <param name="input"></param>
-    /// <returns></returns>
-    [OperateLog(LogName = "新增机构")]
-    [CachingEvict(CacheKeys = new string[] { CachingConsts.DetpListCacheKey })]
+    /// <param name="input">The organization to create.</param>
+    /// <returns>The ID of the created organization.</returns>
+    [OperateLog(LogName = "Create organization")]
+    [CachingEvict(CacheKeys = new[] { CachingConsts.DetpListCacheKey })]
     Task<ServiceResult<IdDto>> CreateAsync(OrganizationCreationDto input);
 
     /// <summary>
-    /// 修改机构
+    /// Updates an organization.
     /// </summary>
-    /// <param name="id"></param>
-    /// <param name="input"></param>
-    /// <returns></returns>
-    [OperateLog(LogName = "修改机构")]
-    [CachingEvict(CacheKeys = new string[] { CachingConsts.DetpListCacheKey })]
+    /// <param name="id">The organization ID.</param>
+    /// <param name="input">The organization changes.</param>
+    /// <returns>A result indicating whether the organization was updated.</returns>
+    [OperateLog(LogName = "Update organization")]
+    [CachingEvict(CacheKeys = new[] { CachingConsts.DetpListCacheKey })]
     [UnitOfWork]
     Task<ServiceResult> UpdateAsync(long id, OrganizationUpdationDto input);
 
     /// <summary>
-    /// 删除机构
+    /// Deletes one or more organizations.
     /// </summary>
-    /// <param name="ids"></param>
-    /// <returns></returns>
-    [OperateLog(LogName = "删除机构")]
-    [CachingEvict(CacheKeys = new string[] { CachingConsts.DetpListCacheKey })]
+    /// <param name="ids">The organization IDs to delete.</param>
+    /// <returns>A result indicating whether the organizations were deleted.</returns>
+    [OperateLog(LogName = "Delete organization")]
+    [CachingEvict(CacheKeys = new[] { CachingConsts.DetpListCacheKey })]
     Task<ServiceResult> DeleteAsync(long[] ids);
 
     /// <summary>
-    /// 获取机构信息
+    /// Gets an organization by ID.
     /// </summary>
-    /// <param name="Id"></param>
-    /// <returns></returns>
-    Task<OrganizationDto?> GetAsync(long Id);
+    /// <param name="id">The organization ID.</param>
+    /// <returns>The requested organization, or <c>null</c> if it does not exist.</returns>
+    Task<OrganizationDto?> GetAsync(long id);
 
     /// <summary>
-    /// 机构树结构
+    /// Gets the organization tree.
     /// </summary>
-    /// <returns></returns>
-    //[CachingAble(CacheKey = CachingConsts.DetpTreeListCacheKey, Expiration = CachingConsts.OneYear)]
+    /// <param name="name">The optional organization name filter.</param>
+    /// <param name="status">The optional organization status filter.</param>
+    /// <returns>The organization tree.</returns>
     Task<List<OrganizationTreeDto>> GetTreeListAsync(string? name = null, bool? status = null);
 
+    /// <summary>
+    /// Gets organization options.
+    /// </summary>
+    /// <param name="status">The optional organization status filter.</param>
+    /// <returns>The organization option tree.</returns>
     Task<List<OptionTreeDto>> GetOrgOptionsAsync(bool? status = null);
 }

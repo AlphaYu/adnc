@@ -1,5 +1,8 @@
 namespace Adnc.Demo.Admin.Application.Cache;
 
+/// <summary>
+/// Provides the bloom filter used for account existence checks.
+/// </summary>
 public class AccountBloomFilter(Lazy<IRedisProvider> redisProvider, Lazy<IDistributedLocker> distributedLocker, Lazy<IServiceProvider> serviceProvider)
     : AbstractBloomFilter(redisProvider, distributedLocker)
 {
@@ -9,6 +12,9 @@ public class AccountBloomFilter(Lazy<IRedisProvider> redisProvider, Lazy<IDistri
 
     public override int Capacity => 10000000;
 
+    /// <summary>
+    /// Initializes the account bloom filter from persisted user accounts.
+    /// </summary>
     public override async Task InitAsync()
     {
         var exists = await ExistsBloomFilterAsync();

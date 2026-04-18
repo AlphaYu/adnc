@@ -2,8 +2,10 @@ using Adnc.Demo.Admin.Application.Contracts.Dtos.Menu;
 
 namespace Adnc.Demo.Admin.Application.Services;
 
+/// <inheritdoc cref="IMenuService"/>
 public class MenuService(IEfRepository<Menu> menuRepo, IEfRepository<RoleMenuRelation> roleMenuRepo, CacheService cacheService) : AbstractAppService, IMenuService
 {
+    /// <inheritdoc />
     public async Task<ServiceResult<IdDto>> CreateAsync(MenuCreationDto input)
     {
         input.TrimStringFields();
@@ -12,14 +14,14 @@ public class MenuService(IEfRepository<Menu> menuRepo, IEfRepository<RoleMenuRel
             var existsCode = await menuRepo.AnyAsync(x => x.Perm == input.Perm);
             if (existsCode)
             {
-                return Problem(HttpStatusCode.BadRequest, "该菜单编码已经存在");
+                return Problem(HttpStatusCode.BadRequest, "This menu code already exists");
             }
         }
 
         var existsName = await menuRepo.AnyAsync(x => x.Name == input.Name);
         if (existsName)
         {
-            return Problem(HttpStatusCode.BadRequest, "该菜单名称已经存在");
+            return Problem(HttpStatusCode.BadRequest, "This menu name already exists");
         }
 
         var menuEntity = Mapper.Map<Menu>(input, IdGenerater.GetNextId());
@@ -34,6 +36,7 @@ public class MenuService(IEfRepository<Menu> menuRepo, IEfRepository<RoleMenuRel
         return new IdDto(menuEntity.Id);
     }
 
+    /// <inheritdoc />
     public async Task<ServiceResult> UpdateAsync(long id, MenuUpdationDto input)
     {
         input.TrimStringFields();
@@ -42,20 +45,20 @@ public class MenuService(IEfRepository<Menu> menuRepo, IEfRepository<RoleMenuRel
             var existsCode = await menuRepo.AnyAsync(x => x.Perm == input.Perm && x.Id != id);
             if (existsCode)
             {
-                return Problem(HttpStatusCode.BadRequest, "该菜单编码已经存在");
+                return Problem(HttpStatusCode.BadRequest, "This menu code already exists");
             }
         }
 
         var existsName = await menuRepo.AnyAsync(x => x.Name == input.Name && x.Id != id);
         if (existsName)
         {
-            return Problem(HttpStatusCode.BadRequest, "该菜单名称已经存在");
+            return Problem(HttpStatusCode.BadRequest, "This menu name already exists");
         }
 
         var menuEntity = await menuRepo.FetchAsync(x => x.Id == id, noTracking: false);
         if (menuEntity is null)
         {
-            return Problem(HttpStatusCode.NotFound, "该菜单不存在");
+            return Problem(HttpStatusCode.NotFound, "This menu does not exist");
         }
 
         Mapper.Map(input, menuEntity);
@@ -66,6 +69,7 @@ public class MenuService(IEfRepository<Menu> menuRepo, IEfRepository<RoleMenuRel
         return ServiceResult();
     }
 
+    /// <inheritdoc />
     public async Task<ServiceResult> DeleteAsync(long id)
     {
         var menuEnity = await menuRepo.FetchAsync(x => new { x.Id, x.ParentIds }, x => x.Id == id);
@@ -79,6 +83,7 @@ public class MenuService(IEfRepository<Menu> menuRepo, IEfRepository<RoleMenuRel
         return ServiceResult();
     }
 
+    /// <inheritdoc />
     public async Task<List<MenuTreeDto>> GetTreelistAsync(string? keywords = null)
     {
         var whereExpr = ExpressionCreator.New<MenuDto>().AndIf(keywords is not null, x => x.Name == keywords);
@@ -107,6 +112,7 @@ public class MenuService(IEfRepository<Menu> menuRepo, IEfRepository<RoleMenuRel
         return GetChildren(rootId);
     }
 
+    /// <inheritdoc />
     public async Task<MenuDto?> GetAsync(long id)
     {
         var allMenus = await cacheService.GetAllMenusFromCacheAsync();
@@ -114,13 +120,14 @@ public class MenuService(IEfRepository<Menu> menuRepo, IEfRepository<RoleMenuRel
         return menuDto;
     }
 
+    /// <inheritdoc />
     public async Task<List<RouterTreeDto>> GetMenusForRouterAsync(IEnumerable<long> roleIds)
     {
-        //所有菜单
+        // All menus.
         var allMenus = await cacheService.GetAllMenusFromCacheAsync();
-        //角色拥有的菜单Ids
+        // Menu IDs owned by the roles.
         var menusIds = await roleMenuRepo.Where(x => roleIds.Contains(x.RoleId)).Select(x => x.MenuId).Distinct().ToArrayAsync();
-        //根据菜单Id获取菜单实体
+        // Filter menu entities by menu ID.
         var menus = allMenus.Where(x => menusIds.Contains(x.Id) && x.Type != MenuType.BUTTON.ToString());
         if (menus.IsNullOrEmpty())
         {
@@ -157,6 +164,7 @@ public class MenuService(IEfRepository<Menu> menuRepo, IEfRepository<RoleMenuRel
         return GetChildren(0);
     }
 
+    /// <inheritdoc />
     public async Task<List<OptionTreeDto>> GetMenuOptionsAsync(bool? onlyParent)
     {
         var whereExpression = ExpressionCreator.New<MenuDto>().AndIf(onlyParent is not null, x => x.Type != MenuType.BUTTON.ToString());
@@ -183,6 +191,11 @@ public class MenuService(IEfRepository<Menu> menuRepo, IEfRepository<RoleMenuRel
         return GetChildren(0);
     }
 
+    /// <summary>
+    /// Builds the serialized parent ID path for a menu.
+    /// </summary>
+    /// <param name="parentId">The parent menu ID.</param>
+    /// <returns>The serialized parent ID path.</returns>
     private async Task<string> GetParentIds(long parentId)
     {
         var parentIds = "[0]";

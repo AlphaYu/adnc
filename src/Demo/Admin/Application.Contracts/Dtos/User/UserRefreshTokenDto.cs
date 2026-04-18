@@ -1,12 +1,12 @@
 namespace Adnc.Demo.Admin.Application.Contracts.Dtos.User;
 
 /// <summary>
-/// 刷新Token实体
+/// Represents the payload used to refresh a token.
 /// </summary>
 public class UserRefreshTokenDto : InputDto
 {
     /// <summary>
-    /// RefreshToken
+    /// Gets or sets the refresh token.
     /// </summary>
     public string RefreshToken { get; set; } = string.Empty;
 }

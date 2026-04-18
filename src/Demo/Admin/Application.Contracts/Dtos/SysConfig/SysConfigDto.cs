@@ -1,13 +1,13 @@
 namespace Adnc.Demo.Admin.Application.Contracts.Dtos.SysConfig;
 
 /// <summary>
-/// 系统配置
+/// Represents a system configuration.
 /// </summary>
 [Serializable]
 public class SysConfigDto : SysConfigCreationDto
 {
     /// <summary>
-    /// 参数Id
+    /// Gets or sets the configuration ID.
     /// </summary>
     public long Id { get; set; }
 }

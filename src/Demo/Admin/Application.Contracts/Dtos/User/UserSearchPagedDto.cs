@@ -1,17 +1,17 @@
 namespace Adnc.Demo.Admin.Application.Contracts.Dtos.User;
 
 /// <summary>
-/// 用户检索条件
+/// Represents the paging and filtering criteria used to search users.
 /// </summary>
 public class UserSearchPagedDto : SearchPagedDto
 {
     /// <summary>
-    /// 用户状态
+    /// Gets or sets the user status filter.
     /// </summary>
     public bool? Status { get; set; }
 
     /// <summary>
-    /// 部门编号
+    /// Gets or sets the department ID filter.
     /// </summary>
     public long? DeptId { get; set; }
 }

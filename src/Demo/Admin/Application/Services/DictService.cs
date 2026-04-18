@@ -2,9 +2,11 @@ using Adnc.Demo.Admin.Application.Contracts.Dtos.Dict;
 
 namespace Adnc.Demo.Admin.Application.Services;
 
+/// <inheritdoc cref="IDictService"/>
 public class DictService(IEfRepository<Dict> dictRepo, IEfRepository<DictData> dictDataRepo/*, BloomFilterFactory bloomFilterFactory*/, CacheService cacheService)
     : AbstractAppService, IDictService
 {
+    /// <inheritdoc />
     public async Task<ServiceResult<IdDto>> CreateAsync(DictCreationDto input)
     {
         input.TrimStringFields();
@@ -12,13 +14,13 @@ public class DictService(IEfRepository<Dict> dictRepo, IEfRepository<DictData> d
         var codeExists = await dictRepo.AnyAsync(x => x.Code == input.Code);
         if (codeExists)
         {
-            return Problem(HttpStatusCode.BadRequest, "字典编码已经存在");
+            return Problem(HttpStatusCode.BadRequest, "This dictionary code already exists");
         }
 
         var nameExists = await dictRepo.AnyAsync(x => x.Name == input.Name);
         if (nameExists)
         {
-            return Problem(HttpStatusCode.BadRequest, "字典名字已经存在");
+            return Problem(HttpStatusCode.BadRequest, "This dictionary name already exists");
         }
 
         var entity = Mapper.Map<Dict>(input, IdGenerater.GetNextId());
@@ -27,7 +29,7 @@ public class DictService(IEfRepository<Dict> dictRepo, IEfRepository<DictData> d
         //var cahceBf = bloomFilterFactory.Create(CachingConsts.BloomfilterOfCacheKey);
         //var addedStatus = await cahceBf.AddAsync(cacheKey);
         //if (!addedStatus)
-        //    return Problem(HttpStatusCode.BadRequest, "添加到布隆过滤器失败!");
+        //    return Problem(HttpStatusCode.BadRequest, "Failed to add the item to the bloom filter.");
         //else
         //    await dictRepo.InsertRangeAsync(dists);
 
@@ -35,25 +37,26 @@ public class DictService(IEfRepository<Dict> dictRepo, IEfRepository<DictData> d
         return new IdDto(entity.Id);
     }
 
+    /// <inheritdoc />
     public async Task<ServiceResult> UpdateAsync(long id, DictUpdationDto input)
     {
         var entity = await dictRepo.FetchAsync(x => x.Id == id, noTracking: false);
         if (entity is null)
         {
-            return Problem(HttpStatusCode.NotFound, "字典不存在");
+            return Problem(HttpStatusCode.NotFound, "This dictionary does not exist");
         }
 
         input.TrimStringFields();
         var codeExists = await dictRepo.AnyAsync(x => x.Code == input.Code && x.Id != id);
         if (codeExists)
         {
-            return Problem(HttpStatusCode.BadRequest, "字典编码已经存在");
+            return Problem(HttpStatusCode.BadRequest, "This dictionary code already exists");
         }
 
         var nameExists = await dictRepo.AnyAsync(x => x.Name == input.Name && x.Id != id);
         if (nameExists)
         {
-            return Problem(HttpStatusCode.BadRequest, "字典名字已经存在");
+            return Problem(HttpStatusCode.BadRequest, "This dictionary name already exists");
         }
 
         if (input.Code != entity.Code)
@@ -67,6 +70,7 @@ public class DictService(IEfRepository<Dict> dictRepo, IEfRepository<DictData> d
         return ServiceResult();
     }
 
+    /// <inheritdoc />
     public async Task<ServiceResult> DeleteAsync(long[] ids)
     {
         await dictRepo.ExecuteDeleteAsync(x => ids.Contains(x.Id));
@@ -80,6 +84,7 @@ public class DictService(IEfRepository<Dict> dictRepo, IEfRepository<DictData> d
         return ServiceResult();
     }
 
+    /// <inheritdoc />
     public async Task<DictDto?> GetAsync(long id)
     {
         var entity = await dictRepo.FetchAsync(x => x.Id == id);
@@ -92,6 +97,7 @@ public class DictService(IEfRepository<Dict> dictRepo, IEfRepository<DictData> d
         return dictDto;
     }
 
+    /// <inheritdoc />
     public async Task<PageModelDto<DictDto>> GetPagedAsync(SearchPagedDto input)
     {
         input.TrimStringFields();
@@ -116,6 +122,7 @@ public class DictService(IEfRepository<Dict> dictRepo, IEfRepository<DictData> d
         return new PageModelDto<DictDto>(input, cfgDtos, total);
     }
 
+    /// <inheritdoc />
     public async Task<List<DictOptionDto>> GetOptionsAsync(string codes)
     {
         if (codes.IsNullOrWhiteSpace())

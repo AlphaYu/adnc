@@ -1,55 +1,58 @@
 namespace Adnc.Demo.Admin.Application.Contracts.Dtos.Notice;
 
 /// <summary>
-/// 通知
+/// Represents a notice.
 /// </summary>
 [Serializable]
 public class NoticeDto
 {
+    /// <summary>
+    /// Gets or sets the notice ID.
+    /// </summary>
     public long Id { get; set; }
 
     /// <summary>
-    /// 通知标题
+    /// Gets or sets the notice title.
     /// </summary>
     public string Title { get; set; } = string.Empty;
 
     /// <summary>
-    /// 通知内容
+    /// Gets or sets the notice content.
     /// </summary>
     public string Content { get; set; } = string.Empty;
 
     /// <summary>
-    /// 通知类型
+    /// Gets or sets the notice type.
     /// </summary>
     public int? Type { get; set; }
 
     /// <summary>
-    /// 发布人
+    /// Gets or sets the publisher ID.
     /// </summary>
     public long? PublisherId { get; set; }
 
     /// <summary>
-    /// 优先级(0-低 1-中 2-高)
+    /// Gets or sets the priority (0: low, 1: medium, 2: high).
     /// </summary>
     public int? Priority { get; set; }
 
     /// <summary>
-    /// 目标类型(0-全体 1-指定)
+    /// Gets or sets the target type (0: all, 1: specified users).
     /// </summary>
     public int? TargetType { get; set; }
 
     /// <summary>
-    /// 发布状态(0-未发布 1已发布 2已撤回)
+    /// Gets or sets the publish status (0: unpublished, 1: published, 2: revoked).
     /// </summary>
     public int? PublishStatus { get; set; }
 
     /// <summary>
-    /// 发布时间
+    /// Gets or sets the publish time.
     /// </summary>
     public DateTime? PublishTime { get; set; }
 
     /// <summary>
-    /// 撤回时间
+    /// Gets or sets the revoke time.
     /// </summary>
     public DateTime? RevokeTime { get; set; }
 }

@@ -1,7 +1,13 @@
 namespace Adnc.Demo.Admin.Application.Contracts.Dtos.Dict.Validators;
 
+/// <summary>
+/// Validates <see cref="DictCreationDto"/> instances.
+/// </summary>
 public class DictCreationDtoValidator : AbstractValidator<DictCreationDto>
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DictCreationDtoValidator"/> class.
+    /// </summary>
     public DictCreationDtoValidator()
     {
         RuleFor(x => x.Name).NotEmpty().Length(2, DictConsts.Name_MaxLength);
@@ -10,8 +16,14 @@ public class DictCreationDtoValidator : AbstractValidator<DictCreationDto>
     }
 }
 
+/// <summary>
+/// Validates <see cref="DictDataCreationDto"/> instances.
+/// </summary>
 public class DictDataCreationDtoValidator : AbstractValidator<DictDataCreationDto>
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DictDataCreationDtoValidator"/> class.
+    /// </summary>
     public DictDataCreationDtoValidator()
     {
         RuleFor(x => x.DictCode).NotEmpty().Length(2, DictConsts.Code_MaxLength);

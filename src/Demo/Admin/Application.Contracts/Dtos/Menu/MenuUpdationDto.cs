@@ -1,7 +1,7 @@
 namespace Adnc.Demo.Admin.Application.Contracts.Dtos.Menu;
 
 /// <summary>
-/// 菜单
+/// Represents the payload used to update a menu.
 /// </summary>
 public class MenuUpdationDto : MenuCreationDto
 { }

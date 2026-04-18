@@ -1,13 +1,13 @@
 namespace Adnc.Demo.Admin.Application.Contracts.Dtos.Menu;
 
 /// <summary>
-/// 菜单
+/// Represents a menu.
 /// </summary>
 [Serializable]
 public class MenuDto : MenuCreationDto
 {
     /// <summary>
-    /// 菜单Id
+    /// Gets or sets the menu ID.
     /// </summary>
     public long Id { get; set; }
 }

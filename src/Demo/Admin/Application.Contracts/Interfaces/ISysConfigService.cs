@@ -3,56 +3,56 @@ using Adnc.Demo.Admin.Application.Contracts.Dtos.SysConfig;
 namespace Adnc.Demo.Admin.Application.Contracts.Interfaces;
 
 /// <summary>
-/// 配置管理
+/// Defines system configuration management services.
 /// </summary>
 public interface ISysConfigService : IAppService
 {
     /// <summary>
-    /// 新增配置
+    /// Creates a system configuration.
     /// </summary>
-    /// <param name="input"></param>
-    /// <returns></returns>
-    [OperateLog(LogName = "新增配置")]
+    /// <param name="input">The configuration to create.</param>
+    /// <returns>The ID of the created configuration.</returns>
+    [OperateLog(LogName = "Create configuration")]
     [CachingEvict(CacheKey = CachingConsts.SysConfigListCacheKey)]
     Task<ServiceResult<IdDto>> CreateAsync(SysConfigCreationDto input);
 
     /// <summary>
-    /// 修改配置
+    /// Updates a system configuration.
     /// </summary>
-    /// <param name="id"></param>
-    /// <param name="input"></param>
-    /// <returns></returns>
-    [OperateLog(LogName = "修改配置")]
+    /// <param name="id">The configuration ID.</param>
+    /// <param name="input">The configuration changes.</param>
+    /// <returns>A result indicating whether the configuration was updated.</returns>
+    [OperateLog(LogName = "Update configuration")]
     [CachingEvict(CacheKey = CachingConsts.SysConfigListCacheKey)]
     Task<ServiceResult> UpdateAsync([CachingParam] long id, SysConfigUpdationDto input);
 
     /// <summary>
-    /// 删除配置
+    /// Deletes one or more system configurations.
     /// </summary>
-    /// <param name="ids"></param>
-    /// <returns></returns>
-    [OperateLog(LogName = "删除配置")]
+    /// <param name="ids">The configuration IDs to delete.</param>
+    /// <returns>A result indicating whether the configurations were deleted.</returns>
+    [OperateLog(LogName = "Delete configuration")]
     [CachingEvict(CacheKey = CachingConsts.SysConfigListCacheKey)]
     Task<ServiceResult> DeleteAsync([CachingParam] long[] ids);
 
     /// <summary>
-    /// 获取配置
+    /// Gets a system configuration by ID.
     /// </summary>
-    /// <param name="id"></param>
-    /// <returns></returns>
+    /// <param name="id">The configuration ID.</param>
+    /// <returns>The requested configuration, or <c>null</c> if it does not exist.</returns>
     Task<SysConfigDto?> GetAsync(long id);
 
     /// <summary>
-    /// 配置列表
+    /// Gets a paged list of system configurations.
     /// </summary>
-    /// <param name="input"></param>
-    /// <returns></returns>
+    /// <param name="input">The paging and filtering criteria.</param>
+    /// <returns>A paged list of system configurations.</returns>
     Task<PageModelDto<SysConfigDto>> GetPagedAsync(SearchPagedDto input);
 
     /// <summary>
-    /// 依据Key获取配置
+    /// Gets system configurations by key list.
     /// </summary>
-    /// <param name="keys"></param>
-    /// <returns></returns>
+    /// <param name="keys">The configuration keys, or <c>all</c>.</param>
+    /// <returns>The matching configurations.</returns>
     Task<List<SysConfigSimpleDto>> GetListAsync(string keys);
 }

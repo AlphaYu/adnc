@@ -1,23 +1,23 @@
 namespace Adnc.Demo.Admin.Application.Contracts.Dtos.SysConfig;
 
 /// <summary>
-/// 系统配置
+/// Represents a lightweight system configuration.
 /// </summary>
 [Serializable]
 public class SysConfigSimpleDto
 {
     /// <summary>
-    /// 参数键
+    /// Gets or sets the configuration key.
     /// </summary>
     public string Key { get; set; } = string.Empty;
 
     /// <summary>
-    /// 参数名
+    /// Gets or sets the configuration name.
     /// </summary>
     public string Name { get; set; } = string.Empty;
 
     /// <summary>
-    /// 参数值
+    /// Gets or sets the configuration value.
     /// </summary>
     public string Value { get; set; } = string.Empty;
 }

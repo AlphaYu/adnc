@@ -3,17 +3,17 @@ using Adnc.Demo.Admin.Application.Contracts.Dtos.User;
 namespace Adnc.Demo.Admin.Api.Controllers;
 
 /// <summary>
-/// 用户管理
+/// Manages users.
 /// </summary>
 [Route($"{RouteConsts.AdminRoot}/users")]
 [ApiController]
 public class UserController(IUserService userService) : AdncControllerBase
 {
     /// <summary>
-    /// 新增用户
+    /// Creates a user.
     /// </summary>
-    /// <param name="input">用户信息</param>
-    /// <returns></returns>
+    /// <param name="input">The user to create.</param>
+    /// <returns>The ID of the created user.</returns>
     [HttpPost]
     [AdncAuthorize(PermissionConsts.User.Create)]
     [ProducesResponseType(StatusCodes.Status201Created)]
@@ -21,11 +21,11 @@ public class UserController(IUserService userService) : AdncControllerBase
         => CreatedResult(await userService.CreateAsync(input));
 
     /// <summary>
-    /// 修改用户
+    /// Updates a user.
     /// </summary>
-    /// <param name="id">id</param>
-    /// <param name="input">用户信息</param>
-    /// <returns></returns>
+    /// <param name="id">The user ID.</param>
+    /// <param name="input">The user changes.</param>
+    /// <returns>A result indicating whether the user was updated.</returns>
     [HttpPut("{id}")]
     [AdncAuthorize(PermissionConsts.User.Update)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -33,10 +33,10 @@ public class UserController(IUserService userService) : AdncControllerBase
         => Result(await userService.UpdateAsync(id, input));
 
     /// <summary>
-    /// 删除用户
+    /// Deletes one or more users.
     /// </summary>
-    /// <param name="ids">用户ID</param>
-    /// <returns></returns>
+    /// <param name="ids">The comma-separated user IDs.</param>
+    /// <returns>A result indicating whether the users were deleted.</returns>
     [HttpDelete("{ids}")]
     [AdncAuthorize(PermissionConsts.User.Delete)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -47,11 +47,11 @@ public class UserController(IUserService userService) : AdncControllerBase
     }
 
     /// <summary>
-    /// 重置密码
+    /// Resets a user's password.
     /// </summary>
-    /// <param name="id"></param>
-    /// <param name="password"></param>
-    /// <returns></returns>
+    /// <param name="id">The user ID.</param>
+    /// <param name="password">The new password.</param>
+    /// <returns>A result indicating whether the password was reset.</returns>
     [HttpPatch("{id}/password")]
     [AdncAuthorize(PermissionConsts.User.ResetPassword)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -59,10 +59,10 @@ public class UserController(IUserService userService) : AdncControllerBase
         => Result(await userService.ResetPasswordAsync(id, password));
 
     /// <summary>
-    /// 获取用户信息
+    /// Gets a user by ID.
     /// </summary>
-    /// <param name="id">用户ID</param>
-    /// <returns><see cref="UserDto"/></returns>
+    /// <param name="id">The user ID.</param>
+    /// <returns>The requested user.</returns>
     [HttpGet("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -74,10 +74,10 @@ public class UserController(IUserService userService) : AdncControllerBase
     }
 
     /// <summary>
-    /// 获取用户分页列表
+    /// Gets a paged list of users.
     /// </summary>
-    /// <param name="input">查询条件</param>
-    /// <returns><see cref="PageModelDto{UserDto}"/></returns>
+    /// <param name="input">The paging and filtering criteria.</param>
+    /// <returns>A paged list of users.</returns>
     [HttpGet("page")]
     [AdncAuthorize(PermissionConsts.User.Search)]
     [ProducesResponseType(StatusCodes.Status200OK)]

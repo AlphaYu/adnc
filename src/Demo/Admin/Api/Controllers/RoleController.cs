@@ -3,17 +3,17 @@ using Adnc.Demo.Admin.Application.Contracts.Dtos.Role;
 namespace Adnc.Demo.Admin.Api.Controllers;
 
 /// <summary>
-/// 角色管理
+/// Manages roles.
 /// </summary>
 [Route($"{RouteConsts.AdminRoot}/roles")]
 [ApiController]
 public class RoleController(IRoleService roleService) : AdncControllerBase
 {
     /// <summary>
-    /// 新增角色
+    /// Creates a role.
     /// </summary>
-    /// <param name="input">角色</param>
-    /// <returns></returns>
+    /// <param name="input">The role to create.</param>
+    /// <returns>The ID of the created role.</returns>
     [HttpPost]
     [AdncAuthorize(PermissionConsts.Role.Create)]
     [ProducesResponseType(StatusCodes.Status201Created)]
@@ -21,11 +21,11 @@ public class RoleController(IRoleService roleService) : AdncControllerBase
         => CreatedResult(await roleService.CreateAsync(input));
 
     /// <summary>
-    /// 修改角色
+    /// Updates a role.
     /// </summary>
-    /// <param name="id">id</param>
-    /// <param name="input">角色</param>
-    /// <returns></returns>
+    /// <param name="id">The role ID.</param>
+    /// <param name="input">The role changes.</param>
+    /// <returns>A result indicating whether the role was updated.</returns>
     [HttpPut("{id}")]
     [AdncAuthorize(PermissionConsts.Role.Update)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -33,10 +33,10 @@ public class RoleController(IRoleService roleService) : AdncControllerBase
         => Result(await roleService.UpdateAsync(id, input));
 
     /// <summary>
-    /// 删除角色
+    /// Deletes one or more roles.
     /// </summary>
-    /// <param name="ids">角色Id</param>
-    /// <returns></returns>
+    /// <param name="ids">The comma-separated role IDs.</param>
+    /// <returns>A result indicating whether the roles were deleted.</returns>
     [HttpDelete("{ids}")]
     [AdncAuthorize(PermissionConsts.Role.Delete)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -47,10 +47,10 @@ public class RoleController(IRoleService roleService) : AdncControllerBase
     }
 
     /// <summary>
-    /// 查询角色
+    /// Gets a paged list of roles.
     /// </summary>
-    /// <param name="input">角色查询条件</param>
-    /// <returns><see cref="PageModelDto{RoleDto}"/></returns>
+    /// <param name="input">The paging and filtering criteria.</param>
+    /// <returns>A paged list of roles.</returns>
     [HttpGet("page")]
     [AdncAuthorize(PermissionConsts.Role.Search)]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -58,10 +58,10 @@ public class RoleController(IRoleService roleService) : AdncControllerBase
         => await roleService.GetPagedAsync(input);
 
     /// <summary>
-    /// 获取角色信息
+    /// Gets a role by ID.
     /// </summary>
-    /// <param name="id">角色Id</param>
-    /// <returns><see cref="RoleDto"/></returns>
+    /// <param name="id">The role ID.</param>
+    /// <returns>The requested role.</returns>
     [HttpGet("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [AdncAuthorize([PermissionConsts.Role.Get, PermissionConsts.Role.Update])]
@@ -73,11 +73,11 @@ public class RoleController(IRoleService roleService) : AdncControllerBase
     }
 
     /// <summary>
-    /// 保存角色权限
+    /// Saves the menu permissions assigned to a role.
     /// </summary>
-    /// <param name="id">角色Id</param>
-    /// <param name="permissions">用户权限Ids</param>
-    /// <returns></returns>
+    /// <param name="id">The role ID.</param>
+    /// <param name="permissions">The menu permission IDs assigned to the role.</param>
+    /// <returns>A result indicating whether the role permissions were saved.</returns>
     [HttpPatch("{id}/permissons")]
     [AdncAuthorize(PermissionConsts.Role.SetPermissons)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -85,19 +85,19 @@ public class RoleController(IRoleService roleService) : AdncControllerBase
         => Result(await roleService.SetPermissonsAsync(new RoleSetPermissonsDto() { RoleId = id, Permissions = permissions }));
 
     /// <summary>
-    /// 获取角色拥有的菜单Id
+    /// Gets the menu IDs assigned to a role.
     /// </summary>
-    /// <param name="id">角色Id</param>
-    /// <returns></returns>
+    /// <param name="id">The role ID.</param>
+    /// <returns>The menu IDs assigned to the role.</returns>
     [HttpGet("{id}/menuids")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<long[]>> GetMenuIdsAsync([FromRoute] long id)
         => await roleService.GetMenuIdsAsync(id);
 
     /// <summary>
-    /// 获取菜单选项
+    /// Gets role options.
     /// </summary>
-    /// <returns><see cref="OptionTreeDto"/></returns>
+    /// <returns>The available role options.</returns>
     [HttpGet("options")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<List<OptionTreeDto>>> GetOptionsAsync()

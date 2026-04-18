@@ -3,17 +3,17 @@ using Adnc.Demo.Admin.Application.Contracts.Dtos.Dict;
 namespace Adnc.Demo.Admin.Api.Controllers;
 
 /// <summary>
-/// 字典数据管理
+/// Manages dictionary data entries.
 /// </summary>
 [Route($"{RouteConsts.AdminRoot}/dictdatas")]
 [ApiController]
 public class DictDataController(IDictDataService dictDataService) : AdncControllerBase
 {
     /// <summary>
-    /// 新增字典数据
+    /// Creates a dictionary data entry.
     /// </summary>
-    /// <param name="input"><see cref="DictDataCreationDto"/></param>
-    /// <returns></returns>
+    /// <param name="input">The dictionary data entry to create.</param>
+    /// <returns>The ID of the created dictionary data entry.</returns>
     [HttpPost]
     [AdncAuthorize(PermissionConsts.DictData.Create)]
     [ProducesResponseType(StatusCodes.Status201Created)]
@@ -21,11 +21,11 @@ public class DictDataController(IDictDataService dictDataService) : AdncControll
         => CreatedResult(await dictDataService.CreateAsync(input));
 
     /// <summary>
-    /// 修改字典数据
+    /// Updates a dictionary data entry.
     /// </summary>
-    /// <param name="id">id</param>
-    /// <param name="input"><see cref="DictDataUpdationDto"/></param>
-    /// <returns></returns>
+    /// <param name="id">The dictionary data entry ID.</param>
+    /// <param name="input">The dictionary data entry changes.</param>
+    /// <returns>A result indicating whether the dictionary data entry was updated.</returns>
     [HttpPut("{id}")]
     [AdncAuthorize(PermissionConsts.DictData.Update)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -33,10 +33,10 @@ public class DictDataController(IDictDataService dictDataService) : AdncControll
         => Result(await dictDataService.UpdateAsync(id, input));
 
     /// <summary>
-    /// 删除字典数据
+    /// Deletes one or more dictionary data entries.
     /// </summary>
-    /// <param name="ids">字典ID</param>
-    /// <returns></returns>
+    /// <param name="ids">The comma-separated dictionary data entry IDs.</param>
+    /// <returns>A result indicating whether the dictionary data entries were deleted.</returns>
     [HttpDelete("{ids}")]
     [AdncAuthorize(PermissionConsts.DictData.Delete)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -47,9 +47,10 @@ public class DictDataController(IDictDataService dictDataService) : AdncControll
     }
 
     /// <summary>
-    /// 获取字典数据列表
+    /// Gets a paged list of dictionary data entries.
     /// </summary>
-    /// <returns><see cref="PageModelDto{DictDataDto}"/></returns>
+    /// <param name="input">The paging and filtering criteria.</param>
+    /// <returns>A paged list of dictionary data entries.</returns>
     [HttpGet("page")]
     [AdncAuthorize(PermissionConsts.DictData.Search)]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -57,9 +58,10 @@ public class DictDataController(IDictDataService dictDataService) : AdncControll
         => await dictDataService.GetPagedAsync(input);
 
     /// <summary>
-    /// 获取单个字典数据
+    /// Gets a dictionary data entry by ID.
     /// </summary>
-    /// <returns><see cref="DictDataDto"/></returns>
+    /// <param name="id">The dictionary data entry ID.</param>
+    /// <returns>The requested dictionary data entry.</returns>
     [HttpGet("{id}")]
     [AdncAuthorize([PermissionConsts.DictData.Get, PermissionConsts.DictData.Update])]
     [ProducesResponseType(StatusCodes.Status200OK)]

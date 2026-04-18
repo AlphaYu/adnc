@@ -3,17 +3,17 @@ using Adnc.Demo.Admin.Application.Contracts.Dtos.Menu;
 namespace Adnc.Demo.Admin.Api.Controllers;
 
 /// <summary>
-/// 菜单管理
+/// Manages menus and router trees.
 /// </summary>
 [Route($"{RouteConsts.AdminRoot}/menus")]
 [ApiController]
 public class MenuController(IMenuService menuService, UserContext userContext) : AdncControllerBase
 {
     /// <summary>
-    /// 新增菜单
+    /// Creates a menu.
     /// </summary>
-    /// <param name="input">菜单</param>
-    /// <returns></returns>
+    /// <param name="input">The menu to create.</param>
+    /// <returns>The ID of the created menu.</returns>
     [HttpPost]
     [AdncAuthorize(PermissionConsts.Menu.Create)]
     [ProducesResponseType(StatusCodes.Status201Created)]
@@ -21,11 +21,11 @@ public class MenuController(IMenuService menuService, UserContext userContext) :
         => CreatedResult(await menuService.CreateAsync(input));
 
     /// <summary>
-    /// 修改菜单
+    /// Updates a menu.
     /// </summary>
-    /// <param name="id">id</param>
-    /// <param name="input">菜单</param>
-    /// <returns></returns>
+    /// <param name="id">The menu ID.</param>
+    /// <param name="input">The menu changes.</param>
+    /// <returns>A result indicating whether the menu was updated.</returns>
     [HttpPut("{id}")]
     [AdncAuthorize(PermissionConsts.Menu.Update)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -33,10 +33,10 @@ public class MenuController(IMenuService menuService, UserContext userContext) :
         => Result(await menuService.UpdateAsync(id, input));
 
     /// <summary>
-    /// 删除菜单
+    /// Deletes a menu.
     /// </summary>
-    /// <param name="id">菜单ID</param>
-    /// <returns></returns>
+    /// <param name="id">The menu ID.</param>
+    /// <returns>A result indicating whether the menu was deleted.</returns>
     [HttpDelete("{id}")]
     [AdncAuthorize(PermissionConsts.Menu.Delete)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -44,9 +44,10 @@ public class MenuController(IMenuService menuService, UserContext userContext) :
         => Result(await menuService.DeleteAsync(id));
 
     /// <summary>
-    /// 获取菜单信息
+    /// Gets a menu by ID.
     /// </summary>
-    /// <returns><see cref="MenuDto"/></returns>
+    /// <param name="id">The menu ID.</param>
+    /// <returns>The requested menu.</returns>
     [HttpGet("{id}")]
     [AdncAuthorize([PermissionConsts.Menu.Get, PermissionConsts.Menu.Update])]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -58,9 +59,10 @@ public class MenuController(IMenuService menuService, UserContext userContext) :
     }
 
     /// <summary>
-    /// 获取菜单树
+    /// Gets the menu tree.
     /// </summary>
-    /// <returns><see cref="List{MenuTreeDto}"/></returns>
+    /// <param name="keywords">The optional keyword used to filter menus.</param>
+    /// <returns>The menu tree.</returns>
     [HttpGet()]
     //[AdncAuthorize(PermissionConsts.Menu.Search)]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -68,9 +70,9 @@ public class MenuController(IMenuService menuService, UserContext userContext) :
         => await menuService.GetTreelistAsync(keywords);
 
     /// <summary>
-    /// 获取侧边栏路由菜单
+    /// Gets the sidebar router menu tree for the current user.
     /// </summary>
-    /// <returns><see cref="List{RouterTreeDto}"/></returns>
+    /// <returns>The router tree available to the current user.</returns>
     [HttpGet("routers")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<List<RouterTreeDto>>> GetMenusForRouterAsync()
@@ -80,9 +82,10 @@ public class MenuController(IMenuService menuService, UserContext userContext) :
     }
 
     /// <summary>
-    /// 获取菜单选项
+    /// Gets menu options.
     /// </summary>
-    /// <returns><see cref="List{OptionTreeDto}"/></returns>
+    /// <param name="onlyParent">Whether to return only parent-capable menu nodes.</param>
+    /// <returns>The menu option tree.</returns>
     [HttpGet("options")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<List<OptionTreeDto>>> GetMenuOptionsAsync(bool? onlyParent)

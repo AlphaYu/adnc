@@ -1,7 +1,7 @@
 namespace Adnc.Demo.Admin.Application.Contracts.Dtos.SysConfig;
 
 /// <summary>
-/// 系统配置
+/// Represents the payload used to update a system configuration.
 /// </summary>
 public class SysConfigUpdationDto : SysConfigCreationDto
 { }

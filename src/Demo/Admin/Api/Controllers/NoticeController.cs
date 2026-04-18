@@ -3,7 +3,7 @@ using Adnc.Demo.Admin.Application.Contracts.Dtos.Notice;
 namespace Adnc.Demo.Admin.Api.Controllers;
 
 /// <summary>
-/// 通知管理
+/// Manages notices.
 /// </summary>
 [Route($"{RouteConsts.AdminRoot}/notices")]
 [ApiController]
@@ -11,10 +11,10 @@ public class NoticeController() : AdncControllerBase
 {
     /*
     /// <summary>
-    /// 新增通知
+    /// Creates a notice.
     /// </summary>
-    /// <param name="input"><see cref="SysConfigCreationDto"/></param>
-    /// <returns></returns>
+    /// <param name="input">The notice to create.</param>
+    /// <returns>The ID of the created notice.</returns>
     //[HttpPost]
     //[AdncAuthorize(PermissionConsts.SysConfig.Create)]
     //[ProducesResponseType(StatusCodes.Status201Created)]
@@ -22,11 +22,11 @@ public class NoticeController() : AdncControllerBase
     //    =>  CreatedResult(await sysConfigService.CreateAsync(input));
 
     /// <summary>
-    /// 更新通知
+    /// Updates a notice.
     /// </summary>
-    /// <param name="id">id</param>
-    /// <param name="input"><see cref="SysConfigUpdationDto"/></param>
-    /// <returns></returns>
+    /// <param name="id">The notice ID.</param>
+    /// <param name="input">The notice changes.</param>
+    /// <returns>A result indicating whether the notice was updated.</returns>
     //[HttpPut("{id}")]
     //[AdncAuthorize(PermissionConsts.SysConfig.Update)]
     //[ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -34,10 +34,10 @@ public class NoticeController() : AdncControllerBase
     //    => Result(await sysConfigService.UpdateAsync(id, input));
 
     /// <summary>
-    /// 删除通知
+    /// Deletes one or more notices.
     /// </summary>
-    /// <param name="ids">节点id</param>
-    /// <returns></returns>
+    /// <param name="ids">The comma-separated notice IDs.</param>
+    /// <returns>A result indicating whether the notices were deleted.</returns>
     //[HttpDelete("{ids}")]
     //[AdncAuthorize(PermissionConsts.SysConfig.Delete)]
     //[ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -48,10 +48,10 @@ public class NoticeController() : AdncControllerBase
     //}
 
     /// <summary>
-    /// 获取单个通知
+    /// Gets a notice by ID.
     /// </summary>
-    /// <param name="id">节点id</param>
-    /// <returns></returns>
+    /// <param name="id">The notice ID.</param>
+    /// <returns>The requested notice.</returns>
     //[HttpGet("{id}")]
     //// [AdncAuthorize(PermissionConsts.SysConfig.Search, AdncAuthorizeAttribute.JwtWithBasicSchemes)]
     //[ProducesResponseType(StatusCodes.Status200OK)]
@@ -64,10 +64,10 @@ public class NoticeController() : AdncControllerBase
     */
 
     /// <summary>
-    /// 获取通知分页列表
+    /// Gets a paged list of notices for the current user.
     /// </summary>
-    /// <param name="input"><see cref="NoticeSearchPagedDto"/></param>
-    /// <returns><see cref="PageModelDto{CfgDto}"/></returns>
+    /// <param name="input">The paging and filtering criteria.</param>
+    /// <returns>A paged list of notices.</returns>
     [HttpGet("mine")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<PageModelDto<NoticeDto>>> GetMinePagedAsync([FromQuery] NoticeSearchPagedDto input)

@@ -1,49 +1,47 @@
 namespace Adnc.Demo.Admin.Application.Contracts.Dtos.User;
 
+/// <summary>
+/// Represents the shared fields used for creating and updating users.
+/// </summary>
 public abstract class UserCreationAndUpdationDto : InputDto
 {
-    ///// <summary>
-    ///// 头像
-    ///// </summary>
-    ////public string Avatar { get; set; }
-
     /// <summary>
-    /// 生日
+    /// Gets or sets the birthday.
     /// </summary>
     public DateTime? Birthday { get; set; }
 
     /// <summary>
-    /// 部门Id
+    /// Gets or sets the department ID.
     /// </summary>
     public long DeptId { get; set; }
 
     /// <summary>
-    /// 邮件地址
+    /// Gets or sets the email address.
     /// </summary>
     public string Email { get; set; } = string.Empty;
 
     /// <summary>
-    /// 姓名
+    /// Gets or sets the display name.
     /// </summary>
     public string Name { get; set; } = string.Empty;
 
     /// <summary>
-    /// 手机号
+    /// Gets or sets the mobile phone number.
     /// </summary>
     public string Mobile { get; set; } = string.Empty;
 
-    // <summary>
-    // 角色Id
-    // </summary>
+    /// <summary>
+    /// Gets or sets the role IDs.
+    /// </summary>
     public long[] RoleIds { get; set; } = [];
 
     /// <summary>
-    /// 性别
+    /// Gets or sets the gender.
     /// </summary>
     public int Gender { get; set; }
 
     /// <summary>
-    /// 账户状态
+    /// Gets or sets a value indicating whether the account is enabled.
     /// </summary>
     public bool Status { get; set; }
 }

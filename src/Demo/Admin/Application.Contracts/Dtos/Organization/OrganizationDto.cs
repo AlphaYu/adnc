@@ -1,13 +1,13 @@
 namespace Adnc.Demo.Admin.Application.Contracts.Dtos.Organization;
 
 /// <summary>
-/// 部门
+/// Represents an organization.
 /// </summary>
 [Serializable]
 public class OrganizationDto : OrganizationCreationDto
 {
     /// <summary>
-    /// 部门Id
+    /// Gets or sets the organization ID.
     /// </summary>
     public long Id { get; set; }
 }

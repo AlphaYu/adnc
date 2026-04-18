@@ -1,7 +1,7 @@
 namespace Adnc.Demo.Admin.Repository.Entities;
 
 /// <summary>
-/// 角色
+/// Role
 /// </summary>
 public class Role : EfFullAuditEntity
 {

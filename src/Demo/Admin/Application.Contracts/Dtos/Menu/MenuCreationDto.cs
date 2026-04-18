@@ -1,77 +1,77 @@
 namespace Adnc.Demo.Admin.Application.Contracts.Dtos.Menu;
 
 /// <summary>
-/// 菜单
+/// Represents the payload used to create a menu.
 /// </summary>
 public class MenuCreationDto : InputDto
 {
     /// <summary>
-    /// 父菜单编号
+    /// Gets or sets the parent menu ID.
     /// </summary>
     public long ParentId { get; set; }
 
     /// <summary>
-    /// 名称
+    /// Gets or sets the menu name.
     /// </summary>
     public string Name { get; set; } = string.Empty;
 
     /// <summary>
-    /// 权限代码
+    /// Gets or sets the permission code.
     /// </summary>
     public string Perm { get; set; } = string.Empty;
 
     /// <summary>
-    /// 路由名称
+    /// Gets or sets the route name.
     /// </summary>
     public string RouteName { get; set; } = string.Empty;
 
     /// <summary>
-    /// 路由路径
+    /// Gets or sets the route path.
     /// </summary>
     public string RoutePath { get; set; } = string.Empty;
 
     /// <summary>
-    /// 菜单类型
+    /// Gets or sets the menu type.
     /// </summary>
     public string Type { get; set; } = string.Empty;
 
     /// <summary>
-    /// 組件配置
+    /// Gets or sets the component path.
     /// </summary>
     public string Component { get; set; } = string.Empty;
 
     /// <summary>
-    /// 是否显示
+    /// Gets or sets a value indicating whether the menu is visible.
     /// </summary>
     public bool Visible { get; set; }
 
     /// <summary>
-    /// 跳转路由路径
+    /// Gets or sets the redirect route path.
     /// </summary>
     public string Redirect { get; set; } = string.Empty;
 
     /// <summary>
-    /// 图标
+    /// Gets or sets the icon.
     /// </summary>
     public string Icon { get; set; } = string.Empty;
 
     /// <summary>
-    /// 是否开启页面缓存
+    /// Gets or sets a value indicating whether page caching is enabled.
     /// </summary>
     public bool KeepAlive { get; set; }
 
     /// <summary>
-    /// 只有一个子路由是否始终显示
+    /// Gets or sets a value indicating whether a single child route should always be shown.
     /// </summary>
     public bool AlwaysShow { get; set; }
 
     /// <summary>
-    ///  路由参数
+    /// Gets or sets the route parameters.
     /// </summary>
     public List<KeyValuePair<string, string>> Params { get; set; } = [];
 
     /// <summary>
-    /// 序号
+    /// Gets or sets the display order.
     /// </summary>
     public int Ordinal { get; set; }
 }

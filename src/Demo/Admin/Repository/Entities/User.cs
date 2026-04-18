@@ -1,7 +1,7 @@
 namespace Adnc.Demo.Admin.Repository.Entities;
 
 /// <summary>
-/// 管理员
+/// Administrator
 /// </summary>
 public class User : EfFullAuditEntity, ISoftDelete
 {
@@ -18,22 +18,22 @@ public class User : EfFullAuditEntity, ISoftDelete
     //}
 
     /// <summary>
-    /// 账号
+    /// Account
     /// </summary>
     public string Account { get; set; } = string.Empty;
 
     /// <summary>
-    /// 头像路径
+    /// Avatar path
     /// </summary>
     public string Avatar { get; set; } = string.Empty;
 
     /// <summary>
-    /// 生日
+    /// Birthday
     /// </summary>
     public DateTime? Birthday { get; set; }
 
     /// <summary>
-    /// 部门Id
+    /// Department ID
     /// </summary>
     public long DeptId { get; set; }
 
@@ -43,38 +43,37 @@ public class User : EfFullAuditEntity, ISoftDelete
     public string Email { get; set; } = string.Empty;
 
     /// <summary>
-    /// 姓名
+    /// Name
     /// </summary>
     public string Name { get; set; } = string.Empty;
 
     /// <summary>
-    /// 密码
+    /// Password
     /// </summary>
     public string Password { get; set; } = string.Empty;
 
     /// <summary>
-    /// 手机号
+    /// Mobile number
     /// </summary>
     public string Mobile { get; set; } = string.Empty;
 
     /// <summary>
-    /// 密码盐
+    /// Password salt
     /// </summary>
     public string Salt { get; set; } = string.Empty;
 
     /// <summary>
-    /// 性别
+    /// Gender
     /// </summary>
     public int Gender { get; set; }
 
     /// <summary>
-    /// 状态
+    /// Status
     /// </summary>
     public bool Status { get; set; }
 
     /// <summary>
-    /// 删除标识
+    /// Deletion flag
     /// </summary>
-
     public bool IsDeleted { get; set; }
 }

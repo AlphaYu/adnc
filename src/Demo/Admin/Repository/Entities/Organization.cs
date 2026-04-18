@@ -1,7 +1,7 @@
 namespace Adnc.Demo.Admin.Repository.Entities;
 
 /// <summary>
-/// 部门
+/// Department
 /// </summary>
 public class Organization : EfFullAuditEntity
 {

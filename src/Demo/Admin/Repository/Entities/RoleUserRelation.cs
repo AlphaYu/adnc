@@ -1,7 +1,7 @@
 namespace Adnc.Demo.Admin.Repository.Entities;
 
 /// <summary>
-/// 用户角色关系
+/// User-role relation
 /// </summary>
 public class RoleUserRelation : EfEntity
 {

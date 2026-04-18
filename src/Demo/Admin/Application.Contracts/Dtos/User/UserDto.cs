@@ -1,28 +1,28 @@
 namespace Adnc.Demo.Admin.Application.Contracts.Dtos.User;
 
 /// <summary>
-/// 用户
+/// Represents a user.
 /// </summary>
 [Serializable]
 public class UserDto : UserCreationAndUpdationDto
 {
     /// <summary>
-    /// 用户Id
+    /// Gets or sets the user ID.
     /// </summary>
     public long Id { get; set; }
 
     /// <summary>
-    /// 用户账号
+    /// Gets or sets the account name.
     /// </summary>
     public string Account { get; set; } = string.Empty;
 
     /// <summary>
-    /// 部门名称
+    /// Gets or sets the department name.
     /// </summary>
     public string DeptName { get; set; } = string.Empty;
 
     /// <summary>
-    /// 创建时间/注册时间
+    /// Gets or sets the creation time.
     /// </summary>
     public DateTime CreateTime { get; set; }
 }

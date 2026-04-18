@@ -2,22 +2,24 @@ using Adnc.Demo.Admin.Application.Contracts.Dtos.Role;
 
 namespace Adnc.Demo.Admin.Application.Services;
 
+/// <inheritdoc cref="IRoleService"/>
 public class RoleService(IEfRepository<Role> roleRepo, IEfRepository<RoleUserRelation> roleUserRelationRepo, IEfRepository<RoleMenuRelation> roleMenuRelationRepo, CacheService cacheService)
     : AbstractAppService, IRoleService
 {
+    /// <inheritdoc />
     public async Task<ServiceResult<IdDto>> CreateAsync(RoleCreationDto input)
     {
         input.TrimStringFields();
         var existsCode = await roleRepo.AnyAsync(x => x.Code == input.Code);
         if (existsCode)
         {
-            return Problem(HttpStatusCode.BadRequest, "该角色代码已经存在");
+            return Problem(HttpStatusCode.BadRequest, "This role code already exists");
         }
 
         var existsName = await roleRepo.AnyAsync(x => x.Name == input.Name);
         if (existsName)
         {
-            return Problem(HttpStatusCode.BadRequest, "该角色名称已经存在");
+            return Problem(HttpStatusCode.BadRequest, "This role name already exists");
         }
 
         var role = Mapper.Map<Role>(input, IdGenerater.GetNextId());
@@ -26,6 +28,7 @@ public class RoleService(IEfRepository<Role> roleRepo, IEfRepository<RoleUserRel
         return new IdDto(role.Id);
     }
 
+    /// <inheritdoc />
     public async Task<ServiceResult> UpdateAsync(long id, RoleUpdationDto input)
     {
         input.TrimStringFields();
@@ -33,19 +36,19 @@ public class RoleService(IEfRepository<Role> roleRepo, IEfRepository<RoleUserRel
         var role = await roleRepo.FetchAsync(x => x.Id == id, noTracking: false);
         if (role is null)
         {
-            return Problem(HttpStatusCode.BadRequest, "该角色Id不存在");
+            return Problem(HttpStatusCode.BadRequest, "This role ID does not exist");
         }
 
         var existsCode = await roleRepo.AnyAsync(x => x.Code == input.Code && x.Id != id);
         if (existsCode)
         {
-            return Problem(HttpStatusCode.BadRequest, "该角色代码已经存在");
+            return Problem(HttpStatusCode.BadRequest, "This role code already exists");
         }
 
         var existsName = await roleRepo.AnyAsync(x => x.Code == input.Code && x.Id != id);
         if (existsName)
         {
-            return Problem(HttpStatusCode.BadRequest, "该角色名称已经存在");
+            return Problem(HttpStatusCode.BadRequest, "This role name already exists");
         }
 
         Mapper.Map(input, role);
@@ -53,11 +56,12 @@ public class RoleService(IEfRepository<Role> roleRepo, IEfRepository<RoleUserRel
         return ServiceResult();
     }
 
+    /// <inheritdoc />
     public async Task<ServiceResult> DeleteAsync(long[] ids)
     {
         if (ids.Contains(1600000000010))
         {
-            return Problem(HttpStatusCode.Forbidden, "禁止删除初始角色");
+            return Problem(HttpStatusCode.Forbidden, "Deleting the initial role is forbidden");
         }
 
         await roleRepo.ExecuteDeleteAsync(x => ids.Contains(x.Id));
@@ -67,12 +71,14 @@ public class RoleService(IEfRepository<Role> roleRepo, IEfRepository<RoleUserRel
         return ServiceResult();
     }
 
+    /// <inheritdoc />
     public async Task<RoleDto?> GetAsync(long id)
     {
         var role = await roleRepo.FetchAsync(x => x.Id == id);
         return role is null ? null : Mapper.Map<RoleDto>(role);
     }
 
+    /// <inheritdoc />
     public async Task<PageModelDto<RoleDto>> GetPagedAsync(SearchPagedDto input)
     {
         input.TrimStringFields();
@@ -97,11 +103,12 @@ public class RoleService(IEfRepository<Role> roleRepo, IEfRepository<RoleUserRel
         return new PageModelDto<RoleDto>(input, dtos, total);
     }
 
+    /// <inheritdoc />
     public async Task<ServiceResult> SetPermissonsAsync(RoleSetPermissonsDto input)
     {
         if (input.RoleId == 1600000000010)
         {
-            return Problem(HttpStatusCode.Forbidden, "禁止设置初始角色");
+            return Problem(HttpStatusCode.Forbidden, "Setting permissions for the initial role is forbidden");
         }
 
         await roleMenuRelationRepo.ExecuteDeleteAsync(x => x.RoleId == input.RoleId);
@@ -116,12 +123,14 @@ public class RoleService(IEfRepository<Role> roleRepo, IEfRepository<RoleUserRel
         return ServiceResult();
     }
 
+    /// <inheritdoc />
     public async Task<long[]> GetMenuIdsAsync(long id)
     {
         var menuIds = await roleMenuRelationRepo.Where(x => x.RoleId == id).Select(x => x.MenuId).ToArrayAsync();
         return menuIds ?? [];
     }
 
+    /// <inheritdoc />
     public async Task<List<OptionTreeDto>> GetOptionsAsync(bool? status = null)
     {
         var whereExpr = ExpressionCreator

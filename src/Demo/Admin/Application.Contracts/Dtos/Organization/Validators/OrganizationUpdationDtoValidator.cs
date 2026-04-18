@@ -1,12 +1,12 @@
 namespace Adnc.Demo.Admin.Application.Contracts.Dtos.Organization.Validators;
 
 /// <summary>
-/// DeptUpdationDtoValidator
+/// Validates <see cref="OrganizationUpdationDto"/> instances.
 /// </summary>
 public class DeptUpdationDtoValidator : AbstractValidator<OrganizationUpdationDto>
 {
     /// <summary>
-    /// DeptUpdationDtoValidator
+    /// Initializes a new instance of the <see cref="DeptUpdationDtoValidator"/> class.
     /// </summary>
     public DeptUpdationDtoValidator()
     {

@@ -3,55 +3,56 @@ using Adnc.Demo.Admin.Application.Contracts.Dtos.Dict;
 namespace Adnc.Demo.Admin.Application.Contracts.Interfaces;
 
 /// <summary>
-/// 字典管理
+/// Defines dictionary management services.
 /// </summary>
 public interface IDictService : IAppService
 {
     /// <summary>
-    /// 新增字典
+    /// Creates a dictionary.
     /// </summary>
-    /// <param name="input"></param>
-    /// <returns></returns>
-    [OperateLog(LogName = "新增字典")]
+    /// <param name="input">The dictionary to create.</param>
+    /// <returns>The ID of the created dictionary.</returns>
+    [OperateLog(LogName = "Create dictionary")]
     Task<ServiceResult<IdDto>> CreateAsync(DictCreationDto input);
 
     /// <summary>
-    /// 修改字典
+    /// Updates a dictionary.
     /// </summary>
-    /// <param name="id"></param>
-    /// <param name="input"></param>
-    /// <returns></returns>
-    [OperateLog(LogName = "修改字典")]
+    /// <param name="id">The dictionary ID.</param>
+    /// <param name="input">The dictionary changes.</param>
+    /// <returns>A result indicating whether the dictionary was updated.</returns>
+    [OperateLog(LogName = "Update dictionary")]
     [CachingEvict(CacheKey = CachingConsts.DictOptionsListKey)]
     [UnitOfWork]
     Task<ServiceResult> UpdateAsync(long id, DictUpdationDto input);
 
     /// <summary>
-    /// 删除字典
+    /// Deletes one or more dictionaries.
     /// </summary>
-    /// <param name="ids"></param>
-    /// <returns></returns>
-    [OperateLog(LogName = "删除字典")]
+    /// <param name="ids">The dictionary IDs to delete.</param>
+    /// <returns>A result indicating whether the dictionaries were deleted.</returns>
+    [OperateLog(LogName = "Delete dictionary")]
     [CachingEvict(CacheKey = CachingConsts.DictOptionsListKey)]
     Task<ServiceResult> DeleteAsync(long[] ids);
 
     /// <summary>
-    /// 获取单个字典
+    /// Gets a dictionary by ID.
     /// </summary>
-    /// <param name="id"></param>
-    /// <returns></returns>
+    /// <param name="id">The dictionary ID.</param>
+    /// <returns>The requested dictionary, or <c>null</c> if it does not exist.</returns>
     Task<DictDto?> GetAsync(long id);
 
     /// <summary>
-    /// 获取字典列表
+    /// Gets a paged list of dictionaries.
     /// </summary>
-    /// <param name="input"></param>
-    /// <returns></returns>
+    /// <param name="input">The paging and filtering criteria.</param>
+    /// <returns>A paged list of dictionaries.</returns>
     Task<PageModelDto<DictDto>> GetPagedAsync(SearchPagedDto input);
 
     /// <summary>
-    /// 获取字典选项
+    /// Gets dictionary options by code list.
     /// </summary>
-    /// <returns></returns>
+    /// <param name="codes">The dictionary codes.</param>
+    /// <returns>The matching dictionary options.</returns>
     Task<List<DictOptionDto>> GetOptionsAsync(string codes);
 }

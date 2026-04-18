@@ -1,7 +1,13 @@
 namespace Adnc.Demo.Admin.Application.Contracts.Dtos.User.Validators;
 
+/// <summary>
+/// Validates <see cref="UserCreationDto"/> instances.
+/// </summary>
 public class UserCreationDtoValidator : AbstractValidator<UserCreationDto>
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="UserCreationDtoValidator"/> class.
+    /// </summary>
     public UserCreationDtoValidator()
     {
         Include(new UserCreationAndUpdationDtoValidator());
