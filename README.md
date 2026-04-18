@@ -55,11 +55,13 @@ adnc
 ### 重要文件
 | 路径                                 | 描述                               |
 | -------------------------------------| ---------------------------------- |
-| `src/Adnc.sln`                       | 该解决方案包含`adnc`所有工程       |
-| `src/Infrastructures/Adnc.Infra.sln` | 该解决方案仅包含基础架构层相关工程 |
-| `src/ServiceShared/Adnc.Shared.sln`  | 该解决方案仅包含服务通用层相关工程 |
-| `src/Demo/Adnc.Demo.sln`             | 该解决方案仅包含`demo`相关工程     |
-| `Directory.Build.props`                   | 工程文件`*.csproj`公用配置  |
+| `src/Adnc.sln`                      | 该解决方案包含`adnc`所有工程       |
+| `src/Infrastructures/Adnc.Infra.sln`| 该解决方案仅包含基础架构层相关工程 |
+| `src/ServiceShared/Adnc.Shared.sln` | 该解决方案仅包含服务通用层相关工程 |
+| `src/Demo/Adnc.Demo.sln`            | 该解决方案仅包含`demo`相关工程     |
+| `src/.editorconfig`            | 用于统一代码风格的跨编辑器配置文件，确保团队中无论谁用 VS、VS Code 还是 JetBrains Rider，写出的代码格式都是一致的     |
+| `src/Directory.Build.props`             | 用于管理通用构建属性（如目标框架、语言版本、输出路径等）  |
+| `src/Directory.Packages.props`          | 用于中央包管理 (CPM)，统一管理整个解决方案中 NuGet 包的版本号  |
 
 ### 总体架构图
 
@@ -85,11 +87,11 @@ adnc
 
 | 名称                                                         | 描述                                                         |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| <a target="_blank" href="https://github.com/ThreeMammals/Ocelot">Ocelot</a> | 基于 `.NET6 编写的开源网关                                   |
+| <a target="_blank" href="https://github.com/ThreeMammals/Ocelot">Ocelot</a> | 基于 .NET 编写的开源网关                                     |
 | <a target="_blank" href="https://github.com/hashicorp/consul">Consul</a> | 配置中心、注册中心组件                                       |
 | <a target="_blank" href="https://github.com/reactiveui/refit">Refit</a> | 一个声明式自动类型安全的RESTful服务调用组件，用于同步调用其他微服务 |
 | <a target="_blank" href="https://github.com/grpc/grpc-dotnet">Grpc.Net.ClientFactory</a><br />Grpc.Tools | Grpc通讯框架                                                 |
-| <a target="_blank" href="https://github.com/SkyAPM/SkyAPM-dotnet">SkyAPM.Agent.AspNetCore</a> | Skywalking `.NET6探针，性能链路监测组件                      |
+| <a target="_blank" href="https://github.com/SkyAPM/SkyAPM-dotnet">SkyAPM.Agent.AspNetCore</a> | Skywalking .NET探针，性能链路监测组件                        |
 | <a target="_blank" href="https://github.com/castleproject/Core">Castle DynamicProxy</a> | 动态代理，AOP开源实现组件                                    |
 | <a target="_blank" href="https://github.com/PomeloFoundation/Pomelo.EntityFrameworkCore.MySql">Pomelo.EntityFrameworkCore.MySql</a> | EFCore ORM组件                                               |
 | <a target="_blank" href="https://github.com/StackExchange/Dapper">Dapper</a> | 轻量级ORM组件                                                |
@@ -165,10 +167,6 @@ adnc
 #### 如何配置健康检测
 - 文档尚未完成
 
-## 数据库脚本
-
-- [adnc/doc/dbsql at develop · AlphaYu/adnc](https://github.com/AlphaYu/adnc/tree/develop/doc/dbsql)
-
 ## Demo介绍
 
 Demo提供了五个相互关联的微服务，展示了不同的架构风格，本章节将介绍项目结构，解释每个服务的架构风格。
@@ -203,10 +201,10 @@ Shared/
 
 ```
 Admin/
-├── Admin.Api/ - 控制器和API端点
-├── Admin.Application/ - 业务逻辑实现
-├── Admin.Application.Contracts/ - DTO和服务接口
-└── Admin.Repository/ - 数据访问层
+├── Api/ - 控制器和API端点
+├── Application/ - 业务逻辑实现
+├── Application.Contracts/ - DTO和服务接口
+└── Repository/ - 数据访问层
 ```
 
 系统管理服务是系统支撑服务，实现了用户管理、角色管理、权限管理、菜单管理、组织架构、字典管理、系统配置管理。
@@ -217,9 +215,9 @@ Admin/
 
 ```
 Maint/
-├── Maint.Api/ - 控制器和端点
-├── Maint.Application/ - 包含合约和实现
-└── Maint.Repository/ - 数据访问层
+├── Api/ - 控制器和端点
+├── Application/ - 包含合约和实现
+└── Repository/ - 数据访问层
 ```
 
 运维中心服务是系统支撑服务，实现了登录日志、审计日志、异常日志。
@@ -230,7 +228,7 @@ Maint/
 
 ```
 Cust/
-└── Cust.Api/ - 包含控制器、应用逻辑和存储库
+└── Api/ - 包含控制器、应用逻辑和存储库
 ```
 
 客户中心微服务。
@@ -241,10 +239,10 @@ Cust/
 
 ```
 Ord/
-├── Ord.Api/ - API端点
-├── Ord.Application/ - 应用服务
-├── Ord.Domain/ - 领域实体、聚合和领域服务
-└── Ord.Migrations/ - 数据库迁移
+├── Api/ - API端点
+├── Application/ - 应用服务
+├── Domain/ - 领域实体、聚合和领域服务
+└── Migrations/ - 数据库迁移
 ```
 
 订单中心微服务。
@@ -277,17 +275,28 @@ Ord/
 
 ## 其他
 
-### 项目官网
+###  项目官网
+
 - [https://aspdotnetcore.net](https://aspdotnetcore.net)
 
-### 演示地址
-- [http://adnc.aspdotnetcore.net](http://62.234.187.128/)
+### 演示网址
+
+- [https://online.aspdotnetcore.net](https://online.aspdotnetcore.net)
+
+### 代码生成器
+
+- [https://code.aspdotnetcore.net](https://code.aspdotnetcore.net)
+
+### 数据库脚本
+
+- [adnc/doc/dbsql at develop · AlphaYu/adnc](https://github.com/AlphaYu/adnc/tree/develop/doc/dbsql)
+
 ### 问题交流
+
 - QQ群号：780634162
 
 - 都看到这里了，那就点个`star`吧！
 
 ## License
 
-**MIT**   
-**Free Software, Hell Yeah!**
+本项目基于 **MIT License** 开源，详见 [LICENSE](./LICENSE)。
