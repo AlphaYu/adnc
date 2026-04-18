@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# 环境变量
+# Environment variables
 RUNNER_DEMO_SOURCE_ROOT="/adnc/src/Gateways/Ocelot"
 PUBLISH_PATH="bin/Release/net8.0/linux-x64/publish"
 
@@ -8,44 +8,44 @@ OCELOT_IMAGE_NAME="adnc-gateway-ocelot"
 OCELOT_PROJECT_PATH=""
 OCELOT_START_FILE="Adnc.Gateway.Ocelot.dll"
 
-# 失败时终止脚本的函数
+# Function to stop the script on failure
 check_error() {
   if [ $? -ne 0 ]; then
-    echo "错误: $1 失败!"
+    echo "Error: $1 failed!"
     exit 1
   fi
 }
 
-# 发布解决方案
+# Publish the solution
 dotnet publish "${RUNNER_DEMO_SOURCE_ROOT}/Adnc.Ocelot.sln" --configuration Release --runtime linux-x64 --self-contained false
 check_error "dotnet publish"
 
-# 构建镜像的函数
+# Function to build the image
 build_and_push_image() {
   local IMAGE_NAME=$1
   local PROJECT_PATH=$2
   local START_FILE=$3
 
-  echo "--- 构建镜像: ${IMAGE_NAME} ---"
+  echo "--- Building image: ${IMAGE_NAME} ---"
   TARGET_DIR="${RUNNER_DEMO_SOURCE_ROOT}/${PROJECT_PATH}/${PUBLISH_PATH}"
   
   if [ ! -d "$TARGET_DIR" ]; then
-    echo "目录 $TARGET_DIR 不存在，正在创建..."
+    echo "Directory $TARGET_DIR does not exist, creating it..."
     mkdir -p "$TARGET_DIR"
     if [ $? -eq 0 ]; then
-      echo "目录 $TARGET_DIR 创建成功！"
+      echo "Directory $TARGET_DIR was created successfully!"
     else
-      echo "创建目录 $TARGET_DIR 失败！"
+      echo "Failed to create directory $TARGET_DIR!"
       exit 1
     fi
   fi
 
   cd "$TARGET_DIR"
-  check_error "进入目录 $TARGET_DIR"
+  check_error "Enter directory $TARGET_DIR"
 
-  echo "当前目录---${PWD}"
+  echo "Current directory --- ${PWD}"
 
-  # 创建 Dockerfile
+  # Create the Dockerfile
   cat <<EOF > Dockerfile
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
@@ -53,9 +53,9 @@ COPY . /app
 ENTRYPOINT [ "dotnet", "$START_FILE" ]
 EOF
 
-  echo "正在构建镜像: $IMAGE_NAME"
+  echo "Building image: $IMAGE_NAME"
   docker build . --file Dockerfile --tag "$IMAGE_NAME"
-  check_error "Docker 构建 $IMAGE_NAME"
+  check_error "Docker build $IMAGE_NAME"
 
   IMAGE_ID=$(echo "$IMAGE_NAME" | tr '[:upper:]' '[:lower:]')
   echo "IMAGE_ID: $IMAGE_ID"
@@ -65,16 +65,16 @@ EOF
   echo "Docker tag version $IMAGE_ID:$VERSION"
   check_error "Docker tag version $IMAGE_ID:$VERSION"
   
-  # 停止并删除旧容器
+  # Stop and remove old containers
   CONTAINER_IDS=$(docker ps -a --filter "name=${IMAGE_ID}" --format "{{.ID}}")
   if [ -n "$CONTAINER_IDS" ]; then
     docker stop $CONTAINER_IDS
-    echo "停止容器 $CONTAINER_IDS"
-    check_error "停止容器 $CONTAINER_IDS"
+    echo "Stopped containers $CONTAINER_IDS"
+    check_error "Stop containers $CONTAINER_IDS"
     
     docker rm $CONTAINER_IDS
-    echo "删除容器 $CONTAINER_IDS"
-    check_error "删除容器 $CONTAINER_IDS"
+    echo "Removed containers $CONTAINER_IDS"
+    check_error "Remove containers $CONTAINER_IDS"
   fi
   
   docker rmi "${IMAGE_ID}:latest"
@@ -84,49 +84,49 @@ EOF
   check_error "Docker tag $IMAGE_ID:latest"
 }
 
-#删除容器/镜像函数
+# Function to remove containers/images
 remove_container_image(){
   local IMAGE_NAME=$1
   local IMAGE_ID=$(echo "$IMAGE_NAME" | tr '[:upper:]' '[:lower:]')
 
-  #删除旧镜像
-  #获取镜像ID和标签
+  # Remove old images
+  # Get image IDs and tags
   # IMAGE_LIST=$(docker images --filter=reference="${IMAGE_ID}" --format "{{.ID}} {{.Repository}}:{{.Tag}}")
   IMAGE_LIST=$(docker images --filter=reference="${IMAGE_NAME}" --format "{{.Tag}}")
-  # 如果镜像存在，检查并删除
+  # If images exist, inspect and remove them
   if [ -n "$IMAGE_LIST" ]; then
-    echo "检查并删除旧镜像，排除 :latest 标签的镜像..."
+    echo "Checking and deleting old images, excluding those tagged :latest..."
     
-    # 遍历每个镜像
+    # Iterate through each image
     for IMAGE in $IMAGE_LIST; do
     echo "-----IMAGE--------- $IMAGE"
-      IMAGE_TAG=$(echo $IMAGE | awk '{print $1}')  # 提取镜像标签
+      IMAGE_TAG=$(echo $IMAGE | awk '{print $1}')  # Extract the image tag
 
       IMAGE_FULL_NAME="${IMAGE_ID}:${IMAGE_TAG}"
       echo "-----IMAGE_FULL_NAME-----: $IMAGE_FULL_NAME"
 
-      # 判断镜像标签是否为 :latest
+      # Check whether the image tag is :latest
       if [[ "$IMAGE_FULL_NAME" != *":latest" ]]; then
-        echo "删除镜像 $IMAGE_FULL_NAME ..."
-        docker rmi -f $IMAGE_FULL_NAME  # 强制删除
-        check_error "删除旧镜像 $IMAGE_FULL_NAME"
+        echo "Deleting image $IMAGE_FULL_NAME ..."
+        docker rmi -f $IMAGE_FULL_NAME  # Force delete
+        check_error "Delete old image $IMAGE_FULL_NAME"
       else
-        echo "跳过删除镜像 $IMAGE_FULL_NAME - 带有 :latest 标签"
+        echo "Skipping image $IMAGE_FULL_NAME because it has the :latest tag"
       fi
     done
   else
-    echo "镜像 $IMAGE_FULL_NAME 不存在，跳过删除。"
+    echo "Image $IMAGE_FULL_NAME does not exist, skipping deletion."
   fi
 }
 
-# 部署镜像的函数
+# Function to deploy the image
 deploy_image() {
   local IMAGE_NAME=$1
   local IMAGE_ID=$(echo "$IMAGE_NAME" | tr '[:upper:]' '[:lower:]')
 
-  echo "--- 部署镜像: ${IMAGE_NAME} ---"
+  echo "--- Deploying image: ${IMAGE_NAME} ---"
 
-  # 运行新容器
+  # Run the new container
   # -e ASPNETCORE_HOSTINGSTARTUPASSEMBLIES=SkyAPM.Agent.AspNetCore
   # -e SKYWALKING__SERVICENAME="${IMAGE_ID}"  
   # -m 100M \  
@@ -137,8 +137,8 @@ deploy_image() {
     -e ASPNETCORE_ENVIRONMENT=Staging \
     -e TZ=Asia/Shanghai \
     "${IMAGE_ID}:latest"
-  echo "启动新容器 $IMAGE_ID"
-  check_error "启动新容器 $IMAGE_ID"
+  echo "Started new container $IMAGE_ID"
+  check_error "Start new container $IMAGE_ID"
 }
 
 # adnc-gateway-ocelot
