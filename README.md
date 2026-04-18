@@ -1,4 +1,4 @@
-# <div align="center"><img src="https://aspdotnetcore.net/wp-content/uploads/2023/04/adnc-github.png" alt="ADNC-基于.NET平台的微服务开源框架" style="zoom:40%;" /></div>
+# <div align="center"><img src="https://aspdotnetcore.net/wp-content/uploads/2023/04/adnc-github.png" alt="ADNC-基于.NET平台的微服务开源框架" style="zoom:50%;" /></div>
 <div align='center'>
 <a href="./LICENSE">
 <img alt="GitHub license" src="https://img.shields.io/github/license/AlphaYu/Adnc"/>
