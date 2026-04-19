@@ -1,3 +1,5 @@
+using Adnc.Demo.Ord.Application.EventSubscribers;
+using Adnc.Demo.Remote.Http;
 using Adnc.Shared.Application.Extensions;
 using Adnc.Shared.Application.Registrar;
 using Microsoft.Extensions.Configuration;
@@ -27,6 +29,6 @@ public sealed class DependencyRegistrar(IServiceCollection services, IServiceInf
         AddRestClient<IAdminRestClient>(ServiceAddressConsts.AdminDemoService, restPolicies);
         AddRestClient<IWhseRestClient>(ServiceAddressConsts.WhseDemoService, restPolicies);
         //rpc-event
-        AddCapEventBus([typeof(CapEventSubscriber)]);
+        AddCapEventBus([typeof(WarehouseQtyBlockedEventSubscriber)]);
     }
 }

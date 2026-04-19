@@ -5,7 +5,7 @@ namespace Adnc.Demo.Ord.Api.Controllers;
 /// <summary>
 /// Order management
 /// </summary>
-[Route("ord/orders")]
+[Route($"{RouteConsts.OrdRoot}/orders")]
 [ApiController]
 public class OrderController(IOrderService orderSrv) : AdncControllerBase
 {

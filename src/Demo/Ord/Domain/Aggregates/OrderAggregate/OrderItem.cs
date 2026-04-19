@@ -5,6 +5,8 @@ namespace Adnc.Demo.Ord.Domain.Aggregates.OrderAggregate;
 /// </summary>
 public class OrderItem : DomainEntity
 {
+    public static readonly int Name_MaxLength = 64;
+
     private OrderItem()
     {
         Product = default!;

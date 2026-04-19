@@ -1,5 +1,5 @@
 using Adnc.Demo.Ord.Application.Contracts.Dtos.Order;
-using Adnc.Demo.Remote.Event;
+using Adnc.Infra.EventBus.Tracker;
 
 namespace Adnc.Demo.Ord.Application.Services;
 
@@ -48,7 +48,7 @@ public class OrderService(IEfBasicRepository<Order> orderRepo, OrderManager orde
     /// <param name="eventDto"></param>
     /// <param name="tracker"></param>
     /// <returns></returns>
-    public async Task MarkCreatedStatusAsync(WarehouseQtyBlockedEvent eventDto, IMessageTracker tracker)
+    public async Task MarkCreatedStatusAsync(Remote.Event.WarehouseQtyBlockedEvent eventDto, IMessageTracker tracker)
     {
         eventDto.TrimStringFields();
         var order = await orderRepo.GetRequiredAsync(eventDto.OrderId);

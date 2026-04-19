@@ -5,6 +5,12 @@ namespace Adnc.Demo.Ord.Domain.Aggregates.OrderAggregate;
 /// </summary>
 public class Order : AggregateRootWithBasicAuditInfo
 {
+    public static readonly int Remark_MaxLength = 64;
+    public static readonly int ChangesReason_MaxLength = 32;
+    public static readonly int Name_MaxLength = 16;
+    public static readonly int Phone_MaxLength = 11;
+    public static readonly int Address_MaxLength = 64;
+
     private Order()
     {
         Status = default!;

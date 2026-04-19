@@ -1,5 +1,6 @@
 using Adnc.Demo.Ord.Application.Contracts.Dtos.Order;
 using Adnc.Demo.Remote.Event;
+using Adnc.Infra.EventBus.Tracker;
 
 namespace Adnc.Demo.Ord.Application.Contracts.Interfaces;
 
@@ -14,7 +15,7 @@ public interface IOrderService : IAppService
 
     [OperateLog(LogName = "Change order status")]
     [UnitOfWork]
-    Task MarkCreatedStatusAsync(WarehouseQtyBlockedEvent eventDto, IMessageTracker tracker);
+    Task MarkCreatedStatusAsync(Remote.Event.WarehouseQtyBlockedEvent eventDto, IMessageTracker tracker);
 
     [OperateLog(LogName = "Pay order")]
     [UnitOfWork(Distributed = true)]
