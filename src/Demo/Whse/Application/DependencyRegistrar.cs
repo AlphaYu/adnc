@@ -15,11 +15,9 @@ public sealed class DependencyRegistrar(IServiceCollection services, IServiceInf
     private readonly IConfiguration _configuration = configuration;
     private readonly ServiceLifetime _lifetime = lifetime;
 
-    public override Assembly ApplicationLayerAssembly => Assembly.GetExecutingAssembly();
+    protected override Assembly ApplicationLayerAssembly => Assembly.GetExecutingAssembly();
 
-    public override Assembly ContractsLayerAssembly => Assembly.GetExecutingAssembly();
-
-    public override Assembly RepositoryOrDomainLayerAssembly => typeof(EntityInfo).Assembly;
+    protected override Assembly RepositoryOrDomainLayerAssembly => typeof(EntityInfo).Assembly;
 
     public override void AddApplicationServices()
     {

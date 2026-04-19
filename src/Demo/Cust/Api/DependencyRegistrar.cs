@@ -50,10 +50,8 @@ public sealed class ApplicationLayerRegistrar(IServiceCollection services, IServ
     //private readonly IServiceInfo _serviceInfo = serviceInfo;
     //private readonly IConfiguration _configuration = configuration;
     private readonly Assembly _assembly = Assembly.GetExecutingAssembly();
-
-    public override Assembly ApplicationLayerAssembly => _assembly;
-    public override Assembly ContractsLayerAssembly => _assembly;
-    public override Assembly RepositoryOrDomainLayerAssembly => _assembly;
+    protected override Assembly ApplicationLayerAssembly => _assembly;
+    protected override Assembly RepositoryOrDomainLayerAssembly => _assembly;
 
     public override void AddApplicationServices()
     {

@@ -20,7 +20,4 @@
     <PackageReference Include="Adnc.Infra.Repository.EfCore.SqlServer" />
 		<PackageReference Include="Adnc.Shared.Application" />
 	</ItemGroup>
-	<ItemGroup>
-	  <Folder Include="Validators\" />
-	</ItemGroup>
 </Project>

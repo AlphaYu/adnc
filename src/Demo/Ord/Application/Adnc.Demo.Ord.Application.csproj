@@ -11,7 +11,4 @@
     <PackageReference Include="Adnc.Infra.Repository" />
     <PackageReference Include="Adnc.Shared.Application" />
 	</ItemGroup>
-	<ItemGroup>
-	  <Folder Include="Validators\" />
-	</ItemGroup>
 </Project>

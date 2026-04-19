@@ -26,9 +26,9 @@ public abstract partial class AbstractApplicationDependencyRegistrar
     }
 
     public string Name => "application";
-    public abstract Assembly ApplicationLayerAssembly { get; }
+    protected abstract Assembly ApplicationLayerAssembly { get; }
     //public abstract Assembly ContractsLayerAssembly { get; }
-    public abstract Assembly RepositoryOrDomainLayerAssembly { get; }
+    protected abstract Assembly RepositoryOrDomainLayerAssembly { get; }
     protected List<Type> DefaultInterceptorTypes => [typeof(OperateLogInterceptor), typeof(CachingInterceptor), typeof(UowInterceptor)];
     internal IServiceCollection Services { get; init; }
     internal IConfiguration Configuration { get; init; }
