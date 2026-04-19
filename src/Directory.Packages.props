@@ -27,6 +27,7 @@
     <PackageVersion Include="Microsoft.Extensions.Options" Version="8.0.2"/>
     <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.3"/>
     <PackageVersion Include="Microsoft.Extensions.Http.Polly" Version="8.0.13"/>
+    <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="8.0.0"/>
     <!--EFCore-->
     <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="8.0.13"/>
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.13"/>
