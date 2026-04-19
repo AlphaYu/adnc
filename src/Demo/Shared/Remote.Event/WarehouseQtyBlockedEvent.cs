@@ -1,12 +1,12 @@
-using Adnc.Shared.Remote.Event;
+using Adnc.Infra.EventBus;
 
 namespace Adnc.Demo.Remote.Event;
 
 /// <summary>
-/// 锁定库存事件
+/// Lock Inventory Event
 /// </summary>
 [Serializable]
-public class WarehouseQtyBlockedEvent : EventEntity
+public class WarehouseQtyBlockedEvent : BaseEvent
 {
     public WarehouseQtyBlockedEvent()
     {

@@ -1,12 +1,12 @@
-using Adnc.Shared.Remote.Event;
+using Adnc.Infra.EventBus;
 
 namespace Adnc.Demo.Remote.Event;
 
 /// <summary>
-/// 订单取消事件
+/// Order Cancelled Event
 /// </summary>
 [Serializable]
-public sealed class OrderCanceledEvent : EventEntity
+public sealed class OrderCanceledEvent : BaseEvent
 {
     public OrderCanceledEvent()
     {

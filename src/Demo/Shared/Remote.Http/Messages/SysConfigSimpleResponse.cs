@@ -3,17 +3,17 @@ namespace Adnc.Demo.Remote.Http.Messages;
 public class SysConfigSimpleResponse
 {
     /// <summary>
-    /// 参数键
+    /// param key
     /// </summary>
     public string Key { get; set; } = string.Empty;
 
     /// <summary>
-    /// 参数名
+    /// param name
     /// </summary>
     public string Name { get; set; } = string.Empty;
 
     /// <summary>
-    /// 参数值
+    /// param value
     /// </summary>
     public string Value { get; set; } = string.Empty;
 }

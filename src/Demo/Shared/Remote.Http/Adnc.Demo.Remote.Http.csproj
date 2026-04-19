@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<Description>该层用来定义Refit客户端(接口)，不需要发布的到Nuget。</Description>
+		<Description>This layer is used to define Refit clients (interfaces) and does not need to be published to NuGet.</Description>
 	</PropertyGroup>
 	<ItemGroup Condition="'$(SolutionName)'=='Adnc'">
 		<ProjectReference Include="..\..\..\Infrastructures\Core\Adnc.Infra.Core.csproj" />

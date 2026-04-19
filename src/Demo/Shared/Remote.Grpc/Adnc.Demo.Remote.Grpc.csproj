@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<Description>该层用来定义Grpc客户端，不需要发布的到Nuget。</Description>
+		<Description>This layer is used to define gRPC clients and does not need to be published to NuGet.</Description>
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="Grpc.Net.ClientFactory"/>

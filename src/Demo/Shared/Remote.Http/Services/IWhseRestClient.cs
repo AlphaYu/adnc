@@ -5,7 +5,7 @@ namespace Adnc.Demo.Remote.Http.Services;
 public interface IWhseRestClient : IRestClient
 {
     /// <summary>
-    /// whse服务-获取商品列表
+    /// Get Products List
     /// </summary>
     /// <returns></returns>
     [Headers("Authorization: Basic", "Cache: 1000")]

@@ -1,12 +1,12 @@
-using Adnc.Shared.Remote.Event;
+using Adnc.Infra.EventBus;
 
 namespace Adnc.Demo.Remote.Event;
 
 /// <summary>
-/// 客户充值事件
+/// Customer Recharge Event
 /// </summary>
 [Serializable]
-public class CustomerRechargedEvent : EventEntity
+public class CustomerRechargedEvent : BaseEvent
 {
     public CustomerRechargedEvent()
     {

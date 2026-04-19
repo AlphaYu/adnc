@@ -1,12 +1,12 @@
-using Adnc.Shared.Remote.Event;
+using Adnc.Infra.EventBus;
 
 namespace Adnc.Demo.Remote.Event;
 
 /// <summary>
-/// 订单支付事件
+/// Order Paid Event
 /// </summary>
 [Serializable]
-public sealed class OrderPaidEvent : EventEntity
+public sealed class OrderPaidEvent : BaseEvent
 {
     public OrderPaidEvent()
     {

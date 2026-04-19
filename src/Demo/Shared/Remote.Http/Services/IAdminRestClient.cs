@@ -5,7 +5,7 @@ namespace Adnc.Demo.Remote.Http.Services;
 public interface IAdminRestClient : IRestClient
 {
     /// <summary>
-    /// 获取字典选项
+    /// Get Dictionary Options
     /// </summary>
     /// <param name="codes"></param>
     /// <returns><see cref="List{DictOptionResponse}"/></returns>
@@ -15,7 +15,7 @@ public interface IAdminRestClient : IRestClient
     Task<List<DictOptionResponse>> GetDictOptionsAsync(string? codes = null);
 
     /// <summary>
-    /// 获取系统配置数据
+    /// Get SystemConfig Data
     /// </summary>
     /// <param name="keys"></param>
     /// <returns><see cref="List{SysConfigSimpleResponse}"/></returns>
