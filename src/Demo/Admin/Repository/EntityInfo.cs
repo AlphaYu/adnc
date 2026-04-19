@@ -16,6 +16,5 @@ public class EntityInfo : AbstractEntityInfo
         modelBuilder.Entity<SysConfig>().ToTable("sys_config");
         modelBuilder.Entity<Dict>().ToTable("sys_dictionary");
         modelBuilder.Entity<DictData>().ToTable("sys_dictionary_data");
-        //modelBuilder.Entity<Notice>().ToTable("sys_notice");
     }
 }

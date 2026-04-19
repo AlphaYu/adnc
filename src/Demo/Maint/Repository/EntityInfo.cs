@@ -6,5 +6,6 @@ public class EntityInfo : AbstractEntityInfo
 
     protected override void SetTableName(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<EventTracker>().ToTable("maint_eventtracker");
     }
 }
