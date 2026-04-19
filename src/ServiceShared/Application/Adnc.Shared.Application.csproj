@@ -10,7 +10,8 @@
 		<PackageReference Include="EFCore.NamingConventions" />
 		<PackageReference Include="Grpc.Net.ClientFactory" />
 		<PackageReference Include="AutoMapper" />
-	</ItemGroup>
+    <PackageReference Include="FluentValidation" />
+  </ItemGroup>
 	<ItemGroup>
     <ProjectReference Include="..\..\Infrastructures\Consul\Adnc.Infra.Consul.csproj" />
     <ProjectReference Include="..\..\Infrastructures\Repository.Dapper\Adnc.Infra.Repository.Dapper.csproj" />
