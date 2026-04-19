@@ -1,3 +1,5 @@
+using Adnc.Infra.EventBus.Tracker;
+
 namespace Adnc.Shared.Application.Services.Trackers;
 
 public sealed class MessageTrackerFactory(IEnumerable<IMessageTracker> trackers)

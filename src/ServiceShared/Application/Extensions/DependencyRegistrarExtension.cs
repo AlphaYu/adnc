@@ -48,13 +48,13 @@ public static class DependencyRegistrarExtension
         var circuitBreakerPolicy = Policy.Handle<Exception>()
                                          .CircuitBreakerAsync
                                          (
-                                              // Number of errors allowed before breaking
+                                             // Number of errors allowed before breaking
                                              exceptionsAllowedBeforeBreaking: 10
                                              ,
-                                              // Break duration
+                                             // Break duration
                                              durationOfBreak: TimeSpan.FromMinutes(3)
                                              ,
-                                              // Triggered when the circuit breaks
+                                             // Triggered when the circuit breaks
                                              onBreak: (ex, breakDelay) =>
                                              {
                                                  //todo
@@ -62,13 +62,13 @@ public static class DependencyRegistrarExtension
                                                  var delay = breakDelay;
                                              }
                                              ,
-                                              // Triggered when the circuit resets
+                                             // Triggered when the circuit resets
                                              onReset: () =>
                                              {
                                                  //todo
                                              }
                                              ,
-                                              // Triggered when the break duration has elapsed
+                                             // Triggered when the break duration has elapsed
                                              onHalfOpen: () =>
                                              {
                                                  //todo

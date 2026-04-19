@@ -1,3 +1,6 @@
+using Adnc.Infra.EventBus;
+using Adnc.Infra.EventBus.Tracker;
+
 namespace Adnc.Shared.Application.Services.Trackers;
 
 public class DbMessageTrackerService(IEfRepository<EventTracker> trackerRepo) : IMessageTracker
@@ -19,5 +22,15 @@ public class DbMessageTrackerService(IEfRepository<EventTracker> trackerRepo) : 
             EventId = eventId,
             TrackerName = trackerName
         });
+    }
+
+    public async Task<bool> HasProcessedAsync(BaseEvent eventModel)
+    {
+        return await HasProcessedAsync(eventModel.Id, eventModel.EventTarget);
+    }
+
+    public async Task MarkAsProcessedAsync(BaseEvent eventModel)
+    {
+        await MarkAsProcessedAsync(eventModel.Id, eventModel.EventTarget);
     }
 }

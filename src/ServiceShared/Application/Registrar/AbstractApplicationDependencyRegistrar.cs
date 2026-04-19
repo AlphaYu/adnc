@@ -1,3 +1,4 @@
+using Adnc.Infra.EventBus.Tracker;
 using Adnc.Infra.Repository.Interceptor.Castle;
 using Adnc.Shared.Application.Mapper.AutoMapper;
 using Adnc.Shared.Application.Services.Trackers;
@@ -6,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 namespace Adnc.Shared.Application.Registrar;
 
 /// <summary>
-    /// Application dependency registrar
+/// Application dependency registrar
 /// </summary>
 public abstract partial class AbstractApplicationDependencyRegistrar
 {

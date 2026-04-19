@@ -1,4 +1,4 @@
-namespace Adnc.Shared.Application.Contracts.Dtos.Validators;
+namespace Adnc.Shared.Application.Validators;
 
 public static class Regulars
 {

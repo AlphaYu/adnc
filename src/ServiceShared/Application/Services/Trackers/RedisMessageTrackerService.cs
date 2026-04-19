@@ -1,3 +1,6 @@
+using Adnc.Infra.EventBus;
+using Adnc.Infra.EventBus.Tracker;
+
 namespace Adnc.Shared.Application.Services.Trackers;
 
 public class RedisMessageTrackerService : IMessageTracker
@@ -12,5 +15,15 @@ public class RedisMessageTrackerService : IMessageTracker
     public async Task MarkAsProcessedAsync(long eventId, string trackerName)
     {
         await Task.CompletedTask;
+    }
+
+    public async Task<bool> HasProcessedAsync(BaseEvent eventModel)
+    {
+        return await HasProcessedAsync(eventModel.Id, eventModel.EventTarget);
+    }
+
+    public async Task MarkAsProcessedAsync(BaseEvent eventModel)
+    {
+        await MarkAsProcessedAsync(eventModel.Id, eventModel.EventTarget);
     }
 }

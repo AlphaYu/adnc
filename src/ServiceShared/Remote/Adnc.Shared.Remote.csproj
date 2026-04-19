@@ -8,7 +8,6 @@
 		<PackageReference Include="Microsoft.Extensions.Configuration" />
 		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" />
 		<PackageReference Include="Refit.HttpClientFactory" />
-		<PackageReference Include="DotNetCore.CAP" />
 	</ItemGroup>
 	<ItemGroup>
     <ProjectReference Include="..\..\Infrastructures\Core\Adnc.Infra.Core.csproj" />
