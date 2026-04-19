@@ -5,6 +5,11 @@ namespace Adnc.Demo.Cust.Api.Repository.Entities;
 /// </summary>
 public class Customer : EfFullAuditEntity
 {
+    public static readonly int Account_MaxLength = 16;
+    public static readonly int Password_Maxlength = 32;
+    public static readonly int Nickname_MaxLength = 16;
+    public static readonly int Realname_Maxlength = 16;
+
     public string Account { get; set; } = string.Empty;
 
     public string Password { get; set; } = string.Empty;

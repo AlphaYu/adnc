@@ -5,6 +5,9 @@ namespace Adnc.Demo.Cust.Api.Repository.Entities;
 /// </summary>
 public class TransactionLog : EfBasicAuditEntity
 {
+    public static readonly int Account_MaxLength = 16;
+    public static readonly int Remark_MaxLength = 64;
+
     public long CustomerId { get; set; }
 
     public string Account { get; set; } = string.Empty;

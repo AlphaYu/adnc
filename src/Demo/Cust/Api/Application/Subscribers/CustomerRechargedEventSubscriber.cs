@@ -1,9 +1,10 @@
 using Adnc.Demo.Remote.Event;
+using Adnc.Infra.EventBus.Tracker;
 
 namespace Adnc.Demo.Cust.Api.Application.Subscribers;
 
-public sealed partial class CapEventSubscriber(IUnitOfWork unitOfWork, IEfRepository<Finance> finaceRepo, IEfRepository<TransactionLog> transactionLogRepo
-    , ILogger<CapEventSubscriber> logger, MessageTrackerFactory trackerFactory) : ICapSubscribe
+public sealed partial class CustomerRechargedEventSubscriber(IUnitOfWork unitOfWork, IEfRepository<Finance> finaceRepo, IEfRepository<TransactionLog> transactionLogRepo
+    , ILogger<CustomerRechargedEventSubscriber> logger, MessageTrackerFactory trackerFactory) : ICapSubscribe
 {
     private readonly IMessageTracker _tracker = trackerFactory.Create();
 

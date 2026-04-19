@@ -1,6 +1,6 @@
-namespace Adnc.Demo.Cust.Api.Repository;
+namespace Adnc.Demo.Cust.Api.Repository.Extensions;
 
-public static class RepositoryExtension
+public static class CustomerExtension
 {
     /// <summary>
     /// Query paginated customer data via SQL

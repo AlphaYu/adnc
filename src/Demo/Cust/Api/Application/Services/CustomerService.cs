@@ -1,5 +1,6 @@
 using System.Text;
 using Adnc.Demo.Cust.Api.Application.Contracts.Dtos.Customer;
+using Adnc.Demo.Cust.Api.Repository.Extensions;
 using Adnc.Demo.Remote.Event;
 using Adnc.Demo.Remote.Http.Services;
 

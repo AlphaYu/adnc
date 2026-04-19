@@ -1,11 +1,8 @@
 global using System.Linq.Expressions;
 global using System.Net;
 global using System.Reflection;
-global using Adnc.Demo.Const;
-global using Adnc.Demo.Const.Permissions.Cust;
 global using Adnc.Demo.Cust.Api.Application.Contracts.Interfaces;
 global using Adnc.Demo.Cust.Api.Application.Subscribers;
-global using Adnc.Demo.Cust.Api.Repository;
 global using Adnc.Demo.Cust.Api.Repository.Entities;
 global using Adnc.Infra.EventBus;
 global using Adnc.Infra.IdGenerater.Yitter;
