@@ -51,7 +51,7 @@ public sealed class ConnectionManager : IConnectionManager
         if (options.HostName.Contains(','))
         {
             logger.LogInformation("create a connection using a list of endpoints");
-        // Required for RabbitMQ clusters
+            // Required for RabbitMQ clusters
             factory.AutomaticRecoveryEnabled = true;
             //factory.TopologyRecoveryEnabled=true
             return factory.CreateConnectionAsync(AmqpTcpEndpoint.ParseMultiple(options.HostName)).GetAwaiter().GetResult();

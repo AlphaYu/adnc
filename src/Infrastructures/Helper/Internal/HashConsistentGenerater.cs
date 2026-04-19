@@ -1,4 +1,4 @@
-﻿﻿namespace Adnc.Infra.Helper.Internal;
+namespace Adnc.Infra.Helper.Internal;
 
 /// <summary>
 /// Consistent hashing algorithm
