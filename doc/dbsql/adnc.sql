@@ -1,10 +1,3 @@
--- --------------------------------------------------------
--- 主机:                           62.234.187.128
--- 服务器版本:                        11.7.2-MariaDB-ubu2404 - mariadb.org binary distribution
--- 服务器操作系统:                      debian-linux-gnu
--- HeidiSQL 版本:                  12.1.0.6537
--- --------------------------------------------------------
-
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET NAMES utf8 */;
 /*!50503 SET NAMES utf8mb4 */;
@@ -14,57 +7,50 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
-
--- 导出 adnc_admin 的数据库结构
 CREATE DATABASE IF NOT EXISTS `adnc_admin` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_uca1400_ai_ci */;
 USE `adnc_admin`;
 
--- 导出  表 adnc_admin.sys_config 结构
 CREATE TABLE IF NOT EXISTS `sys_config` (
   `id` bigint(20) NOT NULL,
-  `createby` bigint(20) NOT NULL COMMENT '创建人',
-  `createtime` datetime(6) NOT NULL COMMENT '创建时间/注册时间',
-  `modifyby` bigint(20) NOT NULL COMMENT '最后更新人',
-  `modifytime` datetime(6) NOT NULL COMMENT '最后更新时间',
-  `key` varchar(64) NOT NULL COMMENT '参数键',
-  `name` varchar(64) NOT NULL COMMENT '参数名',
-  `value` varchar(128) NOT NULL COMMENT '参数值',
-  `remark` varchar(128) NOT NULL COMMENT '备注',
+  `createby` bigint(20) NOT NULL,
+  `createtime` datetime(6) NOT NULL,
+  `modifyby` bigint(20) NOT NULL,
+  `modifytime` datetime(6) NOT NULL,
+  `key` varchar(64) NOT NULL COMMENT 'Parameter key',
+  `name` varchar(64) NOT NULL COMMENT 'Parameter name',
+  `value` varchar(128) NOT NULL COMMENT 'Parameter value',
+  `remark` varchar(128) NOT NULL COMMENT 'Remark',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci COMMENT='系统参数';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci COMMENT='System parameter';
 
--- 正在导出表  adnc_admin.sys_config 的数据：~0 rows (大约)
 INSERT INTO `sys_config` (`id`, `createby`, `createtime`, `modifyby`, `modifytime`, `key`, `name`, `value`, `remark`) VALUES
 	(654337157616325, 653335112912901, '2025-03-14 09:24:44.641988', 653335112912901, '2025-03-14 09:24:44.642019', 'weixin-key', '微信接口Key', '343sfsdfas', '微信接口配置');
 
--- 导出  表 adnc_admin.sys_dictionary 结构
 CREATE TABLE IF NOT EXISTS `sys_dictionary` (
   `id` bigint(20) NOT NULL,
-  `createby` bigint(20) NOT NULL COMMENT '创建人',
-  `createtime` datetime(6) NOT NULL COMMENT '创建时间/注册时间',
-  `modifyby` bigint(20) NOT NULL COMMENT '最后更新人',
-  `modifytime` datetime(6) NOT NULL COMMENT '最后更新时间',
+  `createby` bigint(20) NOT NULL,
+  `createtime` datetime(6) NOT NULL,
+  `modifyby` bigint(20) NOT NULL,
+  `modifytime` datetime(6) NOT NULL,
   `code` varchar(32) NOT NULL,
   `name` varchar(32) NOT NULL,
   `remark` varchar(128) NOT NULL,
   `status` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci COMMENT='字典';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci COMMENT='Dictionary';
 
--- 正在导出表  adnc_admin.sys_dictionary 的数据：~4 rows (大约)
 INSERT INTO `sys_dictionary` (`id`, `createby`, `createtime`, `modifyby`, `modifytime`, `code`, `name`, `remark`, `status`) VALUES
 	(654231800692741, 653335112912901, '2025-03-14 02:16:02.842381', 653335112912901, '2025-03-14 02:16:02.847194', 'notice_type', '通知类型', '', 1),
 	(654240219889733, 653335112912901, '2025-03-14 02:50:18.256197', 653335112912901, '2025-03-14 02:50:50.768281', 'notice_level', '通知级别', '', 1),
 	(657672185329605, 653335112912901, '2025-03-23 19:35:00.432169', 653335112912901, '2025-03-23 19:37:07.391462', 'exchange_behavior', '客户金额变动类型', '', 1),
 	(657672310503365, 653335112912901, '2025-03-23 19:35:30.952618', 653335112912901, '2025-03-23 19:37:20.731602', 'exchage_status', '客户金额变动状态', '', 1);
 
--- 导出  表 adnc_admin.sys_dictionary_data 结构
 CREATE TABLE IF NOT EXISTS `sys_dictionary_data` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `createby` bigint(20) NOT NULL COMMENT '创建人',
-  `createtime` datetime(6) NOT NULL COMMENT '创建时间/注册时间',
-  `modifyby` bigint(20) NOT NULL COMMENT '最后更新人',
-  `modifytime` datetime(6) NOT NULL COMMENT '最后更新时间',
+  `id` bigint(20) NOT NULL,
+  `createby` bigint(20) NOT NULL,
+  `createtime` datetime(6) NOT NULL,
+  `modifyby` bigint(20) NOT NULL,
+  `modifytime` datetime(6) NOT NULL,
   `dictcode` varchar(32) NOT NULL,
   `label` varchar(32) NOT NULL,
   `value` varchar(32) NOT NULL,
@@ -72,9 +58,8 @@ CREATE TABLE IF NOT EXISTS `sys_dictionary_data` (
   `status` tinyint(1) NOT NULL,
   `ordinal` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=658281065769542 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci COMMENT='字典数据';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci COMMENT='Dictionary data';
 
--- 正在导出表  adnc_admin.sys_dictionary_data 的数据：~14 rows (大约)
 INSERT INTO `sys_dictionary_data` (`id`, `createby`, `createtime`, `modifyby`, `modifytime`, `dictcode`, `label`, `value`, `tagtype`, `status`, `ordinal`) VALUES
 	(654239258492997, 653335112912901, '2025-03-14 02:46:23.753258', 653335112912901, '2025-03-14 02:46:23.764096', 'notice_type', '系统升级', '1', 'success', 1, 1),
 	(654239345217605, 653335112912901, '2025-03-14 02:46:44.662244', 653335112912901, '2025-03-14 02:46:44.662315', 'notice_type', '系统维护', '2', 'warning', 1, 2),
@@ -91,45 +76,41 @@ INSERT INTO `sys_dictionary_data` (`id`, `createby`, `createtime`, `modifyby`, `
 	(657673015670725, 653335112912901, '2025-03-23 19:38:23.111797', 653335112912901, '2025-03-23 19:38:48.499734', 'exchage_status', '已失败', '2016', 'danger', 1, 6),
 	(658281065769541, 653335112912901, '2025-03-25 12:52:32.845266', 653335112912901, '2025-03-25 12:55:21.807517', 'exchange_behavior', '订单交易', '8008', 'primary', 1, 1);
 
--- 导出  表 adnc_admin.sys_eventtracker 结构
 CREATE TABLE IF NOT EXISTS `sys_eventtracker` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `eventid` bigint(20) NOT NULL,
   `trackername` varchar(50) NOT NULL,
-  `createby` bigint(20) NOT NULL COMMENT '创建人',
-  `createtime` datetime(6) NOT NULL COMMENT '创建时间/注册时间',
+  `createby` bigint(20) NOT NULL,
+  `createtime` datetime(6) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `ix_sys_eventtracker_eventid_trackername` (`eventid`,`trackername`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci COMMENT='事件跟踪/处理信息';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
 
--- 正在导出表  adnc_admin.sys_eventtracker 的数据：~0 rows (大约)
 
--- 导出  表 adnc_admin.sys_menu 结构
 CREATE TABLE IF NOT EXISTS `sys_menu` (
   `id` bigint(20) NOT NULL,
-  `createby` bigint(20) NOT NULL COMMENT '创建人',
-  `createtime` datetime(6) NOT NULL COMMENT '创建时间/注册时间',
-  `modifyby` bigint(20) NOT NULL COMMENT '最后更新人',
-  `modifytime` datetime(6) NOT NULL COMMENT '最后更新时间',
-  `parentid` bigint(20) NOT NULL COMMENT '父菜单Id',
-  `parentids` varchar(128) NOT NULL COMMENT '父菜单Id组合',
-  `name` varchar(32) NOT NULL COMMENT '名称',
-  `perm` varchar(32) NOT NULL COMMENT '权限编码',
-  `routename` varchar(64) NOT NULL COMMENT '路由名称',
-  `routepath` varchar(64) NOT NULL COMMENT '路由路径',
-  `type` varchar(16) NOT NULL COMMENT '菜单类型',
-  `component` varchar(64) NOT NULL COMMENT '組件配置',
-  `visible` tinyint(1) NOT NULL COMMENT '是否显示',
-  `redirect` varchar(128) NOT NULL COMMENT '跳转路由路径',
-  `icon` varchar(32) NOT NULL COMMENT '图标',
-  `keepalive` tinyint(1) NOT NULL COMMENT '是否开启页面缓存',
-  `alwaysshow` tinyint(1) NOT NULL COMMENT '只有一个子路由是否始终显示',
-  `params` varchar(128) NOT NULL COMMENT '路由参数',
-  `ordinal` int(11) NOT NULL COMMENT '序号',
+  `createby` bigint(20) NOT NULL,
+  `createtime` datetime(6) NOT NULL,
+  `modifyby` bigint(20) NOT NULL,
+  `modifytime` datetime(6) NOT NULL,
+  `parentid` bigint(20) NOT NULL COMMENT 'Parent menu ID',
+  `parentids` varchar(128) NOT NULL COMMENT 'Parent menu ID path',
+  `name` varchar(32) NOT NULL COMMENT 'Name',
+  `perm` varchar(32) NOT NULL COMMENT 'Permission code',
+  `routename` varchar(64) NOT NULL COMMENT 'Route name',
+  `routepath` varchar(64) NOT NULL COMMENT 'Route path',
+  `type` varchar(16) NOT NULL COMMENT 'Menu type',
+  `component` varchar(64) NOT NULL COMMENT 'Component configuration',
+  `visible` tinyint(1) NOT NULL COMMENT 'Visible',
+  `redirect` varchar(128) NOT NULL COMMENT 'Redirect route path',
+  `icon` varchar(32) NOT NULL COMMENT 'Icon',
+  `keepalive` tinyint(1) NOT NULL COMMENT 'Enable page caching',
+  `alwaysshow` tinyint(1) NOT NULL COMMENT 'Always show when there is only one child route',
+  `params` varchar(128) NOT NULL COMMENT 'Route parameters',
+  `ordinal` int(11) NOT NULL COMMENT 'Ordinal',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci COMMENT='菜单';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci COMMENT='Menu';
 
--- 正在导出表  adnc_admin.sys_menu 的数据：~54 rows (大约)
 INSERT INTO `sys_menu` (`id`, `createby`, `createtime`, `modifyby`, `modifytime`, `parentid`, `parentids`, `name`, `perm`, `routename`, `routepath`, `type`, `component`, `visible`, `redirect`, `icon`, `keepalive`, `alwaysshow`, `params`, `ordinal`) VALUES
 	(653342080185029, 1000000000000, '2025-03-11 13:55:46.028479', 653337659433029, '2025-03-14 16:30:12.233442', 0, '[0]', '系统管理', '', '', '/system', 'CATALOG', 'Layout', 1, '/system/user', 'role', 1, 1, '', 1),
 	(653342584296133, 1000000000000, '2025-03-11 13:57:49.016162', 653335112912901, '2025-03-14 09:10:34.425720', 653342080185029, '[0][653342080185029]', '菜单管理', '', 'Menu', 'menu', 'MENU', 'system/menu/index', 1, '', 'menu', 1, 0, '', 4),
@@ -187,13 +168,12 @@ INSERT INTO `sys_menu` (`id`, `createby`, `createtime`, `modifyby`, `modifytime`
 	(657670470342597, 653335112912901, '2025-03-23 19:28:01.718644', 653335112912901, '2025-03-23 19:31:45.945099', 654442132821701, '[0][654442132821701]', 'Loki日志', '', '', 'http://62.234.187.128:9010', 'EXTLINK', '', 1, '', 'el-icon-Cherry', 1, 0, '', 8),
 	(657670977337285, 653335112912901, '2025-03-23 19:30:05.477607', 653335112912901, '2025-03-23 19:30:05.477628', 654442132821701, '[0][654442132821701]', '容器管理', '', '', 'http://62.234.187.128:9000', 'EXTLINK', '', 1, '', 'el-icon-Compass', 1, 0, '', 1);
 
--- 导出  表 adnc_admin.sys_organization 结构
 CREATE TABLE IF NOT EXISTS `sys_organization` (
   `id` bigint(20) NOT NULL,
-  `createby` bigint(20) NOT NULL COMMENT '创建人',
-  `createtime` datetime(6) NOT NULL COMMENT '创建时间/注册时间',
-  `modifyby` bigint(20) NOT NULL COMMENT '最后更新人',
-  `modifytime` datetime(6) NOT NULL COMMENT '最后更新时间',
+  `createby` bigint(20) NOT NULL,
+  `createtime` datetime(6) NOT NULL,
+  `modifyby` bigint(20) NOT NULL,
+  `modifytime` datetime(6) NOT NULL,
   `parentid` bigint(20) NOT NULL,
   `parentids` varchar(128) NOT NULL,
   `code` varchar(16) NOT NULL,
@@ -201,9 +181,8 @@ CREATE TABLE IF NOT EXISTS `sys_organization` (
   `status` tinyint(1) NOT NULL,
   `ordinal` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci COMMENT='部门';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci COMMENT='Department';
 
--- 正在导出表  adnc_admin.sys_organization 的数据：~6 rows (大约)
 INSERT INTO `sys_organization` (`id`, `createby`, `createtime`, `modifyby`, `modifytime`, `parentid`, `parentids`, `code`, `name`, `status`, `ordinal`) VALUES
 	(653725132137989, 653335112912901, '2025-03-12 15:54:24.703512', 653335112912901, '2025-03-12 15:54:24.709316', 0, '[0]', 'microsoft', '微软中国有限公司', 1, 1),
 	(653726253618757, 653335112912901, '2025-03-12 15:58:58.512981', 653335112912901, '2025-03-12 15:58:58.517780', 653725132137989, '[0]', 'office', 'office事业部', 1, 1),
@@ -212,35 +191,31 @@ INSERT INTO `sys_organization` (`id`, `createby`, `createtime`, `modifyby`, `mod
 	(653729175238277, 653335112912901, '2025-03-12 16:10:51.633050', 653335112912901, '2025-03-12 16:10:51.633839', 653726516561477, '[0]', 'vscode', 'vscode', 1, 1),
 	(653729291642501, 653335112912901, '2025-03-12 16:11:19.988466', 653335112912901, '2025-03-13 13:59:53.811160', 653726516561477, '[0]', 'visualstudio', 'visualstudio', 0, 3);
 
--- 导出  表 adnc_admin.sys_role 结构
 CREATE TABLE IF NOT EXISTS `sys_role` (
   `id` bigint(20) NOT NULL,
-  `createby` bigint(20) NOT NULL COMMENT '创建人',
-  `createtime` datetime(6) NOT NULL COMMENT '创建时间/注册时间',
-  `modifyby` bigint(20) NOT NULL COMMENT '最后更新人',
-  `modifytime` datetime(6) NOT NULL COMMENT '最后更新时间',
+  `createby` bigint(20) NOT NULL,
+  `createtime` datetime(6) NOT NULL,
+  `modifyby` bigint(20) NOT NULL,
+  `modifytime` datetime(6) NOT NULL,
   `name` varchar(32) NOT NULL,
   `code` varchar(32) NOT NULL,
   `datascope` int(11) NOT NULL,
   `status` tinyint(1) NOT NULL,
   `ordinal` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci COMMENT='角色';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci COMMENT='Role';
 
--- 正在导出表  adnc_admin.sys_role 的数据：~2 rows (大约)
 INSERT INTO `sys_role` (`id`, `createby`, `createtime`, `modifyby`, `modifytime`, `name`, `code`, `datascope`, `status`, `ordinal`) VALUES
 	(653344679641925, 1000000000000, '2025-03-11 14:06:20.618864', 653335112912901, '2025-03-12 11:45:34.554147', '系统管理员', 'administrator', 0, 1, 1),
 	(653682250118405, 653335112912901, '2025-03-12 12:59:55.116604', 653335112912901, '2025-03-24 23:57:04.926460', '访问者', 'guest', 2, 1, 1);
 
--- 导出  表 adnc_admin.sys_role_menu_relation 结构
 CREATE TABLE IF NOT EXISTS `sys_role_menu_relation` (
   `id` bigint(20) NOT NULL,
   `menuid` bigint(20) NOT NULL,
   `roleid` bigint(20) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci COMMENT='菜单角色关系';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci COMMENT='Menu-role relation';
 
--- 正在导出表  adnc_admin.sys_role_menu_relation 的数据：~83 rows (大约)
 INSERT INTO `sys_role_menu_relation` (`id`, `menuid`, `roleid`) VALUES
 	(657671141251013, 653342080185029, 653344679641925),
 	(657671141251014, 653688386045317, 653344679641925),
@@ -326,15 +301,13 @@ INSERT INTO `sys_role_menu_relation` (`id`, `menuid`, `roleid`) VALUES
 	(658096326601094, 657666958747589, 653682250118405),
 	(658096326601095, 657667115956165, 653682250118405);
 
--- 导出  表 adnc_admin.sys_role_user_relation 结构
 CREATE TABLE IF NOT EXISTS `sys_role_user_relation` (
   `id` bigint(20) NOT NULL,
   `userid` bigint(20) NOT NULL,
   `roleid` bigint(20) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci COMMENT='用户角色关系';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci COMMENT='User-role relation';
 
--- 正在导出表  adnc_admin.sys_role_user_relation 的数据：~6 rows (大约)
 INSERT INTO `sys_role_user_relation` (`id`, `userid`, `roleid`) VALUES
 	(658284478040646, 658284478040645, 653682250118405),
 	(658284667353670, 658284667353669, 653682250118405),
@@ -343,29 +316,27 @@ INSERT INTO `sys_role_user_relation` (`id`, `userid`, `roleid`) VALUES
 	(658284902369861, 653335112912901, 653344679641925),
 	(658285201709637, 658285103086149, 653344679641925);
 
--- 导出  表 adnc_admin.sys_user 结构
 CREATE TABLE IF NOT EXISTS `sys_user` (
   `id` bigint(20) NOT NULL,
-  `isdeleted` tinyint(1) NOT NULL DEFAULT 0 COMMENT '删除标识',
-  `createby` bigint(20) NOT NULL COMMENT '创建人',
-  `createtime` datetime(6) NOT NULL COMMENT '创建时间/注册时间',
-  `modifyby` bigint(20) NOT NULL COMMENT '最后更新人',
-  `modifytime` datetime(6) NOT NULL COMMENT '最后更新时间',
-  `account` varchar(32) NOT NULL COMMENT '账号',
-  `avatar` varchar(128) NOT NULL COMMENT '头像路径',
-  `birthday` datetime(6) DEFAULT NULL COMMENT '生日',
-  `deptid` bigint(20) NOT NULL COMMENT '部门Id',
+  `isdeleted` tinyint(1) NOT NULL DEFAULT 0 COMMENT 'Deletion flag',
+  `createby` bigint(20) NOT NULL,
+  `createtime` datetime(6) NOT NULL,
+  `modifyby` bigint(20) NOT NULL,
+  `modifytime` datetime(6) NOT NULL,
+  `account` varchar(32) NOT NULL COMMENT 'Account',
+  `avatar` varchar(128) NOT NULL COMMENT 'Avatar path',
+  `birthday` datetime(6) DEFAULT NULL COMMENT 'Birthday',
+  `deptid` bigint(20) NOT NULL COMMENT 'Department ID',
   `email` varchar(32) NOT NULL COMMENT 'email',
-  `name` varchar(32) NOT NULL COMMENT '姓名',
-  `password` varchar(32) NOT NULL COMMENT '密码',
-  `mobile` varchar(11) NOT NULL COMMENT '手机号',
-  `salt` varchar(6) NOT NULL COMMENT '密码盐',
-  `gender` int(11) NOT NULL COMMENT '性别',
-  `status` tinyint(1) NOT NULL COMMENT '状态',
+  `name` varchar(32) NOT NULL COMMENT 'Name',
+  `password` varchar(32) NOT NULL COMMENT 'Password',
+  `mobile` varchar(11) NOT NULL COMMENT 'Mobile number',
+  `salt` varchar(6) NOT NULL COMMENT 'Password salt',
+  `gender` int(11) NOT NULL COMMENT 'Gender',
+  `status` tinyint(1) NOT NULL COMMENT 'Status',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci COMMENT='管理员';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci COMMENT='Administrator';
 
--- 正在导出表  adnc_admin.sys_user 的数据：~10 rows (大约)
 INSERT INTO `sys_user` (`id`, `isdeleted`, `createby`, `createtime`, `modifyby`, `modifytime`, `account`, `avatar`, `birthday`, `deptid`, `email`, `name`, `password`, `mobile`, `salt`, `gender`, `status`) VALUES
 	(653335112912901, 0, 1000000000000, '2025-03-11 13:27:25.038287', 653335112912901, '2025-03-25 13:40:52.000000', 'alpha2008', '', '2025-03-11 14:11:08.062000', 653725132137989, 'user@example.com', '余大猫', '3B6791E9AB14DFF278A3C2AF4B97F1E9', '', '846vm', 2, 1),
 	(653337659433029, 0, 1000000000000, '2025-03-11 13:37:46.724327', 653335112912901, '2025-03-25 13:40:48.000000', 'alpha2009', '', '2025-03-11 13:24:22.360000', 653726253618757, 'user@example.com', '余大猫', 'DE325BC108FD5B42D45500C3720F6628', '19964946688', '7vkvf', 2, 1),
@@ -378,90 +349,52 @@ INSERT INTO `sys_user` (`id`, `isdeleted`, `createby`, `createtime`, `modifyby`,
 	(658284667353669, 0, 653335112912901, '2025-03-25 13:07:12.139040', 653335112912901, '2025-03-25 13:40:37.000000', 'alpha2012', '', '2025-03-11 13:24:22.360000', 653725132137989, '2012@tom.com', '2012', '1011AD5C3D8665905E9358E385349C5B', '', '4ix1k', 1, 1),
 	(658285103086149, 0, 653335112912901, '2025-03-25 13:08:58.517647', 653335112912901, '2025-03-25 13:40:32.000000', 'alpha2007', '', NULL, 653725132137989, '2007@tom.com', '余大猫', '6DA705722E3CB40890B7CEA884821F7C', '', '3wjku', 2, 1);
 
--- 导出  表 adnc_admin.__EFMigrationsHistory 结构
-CREATE TABLE IF NOT EXISTS `__EFMigrationsHistory` (
-  `migrationid` varchar(150) NOT NULL,
-  `productversion` varchar(32) NOT NULL,
-  PRIMARY KEY (`migrationid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
-
--- 正在导出表  adnc_admin.__EFMigrationsHistory 的数据：~7 rows (大约)
-INSERT INTO `__EFMigrationsHistory` (`migrationid`, `productversion`) VALUES
-	('20250311045441_Init20250311', '8.0.13'),
-	('20250312052404_Update-2025031201', '8.0.13'),
-	('20250312122420_Update-2025031202', '8.0.13'),
-	('20250312140312_Update-2025031203', '8.0.13'),
-	('20250313164005_Update2025031401', '8.0.13'),
-	('20250316133304_Update2025031601', '8.0.13'),
-	('20250317153239_Update2025031702', '8.0.13'),
-	('20250323101948_Update25032301', '8.0.13');
-
-
--- 导出 adnc_cust 的数据库结构
 CREATE DATABASE IF NOT EXISTS `adnc_cust` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_uca1400_ai_ci */;
 USE `adnc_cust`;
 
--- 导出  表 adnc_cust.cust_customer 结构
 CREATE TABLE IF NOT EXISTS `cust_customer` (
   `id` bigint(20) NOT NULL,
-  `createby` bigint(20) NOT NULL COMMENT '创建人',
-  `createtime` datetime(6) NOT NULL COMMENT '创建时间/注册时间',
-  `modifyby` bigint(20) NOT NULL COMMENT '最后更新人',
-  `modifytime` datetime(6) NOT NULL COMMENT '最后更新时间',
+  `createby` bigint(20) NOT NULL COMMENT 'Created by',
+  `createtime` datetime(6) NOT NULL COMMENT 'Created time/registered time',
+  `modifyby` bigint(20) NOT NULL COMMENT 'Last modified by',
+  `modifytime` datetime(6) NOT NULL COMMENT 'Last modified time',
   `account` varchar(16) NOT NULL,
   `password` varchar(32) NOT NULL,
   `nickname` varchar(16) NOT NULL,
   `realname` varchar(16) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci COMMENT='客户表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci COMMENT='Customer table';
 
--- 正在导出表  adnc_cust.cust_customer 的数据：~0 rows (大约)
-INSERT INTO `cust_customer` (`id`, `createby`, `createtime`, `modifyby`, `modifytime`, `account`, `password`, `nickname`, `realname`) VALUES
-	(657670039692293, 653335112912901, '2025-03-23 19:26:16.726129', 653335112912901, '2025-03-23 19:26:16.728960', 'beta2008', '', '王二狗', '王二');
 
--- 导出  表 adnc_cust.cust_eventtracker 结构
 CREATE TABLE IF NOT EXISTS `cust_eventtracker` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `eventid` bigint(20) NOT NULL,
   `trackername` varchar(50) NOT NULL,
-  `createby` bigint(20) NOT NULL COMMENT '创建人',
-  `createtime` datetime(6) NOT NULL COMMENT '创建时间/注册时间',
+  `createby` bigint(20) NOT NULL COMMENT 'Created by',
+  `createtime` datetime(6) NOT NULL COMMENT 'Created time/registered time',
   PRIMARY KEY (`id`),
   UNIQUE KEY `ix_cust_eventtracker_eventid_trackername` (`eventid`,`trackername`)
-) ENGINE=InnoDB AUTO_INCREMENT=658299319952902 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci COMMENT='事件跟踪/处理信息';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci COMMENT='Event tracking/processing info';
 
--- 正在导出表  adnc_cust.cust_eventtracker 的数据：~6 rows (大约)
-INSERT INTO `cust_eventtracker` (`id`, `eventid`, `trackername`, `createby`, `createtime`) VALUES
-	(657670079996933, 657670078923781, 'HandleCustomerRechargedEvent', 1000000000000, '2025-03-23 19:26:26.407535'),
-	(657986596201605, 657986594858117, 'HandleCustomerRechargedEvent', 1000000000000, '2025-03-24 16:54:20.871952'),
-	(658091573248133, 658091572101253, 'HandleCustomerRechargedEvent', 1000000000000, '2025-03-25 00:01:30.031510'),
-	(658094553260165, 658094553063557, 'HandleCustomerRechargedEvent', 1000000000000, '2025-03-25 00:13:37.562638'),
-	(658274153239813, 658274152133893, 'HandleCustomerRechargedEvent', 1000000000000, '2025-03-25 12:24:25.225767'),
-	(658299319952901, 658299318760965, 'HandleCustomerRechargedEvent', 1000000000000, '2025-03-25 14:06:49.443631');
 
--- 导出  表 adnc_cust.cust_finance 结构
 CREATE TABLE IF NOT EXISTS `cust_finance` (
   `id` bigint(20) NOT NULL,
   `rowversion` timestamp(6) NOT NULL DEFAULT current_timestamp(6) ON UPDATE current_timestamp(6),
-  `createby` bigint(20) NOT NULL COMMENT '创建人',
-  `createtime` datetime(6) NOT NULL COMMENT '创建时间/注册时间',
-  `modifyby` bigint(20) NOT NULL COMMENT '最后更新人',
-  `modifytime` datetime(6) NOT NULL COMMENT '最后更新时间',
+  `createby` bigint(20) NOT NULL COMMENT 'Created by',
+  `createtime` datetime(6) NOT NULL COMMENT 'Created time/registered time',
+  `modifyby` bigint(20) NOT NULL COMMENT 'Last modified by',
+  `modifytime` datetime(6) NOT NULL COMMENT 'Last modified time',
   `account` varchar(16) NOT NULL,
   `balance` decimal(18,4) NOT NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT `fk_cust_finance_cust_customer_id` FOREIGN KEY (`id`) REFERENCES `cust_customer` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci COMMENT='客户财务表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci COMMENT='Customer finance table';
 
--- 正在导出表  adnc_cust.cust_finance 的数据：~0 rows (大约)
-INSERT INTO `cust_finance` (`id`, `rowversion`, `createby`, `createtime`, `modifyby`, `modifytime`, `account`, `balance`) VALUES
-	(657670039692293, '2025-03-25 06:06:49.406508', 653335112912901, '2025-03-23 19:26:16.726174', 1000000000000, '2025-03-25 14:06:49.396450', 'beta2008', 113.0000);
 
--- 导出  表 adnc_cust.cust_transactionlog 结构
 CREATE TABLE IF NOT EXISTS `cust_transactionlog` (
   `id` bigint(20) NOT NULL,
-  `createby` bigint(20) NOT NULL COMMENT '创建人',
-  `createtime` datetime(6) NOT NULL COMMENT '创建时间/注册时间',
+  `createby` bigint(20) NOT NULL COMMENT 'Created by',
+  `createtime` datetime(6) NOT NULL COMMENT 'Created time/registered time',
   `customerid` bigint(20) NOT NULL,
   `account` varchar(16) NOT NULL,
   `exchangetype` int(11) NOT NULL,
@@ -473,87 +406,26 @@ CREATE TABLE IF NOT EXISTS `cust_transactionlog` (
   PRIMARY KEY (`id`),
   KEY `ix_cust_transactionlog_customerid` (`customerid`),
   CONSTRAINT `fk_cust_transactionlog_cust_customer_customerid` FOREIGN KEY (`customerid`) REFERENCES `cust_customer` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci COMMENT='客户财务变动记录';
-
--- 正在导出表  adnc_cust.cust_transactionlog 的数据：~6 rows (大约)
-INSERT INTO `cust_transactionlog` (`id`, `createby`, `createtime`, `customerid`, `account`, `exchangetype`, `exchagestatus`, `changingamount`, `amount`, `changedamount`, `remark`) VALUES
-	(657670078731269, 653335112912901, '2025-03-23 19:26:26.118544', 657670039692293, 'beta2008', 8000, 2008, 0.0000, 10.0000, 10.0000, ''),
-	(657986593965189, 653335112912901, '2025-03-24 16:54:20.439592', 657670039692293, 'beta2008', 8000, 2008, 10.0000, 60.0000, 70.0000, ''),
-	(658091570659461, 653335112912901, '2025-03-25 00:01:29.655862', 657670039692293, 'beta2008', 8000, 2008, 70.0000, 20.0000, 90.0000, ''),
-	(658094553047173, 653335112912901, '2025-03-25 00:13:37.511061', 657670039692293, 'beta2008', 8000, 2008, 90.0000, 10.0000, 100.0000, ''),
-	(658274151302405, 653335112912901, '2025-03-25 12:24:24.841754', 657670039692293, 'beta2008', 8000, 2008, 100.0000, 10.0000, 110.0000, ''),
-	(658299317880325, 653335112912901, '2025-03-25 14:06:49.029827', 657670039692293, 'beta2008', 8000, 2008, 110.0000, 3.0000, 113.0000, '');
-
--- 导出  表 adnc_cust.__EFMigrationsHistory 结构
-CREATE TABLE IF NOT EXISTS `__EFMigrationsHistory` (
-  `migrationid` varchar(150) NOT NULL,
-  `productversion` varchar(32) NOT NULL,
-  PRIMARY KEY (`migrationid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
-
--- 正在导出表  adnc_cust.__EFMigrationsHistory 的数据：~2 rows (大约)
-INSERT INTO `__EFMigrationsHistory` (`migrationid`, `productversion`) VALUES
-	('20250317152707_Init20250317', '8.0.13'),
-	('20250323102232_Update25032301', '8.0.13');
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci COMMENT='Customer finance change log';
 
 
--- 导出 adnc_maint 的数据库结构
 CREATE DATABASE IF NOT EXISTS `adnc_maint` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_uca1400_ai_ci */;
 USE `adnc_maint`;
 
--- 导出  表 adnc_maint.sys_eventtracker 结构
-CREATE TABLE IF NOT EXISTS `sys_eventtracker` (
+CREATE TABLE IF NOT EXISTS `maint_eventtracker` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `eventid` bigint(20) NOT NULL,
   `trackername` varchar(50) NOT NULL,
-  `createby` bigint(20) NOT NULL COMMENT '创建人',
-  `createtime` datetime(6) NOT NULL COMMENT '创建时间/注册时间',
+  `createby` bigint(20) NOT NULL COMMENT 'Creator',
+  `createtime` datetime(6) NOT NULL COMMENT 'Creation time / registration time',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `ix_sys_eventtracker_eventid_trackername` (`eventid`,`trackername`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci COMMENT='事件跟踪/处理信息';
-
--- 正在导出表  adnc_maint.sys_eventtracker 的数据：~0 rows (大约)
-
--- 导出  表 adnc_maint.__EFMigrationsHistory 结构
-CREATE TABLE IF NOT EXISTS `__EFMigrationsHistory` (
-  `migrationid` varchar(150) NOT NULL,
-  `productversion` varchar(32) NOT NULL,
-  PRIMARY KEY (`migrationid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
-
--- 正在导出表  adnc_maint.__EFMigrationsHistory 的数据：~2 rows (大约)
-INSERT INTO `__EFMigrationsHistory` (`migrationid`, `productversion`) VALUES
-	('20250317152538_Init20250317', '8.0.13'),
-	('20250323125304_Update25032302', '8.0.13');
-
-/*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
-/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
-/*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40111 SET SQL_NOTES=IFNULL(@OLD_SQL_NOTES, 1) */;
-
--- --------------------------------------------------------
--- 主机:                           62.234.187.128
--- 服务器版本:                        11.7.2-MariaDB-ubu2404 - mariadb.org binary distribution
--- 服务器操作系统:                      debian-linux-gnu
--- HeidiSQL 版本:                  12.1.0.6537
--- --------------------------------------------------------
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET NAMES utf8 */;
-/*!50503 SET NAMES utf8mb4 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+  UNIQUE KEY `ix_maint_eventtracker_eventid_trackername` (`eventid`,`trackername`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci COMMENT='Event tracking/processing information';
 
 
--- 导出 adnc_syslog 的数据库结构
 CREATE DATABASE IF NOT EXISTS `adnc_syslog` /*!40100 DEFAULT CHARACTER SET armscii8 COLLATE armscii8_bin */;
 USE `adnc_syslog`;
 
--- 导出  表 adnc_syslog.login_log 结构
 CREATE TABLE IF NOT EXISTS `login_log` (
   `Id` bigint(20) NOT NULL,
   `Device` varchar(32) NOT NULL,
@@ -569,9 +441,7 @@ CREATE TABLE IF NOT EXISTS `login_log` (
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
 
--- 数据导出被取消选择。
 
--- 导出  表 adnc_syslog.operation_log 结构
 CREATE TABLE IF NOT EXISTS `operation_log` (
   `Id` bigint(20) NOT NULL,
   `ClassName` varchar(255) NOT NULL,
@@ -589,7 +459,6 @@ CREATE TABLE IF NOT EXISTS `operation_log` (
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
 
--- 数据导出被取消选择。
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
