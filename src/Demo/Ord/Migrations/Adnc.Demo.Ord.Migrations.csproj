@@ -11,7 +11,4 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\Domain\Adnc.Demo.Ord.Domain.csproj" />
 	</ItemGroup>
-	<ItemGroup>
-	  <Folder Include="Migrations\" />
-	</ItemGroup>	
 </Project>

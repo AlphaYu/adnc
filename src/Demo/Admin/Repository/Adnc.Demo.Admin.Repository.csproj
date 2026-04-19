@@ -9,7 +9,4 @@
 		<PackageReference Include="Adnc.Shared.Repository" />
 		<PackageReference Include="Adnc.Infra.Repository.EfCore.MySql" />
 	</ItemGroup>
-	<ItemGroup>
-	  <Folder Include="Migrations\" />
-	</ItemGroup>
 </Project>

@@ -13,7 +13,4 @@
 		<PackageReference Include="Adnc.Shared" />
 		<PackageReference Include="Adnc.Shared.Repository" />
 	</ItemGroup>
-	<ItemGroup>
-	  <Folder Include="Entities\Config\" />
-	</ItemGroup>
 </Project>

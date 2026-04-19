@@ -20,7 +20,4 @@
     <PackageReference Include="Adnc.Shared.Application" />
 		<PackageReference Include="Adnc.Shared.WebApi" />
 	</ItemGroup>
-	<ItemGroup>
-	  <Folder Include="Migrations\" />
-	</ItemGroup>
 </Project>
