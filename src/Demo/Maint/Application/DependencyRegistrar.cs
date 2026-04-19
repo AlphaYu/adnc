@@ -13,7 +13,7 @@ public sealed class DependencyRegistrar(IServiceCollection services, IServiceInf
 
     public override Assembly ContractsLayerAssembly => Assembly.GetExecutingAssembly();
 
-    public override Assembly RepositoryOrDomainLayerAssembly => typeof(LogRepoExtension).Assembly;
+    public override Assembly RepositoryOrDomainLayerAssembly => typeof(EntityInfo).Assembly;
 
     public override void AddApplicationServices()
     {

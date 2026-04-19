@@ -1,5 +1,6 @@
 using System.Text;
 using Adnc.Demo.Maint.Application.Contracts.Dtos.Log;
+using Adnc.Demo.Maint.Repository.Extensions;
 
 namespace Adnc.Demo.Maint.Application.Services;
 

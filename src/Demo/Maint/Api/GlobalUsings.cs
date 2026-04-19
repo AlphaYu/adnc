@@ -1,6 +1,3 @@
-global using Adnc.Demo.Const;
-global using Adnc.Demo.Const.Permissions.Maint;
-global using Adnc.Demo.Maint.Application.Contracts.Dtos;
 global using Adnc.Demo.Maint.Application.Contracts.Interfaces;
 global using Adnc.Shared;
 global using Adnc.Shared.Application.Contracts.Dtos;
