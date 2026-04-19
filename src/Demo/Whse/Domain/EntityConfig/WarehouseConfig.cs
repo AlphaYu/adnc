@@ -13,8 +13,8 @@ public class WarehouseConfig : AbstractEntityTypeConfiguration<Warehouse>
 
         builder.OwnsOne(x => x.Position, y =>
         {
-            y.Property(x => x.Code).IsRequired().HasColumnName("positioncode").HasMaxLength(WhseConsts.Code_MaxLength);
-            y.Property(x => x.Description).HasColumnName("positiondescription").HasMaxLength(WhseConsts.Description_MaxLength);
+            y.Property(x => x.Code).IsRequired().HasColumnName("positioncode").HasMaxLength(Warehouse.Code_MaxLength);
+            y.Property(x => x.Description).HasColumnName("positiondescription").HasMaxLength(Warehouse.Description_MaxLength);
         });
     }
 }

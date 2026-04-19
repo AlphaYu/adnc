@@ -2,6 +2,12 @@ namespace Adnc.Demo.Whse.Domain.Aggregates.ProductAggregate;
 
 public class Product : AggregateRootWithBasicAuditInfo
 {
+    public static readonly int Name_MaxLength = 64;
+    public static readonly int Describe_MaxLength = 128;
+    public static readonly int Sku_MaxLength = 32;
+    public static readonly int ChangesReason_MaxLength = 32;
+    public static readonly int Unit_MaxLength = 4;
+
     private Product()
     {
         Status = new ProductStatus(ProductStatusCodes.UnKnow, string.Empty);

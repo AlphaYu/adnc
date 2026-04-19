@@ -1,8 +1,9 @@
 using Adnc.Demo.Remote.Event;
+using Adnc.Infra.EventBus.Tracker;
 
 namespace Adnc.Demo.Whse.Application.Subscribers;
 
-public sealed class CapEventSubscriber(IWarehouseService wareHouserSrv, MessageTrackerFactory trackerFactory) : ICapSubscribe
+public sealed class OrderCreatedEventSubscriber(IWarehouseService wareHouserSrv, MessageTrackerFactory trackerFactory) : ICapSubscribe
 {
     private readonly IMessageTracker _tracker = trackerFactory.Create();
 

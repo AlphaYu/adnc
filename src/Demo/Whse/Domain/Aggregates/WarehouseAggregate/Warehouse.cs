@@ -5,6 +5,9 @@ namespace Adnc.Demo.Whse.Domain.Aggregates.WarehouseAggregate;
 /// </summary>
 public class Warehouse : AggregateRootWithBasicAuditInfo
 {
+    public static readonly int Code_MaxLength = 32;
+    public static readonly int Description_MaxLength = 64;
+
     private Warehouse()
     {
     }

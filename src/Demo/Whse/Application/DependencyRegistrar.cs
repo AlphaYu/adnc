@@ -1,3 +1,4 @@
+using Adnc.Demo.Remote.Http;
 using Adnc.Shared;
 using Adnc.Shared.Application.Extensions;
 using Adnc.Shared.Application.Registrar;
@@ -16,7 +17,7 @@ public sealed class DependencyRegistrar(IServiceCollection services, IServiceInf
 
     public override Assembly ApplicationLayerAssembly => Assembly.GetExecutingAssembly();
 
-    public override Assembly ContractsLayerAssembly => typeof(IWarehouseService).Assembly;
+    public override Assembly ContractsLayerAssembly => Assembly.GetExecutingAssembly();
 
     public override Assembly RepositoryOrDomainLayerAssembly => typeof(EntityInfo).Assembly;
 
@@ -29,7 +30,7 @@ public sealed class DependencyRegistrar(IServiceCollection services, IServiceInf
         var restPolicies = this.GenerateDefaultRefitPolicies();
         AddRestClient<IAdminRestClient>(ServiceAddressConsts.AdminDemoService, restPolicies);
         //rpc-event
-        AddCapEventBus([typeof(CapEventSubscriber)]);
+        AddCapEventBus([typeof(OrderCreatedEventSubscriber)]);
     }
 
     protected override void AddCapEventBus(IEnumerable<Type> subscribers, Action<FailedInfo>? failedThresholdCallback = null)

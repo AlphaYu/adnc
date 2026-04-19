@@ -5,7 +5,7 @@ namespace Adnc.Demo.Whse.Api.Controllers;
 /// <summary>
 /// Warehouse shelf management
 /// </summary>
-[Route("whse/warehouses")]
+[Route($"{RouteConsts.WhseRoot}/warehouses")]
 [ApiController]
 public class WarehouseController(IWarehouseService warehouseSrv) : AdncControllerBase
 {

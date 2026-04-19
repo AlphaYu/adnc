@@ -1,6 +1,5 @@
 global using System.Linq.Expressions;
 global using System.Reflection;
-global using Adnc.Demo.Const;
 global using Adnc.Demo.Remote.Http.Services;
 global using Adnc.Demo.Whse.Application.Contracts.Interfaces;
 global using Adnc.Demo.Whse.Application.Subscribers;

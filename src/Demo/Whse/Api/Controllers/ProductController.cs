@@ -5,7 +5,7 @@ namespace Adnc.Demo.Whse.Api.Controllers;
 /// <summary>
 /// Product management
 /// </summary>
-[Route("whse/products")]
+[Route($"{RouteConsts.WhseRoot}/products")]
 [ApiController]
 public class ProductController(IProductService productSrv) : AdncControllerBase
 {
