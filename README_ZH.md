@@ -131,7 +131,6 @@ Demo 提供了五个相互关联的微服务示例，分别展示了不同的服
 
 ```
 Shared/
-├── Const/ - 用于缓存、实体、权限的常量
 ├── Remote.Event/ - 用于跨服务通信事件定义
 ├── Remote.Grpc/ - gRPC客户端定义
 ├── Remote.Http/ - HTTP客户端定义

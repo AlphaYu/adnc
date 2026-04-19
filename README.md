@@ -133,7 +133,6 @@ These demos show how to organize code for different business sizes and complexit
 
 ```
 Shared/
-├── Const/ - Constants for caching, entities, and permissions
 ├── Remote.Event/ - Event contracts for cross-service communication
 ├── Remote.Grpc/ - gRPC client definitions
 ├── Remote.Http/ - HTTP client definitions
