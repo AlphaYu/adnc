@@ -1,4 +1,6 @@
-namespace Adnc.Demo.Admin.Application.Contracts.Dtos.User.Validators;
+using Adnc.Demo.Admin.Application.Contracts.Dtos.User;
+
+namespace Adnc.Demo.Admin.Application.Validators;
 
 /// <summary>
 /// Validates <see cref="UserCreationAndUpdationDto"/> instances.
@@ -10,8 +12,8 @@ public class UserCreationAndUpdationDtoValidator : AbstractValidator<UserCreatio
     /// </summary>
     public UserCreationAndUpdationDtoValidator()
     {
-        RuleFor(x => x.Name).Required().Length(2, UserConsts.Name_Maxlength);
-        RuleFor(x => x.Email).Required().MaximumLength(UserConsts.Email_Maxlength).EmailAddress();
+        RuleFor(x => x.Name).Required().Length(2, User.Name_Maxlength);
+        RuleFor(x => x.Email).Required().MaximumLength(User.Email_Maxlength).EmailAddress();
         RuleFor(x => x.Mobile).Phone();
     }
 }

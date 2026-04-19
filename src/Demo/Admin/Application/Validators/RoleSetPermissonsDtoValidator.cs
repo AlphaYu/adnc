@@ -1,4 +1,6 @@
-namespace Adnc.Demo.Admin.Application.Contracts.Dtos.Role.Validators;
+using Adnc.Demo.Admin.Application.Contracts.Dtos.Role;
+
+namespace Adnc.Demo.Admin.Application.Validators;
 
 /// <summary>
 /// Validates <see cref="RoleSetPermissonsDto"/> instances.

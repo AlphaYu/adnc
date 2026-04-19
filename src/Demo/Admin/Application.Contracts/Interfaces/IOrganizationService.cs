@@ -13,7 +13,7 @@ public interface IOrganizationService : IAppService
     /// <param name="input">The organization to create.</param>
     /// <returns>The ID of the created organization.</returns>
     [OperateLog(LogName = "Create organization")]
-    [CachingEvict(CacheKeys = new[] { CachingConsts.DetpListCacheKey })]
+    [CachingEvict(CacheKeys = new[] { CacheConsts.DetpListCacheKey })]
     Task<ServiceResult<IdDto>> CreateAsync(OrganizationCreationDto input);
 
     /// <summary>
@@ -23,7 +23,7 @@ public interface IOrganizationService : IAppService
     /// <param name="input">The organization changes.</param>
     /// <returns>A result indicating whether the organization was updated.</returns>
     [OperateLog(LogName = "Update organization")]
-    [CachingEvict(CacheKeys = new[] { CachingConsts.DetpListCacheKey })]
+    [CachingEvict(CacheKeys = new[] { CacheConsts.DetpListCacheKey })]
     [UnitOfWork]
     Task<ServiceResult> UpdateAsync(long id, OrganizationUpdationDto input);
 
@@ -33,7 +33,7 @@ public interface IOrganizationService : IAppService
     /// <param name="ids">The organization IDs to delete.</param>
     /// <returns>A result indicating whether the organizations were deleted.</returns>
     [OperateLog(LogName = "Delete organization")]
-    [CachingEvict(CacheKeys = new[] { CachingConsts.DetpListCacheKey })]
+    [CachingEvict(CacheKeys = new[] { CacheConsts.DetpListCacheKey })]
     Task<ServiceResult> DeleteAsync(long[] ids);
 
     /// <summary>

@@ -6,15 +6,15 @@ public class MenuConfig : AbstractEntityTypeConfiguration<Menu>
     {
         base.Configure(builder);
 
-        builder.Property(x => x.Perm).HasMaxLength(MenuConsts.Code_MaxLength);
-        builder.Property(x => x.ParentIds).HasMaxLength(MenuConsts.ParentIds_MaxLength);
-        builder.Property(x => x.Component).HasMaxLength(MenuConsts.Component_MaxLength);
-        builder.Property(x => x.Icon).HasMaxLength(MenuConsts.Icon_MaxLength);
-        builder.Property(x => x.Name).HasMaxLength(MenuConsts.Name_MaxLength);
-        builder.Property(x => x.Redirect).HasMaxLength(MenuConsts.Redirect_MaxLength);
-        builder.Property(x => x.RouteName).HasMaxLength(MenuConsts.RouteName_MaxLength);
-        builder.Property(x => x.RoutePath).HasMaxLength(MenuConsts.RoutePath_MaxLength);
-        builder.Property(x => x.Type).HasMaxLength(MenuConsts.Type_MaxLength);
-        builder.Property(x => x.Params).HasMaxLength(MenuConsts.Params_MaxLength);
+        builder.Property(x => x.Perm).HasMaxLength(Menu.Code_MaxLength);
+        builder.Property(x => x.ParentIds).HasMaxLength(Menu.ParentIds_MaxLength);
+        builder.Property(x => x.Component).HasMaxLength(Menu.Component_MaxLength);
+        builder.Property(x => x.Icon).HasMaxLength(Menu.Icon_MaxLength);
+        builder.Property(x => x.Name).HasMaxLength(Menu.Name_MaxLength);
+        builder.Property(x => x.Redirect).HasMaxLength(Menu.Redirect_MaxLength);
+        builder.Property(x => x.RouteName).HasMaxLength(Menu.RouteName_MaxLength);
+        builder.Property(x => x.RoutePath).HasMaxLength(Menu.RoutePath_MaxLength);
+        builder.Property(x => x.Type).HasMaxLength(Menu.Type_MaxLength);
+        builder.Property(x => x.Params).HasMaxLength(Menu.Params_MaxLength);
     }
 }

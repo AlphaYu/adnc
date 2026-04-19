@@ -22,7 +22,7 @@ public interface IDictService : IAppService
     /// <param name="input">The dictionary changes.</param>
     /// <returns>A result indicating whether the dictionary was updated.</returns>
     [OperateLog(LogName = "Update dictionary")]
-    [CachingEvict(CacheKey = CachingConsts.DictOptionsListKey)]
+    [CachingEvict(CacheKey = CacheConsts.DictOptionsListKey)]
     [UnitOfWork]
     Task<ServiceResult> UpdateAsync(long id, DictUpdationDto input);
 
@@ -32,7 +32,7 @@ public interface IDictService : IAppService
     /// <param name="ids">The dictionary IDs to delete.</param>
     /// <returns>A result indicating whether the dictionaries were deleted.</returns>
     [OperateLog(LogName = "Delete dictionary")]
-    [CachingEvict(CacheKey = CachingConsts.DictOptionsListKey)]
+    [CachingEvict(CacheKey = CacheConsts.DictOptionsListKey)]
     Task<ServiceResult> DeleteAsync(long[] ids);
 
     /// <summary>

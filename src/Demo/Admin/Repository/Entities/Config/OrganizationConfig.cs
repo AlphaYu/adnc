@@ -6,8 +6,8 @@ public class DetpConfig : AbstractEntityTypeConfiguration<Organization>
     {
         base.Configure(builder);
 
-        builder.Property(x => x.Name).HasMaxLength(DeptConsts.Name_MaxLength);
-        builder.Property(x => x.Code).HasMaxLength(DeptConsts.Code_MaxLength);
-        builder.Property(x => x.ParentIds).HasMaxLength(DeptConsts.Pids_MaxLength);
+        builder.Property(x => x.Name).HasMaxLength(Organization.Name_MaxLength);
+        builder.Property(x => x.Code).HasMaxLength(Organization.Code_MaxLength);
+        builder.Property(x => x.ParentIds).HasMaxLength(Organization.Pids_MaxLength);
     }
 }

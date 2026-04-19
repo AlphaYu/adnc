@@ -23,7 +23,7 @@ public interface IUserService : IAppService
     /// <param name="input">The user changes.</param>
     /// <returns>A result indicating whether the user was updated.</returns>
     [OperateLog(LogName = "Update user")]
-    [CachingEvict(CacheKeyPrefix = CachingConsts.UserValidatedInfoKeyPrefix)]
+    [CachingEvict(CacheKeyPrefix = CacheConsts.UserValidatedInfoKeyPrefix)]
     [UnitOfWork]
     Task<ServiceResult> UpdateAsync([CachingParam] long id, UserUpdationDto input);
 
@@ -33,7 +33,7 @@ public interface IUserService : IAppService
     /// <param name="ids">The user IDs to delete.</param>
     /// <returns>A result indicating whether the users were deleted.</returns>
     [OperateLog(LogName = "Delete user")]
-    [CachingEvict(CacheKeyPrefix = CachingConsts.UserValidatedInfoKeyPrefix)]
+    [CachingEvict(CacheKeyPrefix = CacheConsts.UserValidatedInfoKeyPrefix)]
     [UnitOfWork]
     Task<ServiceResult> DeleteAsync([CachingParam] long[] ids);
 
@@ -92,7 +92,7 @@ public interface IUserService : IAppService
     /// <param name="input">The password change request.</param>
     /// <returns>A result indicating whether the password was updated.</returns>
     [OperateLog(LogName = "Change password")]
-    [CachingEvict(CacheKeyPrefix = CachingConsts.UserValidatedInfoKeyPrefix)]
+    [CachingEvict(CacheKeyPrefix = CacheConsts.UserValidatedInfoKeyPrefix)]
     Task<ServiceResult> UpdatePasswordAsync([CachingParam] long id, UserProfileChangePwdDto input);
 
     /// <summary>
@@ -102,7 +102,7 @@ public interface IUserService : IAppService
     /// <param name="password">The new password.</param>
     /// <returns>A result indicating whether the password was reset.</returns>
     [OperateLog(LogName = "Reset password")]
-    [CachingEvict(CacheKeyPrefix = CachingConsts.UserValidatedInfoKeyPrefix)]
+    [CachingEvict(CacheKeyPrefix = CacheConsts.UserValidatedInfoKeyPrefix)]
     Task<ServiceResult> ResetPasswordAsync([CachingParam] long id, string password);
 
     /// <summary>
@@ -111,7 +111,7 @@ public interface IUserService : IAppService
     /// <param name="id">The user ID.</param>
     /// <returns>The cached validation info, or <c>null</c> if it is not available.</returns>
     //[OperateLog(LogName = "Get validation info")]
-    [CachingAble(CacheKeyPrefix = CachingConsts.UserValidatedInfoKeyPrefix)]
+    [CachingAble(CacheKeyPrefix = CacheConsts.UserValidatedInfoKeyPrefix)]
     Task<UserValidatedInfoDto?> GetUserValidatedInfoAsync([CachingParam] long id) => Task.FromResult<UserValidatedInfoDto?>(null);
 
     /// <summary>
@@ -120,7 +120,7 @@ public interface IUserService : IAppService
     /// <param name="id">The user ID.</param>
     /// <returns>A result indicating whether the validation info was removed.</returns>
     [OperateLog(LogName = "Remove validation info")]
-    [CachingEvict(CacheKeyPrefix = CachingConsts.UserValidatedInfoKeyPrefix)]
+    [CachingEvict(CacheKeyPrefix = CacheConsts.UserValidatedInfoKeyPrefix)]
     Task<ServiceResult> DeleteUserValidateInfoAsync([CachingParam] long id) => Task.FromResult(new ServiceResult());
 
     /// <summary>

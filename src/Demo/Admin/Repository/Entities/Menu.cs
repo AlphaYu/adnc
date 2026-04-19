@@ -5,6 +5,18 @@ namespace Adnc.Demo.Admin.Repository.Entities;
 /// </summary>
 public class Menu : EfFullAuditEntity
 {
+    public static readonly int Code_MaxLength = 32;
+    public static readonly int ParentIds_MaxLength = 128;
+    public static readonly int Component_MaxLength = 64;
+    public static readonly int Icon_MaxLength = 32;
+    public static readonly int Name_MaxLength = 32;
+    public static readonly int RouteName_MaxLength = 64;
+    public static readonly int RoutePath_MaxLength = 64;
+    public static readonly int Redirect_MaxLength = 128;
+    public static readonly int Title_MaxLength = 16;
+    public static readonly int Type_MaxLength = 16;
+    public static readonly int Params_MaxLength = 128;
+
     /// <summary>
     /// Parent menu ID
     /// </summary>

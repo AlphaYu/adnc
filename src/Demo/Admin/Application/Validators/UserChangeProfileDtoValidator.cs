@@ -1,4 +1,6 @@
-namespace Adnc.Demo.Admin.Application.Contracts.Dtos.User.Validators;
+using Adnc.Demo.Admin.Application.Contracts.Dtos.User;
+
+namespace Adnc.Demo.Admin.Application.Validators;
 
 /// <summary>
 /// Validates <see cref="UserProfileUpdationDto"/> instances.
@@ -10,6 +12,6 @@ public class UserChangeProfileDtoValidator : AbstractValidator<UserProfileUpdati
     /// </summary>
     public UserChangeProfileDtoValidator()
     {
-        RuleFor(x => x.Name).Length(2, UserConsts.Name_Maxlength);
+        RuleFor(x => x.Name).Length(2, User.Name_Maxlength);
     }
 }

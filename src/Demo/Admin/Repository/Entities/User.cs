@@ -5,6 +5,15 @@ namespace Adnc.Demo.Admin.Repository.Entities;
 /// </summary>
 public class User : EfFullAuditEntity, ISoftDelete
 {
+    public static readonly int Account_MaxLength = 32;
+    public static readonly int Avatar_MaxLength = 128;
+    public static readonly int Email_Maxlength = 32;
+    public static readonly int Name_Maxlength = 32;
+    public static readonly int Password_Maxlength = 32;
+    public static readonly int Phone_Maxlength = 11;
+    public static readonly int RoleIds_Maxlength = 72;
+    public static readonly int Salt_Maxlength = 6;
+
     //private SysDept _dept;
     //private Action<object, string> LazyLoader { get; set; }
     //private SysUser(Action<object, string> lazyLoader)

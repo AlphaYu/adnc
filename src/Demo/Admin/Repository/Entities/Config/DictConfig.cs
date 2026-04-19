@@ -6,9 +6,9 @@ public class DictConfig : AbstractEntityTypeConfiguration<Dict>
     {
         base.Configure(builder);
 
-        builder.Property(x => x.Code).HasMaxLength(DictConsts.Code_MaxLength);
-        builder.Property(x => x.Name).HasMaxLength(DictConsts.Name_MaxLength);
-        builder.Property(x => x.Remark).HasMaxLength(DictConsts.Remark_MaxLength);
+        builder.Property(x => x.Code).HasMaxLength(Dict.Code_MaxLength);
+        builder.Property(x => x.Name).HasMaxLength(Dict.Name_MaxLength);
+        builder.Property(x => x.Remark).HasMaxLength(Dict.Remark_MaxLength);
     }
 }
 
@@ -18,9 +18,9 @@ public class DictDataConfig : AbstractEntityTypeConfiguration<DictData>
     {
         base.Configure(builder);
 
-        builder.Property(x => x.DictCode).HasMaxLength(DictConsts.Code_MaxLength);
-        builder.Property(x => x.Label).HasMaxLength(DictDataConsts.Label_MaxLength);
-        builder.Property(x => x.Value).HasMaxLength(DictDataConsts.Value_MaxLength);
-        builder.Property(x => x.TagType).HasMaxLength(DictDataConsts.TagType_MaxLength);
+        builder.Property(x => x.DictCode).HasMaxLength(Dict.Code_MaxLength);
+        builder.Property(x => x.Label).HasMaxLength(DictData.Label_MaxLength);
+        builder.Property(x => x.Value).HasMaxLength(DictData.Value_MaxLength);
+        builder.Property(x => x.TagType).HasMaxLength(DictData.TagType_MaxLength);
     }
 }

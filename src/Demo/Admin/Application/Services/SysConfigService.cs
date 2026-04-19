@@ -24,8 +24,8 @@ public class SysConfigService(IEfRepository<SysConfig> sysConfigRepo/*, BloomFil
 
         var entity = Mapper.Map<SysConfig>(input, IdGenerater.GetNextId());
 
-        //var cacheKey = cacheService.ConcatCacheKey(CachingConsts.SysConfigSingleKeyPrefix, cfg.Id);
-        //var cahceBf = bloomFilterFactory.Create(CachingConsts.BloomfilterOfCacheKey);
+        //var cacheKey = cacheService.ConcatCacheKey(CacheConsts.SysConfigSingleKeyPrefix, cfg.Id);
+        //var cahceBf = bloomFilterFactory.Create(CacheConsts.BloomfilterOfCacheKey);
         //var addedStatus = await cahceBf.AddAsync(cacheKey);
         //if (!addedStatus)
         //    return Problem(HttpStatusCode.BadRequest, "Failed to add the item to the bloom filter.");

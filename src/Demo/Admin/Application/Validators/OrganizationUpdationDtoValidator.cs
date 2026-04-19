@@ -1,4 +1,6 @@
-namespace Adnc.Demo.Admin.Application.Contracts.Dtos.Organization.Validators;
+using Adnc.Demo.Admin.Application.Contracts.Dtos.Organization;
+
+namespace Adnc.Demo.Admin.Application.Validators;
 
 /// <summary>
 /// Validates <see cref="OrganizationUpdationDto"/> instances.

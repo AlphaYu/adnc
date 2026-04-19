@@ -5,6 +5,11 @@ namespace Adnc.Demo.Admin.Repository.Entities;
 /// </summary>
 public class SysConfig : EfFullAuditEntity
 {
+    public static readonly int Key_MaxLength = 64;
+    public static readonly int Name_MaxLength = 64;
+    public static readonly int Value_MaxLength = 128;
+    public static readonly int Remark_MaxLength = 128;
+
     /// <summary>
     /// Parameter key
     /// </summary>

@@ -6,9 +6,9 @@ public class SysConfigConfig : AbstractEntityTypeConfiguration<SysConfig>
     {
         base.Configure(builder);
 
-        builder.Property(x => x.Key).HasMaxLength(SysConfigConsts.Key_MaxLength);
-        builder.Property(x => x.Name).HasMaxLength(SysConfigConsts.Name_MaxLength);
-        builder.Property(x => x.Value).HasMaxLength(SysConfigConsts.Value_MaxLength);
-        builder.Property(x => x.Remark).HasMaxLength(SysConfigConsts.Remark_MaxLength);
+        builder.Property(x => x.Key).HasMaxLength(SysConfig.Key_MaxLength);
+        builder.Property(x => x.Name).HasMaxLength(SysConfig.Name_MaxLength);
+        builder.Property(x => x.Value).HasMaxLength(SysConfig.Value_MaxLength);
+        builder.Property(x => x.Remark).HasMaxLength(SysConfig.Remark_MaxLength);
     }
 }

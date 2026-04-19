@@ -1,4 +1,6 @@
-namespace Adnc.Demo.Admin.Application.Contracts.Dtos.User.Validators;
+using Adnc.Demo.Admin.Application.Contracts.Dtos.User;
+
+namespace Adnc.Demo.Admin.Application.Validators;
 
 /// <summary>
 /// Validates <see cref="UserLoginDto"/> instances.
@@ -10,7 +12,7 @@ public class UserLoginDtoValidator : AbstractValidator<UserLoginDto>
     /// </summary>
     public UserLoginDtoValidator()
     {
-        RuleFor(x => x.Account).Required().Length(5, UserConsts.Account_MaxLength).LetterNumberUnderscode();
-        RuleFor(x => x.Password).Required().Length(5, UserConsts.Password_Maxlength);
+        RuleFor(x => x.Account).Required().Length(5, User.Account_MaxLength).LetterNumberUnderscode();
+        RuleFor(x => x.Password).Required().Length(5, User.Password_Maxlength);
     }
 }

@@ -13,7 +13,7 @@ public interface ISysConfigService : IAppService
     /// <param name="input">The configuration to create.</param>
     /// <returns>The ID of the created configuration.</returns>
     [OperateLog(LogName = "Create configuration")]
-    [CachingEvict(CacheKey = CachingConsts.SysConfigListCacheKey)]
+    [CachingEvict(CacheKey = CacheConsts.SysConfigListCacheKey)]
     Task<ServiceResult<IdDto>> CreateAsync(SysConfigCreationDto input);
 
     /// <summary>
@@ -23,7 +23,7 @@ public interface ISysConfigService : IAppService
     /// <param name="input">The configuration changes.</param>
     /// <returns>A result indicating whether the configuration was updated.</returns>
     [OperateLog(LogName = "Update configuration")]
-    [CachingEvict(CacheKey = CachingConsts.SysConfigListCacheKey)]
+    [CachingEvict(CacheKey = CacheConsts.SysConfigListCacheKey)]
     Task<ServiceResult> UpdateAsync([CachingParam] long id, SysConfigUpdationDto input);
 
     /// <summary>
@@ -32,7 +32,7 @@ public interface ISysConfigService : IAppService
     /// <param name="ids">The configuration IDs to delete.</param>
     /// <returns>A result indicating whether the configurations were deleted.</returns>
     [OperateLog(LogName = "Delete configuration")]
-    [CachingEvict(CacheKey = CachingConsts.SysConfigListCacheKey)]
+    [CachingEvict(CacheKey = CacheConsts.SysConfigListCacheKey)]
     Task<ServiceResult> DeleteAsync([CachingParam] long[] ids);
 
     /// <summary>

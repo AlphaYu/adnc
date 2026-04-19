@@ -23,9 +23,9 @@ public class CacheKeyBloomFilter(Lazy<IOptions<CacheOptions>> cacheOptions, Lazy
         //{
         //    var values = new List<string>()
         //    {
-        //        CachingConsts.MenuListCacheKey,
-        //        CachingConsts.RoleMenuCodesCacheKey,
-        //        CachingConsts.DetpListCacheKey
+        //        CacheConsts.MenuListCacheKey,
+        //        CacheConsts.RoleMenuCodesCacheKey,
+        //        CacheConsts.DetpListCacheKey
         //    };
 
         //    using var scope = serviceProvider.Value.CreateScope();
@@ -35,7 +35,7 @@ public class CacheKeyBloomFilter(Lazy<IOptions<CacheOptions>> cacheOptions, Lazy
         //                                            .Select(x => x.Id)
         //                                            .ToListAsync();
         //    if (ids.IsNotNullOrEmpty())
-        //        values.AddRange(ids.Select(x => string.Concat(CachingConsts.UserValidatedInfoKeyPrefix, GeneralConsts.LinkChar, x)));
+        //        values.AddRange(ids.Select(x => string.Concat(CacheConsts.UserValidatedInfoKeyPrefix, GeneralConsts.LinkChar, x)));
 
         //    await InitAsync(values);
         //}

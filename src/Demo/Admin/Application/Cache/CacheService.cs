@@ -45,7 +45,7 @@ public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IDistr
     /// <param name="count">The failed login count.</param>
     internal async Task SetFailLoginCountToCacheAsync(long id, int count)
     {
-        var cacheKey = ConcatCacheKey(CachingConsts.UserFailCountKeyPrefix, id);
+        var cacheKey = ConcatCacheKey(CacheConsts.UserFailCountKeyPrefix, id);
         await CacheProvider.Value.SetAsync(cacheKey, count, TimeSpan.FromSeconds(GetRefreshTokenExpires()));
     }
 
@@ -55,7 +55,7 @@ public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IDistr
     /// <param name="id">The user ID.</param>
     internal async Task RemoveFailLoginCountToCacheAsync(long id)
     {
-        var cacheKey = ConcatCacheKey(CachingConsts.UserFailCountKeyPrefix, id);
+        var cacheKey = ConcatCacheKey(CacheConsts.UserFailCountKeyPrefix, id);
         await CacheProvider.Value.RemoveAsync(cacheKey);
     }
 
@@ -66,7 +66,7 @@ public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IDistr
     /// <returns>The failed login count.</returns>
     internal async Task<int> GetFailLoginCountByUserIdAsync(long id)
     {
-        var cacheKey = ConcatCacheKey(CachingConsts.UserFailCountKeyPrefix, id);
+        var cacheKey = ConcatCacheKey(CacheConsts.UserFailCountKeyPrefix, id);
         var cacheValue = await CacheProvider.Value.GetAsync<int>(cacheKey);
         return cacheValue.Value;
     }
@@ -77,7 +77,7 @@ public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IDistr
     /// <param name="value">The validated user information to cache.</param>
     internal async Task SetValidateInfoToCacheAsync(UserValidatedInfoDto value)
     {
-        var cacheKey = ConcatCacheKey(CachingConsts.UserValidatedInfoKeyPrefix, value.Id);
+        var cacheKey = ConcatCacheKey(CacheConsts.UserValidatedInfoKeyPrefix, value.Id);
         await CacheProvider.Value.SetAsync(cacheKey, value, TimeSpan.FromSeconds(GetRefreshTokenExpires()));
     }
 
@@ -88,7 +88,7 @@ public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IDistr
     /// <returns>The cached validated user information, or <see langword="null"/> if none exists.</returns>
     internal async Task<UserValidatedInfoDto?> GetUserValidateInfoFromCacheAsync(long id)
     {
-        var cacheKey = ConcatCacheKey(CachingConsts.UserValidatedInfoKeyPrefix, id.ToString());
+        var cacheKey = ConcatCacheKey(CacheConsts.UserValidatedInfoKeyPrefix, id.ToString());
         var cacheValue = await CacheProvider.Value.GetAsync<UserValidatedInfoDto>(cacheKey);
         return cacheValue.Value;
     }
@@ -99,7 +99,7 @@ public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IDistr
     /// <param name="id">The user ID.</param>
     internal async Task ChangeUserValidateInfoCacheExpiresDtAsync(long id)
     {
-        var cacheKey = ConcatCacheKey(CachingConsts.UserValidatedInfoKeyPrefix, id);
+        var cacheKey = ConcatCacheKey(CacheConsts.UserValidatedInfoKeyPrefix, id);
         await CacheProvider.Value.KeyExpireAsync([cacheKey], GetRefreshTokenExpires());
     }
 
@@ -109,7 +109,7 @@ public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IDistr
     /// <returns>A list of cached organizations.</returns>
     internal async Task<List<OrganizationDto>> GetAllOrganizationsFromCacheAsync()
     {
-        var cahceValue = await CacheProvider.Value.GetAsync(CachingConsts.DetpListCacheKey, async () =>
+        var cahceValue = await CacheProvider.Value.GetAsync(CacheConsts.DetpListCacheKey, async () =>
         {
             using var scope = ServiceProvider.Value.CreateScope();
             var orgRepo = scope.ServiceProvider.GetRequiredService<IEfRepository<Organization>>();
@@ -126,7 +126,7 @@ public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IDistr
     /// <returns>A list of cached menus.</returns>
     internal async Task<List<MenuDto>> GetAllMenusFromCacheAsync()
     {
-        var cahceValue = await CacheProvider.Value.GetAsync(CachingConsts.MenuListCacheKey, async () =>
+        var cahceValue = await CacheProvider.Value.GetAsync(CacheConsts.MenuListCacheKey, async () =>
         {
             using var scope = ServiceProvider.Value.CreateScope();
             var menuRepo = scope.ServiceProvider.GetRequiredService<IEfRepository<Menu>>();
@@ -143,7 +143,7 @@ public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IDistr
     /// <returns>A list of cached role menu code mappings.</returns>
     internal async Task<List<RoleMenuCodeDto>> GetAllRoleMenuCodesFromCacheAsync()
     {
-        var cahceValue = await CacheProvider.Value.GetAsync(CachingConsts.RoleMenuCodesCacheKey, async () =>
+        var cahceValue = await CacheProvider.Value.GetAsync(CacheConsts.RoleMenuCodesCacheKey, async () =>
         {
             var result = await GetAllRoleMenuCodesFromDb();
             return result;
@@ -159,7 +159,7 @@ public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IDistr
     internal async Task SetAllRoleMenuCodesToCacheAsync()
     {
         var cacheValue = await GetAllRoleMenuCodesFromDb();
-        await CacheProvider.Value.SetAsync(CachingConsts.RoleMenuCodesCacheKey, cacheValue, TimeSpan.FromSeconds(GeneralConsts.OneYear));
+        await CacheProvider.Value.SetAsync(CacheConsts.RoleMenuCodesCacheKey, cacheValue, TimeSpan.FromSeconds(GeneralConsts.OneYear));
     }
 
     /// <summary>
@@ -168,13 +168,13 @@ public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IDistr
     [Obsolete($"use {nameof(GetAllDictOptionsFromCacheAsync)} instead")]
     internal async Task PreheatAllDictOptionsAsync()
     {
-        var exists = await CacheProvider.Value.ExistsAsync(CachingConsts.DictOptionsPreheatedKey);
+        var exists = await CacheProvider.Value.ExistsAsync(CacheConsts.DictOptionsPreheatedKey);
         if (exists)
         {
             return;
         }
 
-        var (Success, LockValue) = await dictributeLocker.Value.LockAsync(CachingConsts.DictOptionsPreheatedKey);
+        var (Success, LockValue) = await dictributeLocker.Value.LockAsync(CacheConsts.DictOptionsPreheatedKey);
         if (!Success)
         {
             await Task.Delay(500);
@@ -203,7 +203,7 @@ public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IDistr
             var codes = queryList.Select(x => x.DictCode).Distinct();
             foreach (var code in codes)
             {
-                var cacheKey = ConcatCacheKey(CachingConsts.DictOptionSingleKeyPrefix, code);
+                var cacheKey = ConcatCacheKey(CacheConsts.DictOptionSingleKeyPrefix, code);
                 var dictOptions = new DictOptionDto
                 {
                     Code = code,
@@ -213,16 +213,16 @@ public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IDistr
                 cahceDictionary.Add(cacheKey, dictOptions);
             }
             await CacheProvider.Value.SetAllAsync(cahceDictionary, TimeSpan.FromSeconds(GeneralConsts.OneMonth));
-            logger.Value.LogInformation("finished({Count}) preheat {DictOptionSingleKeyPrefix}", cahceDictionary.Count, CachingConsts.DictOptionSingleKeyPrefix);
+            logger.Value.LogInformation("finished({Count}) preheat {DictOptionSingleKeyPrefix}", cahceDictionary.Count, CacheConsts.DictOptionSingleKeyPrefix);
         }
         catch (Exception ex)
         {
             logger.Value.LogError(ex, "{message}", ex.Message);
-            await dictributeLocker.Value.SafedUnLockAsync(CachingConsts.DictOptionsPreheatedKey, LockValue);
+            await dictributeLocker.Value.SafedUnLockAsync(CacheConsts.DictOptionsPreheatedKey, LockValue);
             throw new InvalidOperationException("PreheatAllCfgsAsync was failure", ex);
         }
         var serverInfo = ServiceProvider.Value.GetRequiredService<IServiceInfo>();
-        await CacheProvider.Value.SetAsync(CachingConsts.DictOptionsPreheatedKey, serverInfo.Version, TimeSpan.FromSeconds(GeneralConsts.OneYear));
+        await CacheProvider.Value.SetAsync(CacheConsts.DictOptionsPreheatedKey, serverInfo.Version, TimeSpan.FromSeconds(GeneralConsts.OneYear));
     }
 
     /// <summary>
@@ -231,7 +231,7 @@ public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IDistr
     /// <returns>A list of cached dictionary options.</returns>
     internal async Task<List<DictOptionDto>> GetAllDictOptionsFromCacheAsync()
     {
-        var cahceValue = await CacheProvider.Value.GetAsync(CachingConsts.DictOptionsListKey, async () =>
+        var cahceValue = await CacheProvider.Value.GetAsync(CacheConsts.DictOptionsListKey, async () =>
         {
             using var scope = ServiceProvider.Value.CreateScope();
             var dictRepo = scope.ServiceProvider.GetRequiredService<IEfRepository<Dict>>();
@@ -270,7 +270,7 @@ public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IDistr
     /// <returns>A list of cached system configuration entries.</returns>
     internal async Task<List<SysConfigSimpleDto>> GetAllSysConfigsFromCacheAsync()
     {
-        var cahceValue = await CacheProvider.Value.GetAsync(CachingConsts.SysConfigListCacheKey, async () =>
+        var cahceValue = await CacheProvider.Value.GetAsync(CacheConsts.SysConfigListCacheKey, async () =>
         {
             using var scope = ServiceProvider.Value.CreateScope();
             var sysConfigRepo = scope.ServiceProvider.GetRequiredService<IEfRepository<SysConfig>>();

@@ -1,4 +1,6 @@
-namespace Adnc.Demo.Admin.Application.Contracts.Dtos.Menu.Validators;
+using Adnc.Demo.Admin.Application.Contracts.Dtos.Menu;
+
+namespace Adnc.Demo.Admin.Application.Validators;
 
 /// <summary>
 /// Validates <see cref="MenuUpdationDto"/> instances.

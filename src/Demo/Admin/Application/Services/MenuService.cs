@@ -89,7 +89,7 @@ public class MenuService(IEfRepository<Menu> menuRepo, IEfRepository<RoleMenuRel
         var whereExpr = ExpressionCreator.New<MenuDto>().AndIf(keywords is not null, x => x.Name == keywords);
         var menus = (await cacheService.GetAllMenusFromCacheAsync()).Where(whereExpr.Compile()).OrderBy(x => x.ParentId).ThenBy(x => x.Ordinal).ToArray();
 
-        var exists = await cacheService.CacheProvider.Value.ExistsAsync(CachingConsts.RoleMenuCodesCacheKey);
+        var exists = await cacheService.CacheProvider.Value.ExistsAsync(CacheConsts.RoleMenuCodesCacheKey);
         if (!exists)
         {
             _ = await cacheService.GetAllRoleMenuCodesFromCacheAsync();

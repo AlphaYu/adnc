@@ -1,4 +1,6 @@
-namespace Adnc.Demo.Admin.Application.Contracts.Dtos.User.Validators;
+using Adnc.Demo.Admin.Application.Contracts.Dtos.User;
+
+namespace Adnc.Demo.Admin.Application.Validators;
 
 /// <summary>
 /// Validates <see cref="UserUpdationDto"/> instances.

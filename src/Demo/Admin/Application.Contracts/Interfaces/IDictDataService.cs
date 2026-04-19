@@ -13,7 +13,7 @@ public interface IDictDataService : IAppService
     /// <param name="input">The dictionary data entry to create.</param>
     /// <returns>The ID of the created dictionary data entry.</returns>
     [OperateLog(LogName = "Create dictionary data")]
-    [CachingEvict(CacheKey = CachingConsts.DictOptionsListKey)]
+    [CachingEvict(CacheKey = CacheConsts.DictOptionsListKey)]
     Task<ServiceResult<IdDto>> CreateAsync(DictDataCreationDto input);
 
     /// <summary>
@@ -23,7 +23,7 @@ public interface IDictDataService : IAppService
     /// <param name="input">The dictionary data entry changes.</param>
     /// <returns>A result indicating whether the dictionary data entry was updated.</returns>
     [OperateLog(LogName = "Update dictionary data")]
-    [CachingEvict(CacheKey = CachingConsts.DictOptionsListKey)]
+    [CachingEvict(CacheKey = CacheConsts.DictOptionsListKey)]
     Task<ServiceResult> UpdateAsync(long id, DictDataUpdationDto input);
 
     /// <summary>
@@ -32,7 +32,7 @@ public interface IDictDataService : IAppService
     /// <param name="ids">The dictionary data entry IDs to delete.</param>
     /// <returns>A result indicating whether the dictionary data entries were deleted.</returns>
     [OperateLog(LogName = "Delete dictionary data")]
-    [CachingEvict(CacheKey = CachingConsts.DictOptionsListKey)]
+    [CachingEvict(CacheKey = CacheConsts.DictOptionsListKey)]
     Task<ServiceResult> DeleteAsync(long[] ids);
 
     /// <summary>

@@ -79,9 +79,9 @@ public class OrganizationService(IEfRepository<Organization> organizationRepo, C
     }
 
     /// <inheritdoc />
-    public async Task<OrganizationDto?> GetAsync(long Id)
+    public async Task<OrganizationDto?> GetAsync(long id)
     {
-        var org = (await cacheService.GetAllOrganizationsFromCacheAsync()).FirstOrDefault(x => x.Id == Id);
+        var org = (await cacheService.GetAllOrganizationsFromCacheAsync()).FirstOrDefault(x => x.Id == id);
         return org;
     }
 

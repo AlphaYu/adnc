@@ -23,11 +23,11 @@ public class UserService(IEfRepository<User> userRepo, IEfRepository<Role> roleR
         user.Salt = Random.Shared.Next(5, false);
         user.Password = InfraHelper.Encrypt.Md5(user.Password + user.Salt);
 
-        //var cacheKey = cacheService.ConcatCacheKey(CachingConsts.UserValidatedInfoKeyPrefix, user.Id);
-        //var bloomFilterCacheKey = bloomFilterFactory.Create(CachingConsts.BloomfilterOfCacheKey);
+        //var cacheKey = cacheService.ConcatCacheKey(CacheConsts.UserValidatedInfoKeyPrefix, user.Id);
+        //var bloomFilterCacheKey = bloomFilterFactory.Create(CacheConsts.BloomfilterOfCacheKey);
         //await bloomFilterCacheKey.AddAsync(cacheKey);
 
-        //var bloomFilterAccount = bloomFilterFactory.Create(CachingConsts.BloomfilterOfAccountsKey);
+        //var bloomFilterAccount = bloomFilterFactory.Create(CacheConsts.BloomfilterOfAccountsKey);
         //await bloomFilterAccount.AddAsync(user.Account);
 
         if (input.RoleIds.IsNotNullOrEmpty())
@@ -212,7 +212,7 @@ public class UserService(IEfRepository<User> userRepo, IEfRepository<Role> roleR
         };
 
         // Bloom filter demo code.
-        //var accountsFilter = bloomFilterFactory.Create(CachingConsts.BloomfilterOfAccountsKey);
+        //var accountsFilter = bloomFilterFactory.Create(CacheConsts.BloomfilterOfAccountsKey);
         //var exists = await accountsFilter.ExistsAsync(input.Account.ToLower());
         //if (!exists)
         //    return Problem(HttpStatusCode.BadRequest, "Invalid username or password.");
@@ -251,7 +251,7 @@ public class UserService(IEfRepository<User> userRepo, IEfRepository<Role> roleR
             log.StatusCode = problem.Status;
             await channelWriter.WriteAsync(log);
 
-            string[] needRemovedKeys = [cacheService.ConcatCacheKey(CachingConsts.UserFailCountKeyPrefix, user.Id), cacheService.ConcatCacheKey(CachingConsts.UserValidatedInfoKeyPrefix, user.Id)];
+            string[] needRemovedKeys = [cacheService.ConcatCacheKey(CacheConsts.UserFailCountKeyPrefix, user.Id), cacheService.ConcatCacheKey(CacheConsts.UserValidatedInfoKeyPrefix, user.Id)];
             await cacheService.RemoveCachesAsync(async (cancellToken) =>
             {
                 await userRepo.ExecuteUpdateAsync(x => x.Id == user.Id, setters => setters.SetProperty(y => y.Status, false), cancellToken);

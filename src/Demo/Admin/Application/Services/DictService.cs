@@ -25,8 +25,8 @@ public class DictService(IEfRepository<Dict> dictRepo, IEfRepository<DictData> d
 
         var entity = Mapper.Map<Dict>(input, IdGenerater.GetNextId());
 
-        //var cacheKey = cacheService.ConcatCacheKey(CachingConsts.DictOptionSingleKeyPrefix, id);
-        //var cahceBf = bloomFilterFactory.Create(CachingConsts.BloomfilterOfCacheKey);
+        //var cacheKey = cacheService.ConcatCacheKey(CacheConsts.DictOptionSingleKeyPrefix, id);
+        //var cahceBf = bloomFilterFactory.Create(CacheConsts.BloomfilterOfCacheKey);
         //var addedStatus = await cahceBf.AddAsync(cacheKey);
         //if (!addedStatus)
         //    return Problem(HttpStatusCode.BadRequest, "Failed to add the item to the bloom filter.");

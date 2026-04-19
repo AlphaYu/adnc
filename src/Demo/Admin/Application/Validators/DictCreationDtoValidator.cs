@@ -1,4 +1,6 @@
-namespace Adnc.Demo.Admin.Application.Contracts.Dtos.Dict.Validators;
+using Adnc.Demo.Admin.Application.Contracts.Dtos.Dict;
+
+namespace Adnc.Demo.Admin.Application.Validators;
 
 /// <summary>
 /// Validates <see cref="DictCreationDto"/> instances.
@@ -10,9 +12,9 @@ public class DictCreationDtoValidator : AbstractValidator<DictCreationDto>
     /// </summary>
     public DictCreationDtoValidator()
     {
-        RuleFor(x => x.Name).NotEmpty().Length(2, DictConsts.Name_MaxLength);
-        RuleFor(x => x.Code).NotEmpty().Length(2, DictConsts.Code_MaxLength);
-        RuleFor(x => x.Remark).MaximumLength(DictConsts.Remark_MaxLength);
+        RuleFor(x => x.Name).NotEmpty().Length(2, Dict.Name_MaxLength);
+        RuleFor(x => x.Code).NotEmpty().Length(2, Dict.Code_MaxLength);
+        RuleFor(x => x.Remark).MaximumLength(Dict.Remark_MaxLength);
     }
 }
 
@@ -26,9 +28,9 @@ public class DictDataCreationDtoValidator : AbstractValidator<DictDataCreationDt
     /// </summary>
     public DictDataCreationDtoValidator()
     {
-        RuleFor(x => x.DictCode).NotEmpty().Length(2, DictConsts.Code_MaxLength);
-        RuleFor(x => x.Value).NotEmpty().MaximumLength(DictDataConsts.Value_MaxLength);
-        RuleFor(x => x.Label).NotEmpty().MaximumLength(DictDataConsts.Label_MaxLength);
-        RuleFor(x => x.TagType).MaximumLength(DictDataConsts.TagType_MaxLength);
+        RuleFor(x => x.DictCode).NotEmpty().Length(2, Dict.Code_MaxLength);
+        RuleFor(x => x.Value).NotEmpty().MaximumLength(DictData.Value_MaxLength);
+        RuleFor(x => x.Label).NotEmpty().MaximumLength(DictData.Label_MaxLength);
+        RuleFor(x => x.TagType).MaximumLength(DictData.TagType_MaxLength);
     }
 }

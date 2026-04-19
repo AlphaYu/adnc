@@ -1,4 +1,6 @@
-namespace Adnc.Demo.Admin.Application.Contracts.Dtos.Dict.Validators;
+using Adnc.Demo.Admin.Application.Contracts.Dtos.Dict;
+
+namespace Adnc.Demo.Admin.Application.Validators;
 
 /// <summary>
 /// Validates <see cref="DictUpdationDto"/> instances.

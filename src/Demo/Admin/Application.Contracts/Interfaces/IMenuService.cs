@@ -13,7 +13,7 @@ public interface IMenuService : IAppService
     /// <param name="input">The menu to create.</param>
     /// <returns>The ID of the created menu.</returns>
     [OperateLog(LogName = "Create menu")]
-    [CachingEvict(CacheKeys = new[] { CachingConsts.MenuListCacheKey })]
+    [CachingEvict(CacheKeys = new[] { CacheConsts.MenuListCacheKey })]
     Task<ServiceResult<IdDto>> CreateAsync(MenuCreationDto input);
 
     /// <summary>
@@ -23,7 +23,7 @@ public interface IMenuService : IAppService
     /// <param name="input">The menu changes.</param>
     /// <returns>A result indicating whether the menu was updated.</returns>
     [OperateLog(LogName = "Update menu")]
-    [CachingEvict(CacheKeys = new[] { CachingConsts.MenuListCacheKey, CachingConsts.RoleMenuCodesCacheKey })]
+    [CachingEvict(CacheKeys = new[] { CacheConsts.MenuListCacheKey, CacheConsts.RoleMenuCodesCacheKey })]
     Task<ServiceResult> UpdateAsync(long id, MenuUpdationDto input);
 
     /// <summary>
@@ -32,7 +32,7 @@ public interface IMenuService : IAppService
     /// <param name="id">The menu ID.</param>
     /// <returns>A result indicating whether the menu was deleted.</returns>
     [OperateLog(LogName = "Delete menu")]
-    [CachingEvict(CacheKeys = new[] { CachingConsts.MenuListCacheKey, CachingConsts.RoleMenuCodesCacheKey })]
+    [CachingEvict(CacheKeys = new[] { CacheConsts.MenuListCacheKey, CacheConsts.RoleMenuCodesCacheKey })]
     Task<ServiceResult> DeleteAsync(long id);
 
     /// <summary>
@@ -40,7 +40,7 @@ public interface IMenuService : IAppService
     /// </summary>
     /// <param name="keywords">The optional keyword used to filter menus.</param>
     /// <returns>The menu tree.</returns>
-    //[CachingAble(CacheKey = CachingConsts.MenuTreeListCacheKey, Expiration = CachingConsts.OneYear)]
+    //[CachingAble(CacheKey = CacheConsts.MenuTreeListCacheKey, Expiration = CacheConsts.OneYear)]
     Task<List<MenuTreeDto>> GetTreelistAsync(string? keywords = null);
 
     /// <summary>

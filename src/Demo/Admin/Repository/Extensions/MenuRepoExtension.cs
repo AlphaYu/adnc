@@ -1,6 +1,6 @@
-namespace Adnc.Demo.Admin.Repository;
+namespace Adnc.Demo.Admin.Repository.Extensions;
 
-public static class MenuRepositoryExtension
+public static class MenuRepoExtension
 {
     /*
     public static async Task<List<Menu>> GetMenusByRoleIdsAsync(this IEfRepository<Menu> repo, long[] roleIds, bool? status)

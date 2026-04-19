@@ -1,4 +1,6 @@
-namespace Adnc.Demo.Admin.Application.Contracts.Dtos.SysConfig.Validators;
+using Adnc.Demo.Admin.Application.Contracts.Dtos.SysConfig;
+
+namespace Adnc.Demo.Admin.Application.Validators;
 
 /// <summary>
 /// Validates <see cref="SysConfigUpdationDto"/> instances.

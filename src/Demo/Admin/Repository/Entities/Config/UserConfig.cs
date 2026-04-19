@@ -6,12 +6,12 @@ public class UserConfig : AbstractEntityTypeConfiguration<User>
     {
         base.Configure(builder);
 
-        builder.Property(x => x.Account).HasMaxLength(UserConsts.Account_MaxLength);
-        builder.Property(x => x.Avatar).HasMaxLength(UserConsts.Avatar_MaxLength);
-        builder.Property(x => x.Email).HasMaxLength(UserConsts.Email_Maxlength);
-        builder.Property(x => x.Name).HasMaxLength(UserConsts.Name_Maxlength);
-        builder.Property(x => x.Password).HasMaxLength(UserConsts.Password_Maxlength);
-        builder.Property(x => x.Mobile).HasMaxLength(UserConsts.Phone_Maxlength);
-        builder.Property(x => x.Salt).HasMaxLength(UserConsts.Salt_Maxlength);
+        builder.Property(x => x.Account).HasMaxLength(User.Account_MaxLength);
+        builder.Property(x => x.Avatar).HasMaxLength(User.Avatar_MaxLength);
+        builder.Property(x => x.Email).HasMaxLength(User.Email_Maxlength);
+        builder.Property(x => x.Name).HasMaxLength(User.Name_Maxlength);
+        builder.Property(x => x.Password).HasMaxLength(User.Password_Maxlength);
+        builder.Property(x => x.Mobile).HasMaxLength(User.Phone_Maxlength);
+        builder.Property(x => x.Salt).HasMaxLength(User.Salt_Maxlength);
     }
 }
