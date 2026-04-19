@@ -39,7 +39,7 @@ public class CustomerController(ICustomerService customerService) : AdncControll
     [AdncAuthorize(PermissionConsts.Customer.Search)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<PageModelDto<CustomerDto>>> GetPagedAsync([FromQuery] SearchPagedDto input)
-        => Result(await customerService.GetPagedAsync(input));
+        => await customerService.GetPagedAsync(input);
 
     /// <summary>
     /// Get a paginated customer list via SQL
@@ -50,7 +50,7 @@ public class CustomerController(ICustomerService customerService) : AdncControll
     [AdncAuthorize(PermissionConsts.Customer.Search)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<PageModelDto<CustomerDto>>> GetPagedBySqlAsync([FromQuery] SearchPagedDto input)
-      => Result(await customerService.GetPagedBySqlAsync(input));
+      => await customerService.GetPagedBySqlAsync(input);
 
     /// <summary>
     /// Get a paginated customer recharge log list
@@ -61,5 +61,5 @@ public class CustomerController(ICustomerService customerService) : AdncControll
     [AdncAuthorize(PermissionConsts.Customer.SearchTransactionLog)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<PageModelDto<TransactionLogDto>>> GetTransactionLogsPagedAsync([FromQuery] SearchPagedDto input)
-        => Result(await customerService.GetTransactionLogsPagedAsync(input));
+        => await customerService.GetTransactionLogsPagedAsync(input);
 }

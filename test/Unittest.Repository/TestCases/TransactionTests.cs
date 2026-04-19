@@ -22,8 +22,6 @@ public class TransactionTests : IClassFixture<EfCoreDbcontextFixture>
 
     }
 
-    private static Expression<Func<TEntity, object>>[] UpdatingProps<TEntity>(params Expression<Func<TEntity, object>>[] expressions) => expressions;
-
     /// <summary>
     /// Test the unit of work (commit)
     /// </summary>
@@ -51,19 +49,22 @@ public class TransactionTests : IClassFixture<EfCoreDbcontextFixture>
             await _customerRsp.InsertAsync(customer2);
 
             //update single
-            customer.Nickname = newNickName;
-            await _customerRsp.UpdateAsync(customer, UpdatingProps<Customer>(c => c.Nickname));
-            var customerFromDb = await _customerRsp.FindAsync(customer.Id);
+            await _customerRsp.ExecuteUpdateAsync(x => x.Id == customer.Id,
+                setters => setters.SetProperty(c => c.Nickname, newNickName));
+            var customerFromDb = await _customerRsp.FetchAsync(x => x.Id == customer.Id);
             Assert.Equal(newNickName, customerFromDb.Nickname);
             Assert.NotEqual(newRealName, customerFromDb.Realname);
 
-            cusFinance.Balance = newBalance;
-            await _cusFinanceRsp.UpdateAsync(cusFinance, UpdatingProps<CustomerFinance>(c => c.Balance));
+            await _cusFinanceRsp.ExecuteUpdateAsync(x => x.Id == cusFinance.Id,
+                setters => setters.SetProperty(c => c.Balance, newBalance));
             var financeFromDb = await _customerRsp.FetchAsync(x => x.Id == cusFinance.Id);
             Assert.Equal(newBalance, cusFinance.Balance);
 
             //update batchs
-            await _customerRsp.UpdateRangeAsync(x => x.Id == id, c => new Customer { Realname = newRealName, Nickname = newNickName });
+            await _customerRsp.ExecuteUpdateAsync(x => x.Id == id,
+                setters => setters
+                    .SetProperty(c => c.Realname, newRealName)
+                    .SetProperty(c => c.Nickname, newNickName));
 
             //delete raw sql
             await _customerRsp.DeleteAsync(id2);
@@ -116,13 +117,14 @@ public class TransactionTests : IClassFixture<EfCoreDbcontextFixture>
             await _cusFinanceRsp.InsertAsync(cusFinance);
 
             //update single
-            customer.Nickname = newNickName;
-            await _customerRsp.UpdateAsync(customer, UpdatingProps<Customer>(c => c.Nickname));
-            cusFinance.Balance = newBalance;
-            await _cusFinanceRsp.UpdateAsync(cusFinance, UpdatingProps<CustomerFinance>(c => c.Balance));
+            await _customerRsp.ExecuteUpdateAsync(x => x.Id == customer.Id,
+                setters => setters.SetProperty(c => c.Nickname, newNickName));
+            await _cusFinanceRsp.ExecuteUpdateAsync(x => x.Id == cusFinance.Id,
+                setters => setters.SetProperty(c => c.Balance, newBalance));
 
             //update batchs
-            await _customerRsp.UpdateRangeAsync(x => x.Id == id, c => new Customer { Realname = newRealName });
+            await _customerRsp.ExecuteUpdateAsync(x => x.Id == id,
+                setters => setters.SetProperty(c => c.Realname, newRealName));
 
             //delete raw sql
             await _customerRsp.DeleteAsync(id2);
@@ -146,7 +148,7 @@ public class TransactionTests : IClassFixture<EfCoreDbcontextFixture>
         var cusTotal = await _customerRsp.CountAsync(x => x.Id == id || x.Id == id2);
         Assert.Equal(0, cusTotal);
 
-        var customerFromDb = await _customerRsp.FindAsync(id);
+        var customerFromDb = await _customerRsp.FetchAsync(x => x.Id == id);
         var financeFromDb = await _customerRsp.FetchAsync(x => x.Id == id, c => c.FinanceInfo);
 
         Assert.Null(customerFromDb);
@@ -257,7 +259,7 @@ public class TransactionTests : IClassFixture<EfCoreDbcontextFixture>
             await _customerRsp.ExecuteDeleteAsync(x => x.Id <=10000);
 
             //ef search
-            var dbCustomer2 = await _customerRsp.FindAsync(dbCustomer.Id, x => x.FinanceInfo);
+            var dbCustomer2 = await _customerRsp.FetchAsync(x => x.Id == dbCustomer.Id, x => x.FinanceInfo);
             Assert.NotNull(dbCustomer2);
             Assert.Equal("test8888", dbCustomer2.Nickname);
 

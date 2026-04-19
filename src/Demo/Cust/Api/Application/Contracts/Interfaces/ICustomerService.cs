@@ -27,19 +27,19 @@ public interface ICustomerService : IAppService
     /// </summary>
     /// <param name="input"></param>
     /// <returns></returns>
-    Task<ServiceResult<PageModelDto<CustomerDto>>> GetPagedAsync(SearchPagedDto input);
+    Task<PageModelDto<CustomerDto>> GetPagedAsync(SearchPagedDto input);
 
     /// <summary>
     /// Get a paginated customer list (raw SQL)
     /// </summary>
     /// <param name="input"></param>
     /// <returns></returns>
-    Task<ServiceResult<PageModelDto<CustomerDto>>> GetPagedBySqlAsync(SearchPagedDto input);
+    Task<PageModelDto<CustomerDto>> GetPagedBySqlAsync(SearchPagedDto input);
 
     /// <summary>
     /// Get a paginated customer recharge log list
     /// </summary>
     /// <param name="input"></param>
     /// <returns></returns>
-    Task<ServiceResult<PageModelDto<TransactionLogDto>>> GetTransactionLogsPagedAsync(SearchPagedDto input);
+    Task<PageModelDto<TransactionLogDto>> GetTransactionLogsPagedAsync(SearchPagedDto input);
 }

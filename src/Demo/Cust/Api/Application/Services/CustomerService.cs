@@ -69,7 +69,7 @@ public class CustomerAppService(IEfRepository<Customer> customerRepo, IEfReposit
         return new IdDto(transactionLog.Id);
     }
 
-    public async Task<ServiceResult<PageModelDto<CustomerDto>>> GetPagedAsync(SearchPagedDto input)
+    public async Task<PageModelDto<CustomerDto>> GetPagedAsync(SearchPagedDto input)
     {
         input.TrimStringFields();
         var whereCondition = ExpressionCreator
@@ -103,7 +103,7 @@ public class CustomerAppService(IEfRepository<Customer> customerRepo, IEfReposit
         return new PageModelDto<CustomerDto>(input, customerDtos, count);
     }
 
-    public async Task<ServiceResult<PageModelDto<CustomerDto>>> GetPagedBySqlAsync(SearchPagedDto input)
+    public async Task<PageModelDto<CustomerDto>> GetPagedBySqlAsync(SearchPagedDto input)
     {
         input.TrimStringFields();
         var where = new StringBuilder(100)
@@ -116,7 +116,7 @@ public class CustomerAppService(IEfRepository<Customer> customerRepo, IEfReposit
         return new PageModelDto<CustomerDto>(input, queryResult.Content.ToArray(), queryResult.TotalCount);
     }
 
-    public async Task<ServiceResult<PageModelDto<TransactionLogDto>>> GetTransactionLogsPagedAsync(SearchPagedDto input)
+    public async Task<PageModelDto<TransactionLogDto>> GetTransactionLogsPagedAsync(SearchPagedDto input)
     {
         input.TrimStringFields();
         var whereExpr = ExpressionCreator

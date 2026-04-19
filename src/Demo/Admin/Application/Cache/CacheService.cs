@@ -10,9 +10,8 @@ namespace Adnc.Demo.Admin.Application.Cache;
 /// <summary>
 /// Provides cache access and cache preheating for Admin application data.
 /// </summary>
-public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IDistributedLocker> dictributeLocker
-    , Lazy<ILogger<CacheService>> logger, Lazy<IServiceProvider> serviceProvider, Lazy<IConfiguration> configuration
-    , Lazy<IObjectMapper> mapper)
+public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IServiceProvider> serviceProvider
+    , Lazy<IConfiguration> configuration, Lazy<IObjectMapper> mapper)
     : AbstractCacheService(cacheProvider, serviceProvider), ICachePreheatable
 {
     /// <summary>
@@ -160,69 +159,6 @@ public sealed class CacheService(Lazy<ICacheProvider> cacheProvider, Lazy<IDistr
     {
         var cacheValue = await GetAllRoleMenuCodesFromDb();
         await CacheProvider.Value.SetAsync(CacheConsts.RoleMenuCodesCacheKey, cacheValue, TimeSpan.FromSeconds(GeneralConsts.OneYear));
-    }
-
-    /// <summary>
-    /// Preheats dictionary options into individual cache entries.
-    /// </summary>
-    [Obsolete($"use {nameof(GetAllDictOptionsFromCacheAsync)} instead")]
-    internal async Task PreheatAllDictOptionsAsync()
-    {
-        var exists = await CacheProvider.Value.ExistsAsync(CacheConsts.DictOptionsPreheatedKey);
-        if (exists)
-        {
-            return;
-        }
-
-        var (Success, LockValue) = await dictributeLocker.Value.LockAsync(CacheConsts.DictOptionsPreheatedKey);
-        if (!Success)
-        {
-            await Task.Delay(500);
-            await PreheatAllDictOptionsAsync();
-        }
-
-        try
-        {
-            using var scope = ServiceProvider.Value.CreateScope();
-            var dictRepo = scope.ServiceProvider.GetRequiredService<IEfRepository<Dict>>();
-            var dictDataRepo = scope.ServiceProvider.GetRequiredService<IEfRepository<DictData>>();
-
-            var dicts = dictRepo.GetAll();
-            var dictDatas = dictDataRepo.GetAll();
-            var queryList = await (from d in dicts
-                                   join dd in dictDatas on d.Code equals dd.DictCode
-                                   orderby dd.Ordinal ascending
-                                   select new { dd.DictCode, d.Name, dd.Label, dd.Value, dd.TagType }).ToListAsync();
-
-            if (queryList.IsNullOrEmpty())
-            {
-                return;
-            }
-
-            var cahceDictionary = new Dictionary<string, DictOptionDto>();
-            var codes = queryList.Select(x => x.DictCode).Distinct();
-            foreach (var code in codes)
-            {
-                var cacheKey = ConcatCacheKey(CacheConsts.DictOptionSingleKeyPrefix, code);
-                var dictOptions = new DictOptionDto
-                {
-                    Code = code,
-                    Name = queryList.First(x => x.DictCode == code).Name,
-                    DictDataList = queryList.Where(x => x.DictCode == code).Select(x => new DictOptionDto.DictDataOption { Label = x.Label, Value = x.Value, TagType = x.TagType }).ToArray()
-                };
-                cahceDictionary.Add(cacheKey, dictOptions);
-            }
-            await CacheProvider.Value.SetAllAsync(cahceDictionary, TimeSpan.FromSeconds(GeneralConsts.OneMonth));
-            logger.Value.LogInformation("finished({Count}) preheat {DictOptionSingleKeyPrefix}", cahceDictionary.Count, CacheConsts.DictOptionSingleKeyPrefix);
-        }
-        catch (Exception ex)
-        {
-            logger.Value.LogError(ex, "{message}", ex.Message);
-            await dictributeLocker.Value.SafedUnLockAsync(CacheConsts.DictOptionsPreheatedKey, LockValue);
-            throw new InvalidOperationException("PreheatAllCfgsAsync was failure", ex);
-        }
-        var serverInfo = ServiceProvider.Value.GetRequiredService<IServiceInfo>();
-        await CacheProvider.Value.SetAsync(CacheConsts.DictOptionsPreheatedKey, serverInfo.Version, TimeSpan.FromSeconds(GeneralConsts.OneYear));
     }
 
     /// <summary>

@@ -10,11 +10,6 @@ public sealed class DapperRepository : IAdoExecuterWithQuerierRepository
         _dbConnection = dbConnection;
     }
 
-    public IDbConnection ChangeOrSetDbConnection(string connectionString, DbTypes dbType)
-    {
-        return CreateDbConnection(connectionString, dbType);
-    }
-
     public IDbConnection CreateDbConnection(string connectionString, DbTypes dbType)
     {
         ArgumentNullException.ThrowIfNullOrWhiteSpace(connectionString, nameof(connectionString));

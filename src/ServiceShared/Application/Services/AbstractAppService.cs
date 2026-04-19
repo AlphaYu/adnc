@@ -7,16 +7,6 @@ public abstract class AbstractAppService : IAppService
         get => ServiceLocator.GetProvider().GetRequiredService<IObjectMapper>();
     }
 
-    [Obsolete($"use {nameof(ServiceResult)} instead")]
-    protected static ServiceResult AppSrvResult() => new();
-
-    [Obsolete($"use {nameof(ServiceResult)} instead")]
-    protected static ServiceResult<TValue> AppSrvResult<TValue>(TValue value)
-        where TValue : notnull
-    {
-        return new ServiceResult<TValue>(value);
-    }
-
     protected static ServiceResult ServiceResult() => new();
 
     protected static ServiceResult<TValue> ServiceResult<TValue>(TValue value)

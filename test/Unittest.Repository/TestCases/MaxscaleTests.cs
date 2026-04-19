@@ -19,8 +19,6 @@ public class MaxscaleTests : IClassFixture<EfCoreDbcontextFixture>
         _cusLogsRsp = _fixture.Container.GetRequiredService<IEfRepository<CustomerTransactionLog>>();
     }
 
-    protected Expression<Func<TEntity, object>>[] UpdatingProps<TEntity>(params Expression<Func<TEntity, object>>[] expressions) => expressions;
-
     [Fact]
     public async Task TestReadFromWirteDb()
     {
@@ -76,9 +74,10 @@ public class MaxscaleTests : IClassFixture<EfCoreDbcontextFixture>
             var result = await InsertCustomer();
             id = result.Id;
 
-            result.Realname = newRealName;
-            result.Nickname = newNickname;
-            await _cusRsp.UpdateAsync(result, UpdatingProps<Customer>(c => c.Realname, c => c.Nickname));
+            await _cusRsp.ExecuteUpdateAsync(c => c.Id == result.Id,
+                setters => setters
+                    .SetProperty(c => c.Realname, newRealName)
+                    .SetProperty(c => c.Nickname, newNickname));
 
             _unitOfWork.Commit();
         }
@@ -91,7 +90,7 @@ public class MaxscaleTests : IClassFixture<EfCoreDbcontextFixture>
             _unitOfWork.Dispose();
         }
 
-        var newCus = await _cusRsp.FindAsync(id, writeDb: true);
+        var newCus = await _cusRsp.FetchAsync(c => c.Id == id, writeDb: true);
         Assert.Equal(newRealName, newCus.Realname);
         Assert.Equal(newNickname, newCus.Nickname);
     }
@@ -125,7 +124,7 @@ public class MaxscaleTests : IClassFixture<EfCoreDbcontextFixture>
             _unitOfWork.Dispose();
         }
 
-        var newCus = await _cusRsp.FindAsync(id, writeDb: true);
+        var newCus = await _cusRsp.FetchAsync(c => c.Id == id, writeDb: true);
         Assert.Equal(newRealName, newCus.Realname);
         Assert.Equal(newNickname, newCus.Nickname);
     }
@@ -138,9 +137,12 @@ public class MaxscaleTests : IClassFixture<EfCoreDbcontextFixture>
         var newRealName = "TestUser001";
         var newNickname = "Test";
 
-        await _cusRsp.UpdateRangeAsync(c => ids.Contains(c.Id), c => new Customer { Realname = newRealName, Nickname = newNickname });
+        await _cusRsp.ExecuteUpdateAsync(c => ids.Contains(c.Id),
+            setters => setters
+                .SetProperty(c => c.Realname, newRealName)
+                .SetProperty(c => c.Nickname, newNickname));
 
-        var newCus = await _cusRsp.FindAsync(list[0].Id, writeDb: true);
+        var newCus = await _cusRsp.FetchAsync(c => c.Id == list[0].Id, writeDb: true);
 
         Assert.Equal(newRealName, newCus.Realname);
         Assert.Equal(newNickname, newCus.Nickname);

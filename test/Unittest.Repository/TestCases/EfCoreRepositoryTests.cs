@@ -5,8 +5,6 @@ namespace Adnc.Infra.Unittest.Reposity.TestCases;
 
 public class EfCoreRepositoryTests(EfCoreDbcontextFixture fixture, ITestOutputHelper output) : IClassFixture<EfCoreDbcontextFixture>
 {
-    private static Expression<Func<TEntity, object>>[] UpdatingProps<TEntity>(params Expression<Func<TEntity, object>>[] expressions) => expressions;
-
     /// <summary>
     /// Insert one conditional record
     /// Database.AutoTransactionBehavior = AutoTransactionBehavior.Never will not start a transaction
@@ -119,7 +117,7 @@ public class EfCoreRepositoryTests(EfCoreDbcontextFixture fixture, ITestOutputHe
         var id0 = ids.ToArray()[0];
 
         // IEfRepository<> disables tracking by default, so tracking must be enabled manually.
-        var customer = await customerRsp.FindAsync(id0, noTracking: false);
+        var customer = await customerRsp.FetchAsync(x => x.Id == id0, noTracking: false);
         // The entity is already tracked.
         customer.Realname = "Tracked01";
         await customerRsp.UpdateAsync(customer);
@@ -127,11 +125,11 @@ public class EfCoreRepositoryTests(EfCoreDbcontextFixture fixture, ITestOutputHe
         Assert.Equal("Tracked01", newCust1.FirstOrDefault().Realname);
 
         var customerId = (await customerRsp.AdoQuerier.QueryAsync<long>("SELECT Id  FROM customerfinance limit 0,1")).FirstOrDefault();
-        customer = await customerRsp.FindAsync(x => x.Id == customerId, x => x.FinanceInfo, noTracking: false);
+        customer = await customerRsp.FetchAsync(x => x.Id == customerId, x => x.FinanceInfo, noTracking: false);
         customer.Account = "ParentChildUpdate01";
         customer.FinanceInfo.Account = "ParentChildUpdate01";
         await customerRsp.UpdateAsync(customer);
-        var newCust2 = await customerRsp.FindAsync(customerId, x => x.FinanceInfo);
+        var newCust2 = await customerRsp.FetchAsync(x => x.Id == customerId, x => x.FinanceInfo);
         Assert.Equal("ParentChildUpdate01", newCust2.Account);
         Assert.Equal("ParentChildUpdate01", newCust2.FinanceInfo.Account);
     }
@@ -155,7 +153,8 @@ public class EfCoreRepositoryTests(EfCoreDbcontextFixture fixture, ITestOutputHe
         // The entity is already tracked and specific columns are selected, so Realname will not be updated.
         customer.Nickname = "UpdateSelectedColumn";
         customer.Realname = "ColumnNotSelected";
-        await customerRsp.UpdateAsync(customer, UpdatingProps<Customer>(c => c.Nickname));
+        await customerRsp.ExecuteUpdateAsync(x => x.Id == customer.Id,
+            setters => setters.SetProperty(c => c.Nickname, "UpdateSelectedColumn"));
         var newCus = (await customerRsp.AdoQuerier.QueryAsync<Customer>("SELECT * FROM customer WHERE ID=@ID", customer)).FirstOrDefault();
         Assert.Equal("UpdateSelectedColumn", newCus.Nickname);
         Assert.NotEqual("ColumnNotSelected", newCus.Realname);
@@ -175,7 +174,8 @@ public class EfCoreRepositoryTests(EfCoreDbcontextFixture fixture, ITestOutputHe
         var total = await customerRsp.CountAsync(c => c.Id == cus1.Id || c.Id == cus2.Id);
         Assert.Equal(2, total);
 
-        await customerRsp.UpdateRangeAsync(c => c.Id == cus1.Id || c.Id == cus2.Id, x => new Customer { Realname = "BatchUpdate" });
+        await customerRsp.ExecuteUpdateAsync(c => c.Id == cus1.Id || c.Id == cus2.Id,
+            setters => setters.SetProperty(x => x.Realname, "BatchUpdate"));
         var result2 = await customerRsp.AdoQuerier.QueryAsync<Customer>("SELECT * FROM customer WHERE ID in @ids", new { ids = new[] { cus1.Id, cus2.Id } });
         Assert.NotEmpty(result2);
         Assert.Equal("BatchUpdate", result2.FirstOrDefault().Realname);
@@ -284,7 +284,7 @@ public class EfCoreRepositoryTests(EfCoreDbcontextFixture fixture, ITestOutputHe
 
         // Delete without tracking
         var customer = await InsertCustomer();
-        var customerFromDb = await customerRsp.FindAsync(customer.Id);
+        var customerFromDb = await customerRsp.FetchAsync(x => x.Id == customer.Id);
         Assert.Equal(customer.Id, customerFromDb.Id);
 
         await customerRsp.DeleteAsync(customer.Id);
@@ -474,25 +474,9 @@ public class EfCoreRepositoryTests(EfCoreDbcontextFixture fixture, ITestOutputHe
             => setter.SetProperty(x => x.Name, "TestEfcore8UpdateRangeAsync"));
         Assert.True(result > 0);
 
-        var newProject = await custProject.FindAsync(project.Id);
+        var newProject = await custProject.FetchAsync(x => x.Id == project.Id);
         Assert.Equal(1000000000001, newProject.ModifyBy);
         Assert.Equal("TestEfcore8UpdateRangeAsync", newProject.Name);
-    }
-
-    [Fact]
-    public async Task TestUpdateRangeAsync()
-    {
-        var custProject = fixture.Container.GetRequiredService<IEfRepository<Project>>();
-
-        var project = new Project { Id = UnittestHelper.GetNextId(), Name = $"{UnittestHelper.GetNextId()}" };
-        await custProject.InsertAsync(project);
-
-        var result = await custProject.UpdateRangeAsync(x => x.Id == project.Id, x => new Project { Name = "abcdef" });
-        Assert.True(result > 0);
-
-        var newProject = await custProject.FindAsync(project.Id);
-        Assert.Equal(1000000000001, newProject.ModifyBy);
-        Assert.Equal("abcdef", newProject.Name);
     }
 
     private async Task<Customer> InsertCustomer()

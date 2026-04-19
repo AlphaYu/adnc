@@ -44,12 +44,6 @@ public class EfRepository<TEntity>(DbContext dbContext, Operater operater, IAdoQ
     public virtual IQueryable<TrdEntity> GetAll<TrdEntity>(bool writeDb = false, bool noTracking = true) where TrdEntity : EfEntity
         => GetDbSet<TrdEntity>(writeDb, noTracking);
 
-    public virtual async Task<TEntity?> FindAsync(long keyValue, Expression<Func<TEntity, dynamic>>? navigationPropertyPath = null, bool writeDb = false, bool noTracking = true, CancellationToken cancellationToken = default)
-        => await FetchAsync(x => x.Id == keyValue, navigationPropertyPath, null, false, writeDb, noTracking, cancellationToken);
-
-    public virtual async Task<TEntity?> FindAsync(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, dynamic>>? navigationPropertyPath = null, Expression<Func<TEntity, object>>? orderByExpression = null, bool ascending = false, bool writeDb = false, bool noTracking = true, CancellationToken cancellationToken = default)
-        => await FetchAsync(whereExpression, navigationPropertyPath, orderByExpression, ascending, writeDb, noTracking, cancellationToken);
-
     public virtual async Task<TEntity?> FetchAsync(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, dynamic>>? navigationPropertyPath = null, Expression<Func<TEntity, object>>? orderByExpression = null, bool ascending = false, bool writeDb = false, bool noTracking = true, CancellationToken cancellationToken = default)
     {
         TEntity? result;
@@ -118,9 +112,6 @@ public class EfRepository<TEntity>(DbContext dbContext, Operater operater, IAdoQ
         return rows;
     }
 
-    public virtual async Task<int> DeleteRangeAsync(Expression<Func<TEntity, bool>> whereExpression, CancellationToken cancellationToken = default)
-        => await ExecuteDeleteAsync(whereExpression, cancellationToken);
-
     public virtual async Task<int> ExecuteDeleteAsync(Expression<Func<TEntity, bool>> whereExpression, CancellationToken cancellationToken = default)
     {
         //var enityType = typeof(TEntity);
@@ -159,55 +150,6 @@ public class EfRepository<TEntity>(DbContext dbContext, Operater operater, IAdoQ
                 .SetProperty(setter => ((IFullAuditInfo)setter).ModifyTime, DateTime.Now), cancellationToken);
             }
         }
-    }
-
-    public virtual async Task<int> UpdateAsync(TEntity entity, Expression<Func<TEntity, object>>[] updatingExpressions, CancellationToken cancellationToken = default)
-    {
-        if (updatingExpressions.IsNullOrEmpty())
-        {
-            await UpdateAsync(entity, cancellationToken);
-        }
-
-        var entry = DbContext.Entry(entity);
-
-        if (entry.State == EntityState.Added || entry.State == EntityState.Deleted)
-        {
-            throw new ArgumentException($"{nameof(entity)}, entity state is {nameof(entry.State)}");
-        }
-
-        if (entry.State == EntityState.Unchanged)
-        {
-            return await Task.FromResult(0);
-        }
-
-        if (entry.State == EntityState.Modified)
-        {
-            var propNames = updatingExpressions.Select(x => x.GetMemberName()).ToArray();
-            entry.Properties.ForEach(propEntry =>
-            {
-                if (!propNames.Contains(propEntry.Metadata.Name))
-                {
-                    propEntry.IsModified = false;
-                }
-            });
-        }
-
-        if (entry.State == EntityState.Detached)
-        {
-            entry.State = EntityState.Unchanged;
-            updatingExpressions.ForEach(expression =>
-            {
-                entry.Property(expression).IsModified = true;
-            });
-        }
-
-        return await DbContext.SaveChangesAsync(cancellationToken);
-    }
-
-    public virtual async Task<int> UpdateRangeAsync(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, TEntity>> updatingExpression, CancellationToken cancellationToken = default)
-    {
-        var setPropertyCalls = ExpressionHelper.ConvertToSetPropertyCalls(updatingExpression);
-        return await ExecuteUpdateAsync(whereExpression, setPropertyCalls, cancellationToken);
     }
 
     public virtual async Task<int> UpdateRangeAsync(Dictionary<long, List<(string propertyName, dynamic propertyValue)>> propertyNameAndValues, CancellationToken cancellationToken = default)
