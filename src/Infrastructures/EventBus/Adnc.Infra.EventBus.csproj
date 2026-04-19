@@ -5,12 +5,12 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="Polly" />
-    <PackageReference Include="SkyAPM.Utilities.DependencyInjection"/>
-    <PackageReference Include="RabbitMQ.Client"/>
-		<PackageReference Include="DotNetCore.CAP"/>
+    <PackageReference Include="SkyAPM.Utilities.DependencyInjection" />
+    <PackageReference Include="RabbitMQ.Client" />
+		<PackageReference Include="DotNetCore.CAP" />
     <PackageReference Include="DotNetCore.CAP.RabbitMQ" />
     <PackageReference Include="SkyAPM.Diagnostics.CAP" />
-    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions"/>
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Core\Adnc.Infra.Core.csproj" />
