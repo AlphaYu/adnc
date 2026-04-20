@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Environment variables
-RUNNER_DEMO_SOURCE_ROOT="/adnc/src/Gateways/Ocelot"
+RUNNER_DEMO_SOURCE_ROOT="/opt/adnc/src/Gateways/Ocelot"
 PUBLISH_PATH="bin/Release/net8.0/linux-x64/publish"
 
 OCELOT_IMAGE_NAME="adnc-gateway-ocelot"
@@ -28,7 +28,7 @@ build_and_push_image() {
 
   echo "--- Building image: ${IMAGE_NAME} ---"
   TARGET_DIR="${RUNNER_DEMO_SOURCE_ROOT}/${PROJECT_PATH}/${PUBLISH_PATH}"
-  
+
   if [ ! -d "$TARGET_DIR" ]; then
     echo "Directory $TARGET_DIR does not exist, creating it..."
     mkdir -p "$TARGET_DIR"
@@ -64,19 +64,19 @@ EOF
   docker tag "$IMAGE_NAME" "$IMAGE_ID:$VERSION"
   echo "Docker tag version $IMAGE_ID:$VERSION"
   check_error "Docker tag version $IMAGE_ID:$VERSION"
-  
+
   # Stop and remove old containers
   CONTAINER_IDS=$(docker ps -a --filter "name=${IMAGE_ID}" --format "{{.ID}}")
   if [ -n "$CONTAINER_IDS" ]; then
     docker stop $CONTAINER_IDS
     echo "Stopped containers $CONTAINER_IDS"
     check_error "Stop containers $CONTAINER_IDS"
-    
+
     docker rm $CONTAINER_IDS
     echo "Removed containers $CONTAINER_IDS"
     check_error "Remove containers $CONTAINER_IDS"
   fi
-  
+
   docker rmi "${IMAGE_ID}:latest"
 
   docker tag "$IMAGE_ID:$VERSION" "${IMAGE_ID}:latest"
@@ -96,7 +96,7 @@ remove_container_image(){
   # If images exist, inspect and remove them
   if [ -n "$IMAGE_LIST" ]; then
     echo "Checking and deleting old images, excluding those tagged :latest..."
-    
+
     # Iterate through each image
     for IMAGE in $IMAGE_LIST; do
     echo "-----IMAGE--------- $IMAGE"
@@ -128,11 +128,12 @@ deploy_image() {
 
   # Run the new container
   # -e ASPNETCORE_HOSTINGSTARTUPASSEMBLIES=SkyAPM.Agent.AspNetCore
-  # -e SKYWALKING__SERVICENAME="${IMAGE_ID}"  
-  # -m 100M \  
+  # -e SKYWALKING__SERVICENAME="${IMAGE_ID}"
+  # -m 100M \
   docker run \
     -d \
     --name="${IMAGE_ID}-${RANDOM}" \
+    --network adnc_network_main \
     -p 5000:80 \
     -e ASPNETCORE_ENVIRONMENT=Staging \
     -e TZ=Asia/Shanghai \
