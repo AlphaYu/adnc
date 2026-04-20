@@ -134,6 +134,7 @@ deploy_image() {
     -d \
     --name="${IMAGE_ID}-${RANDOM}" \
     --network adnc_network_main \
+    --ip 172.80.0.198 \
     -p 5000:80 \
     -e ASPNETCORE_ENVIRONMENT=Staging \
     -e TZ=Asia/Shanghai \
