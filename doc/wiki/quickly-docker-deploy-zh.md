@@ -1,17 +1,17 @@
-# 快速docker部署
+# 快速 Docker 部署指南
 
-## 1.系统要求
+## 1. 系统要求
 
-1. 服务器操作系统：`Ubuntu 22.04`
-2. 服务器需预先安装 `Docker` 和 `Docker Compose`
+1. 推荐服务器操作系统：`Ubuntu 22.04`
+2. 服务器需预先安装 `Docker` 与 `Docker Compose`
 
-## 2.创建目录
+## 2. 创建部署目录
 
 ```bash
 mkdir -p /opt/adnc/src
 ```
 
-## 3.创建自定义网络
+## 3. 创建自定义 Docker 网络
 
 ```bash
 docker network create \
@@ -22,11 +22,11 @@ docker network create \
   adnc_network_main
 ```
 
-## 3.上传部署中间件的yml文件
+## 4. 上传中间件部署 yml 文件
 
-上传 `adnc\doc\devops-staging` 文件夹到服务器 `/opt/adnc` 目录。
+请将本地 `adnc\doc\devops-staging` 文件夹上传至服务器 `/opt/adnc` 目录。
 
-上传后服务器目录结构如下：
+上传完成后，服务器目录结构如下：
 
 ```bash
 opt
@@ -35,41 +35,40 @@ opt
     └── src
 ```
 
-## 4.执行docker-compose.yml
+## 5. 启动中间件容器
 
 ```bash
 cd /opt/adnc/devops-staging
 docker compose up -d
 ```
 
-`docker-compose.yml` 文件将执行以下操作：
+`docker-compose.yml` 文件将完成以下操作：
 
 - 部署 `Consul` 集群并初始化配置信息
-
 - 部署 `MariaDB` 并初始化数据库
 - 部署 `Redis`
 - 部署 `RabbitMQ`
-- 部署 `Grafana`,`Loki`
-- 部署`Nginx`
+- 部署 `Grafana`、`Loki`
+- 部署 `Nginx`
 
-检查容器是否正常运行
+部署完成后，可通过以下命令检查容器运行状态：
 
 ```bash
 docker container ls
 ```
 
-## 5.安装 .NET 8 SDK
+## 6. 安装 .NET 8 SDK
 
 ```bash
 apt-get update && \
 apt-get install -y dotnet-sdk-8.0
 ```
 
-## 6.上传微服务代码
+## 7. 上传微服务代码
 
-> 上传前先执行 `Delete-BIN-OBJ-Folders.bat`，该文件会清理 `bin` 和 `obj` 目录。
+> 上传前请先在本地执行 `Delete-BIN-OBJ-Folders.bat`，以清理所有 `bin` 和 `obj` 目录。
 
-上传的以下文件夹与文件到服务器`opt/adnc/src`目录
+请将以下文件夹及文件上传至服务器 `opt/adnc/src` 目录：
 
 - `Demo` 目录
 - `Gateways` 目录
@@ -78,7 +77,7 @@ apt-get install -y dotnet-sdk-8.0
 - `deploy_demo.sh`
 - `deploy_ocelot.sh`
 
-上传后服务器目录结构如下：
+上传完成后，服务器目录结构如下：
 
 ```bash
 adnc
@@ -92,7 +91,7 @@ adnc
 └── devops-staging
 ```
 
-## 7.执行微服务部署脚本
+## 8. 执行微服务部署脚本
 
 ```bash
 cd /opt/adnc/src
@@ -101,9 +100,9 @@ bash deploy_demo.sh
 bash deploy_ocelot.sh
 ```
 
-## 8.验证网关与微服务
+## 9. 验证网关与微服务
 
-- 访问`http://{服务器Ip}:8590`Consul UI,查看 `admin`,`maint`,`cust` 服务是否注册成功。
+- 访问 `http://{服务器Ip}:8590` 打开 Consul UI，检查 `admin`、`maint`、`cust` 服务是否注册成功。
 - 访问 `http://{服务器Ip}:5000` 检查网关是否正常工作。
 
 ## 9.部署前端
