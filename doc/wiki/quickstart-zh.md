@@ -1,16 +1,10 @@
-## 前言
+# 快速上手指南
 
-`adnc` 是一个完全可落地的 `.NET 8` 微服务/分布式框架，集成了多种主流、稳定的微服务配套组件。在本地调试时，仅需安装必要的软件，包括 `MariaDB` 或 `MySQL`、`Redis` 和 `RabbitMQ`，可采用任意熟悉的方式进行安装，或使用已有的环境。
+## 1. 配置文件修改
 
-此外，服务的自动注册、发现、配置中心及链路跟踪等功能，在调试环境下不会启用，因为代码中已做了环境变量判断。安装完必备软件后，仅需修改配置文件中的相关连接字符串，即可运行项目。
+开发环境下，`adnc` 所有服务的通用配置集中存放于 `adnc\src\Demo\Shared\resources\appsettings.shared.Development.json` 文件（如 Redis、RabbitMQ 等）。
 
-- **所有服务的数据库脚本存放于 \**\*\*`adnc\doc\dbsql\adnc.sql`\*\**\*，请自行导入。**
-
-## 1. 环境说明与配置
-
-在开发环境下，`adnc` 所有服务的公共配置存放于 `adnc\src\Demo\Shared\resources\appsettings.shared.Development.json` 文件，例如 `Redis`、`RabbitMQ` 配置。
-
-各服务的特有配置存放在对应 `API` 工程的 `appsettings.Development.json` 文件中，例如数据库和服务端口的配置。
+各服务的专有配置则位于对应 Api 工程的 `appsettings.Development.json` 文件中（如数据库连接、服务端口等）。
 
 1. Redis 配置
 
@@ -55,18 +49,22 @@
 }
 ```
 
-## 2. 启动后端
+## 2. 导入数据库数据
 
-1. 在 `Visual Studio 2022` 中，右键解决方案 -> **属性** -> **项目启动** -> **多个启动项目**，选择以下 4 个项目：
+所有服务的数据库脚本统一存放于 `adnc\doc\dbsql\adnc.sql` 文件，可一次性导入全部数据。
+
+## 3. 启动后端服务
+
+1. 在 `Visual Studio 2022` 中，右键解决方案 → **属性** → **项目启动** → **多个启动项目**，勾选以下 4 个项目：
 
    - `Adnc.Gateway.Ocelot`
    - `Adnc.Demo.Admin.Api`
    - `Adnc.Demo.Maint.Api`
    - `Adnc.Demo.Cust.Api`
 
-   **注意**：实际开发过程中不必一次性启动所有服务，此处仅用于快速在本地运行项目。
+   **提示**：实际开发时无需同时启动所有服务，此处仅为快速本地体验。
 
-2. 在 `Visual Studio 2022` 主界面，点击 **启动** 按钮，成功后 3 个服务和网关将会启动。
+2. 在 `Visual Studio 2022` 主界面，点击 **启动** 按钮，启动上述 3 个服务及网关。
 
 3. 若启动报错，优先查看 **控制台窗口** 的错误信息，常见问题如下：
 
@@ -80,7 +78,7 @@
 | Adnc.Demo.Maint.Api | 运维管理 | `http://localhost:50020` |
 | Adnc.Demo.Cust.Api  | 客户管理 | `http://localhost:50030` |
 
-## 3. 启动前端
+## 4. 启动前端
 
 1. 使用 `Visual Studio Code` 打开前端项目 `adnc-vue-elementplus`，前端基于 `Vue 3` 开发，需要安装相关依赖。
 2. 运行以下命令进行环境配置：
@@ -99,7 +97,7 @@ pnpm install
 pnpm run dev
 ```
 
-## 4. 结语
+## 5. 结语
 
 至此，`adnc` 框架已成功在本地运行！
 
