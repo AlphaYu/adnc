@@ -1,6 +1,6 @@
 # 以 Student 为例的完整开发流程
 
-本文以 Student 实体为例，结合项目代码风格，介绍如何在 ADNC 项目中，从 Entity 定义到 Controller 层，实现一个完整的增删改查（CRUD）功能。流程涵盖 Entity、EntityConfig、DTO、Validator、Service、AutoMapper、Controller 等关键环节。
+本文以 Student 实体为例，结合项目代码风格，系统性地阐述在 ADNC 项目中，从 Entity 定义到 Controller 层，实现完整增删改查（CRUD）功能的标准流程。内容涵盖 Entity、EntityConfig、DTO、Validator、Service、AutoMapper、Controller 等关键环节，旨在规范开发实践，提升代码一致性与可维护性。
 
 ---
 
@@ -10,12 +10,12 @@
 
 在 `Repository\Entities` 下新建 Student 实体：
 
-1. Enity必须直接或者间接继承EfEntity。
-2. 如果Entity包含了CreateBy,CreateByTime,ModifyBy,ModifyTime，需要继承EfFullAuditEntity。
-3. 如果Entity只包含CreateBy,CreateByTime，需要继承EfBasicAuditEntity。
-4. 如果Enity没有CreateBy,CreateByTime,ModifyBy,ModifyTime，需要继承EfEntity。
-5. 如果Entity支持软删除，需要实现ISoftDelete接口。
-6. 如果Enity支持乐观锁(行并发控制)，需要实现IConcurrency接口。
+1. 实体类必须直接或间接继承 EfEntity。
+2. 若实体包含 CreateBy、CreateByTime、ModifyBy、ModifyTime 字段，则需继承 EfFullAuditEntity。
+3. 若实体仅包含 CreateBy、CreateByTime 字段，则需继承 EfBasicAuditEntity。
+4. 若实体不包含上述审计字段，则需继承 EfEntity。
+5. 若实体需支持软删除，须实现 ISoftDelete 接口。
+6. 若实体需支持乐观锁（行并发控制），须实现 IConcurrency 接口。
 
 ```csharp
 namespace Adnc.Demo.Admin.Repository.Entities;
@@ -39,7 +39,7 @@ public class Student : EfBasicAuditEntity, ISoftDelete
 }
 ```
 
-并在 `EntityInfo.cs` 注册：
+并需在 `EntityInfo.cs` 中进行注册：
 
 ```csharp
 modelBuilder.Entity<Student>().ToTable("sch_student");
@@ -49,7 +49,7 @@ modelBuilder.Entity<Student>().ToTable("sch_student");
 
 ### 1.2 定义EntityConfig
 
-在 `Repository\Entities\Config` 下新建 StudentConfig 实体配置文件：
+在 `Repository\Entities\Config` 目录下新建 StudentConfig 实体配置类：
 
 ```csharp
 namespace Adnc.Demo.Admin.Repository.Entities.Config;
@@ -66,7 +66,7 @@ public class StudentConfig : AbstractEntityTypeConfiguration<Student>
 
 ### 1.3 数据库迁移
 
-定义完实体后，需要进行数据库迁移：
+实体定义完成后，需执行数据库迁移操作：
 
 ```powershell
 cd src
@@ -80,15 +80,118 @@ dotnet ef database update --project Repository\Adnc.Demo.Admin.Repository.csproj
 
 ## 2. Applcation/Application.Contracts层
 
-### 2.1 IStudentService 接口定义
+### 2.1 配置 AutoMapper
+
+在 `Application\AutoMapper\MapperProfile.cs` 文件中添加映射配置：
+
+```csharp
+CreateMap<Student, StudentDto>();
+CreateMap<StudentCreationDto, Student>();
+```
+
+### 2.2 创建 DTOs
+
+在 `Application\Contracts\Dtos\Student` 下新建 DTOs：
+
+1. 若 Dto 包含 CreateBy、CreateByTime、ModifyBy、ModifyTime 字段，可继承 OutputFullAuditInfoDto。
+2. 若 Dto 仅包含 CreateBy、CreateByTime 字段，可继承 OutputBaseAuditDto。
+3. 若 Dto 不包含上述审计字段，可继承 InputDto 或 OutputDto。
+4. 分页搜索 Dto 须继承 SearchPagedDto。
+
+```csharp
+namespace Adnc.Demo.Admin.Application.Contracts.Dtos.Student;
+
+/// <summary>
+/// Represents the payload used to create a student.
+/// </summary>
+public class StudentCreationDto : InputDto
+{
+    /// <summary>
+    /// Gets or sets the name.
+    /// </summary>
+    public string Name { get; set; } = string.Empty;
+
+}
+
+/// <summary>
+/// Represents the payload used to update a student.
+/// </summary>
+public class StudentUpdationDto : StudentCreationDto
+{ }
+
+namespace Adnc.Demo.Admin.Application.Contracts.Dtos.Student;
+
+/// <summary>
+/// Represents the paging and filtering criteria used to search student records.
+/// </summary>
+public class StudentSearchPagedDto : SearchPagedDto
+{ }
+
+/// <summary>
+/// Represents a student.
+/// </summary>
+[Serializable]
+public class StudentDto : OutputBaseAuditDto
+{
+    /// <summary>
+    /// Gets or sets the name.
+    /// </summary>
+    public string Name { get; set; } = string.Empty;
+
+}
+```
+
+---
+
+### 2.3 编写 Validators
+
+在 `Application\Contracts\Dtos\Student\Validators` 目录下新建校验器类：
+
+```csharp
+using Adnc.Demo.Admin.Application.Contracts.Dtos.Student;
+
+namespace Adnc.Demo.Admin.Application.Validators;
+
+/// <summary>
+/// Validates <see cref="StudentCreationDto"/> instances.
+/// </summary>
+public class StudentCreationDtoValidator : AbstractValidator<StudentCreationDto>
+{
+    /// <summary>
+    /// Initializes a new instance of the <see cref="StudentCreationDtoValidator"/> class.
+    /// </summary>
+    public StudentCreationDtoValidator()
+    { 
+        RuleFor(x => x.Name).NotEmpty().MaximumLength(Student.Name_MaxLength);
+    }
+}
+
+/// <summary>
+/// Validates <see cref="StudentUpdationDto"/> instances.
+/// </summary>
+public class StudentUpdationDtoValidator : AbstractValidator<StudentUpdationDto>
+{
+    /// <summary>
+    /// Initializes a new instance of the <see cref="StudentUpdationDtoValidator"/> class.
+    /// </summary>
+    public StudentUpdationDtoValidator()
+    {
+        Include(new StudentCreationDtoValidator());
+    }
+}
+```
+
+---
+
+### 2.4 IStudentService 接口定义
 
 在 `Application\Contracts\Interfaces` 下新建 IStudentService：
 
-1. 接口必须继承`IAppService`。
-2. 所有写操作必须返回 `ServiceResult/ServiceResult<T>` 。
-3. 读操作返回`Dto`类型也可以ServiceResult<T>
-4. 如何需要处理事务可以添加[UnitOfWork]特性，也可以在实现类注入IUnitOfWork手动开始事务。
-5. 如何需要CAP处理分布式事务(发布事件)可以添加 [UnitOfWork(Distributed =true)]特性，也可以在实现类注入IUnitOfWork手动开始事务。
+1. 接口必须继承 `IAppService`。
+2. 所有写操作必须返回 `ServiceResult` 或 `ServiceResult<T>`。
+3. 读操作建议返回 `Dto` 类型，亦可返回 `ServiceResult<T>`。
+4. 如需处理事务，可添加 [UnitOfWork] 特性，或在实现类中注入 IUnitOfWork 手动开启事务。
+5. 如需 CAP 处理分布式事务（发布事件），可添加 [UnitOfWork(Distributed = true)] 特性，或在实现类中注入 IUnitOfWork 手动开启事务。
 
 ```csharp
 using Adnc.Demo.Admin.Application.Contracts.Dtos.Student;
@@ -141,115 +244,12 @@ public interface IStudentService : IAppService
 }
 ```
 
-### 2.2 创建 DTOs
-
-在 `Application\Contracts\Dtos\Student` 下新建 DTOs：
-
-1. 如果Dto包含了CreateBy,CreateByTime,ModifyBy,ModifyTime，可以继承OutputFullAuditInfoDto。
-2. 如果Dto只包含CreateBy,CreateByTime，可以继承OutputBaseAuditDto。
-3. 如果Dto没有CreateBy,CreateByTime,ModifyBy,ModifyTime，可以继承InputDto或者OutputDto。
-4. 分页搜索Dto需要继承SearchPagedDto
-
-```csharp
-namespace Adnc.Demo.Admin.Application.Contracts.Dtos.Student;
-
-/// <summary>
-/// Represents the payload used to create a student.
-/// </summary>
-public class StudentCreationDto : InputDto
-{
-    /// <summary>
-    /// Gets or sets the name.
-    /// </summary>
-    public string Name { get; set; } = string.Empty;
-
-}
-
-/// <summary>
-/// Represents the payload used to update a student.
-/// </summary>
-public class StudentUpdationDto : StudentCreationDto
-{ }
-
-namespace Adnc.Demo.Admin.Application.Contracts.Dtos.Student;
-
-/// <summary>
-/// Represents the paging and filtering criteria used to search student records.
-/// </summary>
-public class StudentSearchPagedDto : SearchPagedDto
-{ }
-
-/// <summary>
-/// Represents a student.
-/// </summary>
-[Serializable]
-public class StudentDto : OutputBaseAuditDto
-{
-    /// <summary>
-    /// Gets or sets the name.
-    /// </summary>
-    public string Name { get; set; } = string.Empty;
-
-}
-```
-
----
-
-### 2.3 编写 Validators
-
-在 `Application\Contracts\Dtos\Student\Validators` 下新建：
-
-```csharp
-using Adnc.Demo.Admin.Application.Contracts.Dtos.Student;
-
-namespace Adnc.Demo.Admin.Application.Validators;
-
-/// <summary>
-/// Validates <see cref="StudentCreationDto"/> instances.
-/// </summary>
-public class StudentCreationDtoValidator : AbstractValidator<StudentCreationDto>
-{
-    /// <summary>
-    /// Initializes a new instance of the <see cref="StudentCreationDtoValidator"/> class.
-    /// </summary>
-    public StudentCreationDtoValidator()
-    { 
-        RuleFor(x => x.Name).NotEmpty().MaximumLength(Student.Name_MaxLength);
-    }
-}
-
-/// <summary>
-/// Validates <see cref="StudentUpdationDto"/> instances.
-/// </summary>
-public class StudentUpdationDtoValidator : AbstractValidator<StudentUpdationDto>
-{
-    /// <summary>
-    /// Initializes a new instance of the <see cref="StudentUpdationDtoValidator"/> class.
-    /// </summary>
-    public StudentUpdationDtoValidator()
-    {
-        Include(new StudentCreationDtoValidator());
-    }
-}
-```
-
----
-
-### 2.4 配置 AutoMapper
-
-在 `Application\AutoMapper\MapperProfile.cs` 添加映射：
-
-```csharp
-CreateMap<Student, StudentDto>();
-CreateMap<StudentCreationDto, Student>();
-```
-
 ### 2.5 实现IStudentService
 
 在 `Application\Services` 下新建 StudentService：
 
-1. Service类必须继承AbstractAppService。
-2. 业务逻辑判断失败时，统一返回 Problem，不是抛出异常。
+1. Service 类必须继承 AbstractAppService。
+2. 业务逻辑校验失败时，统一返回 Problem，不得抛出异常。
 
 ```csharp
 using Adnc.Demo.Admin.Application.Contracts.Dtos.Student;
@@ -340,7 +340,7 @@ public class StudentService(IEfRepository<Student> studentRepo)
 
 ### 3.1 权限常量定义
 
-在 `Api\Consts.cs` 添加权限常量定义(可选)：
+可在 `Api\Consts.cs` 文件中添加权限常量定义（可选）：
 
 ```csharp
 /// <summary>
@@ -358,10 +358,10 @@ public static class Student
 
 ### 3.2 编写 Controller
 
-在 `Api\Controllers` 下新建 Controller：
+在 `Api\Controllers` 目录下新建 Controller 类：
 
-1. Controller类必须继承AdncControllerBase
-2. 每个方法都可以加权限特性(可选)：
+1. Controller 类必须继承 AdncControllerBase。
+2. 每个方法可根据需要添加权限特性（可选）：
 
 ```csharp
 using Adnc.Demo.Admin.Application.Contracts.Dtos.Student;
@@ -444,4 +444,4 @@ public class StudentController(IStudentService studentService) : AdncControllerB
 
 ## 4. 总结
 
-通过以上步骤，即可在 ADNC 架构下，实现 Student 实体的完整功能。所有写操作业务逻辑判断失败时，统一返回 Problem，不抛异常，保证了业务异常的统一处理和前后端友好交互，便于维护和扩展。
+综上所述，按照上述流程可在 ADNC 架构下规范、高效地实现 Student 实体的完整功能。开发过程中需注意：所有写操作在业务校验失败时统一返回 Problem，不抛出异常，确保业务异常处理一致、前后端交互友好，从而提升系统的可维护性与扩展性。
