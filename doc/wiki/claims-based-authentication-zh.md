@@ -1,24 +1,26 @@
 ## 前言
-&ensp;&ensp;&ensp;&ensp;我们在`NET Framework`时代，最常用的是Form认证。Form认证对于前后端分离或者多前端的系统来说不是太友好，很难相互兼容。很多都是一套后台管理系统，一套前端系统，一套API在物理层面分开，这样做代码复用率非常低，后期维护成本也高很多。 ASP.NET Core 对认证与授权进行了全新的设计，使用基于声明的认证(claims-based authentication)。
+&ensp;&ensp;&ensp;&ensp;在 .NET Framework 时代，常用的是 Form 认证。对于前后端分离或多前端的系统，Form 认证的兼容性较差，导致代码复用率低且维护成本高。ASP.NET Core 对认证与授权进行了重构，采用基于声明（claims-based）的认证模型。
 `Microsoft.AspNetCore.Authentication.JwtBearer`  
 `Microsoft.AspNetCore.Authentication.Cookies`  
 `Microsoft.AspNetCore.Authentication.OpenIdConnect`  
 `Microsoft.AspNetCore.Authentication.Auth`  
 `Microsoft.AspNetCore.Authentication.Google`  
 `Microsoft.AspNetCore.Authentication.Microsoft`  
-`Microsoft.AspNetCore.Authentication.FaceBook`  
+`Microsoft.AspNetCore.Authentication.Facebook`  
 `Microsoft.AspNetCore.Authentication.Twitter`  
 
 以上这些都是.NET SDK已经实现了的，他们都是基于claims的，都是`Microsoft.AspNetCore.Authentication.Abstractions`的实现。在ASP.NET CORE时代，很容易做到混合认证，也就是同一个Controller里，可以一个Action支持Cookies认证，另外一个可以支持JwtBearer认证。网上很多这样案例，大家可以搜索看一下，很简单的配置就能实现。
 
-然而，如果想实现的更灵活一些，比方目前ADNC的实现，同一个Action可以同时支持多种认证，也可以指定其中一种认证方式。为了实现这种方式，废了不少脑细胞。ADNC增加了Hybrid，Basic两种认证方式（Hybrid是自己取的名，Basic是http标准认证方式，相关代码在Adnc.Shared.WebApi工程的Authentication目录）。
+为实现更灵活的认证策略（例如同一 Action 同时支持多种认证或指定认证方案），ADNC 引入了 Hybrid 与 Basic 两种认证方式。Hybrid 为项目自定义的路由型方案，Basic 为 HTTP 标准的基本认证。相关实现位于 Adnc.Shared.WebApi 工程的 Authentication 目录。
 
 ## 为什么要混合两种认证
-为什么呢？
-目的是什么？
-首先你可以只用JwtBeare认证，Basic认证是可选项目。我们在什么情况下可能需要使用Basic认证呢？
-1、微服务之间同步通信，如果客户有A服务X功能的权限，但是X功能会调用B服务的Y功能。也就是如果采用JwtBeare认证，客户必须同时有A服务X功能和B服务Y功能权限才能正常使用。
-2、开放接口给第三方合作方对接,也会遇到1同样的问题。当然，如果你的需求就是这样，你完全可以只采用JwtBearer认证。
+在某些场景下，仅使用 JwtBearer 可能不足以满足需求。例如：
+
+- 微服务间的同步调用：若服务 A 的某功能 X 会调用服务 B 的功能 Y，且仅采用 JwtBearer，则调用者必须同时具备 A: X 与 B: Y 的权限，导致权限传播复杂且管理成本高。
+
+- 开放接口给第三方对接时，也可能遇到相同问题。
+
+为应对上述场景，Basic 认证可作为一种可选且更简单的鉴权方式，便于服务间互调。若业务场景不需此类支持，仍可仅使用 JwtBearer。
 
 
 ## 注册认证服务
@@ -36,8 +38,7 @@ public virtual void AddAuthentication()
 - AddBasic 注册Basic认证相关服务
 - AddJwtBearer 注册JwtBearer认证相关服务。  
   
-  实现认证的核心类是XxxAuthenticationHandler。
-  通过上面的代码我们可以知道，系统默认的认证方式Hybrid，HybridAuthenticationHandler的主要作用就是路由，并不做实际的认证，系统所有认证请求都需要通过HybridAuthenticationHandler转发。
+  实现认证的核心为各具体的 AuthenticationHandler。上例中默认认证方案为 Hybrid；HybridAuthenticationHandler 仅负责路由（将请求转发到相应的认证处理器），不直接执行认证逻辑。
 
 ```csharp
 public sealed class HybridAuthenticationHandler : AuthenticationHandler<HybridSchemeOptions>
@@ -47,7 +48,7 @@ public sealed class HybridAuthenticationHandler : AuthenticationHandler<HybridSc
         var authHeader = Request.Headers["Authorization"].ToString();
         if (authHeader.IsNotNullOrWhiteSpace())
         {
-            //jwtBearer
+            // JwtBearer 认证
             if (authHeader.StartsWith(JwtBearerDefaults.AuthenticationScheme, StringComparison.OrdinalIgnoreCase))
                 return await Context.AuthenticateAsync(JwtBearerDefaults.AuthenticationScheme);
 
@@ -69,7 +70,7 @@ public class BasicAuthenticationHandler : AuthenticationHandler<BasicSchemeOptio
         if (authHeader != null && authHeader.StartsWith(BasicDefaults.AuthenticationScheme, StringComparison.OrdinalIgnoreCase))
         {
             var token = authHeader.Substring($"{BasicDefaults.AuthenticationScheme} ".Length).Trim();
-            //校验token是否合法
+            // 校验 token 是否合法
             if (UnpackFromBase64(token, out string userName, out string appId))
             {
                 var claims = new[] { new Claim("name", userName), new Claim(ClaimTypes.Role, "partner") };
@@ -94,7 +95,7 @@ public class BasicAuthenticationHandler : AuthenticationHandler<BasicSchemeOptio
 }
 ```
 ## 注册授权服务
-> 这里要注意，认证是认证，授权是授权。
+> 注意：认证（Authentication）与授权（Authorization）为不同概念。
 
 ```csharp
 public virtual void AddAuthorization<THandler>() where THandler : AbstractPermissionHandler
@@ -119,7 +120,7 @@ public abstract class AbstractPermissionHandler : AuthorizationHandler<Permissio
         if (context.User.Identity.IsAuthenticated && context.Resource is HttpContext httpContext)
         {
             var authHeader = httpContext.Request.Headers["Authorization"].ToString();
-            //Basic认证通过后并且Action允许Basic认证，那么默认有该功能的权限
+            // 若使用 Basic 认证，且 Action 允许 Basic，则默认通过权限检查。
             if (authHeader != null && authHeader.StartsWith(BasicDefaults.AuthenticationScheme, StringComparison.OrdinalIgnoreCase))
             {
                 context.Succeed(requirement);
@@ -170,7 +171,7 @@ public async Task<ActionResult<long>> CreateAsync([FromBody] DeptCreationDto inp
 public async Task<ActionResult<List<DeptTreeDto>>> GetListAsync()
 ```
 
-我们来看下PermissionAttribute的代码，它派生自AuthorizeAttribute。默认认证方式是JwtBearer。
+下面展示 PermissionAttribute 的实现（派生自 AuthorizeAttribute）。默认认证方案为 JwtBearer。
 
 ```csharp
 public class PermissionAttribute : AuthorizeAttribute
@@ -199,10 +200,9 @@ public class PermissionAttribute : AuthorizeAttribute
 
 ## 客户端调用时如何指定认证方式
 
-> JwtBearer=>Authorization Bearer xxxxxxxxxxxxx  
-> Basic=>Authorization Basic yyyyyyyyyyy
-> 前端调用走的就是JwtBearer认证。
-> 微服务间同步调用除了鉴权服务走的是JwtBearer认证，其它走的都是Basic认证
+> JwtBearer => Authorization: Bearer {token}  
+> Basic => Authorization: Basic {credentials}  
+> 前端接口通常使用 JwtBearer；微服务之间的同步调用（除鉴权服务外）通常使用 Basic 认证以简化服务间鉴权。
 
 - 要求服务端采用JwtBearer认证
 ```csharp
@@ -236,7 +236,7 @@ Task<ApiResponse<List<DeptRto>>> GeDeptsAsync();
             {
                 //这里
                 var tokenGenerator = _tokenGenerators.FirstOrDefault(x => x.Scheme.EqualsIgnoreCase(auth.Scheme));
-                //这里
+                // 使用 TokenGenerator 生成 token 文本
                 var tokenTxt = tokenGenerator?.Create();
 
                 if (!string.IsNullOrEmpty(tokenTxt))
@@ -246,5 +246,7 @@ Task<ApiResponse<List<DeptRto>>> GeDeptsAsync();
     }
 ```
 -----------------------------
-WELL DONE，记得 [star&&fork](https://github.com/alphayu/adnc)
-全文完，[ADNC](https://aspdotnetcore.net)一个可以落地的.NET微服务/分布式开发框架。
+
+WELL DONE，记得 [star & fork](https://github.com/alphayu/adnc)
+
+全文完，[ADNC](https://aspdotnetcore.net) —— 一个可以落地的 .NET 微服务/分布式开发框架。
