@@ -1,14 +1,11 @@
 ## 前言
-&ensp; &ensp; 本文主要介绍在`ADNC`仓储中如何切换数据库类型，只要是EFCore支持的数据库类型ADNC都支持顺滑切换。ADNC默认使用的数据库类型是mariadb/mysql，本文将介绍如何从默认数据库类型切换到SqlServer，切换其他类型步骤都一样。数据库类型切换有两种场景：一是全局切换(所有服务的数据库类型都切换到另外一种类型，如Mysql切换到SqlServer)；二是部分切换(A服务使用MySql，B服务使用SqlServer，C服务使用Oracle），ADNC支持每个服务使用各自不同类型的数据库；。
-
-- <a href="https://aspdotnetcore.net/docs/efcore-pemelo-grud/" title="如何使用仓储(一)-基础功能">如何使用仓储(一)-基础功能</a>
-- <a href="https://aspdotnetcore.net/docs/efcore-pemolo-unitofwork/" title="如何使用仓储(二)-工作单元">如何使用仓储(二)-工作单元</a>
-- <a href="https://aspdotnetcore.net/docs/efcore-pemelo-codefirst/" title="如何使用仓储(三)-CodeFirst">如何使用仓储(三)-CodeFirst</a>
-- <a href="https://aspdotnetcore.net/docs/efcore-pemelo-sql/" title="如何使用仓储(四)-撸SQL">如何使用仓储(四)-撸SQL</a>
-- <a href="https://aspdotnetcore.net/docs/efcore-pemelo-sqlserver/" title="如何使用仓储(五)-切换数据库类型">如何使用仓储(五)-切换数据库类型</a>
+本文主要介绍在 `ADNC` 仓储中如何切换数据库类型。原则上，只要 EF Core 支持的数据库类型，ADNC 均可实现平滑切换。ADNC 默认使用 MariaDB/MySQL，本文以从默认数据库类型切换到 SQL Server 为例；切换到其他数据库类型的步骤类似。
+数据库类型切换通常有两类场景：
+1) 全局切换：所有服务的数据库类型统一切换到另一种类型（例如 MySQL 切换到 SQL Server）。
+2) 部分切换：不同服务使用不同数据库类型（例如服务 A 使用 MySQL，服务 B 使用 SQL Server，服务 C 使用 Oracle）。ADNC 支持各服务使用不同类型的数据库。
 
 ## 全局切换
-全局切换需要调整4个文件，以下示例为将默认的MySql切换到SqlServer。
+全局切换需要调整3个文件，以下示例为将默认的MySql切换到SqlServer。
 
 - `AbstractApplicationDependencyRegistrar.Repositories.cs`
 
@@ -21,12 +18,23 @@ public abstract partial class AbstractApplicationDependencyRegistrar
 	/// <summary>
     /// 注册EFCoreContext
     /// </summary>
-    protected virtual void AddEfCoreContext()
+        protected virtual void AddEfCoreContext()
     {
-        //首选需要引用Adnc.Infra.Repository.EfCore.SqlServer工程
- 		var sqlserverSection = Configuration.GetSection("SqlServer");
-        Services.AddAdncInfraEfCoreSQLServer(sqlserverSection);
-    }    
+        AddOperater(_services);
+
+        var connectionString = _configuration[NodeConsts.SqlServer_ConnectionString] ?? throw new InvalidDataException("SqlServer ConnectionString is null");
+        var migrationsAssemblyName = _serviceInfo.MigrationsAssemblyName;
+        _services.AddAdncInfraEfCoreSQLServer(RepositoryOrDomainLayerAssembly, optionsBuilder =>
+        {
+            optionsBuilder.UseLowerCaseNamingConvention();
+            optionsBuilder.UseSqlServer(connectionString, optionsBuilder =>
+            {
+                optionsBuilder.MinBatchSize(4)
+                                        .MigrationsAssembly(migrationsAssemblyName)
+                                        .UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
+            });
+        }, _lifetime);
+    }
 }
 ```
 - `AbstractApplicationDependencyRegistrar.EventBus.cs`
@@ -39,71 +47,30 @@ namespace Adnc.Shared.Application.Registrar;
 
 public abstract partial class AbstractApplicationDependencyRegistrar
 {
-    /// <summary>
-    /// 注册CAP组件(实现事件总线及最终一致性（分布式事务）的一个开源的组件)
-    /// </summary>
-    protected virtual void AddCapEventBus<TSubscriber>(
-        Action<CapOptions> replaceDbAction = null,
-        Action<CapOptions> replaceMqAction = null)
-        where TSubscriber : class, ICapSubscribe
+    protected virtual void AddCapEventBus(IEnumerable<Type> subscribers, Action<FailedInfo>? failedThresholdCallback = null)
     {
-        //other code
-        Services.AddAdncInfraCap<TSubscriber>(option =>
-        {
-            if (replaceDbAction is not null)
-            {
-                replaceDbAction.Invoke(option);
-            }
-            else
-            {
-                var sqlsection = Configuration.GetSection("SqlServer");
-                var connectionString = sqlsection.GetValue<string>("ConnectionString");
-                //需要引用DotNetCore.CAP.SqlServer
-                option.UseSqlServer(config =>
-                {
-                    config.ConnectionString = connectionString;
-                    config.Schema = "cap";
-                });
-            }
-        });
-        //other code
-    }                                      
+        ArgumentNullException.ThrowIfNull(subscribers, nameof(subscribers));
+        Checker.Argument.ThrowIfNullOrCountLEZero(subscribers, nameof(subscribers));
+
+        var connectionString = Configuration.GetValue<string>(NodeConsts.SqlServer_ConnectionString) ?? throw new InvalidDataException("SqlServer ConnectionString is null");
+        var rabbitMQOptions = Configuration.GetRequiredSection(NodeConsts.RabbitMq).Get<RabbitMQOptions>() ?? throw new InvalidDataException(nameof(RabbitMQOptions));
+        var clientProvidedName = ServiceInfo.Id;
+        var version = ServiceInfo.Version;
+        var groupName = $"cap.{ServiceInfo.ShortName}.{this.GetEnvShortName()}";
+        Services.AddAdncInfraCap(subscribers, capOptions =>
+                                 {
+                                    SetCapBasicInfo(capOptions, version, groupName,failedThresholdCallback);
+                                    SetCapRabbitMQInfo(capOptions, rabbitMQOptions, clientProvidedName);
+                                    //需要引用DotNetCore.CAP.SqlServer
+                                    option.UseSqlServer(config =>
+                                    {
+                                        config.ConnectionString = connectionString;
+                                        config.Schema = "cap";
+                                    });
+                                 }, null, Lifetime);
+    }
 }
 ```
-- `AbstractWebApiDependencyRegistrar.HealthChecks.cs`
-
-  > checkingMysql 调整为 checkingSqlserver
-
-```csharp
-/*project:Adnc.Shared.WebApi*/
-namespace Adnc.Shared.WebApi.Registrar;
-
-public abstract partial class AbstractWebApiDependencyRegistrar
-{
-    /// <summary>
-    /// 注册健康监测组件
-    /// </summary>
-    protected IHealthChecksBuilder AddHealthChecks(
-        bool checkingSqlserver = true,
-        bool checkingMongodb = true,
-        bool checkingRedis = true,
-        bool checkingRabitmq = true)
-    {
-        //other code
-        if (checkingSqlserver)
-        {
-            var sqlserverSection = Configuration.GetSection("SqlServer");
-            if (sqlserverSection is null)
-                throw new NullReferenceException("sqlserverSection is null");
-            var connectionString = sqlserverSection.GetValue<string>("ConnectionString");
-            //需要引用HealthChecks.SqlServer
-            checksBuilder.AddSqlServer(connectionString);
-        }
-        //other code
-    }
-} 
-```
-
 - `appsettings.Development.json`
 
   > 删除MySql节点，新增SqlServer节点。
@@ -114,60 +81,79 @@ public abstract partial class AbstractWebApiDependencyRegistrar
   },
 ```
 
+- 工程文件中删除`Adnc.Infra.Repository.EfCore.Mysql.csproj`工程，并引用`Adnc.Infra.Repository.EfCore.SqlServer.csproj`。
+
 ## 部分切换
 
-部分切换相对简单很多，只需要覆写或者传递委托即可。下面将以whse服务为例。
+部分切换相对简单很多，只需要覆写`AddCapEventBus`，`AddEfCoreContext`即可。下面将以whse服务为例。
 
 1、`Adnc.Whse.Application`工程引用`Adnc.Infra.Repository.EfCore.SqlServer.csproj`
 
 ```csharp
 namespace Adnc.Whse.Application.Registrar;
 
-public sealed class WhseApplicationDependencyRegistrar : AbstractApplicationDepe
-{
-    public override void AddAdnc()
+public sealed class DependencyRegistrar(IServiceCollection services, IServiceInfo serviceInfo, IConfiguration configuration, ServiceLifetime lifetime = ServiceLifetime.Scoped)
+    : AbstractApplicationDependencyRegistrar(services, serviceInfo, configuration, lifetime)
+{        
+    protected override void AddCapEventBus(IEnumerable<Type> subscribers, Action<FailedInfo>? failedThresholdCallback = null)
     {
-        //other code
-        //如果使用默认的mysql不需要传递replaceDbAction委托
-      	AddCapEventBus<CapEventSubscriber>(replaceDbAction: capOption =>
+        var connectionString = _configuration[NodeConsts.SqlServer_ConnectionString] ?? throw new InvalidDataException("SqlServer ConnectionString is null");
+        var rabbitMQOptions = _configuration.GetRequiredSection(NodeConsts.RabbitMq).Get<RabbitMQOptions>() ?? throw new InvalidDataException(nameof(NodeConsts.RabbitMq));
+        var clientProvidedName = _serviceInfo.Id;
+        var version = _serviceInfo.Version;
+        var groupName = $"cap.{_serviceInfo.ShortName}.{this.GetEnvShortName()}";
+        _services.AddAdncInfraCap(subscribers, capOptions =>
         {
-            var connectionString = _sqlSection.GetValue<string>("ConnectionString");
-            capOption.UseSqlServer(config =>
+            SetCapBasicInfo(capOptions, version, groupName, failedThresholdCallback);
+            SetCapRabbitMQInfo(capOptions, rabbitMQOptions, clientProvidedName);
+            capOptions.UseSqlServer(sqlServerOptions =>
             {
-                config.ConnectionString = connectionString;
-                config.Schema = "cap";
+                sqlServerOptions.ConnectionString = connectionString;
+                sqlServerOptions.Schema = "cap";
             });
-        });
-        //other code
+        }, null, _lifetime);
     }
-    
-    //如果使用默认的mysql，不需要覆写该方法。
+
     protected override void AddEfCoreContext()
     {
-      Services.AddAdncInfraEfCoreSQLServer(_sqlSection);
+        AddOperater(_services);
+
+        var connectionString = _configuration[NodeConsts.SqlServer_ConnectionString] ?? throw new InvalidDataException("SqlServer ConnectionString is null");
+        var migrationsAssemblyName = _serviceInfo.MigrationsAssemblyName;
+        _services.AddAdncInfraEfCoreSQLServer(RepositoryOrDomainLayerAssembly, optionsBuilder =>
+        {
+            optionsBuilder.UseLowerCaseNamingConvention();
+            optionsBuilder.UseSqlServer(connectionString, optionsBuilder =>
+            {
+                optionsBuilder.MinBatchSize(4)
+                                        .MigrationsAssembly(migrationsAssemblyName)
+                                        .UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
+            });
+        }, _lifetime);
     }
-}
+}        
 ```
 
 
 
 2、`Adnc.Whse.Migrations`工程引用`Adnc.Infra.Repository.EfCore.SqlServer.csproj`并删除`Adnc.Infra.Repository.EfCore.Mysql.csproj`工程。
 
-3、注册SqlServer健康检测，`WhseWebApiDependencyRegistrar.cs`
+3、注册SqlServer健康检测，`DependencyRegistrar.cs`
 
 ```csharp
 namespace Adnc.Whse.WebApi.Registrar;
 
-public sealed class WhseWebApiDependencyRegistrar : AbstractWebApiDependencyRegiter
+public sealed class DependencyRegistrar(IServiceCollection services, IServiceInfo serviceInfo, IConfiguration configuration) : AbstractWebApiDependencyRegistrar(services, serviceInfo, configuration)
 {
-    public override void AddAdnc()
+    public override void AddAdncServices()
     {
-        AddWebApiDefault();
-       //如果使用默认的Mysql,只需要AddHealthChecks(true, true, true, true)即可。
-        var connectionString = Configuration.GetValue<string>("SqlServer:ConnectionString");
-        AddHealthChecks(false, true, true, true).AddSqlServer(connectionString);
-
-        Services.AddGrpc();
+        _services.AddHealthChecks(checksBuilder =>
+        {
+            checksBuilder
+                    .AddSqlServer(connectionString) // sqlserver 
+                    .AddRedis(redisSecton)
+                    .AddRabbitMQ(rabbitSecton, clientProvidedName);
+        });
     }
 }
 ```
@@ -182,5 +168,4 @@ public sealed class WhseWebApiDependencyRegistrar : AbstractWebApiDependencyRegi
   },
 ```
 ---
-WELL DONE
-全文完
+—— 完 ——

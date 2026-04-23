@@ -31,7 +31,7 @@ docker network create \
 ```bash
 opt
 └── adnc
-	├── devops-staging
+    ├── devops-staging
     └── src
 ```
 
@@ -102,20 +102,20 @@ bash deploy_ocelot.sh
 
 ## 9. 验证网关与微服务
 
-- 访问 `http://{服务器Ip}:8590` 打开 Consul UI，检查 `admin`、`maint`、`cust` 服务是否注册成功。
-- 访问 `http://{服务器Ip}:5000` 检查网关是否正常工作。
+- 访问 `http://{服务器IP}:8590` 打开 Consul UI，检查 `admin`、`maint`、`cust` 服务是否注册成功。
+- 访问 `http://{服务器IP}:5000` 检查网关是否正常工作。
 
-## 9.部署前端
+## 10. 部署前端
 
 ```bash
 pnpm run build
 ```
 
-- `build` 成功后，将 `dist` 目录内的文件上传到 `/opt/adnc/devops-staging/adnc-nginx/html`目录。
-- 访问 `http://{服务器Ip}` 并登录，检查系统是否部署成功。
+- `build` 成功后，将 `dist` 目录内的文件上传到 `/opt/adnc/devops-staging/adnc-nginx/html` 目录。
+- 访问 `http://{服务器IP}` 并登录，检查系统是否部署成功。
 
 ------
 
-## 10.结语
+## 11. 结语
 
-🎉 恭喜您，`ADNC` 框架以及完成部署！
+至此，`ADNC` 已完成部署。

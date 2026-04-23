@@ -2,9 +2,9 @@
 
 ## 1. 配置文件修改
 
-开发环境下，`adnc` 所有服务的通用配置集中存放于 `adnc\src\Demo\Shared\resources\appsettings.shared.Development.json` 文件（如 Redis、RabbitMQ 等）。
+在开发环境中，`adnc` 各服务的通用配置统一集中在 `adnc\src\Demo\Shared\resources\appsettings.shared.Development.json` 文件中（例如 Redis、RabbitMQ 等）。
 
-各服务的专有配置则位于对应 Api 工程的 `appsettings.Development.json` 文件中（如数据库连接、服务端口等）。
+各服务的专有配置位于对应 API 工程的 `appsettings.Development.json` 文件中（例如数据库连接字符串、服务端口等）。
 
 1. Redis 配置
 
@@ -32,7 +32,7 @@
 }
 ```
 
-3.  SysLogDb配置
+3. SysLogDb 配置
 
 ```json
 "SysLogDb": {
@@ -64,12 +64,12 @@
 
    **提示**：实际开发时无需同时启动所有服务，此处仅为快速本地体验。
 
-2. 在 `Visual Studio 2022` 主界面，点击 **启动** 按钮，启动上述 3 个服务及网关。
+2. 在 `Visual Studio 2022` 主界面，点击 **启动** 按钮，启动上述 3 个服务以及网关（共 4 个项目）。
 
 3. 若启动报错，优先查看 **控制台窗口** 的错误信息，常见问题如下：
 
    - **RabbitMQ 端口配置错误**：RabbitMQ 公开两个端口，一个用于 Web 管理页面，另一个用于数据通信，配置文件中应填写数据端口。
-   - **服务端口冲突**：可能与企业微信端口或其他已占用端口冲突。
+   - **服务端口冲突**：可能与企业微信等应用占用的端口冲突。
 
 | 工程名              | 描述     | URL 地址                 |
 | ------------------- | -------- | ------------------------ |
@@ -99,8 +99,8 @@ pnpm run dev
 
 ## 5. 结语
 
-至此，`adnc` 框架已成功在本地运行！
+至此，`adnc` 已可在本地正常运行。
 
-如果觉得本项目对你有帮助，欢迎 `Star` & `Fork` 支持！
+如果本项目对你有帮助，欢迎 `Star` & `Fork` 支持！
 
 [ADNC](https://aspdotnetcore.net/) —— 一个可落地的 .NET 微服务/分布式开发框架。

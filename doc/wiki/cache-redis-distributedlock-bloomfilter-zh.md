@@ -1,8 +1,9 @@
 ## 前言
-&ensp; &ensp; 微软官方已经有了`Microsoft.Extensions.Caching.Distributed.IDistributedCache`接口，并且有`StackExchange.Redis`的实现和官方自己redis实现。那为什么还要再封装一套出来呢，是不是多此一举呢？
-我们来看下IDistributedCache提供的方法签名，实际生产环境中满足不了需求。即便是直接使用，也可能需要再简单封装一次。
-另外我们在实际项目中，还会用到redis的其他数据类型。不管是使用StackExchange.Redis或者CSredis都需要再次封装。
-基于上面两者原因，`Adnc.Infra.Caching`封装了StackExchange.Redis来管理和使用cache、redis、distributedLocker，当然你也可以封装CSredis或者其它Redis的SDK来实现。
+.NET 官方提供了 `Microsoft.Extensions.Caching.Distributed.IDistributedCache` 接口，并且提供了 `StackExchange.Redis` 等实现。那么，为什么还需要再封装一层？
+本文的出发点主要有两点：
+
+1) `IDistributedCache` 的方法签名偏通用，在实际生产环境中往往无法直接覆盖项目需求，即使直接使用通常也需要二次封装。
+2) 在项目中经常需要使用 Redis 的其他数据结构与能力。无论使用 StackExchange.Redis 还是 CSRedis，通常也需要统一封装以降低耦合。因此，`Adnc.Infra.Caching` 基于 StackExchange.Redis 进行了封装，用于管理和使用 cache、Redis 以及分布式锁。
 
 > `Adnc.Infra.Caching` 参考拷贝了`EasyCaching`很多代码，并删减了大量`EasyCaching`代码同时也在`EasyCaching`的基础上完善了很多核心功能。
 
@@ -18,8 +19,8 @@ void Remove(string key);
 Task RemoveAsync(string key, CancellationToken token = default(CancellationToken));
 ```
 ## 总体设计
-还没有画图
-`Adnc.Infra.Caching` 提供了三个接口以及两个Cache拦截器。
+`Adnc.Infra.Redis/Adnc.Infra.Redis.Caching` 提供了三个接口以及两个Cache拦截器。
+
 #### 接口
 - IDistributedLocker 分布式锁
 - IRedisProvider Redis操作接口
@@ -29,26 +30,26 @@ Task RemoveAsync(string key, CancellationToken token = default(CancellationToken
 - CachingEvictAttribute 删除拦截器
 - CachingAbleAttribute 读取拦截器
 
-## appsetting.json配置
+## appsettings.json 配置示例
 ```json
 "Redis": {
-    //防止cahce雪崩配置,cahce保存时，过期时间会加上最大不超过MaxRdSecond的一个随机数。
+    //防止 cache 雪崩配置。保存 cache 时，过期时间会加上一个不超过 MaxRdSecond 的随机秒数。
     "MaxRdSecond": 30,
-    //防止cache击穿配置，LockMs是获取到分布式锁的锁定时间，SleepMs没有获取到分布式锁的休眠时间，具体实现请参考源码。
+    //防止 cache 击穿配置。LockMs 为获取到分布式锁后的锁定时长；SleepMs 为未获取锁时的休眠时长，具体实现请参考源码。
     "LockMs": 6000,
     "SleepMs": 300,
-    //cahce序列化配置，目前只实现了binary一种方式，可以自己扩展。
+    //cache 序列化配置。目前仅实现了 binary 一种方式，可自行扩展。
     "SerializerName": "binary",
-    //cahce是否允许记录日志
+    //cache 是否允许记录日志
     "EnableLogging": true,
-    //Polly超时时间，cahce与数据库同步补偿机制会用到这个参数，具体实现请参考源码。
+    //Polly 超时时间。cache 与数据库同步补偿机制会用到该参数，具体实现请参考源码。
     "PollyTimeoutSeconds": 11,
-    //防止cahce穿透配置
+    //防止 cache 穿透配置
     "PenetrationSetting": {
         //Disable=true 允许穿透
         //Disable=false不允许穿透
         "Disable": false,
-        //布隆过滤器配置。cache防穿透通过布隆过滤器实现。
+        //布隆过滤器配置。cache 防穿透通过布隆过滤器实现。
         "BloomFilterSetting": {
             //过滤器名字
             "Name": "adnc:usr:bloomfilter:cachekeys",
@@ -58,21 +59,11 @@ Task RemoveAsync(string key, CancellationToken token = default(CancellationToken
             "ErrorRate": 0.001
             }
     },
-    //redis连接串
+    //Redis 连接串
     "Dbconfig": {
-        "ConnectionString": "193.112.75.77:13379,password=football,defaultDatabase=11,ssl=false,sslHost=null,connectTimeout=4000,allowAdmin=true"
+        "ConnectionString": "127.0.0.1:13379,password=football,defaultDatabase=11,ssl=false,sslHost=null,connectTimeout=4000,allowAdmin=true"
     }
 }
-```
-## 注册
-框架在Adnc.Application.Shared.AdncApplicationModule.cs文件中已经统一注册。
-```csharp
- private void LoadDepends(ContainerBuilder builder)
- {
-     //注册Caching模块
-     builder.RegisterModule(new AdncInfraCachingModule(_redisSection));
-     //注册其他模块
- }
 ```
 ## IDistributedLocker 
 该接口提供一个安全的分布式锁，释放锁通过lua脚本+版本号(lockvalue)的方式释放，并且实现了自动续期的功能。
@@ -115,8 +106,8 @@ public interface IDistributedLocker
 }
 ```
 ### IDistributedLocker使用
-在需要使用分布式锁的地方通过构造函数注入。<br/>
-单元测试：https://github.com/AlphaYu/Adnc/blob/master/test/Adnc.UnitTest/RedisCahceTests.cs
+在需要使用分布式锁的地方通过构造函数注入。
+
 ```csharp
 public class xxxAppService
 {
@@ -155,8 +146,8 @@ public class xxxAppService
 }
 ```
 ## IRedisProvider 
-默认基于StackExchange.Redis实现了该接口，该接口提供Redis所有数据类型的操作方法。
-IRedisProvidert提供的方法太多了，这里就不放全部代码了。贴下布隆拦截器的几个方法。
+默认基于StackExchange.Redis实现了该接口，该接口提供Redis所有数据类型的操作方法。IRedisProvidert提供的方法太多了，这里就不放全部代码了。贴下布隆拦截器的几个方法。
+
 ```csharp
 public interface IRedisProvide
 {
@@ -216,8 +207,8 @@ public interface IRedisProvide
 }     
 ```
 ### IRedisProvider使用
-在需要使用redis的地方通过构造函数注入。基本常用的方法大家应该都会，下面示例代码中演示了一个复杂点的，如何执行lua脚本。<br/>
-单元测试：https://github.com/AlphaYu/Adnc/blob/master/test/Adnc.UnitTest/RedisCahceTests.cs
+在需要使用redis的地方通过构造函数注入。基本常用的方法大家应该都会，下面示例代码中演示了一个复杂点的，如何执行lua脚本。
+
 ```csharp
 public class xxxAppService
 {
@@ -422,11 +413,10 @@ public interface ICacheProvider
     Task KeyExpireAsync(IEnumerable<string> cacheKeys, int seconds);
 }
 ```
-### ICacheProvider使用
-在需要使用cache的地方通过构造函数注入。Adnc是通过CacheService这个类来操作缓存的，你也可以直接在XXXAppServcie中通过构造函数注入，直接使用。<br/>
-建议统一通过CacheService方式来操作缓存。
+### ICacheProvider 使用
+在需要使用缓存的地方，可通过构造函数注入 `ICacheProvider`。在 ADNC 中，通常通过 `CacheService` 对缓存访问进行统一封装；你也可以在 `XXXAppService` 中直接注入并调用。
 
->单元测试：https://github.com/AlphaYu/Adnc/blob/master/test/Adnc.UnitTest/RedisCahceTests.cs
+建议优先通过 `CacheService` 方式操作缓存，以便集中管理缓存键规范、过期策略、布隆过滤器与分布式锁等横切能力。
 
 - 直接使用
 ```csharp
@@ -446,9 +436,7 @@ public class xxxAppService
     }
 }
 ```
-- 通过CacheService使用
-参考代码：https://github.com/AlphaYu/Adnc/blob/master/src/ServerApi/Services/Adnc.Usr/Adnc.Usr.Application/Caching/CacheService.cs<br/>
-再在xxxAppService.cs 注入CacheService。
+- 在xxxAppService.cs 注入CacheService。
 
 ```csharp
 public class CacheService : AbstractCacheService
@@ -484,7 +472,7 @@ public class CacheService : AbstractCacheService
 ```
 ## Cache拦截器使用
 拦截器要根据实际业务场景使用，拦截器解决不了所有问题。当拦截器解决不了时，则只能在业务逻辑中使用编码的方式使用cache。
-#### CachingEvictAttribute 删除拦截器，在xxxappService接口使用CachingEvictAttribute特性<br/>
+#### CachingEvictAttribute 删除拦截器，在IxxxappService接口使用CachingEvictAttribute特性<br/>
 
 | 参数           | 描述(以下参数可以组合使用)                                   |
 | -------------- | ------------------------------------------------------------ |
@@ -531,9 +519,10 @@ public interface IAccountAppService : IAppService
 ```
 
 ## Cachekey布隆过滤器的使用
-`Adnc.Infra.Caching`防穿透的实现是通过布隆过滤器实现的。下面介绍如何在项目中定义和使用,我以Usr微服务为例。
+`Adnc.Infra.Caching`防穿透的实现是通过布隆过滤器实现的。下面介绍如何在项目中定义和使用,我以Admin微服务为例。
+
 - 第一步
-在Adnc.Usr.Application工程的Caching目录中新建BloomFilterCacheKey.cs，并继承AbstractBloomFilter
+在Adnc.Admin.Application工程的Caching目录中新建BloomFilterCacheKey.cs，并继承AbstractBloomFilter
 - 第二步
 覆写 InitAsync 方法，该方法负责初始化布隆过滤器，项目启动时，会自动调用该方法，将系统中使用到cachekey保存进过滤器中。
 默认InitAsync只会执行一次，布隆过滤器创建成功后，项目再次启动也不会被调用，这里需要根据自己的实际情况调整。
@@ -666,6 +655,7 @@ public class UserAppService : AbstractAppService, IUserAppService
 ## 其它布隆过滤器
 在上一节中我们看到还有一个accountFilter过滤器（BloomFilterAccount）,这个过滤器和cache没有关系。具体实现请参考源码，所有布隆过滤器的定义都一样。
 BloomFilterAccount用于登录时判断account是否存在。
+
 ```csharp
 namespace Adnc.Usr.Application.Services
 {
@@ -711,5 +701,6 @@ namespace Adnc.Usr.Application.Services
 如果您的业务场景需要实现上面的这些功能，阿里开源的canal或许是比较好的选择。使用canal能优雅更方便的组织业务代码。
 
 ---
-WELL DONE，记得 [star&&fork](https://github.com/alphayu/adnc)
-全文完，[ADNC](https://aspdotnetcore.net)一个可以落地的.NET微服务/分布式开发框架。
+—— 完 ——
+
+如有帮助，欢迎 [star & fork](https://github.com/alphayu/adnc)。

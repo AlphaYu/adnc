@@ -4,18 +4,18 @@
 
 ---
 
-## 1.Repository层
+## 1. Repository 层
 
 ### 1.1 定义 Entity
 
-在 `Repository\Entities` 下新建 Student 实体：
+在 `Repository\Entities` 目录下新建 Student 实体：
 
-1. 实体类必须直接或间接继承 EfEntity。
-2. 若实体包含 CreateBy、CreateByTime、ModifyBy、ModifyTime 字段，则需继承 EfFullAuditEntity。
-3. 若实体仅包含 CreateBy、CreateByTime 字段，则需继承 EfBasicAuditEntity。
-4. 若实体不包含上述审计字段，则需继承 EfEntity。
-5. 若实体需支持软删除，须实现 ISoftDelete 接口。
-6. 若实体需支持乐观锁（行并发控制），须实现 IConcurrency 接口。
+1. 实体类必须直接或间接继承 `EfEntity`。
+2. 若实体包含 `CreateBy`、`CreateByTime`、`ModifyBy`、`ModifyTime` 字段，则需继承 `EfFullAuditEntity`。
+3. 若实体仅包含 `CreateBy`、`CreateByTime` 字段，则需继承 `EfBasicAuditEntity`。
+4. 若实体不包含上述审计字段，则继承 `EfEntity`。
+5. 若实体需要支持软删除，则实现 `ISoftDelete` 接口。
+6. 若实体需要支持乐观锁（行并发控制），则实现 `IConcurrency` 接口。
 
 ```csharp
 namespace Adnc.Demo.Admin.Repository.Entities;
@@ -28,12 +28,12 @@ public class Student : EfBasicAuditEntity, ISoftDelete
     public static readonly int Name_MaxLength = 50;
 
     /// <summary>
-    /// sdudent name
+    /// student name
     /// </summary>
     public string Name { get; set; } = string.Empty;
 
     /// <summary>
-    /// soft delete
+    /// soft delete flag
     /// </summary>
     public bool IsDeleted { get; set; }
 }
@@ -47,7 +47,7 @@ modelBuilder.Entity<Student>().ToTable("sch_student");
 
 ---
 
-### 1.2 定义EntityConfig
+### 1.2 定义 EntityConfig
 
 在 `Repository\Entities\Config` 目录下新建 StudentConfig 实体配置类：
 
@@ -78,7 +78,7 @@ dotnet ef database update --project Repository\Adnc.Demo.Admin.Repository.csproj
 
 ---
 
-## 2. Applcation/Application.Contracts层
+## 2. Application/Application.Contracts 层
 
 ### 2.1 配置 AutoMapper
 

@@ -2,7 +2,7 @@
 
 ## 1. 服务公共配置
 
->adnc\src\Demo\Shared\resources\appsettings.shared.Development.json
+> `adnc\src\Demo\Shared\resources\appsettings.shared.Development.json`
 
 ### 1.1 RegisterType
 
@@ -355,5 +355,6 @@ public static WebApplicationBuilder AddConfiguration(this WebApplicationBuilder 
 
 ------
 
-WELL DONE，记得 star && fork。
- 全文完，[ADNC](https://aspdotnetcore.net/) 一个可以落地的 .NET 微服务/分布式开发框架。
+—— 完 ——
+
+如有帮助，欢迎 Star & Fork。

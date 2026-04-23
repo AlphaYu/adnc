@@ -1,6 +1,6 @@
 ## 前言
-&ensp; &ensp; 本文主要介绍在`ADNC`框架中实体如何映射到数据库，示例采用CodeFirst模式，当然你也可以使用DBFirst模式。
-本文所有操作都是在`Adnc.Cust`微服务中完成，其它微服务定义方式都一样。
+本文主要介绍在 `ADNC` 框架中，如何将实体映射到数据库。示例采用 Code First 模式；如有需要，也可使用 DB First 模式。
+本文所有操作均以 `Adnc.Cust` 微服务为例，其他微服务的定义方式一致。
 
 - <a href="https://aspdotnetcore.net/docs/efcore-pemelo-grud/" title="如何使用仓储(一)-基础功能">如何使用仓储(一)-基础功能</a>
 - <a href="https://aspdotnetcore.net/docs/efcore-pemolo-unitofwork/" title="如何使用仓储(二)-工作单元">如何使用仓储(二)-工作单元</a>
@@ -10,11 +10,11 @@
 
 ## 如何映射
 ### 第一步，创建实体
-我们需要在`Adnc.Cus.Repository`工程下的`Entities`目录创建实体，如`Customer`(如果是DDD模式则是Adnc.Xxx.Domain工程)。
+在 `Adnc.Cus.Repository` 工程的 `Entities` 目录下创建实体（例如 `Customer`）。如果采用 DDD 模式，则实体通常位于 `Adnc.Xxx.Domain` 工程中。
 
-> 如果采用经典三层模式开发，我们定义的实体必须直接继承或间接继承`EfEntity`类。
-> 如果采用DDD架构模式开发， 我们定义的实体必须直接继承或间接继承`AggregateRoot`或者`DomainEntity`。
-> Adnc.Cust 是采用经典三层模式开发的，DDD架构模式请参考Adnc.Ord/Adnc.Whse。实现模式都一样。
+> 若采用经典三层模式开发，实体需直接或间接继承 `EfEntity` 类。
+> 若采用 DDD 架构模式开发，实体需直接或间接继承 `AggregateRoot` 或 `DomainEntity`。
+> `Adnc.Cust` 采用经典三层模式；DDD 架构模式可参考 `Adnc.Ord` / `Adnc.Whse`，实现方式一致。
 
 `EfEntity` 经典三层开发模式中所有实体类的基类 
 
@@ -222,5 +222,4 @@ namespace Adnc.Infra.EfCore.MySQL
 }
 ```
 
-WELL DONE
-全文完
+—— 完 ——
