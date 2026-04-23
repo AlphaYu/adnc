@@ -126,7 +126,7 @@ SELECT * FROM TABLE1
 /*#mycat:db_type=master*/
 SELECT * FROM TABLE1
 ```
-&ensp; &ensp; 以 `Pomelo.EntityFrameworkCore.MySql` 为例，EFCore 提供 `IQuerySqlGeneratorFactory` 接口，`Pomelo` 的 `MySqlQuerySqlGeneratorFactory` 实现该接口，`Create()` 方法负责生成具体的 `QuerySqlGenerator`，即查询 SQL 的生成。<a href="https://github.com/AlphaYu/Adnc/blob/master/src/ServerApi/Adnc.Infr.EfCore/AdncMySqlQuerySqlGeneratorFactory.cs">完整源码参考</a>。
+&ensp; &ensp; 以 `Pomelo.EntityFrameworkCore.MySql` 为例，EFCore 提供 `IQuerySqlGeneratorFactory` 接口，`Pomelo` 的 `MySqlQuerySqlGeneratorFactory` 实现该接口，`Create()` 方法负责生成具体的 `QuerySqlGenerator`，即查询 SQL 的生成。
 
 &ensp; &ensp; 主要需完成三步：
 - 新建工厂类 `AdncMySqlQuerySqlGeneratorFactory`，继承 `MySqlQuerySqlGeneratorFactory` 并重写 `Create()` 方法。示例代码如下
