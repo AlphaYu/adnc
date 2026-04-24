@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  nginx:
+    image: nginx:latest
+    container_name: adnc-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+      - "9079:9079"
+    volumes:
+      - ./cert/:/etc/nginx/cert/
+      - ./certbot/webroot/www/:/etc/nginx/certbot/
+      - ./conf/nginx.conf:/etc/nginx/nginx.conf
+    restart: always
+    networks:
+      - adnc_nginx
+
+networks:
+  adnc_nginx:

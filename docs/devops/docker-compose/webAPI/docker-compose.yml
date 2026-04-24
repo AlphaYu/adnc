@@ -1,0 +1,26 @@
+version: '3.3'
+
+services:
+  dotnet-app:
+    image: mcr.microsoft.com/dotnet/aspnet:8.0  # 选择合适的 .NET 版本
+    container_name: youapi_dotnet_server
+    environment:
+       - ASPNETCORE_ENVIRONMENT=Staging
+    working_dir: /app
+    volumes:
+      - ./publish:/app  # 将打包后的 Liunx x64 dll 放到这个文件的同级 publish 目录，如果没有 publish 新建一个空的
+    command: ["./youapi"]  # 执行 修改为你的项目 dll 名称
+    networks:
+      webapi_default:
+      docker-compose_adnc_consul_webapi:
+          ipv4_address: 172.80.0.1
+    ports:
+      - "50010:8080"  # 你可以根据需要映射端口
+      - "50011:8081"
+    restart: unless-stopped
+
+networks:
+  webapi_default:
+  docker-compose_adnc_consul_webapi:
+    external: true
+# 然后输入 http://localhost:50010/swagger/index.html 查看接口文档
