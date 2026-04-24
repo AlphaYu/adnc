@@ -1,3 +1,0 @@
-[submodule "doc/devops"]
-	path = docs_backup/devops
-	url = https://github.com/woyaodangrapper/adnc-devops
