@@ -1,1 +1,0 @@
-[adnc](https://aspdotnetcore.net)
