@@ -1,4 +1,6 @@
 ## ADNC 如何使用仓储 - 切换数据库类型
+
+[GitHub 仓库地址](https://github.com/alphayu/adnc)
 本文主要介绍在 `ADNC` 仓储中如何切换数据库类型。原则上，只要 EF Core 支持的数据库类型，ADNC 均可实现平滑切换。ADNC 默认使用 MariaDB/MySQL，本文以从默认数据库类型切换到 SQL Server 为例；切换到其他数据库类型的步骤类似。
 数据库类型切换通常有两类场景：
 1) 全局切换：所有服务的数据库类型统一切换到另一种类型（例如 MySQL 切换到 SQL Server）。

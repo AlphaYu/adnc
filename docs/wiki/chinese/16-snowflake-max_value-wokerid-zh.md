@@ -1,4 +1,6 @@
 ## ADNC Id生成器(雪花算法)
+
+[GitHub 仓库地址](https://github.com/alphayu/adnc)
 主键生成方式有多种，例如自增 ID、GUID、Redis 的 `INCR`、雪花算法等。各类方案的优劣已有大量资料，本文不再赘述。ADNC 采用基于 [Yitter](https://github.com/yitter/IdGenerator) 的雪花算法生成 ID，以兼顾分布式环境下的唯一性与高性能。
 
 ## Yitter 雪花算法介绍

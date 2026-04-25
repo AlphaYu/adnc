@@ -1,5 +1,7 @@
 # ADNC API 层开发指引
 
+[GitHub 仓库地址](https://github.com/alphayu/adnc)
+
 API 层负责对外提供 HTTP 接口，处理路由与协议适配、鉴权与权限校验、参数绑定与输入校验、响应封装与错误输出等。API 层应保持“薄”，避免承载业务规则与事务逻辑，将业务编排交由服务层（`Application`）完成。
 
 ---

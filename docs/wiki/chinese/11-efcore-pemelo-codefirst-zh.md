@@ -1,4 +1,6 @@
 ## ADNC 如何使用仓储 - CodeFirst
+
+[GitHub 仓库地址](https://github.com/alphayu/adnc)
 本文主要介绍在 `ADNC` 框架中，如何将实体映射到数据库。示例采用 Code First 模式；如有需要，也可使用 DB First 模式。
 本文所有操作均以 `Adnc.Cust` 微服务为例，其他微服务的定义方式一致。
 

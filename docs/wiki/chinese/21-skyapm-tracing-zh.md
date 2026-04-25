@@ -1,5 +1,7 @@
 # ADNC 如何开启 SkyAPM（SkyWalking）链路追踪
 
+[GitHub 仓库地址](https://github.com/alphayu/adnc)
+
 本项目已集成 SkyAPM（SkyWalking .NET Agent）相关依赖。开启后，你可以在 SkyWalking UI 中看到请求链路（Trace）、服务依赖关系、接口耗时等信息，并能把 HTTP、gRPC、CAP 消息消费/发布、Redis 缓存等操作串起来排查问题。
 
 ---

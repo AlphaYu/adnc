@@ -1,5 +1,7 @@
 # ADNC 如何使用配置中心（Consul）
 
+[GitHub 仓库地址](https://github.com/alphayu/adnc)
+
 本项目支持两种配置加载方式：
 
 - `File`：从本地 `appsettings` 文件读取配置，适合本地开发。

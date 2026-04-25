@@ -1,5 +1,7 @@
 # ADNC 配置节点详细说明
 
+[GitHub 仓库地址](https://github.com/alphayu/adnc)
+
 ## 1. 服务公共配置
 
 > `adnc\src\Demo\Shared\resources\appsettings.shared.Development.json`

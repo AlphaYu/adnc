@@ -1,5 +1,7 @@
 # ADNC 如何使用注册中心
 
+[GitHub 仓库地址](https://github.com/alphayu/adnc)
+
 本项目支持多种“服务注册与发现”方式，通过 `RegisterType` 控制：
 
 - `Direct`：不进行注册，服务间调用直接使用固定 URL。
