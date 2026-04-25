@@ -35,7 +35,7 @@
 
 建议按下面顺序开始：
 
-1. 先阅读 [快速开始文档](https://aspdotnetcore.net/docs/quickstart/)
+1. 先阅读 [快速开始文档](https://github.com/alphayu/adnc/wiki/02-quickstart-zh)
 2. 使用 `src/Adnc.sln` 或 `src/Demo/Adnc.Demo.sln` 打开解决方案
 3. 如需前端项目，请查看文末前端链接
 4. 如需初始化数据，请查看文末数据库脚本链接
@@ -196,61 +196,31 @@ Whse/
 
 ## 文档链接
 
-### 已提供文档
-
-#### 配置文件详解
-用于说明各个配置节点及其作用：[查看文档](https://aspdotnetcore.net/docs/appsettings/)
-
-#### 如何手动部署到容器
-涵盖如何使用 Docker 安装并配置 Consul 集群、SkyWalking 系列组件，以及编写和配置相关项目的 Dockerfile 并部署多个服务：[查看文档](https://aspdotnetcore.net/docs/deploy-docker/)
-
-#### 如何实现读写分离
-说明为什么通过中间件实现读写分离，以及 EF Core 在这一方案下的代码写法：[查看文档](https://aspdotnetcore.net/docs/maxscale-readwritesplit/)
-
-#### 如何使用 Cache、Redis、分布式锁与布隆过滤器
-包含 Cache、Redis、分布式锁和布隆过滤器的使用方式，以及缓存防雪崩、防击穿、防穿透和同步方案：[查看文档](https://aspdotnetcore.net/docs/cache-redis-distributedlock-bloomfilter/)
-
-#### 如何动态分配雪花算法 workerId
-介绍 Yitter 雪花算法的特点、配置方式，以及如何动态获取 workerId：[查看文档](https://aspdotnetcore.net/docs/snowflake-max_value-workerid/)
-
-#### 如何认证与授权
-介绍为何采用 JwtBearer + Basic 混合认证模式，以及对应的实现逻辑与配置方式：[查看文档](https://aspdotnetcore.net/docs/claims-based-authentication/)
-
-#### 如何使用 EF Core 仓储
-涵盖 EF Core 仓储基础功能、工作单元、Code First、原生 SQL 等内容，并附带对应的演示代码与 SQL 示例。
-1. [如何使用仓储(一)-基础功能](https://aspdotnetcore.net/docs/efcore-pemelo-grud/)<br/>
-1. [如何使用仓储(二)-分布式事务/本地事务](https://aspdotnetcore.net/docs/efcore-pemolo-unitofwork/)<br/>
-1. [如何使用仓储(三)-CodeFirst](https://aspdotnetcore.net/docs/efcore-pemelo-codefirst/)<br/>
-1. [如何使用仓储(四)-撸SQL](https://aspdotnetcore.net/docs/efcore-pemelo-sql/)<br/>
-1. [ 如何使用仓储(五)-切换数据库类型](https://aspdotnetcore.net/docs/efcore-pemelo-sqlserver/)<br/>
-
-### 规划中
-
-#### 如何使用 Jenkins + Shell 脚本自动化部署
-
-- 相关文档正在整理中
-
-#### 如何部署到 K8S
-
-- 相关文档正在整理中
-
-#### 如何从零开发业务
-- 相关文档正在整理中
-
-#### 如何调用微服务
-- 相关文档正在整理中
-
-#### 如何配置网关
-- 相关文档正在整理中
-
-#### 如何使用注册/配置中心
-- 相关文档正在整理中
-
-#### 如何配置链路追踪
-- 相关文档正在整理中
-
-#### 如何配置健康检测
-- 相关文档正在整理中
+| **序号** | 标题                                                         |
+| -------- | ------------------------------------------------------------ |
+| 1        | [ADNC 项目导览：一套可落地的 .NET 8 微服务/分布式工程实践](https://github.com/alphayu/adnc/wiki/01-adnc-intro-zh) |
+| 2        | [ADNC 快速上手指南](https://github.com/alphayu/adnc/wiki/02-quickstart-zh) |
+| 3        | [ADNC 快速 Docker 部署指南](https://github.com/alphayu/adnc/wiki/03-quickly-docker-deploy-zh) |
+| 4        | [ADNC 配置节点详细说明](https://github.com/alphayu/adnc/wiki/04-appsettings-zh) |
+| 5        | [ADNC 完整开发流程](https://github.com/alphayu/adnc/wiki/05-feature-dev-guide-zh) |
+| 6        | [ADNC Repository 层开发指引](https://github.com/alphayu/adnc/wiki/06-repository-dev-guide-zh) |
+| 7        | [ADNC Service层开发指引](https://github.com/alphayu/adnc/wiki/07-service-dev-guide) |
+| 8        | [ADNC API 层开发指引](https://github.com/alphayu/adnc/wiki/08-api-dev-guide-zh) |
+| 9        | [ADNC 如何认证与授权](https://github.com/alphayu/adnc/wiki/09-claims-based-authentication-zh) |
+| 10       | [ADNC 如何使用仓储 - 基础功能](https://github.com/alphayu/adnc/wiki/10-efcore-pemelo-curd-zh) |
+| 11       | [ADNC 如何使用仓储 - CodeFirst](https://github.com/alphayu/adnc/wiki/11-efcore-pemelo-codefirst-zh) |
+| 12       | [ADNC 如何使用仓储 - 切换数据库类型](https://github.com/alphayu/adnc/wiki/12-efcore-pemelo-sqlserver-zh) |
+| 13       | [ADNC 如何使用仓储 - 事务](https://github.com/alphayu/adnc/wiki/13-efcore-pemolo-unitofwork-zh) |
+| 14       | [ADNC  如何使用仓储 - 执行原生SQL](https://github.com/alphayu/adnc/wiki/14-efcore-pemelo-sql-zh) |
+| 15       | [ADNC 如何使用仓储 - 读写分离](https://github.com/alphayu/adnc/wiki/15-maxsale-readwritesplit-zh) |
+| 16       | [ADNC Id生成器(雪花算法)介绍](https://github.com/alphayu/adnc/wiki/16-snowflake-max_value-wokerid-zh) |
+| 17       | [ADNC 如何使用Cache/Redis/分布式锁/布隆过滤器](https://github.com/alphayu/adnc/wiki/17-cache-redis-distributedlock-bloomfilter-zh) |
+| 18       | [ADNC 服务之间如何通过 HTTP 调用（Refit）](https://github.com/alphayu/adnc/wiki/18-service-http-call-zh) |
+| 19       | [ADNC 服务之间如何通过 gRPC 调用](https://github.com/alphayu/adnc/wiki/19-service-grpc-call-zh) |
+| 20       | [ADNC 服务之间如何通过事件（CAP）通信](https://github.com/alphayu/adnc/wiki/20-service-event-call-zh) |
+| 21       | [ADNC 如何开启 SkyAPM（SkyWalking）链路追踪](https://github.com/alphayu/adnc/wiki/21-skyapm-tracing-zh) |
+| 22       | [ADNC 如何使用配置中心（Consul）](https://github.com/alphayu/adnc/wiki/22-config-center-zh) |
+| 23       | [ADNC 如何使用注册中心](https://github.com/alphayu/adnc/wiki/23-registry-center-zh) |
 
 ## 截图 / JMeter / 官网
 
