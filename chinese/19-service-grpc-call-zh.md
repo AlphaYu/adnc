@@ -1,5 +1,7 @@
 # ADNC 服务之间如何通过 gRPC 调用
 
+[GitHub 仓库地址](https://github.com/alphayu/adnc)
+
 在 ADNC 中，服务间同步调用除了 HTTP（Refit）外，也常用 gRPC。gRPC 的优点是性能更好、契约更强（基于 `.proto`），适合服务之间的内部调用。本文以 `src/Demo/Cust/Api/Controllers/GrpcClientDemoController.cs` 为例，说明 Cust 服务如何通过 gRPC 调用 Admin 服务。
 
 ---

@@ -1,4 +1,6 @@
 ## ADNC 如何使用仓储 - 基础功能
+[GitHub 仓库地址](https://github.com/alphayu/adnc)
+
 本文重点介绍如何使用仓储操作 MariaDB/Mysql。
 
 ## 总体设计

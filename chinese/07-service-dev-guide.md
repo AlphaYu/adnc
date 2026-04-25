@@ -1,4 +1,6 @@
-# 服务层开发指引
+# ADNC 服务层开发指引
+
+[GitHub 仓库地址](https://github.com/alphayu/adnc)
 
 服务层（`Application` / `Application.Contracts`）负责业务编排、DTO 映射、事务控制、跨服务调用等，是应用层的核心组成部分。建议遵循分层、解耦、可测试的设计原则。
 

@@ -1,5 +1,7 @@
 # ADNC 服务之间如何通过 HTTP 调用（Refit）
 
+[GitHub 仓库地址](https://github.com/alphayu/adnc)
+
 在 ADNC 中，服务间“同步调用”（A 服务去调用 B 服务的接口）通常使用 HTTP（基于 Refit）或 gRPC。本文以 `src/Demo/Cust/Api/Controllers/RestClientDemoController.cs` 为例，说明 Cust 服务如何通过 HTTP 调用 Admin 服务的接口，涵盖：接口定义、客户端注册、地址配置、鉴权方式与容错策略。
 
 ---

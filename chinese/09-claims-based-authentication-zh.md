@@ -1,4 +1,6 @@
 ## ADNC 认证与授权
+[GitHub 仓库地址](https://github.com/alphayu/adnc)
+
 在 .NET Framework 时代，常用的是 Form 认证。对于前后端分离或多前端的系统，Form 认证的兼容性较差，容易导致代码复用率低、维护成本高。ASP.NET Core 对认证与授权进行了重构，采用基于声明（claims-based）的认证模型。
 
 常见的认证组件包括：

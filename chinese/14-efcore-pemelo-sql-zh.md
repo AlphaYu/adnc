@@ -1,4 +1,6 @@
 ## ADNC 如何使用仓储 - 执行原生SQL
+
+[GitHub 仓库地址](https://github.com/alphayu/adnc)
 本文主要介绍在 `ADNC` 仓储中如何执行原生 SQL。当遇到复杂查询、多表查询、大批量写操作等场景时，勉强使用 EF Core 实现并不是最佳方案。例如 `SqlSugar`、`FreeSql`也提供直接操作 ADO 执行 SQL 的能力；因此在生产环境中，适当使用原生 SQL 往往不可避免。
 
 ## 在 EF Core 仓储中执行原生 SQL

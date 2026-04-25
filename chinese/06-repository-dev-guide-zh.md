@@ -1,5 +1,7 @@
 # ADNC Repository 层开发指引
 
+[GitHub 仓库地址](https://github.com/alphayu/adnc)
+
 Repository 层（`Repository` 工程，或 DDD 场景下的 `Domain` + `Infrastructure`）负责数据持久化与查询能力的封装，包括实体建模、映射配置、数据库上下文、仓储接口实现、读写分离/软删除/并发控制等基础能力。Repository 层应专注于“数据访问”，不承载业务编排与事务边界（事务边界建议由服务层控制）。
 
 ---

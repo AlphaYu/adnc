@@ -1,5 +1,7 @@
 # ADNC 以 Student 为例的完整开发流程
 
+
+[GitHub 仓库地址](https://github.com/alphayu/adnc)
 本文以 Student 实体为例，结合项目代码风格，系统性地阐述在 ADNC 项目中，从 Entity 定义到 Controller 层，实现完整增删改查（CRUD）功能的标准流程。内容涵盖 Entity、EntityConfig、DTO、Validator、Service、AutoMapper、Controller 等关键环节，旨在规范开发实践，提升代码一致性与可维护性。
 
 ---

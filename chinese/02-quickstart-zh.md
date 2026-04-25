@@ -1,5 +1,7 @@
 # ADNC 快速上手指南
 
+[GitHub 仓库地址](https://github.com/alphayu/adnc)
+
 ## 1. 配置文件修改
 
 在开发环境中，`adnc` 各服务的通用配置统一集中在 `adnc\src\Demo\Shared\resources\appsettings.shared.Development.json` 文件中（例如 Redis、RabbitMQ 等）。

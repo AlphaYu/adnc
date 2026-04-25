@@ -1,5 +1,7 @@
 # ADNC 服务之间如何通过事件（CAP）通信
 
+[GitHub 仓库地址](https://github.com/alphayu/adnc)
+
 在微服务中，除了“同步调用”（HTTP/gRPC）之外，更推荐使用“事件驱动”来做跨服务协作：一个服务只负责把“发生了什么”发布出去，其他服务按需订阅并处理。这样可以降低耦合、减少调用链长度，并更容易实现最终一致性。
 
 本文以 `src/Demo/Cust/Api/Application/Subscribers/CustomerRechargedEventSubscriber.cs` 为例，介绍 ADNC 中基于 CAP（DotNetCore.CAP）的事件发布与订阅方式，并与 `docs/wiki/service-http-call-zh.md` 的“同步调用”做出区分。

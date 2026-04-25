@@ -1,4 +1,6 @@
 ## ADNC 如何使用仓储 - 读写分离
+
+[GitHub 仓库地址](https://github.com/alphayu/adnc)
 当单库系统遇到性能瓶颈时，读写分离通常是首选的优化手段之一。绝大多数系统中，读操作远多于写操作，大量耗时的读请求容易导致锁表，进而影响写入。因此，读写分离尤为重要。
 
 关于 `EF Core` 如何实现读写分离，常见方案包括注册 `DbContextFactory`，分别注入 `ReadDbContext` 和 `WriteDbContext`，或动态切换数据库连接字符串。

@@ -1,5 +1,7 @@
 # ADNC 快速 Docker 部署指南
 
+[GitHub 仓库地址](https://github.com/alphayu/adnc)
+
 ## 1. 系统要求
 
 1. 推荐服务器操作系统：`Ubuntu 22.04`
