@@ -7,6 +7,11 @@ internal sealed class RoundRobinLoadBalancer : ILoadBalancer
 
     public string Resolve(IList<string> services)
     {
+        if (services.Count == 0)
+        {
+            return string.Empty;
+        }
+
         lock (_lock)
         {
             if (_index >= services.Count)
